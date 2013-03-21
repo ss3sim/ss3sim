@@ -1,6 +1,7 @@
 #' Take an SS data object, manipulate the values, and return a
 #' modified version
 #' 
+#' @param SS_dat SS data object from SS_readdat() in the r4ss package
 #' @param Yr_start Starting year
 #' @param Yr_end Ending year
 #' @param Nfleet Number of fleets
@@ -15,9 +16,15 @@
 #' @param survey_index Survey index values
 #' @param se_log_CPUE Standard error of log(CPUE)
 #' @param se_log_survey Standard error of log(survey index)
-#' @param N_lencomp Number of length-composition observations
+#' @param N_lencomp Use length composition data? 0 means don't use length
+#' composition data; 1 means leave length composition data as is; if > 1
+#' then lengthcompdata should be a data.frame formatted as in the data
+#' file.
 #' @param lengthcompdata Length-composition data
-#' @param N_agecomp Number of age-composition observations
+#' @param N_agecomp Use age composition data? 0 means don't use length
+#' composition data; 1 means leave length composition data as is; if > 1
+#' then lengthcompdata should be a data frame formatted as in the
+#' data file.
 #' @param agecompdata Age composition data
 
 change_SS_dat <- function(SS_dat, 

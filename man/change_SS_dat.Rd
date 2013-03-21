@@ -14,6 +14,9 @@ modified version}
     lengthcompdata = 1, N_agecomp = 1, agecompdata = 1)
 }
 \arguments{
+  \item{SS_dat}{SS data object from SS_readdat() in the
+  r4ss package}
+
   \item{Yr_start}{Starting year}
 
   \item{Yr_end}{Ending year}
@@ -42,12 +45,17 @@ modified version}
 
   \item{se_log_survey}{Standard error of log(survey index)}
 
-  \item{N_lencomp}{Number of length-composition
-  observations}
+  \item{N_lencomp}{Use length composition data? 0 means
+  don't use length composition data; 1 means leave length
+  composition data as is; if > 1 then lengthcompdata should
+  be a data.frame formatted as in the data file.}
 
   \item{lengthcompdata}{Length-composition data}
 
-  \item{N_agecomp}{Number of age-composition observations}
+  \item{N_agecomp}{Use age composition data? 0 means don't
+  use length composition data; 1 means leave length
+  composition data as is; if > 1 then lengthcompdata should
+  be a data frame formatted as in the data file.}
 
   \item{agecompdata}{Age composition data}
 }
