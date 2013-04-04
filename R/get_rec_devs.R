@@ -1,6 +1,7 @@
 #' Extract recruitment deviations from the par file
 #' 
 #' @param working_folder The folder with SS3 output.
+#' @author Kotaro Ono
 
 get_rec_devs <- function(working_folder) {
   SS_par <- scan(file=paste(working_folder, "/ss3.par", sep=""), 

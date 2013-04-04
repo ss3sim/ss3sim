@@ -10,4 +10,7 @@
 \description{
   Extract recruitment deviations from the par file
 }
+\author{
+  Kotaro Ono
+}
 

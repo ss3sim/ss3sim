@@ -23,4 +23,7 @@
 m <- arima(lh, order = c(1,0,0))
 create_new_rec_devs(rep(0, 20), m)
 }
+\author{
+  Kotaro Ono
+}
 

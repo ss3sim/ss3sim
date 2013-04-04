@@ -24,4 +24,7 @@
 write.recdevs(recdevs_new=rlnorm(58), file_out="test.par") ## give it wrong num.years
 write.recdevs(recdevs_new=rlnorm(57), file_out="test.par") ## give it right ones
 }
+\author{
+  Cole Monnahan
+}
 
