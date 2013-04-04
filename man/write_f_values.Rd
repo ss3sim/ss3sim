@@ -6,14 +6,14 @@
     file_in = "ss3.par", file_out = file_in)
 }
 \arguments{
-  \item{years}{- Vector of years for which Fvalues are
+  \item{years}{Vector of years for which Fvalues are
   specified}
 
-  \item{years_alter}{- Vector of years for which Fvalue
-  will be altered}
+  \item{years_alter}{Vector of years for which Fvalue will
+  be altered}
 
-  \item{fvals}{- Vector of Fvalues to be entered into
-  ss3.par file}
+  \item{fvals}{Vector of Fvalues to be entered into ss3.par
+  file}
 
   \item{file_in}{Input SS3 par file.}
 

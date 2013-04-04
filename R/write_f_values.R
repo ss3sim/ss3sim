@@ -3,9 +3,9 @@
 #' @author Curry James Cunningham
 #' @details Changed to allow for specific years in series to be altered (this may be unnecessary given our purpose)
 #'
-#' @param years - Vector of years for which Fvalues are specified
-#' @param years_alter - Vector of years for which Fvalue will be altered
-#' @param fvals - Vector of Fvalues to be entered into ss3.par file
+#' @param years Vector of years for which Fvalues are specified
+#' @param years_alter Vector of years for which Fvalue will be altered
+#' @param fvals Vector of Fvalues to be entered into ss3.par file
 #' @param file_in Input SS3 par file.
 #' @param file_out Output SS3 par file. Defaults to overwriting
 
