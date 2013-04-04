@@ -2,6 +2,9 @@ This repository holds code for the 'fish-600 project' by students at the School 
 
 This package can be installed with:
 ```r
+    # install.packages("devtools")
     library(devtools)
     install_github("ss3sim", username="seananderson")
 ````
+
+Authors of functions in this package are listed within functions and will be collated here.
