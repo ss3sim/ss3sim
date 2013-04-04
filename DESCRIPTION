@@ -1,4 +1,4 @@
-Package: fish600
+Package: ss3sim
 Type: Package
 Title: Functions for stock assessment simulation studies using SS
 Version: 0.11
