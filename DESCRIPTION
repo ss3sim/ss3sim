@@ -1,9 +1,20 @@
 Package: fish600
 Type: Package
 Title: Functions for stock assessment simulation studies using SS
-Version: 0.1
-Date: 2013-03-21
-Author: FISH600 class
+Version: 0.11
+Date: 2013-04-04
+Author: FISH600 class (to be expanded with names)
 Maintainer: Sean C. Anderson <sean_anderson@sfu.ca>
-Description: This project aims to develop R functions for stock assessment simulation studies using Stock Synthesis. The functions will be used to complete simulation studies for the World Conference on Stock Assessment in Boston, July 2013.
+Description: This project aims to develop R functions for stock assessment
+    simulation studies using Stock Synthesis. The functions will be used to
+    complete simulation studies for the World Conference on Stock Assessment in
+    Boston, July 2013.
 License: MIT
+Collate:
+    'change_SS_dat.R'
+    'create_new_rec_devs.R'
+    'find_item.R'
+    'find_rec_dev_arma.R'
+    'get_rec_devs.R'
+    'write_f_values.R'
+    'write_rec_devs.R'
