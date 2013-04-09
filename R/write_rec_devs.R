@@ -7,8 +7,7 @@
 #'
 #' @param recdevs_new A vector of new recruitment deviations.
 #' @param file_in Input SS3 par file.
-#' @param file_out Output SS3 par file. Defaults to overwriting
-#' file_in
+#' @param file_out Output SS3 par file. 
 #' @author Cole Monnahan
 
 #' @examples
