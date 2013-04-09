@@ -20,8 +20,7 @@ write_rec_devs <- function(recdevs_new, file_in="ss3.par", file_out="ss3.par"){
   pattern <- "# recdev1"
 
   if(!file.exists(file_in)) stop(paste("File", file_in,"not found"))
-  par <- readLines(file(file_in))
-  on.exit(close(file(file_in)))       # in case of error, close file
+  par <- readLines(file_in)
   which.line <- grep(pattern=pattern, x=par)+1
 
   ## grab the old ones, note there is a leading space that needs to be
@@ -40,7 +39,6 @@ write_rec_devs <- function(recdevs_new, file_in="ss3.par", file_out="ss3.par"){
   ## replace w/ new recdevs, adding back in that leading space
   par[which.line] <- paste0(" ", recdevs_new, collapse="")
   ## Write it back to file
-  writeLines(par, con=file(file_out))
-  close(file(file_out))
+  writeLines(par, con=file_out)
 }
 
