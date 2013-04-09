@@ -29,7 +29,7 @@ write_f_values <- function(years, years_alter, fvals, file_in="ss3.par", file_ou
   }#next y
   
   #Write new .par file
-  writeLines(ss3.par.new, con=file(file_out))
+  writeLines(ss3.par.new, con=file_out)
   close(file(file_out))
   invisible(ss3.par.new)
 }
