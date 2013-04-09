@@ -15,7 +15,7 @@
 #' write.recdevs(recdevs_new=rlnorm(58), file_out="test.par") ## give it wrong num.years
 #' write.recdevs(recdevs_new=rlnorm(57), file_out="test.par") ## give it right ones
 
-write_rec_devs <- function(recdevs_new, file_in="ss3.par", file_out=file_in){
+write_rec_devs <- function(recdevs_new, file_in="ss3.par", file_out="ss3.par"){
   ## This is the pattern on the line before the vector of current recdevs
   pattern <- "# recdev1"
 
@@ -34,11 +34,11 @@ write_rec_devs <- function(recdevs_new, file_in="ss3.par", file_out=file_in){
   ## Check that the length of the recdevs matches up
   if(length(recdevs_new) != length(recdevs.old)){
     stop("The new recdev vector isn't the same length as what is
-      in the ss3.par file -- major problem!")
+      in the ss3.par file")
   }
 
   ## replace w/ new recdevs, adding back in that leading space
-  par[which.line] <- paste0(" ",recdevs_new, collapse="")
+  par[which.line] <- paste0(" ", recdevs_new, collapse="")
   ## Write it back to file
   writeLines(par, con=file(file_out))
   close(file(file_out))
