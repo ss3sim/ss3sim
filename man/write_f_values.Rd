@@ -3,7 +3,7 @@
 \title{Alter the Fvalues in an ss3.par file}
 \usage{
   write_f_values(years, years_alter, fvals,
-    file_in = "ss3.par", file_out = file_in)
+    file_in = "ss3.par", file_out = "ss3.par")
 }
 \arguments{
   \item{years}{Vector of years for which Fvalues are
@@ -17,8 +17,7 @@
 
   \item{file_in}{Input SS3 par file.}
 
-  \item{file_out}{Output SS3 par file. Defaults to
-  overwriting}
+  \item{file_out}{Output SS3 par file.}
 }
 \description{
   Alter the Fvalues in an ss3.par file

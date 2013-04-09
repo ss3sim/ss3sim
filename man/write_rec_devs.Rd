@@ -3,7 +3,7 @@
 \title{Replace recruitment deviations}
 \usage{
   write_rec_devs(recdevs_new, file_in = "ss3.par",
-    file_out = file_in)
+    file_out = "ss3.par")
 }
 \arguments{
   \item{recdevs_new}{A vector of new recruitment
@@ -11,8 +11,7 @@
 
   \item{file_in}{Input SS3 par file.}
 
-  \item{file_out}{Output SS3 par file. Defaults to
-  overwriting file_in}
+  \item{file_out}{Output SS3 par file.}
 }
 \description{
   This function replaces the recdevs in the ss3.par file
