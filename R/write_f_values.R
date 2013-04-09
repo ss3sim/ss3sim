@@ -7,9 +7,9 @@
 #' @param years_alter Vector of years for which Fvalue will be altered
 #' @param fvals Vector of Fvalues to be entered into ss3.par file
 #' @param file_in Input SS3 par file.
-#' @param file_out Output SS3 par file. Defaults to overwriting
+#' @param file_out Output SS3 par file. 
 
-write_f_values <- function(years, years_alter, fvals, file_in="ss3.par", file_out=file_in) {
+write_f_values <- function(years, years_alter, fvals, file_in="ss3.par", file_out="ss3.par") {
 	
   n.years_alter <- length(years_alter)
   #Check that sufficient Fvalues are supplied
