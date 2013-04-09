@@ -1,1 +1,6 @@
-exportPattern("^[[:alpha:]]+")
+export(change_SS_dat)
+export(find_item)
+export(find_rec_dev_arma)
+export(get_rec_devs)
+export(write_f_values)
+export(write_rec_devs)

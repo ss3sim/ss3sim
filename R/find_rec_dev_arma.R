@@ -5,6 +5,7 @@
 #' 
 #' @param working_folder The folder with SS3 output. 
 #' @return An arima() model object.
+#' @export
 
 find_rec_dev_arma <- function(working_folder) {
   Rec_dev <- get_rec_devs(working_folder)

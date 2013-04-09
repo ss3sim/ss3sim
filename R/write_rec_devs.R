@@ -9,6 +9,7 @@
 #' @param file_in Input SS3 par file.
 #' @param file_out Output SS3 par file. 
 #' @author Cole Monnahan
+#' @export
 
 #' @examples
 #' write.recdevs(recdevs_new=rlnorm(58), file_out="test.par") ## give it wrong num.years

@@ -26,6 +26,7 @@
 #' then lengthcompdata should be a data frame formatted as in the
 #' data file.
 #' @param agecompdata Age composition data
+#' @export
 
 change_SS_dat <- function(SS_dat, 
   Yr_start=1913,
