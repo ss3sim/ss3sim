@@ -16,6 +16,7 @@
 #' @param lencomp matrix of length comps 
 #' 
 #' @export
+#' 
 
 
 change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
