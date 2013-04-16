@@ -23,8 +23,11 @@ add_time_varying_features <- function(
   par.file="ss3.par", 
   how.time.varying=c("env", "block", "dev")) {
 
-  how.time.varying <- how.time.varying[1]
   require(r4ss)
+
+  how.time.varying <- how.time.varying[1]
+  if(!how.time.varying %in% c("env", "block", "dev")) 
+    stop("how.time.varying must be one of env, block, dev")
 
   ## To read in the control file and create an R object to modify afterwards
   SS_ctl <- readLines(ctl.file.in)
