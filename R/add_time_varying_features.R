@@ -1,16 +1,16 @@
 #' Methods to include time varying param features
 #'
-#' @details 
-#' Documentation not complete
-#' Include_timevarying_param accept three different options
-#' 1. using the "block" option for time varying param
-#' 2. using the "dev" option for time varying param
-#' 3. using the "env" option for time varying param
-#' 
-#' @param                              
-
-
-
+#' @param Nblocks Number of blocks
+#' @param Blockpattern Block pattern 
+#' @param Deviations
+#' @param ctl.file.in Input control file name
+#' @param ctl.file.out Output control file name
+#' @param Dat.file .dat file name
+#' @param par.file .par file name 
+#' @param how.time.varying How time varying parameters are added.
+#' Options are "env" for environment, "block" for block, or "dev" for
+#' deviations. 
+#'
 #' @export
 			
 add_time_varying_features <- function(
@@ -21,8 +21,9 @@ add_time_varying_features <- function(
   ctl.file.out ="YTF.ctl",
   Dat.file="YTF.dat", 
   par.file="ss3.par", 
-  how.time.varying="env") {
+  how.time.varying=c("env", "block", "dev")) {
 
+  how.time.varying <- how.time.varying[1]
   require(r4ss)
 
   ## To read in the control file and create an R object to modify afterwards
