@@ -1,3 +1,4 @@
+export(add_time_varying_features)
 export(change_lcomp)
 export(change_SS_dat)
 export(find_item)
