@@ -1,25 +1,34 @@
 #' Methods to include time varying param features
-
+#'
+#' @details 
 #' Documentation not complete
 #' Include_timevarying_param accept three different options
 #' 1. using the "block" option for time varying param
 #' 2. using the "dev" option for time varying param
 #' 3. using the "env" option for time varying param
+#' 
+#' @param                              
+
+
 
 #' @export
 			
-add_time_varying_features <- function(working_folder=working_folder,
-  ctl.file.in ="control.ss_new", ctl.file.out ="YTF.ctl",
-  Dat.file="YTF.dat", par.file="ss3.par", Nblocks, Blockpattern, Dev,
+add_time_varying_features <- function(
+  Nblocks, 
+  Blockpattern, 
+  Dev,
+  ctl.file.in ="control.ss_new", 
+  ctl.file.out ="YTF.ctl",
+  Dat.file="YTF.dat", 
+  par.file="ss3.par", 
   how.time.varying="env") {
 
   require(r4ss)
 
   ## To read in the control file and create an R object to modify afterwards
-  SS_ctl <- readLines(con = paste(working_folder, "/", ctl.file.in, sep=""))
+  SS_ctl <- readLines(ctl.file.in)
   ## To read in the dat file 
-  SS_dat <- SS_readdat(file= paste(working_folder, "/", Dat.file,
-      sep=""), verbose = FALSE, echoall = FALSE, section = NULL)
+  SS_dat <- SS_readdat(Dat.file, verbose = FALSE, echoall = FALSE, section = NULL)
   year.beg=SS_dat$styr
   year.end=SS_dat$endyr
 
@@ -84,11 +93,11 @@ add_time_varying_features <- function(working_folder=working_folder,
     val2 <- c(-1, 2, 1, 0, -1, 99, -2)
     SS_ctl[ch5+1] <- paste(c(val2, " # env link specification i.e fixed to 1"), collapse=" ")
 
-    writeLines(SS_ctl, con= paste(working_folder, "/", ctl.file.out, sep=""))
+    writeLines(SS_ctl, con= ctl.file.out)
 
     # add the time varying feature into the dat file	 
     # Now put the environmental covariate into the dat file
-    SS_data <- readLines(con = paste(working_folder, "/", Dat.file, sep=""))
+    SS_data <- readLines(con = Dat.file)
     ch1d <- grep("#_N_environ_variables", SS_data) 
     ch2d <- regexpr(" #_N_environ_variables", SS_data[ch1d], fixed=TRUE)[1]
     SS_data[ch1d] <- paste(1, " #_N_environ_variables")
@@ -105,7 +114,7 @@ add_time_varying_features <- function(working_folder=working_folder,
     # combine back everything
     New.dat=c(First_piece, apply(env.dat, 1, function(x) paste(x, collapse=" ")), Last_piece)
     # write output	
-    writeLines(New.dat, con= paste(working_folder, "/", Dat.file, sep=""))
+    writeLines(New.dat, con= Dat.file)
   }
 
   if(how.time.varying == "dev")
@@ -130,10 +139,10 @@ add_time_varying_features <- function(working_folder=working_folder,
     val[12] = 1				
     SS_ctl[ch3] <- paste(c(val, "# NatM_p_1_Fem_GP_1"), collapse=" ")
     # Now specify the custom MG-env setup		
-    writeLines(SS_ctl, con= paste(working_folder, "/", ctl.file.out, sep=""))
+    writeLines(SS_ctl, con= ctl.file.out)
 
     # add grwoth dev estimates into the par file	 
-    SS_par <- readLines(con = paste(working_folder, "/", par.file, sep=""))
+    SS_par <- readLines(con = par.file)
     ch1 <- grep("# SR_parm[1]:", SS_par, fixed=TRUE)
     MGdev.exist = sum(as.numeric((grep("# MGparm_dev:", SS_par, fixed=TRUE))))
     length.file=length(SS_par)
@@ -142,7 +151,7 @@ add_time_varying_features <- function(working_folder=working_folder,
     if(MGdev.exist==0) {to.add <- c("# MGparm_dev:", paste(Dev, collapse=" "))} 
     if(MGdev.exist!=0) {print("WARNINGS: MGparm_dev line already exist"); to.add <- NULL}
     new.par=c(beg.file, to.add, end.file)
-    writeLines(new.par, con = paste(working_folder, "/", par.file, sep=""))
+    writeLines(new.par, con = par.file)
   }
 }
 
