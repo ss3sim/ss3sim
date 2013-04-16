@@ -18,3 +18,5 @@ Collate:
     'get_rec_devs.R'
     'write_f_values.R'
     'write_rec_devs.R'
+    'add_time_varying_features.R'
+    'change_lcomp.R'
