@@ -11,12 +11,12 @@ Description: This project aims to develop R functions for stock assessment
     Boston, July 2013.
 License: MIT
 Collate:
-    'change_SS_dat.R'
-    'create_new_rec_devs.R'
-    'find_item.R'
-    'find_rec_dev_arma.R'
-    'get_rec_devs.R'
-    'write_f_values.R'
-    'write_rec_devs.R'
-    'add_time_varying_features.R'
-    'change_lcomp.R'
+    'create_new_rec_devs.r'
+    'find_item.r'
+    'find_rec_dev_arma.r'
+    'get_rec_devs.r'
+    'add_time_varying_features.r'
+    'change_lcomp.r'
+    'change_f.r'
+    'change_index.r'
+    'change_rec_devs.r'

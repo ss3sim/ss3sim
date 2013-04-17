@@ -1,7 +1,7 @@
 #' Alter the Fvalues in an ss3.par file
 #'
 #' @author Curry James Cunningham
-#' @details Changed to allow for specific years in series to be altered (this may be unnecessary given our purpose)
+#' @details Allows for specific years in series to be altered
 #'
 #' @param years Vector of years for which Fvalues are specified
 #' @param years_alter Vector of years for which Fvalue will be altered

@@ -1,8 +1,6 @@
 \name{change_lcomp}
 \alias{change_lcomp}
-\title{Take a data.SS_new file, resample the length compositions from the expected values, and
-return a new file with the new length comp samples. Samples can have dimensions, bins,
-sample sizes, and distributions which are different than those coming from SS.}
+\title{Change length composition values}
 \usage{
   change_lcomp(infile, outfile,
     distribution = "multinomial", Nsamp = NA, minyear = NA,
@@ -12,22 +10,23 @@ sample sizes, and distributions which are different than those coming from SS.}
     lencomp = NA, ...)
 }
 \arguments{
-  \item{infile}{SS data object from SS_readdat() in the
-  r4ss package. Make sure you select option "section=2"}
+  \item{infile}{SS data object from \code{SS_readdat} in
+  the \code{r4ss} package. Make sure you select option
+  \code{section=2}}
 
   \item{outfile}{Path to the new file to be created. May be
   global or local.}
 
   \item{distribution}{Distribution to be used to sample the
-  length compositions. Options are "multinomial" and
-  "dirichlet"}
+  length compositions. Options are \code{multinomial} and
+  \code{dirichlet}}
 
   \item{Nsamp}{Number of samples drawn from a multinomial
   distribution, or precision for the Dirichlet
   distribution}
 
   \item{minyear,}{maxyear starting and ending year for the
-  fleet length comps. Overridden by specifying "years"}
+  fleet length comps.  Overridden by specifying "years"}
 
   \item{years}{vector of years for the fleet length comps.}
 
@@ -45,11 +44,11 @@ sample sizes, and distributions which are different than those coming from SS.}
   \item{lencomp}{matrix of length comps}
 }
 \description{
-  Take a data.SS_new file, resample the length compositions
-  from the expected values, and return a new file with the
-  new length comp samples. Samples can have dimensions,
-  bins, sample sizes, and distributions which are different
-  than those coming from SS.
+  Takes a data.SS_new file, resamples the length
+  compositions from the expected values, and return a new
+  file with the new length composition samples. Samples can
+  have dimensions, bins, sample sizes, and distributions
+  which are different than those coming from SS.
 }
 \author{
   Felipe Hurtado-Ferro
