@@ -14,7 +14,7 @@
 #' @param make.plot
 #' @export
 
-write_index <- function(operating.model.path, assessment.model.path,
+change_index <- function(operating.model.path, assessment.model.path,
   dat.filename, start.year, end.year, frequency=1,
   sd.obs = .1, make.plot=FALSE){
   
@@ -52,5 +52,5 @@ write_index <- function(operating.model.path, assessment.model.path,
   writeLines(text=dat.new, con=paste0(assessment.model.path,"/", dat.filename))
 }
 
-# write_index(getwd(), "../flatfish assessment model", "assessment_flatfish.dat",
+# change_index(getwd(), "../flatfish assessment model", "assessment_flatfish.dat",
 #           1930, 1981, 1, make.plot=T)

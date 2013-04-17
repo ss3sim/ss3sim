@@ -12,10 +12,10 @@
 #' @export
 
 #' @examples
-#' write.recdevs(recdevs_new=rlnorm(58), file_out="test.par") ## give it wrong num.years
-#' write.recdevs(recdevs_new=rlnorm(57), file_out="test.par") ## give it right ones
+#' change_rec_devs(recdevs_new=rlnorm(58), file_out="test.par") ## give it wrong num.years
+#' change_rec_devs(recdevs_new=rlnorm(57), file_out="test.par") ## give it right ones
 
-write_rec_devs <- function(recdevs_new, file_in="ss3.par", file_out="ss3.par"){
+change_rec_devs <- function(recdevs_new, file_in="ss3.par", file_out="ss3.par"){
   ## This is the pattern on the line before the vector of current recdevs
   pattern <- "# recdev1"
 

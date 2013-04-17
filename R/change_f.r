@@ -11,7 +11,7 @@
 #'
 #' @export
 
-write_f_values <- function(years, years_alter, fvals, file_in="ss3.par", file_out="ss3.par") {
+change_f <- function(years, years_alter, fvals, file_in="ss3.par", file_out="ss3.par") {
 	
   n.years_alter <- length(years_alter)
   #Check that sufficient Fvalues are supplied
@@ -36,5 +36,5 @@ write_f_values <- function(years, years_alter, fvals, file_in="ss3.par", file_ou
   invisible(ss3.par.new)
 }
 
-#input.Fvalue(years=1:49, years_alter=2, fvals=9999, file_in = "test_in.txt", file_out = "test_out.txt")
+#change_f(years=1:49, years_alter=2, fvals=9999, file_in = "test_in.txt", file_out = "test_out.txt")
 
