@@ -26,7 +26,10 @@
 \description{
   This function is used to create an index of abundance
   sampled from the true biomass. It takes the biomass from
-  the Report.sso file using the r4ss function and then
-  splits it.
+  the Report.sso file using the \code{r4ss} function and
+  then splits it.
+}
+\author{
+  Cole Monnahan
 }
 

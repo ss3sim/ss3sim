@@ -2,7 +2,7 @@
 #'
 #' This function is used to create an index of abundance sampled from the
 #' true biomass. It takes the biomass from the Report.sso file using the
-#' r4ss function and then splits it.
+#' \code{r4ss} function and then splits it.
 #' 
 #' @param operating.model.path
 #' @param assessment.model.path
@@ -13,6 +13,7 @@
 #' @param sd.obs
 #' @param make.plot
 #' @export
+#' @author Cole Monnahan
 
 change_index <- function(operating.model.path, assessment.model.path,
   dat.filename, start.year, end.year, frequency=1,
