@@ -1,23 +1,30 @@
-#' Take a data.SS_new file, resample the length compositions from the expected values, and 
-#' return a new file with the new length comp samples. Samples can have dimensions, bins, 
-#' sample sizes, and distributions which are different than those coming from SS.
+#' Change length composition values
+#' 
+#' Takes a data.SS_new file, resamples the length compositions from the expected
+#' values, and return a new file with the new length composition samples.
+#' Samples can have dimensions, bins, sample sizes, and distributions which are
+#' different than those coming from SS.
 #' 
 #' @author Felipe Hurtado-Ferro
-#' @param infile SS data object from SS_readdat() in the r4ss package. Make sure you select option "section=2"
+#' @param infile SS data object from \code{SS_readdat} in the \code{r4ss} 
+#'   package. Make sure you select option \code{section=2}
 #' @param outfile Path to the new file to be created. May be global or local.
-#' @param distribution Distribution to be used to sample the length compositions. Options are "multinomial" and "dirichlet"
-#' @param Nsamp Number of samples drawn from a multinomial distribution, or precision for the Dirichlet distribution
-#' @param minyear, maxyear starting and ending year for the fleet length comps. Overridden by specifying "years"
+#' @param distribution Distribution to be used to sample the length 
+#'   compositions. Options are \code{multinomial} and \code{dirichlet}
+#' @param Nsamp Number of samples drawn from a multinomial distribution, or 
+#'   precision for the Dirichlet distribution
+#' @param minyear, maxyear starting and ending year for the fleet length comps. 
+#'   Overridden by specifying "years"
 #' @param years vector of years for the fleet length comps.
 #' @param svyears vector of years for the survey lenght comps.
-#' @param lbin_method method to generate model length bins. See SS manual for details
-#' @param binwidth, minimum_size, maximum_size, N_lbins 
+#' @param lbin_method method to generate model length bins. See SS manual for 
+#'   details
+#' @param binwidth, minimum_size, maximum_size, N_lbins
 #' @param lbin_vector Vector of length bins for the observations
-#' @param lencomp matrix of length comps 
-#' 
+#' @param lencomp matrix of length comps
+#'   
 #' @export
 #' 
-
 
 change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
                         minyear=NA,maxyear=NA,years=NA,svyears=NA,
