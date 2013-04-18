@@ -4,14 +4,18 @@
 #' biomass. It takes the biomass from the Report.sso file using the \code{r4ss}
 #' function and then splits it.
 #' 
-#' @param operating_path_in
-#' @param assess_path_in
-#' @param dat_filename
-#' @param start_year
-#' @param end_year
-#' @param frequency
-#' @param sd_obs
-#' @param make_plot
+#' @param operating_path_in Folder path to the operating model
+#' @param assess_path_in Folder path to the assessment model
+#' @param dat_filename_in Name of the data file to read in
+#' @param assess_path_out Folder path of the assessment model to write
+#' to.
+#' @param dat_filename_out Name of the data file to write to
+#' @param start_year Starting year
+#' @param end_year Ending year
+#' @param frequency Frequency to return index values
+#' @param sd_obs Standard deviation of the observation error
+#' @param make_plot Logical - make a plot of the biomass and index
+#' values?
 #' @export
 #' @author Cole Monnahan
 #' @examples \notrun{
