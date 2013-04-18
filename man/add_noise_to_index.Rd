@@ -1,8 +1,8 @@
-\name{change_index}
-\alias{change_index}
-\title{Change index values}
+\name{add_noise_to_index}
+\alias{add_noise_to_index}
+\title{Create a jittered version of a survey index based on biomass data}
 \usage{
-  change_index(operating.model.path,
+  add_noise_to_index(operating.model.path,
     input.assessment.model.path, input.dat.filename,
     output.assessment.model.path, output.dat.filename,
     start.year, end.year, frequency = 1, sd.obs = 0.1,
@@ -33,12 +33,14 @@
 }
 \examples{
 \\notrun{
-# Location of the R package code. I can't get system.file() to bring over the
-# files with the correct permissions for SS_output() to work. Resorting to this
-# in the meantime.
+# Location of the R package code:
+# (I can't get system.file() to bring over the package files with the
+# correct permissions for SS_output() to work. Resorting to this in
+# the meantime.)
 f_op <- "~/Documents/github/ss3sim/inst/extdata/flatfish-operating"
 f_as <- "~/Documents/github/ss3sim/inst/extdata/flatfish-assessment"
-change_index(f_op, f_as, "flatfish.dat", ".", "flatfish-modified.dat", 1930, 1981, 1, make.plot = TRUE)
+add_noise_to_index(f_op, f_as, "flatfish.dat", ".",
+"flatfish-modified.dat", 1930, 1981, 1, make.plot = TRUE)
 }
 }
 \author{

@@ -18,5 +18,5 @@ Collate:
     'add_time_varying_features.r'
     'change_lcomp.r'
     'change_f.r'
-    'change_index.r'
     'change_rec_devs.r'
+    'add_noise_to_index.r'
