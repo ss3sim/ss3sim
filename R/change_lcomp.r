@@ -35,7 +35,7 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
   require(r4ss)
   
   #Read the input file
-  #dat.file <- SS_readdat(file=infile, section=2)
+  dat.file <- SS_readdat(file=infile, section=2)
   
   #Explicit inputs
   if(is.na(lbin_method)==FALSE){
