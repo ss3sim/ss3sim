@@ -2,28 +2,48 @@
 \alias{add_noise_to_index}
 \title{Create a jittered version of a survey index based on biomass data}
 \usage{
-  add_noise_to_index(operating.model.path,
-    input.assessment.model.path, input.dat.filename,
-    output.assessment.model.path, output.dat.filename,
-    start.year, end.year, frequency = 1, sd.obs = 0.1,
-    make.plot = FALSE)
+  add_noise_to_index(operating_path_in, assess_path_in,
+    dat_file_in, assess_path_out, dat_file_out, start_surv,
+    end_surv, freq_surv = 1, sd_obs_surv = 0.1, start_fish,
+    end_fish, freq_fish = 1, sd_obs_fish = 0.1,
+    make_plot = FALSE)
 }
 \arguments{
-  \item{operating.model.path}{}
+  \item{operating_path_in}{Folder path to the operating
+  model}
 
-  \item{assessment.model.path}{}
+  \item{assess_path_in}{Folder path to the assessment
+  model}
 
-  \item{dat.filename}{}
+  \item{dat_file_in}{Name of the data file to read in}
 
-  \item{start.year}{}
+  \item{assess_path_out}{Folder path of the assessment
+  model to write to.}
 
-  \item{end.year}{}
+  \item{dat_file_out}{Name of the data file to write to}
 
-  \item{frequency}{}
+  \item{start_surv}{Starting year survey index}
 
-  \item{sd.obs}{}
+  \item{end_surv}{Ending year survey index}
 
-  \item{make.plot}{}
+  \item{freq_surv}{Frequency to return index values survey
+  index}
+
+  \item{sd_obs_surv}{Standard deviation of the observation
+  error survey index}
+
+  \item{start_fish}{Starting year fishery index}
+
+  \item{end_fish}{Ending year fishery index}
+
+  \item{freq_fish}{Frequency to return index values fishery
+  index}
+
+  \item{sd_obs_fish}{Standard deviation of the observation
+  error fishery index}
+
+  \item{make_plot}{Logical - make a plot of the biomass and
+  index values?}
 }
 \description{
   This function is used to create an index of abundance
@@ -39,11 +59,12 @@
 # the meantime.)
 f_op <- "~/Documents/github/ss3sim/inst/extdata/flatfish-operating"
 f_as <- "~/Documents/github/ss3sim/inst/extdata/flatfish-assessment"
-add_noise_to_index(f_op, f_as, "flatfish.dat", ".",
-"flatfish-modified.dat", 1930, 1981, 1, make.plot = TRUE)
+add_noise_to_index(f_op, f_as, "flatfish.dat", assess_path_out = ".",
+dat_file_out = "flatfish-modified.dat", start_year = 1930,
+end_year = 1981, 1, make_plot = TRUE)
 }
 }
 \author{
-  Cole Monnahan
+  Cole Monnahan (modified by Kot)
 }
 

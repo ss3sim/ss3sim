@@ -1,5 +1,6 @@
 export(add_noise_to_index)
 export(add_time_varying_features)
+export(change_SS_dat)
 export(change_f)
 export(change_lcomp)
 export(change_rec_devs)
