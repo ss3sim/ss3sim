@@ -21,3 +21,4 @@ Collate:
     'change_rec_devs.r'
     'add_noise_to_index.r'
     'change_SS_dat.r'
+    'change_agecomp.R'
