@@ -1,30 +1,24 @@
-#' Change length composition values
-#' 
-#' Takes a data.SS_new file, resamples the length compositions from the expected
-#' values, and return a new file with the new length composition samples.
-#' Samples can have dimensions, bins, sample sizes, and distributions which are
-#' different than those coming from SS.
+#' Change length comps
+#'
+#' Take a data.SS_new file, resample the length compositions from the expected values, and 
+#' return a new file with the new length comp samples. Samples can have dimensions, bins, 
+#' sample sizes, and distributions which are different than those coming from SS.
 #' 
 #' @author Felipe Hurtado-Ferro
-#' @param infile SS data object from \code{SS_readdat} in the \code{r4ss} 
-#'   package. Make sure you select option \code{section=2}
-#' @param outfile Path to the new file to be created. May be global or local.
-#' @param distribution Distribution to be used to sample the length 
-#'   compositions. Options are \code{multinomial} and \code{dirichlet}
-#' @param Nsamp Number of samples drawn from a multinomial distribution, or 
-#'   precision for the Dirichlet distribution
-#' @param minyear, maxyear starting and ending year for the fleet length comps. 
-#'   Overridden by specifying "years"
+#' @param infile SS data object from SS_readdat() in the r4ss package. Make sure you select option "section=2"
+#' @param outfile Name of the new file to be created. Path may be global or local. Make sure to give extension .dat to the file name.
+#' @param distribution Distribution to be used to sample the length compositions. Options are "multinomial" and "dirichlet"
+#' @param Nsamp Number of samples drawn from a multinomial distribution, or precision for the Dirichlet distribution
+#' @param minyear, maxyear starting and ending year for the fleet length comps. Overridden by specifying "years"
 #' @param years vector of years for the fleet length comps.
 #' @param svyears vector of years for the survey lenght comps.
-#' @param lbin_method method to generate model length bins. See SS manual for 
-#'   details
-#' @param binwidth, minimum_size, maximum_size, N_lbins
+#' @param lbin_method method to generate model length bins. See SS manual for details
+#' @param binwidth, minimum_size, maximum_size, N_lbins 
 #' @param lbin_vector Vector of length bins for the observations
-#' @param lencomp matrix of length comps
-#'   
-#' @export
+#' @param lencomp matrix of length comps 
 #' 
+#' @export
+
 
 change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
                         minyear=NA,maxyear=NA,years=NA,svyears=NA,
@@ -35,7 +29,8 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
   require(r4ss)
   
   #Read the input file
-  dat.file <- SS_readdat(file=infile, section=2)
+  #dat.file <- SS_readdat(file=infile, section=2)
+  dat.file <- infile
   
   #Explicit inputs
   if(is.na(lbin_method)==FALSE){
@@ -68,6 +63,10 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
       stop("lencomp must have a numeric input")
     new.lencomp <- lencomp
   }
+  if(is.na(sum(svyears))==FALSE){  
+    if(class(svyears)!="numeric") 
+      stop("svyears must have a numeric input")   
+  }
   if(is.na(Nsamp)==TRUE){
     Nsamp <- dat.file$lencomp[,6]
   }
@@ -77,12 +76,12 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
     if(is.na(minyear)==FALSE & is.na(maxyear)==FALSE)
       years <- minyear:maxyear
     else
-      years <- dat.file$lencomp[dat.file$lencomp[,3]==1,1]
+      years <- dat.file$lencomp[dat.file$lencomp[,"FltSvy"]==1,1]
   }
 
   #Determine the length of the survey series
   if(is.na(sum(svyears))==TRUE){
-    svyears <- lencomp[lencomp[,3]==2,1]
+    svyears <- dat.file$lencomp[dat.file$lencomp[,"FltSvy"]==2,1]
   }
 
   #Save the expected lencomps in another object to be modified (if necessary)
@@ -146,7 +145,3 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
   SS_writedat(datlist=dat.file, outfile=outfile, overwrite=TRUE)
 }
 
-# 
-# setwd("C:/Users/Felipe/Dropbox/Fish 600/Sardine SS OM/v1.5 - Semi-final version")
-# change_lcomp(outfile="blah.txt",minyear=1995,maxyear=1999,svyears=c(2007,2008), Nsamp=1000, 
-#             lbin_vector=seq(10,27,0.5),distribution="dirichlet")
