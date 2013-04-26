@@ -57,11 +57,11 @@
 # (I can't get system.file() to bring over the package files with the
 # correct permissions for SS_output() to work. Resorting to this in
 # the meantime.)
-f_op <- "~/Documents/github/ss3sim/inst/extdata/flatfish-operating"
-f_as <- "~/Documents/github/ss3sim/inst/extdata/flatfish-assessment"
-add_noise_to_index(f_op, f_as, "flatfish.dat", assess_path_out = ".",
-dat_file_out = "flatfish-modified.dat", start_year = 1930,
-end_year = 1981, 1, make_plot = TRUE)
+f_op <- "~/Documents/github/ss3sim/inst/extdata/Simple/"
+f_as <- "~/Documents/github/ss3sim/inst/extdata/Simple/"
+add_noise_to_index(f_op, f_as, "simple.dat", assess_path_out = ".",
+  dat_file_out = "simple-modified.dat", start_surv = 1971, end_surv =
+  2011, start_fish = 1971, end_fish = 2011, 1, make_plot = TRUE)
 }
 }
 \author{
