@@ -20,8 +20,10 @@
   file_out into the working directory.
 }
 \examples{
+\dontrun{
 change_rec_devs(recdevs_new=rlnorm(58), file_out="test.par") ## give it wrong num.years
 change_rec_devs(recdevs_new=rlnorm(57), file_out="test.par") ## give it right ones
+}
 }
 \author{
   Cole Monnahan
