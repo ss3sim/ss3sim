@@ -54,13 +54,16 @@ add_noise_to_index <- function(dat_file_in, dat_file_out, start_surv,
   yr <- CPUE_data$Yr
 
   if(sum(!years.surveyindex %in% CPUE_data$Yr) > 0) {
-    warning("Not all years you requested for an index value are available in the data file. Dropping years that don't match.")
+    warning("Not all years you requested for an index value are
+      available in the data file. Dropping years that don't match.")
   }
   years.surveyindex <- yr[yr %in% years.surveyindex & CPUE_data$Fleet == 2]
   years.fisheryindex <- yr[yr %in% years.fisheryindex & CPUE_data$Fleet == 3]
 
-  bio.survey <- CPUE_data[which(CPUE_data$Fleet==2 & CPUE_data$Yr %in% years.surveyindex),] # biomass for years w/ survey
-  bio.fishery <- CPUE_data[which(CPUE_data$Fleet==3 & CPUE_data$Yr %in% years.fisheryindex),] # biomass for years w/ survey
+  bio.survey <- CPUE_data[which(CPUE_data$Fleet==2 & CPUE_data$Yr %in%
+    years.surveyindex),] # biomass for years w/ survey
+  bio.fishery <- CPUE_data[which(CPUE_data$Fleet==3 & CPUE_data$Yr
+    %in% years.fisheryindex),] # biomass for years w/ survey
 
   if(length(bio.survey)==0 | length(bio.fishery)==0)
     stop("Error: no matching years in either survey of fishery, index has length 0")
@@ -73,7 +76,9 @@ add_noise_to_index <- function(dat_file_in, dat_file_out, start_surv,
     paste(years.surveyindex, 1, 2, index.survey, sd_obs_surv),
     index.survey.text <- NULL)
 
-  index.fishery <- bio.fishery$Mean*exp(rnorm(n=length(bio.fishery$Mean), mean=0, sd=sd_obs_fish)-sd_obs_fish^2/2)
+  index.fishery <-
+    bio.fishery$Mean*exp(rnorm(n=length(bio.fishery$Mean), mean=0,
+        sd=sd_obs_fish)-sd_obs_fish^2/2)
 
   ifelse(length(bio.fishery)!=0, index.fishery.text <-
     paste(years.fisheryindex, 1, 3, index.fishery, sd_obs_fish),
@@ -105,7 +110,8 @@ add_noise_to_index <- function(dat_file_in, dat_file_out, start_surv,
     ind.end <- grep("#_N_discard_fleets", x=dat.current)
   if(length(ind.end)==0)
     stop("Couldn't locate where to print data in the .dat file.")
-  dat.new <- c(dat.current[1:ind.start], index.survey.text, index.fishery.text, "", dat.current[ind.end:length(dat.current)])
+  dat.new <- c(dat.current[1:ind.start], index.survey.text,
+    index.fishery.text, "", dat.current[ind.end:length(dat.current)])
 
   ## Write it back to file, possibly overwriting the original
   writeLines(text=dat.new, con=dat_file_out)
