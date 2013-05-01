@@ -1,6 +1,5 @@
 #' Replace recruitment deviations
 #' 
-#' @description 
 #' This function replaces the recdevs in the ss3.par file with those
 #' specified in recdevs_new, as well as a comment (for debugging). It then
 #' writes a new file with name file_out into the working directory.
