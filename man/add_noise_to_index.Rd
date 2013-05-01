@@ -44,7 +44,7 @@
 \examples{
 \\notrun{
 Location of the R package code:
-(I can't get system.file() to bring over the package files with the
+(I cannnot get system.file() to bring over the package files with the
 correct permissions for SS_output() to work. Resorting to this in
 the meantime. Download the package from Github and locate the
 Simple example folder.)
