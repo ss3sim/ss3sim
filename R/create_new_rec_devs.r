@@ -5,6 +5,7 @@
 #' @param best_model A model from arima(). Intended to be output from 
 #' find_rec_dev_arma().
 #' @return A vector of new recruitment deviations.
+#' @export
 #' @author Kotaro Ono
 #' @examples
 #' m <- arima(lh, order = c(1,0,0))
