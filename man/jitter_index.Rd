@@ -42,7 +42,7 @@
   add some lognormal errors around it
 }
 \examples{
-\\notrun{
+\dontrun{
 Location of the R package code:
 (I cannnot get system.file() to bring over the package files with the
 correct permissions for SS_output() to work. Resorting to this in

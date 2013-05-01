@@ -17,7 +17,7 @@
 #' @param make_plot Logical - make a plot of the biomass and index values?
 #' @export
 #' @author Cole Monnahan, Kotaro Ono, Sean Anderson
-#' @examples \notrun{
+#' @examples \dontrun{ 
 #' Location of the R package code:
 #' (I cannnot get system.file() to bring over the package files with the
 #' correct permissions for SS_output() to work. Resorting to this in
