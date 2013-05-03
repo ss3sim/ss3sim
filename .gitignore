@@ -5,3 +5,5 @@
 .Rbuildignore
 
 *.Rproj
+
+.Rapp.history
