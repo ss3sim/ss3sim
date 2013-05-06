@@ -34,13 +34,11 @@
 }
 \examples{
 \dontrun{
-scenlist <- list()
-scenlist[[1]] <- c("scen_a", "scen_b")
-scenlist[[2]] <- c("sub_scen_a", "sub_scen_b")
 # Change the home_name directory based on where you'd like the
 example folders created:
-create_dirs(home_name = "~/Desktop/", scenlist = scenlist, beg = 1,
-  nsets = 5, copy_om = FALSE)
+create_dirs(home_name = "~/Desktop/", scenlist = list(main = "ss3sim",
+papers = "m", species = c("cod","flat","sardine"), fishing =
+c("down","up","contrast")), nsets = 10, copy_om = FALSE)
 }
 }
 \author{
