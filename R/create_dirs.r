@@ -62,7 +62,3 @@ create_dirs <- function(home_name, scen_list, beg = 1, nsets = 100,
   }
 }
 
-## Example for dirCreation
-# setupOM(home_name = "c:\\ss", scen_list = list(main = "ss3sim",
-# papers = "m", species = c("cod","flat","sardine"), fishing =
-# c("down","up","contrast")))
