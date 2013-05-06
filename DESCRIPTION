@@ -22,3 +22,4 @@ Collate:
     'change_SS_dat.r'
     'jitter_index.r'
     'change_agecomp.r'
+    'create_dirs.r'
