@@ -2,14 +2,14 @@
 \alias{create_dirs}
 \title{Create simulation directories}
 \usage{
-  create_dirs(home_name, scenlist, beg = 1, nsets = 100,
+  create_dirs(home_name, scen_list, beg = 1, nsets = 100,
     copy_om = TRUE)
 }
 \arguments{
   \item{home_name}{The base working directory for the
   simulation.}
 
-  \item{scenlist}{A list of vectors, where each vector
+  \item{scen_list}{A list of vectors, where each vector
   specifies folder names for the scenario options. Enter
   vectors in order of their hierarchy. Names in the vector
   specifying the operating models should match the folder
@@ -36,7 +36,7 @@
 \dontrun{
 # Change the home_name directory based on where you'd like the
 example folders created:
-create_dirs(home_name = "~/Desktop/", scenlist = list(main = "ss3sim",
+create_dirs(home_name = "~/Desktop/", scen_list = list(main = "ss3sim",
 papers = "m", species = c("cod","flat","sardine"), fishing =
 c("down","up","contrast")), nsets = 10, copy_om = FALSE)
 }

@@ -5,7 +5,7 @@
 #' models from the master location to the trial folders.
 #'
 #' @param home_name The base working directory for the simulation. 
-#' @param scenlist A list of vectors, where each vector specifies folder
+#' @param scen_list A list of vectors, where each vector specifies folder
 #' names for the scenario options. Enter vectors in order of their
 #' hierarchy. Names in the vector specifying the operating models
 #' should match the folder names that house the operating models in
@@ -20,12 +20,12 @@
 #' @examples \dontrun{
 #' # Change the home_name directory based on where you'd like the
 #' example folders created:
-#' create_dirs(home_name = "~/Desktop/", scenlist = list(main = "ss3sim",
+#' create_dirs(home_name = "~/Desktop/", scen_list = list(main = "ss3sim",
 #' papers = "m", species = c("cod","flat","sardine"), fishing =
 #' c("down","up","contrast")), nsets = 10, copy_om = FALSE)
 #' }
 
-create_dirs <- function(home_name, scenlist, beg = 1, nsets = 100,
+create_dirs <- function(home_name, scen_list, beg = 1, nsets = 100,
   copy_om = TRUE){
 
   require("reshape")
@@ -37,9 +37,9 @@ create_dirs <- function(home_name, scenlist, beg = 1, nsets = 100,
     home_name <- paste(home_name, "/", sep = "")
   }
 
-  scenlist$iterations <- seq(beg,(beg+nsets-1), by = 1)
+  scen_list$iterations <- seq(beg,(beg+nsets-1), by = 1)
 # add a slash to the end of home_name if it isn't already a slasp
-  pathMatrix <- expand.grid(scenlist)
+  pathMatrix <- expand.grid(scen_list)
   pathVector <- apply(pathMatrix, 1, paste, collapse = "/")
   pathVector <- paste(home_name, pathVector, "/", sep = "")
   pathVector <- gsub(" ", "", pathVector)
