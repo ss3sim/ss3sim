@@ -46,9 +46,9 @@ create_dirs <- function(home_name, scen_list, beg = 1, nsets = 100,
   sapply(pathVector, dir.create, recursive = TRUE, showWarnings = FALSE)
 
   if(copy_om == TRUE){
-    om_names <- list.files(file.path(home_name, "omMaster"))
+    om_names <- list.files(file.path(home_name, "om_master"))
     om_paths <- gsub("\\/", "\\", list.files(file.path(home_name,
-          "omMaster"), full.names = TRUE), fixed = TRUE)
+          "om_master"), full.names = TRUE), fixed = TRUE)
     om_files <- lapply(om_paths, list.files, full.names = TRUE)
     ## a list where each OM needs to go
     omDestIndex <- sapply(om_names, grep, x = pathVector, ignore.case
