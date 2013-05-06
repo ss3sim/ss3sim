@@ -23,3 +23,4 @@ Collate:
     'jitter_index.r'
     'change_agecomp.r'
     'create_dirs.r'
+    'setup_om.r'
