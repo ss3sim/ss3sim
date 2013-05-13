@@ -1,10 +1,10 @@
 Package: ss3sim
 Type: Package
 Title: Functions for stock assessment simulation studies using SS
-Version: 0.11
-Date: 2013-04-04
+Version: 0.12
+Date: 2013-05-13
 Author: FISH600 class (to be expanded with names)
-Maintainer: Sean C. Anderson <sean_anderson@sfu.ca>
+Maintainer: Sean C. Anderson <sean@seananderson.ca>
 Description: This project aims to develop R functions for stock assessment
     simulation studies using Stock Synthesis. The functions will be used to
     complete simulation studies for the World Conference on Stock Assessment in
@@ -24,3 +24,4 @@ Collate:
     'change_agecomp.r'
     'create_dirs.r'
     'setup_om.r'
+    'recdevs.r'
