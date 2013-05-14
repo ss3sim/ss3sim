@@ -7,3 +7,11 @@
 *.Rproj
 
 .Rapp.history
+
+*.log
+
+*.fls
+
+*.fdb_latexmk
+
+*.aux
