@@ -27,4 +27,4 @@ Collate:
     'recdevs.r'
     'paste_f.r'
     'copy_models.r'
-    'run_om.r'
+    'run_model.r'
