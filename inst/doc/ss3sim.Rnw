@@ -1,0 +1,74 @@
+\documentclass[12pt]{article}
+\usepackage{geometry} 
+\geometry{letterpaper}
+\usepackage{graphicx}
+\usepackage{Sweave}
+
+% \VignetteIndexEntry{How to use the ss3sim package to run simulations in SS3}
+% \VignetteKeyword{metapopulations}
+% \VignetteKeyword{ecology}
+
+%\usepackage[round]{natbib} 
+%\bibliographystyle{apalike}   
+%\bibpunct{(}{)}{;}{a}{}{;}   
+
+\title{How to use the \texttt{ss3sim} package to run\\simulations in SS3}
+\author{Sean C. Anderson and others to follow}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent
+
+<<echo = true, results = verbatim>>=
+# install.packages("devtools")
+# devtools::install_github("ss3sim", username="seananderson")
+library(ss3sim)
+@
+
+\noindent
+make folders
+
+\noindent
+make oms and ems in ...
+
+<<eval = FALSE, echo = true>>=
+copy_models(model_dir = "oms", type = "om")
+copy_models(model_dir = "ems", type = "em")
+@
+
+\noindent
+or if you were only responsible for 1:50:
+
+<<eval = FALSE, echo = true>>=
+copy_models(model_dir = "oms", type = "om", iterations = 1:50)
+@
+
+\noindent
+This creates the structure:
+
+\begin{verbatim}
+  sc1-cod/1/om
+  sc1-cod/1/em
+  sc1-cod/2/om
+  sc1-cod/2/em
+  ...
+\end{verbatim}
+
+<<eval = FALSE, echo = true>>=
+scenarios <- scan("mysenarios.txt", what = "character")
+run_scenario(scenarios, iterations = 1:50)
+@
+
+\noindent
+Or, to test the operating model for the first scenario:
+
+<<eval = FALSE, echo = true>>=
+run_scenario(scenarios[1], iterations = 1, type = "om")
+@
+
+%\bibliography{/Users/seananderson/Dropbox/tex/jshort,/Users/seananderson/Dropbox/tex/ref}
+\end{document}
+
+
