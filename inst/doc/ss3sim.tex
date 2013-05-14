@@ -30,6 +30,7 @@ First start by installing a recent version if needed and loading the package:
 \end{Sinput}
 \end{Schunk}
 
+\section*{Setting up the file structure}
 We are assuming there are a series of operating models in a folder and a series
 of estimation models in another folder. Within each folder, the models should be
 named according to whatever you would like the scenario ID to be. For our
@@ -84,6 +85,14 @@ This creates the structure:
 Note that the operating and estimating model folders have been renamed
 \texttt{om} and \texttt{em} within each iteration.
 
+\noindent
+Note that all functions in this package assume you've set your working directory
+in R to be the base folder where you will store the scenario folders. The
+folders containing the operating and assessment scenarios should also be in this
+same base folder.
+
+\section*{Running the models}
+
 The \texttt{run\_scenario} function is a wrapper function. It calls
 \texttt{run\_model} to run the operating model, adds the recruitment deviations,
 samples various survey estimates from the operating model, copies and renames
@@ -109,7 +118,7 @@ Or, to test the operating model for the first scenario only:
 \end{Sinput}
 \end{Schunk}
 
-\section{The flat scenario ID structure}
+\section*{The flat scenario ID structure}
 There are many advantages to this flat scenario ID fold setup:
 
 \begin{enumerate}
