@@ -79,8 +79,7 @@ This creates the structure:
 Note that the operating and estimating model folders have been renamed
 \texttt{om} and \texttt{em} within each iteration.
 
-\noindent
-Note that all functions in this package assume you've set your working directory
+The functions in this package assume you've set your working directory
 in R to be the base folder where you will store the scenario folders. The
 folders containing the operating and assessment scenarios should also be in this
 same base folder.
