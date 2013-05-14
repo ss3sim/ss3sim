@@ -14,10 +14,10 @@ run_model <- function(scenarios, iterations, type = c("om", "em")) {
       om <- pastef(sc, it)
       print(paste0("Running ", type, " for scenario: ", sc, "; iteration: ", it)) 
       if(os == "unix") {
-        system(paste("cd", pastef(sc, it, type), ";", "SS3")) 
+        system(paste("cd", pastef(sc, it, type), ";SS3")) 
       } else {
-        stop("Not implemented. Please send Sean directions.")
-        #shell(paste0(dir_switch, pastef(sc, it, type), sep, ss_call)) 
+        warning("Windows command not tested yet")
+        shell(paste("cd", pastef(sc, it, type), "&SS3.exe)) 
       }
     }
   }
