@@ -136,6 +136,26 @@ Scenario ID, Scenario description, Control modifications, Model status
 \noindent
 Then, groups can compile a list of scenario IDs they want to extract and compare.
 
+\section*{Setting up the models}
+
+The main functions to work with are:
+
+\begin{description}
+  \item[\texttt{change\_f}] A function to alter fishing mortality values in the
+    \texttt{.par} file
+  \item[\texttt{change\_lcomp}] Takes a \texttt{data.SS\_new} file, resamples the length
+    compositions from the expected values, and returns a new file with the new
+    length comp samples. Samples can have dimensions, bins, sample sizes, and
+    distributions which are different than those coming from SS.
+  \item[\texttt{jitter\_index}] This function is used to create an index of
+    abundance sampled from the expected available biomass for each fleet: survey
+    1 and survey 2 (which mimics the fishery) and add some lognormal errors around
+    it.
+  \item[\texttt{change\_agecomp}] Similar to \texttt{change\_lcomp} but for age
+    composition data.
+  \item[\texttt{add\_time\_varying\_features}] Adds time-varying natural
+    mortality either through the environment, block, or deviation methods.
+\end{description}
 
 
 %\bibliography{/Users/seananderson/Dropbox/tex/jshort,/Users/seananderson/Dropbox/tex/ref}
