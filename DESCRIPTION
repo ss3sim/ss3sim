@@ -10,6 +10,8 @@ Description: This project aims to develop R functions for stock assessment
     complete simulation studies for the World Conference on Stock Assessment in
     Boston, July 2013.
 License: MIT
+Imports:
+    r4ss (>= 1.20)
 Collate:
     'create_new_rec_devs.r'
     'find_item.r'
