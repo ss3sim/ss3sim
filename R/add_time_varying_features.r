@@ -1,8 +1,9 @@
-#' Methods to include time varying param features
+#' Methods to include time varying natural mortality features
 #'
 #' @param n_blocks Number of blocks
-#' @param block_pattern Block pattern 
-#' @param dev Deviations
+#' @param block_pattern Block pattern. A vector of years when changes
+#' occur.
+#' @param dev A vector of deviations
 #' @param ctl_file_in Input control file name
 #' @param ctl_file_out Output control file name
 #' @param dat_file .dat file name
@@ -22,8 +23,6 @@ add_time_varying_features <- function(
   par_file="ss3.par", 
   how_time_varying=c("env", "block", "dev")) {
 
-  require(r4ss)
-
   how_time_varying <- how_time_varying[1]
   if(!how_time_varying %in% c("env", "block", "dev")) 
     stop("how_time_varying must be one of env, block, dev")
@@ -31,7 +30,7 @@ add_time_varying_features <- function(
   ## To read in the control file and create an R object to modify afterwards
   SS_ctl <- readLines(ctl_file_in)
   ## To read in the dat file 
-  SS_dat <- SS_readdat(dat_file, verbose = FALSE, echoall = FALSE, section = NULL)
+  SS_dat <- r4ss::SS_readdat(dat_file, verbose = FALSE, echoall = FALSE, section = NULL)
   year.beg=SS_dat$styr
   year.end=SS_dat$endyr
 
