@@ -7,26 +7,18 @@
 
 run_model <- function(scenarios, iterations, type = c("om", "em")) {
 
-ss_call <- switch(.Platform$OS.type, 
-  unix = "SS3",
-  windows = "SS3.exe"
-  )
-
-dir_switch <- switch(.Platform$OS.type, 
-  unix = "cd ",
-  windows = "I DON'T KNOW"
-  )
-
-sep <- switch(.Platform$OS.type, 
-  unix = "; ",
-  windows = "I DON'T KNOW"
-  )
+  os <- .Platform$OS.type 
 
   for(sc in scenarios) {
     for(it in iterations) {
       om <- pastef(sc, it)
       print(paste0("Running ", type, " for scenario: ", sc, "; iteration: ", it)) 
-      system2(paste0(dir_switch, pastef(sc, it, type), sep, ss_call)) 
+      if(os == "unix") {
+        system(paste("cd", pastef(sc, it, type), ";", "SS3")) 
+      } else {
+        stop("Not implemented. Please send Sean directions.")
+        #shell(paste0(dir_switch, pastef(sc, it, type), sep, ss_call)) 
+      }
     }
   }
 }
