@@ -2,8 +2,8 @@
 \alias{create_dirs}
 \title{Create simulation directories}
 \usage{
-  create_dirs(home_name, scen_list, beg = 1, nsets = 100,
-    copy_om = TRUE)
+  create_dirs(home_name = ".", scen_list, beg = 1,
+    nsets = 100)
 }
 \arguments{
   \item{home_name}{The base working directory for the
@@ -21,10 +21,6 @@
 
   \item{nsets}{A numeric value for the number of iterations
   to run.}
-
-  \item{copy_om}{A binary value indicating whether or not
-  to copy the necessary operating model from the master
-  location to each iteration folder.}
 }
 \description{
   Create a tree of file directories based on the specified
@@ -34,11 +30,6 @@
 }
 \examples{
 \dontrun{
-# Change the home_name directory based on where you'd like the
-example folders created:
-create_dirs(home_name = "~/Desktop/", scen_list = list(main = "ss3sim",
-papers = "m", species = c("cod","flat","sardine"), fishing =
-c("down","up","contrast")), nsets = 10, copy_om = FALSE)
 }
 }
 \author{

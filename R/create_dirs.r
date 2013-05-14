@@ -12,23 +12,20 @@
 #' the master location. See the example below.
 #' @param beg A numeric value for the first iteration of the simulation.
 #' @param nsets A numeric value for the number of iterations to run.
-#' @param copy_om A binary value indicating whether or not to copy the
-#' necessary operating model from the master location to each
-#' iteration folder.
+# @param copy_om A binary value indicating whether or not to copy the
+# necessary operating model from the master location to each
+# iteration folder.
 #' @author Kelli Johnson
 #' @export
 #' @examples \dontrun{
-#' # Change the home_name directory based on where you'd like the
-#' example folders created:
-#' create_dirs(home_name = "~/Desktop/", scen_list = list(main = "ss3sim",
-#' papers = "m", species = c("cod","flat","sardine"), fishing =
-#' c("down","up","contrast")), nsets = 10, copy_om = FALSE)
+ # Change the home_name directory based on where you'd like the
+ #example folders created:
+ #create_dirs(scen_list = list(main = "ss3sim",
+ #papers = "m", species = c("cod","flat","sardine"), scenarios =
+ #c("down-base","up-base","contrast-base")), nsets = 100, copy_om = FALSE)
 #' }
 
-create_dirs <- function(home_name, scen_list, beg = 1, nsets = 100,
-  copy_om = TRUE){
-
-  require("reshape")
+create_dirs <- function(home_name = ".", scen_list, beg = 1, nsets = 100){
 
   checkPathName <- rev(unlist(strsplit(home_name,"")))[1]
 
@@ -38,27 +35,14 @@ create_dirs <- function(home_name, scen_list, beg = 1, nsets = 100,
   }
 
   scen_list$iterations <- seq(beg,(beg+nsets-1), by = 1)
+  #scen_list$models <- c("om", "em")
 # add a slash to the end of home_name if it isn't already a slasp
   pathMatrix <- expand.grid(scen_list)
   pathVector <- apply(pathMatrix, 1, paste, collapse = "/")
   pathVector <- paste(home_name, pathVector, "/", sep = "")
   pathVector <- gsub(" ", "", pathVector)
-  sapply(pathVector, dir.create, recursive = TRUE, showWarnings = FALSE)
-
-  if(copy_om == TRUE){
-    om_names <- list.files(file.path(home_name, "om_master"))
-    om_paths <- gsub("\\/", "\\", list.files(file.path(home_name,
-          "om_master"), full.names = TRUE), fixed = TRUE)
-    om_files <- lapply(om_paths, list.files, full.names = TRUE)
-    ## a list where each OM needs to go
-    omDestIndex <- sapply(om_names, grep, x = pathVector, ignore.case
-      = TRUE, simplify = FALSE)
-    omDestLocat <- lapply(omDestIndex, function(x)pathVector[c(x)])
-
-    for(i in seq_along(om_names)){
-      sapply(omDestLocat[[i]], function(x)sapply(om_files[i],
-          function(y)file.copy(from = y, to = x)))
-    }
-  }
+  folders <- sapply(pathVector, dir.create, recursive = TRUE, showWarnings = FALSE)
+  print("All folders created")
+  invisible(list(path_vector = pathVector, path_matrix = pathMatrix))
 }
 
