@@ -13,14 +13,15 @@
 %\bibpunct{(}{)}{;}{a}{}{;}   
 
 \title{How to use the \texttt{ss3sim} package to run\\simulations in SS3}
-\author{Sean C. Anderson and others to be included}
+%\author{Sean C. Anderson and others to be included}
 \date{}
 
 \begin{document}
 \maketitle
 
 \noindent
-First start by installing a recent version if needed and loading the package:
+First start by installing the latest version of \texttt{ss3sim} and loading the
+package:
 
 \begin{Schunk}
 \begin{Sinput}
@@ -66,7 +67,8 @@ or if you were only responsible for 1:50:
 
 \begin{Schunk}
 \begin{Sinput}
-> copy_models(model_dir = "operating-models", type = "om", iterations = 1:50)
+> copy_models(model_dir = "operating-models", type = "om", 
++   iterations = 1:50)
 \end{Sinput}
 \end{Schunk}
 
@@ -153,19 +155,49 @@ The main functions to work with are:
 \begin{description}
   \item[\texttt{change\_f}] A function to alter fishing mortality values in the
     \texttt{.par} file
-  \item[\texttt{change\_lcomp}] Takes a \texttt{data.SS\_new} file, resamples the length
-    compositions from the expected values, and returns a new file with the new
-    length comp samples. Samples can have dimensions, bins, sample sizes, and
-    distributions which are different than those coming from SS.
-  \item[\texttt{jitter\_index}] This function is used to create an index of
-    abundance sampled from the expected available biomass for each fleet: survey
-    1 and survey 2 (which mimics the fishery) and add some lognormal errors around
-    it.
-  \item[\texttt{change\_agecomp}] Similar to \texttt{change\_lcomp} but for age
-    composition data.
+
   \item[\texttt{add\_time\_varying\_features}] Adds time-varying natural
     mortality either through the environment, block, or deviation methods.
 \end{description}
+
+ADD EXAMPLES OF USING THESE FUNCTIONS FOR COMMON SCENARIOS
+
+\section*{What \texttt{run\_simulations} does}
+
+Between running the operating and estimation models, \texttt{run\_simulations}
+performs a number of tasks that are needed across all scenarios:
+
+\begin{enumerate}
+  \item Takes the appropriate column of recruitment deviations from
+    \texttt{data(recdevs)}, scales them by the appropriate standard deviation
+    using \texttt{TODO}, and adds them to the \texttt{.par} file using
+    \texttt{change\_rec\_devs}.
+  \item Samples the length and age composition data and adds them to the data
+    file using \texttt{change\_lcomp} and \texttt{change\_agecomp}.
+  \item Jitters the index of abundance based on the reported biomass for each
+    fleet using \texttt{jitter\_index}.
+  \item TODO renames and moves files as needed
+\end{enumerate}
+
+%\noindent
+%These functions are used internally by \texttt{run\_simulations} between running
+%the operating and estimation models:
+
+%\begin{description}
+  %\item[\texttt{change\_lcomp}] Takes a \texttt{data.SS\_new} file, resamples
+    %the length compositions from the expected values, and returns a new file
+    %with the new length comp samples. Samples can have dimensions, bins, sample
+    %sizes, and distributions which are different than those coming from SS.
+
+  %\item[\texttt{change\_agecomp}] Similar to \texttt{change\_lcomp}
+    %but for age composition data.
+
+  %\item[\texttt{jitter\_index}] This function is used to create an index of
+    %abundance sampled from the expected available biomass for each fleet: survey
+    %1 and survey 2 (which mimics the fishery) and add some lognormal errors
+    %around it. 
+%\end{description}
+
 
 
 %\bibliography{/Users/seananderson/Dropbox/tex/jshort,/Users/seananderson/Dropbox/tex/ref}
