@@ -13,13 +13,14 @@
 %\bibpunct{(}{)}{;}{a}{}{;}   
 
 \title{How to use the \texttt{ss3sim} package to run\\simulations in SS3}
-\author{Sean C. Anderson and others to follow}
+\author{Sean C. Anderson and others to be included}
 \date{}
 
 \begin{document}
 \maketitle
 
 \noindent
+First start by installing a recent version if needed and loading the package:
 
 <<echo = true, results = verbatim>>=
 # install.packages("devtools")
@@ -27,34 +28,64 @@
 library(ss3sim)
 @
 
-\noindent
-make folders
+We are assuming there are a series of operating models in a folder and a series
+of estimation models in another folder. Within each folder, the models should be
+named according to whatever you would like the scenario ID to be. For our
+purposes, I suggest we use a brief identifier made up of lower-case letters and
+numbers followed by a dash followed by the species name. For example for a
+scenario with a block change in natural mortality you might have these folders:
+
+\begin{verbatim}
+blockm-cod
+blockm-flat
+blockm-sardine
+\end{verbatim}
 
 \noindent
-make oms and ems in ...
+It is up to the various groups to come up with these operating models and
+estimation models. There are a number of functions in this R package to
+facilitate this. We will come back to this. 
+
+Once you have these folders set up you can move them into the simulation folder
+structure with the \texttt{copy\_model} function. Assuming you've put these in
+folders called \texttt{operating-models} and \texttt{estimation-models} you can
+copy the models over like this:
 
 <<eval = FALSE, echo = true>>=
-copy_models(model_dir = "oms", type = "om")
-copy_models(model_dir = "ems", type = "em")
+copy_models(model_dir = "operating-models", type = "om")
+copy_models(model_dir = "estimation-models", type = "em")
 @
 
 \noindent
 or if you were only responsible for 1:50:
 
 <<eval = FALSE, echo = true>>=
-copy_models(model_dir = "oms", type = "om", iterations = 1:50)
+copy_models(model_dir = "operating-models", type = "om", iterations = 1:50)
 @
 
 \noindent
 This creates the structure:
 
 \begin{verbatim}
-  sc1-cod/1/om
-  sc1-cod/1/em
-  sc1-cod/2/om
-  sc1-cod/2/em
+  blockm-cod/1/om
+  blockm-cod/1/em
+  blockm-cod/2/om
+  blockm-cod/2/em
   ...
 \end{verbatim}
+
+\noindent
+Note that the operating and estimating model folders have been renamed
+\texttt{om} and \texttt{em} within each iteration.
+
+The \texttt{run\_scenario} function is a wrapper function. It calls
+\texttt{run\_model} to run the operating model, adds the recruitment deviations,
+samples various survey estimates from the operating model, copies and renames
+files as necessary, and calls \texttt{run\_model} again to run the estimation
+model.
+
+Say you have a text files of scenarios to run and you want to run the first 50
+iterations of those scenarios. You could run them like this:
 
 <<eval = FALSE, echo = true>>=
 scenarios <- scan("mysenarios.txt", what = "character")
@@ -62,11 +93,42 @@ run_scenario(scenarios, iterations = 1:50)
 @
 
 \noindent
-Or, to test the operating model for the first scenario:
+Or, to test the operating model for the first scenario only:
 
 <<eval = FALSE, echo = true>>=
 run_scenario(scenarios[1], iterations = 1, type = "om")
 @
+
+\section{The flat scenario ID structure}
+There are many advantages to this flat scenario ID fold setup:
+
+\begin{enumerate}
+  \item It makes it easier for multiple papers to share scenarios.
+
+  \item It makes it easier for papers to change which scenarios to compare after.
+
+  \item It avoids unnecessary nested folder structure.
+
+  \item It's easier to distribute the model runs across people and computers.
+
+  \item The functions are more general and applicable to future research.
+
+  \item Since each folder represents a unique scenario run, it's simple to keep
+    track of progress on model runs in a spreadsheet
+  
+\end{enumerate}
+
+\noindent
+Cole suggested we have a spreadsheet with the following columns:
+
+\begin{verbatim}
+Scenario ID, Scenario description, Control modifications, Model status
+\end{verbatim}
+
+\noindent
+Then, groups can compile a list of scenario IDs they want to extract and compare.
+
+
 
 %\bibliography{/Users/seananderson/Dropbox/tex/jshort,/Users/seananderson/Dropbox/tex/ref}
 \end{document}
