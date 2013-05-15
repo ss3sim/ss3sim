@@ -2,7 +2,6 @@
 #' @param scenarios Which scenarios to run.
 #' @param iterations Which iterations to run.
 #' @param type Are you running the operating or estimation models?
-#' @export
 #' @author Sean Anderson
 
 run_model <- function(scenarios, iterations, type = c("om", "em")) {
@@ -16,7 +15,7 @@ run_model <- function(scenarios, iterations, type = c("om", "em")) {
       #print(paste0("Running ", type, " for scenario: ", sc, ";
       #iteration: ", it)) 
       if(os == "unix") {
-        system(paste("cd", pastef(sc, it, type), ";SS3", ss_options)),
+        system(paste("cd", pastef(sc, it, type), ";SS3", ss_options))
       } else {
         warning("Windows command not tested yet")
         shell(paste("cd", pastef(sc, it, type), "&ss3", ss_options),
