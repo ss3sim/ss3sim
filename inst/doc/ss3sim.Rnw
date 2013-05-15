@@ -20,8 +20,7 @@
 \maketitle
 
 \noindent
-First start by installing the latest version of \texttt{ss3sim} and loading the
-package:
+First start by installing the latest version of \texttt{ss3sim} and loading the package:
 
 <<echo = true, results = verbatim>>=
 # install.packages("devtools")
@@ -30,28 +29,22 @@ library(ss3sim)
 @
 
 \section*{Setting up the file structure}
-We are assuming there are a series of operating models in a folder and a series
-of estimation models in another folder. Within each folder, the models should be
-named according to whatever you would like the scenario ID to be. For our
-purposes, I suggest we use a brief identifier made up of lower-case letters and
-numbers followed by a dash followed by the species name. For example for a
-scenario with a block change in natural mortality you might have these folders:
+We are assuming there are a series of operating models in a folder and a series of estimation models in another folder. Within each folder, the models should be named according to whatever you would like the scenario ID to be. For our purposes, I suggest we use a brief identifier made up of letters and numbers followed by a dash followed by the species name. We have four kinds of ``cases'': natural- mortality cases (M), fishing-mortality cases (F), data-quality cases (D), and retrospective cases (R). 
+
+The base case scenario is identified as \texttt{M1F1D1R1}. Melissa is working on a spreadsheet that defines each of these.
+
+For example, for a scenario might have these folders:
 
 \begin{verbatim}
-blockm-cod
-blockm-flat
-blockm-sardine
+M1F1D1R1-cod
+M1F1D1R1-fla
+M1F1D1R1-sar
 \end{verbatim}
 
 \noindent
-It is up to the various groups to come up with these operating models and
-estimation models. There are a number of functions in this R package to
-facilitate this. We will come back to this. 
+It is up to the various groups to come up with these operating models and estimation models. There are a number of functions in this \texttt{R} package to facilitate this. We will come back to this. 
 
-Once you have these folders set up you can move them into the simulation folder
-structure with the \texttt{copy\_model} function. Assuming you've put these in
-folders called \texttt{operating-models} and \texttt{estimation-models} you can
-copy the models over like this:
+Once you have these folders set up you can move them into the simulation folder structure with the \texttt{copy\_model} function. Assuming you've put these in folders called \texttt{operating-models} and \texttt{estimation-models} you can copy the models over like this:
 
 <<eval = FALSE, echo = true>>=
 copy_models(model_dir = "operating-models", type = "om")
@@ -81,21 +74,13 @@ This creates the structure:
 Note that the operating and estimating model folders have been renamed
 \texttt{om} and \texttt{em} within each iteration.
 
-The functions in this package assume you've set your working directory
-in R to be the base folder where you will store the scenario folders. The
-folders containing the operating and assessment scenarios should also be in this
-same base folder.
+The functions in this package assume you've set your working directory in R to be the base folder where you will store the scenario folders. The folders containing the operating and assessment scenarios should also be in this same base folder.
 
 \section*{Running the models}
 
-The \texttt{run\_scenario} function is a wrapper function. It calls
-\texttt{run\_model} to run the operating model, adds the recruitment deviations,
-samples various survey estimates from the operating model, copies and renames
-files as necessary, and calls \texttt{run\_model} again to run the estimation
-model.
+The \texttt{run\_scenario} function is a wrapper function. It calls \texttt{run\_model} to run the operating model, adds the recruitment deviations, samples various survey estimates from the operating model, copies and renames files as necessary, and calls \texttt{run\_model} again to run the estimation model.
 
-Say you have a text files of scenarios to run and you want to run the first 50
-iterations of those scenarios. You could run them like this:
+Say you have a text files of scenarios to run and you want to run the first 50 iterations of those scenarios. You could run them like this:
 
 <<eval = FALSE, echo = true>>=
 scenarios <- scan("mysenarios.txt", what = "character")
@@ -123,8 +108,7 @@ There are many advantages to this flat scenario ID fold setup:
 
   \item The functions are more general and applicable to future research.
 
-  \item Since each folder represents a unique scenario run, it's simple to keep
-    track of progress on model runs in a spreadsheet
+  \item Since each folder represents a unique scenario run, it's simple to keep track of progress on model runs in a spreadsheet
   
 \end{enumerate}
 
@@ -154,18 +138,12 @@ ADD EXAMPLES OF USING THESE FUNCTIONS FOR COMMON SCENARIOS
 
 \section*{What \texttt{run\_scenario} does}
 
-Between running the operating and estimation models, \texttt{run\_scenario}
-performs a number of tasks that are needed across all scenarios:
+Between running the operating and estimation models, \texttt{run\_scenario} performs a number of tasks that are needed across all scenarios:
 
 \begin{enumerate}
-  \item Takes the appropriate column of recruitment deviations from
-    \texttt{data(recdevs)}, scales them by the appropriate standard deviation
-    using \texttt{TODO}, and adds them to the \texttt{.par} file using
-    \texttt{change\_rec\_devs}.
-  \item Samples the length and age composition data and adds them to the data
-    file using \texttt{change\_lcomp} and \texttt{change\_agecomp}.
-  \item Jitters the index of abundance based on the reported biomass for each
-    fleet using \texttt{jitter\_index}.
+  \item Takes the appropriate column of recruitment deviations from \texttt{data(recdevs)}, scales them by the appropriate standard deviation using \texttt{TODO}, and adds them to the \texttt{.par} file using
+    \texttt{change\_rec\_devs}. \item Samples the length and age composition data and adds them to the data file using \texttt{change\_lcomp} and \texttt{change\_agecomp}.
+  \item Jitters the index of abundance based on the reported biomass for each fleet using \texttt{jitter\_index}.
   \item TODO renames and moves files as needed
 \end{enumerate}
 
