@@ -31,3 +31,4 @@ Collate:
     'recdevs.r'
     'run_ss3model.r'
     'run_ss3sim.r'
+    'get_sigma.r'
