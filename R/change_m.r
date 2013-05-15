@@ -13,7 +13,7 @@
 #' or \code{"dev"} for deviations. 
 #' @export
 			
-add_time_varying_features <- function(
+change_m <- function(
   n_blocks, 
   block_pattern, 
   dev,

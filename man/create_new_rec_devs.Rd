@@ -19,11 +19,8 @@
   Generate a new recruitment deviation time series to put
   into a simulation
 }
-\examples{
-m <- arima(lh, order = c(1,0,0))
-create_new_rec_devs(rep(0, 20), m)
-}
 \author{
-  Kotaro Ono
+  Kotaro Ono m <- arima(lh, order = c(1,0,0))
+  create_new_rec_devs(rep(0, 20), m)
 }
 

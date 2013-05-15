@@ -6,7 +6,7 @@
 #' @author Kelli Johnson
 #' @export
 
-grab_sigmar <- function (om) {
+get_sigmar <- function (om) {
   ctlFileName <- paste( om, ".ctl", sep = "" )
   if (!file.exists ( ctlFileName ) ) 
     stop ( "Cannot find the .ctl file for the specified operating model." )

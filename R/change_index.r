@@ -26,7 +26,7 @@
 #' Simple example folder.)
 #' f_in <- "~/Documents/github/ss3sim/inst/extdata/Simple/simple.dat"
 #' # change as necessary
-#' jitter_index(f_in, "output_test.dat", start_surv = 1980,
+#' change_index(f_in, "output_test.dat", start_surv = 1980,
 #' end_surv = 2001, start_fish = 1980, end_fish = 2001, 
 #' make_plot = TRUE, use_index = "survey")
 #' }
@@ -34,7 +34,7 @@
 #f_as <- system.file("extdata", "flatfish-assessment", package="ss3sim")
 #f_op <- system.file("extdata", "flatfish-operating", package="ss3sim")
 
-jitter_index <- function(dat_file_in, dat_file_out, start_surv,
+change_index <- function(dat_file_in, dat_file_out, start_surv,
   end_surv, start_fish, end_fish, freq_surv=2, sd_obs_surv = 0.2,
   freq_fish=1, sd_obs_fish = 0.4, make_plot = FALSE,
   use_index=c("survey", "fishery", "all")){

@@ -16,7 +16,6 @@
 # necessary operating model from the master location to each
 # iteration folder.
 #' @author Kelli Johnson
-#' @export
 #' @examples \dontrun{
  # Change the home_name directory based on where you'd like the
  #example folders created:

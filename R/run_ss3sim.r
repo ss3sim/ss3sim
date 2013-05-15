@@ -1,8 +1,9 @@
 #' Run both the operating model and assessment model
 #'
-#' This function is a wrapper function that can call \code{run_model} for
-#' the operating model, manipulate the output (add recruitment
-#' deviations, survey the data, etc.), and run the estimation model.
+#' This function is a wrapper function that can call
+#' \code{\link{run_ss3model}} for the operating model, manipulate the
+#' output (add recruitment deviations, survey the data, etc.), and run
+#' the estimation model.
 #'
 #' @param scenarios Which scenarios to run.
 #' @param iterations Which iterations to run.
@@ -13,7 +14,7 @@
 #' or the other?
 #' @export
 
-run_scenario <- function(scenarios, iterations, index_params =
+run_ss3sim <- function(scenarios, iterations, index_params =
   "default", lcomp_params = "default", agecomp_params = "default",
   type = c("om and em", "om", "em")) {
 
@@ -28,7 +29,7 @@ run_scenario <- function(scenarios, iterations, index_params =
         for(i in iterations) {
 
           # Run the operating model
-          run_model(scenarios = sc, iterations = i, type = "om")
+          run_ss3model(scenarios = sc, iterations = i, type = "om")
 
           # Add rec devs
           data(recdevs)
@@ -81,12 +82,12 @@ run_scenario <- function(scenarios, iterations, index_params =
 
           warning("Manipulation steps aren't all implemented or checked yet!")
 
-          run_model(scenarios = sc, iterations = i, type = "em")
+          run_ss3model(scenarios = sc, iterations = i, type = "em")
         } # end iterations
       } # end scenarios
     }, # end "om and em" switch option
-    "om" = run_model(scenarios, iterations, type = "om"),
-    "em" = run_model(scenarios, iterations, type = "em")
+    "om" = run_ss3model(scenarios, iterations, type = "om"),
+    "em" = run_ss3model(scenarios, iterations, type = "em")
     ) # end switch() call
 }
 
