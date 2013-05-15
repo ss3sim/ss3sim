@@ -144,6 +144,13 @@ Between running the operating and estimation models, \texttt{run\_scenario} perf
   \item TODO renames and moves files as needed
 \end{enumerate}
 
+\begin{figure}[htbp]
+  \centering
+    \includegraphics[width=5.5in]{sim-steps.pdf}
+  \caption{Simulation steps}
+  \label{fig:sim-steps}
+\end{figure}
+
 
 %\noindent
 %These functions are used internally by \texttt{run\_simulations} between running
