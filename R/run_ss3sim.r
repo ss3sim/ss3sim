@@ -45,7 +45,7 @@ run_ss3sim <- function(scenarios, iterations, index_params =
           run_ss3model(scenarios = sc, iterations = i, type = "om")
 
           with(index_params, 
-            jitter_index(dat_file_in    = pastef(sc, i, "om", "data.dat"), 
+            change_index(dat_file_in    = pastef(sc, i, "om", "data.dat"), 
                          dat_file_out   = pastef(sc, i, "em", "data.dat"),
                          start_surv     = start_surv,
                          end_surv       = end_surv,
