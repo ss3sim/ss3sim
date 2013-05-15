@@ -20,3 +20,40 @@ get_caseval <- function(cases, case, delimiter = "-") {
   x <- strsplit(cases, "-")[[1]]
   as.numeric(substr(cases[grep(case, x)], 2, 2))
 }
+
+# Return list of lcomp, agecomp, and index parameters to pass to
+# \code{run_ss3sim}
+
+base_index <- function() {
+
+}
+
+base_agecomp <- function() {
+
+}
+
+base_lcomp <- function() {
+
+}
+
+get_m_args <- function(x) {
+ switch(x,
+   1 = {
+   },
+   2 = ,
+   3 = ,
+   4 = )
+}
+
+get_f_args <- function() {
+
+}
+
+get_d_args <- function() {
+
+}
+
+get_r_args <- function() {
+
+}
+
