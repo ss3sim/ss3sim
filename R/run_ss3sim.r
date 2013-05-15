@@ -28,9 +28,6 @@ run_ss3sim <- function(scenarios, iterations, index_params =
       for(sc in scenarios) {
         for(i in iterations) {
 
-          # Run the operating model
-          run_ss3model(scenarios = sc, iterations = i, type = "om")
-
           # Add rec devs
           data(recdevs)
 
@@ -44,6 +41,9 @@ run_ss3sim <- function(scenarios, iterations, index_params =
           change_rec_devs(recdevs_new = sc_i_recdevs)
 
           # Surveys
+          # Run the operating model
+          run_ss3model(scenarios = sc, iterations = i, type = "om")
+
           with(index_params, 
             jitter_index(dat_file_in    = pastef(sc, i, "om", "data.dat"), 
                          dat_file_out   = pastef(sc, i, "em", "data.dat"),
