@@ -32,3 +32,4 @@ Collate:
     'copy_models.r'
     'run_model.r'
     'run_scenario.r'
+    'grab_sigmar.r'
