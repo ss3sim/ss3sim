@@ -38,6 +38,7 @@ run_scenario <- function(scenarios, iterations, index_params =
 
           # Add new rec devs overwriting ss3.par
           change_rec_devs(recdevs_new = sd_recdev * recdevs[, i])
+          # TODO need to copy these over to em
 
           # Surveys
           with(index_params, 
