@@ -44,18 +44,18 @@ M1F1D1R1-sar
 \noindent
 It is up to the various groups to come up with these operating models and estimation models. There are a number of functions in this \texttt{R} package to facilitate this. We will come back to this. 
 
-Once you have these folders set up you can move them into the simulation folder structure with the \texttt{copy\_model} function. Assuming you've put these in folders called \texttt{operating-models} and \texttt{estimation-models} you can copy the models over like this:
+Once you have these folders set up you can move them into the simulation folder structure with the \texttt{copy\_ss3model} function. Assuming you've put these in folders called \texttt{operating-models} and \texttt{estimation-models} you can copy the models over like this:
 
 <<eval = FALSE, echo = true>>=
-copy_models(model_dir = "operating-models", type = "om")
-copy_models(model_dir = "estimation-models", type = "em")
+copy_ss3models(model_dir = "operating-models", type = "om")
+copy_ss3models(model_dir = "estimation-models", type = "em")
 @
 
 \noindent
 or if you were only responsible for 1:50:
 
 <<eval = FALSE, echo = true>>=
-copy_models(model_dir = "operating-models", type = "om", 
+copy_ss3models(model_dir = "operating-models", type = "om", 
   iterations = 1:50)
 @
 
@@ -63,35 +63,35 @@ copy_models(model_dir = "operating-models", type = "om",
 This creates the structure:
 
 \begin{verbatim}
-  blockm-cod/1/om
-  blockm-cod/1/em
-  blockm-cod/2/om
-  blockm-cod/2/em
+  M1F1D1R1-cod/1/om
+  M1F1D1R1-cod/1/em
+  M1F1D1R1-cod/2/om
+  M1F1D1R1-cod/2/em
   ...
 \end{verbatim}
 
 \noindent
 Note that the operating and estimating model folders have been renamed
-\texttt{om} and \texttt{em} within each iteration.
+\texttt{om} and \texttt{em} within each iteration, the folder have been checked to make sure they contain the minimal files (LIST HERE), the filenames have been made all lowercase, the data file has been renamed \texttt{data.dat}, the control file has been renamed \texttt{control.ctl}, and the starter file has been adjusted to reflect these new file names.
 
 The functions in this package assume you've set your working directory in R to be the base folder where you will store the scenario folders. The folders containing the operating and assessment scenarios should also be in this same base folder.
 
 \section*{Running the models}
 
-The \texttt{run\_scenario} function is a wrapper function. It calls \texttt{run\_model} to run the operating model, adds the recruitment deviations, samples various survey estimates from the operating model, copies and renames files as necessary, and calls \texttt{run\_model} again to run the estimation model.
+The \texttt{run\_ss3sim} function is a wrapper function. It adds recruitment deviations, calls \texttt{run\_ss3model} to run the operating model, samples various survey estimates from the operating model, copies and renames files as necessary, and calls \texttt{run\_ss3model} again to run the estimation model.
 
 Say you have a text files of scenarios to run and you want to run the first 50 iterations of those scenarios. You could run them like this:
 
 <<eval = FALSE, echo = true>>=
 scenarios <- scan("mysenarios.txt", what = "character")
-run_scenario(scenarios, iterations = 1:50)
+run_ss3sim(scenarios, iterations = 1:50)
 @
 
 \noindent
 Or, to test the operating model for the first scenario only:
 
 <<eval = FALSE, echo = true>>=
-run_scenario(scenarios[1], iterations = 1, type = "om")
+run_ss3sim(scenarios[1], iterations = 1, type = "om")
 @
 
 \section*{The flat scenario ID structure}
@@ -113,10 +113,10 @@ There are many advantages to this flat scenario ID fold setup:
 \end{enumerate}
 
 \noindent
-Cole suggested we have a spreadsheet with the following columns:
+We can have a spreadsheet with the following columns:
 
 \begin{verbatim}
-Scenario ID, Scenario description, Control modifications, Model status
+Scenario ID, Scenario description, Model status
 \end{verbatim}
 
 \noindent
@@ -127,25 +127,23 @@ Then, groups can compile a list of scenario IDs they want to extract and compare
 The main functions to work with are:
 
 \begin{description}
-  \item[\texttt{change\_f}] A function to alter fishing mortality values in the
-    \texttt{.par} file
+  \item[\texttt{change\_f}] A function to alter fishing mortality values in the \texttt{.par} file
 
-  \item[\texttt{add\_time\_varying\_features}] Adds time-varying natural
-    mortality either through the environment, block, or deviation methods.
+  \item[\texttt{change\_m}] Adds time-varying natural mortality either through the environment, block, or deviation methods.
 \end{description}
 
 ADD EXAMPLES OF USING THESE FUNCTIONS FOR COMMON SCENARIOS
 
-\section*{What \texttt{run\_scenario} does}
+\section*{What \texttt{run\_ss3sim} does}
 
 Between running the operating and estimation models, \texttt{run\_scenario} performs a number of tasks that are needed across all scenarios:
 
 \begin{enumerate}
-  \item Takes the appropriate column of recruitment deviations from \texttt{data(recdevs)}, scales them by the appropriate standard deviation using \texttt{TODO}, and adds them to the \texttt{.par} file using
-    \texttt{change\_rec\_devs}. \item Samples the length and age composition data and adds them to the data file using \texttt{change\_lcomp} and \texttt{change\_agecomp}.
+  \item Takes the appropriate column of recruitment deviations from \texttt{data(recdevs)}, scales them by the appropriate standard deviation using \texttt{TODO}, and adds them to the \texttt{.par} file using \texttt{change\_rec\_devs}. \item Samples the length and age composition data and adds them to the data file using \texttt{change\_lcomp} and \texttt{change\_agecomp}.
   \item Jitters the index of abundance based on the reported biomass for each fleet using \texttt{jitter\_index}.
   \item TODO renames and moves files as needed
 \end{enumerate}
+
 
 %\noindent
 %These functions are used internally by \texttt{run\_simulations} between running
