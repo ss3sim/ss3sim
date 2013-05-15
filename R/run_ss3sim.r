@@ -34,12 +34,14 @@ run_ss3sim <- function(scenarios, iterations, index_params =
           # Add rec devs
           data(recdevs)
 
-          # Pull in the SD of the rec devs here...
-          sd_recdev <- 1 # Hardcoded in the mean time
+          # Pull in sigma R from the operating model
+          sigmar <- get_sigma(pastef(sc, i, "om", "om"))
+
+          # Exponentiate with bias adjustment
+          sc_i_recdevs <- exp(sigmar * recdevs[, i] - sigmar/2)
 
           # Add new rec devs overwriting ss3.par
-          change_rec_devs(recdevs_new = sd_recdev * recdevs[, i])
-          # TODO need to copy these over to em
+          change_rec_devs(recdevs_new = sc_i_recdevs)
 
           # Surveys
           with(index_params, 
