@@ -20,9 +20,9 @@
 change_agecomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
                          minyear=NA,maxyear=NA,years=NA,svyears=NA,
                          N_agebins=NA,agebin_vector=NA,agecomp=NA,...){
-  #Load required libraries
-  require(r4ss)
-  require(MCMCpack)
+  #Load required libraries (now done by package)
+  #require(r4ss)
+  #require(MCMCpack)
   
   #Read the input file
   dat.file <- infile
@@ -81,7 +81,7 @@ change_agecomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
       if(distribution=="multinomial")
         new.agecomp[it,10:NDF.width] <- rmultinom(1,new.agecomp[it,9],probs)
       if(distribution=="dirichlet")    
-        new.agecomp[it,10:NDF.width] <- rdirichlet(1,as.numeric(probs)*Nsamp)
+        new.agecomp[it,10:NDF.width] <- MCMCpack::rdirichlet(1,as.numeric(probs)*Nsamp)
     }
     svagecomp <- subset(init.agecomp,init.agecomp[,3]==2)
     for(it in (length(years)+1):length(c(years,svyears))){
@@ -89,7 +89,7 @@ change_agecomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
       if(distribution=="multinomial")
         new.agecomp[it,10:NDF.width] <- rmultinom(1,new.agecomp[it,9],probs)
       if(distribution=="dirichlet")
-        new.agecomp[it,10:NDF.width] <- rdirichlet(1,as.numeric(probs)*Nsamp)
+        new.agecomp[it,10:NDF.width] <- MCMCpack::rdirichlet(1,as.numeric(probs)*Nsamp)
     }
   }
   
@@ -102,7 +102,7 @@ change_agecomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
   
   
   #Write the modified file
-  SS_writedat(datlist=dat.file, outfile=outfile, overwrite=TRUE)
+  r4ss::SS_writedat(datlist=dat.file, outfile=outfile, overwrite=TRUE)
 }
 
 
