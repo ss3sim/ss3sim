@@ -14,10 +14,10 @@
   \item{file_out}{Output SS3 par file.}
 }
 \description{
-  This function replaces the recdevs in the ss3.par file
-  with those specified in recdevs_new, as well as a comment
-  (for debugging). It then writes a new file with name
-  file_out into the working directory.
+  This function replaces the recdevs in the \code{ss3.par}
+  file with those specified in recdevs_new, as well as a
+  comment (for debugging). It then writes a new file with
+  name \code{file_out} into the working directory.
 }
 \examples{
 \dontrun{

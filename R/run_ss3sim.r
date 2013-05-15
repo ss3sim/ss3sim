@@ -7,12 +7,23 @@
 #'
 #' @param scenarios Which scenarios to run.
 #' @param iterations Which iterations to run.
-#' @param index_params A named list containing all the \code{jitter_index} options.
-#' @param lcomp_params A named list containing all the \code{change_lcomp} options.
-#' @param agecomp_params A named list containing all the \code{change_agecomp} options.
+#' @param index_params A named list containing all the
+#' \code{\link{change_index}} options.
+#' @param lcomp_params A named list containing all the
+#' \code{\link{change_lcomp}} options.
+#' @param agecomp_params A named list containing all the
+#' \code{\link{change_agecomp}} options.
 #' @param type Are you running the both the operating and estimation models or just one
 #' or the other?
 #' @export
+#' @details
+#' This function is written to be flexible. You can specify the index,
+#' lcomp, and agecomp parameters in the function call. Eventually the
+#' plan is to create a script which derives the parameters from the
+#' case identifiers and calls this function. That will be a FISH600
+#' specific function.
+#'
+#' Note that bias adjustment isn't implemented yet.
 
 run_ss3sim <- function(scenarios, iterations, index_params =
   "default", lcomp_params = "default", agecomp_params = "default",
@@ -28,7 +39,7 @@ run_ss3sim <- function(scenarios, iterations, index_params =
       for(sc in scenarios) {
         for(i in iterations) {
 
-          # Add rec devs
+          # Load recruitment deviation data
           data(recdevs)
 
           # Pull in sigma R from the operating model
@@ -40,10 +51,10 @@ run_ss3sim <- function(scenarios, iterations, index_params =
           # Add new rec devs overwriting ss3.par
           change_rec_devs(recdevs_new = sc_i_recdevs)
 
-          # Surveys
           # Run the operating model
           run_ss3model(scenarios = sc, iterations = i, type = "om")
 
+          # Survey biomass index
           with(index_params, 
             change_index(dat_file_in    = pastef(sc, i, "om", "data.dat"), 
                          dat_file_out   = pastef(sc, i, "em", "data.dat"),
@@ -58,7 +69,7 @@ run_ss3sim <- function(scenarios, iterations, index_params =
                          make_plot      = make_plot,
                          use_index      = use_index))
 
-          # Add error in the length comp
+          # Add error in the length comp data
           SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "data.dat"))
           with(lcomp_params, 
             change_lcomp(infile         = SS.dat, 
@@ -70,7 +81,7 @@ run_ss3sim <- function(scenarios, iterations, index_params =
                          years          = years,
                          svyears        = svyears))
 
-          # Add error in the age comp
+          # Add error in the age comp data
           SS.dat2 = r4ss::SS_readdat(pastef(sc, i, "em", "data.dat"))
           with(agecomp_params, 
             change_agecomp(infile       = SS.dat2,
