@@ -1,8 +1,8 @@
 #' Replace recruitment deviations
 #' 
-#' This function replaces the recdevs in the ss3.par file with those
+#' This function replaces the recdevs in the \code{ss3.par} file with those
 #' specified in recdevs_new, as well as a comment (for debugging). It then
-#' writes a new file with name file_out into the working directory.
+#' writes a new file with name \code{file_out} into the working directory.
 #'
 #' @param recdevs_new A vector of new recruitment deviations.
 #' @param file_in Input SS3 par file.
