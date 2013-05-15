@@ -21,7 +21,7 @@ Collate:
     'change_lcomp.r'
     'change_m.r'
     'change_rec_devs.r'
-    'copy_models.r'
+    'copy_ss3models.r'
     'create_dirs.r'
     'create_new_rec_devs.r'
     'find_item.r'

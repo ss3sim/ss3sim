@@ -14,11 +14,11 @@
 #' @examples \dontrun{
 #' dir.create("oms/blockm-cod")
 #' dir.create("oms/blockm-fla")
-#' copy_models(model_dir = "oms", type = "om", iterations = 1:3)
+#' copy_ss3models(model_dir = "oms", type = "om", iterations = 1:3)
 #' }
 #' @export
 
-copy_models <- function(model_dir, iterations = 1:100,
+copy_ss3models <- function(model_dir, iterations = 1:100,
   scenarios = "all available", type = c("om", "em")) {
 
   type <- type[1]
