@@ -24,9 +24,10 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
                         minyear=NA,maxyear=NA,years=NA,svyears=NA,
                         lbin_method=NA,binwidth=NA,minimum_size=NA,maximum_size=NA,
                         N_lbins=NA,lbin_vector=NA,lencomp=NA,...){
-  #Load required libraries
-  require(MCMCpack)
-  require(r4ss)
+
+  #Load required libraries (done via package)
+  #require(MCMCpack)
+  #require(r4ss)
   
   #Read the input file
   #dat.file <- SS_readdat(file=infile, section=2)
@@ -121,7 +122,7 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
       if(distribution=="multinomial")
         new.lencomp[it,7:NDF.width] <- rmultinom(1,new.lencomp[it,6],probs)
       if(distribution=="dirichlet")
-        new.lencomp[it,7:NDF.width] <- rdirichlet(1,as.numeric(probs)*Nsamp)
+        new.lencomp[it,7:NDF.width] <- MCMCpack::rdirichlet(1,as.numeric(probs)*Nsamp)
     }
     svlcomp <- subset(init.lcomp,init.lcomp[,3]==2)
     for(it in (length(years)+1):length(c(years,svyears))){
@@ -129,7 +130,7 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
       if(distribution=="multinomial")
         new.lencomp[it,7:NDF.width] <- rmultinom(1,new.lencomp[it,6],probs)
       if(distribution=="dirichlet")
-        new.lencomp[it,7:NDF.width] <- rdirichlet(1,as.numeric(probs)*Nsamp)
+        new.lencomp[it,7:NDF.width] <- MCMCpack::rdirichlet(1,as.numeric(probs)*Nsamp)
     }
   }
   
@@ -142,6 +143,6 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
   
   
   #Write the modified file
-  SS_writedat(datlist=dat.file, outfile=outfile, overwrite=TRUE)
+  r4ss::SS_writedat(datlist=dat.file, outfile=outfile, overwrite=TRUE)
 }
 
