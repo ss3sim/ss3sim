@@ -17,7 +17,7 @@ run_model <- function(scenarios, iterations, type = c("om", "em")) {
         system(paste("cd", pastef(sc, it, type), ";SS3")) 
       } else {
         warning("Windows command not tested yet")
-        shell(paste("cd", pastef(sc, it, type), "&SS3.exe)) 
+        shell(paste("cd", pastef(sc, it, type), "&SS3.exe")) 
       }
     }
   }
