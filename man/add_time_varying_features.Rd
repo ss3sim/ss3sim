@@ -1,6 +1,6 @@
 \name{add_time_varying_features}
 \alias{add_time_varying_features}
-\title{Methods to include time varying param features}
+\title{Methods to include time varying natural mortality features}
 \usage{
   add_time_varying_features(n_blocks, block_pattern, dev,
     ctl_file_in = "control.ss_new",
@@ -11,9 +11,10 @@
 \arguments{
   \item{n_blocks}{Number of blocks}
 
-  \item{block_pattern}{Block pattern}
+  \item{block_pattern}{Block pattern. A vector of years
+  when changes occur.}
 
-  \item{dev}{Deviations}
+  \item{dev}{A vector of deviations}
 
   \item{ctl_file_in}{Input control file name}
 
@@ -29,6 +30,7 @@
   deviations.}
 }
 \description{
-  Methods to include time varying param features
+  Methods to include time varying natural mortality
+  features
 }
 

@@ -3,6 +3,8 @@
 \title{Run both the operating model and assessment model}
 \usage{
   run_scenario(scenarios, iterations,
+    index_params = "default", lcomp_params = "default",
+    agecomp_params = "default",
     type = c("om and em", "om", "em"))
 }
 \arguments{
