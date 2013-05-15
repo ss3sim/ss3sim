@@ -12,6 +12,15 @@
 
   \item{iterations}{Which iterations to run.}
 
+  \item{index_params}{A named list containing all the
+  \code{jitter_index} options.}
+
+  \item{lcomp_params}{A named list containing all the
+  \code{change_lcomp} options.}
+
+  \item{agecomp_params}{A named list containing all the
+  \code{change_agecomp} options.}
+
   \item{type}{Are you running the both the operating and
   estimation models or just one or the other?}
 }
@@ -20,8 +29,5 @@
   \code{run_model} for the operating model, manipulate the
   output (add recruitment deviations, survey the data,
   etc.), and run the estimation model.
-}
-\author{
-  Sean Anderson
 }
 

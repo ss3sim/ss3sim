@@ -6,9 +6,11 @@
 #'
 #' @param scenarios Which scenarios to run.
 #' @param iterations Which iterations to run.
-#' @param type Are you running the both the operating and estimation
-#' models or just one or the other?
-#' @author Sean Anderson
+#' @param index_params A named list containing all the \code{jitter_index} options.
+#' @param lcomp_params A named list containing all the \code{change_lcomp} options.
+#' @param agecomp_params A named list containing all the \code{change_agecomp} options.
+#' @param type Are you running the both the operating and estimation models or just one
+#' or the other?
 #' @export
 
 run_scenario <- function(scenarios, iterations, index_params =
