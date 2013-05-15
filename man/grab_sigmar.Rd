@@ -1,9 +1,9 @@
-\name{grabSigma}
-\alias{grabSigma}
+\name{grab_sigmar}
+\alias{grab_sigmar}
 \title{Use the name of the operating model to open the ctl file and obtain the INIT
 value for sigmaR (recruitment deviations sigma)}
 \usage{
-  grabSigma(om)
+  grab_sigmar(om)
 }
 \arguments{
   \item{om}{The name of the operating model, which should
