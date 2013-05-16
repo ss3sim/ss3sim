@@ -37,12 +37,12 @@ base_lcomp <- function() {
 }
 
 get_m_args <- function(x) {
- switch(x,
-   1 = {
-   },
-   2 = ,
-   3 = ,
-   4 = )
+ #switch(x,
+   #1 = {
+   #},
+   #2 = ,
+   #3 = ,
+   #4 = )
 }
 
 get_f_args <- function() {
