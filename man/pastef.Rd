@@ -4,6 +4,9 @@
 \usage{
   pastef(...)
 }
+\arguments{
+  \item{...}{Objects to paste together}
+}
 \description{
   Paste with "/" as the separator
 }

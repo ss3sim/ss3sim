@@ -30,6 +30,11 @@
 }
 \examples{
 \dontrun{
+# Change the home_name directory based on where you'd like the
+# example folders created:
+create_dirs(scen_list = list(main = "ss3sim",
+papers = "m", species = c("cod","flat","sardine"), scenarios =
+c("down-base","up-base","contrast-base")), nsets = 100, copy_om = FALSE)
 }
 }
 \author{

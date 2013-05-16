@@ -1,6 +1,6 @@
 \name{get_caseargs}
 \alias{get_caseargs}
-\title{Takes a scenario and returns file names of argument input files}
+\title{Take a scenario ID and return argument lists to pass to functions}
 \usage{
   get_caseargs(folder, scenario, delimiter = "-",
     ext = ".txt", case_vals = c("M", "F", "D", "R"),
@@ -56,37 +56,49 @@
 }
 \examples{
 \dontrun{
-# Given the default values for this function,
-# this example assumes you have files named:
-# M1.txt, F2.txt, index3.txt, lcomp3.txt, agecomp3.txt, R4.txt
-# Each text file should be comma delimited with quote characters
-# around vectors like "c(1, 2, 3)" or around sets of words.
-# To get data that this example works with, download the package
-# source and setwd() to the root "ss3sim" folder.
-get_caseargs("inst/extdata/", "M1-F2-D3-R4")
+# Create some demo input files first:
+wt <- function(x, f) write.table(x, f, row.names = FALSE, col.names =
+  FALSE, sep = ",")
+wt(data.frame("a", 1), "M1.txt")
+wt(data.frame("b", "Some words"), "F2.txt")
+wt(data.frame("d", 1), "index3.txt")
+wt(data.frame("d", 1), "agecomp3.txt")
+wt(data.frame(c("e", "f"), c(1, 99)), "lcomp3.txt")
+wt(data.frame("c", "c(1, 2, 3)"), "R4.txt")
+
+get_caseargs(".", "M1-F2-D3-R4")
+
+# Clean up the files created above:
+file.remove(c("M1.txt", "F2.txt", "index3.txt", "agecomp3.txt",
+"lcomp3.txt", "R4.txt"))
+
 # The following output is returned:
-#$M
-#$M$a
-#[1] 1
-#$M$d
-#[1] 7
-#$F
-#$F$b
-#[1] "c(1, 2, 3, 4)"
-#$F$foo
-#[1] "Some words"
-#$index
-#$index$c
-#[1] 3
-#$lcomp
-#$lcomp$d
-#[1] 8
-#$agecomp
-#$agecomp$z
-#[1] 99
-#$R
-#$R$g
-#[1] 1
+# $M
+# $M$a
+# [1] 1
+#
+# $F
+# $F$b
+# [1] "Some words"
+#
+# $index
+# $index$d
+# [1] 1
+#
+# $lcomp
+# $lcomp$e
+# [1] 1
+#
+# $lcomp$f
+# [1] 99
+#
+# $agecomp
+# $agecomp$d
+# [1] 1
+#
+# $R
+# $R$c
+# [1] "c(1, 2, 3)"
 }
 }
 
