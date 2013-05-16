@@ -3,7 +3,7 @@
 #' @param file The file name as character
 get_args <- function(file) {
   x <- read.csv(file, stringsAsFactors = FALSE, col.names =
-    c("arg", "val"), header = FALSE)
+    c("arg", "val"), header = FALSE, strip.white = TRUE)
   y <- as.list(x$val)
   names(y) <- x$arg
   y
@@ -32,11 +32,20 @@ get_caseval <- function(scenario, case, delimiter = "-") {
 #' Takes a scenario and returns file names of argument input files
 #'
 #' This function calls a number of internal functions to go from a
-#' unique scenario identifier like \code{"M1-F2-D3-R4"}, read
+#' unique scenario identifier like \code{"M1-F2-D3-R4"} and read the
 #' corresponding input files (like \code{"M1.txt"}) that have two
 #' columns: the first column contains the argument names and the
-#' second column contains the argument values. The output is returned
-#' in a named list.
+#' second column contains the argument values. The two columns should
+#' be separated by a comma. The output is then returned in a named
+#' list.
+#'
+#' @details
+#' The input plain text files should have arguments in the first
+#' column that should be passed on to functions. The names should
+#' match exactly. The second column should contain the values to be
+#' passed to those arguments. Multiple words should be enclosed in
+#' quotes. Vectors (\code{"c(1, 2, 3}") should also be enclosed in
+#' quotes as shown.
 #'
 #' @param folder The folder to look for input files in.
 #' @param scenario A character object with the cases. E.g.
@@ -64,35 +73,39 @@ get_caseval <- function(scenario, case, delimiter = "-") {
 #' # around vectors like "c(1, 2, 3)" or around sets of words.
 #' # To get data that this example works with, download the package
 #' # source and setwd() to the root "ss3sim" folder.
-#' get_argfiles("inst/extdata/", "M1-F2-D3-R4")
+#'
+#' get_caseargs("inst/extdata/", "M1-F2-D3-R4")
+#'
 #' # The following output is returned:
-#' # $M
-#' # $M$a
-#' # [1] 1
-#' # 
-#' # $M$d
-#' # [1] 7
-#' # 
-#' # $F
-#' # $F$b
-#' # [1] 99
-#' # 
-#' # $index
-#' # $index$c
-#' # [1] 3
-#' # 
-#' # $lcomp
-#' # $lcomp$d
-#' # [1] 8
-#' # 
-#' # $agecomp
-#' # $agecomp$z
-#' # [1] 99
-#' # 
-#' # $R
-#' # $R$g
-#' # [1] 1
-#' # 
+#' #$M
+#' #$M$a
+#' #[1] 1
+#' #
+#' #$M$d
+#' #[1] 7
+#' #
+#' #$F
+#' #$F$b
+#' #[1] "c(1, 2, 3, 4)"
+#' #
+#' #$F$foo
+#' #[1] "Some words"
+#' #
+#' #$index
+#' #$index$c
+#' #[1] 3
+#' #
+#' #$lcomp
+#' #$lcomp$d
+#' #[1] 8
+#' #
+#' #$agecomp
+#' #$agecomp$z
+#' #[1] 99
+#' #
+#' #$R
+#' #$R$g
+#' #[1] 1
 #' }
 #' @export
 get_caseargs <- function(folder, scenario, delimiter = "-", ext = ".txt",

@@ -38,11 +38,21 @@
 \description{
   This function calls a number of internal functions to go
   from a unique scenario identifier like
-  \code{"M1-F2-D3-R4"}, read corresponding input files
-  (like \code{"M1.txt"}) that have two columns: the first
-  column contains the argument names and the second column
-  contains the argument values. The output is returned in a
-  named list.
+  \code{"M1-F2-D3-R4"} and read the corresponding input
+  files (like \code{"M1.txt"}) that have two columns: the
+  first column contains the argument names and the second
+  column contains the argument values. The two columns
+  should be separated by a comma. The output is then
+  returned in a named list.
+}
+\details{
+  The input plain text files should have arguments in the
+  first column that should be passed on to functions. The
+  names should match exactly. The second column should
+  contain the values to be passed to those arguments.
+  Multiple words should be enclosed in quotes. Vectors
+  (\code{"c(1, 2, 3}") should also be enclosed in quotes as
+  shown.
 }
 \examples{
 \dontrun{
@@ -53,35 +63,39 @@
 # around vectors like "c(1, 2, 3)" or around sets of words.
 # To get data that this example works with, download the package
 # source and setwd() to the root "ss3sim" folder.
-get_argfiles("inst/extdata/", "M1-F2-D3-R4")
+
+get_caseargs("inst/extdata/", "M1-F2-D3-R4")
+
 # The following output is returned:
-# $M
-# $M$a
-# [1] 1
+#$M
+#$M$a
+#[1] 1
 #
-# $M$d
-# [1] 7
+#$M$d
+#[1] 7
 #
-# $F
-# $F$b
-# [1] 99
+#$F
+#$F$b
+#[1] "c(1, 2, 3, 4)"
 #
-# $index
-# $index$c
-# [1] 3
+#$F$foo
+#[1] "Some words"
 #
-# $lcomp
-# $lcomp$d
-# [1] 8
+#$index
+#$index$c
+#[1] 3
 #
-# $agecomp
-# $agecomp$z
-# [1] 99
+#$lcomp
+#$lcomp$d
+#[1] 8
 #
-# $R
-# $R$g
-# [1] 1
+#$agecomp
+#$agecomp$z
+#[1] 99
 #
+#$R
+#$R$g
+#[1] 1
 }
 }
 
