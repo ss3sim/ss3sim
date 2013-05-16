@@ -4,7 +4,7 @@
 #' @param type Are you running the operating or estimation models?
 #' @author Sean Anderson
 
-run_model <- function(scenarios, iterations, type = c("om", "em")) {
+run_ss3model <- function(scenarios, iterations, type = c("om", "em")) {
 
   os <- .Platform$OS.type 
 
