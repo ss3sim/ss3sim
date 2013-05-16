@@ -38,6 +38,7 @@ get_caseval <- function(scenario, case, delimiter = "-") {
 #' second column contains the argument values. The output is returned
 #' in a named list.
 #'
+#' @param folder The folder to look for input files in.
 #' @param scenario A character object with the cases. E.g.
 #' \code{"M1-F1-D1-R1"}
 #' @param delimiter The delimiter between the cases. Defaults to a
@@ -61,10 +62,40 @@ get_caseval <- function(scenario, case, delimiter = "-") {
 #' # M1.txt, F2.txt, index3.txt, lcomp3.txt, agecomp3.txt, R4.txt
 #' # Each text file should be comma delimited with quote characters
 #' # around vectors like "c(1, 2, 3)" or around sets of words.
-#' get_argfiles("M1-F2-D3-R1")
+#' # To get data that this example works with, download the package
+#' # source and setwd() to the root "ss3sim" folder.
+#' get_argfiles("inst/extdata/", "M1-F2-D3-R4")
+#' # The following output is returned:
+#' # $M
+#' # $M$a
+#' # [1] 1
+#' # 
+#' # $M$d
+#' # [1] 7
+#' # 
+#' # $F
+#' # $F$b
+#' # [1] 99
+#' # 
+#' # $index
+#' # $index$c
+#' # [1] 3
+#' # 
+#' # $lcomp
+#' # $lcomp$d
+#' # [1] 8
+#' # 
+#' # $agecomp
+#' # $agecomp$z
+#' # [1] 99
+#' # 
+#' # $R
+#' # $R$g
+#' # [1] 1
+#' # 
 #' }
 #' @export
-get_caseargs <- function(scenario, delimiter = "-", ext = ".txt",
+get_caseargs <- function(folder, scenario, delimiter = "-", ext = ".txt",
   case_vals = c("M", "F", "D", "R"), case_files = list(M = "M", F =
     "F", D = c("index", "lcomp", "agecomp"), R = "R")) {
   case_vals <- sapply(case_vals, function(x)
@@ -75,7 +106,9 @@ get_caseargs <- function(scenario, delimiter = "-", ext = ".txt",
   for(i in 1:length(case_files)) {
     args_out[[i]] <- paste0(case_files[[i]], case_vals[i], ext)
   }
-  argvalues_out <- lapply(unlist(args_out), function(x) get_args(x))
+  args_out2 <- unlist(args_out)
+  names(args_out2) <- unlist(case_files)
+  argvalues_out <- lapply(args_out2, function(x) get_args(pastef(folder, x)))
   argvalues_out
 }
 
