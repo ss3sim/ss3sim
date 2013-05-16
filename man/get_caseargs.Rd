@@ -29,7 +29,7 @@
 }
 \value{
   A (nested) named list. The first level of the named list
-  refers to the \code{case_vals}. The second level of the
+  refers to the \code{case_files}. The second level of the
   named list refers to the argument names (the first column
   in the input text files). The contents of the list are
   the argument values themselves (the second column of the
@@ -51,7 +51,7 @@
   names should match exactly. The second column should
   contain the values to be passed to those arguments.
   Multiple words should be enclosed in quotes. Vectors
-  (\code{"c(1, 2, 3}") should also be enclosed in quotes as
+  (\code{"c(1, 2, 3"}) should also be enclosed in quotes as
   shown.
 }
 \examples{
@@ -63,36 +63,27 @@
 # around vectors like "c(1, 2, 3)" or around sets of words.
 # To get data that this example works with, download the package
 # source and setwd() to the root "ss3sim" folder.
-
 get_caseargs("inst/extdata/", "M1-F2-D3-R4")
-
 # The following output is returned:
 #$M
 #$M$a
 #[1] 1
-#
 #$M$d
 #[1] 7
-#
 #$F
 #$F$b
 #[1] "c(1, 2, 3, 4)"
-#
 #$F$foo
 #[1] "Some words"
-#
 #$index
 #$index$c
 #[1] 3
-#
 #$lcomp
 #$lcomp$d
 #[1] 8
-#
 #$agecomp
 #$agecomp$z
 #[1] 99
-#
 #$R
 #$R$g
 #[1] 1
