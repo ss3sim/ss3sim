@@ -13,7 +13,6 @@ get_sigmar <- function (om) {
   ctlFile <- readLines ( ctlFileName )
  # The line contains multiple values, I want the third value which is the INIT: 
   sigmaRLoc <- grep ( "SR_sigmaR", ctlFile ) 
-  sigmaRLoc <- grep ( "SR_sigmaR", ctlFile ) 
   sigmaRValue <- ctlFile[sigmaRLoc]
   as.numeric(strsplit(sigmaRValue, " " )[[1]][3])
 }
