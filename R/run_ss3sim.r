@@ -25,6 +25,9 @@
 #'
 #' Note that bias adjustment isn't implemented yet.
 
+# todo change params to args
+# todo change iter to reps
+
 run_ss3sim <- function(scenarios, iterations, index_params =
   "default", lcomp_params = "default", agecomp_params = "default",
   type = c("om and em", "om", "em")) {
