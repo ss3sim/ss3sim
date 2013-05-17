@@ -32,7 +32,7 @@ get_caseval <- function(scenario, case, delimiter = "-") {
 #' Take a scenario ID and return argument lists to pass to functions
 #'
 #' This function calls a number of internal functions to go from a
-#' unique scenario identifier like \code{"M1-F2-D3-R4"} and read the
+#' unique scenario identifier like \code{"M1-F2-D3-R4-cod"} and read the
 #' corresponding input files (like \code{"M1.txt"}) that have two
 #' columns: the first column contains the argument names and the
 #' second column contains the argument values. The two columns should
@@ -48,14 +48,16 @@ get_caseval <- function(scenario, case, delimiter = "-") {
 #' quotes as shown.
 #'
 #' @param folder The folder to look for input files in.
-#' @param scenario A character object with the cases. E.g.
-#' \code{"M1-F1-D1-R1"}
+#' @param scenario A character object that has the cases separated by
+#' some delimiter. The combination of cases is referred to as a
+#' scenario. E.g. \code{"M1-F1-D1-R1-S1"}. 
 #' @param delimiter The delimiter between the cases. Defaults to a
 #' dash.
-#' @param ext The file extension of the input files. Defaults to .txt.
-#' @param case_vals The cases that make up the scenario ID. In the
-#' example above the \code{case_vals} would be \code{c("M", "F", "D",
-#' "F")}
+#' @param ext The file extension of the input files. Defaults to
+#' \code{".txt"}.
+#' @param case_vals The case types that make up the scenario ID. In
+#' the example above the \code{case_vals} would be \code{c("M", "F",
+#' "D", "F")}
 #' @param case_files A named list that relates the \code{case_vals} to
 #' the files to return. If each \code{case_val} has only one file then
 #' this is simple. See the default values for a more complicated case.
@@ -77,7 +79,7 @@ get_caseval <- function(scenario, case, delimiter = "-") {
 #' wt(data.frame(c("e", "f"), c(1, 99)), "lcomp3.txt")
 #' wt(data.frame("c", "c(1, 2, 3)"), "R4.txt")
 #'
-#' get_caseargs(".", "M1-F2-D3-R4")
+#' get_caseargs(".", "M1-F2-D3-R4-cod")
 #'
 #' # Clean up the files created above:
 #' file.remove(c("M1.txt", "F2.txt", "index3.txt", "agecomp3.txt",
