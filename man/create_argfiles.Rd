@@ -26,9 +26,25 @@
   of \code{cod}, \code{sar}, or \code{fla} for cod,
   sardine, or flatfish.
 }
+\details{
+  The first column in the text files denotes the argument
+  to be passed to a function. The second argument denotes
+  the value to be passed. You can use any simple R syntax.
+  For example: \code{c(1, 2, 4)}, or \code{seq(1, 100)} or
+  \code{1:100} or \code{matrix()}. Character objects don't
+  need to be quoted. However, be careful not to use your
+  delimiter (set up as a semicolon) anywhere else in the
+  file besides to denote columns.
+}
 \examples{
 \dontrun{
 create_argfiles()
+# Some example input lines:
+#
+# year1; 1990
+# years; 1990:2000
+# years; c(1980, 1990, 1995)
+# survey_type; fishery
 }
 }
 \author{
