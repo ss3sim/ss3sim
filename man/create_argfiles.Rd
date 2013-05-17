@@ -4,8 +4,7 @@
 \usage{
   create_argfiles(functions = c(`lcomp0-spp` = "change_lcomp", `agecomp0-spp` = "change_agecomp", `index0-spp` = "change_index", `M0-spp` = "change_m", `F0-spp` = "change_f"),
     ext = ".txt", delim = "; ",
-    ignore = c("file", "dir", "make_plot", "use_index", "start_fish", "end_fish", "freq_fish", "sd_obs_fish", "sd_obs_fish"),
-    ...)
+    ignore = c("file", "dir", "make_plot"), ...)
 }
 \arguments{
   \item{functions}{A named vector. The names correspond to

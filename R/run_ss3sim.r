@@ -108,7 +108,12 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
         change_index(dat_file_in    = pastef(sc, i, "om", "data.dat"), 
                      dat_file_out   = pastef(sc, i, "em", "data.dat"),
                      start_surv     = start_surv,
-                     end_surv       = end_surv))
+                     end_surv       = end_surv,
+                     use_index      = use_index,
+                     start_fish     = start_fish,
+                     end_fish       = end_fish,
+                     freq_fish      = freq_fish,
+                     sd_obs_fish    = sd_obs_fish)) 
 
       # Add error in the length comp data
       SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "data.dat"))
