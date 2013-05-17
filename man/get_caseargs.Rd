@@ -59,19 +59,19 @@
 \dontrun{
 # Create some demo input files first:
 wt <- function(x, f) write.table(x, f, row.names = FALSE, col.names =
-  FALSE, sep = ",")
-wt(data.frame("a", 1), "M1.txt")
-wt(data.frame("b", "Some words"), "F2.txt")
-wt(data.frame("d", 1), "index3.txt")
-wt(data.frame("d", 1), "agecomp3.txt")
-wt(data.frame(c("e", "f"), c(1, 99)), "lcomp3.txt")
-wt(data.frame("c", "c(1, 2, 3)"), "R4.txt")
+  FALSE, sep = "; ", quote = FALSE)
+wt(data.frame("a", 1), "M1-cod.txt")
+wt(data.frame("b", "Some words"), "F2-cod.txt")
+wt(data.frame("d", 1), "index3-cod.txt")
+wt(data.frame("d", 1), "agecomp3-cod.txt")
+wt(data.frame(c("e", "f"), c(1, 99)), "lcomp3-cod.txt")
+wt(data.frame("c", "c(1, 2, 3)"), "R4-cod.txt")
 
 get_caseargs(".", "M1-F2-D3-R4-cod")
 
 # Clean up the files created above:
-file.remove(c("M1.txt", "F2.txt", "index3.txt", "agecomp3.txt",
-"lcomp3.txt", "R4.txt"))
+file.remove(c("M1-cod.txt", "F2-cod.txt", "index3-cod.txt",
+"agecomp3-cod.txt", "lcomp3-cod.txt", "R4-cod.txt"))
 
 # The following output is returned:
 # $M
@@ -99,7 +99,7 @@ file.remove(c("M1.txt", "F2.txt", "index3.txt", "agecomp3.txt",
 #
 # $R
 # $R$c
-# [1] "c(1, 2, 3)"
+# [1] c(1, 2, 3)
 }
 }
 
