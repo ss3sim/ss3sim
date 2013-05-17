@@ -39,3 +39,4 @@ Collate:
     'bias_ss3.r'
     'run_bias_ss3.r'
     'create_argfiles.r'
+    'run_fish600.r'
