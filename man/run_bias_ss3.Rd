@@ -42,12 +42,7 @@
   file from one of the 5 SS runs, changes the 5 bias
   adjustment parameters, and writes the whole updated
   \code{control.ss_new} file with new bias adjustment
-  parameters to an \code{em.ctl} file } The new
-  \code{em.ctl} file (that now contains the updated bias
-  adjustment parameters) can then be copied to the folders
-  for each run of the scenario \code{run_bias_ss3} needs to
-  be run for each scenario, but results can be used for all
-  runs of that scenario
+  parameters to an \code{em.ctl} file }
 }
 \examples{
 \dontrun{

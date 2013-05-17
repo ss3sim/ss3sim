@@ -20,11 +20,11 @@
 #' updated \code{control.ss_new} file with new bias adjustment
 #' parameters to an \code{em.ctl} file
 #' }
-#' The new \code{em.ctl} file (that now contains the updated
-#' bias adjustment parameters) can then be copied to the folders for
-#' each run of the scenario \code{run_bias_ss3} needs to be run for
-#' each scenario, but results can be used for all runs of that
-#' scenario
+# The new \code{em.ctl} file (that now contains the updated
+# bias adjustment parameters) can then be copied to the folders for
+# each run of the scenario \code{run_bias_ss3} needs to be run for
+# each scenario, but results can be used for all runs of that
+# scenario
 #' @author Carey McGilliard
 #' @export
 #'
@@ -119,9 +119,9 @@ run_bias_ss3 <-function(dir, outdir, nsim, iter) {
 
   # place the new em.ctl file in the em folder for each model realization,
   # assuming that the .ctl file does not change between realizations!!!
-  for (iRealSim in iter) {
-    file.copy(from = paste0(dir, "em.ctl"), to = paste0(outdir, 
-        iRealSim, "/em/"), overwrite = T, copy.mode = TRUE)
-  }
+  #for (iRealSim in iter) {
+    #file.copy(from = paste0(dir, "em.ctl"), to = paste0(outdir, 
+        #iRealSim, "/em/"), overwrite = T, copy.mode = TRUE)
+  #}
 }
 
