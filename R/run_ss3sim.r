@@ -71,7 +71,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
       # em folder
       if(bias_correct) {
         file.copy(from = pastef(sc, "bias", "em.ctl"), to = pastef(sc,
-            i, "em"), overwrite = TRUE)
+            i, "em", "em.ctl"), overwrite = TRUE)
       }
 
       # Pull in sigma R from the operating model
