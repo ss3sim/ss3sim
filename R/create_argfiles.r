@@ -18,6 +18,7 @@
 #' @examples \dontrun{
 #' create_argfiles()
 #' }
+#' @export
 
 create_argfiles <- function(functions = c("lcomp0-spp" =
     "change_lcomp", "agecomp0-spp" = "change_agecomp", "index0-spp" =
