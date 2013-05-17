@@ -40,18 +40,18 @@
 #' \code{"M1-F1-D1-R1-cod/1/"} \code{"M1-F1-D1-R1-cod/2/"}, etc.)
 #' @param nsim number of bias adjustment runs conducted for a
 #' particular scenario (e.g. \code{5})
-#' @param iter number of runs conducted for a scenario after bias
-#' adjustment is complete (e.g. \code{1:100})
+# @param iter number of runs conducted for a scenario after bias
+# adjustment is complete (e.g. \code{1:100})
 #'
 #' @examples \dontrun{
 #' # Main Function call example:
 #' # Note that usually nsim will be 5, not 2,
 #' # nsim = 2 is just faster for an example
 #' run_bias_ss3(dir = "M1-F1-D1-R1-cod/", outdir = "M1-F1-D1-R1-cod/",
-#' nsim = 2,iter = 3)
+#' nsim = 2)
 #' }
 
-run_bias_ss3 <-function(dir, outdir, nsim, iter) {
+run_bias_ss3 <-function(dir, outdir, nsim) {
   outfile = "CorrectBias.DAT"
   mysims = 1:nsim
   sapply(mysims, bias_ss3, dir = dir)
