@@ -3,9 +3,8 @@
 \title{Methods to include time varying natural mortality features}
 \usage{
   change_m(n_blocks, block_pattern, dev,
-    ctl_file_in = "control.ss_new",
-    ctl_file_out = "YTF.ctl", dat_file = "YTF.dat",
-    par_file = "ss3.par",
+    ctl_file_in = "om.ctl", ctl_file_out = "om.ctl",
+    dat_file = "data.dat", par_file = "ss3.par",
     how_time_varying = c("env", "block", "dev"))
 }
 \arguments{
