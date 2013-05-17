@@ -12,6 +12,12 @@
 
   \item{scenarios}{Which scenarios to run.}
 
+  \item{m_params}{A named list containing all the
+  \code{\link{change_m}} options.}
+
+  \item{f_params}{A named list containing all the
+  \code{\link{change_f}} options.}
+
   \item{index_params}{A named list containing all the
   \code{\link{change_index}} options.}
 
@@ -20,6 +26,14 @@
 
   \item{agecomp_params}{A named list containing all the
   \code{\link{change_agecomp}} options.}
+
+  \item{om_model_dir}{The directory with the operating
+  model you want to copy and use for the specified
+  simulations.}
+
+  \item{em_model_dir}{The directory with the estimation
+  model you want to copy and use for the specified
+  simulations.}
 }
 \description{
   This function is a wrapper function that can call

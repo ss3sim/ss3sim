@@ -7,12 +7,20 @@
 #'
 #' @param iterations Which iterations to run. A numeric vector.
 #' @param scenarios Which scenarios to run.
+#' @param m_params A named list containing all the
+#' \code{\link{change_m}} options.
+#' @param f_params A named list containing all the
+#' \code{\link{change_f}} options.
 #' @param index_params A named list containing all the
 #' \code{\link{change_index}} options.
 #' @param lcomp_params A named list containing all the
 #' \code{\link{change_lcomp}} options.
 #' @param agecomp_params A named list containing all the
 #' \code{\link{change_agecomp}} options.
+#' @param om_model_dir The directory with the operating model you want
+#' to copy and use for the specified simulations.
+#' @param em_model_dir The directory with the estimation model you want
+#' to copy and use for the specified simulations.
 #' @export
 #' @details
 #' This function is written to be flexible. You can specify the index,
