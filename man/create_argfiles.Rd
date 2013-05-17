@@ -3,7 +3,9 @@
 \title{Create template argument input files}
 \usage{
   create_argfiles(functions = c(`lcomp0-spp` = "change_lcomp", `agecomp0-spp` = "change_agecomp", `index0-spp` = "change_index", `M0-spp` = "change_m", `F0-spp` = "change_f"),
-    ext = ".txt", delim = "; ", ...)
+    ext = ".txt", delim = "; ",
+    ignore = c("file", "dir", "make_plot", "use_index", "start_fish", "end_fish", "freq_fish", "sd_obs_fish", "sd_obs_fish"),
+    ...)
 }
 \arguments{
   \item{functions}{A named vector. The names correspond to
@@ -14,6 +16,10 @@
   files with. Defaults to \code{".txt"}.}
 
   \item{delim}{The delimiter. Defaults to \code{"; "}.}
+
+  \item{ignore}{A vector of character object of arguments
+  to ignore in the arguments. Found via \code{grep} so can
+  be part of an argument name.}
 
   \item{...}{Anything else to pass to \code{write.table}.}
 }

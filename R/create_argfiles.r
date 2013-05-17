@@ -13,6 +13,9 @@
 #' @param ext The file extension to create the configuration files
 #' with. Defaults to \code{".txt"}.
 #' @param delim The delimiter. Defaults to \code{"; "}.
+#' @param ignore A vector of character object of arguments to ignore in the
+#' arguments. Found via \code{grep} so can be part of an argument
+#' name.
 #' @param ... Anything else to pass to \code{write.table}.
 #' @author Sean Anderson
 #' @examples \dontrun{
@@ -37,11 +40,17 @@
 create_argfiles <- function(functions = c("lcomp0-spp" =
     "change_lcomp", "agecomp0-spp" = "change_agecomp", "index0-spp" =
     "change_index", "M0-spp" = "change_m", "F0-spp" = "change_f"), ext
-  = ".txt", delim = "; ", ...) {
+  = ".txt", delim = "; ", ignore = c("file", "dir", "make_plot",
+    "use_index", "start_fish", "end_fish", "freq_fish", "sd_obs_fish",
+    "sd_obs_fish"), ...) {
   if(!is.character(functions)) 
     stop("Functions must be a vector of character.")
   for(i in 1:length(functions)) {
     x <- formals(functions[i])
+    args_ignore <- as.numeric(unlist(sapply(ignore,
+          function(z) grep(z, names(x)))))
+    print(paste("Ignoring", names(x)[args_ignore], "in", functions[i]))
+    x <- x[-args_ignore]
     d <- data.frame(args = names(x), vals = as.character(x))
     write.table(d, file = paste0(names(functions)[i], ext), sep = delim,
       row.names = FALSE, col.names = FALSE, quote = FALSE, ...)
