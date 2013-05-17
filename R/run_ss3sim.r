@@ -41,9 +41,15 @@
 
 run_ss3sim <- function(iterations, scenarios, m_params, f_params,
   index_params, lcomp_params, agecomp_params, om_model_dir,
-  em_model_dir, bias_correct = FALSE, bias_nsim = 5) {
+  em_model_dir, bias_correct = FALSE, bias_nsim = 5, 
+  bias_already_run = FALSE) {
 
    warning("Manipulation steps have not been tested yet!")
+
+  # The first bias_nsim runs will be bias-adjustment runs
+  if(bias_correct) {
+    iterations <- c(paste0("bias/", c(1:bias_nsim)), iterations)
+  }
 
   for(sc in scenarios) {
     for(i in iterations) {
@@ -55,26 +61,9 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
       copy_ss3models(model_dir = em_model_dir, scenarios = sc,
         iterations = i, type = "em")
 
-#### TODO WARNING - this is not correct
-# First this whole function needs to be run 5 times in the bias folder
-# then run this:
-# Therefore, if bias_correct, run 5 times in the "bias" folder
-# then do this
-      # Should we run bias correction?
-      if(i == min(iterations) & bias_correct) {
-        # Make the folders for bias correction
-        for(j in 1:bias_nsim) {
-          dir.create(pastef(sc, "bias", j), showWarnings = FALSE,
-            recursive = TRUE)
-        }
-        # And run the bias correction routine
-        run_bias_ss3(dir = pastef(sc, "bias"), outdir = pastef(sc,
-            "bias"), nsim = bias_nsim)
-      } # end bias correction runs
-
       # If we're bias correcting, then copy over the .ctl file to the
       # em folder
-      if(bias_correct) {
+      if(bias_already_run & bias_correct) {
         file.copy(from = pastef(sc, "bias", "em.ctl"), to = pastef(sc,
             i, "em", "em.ctl"), overwrite = TRUE)
       }
@@ -156,6 +145,20 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
                        agecomp       = agecomp))
 
       run_ss3model(scenarios = sc, iterations = i, type = "em")
+
+      # Should we run bias correction? We should if bias_correct is
+      # true, and we are done running bias corrections (i.e. we're on
+      # the last "bias" iteration, and we haven't already run this
+      # yet.
+      if(bias_correct & i == pastef("bias", bias_nsim) &
+        bias_already_run == FALSE) { 
+        run_bias_ss3(dir = pastef(sc, "bias"), outdir = pastef(sc,
+            "bias"), nsim = bias_nsim)
+        bias_already_run <- TRUE
+      } 
+      # Since we've now run bias correction routine, copy the .ctl on
+      # subsequent iterations
+
     } # end iterations
   } # end scenarios
 }
