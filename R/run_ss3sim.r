@@ -129,20 +129,3 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
   } # end scenarios
 }
 
-
-    #The OM is in the folder "flatfish OM"
-    #For the EM, you have to check the codes in the "model files" folder.
-
-    #Basically, the way I had set-up the simulation setting is that (if not
-    #understandable with my code)
-    #1. I copy paste all things from the base operating model to another folder.
-    #2. then modify this to adapt it to each scenario (change F and choose rec
-    #devs)
-    #3. copy paste the above files into another folder to then create the
-    #assessment model
-    #4. modify different things inside this last folder (starter file, dat file)
-    #and choose the ctl file that we want to use for estimation (these stl files
-    #specify which parameters we want to estimate and which we do not want to)
-    #5. run the estimation
-    #I don't have Carey's code to do the recruitment bias adjustment in it yet.
-
