@@ -55,6 +55,11 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
       copy_ss3models(model_dir = em_model_dir, scenarios = sc,
         iterations = i, type = "em")
 
+#### TODO WARNING - this is not correct
+# First this whole function needs to be run 5 times in the bias folder
+# then run this:
+# Therefore, if bias_correct, run 5 times in the "bias" folder
+# then do this
       # Should we run bias correction?
       if(i == min(iterations) & bias_correct) {
         # Make the folders for bias correction
