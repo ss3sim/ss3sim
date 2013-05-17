@@ -33,8 +33,6 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
   for(sc in scenarios) {
     for(i in iterations) {
 
-      # Load recruitment deviation data
-      # data(recdevs) # now it is lazy loaded on package install
 
       # Pull in sigma R from the operating model
       sigmar <- get_sigmar(pastef(sc, i, "om", "om"))
