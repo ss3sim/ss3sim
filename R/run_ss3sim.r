@@ -28,8 +28,7 @@
 # todo change params to args
 # todo change iter to reps
 
-run_ss3sim <- function(scenarios, iterations, index_params =
-  "default", lcomp_params = "default", agecomp_params = "default",
+run_ss3sim <- function(scenarios, iterations, index_params, lcomp_params, agecomp_params,
   type = c("om and em", "om", "em")) {
 
   # create default list objects
@@ -51,8 +50,10 @@ run_ss3sim <- function(scenarios, iterations, index_params =
           # Exponentiate with bias adjustment
           sc_i_recdevs <- exp(sigmar * recdevs[, i] - sigmar/2)
 
-          # Add new rec devs overwriting ss3.par
-          change_rec_devs(recdevs_new = sc_i_recdevs)
+          # Add new rec devs overwriting om/ss3.par
+          change_rec_devs(recdevs_new = sc_i_recdevs, file_in =
+            pastef(sc, i, "om", "ss3.par"), file_out = paste_f(sc, i,
+              "om", "ss3.par"))
 
           # Run the operating model
           run_ss3model(scenarios = sc, iterations = i, type = "om")
@@ -62,40 +63,41 @@ run_ss3sim <- function(scenarios, iterations, index_params =
             change_index(dat_file_in    = pastef(sc, i, "om", "data.dat"), 
                          dat_file_out   = pastef(sc, i, "em", "data.dat"),
                          start_surv     = start_surv,
-                         end_surv       = end_surv,
-                         start_fish     = start_fish,
-                         end_fish       = end_fish,
-                         freq_surv      = freq_surv,
-                         sd_obs_surv    = sd_obs_surv,
-                         freq_fish      = freq_fish,
-                         sd_obs_fish    = sd_obs_fish,
-                         make_plot      = make_plot,
-                         use_index      = use_index))
+                         end_surv       = end_surv))
 
           # Add error in the length comp data
           SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "data.dat"))
-          with(lcomp_params, 
-            change_lcomp(infile         = SS.dat, 
-                         outfile        = pastef(sc, i, "em", "data.dat"),
-                         distribution   = distribution,
-                         Nsamp          = Nsamp,
-                         minyear        = minyear,
-                         maxyear        = maxyear,
-                         years          = years,
-                         svyears        = svyears))
+          with(lcomp_params,
+          change_lcomp(infile       = SS.dat,
+                       outfile      = pastef(sc, i, "em", "data.dat"),
+                       distribution = multinomial,
+                       Nsamp        = Nsamp,
+                       minyear      = minyear,
+                       maxyear      = maxyear,
+                       years        = years,
+                       svyears      = svyears,
+                       lbin_method  = lbin_method,
+                       binwidth     = binwidth,
+                       minimum_size = minimum_size,
+                       maximum_size = maximum_size,
+                       N_lbins      = N_lbins,
+                       lbin_vector  = lbin_vector,
+                       lencomp      = lencomp))
 
           # Add error in the age comp data
           SS.dat2 = r4ss::SS_readdat(pastef(sc, i, "em", "data.dat"))
           with(agecomp_params, 
-            change_agecomp(infile       = SS.dat2,
-                           outfile      = pastef(sc, i, "em", "data.dat"),
-                           distribution = distribution,
-                           Nsamp        = Nsamp,
-                           minyear      = minyear,
-                           maxyear      = maxyear,
-                           years        = years,
-                           svyears      = svyears))
-
+            change_agecomp(infile        = SS.dat2,
+                           outfile       = pastef(sc, i, "em", "data.dat"),
+                           distribution  = distribution,
+                           Nsamp         = Nsamp,
+                           minyear       = minyear,
+                           maxyear       = maxyear,
+                           years         = years,
+                           svyears       = svyears,
+                           N_agebins     = N_agebins,
+                           agebin_vector = agebin_vector,
+                           agecomp       = agecomp))
           warning("Manipulation steps aren't all implemented or checked yet!")
 
           run_ss3model(scenarios = sc, iterations = i, type = "em")

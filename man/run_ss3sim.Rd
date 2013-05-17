@@ -2,9 +2,8 @@
 \alias{run_ss3sim}
 \title{Run both the operating model and assessment model}
 \usage{
-  run_ss3sim(scenarios, iterations,
-    index_params = "default", lcomp_params = "default",
-    agecomp_params = "default",
+  run_ss3sim(scenarios, iterations, index_params,
+    lcomp_params, agecomp_params,
     type = c("om and em", "om", "em"))
 }
 \arguments{
