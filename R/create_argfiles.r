@@ -5,7 +5,8 @@
 #' template files. Change the case ID number (defaults to \code{0})
 #' and the species identifier to a three letter identifier. For the
 #' FISH600 project use one of \code{cod}, \code{sar}, or \code{fla}
-#' for cod, sardine, or flatfish.
+#' for cod, sardine, or flatfish. An example filename would be
+#' \code{M1-sar.txt} or \code{lcomp2-fla.txt}.
 #'
 #' @param functions A named vector. The names correspond to the
 #' filenames that will get written. The values correspond to the
@@ -35,7 +36,8 @@
 #' 4)}, or \code{seq(1, 100)} or \code{1:100} or \code{matrix()}.
 #' Character objects don't need to be quoted. However, be careful not
 #' to use your delimiter (set up as a semicolon) anywhere else in the
-#' file besides to denote columns.
+#' file besides to denote columns. 
+
 
 create_argfiles <- function(functions = c("lcomp0-spp" =
     "change_lcomp", "agecomp0-spp" = "change_agecomp", "index0-spp" =

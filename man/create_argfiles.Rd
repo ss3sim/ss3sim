@@ -30,7 +30,8 @@
   (defaults to \code{0}) and the species identifier to a
   three letter identifier. For the FISH600 project use one
   of \code{cod}, \code{sar}, or \code{fla} for cod,
-  sardine, or flatfish.
+  sardine, or flatfish. An example filename would be
+  \code{M1-sar.txt} or \code{lcomp2-fla.txt}.
 }
 \details{
   The first column in the text files denotes the argument
