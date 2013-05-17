@@ -28,8 +28,8 @@
 # todo change params to args
 # todo change iter to reps
 
-run_ss3sim <- function(scenarios, iterations, index_params, lcomp_params, agecomp_params,
-  type = c("om and em", "om", "em")) {
+run_ss3sim <- function(scenarios, iterations, index_params,
+  lcomp_params, agecomp_params, type = c("om and em", "om", "em")) {
 
   # create default list objects
   #if(index_params == "default") data(default_index_params)
