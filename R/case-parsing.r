@@ -2,12 +2,34 @@
 #' names and the second column into the list values.
 #' @param file The file name as character
 get_args <- function(file) {
+
   x <- read.csv(file, stringsAsFactors = FALSE, col.names =
     c("arg", "val"), header = FALSE, strip.white = TRUE, sep = ";",
     comment.char = "#")
   y <- as.list(x$val)
   names(y) <- x$arg
-  lapply(y, function(z) eval(parse(text = z))) # turn into correct class
+
+# if all numeric then eval(parse(text = 
+# if has [a-zA-Z]( then eval(parse(text = 
+# if has : then eval(parse(text = 
+# else use as character
+  lapply(y, function(z) {
+    if(is_f(z)) {
+      eval(parse(text = z)) # turn into correct class
+    } else {
+      as.character(z)
+    }}
+    )
+}
+
+#' Check if we should leave as character or convert to another class
+#' 
+#' @param x A character object
+is_f <- function(x) {
+  if(!is.character(x)) stop("x must be a character")
+  fn <- grepl("[a-zA-Z0-9]\\(", x) # is a function
+  nu <- !grepl("[a-zA-Z]", x) # is not character (is numeric)
+  ifelse(fn | nu, TRUE, FALSE)
 }
 
 #' Take a vector of cases and return the case number
