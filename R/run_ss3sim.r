@@ -52,6 +52,8 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
       sigmar <- get_sigmar(pastef(sc, i, "om", "om"))
 
       # Exponentiate with bias adjustment
+      # recdevs is a 100x100 matrix stored in the package 'data' folder
+      # Columns are for iterations and rows are for years
       sc_i_recdevs <- exp(sigmar * recdevs[, i] - (sigmar^2)/2)
 
       # Add new rec devs overwriting om/ss3.par
