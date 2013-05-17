@@ -9,17 +9,18 @@
 \arguments{
   \item{folder}{The folder to look for input files in.}
 
-  \item{scenario}{A character object with the cases. E.g.
-  \code{"M1-F1-D1-R1"}}
+  \item{scenario}{A character object that has the cases
+  separated by some delimiter. The combination of cases is
+  referred to as a scenario. E.g. \code{"M1-F1-D1-R1-S1"}.}
 
   \item{delimiter}{The delimiter between the cases.
   Defaults to a dash.}
 
   \item{ext}{The file extension of the input files.
-  Defaults to .txt.}
+  Defaults to \code{".txt"}.}
 
-  \item{case_vals}{The cases that make up the scenario ID.
-  In the example above the \code{case_vals} would be
+  \item{case_vals}{The case types that make up the scenario
+  ID. In the example above the \code{case_vals} would be
   \code{c("M", "F", "D", "F")}}
 
   \item{case_files}{A named list that relates the
@@ -38,7 +39,7 @@
 \description{
   This function calls a number of internal functions to go
   from a unique scenario identifier like
-  \code{"M1-F2-D3-R4"} and read the corresponding input
+  \code{"M1-F2-D3-R4-cod"} and read the corresponding input
   files (like \code{"M1.txt"}) that have two columns: the
   first column contains the argument names and the second
   column contains the argument values. The two columns
@@ -66,7 +67,7 @@ wt(data.frame("d", 1), "agecomp3.txt")
 wt(data.frame(c("e", "f"), c(1, 99)), "lcomp3.txt")
 wt(data.frame("c", "c(1, 2, 3)"), "R4.txt")
 
-get_caseargs(".", "M1-F2-D3-R4")
+get_caseargs(".", "M1-F2-D3-R4-cod")
 
 # Clean up the files created above:
 file.remove(c("M1.txt", "F2.txt", "index3.txt", "agecomp3.txt",
