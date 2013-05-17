@@ -17,7 +17,4 @@
 \description{
   Take a vector of cases and return the case number
 }
-\examples{
-get_caseval("M1-F1-D1-R1", "M")
-}
 

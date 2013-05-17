@@ -22,10 +22,10 @@
 #' @param lencomp Matrix of length comps 
 #' 
 #' @export
-#' @examples
+#' @examples \dontrun{
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
-#' infile <- SS_readdat(f_in, section = 2, verbose = FALSE)
+#' infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
 #' 
 #' # Generate a DAT file with the same dimensions as the original 'infile'
 #' change_lcomp(infile,outfile="newdat.dat")
@@ -44,6 +44,7 @@
 #' 
 #' # Generate a DAT file using Dirichlet distributed samples
 #' change_lcomp(infile,outfile="newdat.dat", Nsamp=100, distribution="dirichlet")
+#' }
 
 change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
                         minyear=NA,maxyear=NA,years=NA,svyears=NA,

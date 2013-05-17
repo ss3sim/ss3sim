@@ -10,6 +10,7 @@ Description: This project aims to develop R functions for stock assessment
     complete simulation studies for the World Conference on Stock Assessment in
     Boston, July 2013.
 License: MIT
+LazyData: true
 Imports:
     r4ss (>= 1.20),
     MCMCpack (>= 1.3-3)

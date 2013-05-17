@@ -35,6 +35,7 @@
 create_dirs(scen_list = list(main = "ss3sim",
 papers = "m", species = c("cod","flat","sardine"), scenarios =
 c("down-base","up-base","contrast-base")), nsets = 100, copy_om = FALSE)
+# cleanup
 }
 }
 \author{

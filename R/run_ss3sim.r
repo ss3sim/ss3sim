@@ -43,10 +43,10 @@ run_ss3sim <- function(scenarios, iterations, index_params =
         for(i in iterations) {
 
           # Load recruitment deviation data
-          data(recdevs)
+          # data(recdevs) # now it is lazy loaded on package install
 
           # Pull in sigma R from the operating model
-          sigmar <- get_sigma(pastef(sc, i, "om", "om"))
+          sigmar <- get_sigmar(pastef(sc, i, "om", "om"))
 
           # Exponentiate with bias adjustment
           sc_i_recdevs <- exp(sigmar * recdevs[, i] - sigmar/2)

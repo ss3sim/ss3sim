@@ -1,0 +1,6 @@
+doc/.*[.]tex$
+doc/.*[.]aux$
+doc/.*[.]log$
+doc/.*[.]graffle$
+doc/.*[.]fdb_latexmk$
+doc/.*[.]fls$

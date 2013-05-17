@@ -22,10 +22,10 @@
 
 bias_ss3 <- function(iter, dir) {
   outfile = "CorrectBias.DAT"
-  myoutput = SS_output(dir = paste0(dir, iter), repfile = "Report.sso", 
+  myoutput = r4ss::SS_output(dir = paste0(dir, iter), repfile = "Report.sso", 
     compfile = "CompReport.sso", covarfile = "covar.sso", 
     forecast = FALSE)
-  biasvars = try(SS_fitbiasramp(replist = myoutput), TRUE)
+  biasvars = try(r4ss::SS_fitbiasramp(replist = myoutput), TRUE)
   if (is.list(biasvars) == TRUE) {
     bias.df = data.frame(Sim = iter, bias1 = biasvars$df[1, 
       1], bias2 = biasvars$df[2, 1], bias3 = biasvars$df[3, 

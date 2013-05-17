@@ -14,7 +14,4 @@
 \description{
   Find a vector of values from an object between 2 values
 }
-\examples{
-find_item(seq_len(10), c(3, 7))
-}
 

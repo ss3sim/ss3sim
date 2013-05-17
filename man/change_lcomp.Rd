@@ -60,9 +60,10 @@
   than those coming from SS.
 }
 \examples{
+\dontrun{
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/example-om/data.ss_new")
-infile <- SS_readdat(f_in, section = 2, verbose = FALSE)
+infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
 
 # Generate a DAT file with the same dimensions as the original 'infile'
 change_lcomp(infile,outfile="newdat.dat")
@@ -81,6 +82,7 @@ change_lcomp(infile,outfile="newdat.dat", Nsamp=100, years=1980:2012)
 
 # Generate a DAT file using Dirichlet distributed samples
 change_lcomp(infile,outfile="newdat.dat", Nsamp=100, distribution="dirichlet")
+}
 }
 \author{
   Felipe Hurtado-Ferro
