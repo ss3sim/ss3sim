@@ -155,9 +155,9 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
         run_bias_ss3(dir = pastef(sc, "bias"), outdir = pastef(sc,
             "bias"), nsim = bias_nsim)
         bias_already_run <- TRUE
-      } 
       # Since we've now run bias correction routine, copy the .ctl on
       # subsequent iterations
+      } 
 
     } # end iterations
   } # end scenarios
