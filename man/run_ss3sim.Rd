@@ -4,7 +4,8 @@
 \usage{
   run_ss3sim(iterations, scenarios, m_params, f_params,
     index_params, lcomp_params, agecomp_params,
-    om_model_dir, em_model_dir)
+    om_model_dir, em_model_dir, bias_correct = FALSE,
+    bias_nsim = 5)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -34,6 +35,14 @@
   \item{em_model_dir}{The directory with the estimation
   model you want to copy and use for the specified
   simulations.}
+
+  \item{bias_correct}{Run bias correction first? See
+  \code{\link{run_bias_ss3}}.}
+
+  \item{bias_nsim}{If bias correction is run, how many
+  simulations should the bias be estimated from? It will
+  take the mean of the correction factors across these
+  runs.}
 }
 \description{
   This function is a wrapper function that can call

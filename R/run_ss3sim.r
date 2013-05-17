@@ -21,6 +21,11 @@
 #' to copy and use for the specified simulations.
 #' @param em_model_dir The directory with the estimation model you want
 #' to copy and use for the specified simulations.
+#' @param bias_correct Run bias correction first? See
+#' \code{\link{run_bias_ss3}}.
+#' @param bias_nsim If bias correction is run, how many simulations
+#' should the bias be estimated from? It will take the mean of the
+#' correction factors across these runs.
 #' @export
 #' @details
 #' This function is written to be flexible. You can specify the index,
@@ -36,7 +41,9 @@
 
 run_ss3sim <- function(iterations, scenarios, m_params, f_params,
   index_params, lcomp_params, agecomp_params, om_model_dir,
-  em_model_dir) {
+  em_model_dir, bias_correct = FALSE, bias_nsim = 5) {
+
+   warning("Manipulation steps have not been tested yet!")
 
   for(sc in scenarios) {
     for(i in iterations) {
@@ -47,6 +54,25 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
         iterations = i, type = "om")
       copy_ss3models(model_dir = em_model_dir, scenarios = sc,
         iterations = i, type = "em")
+
+      # Should we run bias correction?
+      if(i == min(iterations) & bias_correct) {
+        # Make the folders for bias correction
+        for(j in 1:bias_nsim) {
+          dir.create(pastef(sc, "bias", j), showWarnings = FALSE,
+            recursive = TRUE)
+        }
+        # And run the bias correction routine
+        run_bias_ss3(dir = pastef(sc, "bias"), outdir = pastef(sc,
+            "bias"), nsim = bias_nsim)
+      } # end bias correction runs
+
+      # If we're bias correcting, then copy over the .ctl file to the
+      # em folder
+      if(bias_correct) {
+        file.copy(from = pastef(sc, "bias", "em.ctl"), to = pastef(sc,
+            i, "em"), overwrite = TRUE)
+      }
 
       # Pull in sigma R from the operating model
       sigmar <- get_sigmar(pastef(sc, i, "om", "om"))
@@ -123,8 +149,6 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
                        N_agebins     = N_agebins,
                        agebin_vector = agebin_vector,
                        agecomp       = agecomp))
-
-      warning("Manipulation steps aren't all implemented or checked yet!")
 
       run_ss3model(scenarios = sc, iterations = i, type = "em")
     } # end iterations
