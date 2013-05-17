@@ -7,7 +7,7 @@ get_args <- function(file) {
     comment.char = "#")
   y <- as.list(x$val)
   names(y) <- x$arg
-  y
+  lapply(y, function(z) eval(parse(text = z))) # turn into correct class
 }
 
 #' Take a vector of cases and return the case number
