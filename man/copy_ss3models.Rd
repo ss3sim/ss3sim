@@ -3,8 +3,8 @@
 \title{Copy operating and estimation models while creating folder
 structure}
 \usage{
-  copy_ss3models(model_dir, iterations = 1:100,
-    scenarios = "all available", type = c("om", "em"))
+  copy_ss3models(model_dir, scenarios, iterations = 1:100,
+    type = c("om", "em"))
 }
 \arguments{
   \item{model_dir}{A directory containing the operating or
@@ -14,10 +14,8 @@ structure}
   \item{iterations}{The iterations to copy to. The function
   will create the folders as needed.}
 
-  \item{scenarios}{Which scenarios to copy. Default to
-  taking all available scenarios. You can also supply a
-  vector of character elements specifying which ones to
-  copy.}
+  \item{scenarios}{Which scenarios to copy to. Supply a
+  vector of character elements.}
 
   \item{type}{Are you copying operating or estimation
   models? This affects whether the model folder gets named

@@ -5,9 +5,8 @@
 #' models. Each folder should be named according to a scenario ID.
 #' @param iterations The iterations to copy to. The function will
 #' create the folders as needed.
-#' @param scenarios Which scenarios to copy. Default to taking all
-#' available scenarios. You can also supply a vector of character
-#' elements specifying which ones to copy.
+#' @param scenarios Which scenarios to copy to. Supply a vector of
+#' character elements.
 #' @param type Are you copying operating or estimation models? This
 #' affects whether the model folder gets named "om" or "em"
 #' @author Sean Anderson, Kelli Johnson
@@ -18,26 +17,29 @@
 #' }
 #' @export
 
-copy_ss3models <- function(model_dir, iterations = 1:100,
-  scenarios = "all available", type = c("om", "em")) {
+copy_ss3models <- function(model_dir, scenarios, iterations = 1:100,
+  type = c("om", "em")) {
 
   type <- type[1]
-  if(scenarios[1] == "all available"){
-    scenarios <- list.files(model_dir)
-  }
+  #if(scenarios[1] == "all available"){
+    #scenarios <- list.files(model_dir)
+  #}
 
   for(sc in scenarios) {
     for(it in iterations) {
-      from <- pastef(model_dir, sc)
+      from <- pastef(model_dir)
       to <- pastef(sc, it)
       dir.create(to, showWarnings = FALSE, recursive = TRUE)
       if(file.exists(pastef(to, type))){
         print(paste0(to, "/", type, " already exists; not copying this folder."))
       } else {
         file.copy(from, to, recursive = TRUE)
-        file.rename(pastef(to, sc), pastef(to, "om"))
+        file.rename(pastef(to, model_dir), pastef(to, "om"))
       }
     }
   }
+
+  # sanity check and rename for consistency:
+  verify_input(model_dir = pastef(to, type), type = type)
 }
 
