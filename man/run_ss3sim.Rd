@@ -2,14 +2,15 @@
 \alias{run_ss3sim}
 \title{Run both the operating model and assessment model}
 \usage{
-  run_ss3sim(scenarios, iterations, index_params,
-    lcomp_params, agecomp_params,
-    type = c("om and em", "om", "em"))
+  run_ss3sim(iterations, scenarios, m_params, f_params,
+    index_params, lcomp_params, agecomp_params,
+    om_model_dir, em_model_dir)
 }
 \arguments{
-  \item{scenarios}{Which scenarios to run.}
+  \item{iterations}{Which iterations to run. A numeric
+  vector.}
 
-  \item{iterations}{Which iterations to run.}
+  \item{scenarios}{Which scenarios to run.}
 
   \item{index_params}{A named list containing all the
   \code{\link{change_index}} options.}
@@ -19,9 +20,6 @@
 
   \item{agecomp_params}{A named list containing all the
   \code{\link{change_agecomp}} options.}
-
-  \item{type}{Are you running the both the operating and
-  estimation models or just one or the other?}
 }
 \description{
   This function is a wrapper function that can call
