@@ -4,6 +4,7 @@ This package can be installed and loaded with:
 ```r
 # install.packages("devtools")
 devtools::install_github("ss3sim", username="seananderson")
+library(ss3sim)
 ```
 You can read the vignette and see the help pages with:
 ```r
