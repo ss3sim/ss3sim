@@ -148,10 +148,9 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
 
       # Should we run bias correction? We should if bias_correct is
       # true, and we are done running bias corrections (i.e. we're on
-      # the last "bias" iteration, and we haven't already run this
+      # the last "bias" iteration), and we haven't already run this
       # yet.
-      if(bias_correct & i == pastef("bias", bias_nsim) &
-        bias_already_run == FALSE) { 
+      if(bias_correct & i == pastef("bias", bias_nsim) & !bias_already_run) { 
         run_bias_ss3(dir = pastef(sc, "bias"), outdir = pastef(sc,
             "bias"), nsim = bias_nsim)
         bias_already_run <- TRUE
