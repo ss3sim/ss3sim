@@ -48,7 +48,7 @@ run_ss3sim <- function(scenarios, iterations, index_params,
           sigmar <- get_sigmar(pastef(sc, i, "om", "om"))
 
           # Exponentiate with bias adjustment
-          sc_i_recdevs <- exp(sigmar * recdevs[, i] - sigmar/2)
+          sc_i_recdevs <- exp(sigmar * recdevs[, i] - (sigmar^2)/2)
 
           # Add new rec devs overwriting om/ss3.par
           change_rec_devs(recdevs_new = sc_i_recdevs, file_in =
