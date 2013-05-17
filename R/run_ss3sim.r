@@ -30,11 +30,6 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
   index_params, lcomp_params, agecomp_params, om_model_dir,
   em_model_dir) {
 
-  # create default list objects
-  #if(index_params == "default") data(default_index_params)
-  #if(lcomp_params == "default") data(default_lcomp_params)
-  #if(agecomp_params == "default") data(default_agecomp_params)
-
   for(sc in scenarios) {
     for(i in iterations) {
 
