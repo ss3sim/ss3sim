@@ -14,7 +14,7 @@ get_args <- function(file) {
 # if has : then eval(parse(text = 
 # else use as character
   lapply(y, function(z) {
-    if(is_f(z)) {
+    if(is_f(as.character(z))) {
       eval(parse(text = z)) # turn into correct class
     } else {
       as.character(z)
