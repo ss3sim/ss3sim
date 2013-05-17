@@ -3,7 +3,8 @@
 #' @param file The file name as character
 get_args <- function(file) {
   x <- read.csv(file, stringsAsFactors = FALSE, col.names =
-    c("arg", "val"), header = FALSE, strip.white = TRUE)
+    c("arg", "val"), header = FALSE, strip.white = TRUE, sep = ";",
+    comment.char = "#")
   y <- as.list(x$val)
   names(y) <- x$arg
   y
