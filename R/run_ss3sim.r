@@ -33,6 +33,12 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
   for(sc in scenarios) {
     for(i in iterations) {
 
+      # Create folders, copy models, check for necessary files, rename
+      # files for consistency
+      copy_ss3models(model_dir = om_model_dir, scenarios = sc,
+        iterations = i, type = "om")
+      copy_ss3models(model_dir = em_model_dir, scenarios = sc,
+        iterations = i, type = "em")
 
       # Pull in sigma R from the operating model
       sigmar <- get_sigmar(pastef(sc, i, "om", "om"))
