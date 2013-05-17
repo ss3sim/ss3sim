@@ -35,3 +35,5 @@ Collate:
     'case-parsing.r'
     'verify_input.r'
     'cleanup_ss3.r'
+    'bias_ss3.r'
+    'run_bias_ss3.r'

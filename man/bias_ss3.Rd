@@ -1,0 +1,32 @@
+\name{bias_ss3}
+\alias{bias_ss3}
+\title{Perform a single bias adjustment run}
+\usage{
+  bias_ss3(iter, dir)
+}
+\arguments{
+  \item{iter}{Replicate number, used to identify this
+  iteration if there are multiple adjustment runs.}
+
+  \item{dir}{Passes \code{dir} from the function
+  \code{\link{run_bias_ss3}} to \code{bias_ss3} In
+  \code{\link{run_bias_ss3}} this is run within an
+  \code{sapply} function for each of the bias adjustment
+  runs.}
+}
+\description{
+  This function is run within \code{\link{run_bias_ss3}}
+  and for a single run it: \itemize{ \item uses \code{r4ss}
+  function \code{SS_output} to read in the output from a
+  single bias adjustment run \item uses \code{r4ss}
+  function \code{SS_fitbiasramp} to calculate the correct 5
+  bias adjustment parameters for that run \item Writes the
+  correct bias adjustment parameters to the file
+  \code{CorrectBias.DAT} within the \code{dir} folder,
+  overwriting the file if \code{iter = 1} (the first run)
+  and appending the file otherwise }
+}
+\author{
+  Carey McGilliard
+}
+
