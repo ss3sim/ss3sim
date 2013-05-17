@@ -9,21 +9,46 @@
 #' @param outfile Name of the new file to be created. Path may be global or local. Make sure to give extension .dat to the file name.
 #' @param distribution Distribution to be used to sample the length compositions. Options are "multinomial" and "dirichlet"
 #' @param Nsamp Number of samples drawn from a multinomial distribution, or precision for the Dirichlet distribution
-#' @param minyear, maxyear starting and ending year for the fleet length comps. Overridden by specifying "years"
+#' @param minyear starting year for the fleet length comps. Overridden by specifying "years"
+#' @param maxyear ending year for the fleet length comps. Overridden by specifying "years"
 #' @param years vector of years for the fleet length comps.
 #' @param svyears vector of years for the survey lenght comps.
 #' @param lbin_method method to generate model length bins. See SS manual for details
-#' @param binwidth, minimum_size, maximum_size, N_lbins 
+#' @param binwidth Bin width
+#' @param minimum_size, Minimum size
+#' @param maximum_size Maximum size 
+#' @param N_lbins Number of length bins
 #' @param lbin_vector Vector of length bins for the observations
-#' @param lencomp matrix of length comps 
+#' @param lencomp Matrix of length comps 
 #' 
 #' @export
-
+#' @examples
+#' d <- system.file("extdata", package = "ss3sim")
+#' f_in <- paste0(d, "/example-om/data.ss_new")
+#' infile <- SS_readdat(f_in, section = 2, verbose = FALSE)
+#' 
+#' # Generate a DAT file with the same dimensions as the original 'infile'
+#' change_lcomp(infile,outfile="newdat.dat")
+#' 
+#' # Generate a DAT file with less length bins
+#' change_lcomp(infile,outfile="newdat.dat", lbin_vector=seq(10,27,0.5))
+#' 
+#' # Generate a DAT file with a smaller sample size
+#' change_lcomp(infile,outfile="newdat.dat", Nsamp=20)
+#' 
+#' # Generate a DAT file with a shorter time series, method 1
+#' change_lcomp(infile,outfile="newdat.dat", Nsamp =100, minyear=1980, maxyear=2012)
+#' 
+#' # Generate a DAT file with a shorter time series, method 2
+#' change_lcomp(infile,outfile="newdat.dat", Nsamp=100, years=1980:2012)
+#' 
+#' # Generate a DAT file using Dirichlet distributed samples
+#' change_lcomp(infile,outfile="newdat.dat", Nsamp=100, distribution="dirichlet")
 
 change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
                         minyear=NA,maxyear=NA,years=NA,svyears=NA,
                         lbin_method=NA,binwidth=NA,minimum_size=NA,maximum_size=NA,
-                        N_lbins=NA,lbin_vector=NA,lencomp=NA,...){
+                        N_lbins=NA,lbin_vector=NA,lencomp=NA){
 
   #Load required libraries (done via package)
   #require(MCMCpack)

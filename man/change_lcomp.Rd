@@ -7,7 +7,7 @@
     maxyear = NA, years = NA, svyears = NA,
     lbin_method = NA, binwidth = NA, minimum_size = NA,
     maximum_size = NA, N_lbins = NA, lbin_vector = NA,
-    lencomp = NA, ...)
+    lencomp = NA)
 }
 \arguments{
   \item{infile}{SS data object from SS_readdat() in the
@@ -25,8 +25,11 @@
   distribution, or precision for the Dirichlet
   distribution}
 
-  \item{minyear,}{maxyear starting and ending year for the
-  fleet length comps. Overridden by specifying "years"}
+  \item{minyear}{starting year for the fleet length comps.
+  Overridden by specifying "years"}
+
+  \item{maxyear}{ending year for the fleet length comps.
+  Overridden by specifying "years"}
 
   \item{years}{vector of years for the fleet length comps.}
 
@@ -36,12 +39,18 @@
   \item{lbin_method}{method to generate model length bins.
   See SS manual for details}
 
-  \item{binwidth,}{minimum_size, maximum_size, N_lbins}
+  \item{binwidth}{Bin width}
+
+  \item{minimum_size,}{Minimum size}
+
+  \item{maximum_size}{Maximum size}
+
+  \item{N_lbins}{Number of length bins}
 
   \item{lbin_vector}{Vector of length bins for the
   observations}
 
-  \item{lencomp}{matrix of length comps}
+  \item{lencomp}{Matrix of length comps}
 }
 \description{
   Take a data.SS_new file, resample the length compositions
@@ -49,6 +58,29 @@
   new length comp samples. Samples can have dimensions,
   bins, sample sizes, and distributions which are different
   than those coming from SS.
+}
+\examples{
+d <- system.file("extdata", package = "ss3sim")
+f_in <- paste0(d, "/example-om/data.ss_new")
+infile <- SS_readdat(f_in, section = 2, verbose = FALSE)
+
+# Generate a DAT file with the same dimensions as the original 'infile'
+change_lcomp(infile,outfile="newdat.dat")
+
+# Generate a DAT file with less length bins
+change_lcomp(infile,outfile="newdat.dat", lbin_vector=seq(10,27,0.5))
+
+# Generate a DAT file with a smaller sample size
+change_lcomp(infile,outfile="newdat.dat", Nsamp=20)
+
+# Generate a DAT file with a shorter time series, method 1
+change_lcomp(infile,outfile="newdat.dat", Nsamp =100, minyear=1980, maxyear=2012)
+
+# Generate a DAT file with a shorter time series, method 2
+change_lcomp(infile,outfile="newdat.dat", Nsamp=100, years=1980:2012)
+
+# Generate a DAT file using Dirichlet distributed samples
+change_lcomp(infile,outfile="newdat.dat", Nsamp=100, distribution="dirichlet")
 }
 \author{
   Felipe Hurtado-Ferro

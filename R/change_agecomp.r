@@ -9,17 +9,20 @@
 #' @param outfile Name of the new file to be created. May be global or local. Make sure to give extension .dat to the file name.
 #' @param distribution Distribution to be used to sample the length compositions. Options are "multinomial" and "dirichlet"
 #' @param Nsamp Number of samples drawn from a multinomial distribution, or precision for the Dirichlet distribution
-#' @param minyear, maxyear starting and ending year for the fleet age comps. Overridden by specifying "years"
-#' @param years vector of years for the fleet age comps.
-#' @param svyears vector of years for the survey age comps.
-#' @param agecomp matrix of age comps 
+#' @param minyear starting year for the fleet age comps. Overridden by specifying "years"
+#' @param maxyear ending year for the fleet age comps. Overridden by specifying "years"
+#' @param N_agebins Number of age bins
+#' @param agebin_vector A vector of age bins
+#' @param years Vector of years for the fleet age comps
+#' @param svyears Vector of years for the survey age comps
+#' @param agecomp Matrix of age comps 
 #' 
 #' @export
 
 
 change_agecomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
                          minyear=NA,maxyear=NA,years=NA,svyears=NA,
-                         N_agebins=NA,agebin_vector=NA,agecomp=NA,...){
+                         N_agebins=NA,agebin_vector=NA,agecomp=NA){
   #Load required libraries (now done by package)
   #require(r4ss)
   #require(MCMCpack)
