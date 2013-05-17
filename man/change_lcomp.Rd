@@ -45,7 +45,7 @@
 
   \item{maximum_size}{Maximum size}
 
-  \item{N_lbins}{Number of length bins}
+  \item{N_lbins}{Number of length bins.}
 
   \item{lbin_vector}{Vector of length bins for the
   observations}

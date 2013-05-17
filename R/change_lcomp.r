@@ -17,7 +17,7 @@
 #' @param binwidth Bin width
 #' @param minimum_size, Minimum size
 #' @param maximum_size Maximum size 
-#' @param N_lbins Number of length bins
+#' @param N_lbins Number of length bins. 
 #' @param lbin_vector Vector of length bins for the observations
 #' @param lencomp Matrix of length comps 
 #' 

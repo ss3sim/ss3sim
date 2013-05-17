@@ -38,3 +38,4 @@ Collate:
     'cleanup_ss3.r'
     'bias_ss3.r'
     'run_bias_ss3.r'
+    'create_argfiles.r'
