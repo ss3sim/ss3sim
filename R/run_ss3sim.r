@@ -83,56 +83,56 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
 
       # Change M
       with(m_params,
-        change_m(n_blocks          = n_blocks,
-                 block_pattern     = block_pattern,
-                 dev               = dev,
-                 ctl_file_in       = pastef(sc, i, "om", "om.ctl"),
-                 ctl_file_out      = pastef(sc, i, "om", "om.ctl"),
-                 dat_file          = pastef(sc, i, "om", "data.dat"),
-                 par_file          = pastef(sc, i, "om", "ss3.par"),
-                 how_time_varying  = how_time_varying)) 
+        change_m(n_blocks            = n_blocks,
+                 block_pattern       = block_pattern,
+                 dev                 = dev,
+                 ctl_file_in         = pastef(sc, i, "om", "om.ctl"),
+                 ctl_file_out        = pastef(sc, i, "om", "om.ctl"),
+                 dat_file            = pastef(sc, i, "om", "data.dat"),
+                 par_file            = pastef(sc, i, "om", "ss3.par"),
+                 how_time_varying    = how_time_varying)) 
 
       # Change F
       with(f_params,
-        change_f(years       = years,
-                 years_alter = years_alter,
-                 fvals       = fvals,
-                 file_in     = pastef(sc, i, "om", "ss3.par"),
-                 file_out    = pastef(sc, i, "om", "ss3.par")))
+        change_f(years               = years,
+                 years_alter         = years_alter,
+                 fvals               = fvals,
+                 file_in             = pastef(sc, i, "om", "ss3.par"),
+                 file_out            = pastef(sc, i, "om", "ss3.par")))
 
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om")
 
       # Survey biomass index
       with(index_params, 
-        change_index(dat_file_in    = pastef(sc, i, "om", "data.dat"), 
-                     dat_file_out   = pastef(sc, i, "em", "data.dat"),
-                     start_surv     = start_surv,
-                     end_surv       = end_surv,
-                     use_index      = use_index,
-                     start_fish     = start_fish,
-                     end_fish       = end_fish,
-                     freq_fish      = freq_fish,
-                     sd_obs_fish    = sd_obs_fish)) 
+        change_index(dat_file_in     = pastef(sc, i, "om", "data.dat"), 
+                     dat_file_out    = pastef(sc, i, "em", "data.dat"),
+                     start_surv      = start_surv,
+                     end_surv        = end_surv,
+                     use_index       = use_index,
+                     start_fish      = start_fish,
+                     end_fish        = end_fish,
+                     freq_fish       = freq_fish,
+                     sd_obs_fish     = sd_obs_fish)) 
 
       # Add error in the length comp data
       SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "data.dat"))
       with(lcomp_params,
-        change_lcomp(infile       = SS.dat,
-                     outfile      = pastef(sc, i, "em", "data.dat"),
-                     distribution = multinomial,
-                     Nsamp        = Nsamp,
-                     minyear      = minyear,
-                     maxyear      = maxyear,
-                     years        = years,
-                     svyears      = svyears,
-                     lbin_method  = lbin_method,
-                     binwidth     = binwidth,
-                     minimum_size = minimum_size,
-                     maximum_size = maximum_size,
-                     N_lbins      = N_lbins,
-                     lbin_vector  = lbin_vector,
-                     lencomp      = lencomp))
+        change_lcomp(infile          = SS.dat,
+                     outfile         = pastef(sc, i, "em", "data.dat"),
+                     distribution    = multinomial,
+                     Nsamp           = Nsamp,
+                     minyear         = minyear,
+                     maxyear         = maxyear,
+                     years           = years,
+                     svyears         = svyears,
+                     lbin_method     = lbin_method,
+                     binwidth        = binwidth,
+                     minimum_size    = minimum_size,
+                     maximum_size    = maximum_size,
+                     N_lbins         = N_lbins,
+                     lbin_vector     = lbin_vector,
+                     lencomp         = lencomp))
 
       # Add error in the age comp data
       SS.dat2 = r4ss::SS_readdat(pastef(sc, i, "em", "data.dat"))
