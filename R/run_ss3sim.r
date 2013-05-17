@@ -36,6 +36,8 @@ run_ss3sim <- function(scenarios, iterations, index_params,
   #if(lcomp_params == "default") data(default_lcomp_params)
   #if(agecomp_params == "default") data(default_agecomp_params)
 
+  type <- type[1]
+
   switch(type,
     "om and em" = {
       for(sc in scenarios) {
