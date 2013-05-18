@@ -17,8 +17,8 @@
 #' }
 #' @export
 
-copy_ss3models <- function(model_dir, scenarios, iterations = 1:100,
-  type = c("om", "em")) {
+copy_ss3models <- function(model_dir, scenarios,
+  iterations = 1:100, type = c("om", "em")) {
 
   type <- type[1]
   #if(scenarios[1] == "all available"){
