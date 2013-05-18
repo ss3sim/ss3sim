@@ -119,12 +119,10 @@ change_m <- function(how_time_varying = "env", ctl_file_in =
     check = (is.na(val)) #check for missing values
     if (sum(check)>0) #Extra QAQC check
     {
-      print("Some values are removed. Normally it is the white space but
-        checking it...")
+      print("Some values are removed. Normally it is the white space but checking it...")
       val = val[check==FALSE]	# only keep the ones that are non NAs
       ifelse(length(val)==14, print("Everything is fine"),
-             print("Something is wrong. Please check the control.ss.new
-               file"))					
+             print("Something is wrong. Please check the control.ss.new file"))					
     }	
     # find the line specifying natural mortality params and specify
     # the environmental link
