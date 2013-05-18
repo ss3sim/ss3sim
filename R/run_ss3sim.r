@@ -87,16 +87,16 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
           "om", "ss3.par"))
 
       # Change M
-      with(m_params,
-        change_m(n_blocks            = n_blocks,
-                 block_pattern       = block_pattern,
-                 dev                 = dev,
-                 ctl_file_in         = pastef(sc, i, "om", "om.ctl"),
-                 ctl_file_out        = pastef(sc, i, "om", "om.ctl"),
-                 dat_file            = pastef(sc, i, "om", "data.dat"),
-                 dat_file_out        = pastef(sc, i, "om", "data.dat"),
-                 par_file            = pastef(sc, i, "om", "ss3.par"),
-                 how_time_varying    = how_time_varying)) 
+      #with(m_params,
+        #change_m(n_blocks            = n_blocks,
+                 #block_pattern       = block_pattern,
+                 #dev                 = dev,
+                 #ctl_file_in         = pastef(sc, i, "om", "om.ctl"),
+                 #ctl_file_out        = pastef(sc, i, "om", "om.ctl"),
+                 #dat_file            = pastef(sc, i, "om", "data.dat"),
+                 #dat_file_out        = pastef(sc, i, "om", "data.dat"),
+                 #par_file            = pastef(sc, i, "om", "ss3.par"),
+                 #how_time_varying    = how_time_varying)) 
 
       # Change F
       with(f_params,
