@@ -33,13 +33,24 @@
 #' plan is to create a script which derives the parameters from the
 #' case identifiers and calls this function. That will be a FISH600
 #' specific function.
-#'
-#' Note that bias adjustment isn't implemented yet.
 
-#d <- system.file("extdata", package = "ss3sim")
-#f <- paste0(d, "/run_ss3sim_eg/")
-#a <- get_caseargs(folder = paste0(f, "case-arguments"), scenario = "M1-F1-D1-R1-cod") 
-#run_ss3sim(iterations = 1, scenarios = "M1-F1-D1-R1-cod", m_params = a$M, f_params = a$F, index_params = a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp, om_model_dir = paste0(f, "cod_om"), em_model_dir = paste0(f, "cod_em"))
+#' @examples
+#' \dontrun{
+#' d <- system.file("extdata", package = "ss3sim")
+#' f <- paste0(d, "/run_ss3sim_eg/")
+#' a <- get_caseargs(folder = paste0(f, "case-arguments"), scenario =
+#' "M1-F1-D1-R1-cod") 
+#'
+#' # With bias correction:
+#' # (Note that bias_nsim should be bigger, say 5, but it is set to 1
+#' here so the example runs faster.)
+#'
+#' run_ss3sim(iterations = 1, scenarios = "M1-F1-D1-R1-cod", m_params
+#' = a$M, f_params = a$F, index_params = a$index, lcomp_params =
+#' a$lcomp, agecomp_params = a$agecomp, om_model_dir = paste0(f,
+#' "cod_om"), em_model_dir = paste0(f, "cod_em"))
+#' }
+
 
 # todo change params to args
 # todo change iter to reps

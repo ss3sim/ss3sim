@@ -7,9 +7,19 @@
 #' \dontrun{
 #' d <- system.file("extdata", package = "ss3sim")
 #' f <- paste0(d, "/run_ss3sim_eg/")
+#'
+#' # Without bias correction:
 #' run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-cod"),
 #' case_folder = paste0(f, "case-arguments"), om_model_dir = paste0(f,
 #' "cod_om"), em_model_dir = paste0(f, "cod_em"))
+#'
+#' # With bias correction:
+#' # (Note that bias_nsim should be bigger, say 5, but it is set to 1
+#' here so the example runs faster.)
+#' run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-cod"),
+#' case_folder = paste0(f, "case-arguments"), om_model_dir = paste0(f,
+#' "cod_om"), em_model_dir = paste0(f, "cod_em"), bias_correct = TRUE,
+#' bias_nsim = 1)
 #' }
 
 run_fish600 <- function(iterations, scenarios, case_folder,
