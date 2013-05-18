@@ -41,6 +41,7 @@
 #' \item ...
 #' }
 #' @seealso \code{\link{run_ss3sim}}
+#' @export
 #'
 #' @examples
 #' \dontrun{
