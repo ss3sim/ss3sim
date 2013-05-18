@@ -80,7 +80,7 @@ get_caseval <- function(scenario, case, delimiter = "-") {
 #' \code{".txt"}.
 #' @param case_vals The case types that make up the scenario ID. In
 #' the example above the \code{case_vals} would be \code{c("M", "F",
-#' "D", "F")}
+#' "D", "R")}
 #' @param case_files A named list that relates the \code{case_vals} to
 #' the files to return. If each \code{case_val} has only one file then
 #' this is simple. See the default values for a more complicated case.
