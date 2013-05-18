@@ -7,9 +7,9 @@
 #' the SS input files the 3 options are: \code{"env"} \code{"block"}
 #' or \code{"dev"}. 
 #' \itemize{
-#' \item "env" is to include an ADDITIVE functional linkage between
-#' environmental data and M where a link parameter is estimated: \code{M'(y) =
-#' M + link * env(y)}
+#' \item \code{"env"} is to include an *additive* functional linkage
+#' between environmental data and M where a link parameter is
+#' estimated: \code{M\' (y) = M + link * env(y)}
 #' \item \code{"block"} is to allow M to be estimated separately in different
 #' pre-specified time blocks
 #' \item \code{"dev"} is to estimate a mean M and to estimate deviations about
@@ -19,59 +19,65 @@
 #' chosen)
 #' @param ctl_file_out Output control file name (resulting control file with M
 #' changed)
-#' @param dat_file \code{.dat} File name
-#' @param par_file \code{.par} File name 
-#' @param n_blocks: The number of time blocks within which M is estimated
+#' @param dat_file Input \code{.dat} file name
+#' @param dat_file_out Output data file name
+#' @param par_file \code{.par} Input file name 
+#' @param n_blocks The number of time blocks within which M is estimated
 #' separately; Equal to 1 unless \code{how_time_varying} is \code{"block"}, but
-#' #' is not used in the function unless \code{how_time_varying} is
+#' \code{n_blocks} is not used in the function unless \code{how_time_varying} is
 #' \code{"block"}
 #' @param block_pattern Block pattern. A vector of years marking time blocks
 #' with separate Ms in each block - doesn't get used in the function if
 #' \code{how_time_varying} does not equal \code{"block"}
-#' @param dev: A vector of environmental data of length = length of *.dat
-#' endyr-startyr+1
+#' @param dev A vector of environmental data of \code{length = length of *.dat
+#' endyr-startyr+1}
 #' @author Kotaro Ono and Carey McGilliard
 #' @export 
 #'
-#' @details Although it appears that 3 options exist for how time-varying M is
-#' modeled within SS and within this function, right now only the
-#' how_time_varying = "env" (making m vary over time by including an ADDITIVE
-#' environmental linkage to M) has been tested. The \code{ctl_file_in}
-#' parameter needs to be a \code{.ss_new} file because the documentation in
-#' \code{.ss_new} files are automated and standardized; this function takes
-#' advantage of standard documentation used to figure out where additional
-#' lines need to be added to \code{.ctl} files to implement time-varying M. 
+#' @details Although it appears that 3 options exist for how
+#' time-varying M is modeled within SS and within this function, right
+#' now only the \code{how_time_varying = "env"} (making M vary over time by
+#' including an *additive* environmental linkage to M) has been
+#' tested. The \code{ctl_file_in} parameter needs to be a
+#' \code{.ss_new} file because the documentation in \code{.ss_new}
+#' files are automated and standardized; this function takes advantage
+#' of standard documentation used to figure out where additional lines
+#' need to be added to \code{.ctl} files to implement time-varying M. 
 #' 
-#' CAREFUL: currently the function will modify the \code{.dat} file
-#' (\code{dat_file}) that is input; make a copy of the \code{.dat}
-#' file under another name if you want to keep an unmodified copy 
-#'  
 #' NOTE: the user has to define an environmental data series such that
 #' the additive linkage creates the desired time-varying pattern in
 #' M. 
 #'
 #' @examples 
 #' \dontrun{
-#' # setwd()... simple SS3 example
-#' change_m(how_time_varying="env",ctl_file_in = "control.ss_new",dat_file =
-#' "simple.dat",par_file = "SS3.par",n_blocks = 1,block_pattern =
-#' c(1990,2001),dev = rnorm(31,mean = 0,sd = 0.6))
+#' d <- system.file("extdata", package = "ss3sim")
+#' ctl_file_in <- paste0(d, "/Simple/control.ss_new")
+#' dat_file <- paste0(d, "/Simple/simple.dat")
+#' par_file <- paste0(d, "/Simple/SS3.par")
+#' change_m(how_time_varying = "env", ctl_file_in = ctl_file_in,
+#'   ctl_file_out = "example.ctl", dat_file = dat_file, dat_file_out =
+#'   "example.dat", par_file = par_file, n_blocks = 1, block_pattern =
+#'   c(1990, 2001), dev = rnorm(31, mean = 0, sd = 0.6))
+#' # clean up:
+#' file.remove("example.ctl")
+#' file.remove("example.dat")
 #'
-#' # Other examples
-#' # setwd() sardine model
-#' change_m(how_time_varying="env",ctl_file_in = "control.ss_new",dat_file =
-#' "SardOM.dat",par_file = "SS3.par",n_blocks = 1,block_pattern =
-#' c(1990,2001),dev = rnorm(100,mean = 0,sd = 0.6))
-#'
-#' setwd() flatfish model
-#' change_m(how_time_varying="env",ctl_file_in = "control.ss_new",dat_file =
-#' "flatfish.dat",par_file = "SS3.par",n_blocks = 2,block_pattern =
-#' c(1990,2001),dev = rnorm(100,mean = 0,sd = 0.6))
+#' # other examples
+#' # sardine model
+#' # change_m(how_time_varying="env",ctl_file_in = "control.ss_new",dat_file =
+#' # "SardOM.dat",par_file = "SS3.par",n_blocks = 1,block_pattern =
+#' # c(1990,2001),dev = rnorm(100,mean = 0,sd = 0.6))
+#' 
+#' # flatfish model
+#' # change_m(how_time_varying="env",ctl_file_in = "control.ss_new",dat_file =
+#' # "flatfish.dat",par_file = "SS3.par",n_blocks = 2,block_pattern =
+#' # c(1990,2001),dev = rnorm(100,mean = 0,sd = 0.6))
 #' }
 
 change_m <- function(how_time_varying="env", ctl_file_in =
   "control.ss_new", ctl_file_out = "Simple.ctl", dat_file =
-  "Simple.dat", par_file = "ss3.par", n_blocks = 1, block_pattern,
+  "Simple.dat", dat_file_out = "Simple.dat", par_file = "ss3.par",
+  n_blocks = 1, block_pattern,
   dev) {
   
   # how_time_varying <- how_time_varying[1] #In the future if people want to
@@ -153,7 +159,7 @@ change_m <- function(how_time_varying="env", ctl_file_in =
     # combine back everything
     New.dat=c(First_piece, apply(env.dat, 1, function(x) paste(x, collapse=" ")), Last_piece)
     # write output	
-    writeLines(New.dat, con= dat_file)
+    writeLines(New.dat, con= dat_file_out)
   }
   
   # We are not currently using how_time_varying = "dev" and this section may
