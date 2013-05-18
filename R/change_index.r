@@ -127,8 +127,9 @@ change_index <- function(dat_file_in, dat_file_out, start_surv,
 
   ind.start <- grep("#_year seas index obs", x=dat.current)[1]
   ind.end1 <- grep("#_N_fleets_with_discard", x=dat.current)[1] # TODO Check this should be [1]
-  ind.end2 <- grep("#_N_discard_fleets", x=dat.current)[1]  # TODO Check this should be [1]
-  ind.end <- c(ind.end1, ind.end2)	# in case people find these different ways
+  #ind.end2 <- grep("#_N_discard_fleets", x=dat.current)[1]  # TODO Check this should be [1]
+  #ind.end <- c(ind.end1, ind.end2)	# in case people find these different ways
+  ind.end <- ind.end1
   if(length(ind.end)==0)
     stop("Couldn't locate where to print data in the .dat file.")
 
