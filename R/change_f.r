@@ -8,6 +8,15 @@
 #' @param fvals Vector of Fvalues to be entered into ss3.par file
 #' @param file_in Input SS3 par file.
 #' @param file_out Output SS3 par file. 
+#' @examples 
+#' \dontrun{
+#' d <- system.file("extdata", package = "ss3sim")
+#' par_file <- paste0(d, "/change_f/ss3.par")
+#' change_f(years = 1:49, years_alter = 2, fvals = 9999, file_in =
+#' par_file, file_out = "test.par")
+#' # clean up
+#' file.remove("test.par")
+#' }
 #'
 #' @export
 
@@ -36,5 +45,4 @@ change_f <- function(years, years_alter, fvals, file_in="ss3.par", file_out="ss3
   invisible(ss3.par.new)
 }
 
-#change_f(years=1:49, years_alter=2, fvals=9999, file_in = "test_in.txt", file_out = "test_out.txt")
 

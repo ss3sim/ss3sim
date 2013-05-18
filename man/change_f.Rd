@@ -25,6 +25,16 @@
 \details{
   Allows for specific years in series to be altered
 }
+\examples{
+\dontrun{
+d <- system.file("extdata", package = "ss3sim")
+par_file <- paste0(d, "/change_f/ss3.par")
+change_f(years = 1:49, years_alter = 2, fvals = 9999, file_in =
+par_file, file_out = "test.par")
+# clean up
+file.remove("test.par")
+}
+}
 \author{
   Curry James Cunningham
 }
