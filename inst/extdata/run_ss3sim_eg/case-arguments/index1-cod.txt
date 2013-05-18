@@ -1,0 +1,9 @@
+start_surv; 1938
+end_surv; 2012
+freq_surv; 2
+sd_obs_surv; 0.2
+start_fish; NA
+end_fish; NA
+freq_fish; NA
+sd_obs_fish; NA
+use_index; survey
