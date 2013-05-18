@@ -85,6 +85,13 @@ verify_input <- function(model_dir, type = c("om", "em")) {
       file.ext <- file(paste(model_dir, "/starter.ss", sep = ""))
       writeLines(starter.ss, file.ext)
       close(file.ext)
+      # Alter the .ctl file
+      ctl <- readLines(paste0(model_dir, "/om.ctl"))
+      ctl.line <- grep("data_and_control_files", ctl, ignore.case = TRUE)
+      ctl[ctl.line] <- "#_data_and_control_files: data.dat // om.ctl"
+      file.ext <- file(paste(model_dir, "/om.ctl", sep = ""))
+      writeLines(ctl, file.ext)
+      close(file.ext)
     }
   }
   if (type == "em") {
@@ -139,6 +146,13 @@ verify_input <- function(model_dir, type = c("om", "em")) {
       #Write new starter.ss
       file.ext <- file(paste(model_dir, "/starter.ss", sep = ""))
       writeLines(starter.ss, file.ext)
+      close(file.ext)
+      # Alter the .ctl file
+      ctl <- readLines(paste0(model_dir, "/em.ctl"))
+      ctl.line <- grep("data_and_control_files", ctl, ignore.case = TRUE)
+      ctl[ctl.line] <- "#_data_and_control_files: data.dat // em.ctl"
+      file.ext <- file(paste(model_dir, "/em.ctl", sep = ""))
+      writeLines(ctl, file.ext)
       close(file.ext)
     }
   }
