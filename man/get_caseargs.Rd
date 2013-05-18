@@ -3,8 +3,8 @@
 \title{Take a scenario ID and return argument lists to pass to functions}
 \usage{
   get_caseargs(folder, scenario, delimiter = "-",
-    ext = ".txt", case_vals = c("M", "F", "D", "R"),
-    case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), R = "R"))
+    ext = ".txt", case_vals = c("M", "F", "D"),
+    case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp")))
 }
 \arguments{
   \item{folder}{The folder to look for input files in.}
@@ -21,7 +21,7 @@
 
   \item{case_vals}{The case types that make up the scenario
   ID. In the example above the \code{case_vals} would be
-  \code{c("M", "F", "D", "F")}}
+  \code{c("M", "F", "D", "R")}}
 
   \item{case_files}{A named list that relates the
   \code{case_vals} to the files to return. If each
