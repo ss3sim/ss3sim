@@ -142,7 +142,6 @@ get_caseargs <- function(folder, scenario, delimiter = "-", ext = ".txt",
     "F", D = c("index", "lcomp", "agecomp"), R = "R")) {
   case_vals <- sapply(case_vals, function(x)
     get_caseval(scenario, x, delimiter))
-  paste0(names(case_vals), case_vals)
   args_out <- vector("list", length = length(case_files))
   names(args_out) <- names(case_files)
   for(i in 1:length(case_files)) {
