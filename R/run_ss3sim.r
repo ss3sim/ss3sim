@@ -89,6 +89,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
                  ctl_file_in         = pastef(sc, i, "om", "om.ctl"),
                  ctl_file_out        = pastef(sc, i, "om", "om.ctl"),
                  dat_file            = pastef(sc, i, "om", "data.dat"),
+                 dat_file_out        = pastef(sc, i, "om", "data.dat"),
                  par_file            = pastef(sc, i, "om", "ss3.par"),
                  how_time_varying    = how_time_varying)) 
 
