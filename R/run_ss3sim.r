@@ -65,8 +65,6 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
   em_model_dir, bias_correct = FALSE, bias_nsim = 5, 
   bias_already_run = FALSE) {
 
-   warning("Manipulation steps have not been tested yet!")
-
   # The first bias_nsim runs will be bias-adjustment runs
   if(bias_correct) {
     iterations <- c(paste0("bias/", c(1:bias_nsim)), iterations)
