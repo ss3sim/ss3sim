@@ -78,7 +78,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
 
       # Add new rec devs overwriting om/ss3.par
       change_rec_devs(recdevs_new = sc_i_recdevs, file_in =
-        pastef(sc, i, "om", "ss3.par"), file_out = paste_f(sc, i,
+        pastef(sc, i, "om", "ss3.par"), file_out = pastef(sc, i,
           "om", "ss3.par"))
 
       # Change M
