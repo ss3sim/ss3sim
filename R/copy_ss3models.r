@@ -21,9 +21,6 @@ copy_ss3models <- function(model_dir, scenarios,
   iterations = 1:100, type = c("om", "em")) {
 
   type <- type[1]
-  #if(scenarios[1] == "all available"){
-    #scenarios <- list.files(model_dir)
-  #}
 
   for(sc in scenarios) {
     for(it in iterations) {
