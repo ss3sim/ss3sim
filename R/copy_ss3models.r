@@ -31,7 +31,8 @@ copy_ss3models <- function(model_dir, scenarios,
         print(paste0(to, "/", type, " already exists; not copying this folder."))
       } else {
         file.copy(from, to, recursive = TRUE)
-        file.rename(pastef(to, model_dir), pastef(to, "om"))
+        orig_model_folder <- rev(strsplit(from, "/")[[1]])[1]
+        file.rename(pastef(to, orig_model_folder), pastef(to, type))
       }
     }
   }
