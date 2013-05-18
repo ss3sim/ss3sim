@@ -5,7 +5,8 @@
   change_m(how_time_varying = "env",
     ctl_file_in = "control.ss_new",
     ctl_file_out = "Simple.ctl", dat_file = "Simple.dat",
-    par_file = "ss3.par", n_blocks = 1, block_pattern, dev)
+    dat_file_out = "Simple.dat", par_file = "ss3.par",
+    n_blocks = 1, block_pattern, dev)
 }
 \arguments{
   \item{how_time_varying}{The method for including
@@ -25,9 +26,11 @@
   \item{ctl_file_out}{Output control file name (resulting
   control file with M changed)}
 
-  \item{dat_file}{\code{.dat} File name}
+  \item{dat_file}{Input \code{.dat} file name}
 
-  \item{par_file}{\code{.par} File name}
+  \item{dat_file_out}{Output data file name}
+
+  \item{par_file}{\code{.par} Input file name}
 
   \item{n_blocks}{The number of time blocks within which M
   is estimated separately; Equal to 1 unless
@@ -60,32 +63,34 @@
   to figure out where additional lines need to be added to
   \code{.ctl} files to implement time-varying M.
 
-  CAREFUL: currently the function will modify the
-  \code{.dat} file (\code{dat_file}) that is input; make a
-  copy of the \code{.dat} file under another name if you
-  want to keep an unmodified copy
-
   NOTE: the user has to define an environmental data series
   such that the additive linkage creates the desired
   time-varying pattern in M.
 }
 \examples{
 \dontrun{
-# setwd()... simple SS3 example
-change_m(how_time_varying="env",ctl_file_in = "control.ss_new",dat_file =
-"simple.dat",par_file = "SS3.par",n_blocks = 1,block_pattern =
-c(1990,2001),dev = rnorm(31,mean = 0,sd = 0.6))
+d <- system.file("extdata", package = "ss3sim")
+ctl_file_in <- paste0(d, "/Simple/control.ss_new")
+dat_file <- paste0(d, "/Simple/simple.dat")
+par_file <- paste0(d, "/Simple/SS3.par")
+change_m(how_time_varying = "env", ctl_file_in = ctl_file_in,
+  ctl_file_out = "example.ctl", dat_file = dat_file, dat_file_out =
+  "example.dat", par_file = par_file, n_blocks = 1, block_pattern =
+  c(1990, 2001), dev = rnorm(31, mean = 0, sd = 0.6))
+# clean up:
+file.remove("example.ctl")
+file.remove("example.dat")
 
-# Other examples
-# setwd() sardine model
-change_m(how_time_varying="env",ctl_file_in = "control.ss_new",dat_file =
-"SardOM.dat",par_file = "SS3.par",n_blocks = 1,block_pattern =
-c(1990,2001),dev = rnorm(100,mean = 0,sd = 0.6))
+# other examples
+# sardine model
+# change_m(how_time_varying="env",ctl_file_in = "control.ss_new",dat_file =
+# "SardOM.dat",par_file = "SS3.par",n_blocks = 1,block_pattern =
+# c(1990,2001),dev = rnorm(100,mean = 0,sd = 0.6))
 
-setwd() flatfish model
-change_m(how_time_varying="env",ctl_file_in = "control.ss_new",dat_file =
-"flatfish.dat",par_file = "SS3.par",n_blocks = 2,block_pattern =
-c(1990,2001),dev = rnorm(100,mean = 0,sd = 0.6))
+# flatfish model
+# change_m(how_time_varying="env",ctl_file_in = "control.ss_new",dat_file =
+# "flatfish.dat",par_file = "SS3.par",n_blocks = 2,block_pattern =
+# c(1990,2001),dev = rnorm(100,mean = 0,sd = 0.6))
 }
 }
 \author{
