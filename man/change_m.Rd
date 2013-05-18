@@ -6,7 +6,7 @@
     ctl_file_in = "control.ss_new",
     ctl_file_out = "Simple.ctl", dat_file = "Simple.dat",
     dat_file_out = "Simple.dat", par_file = "ss3.par",
-    n_blocks = 1, block_pattern, dev)
+    n_blocks = 1, block_pattern = NA, dev)
 }
 \arguments{
   \item{how_time_varying}{The method for including
