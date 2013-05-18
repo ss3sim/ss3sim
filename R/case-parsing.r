@@ -154,3 +154,10 @@ get_caseargs <- function(folder, scenario, delimiter = "-", ext = ".txt",
   argvalues_out
 }
 
+#' Substring from right
+#' @references
+#' http://stackoverflow.com/questions/7963898/extracting-the-last-n-characters-from-a-string-in-r
+substr_r <- function(x, n){
+  substr(x, nchar(x)-n+1, nchar(x))
+}
+
