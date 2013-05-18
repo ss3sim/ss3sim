@@ -78,4 +78,10 @@ a$lcomp, agecomp_params = a$agecomp, om_model_dir = om_model_dir,
 em_model_dir = em_model_dir)
 }
 }
+\author{
+  Sean C. Anderson
+}
+\seealso{
+  \code{\link{run_fish600}}
+}
 

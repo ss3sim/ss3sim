@@ -26,6 +26,8 @@
 #' @param bias_nsim If bias correction is run, how many simulations
 #' should the bias be estimated from? It will take the mean of the
 #' correction factors across these runs.
+#' @author Sean C. Anderson
+#' @seealso \code{\link{run_fish600}}
 #' @export
 #' @details
 #' This function is written to be flexible. You can specify the index,
