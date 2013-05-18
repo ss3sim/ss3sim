@@ -69,7 +69,7 @@
 run_fish600 <- function(iterations, scenarios, case_folder,
   om_model_dir, em_model_dir, ...) {
 
-  lapply(scenarios, function(x) {
+  junk <- lapply(scenarios, function(x) {
     a <- get_caseargs(folder = case_folder, scenario = x) 
 
     run_ss3sim(iterations, scenarios = x, m_params = a$M,
@@ -77,6 +77,9 @@ run_fish600 <- function(iterations, scenarios, case_folder,
       agecomp_params = a$agecomp, om_model_dir = om_model_dir,
       em_model_dir = em_model_dir, ...) 
   })
+
+  print(paste("Completed iterations:", paste(iterations, collapse = ",
+        "), "for scenarios:", paste(scenarios, collapse = ", ")))
 
 }
 
