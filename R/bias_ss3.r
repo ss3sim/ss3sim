@@ -22,7 +22,7 @@
 
 bias_ss3 <- function(iter, dir) {
   outfile = "CorrectBias.DAT"
-  myoutput = r4ss::SS_output(dir = paste0(dir, iter, "/em"), repfile =
+  myoutput = r4ss::SS_output(dir = paste0(dir, "/", iter, "/em"), repfile =
     "Report.sso", compfile = "CompReport.sso", covarfile =
     "covar.sso", forecast = FALSE)
   biasvars = try(r4ss::SS_fitbiasramp(replist = myoutput), TRUE)
