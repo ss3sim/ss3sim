@@ -41,8 +41,8 @@ vignette("ss3sim")
 \section*{Setting up the file structure}
 This package is set up assuming that you have an established base case 
 operating model and estimation model to work with. Each operating model and 
-estimation model should be in their own folder. The operating should have the 
-files:
+estimation model should be in their own folder. The operating model folder 
+should have the files:
 \begin{enumerate}
   \item \texttt{yourmodel.ctl}
   \item \texttt{yourmodel.dat}
@@ -60,12 +60,14 @@ The estimation model folder should have:
 \end{enumerate}
 
 \noindent
-In both cases, nothing more and nothing less. The names of the \texttt{.ctl} 
-and \texttt{.dat} files are not important. The package functions will rename 
-them after they are copied to appropriate folders. These files should be 
-derived from the \texttt{.ss\_new} files but named as listed above. It's 
-important to use these \texttt{.ss\_new} files so they have consistent 
-formatting. Many of the functions in this package depend on that formatting.
+In both cases, nothing more and nothing less. (Actually, the \texttt{.dat} 
+folder in the estimation model is optional, but good practice to include for 
+model testing purposes.) The names of the \texttt{.ctl} and \texttt{.dat} files 
+are not important. The package functions will rename them after they are copied 
+to appropriate folders. These files should be derived from the 
+\texttt{.ss\_new} files but named as listed above. It's important to use these 
+\texttt{.ss\_new} files so they have consistent formatting. Many of the 
+functions in this package depend on that formatting.
 
 For the purposes of the Fish 600 project, we have unique case identifiers which 
 combine to create unique scenarios. The types of cases are: natural mortality 
@@ -233,36 +235,36 @@ bias_nsim = 1)
 @
 
 
-\section*{The flat scenario ID structure}
-There are many advantages to this flat scenario ID folder setup:
+%\section*{The flat scenario ID structure}
+%There are many advantages to this flat scenario ID folder setup:
 
-\begin{enumerate}
-  \item It makes it easier for multiple papers to share scenarios.
+%\begin{enumerate}
+  %\item It makes it easier for multiple papers to share scenarios.
 
-  \item It makes it easier for papers to change which scenarios to compare 
-    after.
+  %\item It makes it easier for papers to change which scenarios to compare 
+    %after.
 
-  \item It avoids unnecessary nested folder structure.
+  %\item It avoids unnecessary nested folder structure.
 
-  \item It's easier to distribute the model runs across people and computers.
+  %\item It's easier to distribute the model runs across people and computers.
 
-  \item The functions are more general and applicable to future research.
+  %\item The functions are more general and applicable to future research.
 
-  \item Since each folder represents a unique scenario run, it's simple to keep 
-    track of progress on model runs in a spreadsheet
+  %\item Since each folder represents a unique scenario run, it's simple to keep 
+    %track of progress on model runs in a spreadsheet
   
-\end{enumerate}
+%\end{enumerate}
 
-\noindent
-We can have a spreadsheet with the following columns:
+%\noindent
+%We can have a spreadsheet with the following columns:
 
-\begin{verbatim}
-Scenario ID, Scenario description, Model status
-\end{verbatim}
+%\begin{verbatim}
+%Scenario ID, Scenario description, Model status
+%\end{verbatim}
 
-\noindent
-Then, groups can compile a list of scenario IDs they want to extract and 
-compare.
+%\noindent
+%Then, groups can compile a list of scenario IDs they want to extract and 
+%compare.
 
 
 
@@ -291,7 +293,8 @@ compare.
 \begin{figure}[htbp]
   \centering
     \includegraphics[width=5.5in]{sim-steps.pdf}
-  \caption{Simulation steps}
+  \caption{Simulation steps. Higher-level function calls are shown on the 
+    right.}
   \label{fig:sim-steps}
 \end{figure}
 
