@@ -20,6 +20,7 @@
 #' @param ... Any additional options to pass the SS3 command.
 #' @seealso \code{\link{run_ss3sim}}, \code{\link{run_fish600}}
 #' @author Sean Anderson
+#' @export
 
 run_ss3model <- function(scenarios, iterations, type = c("om", "em"), ss3path = NULL, ...) {
 
