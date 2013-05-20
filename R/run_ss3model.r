@@ -40,7 +40,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"), ss3path = 
         wd <- getwd()
         setwd(pastef(sc, it, type))
         #warning("Windows command not tested yet")
-        system(paste0(ss3path, "SS3 ", ss_options, ...)), invisible = TRUE) 
+        system(paste0(ss3path, "SS3 ", ss_options, ...), invisible = TRUE)
         setwd(wd)
       }
     }
