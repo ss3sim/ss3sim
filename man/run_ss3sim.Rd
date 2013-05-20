@@ -5,7 +5,7 @@
   run_ss3sim(iterations, scenarios, m_params, f_params,
     index_params, lcomp_params, agecomp_params,
     om_model_dir, em_model_dir, bias_correct = FALSE,
-    bias_nsim = 5, bias_already_run = FALSE)
+    bias_nsim = 5, bias_already_run = FALSE, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -43,6 +43,12 @@
   simulations should the bias be estimated from? It will
   take the mean of the correction factors across these
   runs.}
+
+  \item{...}{Anything extra to pass to
+  \code{\link{run_ss3model}}. For example, you may want to
+  pass \code{ss3path} if you haven't placed \code{SS3} in
+  your path, or you may want to pass additional options to
+  \code{SS3}.}
 }
 \description{
   This function is a wrapper function that can call

@@ -26,6 +26,11 @@
 #' @param bias_nsim If bias correction is run, how many simulations
 #' should the bias be estimated from? It will take the mean of the
 #' correction factors across these runs.
+#' @param ... Anything extra to pass to \code{\link{run_ss3model}}.
+#' For example, you may want to pass \code{ss3path} if you haven't
+#' placed \code{SS3} in your path, or you may want to pass additional
+#' options to \code{SS3}.
+#
 #' @author Sean C. Anderson
 #' @seealso \code{\link{run_fish600}}
 #' @export
@@ -62,7 +67,7 @@
 run_ss3sim <- function(iterations, scenarios, m_params, f_params,
   index_params, lcomp_params, agecomp_params, om_model_dir,
   em_model_dir, bias_correct = FALSE, bias_nsim = 5, 
-  bias_already_run = FALSE) {
+  bias_already_run = FALSE, ...) {
 
   # The first bias_nsim runs will be bias-adjustment runs
   if(bias_correct) {
@@ -124,7 +129,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
                  file_out            = pastef(sc, i, "om", "ss3.par")))
 
       # Run the operating model
-      run_ss3model(scenarios = sc, iterations = i, type = "om")
+      run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
 
       # Survey biomass index
       with(index_params, 
@@ -172,7 +177,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
                        agebin_vector = agebin_vector,
                        agecomp       = agecomp))
 
-      run_ss3model(scenarios = sc, iterations = i, type = "em")
+      run_ss3model(scenarios = sc, iterations = i, type = "em", ...)
 
       # Should we run bias correction? We should if bias_correct is
       # true, and we are done running bias corrections (i.e. we're on
