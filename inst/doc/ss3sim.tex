@@ -25,6 +25,7 @@ package:
 
 \begin{Schunk}
 \begin{Sinput}
+> # install.packages("r4ss", "MCMCpack") # dependencies, if needed
 > # install.packages("devtools")
 > # devtools::install_github("ss3sim", username="seananderson")
 > library(ss3sim)
@@ -53,6 +54,7 @@ files:
   \item \texttt{starter.ss}
 \end{enumerate}
 
+\noindent
 The estimation model folder should have:
 
 \begin{enumerate}
@@ -61,6 +63,7 @@ The estimation model folder should have:
   \item \texttt{starter.ss}
 \end{enumerate}
 
+\noindent
 In both cases, nothing more and nothing less. The names of the \texttt{.ctl} 
 and \texttt{.dat} files are not important. The package functions will rename 
 them after they are copied to appropriate folders. These files should be 
@@ -119,6 +122,7 @@ over the operating and estimation models. The folder structure looks like:
   ...
 \end{verbatim}
 
+\noindent
 If you are using bias correction (\texttt{bias\_correct = TRUE}) then there 
 will be some additional folders. In that case the folders will look like:
 
