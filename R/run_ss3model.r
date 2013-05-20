@@ -35,10 +35,10 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"), ss3path = 
       #print(paste0("Running ", type, " for scenario: ", sc, ";
       #iteration: ", it)) 
       if(os == "unix") {
-        system(paste0("cd ", pastef(sc, it, type), ";", ss3path, SS3, ss_options, ...))
+        system(paste0("cd ", pastef(sc, it, type), ";", ss3path, "SS3", ss_options, ...))
       } else {
         warning("Windows command not tested yet")
-        shell(paste("cd ", pastef(sc, it, type), "&", ss3path, SS3, ss_options, ...),
+        shell(paste("cd ", pastef(sc, it, type), "&", ss3path, "SS3", ss_options, ...),
           invisible = TRUE) 
       }
     }
