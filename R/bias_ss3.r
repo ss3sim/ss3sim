@@ -36,12 +36,12 @@ bias_ss3 <- function(iter, dir) {
       1])
   }
   if (iter == 1) {
-    write.table(bias.df, file = paste0(dir, outfile), 
+    write.table(bias.df, file = paste0(dir, "/", outfile), 
       row.names = FALSE, col.names = FALSE, quote = FALSE, 
       append = F)
   }
   else {
-    write.table(bias.df, file = paste0(dir, outfile), 
+    write.table(bias.df, file = paste0(dir, "/", outfile), 
       row.names = FALSE, col.names = FALSE, quote = FALSE, 
       append = T)
   }

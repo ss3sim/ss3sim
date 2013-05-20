@@ -59,7 +59,7 @@ run_bias_ss3 <-function(dir, outdir, nsim) {
 
   # Read in the raw bias adjustment parameters for each run,
   # calculated from Ian Taylor's r4ss function:
-  bias.table <-read.table(paste(dir,outfile,sep=""),header = FALSE)
+  bias.table <-read.table(paste(dir,"/",outfile,sep=""),header = FALSE)
 
   #rename some variables to enhance code interpretability
   names(bias.table)[names(bias.table) == "V1"] = "Sim"
@@ -79,7 +79,7 @@ run_bias_ss3 <-function(dir, outdir, nsim) {
     bias5 = mean(bias.table$bias5))
 
   #Write avg.df values to the the file AvgBias.DAT under the dir folder  
-  write.table(avg.df, file = paste0(dir, "AvgBias.DAT"), 
+  write.table(avg.df, file = paste0(dir, "/", "AvgBias.DAT"), 
     row.names = FALSE, col.names = TRUE, quote = FALSE, append = F)
 
   # Open the control.ss_new file from one of the bias adjustment runs,
@@ -114,7 +114,7 @@ run_bias_ss3 <-function(dir, outdir, nsim) {
   SS_ctlB[ParamLine1 + 3] = paste0(avg.df$bias4, " #_first_recent_yr_nobias_adj_in_MPD")
   SS_ctlB[ParamLine1 + 4] = paste0(avg.df$bias5, " #_max_bias_adj_in_MPD (-1 to override ramp and set biasadj=1.0 for all estimated recdevs)")
 
-  writeLines(SS_ctlB, con = paste(dir, "em.ctl", sep = ""))
+  writeLines(SS_ctlB, con = paste(dir, "/", "em.ctl", sep = ""))
   #}
 
   # place the new em.ctl file in the em folder for each model realization,
