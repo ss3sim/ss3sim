@@ -103,12 +103,12 @@ verify_input <- function(model_dir, type = c("om", "em")) {
     else {
       f.ctl <- NA
     }
-    if (length(grep(".dat", files, ignore.case = TRUE))) {
-      f.dat <- grep(".dat", files, ignore.case = TRUE)
-    }
-    else {
-      f.dat <- NA
-    }
+    #if (length(grep(".dat", files, ignore.case = TRUE))) {
+      #f.dat <- grep(".dat", files, ignore.case = TRUE)
+    #}
+    #else {
+      #f.dat <- NA
+    #}
     if (length(grep("starter.ss", files, ignore.case = TRUE))) {
       f.starter <- grep("starter.ss", files, ignore.case = TRUE)
     }
@@ -121,8 +121,8 @@ verify_input <- function(model_dir, type = c("om", "em")) {
     else {
       f.forecast <- NA
     }
-    file.loc <- data.frame(f.ctl, f.dat, f.starter, f.forecast)
-    file.types <- c(".ctl file", ".dat file", "starter.ss file", 
+    file.loc <- data.frame(f.ctl, f.starter, f.forecast)
+    file.types <- c(".ctl file", "starter.ss file", 
       "forecast.ss file")
     missing.file <- which(is.na(file.loc)) # Which files are missing 
     if (length(missing.file) > 0) {
@@ -133,9 +133,9 @@ verify_input <- function(model_dir, type = c("om", "em")) {
       file.rename(from = paste(model_dir, "/", files[file.loc$f.ctl], 
         sep = ""), to = paste(model_dir, "/em.ctl", 
         sep = ""))
-      file.rename(from = paste(model_dir, "/", files[file.loc$f.dat], 
-        sep = ""), to = paste(model_dir, "/data.dat", 
-        sep = ""))
+      #file.rename(from = paste(model_dir, "/", files[file.loc$f.dat], 
+        #sep = ""), to = paste(model_dir, "/data.dat", 
+        #sep = ""))
       # Alter the starter.ss file
       starter.ss <- readLines(paste(model_dir, "/starter.ss", 
         sep = ""))
