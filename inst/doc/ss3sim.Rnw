@@ -234,7 +234,7 @@ bias_nsim = 1)
 
 
 \section*{The flat scenario ID structure}
-There are many advantages to this flat scenario ID fold setup:
+There are many advantages to this flat scenario ID folder setup:
 
 \begin{enumerate}
   \item It makes it easier for multiple papers to share scenarios.
