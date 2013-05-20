@@ -78,8 +78,8 @@ run_fish600 <- function(iterations, scenarios, case_folder,
       em_model_dir = em_model_dir, ...) 
   })
 
-  print(paste("Completed iterations:", paste(iterations, collapse = ",
-        "), "for scenarios:", paste(scenarios, collapse = ", ")))
+  print(paste("Completed iterations:", paste(iterations, collapse = ", "), 
+      "for scenarios:", paste(scenarios, collapse = ", ")))
 
 }
 
