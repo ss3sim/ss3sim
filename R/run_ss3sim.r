@@ -30,12 +30,11 @@
 #' @seealso \code{\link{run_fish600}}
 #' @export
 #' @details
-#' This function is written to be flexible. You can specify the index,
-#' lcomp, and agecomp parameters in the function call. Eventually the
-#' plan is to create a script which derives the parameters from the
-#' case identifiers and calls this function. That will be a FISH600
-#' specific function.
-
+#' This function is written to be flexible. You can specify the
+#' natural mortality, fishing mortality, survey index,
+#' length comp, and age comp parameters in the function call as list
+#' objects. For a higher-level wrapper function specific to the setup
+#' of the Fish600 projects, see \code{\link{run_fish600}}.
 #' @examples
 #' \dontrun{
 #' # Pull in file paths from the package example data:
