@@ -28,16 +28,16 @@ copy_ss3models <- function(model_dir, scenarios,
       to <- pastef(sc, it)
       dir.create(to, showWarnings = FALSE, recursive = TRUE)
       if(file.exists(pastef(to, type))){
-        print(paste0(to, "/", type, " already exists; not copying this folder."))
+        stop(paste0(to, "/", type, " already exists. Have you already run this model?"))
       } else {
         file.copy(from, to, recursive = TRUE)
         orig_model_folder <- rev(strsplit(from, "/")[[1]])[1]
         file.rename(pastef(to, orig_model_folder), pastef(to, type))
+        # sanity check and rename for consistency:
+        verify_input(model_dir = pastef(to, type), type = type)
       }
     }
   }
 
-  # sanity check and rename for consistency:
-  verify_input(model_dir = pastef(to, type), type = type)
 }
 
