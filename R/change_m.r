@@ -3,6 +3,8 @@
 #' This function takes generic OM files for sardine, flatfish, and cod and
 #' inserts time-varying M. 
 #'
+#' @param dev A vector of environmental data of \code{length = length of *.dat
+#' endyr-startyr+1}
 #' @param how_time_varying The method for including time-varying M in
 #' the SS input files the 3 options are: \code{"env"} \code{"block"}
 #' or \code{"dev"}. 
@@ -23,6 +25,9 @@
 #' @param dat_file_out Output data file name
 #' @param par_file \code{.par} Input file name 
 #' @param par_file_out \code{.par} Output file name 
+#' @param starter_file Input \code{starter.ss} file location
+#' @param starter_file_out Output \code{starter.ss} file location
+#' @param report_file Input \code{Report.sso} file
 #' @param n_blocks The number of time blocks within which M is estimated
 #' separately; Equal to 1 unless \code{how_time_varying} is \code{"block"}, but
 #' \code{n_blocks} is not used in the function unless \code{how_time_varying} is
@@ -30,8 +35,12 @@
 #' @param block_pattern Block pattern. A vector of years marking time blocks
 #' with separate Ms in each block - doesn't get used in the function if
 #' \code{how_time_varying} does not equal \code{"block"}
-#' @param dev A vector of environmental data of \code{length = length of *.dat
-#' endyr-startyr+1}
+#' @param ss3path The path to your SS3 binary the binary is not in
+#' your path. For example, if \code{SS3} was in the folder
+#' \code{/usr/bin/} then \code{ss3path = "/usr/bin/"}. Make sure to
+#' append a slash to the end of this path. Defaults to \code{NULL},
+#' which means the function will assume the binary is already in your
+#' path.
 #' @author Kotaro Ono and Carey McGilliard
 #' @export 
 #'
@@ -43,8 +52,8 @@
 #' \code{.ss_new} file because the documentation in \code{.ss_new}
 #' files are automated and standardized; this function takes advantage
 #' of standard documentation used to figure out where additional lines
-#' need to be added to \code{.ctl}, \code{.par}, and \code{.dat} files to implement time-varying M. 
-#' 
+#' need to be added to \code{.ctl}, \code{.par}, and \code{.dat} files
+#' to implement time-varying M. 
 #' 
 #' NOTE: the user has to define an environmental data series such that
 #' the additive linkage creates the desired time-varying pattern in
@@ -56,10 +65,13 @@
 #' ctl_file_in <- paste0(d, "/Simple/control.ss_new")
 #' dat_file <- paste0(d, "/Simple/simple.dat")
 #' par_file <- paste0(d, "/Simple/SS3.par")
+#' starter_file <- paste0(d, "/Simple/starter.ss")
+#' report_file <- paste0(d, "/Simple/Report.sso")
 #' change_m(how_time_varying = "env", ctl_file_in = ctl_file_in,
 #'   ctl_file_out = "example.ctl", dat_file = dat_file, dat_file_out =
-#'   "example.dat", par_file = par_file, n_blocks = 1, block_pattern =
-#'   c(1990, 2001), dev = rnorm(31, mean = 0, sd = 0.6))
+#'   "example.dat", par_file = par_file, starter_file = starter_file,
+#'   report_file = report_file, n_blocks = 1, block_pattern = c(1990, 2001), 
+#'   dev = rnorm(31, mean = 0, sd = 0.6))
 #' # clean up:
 #' file.remove("example.ctl")
 #' file.remove("example.dat")
@@ -70,23 +82,23 @@
 #' # "SardOM.dat",par_file = "SS3.par",n_blocks = 1,block_pattern =
 #' # c(1990,2001),dev = rnorm(100,mean = 0,sd = 0.6))
 #' 
-# #' # flatfish model
-#  change_m(how_time_varying="env",
-#           ctl_file_in = "control.ss_new",ctl_file_out="Flatfish_m.ctl",
-#           dat_file = "Flatfish.dat",dat_file_out = "Flatfish_m.dat",
-#           par_file = "ss3.par",par_file_out = "ss3.par",
-#           n_blocks = 2,block_pattern = c(1990,2001),
-#           dev = c(rep(0,length = 50),rep(0.1,length=50)))
-#  
+#' # flatfish model
+#' # change_m(how_time_varying="env",
+#' #          ctl_file_in = "control.ss_new",ctl_file_out="Flatfish_m.ctl",
+#' #          dat_file = "Flatfish.dat",dat_file_out = "Flatfish_m.dat",
+#' #          par_file = "ss3.par",par_file_out = "ss3.par",
+#' #          n_blocks = 2,block_pattern = c(1990,2001),
+#' #          dev = c(rep(0,length = 50),rep(0.1,length=50)))
+#' # 
+#' # sardine model
+#' # change_m(how_time_varying="env",
+#' #          ctl_file_in = "control.ss_new",ctl_file_out="SardOM_m.ctl",
+#' #          dat_file = "SardOM.dat",dat_file_out = "SardOM_m.dat",
+#' #          par_file = "ss3.par",par_file_out = "ss3.par",
+#' #          n_blocks = 2,block_pattern = c(1990,2001),
+#' #          dev = c(rep(0,length = 50),rep(0.1,length=50)))
+#' }
 
-# #' # sardine model
-#  change_m(how_time_varying="env",
-#           ctl_file_in = "control.ss_new",ctl_file_out="SardOM_m.ctl",
-#           dat_file = "SardOM.dat",dat_file_out = "SardOM_m.dat",
-#           par_file = "ss3.par",par_file_out = "ss3.par",
-#           n_blocks = 2,block_pattern = c(1990,2001),
-#           dev = c(rep(0,length = 50),rep(0.1,length=50)))
-# #----------------------------------
 # #Carey will remove this section before submitting
 # how_time_varying = "env"
 # ctl_file_in = "control.ss_new"
@@ -98,13 +110,15 @@
 # n_blocks = 1
 # block_pattern = NA
 # dev = rnorm(100,mean=0,sd = 0.6)
-setwd("D:\\Fish600\\Rcode\\change_m_fix_par_sardine")
+# setwd("D:\\Fish600\\Rcode\\change_m_fix_par_sardine")
 #------------------------------------
 
-change_m <- function(how_time_varying = "env", ctl_file_in =
-                       "control.ss_new", ctl_file_out = "Simple.ctl", dat_file =
-                       "Simple.dat", dat_file_out = "Simple.dat", par_file = "ss3.par", par_file_out="ss3.par",
-                     n_blocks = 1, block_pattern = NA, dev) {
+change_m <- function(dev, how_time_varying = "env", ctl_file_in =
+  "control.ss_new", ctl_file_out = "Simple.ctl", dat_file =
+  "Simple.dat", dat_file_out = "Simple.dat", par_file = "ss3.par",
+  par_file_out="ss3.par", starter_file = "starter.ss", starter_file_out
+  = "starter.ss", report_file = "Report.sso", n_blocks = 1,
+  block_pattern = NA, ss3path = NULL) {
   
   # how_time_varying <- how_time_varying[1] #In the future if people want to
   # include more than one kind of time-varying M 
@@ -124,10 +138,11 @@ change_m <- function(how_time_varying = "env", ctl_file_in =
   year.end=SS_dat$endyr
   
   #Copy original files (this is just a failsafe to prevent loss of info)
-  file.copy(from = ctl_file_in, to = "control_pre_change_m.ss_new", overwrite = T, copy.mode = TRUE)
-  file.copy(from = "ss3.par", to = "pre_change_m.par", overwrite = T, copy.mode = TRUE)
+  file.copy(from = ctl_file_in, to = "control_pre_change_m.ss_new",
+    overwrite = T, copy.mode = TRUE)
+  file.copy(from = "ss3.par", to = "pre_change_m.par", overwrite = T,
+    copy.mode = TRUE)
   file.copy(from = dat_file, to = "pre_change_m.dat", overwrite = T, copy.mode = TRUE)
-  
   
   # how_time_varying = "env" may be the only how_time_varying option that's
   # working!!! Use it!!!
@@ -196,24 +211,28 @@ change_m <- function(how_time_varying = "env", ctl_file_in =
     
     #run SS with with no estimation and no hessian
     #first change starter file option to use .par to .ctl
-    SS_Starter <- readLines(con = "Starter.SS") 
+    SS_Starter <- readLines(con = starter_file) 
     UseParLine =grep("# 0=use init values in control file; 1=use ss3.par", SS_Starter, fixed=TRUE) 
     
     SS_Starter[UseParLine] = "0 # 0=use init values in control file; 1=use ss3.par"
     SS_Starter[UseParLine-2] = dat_file_out #This could create a mess up but probably not
     SS_Starter[UseParLine-1] = ctl_file_out
-    writeLines(SS_Starter,con ="Starter.SS")
+    writeLines(SS_Starter,con = starter_file_out)
     
     
     #Call ss3 for a run that includes the environmental link
-    system("ss3 -noest")
+    if(is.null(ss3path)) {
+      system("ss3 -noest")
+    } else {
+      system(paste0(ss3path, "ss3 -noest"))
+    }
     
     #Change starter file option back to using .par!
     SS_Starter[UseParLine] = "1 # 0=use init values in control file; 1=use ss3.par"
-    writeLines(SS_Starter,con ="Starter.SS")
+    writeLines(SS_Starter,con = starter_file_out)
     
     #Dig through Report.sso file to find out MGparm number associated with environmental link parameter
-    SS_Report = readLines(con = "Report.sso")
+    SS_Report = readLines(con = report_file)
     EnvLineNum =grep("NatM_p_1_Fem_GP_1_ENV", SS_Report, fixed=TRUE) 
     LinkLine = SS_Report[EnvLineNum]
     EnvCol <- regexpr("NatM_p_1_Fem_GP_1_ENV", SS_Report[EnvLineNum], fixed=TRUE)[1]

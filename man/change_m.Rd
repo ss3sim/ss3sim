@@ -2,13 +2,19 @@
 \alias{change_m}
 \title{Methods to include time varying natural mortality features}
 \usage{
-  change_m(how_time_varying = "env",
+  change_m(dev, how_time_varying = "env",
     ctl_file_in = "control.ss_new",
     ctl_file_out = "Simple.ctl", dat_file = "Simple.dat",
     dat_file_out = "Simple.dat", par_file = "ss3.par",
-    n_blocks = 1, block_pattern = NA, dev)
+    par_file_out = "ss3.par", starter_file = "starter.ss",
+    starter_file_out = "starter.ss",
+    report_file = "Report.sso", n_blocks = 1,
+    block_pattern = NA, ss3path = NULL)
 }
 \arguments{
+  \item{dev}{A vector of environmental data of \code{length
+  = length of *.dat endyr-startyr+1}}
+
   \item{how_time_varying}{The method for including
   time-varying M in the SS input files the 3 options are:
   \code{"env"} \code{"block"} or \code{"dev"}. \itemize{
@@ -32,6 +38,16 @@
 
   \item{par_file}{\code{.par} Input file name}
 
+  \item{par_file_out}{\code{.par} Output file name}
+
+  \item{starter_file}{Input \code{starter.ss} file
+  location}
+
+  \item{starter_file_out}{Output \code{starter.ss} file
+  location}
+
+  \item{report_file}{Input \code{Report.sso} file}
+
   \item{n_blocks}{The number of time blocks within which M
   is estimated separately; Equal to 1 unless
   \code{how_time_varying} is \code{"block"}, but
@@ -43,8 +59,12 @@
   doesn't get used in the function if
   \code{how_time_varying} does not equal \code{"block"}}
 
-  \item{dev}{A vector of environmental data of \code{length
-  = length of *.dat endyr-startyr+1}}
+  \item{ss3path}{The path to your SS3 binary the binary is
+  not in your path. For example, if \code{SS3} was in the
+  folder \code{/usr/bin/} then \code{ss3path =
+  "/usr/bin/"}. Make sure to append a slash to the end of
+  this path. Defaults to \code{NULL}, which means the
+  function will assume the binary is already in your path.}
 }
 \description{
   This function takes generic OM files for sardine,
@@ -61,7 +81,8 @@
   \code{.ss_new} files are automated and standardized; this
   function takes advantage of standard documentation used
   to figure out where additional lines need to be added to
-  \code{.ctl} files to implement time-varying M.
+  \code{.ctl}, \code{.par}, and \code{.dat} files to
+  implement time-varying M.
 
   NOTE: the user has to define an environmental data series
   such that the additive linkage creates the desired
@@ -73,10 +94,13 @@ d <- system.file("extdata", package = "ss3sim")
 ctl_file_in <- paste0(d, "/Simple/control.ss_new")
 dat_file <- paste0(d, "/Simple/simple.dat")
 par_file <- paste0(d, "/Simple/SS3.par")
+starter_file <- paste0(d, "/Simple/starter.ss")
+report_file <- paste0(d, "/Simple/Report.sso")
 change_m(how_time_varying = "env", ctl_file_in = ctl_file_in,
   ctl_file_out = "example.ctl", dat_file = dat_file, dat_file_out =
-  "example.dat", par_file = par_file, n_blocks = 1, block_pattern =
-  c(1990, 2001), dev = rnorm(31, mean = 0, sd = 0.6))
+  "example.dat", par_file = par_file, starter_file = starter_file,
+  report_file = report_file, n_blocks = 1, block_pattern = c(1990, 2001),
+  dev = rnorm(31, mean = 0, sd = 0.6))
 # clean up:
 file.remove("example.ctl")
 file.remove("example.dat")
@@ -88,9 +112,20 @@ file.remove("example.dat")
 # c(1990,2001),dev = rnorm(100,mean = 0,sd = 0.6))
 
 # flatfish model
-# change_m(how_time_varying="env",ctl_file_in = "control.ss_new",dat_file =
-# "flatfish.dat",par_file = "SS3.par",n_blocks = 2,block_pattern =
-# c(1990,2001),dev = rnorm(100,mean = 0,sd = 0.6))
+# change_m(how_time_varying="env",
+#          ctl_file_in = "control.ss_new",ctl_file_out="Flatfish_m.ctl",
+#          dat_file = "Flatfish.dat",dat_file_out = "Flatfish_m.dat",
+#          par_file = "ss3.par",par_file_out = "ss3.par",
+#          n_blocks = 2,block_pattern = c(1990,2001),
+#          dev = c(rep(0,length = 50),rep(0.1,length=50)))
+#
+# sardine model
+# change_m(how_time_varying="env",
+#          ctl_file_in = "control.ss_new",ctl_file_out="SardOM_m.ctl",
+#          dat_file = "SardOM.dat",dat_file_out = "SardOM_m.dat",
+#          par_file = "ss3.par",par_file_out = "ss3.par",
+#          n_blocks = 2,block_pattern = c(1990,2001),
+#          dev = c(rep(0,length = 50),rep(0.1,length=50)))
 }
 }
 \author{
