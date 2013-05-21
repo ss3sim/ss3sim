@@ -25,7 +25,7 @@ package:
 
 \begin{Schunk}
 \begin{Sinput}
-> # install.packages("r4ss", "MCMCpack") # dependencies, if needed
+> # install.packages(c("r4ss", "MCMCpack")) # dependencies, if needed
 > # install.packages("devtools")
 > # devtools::install_github("ss3sim", username="seananderson")
 > library(ss3sim)
@@ -47,31 +47,43 @@ This package is set up assuming that you have an established base case
 operating model and estimation model to work with. Each operating model and 
 estimation model should be in their own folder. The operating model folder 
 should have the files:
-\begin{enumerate}
-  \item \texttt{yourmodel.ctl}
-  \item \texttt{yourmodel.dat}
-  \item \texttt{ss3.par}
-  \item \texttt{starter.ss}
-\end{enumerate}
+%\begin{enumerate}
+  %\item \texttt{yourmodel.ctl}
+  %\item \texttt{yourmodel.dat}
+  %\item \texttt{ss3.par}
+  %\item \texttt{starter.ss}
+%\end{enumerate}
+\begin{verbatim}
+yourmodel.ctl
+yourmodel.dat
+ss3.par
+starter.ss
+forecast.ss
+\end{verbatim}
 
 \noindent
 The estimation model folder should have:
 
-\begin{enumerate}
-  \item \texttt{yourmodel.ctl}
-  \item \texttt{yourmodel.dat}
-  \item \texttt{starter.ss}
-\end{enumerate}
+\begin{verbatim}
+yourmodel.ctl
+yourmodel.dat # optional; not used
+starter.ss
+forecast.ss
+\end{verbatim}
+
+%\begin{enumerate}
+  %\item \texttt{yourmodel.ctl}
+  %\item \texttt{yourmodel.dat}
+  %\item \texttt{starter.ss}
+%\end{enumerate}
 
 \noindent
-In both cases, nothing more and nothing less. (Actually, the \texttt{.dat} 
-folder in the estimation model is optional, but good practice to include for 
-model testing purposes.) The names of the \texttt{.ctl} and \texttt{.dat} files 
-are not important. The package functions will rename them after they are copied 
-to appropriate folders. These files should be derived from the 
-\texttt{.ss\_new} files but named as listed above. It's important to use these 
-\texttt{.ss\_new} files so they have consistent formatting. Many of the 
-functions in this package depend on that formatting.
+In both cases, nothing more and nothing less. The names of the \texttt{.ctl} 
+and \texttt{.dat} files are not important. The package functions will rename 
+them after they are copied to appropriate folders. These files should be 
+derived from the \texttt{.ss\_new} files but named as listed above. It's 
+important to use these \texttt{.ss\_new} files so they have consistent 
+formatting. Many of the functions in this package depend on that formatting.
 
 For the purposes of the Fish 600 project, we have unique case identifiers which 
 combine to create unique scenarios. The types of cases are: natural mortality 
