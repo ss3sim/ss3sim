@@ -64,7 +64,7 @@
 #' d <- system.file("extdata", package = "ss3sim")
 #' ctl_file_in <- paste0(d, "/Simple/control.ss_new")
 #' dat_file <- paste0(d, "/Simple/simple.dat")
-#' par_file <- paste0(d, "/Simple/SS3.par")
+#' par_file <- paste0(d, "/Simple/ss3.par")
 #' starter_file <- paste0(d, "/Simple/starter.ss")
 #' report_file <- paste0(d, "/Simple/Report.sso")
 #' change_m(how_time_varying = "env", ctl_file_in = ctl_file_in,
@@ -222,9 +222,9 @@ change_m <- function(dev, how_time_varying = "env", ctl_file_in =
     
     #Call ss3 for a run that includes the environmental link
     if(is.null(ss3path)) {
-      system("ss3 -noest")
+      system("SS3 -noest")
     } else {
-      system(paste0(ss3path, "ss3 -noest"))
+      system(paste0(ss3path, "SS3 -noest"))
     }
     
     #Change starter file option back to using .par!
