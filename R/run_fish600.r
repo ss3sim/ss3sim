@@ -58,12 +58,12 @@
 #' em_model_dir = em_model_dir)
 #'
 #' # With bias correction:
-#' # (Note that bias_nsim should be bigger, say 5, but it is set to 1
+#' # (Note that bias_nsim should be bigger, say 5, but it is set to 2
 #' # here so the example runs faster.)
 #' run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-cod"),
 #' case_folder = case_folder, om_model_dir = om_model_dir,
 #' em_model_dir = em_model_dir, bias_correct = TRUE,
-#' bias_nsim = 1)
+#' bias_nsim = 2)
 #' }
 
 run_fish600 <- function(iterations, scenarios, case_folder,
