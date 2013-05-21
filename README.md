@@ -2,7 +2,7 @@ This repository holds code for the 'fish-600 project' by students at the School 
 
 This package can be installed and loaded with:
 ```r
-# install.packages("r4ss", "MCMCpack") # dependencies, if you don't have them
+# install.packages(c("r4ss", "MCMCpack")) # dependencies
 # install.packages("devtools") # for install_github()
 devtools::install_github("ss3sim", username="seananderson")
 library(ss3sim)
