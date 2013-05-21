@@ -141,7 +141,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
 
       # Survey biomass index
       with(index_params, 
-        change_index(dat_file_in     = pastef(sc, i, "om", "data.dat"), 
+        change_index(dat_file_in     = pastef(sc, i, "em", "data.dat"), 
                      dat_file_out    = pastef(sc, i, "em", "data.dat"),
                      start_surv      = start_surv,
                      end_surv        = end_surv,
