@@ -41,6 +41,7 @@
 #' append a slash to the end of this path. Defaults to \code{NULL},
 #' which means the function will assume the binary is already in your
 #' path.
+#' @param dir Directory with the model
 #' @author Kotaro Ono and Carey McGilliard
 #' @export 
 #'
@@ -67,14 +68,17 @@
 #' par_file <- paste0(d, "/Simple/ss3.par")
 #' starter_file <- paste0(d, "/Simple/starter.ss")
 #' report_file <- paste0(d, "/Simple/Report.sso")
+#' wd <- get()
+#' setwd(paste0(d, "/Simple"))
 #' change_m(how_time_varying = "env", ctl_file_in = ctl_file_in,
 #'   ctl_file_out = "example.ctl", dat_file = dat_file, dat_file_out =
 #'   "example.dat", par_file = par_file, starter_file = starter_file,
 #'   report_file = report_file, n_blocks = 1, block_pattern = c(1990, 2001), 
 #'   dev = rnorm(31, mean = 0, sd = 0.6))
-#' # clean up:
-#' file.remove("example.ctl")
-#' file.remove("example.dat")
+# # clean up:
+# file.remove("example.ctl")
+# file.remove("example.dat")
+#' setwd(wd)
 #'
 #' # other examples
 #' # sardine model
