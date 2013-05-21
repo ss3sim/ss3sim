@@ -133,11 +133,14 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
 
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
-    	Data = readLines(pastef(sc, i, "om", "data.ss_new"))
-		  Data.new = Data[(grep("#_expected values with no error added", Data, fixed=TRUE)+1):(grep("#_bootstrap file: 1", Data, fixed=TRUE)-1)]
-		  writeLines(Data.new, con=pastef(sc, i, "om", "data.dat"))
 
-     file.copy(from = pastef(sc, i, "om", "data.dat"), to=pastef(sc, i, "em", "data.dat"))
+      # Read in the data.ss_new file and move it to the em folder
+    	data_file <- readLines(pastef(sc, i, "om", "data.ss_new"))
+      data_file_new <- data_file[(grep("#_expected values with no error
+          added", data_file, fixed=TRUE)+1):(grep("#_bootstrap file:
+          1", data_file, fixed=TRUE)-1)]
+		  writeLines(data_file_new, con=pastef(sc, i, "om", "data.dat"))
+      file.copy(from = pastef(sc, i, "om", "data.dat"), to=pastef(sc, i, "em", "data.dat"))
 
       # Survey biomass index
       with(index_params, 
@@ -150,7 +153,6 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
                      end_fish        = end_fish,
                      freq_fish       = freq_fish,
                      sd_obs_fish     = sd_obs_fish)) 
-
  
       # Add error in the length comp data
       SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "data.dat"))
