@@ -35,13 +35,12 @@
 #' @param block_pattern Block pattern. A vector of years marking time blocks
 #' with separate Ms in each block - doesn't get used in the function if
 #' \code{how_time_varying} does not equal \code{"block"}
-#' @param ss3path The path to your SS3 binary the binary is not in
+#' @param ss3path The path to your SS3 binary if the binary is not in
 #' your path. For example, if \code{SS3} was in the folder
 #' \code{/usr/bin/} then \code{ss3path = "/usr/bin/"}. Make sure to
 #' append a slash to the end of this path. Defaults to \code{NULL},
 #' which means the function will assume the binary is already in your
 #' path.
-#' @param dir Directory with the model
 #' @author Kotaro Ono and Carey McGilliard
 #' @export 
 #'
