@@ -110,21 +110,6 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
         pastef(sc, i, "om", "ss3.par"), file_out = pastef(sc, i,
           "om", "ss3.par"))
 
-
-      #wd <- getwd()
-      #setwd(pastef(sc, i, "om"))
-      # Change M
-      #with(m_params,
-        #change_m(n_blocks            = n_blocks,
-                 #block_pattern       = block_pattern,
-                 #dev                 = dev,
-                 #ctl_file_in         = "om.ctl",
-                 #ctl_file_out        = "om.ctl",
-                 #dat_file            = "data.dat",
-                 #dat_file_out        = "data.dat",
-                 #how_time_varying    = how_time_varying) 
-      #setwd(wd)
-
       # Change F
       with(f_params,
         change_f(years               = years,
@@ -136,14 +121,34 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
 
+      # Read in the data.ss_new file and write to data.dat in the om folder
+      extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
+        data_out = pastef(sc, i, "om", "data.dat"))
+
+      # Change M
+      wd <- getwd()
+      setwd(pastef(sc, i, "om"))
+      with(m_params,
+        change_m(n_blocks            = n_blocks,
+                 block_pattern       = block_pattern,
+                 dev                 = dev,
+                 ctl_file_in         = "om.ctl",
+                 ctl_file_out        = "om.ctl",
+                 dat_file            = "data.dat",
+                 dat_file_out        = "data.dat",
+                 how_time_varying    = how_time_varying)) 
+      setwd(wd)
+
+      # Run the operating model
+      run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
+
       # Read in the data.ss_new file and move it to the em folder
-    	data_file <- readLines(pastef(sc, i, "om", "data.ss_new"))
-      data_file_new <- data_file[(
-        grep("#_expected values with no error added", 
-          data_file, fixed=TRUE)+1):(grep("#_bootstrap file: 1", 
-        data_file, fixed=TRUE)-1)]
-		  writeLines(data_file_new, con=pastef(sc, i, "om", "data.dat"))
-      file.copy(from = pastef(sc, i, "om", "data.dat"), to=pastef(sc, i, "em", "data.dat"))
+      extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
+        data_out = pastef(sc, i, "om", "data.dat"))
+
+      # Copy the new data.dat to the em folder
+      file.copy(from = pastef(sc, i, "om", "data.dat"), to = 
+        pastef(sc, i, "em", "data.dat"))
 
       # Survey biomass index
       with(index_params, 
