@@ -29,7 +29,7 @@
 #' @param ... Anything extra to pass to \code{\link{run_ss3model}}.
 #' For example, you may want to pass \code{ss3path} if you haven't
 #' placed \code{SS3} in your path, or you may want to pass additional
-#' options to \code{SS3}.
+#' options to \code{SS3} through the argument \code{admb_options}.
 #
 #' @author Sean C. Anderson
 #' @seealso \code{\link{run_fish600}}
@@ -108,17 +108,20 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
         pastef(sc, i, "om", "ss3.par"), file_out = pastef(sc, i,
           "om", "ss3.par"))
 
+
+      #wd <- getwd()
+      #setwd(pastef(sc, i, "om"))
       # Change M
       #with(m_params,
         #change_m(n_blocks            = n_blocks,
                  #block_pattern       = block_pattern,
                  #dev                 = dev,
-                 #ctl_file_in         = pastef(sc, i, "om", "om.ctl"),
-                 #ctl_file_out        = pastef(sc, i, "om", "om.ctl"),
-                 #dat_file            = pastef(sc, i, "om", "data.dat"),
-                 #dat_file_out        = pastef(sc, i, "om", "data.dat"),
-                 #par_file            = pastef(sc, i, "om", "ss3.par"),
-                 #how_time_varying    = how_time_varying)) 
+                 #ctl_file_in         = "om.ctl",
+                 #ctl_file_out        = "om.ctl",
+                 #dat_file            = "data.dat",
+                 #dat_file_out        = "data.dat",
+                 #how_time_varying    = how_time_varying) 
+      #setwd(wd)
 
       # Change F
       with(f_params,
