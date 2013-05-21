@@ -136,9 +136,10 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
 
       # Read in the data.ss_new file and move it to the em folder
     	data_file <- readLines(pastef(sc, i, "om", "data.ss_new"))
-      data_file_new <- data_file[(grep("#_expected values with no error
-          added", data_file, fixed=TRUE)+1):(grep("#_bootstrap file:
-          1", data_file, fixed=TRUE)-1)]
+      data_file_new <- data_file[(
+        grep("#_expected values with no error added", 
+          data_file, fixed=TRUE)+1):(grep("#_bootstrap file: 1", 
+        data_file, fixed=TRUE)-1)]
 		  writeLines(data_file_new, con=pastef(sc, i, "om", "data.dat"))
       file.copy(from = pastef(sc, i, "om", "data.dat"), to=pastef(sc, i, "em", "data.dat"))
 
