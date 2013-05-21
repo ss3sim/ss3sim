@@ -48,7 +48,7 @@
   \code{\link{run_ss3model}}. For example, you may want to
   pass \code{ss3path} if you haven't placed \code{SS3} in
   your path, or you may want to pass additional options to
-  \code{SS3}.}
+  \code{SS3} through the argument \code{admb_options}.}
 }
 \description{
   This function is a wrapper function that can call

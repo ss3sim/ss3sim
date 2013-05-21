@@ -59,9 +59,9 @@
   doesn't get used in the function if
   \code{how_time_varying} does not equal \code{"block"}}
 
-  \item{ss3path}{The path to your SS3 binary the binary is
-  not in your path. For example, if \code{SS3} was in the
-  folder \code{/usr/bin/} then \code{ss3path =
+  \item{ss3path}{The path to your SS3 binary if the binary
+  is not in your path. For example, if \code{SS3} was in
+  the folder \code{/usr/bin/} then \code{ss3path =
   "/usr/bin/"}. Make sure to append a slash to the end of
   this path. Defaults to \code{NULL}, which means the
   function will assume the binary is already in your path.}
@@ -93,17 +93,17 @@
 d <- system.file("extdata", package = "ss3sim")
 ctl_file_in <- paste0(d, "/Simple/control.ss_new")
 dat_file <- paste0(d, "/Simple/simple.dat")
-par_file <- paste0(d, "/Simple/SS3.par")
+par_file <- paste0(d, "/Simple/ss3.par")
 starter_file <- paste0(d, "/Simple/starter.ss")
 report_file <- paste0(d, "/Simple/Report.sso")
+wd <- get()
+setwd(paste0(d, "/Simple"))
 change_m(how_time_varying = "env", ctl_file_in = ctl_file_in,
   ctl_file_out = "example.ctl", dat_file = dat_file, dat_file_out =
   "example.dat", par_file = par_file, starter_file = starter_file,
   report_file = report_file, n_blocks = 1, block_pattern = c(1990, 2001),
   dev = rnorm(31, mean = 0, sd = 0.6))
-# clean up:
-file.remove("example.ctl")
-file.remove("example.dat")
+setwd(wd)
 
 # other examples
 # sardine model
