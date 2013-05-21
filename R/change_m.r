@@ -140,7 +140,7 @@ change_m <- function(dev, how_time_varying = "env", ctl_file_in =
   #Copy original files (this is just a failsafe to prevent loss of info)
   file.copy(from = ctl_file_in, to = "control_pre_change_m.ss_new",
     overwrite = T, copy.mode = TRUE)
-  file.copy(from = "ss3.par", to = "pre_change_m.par", overwrite = T,
+  file.copy(from = par_file, to = "pre_change_m.par", overwrite = T,
     copy.mode = TRUE)
   file.copy(from = dat_file, to = "pre_change_m.dat", overwrite = T, copy.mode = TRUE)
   
