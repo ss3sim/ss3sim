@@ -17,12 +17,13 @@
 #' append a slash to the end of this path. Defaults to \code{NULL},
 #' which means the function will assume the binary is already in your
 #' path.
-#' @param ... Any additional options to pass the SS3 command.
+#' @param admb_options Any additional options to pass to the SS3 command.
 #' @seealso \code{\link{run_ss3sim}}, \code{\link{run_fish600}}
 #' @author Sean Anderson
 #' @export
 
-run_ss3model <- function(scenarios, iterations, type = c("om", "em"), ss3path = NULL, ...) {
+run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
+  ss3path = NULL, admb_options = "") {
 
   os <- .Platform$OS.type 
 
@@ -35,12 +36,12 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"), ss3path = 
       #print(paste0("Running ", type, " for scenario: ", sc, ";
       #iteration: ", it)) 
       if(os == "unix") {
-        system(paste0("cd ", pastef(sc, it, type), ";", ss3path, "SS3 ", ss_options, ...))
+        system(paste0("cd ", pastef(sc, it, type), ";", ss3path, "SS3 ", ss_options, " ", admb_options))
       } else {
         wd <- getwd()
         setwd(pastef(sc, it, type))
-        #warning("Windows command not tested yet")
-        system(paste0(ss3path, "SS3 ", ss_options, ...), invisible = TRUE)
+        system(paste0(ss3path, "SS3 ", ss_options, admb_options),
+          invisible = TRUE)
         setwd(wd)
       }
     }

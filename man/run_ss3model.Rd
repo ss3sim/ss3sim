@@ -3,7 +3,7 @@
 \title{Run the operating models for a specified set of scenario IDs}
 \usage{
   run_ss3model(scenarios, iterations, type = c("om", "em"),
-    ss3path = NULL, ...)
+    ss3path = NULL, admb_options = "")
 }
 \arguments{
   \item{scenarios}{Which scenarios to run. Controls which
@@ -22,8 +22,8 @@
   this path. Defaults to \code{NULL}, which means the
   function will assume the binary is already in your path.}
 
-  \item{...}{Any additional options to pass the SS3
-  command.}
+  \item{admb_options}{Any additional options to pass to the
+  SS3 command.}
 }
 \description{
   This function takes care of calling SS3. Importantly, it
