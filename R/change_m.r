@@ -22,6 +22,7 @@
 #' @param dat_file Input \code{.dat} file name
 #' @param dat_file_out Output data file name
 #' @param par_file \code{.par} Input file name 
+#' @param par_file_out \code{.par} Output file name 
 #' @param n_blocks The number of time blocks within which M is estimated
 #' separately; Equal to 1 unless \code{how_time_varying} is \code{"block"}, but
 #' \code{n_blocks} is not used in the function unless \code{how_time_varying} is
@@ -42,7 +43,8 @@
 #' \code{.ss_new} file because the documentation in \code{.ss_new}
 #' files are automated and standardized; this function takes advantage
 #' of standard documentation used to figure out where additional lines
-#' need to be added to \code{.ctl} files to implement time-varying M. 
+#' need to be added to \code{.ctl}, \code{.par}, and \code{.dat} files to implement time-varying M. 
+#' 
 #' 
 #' NOTE: the user has to define an environmental data series such that
 #' the additive linkage creates the desired time-varying pattern in
@@ -68,16 +70,41 @@
 #' # "SardOM.dat",par_file = "SS3.par",n_blocks = 1,block_pattern =
 #' # c(1990,2001),dev = rnorm(100,mean = 0,sd = 0.6))
 #' 
-#' # flatfish model
-#' # change_m(how_time_varying="env",ctl_file_in = "control.ss_new",dat_file =
-#' # "flatfish.dat",par_file = "SS3.par",n_blocks = 2,block_pattern =
-#' # c(1990,2001),dev = rnorm(100,mean = 0,sd = 0.6))
-#' }
+# #' # flatfish model
+#  change_m(how_time_varying="env",
+#           ctl_file_in = "control.ss_new",ctl_file_out="Flatfish_m.ctl",
+#           dat_file = "Flatfish.dat",dat_file_out = "Flatfish_m.dat",
+#           par_file = "ss3.par",par_file_out = "ss3.par",
+#           n_blocks = 2,block_pattern = c(1990,2001),
+#           dev = c(rep(0,length = 50),rep(0.1,length=50)))
+#  
+
+# #' # sardine model
+#  change_m(how_time_varying="env",
+#           ctl_file_in = "control.ss_new",ctl_file_out="SardOM_m.ctl",
+#           dat_file = "SardOM.dat",dat_file_out = "SardOM_m.dat",
+#           par_file = "ss3.par",par_file_out = "ss3.par",
+#           n_blocks = 2,block_pattern = c(1990,2001),
+#           dev = c(rep(0,length = 50),rep(0.1,length=50)))
+# #----------------------------------
+# #Carey will remove this section before submitting
+# how_time_varying = "env"
+# ctl_file_in = "control.ss_new"
+# ctl_file_out = "Flatfish_m.ctl"
+# dat_file = "Flatfish.dat"
+# dat_file_out = "Flatfish_m.dat"
+# par_file = "ss3.par"
+# par_file_out = "ss3.par"
+# n_blocks = 1
+# block_pattern = NA
+# dev = rnorm(100,mean=0,sd = 0.6)
+setwd("D:\\Fish600\\Rcode\\change_m_fix_par_sardine")
+#------------------------------------
 
 change_m <- function(how_time_varying = "env", ctl_file_in =
-  "control.ss_new", ctl_file_out = "Simple.ctl", dat_file =
-  "Simple.dat", dat_file_out = "Simple.dat", par_file = "ss3.par",
-  n_blocks = 1, block_pattern = NA, dev) {
+                       "control.ss_new", ctl_file_out = "Simple.ctl", dat_file =
+                       "Simple.dat", dat_file_out = "Simple.dat", par_file = "ss3.par", par_file_out="ss3.par",
+                     n_blocks = 1, block_pattern = NA, dev) {
   
   # how_time_varying <- how_time_varying[1] #In the future if people want to
   # include more than one kind of time-varying M 
@@ -91,30 +118,37 @@ change_m <- function(how_time_varying = "env", ctl_file_in =
   ## afterwards, read in .dat file
   SS_ctl <- readLines(ctl_file_in)
   SS_dat <- r4ss::SS_readdat(dat_file, verbose = FALSE, echoall = FALSE, section = NULL)
+  SS_par <- readLines(con = par_file)  
   
   year.beg=SS_dat$styr
   year.end=SS_dat$endyr
+  
+  #Copy original files (this is just a failsafe to prevent loss of info)
+  file.copy(from = ctl_file_in, to = "control_pre_change_m.ss_new", overwrite = T, copy.mode = TRUE)
+  file.copy(from = "ss3.par", to = "pre_change_m.par", overwrite = T, copy.mode = TRUE)
+  file.copy(from = dat_file, to = "pre_change_m.dat", overwrite = T, copy.mode = TRUE)
+  
   
   # how_time_varying = "env" may be the only how_time_varying option that's
   # working!!! Use it!!!
   # "env" is the preferred method of doing time-varying M that we decided on as
   # a class
   if(how_time_varying == "env") {
-    # add the time varying feature into the ctl file	 
+    # add the time varying feature into the ctl file   
     # find the line specifying natural mortality params
-
+    
     # Find the line # of the line with the character string "#
     # NatM_p_1_Fem_GP_1" in SS_ctl
     ch3a <- grep("# NatM_p_1_Fem_GP_1", SS_ctl) 
     ch3<-ch3a[1]
-
+    
     # Extract every value that comes before "# NatM_p_1_Fem_GP_1" on
     # line ch3 as characters in the character vector "val"
     ch4 <- regexpr("# NatM_p_1_Fem_GP_1", SS_ctl[ch3])[1] 
-
+    
     # Extract every value that comes before "# NatM_p_1_Fem_GP_1" on
     # line ch3 as characters in the character vector "val"
-    val = strsplit(substr(SS_ctl[ch3], start=1, stop=ch4-1), " ")[[1]]	
+    val = strsplit(substr(SS_ctl[ch3], start=1, stop=ch4-1), " ")[[1]]  
     val = as.numeric(val)	# change val to a numeric vector
     check = (is.na(val)) #check for missing values
     if (sum(check)>0) #Extra QAQC check
@@ -157,6 +191,45 @@ change_m <- function(how_time_varying = "env", ctl_file_in =
     New.dat=c(First_piece, apply(env.dat, 1, function(x) paste(x, collapse=" ")), Last_piece)
     # write output	
     writeLines(New.dat, con= dat_file_out)
+    
+    #CRM 5/19/2013: modify the *.par file to include the environmental link parameter (MGparam[17])
+    
+    #run SS with with no estimation and no hessian
+    #first change starter file option to use .par to .ctl
+    SS_Starter <- readLines(con = "Starter.SS") 
+    UseParLine =grep("# 0=use init values in control file; 1=use ss3.par", SS_Starter, fixed=TRUE) 
+    
+    SS_Starter[UseParLine] = "0 # 0=use init values in control file; 1=use ss3.par"
+    SS_Starter[UseParLine-2] = dat_file_out #This could create a mess up but probably not
+    SS_Starter[UseParLine-1] = ctl_file_out
+    writeLines(SS_Starter,con ="Starter.SS")
+    
+    
+    #Call ss3 for a run that includes the environmental link
+    system("ss3 -noest")
+    
+    #Change starter file option back to using .par!
+    SS_Starter[UseParLine] = "1 # 0=use init values in control file; 1=use ss3.par"
+    writeLines(SS_Starter,con ="Starter.SS")
+    
+    #Dig through Report.sso file to find out MGparm number associated with environmental link parameter
+    SS_Report = readLines(con = "Report.sso")
+    EnvLineNum =grep("NatM_p_1_Fem_GP_1_ENV", SS_Report, fixed=TRUE) 
+    LinkLine = SS_Report[EnvLineNum]
+    EnvCol <- regexpr("NatM_p_1_Fem_GP_1_ENV", SS_Report[EnvLineNum], fixed=TRUE)[1]
+    MGParmNum = as.numeric(substr(LinkLine,start = 1, stop = (EnvCol-1)))
+   
+    #Remake the ss3.par file with the enviro link param...
+    ParSearchPhrase = paste0("# MGparm[",MGParmNum-1,"]:")
+    ParLineA = grep(ParSearchPhrase,SS_par,fixed=TRUE)
+    FirstParFile = SS_par[1:(ParLineA+1)]
+    LastParFile = SS_par[(ParLineA+2):(length(SS_par))]
+    #write a new par file that merges original par file info with inclusion of enviro link param
+    NewParLine1 = paste0("# MGparm[",MGParmNum,"]:")
+    NewParLine2 = "1.00000000000"
+    New.par=c(FirstParFile,NewParLine1,NewParLine2, LastParFile)
+    writeLines(New.par, con= par_file_out)
+    
   }
   
   # We are not currently using how_time_varying = "dev" and this section may
@@ -186,7 +259,7 @@ change_m <- function(how_time_varying = "env", ctl_file_in =
     writeLines(SS_ctl, con= ctl_file_out)
     
     # add grwoth dev estimates into the par file	 
-    SS_par <- readLines(con = par_file)
+    SS_par <- readLines(con = par_file_in)
     ch1 <- grep("# SR_parm[1]:", SS_par, fixed=TRUE)
     MGdev.exist = sum(as.numeric((grep("# MGparm_dev:", SS_par, fixed=TRUE))))
     length.file=length(SS_par)
@@ -197,7 +270,7 @@ change_m <- function(how_time_varying = "env", ctl_file_in =
     new.par=c(beg.file, to.add, end.file)
     writeLines(new.par, con = par_file)
   }
-
+  
   # We are not currently using how_time_varying = "block" and this section may
   # need updating!!!
   if(how_time_varying == "block") {
@@ -234,6 +307,7 @@ change_m <- function(how_time_varying = "env", ctl_file_in =
     val2 <- c(-1, 2, 1, 0, -1, 99, -2)
     SS_ctl[ch5+1] <- paste(c(val2, " # env link specification i.e fixed to 1"), collapse=" ")
   }
+  
   
 }
 
