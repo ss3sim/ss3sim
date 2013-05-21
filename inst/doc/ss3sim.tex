@@ -42,6 +42,47 @@ You can read the help files and access this vignette again with:
 \end{Sinput}
 \end{Schunk}
 
+\section*{Putting \texttt{SS3} in your path}
+SS3 must be in your path for the \texttt{ss3sim} package to work.
+
+\subsection*{For Unix (Linux and OS X)}
+To check if SS is in your path: open a Terminal window and type \texttt{which 
+  SS3} and hit enter. If you get nothing returned then SS is not in your path.
+The easiest way to fix this is to move the SS3 binary to a folder that's 
+already in your path. To find existing path folders type \texttt{echo \$PATH} 
+in the terminal and hit enter. Now move the SS3 binary to one of these folders. 
+For example, in a Terminal window type:
+
+\begin{verbatim}
+  sudo cp ~/Downloads/SS3 /usr/bin/
+\end{verbatim}
+
+\noindent
+You will need to use \texttt{sudo} and enter your password after to have 
+permission to move a file to a folder like \texttt{/usr/bin/}.
+
+\subsection*{For Windows}
+To check if SS is in your path: open a DOS prompt and type \texttt{ss3?} and 
+hit enter. If you get a line like ``ss3 is not recognized \ldots'' then SS is 
+not in your path. To add it to your path:
+
+\begin{enumerate}
+  \item Find the latest version of the \texttt{ss3.exe} binary on your computer
+  \item Record the folder location. E.g. \texttt{C:/SS3.24o/}
+  \item Click on the start menu and type ``environment''
+  \item Choose ``Edit environment variables for your account'' under Control 
+    Panel
+  \item Click on \texttt{PATH} if it exists, create it if doesn't exist
+  \item Choose \texttt{PATH} and click edit
+  \item In the ``Edit User Variable'' window add to the \textbf{end} of the 
+    ``Variable value'' section a semicolon and the SS3 folder location you 
+    recorded earlier. E.g. \texttt{;C:/SS3.24o/}
+  \item Restart your computer
+  \item Go back to the DOS prompt and try typing \texttt{ss3?} and hitting 
+    return again.
+\end{enumerate}
+
+
 \section*{Setting up the file structure}
 This package is set up assuming that you have an established base case 
 operating model and estimation model to work with. Each operating model and 
