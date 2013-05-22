@@ -9,7 +9,7 @@ library(ss3sim)
 ```
 You can read the vignette and see the help pages with:
 ```r
-vignette("ss3sim") # still under development and slightly out of date
+vignette("ss3sim") 
 help(package = "ss3sim")
 ```
 
