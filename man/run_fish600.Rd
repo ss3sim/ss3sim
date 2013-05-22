@@ -35,7 +35,7 @@
   pass additional options to \code{SS3} through the
   argument \code{admb_options}. Just don't pass the ADMB
   options \code{-noest} or \code{-nohess} and enable bias
-  correction.}
+  adjustment.}
 }
 \description{
   This function first deals with parsing the case input

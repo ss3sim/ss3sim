@@ -21,7 +21,7 @@
 #' includes \code{bias_adjust} and \code{bias_nsim}. Also, you can
 #' pass additional options to \code{SS3} through the argument
 #' \code{admb_options}. Just don't pass the ADMB options \code{-noest}
-#' or \code{-nohess} and enable bias correction.
+#' or \code{-nohess} and enable bias adjustment.
 #' @author Sean C. Anderson
 #' @details
 #' The operating model folder should contain: \code{forecast.ss},

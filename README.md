@@ -42,7 +42,7 @@ permission to move a file to a folder like `/usr/bin/`.
 For Windows
 -----------
 
-To check if SS is in your path: open a DOS prompt and type `ss3?` and
+To check if SS is in your path: open a DOS prompt and type `ss3 -?` and
 hit enter. If you get a line like “ss3 is not recognized …” then SS is
 not in your path. To add it to your path:
 
@@ -120,7 +120,7 @@ the operating and estimation models. The folder structure looks like:
       M1-F1-D1-R1-cod/2/em
       ...
 
-If you are using bias correction (`bias_correct = TRUE`) then there will
+If you are using bias adjustment (`bias_adjust = TRUE`) then there will
 be some additional folders. In that case the folders will look like:
 
       M1-F1-D1-R1-cod/bias/1/om
@@ -220,17 +220,17 @@ iteration of the scenario `M1-F1-D1-R1-cod`. You could run it like this:
     em_model_dir <- paste0(f, "cod_em")
     case_folder <- paste0(f, "case-arguments")
 
-    # Without bias correction:
+    # Without bias adjustment:
     run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-cod"),
     case_folder = case_folder, om_model_dir = om_model_dir,
     em_model_dir = em_model_dir)
 
-    # With bias correction:
+    # With bias adjustment:
     # (Note that bias_nsim should be bigger, say 5, but it is set to 2
     # here so the example runs faster.)
     run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-cod"),
     case_folder = case_folder, om_model_dir = om_model_dir,
-    em_model_dir = em_model_dir, bias_correct = TRUE,
+    em_model_dir = em_model_dir, bias_adjust = TRUE,
     bias_nsim = 2)
 
 See the PDF version of this vignette for a flow chart illustrating how
