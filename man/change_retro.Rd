@@ -17,9 +17,7 @@
 \description{
   Alter a starter file for a retrospective analysis
 }
-\references{
-  This function consists of three lines of code extracted
-  from Ian Taylor's \code{r4ss::SS_doRetro} function by
-  Sean Anderson.
+\author{
+  Sean C. Anderson
 }
 
