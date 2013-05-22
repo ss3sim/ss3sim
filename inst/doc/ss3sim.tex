@@ -229,12 +229,12 @@ specified, changes the length composition data as specified, copies and renames
 files as necessary, and calls \texttt{run\_ss3model} again to run the 
 estimation model.
 
-The \texttt{run\_fish600} function is a high-level wrapper that deals with 
+The \texttt{run\_fish600} function is a higher-level wrapper that deals with 
 parsing the case input files and then passes these arguments on to 
-\texttt{run\_ss3sim}.
+\texttt{run\_ss3sim}. This is what we will use for the Fish 600 project.
 
 Say you have your input case files setup and you want to run the first 
-50 iterations of those scenarios. You could run them like this:
+iteration of the scenario \texttt{M1-F1-D1-R1-cod}. You could run it like this:
 
 \begin{verbatim}
 # First grab the example package data:
@@ -258,6 +258,12 @@ em_model_dir = em_model_dir, bias_correct = TRUE,
 bias_nsim = 1)
 \end{verbatim}
 
+See the PDF version of this vignette for a flow chart illustrating how 
+\texttt{run\_fish600} and \texttt{run\_ss3sim} work:
+
+\begin{verbatim}
+vignette("ss3sim")
+\end{verbatim}
 
 \begin{figure}[htbp]
   \centering

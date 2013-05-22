@@ -206,12 +206,12 @@ specified, changes the length composition data as specified, copies and
 renames files as necessary, and calls `run_ss3model` again to run the
 estimation model.
 
-The `run_fish600` function is a high-level wrapper that deals with
+The `run_fish600` function is a higher-level wrapper that deals with
 parsing the case input files and then passes these arguments on to
-`run_ss3sim`.
+`run_ss3sim`. This is what we will use for the Fish 600 project.
 
 Say you have your input case files setup and you want to run the first
-50 iterations of those scenarios. You could run them like this:
+iteration of the scenario `M1-F1-D1-R1-cod`. You could run it like this:
 
     # First grab the example package data:
     d <- system.file("extdata", package = "ss3sim")
@@ -232,4 +232,9 @@ Say you have your input case files setup and you want to run the first
     case_folder = case_folder, om_model_dir = om_model_dir,
     em_model_dir = em_model_dir, bias_correct = TRUE,
     bias_nsim = 1)
+
+See the PDF version of this vignette for a flow chart illustrating how
+`run_fish600` and `run_ss3sim` work:
+
+    vignette("ss3sim")
 
