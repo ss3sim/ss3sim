@@ -53,4 +53,8 @@ nsim = 2)
 \author{
   Carey McGilliard
 }
+\seealso{
+  \code{\link{run_ss3sim}}, \code{\link{run_ss3model}},
+  \code{\link{run_bias_ss3}}
+}
 

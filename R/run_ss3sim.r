@@ -30,10 +30,10 @@
 #' scenario (the bias folders and \code{.dat} files already exist)
 #' then you can set this to \code{TRUE} to avoid re-running the bias
 #' adjustment routine.
-# @param ... Anything extra to pass to \code{\link{run_ss3model}}.
-# For example, you may want to pass \code{ss3path} if you haven't
-# placed \code{SS3} in your path, or you may want to pass additional
-# options to \code{SS3} through the argument \code{admb_options}.
+#' @param ... Anything extra to pass to \code{\link{run_ss3model}}.
+#' For example, you may want to pass additional options to \code{SS3}
+#' through the argument \code{admb_options}. Just don't pass
+#' \code{-noest} or \code{-nohess} and enable bias correction.
 #
 #' @author Sean C. Anderson
 #' @seealso \code{\link{run_fish600}}

@@ -50,6 +50,8 @@
 #' run_bias_ss3(dir = "M1-F1-D1-R1-cod/", outdir = "M1-F1-D1-R1-cod/",
 #' nsim = 2)
 #' }
+#' @seealso \code{\link{run_ss3sim}}, \code{\link{run_ss3model}},
+#' \code{\link{run_bias_ss3}}
 
 run_bias_ss3 <-function(dir, outdir, nsim) {
   outfile = "AdjustBias.DAT"

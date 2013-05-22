@@ -15,17 +15,21 @@
 #' @param em_model_dir The location of the folder containing the
 #' estimation model you want to use. 
 #' @param ... Anything else to pass to \code{\link{run_ss3sim}}. This
-#' includes \code{bias_adjust} and \code{bias_nsim}.
+#' includes \code{bias_adjust} and \code{bias_nsim}. Also, you can
+#' pass additional options to \code{SS3} through the argument
+#' \code{admb_options}. Just don't pass the ADMB options \code{-noest}
+#' or \code{-nohess} and enable bias correction.
 #' @author Sean C. Anderson
 #' @details
-#' The operating model folder should contain: forecast.ss,
-#' yourmodel.ctl, yourmodel.dat, ss3.par, and starter.ss. Nothing more
-#' and nothing less. The files should be the versions returned as
-#' .ss_new files. This is important because it creates consistent
-#' formatting which many of the functions in this package depend on.
-#' Rename the .ss_new files as listed above The estimation model
+#' The operating model folder should contain: \code{forecast.ss},
+#' \code{yourmodel.ctl}, \code{yourmodel.dat}, \code{ss3.par}, and
+#' \code{starter.ss}. Nothing more and nothing less. The files should
+#' be the versions returned as \code{.ss_new} files. This is important
+#' because it creates consistent formatting which many of the
+#' functions in this package depend on. Rename the \code{.ss_new}
+#' files as listed above (and in all lowercase). The estimation model
 #' folder should contain all the same files listed above except the
-#' ss3.par file.
+#' \code{ss3.par} and \code{yourmodel.dat} files, which are unnecessary.
 #' 
 #' The output will appear in whatever your current R working directory
 #' is. There will be folders named after your scenarios. They will
@@ -40,7 +44,8 @@
 #' \item \code{M1-F1-D1-R1-cod/2/om}
 #' \item ...
 #' }
-#' @seealso \code{\link{run_ss3sim}}
+#' @seealso \code{\link{run_ss3sim}}, \code{\link{run_ss3model}},
+#' \code{\link{run_bias_ss3}}
 #' @export
 #'
 #' @examples

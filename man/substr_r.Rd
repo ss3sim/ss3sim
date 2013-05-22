@@ -4,6 +4,12 @@
 \usage{
   substr_r(x, n)
 }
+\arguments{
+  \item{x}{A character object}
+
+  \item{n}{The number of characters from the right to
+  extract}
+}
 \description{
   Substring from right
 }
