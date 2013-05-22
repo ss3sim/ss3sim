@@ -1,17 +1,15 @@
-This repository holds code for the 'fish-600 project' by students at the School of Aquatic and Fishery Sciences, University of Washington. The project will develop assessment models, operating models, and associated R functions for stock assessment simulation studies using Stock Synthesis. The project aims to complete several studies, the results of which will be presented at the World Conference on Stock Assessment Methods in Boston, July 2013.
+First start by installing the latest version of `ss3sim` and loading the
+package:
 
-The `ss3sim` package can be installed and loaded with:
-```r
-# install.packages(c("r4ss", "MCMCpack")) # dependencies
-# install.packages("devtools") # for install_github()
-devtools::install_github("ss3sim", username="seananderson")
-library(ss3sim)
-```
-You can read the vignette and see the help pages with:
-```r
-vignette("ss3sim") 
-help(package = "ss3sim")
-```
+    # install.packages(c("r4ss", "MCMCpack")) # dependencies, if needed
+    # install.packages("devtools")
+    # devtools::install_github("ss3sim", username="seananderson")
+    library(ss3sim)
+
+You can read the help files and access this vignette again with:
+
+    help(package = "ss3sim")
+    vignette("ss3sim")
 
 Putting `SS3` in your path {.unnumbered}
 ==========================
@@ -227,5 +225,5 @@ Say you have your input case files setup and you want to run the first
     em_model_dir = em_model_dir, bias_correct = TRUE,
     bias_nsim = 1)
 
-<!--[htbp] ![Simulation steps. Higher-level function calls are shown on the-->
-<!--right.](sim-steps.pdf "fig:") [fig:sim-steps]-->
+[htbp] ![Simulation steps. Higher-level function calls are shown on the
+right.](sim-steps.pdf "fig:") [fig:sim-steps]
