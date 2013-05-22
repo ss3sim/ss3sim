@@ -11,10 +11,10 @@
 
 change_retro <- function(startfile_in = "starter.ss", startfile_out =
   "starter.ss", retro_yr = 0) {
-  browser()
   starter <- r4ss::SS_readstarter(startfile_in, verbose = FALSE)
   starter$retro_yr <- retro_yr
-  r4ss::SS_writestarter(starter, file = startfile_out, verbose = FALSE, overwrite = TRUE)
+  r4ss::SS_writestarter(starter, file = startfile_out, verbose =
+    FALSE, overwrite = TRUE)
 }
 
 
