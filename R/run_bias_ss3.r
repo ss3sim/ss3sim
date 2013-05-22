@@ -1,7 +1,7 @@
 #' Determine level of bias adjustment for SS runs
 #'
 #' Determine level of bias adjustment from multiple SS runs.
-#' IMPORTANT: The Hessian must be calculated for the SS the runs that
+#' IMPORTANT: The Hessian must be calculated for the SS runs that
 #' this function uses.
 #'
 #' @details

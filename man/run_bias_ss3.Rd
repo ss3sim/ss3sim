@@ -23,8 +23,8 @@
 }
 \description{
   Determine level of bias adjustment from multiple SS runs.
-  IMPORTANT: The Hessian must be calculated for the SS the
-  runs that this function uses.
+  IMPORTANT: The Hessian must be calculated for the SS runs
+  that this function uses.
 }
 \details{
   This function: \itemize{ \item uses the \code{r4ss}
