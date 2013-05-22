@@ -233,5 +233,3 @@ Say you have your input case files setup and you want to run the first
     em_model_dir = em_model_dir, bias_correct = TRUE,
     bias_nsim = 1)
 
-[htbp] ![Simulation steps. Higher-level function calls are shown on the
-right.](sim-steps.pdf "fig:") [fig:sim-steps]
