@@ -32,6 +32,14 @@ library(ss3sim)
 \end{verbatim}
 
 \noindent
+While the package is under active development, it's a good idea to install a 
+new version every day or so using the \texttt{install\_github} command:
+
+\begin{verbatim}
+devtools::install_github("ss3sim", username="seananderson")
+\end{verbatim}
+
+\noindent
 You can read the help files and access this vignette again with:
 
 \begin{verbatim}
@@ -43,12 +51,12 @@ vignette("ss3sim")
 \texttt{SS3} must be in your path for the \texttt{ss3sim} package to work.
 
 \subsection{For Unix (Linux and OS X)}
-To check if SS is in your path: open a Terminal window and type \texttt{which 
-  SS3} and hit enter. If you get nothing returned then SS is not in your path.
-The easiest way to fix this is to move the \texttt{SS3} binary to a folder that's 
-already in your path. To find existing path folders type \texttt{echo \$PATH} 
-in the terminal and hit enter. Now move the \texttt{SS3} binary to one of these folders. 
-For example, in a Terminal window type:
+To check if \texttt{SS3} is in your path: open a Terminal window and type 
+\texttt{which SS3} and hit enter. If you get nothing returned then SS is not in 
+your path. The easiest way to fix this is to move the \texttt{SS3} binary to a 
+folder that's already in your path. To find existing path folders type 
+\texttt{echo \$PATH} in the terminal and hit enter. Now move the \texttt{SS3} 
+binary to one of these folders. For example, in a Terminal window type:
 
 \begin{verbatim}
   sudo cp ~/Downloads/SS3 /usr/bin/
@@ -162,8 +170,8 @@ renamed \texttt{data.dat}, the control files have been renamed \texttt{om.ctl}
 or \texttt{em.ctl}, and the starter and control files have been adjusted to 
 reflect these new file names.
 
-The functions in this package assume you've set your working directory in R to 
-be the base folder where you will store the scenario folders.
+The functions in this package assume you've set your working directory in 
+\texttt{R} to be the base folder where you will store the scenario folders.
 
 \section{Creating the input configuration files}
 You will need to have a folder containing ``case'' argument definitions. These 
@@ -192,12 +200,12 @@ and \texttt{lcomp0-spp.txt}. The other case types have single argument files.
 
 The first column in the text files denotes the argument to be passed to a 
 function. The second argument denotes the value to be passed. You can use any 
-simple R syntax. For example: \texttt{c(1, 2, 4)}, or \texttt{seq(1, 100)} or 
+simple \texttt{R} syntax. For example: \texttt{c(1, 2, 4)}, or \texttt{seq(1, 100)} or 
 \texttt{1:100} or \texttt{matrix()}. Character objects don't need to be quoted, 
 but can be if you'd like. However, be careful not to use the delimiter (set up 
 as a semicolon) anywhere else in the file besides to denote columns. You can 
 add comments after any \texttt{\#} symbols. Internally, the functions evaluate 
-in R any entries that have no character values (e.g. \texttt{1:100}) or have an 
+in \texttt{R} any entries that have no character values (e.g. \texttt{1:100}) or have an 
 alpha-numeric character followed by a \texttt{(}. Anything that is character 
 only or has character mixed with numeric but doesn't have the regular 
 expression \texttt{"[A-Za-z0-9]("} gets turned into a character argument.

@@ -8,6 +8,12 @@ The package can be installed and loaded with:
     # devtools::install_github("ss3sim", username="seananderson")
     library(ss3sim)
 
+While the package is under active development, it’s a good idea to
+install a new version every day or so using the `install_github`
+command:
+
+    devtools::install_github("ss3sim", username="seananderson")
+
 You can read the help files and access this vignette again with:
 
     help(package = "ss3sim")
@@ -21,7 +27,7 @@ Putting `SS3` in your path
 For Unix (Linux and OS X)
 -------------------------
 
-To check if SS is in your path: open a Terminal window and type
+To check if `SS3` is in your path: open a Terminal window and type
 `which SS3` and hit enter. If you get nothing returned then SS is not in
 your path. The easiest way to fix this is to move the `SS3` binary to a
 folder that’s already in your path. To find existing path folders type
@@ -137,7 +143,7 @@ been renamed `data.dat`, the control files have been renamed `om.ctl` or
 reflect these new file names.
 
 The functions in this package assume you’ve set your working directory
-in R to be the base folder where you will store the scenario folders.
+in `R` to be the base folder where you will store the scenario folders.
 
 Creating the input configuration files
 ======================================
@@ -171,12 +177,12 @@ case types have single argument files.
 
 The first column in the text files denotes the argument to be passed to
 a function. The second argument denotes the value to be passed. You can
-use any simple R syntax. For example: `c(1, 2, 4)`, or `seq(1, 100)` or
-`1:100` or `matrix()`. Character objects don’t need to be quoted, but
+use any simple `R` syntax. For example: `c(1, 2, 4)`, or `seq(1, 100)`
+or `1:100` or `matrix()`. Character objects don’t need to be quoted, but
 can be if you’d like. However, be careful not to use the delimiter (set
 up as a semicolon) anywhere else in the file besides to denote columns.
 You can add comments after any `#` symbols. Internally, the functions
-evaluate in R any entries that have no character values (e.g. `1:100`)
+evaluate in `R` any entries that have no character values (e.g. `1:100`)
 or have an alpha-numeric character followed by a `(`. Anything that is
 character only or has character mixed with numeric but doesn’t have the
 regular expression `"[A-Za-z0-9]("` gets turned into a character
