@@ -44,11 +44,11 @@
   take the mean of the adjustment factors across these
   runs.}
 
-  \item{...}{Anything extra to pass to
-  \code{\link{run_ss3model}}. For example, you may want to
-  pass \code{ss3path} if you haven't placed \code{SS3} in
-  your path, or you may want to pass additional options to
-  \code{SS3} through the argument \code{admb_options}.}
+  \item{bias_already_run}{If you've already run the bias
+  runs for a scenario (the bias folders and \code{.dat}
+  files already exist) then you can set this to
+  \texttt{TRUE} to avoid re-running the bias adjustment
+  routine.}
 }
 \description{
   This function is a wrapper function that can call
