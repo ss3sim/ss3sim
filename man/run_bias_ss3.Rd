@@ -33,7 +33,7 @@
   bias adjustment parameters for each run, \item takes the
   average over runs for each bias adjustment parameter
   \item writes out the unaveraged and averaged
-  (\code{CorrectBias.dat} and \code{AvgBias.dat},
+  (\code{AdjustBias.DAT} and \code{AvgBias.DAT},
   respectively) bias adjustment parameters to the
   \code{dir} folder \item takes a \code{control.ss_new}
   file from one of the 5 SS runs, changes the 5 bias

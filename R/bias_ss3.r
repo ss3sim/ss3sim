@@ -5,9 +5,9 @@
 #' \item uses \code{r4ss} function \code{SS_output} to read in the
 #' output from a single bias adjustment run
 #' \item uses \code{r4ss} function \code{SS_fitbiasramp} to calculate
-#' the correct 5 bias adjustment parameters for that run
-#' \item Writes the correct bias adjustment parameters to the file
-#' \code{CorrectBias.DAT} within the \code{dir} folder, overwriting
+#' the bias adjustment parameters for that run
+#' \item Writes the bias adjustment parameters to the file
+#' \code{AdjustBias.DAT} within the \code{dir} folder, overwriting
 #' the file if \code{iter = 1} (the first run) and appending the file
 #' otherwise
 #' }
@@ -21,7 +21,7 @@
 #' @export
 
 bias_ss3 <- function(iter, dir) {
-  outfile = "CorrectBias.DAT"
+  outfile = "AdjustBias.DAT"
   myoutput = r4ss::SS_output(dir = paste0(dir, "/", iter, "/em"), repfile =
     "Report.sso", compfile = "CompReport.sso", covarfile =
     "covar.sso", forecast = FALSE)

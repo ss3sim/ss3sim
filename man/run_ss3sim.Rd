@@ -4,7 +4,7 @@
 \usage{
   run_ss3sim(iterations, scenarios, m_params, f_params,
     index_params, lcomp_params, agecomp_params,
-    om_model_dir, em_model_dir, bias_correct = FALSE,
+    om_model_dir, em_model_dir, bias_adjust = FALSE,
     bias_nsim = 5, bias_already_run = FALSE, ...)
 }
 \arguments{
@@ -36,12 +36,12 @@
   model you want to copy and use for the specified
   simulations.}
 
-  \item{bias_correct}{Run bias correction first? See
+  \item{bias_adjust}{Run bias adjustment first? See
   \code{\link{run_bias_ss3}}.}
 
-  \item{bias_nsim}{If bias correction is run, how many
+  \item{bias_nsim}{If bias adjustment is run, how many
   simulations should the bias be estimated from? It will
-  take the mean of the correction factors across these
+  take the mean of the adjustment factors across these
   runs.}
 
   \item{...}{Anything extra to pass to
@@ -74,7 +74,7 @@ em_model_dir <- paste0(f, "cod_em")
 a <- get_caseargs(folder = paste0(f, "case-arguments"), scenario =
 "M1-F1-D1-R1-cod")
 
-# With bias correction:
+# With bias adjustment:
 # (Note that bias_nsim should be bigger, say 5, but it is set to 1
 here so the example runs faster.)
 

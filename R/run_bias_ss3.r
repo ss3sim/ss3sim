@@ -13,7 +13,7 @@
 #' \item takes the average over runs for each bias adjustment
 #' parameter
 #' \item writes out the unaveraged and averaged
-#' (\code{CorrectBias.dat} and \code{AvgBias.dat}, respectively) bias
+#' (\code{AdjustBias.DAT} and \code{AvgBias.DAT}, respectively) bias
 #' adjustment parameters to the \code{dir} folder
 #' \item takes a \code{control.ss_new} file from one of the 5 SS runs,
 #' changes the 5 bias adjustment parameters, and writes the whole
@@ -52,7 +52,7 @@
 #' }
 
 run_bias_ss3 <-function(dir, outdir, nsim) {
-  outfile = "CorrectBias.DAT"
+  outfile = "AdjustBias.DAT"
   mysims = 1:nsim
   sapply(mysims, bias_ss3, dir = dir)
 
@@ -85,7 +85,7 @@ run_bias_ss3 <-function(dir, outdir, nsim) {
   # Open the control.ss_new file from one of the bias adjustment runs,
   # find where bias adjustment parameters are specified,
   # and update the bias adjustment parameters to the values in avg.df
-  # (average corrected bias adjustment parameters)
+  # (average bias adjustment parameters)
   # write the updated .ctl file to em.ctl within the dir directory:
 
   # This loop and other changes would be necessary if .ctl files

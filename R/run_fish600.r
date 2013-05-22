@@ -15,7 +15,7 @@
 #' @param em_model_dir The location of the folder containing the
 #' estimation model you want to use. 
 #' @param ... Anything else to pass to \code{\link{run_ss3sim}}. This
-#' includes \code{bias_correct} and \code{bias_nsim}.
+#' includes \code{bias_adjust} and \code{bias_nsim}.
 #' @author Sean C. Anderson
 #' @details
 #' The operating model folder should contain: forecast.ss,
@@ -51,18 +51,18 @@
 #' om_model_dir <- paste0(f, "cod_om")
 #' em_model_dir <- paste0(f, "cod_em")
 #' case_folder <- paste0(f, "case-arguments")
-#'
-#' # Without bias correction:
+#' 
+#' # Without bias adjustment:
 #' run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-cod"),
 #' case_folder = case_folder, om_model_dir = om_model_dir,
 #' em_model_dir = em_model_dir)
 #'
-#' # With bias correction:
+#' # With bias adjustment:
 #' # (Note that bias_nsim should be bigger, say 5, but it is set to 2
 #' # here so the example runs faster.)
 #' run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-cod"),
 #' case_folder = case_folder, om_model_dir = om_model_dir,
-#' em_model_dir = em_model_dir, bias_correct = TRUE,
+#' em_model_dir = em_model_dir, bias_adjust = TRUE,
 #' bias_nsim = 2)
 #' }
 
