@@ -46,9 +46,8 @@
 
   \item{bias_already_run}{If you've already run the bias
   runs for a scenario (the bias folders and \code{.dat}
-  files already exist) then you can set this to
-  \texttt{TRUE} to avoid re-running the bias adjustment
-  routine.}
+  files already exist) then you can set this to \code{TRUE}
+  to avoid re-running the bias adjustment routine.}
 }
 \description{
   This function is a wrapper function that can call

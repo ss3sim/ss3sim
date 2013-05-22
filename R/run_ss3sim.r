@@ -28,7 +28,7 @@
 #' adjustment factors across these runs.
 #' @param bias_already_run If you've already run the bias runs for a
 #' scenario (the bias folders and \code{.dat} files already exist)
-#' then you can set this to \texttt{TRUE} to avoid re-running the bias
+#' then you can set this to \code{TRUE} to avoid re-running the bias
 #' adjustment routine.
 # @param ... Anything extra to pass to \code{\link{run_ss3model}}.
 # For example, you may want to pass \code{ss3path} if you haven't
