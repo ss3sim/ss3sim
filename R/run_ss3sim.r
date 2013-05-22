@@ -30,6 +30,9 @@
 #' scenario (the bias folders and \code{.dat} files already exist)
 #' then you can set this to \code{TRUE} to avoid re-running the bias
 #' adjustment routine.
+#' @param hess_always If \code{TRUE} then the Hessian will always be
+#' calculated. If \code{FALSE} then the Hessian will only be
+#' calculated for bias-adjustment runs thereby saving time.
 #' @param ... Anything extra to pass to \code{\link{run_ss3model}}.
 #' For example, you may want to pass additional options to \code{SS3}
 #' through the argument \code{admb_options}. Just don't pass
@@ -67,7 +70,7 @@
 run_ss3sim <- function(iterations, scenarios, m_params, f_params,
   index_params, lcomp_params, agecomp_params, om_model_dir,
   em_model_dir, bias_adjust = FALSE, bias_nsim = 5, 
-  bias_already_run = FALSE, ...) {
+  bias_already_run = FALSE, hess_always = FALSE, ...) {
 
   # The first bias_nsim runs will be bias-adjustment runs
   if(bias_adjust) {
@@ -125,7 +128,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
         data_out = pastef(sc, i, "om", "data.dat"))
 
       # Change M
-      wd <- getwd()
+      wd <- getwd() # change_m() must be in the working directory
       setwd(pastef(sc, i, "om"))
       with(m_params,
         change_m(n_blocks            = n_blocks,
@@ -195,7 +198,18 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
                        agebin_vector = agebin_vector,
                        agecomp       = agecomp))
 
-      run_ss3model(scenarios = sc, iterations = i, type = "em", ...)
+      # Should we calculate the hessian?
+        if(hess_always){
+          hess <- TRUE           # estimate the hessian no matter what
+        } else {
+          if(grepl("bias", i)) { # it's a bias run so we need the hessian
+            hess <- TRUE      
+          } else {               # not a bias run, and hessian not specified
+            hess <- FALSE 
+        }}
+
+      run_ss3model(scenarios = sc, iterations = i, type = "em", 
+        hess = hess, ...)
 
       # Should we run bias adjustment? We should if bias_adjust is
       # true, and we are done running bias adjustments (i.e. we're on
@@ -205,8 +219,8 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
         run_bias_ss3(dir = pastef(sc, "bias"), outdir = pastef(sc,
             "bias"), nsim = bias_nsim)
         bias_already_run <- TRUE
-      # Since we've now run bias adjustment routine, copy the .ctl on
-      # subsequent iterations
+      # Since we've now run the bias adjustment routine, copy the .ctl
+      # on subsequent iterations
       } 
 
     } # end iterations

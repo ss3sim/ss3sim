@@ -3,7 +3,7 @@
 \title{Run the operating models for a specified set of scenario IDs}
 \usage{
   run_ss3model(scenarios, iterations, type = c("om", "em"),
-    ss3path = NULL, admb_options = "")
+    ss3path = NULL, admb_options = "", hess = FALSE)
 }
 \arguments{
   \item{scenarios}{Which scenarios to run. Controls which
@@ -22,6 +22,9 @@
   this path. Defaults to \code{NULL}, which means the
   function will assume the binary is already in your path.}
 
+  \item{hess}{Calculate the Hessian on estimation model
+  runs?}
+
   \item{admb_options}{Any additional options to pass to the
   SS3 command.}
 }
@@ -33,7 +36,7 @@
   \code{\link{run_ss3sim}} and \code{\link{run_fish600}}.
 }
 \author{
-  Sean Anderson
+  Sean C. Anderson
 }
 \seealso{
   \code{\link{run_ss3sim}}, \code{\link{run_fish600}}

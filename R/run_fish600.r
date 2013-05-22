@@ -14,6 +14,9 @@
 #' operating model you want to use. 
 #' @param em_model_dir The location of the folder containing the
 #' estimation model you want to use. 
+#' @param hess_always If \code{TRUE} then the Hessian will always be
+#' calculated. If \code{FALSE} then the Hessian will only be
+#' calculated for bias-adjustment runs thereby saving time.
 #' @param ... Anything else to pass to \code{\link{run_ss3sim}}. This
 #' includes \code{bias_adjust} and \code{bias_nsim}. Also, you can
 #' pass additional options to \code{SS3} through the argument

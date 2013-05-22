@@ -5,7 +5,8 @@
   run_ss3sim(iterations, scenarios, m_params, f_params,
     index_params, lcomp_params, agecomp_params,
     om_model_dir, em_model_dir, bias_adjust = FALSE,
-    bias_nsim = 5, bias_already_run = FALSE, ...)
+    bias_nsim = 5, bias_already_run = FALSE,
+    hess_always = FALSE, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -48,6 +49,11 @@
   runs for a scenario (the bias folders and \code{.dat}
   files already exist) then you can set this to \code{TRUE}
   to avoid re-running the bias adjustment routine.}
+
+  \item{hess_always}{If \code{TRUE} then the Hessian will
+  always be calculated. If \code{FALSE} then the Hessian
+  will only be calculated for bias-adjustment runs thereby
+  saving time.}
 
   \item{...}{Anything extra to pass to
   \code{\link{run_ss3model}}. For example, you may want to

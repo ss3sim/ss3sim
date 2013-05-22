@@ -24,6 +24,11 @@
   \item{em_model_dir}{The location of the folder containing
   the estimation model you want to use.}
 
+  \item{hess_always}{If \code{TRUE} then the Hessian will
+  always be calculated. If \code{FALSE} then the Hessian
+  will only be calculated for bias-adjustment runs thereby
+  saving time.}
+
   \item{...}{Anything else to pass to
   \code{\link{run_ss3sim}}. This includes
   \code{bias_adjust} and \code{bias_nsim}. Also, you can
