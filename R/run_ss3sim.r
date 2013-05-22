@@ -91,18 +91,17 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
             i, "em", "em.ctl"), overwrite = TRUE)
       }
 
-      # Pull in sigma R from the operating model
+      # The following section adds recruitment deviations
+      # First, pull in sigma R from the operating model
       sigmar <- get_sigmar(pastef(sc, i, "om", "om"))
 
-      # Exponentiate with bias adjustment
-      # recdevs is a 100x100 matrix stored in the package 'data' folder
-      # Columns are for iterations and rows are for years
-
-      # Take the true iteration, even if we're working with "bias" iterations
-      # this turns "bias/1" into "1" and leaves "1" unchanged
+      # Second, take the true iteration, even if we're working with
+      # "bias" iterations
+      # This turns "bias/1" into "1" and leaves "1" unchanged
       this_run_num <- as.numeric(rev(strsplit(as.character(i), "/")[[1]])[1])
 
-      #sc_i_recdevs <- exp(sigmar * recdevs[, this_run_num] - (sigmar^2)/2)
+      # recdevs is a 100x100 matrix stored in the package 'data' folder
+      # Columns are for iterations and rows are for years
       sc_i_recdevs <- sigmar * recdevs[, this_run_num]
 
       # Add new rec devs overwriting om/ss3.par
