@@ -64,10 +64,6 @@
 #' em_model_dir = em_model_dir)
 #' }
 
-
-# todo change params to args
-# todo change iter to reps
-
 run_ss3sim <- function(iterations, scenarios, m_params, f_params,
   index_params, lcomp_params, agecomp_params, om_model_dir,
   em_model_dir, bias_adjust = FALSE, bias_nsim = 5, 
