@@ -15,3 +15,5 @@
 *.fdb_latexmk
 
 *.aux
+
+inst/doc/makefile
