@@ -1,5 +1,7 @@
-First start by installing the latest version of `ss3sim` and loading the
-package:
+Installing the `ss3sim` `R` package
+===================================
+
+The package can be installed and loaded with:
 
     # install.packages(c("r4ss", "MCMCpack")) # dependencies, if needed
     # install.packages("devtools")
@@ -11,19 +13,19 @@ You can read the help files and access this vignette again with:
     help(package = "ss3sim")
     vignette("ss3sim")
 
-Putting `SS3` in your path {.unnumbered}
+Putting `SS3` in your path
 ==========================
 
-SS3 must be in your path for the `ss3sim` package to work.
+`SS3` must be in your path for the `ss3sim` package to work.
 
-For Unix (Linux and OS X) {.unnumbered}
+For Unix (Linux and OS X)
 -------------------------
 
 To check if SS is in your path: open a Terminal window and type
 `which SS3` and hit enter. If you get nothing returned then SS is not in
-your path. The easiest way to fix this is to move the SS3 binary to a
+your path. The easiest way to fix this is to move the `SS3` binary to a
 folder that’s already in your path. To find existing path folders type
-`echo $PATH` in the terminal and hit enter. Now move the SS3 binary to
+`echo $PATH` in the terminal and hit enter. Now move the `SS3` binary to
 one of these folders. For example, in a Terminal window type:
 
       sudo cp ~/Downloads/SS3 /usr/bin/
@@ -31,7 +33,7 @@ one of these folders. For example, in a Terminal window type:
 You will need to use `sudo` and enter your password after to have
 permission to move a file to a folder like `/usr/bin/`.
 
-For Windows {.unnumbered}
+For Windows
 -----------
 
 To check if SS is in your path: open a DOS prompt and type `ss3?` and
@@ -52,15 +54,15 @@ not in your path. To add it to your path:
 6.  Choose `PATH` and click edit
 
 7.  In the “Edit User Variable” window add to the **end** of the
-    “Variable value” section a semicolon and the SS3 folder location you
-    recorded earlier. E.g. `;C:/SS3.24o/`
+    “Variable value” section a semicolon and the `SS3` folder location
+    you recorded earlier. E.g. `;C:/SS3.24o/`
 
 8.  Restart your computer
 
 9.  Go back to the DOS prompt and try typing `ss3?` and hitting return
     again.
 
-Setting up the file structure {.unnumbered}
+Setting up the file structure
 =============================
 
 This package is set up assuming that you have an established base case
@@ -137,7 +139,7 @@ reflect these new file names.
 The functions in this package assume you’ve set your working directory
 in R to be the base folder where you will store the scenario folders.
 
-Creating the input configuration files {.unnumbered}
+Creating the input configuration files
 ======================================
 
 You will need to have a folder containing “case” argument definitions.
@@ -187,7 +189,7 @@ might look like:
     years_alter; NA 
     fvals; NA
 
-Running the models {.unnumbered}
+Running the models
 ==================
 
 The `run_ss3sim` function is a wrapper function. It adjusts the natural
