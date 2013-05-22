@@ -1,4 +1,13 @@
-#' Read in the data.ss_new file and move it to the em folder
+#' Extract the expected data values
+#'
+#' Read in a \code{data.ss_new} file, move the expected values up in
+#' the file, and write it back out to a new data file.
+#'
+#' @param data_ss_new The location of the \code{.ss_new} file that was
+#' generated from a run of SS.
+#' @param data_out The location of the \code{.ss_new} file that was
+#' generated from a run of SS.                                                  
+#' @author Kotaro Ono
 
 extract_expected_data <- function(data_ss_new = "data.ss_new",
   data_out = "data.dat") {

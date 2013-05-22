@@ -1,11 +1,23 @@
 \name{extract_expected_data}
 \alias{extract_expected_data}
-\title{Read in the data.ss_new file and move it to the em folder}
+\title{Extract the expected data values}
 \usage{
   extract_expected_data(data_ss_new = "data.ss_new",
     data_out = "data.dat")
 }
+\arguments{
+  \item{data_ss_new}{The location of the \code{.ss_new}
+  file that was generated from a run of SS.}
+
+  \item{data_out}{The location of the \code{.ss_new} file
+  that was generated from a run of SS.}
+}
 \description{
-  Read in the data.ss_new file and move it to the em folder
+  Read in a \code{data.ss_new} file, move the expected
+  values up in the file, and write it back out to a new
+  data file.
+}
+\author{
+  Kotaro Ono
 }
 
