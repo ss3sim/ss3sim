@@ -13,12 +13,12 @@ vignette("ss3sim")
 help(package = "ss3sim")
 ```
 
-Putting `SS3` in your path {.unnumbered}
+Putting `SS3` in your path 
 ==========================
 
 SS3 must be in your path for the `ss3sim` package to work.
 
-For Unix (Linux and OS X) {.unnumbered}
+For Unix (Linux and OS X) 
 -------------------------
 
 To check if SS is in your path: open a Terminal window and type
@@ -33,7 +33,7 @@ one of these folders. For example, in a Terminal window type:
 You will need to use `sudo` and enter your password after to have
 permission to move a file to a folder like `/usr/bin/`.
 
-For Windows {.unnumbered}
+For Windows 
 -----------
 
 To check if SS is in your path: open a DOS prompt and type `ss3?` and
@@ -62,7 +62,7 @@ not in your path. To add it to your path:
 9.  Go back to the DOS prompt and try typing `ss3?` and hitting return
     again.
 
-Setting up the file structure {.unnumbered}
+Setting up the file structure 
 =============================
 
 This package is set up assuming that you have an established base case
@@ -139,7 +139,7 @@ reflect these new file names.
 The functions in this package assume you’ve set your working directory
 in R to be the base folder where you will store the scenario folders.
 
-Creating the input configuration files {.unnumbered}
+Creating the input configuration files 
 ======================================
 
 You will need to have a folder containing “case” argument definitions.
@@ -189,7 +189,7 @@ might look like:
     years_alter; NA 
     fvals; NA
 
-Running the models {.unnumbered}
+Running the models 
 ==================
 
 The `run_ss3sim` function is a wrapper function. It adjusts the natural
