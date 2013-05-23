@@ -22,7 +22,11 @@ You can read the help files and access this vignette again with:
 Putting `SS3` in your path
 ==========================
 
-`SS3` must be in your path for the `ss3sim` package to work.
+`SS3` must be in your path for the `ss3sim` package to work. Your “path”
+is a list of folders that your operating system looks in whenever you
+type the name of a program on the command line. Having a binary in your
+path means that your operating system knows where to look for the file
+regardless of what folder you’re working in.
 
 For Unix (Linux and OS X)
 -------------------------
