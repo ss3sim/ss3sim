@@ -39,6 +39,15 @@ one of these folders. For example, in a Terminal window type:
 You will need to use `sudo` and enter your password after to have
 permission to move a file to a folder like `/usr/bin/`.
 
+If you’ve previously modified your path to add a non-standard location
+for the `SS3` binary, you may need to also tell `R` about the new path.
+The path that `R` sees may not include additional paths that you’ve
+added through a configuration file like `.bash_profile`. You can add to
+the path that `R` sees by including a line like this in your `.Rprofile`
+file. (This is an invisible file in your home directory.)
+
+    Sys.setenv(PATH=paste(Sys.getenv("PATH"),"/my/non-standard/folder",sep=":")) 
+
 For Windows
 -----------
 
