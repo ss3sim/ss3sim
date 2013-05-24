@@ -26,6 +26,10 @@
 run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
   ss3path = NULL, admb_options = "", hess = FALSE) {
 
+  ## input checking:
+  admb_options <- sanitize_admb_options(admb_options, "-nohess")
+  admb_options <- sanitize_admb_options(admb_options, "-noest")
+    
   os <- .Platform$OS.type 
 
   if(is.null(ss3path)) ss3path <- ""
@@ -53,3 +57,24 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
 
 }
 
+
+#' Check admb options to make sure there aren't flags there shouldn't
+#' be
+#'
+#' @param x The admb options
+#' @param exclude A character object (not a vector)
+#' @author Sean C. Anderson
+sanitize_admb_options <- function(x, exclude = "-nohess") {
+  if(length(x) > 1) stop("x should be of length 1")
+  if(length(exclude) > 1) stop("exclude should be of length 1")
+
+  x_split <- strsplit(x, " ")[[1]]
+  x_split_g <- grep(exclude, x_split)
+  if(sum(x_split_g) > 0) {
+    warning(paste("Removed admb_option", x_split[x_split_g])) 
+    x_split_clean <- x_split[-x_split_g]
+  } else {
+    x_split_clean <- x_split
+  }
+  paste(x_split_clean, collapse = " ")
+}
