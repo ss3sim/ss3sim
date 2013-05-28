@@ -1,0 +1,12 @@
+# description: base age comps for flatfish
+# author: SCA 
+# notes: 
+distribution; multinomial
+Nsamp; 100
+minyear; NA
+maxyear; NA
+years; 1938:2012
+svyears; seq(1974,2012,by=2)
+N_agebins; NA
+agebin_vector; NA
+agecomp; NA

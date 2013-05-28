@@ -1,0 +1,12 @@
+# description: 
+# author: 
+# notes: 
+distribution; multinomial
+Nsamp; NA
+minyear; NA
+maxyear; NA
+years; NA
+svyears; NA
+N_agebins; NA
+agebin_vector; NA
+agecomp; NA

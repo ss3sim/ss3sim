@@ -1,0 +1,16 @@
+# description: base case lcomps for flatfish
+# author: SCA 
+# notes: 
+distribution; multinomial
+Nsamp; 100
+minyear; NA
+maxyear; NA
+years; 1938:2012
+svyears; seq(1974,2012,by=2)
+lbin_method; NA
+binwidth; NA
+minimum_size; NA
+maximum_size; NA
+N_lbins; NA
+lbin_vector; NA
+lencomp; NA
