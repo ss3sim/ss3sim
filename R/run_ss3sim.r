@@ -238,19 +238,28 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
         today <- Sys.time()
         me <- Sys.info()["nodename"]
         sink(pastef(sc, i, "log.txt"))
-        print(paste(
-            "These models were run on", today, 
-            "\non", me, 
-            "\nin the folder", getwd(), 
-            "\nwith the following arguments.\n\n"))
+        cat(paste(
+            "These models were run at", today, 
+            "on", me, 
+            "in the folder", getwd(), 
+            "with the following arguments."))
+        cat("M arguments")
         print(m_params)
+        cat("F arguments")
         print(f_params)
+        cat("index arguments")
         print(index_params)
+        cat("lcomp arguments")
         print(lcomp_params)
+        cat("agecomp arguments")
         print(agecomp_params)
+        cat("retro arguments")
         print(retro_params)
+        cat("bias adjust?")
         print(bias_adjust)
+        cat("bias nsim")
         print(bias_nsim)
+        cat("hess always?")
         print(hess_always)
         sink()
       }
