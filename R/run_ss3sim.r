@@ -92,31 +92,31 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
         iterations = i, type = "em")
 
       if(print_logfile) {
-        #today <- format(Sys.time(), "%Y-%m-%d")
-        today <- Sys.time()
+        today <- format(Sys.time(), "%Y-%m-%d")
+        #today <- Sys.time()
         me <- Sys.info()["nodename"]
         sink(pastef(sc, i, "log.txt"))
-        cat("These models were run at ", today, 
-            "\non", me, 
+        cat("These models were run on ", today, 
+            "\non ", me, 
             "\nin the folder ", getwd(), 
-            "\nwith the following arguments.\n\n", sep = "")
-        cat("M arguments")
+            "\nwith the following arguments:", sep = "")
+        cat("\n\n# M arguments\n")
         print(m_params)
-        cat("F arguments")
+        cat("\n\n# F arguments\n")
         print(f_params)
-        cat("index arguments")
+        cat("\n\n# index arguments\n")
         print(index_params)
-        cat("lcomp arguments")
+        cat("\n\n# lcomp arguments\n")
         print(lcomp_params)
-        cat("agecomp arguments")
+        cat("\n\n# agecomp arguments\n")
         print(agecomp_params)
-        cat("retro arguments")
+        cat("\n\n# retro arguments\n")
         print(retro_params)
-        cat("bias adjust?")
+        cat("\n\n# bias adjust?\n")
         print(bias_adjust)
-        cat("bias nsim")
+        cat("\n\n# bias nsim"\n)
         print(bias_nsim)
-        cat("hess always?")
+        cat("\n\n# hess always?"\n)
         print(hess_always)
         sink()
       }
