@@ -17,6 +17,8 @@
 #' \code{\link{change_lcomp}} options.
 #' @param agecomp_params A named list containing all the
 #' \code{\link{change_agecomp}} options.
+#' @param retro_params A named list containing all the
+#' \code{\link{change_retro}} options.
 #' @param om_model_dir The directory with the operating model you want
 #' to copy and use for the specified simulations.
 #' @param em_model_dir The directory with the estimation model you want
@@ -68,8 +70,8 @@
 #' }
 
 run_ss3sim <- function(iterations, scenarios, m_params, f_params,
-  index_params, lcomp_params, agecomp_params, om_model_dir,
-  em_model_dir, bias_adjust = FALSE, bias_nsim = 5, 
+  index_params, lcomp_params, agecomp_params, retro_params,
+  om_model_dir, em_model_dir, bias_adjust = FALSE, bias_nsim = 5,
   bias_already_run = FALSE, hess_always = FALSE, ...) {
 
   # The first bias_nsim runs will be bias-adjustment runs
@@ -197,6 +199,12 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
                        N_agebins     = N_agebins,
                        agebin_vector = agebin_vector,
                        agecomp       = agecomp))
+
+      # Manipulate EM starter file for a possible retrospective analysis
+      with(retro_params, 
+        change_retro(startfile_in    = pastef(sc, i, "em", "starter.ss"),  
+                     startfile_out   = pastef(sc, i, "em", "starter.ss"), 
+                     retro_yr        = retro_yr))
 
       # Should we calculate the hessian?
         if(hess_always){

@@ -4,9 +4,9 @@
 \usage{
   run_ss3sim(iterations, scenarios, m_params, f_params,
     index_params, lcomp_params, agecomp_params,
-    om_model_dir, em_model_dir, bias_adjust = FALSE,
-    bias_nsim = 5, bias_already_run = FALSE,
-    hess_always = FALSE, ...)
+    retro_params, om_model_dir, em_model_dir,
+    bias_adjust = FALSE, bias_nsim = 5,
+    bias_already_run = FALSE, hess_always = FALSE, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -28,6 +28,9 @@
 
   \item{agecomp_params}{A named list containing all the
   \code{\link{change_agecomp}} options.}
+
+  \item{retro_params}{A named list containing all the
+  \code{\link{change_retro}} options.}
 
   \item{om_model_dir}{The directory with the operating
   model you want to copy and use for the specified

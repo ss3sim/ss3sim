@@ -3,8 +3,8 @@
 \title{Take a scenario ID and return argument lists to pass to functions}
 \usage{
   get_caseargs(folder, scenario, delimiter = "-",
-    ext = ".txt", case_vals = c("M", "F", "D"),
-    case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp")))
+    ext = ".txt", case_vals = c("M", "F", "D", "R"),
+    case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), R = "retro"))
 }
 \arguments{
   \item{folder}{The folder to look for input files in.}
