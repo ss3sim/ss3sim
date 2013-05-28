@@ -114,9 +114,9 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
         print(retro_params)
         cat("\n\n# bias adjust?\n")
         print(bias_adjust)
-        cat("\n\n# bias nsim"\n)
+        cat("\n\n# bias nsim\n")
         print(bias_nsim)
-        cat("\n\n# hess always?"\n)
+        cat("\n\n# hess always?\n")
         print(hess_always)
         sink()
       }
