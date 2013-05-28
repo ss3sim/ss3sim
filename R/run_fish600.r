@@ -82,8 +82,8 @@ run_fish600 <- function(iterations, scenarios, case_folder,
 
     run_ss3sim(iterations, scenarios = x, m_params = a$M,
       f_params = a$F, index_params = a$index, lcomp_params = a$lcomp,
-      agecomp_params = a$agecomp, om_model_dir = om_model_dir,
-      em_model_dir = em_model_dir, ...) 
+      agecomp_params = a$agecomp, retro_params = a$R, 
+      om_model_dir = om_model_dir, em_model_dir = em_model_dir, ...) 
   })
 
   print(paste("Completed iterations:", paste(iterations, collapse = ", "), 
