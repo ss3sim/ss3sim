@@ -1,4 +1,4 @@
 # description: 2 years retro for sardines
 # author: SCA
 # notes: 
-retro_yr; 2
+retro_yr; -2
