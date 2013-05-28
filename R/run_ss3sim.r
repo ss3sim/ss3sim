@@ -84,6 +84,13 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
   for(sc in scenarios) {
     for(i in iterations) {
 
+      # Create folders, copy models, check for necessary files, rename
+      # files for consistency
+      copy_ss3models(model_dir = om_model_dir, scenarios = sc,
+        iterations = i, type = "om")
+      copy_ss3models(model_dir = em_model_dir, scenarios = sc,
+        iterations = i, type = "em")
+
       if(print_logfile) {
         #today <- format(Sys.time(), "%Y-%m-%d")
         today <- Sys.time()
@@ -113,13 +120,6 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
         print(hess_always)
         sink()
       }
-
-      # Create folders, copy models, check for necessary files, rename
-      # files for consistency
-      copy_ss3models(model_dir = om_model_dir, scenarios = sc,
-        iterations = i, type = "om")
-      copy_ss3models(model_dir = em_model_dir, scenarios = sc,
-        iterations = i, type = "em")
 
       # If we're bias adjusting, then copy over the .ctl file to the
       # em folder
