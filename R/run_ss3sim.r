@@ -91,36 +91,6 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
       copy_ss3models(model_dir = em_model_dir, scenarios = sc,
         iterations = i, type = "em")
 
-      if(print_logfile) {
-        today <- format(Sys.time(), "%Y-%m-%d")
-        #today <- Sys.time()
-        me <- Sys.info()["nodename"]
-        sink(pastef(sc, i, "log.txt"))
-        cat("These models were run on ", today, 
-            "\non ", me, 
-            "\nin the folder ", getwd(), 
-            "\nwith the following arguments:", sep = "")
-        cat("\n\n# M arguments\n")
-        print(m_params)
-        cat("\n\n# F arguments\n")
-        print(f_params)
-        cat("\n\n# index arguments\n")
-        print(index_params)
-        cat("\n\n# lcomp arguments\n")
-        print(lcomp_params)
-        cat("\n\n# agecomp arguments\n")
-        print(agecomp_params)
-        cat("\n\n# retro arguments\n")
-        print(retro_params)
-        cat("\n\n# bias adjust?\n")
-        print(bias_adjust)
-        cat("\n\n# bias nsim\n")
-        print(bias_nsim)
-        cat("\n\n# hess always?\n")
-        print(hess_always)
-        sink()
-      }
-
       # If we're bias adjusting, then copy over the .ctl file to the
       # em folder
       if(bias_already_run & bias_adjust) {
@@ -263,6 +233,35 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
       # on subsequent iterations
       } 
 
+      if(print_logfile) {
+        today <- format(Sys.time(), "%Y-%m-%d")
+        #today <- Sys.time()
+        me <- Sys.info()["nodename"]
+        sink(pastef(sc, i, "log.txt"))
+        cat("These models were run on ", today, 
+            "\non the computer ", me, 
+            "\nin the folder ", getwd(), 
+            "\nwith the following arguments:", sep = "")
+        cat("\n\n# M arguments\n")
+        print(m_params)
+        cat("\n\n# F arguments\n")
+        print(f_params)
+        cat("\n\n# index arguments\n")
+        print(index_params)
+        cat("\n\n# lcomp arguments\n")
+        print(lcomp_params)
+        cat("\n\n# agecomp arguments\n")
+        print(agecomp_params)
+        cat("\n\n# retro arguments\n")
+        print(retro_params)
+        cat("\n\n# bias adjust?\n")
+        print(bias_adjust)
+        cat("\n\n# bias nsim\n")
+        print(bias_nsim)
+        cat("\n\n# hess always?\n")
+        print(hess_always)
+        sink()
+      }
 
     } # end iterations
   } # end scenarios
