@@ -35,6 +35,7 @@
 #' @param hess_always If \code{TRUE} then the Hessian will always be
 #' calculated. If \code{FALSE} then the Hessian will only be
 #' calculated for bias-adjustment runs thereby saving time.
+#' @param print_logfile Logical. Print a log file?
 #' @param ... Anything extra to pass to \code{\link{run_ss3model}}.
 #' For example, you may want to pass additional options to \code{SS3}
 #' through the argument \code{admb_options}. Just don't pass
@@ -72,7 +73,8 @@
 run_ss3sim <- function(iterations, scenarios, m_params, f_params,
   index_params, lcomp_params, agecomp_params, retro_params,
   om_model_dir, em_model_dir, bias_adjust = FALSE, bias_nsim = 5,
-  bias_already_run = FALSE, hess_always = FALSE, ...) {
+  bias_already_run = FALSE, hess_always = FALSE, print_logfile = TRUE, 
+  ...) {
 
   # The first bias_nsim runs will be bias-adjustment runs
   if(bias_adjust) {
@@ -230,6 +232,28 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
       # Since we've now run the bias adjustment routine, copy the .ctl
       # on subsequent iterations
       } 
+
+      if(print_logfile) {
+        #today <- format(Sys.time(), "%Y-%m-%d")
+        today <- Sys.time()
+        me <- Sys.info()["nodename"]
+        sink(pastef(sc, i, "log.txt"))
+        print(paste(
+            "These models were run on", today, 
+            "\non", me, 
+            "\nin the folder", getwd(), 
+            "\nwith the following arguments.\n\n"))
+        print(m_params)
+        print(f_params)
+        print(index_params)
+        print(lcomp_params)
+        print(agecomp_params)
+        print(retro_params)
+        print(bias_adjust)
+        print(bias_nsim)
+        print(hess_always)
+        sink()
+      }
 
     } # end iterations
   } # end scenarios
