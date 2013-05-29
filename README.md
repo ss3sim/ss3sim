@@ -78,7 +78,7 @@ not in your path. To add it to your path:
 
 8.  Restart your computer
 
-9.  Go back to the DOS prompt and try typing `ss3?` and hitting return
+9.  Go back to the DOS prompt and try typing `ss3 -?` and hitting return
     again.
 
 Setting up the file structure
