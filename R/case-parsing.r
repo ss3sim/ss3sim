@@ -49,7 +49,8 @@ get_caseval <- function(scenario, case, delimiter = "-") {
   if(!is.character(case))
     stop("case must be of class character")
   x <- strsplit(scenario, "-")[[1]]
-  as.numeric(substr(x[grep(case, x)], 2, 2))
+  # get the case number that is up to 9 digits long:
+  as.numeric(substr(x[grep(case, x)], 2, 9))
 }
 
 #' Take a scenario ID and return argument lists to pass to functions
