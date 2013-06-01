@@ -9,6 +9,10 @@
 #' @param scenarios Which scenarios to run.
 #' @param m_params A named list containing all the
 #' \code{\link{change_m}} options.
+#' @param sel_params A named list containing all the
+#' \code{\link{change_sel}} options.
+#' @param growth_params A named list containing all the
+#' \code{\link{change_growth}} options.
 #' @param f_params A named list containing all the
 #' \code{\link{change_f}} options.
 #' @param index_params A named list containing all the
@@ -70,10 +74,11 @@
 #' em_model_dir = em_model_dir)
 #' }
 
-run_ss3sim <- function(iterations, scenarios, m_params, f_params,
-  index_params, lcomp_params, agecomp_params, retro_params,
-  om_model_dir, em_model_dir, bias_adjust = FALSE, bias_nsim = 5,
-  bias_already_run = FALSE, hess_always = FALSE, print_logfile = TRUE, 
+run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
+  growth_params, f_params, index_params, lcomp_params, agecomp_params,
+  retro_params, om_model_dir, em_model_dir, bias_adjust = FALSE,
+  bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
+  print_logfile = TRUE, 
   ...) {
 
   # The first bias_nsim runs will be bias-adjustment runs
@@ -132,7 +137,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
         data_out = pastef(sc, i, "om", "data.dat"))
 
       # Change M
-      wd <- getwd() # change_m() must be in the working directory
+      wd <- getwd() # change_m() etc. must be in the working directory
       setwd(pastef(sc, i, "om"))
       with(m_params,
         change_m(n_blocks            = n_blocks,
@@ -143,8 +148,32 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
                  dat_file            = "data.dat",
                  dat_file_out        = "data.dat",
                  how_time_varying    = how_time_varying)) 
-      setwd(wd)
 
+      # Change selectivity
+      with(sel_params,
+        change_m(use                 = use,
+                 n_blocks            = n_blocks,
+                 block_pattern       = block_pattern,
+                 dev                 = dev,
+                 ctl_file_in         = "om.ctl",
+                 ctl_file_out        = "om.ctl",
+                 dat_file            = "data.dat",
+                 dat_file_out        = "data.dat",
+                 how_time_varying    = how_time_varying)) 
+
+      # Change growth
+      with(growth_params,
+        change_m(use                 = use,
+                 n_blocks            = n_blocks,
+                 block_pattern       = block_pattern,
+                 dev                 = dev,
+                 ctl_file_in         = "om.ctl",
+                 ctl_file_out        = "om.ctl",
+                 dat_file            = "data.dat",
+                 dat_file_out        = "data.dat",
+                 how_time_varying    = how_time_varying)) 
+
+      setwd(wd)
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
 

@@ -2,11 +2,12 @@
 \alias{run_ss3sim}
 \title{Run both the operating model and assessment model}
 \usage{
-  run_ss3sim(iterations, scenarios, m_params, f_params,
-    index_params, lcomp_params, agecomp_params,
-    retro_params, om_model_dir, em_model_dir,
-    bias_adjust = FALSE, bias_nsim = 5,
-    bias_already_run = FALSE, hess_always = FALSE, ...)
+  run_ss3sim(iterations, scenarios, m_params, sel_params,
+    growth_params, f_params, index_params, lcomp_params,
+    agecomp_params, retro_params, om_model_dir,
+    em_model_dir, bias_adjust = FALSE, bias_nsim = 5,
+    bias_already_run = FALSE, hess_always = FALSE,
+    print_logfile = TRUE, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -16,6 +17,12 @@
 
   \item{m_params}{A named list containing all the
   \code{\link{change_m}} options.}
+
+  \item{sel_params}{A named list containing all the
+  \code{\link{change_sel}} options.}
+
+  \item{growth_params}{A named list containing all the
+  \code{\link{change_growth}} options.}
 
   \item{f_params}{A named list containing all the
   \code{\link{change_f}} options.}
@@ -57,6 +64,8 @@
   always be calculated. If \code{FALSE} then the Hessian
   will only be calculated for bias-adjustment runs thereby
   saving time.}
+
+  \item{print_logfile}{Logical. Print a log file?}
 
   \item{...}{Anything extra to pass to
   \code{\link{run_ss3model}}. For example, you may want to
