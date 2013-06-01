@@ -19,6 +19,12 @@ You can read the help files and access this vignette again with:
     help(package = "ss3sim")
     vignette("ss3sim")
 
+Note that you can install the development version of the package with:
+
+    devtools::install_github("ss3sim", username="seananderson", ref="develop")
+
+The development version may contain recent and untested changes.
+
 Putting `SS3` in your path
 ==========================
 
