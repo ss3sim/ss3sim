@@ -91,7 +91,7 @@ change_growth <- function(use=FALSE,dev, how_time_varying = "env", ctl_file_in =
   = "starter.ss", report_file = "Report.sso", n_blocks = 1,
   block_pattern = NA, ss3path = NULL) {
   
-  if(!use)
+  if(use == FALSE)
     return()
   
   # how_time_varying <- how_time_varying[1] #In the future if people want to

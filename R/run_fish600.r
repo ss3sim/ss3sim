@@ -78,9 +78,10 @@ run_fish600 <- function(iterations, scenarios, case_folder,
     a <- get_caseargs(folder = case_folder, scenario = x) 
 
     run_ss3sim(iterations, scenarios = x, m_params = a$M,
-      f_params = a$F, index_params = a$index, lcomp_params = a$lcomp,
-      agecomp_params = a$agecomp, retro_params = a$R, 
-      om_model_dir = om_model_dir, em_model_dir = em_model_dir, ...) 
+      sel_params = a$S, growth_params = a$G, f_params = a$F, index_params =
+      a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp, 
+      retro_params = a$R, om_model_dir = om_model_dir, 
+      em_model_dir = em_model_dir, ...) 
   })
 
   print(paste("Completed iterations:", paste(iterations, collapse = ", "), 

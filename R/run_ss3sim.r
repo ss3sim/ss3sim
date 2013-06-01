@@ -151,7 +151,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
 
       # Change selectivity
       with(sel_params,
-        change_m(use                 = use,
+        change_sel(use               = use,
                  n_blocks            = n_blocks,
                  block_pattern       = block_pattern,
                  dev                 = dev,
@@ -163,7 +163,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
 
       # Change growth
       with(growth_params,
-        change_m(use                 = use,
+        change_growth(use            = use,
                  n_blocks            = n_blocks,
                  block_pattern       = block_pattern,
                  dev                 = dev,
