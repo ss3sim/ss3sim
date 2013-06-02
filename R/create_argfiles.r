@@ -42,7 +42,7 @@
 create_argfiles <- function(functions = c("lcomp0-spp" =
     "change_lcomp", "agecomp0-spp" = "change_agecomp", "index0-spp" =
     "change_index", "M0-spp" = "change_m", "F0-spp" = "change_f",
-    "R0-spp" = "change_retro"), ext = ".txt", delim = "; ", ignore =
+    "R0-spp" = "change_retro", "E0-spp" = "change_e"), ext = ".txt", delim = "; ", ignore =
   c("file", "dir", "make_plot"), ...) {
   if(!is.character(functions)) 
     stop("Functions must be a vector of character.")
