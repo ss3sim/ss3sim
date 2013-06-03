@@ -6,7 +6,8 @@
     index_params, lcomp_params, agecomp_params,
     retro_params, om_model_dir, em_model_dir,
     bias_adjust = FALSE, bias_nsim = 5,
-    bias_already_run = FALSE, hess_always = FALSE, ...)
+    bias_already_run = FALSE, hess_always = FALSE,
+    print_logfile = TRUE, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -57,6 +58,8 @@
   always be calculated. If \code{FALSE} then the Hessian
   will only be calculated for bias-adjustment runs thereby
   saving time.}
+
+  \item{print_logfile}{Logical. Print a log file?}
 
   \item{...}{Anything extra to pass to
   \code{\link{run_ss3model}}. For example, you may want to

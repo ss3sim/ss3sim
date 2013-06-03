@@ -1,5 +1,6 @@
 export(bias_ss3)
 export(change_agecomp)
+export(change_e)
 export(change_f)
 export(change_index)
 export(change_lcomp)
