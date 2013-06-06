@@ -1,0 +1,8 @@
+# description: Base case for mortality
+# author: CC
+# notes: 
+dev; 
+how_time_varying; env
+n_blocks; 1
+block_pattern; NA
+ss3path; NULL
