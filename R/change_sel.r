@@ -92,8 +92,7 @@ change_sel <- function(use=FALSE, dev, how_time_varying = "env", ctl_file_in =
   = "starter.ss", report_file = "Report.sso", n_blocks = 1,
   block_pattern = NA, ss3path = NULL) {
   
-  print(use)
-  
+ 
   if(use == FALSE)
     return()
 
@@ -174,6 +173,7 @@ change_sel <- function(use=FALSE, dev, how_time_varying = "env", ctl_file_in =
 
     # add the time varying feature into the dat file	 
     # Now put the environmental covariate into the dat file
+    print("Init dat file")
     SS_data <- readLines(con = dat_file)
     ch1d <- grep("#_N_environ_variables", SS_data) 
     ch2d <- regexpr(" #_N_environ_variables", SS_data[ch1d], fixed=TRUE)[1]
@@ -192,15 +192,18 @@ change_sel <- function(use=FALSE, dev, how_time_varying = "env", ctl_file_in =
     env.dat <- data.frame(Year=year.beg:year.end, Variable=2, Value=dev)
 #     if((ch5d-ch3d)>1) { env.dat <- c() ; print("WARNINGS: env data already exist. Check") }
     # combine back everything
+    print("before making the new dat object")
     New.dat=c(First_piece, apply(env.dat, 1, function(x) paste(x, collapse=" ")), Last_piece)
-    
+    objeto1 <- apply(env.dat, 1, function(x) paste(x, collapse=" "))
+    print(objeto1)
+    print("after the object")
     ###############################
     ### The above line should go in the if in line 212 
     ###############################
     
     # write output	
     writeLines(New.dat, con= dat_file_out)
-   
+    print("after write")
     # Add sel environm link to .par
     SS_par = c(SS_par, "Environmental_link_Selectivity", "1.0000")       
    
