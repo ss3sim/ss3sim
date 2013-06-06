@@ -203,6 +203,9 @@ change_sel <- function(use=FALSE, dev, how_time_varying = "env", ctl_file_in =
     
     # write output	
     writeLines(New.dat, con= dat_file_out)
+    print(New.dat)
+    print(dat_file_out)
+    print(getwd())
     print("after write")
     # Add sel environm link to .par
     SS_par = c(SS_par, "Environmental_link_Selectivity", "1.0000")       
