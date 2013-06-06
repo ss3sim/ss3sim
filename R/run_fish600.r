@@ -14,9 +14,6 @@
 #' operating model you want to use. 
 #' @param em_model_dir The location of the folder containing the
 #' estimation model you want to use. 
-#' @param hess_always If \code{TRUE} then the Hessian will always be
-#' calculated. If \code{FALSE} then the Hessian will only be
-#' calculated for bias-adjustment runs thereby saving time.
 #' @param ... Anything else to pass to \code{\link{run_ss3sim}}. This
 #' includes \code{bias_adjust} and \code{bias_nsim}. Also, you can
 #' pass additional options to \code{SS3} through the argument
@@ -61,7 +58,7 @@
 #' case_folder <- paste0(f, "case-arguments")
 #' 
 #' # Without bias adjustment:
-#' run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-cod"),
+#' run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-S1-G1-cod"),
 #' case_folder = case_folder, om_model_dir = om_model_dir,
 #' em_model_dir = em_model_dir)
 #'
@@ -81,9 +78,10 @@ run_fish600 <- function(iterations, scenarios, case_folder,
     a <- get_caseargs(folder = case_folder, scenario = x) 
 
     run_ss3sim(iterations, scenarios = x, m_params = a$M,
-      f_params = a$F, index_params = a$index, lcomp_params = a$lcomp,
-      agecomp_params = a$agecomp, retro_params = a$R, 
-      om_model_dir = om_model_dir, em_model_dir = em_model_dir, ...) 
+      sel_params = a$S, growth_params = a$G, f_params = a$F, index_params =
+      a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp, 
+      retro_params = a$R, om_model_dir = om_model_dir, 
+      em_model_dir = em_model_dir, ...) 
   })
 
   print(paste("Completed iterations:", paste(iterations, collapse = ", "), 

@@ -11,7 +11,8 @@ Authors@R: c(person("Sean", "Anderson", email =
     person("Roberto", "Licandeo", role = "aut"),
     person("Carey", "McGilliard", role = "aut"),
     person("Cole", "Monnahan", role = "aut"),
-    person("Kotaro", "Ono", role = "aut"))
+    person("Kotaro", "Ono", role = "aut"),
+    person("Juan", "Valero", role = "aut"))
 Maintainer: Sean C. Anderson <sean@seananderson.ca>
 Description: This project aims to develop R functions for stock assessment
     simulation studies using Stock Synthesis. The functions will be used to
@@ -52,4 +53,9 @@ Collate:
     'run_fish600.r'
     'extract_expected_data.r'
     'change_retro.r'
+<<<<<<< HEAD
     'change_e.r'
+=======
+    'change_growth.r'
+    'change_sel.r'
+>>>>>>> develop

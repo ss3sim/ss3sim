@@ -139,8 +139,8 @@ get_caseval <- function(scenario, case, delimiter = "-") {
 #' }
 #' @export
 get_caseargs <- function(folder, scenario, delimiter = "-", ext = ".txt",
-  case_vals = c("M", "F", "D", "R"), case_files = list(M = "M", F =
-    "F", D = c("index", "lcomp", "agecomp"), R = "R")) {
+  case_vals = c("M", "F", "D", "R", "S", "G"), case_files = list(M = "M", F =
+    "F", D = c("index", "lcomp", "agecomp"), R = "R", S = "S", G = "G")) {
   spp <- substr_r(scenario, 3) # take 3 last characters
   case_vals <- sapply(case_vals, function(x)
     get_caseval(scenario, x, delimiter))

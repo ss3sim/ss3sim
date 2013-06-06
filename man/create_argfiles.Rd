@@ -2,7 +2,11 @@
 \alias{create_argfiles}
 \title{Create template argument input files}
 \usage{
+<<<<<<< HEAD
   create_argfiles(functions = c(`lcomp0-spp` = "change_lcomp", `agecomp0-spp` = "change_agecomp", `index0-spp` = "change_index", `M0-spp` = "change_m", `F0-spp` = "change_f", `R0-spp` = "change_retro", `E0-spp` = "change_e"),
+=======
+  create_argfiles(functions = c(`lcomp0-spp` = "change_lcomp", `agecomp0-spp` = "change_agecomp", `index0-spp` = "change_index", `M0-spp` = "change_m", `F0-spp` = "change_f", `R0-spp` = "change_retro", `S0-spp` = "change_sel", `G0-spp` = "change_growth"),
+>>>>>>> develop
     ext = ".txt", delim = "; ",
     ignore = c("file", "dir", "make_plot"), ...)
 }

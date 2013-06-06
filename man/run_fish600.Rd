@@ -24,11 +24,6 @@
   \item{em_model_dir}{The location of the folder containing
   the estimation model you want to use.}
 
-  \item{hess_always}{If \code{TRUE} then the Hessian will
-  always be calculated. If \code{FALSE} then the Hessian
-  will only be calculated for bias-adjustment runs thereby
-  saving time.}
-
   \item{...}{Anything else to pass to
   \code{\link{run_ss3sim}}. This includes
   \code{bias_adjust} and \code{bias_nsim}. Also, you can
@@ -76,7 +71,7 @@ em_model_dir <- paste0(f, "cod_em")
 case_folder <- paste0(f, "case-arguments")
 
 # Without bias adjustment:
-run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-cod"),
+run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-S1-G1-cod"),
 case_folder = case_folder, om_model_dir = om_model_dir,
 em_model_dir = em_model_dir)
 
