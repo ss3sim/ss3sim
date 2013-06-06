@@ -92,6 +92,8 @@ change_sel <- function(use=FALSE, dev, how_time_varying = "env", ctl_file_in =
   = "starter.ss", report_file = "Report.sso", n_blocks = 1,
   block_pattern = NA, ss3path = NULL) {
   
+  print(use)
+  
   if(use == FALSE)
     return()
 
