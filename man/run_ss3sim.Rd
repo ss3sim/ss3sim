@@ -2,19 +2,12 @@
 \alias{run_ss3sim}
 \title{Run both the operating model and assessment model}
 \usage{
-<<<<<<< HEAD
-  run_ss3sim(iterations, scenarios, m_params, f_params,
-    index_params, lcomp_params, agecomp_params,
-    retro_params, om_model_dir, em_model_dir,
-    bias_adjust = FALSE, bias_nsim = 5,
-=======
   run_ss3sim(iterations, scenarios, m_params, sel_params,
     growth_params, f_params, index_params, lcomp_params,
-    agecomp_params, retro_params, om_model_dir,
-    em_model_dir, bias_adjust = FALSE, bias_nsim = 5,
->>>>>>> develop
-    bias_already_run = FALSE, hess_always = FALSE,
-    print_logfile = TRUE, ...)
+    agecomp_params, estim_params, retro_params,
+    om_model_dir, em_model_dir, bias_adjust = FALSE,
+    bias_nsim = 5, bias_already_run = FALSE,
+    hess_always = FALSE, print_logfile = TRUE, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -45,6 +38,9 @@
 
   \item{retro_params}{A named list containing all the
   \code{\link{change_retro}} options.}
+
+  \item{estim_params}{A named list containing all the
+  \code{\link{change_e}} options.}
 
   \item{om_model_dir}{The directory with the operating
   model you want to copy and use for the specified

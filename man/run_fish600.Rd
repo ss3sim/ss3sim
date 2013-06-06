@@ -71,7 +71,7 @@ em_model_dir <- paste0(f, "cod_em")
 case_folder <- paste0(f, "case-arguments")
 
 # Without bias adjustment:
-run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-S1-G1-cod"),
+run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-S1-G1-E1-cod"),
 case_folder = case_folder, om_model_dir = om_model_dir,
 em_model_dir = em_model_dir)
 
