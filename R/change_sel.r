@@ -92,6 +92,7 @@ change_sel <- function(use=FALSE, dev, how_time_varying = "env", ctl_file_in =
   = "starter.ss", report_file = "Report.sso", n_blocks = 1,
   block_pattern = NA, ss3path = NULL) {
   
+ 
   if(use == FALSE)
     return()
 
@@ -192,40 +193,38 @@ change_sel <- function(use=FALSE, dev, how_time_varying = "env", ctl_file_in =
     # combine back everything
     New.dat=c(First_piece, apply(env.dat, 1, function(x) paste(x, collapse=" ")), Last_piece)
     
-    ###############################
-    ### The above line should go in the if in line 212 
-    ###############################
-    
     # write output	
     writeLines(New.dat, con= dat_file_out)
-   
     # Add sel environm link to .par
-    SS_par = c(SS_par, "Environmental_link_Selectivity", "1.0000")       
+    lastselpar <- grep("# selparm",SS_par)[length(grep("# selparm",SS_par))]
+    selnumbounds <- c(regexpr("[",SS_par[lastselpar],fixed=T)[1],regexpr("]",SS_par[lastselpar],fixed=T)[1])
+    selnum <- as.numeric(substr(SS_par[lastselpar],start=selnumbounds[1]+1, stop=selnumbounds[2]-1))+1
+    SS_par = c(SS_par, paste("# selparm[",selnum,"]:",sep=""), "1.00000000")     
    
-   # NO NEED TO DO THIS RE-RUNNING OF SS3 TO REWRITE THE PAR BECAUSE THE ENV LINK FOR SEL IS THE LAST LINE
     #CRM 5/19/2013: modify the *.par file to include the environmental link parameter (MGparam[17])
     
     #run SS with with no estimation and no hessian
     #first change starter file option to use .par to .ctl
-    #SS_Starter <- readLines(con = starter_file) 
-    #UseParLine =grep("# 0=use init values in control file; 1=use ss3.par", SS_Starter, fixed=TRUE) 
+    SS_Starter <- readLines(con = starter_file) 
+    UseParLine =grep("# 0=use init values in control file; 1=use ss3.par", SS_Starter, fixed=TRUE) 
     
-   #SS_Starter[UseParLine] = "0 # 0=use init values in control file; 1=use ss3.par"
+   SS_Starter[UseParLine] = "0 # 0=use init values in control file; 1=use ss3.par"
    #SS_Starter[UseParLine-2] = dat_file_out #This could create a mess up but probably not
    #SS_Starter[UseParLine-1] = ctl_file_out
-   #writeLines(SS_Starter,con = starter_file_out)
+   writeLines(SS_Starter,con = starter_file_out)
    #
    #
    ##Call ss3 for a run that includes the environmental link
-   #if(is.null(ss3path)) {
-   #  system("SS3 -noest")
-   #} else {
-   #  system(paste0(ss3path, "SS3 -noest"))
-   #}
+   if(is.null(ss3path)) {
+     system("SS3 -noest")
+   } else {
+     system(paste0(ss3path, "SS3 -noest"))
+   }
    #
    ##Change starter file option back to using .par!
-   #SS_Starter[UseParLine] = "1 # 0=use init values in control file; 1=use ss3.par"
-   #writeLines(SS_Starter,con = starter_file_out)
+   SS_Starter[UseParLine] = "1 # 0=use init values in control file; 1=use ss3.par"
+   writeLines(SS_Starter,con = starter_file_out)
+   writeLines(SS_par,con=par_file_out)  
    #
    ##Dig through Report.sso file to find out the par number associated with environmental link parameter
    #SS_Report = readLines(con = report_file)
