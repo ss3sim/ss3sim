@@ -1,4 +1,4 @@
-# description: base case index for flatfish
+# description: base case index for sar
 # author: KFJ
 # notes: 
 start_surv; 1974
