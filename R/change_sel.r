@@ -215,25 +215,25 @@ change_sel <- function(use=FALSE, dev, how_time_varying = "env", ctl_file_in =
     
     #run SS with with no estimation and no hessian
     #first change starter file option to use .par to .ctl
-    #SS_Starter <- readLines(con = starter_file) 
-    #UseParLine =grep("# 0=use init values in control file; 1=use ss3.par", SS_Starter, fixed=TRUE) 
+    SS_Starter <- readLines(con = starter_file) 
+    UseParLine =grep("# 0=use init values in control file; 1=use ss3.par", SS_Starter, fixed=TRUE) 
     
-   #SS_Starter[UseParLine] = "0 # 0=use init values in control file; 1=use ss3.par"
+   SS_Starter[UseParLine] = "0 # 0=use init values in control file; 1=use ss3.par"
    #SS_Starter[UseParLine-2] = dat_file_out #This could create a mess up but probably not
    #SS_Starter[UseParLine-1] = ctl_file_out
-   #writeLines(SS_Starter,con = starter_file_out)
+   writeLines(SS_Starter,con = starter_file_out)
    #
    #
    ##Call ss3 for a run that includes the environmental link
-   #if(is.null(ss3path)) {
-   #  system("SS3 -noest")
-   #} else {
-   #  system(paste0(ss3path, "SS3 -noest"))
-   #}
+   if(is.null(ss3path)) {
+     system("SS3 -noest")
+   } else {
+     system(paste0(ss3path, "SS3 -noest"))
+   }
    #
    ##Change starter file option back to using .par!
-   #SS_Starter[UseParLine] = "1 # 0=use init values in control file; 1=use ss3.par"
-   #writeLines(SS_Starter,con = starter_file_out)
+   SS_Starter[UseParLine] = "1 # 0=use init values in control file; 1=use ss3.par"
+   writeLines(SS_Starter,con = starter_file_out)
    #
    ##Dig through Report.sso file to find out the par number associated with environmental link parameter
    #SS_Report = readLines(con = report_file)
