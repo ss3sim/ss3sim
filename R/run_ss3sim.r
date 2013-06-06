@@ -162,16 +162,16 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
                  how_time_varying    = how_time_varying)) 
 
       # Change growth
-      with(growth_params,
-        change_growth(use            = use,
-                 n_blocks            = n_blocks,
-                 block_pattern       = block_pattern,
-                 dev                 = dev,
-                 ctl_file_in         = "om.ctl",
-                 ctl_file_out        = "om.ctl",
-                 dat_file            = "data.dat",
-                 dat_file_out        = "data.dat",
-                 how_time_varying    = how_time_varying)) 
+#      with(growth_params,
+#        change_growth(use            = use,
+#                 n_blocks            = n_blocks,
+#                 block_pattern       = block_pattern,
+#                 dev                 = dev,
+#                 ctl_file_in         = "om.ctl",
+#                 ctl_file_out        = "om.ctl",
+#                 dat_file            = "data.dat",
+#                 dat_file_out        = "data.dat",
+#                 how_time_varying    = how_time_varying)) 
 
       setwd(wd)
       # Run the operating model
