@@ -78,7 +78,7 @@ em_model_dir = em_model_dir)
 # With bias adjustment:
 # (Note that bias_nsim should be bigger, say 5, but it is set to 2
 # here so the example runs faster.)
-run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-cod"),
+run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-S1-G1-E1-cod"),
 case_folder = case_folder, om_model_dir = om_model_dir,
 em_model_dir = em_model_dir, bias_adjust = TRUE,
 bias_nsim = 2)
