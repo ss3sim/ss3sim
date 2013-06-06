@@ -23,6 +23,8 @@
 #' \code{\link{change_agecomp}} options.
 #' @param retro_params A named list containing all the
 #' \code{\link{change_retro}} options.
+#' @param estim_params A named list containing all the
+#' \code{\link{change_e}} options.
 #' @param om_model_dir The directory with the operating model you want
 #' to copy and use for the specified simulations.
 #' @param em_model_dir The directory with the estimation model you want
@@ -76,6 +78,7 @@
 
 run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
   growth_params, f_params, index_params, lcomp_params, agecomp_params,
+  estim_params,
   retro_params, om_model_dir, em_model_dir, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
   print_logfile = TRUE, 
@@ -236,6 +239,17 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
         change_retro(startfile_in    = pastef(sc, i, "em", "starter.ss"),  
                      startfile_out   = pastef(sc, i, "em", "starter.ss"), 
                      retro_yr        = retro_yr))
+
+      # Manipulate EM control file to adjust what gets estimated
+      with(estim_params,
+       change_e(ctl_file_in          = pastef(sc, i, "em", "em.ctl"),   
+                ctl_file_out         = pastef(sc, i, "em", "em.ctl"),  
+                natM_type            = natM_type,
+                natM_vector          = natM_vector,
+                natM_int             = natM_int,
+                natM_lorenzen        = natM_lorenzen,
+                natM_phase           = natM_phase,
+                steep_phase          = steep_phase))
 
       # Should we calculate the hessian?
         if(hess_always){

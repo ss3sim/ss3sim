@@ -58,7 +58,7 @@
 #' case_folder <- paste0(f, "case-arguments")
 #' 
 #' # Without bias adjustment:
-#' run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-S1-G1-cod"),
+#' run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-S1-G1-E1-cod"),
 #' case_folder = case_folder, om_model_dir = om_model_dir,
 #' em_model_dir = em_model_dir)
 #'
@@ -80,7 +80,7 @@ run_fish600 <- function(iterations, scenarios, case_folder,
     run_ss3sim(iterations, scenarios = x, m_params = a$M,
       sel_params = a$S, growth_params = a$G, f_params = a$F, index_params =
       a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp, 
-      retro_params = a$R, om_model_dir = om_model_dir, 
+      retro_params = a$R, estim_params = a$E, om_model_dir = om_model_dir, 
       em_model_dir = em_model_dir, ...) 
   })
 

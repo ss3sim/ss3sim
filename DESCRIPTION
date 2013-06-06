@@ -53,9 +53,6 @@ Collate:
     'run_fish600.r'
     'extract_expected_data.r'
     'change_retro.r'
-<<<<<<< HEAD
     'change_e.r'
-=======
     'change_growth.r'
     'change_sel.r'
->>>>>>> develop
