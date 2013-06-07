@@ -184,7 +184,13 @@ default settings create these files:
 
 5.  `lcomp0-spp.txt`
 
-6.  `R0-spp.txt` (not implemented yet)
+6.  `R0-spp.txt`
+
+7.  `S0-spp.txt`
+
+8.  `G0-spp.txt`
+
+9.  `E0-spp.txt`
 
 Look in your working directory for the template files. Change the case
 ID number (defaults to `0`) and the species identifier to a three letter
@@ -240,14 +246,14 @@ iteration of the scenario `M1-F1-D1-R1-cod`. You could run it like this:
     case_folder <- paste0(f, "case-arguments")
 
     # Without bias adjustment:
-    run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-cod"),
+    run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-E1-S1-G1-cod"),
     case_folder = case_folder, om_model_dir = om_model_dir,
     em_model_dir = em_model_dir)
 
     # With bias adjustment:
     # (Note that bias_nsim should be bigger, say 5, but it is set to 2
     # here so the example runs faster.)
-    run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-cod"),
+    run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-E1-S1-G1-cod"),
     case_folder = case_folder, om_model_dir = om_model_dir,
     em_model_dir = em_model_dir, bias_adjust = TRUE,
     bias_nsim = 2)
