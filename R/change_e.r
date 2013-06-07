@@ -32,7 +32,7 @@ SS_ctl <- readLines ( ctl_file_in )
   # Copy file to ensure information is not lost
   file.copy ( from = ctl_file_in, to = "control_pre_change_e.ss_new",
               overwrite = TRUE, copy.mode = TRUE )
-if ( !is.null ( natM_type ) ) {
+if ( ! natM_type == "NULL" ) ) {
   natM_value <- pmatch( tolower(natM_type),
                         c("n_breakpoints", "lorenzen", "agespecific", "agespec_withseasinterpolate") )
   if ( natM_value == 3 | natM_value == 4 ) {
