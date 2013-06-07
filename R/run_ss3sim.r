@@ -241,6 +241,17 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
                      retro_yr        = retro_yr))
 
       # Manipulate EM control file to adjust what gets estimated
+      # We'll only run this if it's a bias run or if bias adjustment
+      # isn't getting run. This is because the bias adjustment runs
+      # already manipulate the .ctl file appropriately.
+
+      run_change_e <- FALSE # default
+      if(grepl("bias", i))  # it's a bias run
+        run_change_e <- TRUE
+      if(!bias_adjust)      # we aren't running bias adjustment
+        run_change_e <- TRUE
+
+      if(run_change_e) {
       with(estim_params,
        change_e(ctl_file_in          = pastef(sc, i, "em", "em.ctl"),   
                 ctl_file_out         = pastef(sc, i, "em", "em.ctl"),  
@@ -250,6 +261,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
                 natM_lorenzen        = natM_lorenzen,
                 natM_phase           = natM_phase,
                 steep_phase          = steep_phase))
+      }
 
       # Should we calculate the hessian?
         if(hess_always){
