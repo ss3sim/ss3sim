@@ -30,8 +30,8 @@ if ( !file.exists ( ctl_file_in ) ) stop("Ctl file for the estimation model does
 #Read in the ctl file for the estimation model
 SS_ctl <- readLines ( ctl_file_in )
   # Copy file to ensure information is not lost
-  # file.copy ( from = ctl_file_in, to = "control_pre_change_e.ss_new",
-              # overwrite = TRUE, copy.mode = TRUE )
+  file.copy ( from = ctl_file_in, to = "control_pre_change_e.ss_new",
+              overwrite = TRUE, copy.mode = TRUE )
 if ( ! natM_type == "NULL" ) {
   natM_value <- pmatch( tolower(natM_type),
                         c("n_breakpoints", "lorenzen", "agespecific", "agespec_withseasinterpolate") )
