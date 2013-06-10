@@ -252,15 +252,17 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
         run_change_e <- TRUE
 
       if(run_change_e) {
+      setwd(pastef(sc, i, "em"))
       with(estim_params,
-       change_e(ctl_file_in          = pastef(sc, i, "em", "em.ctl"),   
-                ctl_file_out         = pastef(sc, i, "em", "em.ctl"),  
+       change_e(ctl_file_in          = pastef("em.ctl"),   
+                ctl_file_out         = pastef("em.ctl"),  
                 natM_type            = natM_type,
                 natM_vector          = natM_vector,
                 natM_int             = natM_int,
                 natM_lorenzen        = natM_lorenzen,
                 natM_phase           = natM_phase,
                 steep_phase          = steep_phase))
+      setwd(wd)
       }
 
       # Should we calculate the hessian?
