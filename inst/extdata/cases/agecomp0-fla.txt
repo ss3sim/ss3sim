@@ -1,6 +1,3 @@
-# description: base age comps for flatfish
-# author: SCA 
-# notes: 
 distribution; multinomial
 Nsamp; 100
 minyear; NA
