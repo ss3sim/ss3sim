@@ -1,4 +1,4 @@
-#V3.24f
+#V3.24O
 #C  generic forecast file
 # for all year entries except rebuilder; enter either: actual year, -999 for styr, 0 for endyr, neg number for rel. endyr
 1 # Benchmarks: 0=skip; 1=calc F_spr,F_btgt,F_msy 
@@ -14,17 +14,17 @@
 0 # N forecast years 
 0 # F scalar (only used for Do_Forecast==5)
 #_Fcast_years:  beg_selex, end_selex, beg_relF, end_relF  (enter actual year, or values of 0 or -integer to be rel. endyr)
- 1.35713e+166 5.48345e+241 5.65901e+276 5.63235e-322
-#  0 1 -1 48 # after processing 
+ 2.0465e-153 6.4921e+029 7.20382e+165 1.02684e+248
+#  1180631158 1667592815 7631713 1936290657 # after processing 
 0 # Control rule method (1=catch=f(SSB) west coast; 2=F=f(SSB) ) 
 0 # Control rule Biomass level for constant F (as frac of Bzero, e.g. 0.40); (Must be > the no F level below) 
 0 # Control rule Biomass level for no F (as frac of Bzero, e.g. 0.10) 
 0 # Control rule target as fraction of Flimit (e.g. 0.75) 
-2839680 #_N forecast loops (1=OFL only; 2=ABC; 3=get F from forecast ABC catch with allocations applied)
-2839680 #_First forecast loop with stochastic recruitment
--1 #_Forecast loop control #3 (reserved for future bells&whistles) 
-169345072 #_Forecast loop control #4 (reserved for future bells&whistles) 
-24 #_Forecast loop control #5 (reserved for future bells&whistles) 
+120 #_N forecast loops (1=OFL only; 2=ABC; 3=get F from forecast ABC catch with allocations applied)
+0 #_First forecast loop with stochastic recruitment
+0 #_Forecast loop control #3 (reserved for future bells&whistles) 
+0 #_Forecast loop control #4 (reserved for future bells&whistles) 
+0 #_Forecast loop control #5 (reserved for future bells&whistles) 
 0  #FirstYear for caps and allocations (should be after years with fixed inputs) 
 0 # stddev of log(realized catch/target catch) in forecast (set value>0.0 to cause active impl_error)
 0 # Do West Coast gfish rebuilder output (0/1) 

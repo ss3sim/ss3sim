@@ -1,17 +1,17 @@
-#V3.24f
+#V3.24O
 #C starter comment here
-cod.dat
-cod.ctl
-0 # 0=use init values in control file; 1=use ss3.par ### RL: for EM = 0, for OM=1
+codEM.dat
+codEM.ctl
+0 # 0=use init values in control file; 1=use ss3.par
 1 # run display detail (0,1,2)
 1 # detailed age-structured reports in REPORT.SSO (0,1) 
-0 # write detailed checkup.sso file (0,1) 
+0 # write detailed info from first call to echoinput.sso (0,1) 
 4 # write parm values to ParmTrace.sso (0=no,1=good,active; 2=good,all; 3=every_iter,all_parms; 4=every,active)
 2 # write to cumreport.sso (0=no,1=like&timeseries; 2=add survey fits)
 0 # Include prior_like for non-estimated parameters (0,1) 
 1 # Use Soft Boundaries to aid convergence (0,1) (recommended)
 3 # Number of datafiles to produce: 1st is input, 2nd is estimates, 3rd and higher are bootstrap
-10 # Turn off estimation for parameters entering after this phase  ### RL: for EM =10, for OM= 0
+10 # Turn off estimation for parameters entering after this phase
 0 # MCeval burn interval
 1 # MCeval thin interval
 0 # jitter initial parm value by this fraction
@@ -27,6 +27,6 @@ cod.ctl
 1 # Fraction (X) for Depletion denominator (e.g. 0.4)
 4 # SPR_report_basis:  0=skip; 1=(1-SPR)/(1-SPR_tgt); 2=(1-SPR)/(1-SPR_MSY); 3=(1-SPR)/(1-SPR_Btarget); 4=rawSPR
 1 # F_report_units: 0=skip; 1=exploitation(Bio); 2=exploitation(Num); 3=sum(Frates); 4=true F for range of ages
-# 1 23 #_min and max age over which average F will be calculated  ### RL: for maxage set maxage -2  
+#COND 10 15 #_min and max age over which average F will be calculated with F_reporting=4
 0 # F_report_basis: 0=raw; 1=F/Fspr; 2=F/Fmsy ; 3=F/Fbtgt
 999 # check value for end of file

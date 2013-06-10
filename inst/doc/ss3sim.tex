@@ -302,3 +302,14 @@ vignette("ss3sim")
 \end{figure}
 
 \end{document}
+
+
+get_fish600_casefolder()
+get_fish600_modelfolder("cod-om")
+get_fish600_modelfolder("cod-em")
+
+run_fish600(iterations = 2, scenarios = c("M0-F0-D0-R0-S0-G0-E0-cod"),
+case_folder = get_fish600_casefolder(), om_model_dir = 
+get_fish600_modelfolder("cod-om"),
+em_model_dir = get_fish600_modelfolder("cod-em"))
+
