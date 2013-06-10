@@ -56,3 +56,5 @@ Collate:
     'change_e.r'
     'change_growth.r'
     'change_sel.r'
+    'get_fish600_casefolder.r'
+    'get_fish600_modelfolder.r'
