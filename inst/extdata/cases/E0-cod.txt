@@ -1,0 +1,9 @@
+# Description: Base case estimation arguments for cod (constant single
+# estimated M)
+# Author: KJ, SCA
+natM_type; NULL
+natM_vector; NULL
+natM_int; NULL
+natM_lorenzen; NULL
+natM_phase; 3
+steep_phase; -1
