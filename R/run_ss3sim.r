@@ -265,7 +265,11 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
                 natM_int             = natM_int,
                 natM_lorenzen        = natM_lorenzen,
                 natM_phase           = natM_phase,
-                steep_phase          = steep_phase))
+                steep_phase          = steep_phase,
+                qSurvey_phase        = qSurvey_phase,
+                qCPUE_phase          = qCPUE_phase,
+                CV_young_phase       = CV_young_phase,
+                CV_old_phase         = CV_old_phase ))
       setwd(wd)
       }
 
