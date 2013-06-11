@@ -4,7 +4,7 @@
 #' return a new file with the new length comp samples. Samples can have dimensions, bins, 
 #' sample sizes, and distributions which are different than those coming from SS.
 #' 
-#' @author Felipe Hurtado-Ferro
+#' @author Felipe Hurtado-Ferro (modified by Kotaro Ono)
 #' @param infile SS data object from SS_readdat() in the r4ss package. Make sure you select option "section=2"
 #' @param outfile Name of the new file to be created. Path may be global or local. Make sure to give extension .dat to the file name.
 #' @param distribution Distribution to be used to sample the length compositions. Options are "multinomial" and "dirichlet"
@@ -20,7 +20,9 @@
 #' @param N_lbins Number of length bins. 
 #' @param lbin_vector Vector of length bins for the observations
 #' @param lencomp Matrix of length comps 
-#' 
+#' @param fish.lcomp, TRUE or FALSE. This indicates whether you want to keep the fishery lcomp data at all. default to TRUE 
+#' @param sv.lcomp, TRUE or FALSE. This indicates whether you want to keep the survey lcomp data at all. default to TRUE 
+#'
 #' @export
 #' @examples \dontrun{
 #' d <- system.file("extdata", package = "ss3sim")
@@ -47,7 +49,7 @@
 #' }
 
 change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
-                        minyear=NA,maxyear=NA,years=NA,svyears=NA,
+                        minyear=NA,maxyear=NA,years=NA,svyears=NA,fish.lcomp=TRUE,sv.lcomp=TRUE, 
                         lbin_method=NA,binwidth=NA,minimum_size=NA,maximum_size=NA,
                         N_lbins=NA,lbin_vector=NA,lencomp=NA){
 
@@ -163,11 +165,23 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
   new.lencomp <- as.data.frame(new.lencomp)
   names(new.lencomp) <- c(names(dat.file$lencomp)[1:6],paste("l",dat.file$lbin_vector,sep=""))
   
+  #To keep or not to keep the length comp from fishery and survey
+  if(fish.lcomp==FALSE)
+  {
+    new.lencomp = subset(new.lencomp, subset=c(FltSvy!=1))
+  }
+  if(sv.lcomp==FALSE) 
+  {
+    new.lencomp = subset(new.lencomp, subset=c(FltSvy!=2))
+  }
+
   dat.file$lencomp <- new.lencomp
-  
+
+  if(dim(new.lencomp)[1]==0) dat.file$lencomp = data.frame("#")
+     
+  #To calculate the final sum of years
   dat.file$N_lencomp <- length(new.lencomp[,1])
-  
-  
+    
   #Write the modified file
   r4ss::SS_writedat(datlist=dat.file, outfile=outfile, overwrite=TRUE)
 }
