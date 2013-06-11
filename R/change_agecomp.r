@@ -16,12 +16,14 @@
 #' @param years Vector of years for the fleet age comps
 #' @param svyears Vector of years for the survey age comps
 #' @param agecomp Matrix of age comps 
+#' @param fish.agecomp, TRUE or FALSE; default to TRUE. To use or not to use the fishery age comp data 
+#' @param sv.agecomp, TRUE or FALSE; default to TRUE. To use or not to use the survey age comp data
 #' 
 #' @export
 
 
 change_agecomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
-                         minyear=NA,maxyear=NA,years=NA,svyears=NA,
+                         minyear=NA,maxyear=NA,years=NA,svyears=NA,fish.agecomp=TRUE,sv.agecomp=TRUE,
                          N_agebins=NA,agebin_vector=NA,agecomp=NA){
   #Load required libraries (now done by package)
   #require(r4ss)
@@ -99,10 +101,24 @@ change_agecomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
   new.agecomp <- as.data.frame(new.agecomp)
   names(new.agecomp) <- c(names(dat.file$agecomp)[1:9],paste("a",dat.file$agebin_vector,sep=""))
   
+ #To keep or not to keep the length comp from fishery and survey
+  if(fish.agecomp==FALSE)
+  {
+    new.agecomp = subset(new.agecomp, subset=c(FltSvy!=1))
+  }
+  if(sv.agecomp==FALSE) 
+  {
+    new.agecomp = subset(new.agecomp, subset=c(FltSvy!=2))
+  }
+
   dat.file$agecomp <- new.agecomp
-  
+
+  if(dim(new.agecomp)[1]==0) dat.file$agecomp = data.frame("#")
+    
+  #To calculate the final sum of years 
+ 
   dat.file$N_agecomp <- length(new.agecomp[,1])
-  
+ 
   
   #Write the modified file
   r4ss::SS_writedat(datlist=dat.file, outfile=outfile, overwrite=TRUE)
