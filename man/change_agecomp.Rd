@@ -4,7 +4,8 @@
 \usage{
   change_agecomp(infile, outfile,
     distribution = "multinomial", Nsamp = NA, minyear = NA,
-    maxyear = NA, years = NA, svyears = NA, N_agebins = NA,
+    maxyear = NA, years = NA, svyears = NA,
+    fish_agecomp = TRUE, sv_agecomp = TRUE, N_agebins = NA,
     agebin_vector = NA, agecomp = NA)
 }
 \arguments{
@@ -38,6 +39,12 @@
   \item{svyears}{Vector of years for the survey age comps}
 
   \item{agecomp}{Matrix of age comps}
+
+  \item{fish_agecomp,}{TRUE or FALSE; default to TRUE. To
+  use or not to use the fishery age comp data}
+
+  \item{sv_agecomp,}{TRUE or FALSE; default to TRUE. To use
+  or not to use the survey age comp data}
 }
 \description{
   Take a data.SS_new file, resample the age compositions

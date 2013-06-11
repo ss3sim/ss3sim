@@ -5,9 +5,9 @@
   change_lcomp(infile, outfile,
     distribution = "multinomial", Nsamp = NA, minyear = NA,
     maxyear = NA, years = NA, svyears = NA,
-    lbin_method = NA, binwidth = NA, minimum_size = NA,
-    maximum_size = NA, N_lbins = NA, lbin_vector = NA,
-    lencomp = NA)
+    fish_lcomp = TRUE, sv_lcomp = TRUE, lbin_method = NA,
+    binwidth = NA, minimum_size = NA, maximum_size = NA,
+    N_lbins = NA, lbin_vector = NA, lencomp = NA)
 }
 \arguments{
   \item{infile}{SS data object from SS_readdat() in the
@@ -51,6 +51,14 @@
   observations}
 
   \item{lencomp}{Matrix of length comps}
+
+  \item{fish_lcomp,}{TRUE or FALSE. This indicates whether
+  you want to keep the fishery lcomp data at all. default
+  to TRUE}
+
+  \item{sv_lcomp,}{TRUE or FALSE. This indicates whether
+  you want to keep the survey lcomp data at all. default to
+  TRUE}
 }
 \description{
   Take a data.SS_new file, resample the length compositions
@@ -85,6 +93,6 @@ change_lcomp(infile,outfile="newdat.dat", Nsamp=100, distribution="dirichlet")
 }
 }
 \author{
-  Felipe Hurtado-Ferro
+  Felipe Hurtado-Ferro (modified by Kotaro Ono)
 }
 
