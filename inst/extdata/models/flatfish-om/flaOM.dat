@@ -10,7 +10,7 @@
 1 #_Nfleet
 2 #_Nsurveys
 1 #_N_areas
-Fishery%Survey1%Survey2 #_fleetnames
+Fishery%Survey%CPUE #_fleetnames
 0.5 0.5 0.5 #_surveytiming
 1 1 1 #_areas
 1 #_units_of_catch
