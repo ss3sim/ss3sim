@@ -7,3 +7,5 @@ svyears; seq(1974,2012,by=2)
 N_agebins; NA
 agebin_vector; NA
 agecomp; NA
+fish_agecomp; TRUE
+sv_agecomp; TRUE

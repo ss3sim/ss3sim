@@ -11,3 +11,5 @@ maximum_size; NA
 N_lbins; NA
 lbin_vector; NA
 lencomp; NA
+fish_lcomp; FALSE
+sv_lcomp; FALSE

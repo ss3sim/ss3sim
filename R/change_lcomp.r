@@ -20,8 +20,8 @@
 #' @param N_lbins Number of length bins. 
 #' @param lbin_vector Vector of length bins for the observations
 #' @param lencomp Matrix of length comps 
-#' @param fish.lcomp, TRUE or FALSE. This indicates whether you want to keep the fishery lcomp data at all. default to TRUE 
-#' @param sv.lcomp, TRUE or FALSE. This indicates whether you want to keep the survey lcomp data at all. default to TRUE 
+#' @param fish_lcomp, TRUE or FALSE. This indicates whether you want to keep the fishery lcomp data at all. default to TRUE 
+#' @param sv_lcomp, TRUE or FALSE. This indicates whether you want to keep the survey lcomp data at all. default to TRUE 
 #'
 #' @export
 #' @examples \dontrun{
@@ -49,7 +49,7 @@
 #' }
 
 change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
-                        minyear=NA,maxyear=NA,years=NA,svyears=NA,fish.lcomp=TRUE,sv.lcomp=TRUE, 
+                        minyear=NA,maxyear=NA,years=NA,svyears=NA,fish_lcomp=TRUE,sv_lcomp=TRUE, 
                         lbin_method=NA,binwidth=NA,minimum_size=NA,maximum_size=NA,
                         N_lbins=NA,lbin_vector=NA,lencomp=NA){
 
@@ -166,11 +166,11 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
   names(new.lencomp) <- c(names(dat.file$lencomp)[1:6],paste("l",dat.file$lbin_vector,sep=""))
   
   #To keep or not to keep the length comp from fishery and survey
-  if(fish.lcomp==FALSE)
+  if(fish_lcomp==FALSE)
   {
     new.lencomp = subset(new.lencomp, subset=c(FltSvy!=1))
   }
-  if(sv.lcomp==FALSE) 
+  if(sv_lcomp==FALSE) 
   {
     new.lencomp = subset(new.lencomp, subset=c(FltSvy!=2))
   }
