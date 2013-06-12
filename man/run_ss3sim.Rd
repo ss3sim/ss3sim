@@ -5,9 +5,10 @@
   run_ss3sim(iterations, scenarios, m_params, sel_params,
     growth_params, f_params, index_params, lcomp_params,
     agecomp_params, estim_params, retro_params,
-    om_model_dir, em_model_dir, bias_adjust = FALSE,
-    bias_nsim = 5, bias_already_run = FALSE,
-    hess_always = FALSE, print_logfile = TRUE, ...)
+    om_model_dir, em_model_dir, user_recdevs = NULL,
+    bias_adjust = FALSE, bias_nsim = 5,
+    bias_already_run = FALSE, hess_always = FALSE,
+    print_logfile = TRUE, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -49,6 +50,11 @@
   \item{em_model_dir}{The directory with the estimation
   model you want to copy and use for the specified
   simulations.}
+
+  \item{user_recdevs}{An optional 100x100 matrix of
+  recruitment deviations to replace the recruitment
+  deviations built into the package. The columns represent
+  run iterations and the rows represent years.}
 
   \item{bias_adjust}{Run bias adjustment first? See
   \code{\link{run_bias_ss3}}.}

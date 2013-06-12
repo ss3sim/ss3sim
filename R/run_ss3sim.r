@@ -29,6 +29,10 @@
 #' to copy and use for the specified simulations.
 #' @param em_model_dir The directory with the estimation model you want
 #' to copy and use for the specified simulations.
+#' @param user_recdevs An optional 100x100 matrix of recruitment
+#' deviations to replace the recruitment deviations built into the
+#' package. The columns represent run iterations and the rows
+#' represent years.
 #' @param bias_adjust Run bias adjustment first? See
 #' \code{\link{run_bias_ss3}}.
 #' @param bias_nsim If bias adjustment is run, how many simulations
@@ -77,9 +81,8 @@
 #' }
 
 run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
-  growth_params, f_params, index_params, lcomp_params, agecomp_params,
-  estim_params,
-  retro_params, om_model_dir, em_model_dir, bias_adjust = FALSE,
+  growth_params, f_params, index_params, lcomp_params, agecomp_params, estim_params,
+  retro_params, om_model_dir, em_model_dir, user_recdevs = NULL, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
   print_logfile = TRUE, 
   ...) {
@@ -117,7 +120,11 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
 
       # recdevs is a 100x100 matrix stored in the package 'data' folder
       # Columns are for iterations and rows are for years
-      sc_i_recdevs <- sigmar * recdevs[, this_run_num]
+      if(is.null(user_recdevs)) {
+        sc_i_recdevs <- sigmar * recdevs[, this_run_num] # from the package data
+      } else {
+        sc_i_recdevs <- sigmar * user_recdevs[, this_run_num] # user specified recdevs
+      }
 
       # Add new rec devs overwriting om/ss3.par
       change_rec_devs(recdevs_new = sc_i_recdevs, file_in =
