@@ -117,40 +117,40 @@ if ( steep_phase > 0 ) {
   SS_ctl[steep_line] <- paste( steep_value, collapse = " " )
 }
 if ( !qSurvey_phase == "NULL" ) {
-  steep_line <- grep ( "LnQ_base_2_SURVEY", SS_ctl )
+  qSurvey_line <- grep ( "LnQ_base_2_SURVEY", SS_ctl )
   #_LO HI INIT PRIOR PR_type SD PHASE
-  steep_value <- unlist(strsplit ( SS_ctl[steep_line], split = " " ) )
+  qSurvey_value <- unlist(strsplit ( SS_ctl[qSurvey_line], split = " " ) )
   # remove white space
-  steep_value <- steep_value[which(nchar(steep_value)>0)]
-  steep_value[7] <- steep_phase
-  SS_ctl[steep_line] <- paste( steep_value, collapse = " " )
+  qSurvey_value <- qSurvey_value[which(nchar(qSurvey_value)>0)]
+  qSurvey_value[7] <- qSurvey_phase
+  SS_ctl[qSurvey_line] <- paste( qSurvey_value, collapse = " " )
 }
 if ( !qCPUE_phase == "NULL" ) {
-  steep_line <- grep ( "LnQ_base_3_CPUE", SS_ctl )
+  qCPUE_line <- grep ( "LnQ_base_3_CPUE", SS_ctl )
   #_LO HI INIT PRIOR PR_type SD PHASE
-  steep_value <- unlist(strsplit ( SS_ctl[steep_line], split = " " ) )
+  qCPUE_value <- unlist(strsplit ( SS_ctl[qCPUE_line], split = " " ) )
   # remove white space
-  steep_value <- steep_value[which(nchar(steep_value)>0)]
-  steep_value[7] <- steep_phase
-  SS_ctl[steep_line] <- paste( steep_value, collapse = " " )
+  qCPUE_value <- qCPUE_value[which(nchar(qCPUE_value)>0)]
+  qCPUE_value[7] <- qCPUE_phase
+  SS_ctl[qCPUE_line] <- paste( qCPUE_value, collapse = " " )
 }
 if ( !CV_young_phase == "NULL" ) {
-  steep_line <- grep ( "CV_young", SS_ctl )
+  CV_young_line <- grep ( "CV_young", SS_ctl )
   #_LO HI INIT PRIOR PR_type SD PHASE
-  steep_value <- unlist(strsplit ( SS_ctl[steep_line], split = " " ) )
+  CV_young_value <- unlist(strsplit ( SS_ctl[CV_young_line], split = " " ) )
   # remove white space
-  steep_value <- steep_value[which(nchar(steep_value)>0)]
-  steep_value[7] <- steep_phase
-  SS_ctl[steep_line] <- paste( steep_value, collapse = " " )
+  CV_young_value <- CV_young_value[which(nchar(CV_young_value)>0)]
+  CV_young_value[7] <- CV_young_phase
+  SS_ctl[CV_young_line] <- paste( CV_young_value, collapse = " " )
 }
 if ( !CV_old_phase == "NULL" ) {
-  steep_line <- grep ( "CV_old", SS_ctl )
+  CV_old_line <- grep ( "CV_old", SS_ctl )
   #_LO HI INIT PRIOR PR_type SD PHASE
-  steep_value <- unlist(strsplit ( SS_ctl[steep_line], split = " " ) )
+  CV_old_value <- unlist(strsplit ( SS_ctl[CV_old_line], split = " " ) )
   # remove white space
-  steep_value <- steep_value[which(nchar(steep_value)>0)]
-  steep_value[7] <- steep_phase
-  SS_ctl[steep_line] <- paste( steep_value, collapse = " " )
+  CV_old_value <- CV_old_value[which(nchar(CV_old_value)>0)]
+  CV_old_value[7] <- CV_old_phase
+  SS_ctl[CV_old_line] <- paste( CV_old_value, collapse = " " )
 }
   writeLines ( SS_ctl, ctl_file_out )
 }
