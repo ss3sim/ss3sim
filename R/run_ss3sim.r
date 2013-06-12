@@ -32,7 +32,9 @@
 #' @param user_recdevs An optional 100x100 matrix of recruitment
 #' deviations to replace the recruitment deviations built into the
 #' package. The columns represent run iterations and the rows
-#' represent years.
+#' represent years. Note that these will be multiplied by sigma R. So,
+#' under normal conditions this matrix should contain standard-normal
+#' values ~N(0, 1).
 #' @param bias_adjust Run bias adjustment first? See
 #' \code{\link{run_bias_ss3}}.
 #' @param bias_nsim If bias adjustment is run, how many simulations

@@ -54,7 +54,10 @@
   \item{user_recdevs}{An optional 100x100 matrix of
   recruitment deviations to replace the recruitment
   deviations built into the package. The columns represent
-  run iterations and the rows represent years.}
+  run iterations and the rows represent years. Note that
+  these will be multiplied by sigma R. So, under normal
+  conditions this matrix should contain standard-normal
+  values ~N(0, 1).}
 
   \item{bias_adjust}{Run bias adjustment first? See
   \code{\link{run_bias_ss3}}.}
