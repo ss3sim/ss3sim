@@ -4,3 +4,7 @@ natM_int; c(.2, .3)
 natM_lorenzen; NULL
 natM_phase; c(2,2)
 steep_phase; -1
+qSurvey_phase; NULL
+qCPUE_phase; -1
+CV_young_phase; NULL
+CV_old_phase; NULL
