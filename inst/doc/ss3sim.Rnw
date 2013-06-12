@@ -48,14 +48,14 @@ vignette("ss3sim")
 \end{verbatim}
 
 \noindent
-Note that you can install the development version of the package with:
+%Note that you can install the development version of the package with:
 
-\begin{verbatim}
-devtools::install_github("ss3sim", username="seananderson", ref="develop")
-\end{verbatim}
+%\begin{verbatim}
+%devtools::install_github("ss3sim", username="seananderson", ref="develop")
+%\end{verbatim}
 
-\noindent
-The development version may contain recent and untested changes.
+%\noindent
+%The development version may contain recent and untested changes.
 
 \section{Putting \texttt{SS3} in your path}
 \texttt{SS3} must be in your path for the \texttt{ss3sim} package to work. Your 
