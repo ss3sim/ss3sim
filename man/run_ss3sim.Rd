@@ -113,9 +113,8 @@ a <- get_caseargs(folder = paste0(f, "case-arguments"), scenario =
 run_ss3sim(iterations = 1, scenarios = "M1-F1-D1-R1-S1-G1-E1-cod",
   m_params = a$M, sel_params = a$S, growth_params = a$G, f_params =
   a$F, index_params = a$index, lcomp_params = a$lcomp, agecomp_params
-  = a$agecomp, retro_params = a$R, estim_params = a$E, om_model_dir =
-  om_model_dir, om_model_dir = om_model_dir, em_model_dir =
-  em_model_dir)
+  = a$agecomp, retro_params = a$R, estim_params = a$E,
+  om_model_dir = om_model_dir, em_model_dir = em_model_dir)
 }
 }
 \author{
