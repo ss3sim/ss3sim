@@ -1,0 +1,12 @@
+#description:Single fixed M with no qCPUE
+#author: KFJ
+natM_type; NULL
+natM_vector; NULL
+natM_int; NULL
+natM_lorenzen; NULL
+natM_phase; 3
+steep_phase; -4
+qSurvey_phase; NULL
+qCPUE_phase; -1
+CV_young_phase; NULL
+CV_old_phase; NULL

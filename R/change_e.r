@@ -2,12 +2,16 @@
 #'
 #' @param ctl_file_in The operating model control file to manipulate
 #' @param ctl_file_out Name of the resulting operating model control file
-#' @param natM_type A character value corresponding to option 1:4 in stock synthesis (i.e. "n_breakpoints", "Lorenzen", "agespecific" , "agespec_withseasinterpolate")
+#' @param natM_type A character value corresponding to option 1:4 in stock synthesis (i.e. "n_breakpoints", "Lorenzen", "agespecific" , "agespec_withseasinterpolate"), default is NULL which will leave the parameter as specified in the .ctl file (ie a single fixed parameter)
 #' @param natM_vector A vector of ages at which you want breakpoints, only used if you specify natM_type = "n_breakpoints".
 #' @param natM_int A vector of natural mortality rates for each natM parameter
 #' @param natM_lorenzen The reference age for the Lorenzen function should natM_type = "Lorenzen".
 #' @param natM_phase A vector of phases for each natM parameter. Leave at default if natM_type = "agespecific" or "agespec_withseasinterpolate".
 #' @param steep_phase A single value that specifies the phase in which steepness is estimated.
+#' @param qSurvey_phase A single value that specifies the phase in which catchability for the survey is estimated
+#' @param qCPUE_phase A single value that specifies the phase in which catchability for CPUE is estimated
+#' @param CV_young__phase A single parameter that specifies the phases in which to estimate the CV for size at age for young fish.
+#' @param CV_old__phase A single parameter that specifies the phases in which to estimate the CV for size at age for old fish.
 #' @author Kelli Johnson
 #' @export
 #' @examples
@@ -17,15 +21,17 @@
 #' change_e(ctl_file_in = ctl_file, ctl_file_out = "change_e.ctl",
 #'          natM_type = "n_breakpoints", natM_vector = c(1,4),
 #'          natM_int = c(.2,.3), natM_lorenzen = NULL,
-#'          natM_phase = c(2,2), steep_phase = -1)
+#'          natM_phase = c(2,2), steep_phase = -1, qSurvey_phase = NULL, qCPUE_phase = -1,
+#'          CV_young_phase = NULL, CV_old_phase = NULL )
 #' # clean up
 #' file.remove("change_e.ctl")
 #' }
 
 change_e <- function ( ctl_file_in = "sardEM.ctl", ctl_file_out = "new.ctl",
                        natM_type = NULL, natM_vector = NULL, natM_int = NULL, 
-  				   natM_lorenzen = NULL, 
-					   natM_phase = -1, steep_phase = -1 ) {
+  		       natM_lorenzen = NULL, 
+		       natM_phase = -1, steep_phase = -1, qSurvey_phase = NULL, qCPUE_phase = -1,
+                       CV_young_phase = NULL, CV_old_phase = NULL ) {
 if ( !file.exists ( ctl_file_in ) ) stop("Ctl file for the estimation model does not exist, change_e failed.")
 #Read in the ctl file for the estimation model
 SS_ctl <- readLines ( ctl_file_in )
@@ -109,6 +115,42 @@ if ( steep_phase > 0 ) {
   steep_value <- steep_value[which(nchar(steep_value)>0)]
   steep_value[7] <- steep_phase
   SS_ctl[steep_line] <- paste( steep_value, collapse = " " )
+}
+if ( !qSurvey_phase == "NULL" ) {
+  qSurvey_line <- grep ( "LnQ_base_2", SS_ctl )
+  #_LO HI INIT PRIOR PR_type SD PHASE
+  qSurvey_value <- unlist(strsplit ( SS_ctl[qSurvey_line], split = " " ) )
+  # remove white space
+  qSurvey_value <- qSurvey_value[which(nchar(qSurvey_value)>0)]
+  qSurvey_value[7] <- qSurvey_phase
+  SS_ctl[qSurvey_line] <- paste( qSurvey_value, collapse = " " )
+}
+if ( !qCPUE_phase == "NULL" ) {
+  qCPUE_line <- grep ( "LnQ_base_3", SS_ctl )
+  #_LO HI INIT PRIOR PR_type SD PHASE
+  qCPUE_value <- unlist(strsplit ( SS_ctl[qCPUE_line], split = " " ) )
+  # remove white space
+  qCPUE_value <- qCPUE_value[which(nchar(qCPUE_value)>0)]
+  qCPUE_value[7] <- qCPUE_phase
+  SS_ctl[qCPUE_line] <- paste( qCPUE_value, collapse = " " )
+}
+if ( !CV_young_phase == "NULL" ) {
+  CV_young_line <- grep ( "CV_young", SS_ctl )
+  #_LO HI INIT PRIOR PR_type SD PHASE
+  CV_young_value <- unlist(strsplit ( SS_ctl[CV_young_line], split = " " ) )
+  # remove white space
+  CV_young_value <- CV_young_value[which(nchar(CV_young_value)>0)]
+  CV_young_value[7] <- CV_young_phase
+  SS_ctl[CV_young_line] <- paste( CV_young_value, collapse = " " )
+}
+if ( !CV_old_phase == "NULL" ) {
+  CV_old_line <- grep ( "CV_old", SS_ctl )
+  #_LO HI INIT PRIOR PR_type SD PHASE
+  CV_old_value <- unlist(strsplit ( SS_ctl[CV_old_line], split = " " ) )
+  # remove white space
+  CV_old_value <- CV_old_value[which(nchar(CV_old_value)>0)]
+  CV_old_value[7] <- CV_old_phase
+  SS_ctl[CV_old_line] <- paste( CV_old_value, collapse = " " )
 }
   writeLines ( SS_ctl, ctl_file_out )
 }
