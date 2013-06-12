@@ -19,11 +19,11 @@ You can read the help files and access this vignette again with:
     help(package = "ss3sim")
     vignette("ss3sim")
 
-Shortcut to running Fish 600 models
+Shortcut to running FISH 600 models
 ===================================
 
 Assuming you’ve set up `SS3` in your path and are familiar with how the
-package works (as explained below), you can run Fish 600 models as
+package works (as explained below), you can run FISH 600 models as
 follows:
 
     run_fish600(iterations = 2, scenarios = c("M0-F0-D0-R0-S0-G0-E0-cod"), 
@@ -122,7 +122,7 @@ important to use these `.ss_new` files so they have consistent
 formatting. Many of the functions in this package depend on that
 formatting.
 
-For the purposes of the Fish 600 project, we have unique case
+For the purposes of the FISH 600 project, we have unique case
 identifiers which combine to create unique scenarios. The types of cases
 are: natural mortality (M), fishing mortality (F), data quality (D), and
 retrospective (R). And the species are cod (cod), sardine-like (sar),
@@ -200,7 +200,7 @@ default settings create these files:
 
 Look in your working directory for the template files. Change the case
 ID number (defaults to `0`) and the species identifier to a three letter
-identifier. For the Fish 600 project use one of `cod`, `sar`, or `fla`
+identifier. For the FISH 600 project use one of `cod`, `sar`, or `fla`
 for cod, sardine, or flatfish. An example filename would be `M1-sar.txt`
 or `lcomp2-fla.txt`. The case `D1` corresponds to the files
 `index1-spp.txt`, `agecomp1-spp.txt`, and `lcomp0-spp.txt`. The other
@@ -239,7 +239,7 @@ estimation model.
 
 The `run_fish600` function is a higher-level wrapper that deals with
 parsing the case input files and then passes these arguments on to
-`run_ss3sim`. This is what we will use for the Fish 600 project.
+`run_ss3sim`. This is what we will use for the FISH 600 project.
 
 Say you have your input case files setup and you want to run the first
 iteration of the scenario `M1-F1-D1-R1-cod`. You could run it like this:
