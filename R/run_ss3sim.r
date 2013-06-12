@@ -70,16 +70,14 @@
 #' om_model_dir <- paste0(f, "cod_om")
 #' em_model_dir <- paste0(f, "cod_em")
 #' a <- get_caseargs(folder = paste0(f, "case-arguments"), scenario =
-#' "M1-F1-D1-R1-cod") 
+#' "M1-F1-D1-R1-S1-G1-E1-cod") 
 #'
-#' # With bias adjustment:
-#' # (Note that bias_nsim should be bigger, say 5, but it is set to 1
-#' here so the example runs faster.)
-#'
-#' run_ss3sim(iterations = 1, scenarios = "M1-F1-D1-R1-cod", m_params
-#' = a$M, f_params = a$F, index_params = a$index, lcomp_params =
-#' a$lcomp, agecomp_params = a$agecomp, om_model_dir = om_model_dir,
-#' em_model_dir = em_model_dir)
+#' run_ss3sim(iterations = 1, scenarios = "M1-F1-D1-R1-S1-G1-E1-cod",
+#'   m_params = a$M, sel_params = a$S, growth_params = a$G, f_params =
+#'   a$F, index_params = a$index, lcomp_params = a$lcomp, agecomp_params
+#'   = a$agecomp, retro_params = a$R, estim_params = a$E, om_model_dir =
+#'   om_model_dir, om_model_dir = om_model_dir, em_model_dir =
+#'   em_model_dir)
 #' }
 
 run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
