@@ -19,6 +19,18 @@ You can read the help files and access this vignette again with:
     help(package = "ss3sim")
     vignette("ss3sim")
 
+Shortcut to running Fish 600 models
+===================================
+
+Assuming you’ve set up `SS3` in your path and are familiar with how the
+package works (as explained below), you can run Fish 600 models as
+follows:
+
+    run_fish600(iterations = 2, scenarios = c("M0-F0-D0-R0-S0-G0-E0-cod"), 
+    case_folder = get_fish600_casefolder(), 
+    om_model_dir = get_fish600_modelfolder("cod-om"), 
+    em_model_dir = get_fish600_modelfolder("cod-em"))
+
 Putting `SS3` in your path
 ==========================
 
