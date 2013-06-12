@@ -117,7 +117,7 @@ if ( steep_phase > 0 ) {
   SS_ctl[steep_line] <- paste( steep_value, collapse = " " )
 }
 if ( !qSurvey_phase == "NULL" ) {
-  qSurvey_line <- grep ( "LnQ_base_2_SURVEY", SS_ctl )
+  qSurvey_line <- grep ( "LnQ_base_2", SS_ctl )
   #_LO HI INIT PRIOR PR_type SD PHASE
   qSurvey_value <- unlist(strsplit ( SS_ctl[qSurvey_line], split = " " ) )
   # remove white space
@@ -126,7 +126,7 @@ if ( !qSurvey_phase == "NULL" ) {
   SS_ctl[qSurvey_line] <- paste( qSurvey_value, collapse = " " )
 }
 if ( !qCPUE_phase == "NULL" ) {
-  qCPUE_line <- grep ( "LnQ_base_3_CPUE", SS_ctl )
+  qCPUE_line <- grep ( "LnQ_base_3", SS_ctl )
   #_LO HI INIT PRIOR PR_type SD PHASE
   qCPUE_value <- unlist(strsplit ( SS_ctl[qCPUE_line], split = " " ) )
   # remove white space
