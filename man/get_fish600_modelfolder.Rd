@@ -5,7 +5,7 @@
   get_fish600_modelfolder(folder_name)
 }
 \arguments{
-  \item{folder_name}{}
+  \item{folder_name}{The model folder name.}
 }
 \value{
   A character object showing the location of appropriate
@@ -18,5 +18,8 @@
 \dontrun{
 get_fish600_modelfolder("cod-em")
 }
+}
+\author{
+  Sean Anderson
 }
 
