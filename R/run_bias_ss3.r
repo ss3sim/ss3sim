@@ -97,8 +97,8 @@ run_bias_ss3 <-function(dir, outdir, nsim) {
   # read in a ctl.ss_new file, replace the bias adjust params, and
   # write out a new em.ctl file      
 
-  #grab the control.ss_new file
-  SS_ctl <- readLines(con = paste0(dir, "/", 1, "/em/control.ss_new")) 
+  #grab the control.ss_new file in the OM (so that we have the real true value and not the estimated values!)
+  SS_ctl <- readLines(con = paste0(dir, "/", 1, "/om/control.ss_new")) 
   SS_ctlB = SS_ctl
 
   #grab the line number on which this text occurs
