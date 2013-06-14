@@ -1,0 +1,11 @@
+distribution; multinomial
+Nsamp; 100
+minyear; NA
+maxyear; NA
+years; 1938:2012
+svyears; seq(1974,2012,by=2)
+N_agebins; NA # I don't get the NAs - will the OM fill these in???
+agebin_vector; NA
+agecomp; NA
+fish_agecomp; TRUE
+sv_agecomp; TRUE
