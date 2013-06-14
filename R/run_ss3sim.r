@@ -103,7 +103,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
 
       # If we're bias adjusting, then copy over the .ctl file to the
       # em folder
-      if(bias_already_run & bias_adjust) {
+      if(bias_already_run) {
         file.copy(from = pastef(sc, "bias", "em.ctl"), to = pastef(sc,
             i, "em", "em.ctl"), overwrite = TRUE)
       }
