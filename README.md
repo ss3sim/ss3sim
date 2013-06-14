@@ -24,14 +24,14 @@ Shortcut to running FISH 600 models
 
 Assuming you’ve set up `SS3` in your path and are familiar with how the
 package works (as explained below), you can run FISH 600 models as
-follows. Note that this example runs 2 iterations and 2 bias adjustment
+follows. Note that this example runs 1 iteration and 2 bias adjustment
 runs. Typically we will run 100 iterations and 5 bias adjustment runs.
 
-    run_fish600(iterations = 2, scenarios = c("M0-F0-D0-R0-S0-G0-E0-cod"), 
+    run_fish600(iterations = 1, scenarios = c("M0-F0-D0-R0-S0-G0-E0-cod"), 
     case_folder = get_fish600_casefolder(),
     om_model_dir = get_fish600_modelfolder("cod-om"),
     em_model_dir = get_fish600_modelfolder("cod-em"),
-    bias_adjust = TRUE, bias_nsim = 2))
+    bias_adjust = TRUE, bias_nsim = 2)
 
 Putting `SS3` in your path
 ==========================
