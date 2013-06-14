@@ -1,10 +1,11 @@
+# description: Base Case with survey running last 20yrs: every other year
 distribution; multinomial
 Nsamp; 100
 minyear; NA
 maxyear; NA
 years; 1938:2012
-svyears; seq(1974,2012,by=2)
-N_agebins; NA # I don't get the NAs - will the OM fill these in???
+svyears; seq(1994,2012,by=2)
+N_agebins; NA
 agebin_vector; NA
 agecomp; NA
 fish_agecomp; TRUE
