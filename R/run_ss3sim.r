@@ -310,8 +310,8 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
       } 
 
       if(print_logfile) {
-        today <- format(Sys.time(), "%Y-%m-%d")
-        #today <- Sys.time()
+        #today <- format(Sys.time(), "%Y-%m-%d")
+        today <- Sys.time()
         me <- Sys.info()["nodename"]
         sink(pastef(sc, i, "log.txt"))
         cat("These models were run on ", today, 
@@ -336,6 +336,15 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
         print(bias_nsim)
         cat("\n\n# hess always?\n")
         print(hess_always)
+        cat("\n\n# User recdevs?\n")
+        print(user_recdevs)
+        cat("\n\n# Bias already run?\n")
+        print(bias_already_run)
+        cat("\n\n# This run used the recruitment deviations (before scaling to sigma r):\n")
+        print(recdevs[, this_run_num])
+        cat("\n\n# With sigma r of\n")
+        print(sigmar)
+
         sink()
       }
 
