@@ -310,8 +310,8 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
       } 
 
       if(print_logfile) {
-        #today <- format(Sys.time(), "%Y-%m-%d")
-        today <- Sys.time()
+        today <- format(Sys.time(), "%Y-%m-%d")
+        #today <- Sys.time()
         me <- Sys.info()["nodename"]
         sink(pastef(sc, i, "log.txt"))
         cat("These models were run on ", today, 
