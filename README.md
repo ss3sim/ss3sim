@@ -62,7 +62,7 @@ least one regular run. Therefore, you might do something like this:
 Through this strategy you could run the second set (after running bias
 adjustment) using parallel processing or on separate machines.
 
-You can run multiple scenarios in sequence by expanding the vector or
+You can run multiple scenarios in sequence by expanding the vector of
 values passed to `scenarios`.
 
 Putting `SS3` in your path

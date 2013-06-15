@@ -103,7 +103,7 @@ bias_adjust = FALSE, bias_already_run = TRUE)
 Through this strategy you could run the second set (after running bias 
 adjustment) using parallel processing or on separate machines.
 
-You can run multiple scenarios in sequence by expanding the vector or values 
+You can run multiple scenarios in sequence by expanding the vector of values 
 passed to \texttt{scenarios}.
 
 \section{Putting \texttt{SS3} in your path}
