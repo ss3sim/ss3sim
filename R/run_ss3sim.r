@@ -48,6 +48,9 @@
 #' calculated. If \code{FALSE} then the Hessian will only be
 #' calculated for bias-adjustment runs thereby saving time.
 #' @param print_logfile Logical. Print a log file?
+#' @param sleep A time interval (in seconds) to pause on each iteration. 
+#' Useful if you want to reduce average CPU time -- perhaps because you're
+#' working on a shared server.
 #' @param ... Anything extra to pass to \code{\link{run_ss3model}}.
 #' For example, you may want to pass additional options to \code{SS3}
 #' through the argument \code{admb_options}. Just don't pass
@@ -83,7 +86,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
   growth_params, f_params, index_params, lcomp_params, agecomp_params, estim_params,
   retro_params, om_model_dir, em_model_dir, user_recdevs = NULL, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
-  print_logfile = TRUE, 
+  print_logfile = TRUE, sleep = 0,
   ...) {
 
   # The first bias_nsim runs will be bias-adjustment runs
@@ -335,6 +338,9 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
         print(hess_always)
         sink()
       }
+
+      # Pause to reduce average CPUE use?
+      Sys.sleep(sleep) 
 
     } # end iterations
   } # end scenarios

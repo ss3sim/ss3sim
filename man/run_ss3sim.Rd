@@ -8,7 +8,7 @@
     om_model_dir, em_model_dir, user_recdevs = NULL,
     bias_adjust = FALSE, bias_nsim = 5,
     bias_already_run = FALSE, hess_always = FALSE,
-    print_logfile = TRUE, ...)
+    print_logfile = TRUE, sleep = 0, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -78,6 +78,11 @@
   saving time.}
 
   \item{print_logfile}{Logical. Print a log file?}
+
+  \item{sleep}{A time interval (in seconds) to pause on
+  each iteration. Useful if you want to reduce average CPU
+  time -- perhaps because you're working on a shared
+  server.}
 
   \item{...}{Anything extra to pass to
   \code{\link{run_ss3model}}. For example, you may want to
