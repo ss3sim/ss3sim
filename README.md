@@ -25,13 +25,45 @@ Shortcut to running FISH 600 models
 Assuming you’ve set up `SS3` in your path and are familiar with how the
 package works (as explained below), you can run FISH 600 models as
 follows. Note that this example runs 1 iteration and 2 bias adjustment
-runs. Typically we will run 100 iterations and 5 bias adjustment runs.
+runs.
 
     run_fish600(iterations = 1, scenarios = c("M0-F0-D0-R0-S0-G0-E0-cod"), 
     case_folder = get_fish600_casefolder(),
     om_model_dir = get_fish600_modelfolder("cod-om"),
     em_model_dir = get_fish600_modelfolder("cod-em"),
     bias_adjust = TRUE, bias_nsim = 2)
+
+Typically we will run 100 iterations and 5 bias adjustment runs.
+
+    run_fish600(iterations = 100, scenarios = c("M0-F0-D0-R0-S0-G0-E0-cod"), 
+    case_folder = get_fish600_casefolder(),
+    om_model_dir = get_fish600_modelfolder("cod-om"),
+    em_model_dir = get_fish600_modelfolder("cod-em"),
+    bias_adjust = TRUE, bias_nsim = 5)
+
+You may want to re-start running iterations. In that case you’ll want to
+tell `run_ss3sim` that you’ve already run the bias correction by setting
+the `bias_already_run` argument to `TRUE` and the `bias_adjust` argument
+to `FALSE`. When you run the bias correction runs you need to run at
+least one regular run. Therefore, you might do something like this:
+
+    run_fish600(iterations = 1, scenarios = c("M0-F0-D0-R0-S0-G0-E0-cod"), 
+    case_folder = get_fish600_casefolder(),
+    om_model_dir = get_fish600_modelfolder("cod-om"),
+    em_model_dir = get_fish600_modelfolder("cod-em"),
+    bias_adjust = TRUE, bias_nsim = 5)
+
+    run_fish600(iterations = 2:100, scenarios = c("M0-F0-D0-R0-S0-G0-E0-cod"), 
+    case_folder = get_fish600_casefolder(),
+    om_model_dir = get_fish600_modelfolder("cod-om"),
+    em_model_dir = get_fish600_modelfolder("cod-em"),
+    bias_adjust = FALSE, bias_already_run = TRUE)
+
+Through this strategy you could run the second set (after running bias
+adjustment) using parallel processing or on separate machines.
+
+You can run multiple scenarios in sequence by expanding the vector or
+values passed to `scenarios`.
 
 Putting `SS3` in your path
 ==========================
