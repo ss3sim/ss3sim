@@ -1,0 +1,12 @@
+#description: tuna-like model (no Survey) with dirichlet sampling dist
+distribution; dirichlet
+Nsamp; NA
+minyear; NA
+maxyear; NA
+years; NA
+svyears; NA
+N_agebins; NA
+agebin_vector; NA
+agecomp; NA
+fish_agecomp; FALSE
+sv_agecomp; FALSE
