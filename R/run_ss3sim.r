@@ -97,9 +97,6 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
   for(sc in scenarios) {
     for(i in iterations) {
 
-      # Pause to reduce average CPUE use?
-      Sys.sleep(sleep) 
-
       # Create folders, copy models, check for necessary files, rename
       # files for consistency
       copy_ss3models(model_dir = om_model_dir, scenarios = sc,
@@ -341,6 +338,9 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
         print(hess_always)
         sink()
       }
+
+      # Pause to reduce average CPUE use?
+      Sys.sleep(sleep) 
 
     } # end iterations
   } # end scenarios
