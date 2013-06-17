@@ -8,7 +8,7 @@
 #' "agespec_withseasinterpolate"), default is NULL which will leave
 #' the parameter as specified in the .ctl file (ie a single fixed
 #' parameter)
-#' @param natM_vector A vector of ages at which you want breakpoints,
+#' @param natM_n_breakpoints A vector of ages at which you want breakpoints,
 #' only used if you specify natM_type = "n_breakpoints".
 #' @param natM_int A vector of natural mortality rates for each natM
 #' parameter
@@ -34,7 +34,7 @@
 #' d <- system.file("extdata", package = "ss3sim")
 #' ctl_file <- paste0(d, "/run_ss3sim_eg/cod_em/simple_cod_em.ctl")
 #' change_e(ctl_file_in = ctl_file, ctl_file_out = "change_e.ctl",
-#'          natM_type = "n_breakpoints", natM_vector = c(1,4),
+#'          natM_type = "n_breakpoints", natM_n_breakpoints = c(1,4),
 #'          natM_int = c(.2,.3), natM_lorenzen = NULL,
 #'          natM_phase = c(2,2), steep_phase = -1, qSurvey_phase = NULL, qCPUE_phase = -1,
 #'          CV_young_phase = NULL, CV_old_phase = NULL )
@@ -43,7 +43,7 @@
 #' }
 
 change_e <- function ( ctl_file_in = "sardEM.ctl", ctl_file_out =
-  "new.ctl", natM_type = NULL, natM_vector = NULL, natM_int = NULL,
+  "new.ctl", natM_type = NULL, natM_n_breakpoints = NULL, natM_int = NULL,
   natM_lorenzen = NULL, natM_phase = -1, steep_phase = -1,
   qSurvey_phase = NULL, qCPUE_phase = -1, CV_young_phase = NULL,
   CV_old_phase = NULL ) {
@@ -67,12 +67,12 @@ if ( ! natM_type == "NULL" ) {
   # specify natM_type optional lines according to type
 	natM_additionalInput <- grep ( "#_no additional input for selected M option", SS_ctl )
   if ( natM_value == 1 ) {
-    natM_breakpoints = length ( natM_vector )
+    natM_breakpoints = length ( natM_n_breakpoints )
 	 SS_ctl[natM_additionalInput] <- paste ( natM_breakpoints, 
 	                                         "#_no additional input for selected M option; read 1P per morph",
 											 sep = " " )
 	SS_ctl <- append ( SS_ctl, 
-	                   values = paste0(paste(natM_vector, collapse = " "), " # vector of age breakpoints for natM"), 
+	                   values = paste0(paste(natM_n_breakpoints, collapse = " "), " # vector of age breakpoints for natM"), 
 	                   after = natM_additionalInput )
 	
 	natM_p_FirstLine <- grep ( "# NatM_p_1_Fem_GP_1", SS_ctl )
