@@ -27,18 +27,12 @@ package works (as explained below), you can run FISH 600 models as
 follows. Note that this example runs 1 iteration and 2 bias adjustment
 runs.
 
-    run_fish600(iterations = 1, scenarios = c("M0-F0-D0-R0-S0-G0-E0-cod"), 
-    case_folder = get_fish600_casefolder(),
-    om_model_dir = get_fish600_modelfolder("cod-om"),
-    em_model_dir = get_fish600_modelfolder("cod-em"),
+    run_fish600(iterations = 1, scenarios = c("D0-E0-F0-G0-M0-R0-S0-cod"), 
     bias_adjust = TRUE, bias_nsim = 2)
 
 Typically we will run 100 iterations and 5 bias adjustment runs.
 
-    run_fish600(iterations = 100, scenarios = c("M0-F0-D0-R0-S0-G0-E0-cod"), 
-    case_folder = get_fish600_casefolder(),
-    om_model_dir = get_fish600_modelfolder("cod-om"),
-    em_model_dir = get_fish600_modelfolder("cod-em"),
+    run_fish600(iterations = 100, scenarios = c("D0-E0-F0-G0-M0-R0-S0-cod"), 
     bias_adjust = TRUE, bias_nsim = 5)
 
 You may want to re-start running iterations. In that case you’ll want to
@@ -47,16 +41,10 @@ the `bias_already_run` argument to `TRUE` and the `bias_adjust` argument
 to `FALSE`. When you run the bias correction runs you need to run at
 least one regular run. Therefore, you might do something like this:
 
-    run_fish600(iterations = 1, scenarios = c("M0-F0-D0-R0-S0-G0-E0-cod"), 
-    case_folder = get_fish600_casefolder(),
-    om_model_dir = get_fish600_modelfolder("cod-om"),
-    em_model_dir = get_fish600_modelfolder("cod-em"),
+    run_fish600(iterations = 1, scenarios = c("D0-E0-F0-G0-M0-R0-S0-cod"), 
     bias_adjust = TRUE, bias_nsim = 5)
 
-    run_fish600(iterations = 2:100, scenarios = c("M0-F0-D0-R0-S0-G0-E0-cod"), 
-    case_folder = get_fish600_casefolder(),
-    om_model_dir = get_fish600_modelfolder("cod-om"),
-    em_model_dir = get_fish600_modelfolder("cod-em"),
+    run_fish600(iterations = 2:100, scenarios = c("D0-E0-F0-G0-M0-R0-S0-cod"), 
     bias_adjust = FALSE, bias_already_run = TRUE)
 
 Through this strategy you could run the second set (after running bias
@@ -274,29 +262,6 @@ estimation model.
 The `run_fish600` function is a higher-level wrapper that deals with
 parsing the case input files and then passes these arguments on to
 `run_ss3sim`. This is what we will use for the FISH 600 project.
-
-Say you have your input case files setup and you want to run the first
-iteration of the scenario `M1-F1-D1-R1-cod`. You could run it like this:
-
-    # First grab the example package data:
-    d <- system.file("extdata", package = "ss3sim")
-    f <- paste0(d, "/run_ss3sim_eg/")
-    om_model_dir <- paste0(f, "cod_om")
-    em_model_dir <- paste0(f, "cod_em")
-    case_folder <- paste0(f, "case-arguments")
-
-    # Without bias adjustment:
-    run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-E1-S1-G1-cod"),
-    case_folder = case_folder, om_model_dir = om_model_dir,
-    em_model_dir = em_model_dir)
-
-    # With bias adjustment:
-    # (Note that bias_nsim should be bigger, say 5, but it is set to 2
-    # here so the example runs faster.)
-    run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-E1-S1-G1-cod"),
-    case_folder = case_folder, om_model_dir = om_model_dir,
-    em_model_dir = em_model_dir, bias_adjust = TRUE,
-    bias_nsim = 2)
 
 See the PDF version of this vignette for a flow chart illustrating how
 `run_fish600` and `run_ss3sim` work:
