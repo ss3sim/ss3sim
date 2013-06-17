@@ -4,4 +4,4 @@ doc/.*[.]log$
 doc/.*[.]graffle$
 doc/.*[.]fdb_latexmk$
 doc/.*[.]fls$
-doc/^Makefile$
+doc/Makefile$

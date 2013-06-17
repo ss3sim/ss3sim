@@ -257,7 +257,7 @@ change_growth <- function(use=FALSE,dev, how_time_varying = "env", ctl_file_in =
     writeLines(SS_ctl, con= ctl_file_out)
     
     # add grwoth dev estimates into the par file	 
-    SS_par <- readLines(con = par_file_in)
+    SS_par <- readLines(con = par_file)
     ch1 <- grep("# SR_parm[1]:", SS_par, fixed=TRUE)
     MGdev.exist = sum(as.numeric((grep("# MGparm_dev:", SS_par, fixed=TRUE))))
     length.file=length(SS_par)
