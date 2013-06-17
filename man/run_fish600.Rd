@@ -2,8 +2,7 @@
 \alias{run_fish600}
 \title{Master function to run the FISH600-specific simulations}
 \usage{
-  run_fish600(iterations, scenarios, case_folder,
-    om_model_dir, em_model_dir, ...)
+  run_fish600(iterations, scenarios, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -12,17 +11,6 @@
   \item{scenarios}{Which scenarios to run. A vector of
   character objects. For example \code{c("M1-F1-D1-R1-cod",
   "M2-F1-D1-R1-cod")}.}
-
-  \item{case_folder}{The location of the folder containing
-  the case-specific argument control files. This is the
-  folder that holds files such as \code{M1-cod.txt} and
-  \code{index1-cod.txt}.}
-
-  \item{om_model_dir}{The location of the folder containing
-  the operating model you want to use.}
-
-  \item{em_model_dir}{The location of the folder containing
-  the estimation model you want to use.}
 
   \item{...}{Anything else to pass to
   \code{\link{run_ss3sim}}. This includes
@@ -63,25 +51,23 @@
 }
 \examples{
 \dontrun{
-# Pull in file paths from the package example data:
-d <- system.file("extdata", package = "ss3sim")
-f <- paste0(d, "/run_ss3sim_eg/")
-om_model_dir <- paste0(f, "cod_om")
-em_model_dir <- paste0(f, "cod_em")
-case_folder <- paste0(f, "case-arguments")
-
 # Without bias adjustment:
-run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-S1-G1-E1-cod"),
-case_folder = case_folder, om_model_dir = om_model_dir,
-em_model_dir = em_model_dir)
+run_fish600(iterations = 1, scenarios = "D0-E0-F0-G0-M0-R0-S0-cod")
+
+# Run multiple scenarios (but only 1 iteration each):
+run_fish600(iterations = 1,
+scenarios = c("D0-E0-F0-G0-M0-R0-S0-cod", "D0-E0-F0-G0-M1-R0-S0-cod"))
 
 # With bias adjustment:
 # (Note that bias_nsim should be bigger, say 5, but it is set to 2
 # here so the example runs faster.)
-run_fish600(iterations = 1, scenarios = c("M1-F1-D1-R1-S1-G1-E1-cod"),
-case_folder = case_folder, om_model_dir = om_model_dir,
-em_model_dir = em_model_dir, bias_adjust = TRUE,
-bias_nsim = 2)
+run_fish600(iterations = 1, scenarios = "M0-F0-D0-R0-S0-G0-E0-cod",
+bias_adjust = TRUE, bias_nsim = 2)
+
+# Restarting the previous run using the existing bias-adjustment
+# output
+run_fish600(iterations = 2:3, scenarios = "M0-F0-D0-R0-S0-G0-E0-cod",
+bias_adjust = FALSE, bias_already_run = TRUE)
 }
 }
 \author{
