@@ -22,7 +22,7 @@
 0 #_natM_type:_0=1Parm; 1=N_breakpoints;_2=Lorenzen;_3=agespecific;_4=agespec_withseasinterpolate
   #_no additional input for selected M option; read 1P per morph
 1 # GrowthModel: 1=vonBert with L1&L2; 2=Richards with L1&L2; 3=age_speciific_K; 4=not implemented
-1 #_Growth_Age_for_L1
+0.5 #_Growth_Age_for_L1
 999 #_Growth_Age_for_L2 (999 to use as Linf)
 0 #_SD_add_to_LAA (set to 0.1 for SS2 V1.x compatibility)
 0 #_CV_Growth_Pattern:  0 CV=f(LAA); 1 CV=F(A); 2 SD=F(LAA); 3 SD=F(A); 4 logSD=F(A)
@@ -38,10 +38,10 @@
 #_LO HI INIT PRIOR PR_type SD PHASE env-var use_dev dev_minyr dev_maxyr dev_stddev Block Block_Fxn
  0.01 1.8 0.2 0 -1 0.8 -3 0 0 0 0 0 0 0 # NatM_p_1_Fem_GP_1
  2 20 12.666 30.8 -1 0.2 1 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1
- 25 80 47.4245 40.1 -1 0.2 1 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1
+ 25 80 47.4245 40.1 -1 0.2 2 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1
  0.01 2 0.347769 0 -1 0.8 1 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1
- 0.01 0.5 0.20 0.2 -1 0.8 5 0 0 0 0 0 0 0 # CV_young_Fem_GP_1
- 0.01 0.5 0.20 0.2 -1 0.8 5 0 0 0 0 0 0 0 # CV_old_Fem_GP_1
+ 0.01 0.5 0.2 0.2 -1 0.8 4 0 0 0 0 0 0 0 # CV_young_Fem_GP_1
+ 0.01 0.5 0.2 0.2 -1 0.8 4 0 0 0 0 0 0 0 # CV_old_Fem_GP_1
  0 3 1e-005 1e-005 -1 0.2 -3 0 0 0 0 0 0 0 # Wtlen_1_Fem
  2.5 3.5 3 2.98 -1 0.2 -3 0 0 0 0 0 0 0 # Wtlen_2_Fem
  25 35 28.9 0.879 -1 0.8 -3 0 0 0 0 0 0 0 # Mat50%_Fem
@@ -82,19 +82,19 @@
 2012 # last year of main recr_devs; forecast devs start in following year
 3 #_recdev phase 
 1 # (0/1) to read 13 advanced options
- 0 #_recdev_early_start (0=none; neg value makes relative to recdev_start)
- 4 #_recdev_early_phase
- 0 #_forecast_recruitment phase (incl. late recr) (0 value resets to maxphase+1)
- 1 #_lambda for Fcast_recr_like occurring before endyr+1
- 1913 #_last_early_yr_nobias_adj_in_MPD
- 1938 #_first_yr_fullbias_adj_in_MPD
- 2011 #_last_yr_fullbias_adj_in_MPD
- 2012 #_first_recent_yr_nobias_adj_in_MPD
- 0.9 #_max_bias_adj_in_MPD (-1 to override ramp and set biasadj=1.0 for all estimated recdevs)
- 0 #_period of cycles in recruitment (N parms read below)
- -5 #min rec_dev
- 5 #max rec_dev
- 0 #_read_recdevs
+0 #_recdev_early_start (0=none; neg value makes relative to recdev_start)
+4 #_recdev_early_phase
+0 #_forecast_recruitment phase (incl. late recr) (0 value resets to maxphase+1)
+1 #_lambda for Fcast_recr_like occurring before endyr+1
+1913 #_last_early_yr_nobias_adj_in_MPD
+1938 #_first_yr_fullbias_adj_in_MPD
+2011 #_last_yr_fullbias_adj_in_MPD
+2012 #_first_recent_yr_nobias_adj_in_MPD
+0 #_max_bias_adj_in_MPD (-1 to override ramp and set biasadj=1.0 for all estimated recdevs)
+0 #_period of cycles in recruitment (N parms read below)
+-5 #min rec_dev
+5 #max rec_dev
+0 #_read_recdevs
 #_end of advanced SR options
 #
 #_placeholder for full parameter lines for recruitment cycles

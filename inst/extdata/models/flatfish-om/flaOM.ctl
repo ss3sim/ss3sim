@@ -22,7 +22,7 @@
 0 #_natM_type:_0=1Parm; 1=N_breakpoints;_2=Lorenzen;_3=agespecific;_4=agespec_withseasinterpolate
   #_no additional input for selected M option; read 1P per morph
 1 # GrowthModel: 1=vonBert with L1&L2; 2=Richards with L1&L2; 3=age_speciific_K; 4=not implemented
-1 #_Growth_Age_for_L1
+0.5 #_Growth_Age_for_L1
 999 #_Growth_Age_for_L2 (999 to use as Linf)
 0 #_SD_add_to_LAA (set to 0.1 for SS2 V1.x compatibility)
 0 #_CV_Growth_Pattern:  0 CV=f(LAA); 1 CV=F(A); 2 SD=F(LAA); 3 SD=F(A); 4 logSD=F(A)
