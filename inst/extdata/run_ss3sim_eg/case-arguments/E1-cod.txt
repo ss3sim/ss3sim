@@ -1,5 +1,5 @@
 natM_type; "n_breakpoints"
-natM_vector; c(1,4)
+natM_n_breakpoints; c(1,4)
 natM_int; c(.2, .3)
 natM_lorenzen; NULL
 natM_phase; c(2,2)
