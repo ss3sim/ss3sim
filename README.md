@@ -32,7 +32,7 @@ runs.
 
 Typically we will run 100 iterations and 5 bias adjustment runs.
 
-    run_fish600(iterations = 100, scenarios = "D0-E0-F0-G0-M0-R0-S0-cod", 
+    run_fish600(iterations = 1:100, scenarios = "D0-E0-F0-G0-M0-R0-S0-cod", 
     bias_adjust = TRUE, bias_nsim = 5)
 
 You may want to run the iterations in chunks. In that case you’ll want
