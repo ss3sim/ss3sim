@@ -45,7 +45,7 @@ this:
     run_fish600(iterations = 1, scenarios = "D0-E0-F0-G0-M0-R0-S0-cod", 
     bias_adjust = TRUE, bias_nsim = 5)
 
-    run_fish600(iterations = 2:100, scenarios = c"D0-E0-F0-G0-M0-R0-S0-cod", 
+    run_fish600(iterations = 2:100, scenarios = "D0-E0-F0-G0-M0-R0-S0-cod", 
     bias_adjust = FALSE, bias_already_run = TRUE)
 
 Through this strategy you could run the second set (after running bias
