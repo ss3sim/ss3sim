@@ -22,13 +22,22 @@
 
 bias_ss3 <- function(iter, dir) {
   outfile = "AdjustBias.DAT"
+  if(file.exists(paste0(dir, "/", iter, "/em/covar.sso"))==TRUE)
+  {
   myoutput = r4ss::SS_output(dir = paste0(dir, "/", iter, "/em"), repfile =
     "Report.sso", compfile = "CompReport.sso", covarfile =
     "covar.sso", forecast = FALSE)
   pdf(paste0(dir, "/biasramp-", iter, ".pdf"))
   biasvars = try(r4ss::SS_fitbiasramp(replist = myoutput), TRUE)
   dev.off()
-
+  }
+  
+  if(file.exists(paste0(dir, "/", iter, "/em/covar.sso"))==FALSE)
+  {
+  biasvars = list()
+  biasvars$df = matrix(rep(NA,5),nrow=5)
+  }	
+  
   if (is.list(biasvars) == TRUE) {
     bias.df = data.frame(Sim = iter, bias1 = biasvars$df[1, 
       1], bias2 = biasvars$df[2, 1], bias3 = biasvars$df[3, 
