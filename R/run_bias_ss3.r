@@ -74,17 +74,20 @@ run_bias_ss3 <-function(dir, outdir, nsim) {
 
   #Find the average over nsim runs of each bias adjustment parameter
   avg.df = data.frame(
-    bias1 = mean(bias.table$bias1),
-    bias2 = mean(bias.table$bias2),
-    bias3 = mean(bias.table$bias3),
-    bias4 = mean(bias.table$bias4),
-    bias5 = mean(bias.table$bias5))
+    bias1 = mean(bias.table$bias1, na.rm=TRUE),
+    bias2 = mean(bias.table$bias2, na.rm=TRUE),
+    bias3 = mean(bias.table$bias3, na.rm=TRUE),
+    bias4 = mean(bias.table$bias4, na.rm=TRUE),
+    bias5 = mean(bias.table$bias5, na.rm=TRUE))
 
   #Write avg.df values to the the file AvgBias.DAT under the dir folder  
   write.table(avg.df, file = paste0(dir, "/", "AvgBias.DAT"), 
     row.names = FALSE, col.names = TRUE, quote = FALSE, append = F)
 
-  # Open the control.ss_new file from one of the bias adjustment runs,
+  #If the number of NAs (i.e not invertible hessian) > 80% of the cases, then create a WARNING file
+  if(sum(as.numeric(is.na(bias.table$bias1)))/length(bias.table$bias1) > 0.2) { WARNINGS = c("WARNINGS: more than 20% of cases produces non invertible hessian"); write.table(WARNINGS, file=paste0(dir, "/WARNINGS.txt")); stop()}
+
+# Open the control.ss_new file from one of the bias adjustment runs,
   # find where bias adjustment parameters are specified,
   # and update the bias adjustment parameters to the values in avg.df
   # (average bias adjustment parameters)
