@@ -1,0 +1,12 @@
+#description: fixed M with no qSurvey
+#author: KO
+natM_type;          NULL
+natM_n_breakpoints; NULL
+natM_int;           NULL
+natM_lorenzen;      NULL
+natM_phase;         -3
+steep_phase;        -4
+qSurvey_phase;      -1
+qCPUE_phase;        NULL
+CV_young_phase;     -1
+CV_old_phase;       -1
