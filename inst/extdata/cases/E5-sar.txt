@@ -4,6 +4,6 @@ natM_type;          NULL
 natM_n_breakpoints; NULL  
 natM_lorenzen;      NULL
 natM_val;           c(NA,-3)
-par_name;           _steep,LnQ_base_2_
+par_name;           SR_Ricker,LnQ_base_2_
 par_int;            c(NA,NA)
 par_phase;          c(-4,-1)
