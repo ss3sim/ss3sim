@@ -1,10 +1,8 @@
 natM_type;          NULL      
-natM_n_breakpoints; NULL
-natM_int;           NULL    
+natM_n_breakpoints; NULL  
 natM_lorenzen;      NULL
-natM_phase;         -3
-steep_phase;        -4
-qSurvey_phase;      NULL
-qCPUE_phase;        -1
-CV_young_phase;     NULL
-CV_old_phase;       NULL
+natM_val;           c(NA,-3)
+par_name;           _steep,LnQ_base_3_CPUE
+par_int;            c(NA,NA)
+par_phase;          c(-4,-1)
+
