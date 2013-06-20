@@ -16,7 +16,7 @@
 1    #_Nfleet
 2    #_Nsurveys
 1    #_N_areas
-Fishery%SURVEY%CPUE
+Fishery%Survey%CPUE
 0.5 0.5 0.5  #_surveytiming_in_season
 1 1 1        #_area_assignments_for_each_fishery_and_survey
 1            #_units of catch:  1=bio; 2=num
