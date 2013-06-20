@@ -6,17 +6,17 @@
 #'
 #' @details
 #' This function: \itemize{
-#' \item uses the \code{r4ss} package to read in output from 5 SS
+#' \item uses the \code{r4ss} package to read in output from n SS
 #' runs, 
 #' \item uses Ian Taylor's \code{r4ss} function to find values for the
-#' 5 bias adjustment parameters for each run,
+#' n bias adjustment parameters for each run,
 #' \item takes the average over runs for each bias adjustment
 #' parameter
 #' \item writes out the unaveraged and averaged
 #' (\code{AdjustBias.DAT} and \code{AvgBias.DAT}, respectively) bias
 #' adjustment parameters to the \code{dir} folder
-#' \item takes a \code{control.ss_new} file from one of the 5 SS runs,
-#' changes the 5 bias adjustment parameters, and writes the whole
+#' \item takes a \code{control.ss_new} file from one of the n SS runs,
+#' changes the n bias adjustment parameters, and writes the whole
 #' updated \code{control.ss_new} file with new bias adjustment
 #' parameters to an \code{em.ctl} file
 #' }
@@ -33,19 +33,19 @@
 #' folders for the \code{nsim} runs, e.g.
 #' \code{"M1-F1-D1-R1-cod/bias/1/"},
 #' \code{"M1-F1-D1-R1-cod/bias/2/"}, ...,
-#' \code{"M1-F1-D1-R1-cod/bias/5/"} if there are \code{nsim =
-#' 5} bias adjustment runs)
+#' \code{"M1-F1-D1-R1-cod/bias/10/"} if there are \code{nsim =
+#' 10} bias adjustment runs)
 #' @param outdir Folder containing the run folders for a given
 #' scenario (e.g. \code{"M1-F1-D1-R1-cod"} that contains
 #' \code{"M1-F1-D1-R1-cod/1/"} \code{"M1-F1-D1-R1-cod/2/"}, etc.)
 #' @param nsim number of bias adjustment runs conducted for a
-#' particular scenario (e.g. \code{5})
+#' particular scenario (e.g. \code{10})
 # @param iter number of runs conducted for a scenario after bias
 # adjustment is complete (e.g. \code{1:100})
 #'
 #' @examples \dontrun{
 #' # Main Function call example:
-#' # Note that usually nsim will be 5, not 2,
+#' # Note that usually nsim will be 10, not 2,
 #' # nsim = 2 is just faster for an example
 #' run_bias_ss3(dir = "M1-F1-D1-R1-cod/", outdir = "M1-F1-D1-R1-cod/",
 #' nsim = 2)

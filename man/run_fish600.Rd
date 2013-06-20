@@ -59,7 +59,7 @@ run_fish600(iterations = 1,
 scenarios = c("D0-E0-F0-G0-M0-R0-S0-cod", "D0-E0-F0-G0-M1-R0-S0-cod"))
 
 # With bias adjustment:
-# (Note that bias_nsim should be bigger, say 5, but it is set to 2
+# (Note that bias_nsim should be bigger, say 10, but it is set to 2
 # here so the example runs faster.)
 run_fish600(iterations = 1, scenarios = "M0-F0-D0-R0-S0-G0-E0-cod",
 bias_adjust = TRUE, bias_nsim = 2)

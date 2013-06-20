@@ -30,10 +30,10 @@ runs.
     run_fish600(iterations = 1, scenarios = "D0-E0-F0-G0-M0-R0-S0-cod", 
     bias_adjust = TRUE, bias_nsim = 2)
 
-Typically we will run 100 iterations and 5 bias adjustment runs.
+Typically we will run 100 iterations and 10 bias adjustment runs.
 
     run_fish600(iterations = 1:100, scenarios = "D0-E0-F0-G0-M0-R0-S0-cod", 
-    bias_adjust = TRUE, bias_nsim = 5)
+    bias_adjust = TRUE, bias_nsim = 10)
 
 You may want to run the iterations in chunks. In that case you’ll want
 to tell `run_ss3sim` that you’ve already run the bias correction by
@@ -43,7 +43,7 @@ run at least one regular run. Therefore, you might do something like
 this:
 
     run_fish600(iterations = 1, scenarios = "D0-E0-F0-G0-M0-R0-S0-cod", 
-    bias_adjust = TRUE, bias_nsim = 5)
+    bias_adjust = TRUE, bias_nsim = 10)
 
     run_fish600(iterations = 2:100, scenarios = "D0-E0-F0-G0-M0-R0-S0-cod", 
     bias_adjust = FALSE, bias_already_run = TRUE)
@@ -58,7 +58,7 @@ values passed to `scenarios`. For example,
 
     run_fish600(iterations = 1:100, 
     scenarios = c("D0-E0-F0-G0-M0-R0-S0-cod", "D0-E0-F0-G0-M1-R0-S0-cod"), 
-    bias_adjust = TRUE, bias_nsim = 5)
+    bias_adjust = TRUE, bias_nsim = 10)
 
 Putting `SS3` in your path
 ==========================
