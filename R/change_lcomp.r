@@ -158,7 +158,7 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
       if(distribution=="multinomial")
         new.lencomp[it,7:NDF.width] <- rmultinom(1,new.lencomp[it,6],probs)
       if(distribution=="dirichlet")
-        new.lencomp[it,7:NDF.width] <- MCMCpack::rdirichlet(1,as.numeric(probs)*Nsamp)
+        new.lencomp[it,7:NDF.width] <- MCMCpack::rdirichlet(1,as.numeric(probs)*(Nsamp/2^2-1))
     }
   }
   
