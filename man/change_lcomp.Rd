@@ -7,7 +7,7 @@
     maxyear = NA, years = NA, svyears = NA,
     fish_lcomp = TRUE, sv_lcomp = TRUE, lbin_method = NA,
     binwidth = NA, minimum_size = NA, maximum_size = NA,
-    N_lbins = NA, lbin_vector = NA, lencomp = NA)
+    N_lbins = NA, lbin_vector = NA, lencomp = NA, cpar = 2)
 }
 \arguments{
   \item{infile}{SS data object from SS_readdat() in the
@@ -59,6 +59,9 @@
   \item{sv_lcomp,}{TRUE or FALSE. This indicates whether
   you want to keep the survey lcomp data at all. default to
   TRUE}
+
+  \item{cpar}{parameter scaling the variance of the
+  Dirichlet and Multinomial distributions.}
 }
 \description{
   Take a data.SS_new file, resample the length compositions
