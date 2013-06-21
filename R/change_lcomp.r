@@ -22,6 +22,7 @@
 #' @param lencomp Matrix of length comps 
 #' @param fish_lcomp, TRUE or FALSE. This indicates whether you want to keep the fishery lcomp data at all. default to TRUE 
 #' @param sv_lcomp, TRUE or FALSE. This indicates whether you want to keep the survey lcomp data at all. default to TRUE 
+#' @param cpar parameter scaling the variance of the Dirichlet and Multinomial distributions.
 #'
 #' @export
 #' @examples \dontrun{
@@ -51,7 +52,7 @@
 change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
                         minyear=NA,maxyear=NA,years=NA,svyears=NA,fish_lcomp=TRUE,sv_lcomp=TRUE, 
                         lbin_method=NA,binwidth=NA,minimum_size=NA,maximum_size=NA,
-                        N_lbins=NA,lbin_vector=NA,lencomp=NA){
+                        N_lbins=NA,lbin_vector=NA,lencomp=NA,cpar=2){
 
   #Load required libraries (done via package)
   #require(MCMCpack)
@@ -149,8 +150,10 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
       probs <- fllcomp[fllcomp[,1]==years[it],7:DF.width]
       if(distribution=="multinomial")
         new.lencomp[it,7:NDF.width] <- rmultinom(1,new.lencomp[it,6],probs)
-      if(distribution=="dirichlet")
-        new.lencomp[it,7:NDF.width] <- MCMCpack::rdirichlet(1,as.numeric(probs)*(Nsamp/2^2-1))
+      if(distribution=="dirichlet"){
+        lambda <- Nsamp/cpar^2-1
+        new.lencomp[it,7:NDF.width] <- MCMCpack::rdirichlet(1,as.numeric(probs)*lambda)
+      }
     }
     svlcomp <- subset(init.lcomp,init.lcomp[,3]==2)
     for(it in (length(years)+1):length(c(years,svyears))){
