@@ -1,8 +1,8 @@
 Package: ss3sim
 Type: Package
 Title: Functions for stock assessment simulation studies using SS
-Version: 0.30
-Date: 2013-06-17
+Version: 0.31
+Date: 2013-06-21
 Authors@R: c(person("Sean", "Anderson", email =
     "sean@seananderson.ca", role = c("aut", "cre")),
     person("Curry", "Cunningham", role = "aut"),
