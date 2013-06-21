@@ -1,9 +1,9 @@
 #description:estimate M with no qCPUE
 #author: KO
-natM_type;          NULL      
+natM_type;          1Parm
 natM_n_breakpoints; NULL  
 natM_lorenzen;      NULL
 natM_val;           c(NA,3)
-par_name;           SR_Ricker,LnQ_base_3_CPUE,CV_young,CV_old
+par_name;           -steep,LnQ_base_3_CPUE,CV_young,CV_old
 par_int;            c(NA,NA,NA,NA)
 par_phase;          c(-4,-1,-1,-1)
