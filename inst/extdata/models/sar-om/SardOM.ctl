@@ -67,10 +67,10 @@
 #_Cond -4 #_MGparm_Dev_Phase
 #
 #_Spawner-Recruitment
-2 #_SR_function: 2=Ricker; 3=std_B-H; 4=SCAA; 5=Hockey; 6=B-H_flattop; 7=survival_3Parm
+3 #_SR_function: 2=Ricker; 3=std_B-H; 4=SCAA; 5=Hockey; 6=B-H_flattop; 7=survival_3Parm
 #_LO HI INIT PRIOR PR_type SD PHASE
  3 25 16 0 -1 99 1 # SR_LN(R0)
- 0.2 4 2.5 0 -1 99 1 # SR_Ricker
+ 0.2 1 0.59 0 -1 99 1 # SR_BH_steep
  0 2 0.727 0 -1 99 1 # SR_sigmaR
  -5 5 0 0 -1 99 -3 # SR_envlink
  -15 15 0 0 -1 99 2 # SR_R1_offset
