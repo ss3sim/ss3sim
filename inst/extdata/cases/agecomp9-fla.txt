@@ -1,5 +1,5 @@
 #description: Base case with dirichlet sampling dist
-distribution; dirichlet
+distribution; "dirichlet"
 Nsamp; 100
 minyear; NA
 maxyear; NA
