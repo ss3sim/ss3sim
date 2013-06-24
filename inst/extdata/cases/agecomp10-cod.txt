@@ -1,6 +1,6 @@
 #description: tuna-like model (no Survey) with dirichlet sampling dist
 distribution; dirichlet
-Nsamp; NA
+Nsamp; 100
 minyear; NA
 maxyear; NA
 years; NA
