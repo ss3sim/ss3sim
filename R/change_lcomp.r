@@ -148,6 +148,7 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
     fllcomp <- subset(init.lcomp,init.lcomp[,3]==1)
     for(it in 1:length(years)){
       probs <- fllcomp[fllcomp[,1]==years[it],7:DF.width]
+      probs <- as.numeric(probs)/sum(as.numeric(probs))
       if(distribution=="multinomial")
         new.lencomp[it,7:NDF.width] <- rmultinom(1,new.lencomp[it,6],probs)
       if(distribution=="dirichlet"){
@@ -158,6 +159,7 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
     svlcomp <- subset(init.lcomp,init.lcomp[,3]==2)
     for(it in (length(years)+1):length(c(years,svyears))){
       probs <- svlcomp[svlcomp[,1]==c(years,svyears)[it],7:DF.width]
+      probs <- as.numeric(probs)/sum(as.numeric(probs))
       if(distribution=="multinomial")
         new.lencomp[it,7:NDF.width] <- rmultinom(1,new.lencomp[it,6],probs)
       if(distribution=="dirichlet")
