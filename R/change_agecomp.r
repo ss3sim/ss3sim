@@ -83,7 +83,8 @@ change_agecomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
     flacomp <- subset(init.agecomp,init.agecomp[,3]==1)
     for(it in 1:length(years)){                                   ## maybe here try matrix instead a for 
       probs <- flacomp[flacomp[,1]==years[it],10:DF.width]
-      if(distribution=="multinomial")
+      probs <- as.numeric(probs)/sum(as.numeric(probs))
+     if(distribution=="multinomial")
         new.agecomp[it,10:NDF.width] <- rmultinom(1,new.agecomp[it,9],probs)
       if(distribution=="dirichlet")    
         new.agecomp[it,10:NDF.width] <- MCMCpack::rdirichlet(1,as.numeric(probs)*(Nsamp/2^2-1))
@@ -91,6 +92,7 @@ change_agecomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
     svagecomp <- subset(init.agecomp,init.agecomp[,3]==2)
     for(it in (length(years)+1):length(c(years,svyears))){
       probs <- svagecomp[svagecomp[,1]==c(years,svyears)[it],10:DF.width]
+      probs <- as.numeric(probs)/sum(as.numeric(probs))
       if(distribution=="multinomial")
         new.agecomp[it,10:NDF.width] <- rmultinom(1,new.agecomp[it,9],probs)
       if(distribution=="dirichlet")
