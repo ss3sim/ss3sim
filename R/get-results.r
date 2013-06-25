@@ -3,14 +3,15 @@
 #' This high level function extracts results from SS3 model runs. Give it a
 #' directory which contains directories for different "scenario" runs,
 #' within which are replicates and potentially bias adjustment runs. It
-#' writes two data.frames to file one for single scalar values (e.g. MSY) while
-#' the second contains output for each year of the same model (timeseries,
-#' e.g. biomass(year)). These can always be joined later.
+#' writes two data.frames to file: one for single scalar values (e.g.
+#' MSY) and a second that contains output for each year of the same model 
+#' (timeseries, e.g. biomass(year)). These can always be joined later.
 #'
 #' @param directory The directory which contains scenario folders with
 #' results.
 #' @param files.overwrite A switch to determine if existing files should be
 #' overwritten, useful for testing purposes or if new replicates are run.
+#' @export
 #' @author Cole Monnahan
 
 get_results_all <- function(directory=getwd(), files.overwrite=FALSE){
@@ -65,13 +66,15 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE){
 #'
 #' Take a path to a scenario folder with results and write the individual
 #' scenario results to two data.frames in that folder. This function is
-#' called by get_results_all or can be used individually for testing.
+#' called by \code{\link{get_results_all}} or can be used individually for 
+#' testing.
 #'
 #' @param scenario A folder name in the directory folder which contains
 #' replicates and potentially bias adjustment runs.
 #' @param directory A path to folder containing the scenario folder.
 #' @param overwrite.files A switch to determine if existing files should be
 #' overwritten, useful for testing purposes or if new replicates are run.
+#' @export
 #' @author Cole Monnahan
 
 get_results_scenario <- function(scenario, directory=getwd(),
@@ -179,7 +182,9 @@ get_results_scenario <- function(scenario, directory=getwd(),
 #'
 #' Extract time series from a model run. Returns a data.frame of the
 #' results (single row) which can be rbinded later.
-#' @param report.file An SS_output list for a model (OM or EM).
+#'
+#' @param report.file An \code{SS_output} list for a model (OM or EM).
+#' @export
 #' @author Cole Monnahan
 get_results_timeseries <- function(report.file){
 
@@ -198,6 +203,7 @@ get_results_timeseries <- function(report.file){
 #' Extract scalar quantities from a model run. Returns a data.frame of the
 #' results (single row) which can be rbinded later.
 #' @param report.file An SS_output list for a model (OM or EM).
+#' @export
 #' @author Cole Monnahan
 get_results_scalar <- function(report.file){
 
