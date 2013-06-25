@@ -1,10 +1,9 @@
-#description:Single fixed M with no qCPUE
+#description:Single fixed M, no qCPUE, fixed steepness
 #author: KFJ
 natM_type;          1Parm      
 natM_n_breakpoints; NULL  
 natM_lorenzen;      NULL
-natM_val;           c(NA,3)
-par_name;           _steep,LnQ_base_3_CPUE
-par_int;            c(NA,NA)
-par_phase;          c(-4,-1)
-
+natM_val;           c(NA,6)
+par_name;           LnQ_base_3_CPUE
+par_int;            c(NA)
+par_phase;          c(-1)
