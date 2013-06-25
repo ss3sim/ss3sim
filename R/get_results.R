@@ -1,17 +1,19 @@
+#' Extract SS3 simulation output
+#'
+#' This high level function extracts results from SS3 model runs. Give it a
+#' directory which contains directories for different "scenario" runs,
+#' within which are replicates and potentially bias adjustment runs. It
+#' writes two data.frames to file one for single scalar values (e.g. MSY) while
+#' the second contains output for each year of the same model (timeseries,
+#' e.g. biomass(year)). These can always be joined later.
+#'
+#' @param directory The directory which contains scenario folders with
+#' results.
+#' @param files.overwrite A switch to determine if existing files should be
+#' overwritten, useful for testing purposes or if new replicates are run.
+#' @author Cole Monnahan
 
 get_results_all <- function(directory=getwd(), files.overwrite=FALSE){
-    #' This high level function extracts results from SS3 model runs. Give it a
-    #' directory which contains directories for different "scenario" runs,
-    #' within which are replicates and potentially bias adjustment runs. It
-    #' writes two data.frames to file one for single scalar values (e.g. MSY) while
-    #' the second contains output for each year of the same model (timeseries,
-    #' e.g. biomass(year)). These can always be joined later.
-
-    #' @param directory The directory which contains scenario folders with
-    #' results.
-    #' @param files.overwrite A switch to determine if existing files should be
-    #' overwritten, useful for testing purposes or if new replicates are run.
-    #' @author Cole Monnahan
 
     ## Get unique scenarios that exist in the folder. Might be other random
     ## stuff in the folder so be careful to extract only scenario folders.
@@ -59,20 +61,23 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE){
     print(paste("Final result files written to", directory))
 }
 
-## get_results_scenario(scenario)
+#' Extract SS3 simulation results for one scenario.
+#'
+#' Take a path to a scenario folder with results and write the individual
+#' scenario results to two data.frames in that folder. This function is
+#' called by get_results_all or can be used individually for testing.
+#'
+#' @param scenario A folder name in the directory folder which contains
+#' replicates and potentially bias adjustment runs.
+#' @param directory A path to folder containing the scenario folder.
+#' @param overwrite.files A switch to determine if existing files should be
+#' overwritten, useful for testing purposes or if new replicates are run.
+#' @author Cole Monnahan
 
 get_results_scenario <- function(scenario, directory=getwd(),
                                  overwrite.files=FALSE){
-    #' Take a path to a scenario folder with results and write the individual
-    #' scenario results to two data.frames in that folder. This function is
-    #' called by get_results_all or can be used individually for testing.
 
-    #' @param scenario A folder name in the directory folder which contains
-    #' replicates and potentially bias adjustment runs.
-    #' @param directory A path to folder containing the scenario folder.
-    #' @param overwrite.files A switch to determine if existing files should be
-    #' overwritten, useful for testing purposes or if new replicates are run.
-    #' @author Cole Monnahan
+## get_results_scenario(scenario)
 
     library(r4ss)
     ## Get results for all reps within a scenario folder
@@ -170,12 +175,13 @@ get_results_scenario <- function(scenario, directory=getwd(),
     setwd(old.wd)
 }
 
-
+#' Extract time series from a model run.
+#'
+#' Extract time series from a model run. Returns a data.frame of the
+#' results (single row) which can be rbinded later.
+#' @param report.file An SS_output list for a model (OM or EM).
+#' @author Cole Monnahan
 get_results_timeseries <- function(report.file){
-    #' Extract  scalar quantities from a model run. Returns a data.frame of the
-    #' results (single row) which can be rbinded later.
-    #' @param report.file An SS_output list for a model (OM or EM).
-    #' @author Cole Monnahan
 
     years <- with(report.file, startyr:endyr)
     xx <- subset(report.file$timeseries, select=c("Yr","SpawnBio", "Recruit_0",
@@ -187,11 +193,13 @@ get_results_timeseries <- function(report.file){
     return(invisible(df))
 }
 
+#' Extract scalar quantities from a model run.
+#'
+#' Extract scalar quantities from a model run. Returns a data.frame of the
+#' results (single row) which can be rbinded later.
+#' @param report.file An SS_output list for a model (OM or EM).
+#' @author Cole Monnahan
 get_results_scalar <- function(report.file){
-    #' Extract  scalar quantities from a model run. Returns a data.frame of the
-    #' results (single row) which can be rbinded later.
-    #' @param report.file An SS_output list for a model (OM or EM).
-    #' @author Cole Monnahan
 
     temp <- report.file$derived_quants
     SSB_MSY <-  temp[which(temp$LABEL=="SSB_MSY"),]$Value
