@@ -1,9 +1,9 @@
-#description: M estimated, with no qSurvey, ALL growth param fixed, changed phases for select (as no phase 1 in the model)
+#description: M estimated, fixed steepness, with no qSurvey, ALL growth param fixed, changed phases for select (as no phase 1 in the model)
 #author: KO
 natM_type; 1Parm
 natM_n_breakpoints; NULL
 natM_lorenzen; NULL
-natM_val; c(NA,3)
-par_name; _steep,LnQ_base_2_,L_at_Amin, L_at_Amax, VonBert_K, CV_young,CV_old,SizeSel_1P_1_Fishery,SizeSel_2P_1_Survey
-par_int; c(NA,NA,NA,NA,NA,NA,NA,NA,NA)
-par_phase; c(-4,-1,-1,-1,-1,-1,-1,1,1)
+natM_val; c(NA,5)
+par_name; LnQ_base_2_,L_at_Amin, L_at_Amax, VonBert_K, CV_young,CV_old,SizeSel_1P_1_Fishery,SizeSel_2P_1_Survey
+par_int; c(NA,NA,NA,NA,NA,NA,NA,NA)
+par_phase; c(-1,-1,-1,-1,-1,-1,1,1)
