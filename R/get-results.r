@@ -13,6 +13,7 @@
 #' overwritten, useful for testing purposes or if new replicates are run.
 #' @export
 #' @author Cole Monnahan
+#' @family get-results
 #' @examples \dontrun{
 #' ## Put this R script in a folder which contains the Scenario folders, then run
 #' ## the code below.
@@ -142,6 +143,7 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE){
 #' @param directory A path to folder containing the scenario folder.
 #' @param overwrite.files A switch to determine if existing files should be
 #' overwritten, useful for testing purposes or if new replicates are run.
+#' @family get-results
 #' @export
 #' @author Cole Monnahan
 
@@ -253,6 +255,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
 #'
 #' @param report.file An \code{SS_output} list for a model (OM or EM).
 #' @export
+#' @family get-results
 #' @author Cole Monnahan
 get_results_timeseries <- function(report.file){
 
@@ -271,6 +274,7 @@ get_results_timeseries <- function(report.file){
 #' Extract scalar quantities from a model run. Returns a data.frame of the
 #' results (single row) which can be rbinded later.
 #' @param report.file An SS_output list for a model (OM or EM).
+#' @family get-results
 #' @export
 #' @author Cole Monnahan
 get_results_scalar <- function(report.file){

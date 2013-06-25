@@ -16,4 +16,9 @@
 \author{
   Cole Monnahan
 }
+\seealso{
+  Other get.results: \code{\link{get_results_all}},
+  \code{\link{get_results_scenario}},
+  \code{\link{get_results_timeseries}}
+}
 

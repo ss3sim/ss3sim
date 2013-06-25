@@ -96,4 +96,9 @@ g+geom_jitter(aes(y=Recruit_0), size=.1, alpha=.3)+
 \author{
   Cole Monnahan
 }
+\seealso{
+  Other get.results: \code{\link{get_results_scalar}},
+  \code{\link{get_results_scenario}},
+  \code{\link{get_results_timeseries}}
+}
 
