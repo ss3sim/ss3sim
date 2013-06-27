@@ -4,7 +4,7 @@
 #' directory which contains directories for different "scenario" runs,
 #' within which are replicates and potentially bias adjustment runs. It
 #' writes two data.frames to file: one for single scalar values (e.g.
-#' MSY) and a second that contains output for each year of the same model 
+#' MSY) and a second that contains output for each year of the same model
 #' (timeseries, e.g. biomass(year)). These can always be joined later.
 #'
 #' @param directory The directory which contains scenario folders with
@@ -16,6 +16,8 @@
 
 get_results_all <- function(directory=getwd(), files.overwrite=FALSE){
 
+    library(plyr)
+    on.exit(setwd(directory))
     ## Get unique scenarios that exist in the folder. Might be other random
     ## stuff in the folder so be careful to extract only scenario folders.
     all.dirs <- list.dirs(path=directory, full.names=F, recursive=F)
@@ -54,11 +56,10 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE){
         ts.list[[i]] <- read.csv(ts.file)
     }
     ## Combine all scenarios together into big files
-    scalar.all <- do.call(rbind, scalar.list)
-    ts.all <- do.call(rbind, ts.list)
-    setwd(directory)
-    write.csv(scalar.all, file="final_resuls_scalar.csv")
-    write.csv(ts.all, file="final_resuls_ts.csv")
+    scalar.all <- do.call(rbind.fill, scalar.list)
+    ts.all <- do.call(rbind.fill, ts.list)
+    write.csv(scalar.all, file="final_results_scalar.csv")
+    write.csv(ts.all, file="final_results_ts.csv")
     print(paste("Final result files written to", directory))
 }
 
@@ -66,7 +67,7 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE){
 #'
 #' Take a path to a scenario folder with results and write the individual
 #' scenario results to two data.frames in that folder. This function is
-#' called by \code{\link{get_results_all}} or can be used individually for 
+#' called by \code{\link{get_results_all}} or can be used individually for
 #' testing.
 #'
 #' @param scenario A folder name in the directory folder which contains
@@ -79,8 +80,6 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE){
 
 get_results_scenario <- function(scenario, directory=getwd(),
                                  overwrite.files=FALSE){
-
-## get_results_scenario(scenario)
 
     library(r4ss)
     ## Get results for all reps within a scenario folder
@@ -126,10 +125,10 @@ get_results_scenario <- function(scenario, directory=getwd(),
     for(rep in reps.dirs){
         ## print(paste0("Starting", scen, "-", rep))
         report.em <- SS_output(paste0(rep,"/em/"), covar=F, verbose=F,
-                               compfile="none", forecast=F, warn=F, readwt=F,
+                               compfile="none", forecast=F, warn=T, readwt=F,
                                printstats=F, NoCompOK=T)
         report.om <- SS_output(paste0(rep,"/om/"), covar=F, verbose=F,
-                               compfile="none", forecast=F, warn=F, readwt=F,
+                               compfile="none", forecast=F, warn=T, readwt=F,
                                printstats=F, NoCompOK=T)
         ## Get scalars from the two models
         scalar.om <- get_results_scalar(report.om)
@@ -150,12 +149,17 @@ get_results_scenario <- function(scenario, directory=getwd(),
         ## parse the scenarios into columns for plotting later
         scenario.scalar <-
             data.frame(do.call(rbind, strsplit(as.character(scalar$scenario),
-                                               "-")))
+                                               "-")), stringsAsFactors=F)
+        names(scenario.scalar) <-
+            c(substr(as.vector(as.character(
+                scenario.scalar[1,-ncol(scenario.scalar)])), 1,1) ,"species")
         scenario.ts <-
             data.frame(do.call(rbind, strsplit(as.character(ts$scenario), "-")),
-                       row.names=row.names(ts))
-        names(scenario.scalar) <- names(scenario.ts) <-
-            c("D","E","F","G","M","R", "S", "species")
+                       row.names=row.names(ts), stringsAsFactors=F)
+        names(scenario.ts) <-
+            c(substr(as.vector(as.character(
+                scenario.ts[1,-ncol(scenario.ts)])), 1,1) ,"species")
+
         scalar <- cbind(scalar, scenario.scalar)
         ts <- cbind(ts, scenario.ts)
         ## Other calcs
@@ -164,6 +168,10 @@ get_results_scenario <- function(scenario, directory=getwd(),
         scalar$max_grad <- scalar$max_grad_em
         scalar <- subset(scalar, select= -c(max_grad_om, max_grad_em))
 
+        ## Also get the version and runtime, as checks
+        temp <- readLines(con=paste0(rep,"/em/Report.sso"), n=10)
+        scalar$version <- temp[1]
+        scalar$StartTime <- temp[4]; scalar$EndTime <- temp[5]
         ## Write them to file in the scenario folder
         scalar.exists <- file.exists(scalar.file)
         write.table(x=scalar, file=scalar.file, append=scalar.exists,
@@ -175,7 +183,6 @@ get_results_scenario <- function(scenario, directory=getwd(),
     ## End of loops for extracting results
     print(paste0("Result files created for ",scenario, " with ",
                  length(reps.dirs), " replicates"))
-    setwd(old.wd)
 }
 
 #' Extract time series from a model run.
@@ -207,23 +214,28 @@ get_results_timeseries <- function(report.file){
 #' @author Cole Monnahan
 get_results_scalar <- function(report.file){
 
-    temp <- report.file$derived_quants
-    SSB_MSY <-  temp[which(temp$LABEL=="SSB_MSY"),]$Value
-    TotYield_MSY <-  temp[which(temp$LABEL=="TotYield_MSY"),]$Value
-    SSB_Unfished <-  temp[which(temp$LABEL=="SSB_Unfished"),]$Value
-    xx <- data.frame(t(report.file$parameters$Value))
-    names(xx) <- report.file$parameters$Label
-    yy <- subset(xx,
-                 select=c("SR_LN(R0)",
-                 "SR_BH_steep",
-                 "SR_sigmaR",
-                 "SizeSel_1P_1_Fishery" ,
-                 "SizeSel_1P_2_Fishery",
-                 "SizeSel_2P_1_Survey",
-                 "SizeSel_2P_2_Survey"))
+    der <- report.file$derived_quants
+    SSB_MSY <-  der[which(der$LABEL=="SSB_MSY"),]$Value
+    TotYield_MSY <-  der[which(der$LABEL=="TotYield_MSY"),]$Value
+    SSB_Unfished <-  der[which(der$LABEL=="SSB_Unfished"),]$Value
+    pars <- data.frame(t(report.file$parameters$Value))
+    names(pars) <- report.file$parameters$Label
+    ## Remove the recruitment devs and efforts as these are in the ts file
+    recdev.index <- grep("MAIN_", toupper(names(pars)), fixed=TRUE)
+    if(length(recdev.index)>0) pars <- pars[,-recdev.index]
+    effort.index <- grep("F_FLEET_", toupper(names(pars)), fixed=TRUE)
+    if(length(effort.index)>0) pars <- pars[,-effort.index]
+    names(pars) <- gsub("\\(","_", names(pars))
+    names(pars) <- gsub("\\)","", names(pars))
     max_grad <- report.file$maximum_gradient_component
-    names(yy) <- gsub("\\(","_", names(yy))
-    names(yy) <- gsub("\\)","", names(yy))
-    df <- cbind(yy, SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad)
+    NLL <- report.file$likelihoods_used[1,1]
+    depletion <- report.file$current_depletion
+    warn <- report.file$warnings
+    params_on_bound <- as.numeric(strsplit(warn[grep(
+        "Number_of_active_parameters", warn, fixed=TRUE)], ":")[[1]][2])
+    df <- cbind(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion,
+                NLL, params_on_bound, pars)
     return(invisible(df))
 }
+
+
