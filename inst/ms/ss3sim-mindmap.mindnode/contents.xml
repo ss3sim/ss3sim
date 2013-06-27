@@ -15,14 +15,14 @@
 		<key>associations</key>
 		<array/>
 		<key>color</key>
-		<string>{0.016, 0.127, 0.160, 1.000}</string>
+		<string>{1.000, 0.961, 0.863, 1.000}</string>
 		<key>mainNodes</key>
 		<array>
 			<dict>
 				<key>contentAlignment</key>
 				<integer>1</integer>
 				<key>fillColor</key>
-				<string>{0.037, 0.160, 0.198, 1.000}</string>
+				<string>{1.000, 1.000, 1.000, 1.000}</string>
 				<key>isDecreasingBranchThickness</key>
 				<true/>
 				<key>isDrawingFill</key>
@@ -32,9 +32,9 @@
 				<key>location</key>
 				<string>{110.99642337145031, -12.818814692510387}</string>
 				<key>nodeID</key>
-				<string>48D7E290-336C-414A-B614-1B5F17DE973A</string>
+				<string>BCD0C8FA-BBA8-49C6-842E-69852F21FB65</string>
 				<key>strokeColor</key>
-				<string>{0.273, 0.357, 0.383, 1.000}</string>
+				<string>{0.400, 0.200, 0.000, 1.000}</string>
 				<key>strokeStyle</key>
 				<integer>0</integer>
 				<key>strokeWidth</key>
@@ -45,7 +45,7 @@
 						<key>contentAlignment</key>
 						<integer>1</integer>
 						<key>fillColor</key>
-						<string>{0.037, 0.160, 0.198, 1.000}</string>
+						<string>{1.000, 0.961, 0.863, 1.000}</string>
 						<key>isDecreasingBranchThickness</key>
 						<true/>
 						<key>isDrawingFill</key>
@@ -53,51 +53,11 @@
 						<key>isLeftAligned</key>
 						<true/>
 						<key>location</key>
-						<string>{-186.49055818800679, -377.07742665671219}</string>
+						<string>{-88.207088936550576, -441.89844773107234}</string>
 						<key>nodeID</key>
-						<string>2BAA5EA2-45FC-4DE9-BE16-B6FD61CEAD9A</string>
+						<string>51D75B24-80F2-484A-B172-699A0A02F96B</string>
 						<key>strokeColor</key>
-						<string>{0.647, 0.468, 0.027, 1.000}</string>
-						<key>strokeStyle</key>
-						<integer>0</integer>
-						<key>strokeWidth</key>
-						<real>6</real>
-						<key>subnodes</key>
-						<array/>
-						<key>title</key>
-						<dict>
-							<key>constrainedWidth</key>
-							<integer>300</integer>
-							<key>htmlText</key>
-							<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;1 or 2 examples from our projects (could be used as examples of the plotting the output or could show a worked (minimal) example from start to end.&lt;/p&gt;</string>
-							<key>shrinkToFitContent</key>
-							<integer>1</integer>
-							<key>text</key>
-							<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 1 or 2 examples from our projects (could be used as examples of the plotting the output or could show a worked (minimal) example from start to end.}</string>
-						</dict>
-					</dict>
-					<dict>
-						<key>contentAlignment</key>
-						<integer>1</integer>
-						<key>fillColor</key>
-						<string>{0.037, 0.160, 0.198, 1.000}</string>
-						<key>isDecreasingBranchThickness</key>
-						<true/>
-						<key>isDrawingFill</key>
-						<false/>
-						<key>isLeftAligned</key>
-						<false/>
-						<key>location</key>
-						<string>{288.51054159926218, -276.91327069818033}</string>
-						<key>nodeID</key>
-						<string>6A2D18BB-193D-4CA5-9812-20C862921608</string>
-						<key>strokeColor</key>
-						<string>{0.450, 0.541, 0.020, 1.000}</string>
+						<string>{1.000, 0.400, 0.000, 1.000}</string>
 						<key>strokeStyle</key>
 						<integer>0</integer>
 						<key>strokeWidth</key>
@@ -108,19 +68,19 @@
 								<key>contentAlignment</key>
 								<integer>1</integer>
 								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
 								<key>isDecreasingBranchThickness</key>
 								<true/>
 								<key>isDrawingFill</key>
 								<false/>
 								<key>isLeftAligned</key>
-								<false/>
+								<true/>
 								<key>location</key>
-								<string>{501.20751210107426, -227.20374148323901}</string>
+								<string>{-403.20708893655058, -465.89844773107234}</string>
 								<key>nodeID</key>
-								<string>E1BBF975-7713-4815-964A-FB193A656B3A</string>
+								<string>E92DB5FB-0A72-4070-A469-ECE5A870CCF5</string>
 								<key>strokeColor</key>
-								<string>{0.450, 0.541, 0.020, 1.000}</string>
+								<string>{1.000, 0.400, 0.000, 1.000}</string>
 								<key>strokeStyle</key>
 								<integer>0</integer>
 								<key>strokeWidth</key>
@@ -132,35 +92,35 @@
 									<key>constrainedWidth</key>
 									<integer>300</integer>
 									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; text-align: left; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;What is SS3&lt;/p&gt;</string>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;Can we call run_fish600 something better?&lt;/p&gt;</string>
 									<key>shrinkToFitContent</key>
 									<integer>1</integer>
 									<key>text</key>
 									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs28 \cf2 What is SS3}</string>
+\f0\fs28 \cf2 Can we call run_fish600 something better?}</string>
 								</dict>
 							</dict>
 							<dict>
 								<key>contentAlignment</key>
 								<integer>1</integer>
 								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
 								<key>isDecreasingBranchThickness</key>
 								<true/>
 								<key>isDrawingFill</key>
 								<false/>
 								<key>isLeftAligned</key>
-								<false/>
+								<true/>
 								<key>location</key>
-								<string>{439.68156793998355, -358.09992816367799}</string>
+								<string>{-423.20708893655058, -433.89844773107234}</string>
 								<key>nodeID</key>
-								<string>7314D012-08CC-4D17-8939-57E247E29E67</string>
+								<string>77C981E4-83F1-4277-9C12-CEB3EDE58BEE</string>
 								<key>strokeColor</key>
-								<string>{0.450, 0.541, 0.020, 1.000}</string>
+								<string>{1.000, 0.400, 0.000, 1.000}</string>
 								<key>strokeStyle</key>
 								<integer>0</integer>
 								<key>strokeWidth</key>
@@ -172,13 +132,94 @@
 									<key>constrainedWidth</key>
 									<integer>300</integer>
 									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; text-align: left; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;The value of stock assessment simulation&lt;/p&gt;</string>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;Create a function that creates arguments that don&amp;apos;t affect anything?&lt;/p&gt;</string>
 									<key>shrinkToFitContent</key>
 									<integer>1</integer>
 									<key>text</key>
 									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 Create a function that creates arguments that don't affect anything?}</string>
+								</dict>
+							</dict>
+						</array>
+						<key>title</key>
+						<dict>
+							<key>constrainedWidth</key>
+							<integer>300</integer>
+							<key>htmlText</key>
+							<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;random thoughts&lt;/p&gt;</string>
+							<key>shrinkToFitContent</key>
+							<integer>1</integer>
+							<key>text</key>
+							<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 random thoughts}</string>
+						</dict>
+					</dict>
+					<dict>
+						<key>contentAlignment</key>
+						<integer>1</integer>
+						<key>fillColor</key>
+						<string>{1.000, 0.961, 0.863, 1.000}</string>
+						<key>isDecreasingBranchThickness</key>
+						<true/>
+						<key>isDrawingFill</key>
+						<false/>
+						<key>isLeftAligned</key>
+						<false/>
+						<key>location</key>
+						<string>{251.6767595866969, -409.73834846836905}</string>
+						<key>nodeID</key>
+						<string>B8839DB9-6762-4E52-8B02-34CEAADA77B8</string>
+						<key>strokeColor</key>
+						<string>{1.000, 0.800, 0.000, 1.000}</string>
+						<key>strokeStyle</key>
+						<integer>0</integer>
+						<key>strokeWidth</key>
+						<real>6</real>
+						<key>subnodes</key>
+						<array>
+							<dict>
+								<key>contentAlignment</key>
+								<integer>1</integer>
+								<key>fillColor</key>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
+								<key>isDecreasingBranchThickness</key>
+								<true/>
+								<key>isDrawingFill</key>
+								<false/>
+								<key>isLeftAligned</key>
+								<false/>
+								<key>location</key>
+								<string>{484.6767595866969, -465.73834846836905}</string>
+								<key>nodeID</key>
+								<string>4445E03A-74CF-41A3-800D-65BBC88AF67B</string>
+								<key>strokeColor</key>
+								<string>{1.000, 0.800, 0.000, 1.000}</string>
+								<key>strokeStyle</key>
+								<integer>0</integer>
+								<key>strokeWidth</key>
+								<real>5</real>
+								<key>subnodes</key>
+								<array/>
+								<key>title</key>
+								<dict>
+									<key>constrainedWidth</key>
+									<integer>300</integer>
+									<key>htmlText</key>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;The value of stock assessment simulation&lt;/p&gt;</string>
+									<key>shrinkToFitContent</key>
+									<integer>1</integer>
+									<key>text</key>
+									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
 \f0\fs28 \cf2 The value of stock assessment simulation}</string>
@@ -188,7 +229,7 @@
 								<key>contentAlignment</key>
 								<integer>1</integer>
 								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
 								<key>isDecreasingBranchThickness</key>
 								<true/>
 								<key>isDrawingFill</key>
@@ -196,11 +237,11 @@
 								<key>isLeftAligned</key>
 								<false/>
 								<key>location</key>
-								<string>{473.62998816028505, -181.36576570802725}</string>
+								<string>{484.6767595866969, -433.73834846836905}</string>
 								<key>nodeID</key>
-								<string>3B028E85-A0E1-4F05-99E5-FB298809D24D</string>
+								<string>681E774B-9740-410F-B120-F6A9DCB9812C</string>
 								<key>strokeColor</key>
-								<string>{0.450, 0.541, 0.020, 1.000}</string>
+								<string>{1.000, 0.800, 0.000, 1.000}</string>
 								<key>strokeStyle</key>
 								<integer>0</integer>
 								<key>strokeWidth</key>
@@ -212,81 +253,161 @@
 									<key>constrainedWidth</key>
 									<integer>300</integer>
 									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; text-align: left; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;Pervasiveness of SS3&lt;/p&gt;</string>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;But the complications of doing it and issues of reproducibility&lt;/p&gt;</string>
 									<key>shrinkToFitContent</key>
 									<integer>1</integer>
 									<key>text</key>
 									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 Pervasiveness of SS3}</string>
-								</dict>
-							</dict>
-							<dict>
-								<key>contentAlignment</key>
-								<integer>1</integer>
-								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
-								<key>isDecreasingBranchThickness</key>
-								<true/>
-								<key>isDrawingFill</key>
-								<false/>
-								<key>isLeftAligned</key>
-								<false/>
-								<key>location</key>
-								<string>{444.96780490459776, -318.15272185077009}</string>
-								<key>nodeID</key>
-								<string>0313272F-0FA9-46E3-9E48-F8E5EA25E854</string>
-								<key>strokeColor</key>
-								<string>{0.450, 0.541, 0.020, 1.000}</string>
-								<key>strokeStyle</key>
-								<integer>0</integer>
-								<key>strokeWidth</key>
-								<real>5</real>
-								<key>subnodes</key>
-								<array/>
-								<key>title</key>
-								<dict>
-									<key>constrainedWidth</key>
-									<integer>300</integer>
-									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; text-align: left; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;But the complications of doing it and issues of reproducibility&lt;/p&gt;</string>
-									<key>shrinkToFitContent</key>
-									<integer>1</integer>
-									<key>text</key>
-									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
 \f0\fs28 \cf2 But the complications of doing it and issues of reproducibility}</string>
 								</dict>
 							</dict>
+							<dict>
+								<key>contentAlignment</key>
+								<integer>1</integer>
+								<key>fillColor</key>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
+								<key>isDecreasingBranchThickness</key>
+								<true/>
+								<key>isDrawingFill</key>
+								<false/>
+								<key>isLeftAligned</key>
+								<false/>
+								<key>location</key>
+								<string>{484.6767595866969, -385.73834846836905}</string>
+								<key>nodeID</key>
+								<string>4526CBCB-CCB0-412A-B372-0EC50079E965</string>
+								<key>strokeColor</key>
+								<string>{1.000, 0.800, 0.000, 1.000}</string>
+								<key>strokeStyle</key>
+								<integer>0</integer>
+								<key>strokeWidth</key>
+								<real>5</real>
+								<key>subnodes</key>
+								<array/>
+								<key>title</key>
+								<dict>
+									<key>constrainedWidth</key>
+									<integer>300</integer>
+									<key>htmlText</key>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;What is SS3&lt;/p&gt;</string>
+									<key>shrinkToFitContent</key>
+									<integer>1</integer>
+									<key>text</key>
+									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 What is SS3}</string>
+								</dict>
+							</dict>
+							<dict>
+								<key>contentAlignment</key>
+								<integer>1</integer>
+								<key>fillColor</key>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
+								<key>isDecreasingBranchThickness</key>
+								<true/>
+								<key>isDrawingFill</key>
+								<false/>
+								<key>isLeftAligned</key>
+								<false/>
+								<key>location</key>
+								<string>{484.6767595866969, -353.73834846836905}</string>
+								<key>nodeID</key>
+								<string>5C192E2E-1513-4369-BAB9-6948A45F47E4</string>
+								<key>strokeColor</key>
+								<string>{1.000, 0.800, 0.000, 1.000}</string>
+								<key>strokeStyle</key>
+								<integer>0</integer>
+								<key>strokeWidth</key>
+								<real>5</real>
+								<key>subnodes</key>
+								<array/>
+								<key>title</key>
+								<dict>
+									<key>constrainedWidth</key>
+									<integer>300</integer>
+									<key>htmlText</key>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;Pervasiveness of SS3&lt;/p&gt;</string>
+									<key>shrinkToFitContent</key>
+									<integer>1</integer>
+									<key>text</key>
+									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 Pervasiveness of SS3}</string>
+								</dict>
+							</dict>
 						</array>
 						<key>title</key>
 						<dict>
 							<key>constrainedWidth</key>
 							<integer>300</integer>
 							<key>htmlText</key>
-							<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; text-align: left; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;Motivation&lt;/p&gt;</string>
+							<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;START HERE =&amp;gt; Motivation&lt;/p&gt;</string>
 							<key>shrinkToFitContent</key>
 							<integer>1</integer>
 							<key>text</key>
 							<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs28 \cf2 Motivation}</string>
+\f0\fs28 \cf2 START HERE =&gt; Motivation}</string>
 						</dict>
 					</dict>
 					<dict>
 						<key>contentAlignment</key>
 						<integer>1</integer>
 						<key>fillColor</key>
-						<string>{0.037, 0.160, 0.198, 1.000}</string>
+						<string>{1.000, 0.961, 0.863, 1.000}</string>
+						<key>isDecreasingBranchThickness</key>
+						<true/>
+						<key>isDrawingFill</key>
+						<false/>
+						<key>isLeftAligned</key>
+						<true/>
+						<key>location</key>
+						<string>{-321.59195196515657, -252.58719479145827}</string>
+						<key>nodeID</key>
+						<string>92399CA2-B70C-48D3-BEF1-0B65ED2F5CF7</string>
+						<key>strokeColor</key>
+						<string>{0.600, 0.600, 0.000, 1.000}</string>
+						<key>strokeStyle</key>
+						<integer>0</integer>
+						<key>strokeWidth</key>
+						<real>6</real>
+						<key>subnodes</key>
+						<array/>
+						<key>title</key>
+						<dict>
+							<key>constrainedWidth</key>
+							<integer>300</integer>
+							<key>htmlText</key>
+							<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;Ways forward:  What else you could do with it&lt;/p&gt;</string>
+							<key>shrinkToFitContent</key>
+							<integer>1</integer>
+							<key>text</key>
+							<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 Ways forward:  What else you could do with it}</string>
+						</dict>
+					</dict>
+					<dict>
+						<key>contentAlignment</key>
+						<integer>1</integer>
+						<key>fillColor</key>
+						<string>{1.000, 0.961, 0.863, 1.000}</string>
 						<key>isDecreasingBranchThickness</key>
 						<true/>
 						<key>isDrawingFill</key>
@@ -294,11 +415,11 @@
 						<key>isLeftAligned</key>
 						<false/>
 						<key>location</key>
-						<string>{512.77860808641015, 75.905368319944557}</string>
+						<string>{334.3881938764174, -109.29012846717092}</string>
 						<key>nodeID</key>
-						<string>9D68B419-DCF7-42A4-9460-22748634C653</string>
+						<string>FEBB9B12-E8C0-457B-A171-F151AA8C0128</string>
 						<key>strokeColor</key>
-						<string>{0.747, 0.236, 0.101, 1.000}</string>
+						<string>{0.600, 0.800, 0.800, 1.000}</string>
 						<key>strokeStyle</key>
 						<integer>0</integer>
 						<key>strokeWidth</key>
@@ -309,7 +430,7 @@
 								<key>contentAlignment</key>
 								<integer>1</integer>
 								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
 								<key>isDecreasingBranchThickness</key>
 								<true/>
 								<key>isDrawingFill</key>
@@ -317,793 +438,431 @@
 								<key>isLeftAligned</key>
 								<false/>
 								<key>location</key>
-								<string>{702.77860808641015, 75.905368319944557}</string>
+								<string>{526.55955406482656, -157.00307885692246}</string>
 								<key>nodeID</key>
-								<string>C7C81B7B-9D7E-4BE0-9557-1A3D0C617836</string>
+								<string>7A85C0C2-954E-408B-98A4-919986B28B95</string>
 								<key>strokeColor</key>
-								<string>{0.747, 0.236, 0.101, 1.000}</string>
+								<string>{0.600, 0.800, 0.800, 1.000}</string>
 								<key>strokeStyle</key>
 								<integer>0</integer>
 								<key>strokeWidth</key>
 								<real>5</real>
 								<key>subnodes</key>
-								<array/>
-								<key>title</key>
-								<dict>
-									<key>constrainedWidth</key>
-									<integer>300</integer>
-									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;run_ss3sim&lt;/p&gt;</string>
-									<key>shrinkToFitContent</key>
-									<integer>1</integer>
-									<key>text</key>
-									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 run_ss3sim}</string>
-								</dict>
-							</dict>
-							<dict>
-								<key>contentAlignment</key>
-								<integer>1</integer>
-								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
-								<key>isDecreasingBranchThickness</key>
-								<true/>
-								<key>isDrawingFill</key>
-								<false/>
-								<key>isLeftAligned</key>
-								<false/>
-								<key>location</key>
-								<string>{702.77860808641015, 138.90536831994456}</string>
-								<key>nodeID</key>
-								<string>190BC439-05C3-40A8-B069-3DF3E2BBD715</string>
-								<key>strokeColor</key>
-								<string>{0.747, 0.236, 0.101, 1.000}</string>
-								<key>strokeStyle</key>
-								<integer>0</integer>
-								<key>strokeWidth</key>
-								<real>5</real>
-								<key>subnodes</key>
-								<array/>
-								<key>title</key>
-								<dict>
-									<key>constrainedWidth</key>
-									<integer>300</integer>
-									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;run_fish600&lt;/p&gt;</string>
-									<key>shrinkToFitContent</key>
-									<integer>1</integer>
-									<key>text</key>
-									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 run_fish600}</string>
-								</dict>
-							</dict>
-							<dict>
-								<key>contentAlignment</key>
-								<integer>1</integer>
-								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
-								<key>isDecreasingBranchThickness</key>
-								<true/>
-								<key>isDrawingFill</key>
-								<false/>
-								<key>isLeftAligned</key>
-								<false/>
-								<key>location</key>
-								<string>{702.77860808641015, 201.90536831994456}</string>
-								<key>nodeID</key>
-								<string>43BDCF78-8E5B-4BA0-9E2D-9CDAFD01FC9C</string>
-								<key>strokeColor</key>
-								<string>{0.747, 0.236, 0.101, 1.000}</string>
-								<key>strokeStyle</key>
-								<integer>0</integer>
-								<key>strokeWidth</key>
-								<real>5</real>
-								<key>subnodes</key>
-								<array/>
-								<key>title</key>
-								<dict>
-									<key>constrainedWidth</key>
-									<integer>300</integer>
-									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;plotting functions&lt;/p&gt;</string>
-									<key>shrinkToFitContent</key>
-									<integer>1</integer>
-									<key>text</key>
-									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 plotting functions}</string>
-								</dict>
-							</dict>
-							<dict>
-								<key>contentAlignment</key>
-								<integer>1</integer>
-								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
-								<key>isDecreasingBranchThickness</key>
-								<true/>
-								<key>isDrawingFill</key>
-								<false/>
-								<key>isLeftAligned</key>
-								<false/>
-								<key>location</key>
-								<string>{702.77860808641015, 264.90536831994456}</string>
-								<key>nodeID</key>
-								<string>AA99600C-0163-4975-A761-2CF49C0301AC</string>
-								<key>strokeColor</key>
-								<string>{0.747, 0.236, 0.101, 1.000}</string>
-								<key>strokeStyle</key>
-								<integer>0</integer>
-								<key>strokeWidth</key>
-								<real>5</real>
-								<key>subnodes</key>
-								<array/>
-								<key>title</key>
-								<dict>
-									<key>constrainedWidth</key>
-									<integer>300</integer>
-									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;manipulation functions&lt;/p&gt;</string>
-									<key>shrinkToFitContent</key>
-									<integer>1</integer>
-									<key>text</key>
-									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 manipulation functions}</string>
-								</dict>
-							</dict>
-							<dict>
-								<key>contentAlignment</key>
-								<integer>1</integer>
-								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
-								<key>isDecreasingBranchThickness</key>
-								<true/>
-								<key>isDrawingFill</key>
-								<false/>
-								<key>isLeftAligned</key>
-								<false/>
-								<key>location</key>
-								<string>{701.45910165314501, 23.463384010420384}</string>
-								<key>nodeID</key>
-								<string>32B9DA54-24F1-44E7-BC1E-ABECA6C82430</string>
-								<key>strokeColor</key>
-								<string>{0.747, 0.236, 0.101, 1.000}</string>
-								<key>strokeStyle</key>
-								<integer>0</integer>
-								<key>strokeWidth</key>
-								<real>5</real>
-								<key>subnodes</key>
-								<array/>
-								<key>title</key>
-								<dict>
-									<key>constrainedWidth</key>
-									<integer>300</integer>
-									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;extracting functions&lt;/p&gt;</string>
-									<key>shrinkToFitContent</key>
-									<integer>1</integer>
-									<key>text</key>
-									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 extracting functions}</string>
-								</dict>
-							</dict>
-							<dict>
-								<key>contentAlignment</key>
-								<integer>1</integer>
-								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
-								<key>isDecreasingBranchThickness</key>
-								<true/>
-								<key>isDrawingFill</key>
-								<false/>
-								<key>isLeftAligned</key>
-								<false/>
-								<key>location</key>
-								<string>{702.77860808641015, 327.90536831994456}</string>
-								<key>nodeID</key>
-								<string>DA0489DE-5AB2-4F9B-8951-826B7016458E</string>
-								<key>strokeColor</key>
-								<string>{0.747, 0.236, 0.101, 1.000}</string>
-								<key>strokeStyle</key>
-								<integer>0</integer>
-								<key>strokeWidth</key>
-								<real>5</real>
-								<key>subnodes</key>
-								<array/>
-								<key>title</key>
-								<dict>
-									<key>constrainedWidth</key>
-									<integer>300</integer>
-									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;model running functions&lt;/p&gt;</string>
-									<key>shrinkToFitContent</key>
-									<integer>1</integer>
-									<key>text</key>
-									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 model running functions}</string>
-								</dict>
-							</dict>
-						</array>
-						<key>title</key>
-						<dict>
-							<key>constrainedWidth</key>
-							<integer>300</integer>
-							<key>htmlText</key>
-							<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;Available functions&lt;/p&gt;</string>
-							<key>shrinkToFitContent</key>
-							<integer>1</integer>
-							<key>text</key>
-							<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 Available functions}</string>
-						</dict>
-					</dict>
-					<dict>
-						<key>contentAlignment</key>
-						<integer>1</integer>
-						<key>fillColor</key>
-						<string>{0.037, 0.160, 0.198, 1.000}</string>
-						<key>isDecreasingBranchThickness</key>
-						<true/>
-						<key>isDrawingFill</key>
-						<false/>
-						<key>isLeftAligned</key>
-						<false/>
-						<key>location</key>
-						<string>{386.86406972648604, -38.741668158493439}</string>
-						<key>nodeID</key>
-						<string>7E6244C0-D77B-4103-B9E9-86C7741049D3</string>
-						<key>strokeColor</key>
-						<string>{0.147, 0.571, 0.525, 1.000}</string>
-						<key>strokeStyle</key>
-						<integer>0</integer>
-						<key>strokeWidth</key>
-						<real>6</real>
-						<key>subnodes</key>
-						<array>
-							<dict>
-								<key>contentAlignment</key>
-								<integer>1</integer>
-								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
-								<key>isDecreasingBranchThickness</key>
-								<true/>
-								<key>isDrawingFill</key>
-								<false/>
-								<key>isLeftAligned</key>
-								<false/>
-								<key>location</key>
-								<string>{541.76468649005233, -123.38454343756786}</string>
-								<key>nodeID</key>
-								<string>6B2907AB-919E-4D80-888D-427B3F70FE7D</string>
-								<key>strokeColor</key>
-								<string>{0.147, 0.571, 0.525, 1.000}</string>
-								<key>strokeStyle</key>
-								<integer>0</integer>
-								<key>strokeWidth</key>
-								<real>5</real>
-								<key>subnodes</key>
-								<array/>
-								<key>title</key>
-								<dict>
-									<key>constrainedWidth</key>
-									<integer>300</integer>
-									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; text-align: left; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;Show the higher level objectives&lt;/p&gt;</string>
-									<key>shrinkToFitContent</key>
-									<integer>1</integer>
-									<key>text</key>
-									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
+								<array>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<false/>
+										<key>location</key>
+										<string>{674.55955406482656, -205.00307885692246}</string>
+										<key>nodeID</key>
+										<string>E36FA6AC-ED44-4A9B-8D0A-E53B8CD90166</string>
+										<key>strokeColor</key>
+										<string>{0.600, 0.800, 0.800, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;Show the higher level objectives&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
 \f0\fs28 \cf2 Show the higher level objectives}</string>
-								</dict>
-							</dict>
-							<dict>
-								<key>contentAlignment</key>
-								<integer>1</integer>
-								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
-								<key>isDecreasingBranchThickness</key>
-								<true/>
-								<key>isDrawingFill</key>
-								<false/>
-								<key>isLeftAligned</key>
-								<false/>
-								<key>location</key>
-								<string>{541.76468649005233, -60.384543437567856}</string>
-								<key>nodeID</key>
-								<string>D19BE0A4-B356-43D5-9883-485C3559D557</string>
-								<key>strokeColor</key>
-								<string>{0.147, 0.571, 0.525, 1.000}</string>
-								<key>strokeStyle</key>
-								<integer>0</integer>
-								<key>strokeWidth</key>
-								<real>5</real>
-								<key>subnodes</key>
-								<array/>
+										</dict>
+									</dict>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<false/>
+										<key>location</key>
+										<string>{674.55955406482656, -173.00307885692246}</string>
+										<key>nodeID</key>
+										<string>81F3AAC7-DA10-4D3E-BF15-9247DF03740B</string>
+										<key>strokeColor</key>
+										<string>{0.600, 0.800, 0.800, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;Also name the functions?&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 Also name the functions?}</string>
+										</dict>
+									</dict>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<false/>
+										<key>location</key>
+										<string>{674.55955406482656, -141.00307885692246}</string>
+										<key>nodeID</key>
+										<string>3C7979DF-8794-42C7-AB77-4C99433E7623</string>
+										<key>strokeColor</key>
+										<string>{0.600, 0.800, 0.800, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;just run_ss3sim or also show the surrounding run_fish600 or also show input and output functions?&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 just run_ss3sim or also show the surrounding run_fish600 or also show input and output functions?}</string>
+										</dict>
+									</dict>
+								</array>
 								<key>title</key>
 								<dict>
 									<key>constrainedWidth</key>
 									<integer>300</integer>
 									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; text-align: left; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;Name the functions?&lt;/p&gt;</string>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;Flow diagram&lt;/p&gt;</string>
 									<key>shrinkToFitContent</key>
 									<integer>1</integer>
 									<key>text</key>
 									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 Name the functions?}</string>
-								</dict>
-							</dict>
-							<dict>
-								<key>contentAlignment</key>
-								<integer>1</integer>
-								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
-								<key>isDecreasingBranchThickness</key>
-								<true/>
-								<key>isDrawingFill</key>
-								<false/>
-								<key>isLeftAligned</key>
-								<false/>
-								<key>location</key>
-								<string>{546.3238087180921, -22.714124089201221}</string>
-								<key>nodeID</key>
-								<string>64E5BB5A-D59B-4E44-BE8E-FF53F0CED7BB</string>
-								<key>strokeColor</key>
-								<string>{0.147, 0.571, 0.525, 1.000}</string>
-								<key>strokeStyle</key>
-								<integer>0</integer>
-								<key>strokeWidth</key>
-								<real>5</real>
-								<key>subnodes</key>
-								<array/>
-								<key>title</key>
-								<dict>
-									<key>constrainedWidth</key>
-									<integer>300</integer>
-									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; text-align: left; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;just run_ss3sim or also show the surrounding run_fish600&lt;/p&gt;</string>
-									<key>shrinkToFitContent</key>
-									<integer>1</integer>
-									<key>text</key>
-									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 just run_ss3sim or also show the surrounding run_fish600}</string>
-								</dict>
-							</dict>
-						</array>
-						<key>title</key>
-						<dict>
-							<key>constrainedWidth</key>
-							<integer>300</integer>
-							<key>htmlText</key>
-							<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; text-align: left; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;Flow diagram&lt;/p&gt;</string>
-							<key>shrinkToFitContent</key>
-							<integer>1</integer>
-							<key>text</key>
-							<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
 \f0\fs28 \cf2 Flow diagram}</string>
-						</dict>
-					</dict>
-					<dict>
-						<key>contentAlignment</key>
-						<integer>1</integer>
-						<key>fillColor</key>
-						<string>{0.037, 0.160, 0.198, 1.000}</string>
-						<key>isDecreasingBranchThickness</key>
-						<true/>
-						<key>isDrawingFill</key>
-						<false/>
-						<key>isLeftAligned</key>
-						<false/>
-						<key>location</key>
-						<string>{285.05544938695903, 261.5499811451013}</string>
-						<key>nodeID</key>
-						<string>9D0B8B7E-07BD-4BAC-9298-ED9A9E087F1D</string>
-						<key>strokeColor</key>
-						<string>{0.128, 0.463, 0.782, 1.000}</string>
-						<key>strokeStyle</key>
-						<integer>0</integer>
-						<key>strokeWidth</key>
-						<real>6</real>
-						<key>subnodes</key>
-						<array/>
-						<key>title</key>
-						<dict>
-							<key>constrainedWidth</key>
-							<integer>300</integer>
-							<key>htmlText</key>
-							<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; text-align: left; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;What else you could do with it&lt;/p&gt;</string>
-							<key>shrinkToFitContent</key>
-							<integer>1</integer>
-							<key>text</key>
-							<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 What else you could do with it}</string>
-						</dict>
-					</dict>
-					<dict>
-						<key>contentAlignment</key>
-						<integer>1</integer>
-						<key>fillColor</key>
-						<string>{0.037, 0.160, 0.198, 1.000}</string>
-						<key>isDecreasingBranchThickness</key>
-						<true/>
-						<key>isDrawingFill</key>
-						<false/>
-						<key>isLeftAligned</key>
-						<true/>
-						<key>location</key>
-						<string>{-280.262497403309, 263.2848246319395}</string>
-						<key>nodeID</key>
-						<string>270D94E0-D650-46C7-BB92-2B6D7BF5F2B5</string>
-						<key>strokeColor</key>
-						<string>{0.713, 0.331, 0.520, 1.000}</string>
-						<key>strokeStyle</key>
-						<integer>0</integer>
-						<key>strokeWidth</key>
-						<real>6</real>
-						<key>subnodes</key>
-						<array>
-							<dict>
-								<key>contentAlignment</key>
-								<integer>1</integer>
-								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
-								<key>isDecreasingBranchThickness</key>
-								<true/>
-								<key>isDrawingFill</key>
-								<false/>
-								<key>isLeftAligned</key>
-								<true/>
-								<key>location</key>
-								<string>{-424.83726526603652, 199.81476139404174}</string>
-								<key>nodeID</key>
-								<string>C8F50BDF-ADAD-42EE-8B1B-273F9A0E4549</string>
-								<key>strokeColor</key>
-								<string>{0.713, 0.331, 0.520, 1.000}</string>
-								<key>strokeStyle</key>
-								<integer>0</integer>
-								<key>strokeWidth</key>
-								<real>5</real>
-								<key>subnodes</key>
-								<array/>
-								<key>title</key>
-								<dict>
-									<key>constrainedWidth</key>
-									<integer>300</integer>
-									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; text-align: left; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;Input methods&lt;/p&gt;</string>
-									<key>shrinkToFitContent</key>
-									<integer>1</integer>
-									<key>text</key>
-									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 Input methods}</string>
 								</dict>
 							</dict>
 							<dict>
 								<key>contentAlignment</key>
 								<integer>1</integer>
 								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
 								<key>isDecreasingBranchThickness</key>
 								<true/>
 								<key>isDrawingFill</key>
 								<false/>
 								<key>isLeftAligned</key>
-								<true/>
-								<key>location</key>
-								<string>{-514.58407629738065, 326.13772201643974}</string>
-								<key>nodeID</key>
-								<string>8471742F-9922-469C-B24F-206E78AEE96B</string>
-								<key>strokeColor</key>
-								<string>{0.713, 0.331, 0.520, 1.000}</string>
-								<key>strokeStyle</key>
-								<integer>0</integer>
-								<key>strokeWidth</key>
-								<real>5</real>
-								<key>subnodes</key>
-								<array/>
-								<key>title</key>
-								<dict>
-									<key>constrainedWidth</key>
-									<integer>300</integer>
-									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; text-align: left; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;run_ss3sim vs. run_fish600&lt;/p&gt;</string>
-									<key>shrinkToFitContent</key>
-									<integer>1</integer>
-									<key>text</key>
-									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 run_ss3sim vs. run_fish600}</string>
-								</dict>
-							</dict>
-						</array>
-						<key>title</key>
-						<dict>
-							<key>constrainedWidth</key>
-							<integer>300</integer>
-							<key>htmlText</key>
-							<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; text-align: left; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;Different ways of interacting with it&lt;/p&gt;</string>
-							<key>shrinkToFitContent</key>
-							<integer>1</integer>
-							<key>text</key>
-							<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 Different ways of interacting with it}</string>
-						</dict>
-					</dict>
-					<dict>
-						<key>contentAlignment</key>
-						<integer>1</integer>
-						<key>fillColor</key>
-						<string>{0.037, 0.160, 0.198, 1.000}</string>
-						<key>isDecreasingBranchThickness</key>
-						<true/>
-						<key>isDrawingFill</key>
-						<false/>
-						<key>isLeftAligned</key>
-						<true/>
-						<key>location</key>
-						<string>{-238.93859315684062, 149.95531521739122}</string>
-						<key>nodeID</key>
-						<string>DDECB84F-DFD1-4B90-ACFD-A9C8D94511C1</string>
-						<key>strokeColor</key>
-						<string>{0.647, 0.468, 0.027, 1.000}</string>
-						<key>strokeStyle</key>
-						<integer>0</integer>
-						<key>strokeWidth</key>
-						<real>6</real>
-						<key>subnodes</key>
-						<array>
-							<dict>
-								<key>contentAlignment</key>
-								<integer>1</integer>
-								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
-								<key>isDecreasingBranchThickness</key>
-								<true/>
-								<key>isDrawingFill</key>
 								<false/>
-								<key>isLeftAligned</key>
-								<true/>
 								<key>location</key>
-								<string>{-356.40210338261426, 38.368742641229062}</string>
+								<string>{514.3881938764174, 12.057765865796}</string>
 								<key>nodeID</key>
-								<string>4E7AAF4E-A345-4CC9-B9C6-95CDC5E020DF</string>
+								<string>A40BF1DD-7623-49CB-91E1-671E977CE88E</string>
 								<key>strokeColor</key>
-								<string>{0.647, 0.468, 0.027, 1.000}</string>
+								<string>{0.600, 0.800, 0.800, 1.000}</string>
 								<key>strokeStyle</key>
 								<integer>0</integer>
 								<key>strokeWidth</key>
 								<real>5</real>
 								<key>subnodes</key>
-								<array/>
+								<array>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<false/>
+										<key>location</key>
+										<string>{692.3881938764174, -67.942234134204}</string>
+										<key>nodeID</key>
+										<string>4F5F610E-1483-453A-BDCB-2BD448556C54</string>
+										<key>strokeColor</key>
+										<string>{0.600, 0.800, 0.800, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;extracting functions&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 extracting functions}</string>
+										</dict>
+									</dict>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<false/>
+										<key>location</key>
+										<string>{692.3881938764174, -35.942234134204}</string>
+										<key>nodeID</key>
+										<string>E2A09509-E8BF-4328-A517-D67FC6C7FF6F</string>
+										<key>strokeColor</key>
+										<string>{0.600, 0.800, 0.800, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;run_ss3sim&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 run_ss3sim}</string>
+										</dict>
+									</dict>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<false/>
+										<key>location</key>
+										<string>{692.3881938764174, -3.9422341342039999}</string>
+										<key>nodeID</key>
+										<string>F2787191-9C69-4BC6-A5C1-2695B03B0439</string>
+										<key>strokeColor</key>
+										<string>{0.600, 0.800, 0.800, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;run_fish600&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 run_fish600}</string>
+										</dict>
+									</dict>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<false/>
+										<key>location</key>
+										<string>{692.3881938764174, 28.057765865796}</string>
+										<key>nodeID</key>
+										<string>C2CF8F23-A9D5-4B74-A416-5BF68A8D6C61</string>
+										<key>strokeColor</key>
+										<string>{0.600, 0.800, 0.800, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;plotting functions&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 plotting functions}</string>
+										</dict>
+									</dict>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<false/>
+										<key>location</key>
+										<string>{692.3881938764174, 60.057765865796}</string>
+										<key>nodeID</key>
+										<string>56699213-9173-4551-99C7-FE3268893C3A</string>
+										<key>strokeColor</key>
+										<string>{0.600, 0.800, 0.800, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;manipulation functions&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 manipulation functions}</string>
+										</dict>
+									</dict>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<false/>
+										<key>location</key>
+										<string>{692.3881938764174, 92.057765865796}</string>
+										<key>nodeID</key>
+										<string>0170111C-22ED-4163-B73A-B87791C7B5E0</string>
+										<key>strokeColor</key>
+										<string>{0.600, 0.800, 0.800, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;model running functions&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 model running functions}</string>
+										</dict>
+									</dict>
+								</array>
 								<key>title</key>
 								<dict>
 									<key>constrainedWidth</key>
 									<integer>300</integer>
 									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; text-align: left; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;OM files...&lt;/p&gt;</string>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;Available functions&lt;/p&gt;</string>
 									<key>shrinkToFitContent</key>
 									<integer>1</integer>
 									<key>text</key>
 									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 OM files...}</string>
-								</dict>
-							</dict>
-							<dict>
-								<key>contentAlignment</key>
-								<integer>1</integer>
-								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
-								<key>isDecreasingBranchThickness</key>
-								<true/>
-								<key>isDrawingFill</key>
-								<false/>
-								<key>isLeftAligned</key>
-								<true/>
-								<key>location</key>
-								<string>{-368.30447071328399, 135.0459456183072}</string>
-								<key>nodeID</key>
-								<string>CBD184BD-9A39-4723-B417-3E2E1B547734</string>
-								<key>strokeColor</key>
-								<string>{0.647, 0.468, 0.027, 1.000}</string>
-								<key>strokeStyle</key>
-								<integer>0</integer>
-								<key>strokeWidth</key>
-								<real>5</real>
-								<key>subnodes</key>
-								<array/>
-								<key>title</key>
-								<dict>
-									<key>constrainedWidth</key>
-									<integer>300</integer>
-									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; text-align: left; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;EM files...&lt;/p&gt;</string>
-									<key>shrinkToFitContent</key>
-									<integer>1</integer>
-									<key>text</key>
-									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 EM files...}</string>
-								</dict>
-							</dict>
-						</array>
-						<key>title</key>
-						<dict>
-							<key>constrainedWidth</key>
-							<integer>300</integer>
-							<key>htmlText</key>
-							<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; text-align: left; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;Minimal requirements&lt;/p&gt;</string>
-							<key>shrinkToFitContent</key>
-							<integer>1</integer>
-							<key>text</key>
-							<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 Minimal requirements}</string>
-						</dict>
-					</dict>
-					<dict>
-						<key>contentAlignment</key>
-						<integer>1</integer>
-						<key>fillColor</key>
-						<string>{0.037, 0.160, 0.198, 1.000}</string>
-						<key>isDecreasingBranchThickness</key>
-						<true/>
-						<key>isDrawingFill</key>
-						<false/>
-						<key>isLeftAligned</key>
-						<true/>
-						<key>location</key>
-						<string>{-288.1654255843406, -147.56983480461065}</string>
-						<key>nodeID</key>
-						<string>7F9424CD-3AA2-4570-A6CD-BC497DFAC6AD</string>
-						<key>strokeColor</key>
-						<string>{0.450, 0.541, 0.020, 1.000}</string>
-						<key>strokeStyle</key>
-						<integer>0</integer>
-						<key>strokeWidth</key>
-						<real>6</real>
-						<key>subnodes</key>
-						<array/>
-						<key>title</key>
-						<dict>
-							<key>constrainedWidth</key>
-							<integer>300</integer>
-							<key>htmlText</key>
-							<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;The output folder and file structure&lt;/p&gt;</string>
-							<key>shrinkToFitContent</key>
-							<integer>1</integer>
-							<key>text</key>
-							<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs28 \cf2 The output folder and file structure}</string>
-						</dict>
-					</dict>
-					<dict>
-						<key>contentAlignment</key>
-						<integer>1</integer>
-						<key>fillColor</key>
-						<string>{0.037, 0.160, 0.198, 1.000}</string>
-						<key>isDecreasingBranchThickness</key>
-						<true/>
-						<key>isDrawingFill</key>
-						<false/>
-						<key>isLeftAligned</key>
-						<true/>
-						<key>location</key>
-						<string>{-332.09525118168921, -49.537730704084538}</string>
-						<key>nodeID</key>
-						<string>5EEF057A-EAE9-4CAD-920C-AA3DB31D05E3</string>
-						<key>strokeColor</key>
-						<string>{0.747, 0.236, 0.101, 1.000}</string>
-						<key>strokeStyle</key>
-						<integer>0</integer>
-						<key>strokeWidth</key>
-						<real>6</real>
-						<key>subnodes</key>
-						<array>
-							<dict>
-								<key>contentAlignment</key>
-								<integer>1</integer>
-								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
-								<key>isDecreasingBranchThickness</key>
-								<true/>
-								<key>isDrawingFill</key>
-								<false/>
-								<key>isLeftAligned</key>
-								<true/>
-								<key>location</key>
-								<string>{-509.64776635077209, -96.513316222312937}</string>
-								<key>nodeID</key>
-								<string>E29A83C8-667F-40BA-A621-5F741A4DFA32</string>
-								<key>strokeColor</key>
-								<string>{0.747, 0.236, 0.101, 1.000}</string>
-								<key>strokeStyle</key>
-								<integer>0</integer>
-								<key>strokeWidth</key>
-								<real>5</real>
-								<key>subnodes</key>
-								<array/>
-								<key>title</key>
-								<dict>
-									<key>constrainedWidth</key>
-									<integer>300</integer>
-									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;Available functions&lt;/p&gt;</string>
-									<key>shrinkToFitContent</key>
-									<integer>1</integer>
-									<key>text</key>
-									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
 \f0\fs28 \cf2 Available functions}</string>
@@ -1113,40 +872,161 @@
 								<key>contentAlignment</key>
 								<integer>1</integer>
 								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
 								<key>isDecreasingBranchThickness</key>
 								<true/>
 								<key>isDrawingFill</key>
 								<false/>
 								<key>isLeftAligned</key>
-								<true/>
+								<false/>
 								<key>location</key>
-								<string>{-497.48564311817546, -9.4264681531836914}</string>
+								<string>{496.12349222566138, -291.73572443070884}</string>
 								<key>nodeID</key>
-								<string>A9FFA023-0303-4785-B747-F440C333BD5D</string>
+								<string>EB414E31-362C-4316-9278-CD46F340FBE0</string>
 								<key>strokeColor</key>
-								<string>{0.747, 0.236, 0.101, 1.000}</string>
+								<string>{0.600, 0.800, 0.800, 1.000}</string>
 								<key>strokeStyle</key>
 								<integer>0</integer>
 								<key>strokeWidth</key>
 								<real>5</real>
 								<key>subnodes</key>
-								<array/>
+								<array>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<false/>
+										<key>location</key>
+										<string>{681.86147404917767, -369.03892898445417}</string>
+										<key>nodeID</key>
+										<string>4C70AE78-98AA-4764-81D0-E52D16D238EB</string>
+										<key>strokeColor</key>
+										<string>{0.600, 0.800, 0.800, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;Take an OM and EM&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 Take an OM and EM}</string>
+										</dict>
+									</dict>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<false/>
+										<key>location</key>
+										<string>{674.12349222566115, -338.85071708247904}</string>
+										<key>nodeID</key>
+										<string>357149BA-C29D-4AEF-8798-9F7DC5EAE425</string>
+										<key>strokeColor</key>
+										<string>{0.600, 0.800, 0.800, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;Specify how you want to affect the truth and your assessment of the truth (possibly in a time varying manner)&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 Specify how you want to affect the truth and your assessment of the truth (possibly in a time varying manner)}</string>
+										</dict>
+									</dict>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<false/>
+										<key>location</key>
+										<string>{675.0377488239518, -262.31531643973949}</string>
+										<key>nodeID</key>
+										<string>75DF98D6-3AFE-4548-A14B-DA4F65583CB8</string>
+										<key>strokeColor</key>
+										<string>{0.600, 0.800, 0.800, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;ss3sim carries that out in SS3 by manipulating and running the models in R&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 ss3sim carries that out in SS3 by manipulating and running the models in R}</string>
+										</dict>
+									</dict>
+								</array>
 								<key>title</key>
 								<dict>
 									<key>constrainedWidth</key>
 									<integer>300</integer>
 									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;Example plots&lt;/p&gt;</string>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;general philosophy&lt;/p&gt;</string>
 									<key>shrinkToFitContent</key>
 									<integer>1</integer>
 									<key>text</key>
 									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs28 \cf2 Example plots}</string>
+\f0\fs28 \cf2 general philosophy}</string>
 								</dict>
 							</dict>
 						</array>
@@ -1155,35 +1035,35 @@
 							<key>constrainedWidth</key>
 							<integer>300</integer>
 							<key>htmlText</key>
-							<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;Extracting and plotting results&lt;/p&gt;</string>
+							<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;How ss3sim works&lt;/p&gt;</string>
 							<key>shrinkToFitContent</key>
 							<integer>1</integer>
 							<key>text</key>
 							<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs28 \cf2 Extracting and plotting results}</string>
+\f0\fs28 \cf2 How ss3sim works}</string>
 						</dict>
 					</dict>
 					<dict>
 						<key>contentAlignment</key>
 						<integer>1</integer>
 						<key>fillColor</key>
-						<string>{0.037, 0.160, 0.198, 1.000}</string>
+						<string>{1.000, 0.961, 0.863, 1.000}</string>
 						<key>isDecreasingBranchThickness</key>
 						<true/>
 						<key>isDrawingFill</key>
 						<false/>
 						<key>isLeftAligned</key>
-						<false/>
+						<true/>
 						<key>location</key>
-						<string>{156.85820025145665, 423.05990154460619}</string>
+						<string>{-316.84765808845827, -82.337330297947801}</string>
 						<key>nodeID</key>
-						<string>A677E2C6-B7B7-4A57-9E19-565C45CFDE16</string>
+						<string>046C5BFD-C80C-4853-AFEA-95B57BEAD985</string>
 						<key>strokeColor</key>
-						<string>{0.147, 0.571, 0.525, 1.000}</string>
+						<string>{0.000, 0.600, 0.600, 1.000}</string>
 						<key>strokeStyle</key>
 						<integer>0</integer>
 						<key>strokeWidth</key>
@@ -1194,19 +1074,261 @@
 								<key>contentAlignment</key>
 								<integer>1</integer>
 								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
 								<key>isDecreasingBranchThickness</key>
 								<true/>
 								<key>isDrawingFill</key>
 								<false/>
 								<key>isLeftAligned</key>
-								<false/>
+								<true/>
 								<key>location</key>
-								<string>{524.12948578766293, 363.85795899445952}</string>
+								<string>{-535.84765808845827, -122.3373302979478}</string>
 								<key>nodeID</key>
-								<string>3B4F7C84-4A8D-4A5A-B604-FA08F33D243D</string>
+								<string>4ECB8332-52D6-4109-B8BE-20A08C18144D</string>
 								<key>strokeColor</key>
-								<string>{0.147, 0.571, 0.525, 1.000}</string>
+								<string>{0.000, 0.600, 0.600, 1.000}</string>
+								<key>strokeStyle</key>
+								<integer>0</integer>
+								<key>strokeWidth</key>
+								<real>5</real>
+								<key>subnodes</key>
+								<array>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<true/>
+										<key>location</key>
+										<string>{-876.84765808845827, -154.3373302979478}</string>
+										<key>nodeID</key>
+										<string>9D82C9F6-453A-42AB-B6FB-6A506E68161E</string>
+										<key>strokeColor</key>
+										<string>{0.000, 0.600, 0.600, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;ss3sim is focussed on one complete simulation setup&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 ss3sim is focussed on one complete simulation setup}</string>
+										</dict>
+									</dict>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<true/>
+										<key>location</key>
+										<string>{-875.84765808845827, -106.3373302979478}</string>
+										<key>nodeID</key>
+										<string>4F7D0F2C-706E-4B05-A957-E891D75AEF04</string>
+										<key>strokeColor</key>
+										<string>{0.000, 0.600, 0.600, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;ss3sim uses r4ss for reading, writing, and some manipulation&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 ss3sim uses r4ss for reading, writing, and some manipulation}</string>
+										</dict>
+									</dict>
+								</array>
+								<key>title</key>
+								<dict>
+									<key>constrainedWidth</key>
+									<integer>300</integer>
+									<key>htmlText</key>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;How it complements r4ss&lt;/p&gt;</string>
+									<key>shrinkToFitContent</key>
+									<integer>1</integer>
+									<key>text</key>
+									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 How it complements r4ss}</string>
+								</dict>
+							</dict>
+							<dict>
+								<key>contentAlignment</key>
+								<integer>1</integer>
+								<key>fillColor</key>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
+								<key>isDecreasingBranchThickness</key>
+								<true/>
+								<key>isDrawingFill</key>
+								<false/>
+								<key>isLeftAligned</key>
+								<true/>
+								<key>location</key>
+								<string>{-458.84765808845827, -42.337330297947801}</string>
+								<key>nodeID</key>
+								<string>59D1957F-8C96-4C12-8C6D-7AA392242CAC</string>
+								<key>strokeColor</key>
+								<string>{0.000, 0.600, 0.600, 1.000}</string>
+								<key>strokeStyle</key>
+								<integer>0</integer>
+								<key>strokeWidth</key>
+								<real>5</real>
+								<key>subnodes</key>
+								<array>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<true/>
+										<key>location</key>
+										<string>{-638.84765808845827, -58.337330297947801}</string>
+										<key>nodeID</key>
+										<string>71F2B3D2-7575-48EC-88E1-219D357982F7</string>
+										<key>strokeColor</key>
+										<string>{0.000, 0.600, 0.600, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;ss3sim is scriptable&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 ss3sim is scriptable}</string>
+										</dict>
+									</dict>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<true/>
+										<key>location</key>
+										<string>{-570.84765808845827, -26.337330297947801}</string>
+										<key>nodeID</key>
+										<string>A932623E-BAE1-4C5D-B846-369607861570</string>
+										<key>strokeColor</key>
+										<string>{0.000, 0.600, 0.600, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;?&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 ?}</string>
+										</dict>
+									</dict>
+								</array>
+								<key>title</key>
+								<dict>
+									<key>constrainedWidth</key>
+									<integer>300</integer>
+									<key>htmlText</key>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;Hooilator(?)&lt;/p&gt;</string>
+									<key>shrinkToFitContent</key>
+									<integer>1</integer>
+									<key>text</key>
+									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 Hooilator(?)}</string>
+								</dict>
+							</dict>
+							<dict>
+								<key>contentAlignment</key>
+								<integer>1</integer>
+								<key>fillColor</key>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
+								<key>isDecreasingBranchThickness</key>
+								<true/>
+								<key>isDrawingFill</key>
+								<false/>
+								<key>isLeftAligned</key>
+								<true/>
+								<key>location</key>
+								<string>{-434.84765808845827, 5.6626697020521988}</string>
+								<key>nodeID</key>
+								<string>E097ED33-0384-4EB2-B6D6-A924C8449F26</string>
+								<key>strokeColor</key>
+								<string>{0.000, 0.600, 0.600, 1.000}</string>
 								<key>strokeStyle</key>
 								<integer>0</integer>
 								<key>strokeWidth</key>
@@ -1218,13 +1340,134 @@
 									<key>constrainedWidth</key>
 									<integer>300</integer>
 									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;user_recdevs = 0&lt;/p&gt;</string>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;Others?&lt;/p&gt;</string>
 									<key>shrinkToFitContent</key>
 									<integer>1</integer>
 									<key>text</key>
 									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 Others?}</string>
+								</dict>
+							</dict>
+						</array>
+						<key>title</key>
+						<dict>
+							<key>constrainedWidth</key>
+							<integer>300</integer>
+							<key>htmlText</key>
+							<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;How ss3sim complements/compares to other similar software&lt;/p&gt;</string>
+							<key>shrinkToFitContent</key>
+							<integer>1</integer>
+							<key>text</key>
+							<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 How ss3sim complements/compares to other similar software}</string>
+						</dict>
+					</dict>
+					<dict>
+						<key>contentAlignment</key>
+						<integer>1</integer>
+						<key>fillColor</key>
+						<string>{1.000, 0.961, 0.863, 1.000}</string>
+						<key>isDecreasingBranchThickness</key>
+						<true/>
+						<key>isDrawingFill</key>
+						<false/>
+						<key>isLeftAligned</key>
+						<true/>
+						<key>location</key>
+						<string>{-499.04398899490707, 102.15642459710466}</string>
+						<key>nodeID</key>
+						<string>769D46A8-1D61-4BD7-B22A-D58C11DF5E32</string>
+						<key>strokeColor</key>
+						<string>{0.400, 0.200, 0.000, 1.000}</string>
+						<key>strokeStyle</key>
+						<integer>0</integer>
+						<key>strokeWidth</key>
+						<real>6</real>
+						<key>subnodes</key>
+						<array/>
+						<key>title</key>
+						<dict>
+							<key>constrainedWidth</key>
+							<integer>300</integer>
+							<key>htmlText</key>
+							<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;1 or 2 examples from our projects (could be used as examples of the plotting the output or could show a worked (minimal) example from start to end. (include files in package)&lt;/p&gt;</string>
+							<key>shrinkToFitContent</key>
+							<integer>1</integer>
+							<key>text</key>
+							<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 1 or 2 examples from our projects (could be used as examples of the plotting the output or could show a worked (minimal) example from start to end. (include files in package)}</string>
+						</dict>
+					</dict>
+					<dict>
+						<key>contentAlignment</key>
+						<integer>1</integer>
+						<key>fillColor</key>
+						<string>{1.000, 0.961, 0.863, 1.000}</string>
+						<key>isDecreasingBranchThickness</key>
+						<true/>
+						<key>isDrawingFill</key>
+						<false/>
+						<key>isLeftAligned</key>
+						<true/>
+						<key>location</key>
+						<string>{-324.87321768703157, 353.82968553983096}</string>
+						<key>nodeID</key>
+						<string>030C54BA-4C60-45E2-B060-550E8486C84E</string>
+						<key>strokeColor</key>
+						<string>{1.000, 0.400, 0.000, 1.000}</string>
+						<key>strokeStyle</key>
+						<integer>0</integer>
+						<key>strokeWidth</key>
+						<real>6</real>
+						<key>subnodes</key>
+						<array>
+							<dict>
+								<key>contentAlignment</key>
+								<integer>1</integer>
+								<key>fillColor</key>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
+								<key>isDecreasingBranchThickness</key>
+								<true/>
+								<key>isDrawingFill</key>
+								<false/>
+								<key>isLeftAligned</key>
+								<true/>
+								<key>location</key>
+								<string>{-495.87321768703157, 337.82968553983096}</string>
+								<key>nodeID</key>
+								<string>19B95DCF-1966-4526-B75C-34DC71240F2A</string>
+								<key>strokeColor</key>
+								<string>{1.000, 0.400, 0.000, 1.000}</string>
+								<key>strokeStyle</key>
+								<integer>0</integer>
+								<key>strokeWidth</key>
+								<real>5</real>
+								<key>subnodes</key>
+								<array/>
+								<key>title</key>
+								<dict>
+									<key>constrainedWidth</key>
+									<integer>300</integer>
+									<key>htmlText</key>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;user_recdevs = 0&lt;/p&gt;</string>
+									<key>shrinkToFitContent</key>
+									<integer>1</integer>
+									<key>text</key>
+									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
 \f0\fs28 \cf2 user_recdevs = 0}</string>
@@ -1234,19 +1477,19 @@
 								<key>contentAlignment</key>
 								<integer>1</integer>
 								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
 								<key>isDecreasingBranchThickness</key>
 								<true/>
 								<key>isDrawingFill</key>
 								<false/>
 								<key>isLeftAligned</key>
-								<false/>
+								<true/>
 								<key>location</key>
-								<string>{524.12948578766293, 426.85795899445952}</string>
+								<string>{-679.87321768703157, 369.82968553983096}</string>
 								<key>nodeID</key>
-								<string>AB297082-4522-4AB9-9469-74AF97BCED75</string>
+								<string>2D5D2A83-EC96-45E5-B292-2144178732CA</string>
 								<key>strokeColor</key>
-								<string>{0.147, 0.571, 0.525, 1.000}</string>
+								<string>{1.000, 0.400, 0.000, 1.000}</string>
 								<key>strokeStyle</key>
 								<integer>0</integer>
 								<key>strokeWidth</key>
@@ -1258,13 +1501,13 @@
 									<key>constrainedWidth</key>
 									<integer>300</integer>
 									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;setting up models with minimal observation error&lt;/p&gt;</string>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;setting up models with minimal observation error&lt;/p&gt;</string>
 									<key>shrinkToFitContent</key>
 									<integer>1</integer>
 									<key>text</key>
 									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
 \f0\fs28 \cf2 setting up models with minimal observation error}</string>
@@ -1276,35 +1519,35 @@
 							<key>constrainedWidth</key>
 							<integer>300</integer>
 							<key>htmlText</key>
-							<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;Using the package to test deterministic cases&lt;/p&gt;</string>
+							<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;Testing with the package: using ss3sim to test deterministic cases (or make part of example)&lt;/p&gt;</string>
 							<key>shrinkToFitContent</key>
 							<integer>1</integer>
 							<key>text</key>
 							<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs28 \cf2 Using the package to test deterministic cases}</string>
+\f0\fs28 \cf2 Testing with the package: using ss3sim to test deterministic cases (or make part of example)}</string>
 						</dict>
 					</dict>
 					<dict>
 						<key>contentAlignment</key>
 						<integer>1</integer>
 						<key>fillColor</key>
-						<string>{0.037, 0.160, 0.198, 1.000}</string>
+						<string>{1.000, 0.961, 0.863, 1.000}</string>
 						<key>isDecreasingBranchThickness</key>
 						<true/>
 						<key>isDrawingFill</key>
 						<false/>
 						<key>isLeftAligned</key>
-						<true/>
+						<false/>
 						<key>location</key>
-						<string>{-164.04308732459867, 454.99075572004028}</string>
+						<string>{348.96806431127231, 250.17445152226355}</string>
 						<key>nodeID</key>
-						<string>62A566E8-FBCB-4F7A-8C3B-DF6BFFFE28CB</string>
+						<string>BCA63F82-1961-4FEA-ADFA-A62D70B11A0C</string>
 						<key>strokeColor</key>
-						<string>{0.128, 0.463, 0.782, 1.000}</string>
+						<string>{1.000, 0.800, 0.000, 1.000}</string>
 						<key>strokeStyle</key>
 						<integer>0</integer>
 						<key>strokeWidth</key>
@@ -1315,59 +1558,180 @@
 								<key>contentAlignment</key>
 								<integer>1</integer>
 								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
 								<key>isDecreasingBranchThickness</key>
 								<true/>
 								<key>isDrawingFill</key>
 								<false/>
 								<key>isLeftAligned</key>
-								<true/>
+								<false/>
 								<key>location</key>
-								<string>{-389.23254827692779, 434.56658810341935}</string>
+								<string>{573.96806431127231, 218.17445152226355}</string>
 								<key>nodeID</key>
-								<string>3FB55441-6305-4AD6-88D1-91F4F29743ED</string>
+								<string>4DD67EB0-9C31-4188-BC02-D22230AE00A9</string>
 								<key>strokeColor</key>
-								<string>{0.128, 0.463, 0.782, 1.000}</string>
+								<string>{1.000, 0.800, 0.000, 1.000}</string>
 								<key>strokeStyle</key>
 								<integer>0</integer>
 								<key>strokeWidth</key>
 								<real>5</real>
 								<key>subnodes</key>
-								<array/>
+								<array>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<false/>
+										<key>location</key>
+										<string>{769.96806431127231, 178.17445152226355}</string>
+										<key>nodeID</key>
+										<string>F6BBCE08-7EAB-4E18-9235-E43135D97AB1</string>
+										<key>strokeColor</key>
+										<string>{1.000, 0.800, 0.000, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;OM model files&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 OM model files}</string>
+										</dict>
+									</dict>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<false/>
+										<key>location</key>
+										<string>{769.96806431127231, 210.17445152226355}</string>
+										<key>nodeID</key>
+										<string>77A03F4F-A572-46D9-B9DB-70C62DDECCA4</string>
+										<key>strokeColor</key>
+										<string>{1.000, 0.800, 0.000, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;EM files files&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 EM files files}</string>
+										</dict>
+									</dict>
+									<dict>
+										<key>contentAlignment</key>
+										<integer>1</integer>
+										<key>fillColor</key>
+										<string>{1.000, 0.961, 0.863, 1.000}</string>
+										<key>isDecreasingBranchThickness</key>
+										<true/>
+										<key>isDrawingFill</key>
+										<false/>
+										<key>isLeftAligned</key>
+										<false/>
+										<key>location</key>
+										<string>{769.96806431127231, 242.17445152226355}</string>
+										<key>nodeID</key>
+										<string>5147141C-9E81-4BEB-AE20-1DE7AD77CE9A</string>
+										<key>strokeColor</key>
+										<string>{1.000, 0.800, 0.000, 1.000}</string>
+										<key>strokeStyle</key>
+										<integer>0</integer>
+										<key>strokeWidth</key>
+										<real>4</real>
+										<key>subnodes</key>
+										<array/>
+										<key>title</key>
+										<dict>
+											<key>constrainedWidth</key>
+											<integer>300</integer>
+											<key>htmlText</key>
+											<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;Base case arguments in a list... maybe we should create a function that generates&lt;/p&gt;</string>
+											<key>shrinkToFitContent</key>
+											<integer>1</integer>
+											<key>text</key>
+											<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 Base case arguments in a list... maybe we should create a function that generates}</string>
+										</dict>
+									</dict>
+								</array>
 								<key>title</key>
 								<dict>
 									<key>constrainedWidth</key>
 									<integer>300</integer>
 									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;complete simulation toolbox&lt;/p&gt;</string>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;Minimal requirements&lt;/p&gt;</string>
 									<key>shrinkToFitContent</key>
 									<integer>1</integer>
 									<key>text</key>
 									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs28 \cf2 complete simulation toolbox}</string>
+\f0\fs28 \cf2 Minimal requirements}</string>
 								</dict>
 							</dict>
 							<dict>
 								<key>contentAlignment</key>
 								<integer>1</integer>
 								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
 								<key>isDecreasingBranchThickness</key>
 								<true/>
 								<key>isDrawingFill</key>
 								<false/>
 								<key>isLeftAligned</key>
-								<true/>
+								<false/>
 								<key>location</key>
-								<string>{-466.23254827692779, 497.56658810341935}</string>
+								<string>{573.96806431127231, 290.17445152226355}</string>
 								<key>nodeID</key>
-								<string>3934309D-4FC2-4E98-9A81-A570916383CE</string>
+								<string>32CD364E-3D9C-44B5-82C8-61044B01382B</string>
 								<key>strokeColor</key>
-								<string>{0.128, 0.463, 0.782, 1.000}</string>
+								<string>{1.000, 0.800, 0.000, 1.000}</string>
 								<key>strokeStyle</key>
 								<integer>0</integer>
 								<key>strokeWidth</key>
@@ -1379,35 +1743,35 @@
 									<key>constrainedWidth</key>
 									<integer>300</integer>
 									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;uses r4ss for reading, writing, and some manipulation&lt;/p&gt;</string>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; text-align: left; -cocoa-font-postscriptname: "GillSans"; '&gt;using run_ss3sim vs. run_fish600&lt;/p&gt;</string>
 									<key>shrinkToFitContent</key>
 									<integer>1</integer>
 									<key>text</key>
 									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs28 \cf2 uses r4ss for reading, writing, and some manipulation}</string>
+\f0\fs28 \cf2 using run_ss3sim vs. run_fish600}</string>
 								</dict>
 							</dict>
 							<dict>
 								<key>contentAlignment</key>
 								<integer>1</integer>
 								<key>fillColor</key>
-								<string>{0.037, 0.160, 0.198, 1.000}</string>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
 								<key>isDecreasingBranchThickness</key>
 								<true/>
 								<key>isDrawingFill</key>
 								<false/>
 								<key>isLeftAligned</key>
-								<true/>
+								<false/>
 								<key>location</key>
-								<string>{-469.23254827692779, 574.56658810341935}</string>
+								<string>{573.96806431127231, 322.17445152226355}</string>
 								<key>nodeID</key>
-								<string>DD6C9F4E-65C2-4412-8477-E8BAC22241AA</string>
+								<string>D1CE3D57-1254-4688-80B8-4F5E5343F885</string>
 								<key>strokeColor</key>
-								<string>{0.128, 0.463, 0.782, 1.000}</string>
+								<string>{1.000, 0.800, 0.000, 1.000}</string>
 								<key>strokeStyle</key>
 								<integer>0</integer>
 								<key>strokeWidth</key>
@@ -1419,16 +1783,16 @@
 									<key>constrainedWidth</key>
 									<integer>300</integer>
 									<key>htmlText</key>
-									<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;focussed on a particular simulation setup&lt;/p&gt;</string>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;text files or list arguments&lt;/p&gt;</string>
 									<key>shrinkToFitContent</key>
 									<integer>1</integer>
 									<key>text</key>
 									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs28 \cf2 focussed on a particular simulation setup}</string>
+\f0\fs28 \cf2 text files or list arguments}</string>
 								</dict>
 							</dict>
 						</array>
@@ -1437,56 +1801,177 @@
 							<key>constrainedWidth</key>
 							<integer>300</integer>
 							<key>htmlText</key>
-							<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;How it complements r4ss&lt;/p&gt;</string>
+							<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;Getting data and models in&lt;/p&gt;</string>
 							<key>shrinkToFitContent</key>
 							<integer>1</integer>
 							<key>text</key>
 							<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs28 \cf2 How it complements r4ss}</string>
+\f0\fs28 \cf2 Getting data and models in}</string>
 						</dict>
 					</dict>
 					<dict>
 						<key>contentAlignment</key>
 						<integer>1</integer>
 						<key>fillColor</key>
-						<string>{0.037, 0.160, 0.198, 1.000}</string>
+						<string>{1.000, 0.961, 0.863, 1.000}</string>
 						<key>isDecreasingBranchThickness</key>
 						<true/>
 						<key>isDrawingFill</key>
 						<false/>
 						<key>isLeftAligned</key>
-						<true/>
+						<false/>
 						<key>location</key>
-						<string>{-288.3537722998127, -248.94713091950479}</string>
+						<string>{307.55841246211219, 445.01426838159477}</string>
 						<key>nodeID</key>
-						<string>BB4DEB85-6C77-466B-8DD0-B1155B04E052</string>
+						<string>59CA3857-4CF0-42B1-BD1D-C767F16DB118</string>
 						<key>strokeColor</key>
-						<string>{0.713, 0.331, 0.520, 1.000}</string>
+						<string>{0.600, 0.600, 0.000, 1.000}</string>
 						<key>strokeStyle</key>
 						<integer>0</integer>
 						<key>strokeWidth</key>
 						<real>6</real>
 						<key>subnodes</key>
-						<array/>
+						<array>
+							<dict>
+								<key>contentAlignment</key>
+								<integer>1</integer>
+								<key>fillColor</key>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
+								<key>isDecreasingBranchThickness</key>
+								<true/>
+								<key>isDrawingFill</key>
+								<false/>
+								<key>isLeftAligned</key>
+								<false/>
+								<key>location</key>
+								<string>{522.55841246211219, 413.01426838159477}</string>
+								<key>nodeID</key>
+								<string>7820AAB7-11C4-41D2-9D0D-C6A72905ACAA</string>
+								<key>strokeColor</key>
+								<string>{0.600, 0.600, 0.000, 1.000}</string>
+								<key>strokeStyle</key>
+								<integer>0</integer>
+								<key>strokeWidth</key>
+								<real>5</real>
+								<key>subnodes</key>
+								<array/>
+								<key>title</key>
+								<dict>
+									<key>constrainedWidth</key>
+									<integer>300</integer>
+									<key>htmlText</key>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;The output folder and file structure&lt;/p&gt;</string>
+									<key>shrinkToFitContent</key>
+									<integer>1</integer>
+									<key>text</key>
+									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 The output folder and file structure}</string>
+								</dict>
+							</dict>
+							<dict>
+								<key>contentAlignment</key>
+								<integer>1</integer>
+								<key>fillColor</key>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
+								<key>isDecreasingBranchThickness</key>
+								<true/>
+								<key>isDrawingFill</key>
+								<false/>
+								<key>isLeftAligned</key>
+								<false/>
+								<key>location</key>
+								<string>{522.55841246211219, 445.01426838159477}</string>
+								<key>nodeID</key>
+								<string>60F3881C-FCA4-4023-A6C1-E67431090447</string>
+								<key>strokeColor</key>
+								<string>{0.600, 0.600, 0.000, 1.000}</string>
+								<key>strokeStyle</key>
+								<integer>0</integer>
+								<key>strokeWidth</key>
+								<real>5</real>
+								<key>subnodes</key>
+								<array/>
+								<key>title</key>
+								<dict>
+									<key>constrainedWidth</key>
+									<integer>300</integer>
+									<key>htmlText</key>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;Available functions&lt;/p&gt;</string>
+									<key>shrinkToFitContent</key>
+									<integer>1</integer>
+									<key>text</key>
+									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 Available functions}</string>
+								</dict>
+							</dict>
+							<dict>
+								<key>contentAlignment</key>
+								<integer>1</integer>
+								<key>fillColor</key>
+								<string>{1.000, 0.961, 0.863, 1.000}</string>
+								<key>isDecreasingBranchThickness</key>
+								<true/>
+								<key>isDrawingFill</key>
+								<false/>
+								<key>isLeftAligned</key>
+								<false/>
+								<key>location</key>
+								<string>{522.55841246211219, 477.01426838159477}</string>
+								<key>nodeID</key>
+								<string>9C8E12FB-7275-4269-A5B0-E9369D422049</string>
+								<key>strokeColor</key>
+								<string>{0.600, 0.600, 0.000, 1.000}</string>
+								<key>strokeStyle</key>
+								<integer>0</integer>
+								<key>strokeWidth</key>
+								<real>5</real>
+								<key>subnodes</key>
+								<array/>
+								<key>title</key>
+								<dict>
+									<key>constrainedWidth</key>
+									<integer>300</integer>
+									<key>htmlText</key>
+									<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;Example plots&lt;/p&gt;</string>
+									<key>shrinkToFitContent</key>
+									<integer>1</integer>
+									<key>text</key>
+									<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 Example plots}</string>
+								</dict>
+							</dict>
+						</array>
 						<key>title</key>
 						<dict>
 							<key>constrainedWidth</key>
 							<integer>300</integer>
 							<key>htmlText</key>
-							<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 14px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;Can we call run_fish600 something better?&lt;/p&gt;</string>
+							<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;Working with the output&lt;/p&gt;</string>
 							<key>shrinkToFitContent</key>
 							<integer>1</integer>
 							<key>text</key>
 							<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs28 \cf2 Can we call run_fish600 something better?}</string>
+\f0\fs28 \cf2 Working with the output}</string>
 						</dict>
 					</dict>
 				</array>
@@ -1495,16 +1980,16 @@
 					<key>constrainedWidth</key>
 					<integer>300</integer>
 					<key>htmlText</key>
-					<string>&lt;p style='color: rgba(251, 244, 220, 1.000000); font: 13px "Helvetica Neue"; -cocoa-font-postscriptname: "HelveticaNeue"; '&gt;ss3sim&lt;/p&gt;</string>
+					<string>&lt;p style='color: rgba(102, 102, 102, 1.000000); font: 14px "Gill Sans"; -cocoa-font-postscriptname: "GillSans"; '&gt;ss3sim&lt;/p&gt;</string>
 					<key>shrinkToFitContent</key>
 					<integer>1</integer>
 					<key>text</key>
 					<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red251\green244\blue220;}
+{\fonttbl\f0\fnil\fcharset0 GillSans;}
+{\colortbl;\red255\green255\blue255;\red102\green102\blue102;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs26 \cf2 ss3sim}</string>
+\f0\fs28 \cf2 ss3sim}</string>
 				</dict>
 			</dict>
 		</array>
