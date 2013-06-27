@@ -85,7 +85,6 @@
 
 get_results_all <- function(directory=getwd(), files.overwrite=FALSE){
 
-    library(plyr)
     on.exit(setwd(directory))
     ## Get unique scenarios that exist in the folder. Might be other random
     ## stuff in the folder so be careful to extract only scenario folders.
@@ -151,7 +150,6 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE){
 get_results_scenario <- function(scenario, directory=getwd(),
                                  overwrite.files=FALSE){
 
-    library(r4ss)
     ## Get results for all reps within a scenario folder
     old.wd <- getwd(); on.exit(setwd(old.wd))
     setwd(directory); setwd(scenario)
@@ -194,10 +192,10 @@ get_results_scenario <- function(scenario, directory=getwd(),
     ## Loop through replicates and extract results using r4ss::SS_output
     for(rep in reps.dirs){
         ## print(paste0("Starting", scen, "-", rep))
-        report.em <- SS_output(paste0(rep,"/em/"), covar=F, verbose=F,
+        report.em <- r4ss::SS_output(paste0(rep,"/em/"), covar=F, verbose=F,
                                compfile="none", forecast=F, warn=T, readwt=F,
                                printstats=F, NoCompOK=T)
-        report.om <- SS_output(paste0(rep,"/om/"), covar=F, verbose=F,
+        report.om <- r4ss::SS_output(paste0(rep,"/om/"), covar=F, verbose=F,
                                compfile="none", forecast=F, warn=T, readwt=F,
                                printstats=F, NoCompOK=T)
         ## Get scalars from the two models
