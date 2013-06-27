@@ -1,0 +1,9 @@
+#description: fixed M with no qSurvey, ALL growth param fixed
+#author: KO
+natM_type; NULL
+natM_n_breakpoints; NULL
+natM_lorenzen; NULL
+natM_val; c(NA,NA)
+par_name; LnQ_base_2_,L_at_Amin, L_at_Amax, VonBert_K, CV_young,CV_old,SR_sigmaR
+par_int; c(NA,NA,NA,NA,NA,NA, 0.001)
+par_phase; c(-1,-1,-1,-1,-1,-1,-1)
