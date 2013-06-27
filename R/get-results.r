@@ -302,10 +302,15 @@ get_results_scalar <- function(report.file){
     max_grad <- report.file$maximum_gradient_component
     NLL <- report.file$likelihoods_used[1,1]
     depletion <- report.file$current_depletion
+    ## get the number of params on bounds from the warning.sso file
     warn <- report.file$warnings
-    params_on_bound <- as.numeric(strsplit(warn[grep(
-        "Number_of_active_parameters", warn, fixed=TRUE)], ":")[[1]][2])
-    df <- cbind(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion,
+    warn.line <- grep("Number_of_active_parameters", warn, fixed=TRUE)
+    if(length(warn.line)==1) {
+        params_on_bound <- as.numeric(strsplit(warn[warn.line], split=":")[[1]][2])
+    } else {
+        params_on_bound <-  NA
+    }
+       df <- cbind(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion,
                 NLL, params_on_bound, pars)
     return(invisible(df))
 }
