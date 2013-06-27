@@ -23,6 +23,7 @@ LazyData: true
 Depends:
     R (>= 2.14.0),
 Imports:
+    plyr (>= 1.8),
     r4ss (>= 1.20),
 Collate:
     'change_SS_dat.r'

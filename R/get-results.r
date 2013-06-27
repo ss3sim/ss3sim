@@ -124,8 +124,8 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE){
         ts.list[[i]] <- read.csv(ts.file)
     }
     ## Combine all scenarios together into big files
-    scalar.all <- do.call(rbind.fill, scalar.list)
-    ts.all <- do.call(rbind.fill, ts.list)
+    scalar.all <- do.call(plyr::rbind.fill, scalar.list)
+    ts.all <- do.call(plyr::rbind.fill, ts.list)
     write.csv(scalar.all, file="final_results_scalar.csv")
     write.csv(ts.all, file="final_results_ts.csv")
     print(paste("Final result files written to", directory))
