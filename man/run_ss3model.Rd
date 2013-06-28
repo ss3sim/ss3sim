@@ -28,6 +28,11 @@
 
   \item{admb_options}{Any additional options to pass to the
   SS3 command.}
+
+  \item{ignore.stdout}{Passed to \code{system}. If
+  \code{TRUE} then ADMB output is not printed on screen.
+  This will be slightly faster. Set to \code{FALSE} to help
+  with debugging.}
 }
 \description{
   This function takes care of calling SS3. Importantly, it

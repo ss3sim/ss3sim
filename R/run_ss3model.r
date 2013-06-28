@@ -19,6 +19,9 @@
 #' path.
 #' @param hess Calculate the Hessian on estimation model runs?
 #' @param admb_options Any additional options to pass to the SS3 command.
+#' @param ignore.stdout Passed to \code{system}. If \code{TRUE} then
+#' ADMB output is not printed on screen. This will be slightly faster.
+#' Set to \code{FALSE} to help with debugging.
 #' @seealso \code{\link{run_ss3sim}}, \code{\link{run_fish600}}
 #' @author Sean C. Anderson
 #' @export
