@@ -30,6 +30,13 @@ runs.
     run_fish600(iterations = 1, scenarios = "D0-E0-F0-G0-M0-R0-S0-cod", 
     bias_adjust = TRUE, bias_nsim = 2)
 
+Note that be default the ADMB output is suppressed so the models run
+faster. You can turn this output back on by adding
+`ignore.stdout = FALSE` to your call to `run_fish600`.
+
+    run_fish600(iterations = 1, scenarios = "D0-E0-F0-G0-M0-R0-S0-cod", 
+    bias_adjust = TRUE, bias_nsim = 2, ignore.stdout = FALSE)
+
 Typically we will run 100 iterations and 10 bias adjustment runs.
 
     run_fish600(iterations = 1:100, scenarios = "D0-E0-F0-G0-M0-R0-S0-cod", 
