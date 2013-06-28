@@ -44,7 +44,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
       #iteration: ", it)) 
       if(os == "unix") {
         system(paste0("cd ", pastef(sc, it, type), ";", ss3path, "SS3 ", 
-           ss_em_options, " ", admb_options, ignore.stdout = ignore.stdout))
+           ss_em_options, " ", admb_options), ignore.stdout = ignore.stdout)
       } else {
         wd <- getwd()
         setwd(pastef(sc, it, type))
