@@ -3,7 +3,8 @@
 \title{Run the operating models for a specified set of scenario IDs}
 \usage{
   run_ss3model(scenarios, iterations, type = c("om", "em"),
-    ss3path = NULL, admb_options = "", hess = FALSE)
+    ss3path = NULL, admb_options = "", hess = FALSE,
+    ignore.stdout = TRUE)
 }
 \arguments{
   \item{scenarios}{Which scenarios to run. Controls which

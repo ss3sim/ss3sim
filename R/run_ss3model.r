@@ -24,7 +24,7 @@
 #' @export
 
 run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
-  ss3path = NULL, admb_options = "", hess = FALSE) {
+  ss3path = NULL, admb_options = "", hess = FALSE, ignore.stdout = TRUE) {
 
   ## input checking:
   admb_options <- sanitize_admb_options(admb_options, "-nohess")
@@ -44,12 +44,12 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
       #iteration: ", it)) 
       if(os == "unix") {
         system(paste0("cd ", pastef(sc, it, type), ";", ss3path, "SS3 ", 
-           ss_em_options, " ", admb_options))
+           ss_em_options, " ", admb_options, ignore.stdout = ignore.stdout))
       } else {
         wd <- getwd()
         setwd(pastef(sc, it, type))
         system(paste0(ss3path, "SS3 ", ss_em_options, admb_options),
-          invisible = TRUE)
+          invisible = TRUE, ignore.stdout = ignore.stdout)
         setwd(wd)
       }
     }
