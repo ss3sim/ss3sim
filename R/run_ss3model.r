@@ -22,12 +22,13 @@
 #' @param ignore.stdout Passed to \code{system}. If \code{TRUE} then
 #' ADMB output is not printed on screen. This will be slightly faster.
 #' Set to \code{FALSE} to help with debugging.
+#' @param ... Anything else to pass to \code{system}.
 #' @seealso \code{\link{run_ss3sim}}, \code{\link{run_fish600}}
 #' @author Sean C. Anderson
 #' @export
 
 run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
-  ss3path = NULL, admb_options = "", hess = FALSE, ignore.stdout = TRUE) {
+  ss3path = NULL, admb_options = "", hess = FALSE, ignore.stdout = TRUE, ...) {
 
   ## input checking:
   admb_options <- sanitize_admb_options(admb_options, "-nohess")
@@ -47,12 +48,12 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
       #iteration: ", it)) 
       if(os == "unix") {
         system(paste0("cd ", pastef(sc, it, type), ";", ss3path, "SS3 ", 
-           ss_em_options, " ", admb_options), ignore.stdout = ignore.stdout)
+           ss_em_options, " ", admb_options), ignore.stdout = ignore.stdout, ...)
       } else {
         wd <- getwd()
         setwd(pastef(sc, it, type))
         system(paste0(ss3path, "SS3 ", ss_em_options, admb_options),
-          invisible = TRUE, ignore.stdout = ignore.stdout)
+          invisible = TRUE, ignore.stdout = ignore.stdout, ...)
         setwd(wd)
       }
     }

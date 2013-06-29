@@ -4,7 +4,7 @@
 \usage{
   run_ss3model(scenarios, iterations, type = c("om", "em"),
     ss3path = NULL, admb_options = "", hess = FALSE,
-    ignore.stdout = TRUE)
+    ignore.stdout = TRUE, ...)
 }
 \arguments{
   \item{scenarios}{Which scenarios to run. Controls which
@@ -33,6 +33,8 @@
   \code{TRUE} then ADMB output is not printed on screen.
   This will be slightly faster. Set to \code{FALSE} to help
   with debugging.}
+
+  \item{...}{Anything else to pass to \code{system}.}
 }
 \description{
   This function takes care of calling SS3. Importantly, it
