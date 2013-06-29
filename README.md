@@ -32,12 +32,15 @@ runs.
 
 Note that be default the ADMB output is suppressed so the models run
 faster. You can turn this output back on by adding
-`ignore.stdout = FALSE` to your call to `run_fish600`.
+`ignore.stdout = FALSE` to your call to `run_fish600`:
 
     run_fish600(iterations = 1, scenarios = "D0-E0-F0-G0-M0-R0-S0-cod", 
     bias_adjust = TRUE, bias_nsim = 2, ignore.stdout = FALSE)
 
-Typically we will run 100 iterations and 10 bias adjustment runs.
+If you’re on Windows and want to suppress the ADMB output, you may also
+have to add `show.output.on.console = FALSE` to `run_fish600`.
+
+Typically we will run 100 iterations and 10 bias adjustment runs:
 
     run_fish600(iterations = 1:100, scenarios = "D0-E0-F0-G0-M0-R0-S0-cod", 
     bias_adjust = TRUE, bias_nsim = 10)
@@ -66,6 +69,14 @@ values passed to `scenarios`. For example,
     run_fish600(iterations = 1:100, 
     scenarios = c("D0-E0-F0-G0-M0-R0-S0-cod", "D0-E0-F0-G0-M1-R0-S0-cod"), 
     bias_adjust = TRUE, bias_nsim = 10)
+
+Cole has written a function `expand_scenarios`, which makes it easy to
+generate a list of scenarios. For example:
+
+    expand_scenarios(f = 1:2, species = c("cod", "sar"))
+
+    [1] "E0-F1-M0-D0-R0-S0-G0-cod" "E0-F2-M0-D0-R0-S0-G0-cod"
+    [3] "E0-F1-M0-D0-R0-S0-G0-sar" "E0-F2-M0-D0-R0-S0-G0-sar"
 
 Putting `SS3` in your path
 ==========================
