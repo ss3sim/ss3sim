@@ -59,3 +59,4 @@ Collate:
     'get_fish600_casefolder.r'
     'get_fish600_modelfolder.r'
     'get-results.r'
+    'expand_scenarios.r'

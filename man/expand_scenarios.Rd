@@ -1,0 +1,39 @@
+\name{expand_scenarios}
+\alias{expand_scenarios}
+\title{Create vectors of scenarios from inputs.}
+\usage{
+  expand_scenarios(e = 0, f = 0, m = 0, d = 0, r = 0,
+    s = 0, g = 0, species = c("cod", "fla", "sar"))
+}
+\arguments{
+  \item{e}{Integer values of cases to be expanded}
+
+  \item{f}{Integer values of cases to be expanded}
+
+  \item{m}{Integer values of cases to be expanded}
+
+  \item{d}{Integer values of cases to be expanded}
+
+  \item{r}{Integer values of cases to be expanded}
+
+  \item{s}{Integer values of cases to be expanded}
+
+  \item{g}{Integer values of cases to be expanded}
+
+  \item{species}{Vector of characters in
+  \code{c("cod","fla","sar")}}
+}
+\description{
+  Create vectors of scenarios from inputs. For passing to
+  \code{\link{run_fish600}} and
+  \code{\link{get_results_all}}. Default case values are
+  the base case (\code{0}).
+}
+\examples{
+expand_scenarios()
+expand_scenarios(f=0:2, species="cod")
+}
+\author{
+  Cole Monnahan
+}
+
