@@ -125,7 +125,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
       if(is.null(user_recdevs)) {
         sc_i_recdevs <- sigmar * recdevs[, this_run_num] # from the package data
       } else {
-        sc_i_recdevs <- sigmar * user_recdevs[, this_run_num] # user specified recdevs
+        sc_i_recdevs <- user_recdevs[, this_run_num] # user specified recdevs
       }
 
       # Add new rec devs overwriting om/ss3.par
