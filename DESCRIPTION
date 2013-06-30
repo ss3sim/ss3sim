@@ -58,5 +58,5 @@ Collate:
     'change_sel.r'
     'get_fish600_casefolder.r'
     'get_fish600_modelfolder.r'
-    'get_results.r'
     'expand_scenarios.r'
+    'get-results.r'
