@@ -83,7 +83,7 @@
 #'     geom_hline(yintercept = 0, lty = 2)
 #' }
 
-get_results_all <- function(directory=getwd(), files.overwrite=FALSE){
+get_results_all <- function(directory=getwd(), files.overwrite=FALSE, user.scenarios=NULL){
 
     on.exit(setwd(directory))
     ## Get unique scenarios that exist in the folder. Might be other random
@@ -97,7 +97,13 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE){
         x <- unlist(strsplit(select.dirs[i], split="/"))
         return(x[length(x)])
     })
-    scenarios <- temp.dirs[substr_r(temp.dirs,4) %in% c("-cod", "-fla","-sar")]
+    ## Choose whether to do all scenarios or the vector passed by user
+    if(is.null(user.scenarios)) {
+        scenarios <- temp.dirs[substr_r(temp.dirs,4) %in% c("-cod", "-fla","-sar")]
+        }else {
+    scenarios <- user.scenarios
+    }
+    
     if(length(scenarios)==0) stop(print(paste("Error: No scenarios found in:",directory)))
     print(paste("Extracting results from",length(scenarios), "scenarios"))
 
