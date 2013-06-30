@@ -25,7 +25,7 @@
 The package can be installed and loaded with:
 
 \begin{verbatim}
-# install.packages(c("r4ss", "plyr", "MCMCpack")) # dependencies, if needed
+# install.packages(c("r4ss", "plyr", "gtools")) # dependencies, if needed
 # install.packages("devtools")
 # devtools::install_github("ss3sim", username="seananderson")
 library(ss3sim)
@@ -115,13 +115,13 @@ scenarios = c("D0-E0-F0-G0-M0-R0-S0-cod", "D0-E0-F0-G0-M1-R0-S0-cod"),
 bias_adjust = TRUE, bias_nsim = 10)
 \end{verbatim}
 
-Cole has written a function \texttt{expand\_scenarios}, which makes it easy to generate a list of scenarios. For example:
+Cole has written a function \texttt{expand\_scenarios}, which makes it easier to generate a list of scenarios. For example:
 
 \begin{verbatim}
 expand_scenarios(f = 1:2, species = c("cod", "sar"))
 
-[1] "E0-F1-M0-D0-R0-S0-G0-cod" "E0-F2-M0-D0-R0-S0-G0-cod"
-[3] "E0-F1-M0-D0-R0-S0-G0-sar" "E0-F2-M0-D0-R0-S0-G0-sar"
+[1] "E0-D0-F1-G0-M0-R0-S0-cod" "E0-D0-F2-G0-M0-R0-S0-cod"
+[3] "E0-D0-F1-G0-M0-R0-S0-sar" "E0-D0-F2-G0-M0-R0-S0-sar"
 \end{verbatim}
 
 \section{Putting \texttt{SS3} in your path}

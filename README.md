@@ -3,7 +3,7 @@ Installing the `ss3sim` `R` package
 
 The package can be installed and loaded with:
 
-    # install.packages(c("r4ss", "plyr", "MCMCpack")) # dependencies, if needed
+    # install.packages(c("r4ss", "plyr", "gtools")) # dependencies, if needed
     # install.packages("devtools")
     # devtools::install_github("ss3sim", username="seananderson")
     library(ss3sim)

@@ -55,7 +55,7 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
                         N_lbins=NA,lbin_vector=NA,lencomp=NA,cpar=2){
 
   #Load required libraries (done via package)
-  #require(MCMCpack)
+  #require(gtools)
   #require(r4ss)
   
   #Read the input file
@@ -153,7 +153,7 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
         new.lencomp[it,7:NDF.width] <- rmultinom(1,new.lencomp[it,6],probs)
       if(distribution=="dirichlet"){
         lambda <- Nsamp/cpar^2-1
-        new.lencomp[it,7:NDF.width] <- MCMCpack::rdirichlet(1,as.numeric(probs)*lambda)
+        new.lencomp[it,7:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*lambda)
       }
     }
     svlcomp <- subset(init.lcomp,init.lcomp[,3]==2)
@@ -163,7 +163,7 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
       if(distribution=="multinomial")
         new.lencomp[it,7:NDF.width] <- rmultinom(1,new.lencomp[it,6],probs)
       if(distribution=="dirichlet")
-        new.lencomp[it,7:NDF.width] <- MCMCpack::rdirichlet(1,as.numeric(probs)*(Nsamp/2^2-1))
+        new.lencomp[it,7:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*(Nsamp/2^2-1))
     }
   }
   
