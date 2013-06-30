@@ -61,3 +61,4 @@ Collate:
     'get_fish600_modelfolder.r'
     'expand_scenarios.r'
     'get-results.r'
+    'fish600seeds.r'
