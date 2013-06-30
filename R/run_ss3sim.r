@@ -31,10 +31,10 @@
 #' to copy and use for the specified simulations.
 #' @param user_recdevs An optional 100x100 matrix of recruitment
 #' deviations to replace the recruitment deviations built into the
-#' package. The columns represent run iterations and the rows
-#' represent years. Note that these will be multiplied by sigma R. So,
-#' under normal conditions this matrix should contain standard-normal
-#' values ~N(0, 1).
+#' package (\code{\link{recdevs}}). The columns represent run
+#' iterations and the rows represent years. Note that these will be
+#' multiplied by sigma R. So, under normal conditions this matrix
+#' should contain standard-normal values \code{~N(0, 1)}.
 #' @param bias_adjust Run bias adjustment first? See
 #' \code{\link{run_bias_ss3}}.
 #' @param bias_nsim If bias adjustment is run, how many simulations
@@ -59,6 +59,12 @@
 #' For example, you may want to pass additional options to \code{SS3}
 #' through the argument \code{admb_options}. Just don't pass
 #' \code{-noest} or \code{-nohess} and enable bias correction.
+#' Anything that doesn't match a named argument in
+#' \code{\link{run_ss3model}} will be passed to the
+#' \code{\link{system}} call that runs \code{SS3}. If you are on a
+#' Windows computer then you might want to pass
+#' \code{show.output.on.console = FALSE} to make the simulations runs
+#' faster.
 #
 #' @author Sean C. Anderson
 #' @seealso \code{\link{run_fish600}}
