@@ -34,7 +34,6 @@
 
 ## Exploring ss3 model results
 library(ggplot2)
-devtools::install_github("ss3sim", username="seananderson")
 library(ss3sim)
 
 ## This function reads in results for all runs in a particular directory
