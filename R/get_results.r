@@ -11,6 +11,8 @@
 #' results.
 #' @param files.overwrite A switch to determine if existing files should be
 #' overwritten, useful for testing purposes or if new replicates are run.
+#' @param user.scenarios A character vector of scenarios that should be read in. 
+#' Default is NULL, which indicates find all scenario folders in \code{directory}
 #' @export
 #' @author Cole Monnahan
 #' @family get-results
