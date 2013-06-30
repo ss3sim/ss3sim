@@ -3,7 +3,7 @@
 \title{Extract SS3 simulation output}
 \usage{
   get_results_all(directory = getwd(),
-    files.overwrite = FALSE)
+    files.overwrite = FALSE, user.scenarios = NULL)
 }
 \arguments{
   \item{directory}{The directory which contains scenario
@@ -12,6 +12,10 @@
   \item{files.overwrite}{A switch to determine if existing
   files should be overwritten, useful for testing purposes
   or if new replicates are run.}
+
+  \item{user.scenarios}{A character vector of scenarios
+  that should be read in. Default is NULL, which indicates
+  find all scenario folders in \code{directory}}
 }
 \description{
   This high level function extracts results from SS3 model
