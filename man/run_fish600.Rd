@@ -19,7 +19,7 @@
   useful to make simulations reproducible. If left set to
   \code{NULL} then the seed will not be set. By default, in
   \code{run_fish600}, this argument is passed a set of seed
-  value stored in the package data object
+  values stored in the package data object
   \code{\link{fish600seeds}}. If set, there should be a
   seed value for each iteration. Only affects the
   observation error -- the process error (recruitment
