@@ -107,14 +107,6 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
   for(sc in scenarios) {
     for(i in iterations) {
 
-      # set the seed for this iteration?
-      if(!is.null(seed[i])) {
-        if(is.na(seed[i])) 
-          warning("Seed value missing, not setting the seed.")
-        else
-          set.seed(seed[i])
-      }
-
       # Create folders, copy models, check for necessary files, rename
       # files for consistency
       copy_ss3models(model_dir = om_model_dir, scenarios = sc,
@@ -137,6 +129,16 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
       # "bias" iterations
       # This turns "bias/1" into "1" and leaves "1" unchanged
       this_run_num <- as.numeric(rev(strsplit(as.character(i), "/")[[1]])[1])
+
+      # set the seed for this iteration?
+      if(!is.null(seed[this_run_num])) {
+        if(is.na(seed[this_run_num])) 
+          warning("Seed value missing, not setting the seed.")
+        else {
+          print(paste("Setting seed to", seed[this_run_num]))
+          set.seed(seed[this_run_num])
+        }
+      }
 
       # recdevs is a 100x100 matrix stored in the package 'data' folder
       # Columns are for iterations and rows are for years
