@@ -70,13 +70,13 @@ values passed to `scenarios`. For example,
     scenarios = c("D0-E0-F0-G0-M0-R0-S0-cod", "D0-E0-F0-G0-M1-R0-S0-cod"), 
     bias_adjust = TRUE, bias_nsim = 10)
 
-Cole has written a function `expand_scenarios`, which makes it easy to
+Cole has written a function `expand_scenarios`, which makes it easier to
 generate a list of scenarios. For example:
 
     expand_scenarios(f = 1:2, species = c("cod", "sar"))
 
-    [1] "E0-F1-M0-D0-R0-S0-G0-cod" "E0-F2-M0-D0-R0-S0-G0-cod"
-    [3] "E0-F1-M0-D0-R0-S0-G0-sar" "E0-F2-M0-D0-R0-S0-G0-sar"
+    [1] "E0-D0-F1-G0-M0-R0-S0-cod" "E0-D0-F2-G0-M0-R0-S0-cod"
+    [3] "E0-D0-F1-G0-M0-R0-S0-sar" "E0-D0-F2-G0-M0-R0-S0-sar"
 
 Putting `SS3` in your path
 ==========================
