@@ -8,6 +8,15 @@
 #' @param scenarios Which scenarios to run. A vector of character
 #' objects. For example \code{c("M1-F1-D1-R1-cod",
 #' "M2-F1-D1-R1-cod")}. 
+#' @param seed If set to a numeric vector then \code{set.seed} will be
+#' set to each successive value of the vector \code{seed} on each
+#' iteration. This can be useful to make simulations reproducible. If
+#' left set to \code{NULL} then the seed will not be set. By default,
+#' in \code{run_fish600}, this argument is passed a set of seed value
+#' stored in the package data object \code{\link{fish600seeds}}. If
+#' set, there should be a seed value for each iteration. Only affects
+#' the observation error -- the process error (recruitment deviations)
+#' are already fixed according to \code{\link{recdevs}} by default.
 #' @param ... Anything else to pass to \code{\link{run_ss3sim}}. This
 #' includes \code{bias_adjust} and \code{bias_nsim}. Also, you can
 #' pass additional options to \code{SS3} through the argument
@@ -63,7 +72,7 @@
 #' bias_adjust = FALSE, bias_already_run = TRUE)
 #' }
 
-run_fish600 <- function(iterations, scenarios, ...) {
+run_fish600 <- function(iterations, scenarios, seed = fish600seeds, ...) {
 
   case_folder <- get_fish600_casefolder()
 
@@ -77,7 +86,7 @@ run_fish600 <- function(iterations, scenarios, ...) {
       sel_params = a$S, growth_params = a$G, f_params = a$F, index_params =
       a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp, 
       retro_params = a$R, estim_params = a$E, om_model_dir = om_model_dir, 
-      em_model_dir = em_model_dir, ...) 
+      em_model_dir = em_model_dir, seed = seed, ...) 
   })
 
   print(paste("Completed iterations:", paste(iterations, collapse = ", "), 

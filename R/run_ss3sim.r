@@ -51,6 +51,10 @@
 #' @param sleep A time interval (in seconds) to pause on each iteration. 
 #' Useful if you want to reduce average CPU time -- perhaps because you're
 #' working on a shared server.
+#' @param seed If set to a numeric vector then \code{set.seed} will be
+#' set to each successive value of the vector \code{seed} on each
+#' iteration. This can be useful to make simulations reproducible. If
+#' left set to \code{NULL} then the seed will not be set.
 #' @param ... Anything extra to pass to \code{\link{run_ss3model}}.
 #' For example, you may want to pass additional options to \code{SS3}
 #' through the argument \code{admb_options}. Just don't pass
@@ -86,7 +90,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
   growth_params, f_params, index_params, lcomp_params, agecomp_params, estim_params,
   retro_params, om_model_dir, em_model_dir, user_recdevs = NULL, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
-  print_logfile = TRUE, sleep = 0,
+  print_logfile = TRUE, sleep = 0, seed = NULL,
   ...) {
 
   # The first bias_nsim runs will be bias-adjustment runs
@@ -96,6 +100,14 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
 
   for(sc in scenarios) {
     for(i in iterations) {
+
+      # set the seed for this iteration?
+      if(!is.null(seed[i])) {
+        if(is.na(seed[i])) 
+          warning("Seed value missing, not setting the seed.")
+        else
+          set.seed(seed[i])
+      }
 
       # Create folders, copy models, check for necessary files, rename
       # files for consistency
