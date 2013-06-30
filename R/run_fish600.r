@@ -12,7 +12,7 @@
 #' set to each successive value of the vector \code{seed} on each
 #' iteration. This can be useful to make simulations reproducible. If
 #' left set to \code{NULL} then the seed will not be set. By default,
-#' in \code{run_fish600}, this argument is passed a set of seed value
+#' in \code{run_fish600}, this argument is passed a set of seed values
 #' stored in the package data object \code{\link{fish600seeds}}. If
 #' set, there should be a seed value for each iteration. Only affects
 #' the observation error -- the process error (recruitment deviations)
