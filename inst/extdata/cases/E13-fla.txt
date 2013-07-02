@@ -1,8 +1,8 @@
-#Estimating M, starting at 25% below the MLE
+#description: estimated M w/ init at the M that produces 30% of MSY
 natM_type;          1Parm      
 natM_n_breakpoints; NULL  
 natM_lorenzen;      NULL
-natM_val;           c(0.15,5)
+natM_val;           c(0.3,5)
 par_name;           LnQ_base_3_CPUE
 par_int;            c(NA)
 par_phase;          c(-1)

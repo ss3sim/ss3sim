@@ -1,4 +1,4 @@
-#description:Single fixed M, no qCPUE, fixed steepness
+#description:Single estimated M w/ init at historic value, no qCPUE, fixed steepness
 #author: KFJ
 natM_type;          1Parm      
 natM_n_breakpoints; NULL  
