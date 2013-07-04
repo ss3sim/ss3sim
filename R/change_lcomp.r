@@ -155,8 +155,8 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
       if(distribution=="multinomial")
         new.lencomp[it,7:NDF.width] <- rmultinom(1,new.lencomp[it,6],probs)
       if(distribution=="dirichlet"){
-        lambda <- Nsamp/cpar^2-1
-        new.lencomp[it,7:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*lambda)
+        {lambda <- Nsamp/cpar^2-1
+        new.lencomp[it,7:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*lambda)}
       }
     }
 	}
@@ -169,8 +169,8 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
       if(distribution=="multinomial")
         new.lencomp[it,7:NDF.width] <- rmultinom(1,new.lencomp[it,6],probs)
       if(distribution=="dirichlet")
-        lambda <- Nsamp/cpar^2-1
-        new.lencomp[it,7:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*lambda)
+        {lambda <- Nsamp/cpar^2-1
+        new.lencomp[it,7:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*lambda)}
     }}
   }
   

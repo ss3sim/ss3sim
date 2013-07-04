@@ -90,8 +90,8 @@ change_agecomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
      if(distribution=="multinomial")
         new.agecomp[it,10:NDF.width] <- rmultinom(1,new.agecomp[it,9],probs)
       if(distribution=="dirichlet")    
-        lambda <- Nsamp/cpar^2-1
-        new.agecomp[it,10:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*lambda)
+        {lambda <- Nsamp/cpar^2-1
+        new.agecomp[it,10:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*lambda)}
     }}
     svagecomp <- subset(init.agecomp,init.agecomp[,3]==2)
     if(is.na(sum(svyears))==FALSE){
@@ -102,8 +102,8 @@ change_agecomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
       if(distribution=="multinomial")
         new.agecomp[it,10:NDF.width] <- rmultinom(1,new.agecomp[it,9],probs)
       if(distribution=="dirichlet")
-        lambda <- Nsamp/cpar^2-1
-        new.agecomp[it,10:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*lambda)
+        {lambda <- Nsamp/cpar^2-1
+        new.agecomp[it,10:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*lambda)}
     }}
   }
   
