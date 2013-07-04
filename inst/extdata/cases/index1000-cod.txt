@@ -1,7 +1,7 @@
 # description:
 # author: CC
 # notes:
-start_surv; 1974
+start_surv; 1988
 end_surv; 2012
 freq_surv; 2
 sd_obs_surv; 0.2
