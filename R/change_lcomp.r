@@ -9,6 +9,7 @@
 #' @param outfile Name of the new file to be created. Path may be global or local. Make sure to give extension .dat to the file name.
 #' @param distribution Distribution to be used to sample the length compositions. Options are "multinomial" and "dirichlet"
 #' @param Nsamp Number of samples drawn from a multinomial distribution, or precision for the Dirichlet distribution
+#' it could be either NA, a single value (if the same sample for all years) or a vector for each year you have a sample. this means it combines both the fishery and survey comps data
 #' @param minyear starting year for the fleet length comps. Overridden by specifying "years"
 #' @param maxyear ending year for the fleet length comps. Overridden by specifying "years"
 #' @param years vector of years for the fleet length comps.
@@ -60,7 +61,7 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
   
   #Read the input file
   #dat.file <- SS_readdat(file=infile, section=2)
-  dat.file <- infile
+   dat.file <- infile
   
   #Explicit inputs
   if(is.na(lbin_method)==FALSE){
@@ -97,7 +98,7 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
     if(class(svyears)!="numeric") 
       stop("svyears must have a numeric input")   
   }
-  if(is.na(Nsamp)==TRUE){
+  if(is.na(sum(Nsamp))==TRUE){
     Nsamp <- dat.file$lencomp[,6]
   }
   
@@ -144,9 +145,11 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
     new.lencomp[(length(years)+1):length(c(years,svyears)),3] <- 2
     new.lencomp[,4] <- 0
     new.lencomp[,5] <- 0
-    new.lencomp[,6] <- Nsamp
+    if (length(Nsamp) ==1) new.lencomp[,6] <- Nsamp
     fllcomp <- subset(init.lcomp,init.lcomp[,3]==1)
-    for(it in 1:length(years)){
+    if(is.na(sum(years))==FALSE){
+                        for(it in 1:length(years)){
+	  if (length(Nsamp)>1) new.lencomp[it,6] <- Nsamp[it]
       probs <- fllcomp[fllcomp[,1]==years[it],7:DF.width]
       probs <- as.numeric(probs)/sum(as.numeric(probs))
       if(distribution=="multinomial")
@@ -156,17 +159,165 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
         new.lencomp[it,7:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*lambda)
       }
     }
+	}
     svlcomp <- subset(init.lcomp,init.lcomp[,3]==2)
-    for(it in (length(years)+1):length(c(years,svyears))){
+    if(is.na(sum(svyears))==FALSE){
+	for(it in (length(years)+1):length(c(years,svyears))){
+ 	  if (length(Nsamp)>1) new.lencomp[it,6] <- Nsamp[it]
       probs <- svlcomp[svlcomp[,1]==c(years,svyears)[it],7:DF.width]
+      probs <- as.numeric(probs)/sum(as.numeric(probs))
+      if(distribution=="multinomial")
+        new.lencomp[it,7:NDF.width] <- rmultinom(1,new.lencomp[it,6],probs)
+      if(distribution=="dirichlet")
+        lambda <- Nsamp/cpar^2-1
+        new.lencomp[it,7:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*lambda)
+    }}
+  }
+  
+  new.lencomp <- as.data.frame(new.lencomp)
+  names(new.lencomp) <- c(names(dat.file$lencomp)[1:6],paste("l",dat.file$lbin_vector,sep=""))
+  
+  #To keep or not to keep the length comp from fishery and survey
+  if(fish_lcomp==FALSE)
+  {
+    new.lencomp = subset(new.lencomp, subset=c(FltSvy!=1))
+  }
+  if(sv_lcomp==FALSE) 
+  {
+    new.lencomp = subset(new.lencomp, subset=c(FltSvy!=2))
+  }
+
+  dat.file$lencomp <- new.lencomp
+
+  if(dim(new.lencomp)[1]==0) dat.file$lencomp = data.frame("#")
+     
+  #To calculate the final sum of years
+  dat.file$N_lencomp <- length(new.lencomp[,1])
+    
+  #Write the modified file
+  r4ss::SS_writedat(datlist=dat.file, outfile=outfile, overwrite=TRUE)
+}
+change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
+                        minyear=NA,maxyear=NA,years=NA,svyears=NA,fish_lcomp=TRUE,sv_lcomp=TRUE, 
+                        lbin_method=NA,binwidth=NA,minimum_size=NA,maximum_size=NA,
+                        N_lbins=NA,lbin_vector=NA,lencomp=NA,cpar=2){
+
+  #Load required libraries (done via package)
+  #require(MCMCpack)
+  #require(r4ss)
+  
+  #Read the input file
+  #dat.file <- SS_readdat(file=infile, section=2)
+  dat.file <- infile
+  
+  #Explicit inputs
+  if(is.na(lbin_method)==FALSE){
+    if(class(lbin_method)!="numeric")
+      stop("lbin_method must have a numeric input")
+    dat.file$lbin_method <- lbin_method
+  }
+  if(is.na(binwidth)==FALSE){
+    if(class(binwidth)!="numeric")
+      stop("binwidth must have a numeric input")
+    dat.file$binwidth <- binwidth
+  }
+  if(is.na(minimum_size)==FALSE){
+    if(class(minimum_size)!="numeric")
+      stop("minimum_size must have a numeric input")
+    dat.file$minimum_size <- minimum_size
+  }
+  if(is.na(maximum_size)==FALSE){
+    if(class(maximum_size)!="numeric")
+      stop("maximum_size must have a numeric input")
+    dat.file$maximum_size <- maximum_size
+  }
+  if(is.na(N_lbins)==FALSE){
+    if(class(N_lbins)!="numeric")
+      stop("N_lbins must have a numeric input")
+    dat.file$N_lbins <- N_lbins
+  }
+  if(is.na(lencomp)==FALSE){
+    if(class(lencomp)!="numeric")
+      stop("lencomp must have a numeric input")
+    new.lencomp <- lencomp
+  }
+  if(is.na(sum(svyears))==FALSE){  
+    if(class(svyears)!="numeric") 
+      stop("svyears must have a numeric input")   
+  }
+  if(is.na(sum(Nsamp))==TRUE){
+    Nsamp <- dat.file$lencomp[,6]
+  }
+  
+  #Determine the length of the observation series
+  if(is.na(sum(years))==TRUE){
+    if(is.na(minyear)==FALSE & is.na(maxyear)==FALSE)
+      years <- minyear:maxyear
+    else
+      years <- dat.file$lencomp[dat.file$lencomp[,"FltSvy"]==1,1]
+  }
+
+  #Determine the length of the survey series
+  if(is.na(sum(svyears))==TRUE){
+    svyears <- dat.file$lencomp[dat.file$lencomp[,"FltSvy"]==2,1]
+  }
+
+  #Save the expected lencomps in another object to be modified (if necessary)
+  init.lcomp <- dat.file$lencomp
+  
+  #Check the length of the lbin_vector and adjust if necessary
+  if(is.na(sum(lbin_vector))==FALSE){
+    if(class(lbin_vector)!="numeric")
+      stop("lbin_vector must have a numeric input")
+    if(length(dat.file$lbin_vector)!=length(lbin_vector)){
+      minobsl <- match(min(lbin_vector),dat.file$lbin_vector)
+      maxobsl <- match(max(lbin_vector),dat.file$lbin_vector)
+      init.lcomp <- cbind(init.lcomp[,1:6],
+                          apply(init.lcomp[,7:(6+minobsl)],1,sum),
+                          init.lcomp[,(7+minobsl):(maxobsl+5)],
+                          apply(init.lcomp[,(maxobsl+5):length(init.lcomp[1,])],1,sum))
+    }
+    dat.file$lbin_vector <- lbin_vector
+  }
+  
+  #Write the length comps
+  DF.width <- length(init.lcomp[1,])
+  NDF.width <- length(dat.file$lbin_vector)+6
+  
+  if(is.na(lencomp)==TRUE){
+    new.lencomp <- array(0,dim=c(length(c(years,svyears)),NDF.width))
+    new.lencomp[,1] <- c(years,svyears)
+    new.lencomp[,2] <- 1
+    new.lencomp[1:length(years),3] <- 1
+    new.lencomp[(length(years)+1):length(c(years,svyears)),3] <- 2
+    new.lencomp[,4] <- 0
+    new.lencomp[,5] <- 0
+    if (length(Nsamp) ==1) new.lencomp[,6] <- Nsamp
+    fllcomp <- subset(init.lcomp,init.lcomp[,3]==1)
+    if(is.na(sum(years))==FALSE){
+	for(it in 1:length(years)){
+	  if (length(Nsamp)>1) new.lencomp[it,6] <- Nsamp[it]
+      probs <- fllcomp[fllcomp[,1]==years[it],7:DF.width]
       probs <- as.numeric(probs)/sum(as.numeric(probs))
       if(distribution=="multinomial")
         new.lencomp[it,7:NDF.width] <- rmultinom(1,new.lencomp[it,6],probs)
       if(distribution=="dirichlet"){
         lambda <- Nsamp/cpar^2-1
-        new.lencomp[it,7:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*lambda)
+        new.lencomp[it,7:NDF.width] <- MCMCpack::rdirichlet(1,as.numeric(probs)*lambda)
       }
     }
+	}
+    svlcomp <- subset(init.lcomp,init.lcomp[,3]==2)
+    if(is.na(sum(svyears))==FALSE){
+	for(it in (length(years)+1):length(c(years,svyears))){
+ 	  if (length(Nsamp)>1) new.lencomp[it,6] <- Nsamp[it]
+      probs <- svlcomp[svlcomp[,1]==c(years,svyears)[it],7:DF.width]
+      probs <- as.numeric(probs)/sum(as.numeric(probs))
+      if(distribution=="multinomial")
+        new.lencomp[it,7:NDF.width] <- rmultinom(1,new.lencomp[it,6],probs)
+      if(distribution=="dirichlet")
+        new.lencomp[it,7:NDF.width] <- MCMCpack::rdirichlet(1,as.numeric(probs)*(Nsamp/2^2-1))
+    }}
   }
   
   new.lencomp <- as.data.frame(new.lencomp)
