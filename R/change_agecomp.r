@@ -9,6 +9,7 @@
 #' @param outfile Name of the new file to be created. May be global or local. Make sure to give extension .dat to the file name.
 #' @param distribution Distribution to be used to sample the length compositions. Options are "multinomial" and "dirichlet"
 #' @param Nsamp Number of samples drawn from a multinomial distribution, or precision for the Dirichlet distribution
+#' this parameter could be a single value or a vector for each year of length comp data (both fishery and survey)
 #' @param minyear starting year for the fleet age comps. Overridden by specifying "years"
 #' @param maxyear ending year for the fleet age comps. Overridden by specifying "years"
 #' @param N_agebins Number of age bins
@@ -30,7 +31,7 @@ change_agecomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
   #require(gtools)
   
   #Read the input file
-  dat.file <- infile
+ dat.file <- infile
   
   if(is.na(N_agebins)==FALSE){
     if(class(N_agebins)!="numeric")
@@ -44,7 +45,7 @@ change_agecomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
     new.agecomp <- agecomp    
   }
   
-  if(is.na(Nsamp)==TRUE){
+  if(is.na(sum(Nsamp))==TRUE){
     Nsamp <- dat.file$agecomp[,"Nsamp"]
   }
   
@@ -79,29 +80,29 @@ change_agecomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
     new.agecomp[,6] <- 1                                               ## Ageerr (default = 0)
     new.agecomp[,7] <- -1                                             ## Lbin_lo (default = -1)
     new.agecomp[,8] <- -1                                             ## Lbin_hi (default = -1)
-    new.agecomp[,9] <- Nsamp
+    if (length(Nsamp) ==1) new.agecomp[,9] <- Nsamp
     flacomp <- subset(init.agecomp,init.agecomp[,3]==1)
+    if(is.na(sum(years))==FALSE){
     for(it in 1:length(years)){                                   ## maybe here try matrix instead a for 
+                           if (length(Nsamp)>1) new.agecomp[it,9] <- Nsamp[it]
       probs <- flacomp[flacomp[,1]==years[it],10:DF.width]
       probs <- as.numeric(probs)/sum(as.numeric(probs))
      if(distribution=="multinomial")
         new.agecomp[it,10:NDF.width] <- rmultinom(1,new.agecomp[it,9],probs)
-      if(distribution=="dirichlet"){    
-        lambda <- Nsamp/cpar^2-1
-        new.agecomp[it,10:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*lambda)
-      }
-    }
+      if(distribution=="dirichlet")    
+        new.agecomp[it,10:NDF.width] <- MCMCpack::rdirichlet(1,as.numeric(probs)*(Nsamp/2^2-1))
+    }}
     svagecomp <- subset(init.agecomp,init.agecomp[,3]==2)
+    if(is.na(sum(svyears))==FALSE){
     for(it in (length(years)+1):length(c(years,svyears))){
+	  if (length(Nsamp)>1) new.agecomp[it,9] <- Nsamp[it]
       probs <- svagecomp[svagecomp[,1]==c(years,svyears)[it],10:DF.width]
       probs <- as.numeric(probs)/sum(as.numeric(probs))
       if(distribution=="multinomial")
         new.agecomp[it,10:NDF.width] <- rmultinom(1,new.agecomp[it,9],probs)
-      if(distribution=="dirichlet"){
-        lambda <- Nsamp/cpar^2-1
-        new.agecomp[it,10:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*lambda)
-      }  
-    }
+      if(distribution=="dirichlet")
+        new.agecomp[it,10:NDF.width] <- MCMCpack::rdirichlet(1,as.numeric(probs)*(Nsamp/2^2-1))
+    }}
   }
   
   new.agecomp <- as.data.frame(new.agecomp)
