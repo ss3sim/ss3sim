@@ -145,9 +145,8 @@
 10 0 0 0  # 2 SURVEY
 10 0 0 0  # 3 CPUE - Mirrors Fishery
 
-#_LO    HI      INIT    PRIOR   PR     SD   PHASE  env  use   dev     dev     dev   Block   Block 
-#                                                  var  dev  minyr   maxyr   stddev          Fnx
-20 150 38.18 0 -1 99 -1 0 0 0 0 0 0 0 # SizeSel_1P_1_Fishery
+#_LO HI INIT PRIOR PR_type SD PHASE env-var use_dev dev_minyr dev_maxyr dev_stddev Block Block_Fxn
+20      150 	38.18 	 0 	   -1 	  99    -1      0    0      0       0       0	0	0   # SizeSel_1P_1_Fishery
 0       300     10.63    0     -1     99    -1      0    0      0       0       0	0	0   # SizeSel_1P_2_Fishery  
 20      150     30.54    0     -1     99    -1      0    0      0       0       0	0	0   # SizeSel_2P_1_SURVEY  - 0.8*size at 50% selectivity from fishery
 0       300     10.63    0     -1     99    -1      0    0      0       0       0	0	0   # SizeSel_2P_2_SURVEY 
