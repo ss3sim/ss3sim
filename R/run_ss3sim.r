@@ -96,7 +96,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
   growth_params, f_params, index_params, lcomp_params, agecomp_params, estim_params,
   retro_params, om_model_dir, em_model_dir, user_recdevs = NULL, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
-  print_logfile = TRUE, sleep = 0, seed = NULL,
+  print_logfile = TRUE, sleep = 0, seed = NULL, conv.crit = 0.2,
   ...) {
 
   # The first bias_nsim runs will be bias-adjustment runs
@@ -318,9 +318,9 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
       # true, and we are done running bias adjustments (i.e. we're on
       # the last "bias" iteration), and we haven't already run this
       # yet.
-      if(bias_adjust & i == pastef("bias", bias_nsim) & !bias_already_run) { 
+      if(bias_adjust & i == pastef("bias", bias_nsim) & !bias_already_run) {
         run_bias_ss3(dir = pastef(sc, "bias"), outdir = pastef(sc,
-            "bias"), nsim = bias_nsim)
+            "bias"), nsim = bias_nsim, conv.crit=conv.crit)
         bias_already_run <- TRUE
       # Since we've now run the bias adjustment routine, copy the .ctl
       # on subsequent iterations
