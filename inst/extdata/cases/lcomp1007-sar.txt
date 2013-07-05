@@ -1,0 +1,15 @@
+distribution; c('dirichlet', 'multinomial')
+Nsamp; c(20, 20, seq(40,80,10), rep(100, 30), rep(100, 5))
+minyear; NA
+maxyear; NA
+years; c(seq(1938,1948,by=10), seq(1958, 1983, by=5), seq(1984,2012))
+svyears; seq(2003,2012,by=2)
+lbin_method; NA
+binwidth; NA
+minimum_size; NA
+maximum_size; NA
+N_lbins; NA
+lbin_vector; NA
+lencomp; NA
+fish_lcomp; TRUE
+sv_lcomp; TRUE
