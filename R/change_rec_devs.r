@@ -30,6 +30,10 @@ change_rec_devs <- function(recdevs_new, file_in="ss3.par", file_out="ss3.par"){
   recdevs.old <- gsub("\\s+", " ", recdevs.old)       # remove >1 blanks
   recdevs.old <- as.numeric(unlist(strsplit(recdevs.old, split= " ")))
   num.years <- length(recdevs.old)
+
+  ## Cut off extra recdevs:
+  revdevs_new <- recdevs_new[1:length(recdevs.old)]
+
   ## Check that the length of the recdevs matches up
   if(length(recdevs_new) != length(recdevs.old)){
     stop("The new recdev vector isn't the same length as what is
