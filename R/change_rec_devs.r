@@ -32,7 +32,7 @@ change_rec_devs <- function(recdevs_new, file_in="ss3.par", file_out="ss3.par"){
   num.years <- length(recdevs.old)
 
   ## Cut off extra recdevs:
-  revdevs_new <- recdevs_new[1:length(recdevs.old)]
+  recdevs_new <- recdevs_new[1:length(recdevs.old)]
 
   ## Check that the length of the recdevs matches up
   if(length(recdevs_new) != length(recdevs.old)){
