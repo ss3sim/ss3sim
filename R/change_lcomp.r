@@ -94,26 +94,26 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
       stop("lencomp must have a numeric input")
     new.lencomp <- lencomp
   }
-  if(is.na(sum(svyears))==FALSE){  
-    if(class(svyears)!="numeric") 
-      stop("svyears must have a numeric input")   
-  }
-  if(is.na(sum(Nsamp))==TRUE){
-    Nsamp <- dat.file$lencomp[,6]
-  }
+  # if(is.na(sum(svyears))==FALSE){  
+    # if(class(svyears)!="numeric") 
+      # stop("svyears must have a numeric input")   
+  # }
+  # if(is.na(sum(Nsamp))==TRUE){
+    # Nsamp <- dat.file$lencomp[,6]
+  # }
   
   #Determine the length of the observation series
-  if(is.na(sum(years))==TRUE){
-    if(is.na(minyear)==FALSE & is.na(maxyear)==FALSE)
-      years <- minyear:maxyear
-    else
-      years <- dat.file$lencomp[dat.file$lencomp[,"FltSvy"]==1,1]
-  }
+  # if(is.na(sum(years))==TRUE){
+    # if(is.na(minyear)==FALSE & is.na(maxyear)==FALSE)
+      # years <- minyear:maxyear
+    # else
+      # years <- dat.file$lencomp[dat.file$lencomp[,"FltSvy"]==1,1]
+  # }
 
   #Determine the length of the survey series
-  if(is.na(sum(svyears))==TRUE){
-    svyears <- dat.file$lencomp[dat.file$lencomp[,"FltSvy"]==2,1]
-  }
+  # if(is.na(sum(svyears))==TRUE){
+    # svyears <- dat.file$lencomp[dat.file$lencomp[,"FltSvy"]==2,1]
+  # }
 
   #Save the expected lencomps in another object to be modified (if necessary)
   init.lcomp <- dat.file$lencomp
@@ -148,16 +148,31 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
     if (length(Nsamp) ==1) new.lencomp[,6] <- Nsamp
     fllcomp <- subset(init.lcomp,init.lcomp[,3]==1)
     if(is.na(sum(years))==FALSE){
-                        for(it in 1:length(years)){
+      for(it in 1:length(years)){
 	  if (length(Nsamp)>1) new.lencomp[it,6] <- Nsamp[it]
       probs <- fllcomp[fllcomp[,1]==years[it],7:DF.width]
       probs <- as.numeric(probs)/sum(as.numeric(probs))
-      if(distribution=="multinomial")
+      if(length(distribution)==1)
+	  {
+	  if(distribution=="multinomial")
         new.lencomp[it,7:NDF.width] <- rmultinom(1,new.lencomp[it,6],probs)
       if(distribution=="dirichlet"){
-        {lambda <- Nsamp/cpar^2-1
+        {
+		lambda <- new.lencomp[it,6]/cpar^2-1
         new.lencomp[it,7:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*lambda)}
       }
+	  }
+      if(length(distribution)>1)
+	  {
+	  if(distribution[1]=="multinomial")
+        new.lencomp[it,7:NDF.width] <- rmultinom(1,new.lencomp[it,6],probs)
+      if(distribution[1]=="dirichlet"){
+        {
+		lambda <- new.lencomp[it,6]/cpar^2-1
+        new.lencomp[it,7:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*lambda)}
+      }
+	  }
+	  
     }
 	}
     svlcomp <- subset(init.lcomp,init.lcomp[,3]==2)
@@ -166,11 +181,22 @@ change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
  	  if (length(Nsamp)>1) new.lencomp[it,6] <- Nsamp[it]
       probs <- svlcomp[svlcomp[,1]==c(years,svyears)[it],7:DF.width]
       probs <- as.numeric(probs)/sum(as.numeric(probs))
-      if(distribution=="multinomial")
+      if(length(distribution)==1)
+	  {
+	  if(distribution=="multinomial")
         new.lencomp[it,7:NDF.width] <- rmultinom(1,new.lencomp[it,6],probs)
       if(distribution=="dirichlet")
-        {lambda <- Nsamp/cpar^2-1
+        {lambda <- new.lencomp[it,6]/cpar^2-1
         new.lencomp[it,7:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*lambda)}
+	  }
+      if(length(distribution)>1)
+	  {
+	  if(distribution[2]=="multinomial")
+        new.lencomp[it,7:NDF.width] <- rmultinom(1,new.lencomp[it,6],probs)
+      if(distribution[2]=="dirichlet")
+        {lambda <- new.lencomp[it,6]/cpar^2-1
+        new.lencomp[it,7:NDF.width] <- gtools::rdirichlet(1,as.numeric(probs)*lambda)}
+	  }
     }}
   }
   
