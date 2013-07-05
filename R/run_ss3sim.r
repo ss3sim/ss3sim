@@ -140,7 +140,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
         }
       }
 
-      # recdevs is a 100x100 matrix stored in the package 'data' folder
+      # recdevs is a matrix stored in the package 'data' folder
       # Columns are for iterations and rows are for years
       if(is.null(user_recdevs)) {
         sc_i_recdevs <- sigmar * recdevs[, this_run_num] - sigmar^2/2 # from the package data
