@@ -6,7 +6,7 @@
     distribution = "multinomial", Nsamp = NA, minyear = NA,
     maxyear = NA, years = NA, svyears = NA,
     fish_agecomp = TRUE, sv_agecomp = TRUE, N_agebins = NA,
-    agebin_vector = NA, agecomp = NA)
+    agebin_vector = NA, agecomp = NA, cpar = 2, ...)
 }
 \arguments{
   \item{infile}{SS data object from SS_readdat() in the
@@ -21,8 +21,9 @@
   "dirichlet"}
 
   \item{Nsamp}{Number of samples drawn from a multinomial
-  distribution, or precision for the Dirichlet
-  distribution}
+  distribution, or precision for the Dirichlet distribution
+  this parameter could be a single value or a vector for
+  each year of length comp data (both fishery and survey)}
 
   \item{minyear}{starting year for the fleet age comps.
   Overridden by specifying "years"}

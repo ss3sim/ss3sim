@@ -7,7 +7,8 @@
     maxyear = NA, years = NA, svyears = NA,
     fish_lcomp = TRUE, sv_lcomp = TRUE, lbin_method = NA,
     binwidth = NA, minimum_size = NA, maximum_size = NA,
-    N_lbins = NA, lbin_vector = NA, lencomp = NA, cpar = 2)
+    N_lbins = NA, lbin_vector = NA, lencomp = NA, cpar = 2,
+    ...)
 }
 \arguments{
   \item{infile}{SS data object from SS_readdat() in the
@@ -22,8 +23,11 @@
   "dirichlet"}
 
   \item{Nsamp}{Number of samples drawn from a multinomial
-  distribution, or precision for the Dirichlet
-  distribution}
+  distribution, or precision for the Dirichlet distribution
+  it could be either NA, a single value (if the same sample
+  for all years) or a vector for each year you have a
+  sample. this means it combines both the fishery and
+  survey comps data}
 
   \item{minyear}{starting year for the fleet length comps.
   Overridden by specifying "years"}
