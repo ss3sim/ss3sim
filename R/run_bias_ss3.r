@@ -85,7 +85,7 @@ run_bias_ss3 <-function(dir, outdir, nsim) {
     row.names = FALSE, col.names = TRUE, quote = FALSE, append = F)
 
   #If the number of NAs (i.e not invertible hessian) > 80% of the cases, then create a WARNING file
-  if(sum(as.numeric(is.na(bias.table$bias1)))/length(bias.table$bias1) > 0.2) { WARNINGS = paste("WARNINGS: more than 20% of cases produces non invertible hessian. These are iterations ", paste(which(is.na(bias.table$bias1)), collapse=",")); write.table(WARNINGS, file=paste0(dir, "/WARNINGS.txt")); stop()}
+  if(sum(as.numeric(is.na(bias.table$bias1)))/length(bias.table$bias1) > 0.2) { WARNINGS = paste("WARNINGS: more than 20% of cases produces non invertible hessian. These are iterations ", paste(which(is.na(bias.table$bias1)), collapse=",")); write.table(WARNINGS, file=paste0(dir, "/WARNINGS.txt"));}
 
 # Open the control.ss_new file from one of the bias adjustment runs,
   # find where bias adjustment parameters are specified,
