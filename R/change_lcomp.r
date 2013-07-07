@@ -53,7 +53,7 @@
 change_lcomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
                         minyear=NA,maxyear=NA,years=NA,svyears=NA,fish_lcomp=TRUE,sv_lcomp=TRUE, 
                         lbin_method=NA,binwidth=NA,minimum_size=NA,maximum_size=NA,
-                        N_lbins=NA,lbin_vector=NA,lencomp=NA,cpar=2,...){
+                        N_lbins=NA,lbin_vector=NA,lencomp=NA,cpar=2){
 
   #Load required libraries (done via package)
   #require(gtools)
