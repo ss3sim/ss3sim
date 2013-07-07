@@ -212,15 +212,24 @@ change_sel <- function(use=FALSE, dev, how_time_varying = "env", ctl_file_in =
    #SS_Starter[UseParLine-2] = dat_file_out #This could create a mess up but probably not
    #SS_Starter[UseParLine-1] = ctl_file_out
    writeLines(SS_Starter,con = starter_file_out)
-   #
-   #
-   ##Call ss3 for a run that includes the environmental link
-   if(is.null(ss3path)) {
-     system("SS3 -noest")
-   } else {
-     system(paste0(ss3path, "SS3 -noest"))
-   }
-   #
+   
+   
+    #Call ss3 for a run that includes the environmental link
+    os <- .Platform$OS.type
+    if(is.null(ss3path)) {
+      if(os == "unix") {
+        system("SS3 -noest")
+      } else {
+        system("SS3 -noest", show.output.on.console = FALSE)
+      }
+    } else {
+      if(os == "unix") {
+        system(paste0(ss3path, "SS3 -noest"))
+      } else {
+        system(paste0(ss3path, "SS3 -noest"), show.output.on.console = FALSE)
+      }
+    }
+   
    ##Change starter file option back to using .par!
    SS_Starter[UseParLine] = "1 # 0=use init values in control file; 1=use ss3.par"
    writeLines(SS_Starter,con = starter_file_out)

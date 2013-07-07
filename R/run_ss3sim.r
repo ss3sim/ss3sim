@@ -55,6 +55,10 @@
 #' set to each successive value of the vector \code{seed} on each
 #' iteration. This can be useful to make simulations reproducible. If
 #' left set to \code{NULL} then the seed will not be set.
+#' @param conv_crit The maximum percentage of bias iterations that can
+#' produce a non-invertible Hessian before a warning will be produced.
+#' If this percentage is exceeded then a file \code{WARNINGS.txt} will
+#' be produced. Currently, the simulations will continue to run.
 #' @param ... Anything extra to pass to \code{\link{run_ss3model}}.
 #' For example, you may want to pass additional options to \code{SS3}
 #' through the argument \code{admb_options}. Just don't pass
@@ -96,7 +100,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
   growth_params, f_params, index_params, lcomp_params, agecomp_params, estim_params,
   retro_params, om_model_dir, em_model_dir, user_recdevs = NULL, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
-  print_logfile = TRUE, sleep = 0, seed = NULL,
+  print_logfile = TRUE, sleep = 0, seed = NULL, conv_crit = 0.2,
   ...) {
 
   # The first bias_nsim runs will be bias-adjustment runs
@@ -318,9 +322,9 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
       # true, and we are done running bias adjustments (i.e. we're on
       # the last "bias" iteration), and we haven't already run this
       # yet.
-      if(bias_adjust & i == pastef("bias", bias_nsim) & !bias_already_run) { 
+      if(bias_adjust & i == pastef("bias", bias_nsim) & !bias_already_run) {
         run_bias_ss3(dir = pastef(sc, "bias"), outdir = pastef(sc,
-            "bias"), nsim = bias_nsim)
+            "bias"), nsim = bias_nsim, conv_crit = conv_crit)
         bias_already_run <- TRUE
       # Since we've now run the bias adjustment routine, copy the .ctl
       # on subsequent iterations

@@ -224,10 +224,19 @@ change_m <- function(dev, how_time_varying = "env", ctl_file_in =
     
     
     #Call ss3 for a run that includes the environmental link
+    os <- .Platform$OS.type
     if(is.null(ss3path)) {
-      system("SS3 -noest")
+      if(os == "unix") {
+        system("SS3 -noest")
+      } else {
+        system("SS3 -noest", show.output.on.console = FALSE)
+      }
     } else {
-      system(paste0(ss3path, "SS3 -noest"))
+      if(os == "unix") {
+        system(paste0(ss3path, "SS3 -noest"))
+      } else {
+        system(paste0(ss3path, "SS3 -noest"), show.output.on.console = FALSE)
+      }
     }
     
     #Change starter file option back to using .par!
