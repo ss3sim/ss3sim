@@ -2,7 +2,7 @@
 \alias{run_bias_ss3}
 \title{Determine level of bias adjustment for SS runs}
 \usage{
-  run_bias_ss3(dir, outdir, nsim)
+  run_bias_ss3(dir, outdir, nsim, conv_crit = 0.2)
 }
 \arguments{
   \item{dir}{Folder for all of the bias adjustment runs
@@ -20,6 +20,13 @@
 
   \item{nsim}{number of bias adjustment runs conducted for
   a particular scenario (e.g. \code{10})}
+
+  \item{conv_crit}{The maximum percentage of bias
+  iterations that can produce a non-invertible Hessian
+  before a warning will be produced. If this percentage is
+  exceeded then a file \code{WARNINGS.txt} will be
+  produced. Currently, the simulations will continue to
+  run.}
 }
 \description{
   Determine level of bias adjustment from multiple SS runs.

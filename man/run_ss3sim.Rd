@@ -8,7 +8,8 @@
     om_model_dir, em_model_dir, user_recdevs = NULL,
     bias_adjust = FALSE, bias_nsim = 5,
     bias_already_run = FALSE, hess_always = FALSE,
-    print_logfile = TRUE, sleep = 0, seed = NULL, ...)
+    print_logfile = TRUE, sleep = 0, seed = NULL,
+    conv_crit = 0.2, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -90,6 +91,13 @@
   the vector \code{seed} on each iteration. This can be
   useful to make simulations reproducible. If left set to
   \code{NULL} then the seed will not be set.}
+
+  \item{conv_crit}{The maximum percentage of bias
+  iterations that can produce a non-invertible Hessian
+  before a warning will be produced. If this percentage is
+  exceeded then a file \code{WARNINGS.txt} will be
+  produced. Currently, the simulations will continue to
+  run.}
 
   \item{...}{Anything extra to pass to
   \code{\link{run_ss3model}}. For example, you may want to
