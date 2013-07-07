@@ -19,6 +19,7 @@
 #' @param agecomp Matrix of age comps 
 #' @param fish_agecomp, TRUE or FALSE; default to TRUE. To use or not to use the fishery age comp data 
 #' @param sv_agecomp, TRUE or FALSE; default to TRUE. To use or not to use the survey age comp data
+#' @param cpar c parameter in lambda of Dirichlet distribution
 #' 
 #' @export
 

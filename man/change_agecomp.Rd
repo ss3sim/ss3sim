@@ -46,6 +46,9 @@
 
   \item{sv_agecomp,}{TRUE or FALSE; default to TRUE. To use
   or not to use the survey age comp data}
+
+  \item{cpar}{c parameter in lambda of Dirichlet
+  distribution}
 }
 \description{
   Take a data.SS_new file, resample the age compositions
