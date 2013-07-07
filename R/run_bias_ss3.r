@@ -40,6 +40,10 @@
 #' \code{"M1-F1-D1-R1-cod/1/"} \code{"M1-F1-D1-R1-cod/2/"}, etc.)
 #' @param nsim number of bias adjustment runs conducted for a
 #' particular scenario (e.g. \code{10})
+#' @param conv_crit The maximum percentage of bias iterations that can
+#' produce a non-invertible Hessian before a warning will be produced.
+#' If this percentage is exceeded then a file \code{WARNINGS.txt} will
+#' be produced. Currently, the simulations will continue to run.
 # @param iter number of runs conducted for a scenario after bias
 # adjustment is complete (e.g. \code{1:100})
 #'
@@ -53,7 +57,7 @@
 #' @seealso \code{\link{run_ss3sim}}, \code{\link{run_ss3model}},
 #' \code{\link{run_bias_ss3}}
 
-run_bias_ss3 <-function(dir, outdir, nsim, conv.crit = 0.2) {
+run_bias_ss3 <-function(dir, outdir, nsim, conv_crit = 0.2) {
   outfile = "AdjustBias.DAT"
   mysims = 1:nsim
   sapply(mysims, bias_ss3, dir = dir)
@@ -84,11 +88,15 @@ run_bias_ss3 <-function(dir, outdir, nsim, conv.crit = 0.2) {
   write.table(avg.df, file = paste0(dir, "/", "AvgBias.DAT"), 
     row.names = FALSE, col.names = TRUE, quote = FALSE, append = F)
 
-  #If the number of NAs (i.e not invertible hessian) > 80% of the cases, then create a WARNING file
-  if(sum(as.numeric(is.na(bias.table$bias1)))/length(bias.table$bias1) > conv.crit) 
-    { WARNINGS = paste("WARNINGS: more than 20% of cases produces non invertible hessian. These are iterations ", 
-    paste(which(is.na(bias.table$bias1)), collapse=",")); write.table(WARNINGS, file=paste0(dir, "/WARNINGS.txt")); 
-    stop()}
+  # If the number of NAs (i.e not invertible hessian) > conv_crit of the cases,
+  # then create a WARNING.txt file
+  if(sum(as.numeric(is.na(bias.table$bias1)))/length(bias.table$bias1) > conv_crit) {
+    WARNINGS <- paste(
+      "WARNINGS: more than 20% of cases produces non invertible hessian.
+      These are iterations ",
+      paste(which(is.na(bias.table$bias1)), collapse = ","))
+    write.table(WARNINGS, file = paste0(dir, "/WARNINGS.txt"))
+  }
 
 # Open the control.ss_new file from one of the bias adjustment runs,
   # find where bias adjustment parameters are specified,
