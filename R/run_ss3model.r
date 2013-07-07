@@ -34,7 +34,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
   admb_options <- sanitize_admb_options(admb_options, "-nohess")
   admb_options <- sanitize_admb_options(admb_options, "-noest")
     
-  os <- .Platform$OS.type 
+  os <- .Platform$OS.type
 
   if(is.null(ss3path)) ss3path <- ""
 
