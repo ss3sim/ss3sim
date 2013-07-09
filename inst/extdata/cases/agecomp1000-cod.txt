@@ -2,7 +2,7 @@ distribution; multinomial
 Nsamp; c(seq(20,90,10), rep(100, 25), rep(100,13))
 minyear; NA
 maxyear; NA
-years; c(seq(1938,1948,by=10), seq(1958, 1983, by=5), seq(1988,2012))
+years; c(seq(1938,1948,by=10), seq(1958, 1983, by=5), seq(1984,2012))
 svyears; seq(1988,2012,by=2)
 N_agebins; NA
 agebin_vector; NA
