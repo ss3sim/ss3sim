@@ -2,15 +2,23 @@
 % Sean C. Anderson^1*^, Author2, Author3, ... (authorship order to be discussed)
 %
 
+<!--Notes: how we validated it
+SS, benefit of using one well tested and well understood model (but disadvantages too)-->
+
 # Introduction #
 
-**What is stock assessment simulation?** Why is it increasingly critical?
+What is stock assessment simulation? Why is it increasingly critical? 
 
+- stock assessment simulation is...
 - Stock-assessment simulation is a critical component to evaluating stock assessment methods and understanding their strengths and weaknesses. ...
+- lets us test our assessments on known truths
+- lets us explore truths we are interested and match (or mismatch) truths and assessments 
 - need refs
 
-**What is SS3, why is it important, why simulate with it?**
+What is SS3, why is it important, why simulate with it?
 
+- Stock synthesis is a modelling framework... Integrated analysis
+- SS3 is the 3rd version of the software using this framework 
 - SS software ref: @Methot2012
 - ADMB software ref: @Fournier2012
 - Importance of integrated analysis with SS as an example: @Maunder2012
@@ -20,9 +28,7 @@
 - allows a separation of research from stock assessment that informs management [@Methot2012]
 - been instrumental to investigating new stock assessment concepts: e.g. Piner et al. (2011), Methot and Taylor (2011)
 - been  used in XX stock assessments world wide (~60 as of 2012 - ask Rick) and involved in many more currently
-
 - @Piner2011 example of stock-assessment simulation research with SS3
-
 - @Methot2011 example of stock-assessment research with SS
 
 @Methot2012:
@@ -38,7 +44,7 @@
 
 Therefore two benefits to simulating with SS: (1) much of the model has already been built (research can then progress rapidly and with less chance of errors) and checked and (2) the results are directly applicable to the tools used by stock assessment scientists.
 
-**However, there are many complications** to conducting large-scale, rapid, and reproducible simulations.
+However, there are many complications to conducting large-scale, rapid, and reproducible simulations.
 
 - complications range from data, file, and folder management
 - avoiding coding errors
@@ -48,9 +54,9 @@ Therefore two benefits to simulating with SS: (1) much of the model has already 
 - barrier to research
 - R is the standard, but existing solutions are GUI and therefore not as flexible, scriptable, and repeatable.
 
-<--Our goal is to provide a toolkit and general framework for fast, transparent, and reproducible stock assessment simulation.-->
+<!--Our goal is to provide a toolkit and general framework for fast, transparent, and reproducible stock assessment simulation.-->
 
-**In this paper** we introduce ss3sim, a software package for the popular statistical programming language R that facilitates large-scale, rapid, and reproducible stock-assessment simulation with the widely-used SS framework. 
+In this paper we introduce ss3sim, a software package for the popular statistical programming language R that facilitates large-scale, rapid, and reproducible stock-assessment simulation with the widely-used SS framework. 
 We begin by outlining the general philosophy of ss3sim, and describing its functions.
 Then, to demonstrate how a researcher might conduct a stock-assessment simulation with ss3sim, we work through an example starting at a research question and ending with plots and interpretation of the output.
 Our example includes considerations for setting up operating and estimation models, choosing a folder structure, model testing, and output manipulation and plotting. 
@@ -134,6 +140,10 @@ We conclude by discussing how ss3sim complements other stock assessment simulati
 # Discussion #
 
 ## How ss3sim complements other simulation software ##
+- uses r4ss functions for some reading, writing, and bias adjustment
+- r4ss has functions to facilitate aspects of simulations, mostly focused on reading and plotting output for stock assessment
+- flr:
+- 
 
 ## The need for balance between generalizing and tailoring ##
 maybe?
@@ -155,7 +165,7 @@ Figure X: Panels with example model and output
 
 # Tables #
 
-Table 1: User-facing ss3sim functions and a description of their purpose.                                       
+Table 1: User-facing ss3sim functions and a description of their purpose.                                   
 
 ----------------------------------------------------------------
 Function name          Description                                   
