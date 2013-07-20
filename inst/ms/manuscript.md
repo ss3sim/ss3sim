@@ -1,37 +1,54 @@
 % ss3sim: An R package for generalized stock-assessment simulation with Stock Synthesis
-% Sean C. Anderson^1*^, Author2, Author3, ... (authorship order to be discussed)
+% Sean C. Anderson^1*^ 
+  Athol Whitten^2^
+  Curry Cunningham^2^
+  Felipe Hurtado Ferro^2^
+  Kelli Johnson^2^
+  Carey McGilliard^3^
+  Cole Monnahan^2^
+  Kotaro Ono^2^
+  Juan Valero^2,4^
+  Roberto Licandeo^5^
+  Melissa Muradian^2^
+  Cody Szuwalksi^2^
+  Katyana Vertpre^6^
+ (authorship and order to be discussed) 
 %
 
-<!--Notes: how we validated it
-SS, benefit of using one well tested and well understood model (but disadvantages too)-->
+^1^Department of Biological Sciences, Simon Fraser University, Burnaby BC, V5A 1S6,
+Canada\
+^2^School of Aquatic and Fishery Sciences, University of Washington, Box 355020, Seattle, WA 98195-5020, USA\
+^3^NOAA\
+^4^\
+^5^UBC?\
+^6^?
 
 # Introduction #
 
-What is stock assessment simulation? Why is it increasingly critical? 
+Paragraph 1: What is stock assessment simulation? Why is it increasingly critical? 
 
 - stock assessment simulation is...
-- Stock-assessment simulation is a critical component to evaluating stock assessment methods and understanding their strengths and weaknesses. ...
-- lets us test our assessments on known truths
-- lets us explore truths we are interested and match (or mismatch) truths and assessments 
-- need refs
+- stock-assessment simulation is a critical component to evaluating stock assessment methods and understanding their strengths and weaknesses. ...
+- important because it lets us test our assessments on known truths
+- further, it lets us explore truths we are interested in and match (or mismatch) truths and assessments
+- refs: @hilborn1992 among others; recent papers on stock-assessment simulation
 
-What is SS3, why is it important, why simulate with it?
+2. Paragraph 2: What is SS3, why is it important, why simulate with it?
 
-- Stock synthesis is a modelling framework... Integrated analysis
+- Stock synthesis is a modelling framework... Integrated analysis --- models population dynamics using a wide range of data [@maunder2012]
 - SS3 is the 3rd version of the software using this framework 
-- SS software ref: @Methot2012
-- ADMB software ref: @Fournier2012
-- Importance of integrated analysis with SS as an example: @Maunder2012
-- most widely used now
+- SS software ref: @methot2012
+- ADMB software ref: @fournier2012
+- Importance of integrated analysis with SS as an example: @maunder2012
+- most widely used now world wide (?) and especially on West Coast of United States
 - facilitates rapid, reproducible analyses... focus on peer-review of the science not the modelling code
-- integrated analysis - models population dynamics using a wide range of data [@Maunder2012]
-- allows a separation of research from stock assessment that informs management [@Methot2012]
+- allows a separation of research from stock assessment that informs management [@methot2012]
 - been instrumental to investigating new stock assessment concepts: e.g. Piner et al. (2011), Methot and Taylor (2011)
 - been  used in XX stock assessments world wide (~60 as of 2012 - ask Rick) and involved in many more currently
-- @Piner2011 example of stock-assessment simulation research with SS3
-- @Methot2011 example of stock-assessment research with SS
+- @piner2011 example of stock-assessment simulation research with SS3
+- @methot2011 example of stock-assessment research with SS
 
-@Methot2012:
+@methot2012:
 
 > A comprehensive modeling framework such as SS enhances 
 > communication, efficiency, and education in the fishery
@@ -42,9 +59,9 @@ What is SS3, why is it important, why simulate with it?
 > the assessment being reviewed, rather than spend time learning 
 > the features of a novel assessment model.
 
-Therefore two benefits to simulating with SS: (1) much of the model has already been built (research can then progress rapidly and with less chance of errors) and checked and (2) the results are directly applicable to the tools used by stock assessment scientists.
+Therefore two benefits to simulating with SS: (1) much of the model has already been built (research can then progress rapidly and with less chance of errors) and checked and (2) the results are directly applicable to the tools used by stock assessment scientists --- in fact, used by all Western US assessments.
 
-However, there are many complications to conducting large-scale, rapid, and reproducible simulations.
+Third paragraph: However, there are many complications to conducting large-scale, rapid, and reproducible simulations.
 
 - complications range from data, file, and folder management
 - avoiding coding errors
@@ -52,7 +69,7 @@ However, there are many complications to conducting large-scale, rapid, and repr
 - porting models and questions across stocks and species
 - reproducible, understandable, and documented
 - barrier to research
-- R is the standard, but existing solutions are GUI and therefore not as flexible, scriptable, and repeatable.
+- R [@r2013] is the standard, but existing solutions are GUI and therefore not as flexible, scriptable, and repeatable.
 
 <!--Our goal is to provide a toolkit and general framework for fast, transparent, and reproducible stock assessment simulation.-->
 
@@ -86,13 +103,16 @@ We conclude by discussing how ss3sim complements other stock assessment simulati
 - Minimize book keeping etc. so that researchers can concentrate on the science
 
 ## General structure ##
+
 - start with an OM and EM
 - Specify how you want to affect the truth and your assessment of the truth (possibly in a time varying manner)
 - ss3sim carries that out in SS3 by manipulating and running the models in R
 - SS is controlled by the user through a series of plain-text configuration files
 - ss3sim works, in general, by converting simulation arguments (e.g. a given natural mortality trajectory) into manipulations of these configuration files at the appropriate stage in conjunction with running appropriate models
 
-## Low-level ss3sim functions ##
+## Low-level generic ss3sim functions ##
+
+See Table 1 for description of functions. See Figure 1 for the functions fit into the general structure. ss3sim functions are divided into three types of functions:
 
 1. Functions that manipulate SS configuration files. These manipulations generate an underlying "truth" (operating models) and control our assessment of those models (estimation models).
 
@@ -101,27 +121,28 @@ We conclude by discussing how ss3sim complements other stock assessment simulati
 `copy_models`
 `run_ss3model`
 
-3. Functions for analyzing and plotting simulation output.  
+3. Functions for analyzing and plotting simulation output.
 
-## High-level ss3sim functions ##
+## High-level tailored ss3sim functions ##
 
 - an example framework
 - because it relies on manipulation of these configuration files, it's important the config files match a specific format
 - general framework, because you start with your own OM and EM, and a wide variety of questions are then available through manipulations of ..., ...
-"Environmental correlates of recruitment fluctuations can be included in SS in two ways (Schirripa et al., 2009)" [@Methot2012]
 
 # An example simulation with ss3sim #
 
 ## Setting up the SS models ##
 
-- OM and EM models
+- the (simple) research question
+- setting up the OM and EM SS models
 - things to keep in mind
 - running through SS to format as `.ss_new` files and renaming
 
 ## File and folder setup ##
 
 - required files
-- nested vs. flat folders
+- Why we chose a flat-file structure
+- see vignette
 
 ## Translating research questions into configuration files ##
 
@@ -130,7 +151,7 @@ We conclude by discussing how ss3sim complements other stock assessment simulati
 ## Deterministic model testing ##
 
 - reduce recdevs, reduce sigma R, bias correction
-- what to expect, what to plot
+- what to plot, what to look for, how good is OK?
 
 ## Output analysis and visualization ##
 
@@ -139,14 +160,48 @@ We conclude by discussing how ss3sim complements other stock assessment simulati
 
 # Discussion #
 
-## How ss3sim complements other simulation software ##
-- uses r4ss functions for some reading, writing, and bias adjustment
-- r4ss has functions to facilitate aspects of simulations, mostly focused on reading and plotting output for stock assessment
-- flr:
-- 
+Other sections? how we validated it; benefit of using one well tested and well-understood model (but disadvantages too)
+- benefit to playing with all the switches and understanding one framework (SS) well versus having many tools that we superficially understand
 
-## The need for balance between generalizing and tailoring ##
-maybe?
+## How ss3sim complements other generic stock-assessment simulation software ##
+
+- focus on "generic" software, e.g. not software the just works for salmon simulation
+
+### r4ss ###
+
+- @r4ss2013
+- r4ss has functions to facilitate aspects of simulations, mostly focused on reading and plotting output for stock assessment
+- ss3sim uses r4ss functions for some reading, writing, and bias adjustment
+
+### flr ###
+
+- @kell2007 for FLR and @hillary2009 for simulation in FLR
+- statistical catch-at-age only?
+- not integrated analysis, not SS
+- but particularly relevant to Europe
+
+### "Hooilator" ###
+
+- http://fisherysimulation.codeplex.com, Windows only, GUI..., works on bootstrapped data only, therefore isn't as flexible as ss3sim. Used in:
+    1. @lee2012
+    2. @piner2011
+    3. @lee2011
+
+### Others? ###
+
+## The need for balance between generalizing and tailoring in simulation software ##
+
+- maybe?
+- why we developed generic low-level functions and higher level functions
+- but researchers are free to develop their own higher level functions
+- because in an open-source MIT(?) licensed R package, users are free to modify functions as needed
+
+## Maybe lessons learned? From Athol's work ##
+
+- importance of version control
+- benefits to developing analysis within an R package
+- importance of model testing
+- importance of rapid visualization of output, example `shiny` or `manipulator`
 
 ## Research opportunities with ss3sim ##
 
@@ -159,16 +214,14 @@ maybe?
 
 Figure 1: Flow diagram of ss3sim
 
-Figure X: Folder and file setup?
-
-Figure X: Panels with example model and output
+Figure 2: Panels with output from the example
 
 # Tables #
 
-Table 1: User-facing ss3sim functions and a description of their purpose.                                   
+Table 1: User-facing ss3sim functions and a description of their purpose.
 
 ----------------------------------------------------------------
-Function name          Description                                   
+Function name          Description
 ---------------------- -----------------------------------------
 `change_f`             Changes the fishing mortality
 
@@ -194,10 +247,10 @@ Function name          Description
 `change_rec_devs`      Substitutes recruitment deviations
 
 `change_retro`         Controls the number of years to discard 
-                       for a retrospective analysis.
+                       for a retrospective analysis
 
 `run_ss3sim`           Master function that runs an ss3sim 
-                       simulation       
+                       simulation
 
 `run_fish600`          Wrapper function that facilitates one 
                        particular simulation setup
@@ -212,5 +265,6 @@ Function name          Description
 
 
 Table X: Comparison with related software?
+- maybe a table with the possible columns: software, reference, platform (e.g. R, GUI...), Short description/comparison, examples of papers using it
 
 # References #
