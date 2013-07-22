@@ -160,8 +160,7 @@ See Table 1 for description of functions. See Figure 1 for the functions fit int
 
 # Discussion #
 
-Other sections? how we validated it; benefit of using one well tested and well-understood model (but disadvantages too)
-- benefit to playing with all the switches and understanding one framework (SS) well versus having many tools that we superficially understand
+Other sections? how we validated it; benefit of using one well tested and well-understood model (but disadvantages too) --- benefit to playing with all the switches and understanding one framework (SS) well versus having many tools that we superficially understand
 
 ## How ss3sim complements other generic stock-assessment simulation software ##
 
@@ -173,7 +172,7 @@ Other sections? how we validated it; benefit of using one well tested and well-u
 - r4ss has functions to facilitate aspects of simulations, mostly focused on reading and plotting output for stock assessment
 - ss3sim uses r4ss functions for some reading, writing, and bias adjustment
 
-### flr ###
+### FLR ###
 
 - @kell2007 for FLR and @hillary2009 for simulation in FLR
 - statistical catch-at-age only?
