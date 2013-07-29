@@ -1,0 +1,4 @@
+how_time_varying; env
+n_blocks; 1
+dev; c(rep(0,50),rep(-0.035,50))
+ss3path; NULL
