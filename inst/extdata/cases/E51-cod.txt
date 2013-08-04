@@ -1,0 +1,8 @@
+#description: M is fixed at the M that produces 30% of MSY
+natM_type;          1Parm      
+natM_n_breakpoints; NULL  
+natM_lorenzen;      NULL
+natM_val;           c(0.11,-6)
+par_name;           LnQ_base_3_CPUE
+par_int;            c(NA)
+par_phase;          c(-1)
