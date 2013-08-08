@@ -26,35 +26,35 @@ with(dx0, run_ss3sim(
   em_model_dir = em,
   user_recdevs = recdevs_det))
 
-#with(dx1, run_ss3sim(
-  #iterations = 1:20, 
-  #scenarios = "D1-E100-F0-G0-R0-S0-M0-cod", 
-  #bias_adjust = TRUE,
-  #m_params = M, f_params = F, index_params = index, 
-  #lcomp_params = lcomp, agecomp_params = agecomp, 
-  #estim_params = E, 
-  #om_model_dir = om, 
-  #em_model_dir = em,
-  #user_recdevs = recdevs_det))
+with(dx1, run_ss3sim(
+  iterations = 1:20, 
+  scenarios = "D1-E100-F0-G0-R0-S0-M0-cod", 
+  bias_adjust = TRUE,
+  m_params = M, f_params = F, index_params = index, 
+  lcomp_params = lcomp, agecomp_params = agecomp, 
+  estim_params = E, 
+  om_model_dir = om, 
+  em_model_dir = em,
+  user_recdevs = recdevs_det))
 
-## run stochastic cases:
-#with(x0, run_ss3sim(
-  #iterations = 1:100, 
-  #scenarios = "D0-E0-F0-G0-R0-S0-M0-cod", 
-  #bias_adjust = TRUE,
-  #m_params = M, f_params = F, index_params = index, 
-  #lcomp_params = lcomp, agecomp_params = agecomp, 
-  #estim_params = E, 
-  #om_model_dir = om, 
-  #em_model_dir = em))
+# run stochastic cases:
+with(x0, run_ss3sim(
+  iterations = 1:100, 
+  scenarios = "D0-E0-F0-G0-R0-S0-M0-cod", 
+  bias_adjust = TRUE,
+  m_params = M, f_params = F, index_params = index, 
+  lcomp_params = lcomp, agecomp_params = agecomp, 
+  estim_params = E, 
+  om_model_dir = om, 
+  em_model_dir = em))
 
-#with(x1, run_ss3sim(
-  #iterations = 1:100, 
-  #scenarios = "D1-E0-F0-G0-R0-S0-M0-cod", 
-  #bias_adjust = TRUE,
-  #m_params = M, f_params = F, index_params = index, 
-  #lcomp_params = lcomp, agecomp_params = agecomp, 
-  #estim_params = E, 
-  #om_model_dir = om, 
-  #em_model_dir = em))
+with(x1, run_ss3sim(
+  iterations = 1:100, 
+  scenarios = "D1-E0-F0-G0-R0-S0-M0-cod", 
+  bias_adjust = TRUE,
+  m_params = M, f_params = F, index_params = index, 
+  lcomp_params = lcomp, agecomp_params = agecomp, 
+  estim_params = E, 
+  om_model_dir = om, 
+  em_model_dir = em))
 
