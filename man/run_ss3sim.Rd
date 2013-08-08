@@ -2,10 +2,11 @@
 \alias{run_ss3sim}
 \title{Run both the operating model and assessment model}
 \usage{
-  run_ss3sim(iterations, scenarios, m_params, sel_params,
-    growth_params, f_params, index_params, lcomp_params,
-    agecomp_params, estim_params, retro_params,
-    om_model_dir, em_model_dir, user_recdevs = NULL,
+  run_ss3sim(iterations, scenarios, m_params, f_params,
+    index_params, lcomp_params, agecomp_params,
+    estim_params, om_model_dir, em_model_dir,
+    sel_params = NULL, growth_params = NULL,
+    retro_params = NULL, user_recdevs = NULL,
     bias_adjust = FALSE, bias_nsim = 5,
     bias_already_run = FALSE, hess_always = FALSE,
     print_logfile = TRUE, sleep = 0, seed = NULL,

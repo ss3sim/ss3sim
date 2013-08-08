@@ -96,12 +96,13 @@
 #'   om_model_dir = om_model_dir, em_model_dir = em_model_dir)
 #' }
 
-run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
-  growth_params, f_params, index_params, lcomp_params, agecomp_params, estim_params,
-  retro_params, om_model_dir, em_model_dir, user_recdevs = NULL, bias_adjust = FALSE,
+run_ss3sim <- function(iterations, scenarios, m_params, f_params,
+  index_params, lcomp_params, agecomp_params, estim_params,
+  om_model_dir, em_model_dir, sel_params = NULL, growth_params = NULL,
+  retro_params = NULL, user_recdevs = NULL, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
-  print_logfile = TRUE, sleep = 0, seed = NULL, conv_crit = 0.2,
-  ...) {
+  print_logfile = TRUE, sleep = 0, seed = NULL, conv_crit = 0.2, ...)
+{
 
   # The first bias_nsim runs will be bias-adjustment runs
   if(bias_adjust) {
@@ -186,6 +187,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
                  how_time_varying    = how_time_varying)) 
 
       # Change selectivity
+      if(!is.null(sel_params)) {
       with(sel_params,
         change_sel(use               = use,
                  n_blocks            = n_blocks,
@@ -196,8 +198,10 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
                  dat_file            = "data.dat",
                  dat_file_out        = "data.dat",
                  how_time_varying    = how_time_varying)) 
+      }
 
       # Change growth
+      if(!is.null(sel_params)) {
       with(growth_params,
         change_growth(use            = use,
                  n_blocks            = n_blocks,
@@ -209,6 +213,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
                  dat_file_out        = "data.dat",
                  how_time_varying    = how_time_varying)) 
 
+      }
       setwd(wd)
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
@@ -274,10 +279,12 @@ run_ss3sim <- function(iterations, scenarios, m_params, sel_params,
                        sv_agecomp    = sv_agecomp))
 
       # Manipulate EM starter file for a possible retrospective analysis
+      if(!is.null(retro_params)) {
       with(retro_params, 
         change_retro(startfile_in    = pastef(sc, i, "em", "starter.ss"),  
                      startfile_out   = pastef(sc, i, "em", "starter.ss"), 
                      retro_yr        = retro_yr))
+      }
 
       # Manipulate EM control file to adjust what gets estimated
       # We'll only run this if it's a bias run or if bias adjustment
