@@ -16,7 +16,7 @@ recdevs_det <- matrix(0.001, nrow=100, ncol=20)
 
 # run deterministic cases:
 with(dx0, run_ss3sim(
-  iterations = 1, 
+  iterations = 1:20, 
   scenarios = "D0-E100-F0-G0-R0-S0-M0-cod", 
   bias_adjust = FALSE,
   m_params = M, f_params = F, index_params = index, 
