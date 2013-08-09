@@ -40,11 +40,11 @@ library(ss3sim)
 get_results_all(files.overwrite=F)
 
 ## Rread in the final results produced by above function
-scalars <- read.csv("final_resuls_scalar.csv")
-ts <- read.csv("final_resuls_ts.csv")
+scalars <- read.csv("final_results_scalar.csv")
+ts <- read.csv("final_results_ts.csv")
 
 ## NOTE: For my case I had run different F cases (F0,F1, F2) for the base
-## case. THus below I've grouped by F. You might want to group by something
+## case. Thus below I've grouped by F. You might want to group by something
 ## else, such as M, D, E, etc. depending on what you've run.
 
 ## Check convergence
