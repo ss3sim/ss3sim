@@ -369,7 +369,7 @@ run_ss3sim <- function(iterations, scenarios, m_params, f_params,
         cat("\n\n# Bias already run?\n")
         print(bias_already_run)
         cat("\n\n# This run used the recruitment deviations (before scaling to sigma r):\n")
-        print(recdevs[, this_run_num])
+        print(sc_i_recdevs)
         cat("\n\n# With sigma r of\n")
         print(sigmar)
 
