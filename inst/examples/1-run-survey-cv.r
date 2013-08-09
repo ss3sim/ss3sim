@@ -12,13 +12,13 @@ x0 <- get_caseargs(case_folder, "D0-E0-F0-G0-R0-S0-M0-cod")
 x1 <- get_caseargs(case_folder, "D1-E0-F0-G0-R0-S0-M0-cod")
 dx0 <- get_caseargs(case_folder, "D0-E100-F0-G0-R0-S0-M0-cod") 
 dx1 <- get_caseargs(case_folder, "D1-E100-F0-G0-R0-S0-M0-cod") 
-recdevs_det <- matrix(0.001, nrow=100, ncol=20)
+recdevs_det <- matrix(0, nrow = 100, ncol = 20)
 
 # run deterministic cases:
 with(dx0, run_ss3sim(
   iterations = 1:20, 
   scenarios = "D0-E100-F0-G0-R0-S0-M0-cod", 
-  bias_adjust = FALSE,
+  bias_adjust = TRUE,
   m_params = M, f_params = F, index_params = index, 
   lcomp_params = lcomp, agecomp_params = agecomp, 
   estim_params = E, 
@@ -57,4 +57,11 @@ with(x1, run_ss3sim(
   estim_params = E, 
   om_model_dir = om, 
   em_model_dir = em))
+
+# create output csv file:
+get_results_all(user.scenarios = 
+  c("D0-E100-F0-G0-R0-S0-M0-cod",
+    "D1-E100-F0-G0-R0-S0-M0-cod", 
+    "D0-E0-F0-G0-R0-S0-M0-cod",
+    "D1-E0-F0-G0-R0-S0-M0-cod"))
 
