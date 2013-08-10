@@ -9,9 +9,6 @@
 \arguments{
   \item{data}{A data frame holding results}
 
-  \item{x}{The x-value for all plots as a character
-  string.}
-
   \item{y}{The y-value for all plots as a character
   string.}
 
@@ -32,12 +29,19 @@
   \code{vert} and \code{vert2}) will be set automatically.
   If \code{FALSE} all x- and y-axes will have a shared
   scale.}
+
+  \item{x}{The x-value for all plots as a character
+  string.}
 }
 \description{
   The same as \code{\link{plot_scalar_points}} except it
   produces boxplots and therefore has no color parameter.
   Intended use is to compare performance metrics,
   particularly relative error.
+}
+\examples{
+plot_scalar_boxplot(final_results_scalar, x = "SR_LN_R0_om", y =
+"SR_LN_R0_em", vert = "D")
 }
 \author{
   Cole Monnahan

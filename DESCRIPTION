@@ -65,3 +65,5 @@ Collate:
     'get-results.r'
     'fish600seeds.r'
     'plot-results.r'
+    'final_results_scalar.r'
+    'final_results_ts.r'

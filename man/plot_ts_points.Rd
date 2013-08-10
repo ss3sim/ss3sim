@@ -9,9 +9,6 @@
 \arguments{
   \item{data}{A data frame holding results}
 
-  \item{x}{The x-value for all plots as a character
-  string.}
-
   \item{y}{The y-value for all plots as a character
   string.}
 
@@ -42,6 +39,12 @@
   produces points across years for a timeseries data frame.
   Intended use is to explore model convergence and
   diagnostics.
+}
+\examples{
+final_results <- merge(final_results_ts,
+final_results_scalar[,c("scenario", "replicate", "max_grad")])
+plot_ts_points(final_results, y = "SpawnBio_em", vert = "D",
+color = "max_grad")
 }
 \author{
   Cole Monnahan

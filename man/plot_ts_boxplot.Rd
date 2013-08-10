@@ -8,9 +8,6 @@
 \arguments{
   \item{data}{A data frame holding results}
 
-  \item{x}{The x-value for all plots as a character
-  string.}
-
   \item{y}{The y-value for all plots as a character
   string.}
 
@@ -37,6 +34,13 @@
   produces boxplots across years for a timeseries data
   frame. Intended use is to compare performance metrics,
   particularly relative error.
+}
+\examples{
+\dontrun{
+# Not running this example because it can take a while to generate
+plot_ts_boxplot(subset(final_results_ts, D == "D1"),
+y = "SpawnBio_em", vert = "D")
+}
 }
 \author{
   Cole Monnahan

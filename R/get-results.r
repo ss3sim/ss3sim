@@ -1,3 +1,29 @@
+#' Calculate run time
+#'
+#' Internal function used by \code{get_results_scenario} to calculate
+#' the runtime (in minutes) from a Report.sso file.
+#'
+#' @param start_time Vector of characters as read in from the r4ss
+#' report file
+#' @param end_time Vector of characters as read in from the r4ss
+#' report file
+#' @author Cole Monnahan
+
+calculate_runtime <- function(start_time, end_time) {
+  start <- data.frame(do.call(rbind, strsplit(x = as.character(start_time), 
+    split = " ", fixed = T))[, -(1:2)])
+  end <- data.frame(do.call(rbind, strsplit(x = as.character(end_time), 
+    split = " ", fixed = T))[, -(1:2)])
+  names(start) <- names(end) <- c("month", "day", "time", 
+    "year")
+  start.date <- lubridate::ymd_hms(with(start, paste(year, 
+    month, day, time, sep = "-")))
+  end.date <- lubridate::ymd_hms(with(end, paste(year, 
+    month, day, time, sep = "-")))
+  run.mins <- as.vector(end.date - start.date)/60
+  return(run.mins)
+}
+
 #' Extract SS3 simulation output
 #'
 #' This high level function extracts results from SS3 model runs. Give it a

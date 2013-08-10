@@ -9,9 +9,6 @@
 \arguments{
   \item{data}{A data frame holding results}
 
-  \item{x}{The x-value for all plots as a character
-  string.}
-
   \item{y}{The y-value for all plots as a character
   string.}
 
@@ -33,6 +30,9 @@
   If \code{FALSE} all x- and y-axes will have a shared
   scale.}
 
+  \item{x}{The x-value for all plots as a character
+  string.}
+
   \item{color}{Character of a variable for how to color the
   points. Useful variables are \code{max_grad} or other
   measures of convergence.}
@@ -46,12 +46,10 @@
   misspecification.
 }
 \examples{
-Explore the error in log R0 vs the maximum gradient. Outliers may
-be apparent
-library(ggplot2)
-scalars$log_max_grad <- log(scalars$max_grad)
-plot_scalar_points(data=scalars, x = "SR_LN_R0_om", y = "SR_LN_R0_em",
-  color = "log_max_grad", vert = "F")
+# Explore the error in log R0 vs the maximum gradient. Outliers may
+# be apparent
+plot_scalar_points(final_results_scalar, x = "SR_LN_R0_om", y =
+"SR_LN_R0_em", color = "max_grad", vert = "D")
 }
 \author{
   Cole Monnahan

@@ -1,6 +1,4 @@
-#' @export
 #' @param data A data frame holding results
-#' @param x The x-value for all plots as a character string.
 #' @param y The y-value for all plots as a character string.
 #' @param horiz Character of a variable for which variable to use for
 #' grouping into horizontal rows.

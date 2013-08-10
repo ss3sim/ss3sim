@@ -1,28 +1,3 @@
-#' Calculate run time
-#'
-#' Internal function used by \code{get_results_scenario} to calculate the
-#' runtime (in minutes) from a Report.sso file.
-#'
-#' @param start_time Vector of characters as read in from the r4ss report file
-#' @param end_time Vector of characters as read in from the r4ss report file
-#' @author Cole Monnahan
-
-calculate_runtime <- function(start_time, end_time) {
-  start <- data.frame(do.call(rbind, strsplit(x = as.character(start_time), 
-    split = " ", fixed = T))[, -(1:2)])
-  end <- data.frame(do.call(rbind, strsplit(x = as.character(end_time), 
-    split = " ", fixed = T))[, -(1:2)])
-  names(start) <- names(end) <- c("month", "day", "time", 
-    "year")
-  start.date <- lubridate::ymd_hms(with(start, paste(year, 
-    month, day, time, sep = "-")))
-  end.date <- lubridate::ymd_hms(with(end, paste(year, 
-    month, day, time, sep = "-")))
-  run.mins <- as.vector(end.date - start.date)/60
-  return(run.mins)
-}
-
-
 #' Plot scalar points
 #'
 #' Flexible function to make jittered scatter plots from a scalar data
@@ -32,18 +7,18 @@ calculate_runtime <- function(start_time, end_time) {
 #' outliers or model misspecification.
 #'
 #' @template plot_scalar
+#' @param x The x-value for all plots as a character string.
 #' @param color Character of a variable for how to color the points.
 #' Useful variables are \code{max_grad} or other measures of
 #' convergence.
 #' @author Cole Monnahan
-
+#' @import ggplot2
+#' @export
 #' @examples
-#' Explore the error in log R0 vs the maximum gradient. Outliers may
-#' be apparent
-#' library(ggplot2)
-#' scalars$log_max_grad <- log(scalars$max_grad)
-#' plot_scalar_points(data=scalars, x = "SR_LN_R0_om", y = "SR_LN_R0_em",
-#'   color = "log_max_grad", vert = "F")
+#' # Explore the error in log R0 vs the maximum gradient. Outliers may
+#' # be apparent
+#' plot_scalar_points(final_results_scalar, x = "SR_LN_R0_om", y =
+#' "SR_LN_R0_em", color = "max_grad", vert = "D")
 
 plot_scalar_points <- function(data, x, y, horiz = "species", 
   vert = ".", vert2 = NULL, relative_error = FALSE, 
@@ -60,8 +35,8 @@ plot_scalar_points <- function(data, x, y, horiz = "species",
   else {
     form <- as.formula(paste(horiz, "~", vert, "+", vert2))
   }
-  g <- g + geom_jitter(aes_string(x = x, y = y, color = color), 
-    size = 1) + scale_color_gradient(low = "gray", high = "red") + 
+  g <- g + geom_point(aes_string(x = x, y = y, color = color), 
+    size = 2) + scale_color_gradient(low = "gray", high = "red") + 
     facet_grid(form, scales = ifelse(axes_free, "free", 
       "fixed"))
   print(g)
@@ -76,7 +51,13 @@ plot_scalar_points <- function(data, x, y, horiz = "species",
 #' compare performance metrics, particularly relative error.
 #'
 #' @template plot_scalar
+#' @param x The x-value for all plots as a character string.
 #' @author Cole Monnahan
+#' @import ggplot2
+#' @export
+#' @examples
+#' plot_scalar_boxplot(final_results_scalar, x = "SR_LN_R0_om", y =
+#' "SR_LN_R0_em", vert = "D")
 
 plot_scalar_boxplot <- function(data, x, y, horiz = "species", 
   vert = ".", vert2 = NULL, relative_error = FALSE, axes_free = TRUE) {
@@ -92,8 +73,8 @@ plot_scalar_boxplot <- function(data, x, y, horiz = "species",
   else {
     form <- as.formula(paste(horiz, "~", vert, "+", vert2))
   }
-  g <- g + geom_boxplot(aes_string(x = x, y = y), size = 0.2, 
-    outlier.size = 1, outlier.colour = rgb(0, 0, 0, 0.5)) + 
+  g <- g + geom_boxplot(aes_string(x = x, y = y), size = 0.3, 
+    outlier.size = 1.5, outlier.colour = rgb(0, 0, 0, 0.5)) + 
     facet_grid(form, scales = ifelse(axes_free, "free", 
       "fixed"))
   print(g)
@@ -109,6 +90,14 @@ plot_scalar_boxplot <- function(data, x, y, horiz = "species",
 #'
 #' @template plot_scalar
 #' @author Cole Monnahan
+#' @import ggplot2
+#' @export
+#' @examples
+#' \dontrun{
+#' # Not running this example because it can take a while to generate
+#' plot_ts_boxplot(subset(final_results_ts, D == "D1"), 
+#' y = "SpawnBio_em", vert = "D")
+#' }
 
 plot_ts_boxplot <- function(data, y, horiz = "species", 
   vert = ".", vert2 = NULL, relative_error = FALSE, axes_free = TRUE) {
@@ -145,6 +134,13 @@ plot_ts_boxplot <- function(data, y, horiz = "species",
 #' Useful variables are \code{max_grad} or other measures of
 #' convergence.
 #' @author Cole Monnahan
+#' @import ggplot2
+#' @export
+#' @examples
+#' final_results <- merge(final_results_ts,
+#' final_results_scalar[,c("scenario", "replicate", "max_grad")])
+#' plot_ts_points(final_results, y = "SpawnBio_em", vert = "D", 
+#' color = "max_grad")
 
 plot_ts_points <- function(data, y, horiz = "species", 
   vert = ".", vert2 = NULL, relative_error = FALSE, 
