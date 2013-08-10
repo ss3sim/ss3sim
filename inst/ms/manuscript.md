@@ -59,19 +59,11 @@ Paragraph 1: What is stock assessment simulation? Why is it increasingly critica
 > the assessment being reviewed, rather than spend time learning 
 > the features of a novel assessment model.
 
-Therefore two benefits to simulating with SS: (1) much of the model has already been built (research can then progress rapidly and with less chance of errors) and checked and (2) the results are directly applicable to the tools used by stock assessment scientists --- in fact, used by all Western US assessments.
+Therefore there are two benefits to simulating with SS: (1) much of the model has already been built (research can then progress rapidly and with less chance of errors) and checked and (2) the results are directly applicable to the tools used by stock assessment scientists --- in fact, used by all Western US assessments.
 
-Third paragraph: However, there are many complications to conducting large-scale, rapid, and reproducible simulations.
-
-- complications range from data, file, and folder management
-- avoiding coding errors
-- repeatedly manipulating operating models and estimation models to ask specific questions
-- porting models and questions across stocks and species
-- reproducible, understandable, and documented
-- barrier to research
-- R [@r2013] is the standard, but existing solutions are GUI and therefore not as flexible, scriptable, and repeatable.
-
-<!--Our goal is to provide a toolkit and general framework for fast, transparent, and reproducible stock assessment simulation.-->
+There are, however, many complications to conducting large-scale, rapid, and reproducible stock-assessment simulations. 
+Complications include how to manage data and file structure, how to avoiding coding errors, how to repeatedly manipulate simulation models to ask specific questions, and how to translate models and questions across stocks and species. 
+[Maybe delete this or go into how most solutions are GUI right now]Further, while the statistical software R has become the standard for data analysis and visualization, and the stock-assessment framework Stock Synthesis is increasingly the standard for fisheries stock assessment, we lack a generalized framework to link the two in a simulation context.
 
 In this paper we introduce ss3sim, a software package for the popular statistical programming language R that facilitates large-scale, rapid, and reproducible stock-assessment simulation with the widely-used SS framework. 
 We begin by outlining the general philosophy of ss3sim, and describing its functions.
@@ -82,44 +74,44 @@ We conclude by discussing how ss3sim complements other stock assessment simulati
 # The ss3sim framework #
 
 ## Terminology ##
-
-- operating model
-- estimation model
-- scenario
-- case
-- iteration
-- a simulation = all scenarios and iterations
-- SS the framework vs. `SS3` the binary of version 3 of SS
+Throughout this paper we refer to a number of terms which we defined here. We use the term *operating model* (OM) to refer to the model that represents the underlying true dynamics of the system. 
+We use the term *estimation model* (EM) refer to the model used to estimate quantities of interest. 
+Whereasa the OM refers to the underlying truth, the EM generates our perception of that truth. 
+We use the term *scenario* to refer to a combination of operating and estimation model *cases*. 
+An OM case might be natural mortality that follows a random walk,
+an EM case might be estimating a fixed parameter for natural mortality,
+and the combination of these two cases along with all other specified conditions creates a scenario. 
+We refer to *iterations* as replicates of a scenario with potentially new process and observation error added with each replicate.
+A simulation therefore refers to the combination of all scenarios and iterations.
 
 ## General philosophy ##
+We designed ss3sim to be reproducible, flexible, and rapid.
+To be reproducible, ss3sim allows for the simulation to be documented in code and plaintext control files.
+Further, the plaintext control files refer to individual cases, 
+which allows researchers to reuse control files as much as possible across scenarios to make some relation code easier to understand and less error-prone.
+ss3sim than keeps all SS3 output files as well as generating its own log files along the way for documentation.
 
-- Reproducible: documented in code or plain-text control files
-- Flexible: specify your own OM and EM using all the possibilities of SS3
-- Rapid: use SS3, which relies on ADMB; build on the existing SS and r4ss [@r4ss2013] framework
-- Allow researchers to reuse control files as much as possible across scenarios to make the simulation easy to understand and less error prone
-- Easy to deploy across multiple researchers, multiple computers, or multiple cores
-- Leave a trace throughout of what has happened - log files etc.
-- Make visualization easy so users are likely to use it to understand their models and detect errors quickly
-- Minimize book keeping etc. so that researchers can concentrate on the science
+To be flexible, ss3sim allows the user to specify their own OM and EM using all the possibilities of SS3.
+ss3sim can take input in a number of forms (in R list format or through control files),
+and return output in a standard, separated value (CSV) format allowing  researchers to work with the output either using the package provided functions or their own tools.
+
+To be rapid, ss3sim relies on SS3, which uses ADMB as a backend optimization platform --- the most rapid and robust optimization software available today. 
+Further, we built ss3sim so that it is easy to deploy across multiple computers or multiple researchers and re-combine the output.
+The package provides a number of functions to make visualization easy so that users are more likely to visualize their models and therefore more likely to detect errors quickly and understand their models.
+Finally, ss3sim  minimizes the amount of bookkeeping simulation code that researchers have to write so that they can concentrate on the science itself.
 
 ## General structure ##
 
-- start with an OM and EM
-- Specify how you want to affect the truth and your assessment of the truth (possibly in a time varying manner)
-- ss3sim carries that out in SS3 by manipulating and running the models in R
-- SS is controlled by the user through a series of plain-text configuration files
-- ss3sim works, in general, by converting simulation arguments (e.g. a given natural mortality trajectory) into manipulations of these configuration files at the appropriate stage in conjunction with running appropriate models
+An ss3sim simulation requires three types of input: (1) a base model of the underlying truth (an SS3 OM), (2) a base model of how you will assess that truth (an SS3 EM), (3) and a set of cases that deviate from these base models that you want to compare (configuration arguments either as R lists or plaintext control files).
+ss3sim works, in general, by converting simulation arguments (e.g. a given natural mortality trajectory) into manipulations of SS3 configuration files at the appropriate stage along with running the OM and EM as needed.
 
 ## Low-level generic ss3sim functions ##
 
 See Table 1 for description of functions. See Figure 1 for the functions fit into the general structure. ss3sim functions are divided into three types of functions:
 
-1. Functions that manipulate SS configuration files. These manipulations generate an underlying "truth" (operating models) and control our assessment of those models (estimation models).
+1. Functions that manipulate SS configuration files. These manipulations generate an underlying "truth" (OM) and control our assessment of those models (EM).
 
 2. Functions that conduct simulations. These functions generate a folder structure, call manipulation functions, run `SS3` as needed, and save the output.
-`run_ss3sim`
-`copy_models`
-`run_ss3model`
 
 3. Functions for analyzing and plotting simulation output.
 
