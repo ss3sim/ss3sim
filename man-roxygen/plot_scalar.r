@@ -11,3 +11,4 @@
 #' columns (i.e. between levels of \code{horiz}, \code{vert} and
 #' \code{vert2}) will be set automatically. If \code{FALSE} all x-
 #' and y-axes will have a shared scale.
+#' @family plot-results

@@ -164,6 +164,7 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE, user.scena
     print(paste("Final result files written to", directory))
 }
 
+
 #' Extract SS3 simulation results for one scenario.
 #'
 #' Function that extracts results from all replicates inside a supplied

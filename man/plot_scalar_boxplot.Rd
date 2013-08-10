@@ -46,4 +46,9 @@ plot_scalar_boxplot(scalars, x = "SR_LN_R0_om", y =
 \author{
   Cole Monnahan
 }
+\seealso{
+  Other plot.results: \code{\link{plot_scalar_points}},
+  \code{\link{plot_ts_boxplot}},
+  \code{\link{plot_ts_points}}
+}
 
