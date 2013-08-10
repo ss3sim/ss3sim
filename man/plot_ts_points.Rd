@@ -41,8 +41,8 @@
   diagnostics.
 }
 \examples{
-final_results <- merge(final_results_ts,
-final_results_scalar[,c("scenario", "replicate", "max_grad")])
+final_results <- merge(timeseries,
+scalars[,c("scenario", "replicate", "max_grad")])
 plot_ts_points(final_results, y = "SpawnBio_em", vert = "D",
 color = "max_grad")
 }

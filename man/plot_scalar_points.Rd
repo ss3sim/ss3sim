@@ -48,7 +48,7 @@
 \examples{
 # Explore the error in log R0 vs the maximum gradient. Outliers may
 # be apparent
-plot_scalar_points(final_results_scalar, x = "SR_LN_R0_om", y =
+plot_scalar_points(scalars, x = "SR_LN_R0_om", y =
 "SR_LN_R0_em", color = "max_grad", vert = "D")
 }
 \author{

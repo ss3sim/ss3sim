@@ -17,7 +17,7 @@
 #' @examples
 #' # Explore the error in log R0 vs the maximum gradient. Outliers may
 #' # be apparent
-#' plot_scalar_points(final_results_scalar, x = "SR_LN_R0_om", y =
+#' plot_scalar_points(scalars, x = "SR_LN_R0_om", y =
 #' "SR_LN_R0_em", color = "max_grad", vert = "D")
 
 plot_scalar_points <- function(data, x, y, horiz = "species", 
@@ -56,7 +56,7 @@ plot_scalar_points <- function(data, x, y, horiz = "species",
 #' @import ggplot2
 #' @export
 #' @examples
-#' plot_scalar_boxplot(final_results_scalar, x = "SR_LN_R0_om", y =
+#' plot_scalar_boxplot(scalars, x = "SR_LN_R0_om", y =
 #' "SR_LN_R0_em", vert = "D")
 
 plot_scalar_boxplot <- function(data, x, y, horiz = "species", 
@@ -95,7 +95,7 @@ plot_scalar_boxplot <- function(data, x, y, horiz = "species",
 #' @examples
 #' \dontrun{
 #' # Not running this example because it can take a while to generate
-#' plot_ts_boxplot(subset(final_results_ts, D == "D1"), 
+#' plot_ts_boxplot(subset(timeseries, D == "D1"), 
 #' y = "SpawnBio_em", vert = "D")
 #' }
 
@@ -137,8 +137,8 @@ plot_ts_boxplot <- function(data, y, horiz = "species",
 #' @import ggplot2
 #' @export
 #' @examples
-#' final_results <- merge(final_results_ts,
-#' final_results_scalar[,c("scenario", "replicate", "max_grad")])
+#' final_results <- merge(timeseries,
+#' scalars[,c("scenario", "replicate", "max_grad")])
 #' plot_ts_points(final_results, y = "SpawnBio_em", vert = "D", 
 #' color = "max_grad")
 

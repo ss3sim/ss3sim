@@ -38,7 +38,7 @@
 \examples{
 \dontrun{
 # Not running this example because it can take a while to generate
-plot_ts_boxplot(subset(final_results_ts, D == "D1"),
+plot_ts_boxplot(subset(timeseries, D == "D1"),
 y = "SpawnBio_em", vert = "D")
 }
 }

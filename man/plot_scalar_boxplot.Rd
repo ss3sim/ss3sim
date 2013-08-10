@@ -40,7 +40,7 @@
   particularly relative error.
 }
 \examples{
-plot_scalar_boxplot(final_results_scalar, x = "SR_LN_R0_om", y =
+plot_scalar_boxplot(scalars, x = "SR_LN_R0_om", y =
 "SR_LN_R0_em", vert = "D")
 }
 \author{
