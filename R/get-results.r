@@ -140,30 +140,35 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE, user.scena
 
 #' Extract SS3 simulation results for one scenario.
 #'
-#' Take a path to a scenario folder with results and write the individual
-#' scenario results to two data.frames in that folder. This function is
-#' called by \code{\link{get_results_all}} or can be used individually for
-#' testing.
+#' Function that extracts results from all replicates inside a supplied
+#' scenario folder. The function writes 3 .csv files to the scenario folder:
+#' (1) scalar metrics with one value per replicate (e.g. $R_0$, $h$), (2) a
+#' timeseries data ('ts') which contains multiple values per replicate (e.g.
+#' $SSB_y$ for a range of years $y$), and (3) residuals on the log scale from
+#' the surveys across all replicates (this feature is not fully tested!). The
+#' function \code{get_results_all} loops through these .csv files and combines
+#' them together into a single "final" dataframe.
 #'
-#' @param scenario A folder name in the directory folder which contains
-#' replicates and potentially bias adjustment runs.
-#' @param directory A path to folder containing the scenario folder.
-#' @param overwrite.files A switch to determine if existing files should be
-#' overwritten, useful for testing purposes or if new replicates are run.
+#' @param scenario A single character giving the scenario from which to
+#' extract results.
+#' @param directory The directory which contains the scenario folder.
+#' @param overwrite.files A boolean (default is FALSE) for whether to delete
+#' any files previously created with this function. This is intended to be
+#' used if replicates were added since the last time it was called, or any
+#' changes were made to this function.
+#' @author Cole Monnahan
 #' @family get-results
 #' @export
-#' @author Cole Monnahan
 
 get_results_scenario <- function(scenario, directory=getwd(),
-                                 overwrite.files=FALSE){
+  overwrite.files=FALSE){
 
-    ## Get results for all reps within a scenario folder
     old.wd <- getwd(); on.exit(setwd(old.wd))
     setwd(directory); setwd(scenario)
-
     ## Stop if the files already exist or maybe delete them
     scalar.file <- paste0("results_scalar_",scenario,".csv")
     ts.file <- paste0("results_ts_",scenario,".csv")
+    resids.file <- paste0("results_resids_",scenario,".csv")
     if(file.exists(scalar.file) | file.exists(ts.file)){
         if(overwrite.files) {
             ## Delete them and continue
@@ -192,11 +197,12 @@ get_results_scenario <- function(scenario, directory=getwd(),
     ## Remove the .csv files and bias folder, they are not reps, note here I'm
     ## including only reps <1000, this will need to be changed manually if there
     ## are future runs with more than this.
-    reps.dirs <- dir()[as.character(1:1000) %in% dir()]
+    reps.dirs <- dir()[dir() %in% as.character(1:1000) ]
     reps.dirs <- sort(as.numeric(reps.dirs))
     if(length(reps.dirs)==0)
         stop(print(paste("Error:No replicates for scenario", scenario)))
     ## Loop through replicates and extract results using r4ss::SS_output
+    resids.list <- list()
     for(rep in reps.dirs){
         ## print(paste0("Starting", scen, "-", rep))
         report.em <- r4ss::SS_output(paste0(rep,"/em/"), covar=F, verbose=F,
@@ -205,6 +211,12 @@ get_results_scenario <- function(scenario, directory=getwd(),
         report.om <- r4ss::SS_output(paste0(rep,"/om/"), covar=F, verbose=F,
                                compfile="none", forecast=F, warn=T, readwt=F,
                                printstats=F, NoCompOK=T)
+        ## Grab the residuals for the indices
+        resids.long <- subset(transform(report.em$cpue,
+                                         resids={log(Obs)-log(Exp)}),
+                                         select=c(FleetName, Yr, resids))
+        resids.list[[rep]] <- cbind(scenario, rep, cast(resids.long, FleetName~Yr,
+                                            value="resids"))
         ## Get scalars from the two models
         scalar.om <- get_results_scalar(report.om)
         names(scalar.om) <- paste0(names(scalar.om),"_om")
@@ -246,7 +258,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
         ## Also get the version and runtime, as checks
         temp <- readLines(con=paste0(rep,"/em/Report.sso"), n=10)
         scalar$version <- temp[1]
-        scalar$StartTime <- temp[4]; scalar$EndTime <- temp[5]
+        scalar$RunTime <- calculate_runtime(temp[4],temp[5])
         ## Write them to file in the scenario folder
         scalar.exists <- file.exists(scalar.file)
         write.table(x=scalar, file=scalar.file, append=scalar.exists,
@@ -255,6 +267,9 @@ get_results_scenario <- function(scenario, directory=getwd(),
         write.table(x=ts, file=ts.file, append=ts.exists,
                     col.names=!ts.exists, row.names=FALSE, sep=",")
     }
+    ## Create df for the residuals
+    resids <- do.call(rbind, resids.list)
+    write.table(x=resids, file=resids.file, sep=",", row.names=F)
     ## End of loops for extracting results
     print(paste0("Result files created for ",scenario, " with ",
                  length(reps.dirs), " replicates"))

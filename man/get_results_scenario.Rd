@@ -6,23 +6,30 @@
     overwrite.files = FALSE)
 }
 \arguments{
-  \item{scenario}{A folder name in the directory folder
-  which contains replicates and potentially bias adjustment
-  runs.}
+  \item{scenario}{A single character giving the scenario
+  from which to extract results.}
 
-  \item{directory}{A path to folder containing the scenario
-  folder.}
+  \item{directory}{The directory which contains the
+  scenario folder.}
 
-  \item{overwrite.files}{A switch to determine if existing
-  files should be overwritten, useful for testing purposes
-  or if new replicates are run.}
+  \item{overwrite.files}{A boolean (default is FALSE) for
+  whether to delete any files previously created with this
+  function. This is intended to be used if replicates were
+  added since the last time it was called, or any changes
+  were made to this function.}
 }
 \description{
-  Take a path to a scenario folder with results and write
-  the individual scenario results to two data.frames in
-  that folder. This function is called by
-  \code{\link{get_results_all}} or can be used individually
-  for testing.
+  Function that extracts results from all replicates inside
+  a supplied scenario folder. The function writes 3 .csv
+  files to the scenario folder: (1) scalar metrics with one
+  value per replicate (e.g. $R_0$, $h$), (2) a timeseries
+  data ('ts') which contains multiple values per replicate
+  (e.g. $SSB_y$ for a range of years $y$), and (3)
+  residuals on the log scale from the surveys across all
+  replicates (this feature is not fully tested!). The
+  function \code{get_results_all} loops through these .csv
+  files and combines them together into a single "final"
+  dataframe.
 }
 \author{
   Cole Monnahan
