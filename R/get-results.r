@@ -194,10 +194,8 @@ get_results_scenario <- function(scenario, directory=getwd(),
     ## Loop through each replicate, not including the bias folders, and get
     ## results from both models
 
-    ## Remove the .csv files and bias folder, they are not reps, note here I'm
-    ## including only reps <1000, this will need to be changed manually if there
-    ## are future runs with more than this.
-    reps.dirs <- dir()[dir() %in% as.character(1:1000) ]
+    ## Remove the .csv files and bias folder, they are not reps
+    reps.dirs <- list.files(pattern = "[0-9]+")
     reps.dirs <- sort(as.numeric(reps.dirs))
     if(length(reps.dirs)==0)
         stop(print(paste("Error:No replicates for scenario", scenario)))
