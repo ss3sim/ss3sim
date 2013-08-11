@@ -3,7 +3,10 @@
 \title{Master function to run the FISH600-specific simulations}
 \usage{
   run_fish600(iterations, scenarios, seed = fish600seeds,
-    case_folder = get_fish600_casefolder(), ...)
+    case_folder = get_fish600_casefolder(),
+    om_model_dir = get_fish600_modelfolder(paste0(sp, "-om")),
+    em_model_dir = get_fish600_modelfolder(paste0(sp, "-em")),
+    ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
