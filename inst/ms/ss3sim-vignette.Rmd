@@ -1,0 +1,64 @@
+% ss3sim vignette
+% Sean C. Anderson and lots of others...
+%
+
+First, we'll locate three sets of folders that are located within the package data: (1) the folder with the plaintext case files, (2) the folder with the operating model (OM), and (3) the folder with the estimating model (EM).
+
+```{r locate-folders}
+library(ss3sim)
+d <- system.file("extdata", package = "ss3sim")
+case_folder <- paste0(d, "/eg-cases")
+om <- paste0(d, "/models/cod-om")
+em <- paste0(d, "/models/cod-em")
+```
+
+First, we'll run some "deterministic" runs to check our model for bias when we don't have any process error.
+
+To do this, we'll start by setting up a matrix of recruitment deviations with 0 deviations. 
+We need 100 rows (for 100 year simulations) and 20 columns (for 20 deterministic iterations).
+
+```{r }
+recdevs_det <- matrix(0, nrow = 100, ncol = 20)
+```
+
+Then we'll set up case "estimation" files in which the recruitment deviations are set to the nominal level of `0.001`. 
+We'll name these files `E100-cod.txt` and `E101-cod.txt`. 
+When we run the simulations, we'll pass our deterministic recruitment deviations to the function `run_fish600`. 
+Running 20 replicates should be enough to identify whether our models are performing as we expect.
+
+```{r deterministic-runs, eval=FALSE}
+run_fish600(iterations = 1:20, scenarios = 
+  c("D0-E100-F0-G0-R0-S0-M0-cod",
+    "D1-E100-F0-G0-R0-S0-M0-cod", 
+    "D0-E101-F0-G0-R0-S0-M0-cod",
+    "D1-E101-F0-G0-R0-S0-M0-cod"), 
+  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+  bias_adjust = TRUE, user_recdevs = recdevs_det)
+```
+
+Now we can run the stochastic simulations.
+
+```{r stochastic-runs, eval=FALSE}
+run_fish600(iterations = 1:100, scenarios = 
+  c("D0-E0-F0-G0-R0-S0-M0-cod",
+    "D1-E0-F0-G0-R0-S0-M0-cod", 
+    "D0-E1-F0-G0-R0-S0-M0-cod",
+    "D1-E1-F0-G0-R0-S0-M0-cod"), 
+  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+  bias_adjust = TRUE)
+```
+
+The function `get_results_all` reads in a set of scenarios and combines the output into two `.csv` files: `final_results_scalar.csv` and `final_results_ts.csv`.
+
+```{r get-results, eval=FALSE}
+get_results_all(user.scenarios = 
+  c("D0-E100-F0-G0-R0-S0-M0-cod",
+    "D1-E100-F0-G0-R0-S0-M0-cod", 
+    "D0-E101-F0-G0-R0-S0-M0-cod",
+    "D1-E101-F0-G0-R0-S0-M0-cod", 
+    "D0-E0-F0-G0-R0-S0-M0-cod",
+    "D1-E0-F0-G0-R0-S0-M0-cod",
+    "D0-E1-F0-G0-R0-S0-M0-cod",
+    "D1-E1-F0-G0-R0-S0-M0-cod"))
+```
+

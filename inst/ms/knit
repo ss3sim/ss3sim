@@ -1,0 +1,20 @@
+#!/usr/bin/Rscript
+
+library(knitr)
+render_markdown(strict = FALSE)
+opts_chunk$set(fig.align='center', cache=FALSE, echo=TRUE,
+message=FALSE, autodep=TRUE, fig.path='figure/', fig.width=5,
+par=TRUE)
+
+opts_chunk$set(warning=FALSE, message=FALSE, comment=NA, tidy=FALSE, 
+refresh=TRUE)
+
+#knit_hooks$set(par=function(before, options, envir){
+#  if (before && options$fig.show!='none') 
+#    par(mar=c(4,4,.1,.1), cex.lab=.95, cex.axis=.9, mgp=c(2,.7,0), tcl=-.3)
+#})
+
+# verbose compile:
+opts_knit$set(progress = TRUE, verbose = TRUE)
+opts_chunk$set(dev = 'pdf')
+knit("ss3sim-vignette.Rmd")
