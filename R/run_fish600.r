@@ -73,13 +73,13 @@
 #' }
 
 run_fish600 <- function(iterations, scenarios, seed = fish600seeds,
-  case_folder = get_fish600_casefolder(), ...) {
+  case_folder = get_fish600_casefolder(), om_model_dir =
+  get_fish600_modelfolder(paste0(sp, "-om")), em_model_dir =
+  get_fish600_modelfolder(paste0(sp, "-em")), ...) {
 
   l_pply(scenarios, function(x) {
     a <- get_caseargs(folder = case_folder, scenario = x) 
     sp <- substr_r(x, 3)
-    om_model_dir <- get_fish600_modelfolder(paste0(sp, "-om"))
-    em_model_dir <- get_fish600_modelfolder(paste0(sp, "-em"))
 
     run_ss3sim(iterations, scenarios = x, m_params = a$M,
       sel_params = a$S, growth_params = a$G, f_params = a$F, index_params =

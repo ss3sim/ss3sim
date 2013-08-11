@@ -8,8 +8,8 @@ om <- paste0(d, "/models/cod-om")
 em <- paste0(d, "/models/cod-em")
 
 # get case arguments:
-x0 <- get_caseargs(case_folder, "D0-E0-F0-G0-R0-S0-M0-cod")
-x1 <- get_caseargs(case_folder, "D1-E0-F0-G0-R0-S0-M0-cod")
+x0 <- get_caseargs(case_folder,  "D0-E0-F0-G0-R0-S0-M0-cod")
+x1 <- get_caseargs(case_folder,  "D1-E0-F0-G0-R0-S0-M0-cod")
 dx0 <- get_caseargs(case_folder, "D0-E100-F0-G0-R0-S0-M0-cod") 
 dx1 <- get_caseargs(case_folder, "D1-E100-F0-G0-R0-S0-M0-cod") 
 recdevs_det <- matrix(0, nrow = 100, ncol = 20)
