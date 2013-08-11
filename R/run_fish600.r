@@ -72,11 +72,10 @@
 #' bias_adjust = FALSE, bias_already_run = TRUE)
 #' }
 
-run_fish600 <- function(iterations, scenarios, seed = fish600seeds, ...) {
+run_fish600 <- function(iterations, scenarios, seed = fish600seeds,
+  case_folder = get_fish600_casefolder(), ...) {
 
-  case_folder <- get_fish600_casefolder()
-
-  junk <- lapply(scenarios, function(x) {
+  l_pply(scenarios, function(x) {
     a <- get_caseargs(folder = case_folder, scenario = x) 
     sp <- substr_r(x, 3)
     om_model_dir <- get_fish600_modelfolder(paste0(sp, "-om"))
