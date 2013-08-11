@@ -25,19 +25,19 @@
 The package can be installed and loaded with:
 
 \begin{verbatim}
-# install.packages(c("r4ss", "plyr", "gtools")) # dependencies, if needed
-# install.packages("devtools")
-# devtools::install_github("ss3sim", username="seananderson")
+# dependencies if needed:
+install.packages(c("r4ss", "plyr", "gtools", "ggplot2", "lubridate", "reshape"))
+install.packages("devtools")
+
+# install the package
+devtools::install_github("ss3sim", username="seananderson")
+
 library(ss3sim)
 \end{verbatim}
 
 \noindent
 While the package is under active development, it's a good idea to install a 
-new version every day or so using the \texttt{install\_github} command:
-
-\begin{verbatim}
-devtools::install_github("ss3sim", username="seananderson")
-\end{verbatim}
+new version every day or so using the \texttt{install\_github} command.
 
 \noindent
 You can read the help files and access this vignette again with:

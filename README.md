@@ -3,16 +3,18 @@ Installing the `ss3sim` `R` package
 
 The package can be installed and loaded with:
 
-    # install.packages(c("r4ss", "plyr", "gtools")) # dependencies, if needed
-    # install.packages("devtools")
-    # devtools::install_github("ss3sim", username="seananderson")
+    # dependencies if needed:
+    install.packages(c("r4ss", "plyr", "gtools", "ggplot2", "lubridate", "reshape"))
+    install.packages("devtools")
+
+    # install the package
+    devtools::install_github("ss3sim", username="seananderson")
+
     library(ss3sim)
 
 While the package is under active development, it’s a good idea to
 install a new version every day or so using the `install_github`
-command:
-
-    devtools::install_github("ss3sim", username="seananderson")
+command.
 
 You can read the help files and access this vignette again with:
 

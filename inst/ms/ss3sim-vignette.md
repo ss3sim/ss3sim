@@ -10,7 +10,7 @@ The package can be installed with:
 
 ```r
 # dependencies if needed:
-install.packages(c("r4ss", "plyr", "gtools", "ggplot2", "lubridate"))
+install.packages(c("r4ss", "plyr", "gtools", "ggplot2", "lubridate", "reshape"))
 install.packages("devtools")
 devtools::install_github("ss3sim", "seananderson")
 ```
