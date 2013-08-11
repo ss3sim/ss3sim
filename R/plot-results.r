@@ -159,7 +159,7 @@ plot_ts_points <- function(data, y, horiz = "species",
     form <- as.formula(paste(horiz, "~", vert, "+", vert2))
   }
   g <- g + geom_jitter(aes_string(y = y, group = "year", 
-    colour = color), alpha = 0.5, size = 1) + facet_grid(form, 
+    colour = color), alpha = 0.3, size = 1) + facet_grid(form, 
     scales = ifelse(axes_free, "free", "fixed")) + 
     scale_color_gradient(low = "gray", high = "red")
   print(g)
