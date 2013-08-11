@@ -1,0 +1,26 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\geometry{letterpaper}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{longtable}
+\usepackage{lineno}
+\usepackage{xcolor}
+\usepackage{url}
+\renewcommand\linenumberfont{\normalfont\tiny\sffamily\color{gray}}
+
+% remove numbers in front of sections:
+\makeatletter
+\renewcommand\@seccntformat[1]{}
+\makeatother
+
+\setlength{\parskip}{12pt}
+\setlength{\parindent}{0cm} 
+
+\begin{document}
+\linenumbers
+\modulolinenumbers[2]
+\begin{spacing}{1.5}
+\include{manuscript}
+\end{spacing}
+\end{document}

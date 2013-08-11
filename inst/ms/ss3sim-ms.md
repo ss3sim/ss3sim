@@ -1,27 +1,36 @@
-% ss3sim: An R package for generalized stock-assessment simulation with Stock Synthesis
-% Sean C. Anderson^1*^ 
-  Athol Whitten^2^
-  Curry Cunningham^2^
-  Felipe Hurtado Ferro^2^
-  Kelli Johnson^2^
-  Carey McGilliard^3^
-  Cole Monnahan^2^
-  Kotaro Ono^2^
-  Juan Valero^2,4^
-  Roberto Licandeo^5^
-  Melissa Muradian^2^
-  Cody Szuwalksi^2^
-  Katyana Vertpre^6^
- (authorship and order to be discussed) 
-%
+# ss3sim: An R package for generalized stock-assessment simulation with Stock Synthesis #
+
+Sean C. Anderson^1*^,
+Athol Whitten^2^, 
+Curry Cunningham^2^, 
+Felipe Hurtado Ferro^2^, 
+Kelli Johnson^2^, 
+Carey McGilliard^3^, 
+Cole Monnahan^2^, 
+Kotaro Ono^2^, 
+Juan Valero^2,4^, 
+Roberto Licandeo^5^, 
+Melissa Muradian^2^, 
+Cody Szuwalksi^2^, 
+Katyana Vertpre^6^, 
+(authorship and order to be discussed) 
 
 ^1^Department of Biological Sciences, Simon Fraser University, Burnaby BC, V5A 1S6,
-Canada\
-^2^School of Aquatic and Fishery Sciences, University of Washington, Box 355020, Seattle, WA 98195-5020, USA\
-^3^NOAA\
-^4^\
-^5^UBC?\
+Canada
+
+^2^School of Aquatic and Fishery Sciences, University of Washington, Box 355020, Seattle, WA 98195-5020, USA
+
+^3^NOAA
+
+^4^
+
+^5^UBC?
+
 ^6^?
+
+\setlength{\parskip}{2pt}
+\setlength{\parindent}{16pt} 
+\clearpage
 
 # Introduction #
 
@@ -33,7 +42,7 @@ Paragraph 1: What is stock assessment simulation? Why is it increasingly critica
 - further, it lets us explore truths we are interested in and match (or mismatch) truths and assessments
 - refs: @hilborn1992 among others; recent papers on stock-assessment simulation
 
-2. Paragraph 2: What is SS3, why is it important, why simulate with it?
+Paragraph 2: What is SS3, why is it important, why simulate with it?
 
 - Stock synthesis is a modelling framework... Integrated analysis --- models population dynamics using a wide range of data [@maunder2012]
 - SS3 is the 3rd version of the software using this framework 
@@ -201,11 +210,15 @@ Other sections? how we validated it; benefit of using one well tested and well-u
 - funding: Fulbright Canada, NSERC, Simon Fraser University, ...
 - discussions and advice: André Punt, Richard Methot, Ian Taylor, James Thorson, ...
 
+\clearpage
+
 # Figure captions #
 
 Figure 1: Flow diagram of ss3sim
 
 Figure 2: Panels with output from the example
+
+\clearpage
 
 # Tables #
 
@@ -258,4 +271,9 @@ Function name          Description
 Table X: Comparison with related software?
 - maybe a table with the possible columns: software, reference, platform (e.g. R, GUI...), Short description/comparison, examples of papers using it
 
+\clearpage
+
 # References #
+
+\setlength{\parskip}{12pt}
+\setlength{\parindent}{0cm} 

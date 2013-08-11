@@ -1,14 +1,16 @@
-all: pdf
+all: pdf docx cleanbib
 
 pdf:
-	pandoc --bibliography=refs.bib --csl=icesjms.csl --latex-engine=xelatex --number-sections manuscript.md -o manuscript.pdf
+	pandoc -S --no-wrap --bibliography=refs.bib --csl=icesjms.csl --bibliography=refs.bib --latex-engine=xelatex ss3sim-ms.md -o manuscript.tex
+	perl -p -i -e "s/Fig. /Fig.~/g" manuscript.tex
+	xelatex ss3sim-ms
+	rm manuscript.tex *.log *.aux
 
 docx:
-	pandoc --bibliography=refs.bib --csl=icesjms.csl --reference-docx=reference.docx manuscript.md -o manuscript.docx
+	pandoc --bibliography=refs.bib --csl=icesjms.csl --reference-docx=reference.docx ss3sim-ms.md -o ss3sim-ms.docx
 
 md:
-	pandoc --bibliography=refs.bib --csl=icesjms.csl manuscript.md -o manuscript-with-refs.md
-#TODO need to fix et al.s - should be italic - check csl and file bug if needed
+	pandoc --bibliography=refs.bib --csl=icesjms.csl ss3sim-ms.md -o ss3sim-ms-refs.md
 
 cleanbib:
 	bibtool refs.bib -s > refs2.bib
