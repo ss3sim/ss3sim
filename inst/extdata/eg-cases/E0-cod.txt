@@ -1,4 +1,4 @@
-#description: fixed M, no qSurvey, fixed steepness
+# description: Fixed M, no qSurvey, fixed steepness
 natM_type;          1Parm      
 natM_n_breakpoints; NULL  
 natM_lorenzen;      NULL

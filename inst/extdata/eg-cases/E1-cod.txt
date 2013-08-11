@@ -1,5 +1,5 @@
-#description:Single estimated M w/ init at historic value, no qCPUE, fixed steepness
-#author: KFJ
+# description: Single estimated M w/ init at historic value, no qCPUE,
+# fixed steepness
 natM_type;          1Parm      
 natM_n_breakpoints; NULL  
 natM_lorenzen;      NULL

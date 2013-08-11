@@ -1,6 +1,4 @@
-# description:
-# author: CC
-# notes:
+# description: half the sd on survey observation error
 start_surv; 1974
 end_surv; 2012
 freq_surv; 2

@@ -1,6 +1,4 @@
-# description:
-# author: CC
-# notes:
+# description: base case for survey index
 start_surv; 1974
 end_surv; 2012
 freq_surv; 2
