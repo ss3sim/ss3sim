@@ -77,7 +77,7 @@ run_fish600 <- function(iterations, scenarios, seed = fish600seeds,
   get_fish600_modelfolder(paste0(sp, "-om")), em_model_dir =
   get_fish600_modelfolder(paste0(sp, "-em")), ...) {
 
-  l_pply(scenarios, function(x) {
+  output <- lapply(scenarios, function(x) {
     a <- get_caseargs(folder = case_folder, scenario = x) 
     sp <- substr_r(x, 3)
 
