@@ -42,6 +42,7 @@ calculate_runtime <- function(start_time, end_time) {
 #' @export
 #' @author Cole Monnahan
 #' @family get-results
+#' @import reshape
 #' @examples \dontrun{
 #' ## Put this R script in a folder which contains the Scenario folders, then run
 #' ## the code below.
@@ -241,7 +242,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
                                          resids={log(Obs)-log(Exp)}),
                                          select=c(FleetName, Yr, resids))
         resids.list[[rep]] <- cbind(scenario, rep,
-          reshape::cast(resids.long, FleetName~Yr, value="resids"))
+          cast(resids.long, FleetName~Yr, value="resids"))
         ## Get scalars from the two models
         scalar.om <- get_results_scalar(report.om)
         names(scalar.om) <- paste0(names(scalar.om),"_om")
