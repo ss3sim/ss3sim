@@ -28,7 +28,7 @@ Imports:
     gtools (>= 2.7.1),
     lubridate (>= 1.3.0),
     ggplot2 (>= 0.9.3.1),
-    reshape (>= 0.8.4)
+    reshape2 (>= 1.2.2)
 Collate:
     'change_SS_dat.r'
     'change_agecomp.r'

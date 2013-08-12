@@ -14,8 +14,9 @@ calculate_runtime <- function(start_time, end_time) {
     split = " ", fixed = T))[, -(1:2)])
   end <- data.frame(do.call(rbind, strsplit(x = as.character(end_time), 
     split = " ", fixed = T))[, -(1:2)])
-  names(start) <- names(end) <- c("month", "day", "time", 
-    "year")
+  start <- as.data.frame(t(start))
+  end <- as.data.frame(t(end))
+  names(start) <- names(end) <- c("month", "day", "time", "year")
   start.date <- lubridate::ymd_hms(with(start, paste(year, 
     month, day, time, sep = "-")))
   end.date <- lubridate::ymd_hms(with(end, paste(year, 
@@ -42,7 +43,6 @@ calculate_runtime <- function(start_time, end_time) {
 #' @export
 #' @author Cole Monnahan
 #' @family get-results
-#' @import reshape
 #' @examples \dontrun{
 #' ## Put this R script in a folder which contains the Scenario folders, then run
 #' ## the code below.
@@ -241,8 +241,8 @@ get_results_scenario <- function(scenario, directory=getwd(),
         resids.long <- subset(transform(report.em$cpue,
                                          resids={log(Obs)-log(Exp)}),
                                          select=c(FleetName, Yr, resids))
-        resids.list[[rep]] <- cbind(scenario, rep,
-          cast(resids.long, FleetName~Yr, value="resids"))
+        resids.list[[rep]] <-  cbind(scenario, rep,
+          reshape2::dcast(resids.long, FleetName~Yr, value.var="resids"))
         ## Get scalars from the two models
         scalar.om <- get_results_scalar(report.om)
         names(scalar.om) <- paste0(names(scalar.om),"_om")
