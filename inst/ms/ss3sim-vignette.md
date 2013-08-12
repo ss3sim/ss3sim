@@ -10,7 +10,7 @@ The package can be installed with:
 
 ```r
 # dependencies if needed:
-install.packages(c("r4ss", "plyr", "gtools", "ggplot2", "lubridate", "reshape"))
+install.packages(c("r4ss", "plyr", "gtools", "ggplot2", "lubridate", "reshape2"))
 install.packages("devtools")
 devtools::install_github("ss3sim", "seananderson")
 ```
@@ -235,7 +235,7 @@ The function `get_results_all` reads in a set of scenarios and combines the outp
 
 ```r
 get_results_all(user.scenarios = 
-  c("D0-E100-F0-G0-R0-S0-M0-cod",
+  c("D0-E100-F0-G0-R0-S0-M0-cod"),
     "D1-E100-F0-G0-R0-S0-M0-cod", 
     "D0-E101-F0-G0-R0-S0-M0-cod",
     "D1-E101-F0-G0-R0-S0-M0-cod", 

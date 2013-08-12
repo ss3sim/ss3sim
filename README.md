@@ -4,7 +4,7 @@ Installing the `ss3sim` `R` package
 The package can be installed and loaded with:
 
     # dependencies if needed:
-    install.packages(c("r4ss", "plyr", "gtools", "ggplot2", "lubridate", "reshape"))
+    install.packages(c("r4ss", "plyr", "gtools", "ggplot2", "lubridate", "reshape2"))
     install.packages("devtools")
 
     # install the package
