@@ -89,7 +89,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
     a <- get_caseargs(folder = case_folder, scenario = x) 
     sp <- substr_r(x, 3)
 
-    run_ss3sim(iterations, scenarios = x, m_params = a$M,
+    ss3sim_base(iterations, scenarios = x, m_params = a$M,
       sel_params = a$S, growth_params = a$G, f_params = a$F, index_params =
       a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp, 
       retro_params = a$R, estim_params = a$E, om_model_dir = om_model_dir, 
