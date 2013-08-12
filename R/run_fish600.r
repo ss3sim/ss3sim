@@ -38,17 +38,17 @@
 #' is. There will be folders named after your scenarios. They will
 #' look like this:
 #' \itemize{
-#' \item \code{M1-F1-D1-R1-cod/bias/1/om}
-#' \item \code{M1-F1-D1-R1-cod/bias/1/em}
-#' \item \code{M1-F1-D1-R1-cod/bias/2/om}
+#' \item \code{D0-E0-F0-G0-M0-R0-S0-cod/bias/1/om}
+#' \item \code{D0-E0-F0-G0-M0-R0-S0-cod/bias/1/em}
+#' \item \code{D0-E0-F0-G0-M0-R0-S0-cod/bias/2/om}
 #' \item ...
-#' \item \code{M1-F1-D1-R1-cod/1/om}
-#' \item \code{M1-F1-D1-R1-cod/1/em}
-#' \item \code{M1-F1-D1-R1-cod/2/om}
+#' \item \code{D0-E0-F0-G0-M0-R0-S0-cod/1/om}
+#' \item \code{D0-E0-F0-G0-M0-R0-S0-cod/1/em}
+#' \item \code{D0-E0-F0-G0-M0-R0-S0-cod/2/om}
 #' \item ...
 #' }
-#' @seealso \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
-#' \code{\link{run_bias_ss3}}
+#' @seealso \code{\link{run_ss3sim}}, \code{\link{ss3sim_base}},
+#' \code{\link{run_ss3model}}, \code{\link{run_bias_ss3}}
 #' @export
 #'
 #' @examples
