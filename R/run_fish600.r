@@ -72,20 +72,17 @@
 #' bias_adjust = FALSE, bias_already_run = TRUE)
 #' }
 
-run_fish600 <- function(iterations, scenarios, seed = fish600seeds,
-  case_folder = get_fish600_casefolder(), om_model_dir =
-  get_fish600_modelfolder(paste0(sp, "-om")), em_model_dir =
-  get_fish600_modelfolder(paste0(sp, "-em")), ...) {
+run_fish600 <- function(iterations, scenarios, case_folder,
+  om_model_dir, em_model_dir, ...) {
 
-  output <- lapply(scenarios, function(x) {
+  junk <- lapply(scenarios, function(x) {
     a <- get_caseargs(folder = case_folder, scenario = x) 
-    sp <- substr_r(x, 3)
 
     run_ss3sim(iterations, scenarios = x, m_params = a$M,
       sel_params = a$S, growth_params = a$G, f_params = a$F, index_params =
       a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp, 
       retro_params = a$R, estim_params = a$E, om_model_dir = om_model_dir, 
-      em_model_dir = em_model_dir, seed = seed, ...) 
+      em_model_dir = em_model_dir, ...) 
   })
 
   print(paste("Completed iterations:", paste(iterations, collapse = ", "), 
