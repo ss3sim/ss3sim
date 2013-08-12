@@ -66,22 +66,32 @@
 \examples{
 \dontrun{
 # Without bias adjustment:
-run_ss3sim(iterations = 1, scenarios = "D0-E0-F0-G0-M0-R0-S0-cod")
+d <- system.file("extdata", package = "ss3sim")
+case_folder <- paste0(d, "/eg-cases")
+om <- paste0(d, "/models/cod-om")
+em <- paste0(d, "/models/cod-em")
 
-# Run multiple scenarios (but only 1 iteration each):
-run_ss3sim(iterations = 1,
-scenarios = c("D0-E0-F0-G0-M0-R0-S0-cod", "D0-E0-F0-G0-M1-R0-S0-cod"))
+run_ss3sim(iterations = 1:1, scenarios = "D0-E0-F0-G0-R0-S0-M0-cod",
+  case_folder = case_folder, om_model_dir = om, em_model_dir = em)
 
 # With bias adjustment:
 # (Note that bias_nsim should be bigger, say 10, but it is set to 2
 # here so the example runs faster.)
-run_ss3sim(iterations = 1, scenarios = "M0-F0-D0-R0-S0-G0-E0-cod",
-bias_adjust = TRUE, bias_nsim = 2)
+run_ss3sim(iterations = 1:1, scenarios = "D1-E0-F0-G0-R0-S0-M0-cod",
+  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+  bias_adjust = TRUE, bias_nsim = 2)
 
 # Restarting the previous run using the existing bias-adjustment
 # output
-run_ss3sim(iterations = 2:3, scenarios = "M0-F0-D0-R0-S0-G0-E0-cod",
-bias_adjust = FALSE, bias_already_run = TRUE)
+run_ss3sim(iterations = 2:3, scenarios = "D1-E0-F0-G0-R0-S0-M0-cod",
+  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+  bias_adjust = FALSE, bias_already_run = TRUE)
+
+# A deterministic run for model checking:
+recdevs_det <- matrix(0, nrow = 100, ncol = 20)
+run_ss3sim(iterations = 1:20, scenarios = "D0-E100-F0-G0-R0-S0-M0-cod",
+  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+  bias_adjust = TRUE, bias_nsim = 2, user_recdevs = recdevs_det)
 }
 }
 \author{
