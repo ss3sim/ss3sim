@@ -3,8 +3,8 @@
 #' This function takes care of calling SS3. Importantly, it parses
 #' whether the user is on Unix or Windows and calls the binary
 #' correctly. This lower-level function is meant to be called by
-#' higher level functions such as \code{\link{run_ss3sim}} and
-#' \code{\link{run_fish600}}.
+#' higher level functions such as \code{\link{run_ss3sim}},
+#' \code{\link{ss3sim_base}}, and \code{\link{run_fish600}}.
 #'
 #' @param scenarios Which scenarios to run. Controls which folder
 #' contains the model that SS3 should run on.
@@ -23,7 +23,7 @@
 #' ADMB output is not printed on screen. This will be slightly faster.
 #' Set to \code{FALSE} to help with debugging.
 #' @param ... Anything else to pass to \code{system}.
-#' @seealso \code{\link{run_ss3sim}}, \code{\link{run_fish600}}
+#' @seealso \code{\link{ss3sim_base}}, \code{\link{run_fish600}}
 #' @author Sean C. Anderson
 #' @export
 

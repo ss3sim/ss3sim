@@ -69,7 +69,7 @@ Many of the functions in this package depend on that formatting.
 Cases and scenarios
 -------------------
 
-To use the high-level wrapper function `run_fish600`, you will have unique case identifiers that combine to create unique scenarios. 
+To use the high-level wrapper function `run_ss3sim`, you will have unique case identifiers that combine to create unique scenarios. 
 The types of cases are: natural mortality (M), fishing mortality (F), data quality (D), selectivity (S), growth (G), and retrospective (R). 
 These case IDs are followed by three-letter species identifier.
 It's important to use three letters since the functions assume that the last three letters represent a species (or some other identifier for a different project).
@@ -143,8 +143,8 @@ The default settings create these files:
 
 Look in your working directory for the template files. 
 Change the case ID number (defaults to `0`) and the species identifier to a three letter identifier. 
-For the FISH 600 project use one of `cod`, `sar`, or `fla` for cod, sardine, or flatfish. 
-An example filename would be `M1-sar.txt` or `lcomp2-fla.txt`. 
+For example, `cod`, `sar`, or `fla` for cod, sardine, or flatfish. 
+An example filename would therefore be `M1-sar.txt` or `lcomp2-fla.txt`. 
 The case `D1` corresponds to the files `index1-spp.txt`, `agecomp1-spp.txt`, and `lcomp0-spp.txt`. 
 The other case types have single argument files.
 
@@ -181,11 +181,11 @@ Then we'll set up case "estimation" files in which the recruitment deviations ar
 We'll name these files `E100-cod.txt` and `E101-cod.txt`. 
 In the control files, the key element is setting `par_name = SR_sigmaR` and `par_int = 0.001`.
 
-When we run the simulations, we'll pass our deterministic recruitment deviations to the function `run_fish600`. 
+When we run the simulations, we'll pass our deterministic recruitment deviations to the function `run_ss3sim`. 
 Running 20 replicates should be enough to identify whether our models are performing as we expect.
 
 ```{r deterministic-runs, eval=FALSE}
-run_fish600(iterations = 1:20, scenarios = 
+run_ss3sim(iterations = 1:20, scenarios = 
   c("D0-E100-F0-G0-R0-S0-M0-cod",
     "D1-E100-F0-G0-R0-S0-M0-cod", 
     "D0-E101-F0-G0-R0-S0-M0-cod",
@@ -200,7 +200,7 @@ Running the stochastic simulations
 Now we can run the stochastic simulations.
 
 ```{r stochastic-runs, eval=FALSE}
-run_fish600(iterations = 1:100, scenarios = 
+run_ss3sim(iterations = 1:100, scenarios = 
   c("D0-E0-F0-G0-R0-S0-M0-cod",
     "D1-E0-F0-G0-R0-S0-M0-cod", 
     "D0-E1-F0-G0-R0-S0-M0-cod",

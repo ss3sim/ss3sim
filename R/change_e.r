@@ -24,7 +24,7 @@
 #' @examples
 #' \dontrun{
 #' d <- system.file("extdata", package = "ss3sim")
-#' ctl_file <- paste0(d, "/run_ss3sim_eg/cod_em/simple_cod_em.ctl")
+#' ctl_file <- paste0(d, "/ss3sim_base_eg/cod_em/simple_cod_em.ctl")
 #' change_e(ctl_file_in = ctl_file, ctl_file_out = "change_e.ctl",
 #'          natM_type = "n_breakpoints", natM_n_breakpoints = c(1,4),
 #'          natM_lorenzen = NULL, natM_val = c(.2,3,.4,5),

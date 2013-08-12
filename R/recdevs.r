@@ -19,7 +19,7 @@
 #' long and with up to 1000 iterations. If you want to work with more
 #' iterations or longer time series then you'll need to specify your
 #' own recdevs through the \code{user_recdevs} argument in
-#' \code{\link{run_ss3sim}}. The function
+#' \code{\link{ss3sim_base}}. The function
 #' \code{\link{change_rec_devs}} will throw out extra years of
 #' recruitment deviations.
 #'

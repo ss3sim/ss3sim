@@ -1,7 +1,7 @@
 #' Master function to run the FISH600-specific simulations
 #'
 #' This function first deals with parsing the case input files and
-#' then passes these arguments on to \code{\link{run_ss3sim}}.
+#' then passes these arguments on to \code{\link{ss3sim_base}}.
 #'
 #' @param iterations Which iterations to run. A numeric vector. For
 #' example \code{1:100}.
@@ -17,7 +17,7 @@
 #' set, there should be a seed value for each iteration. Only affects
 #' the observation error -- the process error (recruitment deviations)
 #' are already fixed according to \code{\link{recdevs}} by default.
-#' @param ... Anything else to pass to \code{\link{run_ss3sim}}. This
+#' @param ... Anything else to pass to \code{\link{ss3sim_base}}. This
 #' includes \code{bias_adjust} and \code{bias_nsim}. Also, you can
 #' pass additional options to \code{SS3} through the argument
 #' \code{admb_options}. Just don't pass the ADMB options \code{-noest}
@@ -47,7 +47,7 @@
 #' \item \code{M1-F1-D1-R1-cod/2/om}
 #' \item ...
 #' }
-#' @seealso \code{\link{run_ss3sim}}, \code{\link{run_ss3model}},
+#' @seealso \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
 #' \code{\link{run_bias_ss3}}
 #' @export
 #'
@@ -82,7 +82,7 @@ run_fish600 <- function(iterations, scenarios, seed = fish600seeds, ...) {
     om_model_dir <- get_fish600_modelfolder(paste0(sp, "-om"))
     em_model_dir <- get_fish600_modelfolder(paste0(sp, "-em"))
 
-    run_ss3sim(iterations, scenarios = x, m_params = a$M,
+    ss3sim_base(iterations, scenarios = x, m_params = a$M,
       sel_params = a$S, growth_params = a$G, f_params = a$F, index_params =
       a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp, 
       retro_params = a$R, estim_params = a$E, om_model_dir = om_model_dir, 

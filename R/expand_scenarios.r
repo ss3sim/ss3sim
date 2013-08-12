@@ -1,8 +1,9 @@
 #' Create vectors of scenarios from inputs. 
 #'
 #' Create vectors of scenarios from inputs. For passing to
-#' \code{\link{run_fish600}} and \code{\link{get_results_all}}.
-#' Default case values are the base case (\code{0}).
+#' \code{\link{run_ss3sim}}, \code{\link{run_fish600}}, or
+#' \code{\link{get_results_all}}. Default case values are the base
+#' case (\code{0}).
 #'
 #' @param e Integer values of estimation cases to be expanded
 #' @param d Integer values of data cases to be expanded
