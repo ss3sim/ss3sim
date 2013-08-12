@@ -68,3 +68,4 @@ Collate:
     'plot-results.r'
     'scalars.r'
     'timeseries.r'
+    'ss3sim_base.r'

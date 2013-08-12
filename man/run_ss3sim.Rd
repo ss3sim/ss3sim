@@ -1,152 +1,94 @@
 \name{run_ss3sim}
 \alias{run_ss3sim}
-\title{Run both the operating model and assessment model}
+\title{Master function to run SS3 simulations}
 \usage{
-  run_ss3sim(iterations, scenarios, m_params, f_params,
-    index_params, lcomp_params, agecomp_params,
-    estim_params, om_model_dir, em_model_dir,
-    sel_params = NULL, growth_params = NULL,
-    retro_params = NULL, user_recdevs = NULL,
-    bias_adjust = FALSE, bias_nsim = 5,
-    bias_already_run = FALSE, hess_always = FALSE,
-    print_logfile = TRUE, sleep = 0, seed = NULL,
-    conv_crit = 0.2, ...)
+  run_ss3sim(iterations, scenarios, case_folder,
+    om_model_dir, em_model_dir, seed = NULL, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
-  vector.}
+  vector. For example \code{1:100}.}
 
-  \item{scenarios}{Which scenarios to run.}
-
-  \item{m_params}{A named list containing all the
-  \code{\link{change_m}} options.}
-
-  \item{sel_params}{A named list containing all the
-  \code{\link{change_sel}} options.}
-
-  \item{growth_params}{A named list containing all the
-  \code{\link{change_growth}} options.}
-
-  \item{f_params}{A named list containing all the
-  \code{\link{change_f}} options.}
-
-  \item{index_params}{A named list containing all the
-  \code{\link{change_index}} options.}
-
-  \item{lcomp_params}{A named list containing all the
-  \code{\link{change_lcomp}} options.}
-
-  \item{agecomp_params}{A named list containing all the
-  \code{\link{change_agecomp}} options.}
-
-  \item{retro_params}{A named list containing all the
-  \code{\link{change_retro}} options.}
-
-  \item{estim_params}{A named list containing all the
-  \code{\link{change_e}} options.}
-
-  \item{om_model_dir}{The directory with the operating
-  model you want to copy and use for the specified
-  simulations.}
-
-  \item{em_model_dir}{The directory with the estimation
-  model you want to copy and use for the specified
-  simulations.}
-
-  \item{user_recdevs}{An optional 100x100 matrix of
-  recruitment deviations to replace the recruitment
-  deviations built into the package
-  (\code{\link{recdevs}}). The columns represent run
-  iterations and the rows represent years. Note that these
-  will be multiplied by sigma R. So, under normal
-  conditions this matrix should contain standard-normal
-  values \code{~N(0, 1)}.}
-
-  \item{bias_adjust}{Run bias adjustment first? See
-  \code{\link{run_bias_ss3}}.}
-
-  \item{bias_nsim}{If bias adjustment is run, how many
-  simulations should the bias be estimated from? It will
-  take the mean of the adjustment factors across these
-  runs.}
-
-  \item{bias_already_run}{If you've already run the bias
-  runs for a scenario (the bias folders and \code{.dat}
-  files already exist) then you can set this to \code{TRUE}
-  to avoid re-running the bias adjustment routine.}
-
-  \item{hess_always}{If \code{TRUE} then the Hessian will
-  always be calculated. If \code{FALSE} then the Hessian
-  will only be calculated for bias-adjustment runs thereby
-  saving time.}
-
-  \item{print_logfile}{Logical. Print a log file?}
-
-  \item{sleep}{A time interval (in seconds) to pause on
-  each iteration. Useful if you want to reduce average CPU
-  time -- perhaps because you're working on a shared
-  server.}
+  \item{scenarios}{Which scenarios to run. A vector of
+  character objects. For example
+  \code{c("D0-E0-F0-G0-R0-S0-M0-cod",
+  "D1-E0-F0-G0-R0-S0-M0-cod")}.}
 
   \item{seed}{If set to a numeric vector then
   \code{set.seed} will be set to each successive value of
   the vector \code{seed} on each iteration. This can be
   useful to make simulations reproducible. If left set to
-  \code{NULL} then the seed will not be set.}
+  \code{NULL} then the seed will not be set. See, for
+  example, how this is set in \code{\link{run_fish600}}
+  using the package data object \code{\link{fish600seeds}}.
+  If set, there should be a seed value for each iteration.
+  Only affects the observation error -- the process error
+  (recruitment deviations) are already fixed according to
+  \code{\link{recdevs}} by default.}
 
-  \item{conv_crit}{The maximum percentage of bias
-  iterations that can produce a non-invertible Hessian
-  before a warning will be produced. If this percentage is
-  exceeded then a file \code{WARNINGS.txt} will be
-  produced. Currently, the simulations will continue to
-  run.}
-
-  \item{...}{Anything extra to pass to
-  \code{\link{run_ss3model}}. For example, you may want to
+  \item{...}{Anything else to pass to
+  \code{\link{ss3sim_base}}. This includes
+  \code{bias_adjust} and \code{bias_nsim}. Also, you can
   pass additional options to \code{SS3} through the
-  argument \code{admb_options}. Just don't pass
-  \code{-noest} or \code{-nohess} and enable bias
-  correction. Anything that doesn't match a named argument
-  in \code{\link{run_ss3model}} will be passed to the
-  \code{\link{system}} call that runs \code{SS3}. If you
-  are on a Windows computer then you might want to pass
-  \code{show.output.on.console = FALSE} to make the
-  simulations runs faster.}
+  argument \code{admb_options}. Just don't pass the ADMB
+  options \code{-noest} or \code{-nohess} and enable bias
+  adjustment.}
 }
 \description{
-  This function is a wrapper function that can call
-  \code{\link{run_ss3model}} for the operating model,
-  manipulate the output (add recruitment deviations, survey
-  the data, etc.), and run the estimation model.
+  This function first deals with parsing the case input
+  files and then passes these arguments on to
+  \code{\link{ss3sim_base}}.
 }
 \details{
-  This function is written to be flexible. You can specify
-  the natural mortality, fishing mortality, survey index,
-  length comp, and age comp parameters in the function call
-  as list objects. For a higher-level wrapper function
-  specific to the setup of the Fish600 projects, see
-  \code{\link{run_fish600}}.
+  The operating model folder should contain:
+  \code{forecast.ss}, \code{yourmodel.ctl},
+  \code{yourmodel.dat}, \code{ss3.par}, and
+  \code{starter.ss}. Nothing more and nothing less. The
+  files should be the versions returned as \code{.ss_new}
+  files. This is important because it creates consistent
+  formatting which many of the functions in this package
+  depend on. Rename the \code{.ss_new} files as listed
+  above (and in all lowercase). The estimation model folder
+  should contain all the same files listed above except the
+  \code{ss3.par} and \code{yourmodel.dat} files, which are
+  unnecessary.
+
+  The output will appear in whatever your current R working
+  directory is. There will be folders named after your
+  scenarios. They will look like this: \itemize{ \item
+  \code{D0-E0-F0-G0-M0-R0-S0-cod/bias/1/om} \item
+  \code{D0-E0-F0-G0-M0-R0-S0-cod/bias/1/em} \item
+  \code{D0-E0-F0-G0-M0-R0-S0-cod/bias/2/om} \item ... \item
+  \code{D0-E0-F0-G0-M0-R0-S0-cod/1/om} \item
+  \code{D0-E0-F0-G0-M0-R0-S0-cod/1/em} \item
+  \code{D0-E0-F0-G0-M0-R0-S0-cod/2/om} \item ... }
 }
 \examples{
 \dontrun{
-# Pull in file paths from the package example data:
-d <- system.file("extdata", package = "ss3sim")
-f <- paste0(d, "/run_ss3sim_eg/")
-om_model_dir <- paste0(f, "cod_om")
-em_model_dir <- paste0(f, "cod_em")
-a <- get_caseargs(folder = paste0(f, "case-arguments"), scenario =
-"M1-F1-D1-R1-S1-G1-E1-cod")
+# Without bias adjustment:
+run_ss3sim(iterations = 1, scenarios = "D0-E0-F0-G0-M0-R0-S0-cod")
 
-run_ss3sim(iterations = 1, scenarios = "M1-F1-D1-R1-S1-G1-E1-cod",
-  m_params = a$M, sel_params = a$S, growth_params = a$G, f_params =
-  a$F, index_params = a$index, lcomp_params = a$lcomp, agecomp_params
-  = a$agecomp, retro_params = a$R, estim_params = a$E,
-  om_model_dir = om_model_dir, em_model_dir = em_model_dir)
+# Run multiple scenarios (but only 1 iteration each):
+run_ss3sim(iterations = 1,
+scenarios = c("D0-E0-F0-G0-M0-R0-S0-cod", "D0-E0-F0-G0-M1-R0-S0-cod"))
+
+# With bias adjustment:
+# (Note that bias_nsim should be bigger, say 10, but it is set to 2
+# here so the example runs faster.)
+run_ss3sim(iterations = 1, scenarios = "M0-F0-D0-R0-S0-G0-E0-cod",
+bias_adjust = TRUE, bias_nsim = 2)
+
+# Restarting the previous run using the existing bias-adjustment
+# output
+run_ss3sim(iterations = 2:3, scenarios = "M0-F0-D0-R0-S0-G0-E0-cod",
+bias_adjust = FALSE, bias_already_run = TRUE)
 }
 }
 \author{
   Sean C. Anderson
 }
 \seealso{
-  \code{\link{run_fish600}}
+  \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
+  \code{\link{run_bias_ss3}}
 }
 

@@ -27,7 +27,7 @@
   \code{\link{recdevs}} by default.}
 
   \item{...}{Anything else to pass to
-  \code{\link{run_ss3sim}}. This includes
+  \code{\link{ss3sim_base}}. This includes
   \code{bias_adjust} and \code{bias_nsim}. Also, you can
   pass additional options to \code{SS3} through the
   argument \code{admb_options}. Just don't pass the ADMB
@@ -37,7 +37,7 @@
 \description{
   This function first deals with parsing the case input
   files and then passes these arguments on to
-  \code{\link{run_ss3sim}}.
+  \code{\link{ss3sim_base}}.
 }
 \details{
   The operating model folder should contain:
@@ -88,7 +88,7 @@ bias_adjust = FALSE, bias_already_run = TRUE)
   Sean C. Anderson
 }
 \seealso{
-  \code{\link{run_ss3sim}}, \code{\link{run_ss3model}},
+  \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
   \code{\link{run_bias_ss3}}
 }
 

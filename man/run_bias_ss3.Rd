@@ -61,7 +61,7 @@ nsim = 2)
   Carey McGilliard
 }
 \seealso{
-  \code{\link{run_ss3sim}}, \code{\link{run_ss3model}},
+  \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
   \code{\link{run_bias_ss3}}
 }
 

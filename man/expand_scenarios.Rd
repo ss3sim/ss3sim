@@ -30,7 +30,7 @@
 }
 \description{
   Create vectors of scenarios from inputs. For passing to
-  \code{\link{run_fish600}} and
+  \code{\link{run_ss3sim}}, \code{\link{run_fish600}}, or
   \code{\link{get_results_all}}. Default case values are
   the base case (\code{0}).
 }
