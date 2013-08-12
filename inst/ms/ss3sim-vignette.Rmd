@@ -69,18 +69,14 @@ Many of the functions in this package depend on that formatting.
 Cases and scenarios
 -------------------
 
-For the purposes of the FISH 600 project, we have unique case
-identifiers which combine to create unique scenarios. The types of cases
-are: natural mortality (M), fishing mortality (F), data quality (D), and
-retrospective (R). And the species are cod (cod), sardine-like (sar),
-and flatfish (fla). It’s important to use these three letter
-abbreviations for the species since the functions assume that the last
-three letters represent a species (or some other identifier for a
-different project).
+To use the high-level wrapper function `run_fish600`, you will have unique case identifiers that combine to create unique scenarios. 
+The types of cases are: natural mortality (M), fishing mortality (F), data quality (D), selectivity (S), growth (G), and retrospective (R). 
+These case IDs are followed by three-letter species identifier.
+It's important to use three letters since the functions assume that the last three letters represent a species (or some other identifier for a different project).
 
-The different version of each case are identified with numbers. So, for
-example, the base case scenario for cod is identified as
-`M1-F1-D1-R1-cod`. 
+The different version of each case are identified with numbers. 
+So, for example, the base-case scenario for a cod stock might be: `D0-E0-F0-G0-M0-R0-S0-cod`. 
+The order of the letters doesn't matter, as long as you use them consistently.
 
 
 Output file structure
@@ -89,45 +85,43 @@ Output file structure
 The function `copy_ss3models` creates a folder structure and copies over
 the operating and estimation models. The folder structure looks like:
 
-      M1-F1-D1-R1-cod/1/om
-      M1-F1-D1-R1-cod/1/em
-      M1-F1-D1-R1-cod/2/om
-      M1-F1-D1-R1-cod/2/em
+      D0-E0-F0-G0-M0-R0-S0-cod/1/om
+      D0-E0-F0-G0-M0-R0-S0-cod/1/em
+      D0-E0-F0-G0-M0-R0-S0-cod/2/om
+      D0-E0-F0-G0-M0-R0-S0-cod/2/em
       ...
 
 If you are using bias adjustment (`bias_adjust = TRUE`) then there will
 be some additional folders. In that case the folders will look like:
 
-      M1-F1-D1-R1-cod/bias/1/om
-      M1-F1-D1-R1-cod/bias/1/em
-      M1-F1-D1-R1-cod/bias/2/om
-      M1-F1-D1-R1-cod/bias/2/em
+      D0-E0-F0-G0-M0-R0-S0-cod/bias/1/om
+      D0-E0-F0-G0-M0-R0-S0-cod/bias/1/em
+      D0-E0-F0-G0-M0-R0-S0-cod/bias/2/om
+      D0-E0-F0-G0-M0-R0-S0-cod/bias/2/em
       ...
-      M1-F1-D1-R1-cod/1/om
-      M1-F1-D1-R1-cod/1/em
-      M1-F1-D1-R1-cod/2/om
-      M1-F1-D1-R1-cod/2/em
+      D0-E0-F0-G0-M0-R0-S0-cod/1/om
+      D0-E0-F0-G0-M0-R0-S0-cod/1/em
+      D0-E0-F0-G0-M0-R0-S0-cod/2/om
+      D0-E0-F0-G0-M0-R0-S0-cod/2/em
       ...
 
-Note that the operating and estimating model folders have been renamed
-`om` and `em` within each iteration, the operating and estimation models
-have been checked to make sure they contain the minimal files (as listed
-above), the filenames have been made all lowercase, the data file has
-been renamed `data.dat`, the control files have been renamed `om.ctl` or
-`em.ctl`, and the starter and control files have been adjusted to
-reflect these new file names.
+Note that the operating and estimating model folders have been renamed `om` and `em` within each iteration, 
+the operating and estimation models have been checked to make sure they contain the minimal files (as listed above), 
+the filenames have been made all lowercase, 
+the data file has been renamed `data.dat`, 
+the control files have been renamed `om.ctl` or `em.ctl`, 
+and the starter and control files have been adjusted to reflect these new file names.
 
 The functions in this package assume you've set your working directory in `R` to be the base folder where you will store the scenario folders.
 
 Creating the input configuration files
 --------------------------------------
 
-You will need to have a folder containing “case” argument definitions.
-These plain text files are read by `get_caseval` and turned into
-argument lists that are passed to `run_ss3sim`. You can create template
-input files by running `create_argfiles`. It reads the various functions
-and parses the arguments and default values into plain text files. The
-default settings create these files:
+You will need to have a folder containing "case" argument definitions. 
+These plain text files are read by `get_caseval` and turned into argument lists that are passed to `run_ss3sim`. 
+You can create template input files by running `create_argfiles`. 
+It reads the various functions and parses the arguments and default values into plain text files. 
+The default settings create these files:
 
 1.  `M0-spp.txt`
 
@@ -147,29 +141,26 @@ default settings create these files:
 
 9.  `E0-spp.txt`
 
-Look in your working directory for the template files. Change the case
-ID number (defaults to `0`) and the species identifier to a three letter
-identifier. For the FISH 600 project use one of `cod`, `sar`, or `fla`
-for cod, sardine, or flatfish. An example filename would be `M1-sar.txt`
-or `lcomp2-fla.txt`. The case `D1` corresponds to the files
-`index1-spp.txt`, `agecomp1-spp.txt`, and `lcomp0-spp.txt`. The other
-case types have single argument files.
+Look in your working directory for the template files. 
+Change the case ID number (defaults to `0`) and the species identifier to a three letter identifier. 
+For the FISH 600 project use one of `cod`, `sar`, or `fla` for cod, sardine, or flatfish. 
+An example filename would be `M1-sar.txt` or `lcomp2-fla.txt`. 
+The case `D1` corresponds to the files `index1-spp.txt`, `agecomp1-spp.txt`, and `lcomp0-spp.txt`. 
+The other case types have single argument files.
 
-The first column in the text files denotes the argument to be passed to
-a function. The second argument denotes the value to be passed. You can
-use any simple `R` syntax. For example: `c(1, 2, 4)`, or `seq(1, 100)`
-or `1:100` or `matrix()`. Character objects don’t need to be quoted, but
-can be if you’d like. However, be careful not to use the delimiter (set
-up as a semicolon) anywhere else in the file besides to denote columns.
-You can add comments after any `#` symbols. Internally, the functions
-evaluate in `R` any entries that have no character values (e.g. `1:100`)
-or have an alpha-numeric character followed by a `(`. Anything that is
-character only or has character mixed with numeric but doesn’t have the
-regular expression `"[A-Za-z0-9]("` gets turned into a character
+The first column in the text files denotes the argument to be passed to a function. 
+The second argument denotes the value to be passed. 
+You can use any simple `R` syntax. 
+For example: `c(1, 2, 4)`, or `seq(1, 100)` or `1:100` or `matrix()`. 
+Character objects don’t need to be quoted, but can be if you’d like. 
+However, be careful not to use the delimiter (set up as a semicolon) anywhere else in the file besides to denote columns. 
+You can add comments after any `#` symbols. 
+Internally, the functions evaluate in `R` any entries that have no character values (e.g. 
+`1:100`) or have an alpha-numeric character followed by a `(`. 
+Anything that is character only or has character mixed with numeric but doesn't have the regular expression `"[A-Za-z0-9]("` gets turned into a character
 argument.
 
-Putting that all together, here’s what an example `F1-cod.txt` file
-might look like:
+Putting that all together, here’s what an example `F1-cod.txt` file might look like:
 
     years; 1:100
     years_alter; NA 
@@ -232,18 +223,35 @@ get_results_all(user.scenarios =
     "D1-E1-F0-G0-R0-S0-M0-cod"))
 ```
 
-Let's read in the `.csv` files and calculate some useful values in new columns. 
+Let's read in the `.csv` files:
 
-
-```{r read-output}
+```{r read-output, eval=FALSE}
 scalar_dat <- read.csv("final_results_scalar.csv")
 ts_dat <- read.csv("final_results_ts.csv")
+```
 
+```{r load-output, echo=FALSE}
+# this is to save file space in the package:
+load("ts_dat.rda")
+load("scalar_dat.rda")
+```
+
+And calculate some useful values in new columns:
+
+```{r transform-output}
 scalar_dat <- transform(scalar_dat,
   SSB_MSY=(SSB_MSY_em-SSB_MSY_om)/SSB_MSY_om,
   log_max_grad = log(max_grad))
 
-ts_dat <- transform(ts_dat, SpawnBio=(SpawnBio_em-SpawnBio_om)/SpawnBio_om)
+scalar_dat <- transform(scalar_dat, 
+  steep = (SR_BH_steep_om - SR_BH_steep_em)/SR_BH_steep_om, 
+  logR0 = (SR_LN_R0_om - SR_LN_R0_em)/SR_LN_R0_om, 
+  depletion = (depletion_om - depletion_em)/depletion_om,
+  SSB_MSY = (SSB_MSY_em - SSB_MSY_om)/SSB_MSY_om, 
+  SR_sigmaR = (SR_sigmaR_em - SR_sigmaR_om)/SR_sigmaR_om, 
+  NatM = (NatM_p_1_Fem_GP_1_em - NatM_p_1_Fem_GP_1_om)/NatM_p_1_Fem_GP_1_om)
+
+ts_dat <- transform(ts_dat, SpawnBio = (SpawnBio_em - SpawnBio_om)/SpawnBio_om)
 ts_dat <- merge(ts_dat, scalar_dat[,c("scenario", "replicate",
     "max_grad")])
 
@@ -251,16 +259,14 @@ scalar_dat_det <- subset(scalar_dat, E %in% c("E100", "E101"))
 scalar_dat_sto <- subset(scalar_dat, E %in% c("E0", "E1"))
 ts_dat_det <- subset(ts_dat, E %in% c("E100", "E101"))
 ts_dat_sto <- subset(ts_dat, E %in% c("E0", "E1") & replicate %in% 1:50)
-
-# add more here
 ```
 
 Now let's look at boxplots of the deterministic model runs. 
 
-```{r plot-deterministic, fig.height=4, fig.width=7, fig.cap="Boxplot of relative error for SSB MSY. We see relatively little bias."}
+```{r plot-deterministic, fig.height=3.5, fig.width=9, fig.cap="Boxplot of relative error for SSB MSY. We see relatively little bias."}
 
 plot_scalar_boxplot(scalar_dat_det, x = "SR_LN_R0_om", y = "SSB_MSY",
-  vert = "D", relative_error = TRUE)
+  vert = "D", vert2 = "E", relative_error = TRUE)
 
 # add more here
 ```
@@ -268,9 +274,16 @@ plot_scalar_boxplot(scalar_dat_det, x = "SR_LN_R0_om", y = "SSB_MSY",
 Let's look at the relative error in estimates of spawning biomass. 
 We'll colour the time series according to the 
 
-```{r plot-sto-ts, fig.height=4, fig.width=7, fig.cap="Time series of relative error in spawning stock biomass."}
-plot_ts_points(ts_dat_sto, y = "SpawnBio", vert = "D", 
+```{r plot-sto-ts, fig.height=3.5, fig.width=9, fig.cap="Time series of relative error in spawning stock biomass."}
+plot_ts_points(ts_dat_sto, y = "SpawnBio", vert = "D", vert2 = "E", 
   color = "max_grad", relative_error = TRUE)
+```
+
+```{r test-plots, fig.height=5, fig.width=5, fig.cap="Test plots"}
+library(ggplot2)
+p <- ggplot(ts_dat_sto, aes(year, SpawnBio_em, group = replicate)) + geom_line(alpha = 0.2) + facet_grid(D~E)
+print(p)
+
 ```
 
 Putting `SS3` in your path
@@ -299,7 +312,7 @@ permission to move a file to a folder like `/usr/bin/`.
 
 If you’ve previously modified your path to add a non-standard location
 for the `SS3` binary, you may need to also tell `R` about the new path.
-The path that `R` sees may not include additional paths that you’ve
+The path that `R` sees may not include additional paths that you've
 added through a configuration file like `.bash_profile`. You can add to
 the path that `R` sees by including a line like this in your `.Rprofile`
 file. (This is an invisible file in your home directory.)
@@ -310,7 +323,7 @@ For Windows
 -----------
 
 To check if SS is in your path: open a DOS prompt and type `ss3 -?` and
-hit enter. If you get a line like “ss3 is not recognized …” then SS is
+hit enter. If you get a line like “ss3 is not recognized ...” then SS is
 not in your path. To add it to your path:
 
 1.  Find the latest version of the `ss3.exe` binary on your computer
@@ -322,7 +335,7 @@ not in your path. To add it to your path:
 4.  Choose “Edit environment variables for your account” under Control
     Panel
 
-5.  Click on `PATH` if it exists, create it if doesn’t exist
+5.  Click on `PATH` if it exists, create it if doesn't exist
 
 6.  Choose `PATH` and click edit
 
