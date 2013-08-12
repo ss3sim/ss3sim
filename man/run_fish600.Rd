@@ -2,8 +2,8 @@
 \alias{run_fish600}
 \title{Master function to run the FISH600-specific simulations}
 \usage{
-  run_fish600(iterations, scenarios, case_folder,
-    om_model_dir, em_model_dir, ...)
+  run_fish600(iterations, scenarios, seed = fish600seeds,
+    ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
