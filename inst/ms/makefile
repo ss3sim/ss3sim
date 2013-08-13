@@ -18,5 +18,5 @@ cleanbib:
 
 vignette:
 	./knit
-	pandoc -S ss3sim-vignette.md -o ss3sim-vignette.pdf
+	pandoc -S -N ss3sim-vignette.md -o ss3sim-vignette.pdf
 	#rm ss3sim-vignette.md
