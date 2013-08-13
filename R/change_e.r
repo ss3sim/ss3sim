@@ -3,6 +3,8 @@
 #'
 #' @param ctl_file_in The operating model control file to manipulate
 #' @param ctl_file_out Name of the resulting operating model control file
+#' @param dat_file_in The data file to manipulate for forecasting
+#' @param for_file_in Name of forecast file to base forecasts on.
 #' @param natM_type A character value corresponding to option 0:4 in
 #'                  stock synthesis (i.e. "1Parm", "n_breakpoints",
 #'                  "Lorenzen", "agespecific", "agespec_withseasinterpolate"),
@@ -19,6 +21,10 @@
 #'                value can be NA if you do not wish to change the int.
 #' @param par_phase Vector of phase values, one for each parameter in par_name,
 #'                  value can be NA if you do not wish to change the phase.
+#' @param forecast_num Number of years to remove from the data and instead perform
+#'                     forecasts for
+#' @param run_change_e_full If FALSE change_e will only manipulate for forecasting,
+#'                          if TRUE the full function capability will be ran.
 #' @author Kelli Johnson
 #' @export
 #' @examples
@@ -26,17 +32,22 @@
 #' d <- system.file("extdata", package = "ss3sim")
 #' ctl_file <- paste0(d, "/ss3sim_base_eg/cod_em/simple_cod_em.ctl")
 #' change_e(ctl_file_in = ctl_file, ctl_file_out = "change_e.ctl",
+#'          dat_file_in = "data.dat", for_file_in = "forecast.ss", 
 #'          natM_type = "n_breakpoints", natM_n_breakpoints = c(1,4),
 #'          natM_lorenzen = NULL, natM_val = c(.2,3,.4,5),
 #'          par_name = c("steep", "SizeSel_1P_1_Fishery"),
-#'          par_int = c(.3, 40), par_phase = c(3,2)  )
+#'          par_int = c(.3, 40), par_phase = c(3,2),
+#'          forecast_num = 0, run_change_e_full = TRUE )
 #' # clean up
 #' file.remove("change_e.ctl")
 #' }
 
 change_e <- function ( ctl_file_in = pastef("em.ctl"), ctl_file_out = pastef("em.ctl"), 
+   dat_file_in = pastef("data.dat"), for_file_in = "forecasts.ss", 
    natM_type = "1Parm", natM_n_breakpoints = NULL, natM_lorenzen = NULL, natM_val = c(NA,NA),
-   par_name = NULL, par_int = "NA", par_phase = "NA"  ) {
+   par_name = NULL, par_int = "NA", par_phase = "NA",
+   forecast_num = 0, run_change_e_full = TRUE  ) {
+if ( run_change_e_full ) {
 if ( !file.exists ( ctl_file_in ) ) stop("Ctl file for the estimation model does not exist, change_e failed.")
 #Read in the ctl file for the estimation model
 SS_ctl <- readLines ( ctl_file_in )
@@ -112,5 +123,29 @@ changeMe <- function ( grepChar, intVal, phaseVal, ctlIn = SS_ctl ) {
  SS_ctl <- changeMe ( grepChar = par_name[y], intVal = par_int[y], phaseVal = par_phase[y] )
  }
 
- writeLines ( SS_ctl, ctl_file_out )
+  writeLines ( SS_ctl, ctl_file_out )
+ }
+ if ( forecast_num > 0 ) {
+ if ( !file.exists ( dat_file_in ) ) stop("Data file for the estimation model does not exist, change_e failed.")
+ if ( !file.exists ( for_file_in ) ) stop("Forecast file for the estimation model does not exist, change_e failed.")
+ SS_dat <- readLines ( dat_file_in )
+      data_end_line <- grep ( "#_endyr", SS_dat )
+      data_end_value <- unlist(strsplit ( SS_dat[data_end_line], split = " " ))
+      data_end_value[1] <- as.numeric(data_end_value[1]) - forecast_num
+      SS_dat[data_end_line] <- paste(data_end_value, collapse = "")
+      writeLines ( SS_dat, "data.dat" )
+ SS_for <- readLines ( for_file_in )
+      for_forecast_line <- grep ( "Forecast: 0=none;", SS_for )
+      for_forecast_value <- unlist(strsplit ( SS_for[for_forecast_line], split = "" ))
+      for_forecast_value[1] <- 1
+      SS_for[for_forecast_line] <- paste(for_forecast_value, collapse = "")
+      
+      for_number_line <- grep ( "N forecast years", SS_for )
+      for_number_value <- unlist(strsplit ( SS_for[for_number_line], split = "" ))
+      for_number_value[1] <- forecast_num
+      SS_for[for_number_line] <- paste(for_number_value, collapse = "")
+      
+      writeLines ( SS_for, "forecast.ss" ) 
+ }
+  
 }

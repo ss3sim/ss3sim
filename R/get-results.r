@@ -232,7 +232,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
     for(rep in reps.dirs){
         ## print(paste0("Starting", scen, "-", rep))
         report.em <- r4ss::SS_output(paste0(rep,"/em/"), covar=F, verbose=F,
-                               compfile="none", forecast=F, warn=T, readwt=F,
+                               compfile="none", forecast=TRUE, warn=T, readwt=F,
                                printstats=F, NoCompOK=T)
         report.om <- r4ss::SS_output(paste0(rep,"/om/"), covar=F, verbose=F,
                                compfile="none", forecast=F, warn=T, readwt=F,
@@ -312,7 +312,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
 #' @author Cole Monnahan
 get_results_timeseries <- function(report.file){
 
-    years <- with(report.file, startyr:endyr)
+    years <- report.file$startyr:(report.file$endyr+ifelse(is.na(report.file$nforecastyears)==TRUE,0,report.file$nforecastyears))
     xx <- subset(report.file$timeseries, select=c("Yr","SpawnBio", "Recruit_0",
                                          "F:_1"))
     xx <- xx[xx$Yr %in% years,]

@@ -7,3 +7,5 @@ natM_val;           c(NA,3)
 par_name;           _steep,LnQ_base_3_CPUE,CV_young,CV_old
 par_int;            c(NA,NA,NA,NA)
 par_phase;          c(-4,-1,-1,-1)
+ 
+forecast_num;       0 

@@ -8,3 +8,5 @@ par_name;           LnQ_base_2_,CV_young,CV_old,SR_sigmaR
 par_int;            c(NA,NA,NA,0.001)
 par_phase;          c(-1,-1,-1,-1)
 
+ 
+forecast_num;       0 

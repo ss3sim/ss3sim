@@ -6,3 +6,5 @@ natM_val;           c(0.28,-6)
 par_name;           LnQ_base_3_CPUE
 par_int;            c(NA)
 par_phase;          c(-1)
+ 
+forecast_num;       1 

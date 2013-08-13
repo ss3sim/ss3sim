@@ -287,30 +287,34 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
       }
 
       # Manipulate EM control file to adjust what gets estimated
-      # We'll only run this if it's a bias run or if bias adjustment
-      # isn't getting run. This is because the bias adjustment runs
-      # already manipulate the .ctl file appropriately.
+      # We'll only a portion of the function, the ctl part if
+      # it's a bias run or if bias adjustment isn't getting run. 
+      # This is because the bias adjustment runs
+      # already manipulates the .ctl file appropriately.
+      # Must always run the other portion for the forecast
 
-      run_change_e <- FALSE # default
+      run_change_e_full <- FALSE # default
       if(grepl("bias", i))  # it's a bias run
-        run_change_e <- TRUE
+        run_change_e_full <- TRUE
       if(!bias_adjust)      # we aren't running bias adjustment
-        run_change_e <- TRUE
-
-      if(run_change_e) {
+        run_change_e_full <- TRUE
+        
       setwd(pastef(sc, i, "em"))
       with(estim_params,
        change_e(ctl_file_in          = pastef("em.ctl"),   
-                ctl_file_out         = pastef("em.ctl"),  
+                ctl_file_out         = pastef("em.ctl"),
+                dat_file_in          = pastef("data.dat"),
+                for_file_in          = pastef("forecast.ss"),
                 natM_type            = natM_type,
                 natM_n_breakpoints   = natM_n_breakpoints,
                 natM_lorenzen        = natM_lorenzen,
                 natM_val             = natM_val,
                 par_name             = par_name,
                 par_int              = par_int,
-                par_phase            = par_phase ))
+                par_phase            = par_phase,
+                forecast_num         = forecast_num,
+                run_change_e_full    = run_change_e_full ))
       setwd(wd)
-      }
 
       # Should we calculate the hessian?
         if(hess_always){
