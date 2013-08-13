@@ -37,10 +37,10 @@
 #_growth_parms
 #_LO HI INIT PRIOR PR_type SD PHASE env-var use_dev dev_minyr dev_maxyr dev_stddev Block Block_Fxn
  0.2 0.7 0.4 0 -1 99 -3 0 0 0 0 0 0 0 # NatM_p_1_Fem_GP_1
- 3 15 11.2 0 -1 99 3 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1
- 20 30 24 0 -1 99 3 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1
- 0.05 0.99 0.399 0 -1 99 3 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1
- 0.05 0.3 0.15 0 -1 99 3 0 0 0 0 0 0 0 # CV_young_Fem_GP_1
+ 3 15 10 0 -1 99 3 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1
+ 20 30 25 0 -1 99 3 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1
+ 0.05 0.99 0.40 0 -1 99 3 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1
+ 0.05 0.3 0.14 0 -1 99 3 0 0 0 0 0 0 0 # CV_young_Fem_GP_1
  0.01 0.1 0.05 0 -1 99 3 0 0 0 0 0 0 0 # CV_old_Fem_GP_1
  -3 3 1.68384e-005 0 -1 99 -3 0 0 0 0 0 0 0 # Wtlen_1_Fem
  -3 5 2.948247 0 -1 99 -3 0 0 0 0 0 0 0 # Wtlen_2_Fem
@@ -90,7 +90,7 @@
  1938 #_first_yr_fullbias_adj_in_MPD
  2011 #_last_yr_fullbias_adj_in_MPD
  2012 #_first_recent_yr_nobias_adj_in_MPD
- 0.9 #_max_bias_adj_in_MPD (-1 to override ramp and set biasadj=1.0 for all estimated recdevs)
+ 0 #_max_bias_adj_in_MPD (-1 to override ramp and set biasadj=1.0 for all estimated recdevs)
  0 #_period of cycles in recruitment (N parms read below)
  -5 #min rec_dev
  5 #max rec_dev

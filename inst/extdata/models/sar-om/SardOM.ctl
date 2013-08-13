@@ -36,23 +36,23 @@
 #
 #_growth_parms
 #_LO HI INIT PRIOR PR_type SD PHASE env-var use_dev dev_minyr dev_maxyr dev_stddev Block Block_Fxn
-0.3 0.7 0.4 0 -1 99 -3 0 0 0 0 0 0 0 # NatM_p_1_Fem_GP_1
-3 15 11.2 0 -1 99 3 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1
-20 30 24 0 -1 99 3 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1
-0.05 0.99 0.399 0 -1 99 3 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1
-0.05 0.3 0.15 0 -1 99 3 0 0 0 0 0 0 0 # CV_young_Fem_GP_1
-0.01 0.1 0.05 0 -1 99 3 0 0 0 0 0 0 0 # CV_old_Fem_GP_1
--3 3 1.68e-05 0 -1 99 -3 0 0 0 0 0 0 0 # Wtlen_1_Fem
--3 5 2.948247 0 -1 99 -3 0 0 0 0 0 0 0 # Wtlen_2_Fem
-9 19 15.88 0 -1 99 -3 0 0 0 0 0 0 0 # Mat50%_Fem
--20 3 -0.90461 0 -1 99 -3 0 0 0 0 0 0 0 # Mat_slope_Fem
-0 10 1 0 -1 99 -3 0 0 0 0 0 0 0 # Eggs/kg_inter_Fem
--1 5 0 0 -1 99 -3 0 0 0 0 0 0 0 # Eggs/kg_slope_wt_Fem
--4 4 0 0 -1 99 -3 0 0 0 0 0 0 0 # RecrDist_GP_1
--4 4 1 0 -1 99 -3 0 0 0 0 0 0 0 # RecrDist_Area_1
--4 4 1 0 -1 99 -3 0 0 0 0 0 0 0 # RecrDist_Seas_1
--4 4 1 0 -1 99 -3 0 0 0 0 0 0 0 # CohortGrowDev
- 
+ 0.2 0.7 0.4 0 -1 99 -3 0 0 0 0 0 0 0 # NatM_p_1_Fem_GP_1
+ 3 15 10 0 -1 99 3 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1
+ 20 30 25 0 -1 99 3 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1
+ 0.05 0.99 0.4 0 -1 99 3 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1
+ 0.05 0.3 0.14 0 -1 99 3 0 0 0 0 0 0 0 # CV_young_Fem_GP_1
+ 0.01 0.1 0.05 0 -1 99 5 0 0 0 0 0 0 0 # CV_old_Fem_GP_1
+ -3 3 1.68384e-005 0 -1 99 -3 0 0 0 0 0 0 0 # Wtlen_1_Fem
+ -3 5 2.94825 0 -1 99 -3 0 0 0 0 0 0 0 # Wtlen_2_Fem
+ 9 19 15.88 0 -1 99 -3 0 0 0 0 0 0 0 # Mat50%_Fem
+ -20 3 -0.90461 0 -1 99 -3 0 0 0 0 0 0 0 # Mat_slope_Fem
+ 0 10 1 0 -1 99 -3 0 0 0 0 0 0 0 # Eggs/kg_inter_Fem
+ -1 5 0 0 -1 99 -3 0 0 0 0 0 0 0 # Eggs/kg_slope_wt_Fem
+ -4 4 0 0 -1 99 -3 0 0 0 0 0 0 0 # RecrDist_GP_1
+ -4 4 1 0 -1 99 -3 0 0 0 0 0 0 0 # RecrDist_Area_1
+ -4 4 1 0 -1 99 -3 0 0 0 0 0 0 0 # RecrDist_Seas_1
+ -4 4 1 0 -1 99 -3 0 0 0 0 0 0 0 # CohortGrowDev
+#
 #_Cond 0  #custom_MG-env_setup (0/1)
 #_Cond -2 2 0 0 -1 99 -2 #_placeholder when no MG-environ parameters
 #
@@ -69,12 +69,12 @@
 #_Spawner-Recruitment
 3 #_SR_function: 2=Ricker; 3=std_B-H; 4=SCAA; 5=Hockey; 6=B-H_flattop; 7=survival_3Parm
 #_LO HI INIT PRIOR PR_type SD PHASE
-3 25 16 0 -1 99 1 # SR_LN(R0)
-0.2 1 0.59 0 -1 99 1 # SR_BH_steep
-0 2 0.727 0 -1 99 1 # SR_sigmaR
--5 5 0 0 -1 99 -3 # SR_envlink
--15 15 0 0 -1 99 2 # SR_R1_offset
-0 0 0 0 -1 99 -3 # SR_autocorr
+ 3 25 16 0 -1 99 1 # SR_LN(R0)
+ 0.2 1 0.59 0 -1 99 1 # SR_BH_steep
+ 0 2 0.727 0 -1 99 1 # SR_sigmaR
+ -5 5 0 0 -1 99 -3 # SR_envlink
+ -15 15 0 0 -1 99 2 # SR_R1_offset
+ 0 0 0 0 -1 99 -3 # SR_autocorr
 0 #_SR_env_link
 0 #_SR_env_target_0=none;1=devs;_2=R0;_3=steepness
 1 #do_recdev:  0=none; 1=devvector; 2=simple deviations
