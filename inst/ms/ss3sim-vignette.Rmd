@@ -333,8 +333,6 @@ p <- ggplot(subset(scalar_dat_long, E %in% c("E100", "E101") & variable != "SR_s
 print(p)
 ```
 
-
-
 Let's look at the relative error in estimates of spawning biomass. 
 We'll colour the time series according to the 
 
@@ -349,8 +347,6 @@ p <- ggplot(ts_dat_sto, aes(year, SpawnBio_em, group = replicate)) +
   scale_color_gradient(low = "darkgrey", high = "red") + theme_bw()                      
 print(p)
 ```
-
-
 
 ```{r relative-error-boxplots-sto, fig.height=10, fig.width=6, fig.cap="Relative error box plots for stochastic runs. In case E0, M is fixed at the historical value; in E1 we estimate M. In case D2, the standard deviation on the survey index observation error is 0.4. In case D1, the standard deviation is quartered representing an increase in survey sampling effort."}
 p <- ggplot(subset(scalar_dat_long, E %in% c("E0", "E1")), aes(D, relative_error)) + 
@@ -393,7 +389,7 @@ added through a configuration file like `.bash_profile`. You can add to
 the path that `R` sees by including a line like this in your `.Rprofile`
 file. (This is an invisible file in your home directory.)
 
-    Sys.setenv(PATH=paste(Sys.getenv("PATH"),"/my/non-standard/folder",sep=":")) 
+    Sys.setenv(PATH=paste(Sys.getenv("PATH"),"/my/folder",sep=":")) 
 
 For Windows
 -----------
@@ -423,3 +419,8 @@ not in your path. To add it to your path:
 
 9.  Go back to the DOS prompt and try typing `ss3 -?` and hitting return
     again.
+
+![Flow diagram of `run_ss3sim` stock-assessment simulation steps.\label{flow-diag}](sim-steps.pdf)
+
+
+

@@ -338,8 +338,6 @@ print(p)
 ![Relative error box plots for deterministic runs. In case E0, M is fixed at the historical value; in E1 we estimate M. In case D2, the standard deviation on the survey index observation error is 0.4. In case D1, the standard deviation is quartered representing an increase in survey sampling effort.](figure/relative-error-boxplots-det.pdf) 
 
 
-
-
 Let's look at the relative error in estimates of spawning biomass. 
 We'll colour the time series according to the 
 
@@ -361,8 +359,6 @@ print(p)
 ```
 
 ![Spawning stock biomass time series.](figure/ssb-ts-plots.pdf) 
-
-
 
 
 
@@ -410,7 +406,7 @@ added through a configuration file like `.bash_profile`. You can add to
 the path that `R` sees by including a line like this in your `.Rprofile`
 file. (This is an invisible file in your home directory.)
 
-    Sys.setenv(PATH=paste(Sys.getenv("PATH"),"/my/non-standard/folder",sep=":")) 
+    Sys.setenv(PATH=paste(Sys.getenv("PATH"),"/my/folder",sep=":")) 
 
 For Windows
 -----------
@@ -440,3 +436,8 @@ not in your path. To add it to your path:
 
 9.  Go back to the DOS prompt and try typing `ss3 -?` and hitting return
     again.
+
+![Flow diagram of `run_ss3sim` stock-assessment simulation steps.\label{flow-diag}](sim-steps.pdf)
+
+
+
