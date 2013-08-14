@@ -181,11 +181,10 @@ argument.
 
 Putting that all together, here’s what an example `F1-cod.txt` file might look like:
 
-    years; 1:100
-    years_alter; NA 
-    fvals; NA
+    years; 1913:2012
+    years_alter; 1913:2012
+    fvals; c(rep(0,25), rep(0.114,75))
 
-You may wish to use `#` symbols on new lines to add comments to these text files.
 
 Running deterministic simulations to check the models for bias
 -------------------------------------------------------------

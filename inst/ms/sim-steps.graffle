@@ -14,7 +14,7 @@
 	<key>BackgroundGraphic</key>
 	<dict>
 		<key>Bounds</key>
-		<string>{{0, 0}, {432, 612}}</string>
+		<string>{{0, 0}, {432, 590}}</string>
 		<key>Class</key>
 		<string>SolidGraphic</string>
 		<key>ID</key>
@@ -38,7 +38,7 @@
 	<key>CanvasOrigin</key>
 	<string>{0, 0}</string>
 	<key>CanvasSize</key>
-	<string>{432, 612}</string>
+	<string>{432, 590}</string>
 	<key>ColumnAlign</key>
 	<integer>0</integer>
 	<key>ColumnSpacing</key>
@@ -55,7 +55,7 @@
 	<array>
 		<dict>
 			<key>Bounds</key>
-			<string>{{10.158329924182709, 280.84966491371756}, {73.687823464293785, 45.46493844774011}}</string>
+			<string>{{10.158329924182709, 260.52197223855046}, {73.687823464293785, 45.46493844774011}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -66,7 +66,7 @@
 				<real>11</real>
 			</dict>
 			<key>ID</key>
-			<integer>169</integer>
+			<integer>170</integer>
 			<key>Magnets</key>
 			<array>
 				<string>{0, 1}</string>
@@ -114,11 +114,11 @@ and iterations}</string>
 			<key>Class</key>
 			<string>LineGraphic</string>
 			<key>ID</key>
-			<integer>168</integer>
+			<integer>182</integer>
 			<key>Points</key>
 			<array>
-				<string>{405.2308255314129, 417.45344128128738}</string>
-				<string>{405.2308255314129, 483.42533332650987}</string>
+				<string>{405.2308255314129, 403.27959498568805}</string>
+				<string>{405.2308255314129, 469.25148703091054}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -126,14 +126,12 @@ and iterations}</string>
 				<dict>
 					<key>Color</key>
 					<dict>
-						<key>a</key>
-						<string>0.51</string>
 						<key>b</key>
-						<string>0.217793</string>
+						<string>0.516858</string>
 						<key>g</key>
-						<string>0.217793</string>
+						<string>0.509629</string>
 						<key>r</key>
-						<string>0.217793</string>
+						<string>0.44058</string>
 					</dict>
 					<key>HeadArrow</key>
 					<string>FilledArrow</string>
@@ -155,8 +153,8 @@ and iterations}</string>
 			<integer>167</integer>
 			<key>Points</key>
 			<array>
-				<string>{405.23083025464001, 275.2115490986755}</string>
-				<string>{405.23083025464001, 341.18344114389794}</string>
+				<string>{405.23083025464001, 254.8838564235084}</string>
+				<string>{405.23083025464001, 320.85574846873084}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -164,14 +162,12 @@ and iterations}</string>
 				<dict>
 					<key>Color</key>
 					<dict>
-						<key>a</key>
-						<string>0.51</string>
 						<key>b</key>
-						<string>0.217793</string>
+						<string>0.516858</string>
 						<key>g</key>
-						<string>0.217793</string>
+						<string>0.509629</string>
 						<key>r</key>
-						<string>0.217793</string>
+						<string>0.44058</string>
 					</dict>
 					<key>HeadArrow</key>
 					<string>FilledArrow</string>
@@ -193,8 +189,8 @@ and iterations}</string>
 			<integer>166</integer>
 			<key>Points</key>
 			<array>
-				<string>{405.23080918351667, 96.206964859596042}</string>
-				<string>{405.23080918351667, 162.1788569048185}</string>
+				<string>{405.23080918351667, 97.745426454487983}</string>
+				<string>{405.23080918351667, 163.71731849971044}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -202,14 +198,12 @@ and iterations}</string>
 				<dict>
 					<key>Color</key>
 					<dict>
-						<key>a</key>
-						<string>0.51</string>
 						<key>b</key>
-						<string>0.217793</string>
+						<string>0.516858</string>
 						<key>g</key>
-						<string>0.217793</string>
+						<string>0.509629</string>
 						<key>r</key>
-						<string>0.217793</string>
+						<string>0.44058</string>
 					</dict>
 					<key>HeadArrow</key>
 					<string>FilledArrow</string>
@@ -228,14 +222,14 @@ and iterations}</string>
 			<key>Class</key>
 			<string>LineGraphic</string>
 			<key>ID</key>
-			<integer>165</integer>
+			<integer>171</integer>
 			<key>Points</key>
 			<array>
-				<string>{83.846153388476495, 45.153854449120097}</string>
-				<string>{40.846167925547398, 146.46155014263863}</string>
-				<string>{32.384629153641541, 305.63037521740381}</string>
-				<string>{37.769244735763451, 454.43079693218647}</string>
-				<string>{83.846153388476495, 569.76925830728305}</string>
+				<string>{83.846153388476495, 30.980008153520963}</string>
+				<string>{40.846167925547398, 132.28770384703964}</string>
+				<string>{32.384629153641541, 291.45652892180448}</string>
+				<string>{37.769244735763451, 440.25695063658713}</string>
+				<string>{83.846153388476495, 555.59541201168372}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -243,14 +237,12 @@ and iterations}</string>
 				<dict>
 					<key>Color</key>
 					<dict>
-						<key>a</key>
-						<string>0.51</string>
 						<key>b</key>
-						<string>0.217793</string>
+						<string>0.516858</string>
 						<key>g</key>
-						<string>0.217793</string>
+						<string>0.509629</string>
 						<key>r</key>
-						<string>0.217793</string>
+						<string>0.44058</string>
 					</dict>
 					<key>CornerRadius</key>
 					<real>1</real>
@@ -276,7 +268,7 @@ and iterations}</string>
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556575, 54.965411619595457}, {133.5591800290324, 12.895368782161231}}</string>
+					<string>{{123.22549240556575, 54.196180822149486}, {133.5591800290324, 12.895368782161231}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -341,7 +333,7 @@ and iterations}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556575, 35.595393677428952}, {162.1132116214464, 17.930018004155233}}</string>
+					<string>{{123.22549240556575, 34.826162879982981}, {162.1132116214464, 17.930018004155233}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -410,7 +402,7 @@ and iterations}</string>
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556572, 525.36039848421683}, {186.98285204064544, 17.930018004155233}}</string>
+					<string>{{123.22549240556572, 509.64809059372544}, {186.98285204064544, 17.930018004155233}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -421,7 +413,7 @@ and iterations}</string>
 						<real>11</real>
 					</dict>
 					<key>ID</key>
-					<integer>124</integer>
+					<integer>180</integer>
 					<key>Magnets</key>
 					<array>
 						<string>{0, 1}</string>
@@ -470,7 +462,7 @@ and iterations}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556572, 544.73041642638304}, {133.5591800290324, 12.895368782161231}}</string>
+					<string>{{123.22549240556572, 529.01810853589166}, {133.5591800290324, 12.895368782161231}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -486,7 +478,7 @@ and iterations}</string>
 						<real>10</real>
 					</dict>
 					<key>ID</key>
-					<integer>125</integer>
+					<integer>181</integer>
 					<key>Magnets</key>
 					<array>
 						<string>{0, 1}</string>
@@ -535,7 +527,7 @@ and iterations}</string>
 				</dict>
 			</array>
 			<key>ID</key>
-			<integer>123</integer>
+			<integer>179</integer>
 		</dict>
 		<dict>
 			<key>Class</key>
@@ -544,7 +536,7 @@ and iterations}</string>
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556572, 505.26502941595322}, {133.5591800290324, 12.895368782161231}}</string>
+					<string>{{123.22549240556572, 489.552721525462}, {133.5591800290324, 12.895368782161231}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -560,7 +552,7 @@ and iterations}</string>
 						<real>10</real>
 					</dict>
 					<key>ID</key>
-					<integer>127</integer>
+					<integer>188</integer>
 					<key>Magnets</key>
 					<array>
 						<string>{0, 1}</string>
@@ -609,7 +601,7 @@ and iterations}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556572, 485.89501147378684}, {186.98285204064544, 17.930018004155233}}</string>
+					<string>{{123.22549240556572, 470.18270358329556}, {186.98285204064544, 17.930018004155233}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -620,7 +612,7 @@ and iterations}</string>
 						<real>11</real>
 					</dict>
 					<key>ID</key>
-					<integer>128</integer>
+					<integer>189</integer>
 					<key>Magnets</key>
 					<array>
 						<string>{0, 1}</string>
@@ -669,7 +661,7 @@ and iterations}</string>
 				</dict>
 			</array>
 			<key>ID</key>
-			<integer>126</integer>
+			<integer>187</integer>
 		</dict>
 		<dict>
 			<key>Class</key>
@@ -678,7 +670,7 @@ and iterations}</string>
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556577, 187.04079427688808}, {133.5591800290324, 12.895368782161231}}</string>
+					<string>{{123.22549240556577, 184.73310188455017}, {133.5591800290324, 12.895368782161231}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -743,7 +735,7 @@ and iterations}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556577, 166.3019194247301}, {174.5695127631783, 17.930018004155233}}</string>
+					<string>{{123.22549240556577, 163.99422703239219}, {174.5695127631783, 17.930018004155233}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -794,7 +786,7 @@ and iterations}</string>
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs22 \cf0 Replace recruitment deviations}</string>
+\f0\fs22 \cf0 Specify recruitment deviations}</string>
 						<key>VerticalPad</key>
 						<integer>0</integer>
 					</dict>
@@ -812,7 +804,7 @@ and iterations}</string>
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556577, 429.13116215357644}, {133.5591800290324, 12.895368782161231}}</string>
+					<string>{{123.22549240556577, 414.95731585797711}, {133.5591800290324, 12.895368782161231}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -828,7 +820,7 @@ and iterations}</string>
 						<real>10</real>
 					</dict>
 					<key>ID</key>
-					<integer>130</integer>
+					<integer>177</integer>
 					<key>Magnets</key>
 					<array>
 						<string>{0, 1}</string>
@@ -877,7 +869,7 @@ and iterations}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556577, 409.76114421141017}, {174.5695127631783, 17.930018004155233}}</string>
+					<string>{{123.22549240556577, 395.58729791581084}, {174.5695127631783, 17.930018004155233}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -888,7 +880,7 @@ and iterations}</string>
 						<real>11</real>
 					</dict>
 					<key>ID</key>
-					<integer>131</integer>
+					<integer>178</integer>
 					<key>Magnets</key>
 					<array>
 						<string>{0, 1}</string>
@@ -937,7 +929,7 @@ and iterations}</string>
 				</dict>
 			</array>
 			<key>ID</key>
-			<integer>129</integer>
+			<integer>176</integer>
 		</dict>
 		<dict>
 			<key>Class</key>
@@ -946,7 +938,7 @@ and iterations}</string>
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556577, 389.66577514314662}, {133.5591800290324, 12.895368782161231}}</string>
+					<string>{{123.22549240556577, 369.33808246797952}, {133.5591800290324, 12.895368782161231}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -962,7 +954,7 @@ and iterations}</string>
 						<real>10</real>
 					</dict>
 					<key>ID</key>
-					<integer>133</integer>
+					<integer>173</integer>
 					<key>Magnets</key>
 					<array>
 						<string>{0, 1}</string>
@@ -1002,7 +994,8 @@ and iterations}</string>
 {\colortbl;\red255\green255\blue255;\red61\green61\blue61;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs20 \cf2 change_index, change_agecomp, change_lcomp}</string>
+\f0\fs20 \cf2 \
+change_index, change_agecomp, change_lcomp}</string>
 						<key>VerticalPad</key>
 						<integer>0</integer>
 					</dict>
@@ -1011,7 +1004,7 @@ and iterations}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556577, 357.09620547756782}, {174.5695127631783, 17.930018004155233}}</string>
+					<string>{{123.22549240556577, 336.76851280240072}, {174.5695127631783, 17.930018004155233}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -1022,7 +1015,7 @@ and iterations}</string>
 						<real>11</real>
 					</dict>
 					<key>ID</key>
-					<integer>134</integer>
+					<integer>174</integer>
 					<key>Magnets</key>
 					<array>
 						<string>{0, 1}</string>
@@ -1062,9 +1055,12 @@ and iterations}</string>
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs22 \cf0 Sample the survey index, fishery index, \
-age composition, and length composition data\
-with observation error; write to EM .dat file}</string>
+\f0\fs22 \cf0 Sample fleet data with observation error and write\
+to the EM .dat file
+\fs20  \'97 
+\fs22 can include fishery-dependent\
+and -independent abundance index, age-composition\
+data, and length-composition data}</string>
 						<key>VerticalPad</key>
 						<integer>0</integer>
 					</dict>
@@ -1073,7 +1069,7 @@ with observation error; write to EM .dat file}</string>
 				</dict>
 			</array>
 			<key>ID</key>
-			<integer>132</integer>
+			<integer>172</integer>
 		</dict>
 		<dict>
 			<key>Class</key>
@@ -1082,7 +1078,7 @@ with observation error; write to EM .dat file}</string>
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556577, 226.50618128731801}, {133.5591800290324, 12.895368782161231}}</string>
+					<string>{{123.22549240556577, 224.1984888949801}, {133.5591800290324, 12.895368782161231}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -1147,7 +1143,7 @@ with observation error; write to EM .dat file}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556577, 207.13616334515172}, {174.5695127631783, 17.930018004155233}}</string>
+					<string>{{123.22549240556577, 204.8284709528138}, {174.5695127631783, 17.930018004155233}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -1198,7 +1194,7 @@ with observation error; write to EM .dat file}</string>
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs22 \cf0 Replace F, M, selectivity, and growth values in .par file}</string>
+\f0\fs22 \cf0 Specify F, M, selectivity, and growth values in .par file}</string>
 						<key>VerticalPad</key>
 						<integer>0</integer>
 					</dict>
@@ -1216,7 +1212,7 @@ with observation error; write to EM .dat file}</string>
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556577, 265.97156829774798}, {133.5591800290324, 12.895368782161231}}</string>
+					<string>{{123.22549240556577, 263.66387590541007}, {133.5591800290324, 12.895368782161231}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -1281,7 +1277,7 @@ with observation error; write to EM .dat file}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556577, 246.60155035558165}, {115, 17.930018004155233}}</string>
+					<string>{{123.22549240556577, 244.29385796324374}, {115, 17.930018004155233}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -1345,7 +1341,7 @@ with observation error; write to EM .dat file}</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{123.22549240556576, 460.76499318352944}, {115, 17.930018004155233}}</string>
+			<string>{{123.22549240556576, 446.59114688793011}, {115, 17.930018004155233}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -1356,7 +1352,7 @@ with observation error; write to EM .dat file}</string>
 				<real>11</real>
 			</dict>
 			<key>ID</key>
-			<integer>106</integer>
+			<integer>186</integer>
 			<key>Magnets</key>
 			<array>
 				<string>{0, 1}</string>
@@ -1405,7 +1401,7 @@ with observation error; write to EM .dat file}</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{123.22549240556576, 318.88926363072881}, {115, 17.930018004155233}}</string>
+			<string>{{123.22549240556576, 298.56157095556171}, {115, 17.930018004155233}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -1465,7 +1461,7 @@ with observation error; write to EM .dat file}</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{123.22549240556576, 10.465375387171443}, {174.5695127631783, 17.930018004155233}}</string>
+			<string>{{123.22549240556576, 12.003836982063385}, {174.5695127631783, 17.930018004155233}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -1516,67 +1512,7 @@ with observation error; write to EM .dat file}</string>
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\b\fs22 \cf0 Simulation setup}</string>
-				<key>VerticalPad</key>
-				<integer>0</integer>
-			</dict>
-			<key>Wrap</key>
-			<string>NO</string>
-		</dict>
-		<dict>
-			<key>Bounds</key>
-			<string>{{123.22548295911129, 286.06693736601153}, {174.5695127631783, 17.930018004155233}}</string>
-			<key>Class</key>
-			<string>ShapedGraphic</string>
-			<key>FontInfo</key>
-			<dict>
-				<key>Font</key>
-				<string>Helvetica</string>
-				<key>Size</key>
-				<real>11</real>
-			</dict>
-			<key>ID</key>
-			<integer>88</integer>
-			<key>Magnets</key>
-			<array>
-				<string>{0, 1}</string>
-				<string>{0, -1}</string>
-				<string>{1, 0}</string>
-				<string>{-1, 0}</string>
-			</array>
-			<key>Shape</key>
-			<string>Rectangle</string>
-			<key>Style</key>
-			<dict>
-				<key>fill</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-				<key>shadow</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-				<key>stroke</key>
-				<dict>
-					<key>Draws</key>
-					<string>NO</string>
-				</dict>
-			</dict>
-			<key>Text</key>
-			<dict>
-				<key>Align</key>
-				<integer>0</integer>
-				<key>Pad</key>
-				<integer>0</integer>
-				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\fs22 \cf0 Copy new .dat file to the EM folder}</string>
+\f0\b\fs22 \cf0 Simulation initialization}</string>
 				<key>VerticalPad</key>
 				<integer>0</integer>
 			</dict>
@@ -1590,7 +1526,7 @@ with observation error; write to EM .dat file}</string>
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556572, 584.19580343681309}, {97.021450948629138, 12.895368782161231}}</string>
+					<string>{{123.22549240556572, 568.48349554632182}, {97.021450948629138, 12.895368782161231}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -1606,7 +1542,7 @@ with observation error; write to EM .dat file}</string>
 						<real>10</real>
 					</dict>
 					<key>ID</key>
-					<integer>121</integer>
+					<integer>184</integer>
 					<key>Magnets</key>
 					<array>
 						<string>{0, 1}</string>
@@ -1655,7 +1591,7 @@ with observation error; write to EM .dat file}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556572, 564.82578549464665}, {186.98285204064544, 17.930018004155233}}</string>
+					<string>{{123.22549240556572, 549.11347760415538}, {186.98285204064544, 17.930018004155233}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -1666,7 +1602,7 @@ with observation error; write to EM .dat file}</string>
 						<real>11</real>
 					</dict>
 					<key>ID</key>
-					<integer>122</integer>
+					<integer>185</integer>
 					<key>Magnets</key>
 					<array>
 						<string>{0, 1}</string>
@@ -1706,7 +1642,7 @@ with observation error; write to EM .dat file}</string>
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs22 \cf0 Find bias-adjustment factor if needed}</string>
+\f0\fs22 \cf0 Calculate bias-adjustment factor if needed}</string>
 						<key>VerticalPad</key>
 						<integer>0</integer>
 					</dict>
@@ -1715,7 +1651,7 @@ with observation error; write to EM .dat file}</string>
 				</dict>
 			</array>
 			<key>ID</key>
-			<integer>120</integer>
+			<integer>183</integer>
 		</dict>
 		<dict>
 			<key>Class</key>
@@ -1724,7 +1660,7 @@ with observation error; write to EM .dat file}</string>
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556573, 79.676165472534663}, {73.687823464293771, 17.930018004155233}}</string>
+					<string>{{123.22549240556573, 78.906934675088692}, {73.687823464293771, 17.930018004155233}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -1785,7 +1721,7 @@ copy bias-adjusted .ctl file if needed}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.22549240556575, 106.46114691473538}, {65.375610516820302, 12.895368782161231}}</string>
+					<string>{{123.22549240556575, 105.69191611728941}, {65.375610516820302, 12.895368782161231}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FontInfo</key>
@@ -1854,7 +1790,7 @@ copy bias-adjusted .ctl file if needed}</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{123.22549240556576, 141.17190113447242}, {174.5695127631783, 17.930018004155233}}</string>
+			<string>{{123.22549240556576, 142.71036272936436}, {174.5695127631783, 17.930018004155233}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FontInfo</key>
@@ -1914,11 +1850,11 @@ copy bias-adjusted .ctl file if needed}</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{94.769266083395763, 454.43079693218647}, {322.73752630109607, 151.04656982421875}}</string>
+			<string>{{94.769266083395792, 438.38771555832847}, {322.73752630109607, 146.87693786621094}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>161</integer>
+			<integer>190</integer>
 			<key>Shape</key>
 			<string>Rectangle</string>
 			<key>Style</key>
@@ -1951,11 +1887,11 @@ copy bias-adjusted .ctl file if needed}</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{94.769266083395792, 312.83037550350605}, {322.73752630109607, 134.40042114257812}}</string>
+			<string>{{94.769266083395792, 289.63345501831992}, {322.73752630109607, 141.55426025390625}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
-			<integer>160</integer>
+			<integer>175</integer>
 			<key>Shape</key>
 			<string>Rectangle</string>
 			<key>Style</key>
@@ -1988,7 +1924,7 @@ copy bias-adjusted .ctl file if needed}</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{94.769266083395763, 3.8461540450710263}, {323.50677490234375, 123.97190093994141}}</string>
+			<string>{{94.769266083395763, 4.3846156399629681}, {323.50677490234375, 123.97190093994141}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
@@ -2025,7 +1961,7 @@ copy bias-adjusted .ctl file if needed}</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{94.00000476837161, 135.01805527111475}, {323.50677490234375, 170.61231994628906}}</string>
+			<string>{{94.00000476837161, 135.55651686600669}, {323.50677490234375, 146.87693786621094}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
@@ -2108,7 +2044,7 @@ copy bias-adjusted .ctl file if needed}</string>
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2013-08-13 23:16:16 +0000</string>
+	<string>2013-08-14 19:42:25 +0000</string>
 	<key>Modifier</key>
 	<string>Sean Anderson</string>
 	<key>NotesVisible</key>
@@ -2203,7 +2139,7 @@ copy bias-adjusted .ctl file if needed}</string>
 		<key>SidebarWidth</key>
 		<integer>120</integer>
 		<key>VisibleRegion</key>
-		<string>{{-342.99999999999994, -181}, {1118.4615794864646, 975.38465116151121}}</string>
+		<string>{{-343.00000000000011, -192}, {1118.4615794864649, 975.38465116151121}}</string>
 		<key>Zoom</key>
 		<real>1.2999999523162842</real>
 		<key>ZoomValues</key>
