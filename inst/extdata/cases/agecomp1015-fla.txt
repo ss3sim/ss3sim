@@ -1,8 +1,8 @@
 distribution; c('dirichlet', 'multinomial')
-Nsamp; rep(100,5) 
+Nsamp; c(100,rep(100,5))
 minyear; NA
 maxyear; NA
-years; NA
+years; 2012
 svyears; seq(2004,2012,by=2)
 N_agebins; NA
 agebin_vector; NA
