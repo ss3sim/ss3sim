@@ -1,0 +1,11 @@
+distribution; c('dirichlet', 'multinomial')
+Nsamp; c(100,rep(100,5))
+minyear; NA
+maxyear; NA
+years; 2012
+svyears; seq(1992,2012,by=5)
+N_agebins; NA
+agebin_vector; NA
+agecomp; NA
+fish_agecomp; FALSE
+sv_agecomp; TRUE
