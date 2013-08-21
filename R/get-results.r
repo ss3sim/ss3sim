@@ -336,6 +336,7 @@ get_results_scalar <- function(report.file){
     SSB_MSY <-  der[which(der$LABEL=="SSB_MSY"),]$Value
     TotYield_MSY <-  der[which(der$LABEL=="TotYield_MSY"),]$Value
     SSB_Unfished <-  der[which(der$LABEL=="SSB_Unfished"),]$Value
+    Catch_endyear<-  rev(report.file$timeseries[,grep("dead\\(B\\)",names(report.file$timeseries))])[1]
     pars <- data.frame(t(report.file$parameters$Value))
     names(pars) <- report.file$parameters$Label
     ## Remove the recruitment devs and efforts as these are in the ts file
@@ -357,7 +358,7 @@ get_results_scalar <- function(report.file){
         params_on_bound <-  NA
     }
        df <- cbind(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion,
-                NLL, params_on_bound, pars)
+                NLL, params_on_bound, pars, Catch_endyear)
     return(invisible(df))
 }
 
