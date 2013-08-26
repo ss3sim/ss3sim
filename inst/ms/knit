@@ -2,7 +2,7 @@
 
 library(knitr)
 render_markdown(strict = FALSE)
-opts_chunk$set(fig.align='center', cache=FALSE, echo=TRUE,
+opts_chunk$set(fig.align='center', fig.pos="htpb", cache=FALSE, echo=TRUE,
 message=FALSE, autodep=TRUE, fig.path='figure/', fig.width=5,
 par=TRUE)
 
