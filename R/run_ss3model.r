@@ -22,13 +22,20 @@
 #' @param ignore.stdout Passed to \code{system}. If \code{TRUE} then
 #' ADMB output is not printed on screen. This will be slightly faster.
 #' Set to \code{FALSE} to help with debugging.
+#' @param admb_pause A length of time (in seconds) to pause after
+#' running the simulation model. This can be necessary on certain
+#' computers where file writing can be slightly delayed. For example,
+#' on computer where the files are written over a network connection.
+#' If the output files haven't finished writing before R starts
+#' looking for the output then the simulation will crash with an
+#' error. The default value is set to `0.01` seconds, just to be safe.
 #' @param ... Anything else to pass to \code{system}.
 #' @seealso \code{\link{ss3sim_base}}, \code{\link{run_fish600}}
 #' @author Sean C. Anderson
 #' @export
 
 run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
-  ss3path = NULL, admb_options = "", hess = FALSE, ignore.stdout = TRUE, ...) {
+  ss3path = NULL, admb_options = "", hess = FALSE, ignore.stdout = TRUE, admb_pause = 0.01, ...) {
 
   ## input checking:
   admb_options <- sanitize_admb_options(admb_options, "-nohess")
@@ -38,14 +45,11 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
 
   if(is.null(ss3path)) ss3path <- ""
 
-  #ss_options <- switch(type, om = "-nohess", em = "")
-
   ss_em_options <- ifelse(hess, "", "-nohess")
 
   for(sc in scenarios) {
     for(it in iterations) {
-      #print(paste0("Running ", type, " for scenario: ", sc, ";
-      #iteration: ", it)) 
+      print(paste0("Running ", type, " for scenario: ", sc, "; #iteration: ", it)) 
       if(os == "unix") {
         system(paste0("cd ", pastef(sc, it, type), ";", ss3path, "SS3 ", 
            ss_em_options, " ", admb_options), ignore.stdout = ignore.stdout, ...)
@@ -58,7 +62,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
       }
     }
   }
-
+  Sys.sleep(admb_pause) 
 }
 
 

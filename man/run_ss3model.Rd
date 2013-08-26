@@ -4,7 +4,7 @@
 \usage{
   run_ss3model(scenarios, iterations, type = c("om", "em"),
     ss3path = NULL, admb_options = "", hess = FALSE,
-    ignore.stdout = TRUE, ...)
+    ignore.stdout = TRUE, admb_pause = 0.01, ...)
 }
 \arguments{
   \item{scenarios}{Which scenarios to run. Controls which
@@ -33,6 +33,15 @@
   \code{TRUE} then ADMB output is not printed on screen.
   This will be slightly faster. Set to \code{FALSE} to help
   with debugging.}
+
+  \item{admb_pause}{A length of time (in seconds) to pause
+  after running the simulation model. This can be necessary
+  on certain computers where file writing can be slightly
+  delayed. For example, on computer where the files are
+  written over a network connection. If the output files
+  haven't finished writing before R starts looking for the
+  output then the simulation will crash with an error. The
+  default value is set to `0.01` seconds, just to be safe.}
 
   \item{...}{Anything else to pass to \code{system}.}
 }
