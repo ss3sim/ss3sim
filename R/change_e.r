@@ -137,7 +137,7 @@ changeMe <- function ( grepChar, intVal, phaseVal, ctlIn = SS_ctl ) {
  SS_for <- readLines ( for_file_in )
       for_forecast_line <- grep ( "Forecast: 0=none;", SS_for )
       for_forecast_value <- unlist(strsplit ( SS_for[for_forecast_line], split = "" ))
-      for_forecast_value[1] <- 1
+      for_forecast_value[1] <- 2
       SS_for[for_forecast_line] <- paste(for_forecast_value, collapse = "")
       
       for_number_line <- grep ( "N forecast years", SS_for )
