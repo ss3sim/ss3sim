@@ -6,3 +6,4 @@ natM_val;           c(NA,NA)
 par_name;           LnQ_base_3_CPUE,SR_sigmaR
 par_int;            c(NA,0.001)
 par_phase;          c(-1,-1)
+forecast_num;       0
