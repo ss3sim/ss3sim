@@ -37,7 +37,7 @@
 
 run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
   ss3path = NULL, admb_options = "", hess = FALSE, ignore.stdout =
-  TRUE, admb_pause = 0.01, ...) {
+  TRUE, admb_pause = 0.05, ...) {
 
   ## input checking:
   admb_options <- sanitize_admb_options(admb_options, "-nohess")

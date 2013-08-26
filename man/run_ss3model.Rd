@@ -4,7 +4,7 @@
 \usage{
   run_ss3model(scenarios, iterations, type = c("om", "em"),
     ss3path = NULL, admb_options = "", hess = FALSE,
-    ignore.stdout = TRUE, admb_pause = 0.01, ...)
+    ignore.stdout = TRUE, admb_pause = 0.05, ...)
 }
 \arguments{
   \item{scenarios}{Which scenarios to run. Controls which
