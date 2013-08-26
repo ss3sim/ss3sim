@@ -41,7 +41,8 @@
   written over a network connection. If the output files
   haven't finished writing before R starts looking for the
   output then the simulation will crash with an error. The
-  default value is set to `0.01` seconds, just to be safe.}
+  default value is set to \code{0.01} seconds, just to be
+  safe.}
 
   \item{...}{Anything else to pass to \code{system}.}
 }
