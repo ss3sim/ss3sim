@@ -1,7 +1,7 @@
 Package: ss3sim
 Type: Package
-Title: Functions for stock assessment simulation studies using SS
-Version: 0.50
+Title: Stock assessment simulation with Stock Synthesis
+Version: 0.5.1
 Date: 2013-08-10
 Authors@R: c(person("Sean", "Anderson", email =
     "sean@seananderson.ca", role = c("aut", "cre")),
@@ -14,10 +14,8 @@ Authors@R: c(person("Sean", "Anderson", email =
     person("Kotaro", "Ono", role = "aut"),
     person("Juan", "Valero", role = "aut"))
 Maintainer: Sean C. Anderson <sean@seananderson.ca>
-Description: This project aims to develop R functions for stock assessment
-    simulation studies using Stock Synthesis. The functions will be used to
-    complete simulation studies for the World Conference on Stock Assessment in
-    Boston, July 2013.
+Description: The ss3sim package develops a framework for conducting stock
+    assessment simulation with Stock Synthesis 3 (SS3).
 License: MIT
 LazyData: true
 Depends:
