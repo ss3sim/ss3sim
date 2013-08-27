@@ -7,6 +7,7 @@
 \usepackage{lineno}
 \usepackage{xcolor}
 \usepackage{url}
+\usepackage{fontspec}
 \renewcommand\linenumberfont{\normalfont\tiny\sffamily\color{gray}}
 
 % remove numbers in front of sections:
@@ -14,13 +15,17 @@
 \renewcommand\@seccntformat[1]{}
 \makeatother
 
-\setlength{\parskip}{12pt}
+\usepackage{titlesec}
+\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{-6pt plus 2pt minus 2pt}
+\titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{-6pt plus 2pt minus 2pt}
+
+\setlength{\parskip}{14pt}
 \setlength{\parindent}{0cm} 
 
 \begin{document}
 \linenumbers
 \modulolinenumbers[2]
-\begin{spacing}{1.5}
+\begin{spacing}{1.3}
 \include{manuscript}
 \end{spacing}
 \end{document}

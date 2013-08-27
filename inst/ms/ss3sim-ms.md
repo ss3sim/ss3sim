@@ -8,21 +8,20 @@ Sean C. Anderson^1*^,
 
 ^*^sean_anderson@sfu.ca
 
-\setlength{\parskip}{2pt}
-\setlength{\parindent}{16pt} 
 \clearpage
 
 # Introduction
 
 Fisheries stock-assessment simulation is a critical component to evaluating
 increasingly complex stock-assessment methods and understanding their
-strengths and weaknesses [@hilborn1992]. Simulation lets us test our assessment
-methods in a controlled environment where we know the underlying state of a
-fishery system. Further, it lets us explore matches and mismatches of these
-known truths and are assumptions about those truths. Given the benefits of
-conducting stock-assessment simulations, increasing assessment-model
-complexity, and increasing computational power, stock-assessment simulations
-have become a rapidly expanding field [e.g. @hillary2009; @lee2011; @piner2011; @methot2011; @jiao2012; @lee2012].
+strengths and weaknesses [@hilborn1992]. Simulation lets us test our
+assessment methods in a controlled environment where we know the underlying
+state of a fishery system. Further, it lets us explore matches and mismatches
+of these known truths and are assumptions about those truths. Given the
+benefits of conducting stock-assessment simulations, increasing
+assessment-model complexity, and increasing computational power,
+stock-assessment simulations have become a rapidly expanding field [e.g.
+@hillary2009; @lee2011; @piner2011; @methot2011; @jiao2012; @lee2012].
 
 Stock Synthesis [SS; @methot2012], is a widely used statistical catch-at-age
 (SCAA) stock-assessment framework. It implements Integrated Analysis (IA)
@@ -201,43 +200,39 @@ just enough elements to give a flavour for what can be done in the main paper)
 - how we validated it
 - benefit of using one well tested and well-understood modeling framework (SS)
   (but disadvantages too) --- i.e. benefit to playing with all the switches
-  and understanding one framework well versus having many tools that we superficially
-  understand (based on Rick's comments at the conference)
+  and understanding one framework well versus having many tools that we
+  superficially understand (based on Rick's comments at the conference)
+- why we developed generic low-level functions and higher level functions
+- but researchers are free to develop their own higher level functions
+- because in an open-source MIT(?) licensed R package, users are free to
+  modify functions as needed
 
 ## How ss3sim complements other generic stock-assessment simulation software
 
 - focus on "generic" software, e.g. not software the just works for salmon
   simulation
 
-### r4ss
+*r4ss*
 
 - @r4ss2013
 - r4ss has functions to facilitate aspects of simulations, mostly focused on
   reading and plotting output for stock assessment
 - ss3sim uses r4ss functions for some reading, writing, and bias adjustment
 
-### FLR
+*FLR*
 
 - @kell2007 for FLR and @hillary2009 for simulation in FLR
 - statistical catch-at-age only?
 - not integrated analysis, not SS
 - but particularly relevant to Europe
 
-### "Hooilator"
+*"Hooilator"*
 
 - http://fisherysimulation.codeplex.com, Windows only, GUI..., works on
   bootstrapped data only, therefore isn't as flexible as ss3sim. Used in:
     1. @lee2012
     2. @piner2011
     3. @lee2011
-
-## The need for balance between generalizing and tailoring in simulation software
-
-- maybe?
-- why we developed generic low-level functions and higher level functions
-- but researchers are free to develop their own higher level functions
-- because in an open-source MIT(?) licensed R package, users are free to
-  modify functions as needed
 
 ## Research opportunities with ss3sim
 
@@ -318,6 +313,3 @@ Table X: Comparison with related software?
 \clearpage
 
 # References
-
-\setlength{\parskip}{12pt}
-\setlength{\parindent}{0cm} 
