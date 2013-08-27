@@ -4,10 +4,7 @@ Sean C. Anderson^1*^,
 ...
 (authorship and order to be discussed)
 
-^1^Department of Biological Sciences  
-   Simon Fraser University,  
-   Burnaby BC, V5A 1S6,
-   Canada
+^1^Department of Biological Sciences, Simon Fraser University, Burnaby BC, V5A 1S6, Canada
 
 ^*^sean_anderson@sfu.ca
 
@@ -17,66 +14,42 @@ Sean C. Anderson^1*^,
 
 # Introduction
 
-Paragraph 1: What is stock assessment simulation? Why is it increasingly
-critical? 
+Fisheries stock-assessment simulation is a critical component to evaluating
+increasingly complex stock-assessment methods and understanding their
+strengths and weaknesses [@hilborn1992]. Simulation lets us test our assessment
+methods in a controlled environment where we know the underlying state of a
+fishery system. Further, it lets us explore matches and mismatches of these
+known truths and are assumptions about those truths. Given the benefits of
+conducting stock-assessment simulations, increasing assessment-model
+complexity, and increasing computational power, stock-assessment simulations
+have become a rapidly expanding field [e.g. @hillary2009; @lee2011; @piner2011; @methot2011; @jiao2012; @lee2012].
 
-- stock assessment simulation is...
-- stock-assessment simulation is a critical component to evaluating stock
-  assessment methods and understanding their strengths and weaknesses. ...
-- important because it lets us test our assessments on known truths
-- further, it lets us explore truths we are interested in and match (or
-  mismatch) truths and assessments
-- refs: @hilborn1992 among others; recent papers on stock-assessment
-  simulation
+Stock Synthesis [SS; @methot2012], is a widely used statistical catch-at-age
+(SCAA) stock-assessment framework. It implements Integrated Analysis (IA)
+style population dynamics models using a wide range of data [@maunder2012].
+SS3 is the third version of the software using this framework and is now one
+of the world's most widely-used stock-assessment tools, with researchers and
+modellers especially active on West Coast of United States and in Australia
+(REF). SS facilitates rapid, reproducible analyses, and thus allows users to
+focus on the underlying science and assessment of their stocks, not on the
+underlying model code. 
+Therefore, there are two benefits to conducting stock-assessment simulation
+using SS. First, since the modelling framework has already been developed and
+tested, simulation research can progress rapidly and with less chance of
+errors. Second, since SS is so pervasive as a stock-assessment framework, the
+results are directly applicable to many stock assessments in practice.
 
-Paragraph 2: What is SS3, why is it important, why simulate with it?
-
-- Stock synthesis is a modelling framework... Integrated analysis --- models
-  population dynamics using a wide range of data [@maunder2012]
-- SS3 is the 3rd version of the software using this framework 
-- SS software ref: @methot2012
-- ADMB software ref: @fournier2012
-- Importance of integrated analysis with SS as an example: @maunder2012
-- most widely used now world wide (?) and especially on West Coast of United
-  States
-- facilitates rapid, reproducible analyses... focus on peer-review of the
-  science not the modelling code
-- allows a separation of research from stock assessment that informs
-  management [@methot2012]
-- been instrumental to investigating new stock assessment concepts: e.g. Piner
-  et al. (2011), Methot and Taylor (2011)
-- been  used in XX stock assessments world wide (~60 as of 2012 - ask Rick)
-  and involved in many more currently
-- @piner2011 example of stock-assessment simulation research with SS3
-- @methot2011 example of stock-assessment research with SS
-
-@methot2012:
-
-> A comprehensive modeling framework such as SS enhances 
-> communication, efficiency, and education in the fishery
-> assessment community (Methot, 2009). Communication is 
-> enhanced by creating a familiarity among users, reviewers, and
-> clients regarding terminology and approach. Reviewers who are 
-> already familiar with SS can quickly focus on key issues for 
-> the assessment being reviewed, rather than spend time learning 
-> the features of a novel assessment model.
-
-Therefore there are two benefits to simulating with SS: (1) much of the model
-has already been built and checked (research can then progress rapidly and
-with less chance of errors) (2) the results are directly applicable to the
-tools used by stock assessment scientists --- in fact, used by all Western US
-assessments (REF?).
-
-There are, however, many complications to conducting large-scale, rapid, and
-reproducible stock-assessment simulations. Complications include how to manage
-data and file structure, how to avoiding coding errors, how to repeatedly
-manipulate simulation models to ask specific questions, and how to translate
-models and questions across stocks and species. [Maybe delete this or go into
-how most solutions are GUI right now] Further, while the statistical software
-R has become the standard for data analysis and visualization, and the
-stock-assessment framework Stock Synthesis is increasingly the standard for
-fisheries stock assessment, we lack a generalized framework to link the two in
-a simulation context.
+There are, however, complications to conducting stock-assessment simulations
+that are on a large enough scale to render useful conclusions, fast enough to
+make conducting them feasible, and reproducible enough to make them credible
+and accurate. Complications include how to manage data and file structure, how
+to avoiding coding errors, how to repeatedly manipulate simulation models to
+ask specific questions, and how to translate models and questions across
+stocks and species. Further, while high-level scripting languages such as R
+and Python have become the standard for much of scientific analysis and
+visualization, and the stock-assessment framework Stock Synthesis is
+increasingly the standard for fisheries stock assessment, we lack a
+generalized framework to link these two components in a simulation context.
 
 In this paper we introduce ss3sim, a software package for the popular
 statistical programming language R that facilitates large-scale, rapid, and
@@ -91,11 +64,23 @@ and plotting. We conclude by discussing how ss3sim complements other stock
 assessment simulation software and outlining research questions our accessible
 and general SS simulation framework could address.
 
+*Extra notes:*
+
+- SS is increasingly used in simulation studies.
+- @piner2011 example of stock-assessment simulation research with SS3
+- @methot2011 example of stock-assessment research with SS
+- been used in XX stock assessments world wide (~60 as of 2012 - ask Rick)
+  and involved in many more currently
+- allows a separation of research from stock assessment that informs
+  management [@methot2012]
+- been instrumental to investigating new stock assessment concepts: e.g. Piner
+  et al. (2011), Methot and Taylor (2011)
+
 # The ss3sim framework
 
 ## Terminology
 
-Throughout this paper we refer to a number of terms which we define here. We
+Throughout this paper we refer to a number of terms, which we define here. We
 use the term *operating model* (OM) to refer to the model that represents the
 underlying true dynamics of the system. We use the term *estimation model*
 (EM) to refer to the model used to estimate quantities of interest. Whereas
@@ -104,10 +89,10 @@ truth. We use the term *scenario* to refer to a combination of operating and
 estimation model *cases*. For example, an OM case might be natural mortality
 that follows a random walk, an EM case might be estimating a fixed parameter
 for natural mortality, and the combination of these two cases along with all
-  other specified conditions creates a scenario. We refer to *iterations* or
-  *replicates* as repeated simulations of a scenario with potentially new
-  process and observation error added each time. A simulation therefore refers
-  to the combination of all scenarios and iterations.
+other specified conditions creates a scenario. We refer to *iterations* or
+*replicates* as repeated simulations of a scenario with potentially new
+process and observation error added each time. A simulation therefore refers
+to the combination of all scenarios and iterations.
 
 ## General philosophy
 
