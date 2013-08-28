@@ -29,8 +29,8 @@ these manipulations at the appropriate stage in the simulation.
 `ss3sim` functions are divided into three types:
 
 1. `change` functions that manipulate SS configuration files. These
-   manipulations generate an underlying "truth" (OM) and control our
-   assessment of those models (EM).
+   manipulations generate an underlying "truth" (operating models) and control
+   our assessment of those models (estimation models).
 
 2. `run` functions that conduct simulations. These functions generate a folder
    structure, call manipulation functions, run `SS3` as needed, and save the
@@ -40,7 +40,8 @@ these manipulations at the appropriate stage in the simulation.
 
 
 
-![An illustration of the `ss3sim` simulation structure and relevant R functions](https://raw.github.com/seananderson/ss3sim/master/inst/ms/sim-steps.png)
+![An illustration of the `ss3sim` simulation structure and relevant R functions](https://raw.github.com/seananderson/ss3sim/master/inst/ms/sim-steps.png)\
+An illustration of the `ss3sim` simulation structure and relevant R functions
 
 ## Installing the ss3sim R package
 
@@ -51,7 +52,7 @@ The package can be installed and loaded with:
     install.packages("devtools")
 
     # install the package
-    devtools::install_github("ss3sim", username="seananderson")
+    devtools::install_github("ss3sim", username = "seananderson")
 
     library(ss3sim)
 
