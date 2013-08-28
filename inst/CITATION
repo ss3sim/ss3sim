@@ -1,0 +1,19 @@
+citHeader("To cite package ss3sim in publications use:")
+
+citEntry(
+ entry="Manual",
+ title="ss3sim: An R package for generalized stock-assessment simulation with
+ Stock Synthesis",
+ author="S. C. Anderson and C. Cunningham and F. Hurtado-Ferro and K. F.
+ Johnson and R. Licandeo and C. McGilliard and C. Monnahan and K. Ono and
+ J. Valero",
+ year = "2013",
+ url = "https://github.com/seananderson/ss3sim",
+ textVersion="Anderson, S. C., Cunningham, C., Hurtado-Ferro, F., Johnson, K.
+ F., Licandeo, R., McGilliard, C., Monnahan, C., Ono, K. and Valero, J. 2013.
+ ss3sim: Generalized stock-assessment simulation with Stock Synthesis.
+ https://github.com/seananderson/ss3sim"
+)
+
+citFooter("An accompanying paper and vignette describing ss3sim is in
+development")
