@@ -86,11 +86,11 @@ framework could address.
 <!--- @piner2011 example of stock-assessment simulation research with SS3-->
 <!--- @methot2011 example of stock-assessment research with SS-->
 <!--- been used in XX stock assessments world wide (~60 as of 2012 - ask Rick)-->
-  <!-- and involved in many more currently-->
+  <!--- and involved in many more currently-->
 <!--- allows a separation of research from stock assessment that informs-->
-  <!-- management [@methot2012]-->
+  <!--- management [@methot2012]-->
 <!--- been instrumental to investigating new stock assessment concepts: e.g. Piner-->
-  <!-- et al. (2011), Methot and Taylor (2011)-->
+  <!--- et al. (2011), Methot and Taylor (2011)-->
 
 # The ss3sim framework
 
