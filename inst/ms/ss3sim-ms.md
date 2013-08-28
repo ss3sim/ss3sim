@@ -10,6 +10,18 @@ Sean C. Anderson^1*^,
 
 \clearpage
 
+# Abstract
+
+Fisheries stock-assessment simulation is a critical component to fisheries
+science but 
+
+Here, we present ss3sim, an R package for generalized stock-assessment
+simulation with the commonly used statistical catch-at-age stock-assessment
+framework Stock Synthesis.
+
+Our simulation framework promotes facilitates large-scale simulation studies,
+reproducible research
+
 # Introduction
 
 Fisheries stock-assessment simulation is a critical component to evaluating
@@ -31,12 +43,12 @@ of the world's most widely-used stock-assessment tools, with researchers and
 modellers especially active on West Coast of United States and in Australia
 (REF). SS facilitates rapid, reproducible analyses, and thus allows users to
 focus on the underlying science and assessment of their stocks, not on the
-underlying model code. 
-Therefore, there are two benefits to conducting stock-assessment simulation
-using SS. First, since the modelling framework has already been developed and
-tested, simulation research can progress rapidly and with less chance of
-errors. Second, since SS is so pervasive as a stock-assessment framework, the
-results are directly applicable to many stock assessments in practice.
+underlying model code. Therefore, there are two benefits to conducting
+stock-assessment simulation using SS. First, since the modelling framework has
+already been developed and tested, simulation research can progress rapidly
+and with less chance of errors. Second, since SS is so pervasive as a
+stock-assessment framework, the results are directly applicable to many stock
+assessments in practice.
 
 There are, however, complications to conducting stock-assessment simulations
 that are on a large enough scale to render useful conclusions, fast enough to
@@ -246,9 +258,10 @@ just enough elements to give a flavour for what can be done in the main paper)
 
 \clearpage
 
-# Figure captions
+# Figures
 
-![Flow diagram of `run_ss3sim` stock-assessment simulation steps.\label{flow-diag}](sim-steps.pdf)
+![Flow diagram of `run_ss3sim()` stock-assessment simulation steps.
+\label{flow-diag}](sim-steps.pdf)
 
 \newpage
 
