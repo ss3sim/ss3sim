@@ -11,16 +11,6 @@ Sean C. Anderson^1^, ...
 
 # Abstract
 
-<!--Fisheries stock-assessment simulation is a critical component to fisheries-->
-<!--science but -->
-
-<!--Here, we present ss3sim, an R package for generalized stock-assessment-->
-<!--simulation with the commonly used statistical catch-at-age stock-assessment-->
-<!--framework Stock Synthesis.-->
-
-<!--Our simulation framework promotes facilitates large-scale simulation studies,-->
-<!--reproducible research-->
-
 # Introduction
 
 Fisheries stock assessments provide decision makers with information to manage
@@ -43,29 +33,6 @@ commonly-used stock-assessment tools, particularly on the west coast of the
 United States where it was used in 60?/XX assessments in 2012 (REF) and in
 Australia (REF). 
 
-<!--Therefore, there-->
-<!--are two benefits to conducting stock-assessment simulation using SS. First,-->
-<!--since the modelling framework has already been developed and tested,-->
-<!--simulation research can progress rapidly and with less chance of errors.-->
-<!--Second, since SS is so pervasive as a stock-assessment framework, the results-->
-<!--are directly applicable to many stock assessments in practice.-->
-
-<!--There are, however, complications to conducting stock-assessment simulations-->
-<!--that are on a large enough scale to render useful conclusions, fast enough to-->
-<!--make conducting them feasible, and reproducible enough to make them credible-->
-<!--and accurate. -->
-
-<!--Complications include how to manage data and file structure, how-->
-<!--to avoiding coding errors, how to repeatedly manipulate simulation models to-->
-<!--ask specific questions, and how to translate models and questions across-->
-<!--stocks and species. Further, -->
-
-<!--A-->
-<!--generalized framework would enable simulations that are large enough to render-->
-<!--useful conclusions, fast enough to make conducting them feasible, and-->
-<!--reproducible enough to make them credible and-->
-<!--accurate.                                             -->
-
 While SS is increasingly the standard for fisheries stock assessment
 [@methot2012], and high-level programming languages such as R [@rcoreteam2013]
 have become the standard for statistical computing and visualization, we lack
@@ -79,18 +46,6 @@ effort and estimating or not estimating natural mortality *M*. We conclude by
 discussing how ss3sim complements other stock assessment simulation software
 and outlining research questions our accessible and general SS simulation
 framework could address.
-
-<!--*Extra notes:*-->
-
-<!--- SS is increasingly used in simulation studies.-->
-<!--- @piner2011 example of stock-assessment simulation research with SS3-->
-<!--- @methot2011 example of stock-assessment research with SS-->
-<!--- been used in XX stock assessments world wide (~60 as of 2012 - ask Rick)-->
-  <!--- and involved in many more currently-->
-<!--- allows a separation of research from stock assessment that informs-->
-  <!--- management [@methot2012]-->
-<!--- been instrumental to investigating new stock assessment concepts: e.g. Piner-->
-  <!--- et al. (2011), Methot and Taylor (2011)-->
 
 # The ss3sim framework
 
