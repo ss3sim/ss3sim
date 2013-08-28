@@ -40,7 +40,8 @@ these manipulations at the appropriate stage in the simulation.
 
 
 
-![An illustration of the `ss3sim` simulation structure and relevant R functions](https://raw.github.com/seananderson/ss3sim/master/inst/ms/sim-steps.png)\
+![An illustration of the `ss3sim` simulation structure and relevant R functions](https://raw.github.com/seananderson/ss3sim/master/inst/ms/sim-steps.png)
+
 An illustration of the `ss3sim` simulation structure and relevant R functions
 
 ## Installing the ss3sim R package
