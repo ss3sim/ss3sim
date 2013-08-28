@@ -1,4 +1,4 @@
-all: pdf docx cleanbib
+all: pdf docx md cleanbib
 
 pdf:
 	pandoc -S --no-wrap --bibliography=refs.bib --csl=icesjms.csl --bibliography=refs.bib --latex-engine=xelatex ss3sim-ms.md -o manuscript.tex
@@ -10,7 +10,7 @@ docx:
 	pandoc --bibliography=refs.bib --csl=icesjms.csl --reference-docx=reference.docx ss3sim-ms.md -o ss3sim-ms.docx
 
 md:
-	pandoc --bibliography=refs.bib --csl=icesjms.csl ss3sim-ms.md -o ss3sim-ms-refs.md
+	pandoc -S --bibliography=refs.bib --csl=icesjms.csl ss3sim-ms.md -o ss3sim-ms-with-refs.md
 
 cleanbib:
 	bibtool refs.bib -s > refs2.bib
