@@ -25,7 +25,7 @@ with, for example, time-varying natural mortality [@lee2011; @jiao2012;
 [@lee2012], and uncertainty in stock productivity [@ianelli2002]. [not
 necessarily the best examples]
 
-Stock Synthesis [SS; @methot2013], is a widely-used stock-assessment
+Stock Synthesis [SS; @methot2013] is a widely-used stock-assessment
 framework. It implements statistical age-structured population dynamics
 modeling using a wide range of minimally-processed data [@maunder2013;
 @methot2013]. By using this framework, individuals conducting stock
