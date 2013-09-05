@@ -25,9 +25,11 @@ See `?roygen2::rd_roclet` for a description of all the roxygen tags.
 
 *Exampled* means that the function has a minimal working example. See
 `change_e` for a good self-contained example section for one of the `change`
-function. If the example shouldn't be run when the package is checked or built
+functions. If the example shouldn't be run when the package is checked or built
 then surround the example in `\dontrun{}`. We probably don't want to run
-examples if they create files or try and run SS.
+examples if they create files, try and run SS, or take a long time. Otherwise,
+let them run since they make an excellent form of automated error checking.
+
 
 Function                | Code cleaned  | Documented    | Exampled
 ----------------------- | ------------- | ------------  | --------
