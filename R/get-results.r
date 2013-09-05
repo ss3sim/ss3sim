@@ -285,6 +285,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
         temp <- readLines(con=paste0(rep,"/em/Report.sso"), n=10)
         scalar$version <- temp[1]
         scalar$RunTime <- calculate_runtime(temp[4],temp[5])
+        scalar$hessian <- file.exists(paste0(rep,"/em/admodel.cov"))
         ## Write them to file in the scenario folder
         scalar.exists <- file.exists(scalar.file)
         write.table(x=scalar, file=scalar.file, append=scalar.exists,
