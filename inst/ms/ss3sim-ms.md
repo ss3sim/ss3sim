@@ -1,4 +1,4 @@
-# ss3sim: An R package for generalized stock-assessment simulation with Stock Synthesis
+# ss3sim: An R package for stock-assessment simulation with Stock Synthesis
 
 Sean C. Anderson^1^, ...
 (authorship and order to be discussed)
@@ -13,36 +13,33 @@ Sean C. Anderson^1^, ...
 
 # Introduction
 
-Fisheries stock assessments provide decision makers with information to manage
-fish stocks [@hilborn1992]. Stock-assessment simulation allows testing
-assessment methods in a controlled environment where the true state of a
-fishery is known (REF). Given the expanding complexity of assessment models
-(REF), simulation is becoming an increasingly critical component of testing
-assessment methods (REF), and the field of stock-assessment simulation is
-rapidly developing [e.g. @hillary2009; @lee2011; @piner2011; @methot2011;
-@jiao2012; @lee2012].
+Simulation is a critical component to testing fishery stock-assessment methods
+[@hilborn1992]. With simulation, we can evaluate the precision and bias of
+increasingly complex assessment methods (REF) in a controlled environment
+where the true state of a fishery is known. Recently, simulation studies have
+been key to improving methods to assess, for example, natural mortality (REF),
+XX (REF), and XX (REF). (Possible refs: [@lee2011; @piner2011; @methot2011;
+@jiao2012; @lee2012])
 
-Stock Synthesis [SS; @methot2012], is a widely-used statistical catch-at-age
-(SCAA) stock-assessment framework. It implements Integrated Analysis
+Stock Synthesis [SS; @methot2012], is a widely-used stock-assessment
+framework. It implements a statistical catch-at-age Integrated Analysis
 population dynamics models using a wide range of minimally-processed data
-[@maunder2012]. By using this already-developed assessment framework,
-stock-assessment scientists and peer reviewers can focus on the underlying
-science, instead of the model code [@methot2012]. Owing to these advantages,
-SS3 (the third version of the software) is now one of the world's most
-commonly-used stock-assessment tools, particularly on the west coast of the
-United States where it was used in 60?/XX assessments in 2012 (REF) and in
-Australia (REF). 
+[@maunder2012; @methot2012]. By using this already-developed assessment
+framework, those conducting stock assessments and peer reviewers can focus on
+the underlying science, instead of the model code [@methot2012]. Owing to
+these advantages, SS3 (the third version of the software) is one of the
+world's most commonly-used stock-assessment tools, particularly on the west
+coast of the United States and Australia, where it was used in 60?/XX (REF)
+and XX/XX (REF) assessments in 2012.
 
-While SS is increasingly the standard for fisheries stock assessment
-[@methot2012], and high-level programming languages such as R [@rcoreteam2013]
-have become the standard for statistical computing and visualization, we lack
-a generalized framework to link these components in a simulation context.
-Here, we introduce ss3sim, an R software package that facilitates large-scale,
-rapid, and reproducible stock-assessment simulation with the widely-used SS
-framework. We begin by outlining the general philosophy of ss3sim and
-describing its functions. We then demonstrate the software by developing a
-simple example where we consider the effect of increasing or decreasing survey
-effort and estimating or not estimating natural mortality *M*. We conclude by
+While SS is increasingly the standard for fisheries stock assessment, and the
+programming language R [@rcoreteam2013] has become the standard for
+statistical computing and visualization (REF?), we lack a generalized
+framework to link these components in a simulation context. Here, we introduce
+ss3sim, an R package that facilitates large-scale, rapid, and reproducible
+stock-assessment simulation with the widely-used SS framework. We begin by
+outlining the general philosophy of ss3sim and describing its functions. We
+then demonstrate the software by developing a simple example. We conclude by
 discussing how ss3sim complements other stock assessment simulation software
 and outlining research questions our accessible and general SS simulation
 framework could address.
@@ -51,6 +48,7 @@ framework could address.
 
 ## Terminology
 
+[TODO abbreviate this paragraph]
 Throughout this paper we refer to a number of terms, which we define here. We
 use the term *operating model* (OM) to refer to the model that represents the
 underlying true dynamics of the system. We use the term *estimation model*
@@ -69,14 +67,13 @@ scenarios and iterations.
 We designed ss3sim to be reproducible, flexible, and rapid. *Reproducible*:
 ss3sim allows for the simulation to be documented in code and plain-text
 control files. Further, the plain-text control files refer to individual
-cases, which allows researchers to reuse control files as much as possible
-across scenarios. This reduces the chance for errors and simplifies the
-exploration of new scenarios.
+cases, which allows for the reuse of control files across scenarios. This
+reduces the chance for errors and simplifies the exploration of new scenarios.
 
 *Flexible*: ss3sim allows the user to specify their own OM and EM using all
 the possible configurations of SS3. ss3sim returns output in standard
-comma-separated-value (`.csv`) format allowing researchers to work with the
-output either using the package-provided functions or their own tools.
+comma-separated-value (`.csv`). This means that the output can be easily
+processed with the package-provided functions or with other tools.
 
 *Rapid*: First, ss3sim relies on SS3, which uses ADMB as a backend
 optimization platform --- the most rapid and robust optimization software
@@ -92,38 +89,34 @@ that they can concentrate on the science itself.
 ## General structure
 
 An ss3sim simulation requires three types of input: (1) a base model of the
-underlying truth (an SS3 OM), (2) a base model of how you will assess that
-truth (an SS3 EM), (3) and a set of case files describing deviations from
-these base models. ss3sim works by converting case file arguments (e.g. a
-given natural mortality trajectory) into manipulations of SS3 configuration
-files, running the OM, sampling pseudo data, and running the EM (Figure 1).
+underlying truth (an SS3 OM), (2) a base model of how to assess that truth (an
+SS3 EM), (3) and a set of case files describing deviations from these base
+models. ss3sim works by converting case file arguments (e.g. a given natural
+mortality trajectory) into manipulations of SS3 configuration files, running
+the OM, sampling pseudo data, and running the EM, and storing the output
+(Figure 1).
 
 RE-WORK THIS:
 
 ## Low-level generic ss3sim functions
 
-See Table 1 for a description of the main functions. We show how the functions
-fit into the general structure of a stock assessment simulation in Figure 1.
+See Table 1 for a description of the main functions.
+We show how the functions fit into the general structure of a stock assessment simulation in Figure 1.
 ss3sim functions are divided into three types of functions:
 
-1. Functions that manipulate SS configuration files. These manipulations
-   generate an underlying "truth" (OM) and control our assessment of those
-   models (EM).
+1. Functions that manipulate SS configuration files. 
+These manipulations generate an underlying "truth" (OM) and control our assessment of those models (EM).
 
-2. Functions that conduct simulations. These functions generate a folder
-   structure, call manipulation functions, run `SS3` as needed, and save the
-   output.
+2. Functions that conduct simulations. 
+These functions generate a folder structure, call manipulation functions, run `SS3` as needed, and save the output.
 
 3. Functions for analyzing and plotting simulation output.
 
 ## High-level tailored ss3sim functions
 
-- `run_ss3sim` also see `run_fish600` for an example custom wrapper function
-  for a specific set of projects
-- because it relies on manipulation of these configuration files, it's
-  important the config files match a specific format
-- general framework, because you start with your own OM and EM, and a wide
-  variety of questions are then available through manipulations of ..., ...
+- `run_ss3sim` also see `run_fish600` for an example custom wrapper function for a specific set of projects
+- because it relies on manipulation of these configuration files, it's important the config files match a specific format
+- general framework, because you start with your own OM and EM, and a wide variety of questions are then available through manipulations of ..., ...
 
 # An example simulation with ss3sim
 
