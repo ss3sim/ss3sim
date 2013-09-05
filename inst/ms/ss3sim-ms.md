@@ -9,8 +9,6 @@ Sean C. Anderson^1^, ...
 
 Short title: ss3sim: Stock Synthesis simulation
 
-\clearpage
-
 # Abstract
 
 < 300 words
