@@ -25,16 +25,15 @@ with, for example, time-varying natural mortality [@lee2011; @jiao2012;
 [@lee2012], and uncertainty in stock productivity [@ianelli2002]. [not
 necessarily the best examples]
 
-Stock Synthesis [SS; @methot2013] is a widely-used stock-assessment
-framework. It implements statistical age-structured population dynamics
-modeling using a wide range of minimally-processed data [@maunder2013;
-@methot2013]. By using this framework, individuals conducting stock
-assessments and peer reviewers can focus on the underlying science, instead of
-the model code [@methot2013]. Owing to these advantages, SS3 (the third
-version of the software) is one of the world's most commonly-used
-stock-assessment tools, particularly in the United States and Australia, where
-it has been used in 35 and 12 stock assessments, respectively, as of 2012
-[@methot2013].
+Stock Synthesis [SS; @methot2013] is a widely-used stock-assessment framework.
+It implements statistical age-structured population dynamics modeling using a
+wide range of minimally-processed data [@maunder2013; @methot2013]. By using
+this framework, individuals conducting stock assessments and peer reviewers
+can focus on the underlying science, instead of the model code [@methot2013].
+Owing to these advantages, SS3 (the third version of the software) is one of
+the world's most commonly-used stock-assessment tools, particularly in the
+United States and Australia, where it has been used in 35 and 12 stock
+assessments as of 2012, respectively [@methot2013].
 
 Although SS is increasingly a standard for fisheries stock assessment, and the
 programming language R [@rcoreteam2013] has become the standard for
