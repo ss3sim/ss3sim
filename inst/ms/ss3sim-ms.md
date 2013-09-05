@@ -34,19 +34,24 @@ can focus on the underlying science, instead of the model code [@methot2013].
 Owing to these advantages, SS3 (the third version of the software) 
 is one of the world's most commonly-used stock-assessment tools, 
 particularly in the United States and Australia, 
-where it has been used in 35 and 12 stock assessments as of 2012, respectively [@methot2013].
+where it has been used in 35 and 12 stock assessments as of 2012, 
+respectively [@methot2013].
 
 Although SS is increasingly a standard for fisheries stock assessment, 
 and the programming language R [@rcoreteam2013] has become the standard
 for statistical computing and visualization, 
-there lacks a generalized framework to link these components in a simulation context.
+there lacks a generalized framework 
+to link these components in a simulation context.
 Here, we introduce ss3sim, 
-an R package that facilitates large-scale, rapid, and reproducible
-stock-assessment simulation with the widely-used SS framework.
-We begin by outlining the general structure of ss3sim and describing its functions.
+an R package that facilitates 
+large-scale, rapid, and reproducible stock-assessment simulation 
+with the widely-used SS framework.
+We begin by outlining the general structure of ss3sim 
+and describing its functions.
 We then demonstrate the software by developing a simple example.
-We conclude by discussing how ss3sim complements other stock assessment simulation software 
-and outlining research questions our accessible and general SS simulation framework could address.
+We conclude by discussing how ss3sim complements other simulation software 
+and outlining research questions 
+our accessible and general SS simulation framework could address.
 
 # The ss3sim framework
 
@@ -54,16 +59,13 @@ and outlining research questions our accessible and general SS simulation framew
 
 We designed ss3sim to be reproducible, flexible, and rapid.
 
-*Reproducible*: ss3sim allows for the simulation to be documented
-in code and plain-text control files.
-
 *Reproducible*: ss3sim allows for the simulation to be documented 
 in code and plain-text control files.
 
 *Flexible*: ss3sim can implement all possible configurations of SS3.
 Further, ss3sim summarizes the entire simulation into comma-separated-value (`.csv`) files 
 in addition to returning the typical SS3 output.
-Thus, allowing researchers to easily process simulation output
+Thus, simulation output can be easily processed 
 with the package-provided functions or with other tools.
 
 *Rapid*: First, ss3sim relies on SS3, 
@@ -79,7 +81,8 @@ to quickly visualize simulation output.
 An ss3sim simulation requires three types of input: 
 (1) a base model of the underlying truth, or operating model (OM); 
 (2) a base model used to assess that truth, also known as the estimation model (EM); 
-and (3) a set of plain text files (case files) describing deviations from these base models.
+and (3) a set of plain text files (case files) 
+describing deviations from these base models.
 Each unique combination of OM, EM, and case files are referred to as scenarios. 
 These scenarios are usually run for multiple iterations, 
 possibly adding unique process and observation error each time.
