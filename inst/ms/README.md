@@ -21,7 +21,7 @@ We are developing the appendix (an R-vignette-style document) in the file
 If you have references to add, please add them in BibTeX format to the file
 `refs.bib` (or send them to me).
 
-Note that the lines in `.md` are wrapped approximately on phrases to make Git
+Note that the lines in `ss3sim-ms.md` are wrapped approximately on phrases to make Git
 diffs and merging easier. Don't worry too much about this as you edit, just try
 and keep the line length approximately 80 characters or less and don't make
 line break changes unless you need to.
