@@ -1,39 +1,44 @@
 #' Master function to run SS3 simulations
 #'
 #' This function first deals with parsing the case input files and
-#' then passes these arguments on to \code{\link{ss3sim_base}}.
+#' then passes these arguments on to \code{\link{ss3sim_base}} to run
+#' the simulation.
 #'
 #' @param iterations Which iterations to run. A numeric vector. For
 #' example \code{1:100}.
 #' @param scenarios Which scenarios to run. A vector of character
 #' objects. For example \code{c("D0-E0-F0-G0-R0-S0-M0-cod",
-#' "D1-E0-F0-G0-R0-S0-M0-cod")}. 
+#' "D1-E0-F0-G0-R0-S0-M0-cod")}. Also, see
+#' \code{\link{expand_scenarios}} for a shortcut to specifying the
+#' scenarios.
 #' @param seed If set to a numeric vector then \code{set.seed} will be
 #' set to each successive value of the vector \code{seed} on each
 #' iteration. This can be useful to make simulations reproducible. If
 #' left set to \code{NULL} then the seed will not be set. See, for
 #' example, how this is set in \code{\link{run_fish600}} using the
 #' package data object \code{\link{fish600seeds}}. If set, there
-#' should be a seed value for each iteration. Only affects the
+#' should be a seed value for each iteration. This only affects the
 #' observation error -- the process error (recruitment deviations) are
 #' already fixed according to \code{\link{recdevs}} by default.
 #' @param ... Anything else to pass to \code{\link{ss3sim_base}}. This
 #' includes \code{bias_adjust} and \code{bias_nsim}. Also, you can
 #' pass additional options to \code{SS3} through the argument
-#' \code{admb_options}. Just don't pass the ADMB options \code{-noest}
-#' or \code{-nohess} and enable bias adjustment.
+#' \code{admb_options}.
 #' @author Sean C. Anderson
+#'
 #' @details
 #' The operating model folder should contain: \code{forecast.ss},
 #' \code{yourmodel.ctl}, \code{yourmodel.dat}, \code{ss3.par}, and
 #' \code{starter.ss}. Nothing more and nothing less. The files should
-#' be the versions returned as \code{.ss_new} files. This is important
-#' because it creates consistent formatting which many of the
-#' functions in this package depend on. Rename the \code{.ss_new}
-#' files as listed above (and in all lowercase). The estimation model
-#' folder should contain all the same files listed above except the
-#' \code{ss3.par} and \code{yourmodel.dat} files, which are unnecessary.
+#' be the versions that are returned from an SS run as \code{.ss_new}
+#' files. This is important because it creates consistent formatting
+#' which many of the functions in this package depend on. Rename the
+#' \code{.ss_new} files as listed above (and in all lowercase). The
+#' estimation model folder should contain all the same files listed
+#' above except the \code{ss3.par} and \code{yourmodel.dat} files,
+#' which are unnecessary but can be included if desired.
 #' 
+#' @return
 #' The output will appear in whatever your current R working directory
 #' is. There will be folders named after your scenarios. They will
 #' look like this:
@@ -48,7 +53,7 @@
 #' \item ...
 #' }
 #' @seealso \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
-#' \code{\link{run_bias_ss3}}
+#' \code{\link{run_bias_ss3}}, \code{\link{run_fish600}}
 #' @export
 #'
 #' @examples

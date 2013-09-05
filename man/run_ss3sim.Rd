@@ -12,7 +12,9 @@
   \item{scenarios}{Which scenarios to run. A vector of
   character objects. For example
   \code{c("D0-E0-F0-G0-R0-S0-M0-cod",
-  "D1-E0-F0-G0-R0-S0-M0-cod")}.}
+  "D1-E0-F0-G0-R0-S0-M0-cod")}. Also, see
+  \code{\link{expand_scenarios}} for a shortcut to
+  specifying the scenarios.}
 
   \item{seed}{If set to a numeric vector then
   \code{set.seed} will be set to each successive value of
@@ -22,37 +24,17 @@
   example, how this is set in \code{\link{run_fish600}}
   using the package data object \code{\link{fish600seeds}}.
   If set, there should be a seed value for each iteration.
-  Only affects the observation error -- the process error
-  (recruitment deviations) are already fixed according to
-  \code{\link{recdevs}} by default.}
+  This only affects the observation error -- the process
+  error (recruitment deviations) are already fixed
+  according to \code{\link{recdevs}} by default.}
 
   \item{...}{Anything else to pass to
   \code{\link{ss3sim_base}}. This includes
   \code{bias_adjust} and \code{bias_nsim}. Also, you can
   pass additional options to \code{SS3} through the
-  argument \code{admb_options}. Just don't pass the ADMB
-  options \code{-noest} or \code{-nohess} and enable bias
-  adjustment.}
+  argument \code{admb_options}.}
 }
-\description{
-  This function first deals with parsing the case input
-  files and then passes these arguments on to
-  \code{\link{ss3sim_base}}.
-}
-\details{
-  The operating model folder should contain:
-  \code{forecast.ss}, \code{yourmodel.ctl},
-  \code{yourmodel.dat}, \code{ss3.par}, and
-  \code{starter.ss}. Nothing more and nothing less. The
-  files should be the versions returned as \code{.ss_new}
-  files. This is important because it creates consistent
-  formatting which many of the functions in this package
-  depend on. Rename the \code{.ss_new} files as listed
-  above (and in all lowercase). The estimation model folder
-  should contain all the same files listed above except the
-  \code{ss3.par} and \code{yourmodel.dat} files, which are
-  unnecessary.
-
+\value{
   The output will appear in whatever your current R working
   directory is. There will be folders named after your
   scenarios. They will look like this: \itemize{ \item
@@ -62,6 +44,26 @@
   \code{D0-E0-F0-G0-M0-R0-S0-cod/1/om} \item
   \code{D0-E0-F0-G0-M0-R0-S0-cod/1/em} \item
   \code{D0-E0-F0-G0-M0-R0-S0-cod/2/om} \item ... }
+}
+\description{
+  This function first deals with parsing the case input
+  files and then passes these arguments on to
+  \code{\link{ss3sim_base}} to run the simulation.
+}
+\details{
+  The operating model folder should contain:
+  \code{forecast.ss}, \code{yourmodel.ctl},
+  \code{yourmodel.dat}, \code{ss3.par}, and
+  \code{starter.ss}. Nothing more and nothing less. The
+  files should be the versions that are returned from an SS
+  run as \code{.ss_new} files. This is important because it
+  creates consistent formatting which many of the functions
+  in this package depend on. Rename the \code{.ss_new}
+  files as listed above (and in all lowercase). The
+  estimation model folder should contain all the same files
+  listed above except the \code{ss3.par} and
+  \code{yourmodel.dat} files, which are unnecessary but can
+  be included if desired.
 }
 \examples{
 \dontrun{
@@ -99,6 +101,6 @@ run_ss3sim(iterations = 1:20, scenarios = "D0-E100-F0-G0-R0-S0-M0-cod",
 }
 \seealso{
   \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
-  \code{\link{run_bias_ss3}}
+  \code{\link{run_bias_ss3}}, \code{\link{run_fish600}}
 }
 
