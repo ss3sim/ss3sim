@@ -2,7 +2,7 @@
 
 `ss3sim` is a software package for the statistical programming language
 [R][r-project] that facilitates large-scale, rapid, and reproducible
-stock-assessment simulation with the widely-used [Stock Synthesis III][SS3]
+stock-assessment simulation with the widely-used [Stock Synthesis 3][SS3]
 (SS3) statistical catch-at-age stock-assessment framework.
 
 `ss3sim` was developed by graduate students and post doctoral researchers at
