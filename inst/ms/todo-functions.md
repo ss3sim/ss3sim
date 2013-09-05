@@ -21,7 +21,7 @@ table will be much easier to read if you work with a fixed-width font.
 - a see also section if appropriate `@seealso`
 - any references that are appropriate `@references`
 
-See `?roygen2::rd_roclet` for a description of all the roxygen tags.
+See `?roxygen2::rd_roclet` for a description of all the roxygen tags.
 
 *Exampled* means that the function has a minimal working example. See
 [`change_e`](https://github.com/seananderson/ss3sim/blob/master/R/change_e.r)
