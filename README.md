@@ -1,4 +1,4 @@
-## ss3sim: An R package for generalized stock-assessment simulation with Stock Synthesis
+## ss3sim: An R package for stock-assessment simulation with Stock Synthesis
 
 `ss3sim` is a software package for the statistical programming language
 [R][r-project] that facilitates large-scale, rapid, and reproducible
