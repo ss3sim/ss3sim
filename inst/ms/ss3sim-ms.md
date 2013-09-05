@@ -4,46 +4,49 @@ Sean C. Anderson^1^, ...
 (authorship and order to be discussed)
 
 ^1^Department of Biological Sciences, Simon Fraser University, Burnaby BC, V5A
-1S6, Canada
-
+1S6, Canada  
 ^*^Corresponding author: phone: 1-778-782-3989; email: sean_anderson@sfu.ca
+
+Short title: ss3sim: Stock Synthesis simulation
 
 \clearpage
 
 # Abstract
 
+< 300 words
+
 # Introduction
 
 Simulation is a critical component to testing fishery stock-assessment methods
 [@hilborn1992]. With simulation, we can evaluate the precision and bias of
-increasingly complex assessment methods (REF) in a controlled environment
-where the true state of a fishery is known. Recently, simulation studies have
-been key to improving methods to assess, for example, natural mortality (REF),
-XX (REF), and XX (REF). (Possible refs: [@lee2011; @piner2011; @methot2011;
-@jiao2012; @lee2012])
+complex assessment methods in a controlled environment where we know the true
+state of nature (REFs). Recently, simulation studies have been key to
+improving strategies for dealing with, for example, time-varying natural
+mortality [@lee2011; @jiao2012; @deroba2013], uncertainty in steepness of the
+stock-recruit relationship [@lee2012], and uncertainty in stock productivity
+[@ianelli2002].
 
-Stock Synthesis [SS; @methot2012], is a widely-used stock-assessment
-framework. It implements a statistical catch-at-age Integrated Analysis
-population dynamics models using a wide range of minimally-processed data
-[@maunder2012; @methot2012]. By using this already-developed assessment
-framework, those conducting stock assessments and peer reviewers can focus on
-the underlying science, instead of the model code [@methot2012]. Owing to
-these advantages, SS3 (the third version of the software) is one of the
-world's most commonly-used stock-assessment tools, particularly on the west
-coast of the United States and Australia, where it was used in 60?/XX (REF)
-and XX/XX (REF) assessments in 2012.
+Stock Synthesis [SS; @methot2013], is a widely-used stock-assessment
+framework. It implements statistical age-structured population dynamics models
+using a wide range of minimally-processed data [@maunder2012; @methot2013]. By
+using this framework, individuals conducting stock assessments and peer
+reviewers can focus on the underlying science, instead of the model code
+[@methot2013]. Owing to these advantages, SS3 (the third version of the
+software) is one of the world's most commonly-used stock-assessment tools,
+particularly in the United States and Australia, where it has been used in 35
+and 12 stock assessments, respectively, as of 2012 [@methot2013].
 
-While SS is increasingly the standard for fisheries stock assessment, and the
+Although SS is increasingly a standard for fisheries stock assessment, and the
 programming language R [@rcoreteam2013] has become the standard for
-statistical computing and visualization (REF?), we lack a generalized
-framework to link these components in a simulation context. Here, we introduce
-ss3sim, an R package that facilitates large-scale, rapid, and reproducible
-stock-assessment simulation with the widely-used SS framework. We begin by
-outlining the general philosophy of ss3sim and describing its functions. We
-then demonstrate the software by developing a simple example. We conclude by
-discussing how ss3sim complements other stock assessment simulation software
-and outlining research questions our accessible and general SS simulation
-framework could address.
+statistical computing and visualization, we lack a generalized framework to
+link these components in a simulation context. Here, we introduce ss3sim, an R
+package that facilitates large-scale, rapid, and reproducible stock-assessment
+simulation with the widely-used SS framework. We begin by outlining the
+general philosophy of ss3sim and describing its functions. We then demonstrate
+the software by developing a simple example. We conclude by discussing how
+ss3sim complements other stock assessment simulation software and outlining
+research questions our accessible and general SS simulation framework could
+address.
 
 # The ss3sim framework
 
@@ -178,19 +181,7 @@ Probably turn this into a small table:
 - funding: Fulbright Canada, NSERC, Simon Fraser University, many others...
 - discussions and advice: André Punt, Richard Methot, Ian Taylor, James
   Thorson, ...
-
-\clearpage
-
-# Figures
-
-![Flow diagram of `run_ss3sim()` stock-assessment simulation steps.
-\label{flow-diag}](sim-steps.pdf)
-
-\newpage
-
-Figure 2: Panels with output from the example
-
-\clearpage
+- Any FISH600 members not listed as authors
 
 # Tables
 
@@ -198,6 +189,11 @@ Table X: Comparison with related software? Possible columns: software,
 reference, platform (e.g. R, GUI...), short description/comparison, examples
 of papers using it
 
-\clearpage
+# Figures legends
+
+Figure 1: Flow diagram of `run_ss3sim()` stock-assessment simulation steps.
+
+Figure 2: Panels with output from the example
+
 
 # References
