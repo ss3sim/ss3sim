@@ -8,7 +8,7 @@ pdf:
 	mv ss3sim-ms.pdf ~/Dropbox/Public/
 
 docx:
-	pandoc --bibliography=refs.bib --csl=plos.csl --reference-docx=reference.docx ss3sim-ms.md -o ss3sim-ms.docx
+	pandoc -S --bibliography=refs.bib --csl=plos.csl --reference-docx=reference.docx ss3sim-ms.md -o ss3sim-ms.docx
 	mv ss3sim-ms.docx ~/Dropbox/Public/
 
 md:
