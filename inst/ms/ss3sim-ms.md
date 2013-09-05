@@ -3,7 +3,8 @@
 Sean C. Anderson^1^, ...
 (authorship and order to be discussed)
 
-^1^Department of Biological Sciences, Simon Fraser University, Burnaby BC, V5A 1S6, Canada
+^1^Department of Biological Sciences, Simon Fraser University, Burnaby BC, V5A
+1S6, Canada
 
 ^*^Corresponding author: phone: 1-778-782-3989; email: sean_anderson@sfu.ca
 
@@ -48,21 +49,24 @@ framework could address.
 
 ## Terminology
 
-[TODO abbreviate this paragraph]
+[TODO abbreviate this paragraph substantially or cut it] 
+
 Throughout this paper we refer to a number of terms, which we define here. We
 use the term *operating model* (OM) to refer to the model that represents the
-underlying true dynamics of the system. We use the term *estimation model*
-(EM) to refer to the model used to estimate quantities of interest. We use the
-term *scenario* to refer to a combination of operating and estimation model
-*cases*. For example, an OM case might specify that natural mortality follows
-a random walk, an EM case might estimate a single parameter for natural
-mortality, and the combination of these cases along with all other specified
-conditions creates a scenario. We refer to *iterations* or *replicates* as
-repeated simulations of a scenario, possibly with new process and observation
-error added each time. A simulation therefore refers to the combination of all
-scenarios and iterations.
+underlying true dynamics of the system (REF). We use the term *estimation
+method* (EM) to refer to the method used to estimate quantities of interest
+(REF). We use the term *scenario* to refer to a combination of operating and
+estimation model *cases*. For example, an OM case might specify that natural
+mortality follows a random walk, an EM case might estimate a single parameter
+for natural mortality, and the combination of these cases along with all other
+specified conditions creates a scenario. We refer to *iterations* or
+*replicates* as repeated simulations of a scenario, possibly with new
+process and observation error added each time. A simulation therefore refers
+to the combination of all scenarios and iterations.
 
-## General philosophy
+## Design goals of ss3sim
+
+[This section is too long currently. I don't want to bore people.]
 
 We designed ss3sim to be reproducible, flexible, and rapid. *Reproducible*:
 ss3sim allows for the simulation to be documented in code and plain-text
@@ -86,37 +90,16 @@ their simulation output as they introduce complexity. Finally, ss3sim
 minimizes the amount of bookkeeping code that researchers have to write so
 that they can concentrate on the science itself.
 
-## General structure
+## The general stucture of an ss3sim simulation
 
 An ss3sim simulation requires three types of input: (1) a base model of the
 underlying truth (an SS3 OM), (2) a base model of how to assess that truth (an
 SS3 EM), (3) and a set of case files describing deviations from these base
-models. ss3sim works by converting case file arguments (e.g. a given natural
-mortality trajectory) into manipulations of SS3 configuration files, running
-the OM, sampling pseudo data, and running the EM, and storing the output
-(Figure 1).
-
-RE-WORK THIS:
-
-## Low-level generic ss3sim functions
-
-See Table 1 for a description of the main functions.
-We show how the functions fit into the general structure of a stock assessment simulation in Figure 1.
-ss3sim functions are divided into three types of functions:
-
-1. Functions that manipulate SS configuration files. 
-These manipulations generate an underlying "truth" (OM) and control our assessment of those models (EM).
-
-2. Functions that conduct simulations. 
-These functions generate a folder structure, call manipulation functions, run `SS3` as needed, and save the output.
-
-3. Functions for analyzing and plotting simulation output.
-
-## High-level tailored ss3sim functions
-
-- `run_ss3sim` also see `run_fish600` for an example custom wrapper function for a specific set of projects
-- because it relies on manipulation of these configuration files, it's important the config files match a specific format
-- general framework, because you start with your own OM and EM, and a wide variety of questions are then available through manipulations of ..., ...
+models. ss3sim works, in general, by converting case file arguments (e.g. a
+given natural mortality trajectory) into manipulations of SS3 configuration
+files (`change` functions), running the OM, sampling pseudo data, and running
+the EM (`run` functions), and facilitating the manipulation and visualization
+of output (`get` and `plot` functions) (Figure 1).
 
 # An example simulation with ss3sim
 
@@ -124,52 +107,33 @@ These functions generate a folder structure, call manipulation functions, run `S
 in the appendix... probably many of these details should be appendix only with
 just enough elements to give a flavour for what can be done in the main paper)
 
-## Setting up the SS models
+*Setting up the SS models*: 
 
 - choosing a specific conditioning model or generic conditioning type
 - setting up the OM and EM SS models
 - things to keep in mind
 - running through SS to format as `.ss_new` files and renaming
-
-## File and folder setup
-
 - required files
-- Why we chose a flat-file structure
-- see vignette
 
-## Translating research questions into configuration files
+*Setting up the configuration files*:
 
 - the (simple) research question (increasing or decreasing survey effort
   crossed with estimating M or fixing M)
 - indicate which arguments to adjust
 
-## Deterministic model testing
+*Deterministic model testing*:
 
 - reduce recdevs, reduce sigma R, bias correction
 - what to plot, what to look for, how good is OK?
 
-## Output analysis and visualization
+*Output analysis and visualization*:
 
 - examples using the included functions
 - brief take home of what we'd conclude
 
-# Discussion
+# How ss3sim complements other simulation software
 
-- Other sections? 
-- how we validated it
-- benefit of using one well tested and well-understood modeling framework (SS)
-  (but disadvantages too) --- i.e. benefit to playing with all the switches
-  and understanding one framework well versus having many tools that we
-  superficially understand (based on Rick's comments at the conference)
-- why we developed generic low-level functions and higher level functions
-- but researchers are free to develop their own higher level functions
-- because in an open-source MIT(?) licensed R package, users are free to
-  modify functions as needed
-
-## How ss3sim complements other generic stock-assessment simulation software
-
-- focus on "generic" software, e.g. not software the just works for salmon
-  simulation
+Probably turn this into a small table:
 
 *r4ss*
 
@@ -185,7 +149,7 @@ just enough elements to give a flavour for what can be done in the main paper)
 - not integrated analysis, not SS
 - but particularly relevant to Europe
 
-*"Hooilator"*
+*"Hooalator"*
 
 - http://fisherysimulation.codeplex.com, Windows only, GUI..., works on
   bootstrapped data only, therefore isn't as flexible as ss3sim. Used in:
@@ -193,9 +157,21 @@ just enough elements to give a flavour for what can be done in the main paper)
     2. @piner2011
     3. @lee2011
 
-## Research opportunities with ss3sim
+# Research opportunities with ss3sim
 
 - there are lots, we should brainstorm some key ones
+
+# Conclusions
+
+- benefit of using one well tested and well-understood modeling framework (SS)
+  i.e. benefit to playing with all the switches and understanding one
+  framework well versus having many tools that we superficially understand
+  (based on Rick's comments at the conference)
+- why we developed generic low-level functions and high-level functions
+- researchers are free to develop their own low- and high-level functions
+  because in an open-source MIT(?) licensed R package, users are free to
+  modify functions as needed
+- (these points are somewhat random at the moment)
 
 # Acknowledgements
 
@@ -218,57 +194,9 @@ Figure 2: Panels with output from the example
 
 # Tables
 
-Table 1: User-facing ss3sim functions and a description of their purpose. This
-is now a bit redundant with Fig. 1, the main body text, and the package
-documentation itself.
-
-----------------------------------------------------------------
-Function name          Description
----------------------- -----------------------------------------
-`change_f`             Changes the fishing mortality
-
-`change_m`             Adds time-varying natural mortality 
-                       features
-
-`change_growth`        Adds time-varying growth features
-
-`change_sel`           Adds time-varying selectivity
-
-`change_e`             Controls what and how parameters are 
-                       estimated
-
-`change_lcomp`         Controls how length composition data are 
-                       sampled
-
-`change_agecomp`       Controls how age composition data are 
-                       sampled
-
-`change_index`         Controls how the fishery and survey
-                       indices operate
-
-`change_rec_devs`      Substitutes recruitment deviations
-
-`change_retro`         Controls the number of years to discard 
-                       for a retrospective analysis
-
-`run_ss3sim`           Master function that runs an ss3sim 
-                       simulation
-
-`run_fish600`          Wrapper function that facilitates one 
-                       particular simulation setup
-
-`get_results_all`      Extract results from a series of 
-                       scenarios
-
-`get_results_scenario` Extract the results for a single scenario
-
-`plotting functions!!` Plot the output...
----------------------- -----------------------------------------
-
-
-Table X: Comparison with related software?
-- maybe a table with the possible columns: software, reference, platform (e.g.
-  R, GUI...), Short description/comparison, examples of papers using it
+Table X: Comparison with related software? Possible columns: software,
+reference, platform (e.g. R, GUI...), short description/comparison, examples
+of papers using it
 
 \clearpage
 
