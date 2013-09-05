@@ -18,23 +18,25 @@ Short title: ss3sim: Stock Synthesis simulation
 # Introduction
 
 Simulation is a critical component to testing fishery stock-assessment methods
-[@hilborn1992]. With simulation, we can evaluate the precision and bias of
-complex assessment methods in a controlled environment where we know the true
-state of nature (REFs). Recently, simulation studies have been key to
-improving strategies for dealing with, for example, time-varying natural
-mortality [@lee2011; @jiao2012; @deroba2013], uncertainty in steepness of the
-stock-recruit relationship [@lee2012], and uncertainty in stock productivity
-[@ianelli2002].
+[@hilborn1987; @hilborn1992; @rosenberg1994; @peterman2004]. With simulation,
+we can evaluate the precision and bias of complex assessment methods in a
+controlled environment where we know the true state of nature [@hilborn1992].
+Recently, simulation studies have been key to improving strategies for dealing
+with, for example, time-varying natural mortality [@lee2011; @jiao2012;
+@deroba2013], uncertainty in steepness of the stock-recruit relationship
+[@lee2012], and uncertainty in stock productivity [@ianelli2002]. [not
+necessarily the best examples]
 
 Stock Synthesis [SS; @methot2013], is a widely-used stock-assessment
-framework. It implements statistical age-structured population dynamics models
-using a wide range of minimally-processed data [@maunder2012; @methot2013]. By
-using this framework, individuals conducting stock assessments and peer
-reviewers can focus on the underlying science, instead of the model code
-[@methot2013]. Owing to these advantages, SS3 (the third version of the
-software) is one of the world's most commonly-used stock-assessment tools,
-particularly in the United States and Australia, where it has been used in 35
-and 12 stock assessments, respectively, as of 2012 [@methot2013].
+framework. It implements statistical age-structured population dynamics
+modeling using a wide range of minimally-processed data [@maunder2013;
+@methot2013]. By using this framework, individuals conducting stock
+assessments and peer reviewers can focus on the underlying science, instead of
+the model code [@methot2013]. Owing to these advantages, SS3 (the third
+version of the software) is one of the world's most commonly-used
+stock-assessment tools, particularly in the United States and Australia, where
+it has been used in 35 and 12 stock assessments, respectively, as of 2012
+[@methot2013].
 
 Although SS is increasingly a standard for fisheries stock assessment, and the
 programming language R [@rcoreteam2013] has become the standard for
@@ -42,7 +44,7 @@ statistical computing and visualization, we lack a generalized framework to
 link these components in a simulation context. Here, we introduce ss3sim, an R
 package that facilitates large-scale, rapid, and reproducible stock-assessment
 simulation with the widely-used SS framework. We begin by outlining the
-general philosophy of ss3sim and describing its functions. We then demonstrate
+general structure of ss3sim and describing its functions. We then demonstrate
 the software by developing a simple example. We conclude by discussing how
 ss3sim complements other stock assessment simulation software and outlining
 research questions our accessible and general SS simulation framework could
@@ -55,17 +57,17 @@ address.
 [TODO abbreviate this paragraph substantially or cut it] 
 
 Throughout this paper we refer to a number of terms, which we define here. We
-use the term *operating model* (OM) to refer to the model that represents the
-underlying true dynamics of the system (REF). We use the term *estimation
-method* (EM) to refer to the method used to estimate quantities of interest
-(REF). We use the term *scenario* to refer to a combination of operating and
-estimation model *cases*. For example, an OM case might specify that natural
-mortality follows a random walk, an EM case might estimate a single parameter
-for natural mortality, and the combination of these cases along with all other
-specified conditions creates a scenario. We refer to *iterations* or
-*replicates* as repeated simulations of a scenario, possibly with new
-process and observation error added each time. A simulation therefore refers
-to the combination of all scenarios and iterations.
+use the term *operating model* (OM) [@linhart1986] to refer to the model that
+represents the underlying true dynamics of the system (REF). We use the term
+*estimation method* (EM) to refer to the method used to estimate quantities of
+interest (REF). We use the term *scenario* to refer to a combination of
+operating and estimation model *cases*. For example, an OM case might specify
+that natural mortality follows a random walk, an EM case might estimate a
+single parameter for natural mortality, and the combination of these cases
+along with all other specified conditions creates a scenario. We refer to
+*iterations* or *replicates* as repeated simulations of a scenario, possibly
+with new process and observation error added each time. A simulation therefore
+refers to the combination of all scenarios and iterations.
 
 ## Design goals of ss3sim
 
