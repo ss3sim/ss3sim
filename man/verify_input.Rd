@@ -5,10 +5,15 @@
   verify_input(model_dir, type = c("om", "em"))
 }
 \arguments{
-  \item{model_dir}{directory name for model}
+  \item{model_dir}{Directory name for model. This folder
+  should contain the \code{.ctl}, \code{.dat}, files etc.}
 
   \item{type}{One of "om" or "em" for operating or
-  estimating model}
+  estimating model.}
+}
+\value{
+  Returns a version of the folder with sanitized files or
+  an error if some files are missing.
 }
 \description{
   This function verifies the contents of operating model

@@ -9,9 +9,13 @@
 #' @author Curry James Cunningham; modified by Sean Anderson
 #' @details This is a helper function to be used within the larger wrapper
 #' simulation functions.
+#' @return
+#' Returns a version of the folder with sanitized files or an error if
+#' some files are missing.
 #
-#' @param model_dir directory name for model
-#' @param type One of "om" or "em" for operating or estimating model
+#' @param model_dir Directory name for model. This folder should
+#' contain the \code{.ctl}, \code{.dat}, files etc.
+#' @param type One of "om" or "em" for operating or estimating model.
 #' @export
 #' @examples \dontrun{
 #' d <- system.file("extdata", package = "ss3sim")
