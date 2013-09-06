@@ -10,7 +10,7 @@
 #' @author Kotaro Ono
 
 extract_expected_data <- function(data_ss_new = "data.ss_new",
-  data_out = "data.dat") {
+  data_out = "ss3.dat") {
   data_file <- readLines(data_ss_new)
   data_file_new <- data_file[(
     grep("#_expected values with no error added", 

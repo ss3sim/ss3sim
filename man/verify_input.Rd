@@ -1,6 +1,6 @@
 \name{verify_input}
 \alias{verify_input}
-\title{Function to verify and standardize SS3 input files}
+\title{Verify and standardize SS3 input files}
 \usage{
   verify_input(model_dir, type = c("om", "em"))
 }
@@ -12,27 +12,33 @@
 }
 \description{
   This function verifies the contents of operating model
-  (om) and estimation model (em) folders. IF the contents
-  are correct, .ctl and .dat files are renamed to
-  standardized names, ELSE warning is issued and process
+  (om) and estimation model (em) folders. If the contents
+  are correct, the \code{.ctl} and \code{.dat} files are
+  renamed to standardized names and the `starter.ss` file
+  is updated to reflect these names. If the contents are
+  incorrect then a warning is issued and the simulation is
   aborted.
-
-  Steps: a) Check to ensure correct files are specified and
-  output warning if not - SANITY CHECK b) Rename .ctl and
-  .dat files accordingly from specified OM and EM files c)
-  Change input .ctl and .dat names in starter.SS file
 }
 \details{
   This is a helper function to be used within the larger
-  SS3 simulation wrapper function.
+  wrapper simulation functions.
 }
 \examples{
 \dontrun{
-verify.input(model_dir = "cod_om", type = "om")
-verify.input(model_dir = "cod_em", type = "em")
+d <- system.file("extdata", package = "ss3sim")
+om <- paste0(d, "/ss3sim_base_eg/cod_om")
+em <- paste0(d, "/ss3sim_base_eg/cod_em")
+file.copy(om, ".", recursive = TRUE)
+file.copy(em, ".", recursive = TRUE)
+# verify the correct files exist and change file names:
+verify_input(model_dir = "cod_om", type = "om")
+verify_input(model_dir = "cod_em", type = "om")
+# clean up:
+unlink("cod_om", recursive = TRUE)
+unlink("cod_em", recursive = TRUE)
 }
 }
 \author{
-  Curry James Cunningham
+  Curry James Cunningham; modified by Sean Anderson
 }
 

@@ -114,7 +114,7 @@ Note that the operating and estimation model folders have been renamed `om`
 and `em` within each iteration, the operating and estimation models have been
 checked to make sure they contain the minimal files (as listed above), the
 filenames have been made all lowercase, the data file has been renamed
-`data.dat`, the control files have been renamed `om.ctl` or `em.ctl`, and the
+`ss3.dat`, the control files have been renamed `om.ctl` or `em.ctl`, and the
 starter and control files have been adjusted to reflect these new file names.
 
 The functions in this package assume you've set your working directory in `R` to be the base folder where you will store the scenario folders.

@@ -51,7 +51,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
 
   for(sc in scenarios) {
     for(it in iterations) {
-      print(paste0("Running ", type, " for scenario: ", sc, "; #iteration: ", it)) 
+      print(paste0("Running ", type, " for scenario: ", sc, "; iteration: ", it)) 
       if(os == "unix") {
         system(paste0("cd ", pastef(sc, it, type), ";", ss3path, "SS3 ", 
            ss_em_options, " ", admb_options), ignore.stdout = ignore.stdout, ...)

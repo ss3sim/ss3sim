@@ -169,9 +169,9 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
 
-      # Read in the data.ss_new file and write to data.dat in the om folder
+      # Read in the data.ss_new file and write to ss3.dat in the om folder
       extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
-        data_out = pastef(sc, i, "om", "data.dat"))
+        data_out = pastef(sc, i, "om", "ss3.dat"))
 
       # Change M
       wd <- getwd() # change_m() etc. must be in the working directory
@@ -182,8 +182,8 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
                  dev                 = dev,
                  ctl_file_in         = "om.ctl",
                  ctl_file_out        = "om.ctl",
-                 dat_file            = "data.dat",
-                 dat_file_out        = "data.dat",
+                 dat_file            = "ss3.dat",
+                 dat_file_out        = "ss3.dat",
                  how_time_varying    = how_time_varying)) 
 
       # Change selectivity
@@ -195,8 +195,8 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
                  dev                 = dev,
                  ctl_file_in         = "om.ctl",
                  ctl_file_out        = "om.ctl",
-                 dat_file            = "data.dat",
-                 dat_file_out        = "data.dat",
+                 dat_file            = "ss3.dat",
+                 dat_file_out        = "ss3.dat",
                  how_time_varying    = how_time_varying)) 
       }
 
@@ -209,8 +209,8 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
                  dev                 = dev,
                  ctl_file_in         = "om.ctl",
                  ctl_file_out        = "om.ctl",
-                 dat_file            = "data.dat",
-                 dat_file_out        = "data.dat",
+                 dat_file            = "ss3.dat",
+                 dat_file_out        = "ss3.dat",
                  how_time_varying    = how_time_varying)) 
 
       }
@@ -220,16 +220,16 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
 
       # Read in the data.ss_new file and move it to the em folder
       extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
-        data_out = pastef(sc, i, "om", "data.dat"))
+        data_out = pastef(sc, i, "om", "ss3.dat"))
 
-      # Copy the new data.dat to the em folder
-      file.copy(from = pastef(sc, i, "om", "data.dat"), to = 
-        pastef(sc, i, "em", "data.dat"))
+      # Copy the new ss3.dat to the em folder
+      file.copy(from = pastef(sc, i, "om", "ss3.dat"), to = 
+        pastef(sc, i, "em", "ss3.dat"))
 
       # Survey biomass index
       with(index_params, 
-        change_index(dat_file_in     = pastef(sc, i, "em", "data.dat"), 
-                     dat_file_out    = pastef(sc, i, "em", "data.dat"),
+        change_index(dat_file_in     = pastef(sc, i, "em", "ss3.dat"), 
+                     dat_file_out    = pastef(sc, i, "em", "ss3.dat"),
                      start_surv      = start_surv,
                      end_surv        = end_surv,
                      freq_surv  	   = freq_surv,
@@ -241,10 +241,10 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
                      sd_obs_fish     = sd_obs_fish)) 
  
       # Add error in the length comp data
-      SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "data.dat"))
+      SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"))
       with(lcomp_params,
         change_lcomp(infile          = SS.dat,
-                     outfile         = pastef(sc, i, "em", "data.dat"),
+                     outfile         = pastef(sc, i, "em", "ss3.dat"),
                      distribution    = distribution,
                      Nsamp           = Nsamp,
                      minyear         = minyear,
@@ -262,10 +262,10 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
                      sv_lcomp        = sv_lcomp))
 
       # Add error in the age comp data
-      SS.dat2 = r4ss::SS_readdat(pastef(sc, i, "em", "data.dat"))
+      SS.dat2 = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"))
       with(agecomp_params, 
         change_agecomp(infile        = SS.dat2,
-                       outfile       = pastef(sc, i, "em", "data.dat"),
+                       outfile       = pastef(sc, i, "em", "ss3.dat"),
                        distribution  = distribution,
                        Nsamp         = Nsamp,
                        minyear       = minyear,
@@ -303,7 +303,7 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
       with(estim_params,
        change_e(ctl_file_in          = pastef("em.ctl"),   
                 ctl_file_out         = pastef("em.ctl"),
-                dat_file_in          = pastef("data.dat"),
+                dat_file_in          = pastef("ss3.dat"),
                 for_file_in          = pastef("forecast.ss"),
                 natM_type            = natM_type,
                 natM_n_breakpoints   = natM_n_breakpoints,

@@ -5,7 +5,7 @@ estimation model}
 \usage{
   change_e(ctl_file_in = pastef("em.ctl"),
     ctl_file_out = pastef("em.ctl"),
-    dat_file_in = pastef("data.dat"),
+    dat_file_in = pastef("ss3.dat"),
     for_file_in = "forecasts.ss", natM_type = "1Parm",
     natM_n_breakpoints = NULL, natM_lorenzen = NULL,
     natM_val = c(NA, NA), par_name = NULL, par_int = "NA",
@@ -70,7 +70,7 @@ estimation model}
 d <- system.file("extdata", package = "ss3sim")
 ctl_file <- paste0(d, "/ss3sim_base_eg/cod_em/simple_cod_em.ctl")
 change_e(ctl_file_in = ctl_file, ctl_file_out = "change_e.ctl",
-         dat_file_in = "data.dat", for_file_in = "forecast.ss",
+         dat_file_in = "ss3.dat", for_file_in = "forecast.ss",
          natM_type = "n_breakpoints", natM_n_breakpoints = c(1,4),
          natM_lorenzen = NULL, natM_val = c(.2,3,.4,5),
          par_name = c("steep", "SizeSel_1P_1_Fishery"),
