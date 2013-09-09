@@ -521,6 +521,40 @@ Establishing a working OM and EM
 
 2. HOW TO MAKE BLOCK PATTERNS WITHIN PARAMETERS
 
+3. Turn on recruitment deviations by specifying `#do_recdev` to 1. Using the 
+   next two lines set the recruitment deviations to the start and end years 
+   of the model.
+
+4. Specify additional advanced options for the recruitment deviations 
+   by specifying `# (0/1) to read 13 advanced options to 1. 
+   
+5. Set `#_recdev_early_start` to 0 so that the model will use the 
+   `# first year of main recr_devs`.
+
+6. Set `#_lambda for Fcast_rec_like occurring before endyr+1` to 1. This lambda 
+   is for the log likelihood of the the forecast recruitment devs that occur
+   before the first year of forecasting. Values larger than one accomodate noisy 
+   data at the end of the time series. 
+   
+7. If using BLAH BLAH for recruitment deviations specify `#_max_bias_adj_in_MPD` 
+   to 0. If using BLAH BLAH for recruitment deviations specify it at -1. Either 
+   method will lead to the same end result.
+   
+8. Use any negative value to disable the use of a ballpark year to determine 
+   fishing mortality levels in line `# F ballpark year`.
+
+9. Specify `# F_Method` to 2, which facilitates the use of a vector of 
+   intantaneous fishing mortality levels. The max harvest rate in the 
+   subsequent line will depend upon the fishing mortality levels in your simulation. 
+   Following the max harvest rate, specify a line with three value separated by 
+   spaces. The first value is the overall start F value, followed by the overall phase.
+   The last value are the number of inputs, which will be specified in the next line.
+   Set the number of inputs to 1, as the actual fishing mortality trajectory will 
+   be specified in the `.dat` file. Next specify a line with six values, separtated 
+   by spaces, where the values correspond to fleet number, start year, season, fishing 
+   mortality level, the standard error of the fishing mortality level, and a negative 
+   phase value. 
+
 ## SS new files
 
 x. To obtain `.ss_new` files open a command window in the OM and EM folders
