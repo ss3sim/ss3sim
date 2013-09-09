@@ -9,7 +9,7 @@
     par_file_out = "ss3.par", starter_file = "starter.ss",
     starter_file_out = "starter.ss",
     report_file = "Report.sso", n_blocks = 1,
-    block_pattern = NA, ss3path = NULL)
+    block_pattern = NA, ss3path = NULL, Lorenzen = "NULL")
 }
 \arguments{
   \item{dev}{A vector of environmental data of \code{length
@@ -65,6 +65,15 @@
   "/usr/bin/"}. Make sure to append a slash to the end of
   this path. Defaults to \code{NULL}, which means the
   function will assume the binary is already in your path.}
+
+  \item{Lorenzen}{A vector of length 2, where the first
+  element specifies the reference age for a Lorenzen curve
+  and the second is the natural mortality for that age. The
+  second element can be specified as NULL or NA, which will
+  allow M to remain at the value specified in the original
+  om.ctl. Natural mortality for all other ages will be
+  scaled appropriately. Default is NULL, which keeps the
+  natural mortality type as specified in om.ctl.}
 }
 \description{
   This function takes generic OM files for sardine,
@@ -102,14 +111,14 @@ change_m(how_time_varying = "env", ctl_file_in = ctl_file_in,
   ctl_file_out = "example.ctl", dat_file = dat_file, dat_file_out =
   "example.dat", par_file = par_file, starter_file = starter_file,
   report_file = report_file, n_blocks = 1, block_pattern = c(1990, 2001),
-  dev = rnorm(31, mean = 0, sd = 0.6))
+  dev = rnorm(31, mean = 0, sd = 0.6), Lorenzen = "NULL" )
 setwd(wd)
 
 # other examples
 # sardine model
 # change_m(how_time_varying="env",ctl_file_in = "control.ss_new",dat_file =
 # "SardOM.dat",par_file = "SS3.par",n_blocks = 1,block_pattern =
-# c(1990,2001),dev = rnorm(100,mean = 0,sd = 0.6))
+# c(1990,2001),dev = rnorm(100,mean = 0,sd = 0.6), Lorenzen = "NULL" )
 
 # flatfish model
 # change_m(how_time_varying="env",
@@ -117,15 +126,15 @@ setwd(wd)
 #          dat_file = "Flatfish.dat",dat_file_out = "Flatfish_m.dat",
 #          par_file = "ss3.par",par_file_out = "ss3.par",
 #          n_blocks = 2,block_pattern = c(1990,2001),
-#          dev = c(rep(0,length = 50),rep(0.1,length=50)))
+#          dev = c(rep(0,length = 50),rep(0.1,length=50)), Lorenzen = "NULL" )
 #
 # sardine model
 # change_m(how_time_varying="env",
 #          ctl_file_in = "control.ss_new",ctl_file_out="SardOM_m.ctl",
 #          dat_file = "SardOM.dat",dat_file_out = "SardOM_m.dat",
 #          par_file = "ss3.par",par_file_out = "ss3.par",
-#          n_blocks = 2,block_pattern = c(1990,2001),
-#          dev = c(rep(0,length = 50),rep(0.1,length=50)))
+#          n_blocks = 2, block_pattern = c(1990,2001),
+#          dev = c(rep(0,length = 50),rep(0.1,length=50)), Lorenzen = "NULL" )
 }
 }
 \author{
