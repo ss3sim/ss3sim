@@ -67,7 +67,7 @@ For details on using `ss3sim` for stock-assessment simulation, see the
 [DESCRIPTION]: https://github.com/seananderson/ss3sim/blob/master/DESCRIPTION
 [models]: https://github.com/seananderson/ss3sim/tree/master/inst/extdata/models
 [cases]: https://github.com/seananderson/ss3sim/tree/master/inst/extdata/cases
-[vignette]: https://github.com/seananderson/ss3sim/blob/master/inst/ms/ss3sim-vignette.pdf?raw=true
+[vignette]: https://dl.dropboxusercontent.com/u/254940/ss3sim-vignette.pdf
 [SS3]: http://nft.nefsc.noaa.gov/Stock_Synthesis_3.htm
 [r-project]: http://www.r-project.org/
 [SAFS]: http://fish.washington.edu/
