@@ -1,0 +1,11 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{An introduction to ss3sim}
+-->
+
+# Testing
+
+```{r testing}
+1+1
+```
+

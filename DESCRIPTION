@@ -18,6 +18,8 @@ Description: The ss3sim package develops a framework for conducting stock
     assessment simulation with Stock Synthesis 3 (SS3).
 License: MIT
 LazyData: true
+Suggests:
+    knitr (>= 1.2)
 Depends:
     R (>= 2.14.0),
 Imports:
