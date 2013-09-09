@@ -26,3 +26,9 @@ inst/examples/D0-E0-F0-G0-R0-S0-M0-cod/
 inst/examples/D1-E0-F0-G0-R0-S0-M0-cod/
 
 inst/ms/figure/*
+
+vignettes/figure/
+vignettes/ss3sim-vignette.aux
+vignettes/ss3sim-vignette.tex
+vignettes/ss3sim-vignette.toc
+vignettes/ss3sim.Rnw
