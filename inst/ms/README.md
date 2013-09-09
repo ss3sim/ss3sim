@@ -15,8 +15,8 @@ To contribute, you have a number of options:
    [`ss3sim-ms.docx`](https://dl.dropboxusercontent.com/u/254940/ss3sim-ms.docx)
    and edit using track changes. Then email me the edited version.
 
-We are developing the appendix (an R-vignette-style document) in the file
-`ss3sim-vignette.Rmd`.
+We are developing the appendix (an R vignette) in the file
+`ss3sim-vignette.Rnw` in the `vignettes` folder.
 
 If you have references to add, please add them in BibTeX format to the file
 `refs.bib` (or send them to me).
