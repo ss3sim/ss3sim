@@ -5,7 +5,7 @@ pdf:
 	perl -p -i -e "s/Fig. /Fig.~/g" manuscript.tex
 	xelatex ss3sim-ms
 	rm manuscript.tex *.log *.aux
-	mv ss3sim-ms.pdf ~/Dropbox/Public/
+	cp ss3sim-ms.pdf ~/Dropbox/Public/
 
 docx:
 	pandoc -S --bibliography=refs.bib --csl=plos.csl --reference-docx=reference.docx ss3sim-ms.md -o ss3sim-ms.docx
