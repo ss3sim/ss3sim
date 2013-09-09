@@ -19,7 +19,8 @@ Description: The ss3sim package develops a framework for conducting stock
 License: MIT
 LazyData: true
 Suggests:
-    knitr (>= 1.2)
+    knitr
+VignetteBuilder: knitr
 Depends:
     R (>= 2.14.0),
 Imports:
