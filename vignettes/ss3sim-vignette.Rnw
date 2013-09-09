@@ -22,10 +22,11 @@ opts_chunk$set(dev = 'pdf')
 
 \title{An introduction to \texttt{ss3sim} for\\stock-assessment simulation}
 \author{
-Sean C. Anderson\thanks{Department of Biological Sciences, Simon Fraser University, Burnaby BC, V5A 1S6, Canada}
+  Sean C. Anderson\thanks{Department of Biological Sciences, 
+  Simon Fraser University, Burnaby BC, V5A 1S6, Canada}
   \and
-  Kelli F. Johnson\thanks{School of Aquatic and Fishery Sciences, University
-  of Washington, Box 355020, Seattle, WA 98195-5020, USA}
+  Kelli F. Johnson\thanks{School of Aquatic and Fishery Sciences, 
+  University of Washington, Box 355020, Seattle, WA 98195-5020, USA}
   \and
   Cole C. Monnahan\footnotemark[2]
   \and
@@ -60,42 +61,15 @@ vignette("ss3sim")
 
 \noindent
 \texttt{ss3sim} requires the \texttt{SS3} binary to be in your path. 
-See the section ``Putting \texttt{SS3} in your path'' 
-at the end of this document for details.
+See section \ref{sec:path} for details.
 
-\section{The overall structure of an \texttt{ss3sim} simulation}
-
-TODO I'd like to pull out the ``general'' stuff from below 
-(files needed, output structure, etc.) into a section here. 
-And then keep the example more about the actual example.
-
-\section{An example simulation with \texttt{ss3sim}}
-
-As an example, we will run a 2x2 simulation design in which we test 
-(1) the effect of increasing or decreasing research survey effort and 
-(2) the effect of fixing versus estimating natural mortality (\textit{M}). 
-All of the files for this example are contained 
-within the \texttt{ss3sim} package. 
-To start, we'll locate three sets of folders: 
-(1) the folder with the plaintext case files, 
-(2) the folder with the operating model (OM), 
-(3) and the folder with the estimation model (EM).
-
-<<locate-folders>>=
-library(ss3sim)
-d <- system.file("extdata", package = "ss3sim")
-case_folder <- paste0(d, "/eg-cases")
-om <- paste0(d, "/models/cod-om")
-em <- paste0(d, "/models/cod-em")
-@
+\section{An overview of the \texttt{ss3sim} simulation structure}
 
 \subsection{Setting up the file structure}
 
 The \texttt{ss3sim} package is set up assuming there is 
 an established base-case OM and EM to work with. 
-See the sections 
-``Setting up an operating model'' and 
-``Setting up an estimation model'' for details. 
+See sections \ref{sec:om-setup} and \ref{sec:em-setup} for details. 
 Each OM and EM should be in its own folder. 
 The OM folder should have the files: 
 
@@ -141,10 +115,7 @@ For example, the base-case scenario for our cod stock might be:
 The order of the letters doesn't matter, 
 as long as we use them consistently.
 
-
-\subsection{Creating the input configuration files}
-
-We will need to have a folder containing case argument definitions.
+\texttt{ss3sim} relies on a set of plaintext files to control the simulation.
 These plain text files are read by \texttt{get\_caseval}
 and turned into argument lists that are passed to \texttt{run\_ss3sim}. 
 We can create template input files by running \texttt{create\_argfiles}. 
@@ -173,10 +144,11 @@ The default settings create these files:
   \texttt{lcomp0-spp.txt} (controlled by the \texttt{D} case)
 \end{enumerate}
 
-Look in your working directory for the template files.
+After running \texttt{create\_argfiles}, 
+look in your working directory for the template files.
 Change the case ID number (defaults to \texttt{0}) 
 and the species identifier to a three letter identifier.
-For example, \texttt{cod}, \texttt{sar}, or \texttt{fla} 
+For example, you might use \texttt{cod}, \texttt{sar}, or \texttt{fla} 
 for cod, sardine, or flatfish. 
 An example filename would therefore be 
 \texttt{M1-sar.txt} or \texttt{lcomp2-fla.txt}.
@@ -213,95 +185,6 @@ years; 1913:2012
 years_alter; 1913:2012
 fvals; c(rep(0,25), rep(0.114,75))
 \end{verbatim}
-
-In our case, we will base the simulation around the base-case files used
-for the cod stock in the papers (cite our papers here). 
-You can refer to these papers for details on how the models were set up.
-
-[TODO need to reference (R. Methot, pers. comm.)] 
-
-To investigate the effect of increasing or decreasing sampling effort, 
-we will manipulate argument \texttt{sd\_obs\_surv} 
-that gets passed to \texttt{change\_index()}. 
-In case 1, we'll halve the standard deviation to 0.1
-and in case 2 we'll double the standard deviation to 0.4.
-We can do this by including the line: \texttt{sd\_obs\_surv; 0.1}
-in the file \texttt{D1.txt} and the line: \texttt{sd\_obs\_surv; 0.4}
-in the file \texttt{D2.txt}.
-
-To investigate the effect of fixing versus estimating \textit{M},
-we'll manipulate the argument \texttt{natM\_val} that gets passed to \texttt{change\_e()}.
-In case 0, we'll set the phase that \textit{M} gets estimated in 
-to \texttt{-1} (any negative number will work).
-In case 1, we'll set the phase that \textit{M} gets estimated in 
-to 3 and initialize the estimation of \textit{M} at 0.21.
-We can do this by including the line: \texttt{natM\_val; c(NA,-1)} 
-in the file \texttt{E0-cod.txt} 
-and the line: \texttt{natM\_val; c(0.21,3)} in the file \texttt{E1-cod.txt}.
-
-[TODO Need to add the initilization to the actual example \texttt{natM\_val; c(0.21,3)}]
-
-\subsection{Running deterministic simulations to check the models for
-bias}
-
-We'll run some deterministic runs to check our model for bias
-when process error is not included in the OM. 
-To do this, we'll start by setting up a 
-100 row (number of years) by 20 column (number of iterations) 
-matrix of recruitment deviations, 
-where all values are set to zero.
-
-<<>>=
-recdevs_det <- matrix(0, nrow = 100, ncol = 20)
-@
-
-Then we'll set up case ``estimation'' files in which the recruitment deviations
-are set to the nominal level of \texttt{0.001}. 
-We'll name these files \texttt{E100-cod.txt} and \texttt{E101-cod.txt}. 
-In the case files, the key element is setting 
-\texttt{par\_name = SR\_sigmaR} and \texttt{par\_int = 0.001}.
-
-When we run the simulations, 
-we'll pass our deterministic recruitment deviations 
-to the function \texttt{run\_ss3sim}. 
-Running 20 replicates should be enough 
-to identify whether our models are performing as we expect.
-
-<<deterministic-runs, eval=FALSE>>=
-run_ss3sim(iterations = 1:20, scenarios = 
-  c("D1-E100-F0-G0-R0-S0-M0-cod",
-    "D2-E100-F0-G0-R0-S0-M0-cod", 
-    "D1-E101-F0-G0-R0-S0-M0-cod",
-    "D2-E101-F0-G0-R0-S0-M0-cod"), 
-  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
-  bias_adjust = TRUE, user_recdevs = recdevs_det)
-@
-
-We have written out the scenario names in full for clarity, 
-but \texttt{ss3sim} also contains
-a convenience function \texttt{expand\_scenarios}. 
-With this function we could have instead written:
-
-<<deterministic-runs-expand, eval=FALSE>>=
-x <- expand_scenarios(e = c(100, 101), d = c(1, 2), species = "cod")
-run_ss3sim(iterations = 1:20, scenarios = x,
-  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
-  bias_adjust = TRUE, user_recdevs = recdevs_det)
-@
-
-\subsection{Running the stochastic simulations}
-
-Now we can run the stochastic simulations.
-
-<<stochastic-runs, eval=FALSE>>=
-run_ss3sim(iterations = 1:100, scenarios = 
-  c("D1-E0-F0-G0-R0-S0-M0-cod",
-    "D2-E0-F0-G0-R0-S0-M0-cod", 
-    "D1-E1-F0-G0-R0-S0-M0-cod",
-    "D2-E1-F0-G0-R0-S0-M0-cod"), 
-  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
-  bias_adjust = TRUE)
-@
 
 \subsection{Output file structure}
 
@@ -349,6 +232,122 @@ assume you've set your working directory in \texttt{R}
 to be the base folder where you will store the scenario folders.
 
 
+
+
+\section{An example simulation with \texttt{ss3sim}}
+
+As an example, we will run a 2x2 simulation design in which we test 
+(1) the effect of increasing or decreasing research survey effort and 
+(2) the effect of fixing versus estimating natural mortality (\textit{M}). 
+All of the files for this example are contained 
+within the \texttt{ss3sim} package. 
+To start, we'll locate three sets of folders: 
+(1) the folder with the plaintext case files, 
+(2) the folder with the operating model (OM), 
+(3) and the folder with the estimation model (EM).
+
+<<locate-folders>>=
+library(ss3sim)
+d <- system.file("extdata", package = "ss3sim")
+case_folder <- paste0(d, "/eg-cases")
+om <- paste0(d, "/models/cod-om")
+em <- paste0(d, "/models/cod-em")
+@
+
+
+\subsection{Creating the input configuration files}
+
+
+We will base the simulation around the base-case files used
+for the cod stock in the papers
+(Ono et al.\ \textit{in review}, Johnson et al.\ \textit{in review}). 
+You can refer to these papers for details on how the models were set up.
+
+[TODO need to reference (R. Methot, pers. comm.)] 
+
+To investigate the effect of increasing or decreasing sampling effort, 
+we will manipulate the argument \texttt{sd\_obs\_surv} 
+that gets passed to \texttt{change\_index()}. 
+In case 1, we'll halve the standard deviation to 0.1
+and in case 2 we'll double the standard deviation to 0.4.
+We can do this by including the line: \texttt{sd\_obs\_surv; 0.1}
+in the file \texttt{D1.txt} and the line: \texttt{sd\_obs\_surv; 0.4}
+in the file \texttt{D2.txt}.
+
+To investigate the effect of fixing versus estimating \textit{M},
+we'll manipulate the argument \texttt{natM\_val} that gets passed to \texttt{change\_e()}.
+In case 0, we'll set the phase that \textit{M} gets estimated in 
+to \texttt{-1} (any negative number will work).
+In case 1, we'll set the phase that \textit{M} gets estimated in 
+to 3 and initialize the estimation of \textit{M} at 0.21.
+We can do this by including the line: \texttt{natM\_val; c(NA,-1)} 
+in the file \texttt{E0-cod.txt} 
+and the line: \texttt{natM\_val; c(0.21,3)} in the file \texttt{E1-cod.txt}.
+
+[TODO Need to add the initilization to the actual example \texttt{natM\_val; c(0.21,3)}]
+
+\subsection{Running deterministic simulations to check the models for
+bias}
+
+We'll run some deterministic simulations to check our model
+for bias when process error is not included in the OM. 
+To do this, we'll start by setting up a 
+100 row (number of years) by 20 column (number of iterations) 
+matrix of recruitment deviations, 
+where all values are set to zero.
+
+<<>>=
+recdevs_det <- matrix(0, nrow = 100, ncol = 20)
+@
+
+Then we'll set up case ``estimation'' files in which the recruitment deviations
+are set to the nominal level of \texttt{0.001}. 
+We'll name these files \texttt{E100-cod.txt} and \texttt{E101-cod.txt}. 
+In the case files, the key element is setting 
+\texttt{par\_name = SR\_sigmaR} and \texttt{par\_int = 0.001}.
+
+When we run the simulations, 
+we'll pass our deterministic recruitment deviations 
+to the function \texttt{run\_ss3sim()}. 
+Running 20 replicates should be enough 
+to identify whether our models are performing as we expect.
+
+<<deterministic-runs, eval=FALSE>>=
+run_ss3sim(iterations = 1:20, scenarios = 
+  c("D1-E100-F0-G0-R0-S0-M0-cod",
+    "D2-E100-F0-G0-R0-S0-M0-cod", 
+    "D1-E101-F0-G0-R0-S0-M0-cod",
+    "D2-E101-F0-G0-R0-S0-M0-cod"), 
+  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+  bias_adjust = TRUE, user_recdevs = recdevs_det)
+@
+
+We have written out the scenario names in full for clarity, 
+but \texttt{ss3sim} also contains
+a convenience function \texttt{expand\_scenarios()}. 
+With this function we could have instead written:
+
+<<deterministic-runs-expand, eval=FALSE>>=
+x <- expand_scenarios(e = c(100, 101), d = c(1, 2), species = "cod")
+run_ss3sim(iterations = 1:20, scenarios = x,
+  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+  bias_adjust = TRUE, user_recdevs = recdevs_det)
+@
+
+\subsection{Running the stochastic simulations}
+
+Now we can run the stochastic simulations.
+
+<<stochastic-runs, eval=FALSE>>=
+run_ss3sim(iterations = 1:100, scenarios = 
+  c("D1-E0-F0-G0-R0-S0-M0-cod",
+    "D2-E0-F0-G0-R0-S0-M0-cod", 
+    "D1-E1-F0-G0-R0-S0-M0-cod",
+    "D2-E1-F0-G0-R0-S0-M0-cod"), 
+  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+  bias_adjust = TRUE)
+@
+
 \subsection{Reading in the output and plotting the data}
 
 The function \texttt{get\_results\_all} reads in a set of scenarios
@@ -367,6 +366,7 @@ get_results_all(user.scenarios =
     "D2-E1-F0-G0-R0-S0-M0-cod"))
 @
 
+\noindent
 Let's read in the \texttt{.csv} files:
 
 <<read-output, eval=FALSE>>=
@@ -401,6 +401,7 @@ ts_dat <- subset(ts_dat, D %in% c("D1", "D2"))
 scalar_dat <- subset(scalar_dat, D %in% c("D1", "D2"))
 @
 
+\noindent
 And calculate some useful values in new columns:
 
 <<transform-output>>=
@@ -446,7 +447,7 @@ scalar_dat_long <- plyr::rename(scalar_dat_long,
 \noindent
 Now let's look at boxplots of the deterministic model runs. 
 
-<<relative-error-boxplots-det, fig.height=7, fig.width=5, out.width="4in", fig.cap="Relative error box plots for deterministic runs. In case E0, \\textit{M} is fixed at the historical value; in E1 we estimate \\textit{M}. In case D2, the standard deviation on the survey index observation error is 0.4. In case D1, the standard deviation is quartered representing an increase in survey sampling effort.">>=
+<<relative-error-boxplots-det, fig.height=7, fig.width=5, out.width="4in", cache=TRUE, fig.cap="Relative error box plots for deterministic runs. In case E0, \\textit{M} is fixed at the historical value; in E1 we estimate \\textit{M}. In case D2, the standard deviation on the survey index observation error is 0.4. In case D1, the standard deviation is quartered representing an increase in survey sampling effort.">>=
 library(ggplot2)
 p <- ggplot(subset(scalar_dat_long, E %in% c("E100", "E101") & 
        variable != "SR_sigmaR"), aes(D, relative_error)) + 
@@ -473,14 +474,14 @@ plot_ts_points(ts_dat_sto, y = "SpawnBio", vert = "D", vert2 = "E",
   color = "max_grad", relative_error = TRUE)
 @
 
-<<ssb-ts-plots, fig.height=5, fig.width=7, fig.cap="Spawning stock biomass time series.">>=
+<<ssb-ts-plots, fig.height=5, fig.width=7, cache=TRUE, fig.cap="Spawning stock biomass time series.">>=
 p <- ggplot(ts_dat_sto, aes(year, SpawnBio_em, group = replicate)) +
   geom_line(alpha = 0.3, aes(colour = max_grad)) + facet_grid(D~E) +
   scale_color_gradient(low = "darkgrey", high = "red") + theme_bw()                      
 print(p)
 @
 
-<<relative-error-boxplots-sto, fig.height=7, fig.width=5, out.width="4in", fig.cap="Relative error box plots for stochastic runs. In case E0, \\textit{M} is fixed at the historical value; in E1 we estimate \\textit{M}. In case D2, the standard deviation on the survey index observation error is 0.4. In case D1, the standard deviation is quartered representing an increase in survey sampling effort.">>=
+<<relative-error-boxplots-sto, fig.height=7, fig.width=5, out.width="4in", cache=TRUE, fig.cap="Relative error box plots for stochastic runs. In case E0, \\textit{M} is fixed at the historical value; in E1 we estimate \\textit{M}. In case D2, the standard deviation on the survey index observation error is 0.4. In case D1, the standard deviation is quartered representing an increase in survey sampling effort.">>=
 p <- ggplot(subset(scalar_dat_long, E %in% c("E0", "E1")), 
        aes(D, relative_error)) + 
      geom_boxplot() + geom_hline(aes(yintercept = 0), lty = 2) + 
@@ -494,85 +495,9 @@ print(p)
 @
 
 \clearpage
-\section{Putting \texttt{SS3} in your path}
-
-\texttt{SS3} must be in your path for the \texttt{ss3sim} package to work. 
-Your path is a list of folders that your operating system looks in 
-whenever you type the name of a program on the command line.
-Having a binary in your path means that 
-your operating system knows where to look for the file
-regardless of what folder you're working in.
-
-\subsection{For Unix (Linux and OS X)}
-
-To check if \texttt{SS3} is in your path: 
-open a Terminal window and type \texttt{which SS3} and hit enter.
-If you get nothing returned, then SS is not in your path.
-The easiest way to fix this is to move the \texttt{SS3} binary
-to a folder that's already in your path.
-To find existing path folders type \texttt{echo \$PATH}
-in the terminal and hit enter.
-Now move the \texttt{SS3} binary to one of these folders.
-For example, in a Terminal window type:
-
-\begin{verbatim}
-sudo cp ~/Downloads/SS3 /usr/bin/
-\end{verbatim}
-
-You will need to use \texttt{sudo}
-and enter your password after to have permission
-to move a file to a folder like \texttt{/usr/bin/}.
-
-If you've previously modified your path to add a non-standard location
-for the \texttt{SS3} binary, 
-you may need to also tell \texttt{R} about the new path.
-The path that \texttt{R} sees may not include additional paths 
-that you've added through a configuration file like \texttt{.bash\_profile}.
-You can add to the path that \texttt{R} sees 
-by including a line like this in your \texttt{.Rprofile} file.
-(This is an invisible file in your home directory.)
-
-\begin{verbatim}
-Sys.setenv(PATH=paste(Sys.getenv("PATH"),"/my/folder",sep=":")) 
-\end{verbatim}
-
-\subsection{For Windows}
-
-To check if SS is in your path: 
-open a DOS prompt and type \texttt{ss3 -?} and hit enter. 
-If you get a line like ``ss3 is not recognized \ldots{}'' 
-then SS is not in your path. 
-To add it to your path:
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\item
-  Find the latest version of the \texttt{ss3.exe} binary on your
-  computer
-\item
-  Record the folder location. E.g. \texttt{C:/SS3.24o/}
-\item
-  Click on the start menu and type ``environment''
-\item
-  Choose ``Edit environment variables for your account'' 
-  under Control Panel
-\item
-  Click on \texttt{PATH} if it exists, create it if doesn't exist
-\item
-  Choose \texttt{PATH} and click edit
-\item
-  In the ``Edit User Variable'' window 
-  add to the \textbf{end} of the ``Variable value'' section
-  a semicolon and the \texttt{SS3} folder location you recorded earlier. 
-  E.g. \texttt{;C:/SS3.24o/}
-\item
-  Restart your computer
-\item
-  Go back to the DOS prompt
-  and try typing \texttt{ss3 -?} and hitting return again.
-\end{enumerate}
 
 \section{Setting up an operating model}
+\label{sec:om-setup}
 
 \subsection{Preparation}
 
@@ -664,5 +589,85 @@ To add it to your path:
 \end{enumerate}
 
 \section{Setting up an estimation model}
+\label{sec:em-setup}
+
+
+\section{Putting \texttt{SS3} in your path}
+\label{sec:path}
+
+\texttt{SS3} must be in your path for the \texttt{ss3sim} package to work. 
+Your path is a list of folders that your operating system looks in 
+whenever you type the name of a program on the command line.
+Having a binary in your path means that 
+your operating system knows where to look for the file
+regardless of what folder you're working in.
+
+\subsection{For Unix (Linux and OS X)}
+
+To check if \texttt{SS3} is in your path: 
+open a Terminal window and type \texttt{which SS3} and hit enter.
+If you get nothing returned, then SS is not in your path.
+The easiest way to fix this is to move the \texttt{SS3} binary
+to a folder that's already in your path.
+To find existing path folders type \texttt{echo \$PATH}
+in the terminal and hit enter.
+Now move the \texttt{SS3} binary to one of these folders.
+For example, in a Terminal window type:
+
+\begin{verbatim}
+sudo cp ~/Downloads/SS3 /usr/bin/
+\end{verbatim}
+
+You will need to use \texttt{sudo}
+and enter your password after to have permission
+to move a file to a folder like \texttt{/usr/bin/}.
+
+If you've previously modified your path to add a non-standard location
+for the \texttt{SS3} binary, 
+you may need to also tell \texttt{R} about the new path.
+The path that \texttt{R} sees may not include additional paths 
+that you've added through a configuration file like \texttt{.bash\_profile}.
+You can add to the path that \texttt{R} sees 
+by including a line like this in your \texttt{.Rprofile} file.
+(This is an invisible file in your home directory.)
+
+\begin{verbatim}
+Sys.setenv(PATH=paste(Sys.getenv("PATH"),"/my/folder",sep=":")) 
+\end{verbatim}
+
+\subsection{For Windows}
+
+To check if SS is in your path: 
+open a DOS prompt and type \texttt{ss3 -?} and hit enter. 
+If you get a line like ``ss3 is not recognized \ldots{}'' 
+then SS is not in your path. 
+To add it to your path:
+
+\begin{enumerate}
+\item
+  Find the latest version of the \texttt{ss3.exe} binary on your
+  computer
+\item
+  Record the folder location. E.g. \texttt{C:/SS3.24o/}
+\item
+  Click on the start menu and type ``environment''
+\item
+  Choose ``Edit environment variables for your account'' 
+  under Control Panel
+\item
+  Click on \texttt{PATH} if it exists, create it if doesn't exist
+\item
+  Choose \texttt{PATH} and click edit
+\item
+  In the ``Edit User Variable'' window 
+  add to the \textbf{end} of the ``Variable value'' section
+  a semicolon and the \texttt{SS3} folder location you recorded earlier. 
+  E.g. \texttt{;C:/SS3.24o/}
+\item
+  Restart your computer
+\item
+  Go back to the DOS prompt
+  and try typing \texttt{ss3 -?} and hitting return again.
+\end{enumerate}
 
 \end{document}
