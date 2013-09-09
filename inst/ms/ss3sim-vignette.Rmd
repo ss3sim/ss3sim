@@ -31,10 +31,10 @@ vignette("ss3sim")
 
 As an example, we will run a 2x2 simulation design in which we test (1) the
 effect of increasing or decreasing research survey effort and (2) the effect
-of fixing versus estimating natural mortality (M). All the files for this
-example are contained within the `ss3sim` package. So, to start, we'll locate
-three sets of folders: the folder with the plaintext case files, the folder
-with the operating model (OM), and the folder with the estimation model (EM).
+of fixing versus estimating natural mortality (*M*). All of the files for this
+example are contained within the `ss3sim` package. To start, we'll locate
+three sets of folders: (1) the folder with the plaintext case files, (2) the folder 
+with the operating model (OM), (3) and the folder with the estimation model (EM).
 
 ```{r locate-folders}
 library(ss3sim)
@@ -46,28 +46,28 @@ em <- paste0(d, "/models/cod-em")
 
 ## Setting up the file structure
 
-The `ss3sim` package is set up assuming we have an established base-case OM
-and EM to work with. Each OM and EM should be in its own folder. The OM
+The `ss3sim` package is set up assuming there is an established base-case OM
+and EM to work with. See the section "Establishing a working OM and EM" for details. 
+Each OM and EM should be in its own folder. The OM
 folder should have the files:
-
-    yourmodel.ctl
-    yourmodel.dat
+    yourOMmodel.ctl
+    yourOMmodel.dat
     ss3.par
     starter.ss
     forecast.ss
 
 The EM folder should have:
 
-    yourmodel.ctl
-    yourmodel.dat # optional; not used
+    yourEMmodel.ctl
+    yourEMmodel.dat # optional; not used
     starter.ss
     forecast.ss
 
 In both cases, nothing more and nothing less. The names of the `.ctl` and
 `.dat` files are not important. The package functions will rename them after
 they are copied to appropriate folders. These files should be derived from
-the `.ss_new` files but named as listed above. It’s important to use these
-`.ss_new` files so they have consistent formatting. Many of the functions in
+`.ss_new` files but named as listed above. It’s important to use `.ss_new` 
+files so the files have consistent formatting. Many of the functions in
 this package depend on that formatting.
 
 ## Cases and scenarios
@@ -77,14 +77,12 @@ case identifiers that combine to create unique scenarios. The types of cases
 are: natural mortality (M), fishing mortality (F), data quality (D),
 selectivity (S), growth (G), and retrospective (R). These case IDs are
 followed by three-letter species identifier. It's important to use three
-letters since the functions assume that the last three letters represent a
-species (or some other identifier for a different project).
-
-The different version of each case are identified with numbers. So, for
+letters because the functions assume that the last three letters represent a
+unique identifier.
+The different versions of each case are identified with numbers. For
 example, the base-case scenario for our cod stock might be:
 `D0-E0-F0-G0-M0-R0-S0-cod`. The order of the letters doesn't matter, as long
 as we use them consistently.
-
 ## Output file structure
 
 The function `copy_ss3models` creates a folder structure and copies over the
@@ -152,15 +150,16 @@ for a `change` function to see the arguments that need to be declared. For
 example, see `?change_f`.
 
 You can use any simple `R` syntax to declare the argument values. For
-example: `c(1, 2, 4)`, or `seq(1, 100)` or `1:100` or `matrix()`. Character
+example: `c(1, 2, 4)`, or `seq(1, 100)`, or `1:100`, or `matrix()`. Character
 objects don’t need to be quoted, but can be if you’d like. However, be
 careful not to use the delimiter (set up as a semicolon) anywhere else in the
-file besides to denote columns. You can add comments after any `#` symbols.
+file besides to denote columns. You can add comments after any `#` symbol.
 Internally, the functions evaluate in `R` any entries that have no character
 values (e.g. `1:100`) or have an alpha-numeric character followed by a `(`.
 Anything that is character only or has character mixed with numeric but
 doesn't have the regular expression `"[A-Za-z0-9]("` gets turned into a
 character argument.
+
 
 Putting that all together, here’s what an example `F1-cod.txt` file might
 look like:
@@ -173,6 +172,7 @@ In our case, we will base the simulation around the base-case files used for
 the cod stock in the papers (cite our papers here). You can refer to these
 papers for details on how the models were set up.
 
+[need to reference (R. Methot, pers. comm.)]
 To investigate the effect of increasing or decreasing sampling effort, we will
 manipulate argument `sd_obs_surv` that gets passed to `change_index()`. In
 case 1, we'll halve the standard deviation to 0.1 and in case 2 we'll double
@@ -188,27 +188,28 @@ in the file `D1.txt` and the line:
 
 in the file `D2.txt`.
 
-To investigate the effect of fixing versus estimating M, we'll manipulate the
+To investigate the effect of fixing versus estimating *M*, we'll manipulate the
 argument `natM_val` that gets passed to `change_e()`. In case 0, we'll set the
-phase that M gets estimated in to `NA`. In case 1, we'll set the phase that M
-gets estimated in to 3.
+phase that M gets estimated in to -1 (any negative number will work). In case 1, we'll set the phase that *M* 
+gets estimated in to 3 and initialize the estimation of *M* at 0.21.
 
 We can do this by including the line:
 
-    natM_val; c(NA,NA)
+    natM_val; c(NA,-1)
 
-in the file `E0.txt` and the line:
+in the file `E0-cod.txt` and the line:
 
-    natM_val; c(NA,3)
+    natM_val; c(0.21,3)
 
-in the file `E1.txt`.
+in the file `E1-cod.txt`.
 
+[Need to add the initilization to the actual example natM_val; c(0.21,3)]
 ## Running deterministic simulations to check the models for bias
 
-We'll run some "deterministic" runs to check our model for bias when we don't
-have any process error. To do this, we'll start by setting up a matrix of
-recruitment deviations with 0 deviations. We need 100 rows (for 100 year
-simulations) and 20 columns (for 20 deterministic iterations).
+We'll run some "deterministic" runs to check our model for bias when 
+process error is not included in the OM. To do this, we'll start by 
+setting up a 100 row (number of years) by 20 column (number of iterations) 
+matrix of recruitment deviations, where all values are set to zero.
 
 ```{r }
 recdevs_det <- matrix(0, nrow = 100, ncol = 20)
@@ -216,7 +217,7 @@ recdevs_det <- matrix(0, nrow = 100, ncol = 20)
 
 Then we'll set up case "estimation" files in which the recruitment deviations
 are set to the nominal level of `0.001`. We'll name these files `E100-cod.txt`
-and `E101-cod.txt`. In the control files, the key element is setting `par_name
+and `E101-cod.txt`. In the case files, the key element is setting `par_name
 = SR_sigmaR` and `par_int = 0.001`.
 
 When we run the simulations, we'll pass our deterministic recruitment
@@ -454,3 +455,77 @@ your path. To add it to your path:
 
 9. Go back to the DOS prompt and try typing `ss3 -?` and hitting return again.
 
+
+Establishing a working OM and EM
+================================
+
+# Operating Model
+
+1. Obtain an SS stock assessment. This can either be an actual stock assessment, 
+   from which you would like to base your simulation on, or a fabricted one, 
+   as long as it conforms to the structure needed for SS3. 
+   
+2. Run the assessment from a command window using the command `ss3` to generate 
+   a `.par` file with the maximum likelihood estimates.
+
+3. Modify the `.ctl` file so that catches are driven by instantaneous fishing 
+   mortality rather than catch.
+   
+4. Modify the start and end years of the model to obtain the desired length.
+
+5. Specify the time series of fishing mortality levels.
+
+6. Run the model again with no estimation.
+
+## Starter file
+
+1. Inform model parameters using the `.par` file by changing 
+   `# 0=use init values in control file' to 1. Parameter values specified in 
+   the `.ctl` file will now be ignored.
+
+2. Generate informative reports by setting 
+   `# detailed age-structured reports in REPORT.SSO` to 1.
+   
+3. Generate deterministic data by setting 
+   `# Number of datafiles to produce` to 3.
+
+4. Turn of parameter estimation by changing 
+   `# Turn off estimation for parameters entering after this phase` to 0. 
+   Turning off parameter estimation faciliates running the model 
+   in a deterministic fashion. 
+   
+5. Turn off parameter jittering by setting 
+   `# jitter initial parm value by this fraction` to 0.
+
+6. Turn off retrospective analyses by setting 
+   `# retrospective year relative to end year` to 0. To analyze the data
+   for retrospective patterns, use the R case file.
+   
+7. Specify how catch is reported by setting `# F_report_units` to 1 if
+   catch is reported in biomass or 2 if catch is reported in numbers.
+   Additionally, comment out the next line, 
+   `#_min and max age over which average F will be calculated`, by removing
+   all characters prior to the hash symbol.
+
+8. Implement catches using instantaneous fishing mortality by changing 
+   `# F_report_basis` to 0. 
+
+
+## Control file
+
+1. Specify all environmental deviates to be unconstrained by bounds by setting 
+   `#_env/block/dev_adjust_method` to 1. If the method is set to 2 parameters 
+   adjusted unsing environmental covariate inputs will be adjusted using a 
+   logistic transformation to assure that the adjusted parameter will stay 
+   within the bounds of the base parameter.
+
+2. HOW TO MAKE BLOCK PATTERNS WITHIN PARAMETERS
+
+## SS new files
+
+x. To obtain `.ss_new` files open a command window in the OM and EM folders
+   and type ss3. Once the model is finished running remove the `.ss_new` 
+   file extension from the files needed and add the appropriate
+   file extension. 
+
+# Estimation Model
