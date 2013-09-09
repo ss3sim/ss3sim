@@ -56,7 +56,7 @@ You can read the help files and access this vignette again with:
 
 <<help, eval=FALSE>>=
 help(package = "ss3sim")
-vignette("ss3sim")
+vignette("ss3sim-vignette")
 @
 
 \noindent
@@ -621,7 +621,6 @@ sudo cp ~/Downloads/SS3 /usr/bin/
 You will need to use \texttt{sudo}
 and enter your password after to have permission
 to move a file to a folder like \texttt{/usr/bin/}.
-
 If you've previously modified your path to add a non-standard location
 for the \texttt{SS3} binary, 
 you may need to also tell \texttt{R} about the new path.
@@ -639,7 +638,7 @@ Sys.setenv(PATH=paste(Sys.getenv("PATH"),"/my/folder",sep=":"))
 
 To check if SS is in your path: 
 open a DOS prompt and type \texttt{ss3 -?} and hit enter. 
-If you get a line like ``ss3 is not recognized \ldots{}'' 
+If you get a line like \texttt{ss3 is not recognized...}
 then SS is not in your path. 
 To add it to your path:
 
@@ -650,17 +649,17 @@ To add it to your path:
 \item
   Record the folder location. E.g. \texttt{C:/SS3.24o/}
 \item
-  Click on the start menu and type ``environment''
+  Click on the start menu and type \texttt{environment}
 \item
-  Choose ``Edit environment variables for your account'' 
+  Choose \texttt{Edit environment variables for your account}
   under Control Panel
 \item
   Click on \texttt{PATH} if it exists, create it if doesn't exist
 \item
   Choose \texttt{PATH} and click edit
 \item
-  In the ``Edit User Variable'' window 
-  add to the \textbf{end} of the ``Variable value'' section
+  In the \texttt{Edit User Variable} window 
+  add to the \textbf{end} of the \texttt{Variable value} section
   a semicolon and the \texttt{SS3} folder location you recorded earlier. 
   E.g. \texttt{;C:/SS3.24o/}
 \item
