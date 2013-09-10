@@ -574,6 +574,44 @@ print(p)
   the adjusted parameter will stay within the bounds of the base parameter.
 \item
   TODO HOW TO MAKE BLOCK PATTERNS WITHIN PARAMETERS
+\item
+  Turn on recruitment deviations by specifying 
+  \texttt{\#do\_recdev} to \texttt{1}. 
+  Using the next two lines set the recruitment deviations
+  to the start and end years of the model.
+\item Specify additional advanced options for the recruitment deviations 
+   by specifying \texttt{\# (0/1) to read 13 advanced options} to \texttt{1}.
+\item Set \texttt{\#\_recdev\_early\_start} to \texttt{0} 
+  so that the model will use the \texttt{\# first year of main recr\_devs}.
+\item Set \texttt{\#\_lambda for Fcast\_rec\_like occurring before endyr+1}
+  to \texttt{1}. 
+  This lambda is for the log likelihood of the forecast recruitment
+  deviations that occur before the first year of forecasting. 
+  Values larger than one accommodate noisy data at the end of the time series. 
+\item If using TODO BLAH BLAH for recruitment deviations specify 
+   \texttt{\#\_max\_bias\_adj\_in\_MPD} to \texttt{0}. 
+   If using TODO BLAH BLAH for recruitment deviations specify it at \texttt{-1}.
+   Either method will lead to the same end result.
+\item Use any negative value to disable the use of a ballpark year
+  to determine fishing mortality levels in line \texttt{\# F ballpark year}.
+\item Specify \texttt{\# F\_Method} to \texttt{2},
+   which facilitates the use of a vector of instantaneous fishing mortality levels. 
+   The max harvest rate in the subsequent line will depend upon 
+   the fishing mortality levels in your simulation. 
+ \item Following the max harvest rate, 
+   specify a line with three values separated by spaces. 
+   The first value is the overall start F value, 
+   followed by the overall phase.
+   The last value are the number of inputs, 
+   which will be specified in the next line.
+   Set the number of inputs to 1, 
+   as the actual fishing mortality trajectory 
+   will be specified in the \texttt{.dat} file. 
+ \item 
+   Next specify a line with six values, separated by spaces, 
+   where the values correspond to fleet number, start year, season, 
+   fishing mortality level, the standard error of the fishing mortality level,
+   and a negative phase value. 
 \end{enumerate}
 
 \subsection{Standardizing the model files}
