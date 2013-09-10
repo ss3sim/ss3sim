@@ -5,3 +5,11 @@ doc/.*[.]graffle$
 doc/.*[.]fdb_latexmk$
 doc/.*[.]fls$
 doc/Makefile$
+
+vignettes/Makefile
+vignettes/knit
+vignettes/ss3sim-vignette.Rnw
+vignettes/*.aux
+vignettes/*.log
+vignettes/*.toc
+vignettes/README.md

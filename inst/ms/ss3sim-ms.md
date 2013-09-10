@@ -11,7 +11,26 @@ Short title: ss3sim: Stock Synthesis simulation
 
 # Abstract
 
-< 300 words
+Simulation is critical to testing fishery stock-assessment methods.
+However, while the statistical age-structured population dynamics model Stock Synthesis (SS)
+has become widely-used around the world, 
+there lacks a generalized and scriptable framework to run SS simulations. 
+Here, we introduce ss3sim, an R package that facilitates 
+large-scale, rapid, and reproducible simulation with the third version of SS, SS3.
+ss3sim requires only minor modifications to an existing SS3 model 
+along with a set of plaintext control files describing 
+alternative underlying states of nature, sampling scenarios,
+and assessment scenarios.
+ss3sim then generates an underlying truth, 
+samples from that truth, 
+runs the estimation model, 
+and summarizes the results.
+The package can simultaneously investigate multiple scenarios
+and be run across multiple computers in parallel.
+We demonstrate the software with a simple example, 
+discuss how ss3sim complements other simulation software, 
+and outline research questions that ss3sim could address.
+
 
 # Introduction
 
@@ -44,7 +63,7 @@ there lacks a generalized framework
 to link these components in a simulation context.
 Here, we introduce ss3sim, 
 an R package that facilitates 
-large-scale, rapid, and reproducible stock-assessment simulation 
+large-scale, rapid, and reproducible simulation 
 with the widely-used SS framework.
 We begin by outlining the general structure of ss3sim 
 and describing its functions.
@@ -58,29 +77,26 @@ our accessible and general SS simulation framework could address.
 ## Design goals of ss3sim
 
 We designed ss3sim to be reproducible, flexible, and rapid.
-
 *Reproducible*: ss3sim allows for the simulation to be documented 
 in code and plain-text control files.
-
 *Flexible*: ss3sim can implement all possible configurations of SS3.
-Further, ss3sim summarizes the entire simulation into comma-separated-value (`.csv`) files 
-in addition to returning the typical SS3 output.
-Thus, simulation output can be easily processed 
+Further, ss3sim summarizes the entire simulation into comma-separated-value (`.csv`) files
+allowing for the output to be easily processed 
 with the package-provided functions or with other tools.
-
-*Rapid*: First, ss3sim relies on SS3, 
+*Rapid*: ss3sim relies on SS3, 
 which uses ADMB as a backend optimization platform --- 
 the most rapid and robust optimization software available [@fournier2012].
-Second, ss3sim facilitates the deployment of simulations 
-across multiple computers or computer cores.
-Third, the package provides a number of functions 
-to quickly visualize simulation output.
+ss3sim also facilitates the deployment of simulations 
+across multiple computers or computer cores, thereby accelerating computation.
+Finally, the package provides a number of visualization functions 
+to quickly explore simulation output.
 
 ## The general stucture of an ss3sim simulation
 
 An ss3sim simulation requires three types of input: 
 (1) a base model of the underlying truth, or operating model (OM); 
-(2) a base model used to assess that truth, also known as the estimation model (EM); 
+(2) a base model used to assess that truth, 
+also known as the estimation model or method (EM); 
 and (3) a set of plain text files (case files) 
 describing deviations from these base models.
 Each unique combination of OM, EM, and case files are referred to as scenarios. 
@@ -89,16 +105,12 @@ possibly adding unique process and observation error each time.
 A simulation therefore refers to the combination of all scenarios and iterations.
 
 ss3sim works, in general, by converting case file arguments 
-(e.g. a given natural mortality trajectory) 
-into manipulations of SS3 configuration files (`change` functions), 
+(e.g. arguments specifying a given natural mortality trajectory) 
+into manipulations of SS3 configuration files (`change` functions); 
 running the OM, sampling the time-series of population dynamics (pseudo data), 
-running the EM (`run` functions), 
+and running the EM (`run` functions); 
 and facilitating the manipulation and visualization of output 
 (`get` and `plot` functions) (Figure 1).
-
-[Not sure where this info fits in yet.
-Plain-text case files allows for the reuse of case files across scenarios.
-This reduces the chance for errors and simplifies the exploration of new scenarios.]
 
 # An example simulation with ss3sim
 
