@@ -28,7 +28,8 @@ opts_chunk$set(dev = 'pdf')
   Kelli F. Johnson\thanks{School of Aquatic and Fishery Sciences, 
   University of Washington, Box 355020, Seattle, WA 98195-5020, USA}
   \and
-  Cole C. Monnahan\footnotemark[2]
+  Cole C. Monnahan\thanks{Quantitative Ecology and Resource Management, 
+    University of Washington, Box 352182, Seattle, WA 98195-5020, USA}
   \and
   others to be added \ldots}
 \date{}
@@ -576,24 +577,24 @@ print(p)
   TODO HOW TO MAKE BLOCK PATTERNS WITHIN PARAMETERS
 \item
   Turn on recruitment deviations by specifying 
-  \texttt{#do_recdev} to \texttt{1}. Using the 
+  \texttt{\#do\_recdev} to \texttt{1}. Using the 
    next two lines set the recruitment deviations to the start and end years 
    of the model.
 \item Specify additional advanced options for the recruitment deviations 
-   by specifying \texttt{# (0/1) to read 13 advanced options} to \texttt{1}.
-\item Set \texttt{#_recdev_early_start} to \texttt{0} so that 
-  the model will use the \texttt{# first year of main recr_devs}.
-\item Set \texttt{#_lambda for Fcast_rec_like occurring before endyr+1} 
+   by specifying \texttt{\# (0/1) to read 13 advanced options} to \texttt{1}.
+\item Set \texttt{\#\_recdev\_early\_start} to \texttt{0} so that 
+  the model will use the \texttt{\# first year of main recr\_devs}.
+\item Set \texttt{\#\_lambda for Fcast\_rec\_like occurring before endyr+1} 
    to \texttt{1}. This lambda is for the log likelihood of the the 
    forecast recruitment devs that occur before the first year of forecasting. 
-   Values larger than one accomodate noisy data at the end of the time series. 
+   Values larger than one accommodate noisy data at the end of the time series. 
 \item If using BLAH BLAH for recruitment deviations specify 
-   \texttt{#_max_bias_adj_in_MPD} to \texttt{0}. 
+   \texttt{\#\_max\_bias\_adj\_in\_MPD} to \texttt{0}. 
    If using BLAH BLAH for recruitment deviations specify it at \texttt{-1}.
    Either method will lead to the same end result.
 \item Use any negative value to disable the use of a ballpark year to determine 
-   fishing mortality levels in line \texttt{# F ballpark year}.
-\item Specify \texttt{# F_Method} to \texttt{2},
+   fishing mortality levels in line \texttt{\# F ballpark year}.
+\item Specify \texttt{\# F\_Method} to \texttt{2},
    which facilitates the use of a vector of intantaneous fishing mortality levels. 
    The max harvest rate in the subsequent line will depend upon 
    the fishing mortality levels in your simulation. 
@@ -601,13 +602,95 @@ print(p)
    spaces. The first value is the overall start F value, followed by the overall phase.
    The last value are the number of inputs, which will be specified in the next line.
    Set the number of inputs to 1, as the actual fishing mortality trajectory will 
-   be specified in the \texttt{.dat} file. Next specify a line with six values, separtated 
+   be specified in the \texttt{.dat} file. Next specify a line with six values, separated 
    by spaces, where the values correspond to fleet number, start year, season, fishing 
    mortality level, the standard error of the fishing mortality level, and a negative 
    phase value. 
 \end{enumerate}
 
-\subsection{Standardizing the model files}
+\subsection{Data file modifications}
+
+\begin{enumerate}
+\item Specify the start and end year for the simulation by modifying 
+   \texttt{\#\_styr} and \texttt{\#\_endyr}.
+   Years can be specified as a number line 
+   (i.e. \texttt{1}, \texttt{2}, \texttt{3}, \ldots) or 
+   as actual years 
+   (i.e. \texttt{1999}, \texttt{2000}, \texttt{2001}, \ldots)
+\item Specify the names for each fleet in an uncommented line after 
+   \texttt{\#\_N\_areas}. Names must be separated by a \texttt{\%} with no spaces.
+   It is these names which you will use in the plain text case files
+   to specify and change characteristics of each fleet throughout the simulation.
+\item Specify the mean body weight across all selected sizes and ages
+   to be specific to measured fish by setting \texttt{\#N observations}
+   to \texttt{0}. Subsequently, specify the degrees of freedom for the 
+   Student's T distribution used to evaluated the mean body weight deviations to 
+   \texttt{1} in the following line. The degrees of freedom must be specified
+   even if there are no mean body weight observations.
+\item Set the length bin method to \texttt{2} in the line labeled 
+   \texttt{\# length bin method}. Using a value of \texttt{2} instructs SS
+   to generate the binwidths from a minimum and maximum value. In the following
+   three lines specify the binwidth for population size composition data; 
+   the minimum size, or the lower edge of the first bin and size at age zero; 
+   and the maximum size, or lower edge of the last bin. 
+   The population bins must not be wider than the length data bins, 
+   but the boundaries do not have to align.
+\item Specify \texttt{\#\_comp\_tail\_compression} to any negative value 
+   to turn off tail compression.
+\item Set the length bin range method to \texttt{1} 
+   in the line \texttt{\#\_Lbin\_method} 
+   so that the bins refer to population length bin index.
+\end{enumerate}
+
+\section{Setting up an estimation model}
+\label{sec:em-setup}
+
+\subsection{Preparation}
+
+\begin{enumerate}
+\item
+  Copy working OM files
+\item
+  Modify the \texttt{.ctl} file so that catches 
+  are driven by observed catch.
+\item
+  Specify the forecast file if forecasts are desired.
+\end{enumerate}
+
+\subsection{Starter file modifications}
+\begin{enumerate}
+\item Change the names of the \texttt{.dat} and \texttt{.ctl} files. 
+\item Specify the model to use parameter values found in the \texttt{.ctl} file,
+   by changing \texttt{\# 0=use init values in control file; 1=use ss3.par} 
+   to \texttt{0}.
+\item Turn on parameter estimation by changing 
+   \texttt{\# Turn off estimation for parameters entering after this phase} 
+   to a value larger than the max phase specified in the \texttt{.ctl} file. 
+\end{enumerate}
+\subsection{Control file modifcations}
+\begin{enumerate}
+\item Set the \texttt{\#\_recdev phase} 
+   to a positive value to estimate yearly recruitment deviations. 
+\item If using bias adjustment set \texttt{\#\_recdev\_early\_phase} 
+   to a positive value. 
+   Estimates for the years and maximum bias adjustment 
+   can initially be inputted with approximations 
+   or use the bias adjustment function within \texttt{ss3sim} 
+   to find appropriate values for the base case EM 
+   and input them in the appropriate lines.
+\item Specify \texttt{\# F\_Method} to \texttt{3},
+   which allows the model to use catches to estimate 
+   appropriate fishing mortality levels. 
+   The max harvest rate in the subsequent line will depend upon 
+   the fishing mortality levels in your simulation. 
+   An additional line must be inserted after the maximum harvest rate 
+   to specify the number of iterations used in the hybrid method. 
+   Specify the line as follows 
+   \texttt{3 \# F\_Method:  1=Pope; 2=instan. F; 3=hybrid (hybrid is recommended)}, 
+   where the number can range from \texttt{3} to \texttt{7}.
+\end{enumerate}
+
+\section{Standardizing the model files}
 
 \begin{enumerate}
 \item
@@ -618,10 +701,6 @@ print(p)
   remove the \texttt{.ss\_new} file extension from the files needed 
   and add the appropriate file extension.
 \end{enumerate}
-
-\section{Setting up an estimation model}
-\label{sec:em-setup}
-
 
 \section{Putting \texttt{SS3} in your path}
 \label{sec:path}
