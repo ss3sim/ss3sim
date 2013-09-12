@@ -87,8 +87,6 @@ The EM folder should have:
 
 \begin{verbatim}
 yourEMmodel.ctl
-yourEMmodel.dat # optional; not used 
-[Can we remove the .dat file from the documentation, is it ever used within the package?]
 starter.ss
 forecast.ss
 \end{verbatim}
@@ -193,7 +191,7 @@ fvals; c(rep(0,25), rep(0.114,75))
 \subsection{Bias adjustment}
 
 The high-level wrapper function \texttt{run\_ss3sim}, 
-allows users to specify whether or not they would like to utilize 
+allows users to specify whether or not they would like to use 
 the bias adjustment routine built into the package by setting
 \texttt{bias\_adjust} to \texttt{TRUE} or \texttt{FALSE}.
 The function runs each scenario a set number of times, 
@@ -201,7 +199,7 @@ as specified by \texttt{bias\_nsim},
 to determine the appropriate maximum bias adjustment to use
 during the maximum likelihood estimation mode. Using the bias adjustment procedure
 helps assure that the estimated log-normally distributed recruitment deviations 
-are mean unbiased leading to mean unbiased estimates of biomass \cite{methot2011}
+are mean-unbiased leading to mean-unbiased estimates of biomass \citep{methot2011}.
 
 \subsection{Output file structure}
 
@@ -337,7 +335,7 @@ run_ss3sim(iterations = 1:20, scenarios =
   bias_adjust = TRUE, user_recdevs = recdevs_det)
 @
 
-The scenario names are written out in full for clarity, 
+We have written out the scenario names in full for clarity, 
 but \texttt{ss3sim} also contains
 a convenience function \texttt{expand\_scenarios()}. 
 With this function we could instead write:
@@ -355,7 +353,7 @@ The package contains a set of normally distributed recruitment deviations,
 with a mean of \texttt{-0.5} and a standard deviation of \texttt{1}. 
 To use the pre-specified deviations 
 remove the argument \texttt{user\_recdevs} from \texttt{run\_sssim}.
-Process error will now be unique for each iteration but equal across scenarios
+Process error will now be unique for each iteration but consistent across scenarios
 for a specific iteration, to facilitate comparison between scenarios. 
 
 <<stochastic-runs, eval=FALSE>>=
