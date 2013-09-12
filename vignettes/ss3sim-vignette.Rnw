@@ -9,6 +9,8 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{graphicx}
+\usepackage[round]{natbib}
+\bibpunct{(}{)}{;}{a}{}{;}
 
 \begin{document}
 
@@ -793,5 +795,8 @@ To add it to your path:
   Go back to the DOS prompt
   and try typing \texttt{ss3 -?} and hitting return again.
 \end{enumerate}
+
+\bibliographystyle{apalike}
+\bibliography{refs}
 
 \end{document}
