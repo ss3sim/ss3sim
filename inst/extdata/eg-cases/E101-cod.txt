@@ -1,9 +1,9 @@
-# description: *Deterministic* single estimated M w/ init at historic
+# description: *Deterministic* single estimated M w/ init at historic + 0.01
 # value, no qCPUE,
 natM_type;          1Parm      
 natM_n_breakpoints; NULL  
 natM_lorenzen;      NULL
-natM_val;           c(NA,3)
+natM_val;           c(0.21,3)
 par_name;           LnQ_base_3_CPUE,SR_sigmaR
 par_int;            c(NA,0.001)
 par_phase;          c(-1,-1)
