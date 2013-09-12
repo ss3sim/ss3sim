@@ -157,7 +157,7 @@ for cod, sardine, or flatfish.
 An example filename would therefore be 
 \texttt{M1-sar.txt} or \texttt{lcomp2-fla.txt}.
 The case \texttt{D1} corresponds to the files 
-\texttt{index1-spp.txt}, \texttt{agecomp1-spp.txt}, and \texttt{lcomp0-spp.txt}.
+\texttt{index1-spp.txt}, \texttt{agecomp1-spp.txt}, and\\ \texttt{lcomp0-spp.txt}.
 The other case types have single argument files.
 
 The first column in the text files 
@@ -596,12 +596,12 @@ print(p)
 \item Turn on additional advanced options for the recruitment deviations 
    by specifying \texttt{\# (0/1) to read 13 advanced options} to \texttt{1}.
 \item Set \texttt{\#\_recdev\_early\_start} to \texttt{0} so that 
-  the model will use the \texttt{\# first year of main recr\_devs}.
+  the model will use the\\ \texttt{\# first year of main recr\_devs}.
 \item Set \texttt{\#\_lambda for Fcast\_rec\_like occurring before endyr+1} 
    to \texttt{1}. This lambda is for the log likelihood of the the 
    forecast recruitment devs that occur before the first year of forecasting. 
    Values larger than one accommodate noisy data at the end of the time series. 
-\item If using normally distributed recruitment deviations specify 
+\item If using normally distributed recruitment deviations specify\\ 
    \texttt{\#\_max\_bias\_adj\_in\_MPD} to \texttt{0}. 
    If using lognormally distributed recruitment deviations specify it at \texttt{-1}.
    Either method will lead to the same end result.
@@ -680,7 +680,7 @@ print(p)
 \item Specify the model to use parameter values found in the \texttt{.ctl} file,
    by changing \texttt{\# 0=use init values in control file; 1=use ss3.par} 
    to \texttt{0}.
-\item Turn on parameter estimation by changing 
+\item Turn on parameter estimation by changing\\
    \texttt{\# Turn off estimation for parameters entering after this phase} 
    to a value larger than the max phase specified in the \texttt{.ctl} file. 
 \end{enumerate}
@@ -709,15 +709,13 @@ print(p)
 
 \section{Standardizing model files}
 \label{sec:ss-new}
-\begin{enumerate}
-\item
-  To obtain \texttt{.ss\_new} files 
-  open a command window in the OM and EM folders 
-  and type \texttt{ss3}. 
-  Once the model is finished running, 
-  remove the \texttt{.ss\_new} file extension from the files needed 
-  and add the appropriate file extension.
-\end{enumerate}
+
+To obtain \texttt{.ss\_new} files 
+open a command window in the OM and EM folders 
+and type \texttt{ss3}. 
+Once the model is finished running, 
+remove the \texttt{.ss\_new} file extension from the files needed 
+and add the appropriate file extension.
 
 \section{Putting \texttt{SS3} in your path}
 \label{sec:path}
