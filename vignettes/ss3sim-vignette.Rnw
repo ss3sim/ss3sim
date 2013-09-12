@@ -28,7 +28,8 @@ opts_chunk$set(dev = 'pdf')
   Kelli F. Johnson\thanks{School of Aquatic and Fishery Sciences, 
   University of Washington, Box 355020, Seattle, WA 98195-5020, USA}
   \and
-  Cole C. Monnahan\footnotemark[2]
+  Cole C. Monnahan\thanks{Quantitative Ecology and Resource Management, 
+    University of Washington, Box 352182, Seattle, WA 98195-5020, USA}
   \and
   others to be added \ldots}
 \date{}
@@ -68,7 +69,7 @@ See section \ref{sec:path} for details.
 \subsection{Setting up the file structure}
 
 The \texttt{ss3sim} package is set up assuming there is 
-an established base-case OM and EM to work with. 
+an established base-case operating model (OM) and estimation model (EM) to work with. 
 See sections \ref{sec:om-setup} and \ref{sec:em-setup} for details. 
 Each OM and EM should be in its own folder. 
 The OM folder should have the files: 
@@ -86,7 +87,6 @@ The EM folder should have:
 
 \begin{verbatim}
 yourEMmodel.ctl
-yourEMmodel.dat # optional; not used
 starter.ss
 forecast.ss
 \end{verbatim}
@@ -97,14 +97,16 @@ The package functions will rename them after they are copied to appropriate fold
 These files should be derived from \texttt{.ss\_new} files but named as listed above. 
 It's important to use \texttt{.ss\_new} files so the files have consistent formatting. 
 Many of the functions in this package depend on that formatting.
+See sections \ref{sec:ss-new} for details. 
 
 \subsection{Cases and scenarios}
 
-To use the high-level wrapper function \texttt{run\_ss3sim}, 
-we will have unique case identifiers that combine to create unique scenarios.
+The high-level wrapper function \texttt{run\_ss3sim}, 
+uses unique case identifiers (IDs) that combine to create unique scenarios.
 The types of cases are: 
-natural mortality (M), fishing mortality (F), 
-data quality (D), selectivity (S), growth (G), and retrospective (R).
+data quality (D), estimation (E), fishing mortality (F), 
+growth (G), natural mortality (M), 
+retrospective (R), and selectivity (S).
 These case IDs are followed by three-letter species identifier.
 It's important to use three letters
 because the functions assume that the last three letters 
@@ -115,10 +117,10 @@ For example, the base-case scenario for our cod stock might be:
 The order of the letters doesn't matter, 
 as long as we use them consistently.
 
-\texttt{ss3sim} relies on a set of plaintext files to control the simulation.
+\texttt{ss3sim} relies on a set of plain text files to control the simulation.
 These plain text files are read by \texttt{get\_caseval}
 and turned into argument lists that are passed to \texttt{run\_ss3sim}. 
-We can create template input files by running \texttt{create\_argfiles}. 
+The function \texttt{create\_argfiles} creates template input files. 
 It reads the various functions and parses the arguments and default values
 into plain text files. 
 The default settings create these files:
@@ -163,7 +165,7 @@ See the help for a \texttt{change} function
 to see the arguments that need to be declared. 
 For example, see \texttt{?change\_f}.
 
-You can use any simple \texttt{R} syntax to declare the argument values.
+You can use any simple \texttt{R} syntax to declare argument values.
 For example: 
 \texttt{c(1, 2, 4)}, or \texttt{seq(1, 100)}, or \texttt{1:100}, or \texttt{matrix()}.
 Character objects don't need to be quoted, but can be if you'd like.
@@ -186,10 +188,23 @@ years_alter; 1913:2012
 fvals; c(rep(0,25), rep(0.114,75))
 \end{verbatim}
 
+\subsection{Bias adjustment}
+
+The high-level wrapper function \texttt{run\_ss3sim}, 
+allows users to specify whether or not they would like to use 
+the bias adjustment routine built into the package by setting
+\texttt{bias\_adjust} to \texttt{TRUE} or \texttt{FALSE}.
+The function runs each scenario a set number of times, 
+as specified by \texttt{bias\_nsim}, 
+to determine the appropriate maximum bias adjustment to use
+during the maximum likelihood estimation mode. Using the bias adjustment procedure
+helps assure that the estimated log-normally distributed recruitment deviations 
+are mean-unbiased leading to mean-unbiased estimates of biomass \citep{methot2011}.
+
 \subsection{Output file structure}
 
 The function \texttt{copy\_ss3models} creates a folder structure
-and copies over the operating and estimation models. 
+and copies the operating and estimation models. 
 The folder structure looks like:
 
 \begin{verbatim}
@@ -217,14 +232,14 @@ In that case the folders will look like:
   ...
 \end{verbatim}
 
-Note that the operating and estimation model folders have been renamed
+Note that the OM and EM folders will be renamed
 \texttt{om} and \texttt{em} within each iteration, 
-the operating and estimation models have been checked 
+the OM and EM are checked 
 to make sure they contain the minimal files (as listed above), 
-the filenames have been made all lowercase, 
-the data file has been renamed \texttt{ss3.dat}, 
-the control files have been renamed \texttt{om.ctl} or \texttt{em.ctl}, 
-and the starter and control files have been adjusted 
+the filenames will be all lowercase, 
+the data file is renamed \texttt{ss3.dat}, 
+the control files are renamed \texttt{om.ctl} or \texttt{em.ctl}, 
+and the starter and control files are adjusted 
 to reflect these new file names.
 
 The functions in this package
@@ -232,19 +247,17 @@ assume you've set your working directory in \texttt{R}
 to be the base folder where you will store the scenario folders.
 
 
-
-
 \section{An example simulation with \texttt{ss3sim}}
 
 As an example, we will run a 2x2 simulation design in which we test 
-(1) the effect of increasing or decreasing research survey effort and 
+(1) the effect of high and low research survey effort and 
 (2) the effect of fixing versus estimating natural mortality (\textit{M}). 
 All of the files for this example are contained 
 within the \texttt{ss3sim} package. 
 To start, we'll locate three sets of folders: 
-(1) the folder with the plaintext case files, 
-(2) the folder with the operating model (OM), 
-(3) and the folder with the estimation model (EM).
+(1) the folder with the plain text case files, 
+(2) the folder with the OM, 
+(3) and the folder with the EM.
 
 <<locate-folders>>=
 library(ss3sim)
@@ -258,33 +271,30 @@ em <- paste0(d, "/models/cod-em")
 \subsection{Creating the input configuration files}
 
 
-We will base the simulation around the base-case files used
-for the cod stock in the papers
-(Ono et al.\ \textit{in review}, Johnson et al.\ \textit{in review}). 
-You can refer to these papers for details on how the models were set up.
+We will base the simulation around the base-case files created
+for a cod-like species in the papers
+(Ono \textit{et al}.\ \textit{in review}, Johnson \textit{et al}.\ \textit{in review}). 
+You can refer to these papers for details on how the models were set up. 
 
-[TODO need to reference (R. Methot, pers. comm.)] 
-
-To investigate the effect of increasing or decreasing sampling effort, 
+To investigate the effect of research survey effort, 
 we will manipulate the argument \texttt{sd\_obs\_surv} 
 that gets passed to \texttt{change\_index()}. 
-In case 1, we'll halve the standard deviation to 0.1
-and in case 2 we'll double the standard deviation to 0.4.
+In case 1, we'll specify the standard deviation at 0.1
+and in case 2 we'll increase the standard deviation to 0.4.
 We can do this by including the line: \texttt{sd\_obs\_surv; 0.1}
-in the file \texttt{D1.txt} and the line: \texttt{sd\_obs\_surv; 0.4}
-in the file \texttt{D2.txt}.
+in the file \texttt{D1-cod.txt} and the line: \texttt{sd\_obs\_surv; 0.4}
+in the file \texttt{D2-cod.txt}.
 
 To investigate the effect of fixing versus estimating \textit{M},
 we'll manipulate the argument \texttt{natM\_val} that gets passed to \texttt{change\_e()}.
-In case 0, we'll set the phase that \textit{M} gets estimated in 
-to \texttt{-1} (any negative number will work).
-In case 1, we'll set the phase that \textit{M} gets estimated in 
-to 3 and initialize the estimation of \textit{M} at 0.21.
+In case 0, we'll set the phase in which \textit{M} is estimated 
+to \texttt{-1} (any negative number will work) and use the argument \texttt{NA} 
+to fix \textit{M} at the true value.
+In case 1, we'll estimate \textit{M} in 
+phase \texttt{3} and initialize the estimation of \textit{M} at \texttt{0.21}.
 We can do this by including the line: \texttt{natM\_val; c(NA,-1)} 
 in the file \texttt{E0-cod.txt} 
 and the line: \texttt{natM\_val; c(0.21,3)} in the file \texttt{E1-cod.txt}.
-
-[TODO Need to add the initilization to the actual example \texttt{natM\_val; c(0.21,3)}]
 
 \subsection{Running deterministic simulations to check the models for
 bias}
@@ -305,6 +315,9 @@ are set to the nominal level of \texttt{0.001}.
 We'll name these files \texttt{E100-cod.txt} and \texttt{E101-cod.txt}. 
 In the case files, the key element is setting 
 \texttt{par\_name = SR\_sigmaR} and \texttt{par\_int = 0.001}.
+The arguments \texttt{par\_name} and \texttt{par\_int} are set up 
+to handle vectors of parameter names and values. In this example changing
+\texttt{SR\_sigmaR} will be the second parameter in the vector.
 
 When we run the simulations, 
 we'll pass our deterministic recruitment deviations 
@@ -325,7 +338,7 @@ run_ss3sim(iterations = 1:20, scenarios =
 We have written out the scenario names in full for clarity, 
 but \texttt{ss3sim} also contains
 a convenience function \texttt{expand\_scenarios()}. 
-With this function we could have instead written:
+With this function we could instead write:
 
 <<deterministic-runs-expand, eval=FALSE>>=
 x <- expand_scenarios(e = c(100, 101), d = c(1, 2), species = "cod")
@@ -336,7 +349,12 @@ run_ss3sim(iterations = 1:20, scenarios = x,
 
 \subsection{Running the stochastic simulations}
 
-Now we can run the stochastic simulations.
+The package contains a set of normally distributed recruitment deviations,
+with a mean of \texttt{-0.5} and a standard deviation of \texttt{1}. 
+To use the pre-specified deviations 
+remove the argument \texttt{user\_recdevs} from \texttt{run\_sssim}.
+Process error will now be unique for each iteration but consistent across scenarios
+for a specific iteration, to facilitate comparison between scenarios. 
 
 <<stochastic-runs, eval=FALSE>>=
 run_ss3sim(iterations = 1:100, scenarios = 
@@ -405,10 +423,6 @@ scalar_dat <- subset(scalar_dat, D %in% c("D1", "D2"))
 And calculate some useful values in new columns:
 
 <<transform-output>>=
-scalar_dat <- transform(scalar_dat,
-  SSB_MSY=(SSB_MSY_em-SSB_MSY_om)/SSB_MSY_om,
-  log_max_grad = log(max_grad))
-
 scalar_dat <- transform(scalar_dat, 
   steep = (SR_BH_steep_om - SR_BH_steep_em)/SR_BH_steep_om, 
   logR0 = (SR_LN_R0_om - SR_LN_R0_em)/SR_LN_R0_om, 
@@ -447,7 +461,7 @@ scalar_dat_long <- plyr::rename(scalar_dat_long,
 \noindent
 Now let's look at boxplots of the deterministic model runs. 
 
-<<relative-error-boxplots-det, fig.height=7, fig.width=5, out.width="4in", cache=TRUE, fig.cap="Relative error box plots for deterministic runs. In case E0, \\textit{M} is fixed at the historical value; in E1 we estimate \\textit{M}. In case D2, the standard deviation on the survey index observation error is 0.4. In case D1, the standard deviation is quartered representing an increase in survey sampling effort.">>=
+<<relative-error-boxplots-det, fig.height=7, fig.width=5, out.width="4in", cache=TRUE, fig.cap="Relative error box plots for deterministic runs. In case E100, \\textit{M} is fixed at the historical value; in E101 we estimate \\textit{M}. In case D2, the standard deviation on the survey index observation error is 0.4. In case D1, the standard deviation is quartered representing an increase in survey sampling effort.">>=
 library(ggplot2)
 p <- ggplot(subset(scalar_dat_long, E %in% c("E100", "E101") & 
        variable != "SR_sigmaR"), aes(D, relative_error)) + 
@@ -499,7 +513,7 @@ print(p)
 \section{Setting up an operating model}
 \label{sec:om-setup}
 
-\subsection{Preparation}
+\subsection{Overview}
 
 \begin{enumerate}
 \item
@@ -513,7 +527,7 @@ print(p)
   using the command \texttt{ss3} to generate a \texttt{.par} file 
   with the maximum likelihood estimates.
 \item
-  Modify the \texttt{.ctl} file so that catches 
+  Modify the \texttt{.ctl} file so catches 
   are driven by instantaneous fishing mortality rather than catch.
 \item
   Modify the start and end years of the model 
@@ -573,49 +587,126 @@ print(p)
   will be adjusted using a logistic transformation to ensure that 
   the adjusted parameter will stay within the bounds of the base parameter.
 \item
-  TODO HOW TO MAKE BLOCK PATTERNS WITHIN PARAMETERS
-\item
   Turn on recruitment deviations by specifying 
-  \texttt{\#do\_recdev} to \texttt{1}. 
-  Using the next two lines set the recruitment deviations
-  to the start and end years of the model.
-\item Specify additional advanced options for the recruitment deviations 
+   \texttt{\#do\_recdev} to \texttt{1}. 
+   Using the next two lines, specify the use of recruitment deviations
+   to begin and end with the start and end years of the model.
+\item Turn on additional advanced options for the recruitment deviations 
    by specifying \texttt{\# (0/1) to read 13 advanced options} to \texttt{1}.
-\item Set \texttt{\#\_recdev\_early\_start} to \texttt{0} 
-  so that the model will use the \texttt{\# first year of main recr\_devs}.
-\item Set \texttt{\#\_lambda for Fcast\_rec\_like occurring before endyr+1}
-  to \texttt{1}. 
-  This lambda is for the log likelihood of the forecast recruitment
-  deviations that occur before the first year of forecasting. 
-  Values larger than one accommodate noisy data at the end of the time series. 
-\item If using TODO BLAH BLAH for recruitment deviations specify 
+\item Set \texttt{\#\_recdev\_early\_start} to \texttt{0} so that 
+  the model will use the \texttt{\# first year of main recr\_devs}.
+\item Set \texttt{\#\_lambda for Fcast\_rec\_like occurring before endyr+1} 
+   to \texttt{1}. This lambda is for the log likelihood of the the 
+   forecast recruitment devs that occur before the first year of forecasting. 
+   Values larger than one accommodate noisy data at the end of the time series. 
+\item If using normally distributed recruitment deviations specify 
    \texttt{\#\_max\_bias\_adj\_in\_MPD} to \texttt{0}. 
-   If using TODO BLAH BLAH for recruitment deviations specify it at \texttt{-1}.
+   If using lognormally distributed recruitment deviations specify it at \texttt{-1}.
    Either method will lead to the same end result.
-\item Use any negative value to disable the use of a ballpark year
-  to determine fishing mortality levels in line \texttt{\# F ballpark year}.
+\item Use any negative value in line \texttt{\# F ballpark year}, 
+   to disable the use of a ballpark year to determine fishing mortality levels.
 \item Specify \texttt{\# F\_Method} to \texttt{2},
-   which facilitates the use of a vector of instantaneous fishing mortality levels. 
+   which facilitates the use of a vector of intantaneous fishing mortality levels. 
    The max harvest rate in the subsequent line will depend upon 
    the fishing mortality levels in your simulation. 
- \item Following the max harvest rate, 
-   specify a line with three values separated by spaces. 
-   The first value is the overall start F value, 
-   followed by the overall phase.
-   The last value are the number of inputs, 
-   which will be specified in the next line.
-   Set the number of inputs to 1, 
-   as the actual fishing mortality trajectory 
+   Following the max harvest rate, specify a line with three value separated by 
+   spaces. The first value is the overall start F value, followed by the phase.
+   The last value is the number of inputs. Set the number of inputs to \texttt{1},
+   because the actual fishing mortality trajectory 
    will be specified in the \texttt{.dat} file. 
- \item 
-   Next specify a line with six values, separated by spaces, 
-   where the values correspond to fleet number, start year, season, 
-   fishing mortality level, the standard error of the fishing mortality level,
-   and a negative phase value. 
+   Next, specify a single line with six values, separated by spaces, 
+   where the values correspond to fleet number, start year, season, fishing 
+   mortality level, the standard error of the fishing mortality level, and a negative 
+   phase value. 
 \end{enumerate}
 
-\subsection{Standardizing the model files}
+\subsection{Data file modifications}
 
+\begin{enumerate}
+\item Specify the start and end year for the simulation by modifying 
+   \texttt{\#\_styr} and \texttt{\#\_endyr}.
+   Years can be specified as a number line 
+   (i.e. \texttt{1}, \texttt{2}, \texttt{3}, \ldots) or 
+   as actual years 
+   (i.e. \texttt{1999}, \texttt{2000}, \texttt{2001}, \ldots)
+\item Specify the names for each fleet in an uncommented line 
+   after the line \texttt{\#\_N\_areas}. 
+   Names must be separated by a \texttt{\%} with no spaces.
+   It is these names which you will use in the plain text case files
+   to specify and change characteristics of each fleet throughout the simulation.
+\item Specify the mean body weight across all selected sizes and ages
+   to be specific to measured fish by setting \texttt{\#N observations}
+   to \texttt{0}. Subsequently, specify \texttt{1} degree of freedom for the 
+   Student's T distribution used to evaluated the mean body weight deviations 
+   in the following line. The degrees of freedom must be specified
+   even if there are zero mean body weight observations.
+\item Set the length bin method to \texttt{2} in the line labeled 
+   \texttt{\# length bin method}. Using a value of \texttt{2} instructs SS
+   to generate the binwidths from a minimum and maximum value. In the following
+   three lines specify the binwidth for population size composition data; 
+   the minimum size, or the lower edge of the first bin and size at age zero; 
+   and the maximum size, or lower edge of the last bin. 
+   The population bins must not be wider than the length data bins, 
+   but the boundaries do not have to align.
+\item Specify \texttt{\#\_comp\_tail\_compression} to any negative value 
+   to turn off tail compression.
+\item Set the length bin range method to \texttt{1} 
+   in the line \texttt{\#\_Lbin\_method} 
+   so that the bins refer to population length bin index.
+\end{enumerate}
+
+\section{Setting up an estimation model}
+\label{sec:em-setup}
+
+\subsection{Overview}
+
+\begin{enumerate}
+\item
+  Copy working OM files
+\item
+  Modify the \texttt{.ctl} file so that catches 
+  are driven by observed catch.
+\item
+  Specify the forecast file if forecasts are desired.
+  Use the \texttt{change\_e} function to perform forecasts.
+\end{enumerate}
+
+\subsection{Starter file modifications}
+\begin{enumerate}
+\item Change the names of the \texttt{.dat} and \texttt{.ctl} files
+   to your chosen naming scheme. 
+\item Specify the model to use parameter values found in the \texttt{.ctl} file,
+   by changing \texttt{\# 0=use init values in control file; 1=use ss3.par} 
+   to \texttt{0}.
+\item Turn on parameter estimation by changing 
+   \texttt{\# Turn off estimation for parameters entering after this phase} 
+   to a value larger than the max phase specified in the \texttt{.ctl} file. 
+\end{enumerate}
+\subsection{Control file modifcations}
+\begin{enumerate}
+\item Set the \texttt{\#\_recdev phase} 
+   to a positive value to estimate yearly recruitment deviations. 
+\item If using bias adjustment set \texttt{\#\_recdev\_early\_phase} 
+   to a positive value. 
+   Estimates for the years and maximum bias adjustment 
+   can initially be inputted with approximations 
+   or use the bias adjustment function within \texttt{ss3sim} 
+   to find appropriate values for the base case EM 
+   and input them in the appropriate lines.
+\item Specify \texttt{\# F\_Method} to \texttt{3},
+   which allows the model to use catches to estimate 
+   appropriate fishing mortality levels. 
+   The max harvest rate in the subsequent line will depend upon 
+   the fishing mortality levels in your simulation. 
+   An additional line must be inserted after the maximum harvest rate 
+   to specify the number of iterations used in the hybrid method. 
+   Specify the line as follows 
+   \texttt{3 \# F\_Method:  1=Pope; 2=instan. F; 3=hybrid (hybrid is recommended)}, 
+   where the number can range from \texttt{3} to \texttt{7}.
+\end{enumerate}
+
+\section{Standardizing model files}
+\label{sec:ss-new}
 \begin{enumerate}
 \item
   To obtain \texttt{.ss\_new} files 
@@ -625,10 +716,6 @@ print(p)
   remove the \texttt{.ss\_new} file extension from the files needed 
   and add the appropriate file extension.
 \end{enumerate}
-
-\section{Setting up an estimation model}
-\label{sec:em-setup}
-
 
 \section{Putting \texttt{SS3} in your path}
 \label{sec:path}
