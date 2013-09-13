@@ -130,19 +130,20 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE, user.scena
     ## Choose whether to do all scenarios or the vector passed by user
     if(is.null(user.scenarios)) {
         scenarios <- temp.dirs[substr_r(temp.dirs,4) %in% c("-cod", "-fla","-sar")]
-        }else {
-    scenarios <- user.scenarios
+    } else {
+        scenarios <- user.scenarios
     }
 
-    if(length(scenarios)==0) stop(print(paste("Error: No scenarios found in:",directory)))
-    print(paste("Extracting results from",length(scenarios), "scenarios"))
+    if(length(scenarios)==0)
+        stop(print(paste("Error: No scenarios found in:",directory)))
+    print(paste("Extracting results from", length(scenarios), "scenarios"))
 
     ## Loop through each scenario in folder
     ts.list <- scalar.list <- list()
     for(i in 1:length(scenarios)){
         setwd(directory)
         scen <- scenarios[i]
-        ## If the files already exist, just read them in otherwise get results
+        ## If the files already exist just read them in, otherwise get results
         scalar.file <- paste0(scen,"/results_scalar_",scen,".csv")
         ts.file <- paste0(scen,"/results_ts_",scen,".csv")
         ## Delete them if this is flagged on
@@ -151,15 +152,17 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE, user.scena
             if(file.exists(ts.file)) file.remove(ts.file)
             get_results_scenario(scenario=scen, directory=directory,
                                  overwrite.files=overwrite.files)
-        } else if(!file.exists(scalar.file) |  !file.exists(ts.file)){
-            ## Check if still there and skip if already so, saves a lot of runtime
+        }
+        ## Check if still there and skip if already so, otherwise read in
+        ## and save to file
+        else if(!file.exists(scalar.file) |  !file.exists(ts.file)){
             get_results_scenario(scenario=scen, directory=directory,
                                  overwrite.files=overwrite.files)
         }
         scalar.list[[i]] <- read.csv(scalar.file)
         ts.list[[i]] <- read.csv(ts.file)
     }
-    ## Combine all scenarios together into big files
+    ## Combine all scenarios together and save into big final files
     scalar.all <- do.call(plyr::rbind.fill, scalar.list)
     ts.all <- do.call(plyr::rbind.fill, ts.list)
     write.csv(scalar.all, file="final_results_scalar.csv")
@@ -189,10 +192,21 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE, user.scena
 #' @author Cole Monnahan
 #' @family get-results
 #' @export
-
+#' @examples \dontrun{
+#' d <- system.file("extdata", package = "ss3sim")
+#' case_folder <- paste0(d, "/eg-cases")
+#' om <- paste0(d, "/models/cod-om")
+#' em <- paste0(d, "/models/cod-em")
+#' run_ss3sim(iterations = 1:30, scenarios =
+#'            c("D1-E0-F0-G0-R0-S0-M0-cod"),
+#'            case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+#'            bias_adjust = TRUE)
+#' get_results_scenario(c("D1-E0-F0-G0-R0-S0-M0-cod"))
+#' }
 get_results_scenario <- function(scenario, directory=getwd(),
   overwrite.files=FALSE){
-
+    ## This function moves the wd around so make sure to reset on exit,
+    ## especially in case of an error
     old.wd <- getwd(); on.exit(setwd(old.wd))
     setwd(directory); setwd(scenario)
     ## Stop if the files already exist or maybe delete them
@@ -209,7 +223,8 @@ get_results_scenario <- function(scenario, directory=getwd(),
             stop(paste0("Files already exist for ", scenario," and overwrite.files=F"))
         }
     }
-    ## Check for bias correction for this scenario, grab it if exists
+    ## Check for bias correction for this scenario, grab it if exists otherwise
+    ## report NAs
     bias <- rep(NA,7)
     names(bias) <- c("bias1","bias2","bias3","bias4","bias5",
                      "bias.converged","bias.tried")
@@ -223,7 +238,6 @@ get_results_scenario <- function(scenario, directory=getwd(),
 
     ## Loop through each replicate, not including the bias folders, and get
     ## results from both models
-
     ## Remove the .csv files and bias folder, they are not reps
     reps.dirs <- list.files(pattern = "[0-9]+")
     reps.dirs <- sort(as.numeric(reps.dirs))
@@ -306,18 +320,19 @@ get_results_scenario <- function(scenario, directory=getwd(),
 
 #' Extract time series from a model run.
 #'
-#' Extract time series from a model run. Returns a data.frame of the
-#' results (single row) which can be rbinded later.
+#' Extract time series from an \code{SS_output} list from a model run.
+#' Returns a data.frame of the results for SSB, recruitment and effort by year.
 #'
 #' @param report.file An \code{SS_output} list for a model (OM or EM).
 #' @export
 #' @family get-results
 #' @author Cole Monnahan
 get_results_timeseries <- function(report.file){
-
-    years <- report.file$startyr:(report.file$endyr+ifelse(is.na(report.file$nforecastyears)==TRUE,0,report.file$nforecastyears))
-    xx <- subset(report.file$timeseries, select=c("Yr","SpawnBio", "Recruit_0",
-                                         "F:_1"))
+    years <- report.file$startyr:(report.file$endyr +
+                                  ifelse(is.na(report.file$nforecastyears)==TRUE, 0,
+                                         report.file$nforecastyears))
+    xx <- subset(report.file$timeseries,
+                 select=c("Yr","SpawnBio", "Recruit_0", "F:_1"))
     xx <- xx[xx$Yr %in% years,]
     names(xx) <- gsub(":_1","", names(xx))
     ## create final data.frame
@@ -327,19 +342,19 @@ get_results_timeseries <- function(report.file){
 
 #' Extract scalar quantities from a model run.
 #'
-#' Extract scalar quantities from a model run. Returns a data.frame of the
-#' results (single row) which can be rbinded later.
+#' Extract scalar quantities from an \code{SS_output} list from a model run.
+#' Returns a data.frame of the results (a single row) which can be rbinded later.
 #' @param report.file An SS_output list for a model (OM or EM).
 #' @family get-results
 #' @export
 #' @author Cole Monnahan
 get_results_scalar <- function(report.file){
-
     der <- report.file$derived_quants
     SSB_MSY <-  der[which(der$LABEL=="SSB_MSY"),]$Value
     TotYield_MSY <-  der[which(der$LABEL=="TotYield_MSY"),]$Value
     SSB_Unfished <-  der[which(der$LABEL=="SSB_Unfished"),]$Value
-    Catch_endyear<-  rev(report.file$timeseries[,grep("dead\\(B\\)",names(report.file$timeseries))])[1]
+    Catch_endyear <-
+        rev(report.file$timeseries[,grep("dead\\(B\\)", names(report.file$timeseries))])[1]
     pars <- data.frame(t(report.file$parameters$Value))
     names(pars) <- report.file$parameters$Label
     ## Remove the recruitment devs and efforts as these are in the ts file
@@ -352,15 +367,14 @@ get_results_scalar <- function(report.file){
     max_grad <- report.file$maximum_gradient_component
     NLL <- report.file$likelihoods_used[1,1]
     depletion <- report.file$current_depletion
-    ## get the number of params on bounds from the warning.sso file
+    ## get the number of params on bounds from the warning.sso file, useful for
+    ## checking convergence issues
     warn <- report.file$warnings
     warn.line <- grep("Number_of_active_parameters", warn, fixed=TRUE)
-    if(length(warn.line)==1) {
-        params_on_bound <- as.numeric(strsplit(warn[warn.line], split=":")[[1]][2])
-    } else {
-        params_on_bound <-  NA
-    }
-       df <- cbind(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion,
+    params_on_bound <-
+        ifelse(length(warn.line)==1, as.numeric(strsplit(warn[warn.line], split=":")[[1]][2]), NA)
+    ## Combine into final df and return it
+    df <- cbind(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion,
                 NLL, params_on_bound, pars, Catch_endyear)
     return(invisible(df))
 }
