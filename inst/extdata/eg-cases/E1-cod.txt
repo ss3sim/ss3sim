@@ -1,9 +1,9 @@
-# description: Single estimated M w/ init at historic value+0.01, no qCPUE,
+# description: Single estimated M w/ init at historic value, no qCPUE,
 # fixed steepness
 natM_type;          1Parm      
 natM_n_breakpoints; NULL  
 natM_lorenzen;      NULL
-natM_val;           c(0.21,3)
+natM_val;           c(0.20,3)
 par_name;           LnQ_base_3_CPUE
 par_int;            c(NA)
 par_phase;          c(-1)
