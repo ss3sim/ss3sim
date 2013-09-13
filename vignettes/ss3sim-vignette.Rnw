@@ -289,14 +289,16 @@ in the file \texttt{D2-cod.txt}.
 
 To investigate the effect of fixing versus estimating \textit{M},
 we'll manipulate the argument \texttt{natM\_val} that gets passed to \texttt{change\_e()}.
+The first entry of \texttt{natM\_val} is the value which \textit{M} is fixed or 
+initialized at and the second refers the phase. 
 In case 0, we'll set the phase in which \textit{M} is estimated 
 to \texttt{-1} (any negative number will work) and use the argument \texttt{NA} 
 to fix \textit{M} at the true value.
 In case 1, we'll estimate \textit{M} in 
-phase \texttt{3} and initialize the estimation of \textit{M} at \texttt{0.21}.
+phase \texttt{3} and initialize the estimation of \textit{M} at \texttt{0.20}.
 We can do this by including the line: \texttt{natM\_val; c(NA,-1)} 
 in the file \texttt{E0-cod.txt} 
-and the line: \texttt{natM\_val; c(0.21,3)} in the file \texttt{E1-cod.txt}.
+and the line: \texttt{natM\_val; c(0.20,3)} in the file \texttt{E1-cod.txt}.
 
 \subsection{Running deterministic simulations to check the models for
 bias}
