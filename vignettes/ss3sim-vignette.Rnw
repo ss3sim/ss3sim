@@ -530,37 +530,40 @@ print(p)
   Obtain an SS stock assessment.
   This can either be an actual stock assessment,
   from which you would like to base your simulation on,
-  or a fabricated one,
+  or a simulated one,
   as long as it conforms to the structure needed for SS3.
 \item
-  Run the assessment from a command window
-  using the command \texttt{ss3} to generate a \texttt{.par} file
-  with the maximum likelihood estimates.
+  Verify that the SS model contains at least the following file types:
+  \texttt{name.ctl}, \texttt{name.dat}, \texttt{starter.ss}, \texttt{forecast.ss}
+\item
+  If the model contains already the \texttt{ss3.par} file, skip this step and move to 4 \\ 
+  If the model doens't contain the \texttt{ss3.par} file, run the assessment model from a command window
+  using the command \texttt{ss3} to generate the \texttt{ss3.par} file with the maximum likelihood estimates.
 \item
   Modify the \texttt{.ctl} file so catches
   are driven by instantaneous fishing mortality rather than catch.
 \item
-  Modify the start and end years of the model
-  to obtain the desired length.
+  Modify the start and end years of the model in the \texttt{.dat} file to obtain the desired length.
 \item
-  Specify the time series of fishing mortality levels.
+  Specify/add the time series of fishing mortality levels in the \texttt{.par} file 
 \item
-  Run the model again with no estimation.
+  Run the model again with no estimation using the \texttt{ssa3 - noest} command
 \end{enumerate}
 
 \subsection{Starter file modifications}
 
 \begin{enumerate}
 \item
-  Inform model parameters using the \texttt{.par} file by changing\\
+  Use the \texttt{.par} file to inform model parameters. To do so change \\
   \texttt{\# 0=use init values in control file} to \texttt{1}.
   Parameter values specified in the \texttt{.ctl} file will now be ignored.
 \item
-  Generate informative reports by setting
+  Generate detailed report files (containing age-structure information) by setting \\
   \texttt{\# detailed age-structured reports in REPORT.SSO} to \texttt{1}.
 \item
-  Generate deterministic data by setting\\
-  \texttt{\# Number of datafiles to produce} to \texttt{3}.
+  Generate data by setting\\
+  \texttt{\# Number of datafiles to produce} to \texttt{X}. \\
+  If \texttt{X=1}  
 \item
   Turn off parameter estimation by changing\\
   \texttt{\# Turn off estimation for parameters entering after this phase}\\
