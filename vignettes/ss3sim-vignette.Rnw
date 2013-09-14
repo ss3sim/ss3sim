@@ -562,8 +562,11 @@ print(p)
   \texttt{\# detailed age-structured reports in REPORT.SSO} to \texttt{1}.
 \item
   Generate data by setting\\
-  \texttt{\# Number of datafiles to produce} to \texttt{X}. \\
-  If \texttt{X=1}  
+  \texttt{\# Number of datafiles to produce} to \texttt{3}. \\
+  If \texttt{X=1} it only generates the original data
+  If \texttt{X=2} it generates the original data and the expected value data (based on model specification)
+  If \texttt{X>=3} it generates all the above and \texttt{X-2} bootstrapped data 
+  
 \item
   Turn off parameter estimation by changing\\
   \texttt{\# Turn off estimation for parameters entering after this phase}\\
