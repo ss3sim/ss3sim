@@ -178,7 +178,7 @@ get_caseargs <- function(folder, scenario, delimiter = "-", ext = ".txt",
   argvalues_out <- argvalues_out[which(args_null)]
 
 # and concatenate on the time varying arguments
-  c(argvalues_out, list(time_varying = change_param_args_short))
+  c(argvalues_out, list(timevarying = change_param_args_short))
 
 }
 
