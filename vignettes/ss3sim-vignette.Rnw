@@ -530,37 +530,46 @@ print(p)
   Obtain an SS stock assessment.
   This can either be an actual stock assessment,
   from which you would like to base your simulation on,
-  or a fabricated one,
-  as long as it conforms to the structure needed for SS3.
+  or a simulated one, as long as it conforms to the structure needed for SS3.
 \item
-  Run the assessment from a command window
-  using the command \texttt{ss3} to generate a \texttt{.par} file
-  with the maximum likelihood estimates.
+  Verify that the SS model contains at least the following file types:
+  \texttt{name.ctl}, \texttt{name.dat}, \texttt{starter.ss}, \texttt{forecast.ss}
+\item
+  If the model contains already the \texttt{ss3.par} file, skip this step and move to 4 \\ 
+  If the model doens't contain the \texttt{ss3.par} file, run the assessment model from a command window
+  using the command \texttt{ss3} to generate the \texttt{ss3.par} file with the maximum likelihood estimates.
 \item
   Modify the \texttt{.ctl} file so catches
   are driven by instantaneous fishing mortality rather than catch.
 \item
-  Modify the start and end years of the model
-  to obtain the desired length.
+  Modify the start and end years of the model in the \texttt{.dat} file to obtain the desired length.
 \item
-  Specify the time series of fishing mortality levels.
+  Specify/add the time series of fishing mortality levels in the \texttt{.par} file 
 \item
-  Run the model again with no estimation.
+  Run the model again with no estimation using the \texttt{ss3 - noest} command
+\item
+  Specify/change the specification of the model using the functions available in the package 
+  e.g \texttt{change_e}, \texttt{change_sel}
+\item
+  Run the model again with no estimation using the \texttt{ss3 - noest} command
 \end{enumerate}
 
 \subsection{Starter file modifications}
 
 \begin{enumerate}
 \item
-  Inform model parameters using the \texttt{.par} file by changing\\
+  Use the \texttt{.par} file to inform model parameters. To do so change \\
   \texttt{\# 0=use init values in control file} to \texttt{1}.
   Parameter values specified in the \texttt{.ctl} file will now be ignored.
 \item
-  Generate informative reports by setting
+  Generate detailed report files (containing age-structure information) by setting \\
   \texttt{\# detailed age-structured reports in REPORT.SSO} to \texttt{1}.
 \item
-  Generate deterministic data by setting\\
-  \texttt{\# Number of datafiles to produce} to \texttt{3}.
+  Generate data by setting\\
+  \texttt{\# Number of datafiles to produce} to \texttt{3}. \\
+  If \texttt{X=1} it only generates the original data
+  If \texttt{X=2} it generates the original data and the expected value data (based on model specification)
+  If \texttt{X>=3} it generates all the above and \texttt{X-2} bootstrapped data 
 \item
   Turn off parameter estimation by changing\\
   \texttt{\# Turn off estimation for parameters entering after this phase}\\
@@ -609,9 +618,9 @@ print(p)
    to \texttt{1}. This lambda is for the log likelihood of the the
    forecast recruitment devs that occur before the first year of forecasting.
    Values larger than one accommodate noisy data at the end of the time series.
-\item If using normally distributed recruitment deviations specify\\
-   \texttt{\#\_max\_bias\_adj\_in\_MPD} to \texttt{0}.
-   If using lognormally distributed recruitment deviations specify it at \texttt{-1}.
+\item Recruitment is lognormally distributed in SS. If inputting a normally distributed recruitment deviations specify\\
+   \texttt{\#\_max\_bias\_adj\_in\_MPD} to \texttt{-1} so that SS performs the bias correction for you. If inputting 
+   bias corrected normal recruitment deviation, specify it at \texttt{0}.
    Either method will lead to the same end result.
 \item Use any negative value in line \texttt{\# F ballpark year},
    to disable the use of a ballpark year to determine fishing mortality levels.
@@ -627,7 +636,10 @@ print(p)
    Next, specify a single line with six values, separated by spaces,
    where the values correspond to fleet number, start year, season, fishing
    mortality level, the standard error of the fishing mortality level, and a negative
-   phase value.
+   phase value. E.g \texttt{1 2000 1 0 0.01 -1}
+\item
+  If needed, change the specification of the \texttt{.ctl} using the functions available in the package 
+  e.g \texttt{change_growth}, \texttt{change_sel}
 \end{enumerate}
 
 \subsection{Data file modifications}
@@ -644,25 +656,27 @@ print(p)
    Names must be separated by a \texttt{\%} with no spaces.
    It is these names which you will use in the plain text case files
    to specify and change characteristics of each fleet throughout the simulation.
+   E.g \texttt{Fishery%Survey1%Survey2}
 \item Specify the mean body weight across all selected sizes and ages
    to be specific to measured fish by setting \texttt{\#N observations}
    to \texttt{0}. Subsequently, specify \texttt{1} degree of freedom for the
    Student's T distribution used to evaluated the mean body weight deviations
    in the following line. The degrees of freedom must be specified
    even if there are zero mean body weight observations.
-\item Set the length bin method to \texttt{2} in the line labeled
-   \texttt{\# length bin method}. Using a value of \texttt{2} instructs SS
-   to generate the binwidths from a minimum and maximum value. In the following
-   three lines specify the binwidth for population size composition data;
+\item Set the length bin method to 1 or 2 in the line labeled
+   \texttt{\# length bin method}. Using a value of \texttt{1}, the bins refer to the population bins (=1cm). 
+   Using a value of \texttt{2} instructs SS to generate the binwidths from a user specified 
+   minimum and maximum value. In the following three lines, specify the binwidth for population size composition data;
    the minimum size, or the lower edge of the first bin and size at age zero;
    and the maximum size, or lower edge of the last bin.
-   The population bins must not be wider than the length data bins,
+   The length data bins MUST be wider than the population bin (=1),
    but the boundaries do not have to align.
 \item Specify \texttt{\#\_comp\_tail\_compression} to any negative value
    to turn off tail compression.
-\item Set the length bin range method to \texttt{1}
-   in the line \texttt{\#\_Lbin\_method}
-   so that the bins refer to population length bin index.
+\item Specify \texttt{\#\_add_to_comp} to a very small number E.g \texttt{1e-005}. 
+   This specifies the value that will be added to each composition (age and length) data bins 
+\item Set the length bin range method for the age composition data (used when the conditional age at length data exists) 
+   to 1, 2 or 3 in the line \texttt{\#\_Lbin\_method} depending on the data you have or the purpose of the study
 \end{enumerate}
 
 \section{Setting up an estimation model}
@@ -674,11 +688,14 @@ print(p)
 \item
   Copy working OM files
 \item
-  Modify the \texttt{.ctl} file so that catches
-  are driven by observed catch.
+  Modify the \texttt{.ctl} file to specify the parameters phase, to include time-varying process (if wanted), 
+  and so that catches are driven by observed catch. 
 \item
   Specify the forecast file if forecasts are desired.
   Use the \texttt{change\_e} function to perform forecasts.
+\item 
+  Modify the \texttt{.dat} file so that it includes the user specified process and observation errors. This can be done
+  by using the functions in the package e.g \texttt{change_index}, \texttt{change_lcomp}
 \end{enumerate}
 
 \subsection{Starter file modifications}
@@ -692,8 +709,11 @@ print(p)
    \texttt{\# Turn off estimation for parameters entering after this phase}
    to a value larger than the max phase specified in the \texttt{.ctl} file.
 \end{enumerate}
-\subsection{Control file modifcations}
+
+\subsection{Control file modifications}
 \begin{enumerate}
+\item Set the phases of the parameters to positive or negative value to 
+   inform SS to estimate or fix the parameters, respectively.
 \item Set the \texttt{\#\_recdev phase}
    to a positive value to estimate yearly recruitment deviations.
 \item If using bias adjustment set \texttt{\#\_recdev\_early\_phase}
@@ -713,6 +733,13 @@ print(p)
    Specify the line as follows
    \texttt{3 \# F\_Method:  1=Pope; 2=instan. F; 3=hybrid (hybrid is recommended)},
    where the number can range from \texttt{3} to \texttt{7}.
+\item Use the functions in the package to change the estimation specification in the EM e.g \texttt{change_e}
+\end{enumerate}
+
+\subsection{Data file modifcations}
+\begin{enumerate}
+\item Use the functions in the package to include observation error in the EM \texttt{.dat} file
+   e.g \texttt{change_index}, \texttt{change_lcomp}
 \end{enumerate}
 
 \section{Standardizing model files}
