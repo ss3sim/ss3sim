@@ -1,0 +1,4 @@
+# A sample case file for arbitrary change_param() arguments
+function_type; change_param
+param; something_else
+dev; rep(1, 100)
