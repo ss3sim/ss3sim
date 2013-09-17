@@ -31,6 +31,19 @@
   files and combines them together into a single "final"
   dataframe.
 }
+\examples{
+\dontrun{
+d <- system.file("extdata", package = "ss3sim")
+case_folder <- paste0(d, "/eg-cases")
+om <- paste0(d, "/models/cod-om")
+em <- paste0(d, "/models/cod-em")
+run_ss3sim(iterations = 1:30, scenarios =
+           c("D1-E0-F0-G0-R0-S0-M0-cod"),
+           case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+           bias_adjust = TRUE)
+get_results_scenario(c("D1-E0-F0-G0-R0-S0-M0-cod"))
+}
+}
 \author{
   Cole Monnahan
 }

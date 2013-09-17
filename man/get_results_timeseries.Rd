@@ -9,9 +9,9 @@
   (OM or EM).}
 }
 \description{
-  Extract time series from a model run. Returns a
-  data.frame of the results (single row) which can be
-  rbinded later.
+  Extract time series from an \code{SS_output} list from a
+  model run. Returns a data.frame of the results for SSB,
+  recruitment and effort by year.
 }
 \author{
   Cole Monnahan
