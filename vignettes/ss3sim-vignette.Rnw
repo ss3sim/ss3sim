@@ -65,7 +65,11 @@ vignette("ss3sim-vignette")
 @
 
 \noindent
+We develop and test \texttt{ss3sim} around a specific version of \texttt{SS3}.
+Currently, \texttt{ss3sim} is tested to work with \texttt{SS3 Version 3.24O}.
+You can download \texttt{SS3} at \url{http://nft.nefsc.noaa.gov/Stock_Synthesis_3.htm}.
 \texttt{ss3sim} requires the \texttt{SS3} binary to be in your path.
+This means that your operating system knows where the binary file is located.
 See section \ref{sec:path} for details.
 
 \section{An overview of the \texttt{ss3sim} simulation structure}
@@ -770,10 +774,6 @@ and add the appropriate file extension.
 
 \section{Putting \texttt{SS3} in your path}
 \label{sec:path}
-[TODO Need to add something about how all of our functions are tested on a very
-specific version of SS3. Rick will change things in the future and some of our
-functions will break. I wouldn't want to bet that anything would work with any
-other version. Where should it go? Here?  CCM]
 
 \texttt{SS3} must be in your path for the \texttt{ss3sim} package to work.
 Your path is a list of folders that your operating system looks in
