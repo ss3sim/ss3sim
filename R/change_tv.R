@@ -17,9 +17,9 @@
 #' @param ctl_file_in Input SS3 control file
 #' @param ctl_file_out Output SS3 control file
 #' @param dat_file_in Input SS3 data file 
-#' @param dat_file__out Output SS3 data file 
+#' @param dat_file_out Output SS3 data file 
 #' @param par_file_in Input SS3 paramater file  
-#' @param par_file__out Output SS3 parameter file  
+#' @param par_file_out Output SS3 parameter file  
 #' @param starter_file_in Input SS3 starter file 
 #' @param starter_file_out Output SS3 starter file 
 #' @param report_file Input SS3 report file

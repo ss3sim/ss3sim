@@ -26,7 +26,7 @@
 
 change_agecomp <- function(infile,outfile,distribution="multinomial",Nsamp=NA,
                          minyear=NA,maxyear=NA,years=NA,svyears=NA,fish_agecomp=TRUE,sv_agecomp=TRUE,
-                         N_agebins=NA,agebin_vector=NA,agecomp=NA,cpar=2,...){
+                         N_agebins=NA,agebin_vector=NA,agecomp=NA,cpar=2){
   #Load required libraries (now done by package)
   #require(r4ss)
   #require(gtools)

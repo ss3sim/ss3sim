@@ -34,11 +34,11 @@
 
   \item{dat_file_in}{Input SS3 data file}
 
-  \item{dat_file__out}{Output SS3 data file}
+  \item{dat_file_out}{Output SS3 data file}
 
   \item{par_file_in}{Input SS3 paramater file}
 
-  \item{par_file__out}{Output SS3 parameter file}
+  \item{par_file_out}{Output SS3 parameter file}
 
   \item{starter_file_in}{Input SS3 starter file}
 

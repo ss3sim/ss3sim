@@ -74,7 +74,7 @@
 #' natural mortality, fishing mortality, survey index,
 #' length comp, and age comp parameters in the function call as list
 #' objects. For a generic higher-level function, see
-#' \code{\link{run_ss3sim}.
+#' \code{\link{run_ss3sim}}.
 #' @examples
 #' \dontrun{
 #' # TODO this example needs to be updated
@@ -315,8 +315,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
             "\non the computer ", me, 
             "\nin the folder ", getwd(), 
             "\nwith the following arguments:", sep = "")
-        cat("\n\n# M arguments\n")
-        print(m_params)
+        cat("\n\n# Time-varying arguments\n")
+        print(tv_params)
         cat("\n\n# F arguments\n")
         print(f_params)
         cat("\n\n# index arguments\n")

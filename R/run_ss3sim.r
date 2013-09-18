@@ -11,6 +11,11 @@
 #' "D1-E0-F0-G0-R0-S0-M0-cod")}. Also, see
 #' \code{\link{expand_scenarios}} for a shortcut to specifying the
 #' scenarios.
+#' @param case_folder The folder containing the case .txt files.
+#' @param om_model_dir The folder containing the SS operating model
+#' files.
+#' @param em_model_dir The folder containing the SS estimation model
+#' files.
 #' @param seed If set to a numeric vector then \code{set.seed} will be
 #' set to each successive value of the vector \code{seed} on each
 #' iteration. This can be useful to make simulations reproducible. If

@@ -1,31 +1,56 @@
 #' Change length comps
 #'
-#' Take a data.SS_new file, resample the length compositions from the expected values, and
-#' return a new file with the new length comp samples. Samples can have dimensions, bins,
-#' sample sizes, and distributions which are different than those coming from SS.
+#' Take a data.SS_new file, resample the length compositions from the
+#' expected values, and return a new file with the new length comp
+#' samples. Samples can have dimensions, bins, sample sizes, and
+#' distributions which are different than those coming from SS.
 #'
 #' @author Felipe Hurtado-Ferro (modified by Kotaro Ono)
-#' @param infile SS data object from SS_readdat() in the r4ss package. Make sure you select option "section=2"
-#' @param outfile Name of the new file to be created. Path may be global or local. Make sure to give extension .dat to the file name.
-#' @param distribution Distribution to be used to sample the length compositions. Options are "multinomial" and "dirichlet". it could also be written in the form of a vector if the fishery and survey composition data are not sampled using the same distribution
-#' @param Nsamp Number of samples drawn from a multinomial distribution, or precision for the Dirichlet distribution. This could either be a single value if the sample size is the same for all years but could also be a vector with its length equal to the number of years with fishery and survey samples. For the latter, fishery sample size precedes the survey sample size. Nsamp only accepts numeric values and requires to be specified for both the fishery and survey EVEN IF it is not used in the end. Default to 100.
+#' @param infile SS data object from SS_readdat() in the r4ss package.
+#' Make sure you select option "section=2"
+#' @param outfile Name of the new file to be created. Path may be
+#' global or local. Make sure to give extension .dat to the file name.
+#' @param distribution Distribution to be used to sample the length
+#' compositions. Options are "multinomial" and "dirichlet". it could
+#' also be written in the form of a vector if the fishery and survey
+#' composition data are not sampled using the same distribution
+#' @param Nsamp Number of samples drawn from a multinomial
+#' distribution, or precision for the Dirichlet distribution. This
+#' could either be a single value if the sample size is the same for
+#' all years but could also be a vector with its length equal to the
+#' number of years with fishery and survey samples. For the latter,
+#' fishery sample size precedes the survey sample size. Nsamp only
+#' accepts numeric values and requires to be specified for both the
+#' fishery and survey EVEN IF it is not used in the end. Default to
+#' 100.
 #' @param years vector of years for the fleet length comps.
 #' @param svyears vector of years for the survey lenght comps.
-#' @param minyear starting year for the fleet length comps. Overridden by specifying "years". Not operational. Leave to the default value of NA.
-#' @param maxyear ending year for the fleet length comps. Overridden by specifying "years". Not operational. Leave to the default value of NA.
-#' @param lbin_method method to generate model length bins. Not operational yet. Leave to the default value of NA.Leave to the default value of NA.
-#' @param lbin_vector Vector of length bins for the observations. Not operational yet. Leave to the default value of NA.
+#' @param minyear starting year for the fleet length comps. Overridden
+#' by specifying "years". Not operational. Leave to the default value
+#' of NA.
+#' @param maxyear ending year for the fleet length comps. Overridden
+#' by specifying "years". Not operational. Leave to the default value
+#' of NA.
+#' @param lbin_method method to generate model length bins. Not
+#' operational yet. Leave to the default value of NA.Leave to the
+#' default value of NA.
+#' @param lbin_vector Vector of length bins for the observations. Not
+#' operational yet. Leave to the default value of NA.
 #' @param binwidth Bin width
 #' @param minimum_size, Minimum size
 #' @param maximum_size Maximum size
 #' @param N_lbins Number of length bins.
 #' @param lencomp Matrix of length comps
-#' @param fish_lcomp, TRUE or FALSE. This indicates whether you want to keep the fishery lcomp data at all. default to TRUE
-#' @param sv_lcomp, TRUE or FALSE. This indicates whether you want to keep the survey lcomp data at all. default to TRUE
-#' @param cpar parameter scaling the variance of the Dirichlet and Multinomial distributions.
+#' @param fish_lcomp, TRUE or FALSE. This indicates whether you want
+#' to keep the fishery lcomp data at all. default to TRUE
+#' @param sv_lcomp, TRUE or FALSE. This indicates whether you want to
+#' keep the survey lcomp data at all. default to TRUE
+#' @param cpar parameter scaling the variance of the Dirichlet and
+#' Multinomial distributions.
 #'
 #' @export
-#' @examples \dontrun{
+#' @examples 
+#' \dontrun{
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
@@ -41,10 +66,10 @@
 #'
 #' # Generate a DAT file using Dirichlet distributed samples
 #' change_lcomp(infile,outfile="newdat.dat", Nsamp=100, distribution="dirichlet")
-#' }
+#' 
 #' # Generate a DAT file using Dirichlet distributed samples for the fishery and Multinomial for the survey
 #' change_lcomp(infile,outfile="newdat.dat", Nsamp=100, distribution=c("dirichlet", "multinomial"))
-#' }
+#' 
 #' # Generate a DAT file using Dirichlet distributed samples for the fishery with 50 samples 
 #' # and Multinomial for the survey with 100 samples
 #' change_lcomp(infile,outfile="newdat.dat", distribution=c("dirichlet", "multinomial"), years = seq(1994,2012,by=2), svyears=seq(2003,2012), Nsamp=c(rep(50,10), rep(100,10)))

@@ -116,7 +116,7 @@
   the natural mortality, fishing mortality, survey index,
   length comp, and age comp parameters in the function call
   as list objects. For a generic higher-level function, see
-  \code{\link{run_ss3sim}.
+  \code{\link{run_ss3sim}}.
 }
 \examples{
 \dontrun{
