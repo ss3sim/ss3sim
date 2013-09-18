@@ -120,7 +120,6 @@
 }
 \examples{
 \dontrun{
-# TODO this example needs to be updated
 # Pull in file paths from the package example data:
 d <- system.file("extdata", package = "ss3sim")
 f <- paste0(d, "/ss3sim_base_eg/")
@@ -130,10 +129,10 @@ a <- get_caseargs(folder = paste0(f, "case-arguments"), scenario =
 "M1-F1-D1-R1-S1-G1-E1-cod")
 
 ss3sim_base(iterations = 1, scenarios = "M1-F1-D1-R1-S1-G1-E1-cod",
-  m_params = a$M, sel_params = a$S, growth_params = a$G, f_params =
-  a$F, index_params = a$index, lcomp_params = a$lcomp, agecomp_params
-  = a$agecomp, retro_params = a$R, estim_params = a$E,
-  om_model_dir = om_model_dir, em_model_dir = em_model_dir)
+f_params = a$F, index_params = a$index, lcomp_params = a$lcomp,
+agecomp_params = a$agecomp, tv_params = a$tv_params, retro_params =
+a$R, estim_params = a$E, om_model_dir = om_model_dir, em_model_dir
+= em_model_dir)
 }
 }
 \author{

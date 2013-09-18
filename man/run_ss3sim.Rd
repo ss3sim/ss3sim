@@ -76,7 +76,6 @@
 }
 \examples{
 \dontrun{
-# TODO this example needs to be updated
 # Without bias adjustment:
 d <- system.file("extdata", package = "ss3sim")
 case_folder <- paste0(d, "/eg-cases")
