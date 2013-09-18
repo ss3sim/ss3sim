@@ -1,5 +1,4 @@
-use; FALSE
-n_blocks; 1
-block_pattern; 1
-dev; NA
-how_time_varying;  env
+# A sample case file for arbitrary selectivity change_tv() arguments
+function_type; change_tv
+param; SizeSel_1P_1_FISHERY1
+dev; rep(0, 100)
