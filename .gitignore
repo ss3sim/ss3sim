@@ -2,28 +2,13 @@
 .Rhistory
 .RData
 
-.Rbuildignore
-
 *.Rproj
-
-.Rapp.history
-
+*.Rapp.history
 *.log
-
 *.fls
-
 *.fdb_latexmk
-
 *.aux
-
-inst/doc/makefile
-
 *.vim
-
-inst/examples/D0-E100-F0-G0-R0-S0-M0-cod/
-inst/examples/D1-E100-F0-G0-R0-S0-M0-cod/
-inst/examples/D0-E0-F0-G0-R0-S0-M0-cod/
-inst/examples/D1-E0-F0-G0-R0-S0-M0-cod/
 
 inst/ms/figure/*
 inst/ms/ss3sim-ms.pdf
@@ -35,6 +20,5 @@ vignettes/ss3sim-vignette.toc
 vignettes/ss3sim-vignette.pdf
 vignettes/ss3sim-vignette.blg
 vignettes/ss3sim-vignette.bbl
-vignettes/ss3sim.Rnw
 vignettes/ss3sim-vignette.out
 vignettes/cache/
