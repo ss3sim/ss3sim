@@ -499,9 +499,15 @@ Small values of the maximum gradient (approximately 0.001 or less)
 indicate that convergence is likely.
 Larger values (greater than 1) indicate that convergence is unlikely.
 
-<<plot-sto-ts, fig.height=3.5, fig.width=9, fig.cap="Time series of relative error in spawning stock biomass.">>=
-plot_ts_points(ts_dat_sto, y = "SpawnBio", vert = "D", vert2 = "E",
-  color = "max_grad", relative_error = TRUE)
+<<plot-sto-ts, fig.height=5, fig.width=7, fig.cap="Time series of relative error in spawning stock biomass.">>=
+library(ggplot2)
+p <- ggplot(ts_dat_sto, aes(x = year)) + xlab("Year") + 
+    theme_bw() + geom_line(aes(y = SpawnBio, group = replicate,
+    colour = max_grad), alpha = 0.3, width = 0.15) + facet_grid(D~E) + 
+    scale_color_gradient(low = "gray", high = "red")
+print(p)
+#plot_ts_points(ts_dat_sto, y = "SpawnBio", vert = "D", vert2 = "E",
+#  color = "max_grad", relative_error = TRUE)
 @
 
 <<ssb-ts-plots, fig.height=5, fig.width=7, cache=TRUE, fig.cap="Spawning stock biomass time series.">>=
