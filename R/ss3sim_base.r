@@ -8,12 +8,8 @@
 #'
 #' @param iterations Which iterations to run. A numeric vector.
 #' @param scenarios Which scenarios to run.
-#' @param m_params A named list containing all the
-#' \code{\link{change_m}} options.
-#' @param sel_params A named list containing all the
-#' \code{\link{change_sel}} options.
-#' @param growth_params A named list containing all the
-#' \code{\link{change_growth}} options.
+#' @param tv_params A named list containing all the
+#' \code{\link{change_tv}} (time-varying) options.
 #' @param f_params A named list containing all the
 #' \code{\link{change_f}} options.
 #' @param index_params A named list containing all the
@@ -81,6 +77,7 @@
 #' \code{\link{run_ss3sim}.
 #' @examples
 #' \dontrun{
+#' # TODO this example needs to be updated
 #' # Pull in file paths from the package example data:
 #' d <- system.file("extdata", package = "ss3sim")
 #' f <- paste0(d, "/ss3sim_base_eg/")
@@ -98,8 +95,8 @@
 
 ss3sim_base <- function(iterations, scenarios, f_params,
   index_params, lcomp_params, agecomp_params, estim_params,
-  timevarying_params, retro_params = NULL, om_model_dir,
-  em_model_dir, user_recdevs = NULL, bias_adjust = FALSE,
+  tv_params, om_model_dir, em_model_dir, 
+  retro_params = NULL, user_recdevs = NULL, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
   print_logfile = TRUE, sleep = 0, seed = NULL, conv_crit = 0.2, ...)
 {
@@ -176,12 +173,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # Change time-varying parameters; e.g. M, selectivity, growth...
       wd <- getwd() # change_param() etc. must be in the working directory
       setwd(pastef(sc, i, "om"))
-      with(timevarying_params,
-        change_param(TODO            = ...,
-                 ctl_file_in         = "om.ctl",
-                 ctl_file_out        = "om.ctl",
-                 dat_file            = "ss3.dat",
-                 dat_file_out        = "ss3.dat"))
+      with(tv_params,
+        change_tv(change_tv_list      = tv_params,
+                  ctl_file_in         = "om.ctl",
+                  ctl_file_out        = "om.ctl"))
 
       setwd(wd)
       # Run the operating model

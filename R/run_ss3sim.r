@@ -58,6 +58,7 @@
 #'
 #' @examples
 #' \dontrun{
+#' # TODO this example needs to be updated
 #' # Without bias adjustment:
 #' d <- system.file("extdata", package = "ss3sim")
 #' case_folder <- paste0(d, "/eg-cases")
@@ -94,7 +95,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
     a <- get_caseargs(folder = case_folder, scenario = x) 
     sp <- substr_r(x, 3)
     ss3sim_base(iterations, scenarios = x,
-      timevarying_params = a$timevarying,
+      tv_params = a$tv_params,
       f_params = a$F, index_params =
       a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp, 
       retro_params = a$R, estim_params = a$E, om_model_dir = om_model_dir, 
