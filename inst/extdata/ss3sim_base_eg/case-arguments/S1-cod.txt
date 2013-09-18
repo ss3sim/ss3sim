@@ -1,6 +1,3 @@
-use; FALSE
-dev; 
-how_time_varying; env
-n_blocks; 1
-block_pattern; NA
-ss3path; NULL
+function_type; change_tv
+SizeSel_1P_1_Fishery
+dev; rep(0, 100)
