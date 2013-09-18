@@ -93,7 +93,6 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
   output <- lapply(scenarios, function(x) {
     a <- get_caseargs(folder = case_folder, scenario = x) 
     sp <- substr_r(x, 3)
-
     ss3sim_base(iterations, scenarios = x,
       timevarying_params = a$timevarying,
       f_params = a$F, index_params =
