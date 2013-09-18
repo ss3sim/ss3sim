@@ -39,7 +39,6 @@ Collate:
     'change_m.r'
     'change_rec_devs.r'
     'copy_ss3models.r'
-    'create_dirs.r'
     'create_new_rec_devs.r'
     'find_item.r'
     'find_rec_dev_arma.r'
@@ -69,3 +68,4 @@ Collate:
     'scalars.r'
     'timeseries.r'
     'ss3sim_base.r'
+    'change_tv.R'
