@@ -124,6 +124,8 @@ change_tv <- function(change_tv_list,
   divider.c <- grep("selex_types", ss3.ctl, fixed = TRUE)[1]
   lab <- sapply(names(change_tv_list), function(x) {
                                val <- grep(pattern = x, x = ss3.ctl, fixed = TRUE)[1]
+                               if(is.na(val)) {
+                                 stop(paste("Could not locate the parameter", x, "in the operating model .ctl file. Check that the parameter is spelled correctly and in the correct case. Have you standardized your .ctl file by running it through SS and used the control.ss_new file?"))}
                                if(val < divider.a) temp <- "mg"
                                if(val > divider.a & val < divider.b) temp <- "sr"
                                if(val > divider.b & val < divider.c) temp <- "qs"
@@ -314,8 +316,10 @@ for(i in seq_along(temp.data)) {
       temp <- strsplit(temp, " ")[[1]][1]
       as.numeric(temp)
     })
-    env.name <- env.name[order(env.parnum)]
-    env.lab <- lab[order(env.parnum)]
+    # ensure order is same throughout:
+    env.name <- sort(env.parnum)
+    env.lab <- sort(lab)
+    env.parnum <- sort(env.parnum)
 for(q in seq_along(change_tv_list)) {
     if(env.lab[q] == "sr" | env.lab[q] == "qs") next
     if(env.lab[q] == "mg") {
