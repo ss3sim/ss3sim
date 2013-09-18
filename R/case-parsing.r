@@ -167,7 +167,7 @@ get_caseargs <- function(folder, scenario, delimiter = "-", ext = ".txt",
   # remove elements that aren't time varying:
   args_null <- sapply(change_param_args, function(x) is.null(x))
   if(!length(which(args_null)) == length(args_null)) { # some are time varying
-    change_param_args[[which(args_null)]] <- NULL
+    change_param_args[which(args_null)] <- NULL
     # and re-arrange to pass to change_params
     change_param_args_short <- lapply(change_param_args, "[[", 1)
     names(change_param_args_short) <- sapply(change_param_args, function(x) names(x))
