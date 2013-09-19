@@ -1010,9 +1010,16 @@ and the rows represent years.
 Ensure that you pass a matrix with at least enough columns and rows.
 The \texttt{ss3sim} package contains a built in set of recruitment deviations
 for up to 150 years and 1000 iterations.
-These data are pre-loaded with the package
-in a matrix object named \texttt{recdevs}.
+If \texttt{user\_recdevs} are not specified,
+then the package will use these built-in recruitment deviations.
 See \texttt{?recdevs} for documentation on how they were generated.
+
+Note that these built-in recruitment deviations are standard normal
+and are multiplied by sigma R and bias adjusted within the package.
+If you specify your own recruitment deviations,
+the deviations are used exactly as specified,
+and it is up to you to bias correct them
+by subtracting half the recruitment variance.
 
 \bibliographystyle{apalike}
 \bibliography{refs}
