@@ -5,8 +5,7 @@
   change_lcomp(infile, outfile,
     distribution = "multinomial", Nsamp = 100, years = NA,
     svyears = NA, fish_lcomp = TRUE, sv_lcomp = TRUE,
-    cpar = 2, minyear = NA, maxyear = NA, lbin_method = NA,
-    lbin_vector = NA, binwidth = NA, minimum_size = NA,
+    cpar = 2, binwidth = NA, minimum_size = NA,
     maximum_size = NA, N_lbins = NA, lencomp = NA)
 }
 \arguments{
@@ -29,31 +28,15 @@
   sample size is the same for all years but could also be a
   vector with its length equal to the number of years with
   fishery and survey samples. For the latter, fishery
-  sample size precedes the survey sample size. Nsamp only
-  accepts numeric values and requires to be specified for
-  both the fishery and survey EVEN IF it is not used in the
-  end. Default to 100.}
+  sample size precedes the survey sample size. \code{Nsamp}
+  only accepts numeric values and requires to be specified
+  for both the fishery and survey EVEN IF it is not used in
+  the end. Default to 100.}
 
   \item{years}{vector of years for the fleet length comps.}
 
-  \item{svyears}{vector of years for the survey lenght
+  \item{svyears}{vector of years for the survey length
   comps.}
-
-  \item{minyear}{starting year for the fleet length comps.
-  Overridden by specifying "years". Not operational. Leave
-  to the default value of NA.}
-
-  \item{maxyear}{ending year for the fleet length comps.
-  Overridden by specifying "years". Not operational. Leave
-  to the default value of NA.}
-
-  \item{lbin_method}{method to generate model length bins.
-  Not operational yet. Leave to the default value of
-  NA.Leave to the default value of NA.}
-
-  \item{lbin_vector}{Vector of length bins for the
-  observations. Not operational yet. Leave to the default
-  value of NA.}
 
   \item{binwidth}{Bin width}
 
@@ -65,16 +48,16 @@
 
   \item{lencomp}{Matrix of length comps}
 
-  \item{fish_lcomp,}{TRUE or FALSE. This indicates whether
-  you want to keep the fishery lcomp data at all. default
-  to TRUE}
+  \item{fish_lcomp,}{\code{TRUE} or \code{FALSE}. This
+  indicates whether you want to keep the fishery length
+  comp data at all. Defaults to \code{TRUE}.}
 
-  \item{sv_lcomp,}{TRUE or FALSE. This indicates whether
-  you want to keep the survey lcomp data at all. default to
-  TRUE}
+  \item{sv_lcomp,}{\code{TRUE} or \code{FALSE}. This
+  indicates whether you want to keep the survey lcomp data
+  at all. Defaults to \code{TRUE}}
 
-  \item{cpar}{parameter scaling the variance of the
-  Dirichlet and Multinomial distributions.}
+  \item{cpar}{\code{c} parameter scaling the variance of
+  the Dirichlet and Multinomial distributions.}
 }
 \description{
   Take a data.SS_new file, resample the length compositions

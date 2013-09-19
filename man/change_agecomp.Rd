@@ -3,10 +3,9 @@
 \title{Resample age composition data}
 \usage{
   change_agecomp(infile, outfile,
-    distribution = "multinomial", Nsamp = NA, minyear = NA,
-    maxyear = NA, years = NA, svyears = NA,
-    fish_agecomp = TRUE, sv_agecomp = TRUE, N_agebins = NA,
-    agebin_vector = NA, agecomp = NA, cpar = 2)
+    distribution = "multinomial", Nsamp = NA, years = NA,
+    svyears = NA, fish_agecomp = TRUE, sv_agecomp = TRUE,
+    N_agebins = NA, agecomp = NA, cpar = 2)
 }
 \arguments{
   \item{infile}{SS data object from \code{SS_readdat()} in
@@ -21,38 +20,34 @@
   \code{"dirichlet"}}
 
   \item{Nsamp}{Number of samples drawn from a multinomial
-  distribution, or precision for the Dirichlet distribution
-  this parameter could be a single value or a vector for
-  each year of length comp data (both fishery and survey)}
+  distribution, or precision for the Dirichlet
+  distribution. This could either be a single value if the
+  sample size is the same for all years but could also be a
+  vector with its length equal to the number of years with
+  fishery and survey samples. For the latter, fishery
+  sample size precedes the survey sample size. \code{Nsamp}
+  only accepts numeric values and requires to be specified
+  for both the fishery and survey EVEN IF it is not used in
+  the end. Default to 100.}
 
-  \item{minyear}{starting year for the fleet age comps.
-  Overridden by specifying the \code{years} argument
-  (below)}
+  \item{N_agebins}{Number of age bins.}
 
-  \item{maxyear}{ending year for the fleet age comps.
-  Overridden by specifying the \code{years} argument
-  (below)}
+  \item{years}{Vector of years for the fleet age comps.}
 
-  \item{N_agebins}{Number of age bins}
+  \item{svyears}{Vector of years for the survey age comps.}
 
-  \item{agebin_vector}{A vector of age bins}
-
-  \item{years}{Vector of years for the fleet age comps}
-
-  \item{svyears}{Vector of years for the survey age comps}
-
-  \item{agecomp}{Matrix of age comps}
+  \item{agecomp}{Matrix of age comps.}
 
   \item{fish_agecomp,}{\code{TRUE} or \code{FALSE}; default
   to \code{TRUE}. Sets whether to use or not use the
-  fishery age composition data}
+  fishery age composition data.}
 
   \item{sv_agecomp,}{\code{TRUE} or \code{FALSE}; default
   to \code{TRUE.} Sets whether to use or not use the survey
-  age composition data}
+  age composition data.}
 
-  \item{cpar}{\code{c} parameter in lambda of the Dirichlet
-  distribution}
+  \item{cpar}{\code{c} parameter scaling the variance of
+  the Dirichlet and Multinomial distributions.}
 }
 \description{
   Take a \code{data.SS_new} file, resample the age

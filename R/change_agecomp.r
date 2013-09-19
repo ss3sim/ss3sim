@@ -15,26 +15,26 @@
 #' compositions. Options are \code{"multinomial"} and
 #' \code{"dirichlet"}
 #' @param Nsamp Number of samples drawn from a multinomial
-#' distribution, or precision for the Dirichlet distribution this
-#' parameter could be a single value or a vector for each year of
-#' length comp data (both fishery and survey)
-#' @param minyear starting year for the fleet age comps. Overridden by
-#' specifying the \code{years} argument (below)
-#' @param maxyear ending year for the fleet age comps. Overridden by
-#' specifying the \code{years} argument (below)
-#' @param N_agebins Number of age bins
-#' @param agebin_vector A vector of age bins
-#' @param years Vector of years for the fleet age comps
-#' @param svyears Vector of years for the survey age comps
-#' @param agecomp Matrix of age comps
+#' distribution, or precision for the Dirichlet distribution. This
+#' could either be a single value if the sample size is the same for
+#' all years but could also be a vector with its length equal to the
+#' number of years with fishery and survey samples. For the latter,
+#' fishery sample size precedes the survey sample size. \code{Nsamp}
+#' only accepts numeric values and requires to be specified for both
+#' the fishery and survey EVEN IF it is not used in the end. Default
+#' to 100.
+#' @param N_agebins Number of age bins.
+#' @param years Vector of years for the fleet age comps.
+#' @param svyears Vector of years for the survey age comps.
+#' @param agecomp Matrix of age comps.
 #' @param fish_agecomp, \code{TRUE} or \code{FALSE}; default to
 #' \code{TRUE}. Sets whether to use or not use the fishery age
-#' composition data
+#' composition data.
 #' @param sv_agecomp, \code{TRUE} or \code{FALSE}; default to
 #' \code{TRUE.} Sets whether to use or not use the survey age
-#' composition data
-#' @param cpar \code{c} parameter in lambda of the Dirichlet
-#' distribution
+#' composition data.
+#' @param cpar \code{c} parameter scaling the variance of the
+#' Dirichlet and Multinomial distributions.
 #' @examples
 #' \dontrun{
 #' d <- system.file("extdata", package = "ss3sim")
@@ -73,9 +73,9 @@
 #' @export
 
 change_agecomp <- function(infile, outfile, distribution =
-  "multinomial", Nsamp = NA, minyear = NA, maxyear = NA, years = NA,
-  svyears = NA, fish_agecomp = TRUE, sv_agecomp = TRUE, N_agebins =
-  NA, agebin_vector = NA, agecomp = NA, cpar = 2){
+  "multinomial", Nsamp = NA, years = NA, svyears = NA, fish_agecomp =
+  TRUE, sv_agecomp = TRUE, N_agebins = NA, agecomp
+  = NA, cpar = 2){
 
   dat.file <- infile
   if (is.na(N_agebins) == FALSE) {
@@ -186,10 +186,10 @@ change_agecomp <- function(infile, outfile, distribution =
 
   #To keep or not to keep the length comp from fishery and survey
   if(fish_agecomp==FALSE) {
-    new.agecomp = subset(new.agecomp, subset=c(FltSvy!=1))
+    new.agecomp <- new.agecomp[new.lencomp$FltSvy != 1, ]
   }
   if(sv_agecomp==FALSE) {
-    new.agecomp = subset(new.agecomp, subset=c(FltSvy!=2))
+    new.agecomp <- new.agecomp[new.lencomp$FltSvy != 2, ]
   }
 
   dat.file$agecomp <- new.agecomp

@@ -19,34 +19,25 @@
 #' could either be a single value if the sample size is the same for
 #' all years but could also be a vector with its length equal to the
 #' number of years with fishery and survey samples. For the latter,
-#' fishery sample size precedes the survey sample size. Nsamp only
-#' accepts numeric values and requires to be specified for both the
-#' fishery and survey EVEN IF it is not used in the end. Default to
-#' 100.
+#' fishery sample size precedes the survey sample size. \code{Nsamp}
+#' only accepts numeric values and requires to be specified for both
+#' the fishery and survey EVEN IF it is not used in the end. Default
+#' to 100.
 #' @param years vector of years for the fleet length comps.
-#' @param svyears vector of years for the survey lenght comps.
-#' @param minyear starting year for the fleet length comps. Overridden
-#' by specifying "years". Not operational. Leave to the default value
-#' of NA.
-#' @param maxyear ending year for the fleet length comps. Overridden
-#' by specifying "years". Not operational. Leave to the default value
-#' of NA.
-#' @param lbin_method method to generate model length bins. Not
-#' operational yet. Leave to the default value of NA.Leave to the
-#' default value of NA.
-#' @param lbin_vector Vector of length bins for the observations. Not
-#' operational yet. Leave to the default value of NA.
+#' @param svyears vector of years for the survey length comps.
 #' @param binwidth Bin width
 #' @param minimum_size, Minimum size
 #' @param maximum_size Maximum size
 #' @param N_lbins Number of length bins.
 #' @param lencomp Matrix of length comps
-#' @param fish_lcomp, TRUE or FALSE. This indicates whether you want
-#' to keep the fishery lcomp data at all. default to TRUE
-#' @param sv_lcomp, TRUE or FALSE. This indicates whether you want to
-#' keep the survey lcomp data at all. default to TRUE
-#' @param cpar parameter scaling the variance of the Dirichlet and
-#' Multinomial distributions.
+#' @param fish_lcomp, \code{TRUE} or \code{FALSE}. This indicates
+#' whether you want to keep the fishery length comp data at all.
+#' Defaults to \code{TRUE}.
+#' @param sv_lcomp, \code{TRUE} or \code{FALSE}. This indicates
+#' whether you want to keep the survey lcomp data at all. Defaults to
+#' \code{TRUE}
+#' @param cpar \code{c} parameter scaling the variance of the
+#' Dirichlet and Multinomial distributions.
 #'
 #' @export
 #' @examples
@@ -88,17 +79,15 @@
 
 change_lcomp <- function(infile, outfile, distribution =
   "multinomial", Nsamp = 100,  years = NA, svyears = NA, fish_lcomp =
-  TRUE, sv_lcomp = TRUE, cpar = 2, minyear = NA, maxyear = NA,
-  lbin_method = NA, lbin_vector = NA, binwidth = NA, minimum_size =
-  NA, maximum_size = NA, N_lbins = NA, lencomp = NA){
+  TRUE, sv_lcomp = TRUE, cpar = 2, binwidth = NA, minimum_size = NA,
+  maximum_size = NA, N_lbins = NA, lencomp = NA){
+
+  lbin_vector <- NA # legacy code
 
   # Read the input file
    dat.file <- infile
 
   # Explicit inputs
-  if(is.na(lbin_method)==FALSE){
-    stop("lbin_method must be left to NA")
-  }
   if(is.na(binwidth)==FALSE){
     stop("binwidth must be left to NA")
   }
@@ -221,11 +210,12 @@ change_lcomp <- function(infile, outfile, distribution =
   names(new.lencomp) <- c(names(dat.file$lencomp)[1:6],paste("l",dat.file$lbin_vector,sep=""))
 
   # To keep or not to keep the length comp from fishery and survey
+  browser()
   if(fish_lcomp==FALSE){
-    new.lencomp <- subset(new.lencomp, subset=c(FltSvy!=1))
+    new.lencomp <- new.lencomp[new.lencomp$FltSvy != 1, ]
   }
   if(sv_lcomp==FALSE){
-    new.lencomp <- subset(new.lencomp, subset=c(FltSvy!=2))
+    new.lencomp <- new.lencomp[new.lencomp$FltSvy != 2, ]
   }
 
   dat.file$lencomp <- new.lencomp
