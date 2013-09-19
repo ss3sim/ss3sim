@@ -886,7 +886,7 @@ over-dispersion.
 \subsection{Multinomial vs.\ Dirichlet Distributions} The following
 calculations are shown for age compositions but apply equally to
 length compositions. The multinomial distribution $\mathbf{m} \sim
-\text{MN}\LR{\mathbf{p}, n, A}$ is defined as
+\text{MN}\left(\mathbf{p}, n, A\right )$ is defined as
 \begin{align*} \mathbf{m} &= m_1, \ldots, m_A\\
   &=\text{the number of fish observed in bin $a$}\\
   \mathbf{p}&= p_1, \ldots, p_A\\
@@ -903,7 +903,7 @@ large sample size this set approximates the real interval $[0,1]$,
 but the point being that only some values of $m_a/n$ are possible.
 
 The Dirichlet distribution $\mathbf{d} \sim
-\text{Dirichlet}\LR{\boldsymbol{\alpha}, A}$ is
+\text{Dirichlet}\left (\boldsymbol{\alpha}, A\right )}$ is
 \begin{align*}
   \mathbf{d} &= d_1, \ldots, d_A\\
   &=\text{the proportion of fish observed in bin $a$}\\
