@@ -5,7 +5,7 @@
 #' composition samples. Samples can have dimensions, bins, sample
 #' sizes, and distributions which are different than those coming from
 #' SS.
-#' 
+#'
 #' @author Roberto Licandeo, Felipe Hurtado-Ferro
 #' @param infile SS data object from \code{SS_readdat()} in the r4ss
 #' package. Make sure you select option \code{section = 2}
@@ -26,10 +26,10 @@
 #' @param agebin_vector A vector of age bins
 #' @param years Vector of years for the fleet age comps
 #' @param svyears Vector of years for the survey age comps
-#' @param agecomp Matrix of age comps 
+#' @param agecomp Matrix of age comps
 #' @param fish_agecomp, \code{TRUE} or \code{FALSE}; default to
 #' \code{TRUE}. Sets whether to use or not use the fishery age
-#' composition data 
+#' composition data
 #' @param sv_agecomp, \code{TRUE} or \code{FALSE}; default to
 #' \code{TRUE.} Sets whether to use or not use the survey age
 #' composition data
@@ -37,40 +37,54 @@
 #' distribution
 #' @examples
 #' \dontrun{
-#' d <- system.file("extdata/cod-em-ss3-dat/ss3.dat", package = "ss3sim")
-#' ss_dat <- r4ss::SS_readdat(d, verbose = FALSE, section = 2)
-#'   
-#' # Sample the survey age composition data every second year starting in
-#' # 1974; use a Dirichlet distribution:
-#' change_agecomp(infile = ss_dat, outfile = "dirichlet-ss3.dat", distribution
-#'   = "dirichlet", Nsamp = 100, years = 1938:2012, svyears = seq(1974,
-#'     2012, by = 2), fish_agecomp = TRUE, sv_agecomp = TRUE)
-#' 
-#' # Draw 25 samples from a multinomial distribution surveying every
-#' # second year starting in 1974:
-#' change_agecomp(infile = ss_dat, outfile = "multinomial-ss3.dat",
-#'   distribution = "multinomial", Nsamp = 25, years = 1938:2012, svyears
-#'   = seq(1974, 2012, by = 2), fish_agecomp = TRUE, sv_agecomp = TRUE)
-#' 
+#' d <- system.file("extdata", package = "ss3sim")
+#' f_in <- paste0(d, "/example-om/data.ss_new")
+#' infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+#'
+#' # Generate a .dat file with the same dimensions as the 'infile'
+#' change_agecomp(infile, outfile = "newdat.dat")
+#'
+#' # Generate a .dat file with a smaller sample size
+#' change_agecomp(infile, outfile = "newdat.dat", Nsamp=20)
+#'
+#' # Generate a .dat file with a shorter time series
+#' change_agecomp(infile, outfile = "newdat.dat", Nsamp = 100,
+#'   years = 1980:2012)
+#'
+#' # Generate a .dat file using Dirichlet distributed samples
+#' change_agecomp(infile, outfile = "newdat.dat", Nsamp = 100,
+#'   distribution = "dirichlet")
+#'
+#' # Generate a .dat file using Dirichlet distributed samples for the
+#' # fishery and Multinomial for the survey
+#' change_agecomp(infile, outfile = "newdat.dat", Nsamp = 100,
+#'   distribution = c("dirichlet", "multinomial"))
+#'
+#' # Generate a .dat file using Dirichlet distributed samples for the
+#' # fishery with 50 samples and Multinomial for the survey with 100
+#' # samples
+#' change_agecomp(infile, outfile = "newdat.dat", distribution =
+#'   c("dirichlet", "multinomial"), years = seq(1994, 2012, by = 2),
+#'   svyears = seq(2003, 2012), Nsamp = c(rep(50, 10), rep(100, 10)))
+#'
 #' # cleanup:
-#' unlink("dirichlet-ss3.dat")
-#' unlink("multinomial-ss3.dat")
+#' unlink("newdat.dat")
 #' }
 #' @export
 
-change_agecomp <- function(infile, outfile,
-  distribution="multinomial", Nsamp=NA, minyear=NA, maxyear=NA,
-  years=NA, svyears=NA, fish_agecomp=TRUE, sv_agecomp=TRUE,
-  N_agebins=NA, agebin_vector=NA, agecomp=NA, cpar=2){
+change_agecomp <- function(infile, outfile, distribution =
+  "multinomial", Nsamp = NA, minyear = NA, maxyear = NA, years = NA,
+  svyears = NA, fish_agecomp = TRUE, sv_agecomp = TRUE, N_agebins =
+  NA, agebin_vector = NA, agecomp = NA, cpar = 2){
 
   dat.file <- infile
   if (is.na(N_agebins) == FALSE) {
-    if (class(N_agebins) != "numeric") 
+    if (class(N_agebins) != "numeric")
       stop("N_agebins must have a numeric input")
     dat.file$N_agebins <- N_agebins
   }
   if (is.na(agecomp) == FALSE) {
-    if (class(agecomp) != "numeric") 
+    if (class(agecomp) != "numeric")
       stop("agecomp must have a numeric input")
     new.agecomp <- agecomp
   }
@@ -78,7 +92,8 @@ change_agecomp <- function(infile, outfile,
     Nsamp <- dat.file$agecomp[, "Nsamp"]
   }
 
-  # Save the expected lencomps in another object to be modified (if necessary)
+  # Save the expected lencomps in another object to be modified (if
+  # necessary)
   init.agecomp <- dat.file$agecomp
 
   # Write the age comps
@@ -88,8 +103,8 @@ change_agecomp <- function(infile, outfile,
   if(is.na(agecomp)==TRUE) {
     new.agecomp <- array(0,dim=c(length(c(years,svyears)),NDF.width))  ## create age matrix
     new.agecomp[,1] <- c(years,svyears)                                ## fill Yr
-    new.agecomp[,2] <- 1                                               ## fill Seas      
-    new.agecomp[1:length(years),3] <- 1                                ## fill FltSvy  =1    
+    new.agecomp[,2] <- 1                                               ## fill Seas
+    new.agecomp[1:length(years),3] <- 1                                ## fill FltSvy  =1
     new.agecomp[(length(years)+1):length(c(years,svyears)),3] <- 2     ## fill FltSvy  =2
     new.agecomp[,4] <- 0                                               ## Gender (default = 0)
     new.agecomp[,5] <- 0                                               ## Part (default = 0)
@@ -107,23 +122,23 @@ change_agecomp <- function(infile, outfile,
         probs <- as.numeric(probs)/sum(as.numeric(probs))
         if (length(distribution) == 1) {
           if (distribution == "multinomial") {
-            new.agecomp[it, 10:NDF.width] <- rmultinom(1, 
+            new.agecomp[it, 10:NDF.width] <- rmultinom(1,
               new.agecomp[it, 9], probs)
           }
           if (distribution == "dirichlet") {
             lambda <- new.agecomp[it, 9]/cpar^2 - 1
-            new.agecomp[it, 10:NDF.width] <- gtools::rdirichlet(1, 
+            new.agecomp[it, 10:NDF.width] <- gtools::rdirichlet(1,
               as.numeric(probs) * lambda)
           }
         }
         if (length(distribution) > 1) {
           if (distribution[1] == "multinomial") {
-            new.agecomp[it, 10:NDF.width] <- rmultinom(1, 
+            new.agecomp[it, 10:NDF.width] <- rmultinom(1,
               new.agecomp[it, 9], probs)
           }
           if (distribution[1] == "dirichlet") {
             lambda <- new.agecomp[it, 9]/cpar^2 - 1
-            new.agecomp[it, 10:NDF.width] <- gtools::rdirichlet(1, 
+            new.agecomp[it, 10:NDF.width] <- gtools::rdirichlet(1,
               as.numeric(probs) * lambda)
           }
         }
@@ -136,28 +151,28 @@ change_agecomp <- function(infile, outfile,
         if (length(Nsamp) > 1) {
           new.agecomp[it, 9] <- Nsamp[it]
         }
-        probs <- svagecomp[svagecomp[, 1] == c(years, svyears)[it], 
+        probs <- svagecomp[svagecomp[, 1] == c(years, svyears)[it],
           10:DF.width]
         probs <- as.numeric(probs)/sum(as.numeric(probs))
         if (length(distribution) == 1) {
           if (distribution == "multinomial") {
-            new.agecomp[it, 10:NDF.width] <- rmultinom(1, 
+            new.agecomp[it, 10:NDF.width] <- rmultinom(1,
               new.agecomp[it, 9], probs)
           }
           if (distribution == "dirichlet") {
             lambda <- new.agecomp[it, 9]/cpar^2 - 1
-            new.agecomp[it, 10:NDF.width] <- gtools::rdirichlet(1, 
+            new.agecomp[it, 10:NDF.width] <- gtools::rdirichlet(1,
               as.numeric(probs) * lambda)
           }
         }
         if (length(distribution) > 1) {
           if (distribution[2] == "multinomial") {
-            new.agecomp[it, 10:NDF.width] <- rmultinom(1, 
+            new.agecomp[it, 10:NDF.width] <- rmultinom(1,
               new.agecomp[it, 9], probs)
           }
           if (distribution[2] == "dirichlet") {
             lambda <- new.agecomp[it, 9]/cpar^2 - 1
-            new.agecomp[it, 10:NDF.width] <- gtools::rdirichlet(1, 
+            new.agecomp[it, 10:NDF.width] <- gtools::rdirichlet(1,
               as.numeric(probs) * lambda)
           }
         }
@@ -166,7 +181,7 @@ change_agecomp <- function(infile, outfile,
   }
 
   new.agecomp <- as.data.frame(new.agecomp)
-  names(new.agecomp) <- c(names(dat.file$agecomp)[1:9], paste("a", 
+  names(new.agecomp) <- c(names(dat.file$agecomp)[1:9], paste("a",
       dat.file$agebin_vector, sep = ""))
 
   #To keep or not to keep the length comp from fishery and survey
@@ -183,10 +198,10 @@ change_agecomp <- function(infile, outfile,
     dat.file$agecomp = data.frame("#")
   }
 
-  #To calculate the final sum of years 
+  #To calculate the final sum of years
   dat.file$N_agecomp <- length(new.agecomp[,1])
 
   #Write the modified file
-  r4ss::SS_writedat(datlist = dat.file, outfile = outfile, 
+  r4ss::SS_writedat(datlist = dat.file, outfile = outfile,
     overwrite = TRUE)
 }

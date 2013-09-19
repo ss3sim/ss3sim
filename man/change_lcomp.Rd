@@ -89,24 +89,35 @@ d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/example-om/data.ss_new")
 infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
 
-# Generate a DAT file with the same dimensions as the original 'infile'
-change_lcomp(infile,outfile="newdat.dat")
+# Generate a .dat file with the same dimensions as the original
+# 'infile'
+change_lcomp(infile, outfile = "newdat.dat")
 
-# Generate a DAT file with a smaller sample size
-change_lcomp(infile,outfile="newdat.dat", Nsamp=20)
+# Generate a .dat file with a smaller sample size
+change_lcomp(infile, outfile = "newdat.dat", Nsamp = 20)
 
-# Generate a DAT file with a shorter time series
-change_lcomp(infile,outfile="newdat.dat", Nsamp=100, years=1980:2012)
+# Generate a .dat file with a shorter time series
+change_lcomp(infile, outfile = "newdat.dat", Nsamp = 100,
+  years = 1980:2012)
 
-# Generate a DAT file using Dirichlet distributed samples
-change_lcomp(infile,outfile="newdat.dat", Nsamp=100, distribution="dirichlet")
+# Generate a .dat file using Dirichlet distributed samples
+change_lcomp(infile, outfile = "newdat.dat", Nsamp = 100,
+  distribution = "dirichlet")
 
-# Generate a DAT file using Dirichlet distributed samples for the fishery and Multinomial for the survey
-change_lcomp(infile,outfile="newdat.dat", Nsamp=100, distribution=c("dirichlet", "multinomial"))
+# Generate a .dat file using Dirichlet distributed samples for the
+# fishery and Multinomial for the survey
+change_lcomp(infile, outfile = "newdat.dat", Nsamp = 100,
+  distribution = c("dirichlet", "multinomial"))
 
-# Generate a DAT file using Dirichlet distributed samples for the fishery with 50 samples
-# and Multinomial for the survey with 100 samples
-change_lcomp(infile,outfile="newdat.dat", distribution=c("dirichlet", "multinomial"), years = seq(1994,2012,by=2), svyears=seq(2003,2012), Nsamp=c(rep(50,10), rep(100,10)))
+# Generate a .dat file using Dirichlet distributed samples for the
+# fishery with 50 samples and Multinomial for the survey with 100
+# samples
+change_lcomp(infile, outfile = "newdat.dat", distribution = c("dirichlet",
+  "multinomial"), years = seq(1994, 2012, by = 2), svyears = seq(2003,
+  2012), Nsamp = c(rep(50, 10), rep(100, 10)))
+
+# cleanup:
+unlink("newdat.dat")
 }
 }
 \author{

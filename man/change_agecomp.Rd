@@ -63,24 +63,38 @@
 }
 \examples{
 \dontrun{
-d <- system.file("extdata/cod-em-ss3-dat/ss3.dat", package = "ss3sim")
-ss_dat <- r4ss::SS_readdat(d, verbose = FALSE, section = 2)
+d <- system.file("extdata", package = "ss3sim")
+f_in <- paste0(d, "/example-om/data.ss_new")
+infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
 
-# Sample the survey age composition data every second year starting in
-# 1974; use a Dirichlet distribution:
-change_agecomp(infile = ss_dat, outfile = "dirichlet-ss3.dat", distribution
-  = "dirichlet", Nsamp = 100, years = 1938:2012, svyears = seq(1974,
-    2012, by = 2), fish_agecomp = TRUE, sv_agecomp = TRUE)
+# Generate a .dat file with the same dimensions as the 'infile'
+change_agecomp(infile, outfile = "newdat.dat")
 
-# Draw 25 samples from a multinomial distribution surveying every
-# second year starting in 1974:
-change_agecomp(infile = ss_dat, outfile = "multinomial-ss3.dat",
-  distribution = "multinomial", Nsamp = 25, years = 1938:2012, svyears
-  = seq(1974, 2012, by = 2), fish_agecomp = TRUE, sv_agecomp = TRUE)
+# Generate a .dat file with a smaller sample size
+change_agecomp(infile, outfile = "newdat.dat", Nsamp=20)
+
+# Generate a .dat file with a shorter time series
+change_agecomp(infile, outfile = "newdat.dat", Nsamp = 100,
+  years = 1980:2012)
+
+# Generate a .dat file using Dirichlet distributed samples
+change_agecomp(infile, outfile = "newdat.dat", Nsamp = 100,
+  distribution = "dirichlet")
+
+# Generate a .dat file using Dirichlet distributed samples for the
+# fishery and Multinomial for the survey
+change_agecomp(infile, outfile = "newdat.dat", Nsamp = 100,
+  distribution = c("dirichlet", "multinomial"))
+
+# Generate a .dat file using Dirichlet distributed samples for the
+# fishery with 50 samples and Multinomial for the survey with 100
+# samples
+change_agecomp(infile, outfile = "newdat.dat", distribution =
+  c("dirichlet", "multinomial"), years = seq(1994, 2012, by = 2),
+  svyears = seq(2003, 2012), Nsamp = c(rep(50, 10), rep(100, 10)))
 
 # cleanup:
-unlink("dirichlet-ss3.dat")
-unlink("multinomial-ss3.dat")
+unlink("newdat.dat")
 }
 }
 \author{
