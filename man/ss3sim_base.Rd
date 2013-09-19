@@ -2,10 +2,9 @@
 \alias{ss3sim_base}
 \title{Run both the operating model and assessment model}
 \usage{
-  ss3sim_base(iterations, scenarios, m_params, f_params,
+  ss3sim_base(iterations, scenarios, f_params,
     index_params, lcomp_params, agecomp_params,
-    estim_params, om_model_dir, em_model_dir,
-    sel_params = NULL, growth_params = NULL,
+    estim_params, tv_params, om_model_dir, em_model_dir,
     retro_params = NULL, user_recdevs = NULL,
     bias_adjust = FALSE, bias_nsim = 5,
     bias_already_run = FALSE, hess_always = FALSE,
@@ -18,14 +17,8 @@
 
   \item{scenarios}{Which scenarios to run.}
 
-  \item{m_params}{A named list containing all the
-  \code{\link{change_m}} options.}
-
-  \item{sel_params}{A named list containing all the
-  \code{\link{change_sel}} options.}
-
-  \item{growth_params}{A named list containing all the
-  \code{\link{change_growth}} options.}
+  \item{tv_params}{A named list containing all the
+  \code{\link{change_tv}} (time-varying) options.}
 
   \item{f_params}{A named list containing all the
   \code{\link{change_f}} options.}
@@ -103,44 +96,42 @@
   \item{...}{Anything extra to pass to
   \code{\link{run_ss3model}}. For example, you may want to
   pass additional options to \code{SS3} through the
-  argument \code{admb_options}. Just don't pass
-  \code{-noest} or \code{-nohess} and enable bias
-  correction. Anything that doesn't match a named argument
-  in \code{\link{run_ss3model}} will be passed to the
-  \code{\link{system}} call that runs \code{SS3}. If you
-  are on a Windows computer then you might want to pass
-  \code{show.output.on.console = FALSE} to make the
-  simulations runs faster.}
+  argument \code{admb_options}. Anything that doesn't match
+  a named argument in \code{\link{run_ss3model}} will be
+  passed to the \code{\link{system}} call that runs
+  \code{SS3}. If you are on a Windows computer then you
+  might want to pass \code{show.output.on.console = FALSE}
+  to make the simulations runs faster.}
 }
 \description{
   This function is a wrapper function that can call
   \code{\link{run_ss3model}} for the operating model,
-  manipulate the output (add recruitment deviations, survey
-  the data, etc.), and run the estimation model.
+  sample the output (add recruitment deviations, survey the
+  data, etc.), and run the estimation model.
+  \code{ss3sim_base} is the main internal function for
+  ss3sim.
 }
 \details{
   This function is written to be flexible. You can specify
   the natural mortality, fishing mortality, survey index,
   length comp, and age comp parameters in the function call
-  as list objects. For a higher-level wrapper function
-  specific to the setup of the Fish600 projects, see
-  \code{\link{run_fish600}}.
+  as list objects. For a generic higher-level function, see
+  \code{\link{run_ss3sim}}.
 }
 \examples{
 \dontrun{
 # Pull in file paths from the package example data:
 d <- system.file("extdata", package = "ss3sim")
-f <- paste0(d, "/ss3sim_base_eg/")
-om_model_dir <- paste0(f, "cod_om")
-em_model_dir <- paste0(f, "cod_em")
-a <- get_caseargs(folder = paste0(f, "case-arguments"), scenario =
-"M1-F1-D1-R1-S1-G1-E1-cod")
+om_model_dir <- paste0(d, "/models/cod-om")
+em_model_dir <- paste0(d, "/models/cod-em")
+a <- get_caseargs(folder = paste0(d, "/cases"), scenario =
+"M0-F0-D0-R0-S0-G0-E0-cod")
 
-ss3sim_base(iterations = 1, scenarios = "M1-F1-D1-R1-S1-G1-E1-cod",
-  m_params = a$M, sel_params = a$S, growth_params = a$G, f_params =
-  a$F, index_params = a$index, lcomp_params = a$lcomp, agecomp_params
-  = a$agecomp, retro_params = a$R, estim_params = a$E,
-  om_model_dir = om_model_dir, em_model_dir = em_model_dir)
+ss3sim_base(iterations = 1, scenarios = "M0-F0-D0-R0-S0-G0-E0-cod",
+f_params = a$F, index_params = a$index, lcomp_params = a$lcomp,
+agecomp_params = a$agecomp, tv_params = a$tv_params, retro_params =
+a$R, estim_params = a$E, om_model_dir = om_model_dir, em_model_dir
+= em_model_dir)
 }
 }
 \author{

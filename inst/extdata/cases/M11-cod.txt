@@ -1,4 +1,3 @@
-how_time_varying; env
-n_blocks; 1
+function_type; change_tv
+param; NatM_p_1_Fem_GP_1
 dev; c(rep(0,50),rep(-0.035,50))
-ss3path; NULL

@@ -3,11 +3,11 @@
 \title{Change length comps}
 \usage{
   change_lcomp(infile, outfile,
-    distribution = "multinomial", Nsamp = NA, minyear = NA,
-    maxyear = NA, years = NA, svyears = NA,
-    fish_lcomp = TRUE, sv_lcomp = TRUE, lbin_method = NA,
-    binwidth = NA, minimum_size = NA, maximum_size = NA,
-    N_lbins = NA, lbin_vector = NA, lencomp = NA, cpar = 2)
+    distribution = "multinomial", Nsamp = 100, years = NA,
+    svyears = NA, fish_lcomp = TRUE, sv_lcomp = TRUE,
+    cpar = 2, minyear = NA, maxyear = NA, lbin_method = NA,
+    lbin_vector = NA, binwidth = NA, minimum_size = NA,
+    maximum_size = NA, N_lbins = NA, lencomp = NA)
 }
 \arguments{
   \item{infile}{SS data object from SS_readdat() in the
@@ -19,28 +19,41 @@
 
   \item{distribution}{Distribution to be used to sample the
   length compositions. Options are "multinomial" and
-  "dirichlet"}
+  "dirichlet". it could also be written in the form of a
+  vector if the fishery and survey composition data are not
+  sampled using the same distribution}
 
   \item{Nsamp}{Number of samples drawn from a multinomial
-  distribution, or precision for the Dirichlet distribution
-  it could be either NA, a single value (if the same sample
-  for all years) or a vector for each year you have a
-  sample. this means it combines both the fishery and
-  survey comps data}
-
-  \item{minyear}{starting year for the fleet length comps.
-  Overridden by specifying "years"}
-
-  \item{maxyear}{ending year for the fleet length comps.
-  Overridden by specifying "years"}
+  distribution, or precision for the Dirichlet
+  distribution. This could either be a single value if the
+  sample size is the same for all years but could also be a
+  vector with its length equal to the number of years with
+  fishery and survey samples. For the latter, fishery
+  sample size precedes the survey sample size. Nsamp only
+  accepts numeric values and requires to be specified for
+  both the fishery and survey EVEN IF it is not used in the
+  end. Default to 100.}
 
   \item{years}{vector of years for the fleet length comps.}
 
   \item{svyears}{vector of years for the survey lenght
   comps.}
 
+  \item{minyear}{starting year for the fleet length comps.
+  Overridden by specifying "years". Not operational. Leave
+  to the default value of NA.}
+
+  \item{maxyear}{ending year for the fleet length comps.
+  Overridden by specifying "years". Not operational. Leave
+  to the default value of NA.}
+
   \item{lbin_method}{method to generate model length bins.
-  See SS manual for details}
+  Not operational yet. Leave to the default value of
+  NA.Leave to the default value of NA.}
+
+  \item{lbin_vector}{Vector of length bins for the
+  observations. Not operational yet. Leave to the default
+  value of NA.}
 
   \item{binwidth}{Bin width}
 
@@ -49,9 +62,6 @@
   \item{maximum_size}{Maximum size}
 
   \item{N_lbins}{Number of length bins.}
-
-  \item{lbin_vector}{Vector of length bins for the
-  observations}
 
   \item{lencomp}{Matrix of length comps}
 
@@ -82,20 +92,21 @@ infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
 # Generate a DAT file with the same dimensions as the original 'infile'
 change_lcomp(infile,outfile="newdat.dat")
 
-# Generate a DAT file with less length bins
-change_lcomp(infile,outfile="newdat.dat", lbin_vector=seq(10,27,0.5))
-
 # Generate a DAT file with a smaller sample size
 change_lcomp(infile,outfile="newdat.dat", Nsamp=20)
 
-# Generate a DAT file with a shorter time series, method 1
-change_lcomp(infile,outfile="newdat.dat", Nsamp =100, minyear=1980, maxyear=2012)
-
-# Generate a DAT file with a shorter time series, method 2
+# Generate a DAT file with a shorter time series
 change_lcomp(infile,outfile="newdat.dat", Nsamp=100, years=1980:2012)
 
 # Generate a DAT file using Dirichlet distributed samples
 change_lcomp(infile,outfile="newdat.dat", Nsamp=100, distribution="dirichlet")
+
+# Generate a DAT file using Dirichlet distributed samples for the fishery and Multinomial for the survey
+change_lcomp(infile,outfile="newdat.dat", Nsamp=100, distribution=c("dirichlet", "multinomial"))
+
+# Generate a DAT file using Dirichlet distributed samples for the fishery with 50 samples
+# and Multinomial for the survey with 100 samples
+change_lcomp(infile,outfile="newdat.dat", distribution=c("dirichlet", "multinomial"), years = seq(1994,2012,by=2), svyears=seq(2003,2012), Nsamp=c(rep(50,10), rep(100,10)))
 }
 }
 \author{

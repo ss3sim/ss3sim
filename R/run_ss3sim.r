@@ -11,6 +11,11 @@
 #' "D1-E0-F0-G0-R0-S0-M0-cod")}. Also, see
 #' \code{\link{expand_scenarios}} for a shortcut to specifying the
 #' scenarios.
+#' @param case_folder The folder containing the case .txt files.
+#' @param om_model_dir The folder containing the SS operating model
+#' files.
+#' @param em_model_dir The folder containing the SS estimation model
+#' files.
 #' @param seed If set to a numeric vector then \code{set.seed} will be
 #' set to each successive value of the vector \code{seed} on each
 #' iteration. This can be useful to make simulations reproducible. If
@@ -93,9 +98,9 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
   output <- lapply(scenarios, function(x) {
     a <- get_caseargs(folder = case_folder, scenario = x) 
     sp <- substr_r(x, 3)
-
-    ss3sim_base(iterations, scenarios = x, m_params = a$M,
-      sel_params = a$S, growth_params = a$G, f_params = a$F, index_params =
+    ss3sim_base(iterations, scenarios = x,
+      tv_params = a$tv_params,
+      f_params = a$F, index_params =
       a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp, 
       retro_params = a$R, estim_params = a$E, om_model_dir = om_model_dir, 
       em_model_dir = em_model_dir, seed = seed, ...) 

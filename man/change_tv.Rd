@@ -1,0 +1,90 @@
+\name{change_tv}
+\alias{change_tv}
+\title{Methods to include time-varying parameters in the OM}
+\usage{
+  change_tv(change_tv_list, ctl_file_in = "control.ss_new",
+    ctl_file_out = "om.ctl", dat_file_in = "ss3.dat",
+    dat_file_out = "ss3.dat", par_file_in = "ss3.par",
+    par_file_out = "ss3.par",
+    starter_file_in = "starter.ss",
+    starter_file_out = "starter.ss",
+    report_file = "Report.sso")
+}
+\arguments{
+  \item{change_tv_list}{A list of named vectors. Names
+  correspond to parameters in the operating model that are
+  currently constant across time and will be changed to
+  vary across time according to the vector of deviations.
+  The vector of deviations will function as additive
+  deviations from the value specified in the \code{.par}
+  file for the given parameter. Vectors of deviations, also
+  referred to as environmental data, must be of
+  \code{length = length of *.dat endyr-startyr+1}. Specify
+  years without deviations as zero in the vector. Parameter
+  names must be unique and be specified as the full
+  parameter name in the \code{.ctl} file. The feature will
+  include an *additive* functional linkage between
+  environmental data and the parameter where the link
+  parameter is fixed at a value of one: \code{par\' (y) =
+  par + link * env(y)}}
+
+  \item{ctl_file_in}{Input SS3 control file}
+
+  \item{ctl_file_out}{Output SS3 control file}
+
+  \item{dat_file_in}{Input SS3 data file}
+
+  \item{dat_file_out}{Output SS3 data file}
+
+  \item{par_file_in}{Input SS3 paramater file}
+
+  \item{par_file_out}{Output SS3 parameter file}
+
+  \item{starter_file_in}{Input SS3 starter file}
+
+  \item{starter_file_out}{Output SS3 starter file}
+
+  \item{report_file}{Input SS3 report file}
+}
+\description{
+  Methods to include time-varying parameters in the OM
+}
+\details{
+  Although there are three ways to implement time-varying
+  parameters within SS3, \code{ss3sim} only uses the
+  environmental variable option. The \code{ctl_file_in}
+  argument needs to be a \code{.ss_new} file because the
+  documentation in \code{.ss_new} files are automated and
+  standardized. This function takes advantage of the
+  standard documentation the SS3 control file to determine
+  which lines to manipulate and where to add code in the
+  \code{.ctl}, \code{.par}, and \code{.dat} files, code
+  that is necessary to implement time-varying parameters.
+  Within SS time-varying parameters work on an annual
+  time-step, thus for models with multiple seasons the
+  time-varying parameters will remain constant for the
+  entire year.
+}
+\examples{
+\dontrun{
+d <- system.file("extdata", package = "ss3sim")
+ctl_file_in <- paste0(d, "/Simple/control.ss_new")
+dat_file_in <- paste0(d, "/Simple/simple.dat")
+starter_file_in <- paste0(d, "/Simple/starter.ss")
+par_file_in <- paste0(d, "/Simple/ss3.par")
+report_file <- paste0(d, "/Simple/Report.sso")
+wd <- getwd()
+setwd(paste0(d, "/Simple"))
+change_tv(change_tv_list = list("NatM_p_1_Fem_GP_1" = c(rep(0, 20), rep(.1, 11)),
+                                "SizeSel_1P_1_FISHERY1" = rnorm(31, 0, 0.05)),
+  ctl_file_in = ctl_file_in, ctl_file_out = "example.ctl",
+  dat_file_in = dat_file_in, dat_file_out = "example.dat",
+  starter_file_in = starter_file_in, starter_file_out = "starter.ss",
+  par_file_in = par_file_in, report_file = report_file
+  )
+setwd(wd)}
+}
+\author{
+  Kotaro Ono, Carey McGilliard, and Kelli Faye Johnson
+}
+

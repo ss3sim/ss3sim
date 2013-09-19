@@ -82,10 +82,10 @@ run_fish600 <- function(iterations, scenarios, seed = fish600seeds, ...) {
     om_model_dir <- get_fish600_modelfolder(paste0(sp, "-om"))
     em_model_dir <- get_fish600_modelfolder(paste0(sp, "-em"))
 
-    ss3sim_base(iterations, scenarios = x, m_params = a$M,
-      sel_params = a$S, growth_params = a$G, f_params = a$F, index_params =
-      a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp, 
-      retro_params = a$R, estim_params = a$E, om_model_dir = om_model_dir, 
+    ss3sim_base(iterations, scenarios = x, tv_params = a$tv_params,
+      f_params = a$F, index_params = a$index, lcomp_params = a$lcomp, 
+      agecomp_params = a$agecomp, retro_params = a$R, 
+      estim_params = a$E, om_model_dir = om_model_dir, 
       em_model_dir = em_model_dir, seed = seed, ...) 
   })
 

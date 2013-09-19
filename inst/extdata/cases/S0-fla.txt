@@ -1,5 +1,3 @@
-use; FALSE
-n_blocks; 1
-block_pattern; 1
-dev; NA
-how_time_varying;  env
+function_type; change_tv
+param; SizeSel_1P_1_Fishery
+dev; rep(0, 100)

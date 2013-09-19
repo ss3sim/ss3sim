@@ -152,7 +152,35 @@ get_caseargs <- function(folder, scenario, delimiter = "-", ext = ".txt",
   args_out2 <- unlist(args_out)
   names(args_out2) <- unlist(case_files)
   argvalues_out <- lapply(args_out2, function(x) get_args(pastef(folder, x)))
-  argvalues_out
+
+  # TODO this should check for the value of "function_type" too
+  # now, check for all "function_type = change_tv" and concatenate these
+  # into a list to pass to change_param()
+  change_param_args <- sapply(argvalues_out, function(x) {
+    if("function_type" %in% names(x)) {
+      y <- list(temporary_name = x$dev)
+      names(y) <- x$param
+      y
+      }
+    })
+
+  # remove elements that aren't time varying:
+  args_null <- sapply(change_param_args, function(x) is.null(x))
+  if(!length(which(args_null)) == length(args_null)) { # some are time varying
+    change_param_args[which(args_null)] <- NULL
+    # and re-arrange to pass to change_params
+    change_param_args_short <- lapply(change_param_args, "[[", 1)
+    names(change_param_args_short) <- sapply(change_param_args, function(x) names(x))
+  } else {
+    change_param_args_short <- NULL
+  }
+
+# remove time varying elements from argvalues_out:
+  argvalues_out <- argvalues_out[which(args_null)]
+
+# and concatenate on the time varying arguments
+  c(argvalues_out, list(tv_params = change_param_args_short))
+
 }
 
 #' Substring from right

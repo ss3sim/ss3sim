@@ -1,18 +1,15 @@
 #' Run both the operating model and assessment model
 #'
 #' This function is a wrapper function that can call
-#' \code{\link{run_ss3model}} for the operating model, manipulate the
+#' \code{\link{run_ss3model}} for the operating model, sample the
 #' output (add recruitment deviations, survey the data, etc.), and run
-#' the estimation model.
+#' the estimation model. \code{ss3sim_base} is the main internal
+#' function for ss3sim.
 #'
 #' @param iterations Which iterations to run. A numeric vector.
 #' @param scenarios Which scenarios to run.
-#' @param m_params A named list containing all the
-#' \code{\link{change_m}} options.
-#' @param sel_params A named list containing all the
-#' \code{\link{change_sel}} options.
-#' @param growth_params A named list containing all the
-#' \code{\link{change_growth}} options.
+#' @param tv_params A named list containing all the
+#' \code{\link{change_tv}} (time-varying) options.
 #' @param f_params A named list containing all the
 #' \code{\link{change_f}} options.
 #' @param index_params A named list containing all the
@@ -48,7 +45,7 @@
 #' calculated. If \code{FALSE} then the Hessian will only be
 #' calculated for bias-adjustment runs thereby saving time.
 #' @param print_logfile Logical. Print a log file?
-#' @param sleep A time interval (in seconds) to pause on each iteration. 
+#' @param sleep A time interval (in seconds) to pause on each iteration.
 #' Useful if you want to reduce average CPU time -- perhaps because you're
 #' working on a shared server.
 #' @param seed If set to a numeric vector then \code{set.seed} will be
@@ -61,8 +58,7 @@
 #' be produced. Currently, the simulations will continue to run.
 #' @param ... Anything extra to pass to \code{\link{run_ss3model}}.
 #' For example, you may want to pass additional options to \code{SS3}
-#' through the argument \code{admb_options}. Just don't pass
-#' \code{-noest} or \code{-nohess} and enable bias correction.
+#' through the argument \code{admb_options}.
 #' Anything that doesn't match a named argument in
 #' \code{\link{run_ss3model}} will be passed to the
 #' \code{\link{system}} call that runs \code{SS3}. If you are on a
@@ -77,28 +73,27 @@
 #' This function is written to be flexible. You can specify the
 #' natural mortality, fishing mortality, survey index,
 #' length comp, and age comp parameters in the function call as list
-#' objects. For a higher-level wrapper function specific to the setup
-#' of the Fish600 projects, see \code{\link{run_fish600}}.
+#' objects. For a generic higher-level function, see
+#' \code{\link{run_ss3sim}}.
 #' @examples
 #' \dontrun{
 #' # Pull in file paths from the package example data:
 #' d <- system.file("extdata", package = "ss3sim")
-#' f <- paste0(d, "/ss3sim_base_eg/")
-#' om_model_dir <- paste0(f, "cod_om")
-#' em_model_dir <- paste0(f, "cod_em")
-#' a <- get_caseargs(folder = paste0(f, "case-arguments"), scenario =
-#' "M1-F1-D1-R1-S1-G1-E1-cod") 
+#' om_model_dir <- paste0(d, "/models/cod-om")
+#' em_model_dir <- paste0(d, "/models/cod-em")
+#' a <- get_caseargs(folder = paste0(d, "/cases"), scenario =
+#' "M0-F0-D0-R0-S0-G0-E0-cod")
 #'
-#' ss3sim_base(iterations = 1, scenarios = "M1-F1-D1-R1-S1-G1-E1-cod",
-#'   m_params = a$M, sel_params = a$S, growth_params = a$G, f_params =
-#'   a$F, index_params = a$index, lcomp_params = a$lcomp, agecomp_params
-#'   = a$agecomp, retro_params = a$R, estim_params = a$E, 
-#'   om_model_dir = om_model_dir, em_model_dir = em_model_dir)
+#' ss3sim_base(iterations = 1, scenarios = "M0-F0-D0-R0-S0-G0-E0-cod",
+#' f_params = a$F, index_params = a$index, lcomp_params = a$lcomp,
+#' agecomp_params = a$agecomp, tv_params = a$tv_params, retro_params =
+#' a$R, estim_params = a$E, om_model_dir = om_model_dir, em_model_dir
+#' = em_model_dir)
 #' }
 
-ss3sim_base <- function(iterations, scenarios, m_params, f_params,
+ss3sim_base <- function(iterations, scenarios, f_params,
   index_params, lcomp_params, agecomp_params, estim_params,
-  om_model_dir, em_model_dir, sel_params = NULL, growth_params = NULL,
+  tv_params, om_model_dir, em_model_dir,
   retro_params = NULL, user_recdevs = NULL, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
   print_logfile = TRUE, sleep = 0, seed = NULL, conv_crit = 0.2, ...)
@@ -137,7 +132,7 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
 
       # set the seed for this iteration?
       if(!is.null(seed[this_run_num])) {
-        if(is.na(seed[this_run_num])) 
+        if(is.na(seed[this_run_num]))
           warning("Seed value missing, not setting the seed.")
         else {
           print(paste("Setting seed to", seed[this_run_num]))
@@ -173,47 +168,14 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
       extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
         data_out = pastef(sc, i, "om", "ss3.dat"))
 
-      # Change M
-      wd <- getwd() # change_m() etc. must be in the working directory
+      # Change time-varying parameters; e.g. M, selectivity, growth...
+      wd <- getwd() # change_param() etc. must be in the working directory
       setwd(pastef(sc, i, "om"))
-      with(m_params,
-        change_m(n_blocks            = n_blocks,
-                 block_pattern       = block_pattern,
-                 dev                 = dev,
-                 ctl_file_in         = "om.ctl",
-                 ctl_file_out        = "om.ctl",
-                 dat_file            = "ss3.dat",
-                 dat_file_out        = "ss3.dat",
-                 how_time_varying    = how_time_varying)) 
+      with(tv_params,
+        change_tv(change_tv_list      = tv_params,
+                  ctl_file_in         = "om.ctl",
+                  ctl_file_out        = "om.ctl"))
 
-      # Change selectivity
-      if(!is.null(sel_params)) {
-      with(sel_params,
-        change_sel(use               = use,
-                 n_blocks            = n_blocks,
-                 block_pattern       = block_pattern,
-                 dev                 = dev,
-                 ctl_file_in         = "om.ctl",
-                 ctl_file_out        = "om.ctl",
-                 dat_file            = "ss3.dat",
-                 dat_file_out        = "ss3.dat",
-                 how_time_varying    = how_time_varying)) 
-      }
-
-      # Change growth
-      if(!is.null(sel_params)) {
-      with(growth_params,
-        change_growth(use            = use,
-                 n_blocks            = n_blocks,
-                 block_pattern       = block_pattern,
-                 dev                 = dev,
-                 ctl_file_in         = "om.ctl",
-                 ctl_file_out        = "om.ctl",
-                 dat_file            = "ss3.dat",
-                 dat_file_out        = "ss3.dat",
-                 how_time_varying    = how_time_varying)) 
-
-      }
       setwd(wd)
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
@@ -223,12 +185,12 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
         data_out = pastef(sc, i, "om", "ss3.dat"))
 
       # Copy the new ss3.dat to the em folder
-      file.copy(from = pastef(sc, i, "om", "ss3.dat"), to = 
+      file.copy(from = pastef(sc, i, "om", "ss3.dat"), to =
         pastef(sc, i, "em", "ss3.dat"))
 
       # Survey biomass index
-      with(index_params, 
-        change_index(dat_file_in     = pastef(sc, i, "em", "ss3.dat"), 
+      with(index_params,
+        change_index(dat_file_in     = pastef(sc, i, "em", "ss3.dat"),
                      dat_file_out    = pastef(sc, i, "em", "ss3.dat"),
                      start_surv      = start_surv,
                      end_surv        = end_surv,
@@ -238,10 +200,10 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
                      start_fish      = start_fish,
                      end_fish        = end_fish,
                      freq_fish       = freq_fish,
-                     sd_obs_fish     = sd_obs_fish)) 
- 
+                     sd_obs_fish     = sd_obs_fish))
+
       # Add error in the length comp data
-      SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"))
+      SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"), verbose = FALSE)
       with(lcomp_params,
         change_lcomp(infile          = SS.dat,
                      outfile         = pastef(sc, i, "em", "ss3.dat"),
@@ -262,8 +224,8 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
                      sv_lcomp        = sv_lcomp))
 
       # Add error in the age comp data
-      SS.dat2 = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"))
-      with(agecomp_params, 
+      SS.dat2 = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"), verbose = FALSE)
+      with(agecomp_params,
         change_agecomp(infile        = SS.dat2,
                        outfile       = pastef(sc, i, "em", "ss3.dat"),
                        distribution  = distribution,
@@ -280,15 +242,15 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
 
       # Manipulate EM starter file for a possible retrospective analysis
       if(!is.null(retro_params)) {
-      with(retro_params, 
-        change_retro(startfile_in    = pastef(sc, i, "em", "starter.ss"),  
-                     startfile_out   = pastef(sc, i, "em", "starter.ss"), 
+      with(retro_params,
+        change_retro(startfile_in    = pastef(sc, i, "em", "starter.ss"),
+                     startfile_out   = pastef(sc, i, "em", "starter.ss"),
                      retro_yr        = retro_yr))
       }
 
       # Manipulate EM control file to adjust what gets estimated
       # We'll only a portion of the function, the ctl part if
-      # it's a bias run or if bias adjustment isn't getting run. 
+      # it's a bias run or if bias adjustment isn't getting run.
       # This is because the bias adjustment runs
       # already manipulates the .ctl file appropriately.
       # Must always run the other portion for the forecast
@@ -298,10 +260,10 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
         run_change_e_full <- TRUE
       if(!bias_adjust)      # we aren't running bias adjustment
         run_change_e_full <- TRUE
-        
+
       setwd(pastef(sc, i, "em"))
       with(estim_params,
-       change_e(ctl_file_in          = pastef("em.ctl"),   
+       change_e(ctl_file_in          = pastef("em.ctl"),
                 ctl_file_out         = pastef("em.ctl"),
                 dat_file_in          = pastef("ss3.dat"),
                 for_file_in          = pastef("forecast.ss"),
@@ -321,12 +283,12 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
           hess <- TRUE           # estimate the hessian no matter what
         } else {
           if(grepl("bias", i)) { # it's a bias run so we need the hessian
-            hess <- TRUE      
+            hess <- TRUE
           } else {               # not a bias run, and hessian not specified
-            hess <- FALSE 
+            hess <- FALSE
         }}
 
-      run_ss3model(scenarios = sc, iterations = i, type = "em", 
+      run_ss3model(scenarios = sc, iterations = i, type = "em",
         hess = hess, ...)
 
       # Should we run bias adjustment? We should if bias_adjust is
@@ -339,19 +301,20 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
         bias_already_run <- TRUE
       # Since we've now run the bias adjustment routine, copy the .ctl
       # on subsequent iterations
-      } 
+      }
 
+# TODO pull the log file writing into a separate function and update
+# for current arguments
       if(print_logfile) {
         today <- format(Sys.time(), "%Y-%m-%d")
-        #today <- Sys.time()
         me <- Sys.info()["nodename"]
         sink(pastef(sc, i, "log.txt"))
-        cat("These models were run on ", today, 
-            "\non the computer ", me, 
-            "\nin the folder ", getwd(), 
+        cat("These models were run on ", today,
+            "\non the computer ", me,
+            "\nin the folder ", getwd(),
             "\nwith the following arguments:", sep = "")
-        cat("\n\n# M arguments\n")
-        print(m_params)
+        cat("\n\n# Time-varying arguments\n")
+        print(tv_params)
         cat("\n\n# F arguments\n")
         print(f_params)
         cat("\n\n# index arguments\n")
@@ -381,7 +344,7 @@ ss3sim_base <- function(iterations, scenarios, m_params, f_params,
       }
 
       # Pause to reduce average CPUE use?
-      Sys.sleep(sleep) 
+      Sys.sleep(sleep)
 
     } # end iterations
   } # end scenarios

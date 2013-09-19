@@ -31,15 +31,12 @@ Imports:
     ggplot2 (>= 0.9.3.1),
     reshape2 (>= 1.2.2)
 Collate:
-    'change_SS_dat.r'
     'change_agecomp.r'
     'change_f.r'
     'change_index.r'
     'change_lcomp.r'
-    'change_m.r'
     'change_rec_devs.r'
     'copy_ss3models.r'
-    'create_dirs.r'
     'create_new_rec_devs.r'
     'find_item.r'
     'find_rec_dev_arma.r'
@@ -59,8 +56,6 @@ Collate:
     'extract_expected_data.r'
     'change_retro.r'
     'change_e.r'
-    'change_growth.r'
-    'change_sel.r'
     'get_fish600_casefolder.r'
     'get_fish600_modelfolder.r'
     'expand_scenarios.r'
@@ -69,3 +64,4 @@ Collate:
     'scalars.r'
     'timeseries.r'
     'ss3sim_base.r'
+    'change_tv.r'

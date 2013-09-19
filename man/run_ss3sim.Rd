@@ -16,6 +16,15 @@
   \code{\link{expand_scenarios}} for a shortcut to
   specifying the scenarios.}
 
+  \item{case_folder}{The folder containing the case .txt
+  files.}
+
+  \item{om_model_dir}{The folder containing the SS
+  operating model files.}
+
+  \item{em_model_dir}{The folder containing the SS
+  estimation model files.}
+
   \item{seed}{If set to a numeric vector then
   \code{set.seed} will be set to each successive value of
   the vector \code{seed} on each iteration. This can be

@@ -6,7 +6,7 @@
     distribution = "multinomial", Nsamp = NA, minyear = NA,
     maxyear = NA, years = NA, svyears = NA,
     fish_agecomp = TRUE, sv_agecomp = TRUE, N_agebins = NA,
-    agebin_vector = NA, agecomp = NA, cpar = 2, ...)
+    agebin_vector = NA, agecomp = NA, cpar = 2)
 }
 \arguments{
   \item{infile}{SS data object from SS_readdat() in the
