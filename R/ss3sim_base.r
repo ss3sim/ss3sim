@@ -204,7 +204,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       # Add error in the length comp data
       SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
-        verbose = FALSE, section = 2)
+        verbose = FALSE)
       with(lcomp_params,
         change_lcomp(infile          = SS.dat,
                      outfile         = pastef(sc, i, "em", "ss3.dat"),
@@ -226,7 +226,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       # Add error in the age comp data
       SS.dat2 = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
-        verbose = FALSE, section = 2)
+        verbose = FALSE)
       with(agecomp_params,
         change_agecomp(infile        = SS.dat2,
                        outfile       = pastef(sc, i, "em", "ss3.dat"),
