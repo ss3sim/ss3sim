@@ -42,7 +42,7 @@
 #' estimation model folder should contain all the same files listed
 #' above except the \code{ss3.par} and \code{yourmodel.dat} files,
 #' which are unnecessary but can be included if desired.
-#' 
+#'
 #' @return
 #' The output will appear in whatever your current R working directory
 #' is. There will be folders named after your scenarios. They will
@@ -68,23 +68,23 @@
 #' case_folder <- paste0(d, "/eg-cases")
 #' om <- paste0(d, "/models/cod-om")
 #' em <- paste0(d, "/models/cod-em")
-#' 
+#'
 #' run_ss3sim(iterations = 1:1, scenarios = "D0-E0-F0-G0-R0-S0-M0-cod",
 #'   case_folder = case_folder, om_model_dir = om, em_model_dir = em)
-#' 
+#'
 #' # With bias adjustment:
 #' # (Note that bias_nsim should be bigger, say 10, but it is set to 2
 #' # here so the example runs faster.)
 #' run_ss3sim(iterations = 1:1, scenarios = "D1-E0-F0-G0-R0-S0-M0-cod",
 #'   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
 #'   bias_adjust = TRUE, bias_nsim = 2)
-#' 
+#'
 #' # Restarting the previous run using the existing bias-adjustment
 #' # output
 #' run_ss3sim(iterations = 2:3, scenarios = "D1-E0-F0-G0-R0-S0-M0-cod",
 #'   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
 #'   bias_adjust = FALSE, bias_already_run = TRUE)
-#' 
+#'
 #' # A deterministic run for model checking:
 #' recdevs_det <- matrix(0, nrow = 100, ncol = 20)
 #' run_ss3sim(iterations = 1:20, scenarios = "D0-E100-F0-G0-R0-S0-M0-cod",
@@ -96,17 +96,17 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
   om_model_dir, em_model_dir, seed = NULL, ...) {
 
   output <- lapply(scenarios, function(x) {
-    a <- get_caseargs(folder = case_folder, scenario = x) 
+    a <- get_caseargs(folder = case_folder, scenario = x)
     sp <- substr_r(x, 3)
     ss3sim_base(iterations, scenarios = x,
       tv_params = a$tv_params,
       f_params = a$F, index_params =
-      a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp, 
-      retro_params = a$R, estim_params = a$E, om_model_dir = om_model_dir, 
-      em_model_dir = em_model_dir, seed = seed, ...) 
+      a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp,
+      retro_params = a$R, estim_params = a$E, om_model_dir = om_model_dir,
+      em_model_dir = em_model_dir, seed = seed, ...)
   })
 
-  print(paste("Completed iterations:", paste(iterations, collapse = ", "), 
+  print(paste("Completed iterations:", paste(iterations, collapse = ", "),
       "for scenarios:", paste(scenarios, collapse = ", ")))
 
 }
