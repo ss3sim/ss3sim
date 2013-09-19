@@ -257,10 +257,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       setwd(pastef(sc, i, "em"))
       with(estim_params,
-       change_e(ctl_file_in          = pastef("em.ctl"),
-                ctl_file_out         = pastef("em.ctl"),
-                dat_file_in          = pastef("ss3.dat"),
-                for_file_in          = pastef("forecast.ss"),
+       change_e(ctl_file_in          = "em.ctl",
+                ctl_file_out         = "em.ctl",
+                dat_file_in          = "ss3.dat",
+                for_file_in          = "forecast.ss",
                 natM_type            = natM_type,
                 natM_n_breakpoints   = natM_n_breakpoints,
                 natM_lorenzen        = natM_lorenzen,
@@ -269,7 +269,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                 par_int              = par_int,
                 par_phase            = par_phase,
                 forecast_num         = forecast_num,
-                run_change_e_full    = run_change_e_full ))
+                run_change_e_full    = run_change_e_full))
       setwd(wd)
 
       # Should we calculate the hessian?
