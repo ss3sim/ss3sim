@@ -36,16 +36,14 @@ them run since they make an excellent form of automated error checking.
 Function                | Code cleaned  | Documented    | Exampled
 ----------------------- | ------------- | ------------  | -----------
 bias_ss3                |  [   ]          |  [   ]          |  [   ]
-change_agecomp          |  [SCA]          |  [SCA]          |  [SCA] someone else could look at this too 
+change_agecomp          |  [SCA]          |  [SCA]          |  [partial] 
 change_e                |  [   ]          |  [   ]          |  [   ]
 change_f                |  [SCA]          |  [SCA]          |  [SCA]
-change_growth           |  [   ]          |  [   ]          |  [   ]
 change_index            |  [   ]          |  [   ]          |  [   ]
 change_lcomp            |  [   ]          |  [   ]          |  [   ]
 change_tv               |  [KFJ]          |  [KFJ]          |  [KFJ]
 change_rec_devs         |  [   ]          |  [   ]          |  [   ]
 change_retro            |  [SCA]          |  [SCA]          |  [   ]
-change_sel              |  [   ]          |  [   ]          |  [   ]
 copy_ss3models          |  [   ]          |  [   ]          |  [   ]
 create_argfiles         |  [   ]          |  [   ]          |  [   ]
 create_new_rec_devs     |  [   ]          |  [   ]          |  [   ]
