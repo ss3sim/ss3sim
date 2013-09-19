@@ -13,3 +13,4 @@ lbin_vector; NA
 lencomp; NA
 fish_lcomp; FALSE
 sv_lcomp; FALSE
+cpar; 2

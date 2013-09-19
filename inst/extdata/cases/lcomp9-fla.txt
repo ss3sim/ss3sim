@@ -13,3 +13,4 @@ maximum_size; NA
 N_lbins; NA
 lbin_vector; NA
 lencomp; NA
+cpar; 2

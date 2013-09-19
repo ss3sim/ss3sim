@@ -9,3 +9,4 @@ agebin_vector; NA
 agecomp; NA
 fish_agecomp; FALSE
 sv_agecomp; TRUE
+cpar; 2

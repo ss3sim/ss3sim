@@ -215,7 +215,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                      lbin_vector     = lbin_vector,
                      lencomp         = lencomp,
                      fish_lcomp      = fish_lcomp,
-                     sv_lcomp        = sv_lcomp))
+                     sv_lcomp        = sv_lcomp,
+                     cpar            = cpar))
 
       # Add error in the age comp data
       SS.dat2 = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
@@ -230,7 +231,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                        N_agebins     = N_agebins,
                        agecomp       = agecomp,
                        fish_agecomp  = fish_agecomp,
-                       sv_agecomp    = sv_agecomp))
+                       sv_agecomp    = sv_agecomp,
+                       cpar          = cpar))
 
       # Manipulate EM starter file for a possible retrospective analysis
       if(!is.null(retro_params)) {
