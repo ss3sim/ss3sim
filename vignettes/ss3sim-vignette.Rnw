@@ -11,7 +11,8 @@
 \usepackage{graphicx}
 \usepackage[round]{natbib}
 \bibpunct{(}{)}{;}{a}{}{;}
-
+\newcommand{\Vof}[1]{\mathrm{Var}\left[#1 \right]}
+\newcommand{\Eof}[1]{\mathrm{E}\left[ #1 \right]}
 \begin{document}
 
 <<set-knitr-options, echo=FALSE>>=
