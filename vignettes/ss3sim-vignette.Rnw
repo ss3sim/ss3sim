@@ -1015,11 +1015,13 @@ then the package will use these built-in recruitment deviations.
 See \texttt{?recdevs} for documentation on how they were generated.
 
 Note that these built-in recruitment deviations are standard normal
-and are multiplied by sigma R and bias adjusted within the package.
+and are multiplied by $\sigma_r$ (recruitment standard deviation)
+as specified in the SS model, and bias adjusted within the package.
 If you specify your own recruitment deviations,
-the deviations are used exactly as specified,
+the deviations are used exactly as specified (not multiplied by $\sigma_r$ as
+specified in the SS model),
 and it is up to you to bias correct them
-by subtracting half the recruitment variance.
+by subtracting $\sigma_r^2 / 2$.
 
 \bibliographystyle{apalike}
 \bibliography{refs}
