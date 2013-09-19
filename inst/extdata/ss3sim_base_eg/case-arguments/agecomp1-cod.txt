@@ -1,9 +1,9 @@
 distribution; multinomial
-Nsamp; NA
+Nsamp; 100
 minyear; NA
 maxyear; NA
-years; NA
-svyears; NA
+years; 1938:2012
+svyears; seq(1974,2012,by=2)
 N_agebins; NA
 agebin_vector; NA
 agecomp; NA
