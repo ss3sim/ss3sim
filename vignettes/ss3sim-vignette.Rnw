@@ -904,7 +904,7 @@ large sample size this set approximates the real interval $[0,1]$,
 but the point being that only some values of $m_a/n$ are possible.
 
 The Dirichlet distribution $\mathbf{d} \sim
-\text{Dirichlet}\left (\boldsymbol{\alpha}, A\right )}$ is
+\text{Dirichlet}\left (\boldsymbol{\alpha}, A\right )$ is
 \begin{align*}
   \mathbf{d} &= d_1, \ldots, d_A\\
   &=\text{the proportion of fish observed in bin $a$}\\
@@ -957,7 +957,7 @@ In many cases the user may want to control the amount of reproducibility of both
 observation and process errors. For instance the user may want to
 reuse process errors so that differences between scenarios are not
 confounded with process error. More broadly the user may want to
-make their work reproducbile on another machine.
+make their work reproducible on another machine.
 
 The observation error can be made reproducible by setting the random
 number generator seed [where???].
