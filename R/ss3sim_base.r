@@ -228,7 +228,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                        years         = years,
                        svyears       = svyears,
                        N_agebins     = N_agebins,
-                       agebin_vector = agebin_vector,
                        agecomp       = agecomp,
                        fish_agecomp  = fish_agecomp,
                        sv_agecomp    = sv_agecomp))
