@@ -501,9 +501,9 @@ Larger values (greater than 1) indicate that convergence is unlikely.
 
 <<plot-sto-ts, fig.height=5, fig.width=7, fig.cap="Time series of relative error in spawning stock biomass.">>=
 library(ggplot2)
-p <- ggplot(ts_dat_sto, aes(x = year)) + xlab("Year") + 
+p <- ggplot(ts_dat_sto, aes(x = year)) + xlab("Year") +
     theme_bw() + geom_line(aes(y = SpawnBio, group = replicate,
-    colour = max_grad), alpha = 0.3, width = 0.15) + facet_grid(D~E) + 
+    colour = max_grad), alpha = 0.3, width = 0.15) + facet_grid(D~E) +
     scale_color_gradient(low = "gray", high = "red")
 print(p)
 #plot_ts_points(ts_dat_sto, y = "SpawnBio", vert = "D", vert2 = "E",
@@ -547,12 +547,12 @@ print(p)
   Verify that the SS model contains at least the following file types:
   \texttt{name.ctl}, \texttt{name.dat}, \texttt{starter.ss}, \texttt{forecast.ss}
 \item
-  If the model already contains the \texttt{ss3.par} file, 
+  If the model already contains the \texttt{ss3.par} file,
   skip this step and move to the next step.
-  If the model doesn't contain the \texttt{ss3.par} file, 
+  If the model doesn't contain the \texttt{ss3.par} file,
   run the assessment model from a command window
-  using the command \texttt{ss3} 
-  to generate the \texttt{ss3.par} file 
+  using the command \texttt{ss3}
+  to generate the \texttt{ss3.par} file
   with the maximum likelihood estimates.
 \item
   Modify the \texttt{.ctl} file so catches
@@ -560,12 +560,12 @@ print(p)
 \item
   Modify the start and end years of the model in the \texttt{.dat} file to obtain the desired length.
 \item
-  Specify/add the time series of fishing mortality levels in the \texttt{.par} file 
+  Specify/add the time series of fishing mortality levels in the \texttt{.par} file
 \item
   Run the model again with no estimation using the \texttt{ss3 - noest} command
 \item
-  Specify/change the specification of the model using the functions 
-  available in the \texttt{ss3sim} package 
+  Specify/change the specification of the model using the functions
+  available in the \texttt{ss3sim} package
   e.g \texttt{change\_e()}, \texttt{change\_sel()}
 \item
   Run the model again with no estimation using the \texttt{ss3 - noest} command
@@ -586,7 +586,7 @@ print(p)
   \texttt{\# Number of datafiles to produce} to \texttt{3}. \\
   If \texttt{X=1} it only generates the original data
   If \texttt{X=2} it generates the original data and the expected value data (based on model specification)
-  If \texttt{X>=3} it generates all the above and \texttt{X-2} bootstrapped data 
+  If \texttt{X>=3} it generates all the above and \texttt{X-2} bootstrapped data
 \item
   Turn off parameter estimation by changing\\
   \texttt{\# Turn off estimation for parameters entering after this phase}\\
@@ -635,10 +635,10 @@ print(p)
    to \texttt{1}. This lambda is for the log likelihood of the the
    forecast recruitment devs that occur before the first year of forecasting.
    Values larger than one accommodate noisy data at the end of the time series.
-\item Recruitment is lognormally distributed in SS. 
+\item Recruitment is lognormally distributed in SS.
    If inputting a normally distributed recruitment deviations specify\\
-   \texttt{\#\_max\_bias\_adj\_in\_MPD} to \texttt{-1} 
-   so that SS performs the bias correction for you. 
+   \texttt{\#\_max\_bias\_adj\_in\_MPD} to \texttt{-1}
+   so that SS performs the bias correction for you.
    If inputting bias corrected normal recruitment deviation, specify it at \texttt{0}.
    Either method will lead to the same end result.
 \item Use any negative value in line \texttt{\# F ballpark year},
@@ -657,7 +657,7 @@ print(p)
    mortality level, the standard error of the fishing mortality level, and a negative
    phase value. E.g \texttt{1 2000 1 0 0.01 -1}
 \item
-  If needed, change the specification of the \texttt{.ctl} 
+  If needed, change the specification of the \texttt{.ctl}
   using the functions available in the \texttt{ss3sim} package.
   E.g \texttt{change\_growth()}, \texttt{change\_sel()}.
 \end{enumerate}
@@ -684,10 +684,10 @@ print(p)
    in the following line. The degrees of freedom must be specified
    even if there are zero mean body weight observations.
 \item Set the length bin method to 1 or 2 in the line labeled
-   \texttt{\# length bin method}. 
-   Using a value of \texttt{1}, the bins refer to the population bins (=1cm). 
-   Using a value of \texttt{2} instructs SS to generate the binwidths from a user specified 
-   minimum and maximum value. 
+   \texttt{\# length bin method}.
+   Using a value of \texttt{1}, the bins refer to the population bins (=1cm).
+   Using a value of \texttt{2} instructs SS to generate the binwidths from a user specified
+   minimum and maximum value.
    In the following three lines, specify the binwidth for population size composition data;
    the minimum size, or the lower edge of the first bin and size at age zero;
    and the maximum size, or lower edge of the last bin.
@@ -695,11 +695,11 @@ print(p)
    but the boundaries do not have to align.
 \item Specify \texttt{\#\_comp\_tail\_compression} to any negative value
    to turn off tail compression.
-\item Specify \texttt{\#\_add\_to\_comp} to a very small number E.g \texttt{1e-005}. 
-   This specifies the value that will be added to each composition (age and length) data bins 
-\item Set the length bin range method for the age composition data 
-  (used when the conditional age at length data exists) 
-   to 1, 2 or 3 in the line \texttt{\#\_Lbin\_method} 
+\item Specify \texttt{\#\_add\_to\_comp} to a very small number E.g \texttt{1e-005}.
+   This specifies the value that will be added to each composition (age and length) data bins
+\item Set the length bin range method for the age composition data
+  (used when the conditional age at length data exists)
+   to 1, 2 or 3 in the line \texttt{\#\_Lbin\_method}
    depending on the data you have or the purpose of the study
 \end{enumerate}
 
@@ -712,15 +712,15 @@ print(p)
 \item
   Copy working OM files
 \item
-  Modify the \texttt{.ctl} file to specify the parameters phase, 
-  to include time-varying process (if wanted), 
-  and so that catches are driven by observed catch. 
+  Modify the \texttt{.ctl} file to specify the parameters phase,
+  to include time-varying process (if wanted),
+  and so that catches are driven by observed catch.
 \item
   Specify the forecast file if forecasts are desired.
   Use the \texttt{change\_e} function to perform forecasts.
-\item 
-  Modify the \texttt{.dat} file 
-  so that it includes the user specified process and observation errors. 
+\item
+  Modify the \texttt{.dat} file
+  so that it includes the user specified process and observation errors.
   This can be done by using the functions in the \texttt{ss3sim} package.
   E.g \texttt{change\_index()}, \texttt{change\_lcomp()}
 \end{enumerate}
@@ -739,7 +739,7 @@ print(p)
 
 \subsection{Control file modifications}
 \begin{enumerate}
-\item Set the phases of the parameters to positive or negative value to 
+\item Set the phases of the parameters to positive or negative value to
    inform SS to estimate or fix the parameters, respectively.
 \item Set the \texttt{\#\_recdev phase}
    to a positive value to estimate yearly recruitment deviations.
@@ -760,14 +760,14 @@ print(p)
    Specify the line as follows
    \texttt{3 \# F\_Method:  1=Pope; 2=instan. F; 3=hybrid (hybrid is recommended)},
    where the number can range from \texttt{3} to \texttt{7}.
- \item Use the functions in the \texttt{ss3sim} package 
-   to change the estimation specification in the EM. 
+ \item Use the functions in the \texttt{ss3sim} package
+   to change the estimation specification in the EM.
    E.g \texttt{change\_e()}
 \end{enumerate}
 
 \subsection{Data file modifcations}
 \begin{enumerate}
-  \item Use the functions in the \texttt{ss3sim} package 
+  \item Use the functions in the \texttt{ss3sim} package
     to include observation error in the EM \texttt{.dat} file.
     E.g \texttt{change\_index()}, \texttt{change\_lcomp()}
 \end{enumerate}
@@ -858,6 +858,111 @@ To add it to your path:
   Go back to the DOS prompt
   and try typing \texttt{ss3 -?} and hitting return again.
 \end{enumerate}
+
+\section{Sampling age and length compositions}
+When simulating assessment models we need a way to mimic the way
+that the age/length compositions (comps) are sampled in
+reality. Under perfect mixing of fish and truly random sampling the
+distribution of samples would be multinomial. However, in practice
+neither of these are true because the fish tend to aggregate by size
+and age, and it is difficult to take random samples. This causes the
+data to have more variance than expected, i.e. be over-dispersed. If
+a multinomial likelihood is assumed and the true sample size is used
+then in effect the model puts too much weight on the composition
+data, at the cost of fitting other sources of data less
+well. Analysts thus need to ``tune'' their model to find a more
+appropriate sample size that more accurately reflect the information
+in the comp data.
+
+In simulation work, the true underlying proportions in the
+population are known and true multinomial sampling is
+possible. There is some question about the realism behind providing
+the model with this kind of data, since it never happens in
+practice. Thus there is a need to generate more realistic data that
+has over-dispersion. In this package we use the Dirichlet
+distribution to generate such data for a specified level of
+over-dispersion.
+
+\subsection{Multinomial vs.\ Dirichlet Distributions} The following
+calculations are shown for age compositions but apply equally to
+length compositions. The multinomial distribution $\mathbf{m} \sim
+\text{MN}\LR{\mathbf{p}, n, A}$ is defined as
+\begin{align*} \mathbf{m} &= m_1, \ldots, m_A\\
+  &=\text{the number of fish observed in bin $a$}\\
+  \mathbf{p}&= p_1, \ldots, p_A\\
+  &=\text{the true proportion of fish in bin $a$}\\
+  n&=\text{sample size} \\
+  A&=\text{number of age bins}
+\end{align*}
+In the case of Stock Synthesis, actual proportions are inputted as
+data so $\mathbf{m}/n$ is the distribution used instead of
+$\mathbf{m}$. Thus the variance of the estimated proportion for age
+bin $a$ is $\Vof{M_a/n}=p_aq_a/n$. Note that $m_a/n$ can only take
+on values in the set $\{0, 1/n, 2/n, \ldots, 1\}$. With sufficiently
+large sample size this set approximates the real interval $[0,1]$,
+but the point being that only some values of $m_a/n$ are possible.
+
+The Dirichlet distribution $\mathbf{d} \sim
+\text{Dirichlet}\LR{\boldsymbol{\alpha}, A}$ is
+\begin{align*}
+  \mathbf{d} &= d_1, \ldots, d_A\\
+  &=\text{the proportion of fish observed in bin $a$}\\
+  \boldsymbol{\alpha}&= \alpha_1, \ldots, \alpha_A\\
+  &=\text{concentration parameters for the proportion of fish in bin $a$}\\
+  A&=\text{number of age bins}
+\end{align*}
+
+Since we are using the Dirichlet distribution to generate random
+samples, it is convenient to parameterize the vector of
+concentration parameters $\boldsymbol{\alpha}$ as $\lambda
+\mathbf{p}$ so that $\alpha_a=\lambda p_a$. The mean of $d_a$ is
+then $\Eof{d_a}=p_a$ and the variance is
+$\Vof{d_a}=\frac{p_aq_a}{\lambda+1}$. The marginal distributions for
+the Dirichlet are beta distributed. In contrast to the multinomial
+above, the Dirichlet generates points on the real interval $[0,1]$.
+
+\subsection{Sampling with Overdispersion} It is clear that $\lambda$
+controls the amount of overdispersion in the generated samples: as
+it increases the variance decreases. Thus, it is simple to calculate
+what $\lambda$ should be in order to have a specific level of
+variance in the samples. We know that the variance of the Dirichlet
+samples should never be smaller than that of a multinomial
+(i.e. under-dispersed) so it makes sense to use the multinomial
+variance (with a particular sample size $n$) as a baseline. The
+following steps are used to generate overdispersed samples:
+\begin{enumerate}
+\item Get the true proportions at age (from the operating model
+  ``truth'') for the number of age bins $A$.
+\item Determine a realistic sample size, say $n=100$. Calculate the
+  variance of the samples from a multinomial distribution, call it
+  $V_{m_a}$.
+\item Specify a level, $c$, that scales the standard deviation of
+  the multinomial.  Then $\sqrt{V_{d_{a}}}=c\sqrt{V_{m_{a}}}$ from
+  which $\lambda=n/c^2-1$ can be solved. Samples from the Dirichlet
+  with this value of $\lambda$ will then give the appropriate level
+  of variance. For instance, we can generate samples with twice the
+  standard deviation of the multinomial by setting $c=2$.
+\end{enumerate}
+
+The sampling functions provided in the package allow the user to
+specify either a multinomial or Dirichlet distribution, as well as
+the level of over-dispersion. Note that the package does not allow
+for tuning of the effective sample size and the argument
+\texttt{cpar} controls the level of over-dispersion in the sampling
+functions. See function documentation for more detail.
+
+\section{Stochastic Reproducibility}
+In many cases the user may want to control the amount of reproducibility of both the
+observation and process errors. For instance the user may want to
+reuse process errors so that differences between scenarios are not
+confounded with process error. More broadly the user may want to
+make their work reproducbile on another machine.
+
+The observation error can be made reproducible by setting the random
+number generator seed [where???].
+
+The process error (recruitment deviations) can be set manually by
+the user, or controlled with a seed.
 
 \bibliographystyle{apalike}
 \bibliography{refs}
