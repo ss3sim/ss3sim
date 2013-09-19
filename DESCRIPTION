@@ -31,7 +31,6 @@ Imports:
     ggplot2 (>= 0.9.3.1),
     reshape2 (>= 1.2.2)
 Collate:
-    'change_SS_dat.r'
     'change_agecomp.r'
     'change_f.r'
     'change_index.r'
