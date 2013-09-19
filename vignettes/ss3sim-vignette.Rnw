@@ -904,7 +904,7 @@ Thus, there is a need to generate more realistic data that has overdispersion.
 In this package we use the Dirichlet distribution
 to generate such data for a specified level of overdispersion.
 
-\subsection{Multinomial vs.\ Dirichlet Distributions}
+\subsection{Multinomial vs.\ Dirichlet distributions}
 The following calculations are shown for age compositions
 but apply equally to length compositions.
 The multinomial distribution $\mathbf{m} \sim
@@ -945,7 +945,7 @@ The marginal distributions for the Dirichlet are beta distributed.
 In contrast to the multinomial above,
 the Dirichlet generates points on the real interval $[0,1]$.
 
-\subsection{Sampling with Overdispersion}
+\subsection{Sampling with overdispersion}
 It is clear that $\lambda$ controls the amount of overdispersion
 in the generated samples: as it increases the variance decreases.
 Thus, it is simple to calculate what $\lambda$ should be
