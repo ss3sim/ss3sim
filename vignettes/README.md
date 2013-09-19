@@ -7,6 +7,6 @@ You can download a PDF version of the vignette [here](https://dl.dropboxusercont
 
 You can build the PDF vignette yourself by running the following command in R:
 ```{r}
-# install.package("knitr") # if needed
+# install.packages("knitr") # if needed
 knitr::knit2pdf("ss3sim-vignette.Rnw")
 ```
