@@ -3,16 +3,8 @@
 #' These data are randomly generated recruitment deviations with mean
 #' 0 and standard deviation 1. For legacy reasons (i.e. the matrix
 #' size was enlarged in the middle of a study) they were generated
-#' with this code:
-#' \code{
-#' recdevs <- matrix(nrow = 150, ncol = 1000)
-#' set.seed(999)
-#' recdevs[1:100,   1:100] <- matrix(nrow = 100, ncol = 100, data = rnorm(100*100))
-#' recdevs[1:100, 101:500] <- matrix(nrow = 100, ncol = 400, data = rnorm(100*400))
-#' recdevs[101:150, 1:500] <- matrix(nrow = 50,  ncol = 500, data = rnorm(50*500))
-#' recdevs[1:150, 501:1000] <- matrix(nrow = 150, ncol = 500, data = rnorm(150*500))
-#' save(recdevs, file = "../data/recdevs.rda")
-#' }
+#' with the code listed in the example below.
+#'
 #' The columns are intended to be for iterations and the rows for
 #' years. The matrix has intentionally constructed at a large size to
 #' accommodate studies that work with simulations up to 150 years
@@ -22,6 +14,16 @@
 #' \code{\link{ss3sim_base}}. The function
 #' \code{\link{change_rec_devs}} will throw out extra years of
 #' recruitment deviations.
+#' @examples
+#' \dontrun{
+#' recdevs <- matrix(nrow = 150, ncol = 1000)
+#' set.seed(999)
+#' recdevs[1:100,   1:100] <- matrix(nrow = 100, ncol = 100, data = rnorm(100*100))
+#' recdevs[1:100, 101:500] <- matrix(nrow = 100, ncol = 400, data = rnorm(100*400))
+#' recdevs[101:150, 1:500] <- matrix(nrow = 50,  ncol = 500, data = rnorm(50*500))
+#' recdevs[1:150, 501:1000] <- matrix(nrow = 150, ncol = 500, data = rnorm(150*500))
+#' save(recdevs, file = "../data/recdevs.rda")
+#' }
 #'
 #' @name recdevs
 #' @docType data
