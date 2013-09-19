@@ -4,9 +4,8 @@
 \usage{
   change_lcomp(infile, outfile,
     distribution = "multinomial", Nsamp = 100, years = NA,
-    svyears = NA, fish_lcomp = TRUE, sv_lcomp = TRUE,
-    cpar = 2, binwidth = NA, minimum_size = NA,
-    maximum_size = NA, N_lbins = NA, lencomp = NA)
+    svyears = NA, lbin_vector = NA, fish_lcomp = TRUE,
+    sv_lcomp = TRUE, cpar = 2, lencomp = NA)
 }
 \arguments{
   \item{infile}{SS data object from SS_readdat() in the
@@ -38,15 +37,8 @@
   \item{svyears}{vector of years for the survey length
   comps.}
 
-  \item{binwidth}{Bin width}
-
-  \item{minimum_size,}{Minimum size}
-
-  \item{maximum_size}{Maximum size}
-
-  \item{N_lbins}{Number of length bins.}
-
-  \item{lencomp}{Matrix of length comps}
+  \item{lbin_vector}{Vector of length bins for the
+  observations.}
 
   \item{fish_lcomp,}{\code{TRUE} or \code{FALSE}. This
   indicates whether you want to keep the fishery length
