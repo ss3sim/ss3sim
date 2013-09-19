@@ -1,6 +1,6 @@
 \name{change_tv}
 \alias{change_tv}
-\title{Methods to include time varying parmaeters in the OM}
+\title{Methods to include time-varying parameters in the OM}
 \usage{
   change_tv(change_tv_list, ctl_file_in = "control.ss_new",
     ctl_file_out = "om.ctl", dat_file_in = "ss3.dat",
@@ -47,7 +47,7 @@
   \item{report_file}{Input SS3 report file}
 }
 \description{
-  Methods to include time varying parmaeters in the OM
+  Methods to include time-varying parameters in the OM
 }
 \details{
   Although there are three ways to implement time-varying

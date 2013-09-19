@@ -1,30 +1,30 @@
-#' Methods to include time varying parmaeters in the OM
+#' Methods to include time-varying parameters in the OM
 #'
-#' @param change_tv_list A list of named vectors. Names correspond to 
-#' parameters in the operating model that are currently constant 
+#' @param change_tv_list A list of named vectors. Names correspond to
+#' parameters in the operating model that are currently constant
 #' across time and will be changed to vary across time according to
-#' the vector of deviations. The vector of deviations will function 
+#' the vector of deviations. The vector of deviations will function
 #' as additive deviations from the value specified in the \code{.par}
 #' file for the given parameter. Vectors of deviations, also referred
 #' to as environmental data, must be of \code{length = length of *.dat
-#' endyr-startyr+1}. Specify years without deviations as zero in the 
-#' vector. Parameter names must be unique and be specified 
-#' as the full parameter name in the \code{.ctl} file. 
+#' endyr-startyr+1}. Specify years without deviations as zero in the
+#' vector. Parameter names must be unique and be specified
+#' as the full parameter name in the \code{.ctl} file.
 #' The feature will include an *additive* functional linkage
-#' between environmental data and the parameter where the 
+#' between environmental data and the parameter where the
 #' link parameter is fixed at a value of one:
 #' \code{par\' (y) = par + link * env(y)}
 #' @param ctl_file_in Input SS3 control file
 #' @param ctl_file_out Output SS3 control file
-#' @param dat_file_in Input SS3 data file 
-#' @param dat_file_out Output SS3 data file 
-#' @param par_file_in Input SS3 paramater file  
-#' @param par_file_out Output SS3 parameter file  
-#' @param starter_file_in Input SS3 starter file 
-#' @param starter_file_out Output SS3 starter file 
+#' @param dat_file_in Input SS3 data file
+#' @param dat_file_out Output SS3 data file
+#' @param par_file_in Input SS3 paramater file
+#' @param par_file_out Output SS3 parameter file
+#' @param starter_file_in Input SS3 starter file
+#' @param starter_file_out Output SS3 starter file
 #' @param report_file Input SS3 report file
 #' @author Kotaro Ono, Carey McGilliard, and Kelli Faye Johnson
-#' @export 
+#' @export
 #'
 #' @details Although there are three ways to implement time-varying
 #' parameters within SS3, \code{ss3sim} only uses the environmental
@@ -32,14 +32,14 @@
 #' \code{.ss_new} file because the documentation in \code{.ss_new}
 #' files are automated and standardized. This function takes advantage
 #' of the standard documentation the SS3 control file to determine
-#' which lines to manipulate and where to add code in the 
+#' which lines to manipulate and where to add code in the
 #' \code{.ctl}, \code{.par}, and \code{.dat} files, code that is necessary
-#' to implement time-varying parameters. 
+#' to implement time-varying parameters.
 #' Within SS time-varying parameters work on an annual time-step,
 #' thus for models with multiple seasons the time-varying parameters
 #' will remain constant for the entire year.
 #'
-#' @examples 
+#' @examples
 #' \dontrun{
 #' d <- system.file("extdata", package = "ss3sim")
 #' ctl_file_in <- paste0(d, "/Simple/control.ss_new")
@@ -61,11 +61,11 @@
 # file.remove("example.dat")
 #' setwd(wd)}
 
-change_tv <- function(change_tv_list, 
-  ctl_file_in = "control.ss_new", ctl_file_out = "om.ctl", 
-  dat_file_in = "ss3.dat", dat_file_out = "ss3.dat", 
-  par_file_in = "ss3.par", par_file_out="ss3.par", 
-  starter_file_in = "starter.ss", starter_file_out = "starter.ss", 
+change_tv <- function(change_tv_list,
+  ctl_file_in = "control.ss_new", ctl_file_out = "om.ctl",
+  dat_file_in = "ss3.dat", dat_file_out = "ss3.dat",
+  par_file_in = "ss3.par", par_file_out="ss3.par",
+  starter_file_in = "starter.ss", starter_file_out = "starter.ss",
   report_file = "Report.sso") {
 
   ss3.ctl    <- readLines(con = ctl_file_in)
@@ -94,8 +94,8 @@ change_tv <- function(change_tv_list,
           in the base operating model. ss3sim cannot change time-varying properties
           of parameters that are already specified as time-varying.")
   }
-  
-  dat.varnum.text <- grep("#_N_environ_variables", ss3.dat, 
+
+  dat.varnum.text <- grep("#_N_environ_variables", ss3.dat,
                           fixed = TRUE, value = TRUE)
   dat.varnum <- as.numeric(gsub('([0-9]*).*','\\1', dat.varnum.text))
   dat.varnum.counter <- dat.varnum
@@ -103,22 +103,22 @@ change_tv <- function(change_tv_list,
                   grep("# N sizefreq methods to read", ss3.dat, fixed = TRUE))
   ss3.dat.top <- ss3.dat[1:dat.tbl.ch[1]]
   if(dat.tbl.ch[2] - dat.tbl.ch[1] == 1) {
-    ss3.dat.tbl <- data.frame(array(dim=c(0,3), 
-                                    dimnames = list(NULL, 
+    ss3.dat.tbl <- data.frame(array(dim=c(0,3),
+                                    dimnames = list(NULL,
                                                     c("year", "variable", "value"))))
   } else {
-      ss3.dat.tbl <- as.data.frame(ss3.dat[(dat.tbl.ch[1] + 1) : 
+      ss3.dat.tbl <- as.data.frame(ss3.dat[(dat.tbl.ch[1] + 1) :
                                            (dat.tbl.ch[2] - 1)],
                                    stringsAsFactors = FALSE)
     }
-  ss3.dat.bottom <- ss3.dat[dat.tbl.ch[2]:length(ss3.dat)]             
-  
+  ss3.dat.bottom <- ss3.dat[dat.tbl.ch[2]:length(ss3.dat)]
+
   mg.ch <- grep("#custom_MG-env_setup (0/1)",   ss3.ctl, fixed = TRUE)
   sx.ch <- grep("#_custom_sel-env_setup (0/1)", ss3.ctl, fixed = TRUE)
- 
+
   fleet.names <- ss3.dat[grep("#_N_areas", ss3.dat)[1] + 1]
   fleet.names <- strsplit(fleet.names, "%")[[1]]
- 
+
   divider.a <- grep("#_Spawner-Recruitment", ss3.ctl, fixed = TRUE)[1]
   divider.b <- grep("#_Q_setup", ss3.ctl, fixed = TRUE)[1]
   divider.c <- grep("selex_types", ss3.ctl, fixed = TRUE)[1]
@@ -133,7 +133,7 @@ change_tv <- function(change_tv_list,
                                if(x %in% fleet.names) temp <- "qs"
                                temp
                              })
-  tab <- as.data.frame.table(table(lab))                           
+  tab <- as.data.frame.table(table(lab))
   if(subset(tab, lab == "mg", select = "Freq") > 0 ) {
     ss3.ctl[mg.ch] <- paste(0, "#custom_MG-env_setup (0/1)")
     ss3.ctl[(mg.ch + 1)] <- "-1 2 1 0 -1 99 -2  # env link specification i.e fixed to 1"
@@ -149,10 +149,10 @@ change_tv <- function(change_tv_list,
 for(i in seq_along(temp.data)) {
   dat.varnum.counter <- dat.varnum.counter + 1
   par.ch <- grep(names(temp.data)[i], ss3.ctl, fixed = TRUE)[1]
-  par.ex <- regexpr(names(temp.data)[i], ss3.ctl[par.ch])[1] 
+  par.ex <- regexpr(names(temp.data)[i], ss3.ctl[par.ch])[1]
   val <- strsplit(substr(ss3.ctl[par.ch], start=1, stop=par.ex-1), " ")[[1]]
-    # values might include spaces, make them NA and remove 
-    # should result in a vector with length == 14    
+    # values might include spaces, make them NA and remove
+    # should result in a vector with length == 14
     val <- suppressWarnings(as.numeric(val))
     check <- is.na(val)
     if (sum(check) > 0) {
@@ -169,8 +169,8 @@ for(i in seq_along(temp.data)) {
     # param`(y) = param + link*env(y,-g)
     val[8] <- -1 * dat.varnum.counter
     ss3.ctl[par.ch] <- paste(c(val, "#",  names(temp.data)[i]), collapse=" ")
-  dat <- data.frame(year = year.beg:year.end, 
-                    variable = dat.varnum.counter, 
+  dat <- data.frame(year = year.beg:year.end,
+                    variable = dat.varnum.counter,
                     value = temp.data[i])
   names(dat) <- c("year", "variable", "value")
     ss3.dat.tbl <- rbind(ss3.dat.tbl, dat)
@@ -181,7 +181,7 @@ if(length(temp.data) > 0) {
   sr.ch <- grep("#_SR_env_link", ss3.ctl, fixed = TRUE)
   sr.base <- as.numeric(gsub('([0-9]*).*','\\1',ss3.ctl[sr.ch+1]))
   if(sr.base == 1) {
-    stop("ss3sim uses annual recruitment deviations 
+    stop("ss3sim uses annual recruitment deviations
           and does not work with a model that ties recruitment deviations
           to environmental covariates.
           If the application needs to compare the environment to
@@ -195,21 +195,21 @@ if(length(temp.data) > 0) {
                  "steep", "NA"))
   if(type=="NA") {
     stop("Did not recognize the name for the stock recruit parameter
-          as virgin recruitment or steepness, 
+          as virgin recruitment or steepness,
           please rename and rerun the scenario")
   }
   if(length(temp.data) > 1 ) {
-    stop("Currently SS3 only allows one stock recruit paramater at a time, 
+    stop("Currently SS3 only allows one stock recruit paramater at a time,
           R0 or steepness, to vary with an environmental covariate.")
   }
 
   if(sr.base > 0) {
-    stop("Currently SS3 does not allow environmental deviations 
+    stop("Currently SS3 does not allow environmental deviations
           for multiple stock recruit parameters.
           Please remove the environmental covariate from the base OM
           and run the scenario again.")
   }
-  
+
   sr.shortline.ch <- grep("# SR_envlink", ss3.ctl, fixed = TRUE)
   ss3.ctl[sr.shortline.ch] <- "-5 5 1 0 -1 99 -3 # SR_envlink"
   ss3.ctl[sr.ch] <- dat.varnum.counter <- dat.varnum.counter + 1
@@ -219,10 +219,10 @@ if(length(temp.data) > 0) {
   }
   if(length(grep("steep", names(temp.data), fixed = TRUE)) > 0) {
     ss3.ctl[sr.ch+1] <- "3 #_SR_env_target_0=none;1=devs;_2=R0;_3=steepness"
-  }  
-  
-  dat <- data.frame(year = year.beg:year.end, 
-                    variable = dat.varnum.counter, 
+  }
+
+  dat <- data.frame(year = year.beg:year.end,
+                    variable = dat.varnum.counter,
                     value = temp.data)
     names(dat) <- c("year", "variable", "value")
     ss3.dat.tbl <- rbind(ss3.dat.tbl, dat)
@@ -231,7 +231,7 @@ if(length(temp.data) > 0) {
   if(length(sr.parameter) > 0) {
     names(change_tv_list)[sr.parameter] <- "SR_envlink"
   }
-  
+
   temp.data <- change_tv_list[lab == "qs"]
   paste.into.ctl <- NULL
 for(i in seq_along(temp.data)) {
@@ -249,17 +249,17 @@ for(i in seq_along(temp.data)) {
   ss3.ctl[par.ch] <- paste(paste(val.pars, collapse = " "),
                            "#", val.name, sep = " ")
 
-  names(change_tv_list)[which(names(change_tv_list) == 
+  names(change_tv_list)[which(names(change_tv_list) ==
                               names(temp.data)[i])] <-
-                  paste0("Q_envlink_", 
+                  paste0("Q_envlink_",
                         which(fleet.names == names(temp.data)[i]),
                         "_", names(temp.data)[i])
-  
+
   paste.into.ctl <- c(paste.into.ctl,
                       paste("-2 2 1 0 -1 99 -5 #", names(temp.data)[i]))
-  
-  dat <- data.frame(year = year.beg:year.end, 
-                    variable = dat.varnum.counter, 
+
+  dat <- data.frame(year = year.beg:year.end,
+                    variable = dat.varnum.counter,
                     value = temp.data[i])
   names(dat) <- c("year", "variable", "value")
     ss3.dat.tbl <- rbind(ss3.dat.tbl, dat)
@@ -269,28 +269,28 @@ for(i in seq_along(temp.data)) {
                                                  paste.into.ctl,
                                                  (par.spec + 1))
 
-    ss3.dat.top[grep(" #_N_environ_variables", 
-                     ss3.dat.top, fixed = TRUE)] <- paste(dat.varnum.counter, 
+    ss3.dat.top[grep(" #_N_environ_variables",
+                     ss3.dat.top, fixed = TRUE)] <- paste(dat.varnum.counter,
                                                           " #_N_environ_variables")
-    ss3.dat.top[grep(" #_N_environ_obs", 
+    ss3.dat.top[grep(" #_N_environ_obs",
                      ss3.dat.top, fixed = TRUE)] <- paste((year.end - year.beg + 1) * dat.varnum.counter,
                                         " #_N_environ_obs")
-    ss3.dat.new=c(ss3.dat.top, 
-                  apply(ss3.dat.tbl, 1, paste, collapse = " "), 
+    ss3.dat.new=c(ss3.dat.top,
+                  apply(ss3.dat.tbl, 1, paste, collapse = " "),
                   ss3.dat.bottom)
     writeLines(ss3.dat.new, con = dat_file_out)
     writeLines(ss3.ctl, con= ctl_file_out)
 
     #run SS with with no estimation and no hessian
     #first change starter file option to use .par to .ctl
-    usepar.ch <- grep("# 0=use init values in control file; 1=use ss3.par", 
-                      ss3.starter, fixed=TRUE) 
-    
+    usepar.ch <- grep("# 0=use init values in control file; 1=use ss3.par",
+                      ss3.starter, fixed=TRUE)
+
     ss3.starter[usepar.ch] <- "0 # 0=use init values in control file; 1=use ss3.par"
-    ss3.starter[usepar.ch-2] <- dat_file_out 
+    ss3.starter[usepar.ch-2] <- dat_file_out
     ss3.starter[usepar.ch-1] <- ctl_file_out
     writeLines(ss3.starter, con = starter_file_out)
-    
+
     #Call ss3 for a run that includes the environmental link
     os <- .Platform$OS.type
       if(os == "unix") {
@@ -298,16 +298,16 @@ for(i in seq_along(temp.data)) {
       } else {
         system("SS3 -noest", show.output.on.console = FALSE, invisible = TRUE, ignore.stdout = TRUE)
       }
-    
+
     #Change starter file option back to using .par!
     ss3.starter[usepar.ch] = "1 # 0=use init values in control file; 1=use ss3.par"
     writeLines(ss3.starter, con = starter_file_out)
-        
+
   ss3.report <- readLines(con = report_file)
   ss3.par    <- readLines(con = par_file_in)
-  
+
   env.name <- sapply(names(change_tv_list), function(x) {
-                ifelse(grepl("envlink", x), 
+                ifelse(grepl("envlink", x),
                        x,
                        paste(x, "ENV", sep = "_"))
               })
@@ -328,7 +328,7 @@ for(q in seq_along(change_tv_list)) {
       add.par <- c(paste0("# MGparm[",env.parnum[q],"]:"),
                    "1.00000000000")
       ss3.par <- append(ss3.par, add.par, (line.a + 1))
-          } 
+          }
     if(env.lab[q] == "sx") {
       num.sx <- grep("Sel_.._", ss3.report )
       pos.sx <- grep(env.name[q], ss3.report[num.sx])
@@ -352,7 +352,7 @@ for(q in seq_along(change_tv_list)) {
       ss3.par  <- ss3.par[-(grep("# Q_parm[1]:", ss3.par, fixed = TRUE) :
                  (grep("# selparm[1]:", ss3.par, fixed = TRUE) - 1))]
       ss3.par <- append(ss3.par, qs.new,
-                        (grep("# selparm[1]:", 
+                        (grep("# selparm[1]:",
                               ss3.par, fixed = TRUE) - 1))
       }
     if(any(env.lab == "sr")) {
