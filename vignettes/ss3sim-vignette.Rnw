@@ -985,18 +985,34 @@ See the function documentation for
 \texttt{change\_agecomp} and \texttt{change\_lcomp}
 for more detail.
 
-\section{Stochastic Reproducibility}
-In many cases you may want to make the observation and
-process errors reproducible. For instance, you may want to
-reuse process errors so that differences between scenarios are not
-confounded with process error. More broadly, you may want to
-make a simulation reproducible on another machine.
+\section{Stochastic reproducibility}
 
-The observation error can be made reproducible by setting the random
-number generator seed [where???].
+In many cases, you may want to make
+the observation and process errors reproducible.
+For instance, you may want to reuse process errors
+so that differences between scenarios
+are not confounded with process error.
+More broadly, you may want to make a simulation reproducible
+on another machine.
 
-The process error (recruitment deviations) can be set manually by
-the user, or controlled with a seed.
+You can make the observation error reproducible
+by setting the \texttt{seeds} argument in \texttt{ss3sim\_base}.
+For example, you might want to do this when running \texttt{run\_ss3sim}.
+The \texttt{seeds} argument takes a vector of seed values at least as long
+as the number of iterations you are running in your simulation.
+
+The process error (recruitment deviations)
+can be set manually by the user
+by passing a matrix of recruitment deviations
+to the argument \texttt{user\_recdevs}.
+The columns in the matrix represent iterations of the simulation,
+and the rows represent years.
+Ensure that you pass a matrix with at least enough columns and rows.
+The \texttt{ss3sim} package contains a built in set of recruitment deviations
+for up to 150 years and 1000 iterations.
+These data are pre-loaded with the package
+in a matrix object named \texttt{recdevs}.
+See \texttt{?recdevs} for documentation on how they were generated.
 
 \bibliographystyle{apalike}
 \bibliography{refs}
