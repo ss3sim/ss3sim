@@ -29,4 +29,8 @@
 \author{
   Carey McGilliard
 }
+\seealso{
+  \code{\link{run_bias_ss3}}, \code{\link{run_ss3sim}},
+  \code{link{ss3sim_base}}
+}
 

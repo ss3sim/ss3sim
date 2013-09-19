@@ -18,6 +18,8 @@
 #' \code{\link{run_bias_ss3}} to \code{bias_ss3} In
 #' \code{\link{run_bias_ss3}} this is run within an \code{sapply}
 #' function for each of the bias adjustment runs.
+#' @seealso \code{\link{run_bias_ss3}}, \code{\link{run_ss3sim}},
+#' \code{link{ss3sim_base}}
 #' @export
 
 bias_ss3 <- function(iter, dir) {

@@ -13,8 +13,8 @@
 }
 \description{
   Internal function used by \code{get_results_scenario} to
-  calculate the runtime (in minutes) from a Report.sso
-  file.
+  calculate the runtime (in minutes) from a
+  \code{Report.sso} file.
 }
 \author{
   Cole Monnahan

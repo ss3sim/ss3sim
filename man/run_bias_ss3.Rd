@@ -50,18 +50,22 @@
 }
 \examples{
 \dontrun{
-# Main Function call example:
-# Note that usually nsim will be 10, not 2,
-# nsim = 2 is just faster for an example
-run_bias_ss3(dir = "M1-F1-D1-R1-cod/", outdir = "M1-F1-D1-R1-cod/",
-nsim = 2)
+d <- system.file("extdata", package = "ss3sim")
+case_folder <- paste0(d, "/eg-cases")
+om <- paste0(d, "/models/cod-om")
+em <- paste0(d, "/models/cod-em")
+run_ss3sim(iterations = 1:1, scenarios = "D1-E0-F0-G0-R0-S0-M0-cod",
+  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+  bias_adjust = TRUE, bias_nsim = 2)
+# (Note that bias_nsim should be bigger, say 10, but it is set to 2
+# here so the example runs faster.)
 }
 }
 \author{
   Carey McGilliard
 }
 \seealso{
-  \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
-  \code{\link{run_bias_ss3}}
+  \code{link{run_ss3sim}}, \code{\link{ss3sim_base}},
+  \code{\link{run_ss3model}}, \code{\link{bias_ss3}}
 }
 

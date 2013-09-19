@@ -1,7 +1,7 @@
 #' Calculate run time
 #'
 #' Internal function used by \code{get_results_scenario} to calculate
-#' the runtime (in minutes) from a Report.sso file.
+#' the runtime (in minutes) from a \code{Report.sso} file.
 #'
 #' @param start_time Vector of characters as read in from the r4ss
 #' report file
