@@ -721,7 +721,7 @@ print(p)
   Use the \texttt{change\_e} function to perform forecasts.
 \item
   Modify the \texttt{.dat} file
-  so that it includes the user specified process and observation errors.
+  so that it includes the user-specified process and observation errors.
   This can be done by using the functions in the \texttt{ss3sim} package.
   E.g \texttt{change\_index()}, \texttt{change\_lcomp()}
 \end{enumerate}
@@ -864,14 +864,14 @@ To add it to your path:
 When simulating assessment models we need a way to mimic the way
 that the age/length compositions (comps) are sampled in
 reality. Under perfect mixing of fish and truly random sampling the
-distribution of samples would be multinomial. However, in practice
+distribution of samples would be multinomial (REF). However, in practice
 neither of these are true because the fish tend to aggregate by size
 and age, and it is difficult to take random samples. This causes the
-data to have more variance than expected, i.e. be over-dispersed. If
+data to have more variance than expected, i.e.\ be overdispersed (REF). If
 a multinomial likelihood is assumed and the true sample size is used
 then in effect the model puts too much weight on the composition
 data, at the cost of fitting other sources of data less
-well. Analysts thus need to ``tune'' their model to find a more
+well (REF). Analysts thus need to ``tune'' their model to find a more
 appropriate sample size that more accurately reflect the information
 in the comp data.
 
@@ -879,13 +879,13 @@ In simulation work, the true underlying proportions in the
 population are known and true multinomial sampling is
 possible. There is some question about the realism behind providing
 the model with this kind of data, since it never happens in
-practice. Thus there is a need to generate more realistic data that
-has over-dispersion. In this package we use the Dirichlet
+practice (REF). Thus, there is a need to generate more realistic data that
+has overdispersion. In this package we use the Dirichlet
 distribution to generate such data for a specified level of
-over-dispersion.
+overdispersion.
 
-\subsection{Multinomial vs.\ Dirichlet Distributions} The following
-calculations are shown for age compositions but apply equally to
+\subsection{Multinomial vs.\ Dirichlet Distributions}
+The following calculations are shown for age compositions but apply equally to
 length compositions. The multinomial distribution $\mathbf{m} \sim
 \text{MN}\left(\mathbf{p}, n, A\right )$ is defined as
 \begin{align*} \mathbf{m} &= m_1, \ldots, m_A\\
@@ -895,9 +895,9 @@ length compositions. The multinomial distribution $\mathbf{m} \sim
   n&=\text{sample size} \\
   A&=\text{number of age bins}
 \end{align*}
-In the case of Stock Synthesis, actual proportions are inputted as
+In the case of Stock Synthesis, actual proportions are input as
 data so $\mathbf{m}/n$ is the distribution used instead of
-$\mathbf{m}$. Thus the variance of the estimated proportion for age
+$\mathbf{m}$. Thus, the variance of the estimated proportion for age
 bin $a$ is $\Vof{M_a/n}=p_aq_a/n$. Note that $m_a/n$ can only take
 on values in the set $\{0, 1/n, 2/n, \ldots, 1\}$. With sufficiently
 large sample size this set approximates the real interval $[0,1]$,
@@ -922,7 +922,8 @@ $\Vof{d_a}=\frac{p_aq_a}{\lambda+1}$. The marginal distributions for
 the Dirichlet are beta distributed. In contrast to the multinomial
 above, the Dirichlet generates points on the real interval $[0,1]$.
 
-\subsection{Sampling with Overdispersion} It is clear that $\lambda$
+\subsection{Sampling with Overdispersion}
+It is clear that $\lambda$
 controls the amount of overdispersion in the generated samples: as
 it increases the variance decreases. Thus, it is simple to calculate
 what $\lambda$ should be in order to have a specific level of
@@ -945,19 +946,20 @@ following steps are used to generate overdispersed samples:
   standard deviation of the multinomial by setting $c=2$.
 \end{enumerate}
 
-The sampling functions provided in the package allow the user to
+The sampling functions provided in the package allows you to
 specify either a multinomial or Dirichlet distribution, as well as
-the level of over-dispersion. Note that the package does not allow
+the level of overdispersion. Note that the package does not allow
 for tuning of the effective sample size and the argument
-\texttt{cpar} controls the level of over-dispersion in the sampling
-functions. See function documentation for more detail.
+\texttt{cpar} controls the level of overdispersion in the sampling
+functions. See the function documentation for
+\texttt{change\_agecomp} and \texttt{change\_lcomp} for more detail.
 
 \section{Stochastic Reproducibility}
-In many cases the user may want to control the amount of reproducibility of both the
-observation and process errors. For instance the user may want to
+In many cases you may want to make the observation and
+process errors reproducible. For instance, you may want to
 reuse process errors so that differences between scenarios are not
-confounded with process error. More broadly the user may want to
-make their work reproducible on another machine.
+confounded with process error. More broadly, you may want to
+make a simulation reproducible on another machine.
 
 The observation error can be made reproducible by setting the random
 number generator seed [where???].
