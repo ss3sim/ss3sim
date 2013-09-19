@@ -210,7 +210,6 @@ change_lcomp <- function(infile, outfile, distribution =
   names(new.lencomp) <- c(names(dat.file$lencomp)[1:6],paste("l",dat.file$lbin_vector,sep=""))
 
   # To keep or not to keep the length comp from fishery and survey
-  browser()
   if(fish_lcomp==FALSE){
     new.lencomp <- new.lencomp[new.lencomp$FltSvy != 1, ]
   }
