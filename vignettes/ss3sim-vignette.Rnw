@@ -547,9 +547,13 @@ print(p)
   Verify that the SS model contains at least the following file types:
   \texttt{name.ctl}, \texttt{name.dat}, \texttt{starter.ss}, \texttt{forecast.ss}
 \item
-  If the model contains already the \texttt{ss3.par} file, skip this step and move to 4 \\ 
-  If the model doens't contain the \texttt{ss3.par} file, run the assessment model from a command window
-  using the command \texttt{ss3} to generate the \texttt{ss3.par} file with the maximum likelihood estimates.
+  If the model already contains the \texttt{ss3.par} file, 
+  skip this step and move to the next step.
+  If the model doesn't contain the \texttt{ss3.par} file, 
+  run the assessment model from a command window
+  using the command \texttt{ss3} 
+  to generate the \texttt{ss3.par} file 
+  with the maximum likelihood estimates.
 \item
   Modify the \texttt{.ctl} file so catches
   are driven by instantaneous fishing mortality rather than catch.
