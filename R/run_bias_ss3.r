@@ -7,7 +7,7 @@
 #' @details
 #' This function: \itemize{
 #' \item uses the \code{r4ss} package to read in output from n SS
-#' runs, 
+#' runs,
 #' \item uses Ian Taylor's \code{r4ss} function to find values for the
 #' n bias adjustment parameters for each run,
 #' \item takes the average over runs for each bias adjustment
@@ -60,6 +60,10 @@
 #' }
 #' @seealso \code{link{run_ss3sim}}, \code{\link{ss3sim_base}},
 #' \code{\link{run_ss3model}}, \code{\link{bias_ss3}}
+#' @references
+#' Methot, R. D. and Taylor, I. G. (2011). Adjusting for bias due to
+#' variability of estimated recruitments in fishery assessment models.
+#' Can. J. Fish. Aquat. Sci., 68(10):1744–1760.
 
 run_bias_ss3 <-function(dir, outdir, nsim, conv_crit = 0.2) {
   outfile = "AdjustBias.DAT"
@@ -88,8 +92,8 @@ run_bias_ss3 <-function(dir, outdir, nsim, conv_crit = 0.2) {
     bias4 = mean(bias.table$bias4, na.rm=TRUE),
     bias5 = mean(bias.table$bias5, na.rm=TRUE))
 
-  #Write avg.df values to the the file AvgBias.DAT under the dir folder  
-  write.table(avg.df, file = paste0(dir, "/", "AvgBias.DAT"), 
+  #Write avg.df values to the the file AvgBias.DAT under the dir folder
+  write.table(avg.df, file = paste0(dir, "/", "AvgBias.DAT"),
     row.names = FALSE, col.names = TRUE, quote = FALSE, append = F)
 
   # If the number of NAs (i.e not invertible hessian) > conv_crit of the cases,
@@ -110,23 +114,23 @@ run_bias_ss3 <-function(dir, outdir, nsim, conv_crit = 0.2) {
 
   # This loop and other changes would be necessary if .ctl files
   # differed within scenario (among runs for the same scenario):
-  # for (iter in 1:nsim) 
+  # for (iter in 1:nsim)
   # {
   # read in a ctl.ss_new file, replace the bias adjust params, and
-  # write out a new em.ctl file      
+  # write out a new em.ctl file
 
-  # grab the "ctl" file and make a change to it for the bias adjustement period  
+  # grab the "ctl" file and make a change to it for the bias adjustement period
   SS_ctl <- readLines(con = paste0(dir, "/", 1, "/em/em.ctl"))
   SS_ctlB = SS_ctl
 
   #grab the line number on which this text occurs
-  ParamLine1 <- grep("#_last_early_yr_nobias_adj_in_MPD", SS_ctl) 
+  ParamLine1 <- grep("#_last_early_yr_nobias_adj_in_MPD", SS_ctl)
 
   #in what column does the character string start?
-  colnum1 <- regexpr("#_last_early_yr_nobias_adj_in_MPD", SS_ctl[ParamLine1])[1] 
+  colnum1 <- regexpr("#_last_early_yr_nobias_adj_in_MPD", SS_ctl[ParamLine1])[1]
 
   # what is the value before the character string?
-  # val1 <- as.numeric(as.vector(substr(SS_ctl[ParamLine1], start=1, stop=colnum1-1))) 
+  # val1 <- as.numeric(as.vector(substr(SS_ctl[ParamLine1], start=1, stop=colnum1-1)))
 
   SS_ctlB[ParamLine1] = paste0(avg.df$bias1, " #_last_early_yr_nobias_adj_in_MPD")
   SS_ctlB[ParamLine1 + 1] = paste0(avg.df$bias2, " #_first_yr_fullbias_adj_in_MPD")
@@ -140,7 +144,7 @@ run_bias_ss3 <-function(dir, outdir, nsim, conv_crit = 0.2) {
   # place the new em.ctl file in the em folder for each model realization,
   # assuming that the .ctl file does not change between realizations!!!
   #for (iRealSim in iter) {
-    #file.copy(from = paste0(dir, "em.ctl"), to = paste0(outdir, 
+    #file.copy(from = paste0(dir, "em.ctl"), to = paste0(outdir,
         #iRealSim, "/em/"), overwrite = T, copy.mode = TRUE)
   #}
 }

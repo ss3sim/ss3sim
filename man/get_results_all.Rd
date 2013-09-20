@@ -37,7 +37,7 @@ library(ggplot2)
 library(ss3sim)
 
 ## This function reads in results for all runs in a particular directory
-get_results_all(files.overwrite=F)
+get_results_all(files.overwrite=FALSE)
 
 ## Rread in the final results produced by above function
 scalars <- read.csv("final_results_scalar.csv")

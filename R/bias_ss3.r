@@ -12,7 +12,7 @@
 #' otherwise
 #' }
 #' @author Carey McGilliard
-#' @param iter Replicate number, used to identify this iteration 
+#' @param iter Replicate number, used to identify this iteration
 #' if there are multiple adjustment runs.
 #' @param dir Passes \code{dir} from the function
 #' \code{\link{run_bias_ss3}} to \code{bias_ss3} In
@@ -21,6 +21,10 @@
 #' @seealso \code{\link{run_bias_ss3}}, \code{\link{run_ss3sim}},
 #' \code{link{ss3sim_base}}
 #' @export
+#' @references
+#' Methot, R. D. and Taylor, I. G. (2011). Adjusting for bias due to
+#' variability of estimated recruitments in fishery assessment models.
+#' Can. J. Fish. Aquat. Sci., 68(10):1744–1760.
 
 bias_ss3 <- function(iter, dir) {
   outfile = "AdjustBias.DAT"
@@ -33,27 +37,27 @@ bias_ss3 <- function(iter, dir) {
   biasvars = try(r4ss::SS_fitbiasramp(replist = myoutput), TRUE)
   dev.off()
   }
-  
+
   if(file.exists(paste0(dir, "/", iter, "/em/covar.sso"))==FALSE)
   {
   biasvars = list()
   biasvars$df = matrix(rep(NA,5),nrow=5)
-  }	
-  
+  }
+
   if (is.list(biasvars) == TRUE) {
-    bias.df = data.frame(Sim = iter, bias1 = biasvars$df[1, 
-      1], bias2 = biasvars$df[2, 1], bias3 = biasvars$df[3, 
-      1], bias4 = biasvars$df[4, 1], bias5 = biasvars$df[5, 
+    bias.df = data.frame(Sim = iter, bias1 = biasvars$df[1,
+      1], bias2 = biasvars$df[2, 1], bias3 = biasvars$df[3,
+      1], bias4 = biasvars$df[4, 1], bias5 = biasvars$df[5,
       1])
   }
   if (iter == 1) {
-    write.table(bias.df, file = paste0(dir, "/", outfile), 
-      row.names = FALSE, col.names = FALSE, quote = FALSE, 
+    write.table(bias.df, file = paste0(dir, "/", outfile),
+      row.names = FALSE, col.names = FALSE, quote = FALSE,
       append = F)
   }
   else {
-    write.table(bias.df, file = paste0(dir, "/", outfile), 
-      row.names = FALSE, col.names = FALSE, quote = FALSE, 
+    write.table(bias.df, file = paste0(dir, "/", outfile),
+      row.names = FALSE, col.names = FALSE, quote = FALSE,
       append = T)
   }
 }
