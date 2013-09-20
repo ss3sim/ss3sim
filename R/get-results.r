@@ -54,7 +54,7 @@ calculate_runtime <- function(start_time, end_time) {
 #' library(ss3sim)
 #'
 #' ## This function reads in results for all runs in a particular directory
-#' get_results_all(files.overwrite=F)
+#' get_results_all(files.overwrite=FALSE)
 #'
 #' ## Rread in the final results produced by above function
 #' scalars <- read.csv("final_results_scalar.csv")
@@ -197,11 +197,11 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE, user.scena
 #' case_folder <- paste0(d, "/eg-cases")
 #' om <- paste0(d, "/models/cod-om")
 #' em <- paste0(d, "/models/cod-em")
-#' run_ss3sim(iterations = 1:30, scenarios =
-#'            c("D1-E0-F0-G0-R0-S0-M0-cod"),
-#'            case_folder = case_folder, om_model_dir = om, em_model_dir = em,
-#'            bias_adjust = TRUE)
-#' get_results_scenario(c("D1-E0-F0-G0-R0-S0-M0-cod"))
+#' run_ss3sim(iterations = 1:2, scenarios =
+#'   c("D0-E0-F0-G0-R0-S0-M0-cod"),
+#'   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+#'   bias_adjust = FALSE)
+#' get_results_scenario(c("D0-E0-F0-G0-R0-S0-M0-cod"))
 #' }
 get_results_scenario <- function(scenario, directory=getwd(),
   overwrite.files=FALSE){
