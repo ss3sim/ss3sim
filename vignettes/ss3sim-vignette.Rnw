@@ -33,8 +33,8 @@ opts_chunk$set(dev = 'pdf')
 
 \title{An introduction to \texttt{ss3sim} for\\stock-assessment simulation}
 \author{
-  Sean C. Anderson\thanks{Department of Biological Sciences,
-  Simon Fraser University, Burnaby BC, V5A 1S6, Canada}
+  Sean C. Anderson\thanks{sean@seananderson.ca; Department of Biological
+  Sciences, Simon Fraser University, Burnaby BC, V5A 1S6, Canada}
   \and
   Kelli F. Johnson\thanks{School of Aquatic and Fishery Sciences,
   University of Washington, Box 355020, Seattle, WA 98195-5020, USA}
@@ -82,6 +82,23 @@ This means that your operating system knows where the binary file is located.
 See section \ref{sec:path} for details.
 
 \section{An overview of the \texttt{ss3sim} simulation structure}
+
+\texttt{ss3sim} is an R package that is meant to make it relatively quick and easy
+to run simulations with the 3rd version of Stock Synthesis, \texttt{SS3}.
+The package consists of a series of functions
+that facilitate manipulating \texttt{SS3} configuration files,
+running \texttt{SS3} models, and combining the output.
+\texttt{ss3sim} also contains some wrapper functions
+that tie all these low-level functions together
+into a complete simulation experiment.
+If you choose to use our wrapper function \texttt{run\_ss3sim()}
+then you will use a series of plain text control files
+to control the simulation.
+Much of this vignette focusses on
+how to effectively use \texttt{run\_ss3sim()},
+but feel free to take the low-level functions
+(\texttt{change} and \texttt{sample} functions)
+and use them as part of your own flexible simulation.
 
 \subsection{Setting up the file structure}
 
