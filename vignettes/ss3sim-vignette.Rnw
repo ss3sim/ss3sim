@@ -289,11 +289,9 @@ the data file is renamed \texttt{ss3.dat},
 the control files are renamed \texttt{om.ctl} or \texttt{em.ctl},
 and the starter and control files are adjusted
 to reflect these new file names.
-
 The functions in this package
 assume you've set your working directory in \texttt{R}
 to be the base folder where you will store the scenario folders.
-
 
 \section{An example simulation with \texttt{ss3sim}}
 
@@ -315,15 +313,19 @@ om <- paste0(d, "/models/cod-om")
 em <- paste0(d, "/models/cod-em")
 @
 
-
 \subsection{Creating the input configuration files}
-
 
 We will base the simulation around the base-case files created
 for a cod-like species in the papers
 (Ono \textit{et al}.\ \textit{in review},
 Johnson \textit{et al}.\ \textit{in review}).
 You can refer to these papers for details on how the models were set up.
+
+If we were starting from scratch,
+we'd run the function \texttt{create\_argfiles},
+which would create a default set of configuration files
+in our R working directory.
+Instead we'll start with the configuration files from those papers.
 
 To investigate the effect of research survey effort,
 we will manipulate the argument \texttt{sd\_obs\_surv}
