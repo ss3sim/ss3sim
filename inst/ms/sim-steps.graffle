@@ -262,11 +262,11 @@ and iterations}</string>
 					<key>Color</key>
 					<dict>
 						<key>b</key>
-						<string>0.516858</string>
+						<string>0.66</string>
 						<key>g</key>
-						<string>0.509629</string>
+						<string>0.66</string>
 						<key>r</key>
-						<string>0.44058</string>
+						<string>0.66</string>
 					</dict>
 					<key>HeadArrow</key>
 					<string>FilledArrow</string>
@@ -277,7 +277,7 @@ and iterations}</string>
 					<key>TailArrow</key>
 					<string>0</string>
 					<key>Width</key>
-					<real>2</real>
+					<real>1.5</real>
 				</dict>
 			</dict>
 		</dict>
@@ -298,11 +298,11 @@ and iterations}</string>
 					<key>Color</key>
 					<dict>
 						<key>b</key>
-						<string>0.516858</string>
+						<string>0.66</string>
 						<key>g</key>
-						<string>0.509629</string>
+						<string>0.66</string>
 						<key>r</key>
-						<string>0.44058</string>
+						<string>0.66</string>
 					</dict>
 					<key>HeadArrow</key>
 					<string>FilledArrow</string>
@@ -313,7 +313,7 @@ and iterations}</string>
 					<key>TailArrow</key>
 					<string>0</string>
 					<key>Width</key>
-					<real>2</real>
+					<real>1.5</real>
 				</dict>
 			</dict>
 		</dict>
@@ -334,11 +334,11 @@ and iterations}</string>
 					<key>Color</key>
 					<dict>
 						<key>b</key>
-						<string>0.516858</string>
+						<string>0.66</string>
 						<key>g</key>
-						<string>0.509629</string>
+						<string>0.66</string>
 						<key>r</key>
-						<string>0.44058</string>
+						<string>0.66</string>
 					</dict>
 					<key>HeadArrow</key>
 					<string>FilledArrow</string>
@@ -349,7 +349,7 @@ and iterations}</string>
 					<key>TailArrow</key>
 					<string>0</string>
 					<key>Width</key>
-					<real>2</real>
+					<real>1.5</real>
 				</dict>
 			</dict>
 		</dict>
@@ -373,11 +373,11 @@ and iterations}</string>
 					<key>Color</key>
 					<dict>
 						<key>b</key>
-						<string>0.516858</string>
+						<string>0.657048</string>
 						<key>g</key>
-						<string>0.509629</string>
+						<string>0.657048</string>
 						<key>r</key>
-						<string>0.44058</string>
+						<string>0.657048</string>
 					</dict>
 					<key>CornerRadius</key>
 					<real>1</real>
@@ -392,7 +392,7 @@ and iterations}</string>
 					<key>TailScale</key>
 					<real>0.69999992847442627</real>
 					<key>Width</key>
-					<real>2</real>
+					<real>1.5</real>
 				</dict>
 			</dict>
 		</dict>
@@ -2001,11 +2001,11 @@ copy bias-adjusted .ctl file if needed}</string>
 						<key>a</key>
 						<string>0.15</string>
 						<key>b</key>
-						<string>0.525023</string>
+						<string>0.85008</string>
 						<key>g</key>
-						<string>0.570824</string>
+						<string>0.85008</string>
 						<key>r</key>
-						<string>0.146795</string>
+						<string>0.85008</string>
 					</dict>
 				</dict>
 				<key>shadow</key>
@@ -2015,14 +2015,23 @@ copy bias-adjusted .ctl file if needed}</string>
 				</dict>
 				<key>stroke</key>
 				<dict>
-					<key>Draws</key>
-					<string>NO</string>
+					<key>Color</key>
+					<dict>
+						<key>b</key>
+						<string>0.7</string>
+						<key>g</key>
+						<string>0.7</string>
+						<key>r</key>
+						<string>0.7</string>
+					</dict>
+					<key>Width</key>
+					<real>0.5</real>
 				</dict>
 			</dict>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{94.769266083395792, 334.63345501831992}, {322.73752630109607, 141.55426025390625}}</string>
+			<string>{{94.769266083395792, 333.86422422087395}, {322.73752630109607, 141.55426025390625}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
@@ -2038,11 +2047,11 @@ copy bias-adjusted .ctl file if needed}</string>
 						<key>a</key>
 						<string>0.15</string>
 						<key>b</key>
-						<string>0.782314</string>
+						<string>0.85008</string>
 						<key>g</key>
-						<string>0.462659</string>
+						<string>0.85008</string>
 						<key>r</key>
-						<string>0.127549</string>
+						<string>0.85008</string>
 					</dict>
 				</dict>
 				<key>shadow</key>
@@ -2052,8 +2061,17 @@ copy bias-adjusted .ctl file if needed}</string>
 				</dict>
 				<key>stroke</key>
 				<dict>
-					<key>Draws</key>
-					<string>NO</string>
+					<key>Color</key>
+					<dict>
+						<key>b</key>
+						<string>0.7</string>
+						<key>g</key>
+						<string>0.7</string>
+						<key>r</key>
+						<string>0.7</string>
+					</dict>
+					<key>Width</key>
+					<real>0.5</real>
 				</dict>
 			</dict>
 		</dict>
@@ -2075,11 +2093,11 @@ copy bias-adjusted .ctl file if needed}</string>
 						<key>a</key>
 						<string>0.15</string>
 						<key>b</key>
-						<string>0.782314</string>
+						<string>0.85008</string>
 						<key>g</key>
-						<string>0.462659</string>
+						<string>0.85008</string>
 						<key>r</key>
-						<string>0.127549</string>
+						<string>0.85008</string>
 					</dict>
 				</dict>
 				<key>shadow</key>
@@ -2089,8 +2107,17 @@ copy bias-adjusted .ctl file if needed}</string>
 				</dict>
 				<key>stroke</key>
 				<dict>
-					<key>Draws</key>
-					<string>NO</string>
+					<key>Color</key>
+					<dict>
+						<key>b</key>
+						<string>0.7</string>
+						<key>g</key>
+						<string>0.7</string>
+						<key>r</key>
+						<string>0.7</string>
+					</dict>
+					<key>Width</key>
+					<real>0.5</real>
 				</dict>
 			</dict>
 		</dict>
@@ -2112,11 +2139,11 @@ copy bias-adjusted .ctl file if needed}</string>
 						<key>a</key>
 						<string>0.15</string>
 						<key>b</key>
-						<string>0.525023</string>
+						<string>0.85008</string>
 						<key>g</key>
-						<string>0.570824</string>
+						<string>0.85008</string>
 						<key>r</key>
-						<string>0.146795</string>
+						<string>0.85008</string>
 					</dict>
 				</dict>
 				<key>shadow</key>
@@ -2126,8 +2153,17 @@ copy bias-adjusted .ctl file if needed}</string>
 				</dict>
 				<key>stroke</key>
 				<dict>
-					<key>Draws</key>
-					<string>NO</string>
+					<key>Color</key>
+					<dict>
+						<key>b</key>
+						<string>0.7</string>
+						<key>g</key>
+						<string>0.7</string>
+						<key>r</key>
+						<string>0.7</string>
+					</dict>
+					<key>Width</key>
+					<real>0.5</real>
 				</dict>
 			</dict>
 		</dict>
@@ -2179,7 +2215,7 @@ copy bias-adjusted .ctl file if needed}</string>
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2013-09-20 22:50:05 +0000</string>
+	<string>2013-09-24 21:54:24 +0000</string>
 	<key>Modifier</key>
 	<string>Sean Anderson</string>
 	<key>NotesVisible</key>
@@ -2260,7 +2296,7 @@ copy bias-adjusted .ctl file if needed}</string>
 			</dict>
 		</array>
 		<key>Frame</key>
-		<string>{{730, 11}, {1589, 1407}}</string>
+		<string>{{46, 11}, {1589, 1407}}</string>
 		<key>ListView</key>
 		<true/>
 		<key>OutlineWidth</key>
@@ -2274,7 +2310,7 @@ copy bias-adjusted .ctl file if needed}</string>
 		<key>SidebarWidth</key>
 		<integer>120</integer>
 		<key>VisibleRegion</key>
-		<string>{{-342.99999999999994, -170}, {1118.4615794864646, 975.38465116151121}}</string>
+		<string>{{-343.00000000000006, -170}, {1118.4615794864646, 975.38465116151121}}</string>
 		<key>Zoom</key>
 		<real>1.2999999523162842</real>
 		<key>ZoomValues</key>
