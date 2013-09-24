@@ -72,27 +72,27 @@
 #' }
 #' @export
 
+
 change_agecomp <- function(infile, outfile, distribution =
-  "multinomial", Nsamp = NA, years = NA, svyears = NA, fish_agecomp =
+  "multinomial", Nsamp = 100, years = NA, svyears = NA, fish_agecomp =
   TRUE, sv_agecomp = TRUE, N_agebins = NA, agecomp
   = NA, cpar = 2){
 
+  # Read the input file
   dat.file <- infile
-  if (is.na(N_agebins) == FALSE) {
-    if (class(N_agebins) != "numeric")
-      stop("N_agebins must have a numeric input")
-    dat.file$N_agebins <- N_agebins
-  }
-  if (is.na(agecomp) == FALSE) {
-    if (class(agecomp) != "numeric")
-      stop("agecomp must have a numeric input")
-    new.agecomp <- agecomp
-  }
-  if (is.na(sum(Nsamp)) == TRUE) {
-    Nsamp <- dat.file$agecomp[, "Nsamp"]
-  }
 
-  # Save the expected lencomps in another object to be modified (if
+  # Explicit inputs
+  if(class(Nsamp)!="numeric"){
+    stop("Nsamp must have a numeric input")
+  }
+  if (TRUE %in% is.na(years)) {
+    years <- infile$agecomp$Yr[infile$agecomp$FltSvy == 1]
+  }
+  if (TRUE %in% is.na(svyears)) {
+    svyears <- infile$agecomp$Yr[infile$agecomp$FltSvy == 2]
+  }
+  
+  # Save the expected agecomps in another object to be modified (if
   # necessary)
   init.agecomp <- dat.file$agecomp
 
@@ -112,8 +112,8 @@ change_agecomp <- function(infile, outfile, distribution =
     new.agecomp[,7] <- -1                                             ## Lbin_lo (default = -1)
     new.agecomp[,8] <- -1                                             ## Lbin_hi (default = -1)
     if (length(Nsamp) ==1) new.agecomp[,9] <- Nsamp
-    flacomp <- subset(init.agecomp,init.agecomp[,3]==1)
-    if (is.na(sum(years)) == FALSE) {
+    flacomp <- subset(init.agecomp,init.agecomp[,3]==1)    
+	if (is.na(sum(years)) == FALSE) {
       for (it in 1:length(years)) {
         if (length(Nsamp) > 1) {
           new.agecomp[it, 9] <- Nsamp[it]
@@ -184,12 +184,12 @@ change_agecomp <- function(infile, outfile, distribution =
   names(new.agecomp) <- c(names(dat.file$agecomp)[1:9], paste("a",
       dat.file$agebin_vector, sep = ""))
 
-  #To keep or not to keep the length comp from fishery and survey
+  #To keep or not to keep the age comp from fishery and survey
   if(fish_agecomp==FALSE) {
-    new.agecomp <- new.agecomp[new.lencomp$FltSvy != 1, ]
+    new.agecomp <- new.agecomp[new.age$FltSvy != 1, ]
   }
   if(sv_agecomp==FALSE) {
-    new.agecomp <- new.agecomp[new.lencomp$FltSvy != 2, ]
+    new.agecomp <- new.agecomp[new.age$FltSvy != 2, ]
   }
 
   dat.file$agecomp <- new.agecomp
@@ -205,3 +205,4 @@ change_agecomp <- function(infile, outfile, distribution =
   r4ss::SS_writedat(datlist = dat.file, outfile = outfile,
     overwrite = TRUE)
 }
+
