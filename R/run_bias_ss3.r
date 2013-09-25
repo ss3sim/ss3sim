@@ -63,7 +63,7 @@
 #' @references
 #' Methot, R. D. and Taylor, I. G. (2011). Adjusting for bias due to
 #' variability of estimated recruitments in fishery assessment models.
-#' Can. J. Fish. Aquat. Sci., 68(10):1744–1760.
+#' Can. J. Fish. Aquat. Sci., 68(10):1744-1760.
 
 run_bias_ss3 <-function(dir, outdir, nsim, conv_crit = 0.2) {
   outfile = "AdjustBias.DAT"

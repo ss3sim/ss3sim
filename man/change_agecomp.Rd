@@ -3,7 +3,7 @@
 \title{Resample age composition data}
 \usage{
   change_agecomp(infile, outfile,
-    distribution = "multinomial", Nsamp = NA, years = NA,
+    distribution = "multinomial", Nsamp = 100, years = NA,
     svyears = NA, fish_agecomp = TRUE, sv_agecomp = TRUE,
     N_agebins = NA, agecomp = NA, cpar = 2)
 }
