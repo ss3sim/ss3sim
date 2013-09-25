@@ -182,6 +182,43 @@ Probably turn this into a small table:
 
 - there are lots, we should brainstorm some key ones
 
+- KFJ: Effects of multiple time-varying parameters: Depending on the choice and
+  trends of parameters the effects could be entirely different. Most
+  simulations try to isolate the affects of a single parameter and very few
+  look at two parameters. The package now has the ability to simulate data with
+  multiple time-varying parameters and minimal coding on the users part. I
+  think this would be a great interesting question to stress.
+
+- CM: The effect of different structures for the recdevs. Most people
+  (including us) generate independent normal recdevs, but that is probably not
+  likely considering the changes in environment we see. With our user.recdevs
+  capability it would be easy to simulate different structures such as
+  autocorrelation or time varying sigma_r and see how that affects the EM.
+
+- CM: The impact of bias adjustment. It is so easy to do duplicate runs with
+  and without this option turned out, it would probably make sense to explore
+  when and how it makes it a difference.
+
+- KFJ: Additional info recdevs: The SS3 manual mentions that time-varying
+  recdevs should be implemented with a recruitment survey by transforming the
+  environmental variable into an age 0 pre-recruit survey. The environmental
+  link can then be specified for the selectivity parameter. Using environmental
+  deviations for the recdevs is discouraged because, "it  interacts  with  the
+  level of  residual  recruitment variability and  there  is  no implementation
+  of  a  bias  correction  for  the variability in recruitment caused by the
+  environmental variable."... It would be interesting to see the difference
+  between having a single set of recdevs with time-varying properties versus
+  using a recruitment survey.
+
+- KO: The impact of model mis-specification in general. This rejoins some of
+  the questions that have been mentioned above and also some of the simulation
+  we have already run. One example is: fishery changes every year in response
+  to regulation, fish movement, and gear changes among others, causing changes
+  in catchability and selectivity over time. However, selectivity and/or
+  catchability are commonly assumed to be time invariant (for simplicity and
+  data availability). What is the consequence? This is done very easily with
+  this package.
+
 # Conclusions
 
 - benefit of using one well tested and well-understood modeling framework (SS) i.e. benefit to playing with all the switches and understanding one framework well versus having many tools that we superficially understand (based on Rick's comments at the conference)
