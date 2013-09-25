@@ -189,11 +189,12 @@ Probably turn this into a small table:
 - (these points are somewhat random at the moment)
 
 # Acknowledgements
+KFJ and KO were partially supported for this work under NOAA grant
+423 NA10OAR4320148.
 
-- funding: Fulbright Canada, NSERC, Simon Fraser University, many others...
-- discussions and advice: André Punt, Richard Methot, Ian Taylor, James
-  Thorson, ...
-- Any FISH600 members not listed as authors
+We thank Ian Taylor, André Punt, and Richard Methot for helpful discussions during the development of ss3sim.
+KFJ and KO were partially supported by NOAA grant 423 NA10OAR4320148.
+SCA was supported by Fulbright Canada, NSERC, and a Garfield Weston Foundation/B.C. Packers Ltd. Graduate Fellowship in Marine Sciences.
 
 # Tables
 
