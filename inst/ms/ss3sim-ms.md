@@ -1,13 +1,23 @@
-# ss3sim: An R package for stock-assessment simulation with Stock Synthesis
+# ss3sim: An R package for fisheries stock-assessment simulation with Stock Synthesis
 
-Sean C. Anderson^1^, ...
-(authorship and order to be discussed)
+Sean C. Anderson^1*^, Kelli F. Johnson^2^, Cole C. Monnahan^3^, Kotaro Ono^2^, additional authors to be added as contributions are added...
 
-^1^Department of Biological Sciences, Simon Fraser University, 
-Burnaby BC, V5A 1S6, Canada  
-^*^Corresponding author: phone: 1-778-782-3989; email: sean_anderson@sfu.ca
+^1^Department of Biological Sciences,
+Simon Fraser University,
+Burnaby BC, V5A 1S6, Canada
 
-Short title: ss3sim: Stock Synthesis simulation
+^2^School of Aquatic and Fishery Sciences,
+University of Washington, Box 355020,
+Seattle, WA 98195-5020, USA
+
+^3^Quantitative Ecology and Resource Management,
+University of Washington, Box 352182,
+Seattle, WA 98195-5020, USA
+
+^*^Corresponding author: sean@seananderson.ca
+
+Short title: ss3sim: Simulation with Stock Synthesis
+<!--< 50 characters-->
 
 # Abstract
 
