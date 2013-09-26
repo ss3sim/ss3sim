@@ -227,9 +227,6 @@ Probably turn this into a small table:
 - (these points are somewhat random at the moment)
 
 # Acknowledgements
-KFJ and KO were partially supported for this work under NOAA grant
-423 NA10OAR4320148.
-
 We thank Ian Taylor, André Punt, and Richard Methot for helpful discussions during the development of ss3sim.
 KFJ and KO were partially supported by NOAA grant 423 NA10OAR4320148.
 SCA was supported by Fulbright Canada, NSERC, and a Garfield Weston Foundation/B.C. Packers Ltd. Graduate Fellowship in Marine Sciences.
@@ -241,6 +238,7 @@ Table X: Comparison with related software? Possible columns: software, reference
 # Figures legends
 
 Figure 1: Flow diagram of `run_ss3sim()` stock-assessment simulation steps.
+Function names are shown in a monospaced font.
 
 Figure 2: Panels with output from the example
 
