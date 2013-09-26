@@ -26,7 +26,9 @@ quant_dat <- ddply(ts_dat_sto, c("D", "E", "year"), summarize,
 )
 
 cols <- RColorBrewer::brewer.pal(8, "Blues")
-levels(quant_dat$D) <- c("atop(sigma[survey]==0.1, Decreased~survey~effort)", "atop(sigma[survey]==0.4, Increased~survey~effort)")
+levels(quant_dat$D) <- c("atop(sigma[survey]==0.1,
+  Increased~survey~effort)", "atop(sigma[survey]==0.4,
+  Decreased~survey~effort)")
 levels(quant_dat$E) <- c("Fixed~italic('M')[historical]",
   "Estimated~italic('M')")
 
