@@ -20,13 +20,15 @@
   file for the given parameter. Vectors of deviations, also
   referred to as environmental data, must be of
   \code{length = length of *.dat endyr-startyr+1}. Specify
-  years without deviations as zero in the vector. Parameter
+  years without deviations as vectors of zero. Parameter
   names must be unique and be specified as the full
   parameter name in the \code{.ctl} file. The feature will
   include an *additive* functional linkage between
   environmental data and the parameter where the link
   parameter is fixed at a value of one: \code{par\' (y) =
-  par + link * env(y)}}
+  par + link * env(y)} For catchability (q) the *additive*
+  functional linkage is implemented on the log scale:
+  \code{ln_{q}(y) = ln_{q Base} + link * env(y)}}
 
   \item{ctl_file_in}{Input SS3 control file}
 
@@ -47,7 +49,10 @@
   \item{report_file}{Input SS3 report file}
 }
 \description{
-  Methods to include time-varying parameters in the OM
+  Takes an SS3 \code{.ctl}, \code{.par}, and \code{.dat}
+  file and implements the use of environmental variables to
+  enable time-varying parameters. Specifically set up to
+  work with an operating model \code{.ctl} file.
 }
 \details{
   Although there are three ways to implement time-varying
@@ -60,8 +65,8 @@
   which lines to manipulate and where to add code in the
   \code{.ctl}, \code{.par}, and \code{.dat} files, code
   that is necessary to implement time-varying parameters.
-  Within SS time-varying parameters work on an annual
-  time-step, thus for models with multiple seasons the
+  Within SS, time-varying parameters work on an annual
+  time-step. Thus for models with multiple seasons, the
   time-varying parameters will remain constant for the
   entire year.
 }

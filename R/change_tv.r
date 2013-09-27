@@ -1,8 +1,8 @@
 #' Methods to include time-varying parameters in the OM
 #'
 #' @description Takes an SS3 \code{.ctl}, \code{.par}, and \code{.dat}
-#' file and implements the use of environmental variables to enable 
-#' time-varying parameters. Specifically set up to work with an 
+#' file and implements the use of environmental variables to enable
+#' time-varying parameters. Specifically set up to work with an
 #' operating model \code{.ctl} file.
 #'
 #' @param change_tv_list A list of named vectors. Names correspond to
@@ -12,8 +12,8 @@
 #' as additive deviations from the value specified in the \code{.par}
 #' file for the given parameter. Vectors of deviations, also referred
 #' to as environmental data, must be of \code{length = length of *.dat
-#' endyr-startyr+1}. Specify years without deviations as zero in the
-#' vector. Parameter names must be unique and be specified
+#' endyr-startyr+1}. Specify years without deviations as vectors of
+#' zero. Parameter names must be unique and be specified
 #' as the full parameter name in the \code{.ctl} file.
 #' The feature will include an *additive* functional linkage
 #' between environmental data and the parameter where the
@@ -43,8 +43,8 @@
 #' which lines to manipulate and where to add code in the
 #' \code{.ctl}, \code{.par}, and \code{.dat} files, code that is necessary
 #' to implement time-varying parameters.
-#' Within SS time-varying parameters work on an annual time-step,
-#' thus for models with multiple seasons the time-varying parameters
+#' Within SS, time-varying parameters work on an annual time-step.
+#' Thus for models with multiple seasons, the time-varying parameters
 #' will remain constant for the entire year.
 #'
 #' @examples
@@ -189,13 +189,12 @@ if(length(temp.data) > 0) {
   sr.ch <- grep("#_SR_env_link", ss3.ctl, fixed = TRUE)
   sr.base <- as.numeric(gsub('([0-9]*).*','\\1',ss3.ctl[sr.ch+1]))
   if(sr.base == 1) {
-    stop("ss3sim uses annual recruitment deviations
-          and does not work with a model that ties recruitment deviations
-          to environmental covariates.
-          If the application needs to compare the environment to
-          annual recruitment deviations the preferred option is to
-          transform the environmental variable into an age 0 pre-recruit survey.
-          See page 55 of the SS3 version 3.24f manual for more information.")
+    stop("ss3sim uses annual recruitment deviations and does not work
+with a model that ties recruitment deviations to environmental
+covariates. If you need to compare the environment to annual
+recruitment deviations, the preferred option is to transform the
+environmental variable into an age 0 pre-recruit survey. See
+page 55 of the SS3 version 3.24f manual for more information.")
   }
   type <- ifelse(grep("R0", names(temp.data), ignore.case = TRUE) == 1,
                  "virgin",
@@ -203,19 +202,20 @@ if(length(temp.data) > 0) {
                  "steep", "NA"))
   if(type=="NA") {
     stop("Did not recognize the name for the stock recruit parameter
-          as virgin recruitment or steepness,
-          please rename and rerun the scenario")
+as virgin recruitment or steepness, please rename and rerun the
+scenario")
   }
   if(length(temp.data) > 1 ) {
-    stop("Currently SS3 only allows one stock recruit paramater at a time,
-          R0 or steepness, to vary with an environmental covariate.")
+    stop("Currently SS3 only allows one stock recruit paramater at a
+time, R0 or steepness, to vary with an environmental
+covariate.")
   }
 
   if(sr.base > 0) {
     stop("Currently SS3 does not allow environmental deviations
-          for multiple stock recruit parameters.
-          Please remove the environmental covariate from the base OM
-          and run the scenario again.")
+for multiple stock recruit parameters.
+Please remove the environmental covariate from the base OM
+and run the scenario again.")
   }
 
   sr.shortline.ch <- grep("# SR_envlink", ss3.ctl, fixed = TRUE)
@@ -273,7 +273,7 @@ for(i in seq_along(temp.data)) {
     ss3.dat.tbl <- rbind(ss3.dat.tbl, dat)
 }
   par.spec <- grep("#_Q_parms\\(if_any\\)", ss3.ctl)
-  # Check to see if any Q_parms have a power function, 
+  # Check to see if any Q_parms have a power function,
   # if so change par.spec to place Q_env after Q_power
   par.power<- grep("Q_power_", ss3.ctl, fixed=TRUE)
   par.power<- ifelse(length(par.power) == 0, 0, length(par.power))
