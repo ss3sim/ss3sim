@@ -14,6 +14,9 @@
 #' between environmental data and the parameter where the
 #' link parameter is fixed at a value of one:
 #' \code{par\' (y) = par + link * env(y)}
+#' For catchability (q) the *additive* functional linkage
+#' is implemented on the log scale:
+#' \code{ln_{q}(y) = ln_{q Base} + link * env(y)}
 #' @param ctl_file_in Input SS3 control file
 #' @param ctl_file_out Output SS3 control file
 #' @param dat_file_in Input SS3 data file
@@ -265,9 +268,13 @@ for(i in seq_along(temp.data)) {
     ss3.dat.tbl <- rbind(ss3.dat.tbl, dat)
 }
   par.spec <- grep("#_Q_parms\\(if_any\\)", ss3.ctl)
+  # Check to see if any Q_parms have a power function, 
+  # if so change par.spec to place Q_env after Q_power
+  par.power<- grep("Q_power_", ss3.ctl, fixed=TRUE)
+  par.power<- ifelse(length(par.power) == 0, 0, length(par.power))
   if(!is.null(paste.into.ctl)) ss3.ctl <- append(ss3.ctl,
                                                  paste.into.ctl,
-                                                 (par.spec + 1))
+                                                 (par.spec + 1 + par.power))
 
     ss3.dat.top[grep(" #_N_environ_variables",
                      ss3.dat.top, fixed = TRUE)] <- paste(dat.varnum.counter,
