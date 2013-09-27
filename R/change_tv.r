@@ -1,5 +1,10 @@
 #' Methods to include time-varying parameters in the OM
 #'
+#' @description Takes an SS3 \code{.ctl}, \code{.par}, and \code{.dat}
+#' file and implements the use of environmental variables to enable 
+#' time-varying parameters. Specifically set up to work with an 
+#' operating model \code{.ctl} file.
+#'
 #' @param change_tv_list A list of named vectors. Names correspond to
 #' parameters in the operating model that are currently constant
 #' across time and will be changed to vary across time according to
