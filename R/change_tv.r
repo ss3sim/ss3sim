@@ -15,6 +15,9 @@
 #' endyr-startyr+1}. Specify years without deviations as vectors of
 #' zero. Parameter names must be unique and be specified
 #' as the full parameter name in the \code{.ctl} file.
+#' Names for stock recruit parameters must contain "devs", "R0", or 
+#' "steep", and only one stock recruit parameter can be time-varying
+#' per model.
 #' The feature will include an *additive* functional linkage
 #' between environmental data and the parameter where the
 #' link parameter is fixed at a value of one:
@@ -46,6 +49,12 @@
 #' Within SS, time-varying parameters work on an annual time-step.
 #' Thus for models with multiple seasons, the time-varying parameters
 #' will remain constant for the entire year.
+#' ss3sim uses annual recruitment deviations and may not work
+#' with a model that ties recruitment deviations to environmental
+#' covariates. If you need to compare the environment to annual
+#' recruitment deviations, the preferred option is to transform the
+#' environmental variable into an age 0 pre-recruit survey. See
+#' page 55 of the SS3 version 3.24f manual for more information.
 #'
 #' @examples
 #' \dontrun{
@@ -58,7 +67,7 @@
 #' wd <- getwd()
 #' setwd(paste0(d, "/Simple"))
 #' change_tv(change_tv_list = list("NatM_p_1_Fem_GP_1" = c(rep(0, 20), rep(.1, 11)),
-#'                                 "SizeSel_1P_1_FISHERY1" = rnorm(31, 0, 0.05)),
+#'                                 "SizeSel_1P_1_FISHERY1" = rnorm(31, 0, 0.05),"recdevs"=rep(1,31)),
 #'   ctl_file_in = ctl_file_in, ctl_file_out = "example.ctl",
 #'   dat_file_in = dat_file_in, dat_file_out = "example.dat",
 #'   starter_file_in = starter_file_in, starter_file_out = "starter.ss",
@@ -133,7 +142,12 @@ change_tv <- function(change_tv_list,
   lab <- sapply(names(change_tv_list), function(x) {
                                val <- grep(pattern = x, x = ss3.ctl, fixed = TRUE)[1]
                                if(is.na(val)) {
-                                 stop(paste("Could not locate the parameter", x, "in the operating model .ctl file. Check that the parameter is spelled correctly and in the correct case. Have you standardized your .ctl file by running it through SS and used the control.ss_new file?"))}
+                                 stop(paste("Could not locate the parameter", 
+                                            x, "in the operating model .ctl file.", 
+                                            "Check that the parameter is spelled",
+                                            "correctly and in the correct case.",
+                                            "Have you standardized your .ctl file",
+                                            "by running it through SS and used the control.ss_new file?"))}
                                if(val < divider.a) temp <- "mg"
                                if(val > divider.a & val < divider.b) temp <- "sr"
                                if(val > divider.b & val < divider.c) temp <- "qs"
@@ -188,22 +202,24 @@ temp.data <- change_tv_list[lab == "sr"]
 if(length(temp.data) > 0) {
   sr.ch <- grep("#_SR_env_link", ss3.ctl, fixed = TRUE)
   sr.base <- as.numeric(gsub('([0-9]*).*','\\1',ss3.ctl[sr.ch+1]))
-  if(sr.base == 1) {
-    stop("ss3sim uses annual recruitment deviations and does not work
+  type <- ifelse(grepl("R0", names(temp.data), ignore.case = TRUE) == 1,
+                 "virgin",
+                 ifelse(grepl("steep", names(temp.data), ignore.case = TRUE) == 1,
+                 "steep",
+                 ifelse(grepl("dev", names(temp.data), ignore.case = TRUE) == 1, 
+                 "devs", "NA")))
+  if(type=="NA") {
+    stop("Did not recognize the name for the stock recruit parameter
+as recruitment deviations, virgin recruitment, or steepness, 
+please rename and rerun the scenario")
+  }
+  if(type == "devs") {
+    warning("ss3sim uses annual recruitment deviations and may not work
 with a model that ties recruitment deviations to environmental
 covariates. If you need to compare the environment to annual
 recruitment deviations, the preferred option is to transform the
 environmental variable into an age 0 pre-recruit survey. See
 page 55 of the SS3 version 3.24f manual for more information.")
-  }
-  type <- ifelse(grep("R0", names(temp.data), ignore.case = TRUE) == 1,
-                 "virgin",
-                 ifelse(grep("steep", names(temp.data), ignore.case = TRUE) == 1,
-                 "steep", "NA"))
-  if(type=="NA") {
-    stop("Did not recognize the name for the stock recruit parameter
-as virgin recruitment or steepness, please rename and rerun the
-scenario")
   }
   if(length(temp.data) > 1 ) {
     stop("Currently SS3 only allows one stock recruit paramater at a
@@ -220,8 +236,12 @@ and run the scenario again.")
 
   sr.shortline.ch <- grep("# SR_envlink", ss3.ctl, fixed = TRUE)
   ss3.ctl[sr.shortline.ch] <- "-5 5 1 0 -1 99 -3 # SR_envlink"
-  ss3.ctl[sr.ch] <- dat.varnum.counter <- dat.varnum.counter + 1
+  dat.varnum.counter <- dat.varnum.counter + 1
+  ss3.ctl[sr.ch] <- paste(dat.varnum.counter, "#_SR_env_link")
 
+  if(length(grep("dev", names(temp.data), fixed = TRUE)) > 0) {
+    ss3.ctl[sr.ch+1] <- "1 #_SR_env_target_0=none;1=devs;_2=R0;_3=steepness"
+  }
   if(length(grep("R0", names(temp.data), fixed = TRUE)) > 0) {
     ss3.ctl[sr.ch+1] <- "2 #_SR_env_target_0=none;1=devs;_2=R0;_3=steepness"
   }
