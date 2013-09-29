@@ -19,6 +19,8 @@ Seattle, WA 98195-5020, USA
 Short title: ss3sim: Simulation with Stock Synthesis
 <!--< 50 characters-->
 
+\clearpage
+
 # Abstract
 
 Simulation is critical to testing fishery stock-assessment methods.
@@ -42,6 +44,7 @@ We demonstrate the software with a simple example,
 discuss how ss3sim complements other simulation software,
 and outline research questions that ss3sim could address.
 
+\clearpage
 
 # Introduction
 
@@ -227,9 +230,9 @@ Probably turn this into a small table:
 - (these points are somewhat random at the moment)
 
 # Acknowledgements
-We thank Ian Taylor, André Punt, and Richard Methot for helpful discussions during the development of ss3sim.
+We thank Ian Taylor, André Punt, and Richard Methot, AND INSERT ALL FISH 600 PARTICIPANTS NOT LISTED AS AUTHORS for helpful discussions during the development of ss3sim.
 KFJ and KO were partially supported by NOAA grant 423 NA10OAR4320148.
-SCA was supported by Fulbright Canada, NSERC, and a Garfield Weston Foundation/B.C. Packers Ltd. Graduate Fellowship in Marine Sciences.
+SCA was supported by Fulbright Canada, NSERC, and a Garfield Weston Foundation/B.C. Packers Ltd.\ Graduate Fellowship in Marine Sciences.
 
 # Tables
 
@@ -242,8 +245,9 @@ Table X: Comparison with related software? Possible columns: software, reference
 \includegraphics[width=4.2in]{sim-steps.pdf}
 \end{center}
 
-Figure 1: Flow diagram of `run_ss3sim()` stock-assessment simulation steps.
-Function names are shown in a monospaced font.
+Figure 1: Flow diagram of the main steps
+in an ss3sim simulation carried out using `run_ss3sim()`.
+Functions that are called internally are shown in a monospaced font.
 
 \clearpage
 
@@ -264,7 +268,7 @@ The shaded regions indicate 50% and 90%
 of the relative errors and the line indicates the median.
 Lower panels (grey) show the distribution
 of relative error across four scalar variables:
-depletion, natural mortality, SSB at maximum sustainable yield (MSY),
+depletion, *M*, SSB at maximum sustainable yield (MSY),
 and fishing mortality (F) in the last year.
 We show the values across simulation iterations with dots
 and the distributions with beanplots (kernel density smoothers).
