@@ -121,10 +121,12 @@ A simulation therefore refers to the combination of all scenarios and iterations
 ss3sim works, in general, by converting case file arguments
 (e.g. arguments specifying a given natural mortality trajectory)
 into manipulations of SS3 configuration files (`change` functions);
-running the OM, sampling the time-series of population dynamics (pseudo data),
-and running the EM (`run` functions);
-and facilitating the manipulation and visualization of output
-(`get` and `plot` functions) (Figure 1).
+running the OM;
+sampling the time-series of population dynamics with fishery dependent and independent surveys (`sample` functions);
+running the EM;
+and synthesizing the output
+for easy data manipulation and visualization
+(`get` functions) (Figure 1).
 
 # An example simulation with ss3sim
 
