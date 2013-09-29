@@ -235,11 +235,40 @@ SCA was supported by Fulbright Canada, NSERC, and a Garfield Weston Foundation/B
 
 Table X: Comparison with related software? Possible columns: software, reference, platform (e.g. R, GUI...), short description/comparison, examples of papers using it
 
-# Figures legends
+# Figures
+
+
+\begin{center}
+\includegraphics[width=4.2in]{sim-steps.pdf}
+\end{center}
 
 Figure 1: Flow diagram of `run_ss3sim()` stock-assessment simulation steps.
 Function names are shown in a monospaced font.
 
-Figure 2: Panels with output from the example
+\clearpage
+
+\begin{center}
+\includegraphics[width=5.0in]{fig2.pdf}
+\end{center}
+
+Figure 2: Example output from ss3sim simulations.
+We ran a crossed simulation in which we considered
+(1) the effect of fixing natural mortality (*M*)
+at its historical value (0.2; case E0) or estimating *M* (case E1) and
+(2) the effect of high survey effort
+($\sigma_\mathrm{survey} = 0.1$; case D1)
+or low survey effort ($\sigma_\mathrm{survey} = 0.4$; case D2).
+Upper panels (blue) show time series of relative error
+in spawning stock biomass (SSB).
+The shaded regions indicate 50% and 90%
+of the relative errors and the line indicates the median.
+Lower panels (grey) show the distribution
+of relative error across four scalar variables:
+depletion, natural mortality, SSB at maximum sustainable yield (MSY),
+and fishing mortality (F) in the last year.
+We show the values across simulation iterations with dots
+and the distributions with beanplots (kernel density smoothers).
+
+\clearpage
 
 # References
