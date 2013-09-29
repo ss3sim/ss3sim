@@ -198,57 +198,56 @@ Further details on these models are available in @johnson2013 and @ono2013.
 
 # Research opportunities with ss3sim
 
-There are many research opportunities that are accessible with ss3sim.
+ss3sim makes many research opportunities easily accessible.
 Below we outline some key examples.
 
 <!--Although the low-level functions (`change` and `sample`) functions can be combined or modified in a user's own wrapper function to address nearly any simulation-based research question, there are-->
 
-*Retrospective patterns*:
-define; a major problem (REF);
-easy to run for any simulation;
-what methods cope better?
-
-*Domed selectivity*:
-
-*The importance of contrast in index series*:
-
+<!--*Domed selectivity*:-->
+<!--*The importance of contrast in index series*:-->
 
 *Time-varying model misspecification*:
 A fishery adapts every year in response
-to regulation, fish movement, and gear changes
-causing changes in catchability and selectivity over time.
-However, selectivity and/or catchability
-are commonly assumed to be time invariant (e.g. REFS)
-What is the consequence?"
-
-Many simulations try to isolate the effects
-of single time-varying parameters (e.g. REFS),
-but few consider the effect of multiple time-varying parameters.
-In reality, many aspects of systems change through time (REFS)
+to regulation, fish movement, and gear changes.
+This can cause changes in, for example, catchability and selectivity over time.
+However, selectivity and catchability
+are commonly assumed to be time invariant (REFS).
+What is the consequence for stock assessment?
+Further, although many studies have tried to isolate the effects
+of single time-varying parameters (REFS),
+few (or none?) have considered the effect of multiple time-varying parameters.
 and multiple time-varying parameters could interact in unexpected ways (REFS).
 ss3sim can easily incorporate
 the effect of single or multiple time-varying parameters.
 
-*Recruitment deviation patterns*:
+*Patterns in recruitment deviations*:
 Typically, estimation methods assume
 independent normally-distributed recruitment deviations (REF).
-However, this is probably unlikely
-considering the changes in environment we see (REF).
-ss3sim makes it easy to incorporate different structures
-such as autocorrelation or time varying recruitment variation
-and consider how that affects model performance.
+However, recruitment deviations are frequently auto-correlated and their variability can change through time (REF).
+ss3sim makes it simple
+to incorporate different recruitment deviation structures
+and consider how they affect model performance.
 
 *The impact of bias adjustment*:
 Bias adjustment helps assure
-that the estimated log-normally distributed recruitment deviations
-are mean-unbiased leading to mean-unbiased estimates
+that the estimated recruitment deviations
+are mean-unbiased leading to unbiased estimates
 of biomass [@methot2011].
-However, bias adjustment takes extra model runs,
-which can be computationally intensive.
-As a result bias adjustment is routinely not used in practice (REF).
+However, bias adjustment requires extra model runs,
+which can be computationally intensive and time consuming.
+As a result, bias adjustment is routinely not used in practice (REF).
 ss3sim can turn bias adjustment on or off
 with a single argument and so could be easily used to test when
-and how bias adjustment makes a difference in stock assessment.
+and how bias adjustment makes an important difference in stock assessment.
+
+*Retrospective patterns*:
+Retrospective patterns,
+in which model estimates are systematically biased
+with each additional year of data added,
+are a major problem in stock-assessment science (REFs).
+Key questions are: what causes retrospective patterns and what assessment strategies reduce retrospective patterns?
+ss3sim can run retrospective analyses as part of any simulation by adding a single argument --- the number of retrospective years to investigate.
+
 
 # Conclusions
 
