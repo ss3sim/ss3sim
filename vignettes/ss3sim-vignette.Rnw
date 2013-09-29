@@ -10,6 +10,9 @@
 % Try not to re-wrap unless necessary.
 % Avoid trailing whitespace.
 
+% TODO add section demonstrating parallel runs (if not, strip it from the
+% paper)
+
 \documentclass[12pt]{article}
 \usepackage{geometry}
 \usepackage{url}
