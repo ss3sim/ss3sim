@@ -22,13 +22,16 @@
   \code{length = length of *.dat endyr-startyr+1}. Specify
   years without deviations as vectors of zero. Parameter
   names must be unique and be specified as the full
-  parameter name in the \code{.ctl} file. The feature will
-  include an *additive* functional linkage between
-  environmental data and the parameter where the link
-  parameter is fixed at a value of one: \code{par\' (y) =
-  par + link * env(y)} For catchability (q) the *additive*
-  functional linkage is implemented on the log scale:
-  \code{ln_{q}(y) = ln_{q Base} + link * env(y)}}
+  parameter name in the \code{.ctl} file. Names for stock
+  recruit parameters must contain "devs", "R0", or "steep",
+  and only one stock recruit parameter can be time-varying
+  per model. The feature will include an *additive*
+  functional linkage between environmental data and the
+  parameter where the link parameter is fixed at a value of
+  one: \code{par\' (y) = par + link * env(y)} For
+  catchability (q) the *additive* functional linkage is
+  implemented on the log scale: \code{ln_{q}(y) = ln_{q
+  Base} + link * env(y)}}
 
   \item{ctl_file_in}{Input SS3 control file}
 
@@ -68,7 +71,13 @@
   Within SS, time-varying parameters work on an annual
   time-step. Thus for models with multiple seasons, the
   time-varying parameters will remain constant for the
-  entire year.
+  entire year. ss3sim uses annual recruitment deviations
+  and may not work with a model that ties recruitment
+  deviations to environmental covariates. If you need to
+  compare the environment to annual recruitment deviations,
+  the preferred option is to transform the environmental
+  variable into an age 0 pre-recruit survey. See page 55 of
+  the SS3 version 3.24f manual for more information.
 }
 \examples{
 \dontrun{
@@ -81,7 +90,7 @@ report_file <- paste0(d, "/Simple/Report.sso")
 wd <- getwd()
 setwd(paste0(d, "/Simple"))
 change_tv(change_tv_list = list("NatM_p_1_Fem_GP_1" = c(rep(0, 20), rep(.1, 11)),
-                                "SizeSel_1P_1_FISHERY1" = rnorm(31, 0, 0.05)),
+                                "SizeSel_1P_1_FISHERY1" = rnorm(31, 0, 0.05),"recdevs"=rep(1,31)),
   ctl_file_in = ctl_file_in, ctl_file_out = "example.ctl",
   dat_file_in = dat_file_in, dat_file_out = "example.dat",
   starter_file_in = starter_file_in, starter_file_out = "starter.ss",
