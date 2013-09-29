@@ -1,4 +1,4 @@
-# ss3sim: An R package for fisheries stock-assessment simulation with Stock Synthesis
+# ss3sim: An R package for fish stock-assessment simulation with Stock Synthesis
 
 Sean C. Anderson^1*^, Kelli F. Johnson^2^, Cole C. Monnahan^3^, Kotaro Ono^2^, additional authors to be added as contributions are added...
 
@@ -183,44 +183,60 @@ Probably turn this into a small table:
 
 # Research opportunities with ss3sim
 
-- there are lots, we should brainstorm some key ones
+There are many research opportunities that are readily accessible with ss3sim.
 
-- KFJ: Effects of multiple time-varying parameters: Depending on the choice and
-  trends of parameters the effects could be entirely different. Most
-  simulations try to isolate the affects of a single parameter and very few
-  look at two parameters. The package now has the ability to simulate data with
-  multiple time-varying parameters and minimal coding on the users part. I
-  think this would be a great interesting question to stress.
+Any existing SS model can be used with ss3sim
+with minimal modifications (Text S1).
+Further, ss3sim comes with built-in SS models
+that represent three life histories:
+cod-like (slow-growing and long-lived),
+flatfish-like (fast-growing and intermediate-lived),
+and sardine-like (fast-growing and short-lived).
+These models are based on
+North Sean cod (*Gadus morhua*) (R. Methot, pers.\ comm.),
+Yellowtail flounder (*Limanda ferruginea*) (R. Methot, pers.\ comm.),
+and California sardine (*Sardinops caeruleus*) [@hill2012].
+Further details on these models are available in @johnson2013 and @ono2013.
 
-- CM: The effect of different structures for the recdevs. Most people
-  (including us) generate independent normal recdevs, but that is probably not
-  likely considering the changes in environment we see. With our user.recdevs
-  capability it would be easy to simulate different structures such as
-  autocorrelation or time varying sigma_r and see how that affects the EM.
+*Time-varying parameters*: Many simulations try to isolate the effects
+of single time-varying parameters (e.g. REFS),
+but very few consider the effect of multiple time-varying parameters.
+In reality, many aspects of systems change through time (REFS)
+and multiple time-varying parameters could interact in unexpected ways (REFS).
+ss3sim can easily incorporate
+the effect of single or multiple time-varying parameters.
 
-- CM: The impact of bias adjustment. It is so easy to do duplicate runs with
-  and without this option turned out, it would probably make sense to explore
-  when and how it makes it a difference.
+*Recruitment deviation patterns*:
+"The effect of different structures for the recdevs. Most people (including us)
+generate independent normal recdevs, but that is probably not likely
+considering the changes in environment we see. With our user_recdevs
+capability it would be easy to simulate different structures such as
+autocorrelation or time varying sigma_r and see how that affects the EM."
 
-- KFJ: Additional info recdevs: The SS3 manual mentions that time-varying
-  recdevs should be implemented with a recruitment survey by transforming the
-  environmental variable into an age 0 pre-recruit survey. The environmental
-  link can then be specified for the selectivity parameter. Using environmental
-  deviations for the recdevs is discouraged because, "it  interacts  with  the
-  level of  residual  recruitment variability and  there  is  no implementation
-  of  a  bias  correction  for  the variability in recruitment caused by the
-  environmental variable."... It would be interesting to see the difference
-  between having a single set of recdevs with time-varying properties versus
-  using a recruitment survey.
+"KFJ: Additional info recdevs: The SS3 manual mentions that time-varying
+recdevs should be implemented with a recruitment survey by transforming the
+environmental variable into an age 0 pre-recruit survey. The environmental
+link can then be specified for the selectivity parameter. Using environmental
+deviations for the recdevs is discouraged because, "it  interacts  with  the
+level of  residual  recruitment variability and  there  is  no implementation
+of  a  bias  correction  for  the variability in recruitment caused by the
+environmental variable."... It would be interesting to see the difference
+between having a single set of recdevs with time-varying properties versus
+using a recruitment survey."
 
-- KO: The impact of model mis-specification in general. This rejoins some of
-  the questions that have been mentioned above and also some of the simulation
-  we have already run. One example is: fishery changes every year in response
-  to regulation, fish movement, and gear changes among others, causing changes
-  in catchability and selectivity over time. However, selectivity and/or
-  catchability are commonly assumed to be time invariant (for simplicity and
-  data availability). What is the consequence? This is done very easily with
-  this package.
+*The impact of bias adjustment*:
+"It is so easy to do duplicate runs with and without this option turned out, it
+would probably make sense to explore when and how it makes it a difference."
+
+*Model mis-specification*:
+"KO: The impact of model mis-specification in general. This rejoins some of
+the questions that have been mentioned above and also some of the simulation
+we have already run. One example is: fishery changes every year in response to
+regulation, fish movement, and gear changes among others, causing changes in
+catchability and selectivity over time. However, selectivity and/or
+catchability are commonly assumed to be time invariant (for simplicity and
+data availability). What is the consequence? This is done very easily with
+this package."
 
 # Conclusions
 
@@ -238,11 +254,12 @@ SCA was supported by Fulbright Canada, NSERC, and a Garfield Weston Foundation/B
 
 Table X: Comparison with related software? Possible columns: software, reference, platform (e.g. R, GUI...), short description/comparison, examples of papers using it
 
+\clearpage
+
 # Figures
 
-
 \begin{center}
-\includegraphics[width=4.2in]{sim-steps.pdf}
+\includegraphics[width=3.9in]{sim-steps.pdf}
 \end{center}
 
 Figure 1: Flow diagram of the main steps
