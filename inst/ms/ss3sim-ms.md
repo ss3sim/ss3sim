@@ -181,9 +181,7 @@ Probably turn this into a small table:
     2. @piner2011
     3. @lee2011
 
-# Research opportunities with ss3sim
-
-There are many research opportunities that are readily accessible with ss3sim.
+##
 
 Any existing SS model can be used with ss3sim
 with minimal modifications (Text S1).
@@ -198,45 +196,59 @@ Yellowtail flounder (*Limanda ferruginea*) (R. Methot, pers.\ comm.),
 and California sardine (*Sardinops caeruleus*) [@hill2012].
 Further details on these models are available in @johnson2013 and @ono2013.
 
-*Time-varying parameters*: Many simulations try to isolate the effects
+# Research opportunities with ss3sim
+
+There are many research opportunities that are accessible with ss3sim.
+Below we outline some key examples.
+
+<!--Although the low-level functions (`change` and `sample`) functions can be combined or modified in a user's own wrapper function to address nearly any simulation-based research question, there are-->
+
+*Retrospective patterns*:
+define; a major problem (REF);
+easy to run for any simulation;
+what methods cope better?
+
+*Domed selectivity*:
+
+*The importance of contrast in index series*:
+
+
+*Time-varying model misspecification*:
+A fishery adapts every year in response
+to regulation, fish movement, and gear changes
+causing changes in catchability and selectivity over time.
+However, selectivity and/or catchability
+are commonly assumed to be time invariant (e.g. REFS)
+What is the consequence?"
+
+Many simulations try to isolate the effects
 of single time-varying parameters (e.g. REFS),
-but very few consider the effect of multiple time-varying parameters.
+but few consider the effect of multiple time-varying parameters.
 In reality, many aspects of systems change through time (REFS)
 and multiple time-varying parameters could interact in unexpected ways (REFS).
 ss3sim can easily incorporate
 the effect of single or multiple time-varying parameters.
 
 *Recruitment deviation patterns*:
-"The effect of different structures for the recdevs. Most people (including us)
-generate independent normal recdevs, but that is probably not likely
-considering the changes in environment we see. With our user_recdevs
-capability it would be easy to simulate different structures such as
-autocorrelation or time varying sigma_r and see how that affects the EM."
-
-"KFJ: Additional info recdevs: The SS3 manual mentions that time-varying
-recdevs should be implemented with a recruitment survey by transforming the
-environmental variable into an age 0 pre-recruit survey. The environmental
-link can then be specified for the selectivity parameter. Using environmental
-deviations for the recdevs is discouraged because, "it  interacts  with  the
-level of  residual  recruitment variability and  there  is  no implementation
-of  a  bias  correction  for  the variability in recruitment caused by the
-environmental variable."... It would be interesting to see the difference
-between having a single set of recdevs with time-varying properties versus
-using a recruitment survey."
+Typically, estimation methods assume
+independent normally-distributed recruitment deviations (REF).
+However, this is probably unlikely
+considering the changes in environment we see (REF).
+ss3sim makes it easy to incorporate different structures
+such as autocorrelation or time varying recruitment variation
+and consider how that affects model performance.
 
 *The impact of bias adjustment*:
-"It is so easy to do duplicate runs with and without this option turned out, it
-would probably make sense to explore when and how it makes it a difference."
-
-*Model mis-specification*:
-"KO: The impact of model mis-specification in general. This rejoins some of
-the questions that have been mentioned above and also some of the simulation
-we have already run. One example is: fishery changes every year in response to
-regulation, fish movement, and gear changes among others, causing changes in
-catchability and selectivity over time. However, selectivity and/or
-catchability are commonly assumed to be time invariant (for simplicity and
-data availability). What is the consequence? This is done very easily with
-this package."
+Bias adjustment helps assure
+that the estimated log-normally distributed recruitment deviations
+are mean-unbiased leading to mean-unbiased estimates
+of biomass [@methot2011].
+However, bias adjustment takes extra model runs,
+which can be computationally intensive.
+As a result bias adjustment is routinely not used in practice (REF).
+ss3sim can turn bias adjustment on or off
+with a single argument and so could be easily used to test when
+and how bias adjustment makes a difference in stock assessment.
 
 # Conclusions
 
