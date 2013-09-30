@@ -36,9 +36,7 @@ these manipulations at the appropriate stage in the simulation.
    structure, call manipulation functions, run `SS3` as needed, and save the
    output.
 
-3. `get` and `plot` functions for analyzing and plotting simulation output.
-
-
+3. `get` functions for synthesizing the output.
 
 ![An illustration of the `ss3sim` simulation structure and relevant R functions](https://raw.github.com/seananderson/ss3sim/master/inst/ms/sim-steps.png)
 
@@ -62,12 +60,13 @@ You can read the help files with:
     help(package = "ss3sim")
 
 For details on using `ss3sim` for stock-assessment simulation, see the
-[in-progress vignette][vignette] [PDF].
+[in-progress vignette][vignette] [PDF] and the [in-progress paper][paper].
 
 [DESCRIPTION]: https://github.com/seananderson/ss3sim/blob/master/DESCRIPTION
 [models]: https://github.com/seananderson/ss3sim/tree/master/inst/extdata/models
 [cases]: https://github.com/seananderson/ss3sim/tree/master/inst/extdata/cases
 [vignette]: https://dl.dropboxusercontent.com/u/254940/ss3sim-vignette.pdf
+[paper]: https://dl.dropboxusercontent.com/u/254940/ss3sim-ms.pdf
 [SS3]: http://nft.nefsc.noaa.gov/Stock_Synthesis_3.htm
 [r-project]: http://www.r-project.org/
 [SAFS]: http://fish.washington.edu/
