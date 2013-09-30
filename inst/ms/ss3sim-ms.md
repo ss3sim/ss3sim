@@ -38,11 +38,14 @@ ss3sim then generates an underlying truth,
 samples from that truth,
 modifies and runs an estimation model,
 and synthesizes the results.
-Our package can simultaneously investigate multiple scenarios
-and be run across multiple computers in parallel.
+The simulations can be run in parallel to speed computation, 
+and the source code is open source 
+and free to be modified under a GPL-3 license.
 We demonstrate the software with a simple example,
 discuss how ss3sim complements other simulation software,
 and outline research questions that ss3sim could address.
+
+<!--ss3sim can be easily used to answer questions about time-varying model misspecification, retrospective patterns-->
 
 \clearpage
 
