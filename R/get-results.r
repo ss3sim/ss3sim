@@ -254,9 +254,8 @@ get_results_scenario <- function(scenario, directory=getwd(),
                                compfile="none", forecast=F, warn=T, readwt=F,
                                printstats=F, NoCompOK=T)
         ## Grab the residuals for the indices
-        resids.long <- subset(transform(report.em$cpue,
-                                         resids={log(Obs)-log(Exp)}),
-                                         select=c(FleetName, Yr, resids))
+        resids <- log(report.em$cpue$Obs) - log(report.em$cpue$Exp)
+        resids.long <- data.frame(report.em$cpue[,c("FleetName", "Yr")], resids)
         resids.list[[rep]] <-  cbind(scenario, rep,
           reshape2::dcast(resids.long, FleetName~Yr, value.var="resids"))
         ## Get scalars from the two models
@@ -295,7 +294,8 @@ get_results_scenario <- function(scenario, directory=getwd(),
         ts$year <- ts$Yr_om
         ts <- subset(ts, select=-c(Yr_om, Yr_em))
         scalar$max_grad <- scalar$max_grad_em
-        scalar <- subset(scalar, select= -c(max_grad_om, max_grad_em))
+        ignore.cols <- which(names(scalar) %in% c("max_grad_om", "max_grad_em"))
+        scalar <- scalar[ , -ignore.cols]
 
         ## Also get the version and runtime, as checks
         temp <- readLines(con=paste0(rep,"/em/Report.sso"), n=10)
