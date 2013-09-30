@@ -13,6 +13,7 @@ Authors@R: c(person("Sean", "Anderson", email =
     person("Cole", "Monnahan", role = "aut"),
     person("Kotaro", "Ono", role = "aut"),
     person("Juan", "Valero", role = "aut"))
+Author: Sean Anderson <sean@seananderson.ca>
 Maintainer: Sean C. Anderson <sean@seananderson.ca>
 Description: The ss3sim package develops a framework for conducting stock
     assessment simulation with Stock Synthesis 3 (SS3).

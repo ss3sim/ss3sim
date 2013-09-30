@@ -3,3 +3,9 @@
 doc/Makefile$
 man-roxygen$
 inst/examples$
+^\.git$
+^\.DS_Store$
+^\.Rapp.history$
+^\.gitattributes$
+^\.gitignore$
+
