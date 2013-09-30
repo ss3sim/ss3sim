@@ -17,13 +17,13 @@ Author: Sean Anderson <sean@seananderson.ca>
 Maintainer: Sean C. Anderson <sean@seananderson.ca>
 Description: The ss3sim package develops a framework for conducting stock
     assessment simulation with Stock Synthesis 3 (SS3).
-License: MIT
+License: GPL-3
 LazyData: true
 Suggests:
     knitr,
     ggplot2,
     doParallel,
-    foreach,
+    foreach
 VignetteBuilder: knitr
 Depends:
     R (>= 3.0.0),
