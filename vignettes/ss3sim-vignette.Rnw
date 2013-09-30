@@ -462,7 +462,7 @@ load("scalar_dat.rda")
 ts_dat1 <- read.csv("~/Pending/ss3sim-ms/final_results_ts-run1.csv")
 ts_dat2 <- read.csv("~/Pending/ss3sim-ms/final_results_ts.csv")
 ts_dat <- rbind(ts_dat1, ts_dat2)
-ts_dat <- subset(ts_dat, replicate %in% 1:50)
+ts_dat <- subset(ts_dat, replicate %in% 1:60)
 scalar_dat1 <- read.csv("~/Pending/ss3sim-ms/final_results_scalar-run1.csv")
 scalar_dat2 <- read.csv("~/Pending/ss3sim-ms/final_results_scalar.csv")
 scalar_dat1$StartTime <- NULL
@@ -470,9 +470,11 @@ scalar_dat2$StartTime <- NULL
 scalar_dat1$EndTime <- NULL
 scalar_dat2$EndTime <- NULL
 scalar_dat <- rbind(scalar_dat1, scalar_dat2)
-scalar_dat <- subset(scalar_dat, replicate %in% 1:50)
+scalar_dat <- subset(scalar_dat, replicate %in% 1:60)
 ts_dat <- subset(ts_dat, D %in% c("D1", "D2"))
 scalar_dat <- subset(scalar_dat, D %in% c("D1", "D2"))
+scalar_dat$X <- NULL
+ts_dat$X <- NULL
 save(ts_dat, file = "ts_dat.rda")
 save(scalar_dat, file = "scalar_dat.rda")
 @
