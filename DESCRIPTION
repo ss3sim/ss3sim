@@ -20,7 +20,10 @@ Description: The ss3sim package develops a framework for conducting stock
 License: MIT
 LazyData: true
 Suggests:
-    knitr
+    knitr,
+    ggplot2,
+    doParallel,
+    foreach,
 VignetteBuilder: knitr
 Depends:
     R (>= 3.0.0),
@@ -29,7 +32,6 @@ Imports:
     r4ss (>= 1.20),
     gtools (>= 2.7.1),
     lubridate (>= 1.3.0),
-    ggplot2 (>= 0.9.3.1),
     reshape2 (>= 1.2.2)
 Collate:
     'change_agecomp.r'
@@ -66,3 +68,4 @@ Collate:
     'timeseries.r'
     'ss3sim_base.r'
     'change_tv.r'
+    'setup_parallel.r'

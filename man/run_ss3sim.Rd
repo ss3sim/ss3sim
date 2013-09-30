@@ -3,7 +3,8 @@
 \title{Master function to run SS3 simulations}
 \usage{
   run_ss3sim(iterations, scenarios, case_folder,
-    om_model_dir, em_model_dir, seed = NULL, ...)
+    om_model_dir, em_model_dir, seed = NULL,
+    parallel = FALSE, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -42,6 +43,11 @@
   \code{bias_adjust} and \code{bias_nsim}. Also, you can
   pass additional options to \code{SS3} through the
   argument \code{admb_options}.}
+
+  \item{parallel}{A logical argument that controls whether
+  the scenarios are run in parallel. You will need to
+  register multiple cores first with a package such as
+  \code{doParallel}. See the example code below.}
 }
 \value{
   The output will appear in whatever your current R working
@@ -84,6 +90,7 @@ em <- paste0(d, "/models/cod-em")
 
 run_ss3sim(iterations = 1:1, scenarios = "D0-E0-F0-G0-R0-S0-M0-cod",
   case_folder = case_folder, om_model_dir = om, em_model_dir = em)
+unlink("D0-E0-F0-G0-R0-S0-M0-cod", recursive = TRUE) # clean up
 
 # With bias adjustment:
 # (Note that bias_nsim should be bigger, say 10, but it is set to 2
@@ -97,12 +104,25 @@ run_ss3sim(iterations = 1:1, scenarios = "D1-E0-F0-G0-R0-S0-M0-cod",
 run_ss3sim(iterations = 2:3, scenarios = "D1-E0-F0-G0-R0-S0-M0-cod",
   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
   bias_adjust = FALSE, bias_already_run = TRUE)
+unlink("D1-E0-F0-G0-R0-S0-M0-cod", recursive = TRUE) # clean up
 
 # A deterministic run for model checking:
 recdevs_det <- matrix(0, nrow = 100, ncol = 20)
 run_ss3sim(iterations = 1:20, scenarios = "D0-E100-F0-G0-R0-S0-M0-cod",
   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
   bias_adjust = TRUE, bias_nsim = 2, user_recdevs = recdevs_det)
+unlink("D0-E100-F0-G0-R0-S0-M0-cod", recursive = TRUE) # clean up
+
+# An example of a run using parallel processing across 2 cores:
+require(doParallel)
+registerDoParallel(cores = 2)
+require(foreach)
+getDoParWorkers() # check how many cores are registered
+run_ss3sim(iterations = 1, scenarios = c("D0-E0-F0-G0-R0-S0-M0-cod",
+    "D1-E0-F0-G0-R0-S0-M0-cod"), case_folder = case_folder,
+  om_model_dir = om, em_model_dir = em, parallel = TRUE)
+unlink("D0-E0-F0-G0-R0-S0-M0-cod", recursive = TRUE) # clean up
+unlink("D1-E0-F0-G0-R0-S0-M0-cod", recursive = TRUE) # clean up
 }
 }
 \author{
