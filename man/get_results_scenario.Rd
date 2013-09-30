@@ -3,7 +3,7 @@
 \title{Extract SS3 simulation results for one scenario.}
 \usage{
   get_results_scenario(scenario, directory = getwd(),
-    overwrite.files = FALSE)
+    overwrite_files = FALSE)
 }
 \arguments{
   \item{scenario}{A single character giving the scenario
@@ -12,7 +12,7 @@
   \item{directory}{The directory which contains the
   scenario folder.}
 
-  \item{overwrite.files}{A boolean (default is FALSE) for
+  \item{overwrite_files}{A boolean (default is FALSE) for
   whether to delete any files previously created with this
   function. This is intended to be used if replicates were
   added since the last time it was called, or any changes

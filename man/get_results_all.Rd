@@ -3,17 +3,17 @@
 \title{Extract SS3 simulation output}
 \usage{
   get_results_all(directory = getwd(),
-    files.overwrite = FALSE, user.scenarios = NULL)
+    overwrite_files = FALSE, user_scenarios = NULL)
 }
 \arguments{
   \item{directory}{The directory which contains scenario
   folders with results.}
 
-  \item{files.overwrite}{A switch to determine if existing
+  \item{overwrite_files}{A switch to determine if existing
   files should be overwritten, useful for testing purposes
   or if new replicates are run.}
 
-  \item{user.scenarios}{A character vector of scenarios
+  \item{user_scenarios}{A character vector of scenarios
   that should be read in. Default is NULL, which indicates
   find all scenario folders in \code{directory}}
 }
@@ -37,7 +37,7 @@ library(ggplot2)
 library(ss3sim)
 
 ## This function reads in results for all runs in a particular directory
-get_results_all(files.overwrite=FALSE)
+get_results_all(overwrite_files=FALSE)
 
 ## Rread in the final results produced by above function
 scalars <- read.csv("final_results_scalar.csv")

@@ -38,9 +38,9 @@ calculate_runtime <- function(start_time, end_time) {
 #'
 #' @param directory The directory which contains scenario folders with
 #' results.
-#' @param files.overwrite A switch to determine if existing files should be
+#' @param overwrite_files A switch to determine if existing files should be
 #' overwritten, useful for testing purposes or if new replicates are run.
-#' @param user.scenarios A character vector of scenarios that should be read in.
+#' @param user_scenarios A character vector of scenarios that should be read in.
 #' Default is NULL, which indicates find all scenario folders in \code{directory}
 #' @export
 #' @author Cole Monnahan
@@ -54,7 +54,7 @@ calculate_runtime <- function(start_time, end_time) {
 #' library(ss3sim)
 #'
 #' ## This function reads in results for all runs in a particular directory
-#' get_results_all(files.overwrite=FALSE)
+#' get_results_all(overwrite_files=FALSE)
 #'
 #' ## Rread in the final results produced by above function
 #' scalars <- read.csv("final_results_scalar.csv")
@@ -113,7 +113,7 @@ calculate_runtime <- function(start_time, end_time) {
 #'     geom_hline(yintercept = 0, lty = 2)
 #' }
 
-get_results_all <- function(directory=getwd(), files.overwrite=FALSE, user.scenarios=NULL){
+get_results_all <- function(directory=getwd(), overwrite_files=FALSE, user_scenarios=NULL){
 
     on.exit(setwd(directory))
     ## Get unique scenarios that exist in the folder. Might be other random
@@ -128,10 +128,10 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE, user.scena
         return(x[length(x)])
     })
     ## Choose whether to do all scenarios or the vector passed by user
-    if(is.null(user.scenarios)) {
+    if(is.null(user_scenarios)) {
         scenarios <- temp.dirs[substr_r(temp.dirs,4) %in% c("-cod", "-fla","-sar")]
     } else {
-        scenarios <- user.scenarios
+        scenarios <- user_scenarios
     }
 
     if(length(scenarios)==0)
@@ -147,17 +147,17 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE, user.scena
         scalar.file <- paste0(scen,"/results_scalar_",scen,".csv")
         ts.file <- paste0(scen,"/results_ts_",scen,".csv")
         ## Delete them if this is flagged on
-        if( files.overwrite){
+        if( overwrite_files){
             if(file.exists(scalar.file)) file.remove(scalar.file)
             if(file.exists(ts.file)) file.remove(ts.file)
             get_results_scenario(scenario=scen, directory=directory,
-                                 overwrite.files=overwrite.files)
+                                 overwrite_files=overwrite_files)
         }
         ## Check if still there and skip if already so, otherwise read in
         ## and save to file
         else if(!file.exists(scalar.file) |  !file.exists(ts.file)){
             get_results_scenario(scenario=scen, directory=directory,
-                                 overwrite.files=overwrite.files)
+                                 overwrite_files=overwrite_files)
         }
         scalar.list[[i]] <- read.csv(scalar.file)
         ts.list[[i]] <- read.csv(ts.file)
@@ -185,7 +185,7 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE, user.scena
 #' @param scenario A single character giving the scenario from which to
 #' extract results.
 #' @param directory The directory which contains the scenario folder.
-#' @param overwrite.files A boolean (default is FALSE) for whether to delete
+#' @param overwrite_files A boolean (default is FALSE) for whether to delete
 #' any files previously created with this function. This is intended to be
 #' used if replicates were added since the last time it was called, or any
 #' changes were made to this function.
@@ -204,7 +204,7 @@ get_results_all <- function(directory=getwd(), files.overwrite=FALSE, user.scena
 #' get_results_scenario(c("D0-E0-F0-G0-R0-S0-M0-cod"))
 #' }
 get_results_scenario <- function(scenario, directory=getwd(),
-  overwrite.files=FALSE){
+  overwrite_files=FALSE){
     ## This function moves the wd around so make sure to reset on exit,
     ## especially in case of an error
     old.wd <- getwd(); on.exit(setwd(old.wd))
@@ -214,13 +214,13 @@ get_results_scenario <- function(scenario, directory=getwd(),
     ts.file <- paste0("results_ts_",scenario,".csv")
     resids.file <- paste0("results_resids_",scenario,".csv")
     if(file.exists(scalar.file) | file.exists(ts.file)){
-        if(overwrite.files) {
+        if(overwrite_files) {
             ## Delete them and continue
             print(paste0("Files deleted for ", scenario))
             file.remove(scalar.file, ts.file)
         } else {
             ## Stop the progress
-            stop(paste0("Files already exist for ", scenario," and overwrite.files=F"))
+            stop(paste0("Files already exist for ", scenario," and overwrite_files=F"))
         }
     }
     ## Check for bias correction for this scenario, grab it if exists otherwise
