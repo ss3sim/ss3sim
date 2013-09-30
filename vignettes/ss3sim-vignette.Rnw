@@ -428,7 +428,7 @@ and combines the output into two \texttt{.csv} files:
 \texttt{final\_results\_scalar.csv} and \texttt{final\_results\_ts.csv}.
 
 <<get-results, eval=FALSE>>=
-get_results_all(user.scenarios =
+get_results_all(user_scenarios =
   c("D1-E100-F0-G0-R0-S0-M0-cod",
     "D2-E100-F0-G0-R0-S0-M0-cod",
     "D1-E101-F0-G0-R0-S0-M0-cod",
