@@ -181,58 +181,46 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
 
       # Read in the data.ss_new file and move it to the em folder
-      extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
-        data_out = pastef(sc, i, "om", "ss3.dat"))
+       extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
+         data_out = pastef(sc, i, "em", "ss3.dat"))
 
       # Copy the new ss3.dat to the em folder
-      file.copy(from = pastef(sc, i, "om", "ss3.dat"), to =
-        pastef(sc, i, "em", "ss3.dat"))
+       #file.copy(from = pastef(sc, i, "om", "ss3.dat"), to =
+         #pastef(sc, i, "em", "ss3.dat"))
 
       # Survey biomass index
+      SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
+        verbose = FALSE)
       with(index_params,
-        change_index(dat_file_in     = pastef(sc, i, "em", "ss3.dat"),
-                     dat_file_out    = pastef(sc, i, "em", "ss3.dat"),
-                     start_surv      = start_surv,
-                     end_surv        = end_surv,
-                     freq_surv  	   = freq_surv,
-					        	 sd_obs_surv		 = sd_obs_surv,
-                     use_index       = use_index,
-                     start_fish      = start_fish,
-                     end_fish        = end_fish,
-                     freq_fish       = freq_fish,
-                     sd_obs_fish     = sd_obs_fish))
+        change_index(infile          = SS.dat,
+                     outfile         = pastef(sc, i, "em", "ss3.dat"),
+                     fleets          = fleets,
+                     years           = years,
+                     sds_obs         = sds_obs))
 
       # Add error in the length comp data
       SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
       with(lcomp_params,
-        change_lcomp(infile          = SS.dat,
-                     outfile         = pastef(sc, i, "em", "ss3.dat"),
-                     distribution    = distribution,
-                     Nsamp           = Nsamp,
-                     years           = years,
-                     svyears         = svyears,
-                     lbin_vector     = lbin_vector,
-                     lencomp         = lencomp,
-                     fish_lcomp      = fish_lcomp,
-                     sv_lcomp        = sv_lcomp,
-                     cpar            = cpar))
+        change_lcomp(infile           = SS.dat,
+                     outfile          = pastef(sc, i, "em", "ss3.dat"),
+                     fleets           = fleets,
+                     Nsamp            = Nsamp,
+                     years            = years,
+                     lengthbin_vector = lengthbin_vector,
+                     cpar             = cpar))
 
       # Add error in the age comp data
       SS.dat2 = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
       with(agecomp_params,
-        change_agecomp(infile        = SS.dat2,
-                       outfile       = pastef(sc, i, "em", "ss3.dat"),
-                       distribution  = distribution,
-                       Nsamp         = Nsamp,
-                       years         = years,
-                       svyears       = svyears,
-                       N_agebins     = N_agebins,
-                       agecomp       = agecomp,
-                       fish_agecomp  = fish_agecomp,
-                       sv_agecomp    = sv_agecomp,
-                       cpar          = cpar))
+        change_agecomp(infile         = SS.dat,
+                     outfile          = pastef(sc, i, "em", "ss3.dat"),
+                     fleets           = fleets,
+                     Nsamp            = Nsamp,
+                     years            = years,
+                     agebin_vector    = lengthbin_vector,
+                     cpar             = cpar))
 
       # Manipulate EM starter file for a possible retrospective analysis
       if(!is.null(retro_params)) {
