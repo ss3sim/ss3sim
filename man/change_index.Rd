@@ -19,6 +19,9 @@
   from outfile (i.e. turn it off so no samples are
   written).}
 
+  \item{years}{A Numeric list the same length as
+  \code{fleets} giving the years.}
+
   \item{sds_obs}{A Numeric list of the same length as
   \code{fleets}. Either single values or vectors the same
   length as the number of years can be passed. Single

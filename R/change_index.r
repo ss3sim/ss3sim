@@ -13,6 +13,8 @@
 #' @param fleets Numeric vector giving the fleets to be used. This order also
 #' pertains to other arguments. A value of \code{NA} or missing value excludes that
 #' fleet from outfile (i.e. turn it off so no samples are written).
+#' @param years A Numeric list the same length as \code{fleets} giving
+#' the years.
 #' @param sds_obs A Numeric list of the same length as \code{fleets}. Either
 #' single values or vectors the same length as the number of years can be
 #' passed. Single values are repeated for all years.
