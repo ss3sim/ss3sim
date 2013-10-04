@@ -24,12 +24,13 @@
 #' be turned off to speed up testing or exploration of the function (the new
 #' indices are returned invisibly, as in the examples below)
 #' @export
-#' @author Cole Monnahan, Kotaro Ono, Sean Anderson
+#' @author Cole Monnahan, Kotaro Ono
 #' @examples \dontrun{
-#' # Find the "Simple" example data location:
+#' # Find the example data location:
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+#' outfile <- "test.dat"
 #' ex1 <- change_index(infile, outfile, fleets=c(2,3),
 #'                     years=list(1938:2012, 1938:2012) ,
 #'                     sds_obs=list(1e-6, 1e-6), write_file=F)
@@ -109,8 +110,11 @@ change_index <- function(infile, outfile, fleets, years, sds_obs,
     }
     ## Bind all the rows together to form the new index
     cpue.new <- do.call(rbind, newcpue.list)
-    if(make_plot) {library(ggplot2); ggplot(cpue.new, aes(x=year, y=obs, ymin=0,
-                                       colour=as.factor(index)))+geom_line()}
+    if(make_plot) {
+      p <- ggplot2::ggplot(cpue.new, ggplot2::aes(x=year, y=obs, ymin=0,
+        colour=as.factor(index)))+ggplot2::geom_line()
+      print(p)
+    }
     ## Just for testing purposes. Create crude plots.
 
     ## Open the .dat file for the assessment model and find the right lines to
