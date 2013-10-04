@@ -30,7 +30,7 @@
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
-#' toutfile <- "test.dat"
+#' outfile <- "test.dat"
 #' ex1 <- change_index(infile, outfile, fleets=c(2,3),
 #'                     years=list(1938:2012, 1938:2012) ,
 #'                     sds_obs=list(1e-6, 1e-6), write_file=FALSE,
