@@ -811,12 +811,59 @@ print(p)
 \end{enumerate}
 
 \subsection{Data file modifcations}
+The \texttt{data.ss_new} files produced when executing the OM
+contain the expected values of the OM population dynamics. The data
+the EM model is fit to needs to be sampled with observation error
+from these expected values in order to mimic the random sampling
+process done with real fisheries data. The \texttt{ss3sim} package
+provides three functions (detailed below) which carry out the random
+sampling process and generate \texttt{.dat} files to be used in the
+EM.
 \begin{enumerate}
-  \item Use the functions in the \texttt{ss3sim} package
-    to include observation error in the EM \texttt{.dat} file.
-    E.g \texttt{change\_index()}, \texttt{change\_lcomp()}
+\item[\texttt{change\_index()}] This function samples from the
+  biomass trends for the different fleets to simulate the collection
+  of CPUE data. Since $q=1$ for both the OM and EM, the CPUE indices
+  are actually absolute indices of biomass. The result of the random
+  sampling is a log-normal observed CPUE that is centered at the
+  expected value. The user can specify which fleets are sampled in
+  which years and with what amount of noise. Note that the
+  years/fleets specified to be sampled must be present in the OM
+  file, so the user must setup the OM accordingly.
+\item[\texttt{change\_lcomp()}] This function samples from the
+  length composition using a Dirichlet distribution. The Dirichlet
+  distribution can be thought of as a generalization of the
+  multinomial distribution that has an additional parameter
+  controlling the variance of the random deviates (see section
+  \ref{sec:overdispersion}). The user can specify which fleets are
+  sampled in which years and with what amount of noise. Further, the
+  bin structure can be inputted as an argument and thus changed
+  dynamically within a simulation (see \ref{sec:dybin} below for
+  more information).
+\item[\texttt{change\_agecomp()}] Same as length compositions except
+  acts on ages.
 \end{enumerate}
-
+\subsubsection{Dynamic Composition Binning}
+The functions \texttt{change\_lcomp()} and
+\texttt{change\_agecomp()} include optional arguments specifying the
+bins to use. This option may be useful for users who wish to explore
+the impact of different binning schemes of the same data. The user
+may specify a vector of values determining how to bin the data. The
+function works by determining which OM bins to collapse and summing
+across these to form the new bins. Thus the specified bins need to
+coincide (i.e. be a subset) with the OM bins. For instance, of the
+OM bins are $b_1=(0,1,2,3,4,5)$ then this could be collapsed into
+the bins $b_2=(0-1, 2-3, 4-5)$. Because of the way the function is
+written it is paramount that the bins given by the user be
+compatible with the OM bins. For instance, it is not possible
+(within the framework provided here) to include bins outiside of the
+range of the OM bins. We have provided basic checks to the validity
+of the user provided bin structure. However, \textbf{we stress that
+  dynamic binning is a complicated process and the user is
+  responsible for thoroughly testing their proposed binning
+  structure}. See the help file for these functions for examples of
+how to explore and test the functions. An alternative way of testing
+bin structure would be to setup different OMs that have the bin
+structures desired.
 \section{Standardizing model files}
 \label{sec:ss-new}
 
@@ -904,7 +951,7 @@ To add it to your path:
   and try typing \texttt{ss3 -?} and hitting return again.
 \end{enumerate}
 
-\section{Sampling age and length compositions}
+\section{Sampling age and length compositions}\label{sec:overdispersion}
 When simulating assessment models we need a way to mimic the way
 that the age/length compositions (comps) are sampled in reality.
 Under perfect mixing of fish and truly random sampling
