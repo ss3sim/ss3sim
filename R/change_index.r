@@ -33,10 +33,12 @@
 #' outfile <- "test.dat"
 #' ex1 <- change_index(infile, outfile, fleets=c(2,3),
 #'                     years=list(1938:2012, 1938:2012) ,
-#'                     sds_obs=list(1e-6, 1e-6), write_file=F)
+#'                     sds_obs=list(1e-6, 1e-6), write_file=FALSE,
+#'                     make_plot = TRUE)
 #' ex2 <- change_index(infile, outfile, fleets=c(2,3),
 #'                     years=list(1938:2012, 1938:2012) ,
-#'                     sds_obs=list(.05, .05), write_file=F)
+#'                     sds_obs=list(.05, .05), write_file=FALSE,
+#'                     make_plot = TRUE)
 #' library(ggplot2)
 #' ggplot(ex1, aes(x=year, y=obs, group=index, ymin=0,
 #'                 colour=as.factor(index)))+geom_line() + geom_point(data=ex2,
@@ -44,7 +46,8 @@
 #' ## Exclude a fleet and have varying sds_obs by year
 #' ex3 <- change_index(infile, outfile, fleets=c(2,NA),
 #'                     years=list(1938:2012, 1950),
-#'                     sds_obs=list(seq(.001, .1, len=75), .1), write_file=F)
+#'                     sds_obs=list(seq(.001, .1, len=75), .1),
+#'                     write_file=FALSE)
 #' ggplot(ex3, aes(x=year, y=obs, group=index, ymin=0,
 #'                 colour=as.factor(index)))+geom_point()
 #' }
