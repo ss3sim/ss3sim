@@ -22,7 +22,7 @@
 #' scheme as given in \code{infile}
 #' @param lengthbin_vector A numeric vector giving the new length bins to use.
 #' \code{agebin_vector} must be within the [min;max] of population bin. This
-#' feature alows dynamic binning by the user, but is not fully tested. Users
+#' feature allows dynamic binning by the user, but is not fully tested. Users
 #' should consult the vignette and carefully check the function bins the data as
 #' desired before proceeding with simulations.
 #' @param cpar A numeric value or vector the same length as \code{fleets}
