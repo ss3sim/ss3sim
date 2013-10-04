@@ -1,208 +1,201 @@
-#' Resample age composition data
+#' Sample age compositions from expected values
 #'
-#' Take a \code{data.SS_new} file, resample the age compositions from
-#' the expected values, and return a new file with the new age
-#' composition samples. Samples can have dimensions, bins, sample
-#' sizes, and distributions which are different than those coming from
-#' SS.
+#' Take a \code{data.SS_new} file containing expected values and sample to
+#' create observed age compositions which are then written to file for use by
+#' the EM.
 #'
-#' @author Roberto Licandeo, Felipe Hurtado-Ferro
-#' @param infile SS data object from \code{SS_readdat()} in the r4ss
-#' package. Make sure you select option \code{section = 2}
-#' @param outfile Name of the new file to be created. Make sure to
-#' give the extension \code{.dat} to the file name.
-#' @param distribution Distribution to be used to sample the length
-#' compositions. Options are \code{"multinomial"} and
-#' \code{"dirichlet"}
-#' @param Nsamp Number of samples drawn from a multinomial
-#' distribution, or precision for the Dirichlet distribution. This
-#' could either be a single value if the sample size is the same for
-#' all years but could also be a vector with its length equal to the
-#' number of years with fishery and survey samples. For the latter,
-#' fishery sample size precedes the survey sample size. \code{Nsamp}
-#' only accepts numeric values and requires to be specified for both
-#' the fishery and survey EVEN IF it is not used in the end. Default
-#' to 100.
-#' @param N_agebins Number of age bins.
-#' @param years Vector of years for the fleet age comps.
-#' @param svyears Vector of years for the survey age comps.
-#' @param agecomp Matrix of age comps.
-#' @param fish_agecomp, \code{TRUE} or \code{FALSE}; default to
-#' \code{TRUE}. Sets whether to use or not use the fishery age
-#' composition data.
-#' @param sv_agecomp, \code{TRUE} or \code{FALSE}; default to
-#' \code{TRUE.} Sets whether to use or not use the survey age
-#' composition data.
-#' @param cpar \code{c} parameter scaling the variance of the
-#' Dirichlet and Multinomial distributions.
+#' @author Cole Monnahan and Kotaro Ono; modified from a version by Roberto
+#' Licandeo and Felipe Hurtado-Ferro
+#' @param infile SS data object as read in from \code{SS_readdat} in the r4ss
+#' package. Make sure you select option \code{section=2}.
+#' @param outfile Character string of the name for the new file to be
+#' created. Must end in \code{.dat}.
+#' @param fleets Numeric vector giving the fleets to be used. This order also
+#' pertains to other arguments. A value of \code{NA} or missing value excludes that
+#' fleet from outfile (i.e. turn it off so no samples are written).
+#' @param Nsamp A numeric list of the same length as \code{fleets}. Either single
+#' values or vectors the same length as the number of years can be passed
+#' through. Single values are repeated for all years.
+#' @param years A numeric list of the same length as \code{fleets}. Each element
+#' specifies the years to sample from each fleet. Years left out are excluded in
+#' \code{outfile}, allowing the user to reduce (but not increase) the sample
+#' scheme as given in \code{infile}
+#' @param agebin_vector A numeric vector giving the new age bins to use.
+#' \code{agebin_vector} must be within the [min;max] of population bin. This
+#' feature alows dynamic binning by the user, but is not fully tested. Users
+#' should consult the vignette and carefully check the function bins the data as
+#' desired before proceeding with simulations.
+#' @param cpar A numeric value or vector the same length as \code{fleets}
+#' controlling the variance of the Dirichlet distribution used for sampling. A
+#' value of \code{1} indicates the same standard deviation as a multinomial of the
+#' given \code{Nsamp}, \code{2} indicates twice, etc. Values greater than one indicate
+#' overdispersion, and less underdispersion.
+#' @param write_file A switch for whether to write \code{outfile} to disk. Can
+#' be turned off to speed up testing or exploration of the function (the new
+#' agecomp is returned invisibly, as in the examples below)
+
 #' @examples
 #' \dontrun{
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+
+#' ## Generate with constant sample size across years
+#' ex1 <- sample_agecomp(infile=infile, outfile="test1.dat", fleets=c(1,2),
+#'                Nsamp=list(100,50), years=list(seq(1994, 2012, by=2),
+#'               2003:2012))
 #'
-#' # Generate a .dat file with the same dimensions as the 'infile'
-#' change_agecomp(infile, outfile = "newdat.dat")
+#' ## Generate with varying Nsamp by year for first fleet
+#' ex2 <- sample_agecomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
+#'                Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
+#'                years=list(seq(1994, 2012, by=2),
+#'                2003:2012))
 #'
-#' # Generate a .dat file with a smaller sample size
-#' change_agecomp(infile, outfile = "newdat.dat", Nsamp=20)
+#' ## Generate with varying Nsamp by year for first fleet AND with different age bins
+#' ex3 <- sample_agecomp(infile=infile, outfile="codEM.dat", fleets=c(1,2),
+#'                Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
+#'                years=list(seq(1994, 2012, by=2),
+#'                2003:2012),	agebin_vector = seq(1,15,by=3))
 #'
-#' # Generate a .dat file with a shorter time series
-#' change_agecomp(infile, outfile = "newdat.dat", Nsamp = 100,
-#'   years = 1980:2012)
+#' plot(seq(0,15, by=3), as.numeric(ex3[1, -(1:9)]), type="b", col=2,
+#'      xlab="Age Bin", ylab="Proportion of Age",
+#'      main="Comparison of different age bin structures via agebin_vector")
+#' lines(0:15, as.numeric(ex1[1, -(1:9)]), type="b", col=1)
+#' legend("topright", legend=c("ex1", "ex3"), col=c(1,2), pch=1)
 #'
-#' # Generate a .dat file using Dirichlet distributed samples
-#' change_agecomp(infile, outfile = "newdat.dat", Nsamp = 100,
-#'   distribution = "dirichlet")
+#' unlink(x=c("test1.dat", "test2.dat", "test3.dat")) # clean up
 #'
-#' # Generate a .dat file using Dirichlet distributed samples for the
-#' # fishery and Multinomial for the survey
-#' change_agecomp(infile, outfile = "newdat.dat", Nsamp = 100,
-#'   distribution = c("dirichlet", "multinomial"))
-#'
-#' # Generate a .dat file using Dirichlet distributed samples for the
-#' # fishery with 50 samples and Multinomial for the survey with 100
-#' # samples
-#' change_agecomp(infile, outfile = "newdat.dat", distribution =
-#'   c("dirichlet", "multinomial"), years = seq(1994, 2012, by = 2),
-#'   svyears = seq(2003, 2012), Nsamp = c(rep(50, 10), rep(100, 10)))
-#'
-#' # cleanup:
-#' unlink("newdat.dat")
+#' ## Plot distributions for a particular year for a cpar of 5 and 1 to
+#' ## demonstrate the impact of cpar
+#' temp.list <- list()
+#' for(i in 1:500){
+#'     temp.list[[i]] <-
+#'         sample_agecomp(infile=infile, outfile="test1.dat",
+#'                        fleets=c(1,2), cpar=c(5,1), Nsamp=list(100,100),
+#'                        years=list(1995, 1995), write_file=F)
 #' }
+#' xx <- do.call(rbind, temp.list)[,-(1:9)[-3]]
+#' xx <- reshape2::melt(xx, id.vars="FltSvy")
+#' par(mfrow=c(2,1))
+#' with(subset(xx, FltSvy==1), boxplot(value~variable, las=2,
+#'                 main="Overdispersed",  xlab="Age bin"))
+#' temp <- as.numeric(subset(infile$agecomp, Yr==1995 & FltSvy == 1)[-(1:9)])
+#' points(temp/sum(temp), pch="-", col="red")
+#' with(subset(xx, FltSvy==2), boxplot(value~variable, las=2,
+#'                 main="Multinomial", xlab="Age bin"))
+#' temp <- as.numeric(subset(infile$agecomp, Yr==1995 & FltSvy == 2)[-(1:9)])
+#' points(temp/sum(temp), pch="-", col="red")
+#' #' }
 #' @export
 
+change_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
+                           years, cpar=1, agebin_vector=NULL, write_file=TRUE){
+    ## The new agecomp is mostly based on the old one so start with
+    ## that
+    agecomp <- infile$agecomp
+    newbins <- agebin_vector
+    oldbins <- infile$agebin_vector
+    if (min(newbins) > min(oldbins)) newbins <- c(min(oldbins), newbins)
+    Nbins <- length(newbins)
 
-change_agecomp <- function(infile, outfile, distribution =
-  "multinomial", Nsamp = 100, years = NA, svyears = NA, fish_agecomp =
-  TRUE, sv_agecomp = TRUE, N_agebins = NA, agecomp
-  = NA, cpar = 2){
+    ## Check inputs for errors
+    if(substr_r(outfile,4) != ".dat" & write_file)
+        stop(paste0("outfile ", outfile, " needs to end in .dat"))
+    Nfleets <- length(fleets)
+    if(length(unique(agecomp$FltSvy)) != Nfleets)
+        stop(paste0("Number of fleets specified (",Nfleets,
+                    ") does not match input file (",
+                    length(unique(agecomp$FltSvy)), ")"))
+    if(FALSE %in% (fleets %in% unique(agecomp$FltSvy)))
+        stop(paste0("The specified fleet number does not match input file"))
+    if(class(Nsamp) != "list" | length(Nsamp) != Nfleets)
+        stop("Nsamp needs to be a list of same length as fleets")
+    if(class(years) != "list" | length(years) != Nfleets)
+        stop("years needs to be a list of same length as fleets")
+    for(i in fleets){
+        if(length(Nsamp[[i]])>1 & length(Nsamp[[i]]) != length(years[[i]]))
+            stop(paste0("Length of Nsamp does not match length of years for fleet ",fleets[i]))
+    }
+    if(length(cpar) == 1){
+        ## If only 1 value provided, use it for all fleets
+        cpar <- rep(cpar, times=Nfleets)
+    } else if(length(cpar) != Nfleets){
+        stop(paste0("Length of cpar (", length(cpar),
+                    ") needs to be length of fleets (", Nfleets,
+                    ") or 1"))
+    }
+    ## End input checks
 
-  # Read the input file
-  dat.file <- infile
-
-  # Explicit inputs
-  if(class(Nsamp)!="numeric"){
-    stop("Nsamp must have a numeric input")
-  }
-  if (TRUE %in% is.na(years)) {
-    years <- infile$agecomp$Yr[infile$agecomp$FltSvy == 1]
-  }
-  if (TRUE %in% is.na(svyears)) {
-    svyears <- infile$agecomp$Yr[infile$agecomp$FltSvy == 2]
-  }
-  
-  # Save the expected agecomps in another object to be modified (if
-  # necessary)
-  init.agecomp <- dat.file$agecomp
-
-  # Write the age comps
-  DF.width <- length(init.agecomp[1,])     #Width for the comp matrix
-  NDF.width <- length(dat.file$agebin_vector)+9
-
-  if(is.na(agecomp)==TRUE) {
-    new.agecomp <- array(0,dim=c(length(c(years,svyears)),NDF.width))  ## create age matrix
-    new.agecomp[,1] <- c(years,svyears)                                ## fill Yr
-    new.agecomp[,2] <- 1                                               ## fill Seas
-    new.agecomp[1:length(years),3] <- 1                                ## fill FltSvy  =1
-    new.agecomp[(length(years)+1):length(c(years,svyears)),3] <- 2     ## fill FltSvy  =2
-    new.agecomp[,4] <- 0                                               ## Gender (default = 0)
-    new.agecomp[,5] <- 0                                               ## Part (default = 0)
-    new.agecomp[,6] <- 1                                               ## Ageerr (default = 0)
-    new.agecomp[,7] <- -1                                             ## Lbin_lo (default = -1)
-    new.agecomp[,8] <- -1                                             ## Lbin_hi (default = -1)
-    if (length(Nsamp) ==1) new.agecomp[,9] <- Nsamp
-    flacomp <- subset(init.agecomp,init.agecomp[,3]==1)    
-	if (is.na(sum(years)) == FALSE) {
-      for (it in 1:length(years)) {
-        if (length(Nsamp) > 1) {
-          new.agecomp[it, 9] <- Nsamp[it]
+    ## Recalculate age bins depending on user input
+    if (!is.null(newbins)) {
+        if (class(newbins) != "numeric") {
+            stop("agebin_vector must have a numeric input")
         }
-        probs <- flacomp[flacomp[, 1] == years[it], 10:DF.width]
-        probs <- as.numeric(probs)/sum(as.numeric(probs))
-        if (length(distribution) == 1) {
-          if (distribution == "multinomial") {
-            new.agecomp[it, 10:NDF.width] <- rmultinom(1,
-              new.agecomp[it, 9], probs)
-          }
-          if (distribution == "dirichlet") {
-            lambda <- new.agecomp[it, 9]/cpar^2 - 1
-            new.agecomp[it, 10:NDF.width] <- gtools::rdirichlet(1,
-              as.numeric(probs) * lambda)
-          }
+        if (min(newbins) < min(oldbins) |
+            max(newbins) > max(oldbins)) {
+            stop("agebin_vector must be within the [min;max] of population bin")
         }
-        if (length(distribution) > 1) {
-          if (distribution[1] == "multinomial") {
-            new.agecomp[it, 10:NDF.width] <- rmultinom(1,
-              new.agecomp[it, 9], probs)
-          }
-          if (distribution[1] == "dirichlet") {
-            lambda <- new.agecomp[it, 9]/cpar^2 - 1
-            new.agecomp[it, 10:NDF.width] <- gtools::rdirichlet(1,
-              as.numeric(probs) * lambda)
-          }
+        ## Adjust the "old" age bins to the "new" one
+        if (length(oldbins) != Nbins) {
+            newbin.index <- findInterval(oldbins, newbins)
+            ## Calculate new bins by consolidating old bins, and then and sum
+            ## across appropriate columns to create the new columns
+            temp.index <- 1:length(unique(newbin.index))
+            temp <- sapply(temp.index, function(x)
+                           apply(as.matrix(agecomp[, 9+which(newbin.index==x)]),1, sum))
+            new.agecomp <- cbind(agecomp[,1:9], temp)
+            names(new.agecomp)[-(1:9)] <-
+                c(paste0("a", newbins[-Nbins], "-",
+                         newbins[-1]), paste0("a>",newbins[Nbins]))
+
+            ## Change the corresponding locations in the .dat file
+            infile$N_agebins <- Nbins
+            infile$agebin_vector <- newbins
+            agecomp <- new.agecomp
         }
-      }
     }
 
-    svagecomp <- subset(init.agecomp, init.agecomp[, 3] == 2)
-    if (is.na(sum(svyears)) == FALSE) {
-      for (it in (length(years) + 1):length(c(years, svyears))) {
-        if (length(Nsamp) > 1) {
-          new.agecomp[it, 9] <- Nsamp[it]
+    ## Resample from the age data
+    ## The general approach here is to loop through each row to keep
+    ## (depends on years input) and resample depending on Nsamp and
+    ## cvar. All these rows are then combined back together to form
+    ## the final agecomp.
+    newcomp.list <- list()                  # temp storage for the new rows
+    k <- 1
+    ## Loop through each fleet
+    for(i in 1:length(fleets)){
+        fl <- fleets[i]
+        if(!is.na(fl)){
+            agecomp.fl <- subset(agecomp, FltSvy==fl & Yr %in% years[[i]])
+            if(length(years[[i]]) != nrow(agecomp.fl))
+                stop(paste("A year specified in years was not found in the input file for fleet", fl))
+            agecomp.fl$Nsamp <- Nsamp[[i]]
+            ## Now loop through each year and resample that row
+            for(yr in years[[i]]) {
+                newcomp <- subset(agecomp.fl, Yr==yr)
+                ## First 1-9 cols aren't age bins so skip them
+                probs <- as.numeric(newcomp[-(1:9)]/sum(newcomp[-(1:9)]))
+                lambda <- newcomp$Nsamp/cpar[i]^2 - 1
+                ## Replace expected values with sampled values
+                newcomp[-(1:9)] <-
+                    gtools::rdirichlet(1, as.numeric(probs) * lambda)
+                newcomp.list[[k]] <- newcomp
+                k <- k+1
+            }
         }
-        probs <- svagecomp[svagecomp[, 1] == c(years, svyears)[it],
-          10:DF.width]
-        probs <- as.numeric(probs)/sum(as.numeric(probs))
-        if (length(distribution) == 1) {
-          if (distribution == "multinomial") {
-            new.agecomp[it, 10:NDF.width] <- rmultinom(1,
-              new.agecomp[it, 9], probs)
-          }
-          if (distribution == "dirichlet") {
-            lambda <- new.agecomp[it, 9]/cpar^2 - 1
-            new.agecomp[it, 10:NDF.width] <- gtools::rdirichlet(1,
-              as.numeric(probs) * lambda)
-          }
-        }
-        if (length(distribution) > 1) {
-          if (distribution[2] == "multinomial") {
-            new.agecomp[it, 10:NDF.width] <- rmultinom(1,
-              new.agecomp[it, 9], probs)
-          }
-          if (distribution[2] == "dirichlet") {
-            lambda <- new.agecomp[it, 9]/cpar^2 - 1
-            new.agecomp[it, 10:NDF.width] <- gtools::rdirichlet(1,
-              as.numeric(probs) * lambda)
-          }
-        }
-      }
     }
-  }
+    ## Combine new rows together into one data.frame
+    newcomp.final <- do.call(rbind, newcomp.list)
 
-  new.agecomp <- as.data.frame(new.agecomp)
-  names(new.agecomp) <- c(names(dat.file$agecomp)[1:9], paste("a",
-      dat.file$agebin_vector, sep = ""))
+    ## Build the new dat file
+    newfile <- infile
+    newfile$agecomp <- newcomp.final
+    newfile$N_agecomp <- nrow(newcomp.final)
 
-  #To keep or not to keep the age comp from fishery and survey
-  if(fish_agecomp==FALSE) {
-    new.agecomp <- new.agecomp[new.age$FltSvy != 1, ]
-  }
-  if(sv_agecomp==FALSE) {
-    new.agecomp <- new.agecomp[new.age$FltSvy != 2, ]
-  }
-
-  dat.file$agecomp <- new.agecomp
-
-  if(dim(new.agecomp)[1]==0) {
-    dat.file$agecomp = data.frame("#")
-  }
-
-  #To calculate the final sum of years
-  dat.file$N_agecomp <- length(new.agecomp[,1])
-
-  #Write the modified file
-  r4ss::SS_writedat(datlist = dat.file, outfile = outfile,
-    overwrite = TRUE)
+    ## Write the modified file
+    if(write_file)
+        r4ss::SS_writedat(datlist = newfile, outfile = outfile, overwrite = T)
+    return(invisible(newcomp.final))
 }
+
 
