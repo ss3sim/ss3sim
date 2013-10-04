@@ -1,10 +1,3 @@
-# description: base case for survey index
-start_surv; 1974
-end_surv; 2012
-freq_surv; 2
-sd_obs_surv; 0.4
-start_fish; 1938
-end_fish; 2012
-freq_fish; 1
-sd_obs_fish; 0.4
-use_index; "survey"
+fleets; 2
+years; list(1974:2012)
+sds_obs; 0.4
