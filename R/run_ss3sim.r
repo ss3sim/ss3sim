@@ -119,9 +119,13 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
     if(cores == 1) parallel <- FALSE
   }
 
+  # Note that inside a foreach loop you pop out of your current
+  # workspace until you go back into an exported function
+  # therefore we need to add subst_r to the .export list
+  # for foreach to work on Windows:
   if(parallel) {
     foreach(parallel_scenario = scenarios, .packages = "ss3sim", .verbose =
-            TRUE, .export="substr_r") %dopar% {
+            FALSE, .export = "substr_r") %dopar% {
       a <- get_caseargs(folder = case_folder, scenario = parallel_scenario)
       sp <- substr_r(parallel_scenario, 3)
       ss3sim_base(iterations, scenarios = parallel_scenario,
