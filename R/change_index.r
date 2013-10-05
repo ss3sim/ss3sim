@@ -1,121 +1,156 @@
-#' Sample the biomass with observation error to generate indices of abundance.
+#' Sample the biomass with observation error to simulate a survey
 #'
-#' This function creates an index of abundance sampled from the expected
-#' available biomass for given fleets in given years. Let B_y be the biomass
-#' from the OM. Then the sampled value is calculated as: B_y*exp(rnorm(1, 0,
-#' \code{sds_obs})-\code{sds_obs}^2/2). The second term adjusts the random
-#' samples so that their expected value is B_y (i.e. the log-normal bias correction).
+#' This function creates an index of abundance sampled from the
+#' expected available biomass for each fleet: survey 1 and survey 2
+#' (which mimics the fishery). Lognormal errors are added around the
+#' index. By default only the fishery-independent survey is sampled.
 #'
-#' @param infile SS data object as read in from \code{SS_readdat} in the r4ss
-#' package. Make sure you select option \code{section=2}.
-#' @param outfile Character string of the name for the new file to be
-#' created. Must end in \code{.dat}.
-#' @param fleets Numeric vector giving the fleets to be used. This order also
-#' pertains to other arguments. A value of \code{NA} or missing value excludes that
-#' fleet from outfile (i.e. turn it off so no samples are written).
-#' @param sds_obs A Numeric list of the same length as \code{fleets}. Either
-#' single values or vectors the same length as the number of years can be
-#' passed. Single values are repeated for all years.
-#' @param make_plot A switch for whether to make a crude ggplot showing the
-#' results. Useful for testing and exploring the function.
-#' @param write_file A switch for whether to write \code{outfile} to disk. Can
-#' be turned off to speed up testing or exploration of the function (the new
-#' indices are returned invisibly, as in the examples below)
+#' @param dat_file_in Name of the data file to read in
+#' @param dat_file_out Name of the data file to write to
+#' @param start_surv Starting year survey index
+#' @param end_surv Ending year survey index
+#' @param freq_surv Frequency to return index values survey index
+#' @param sd_obs_surv Standard deviation of the observation error
+#' survey index
+#' @param start_fish Starting year fishery index
+#' @param end_fish Ending year fishery index
+#' @param freq_fish Frequency to return index values fishery index
+#' @param sd_obs_fish Standard deviation of the observation error
+#' fishery index
+#' @param make_plot Logical - make a plot of the biomass and index
+#' values?
+#' @param use_index Specify which abundance index you want to use.
+#' Defaults to \code{"survey"}.
 #' @export
 #' @author Cole Monnahan, Kotaro Ono, Sean Anderson
 #' @examples \dontrun{
 #' # Find the "Simple" example data location:
 #' d <- system.file("extdata", package = "ss3sim")
-#' f_in <- paste0(d, "/example-om/data.ss_new")
-#' infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
-#' ex1 <- change_index(infile, outfile, fleets=c(2,3),
-#'                     years=list(1938:2012, 1938:2012) ,
-#'                     sds_obs=list(1e-6, 1e-6), write_file=F)
-#' ex2 <- change_index(infile, outfile, fleets=c(2,3),
-#'                     years=list(1938:2012, 1938:2012) ,
-#'                     sds_obs=list(.05, .05), write_file=F)
-#' library(ggplot2)
-#' ggplot(ex1, aes(x=year, y=obs, group=index, ymin=0,
-#'                 colour=as.factor(index)))+geom_line() + geom_point(data=ex2,
-#'                 aes(x=year, y=obs, colour=as.factor(index), group=index))
-#' ## Exclude a fleet and have varying sds_obs by year
-#' ex3 <- change_index(infile, outfile, fleets=c(2,NA),
-#'                     years=list(1938:2012, 1950),
-#'                     sds_obs=list(seq(.001, .1, len=75), .1), write_file=F)
-#' ggplot(ex3, aes(x=year, y=obs, group=index, ymin=0,
-#'                 colour=as.factor(index)))+geom_point()
+#' f_in <- paste0(d, "/Simple/simple.dat")
+#' change_index(f_in, "output_test.dat", start_surv = 1980,
+#' end_surv = 2001, start_fish = 1980, end_fish = 2001,
+#' make_plot = TRUE, use_index = "survey")
+#' # Clean up:
+#' file.remove("output_test.dat")
 #' }
+change_index <- function(dat_file_in, dat_file_out, start_surv,
+  end_surv, freq_surv = 2, sd_obs_surv = 0.2, start_fish = 1, end_fish = 1,
+  freq_fish = 1, sd_obs_fish = 0.4, make_plot = FALSE,
+  use_index=c("survey", "fishery", "all")){
 
-change_index <- function(infile, outfile, fleets, years, sds_obs,
-                         make_plot = FALSE, write_file=TRUE){
-    cpue <- infile$CPUE
-    ## Check inputs for errors
-    if(substr_r(outfile,4) != ".dat" & write_file)
-        stop(paste0("outfile ", outfile, " needs to end in .dat"))
-    Nfleets <- length(fleets)
-    if(length(unique(cpue$index)) != Nfleets)
-        stop(paste0("Number of fleets specified (",Nfleets,
-                    ") does not match input file (",
-                    length(unique(cpue$index)), ")"))
-    if(FALSE %in% (fleets[!is.na(fleets)] %in% unique(cpue$index)))
-        stop(paste0("The specified fleet number specified does not match input file"))
-    if(class(sds_obs) != "list" | length(sds_obs) != Nfleets)
-        stop("sds_obs needs to be a list of same length as fleets")
-    if(class(years) != "list" | length(years) != Nfleets)
-        stop("years needs to be a list of same length as fleets")
-    for(i in 1:length(fleets)){
-        if(length(sds_obs[[i]])>1 & length(sds_obs[[i]]) != length(years[[i]]))
-            stop(paste0("Length of sds_obs does not match length of years for fleet ",fleets[i]))
+  use_index = use_index[1]
+  if(!use_index %in% c("all", "fishery", "survey"))
+    stop("use_index must be one of all, fishery, or survey")
+
+  ## Calculate which years to have the index values
+  years.surveyindex <- seq(from=start_surv, to=end_surv, by=freq_surv)
+  years.fisheryindex <- seq(from=start_fish, to=end_fish, by=freq_fish)
+
+  ## Grab the biomass from the report file generated by the operating model; drop
+  ## the first two rows since they aren't what we want
+  dat.current <- readLines(dat_file_in)
+  CPUE_data_start <- grep("_year seas index obs err", dat.current,
+    fixed=TRUE)[1]
+  CPUE_data_end <- grep("_N_fleets_with_discard", dat.current, fixed=TRUE)[1]
+  length_CPUE_dat <- CPUE_data_end - CPUE_data_start - 2
+  CPUE_data <- read.table(file=dat_file_in, skip=(CPUE_data_start),
+    nrows=length_CPUE_dat)
+  colnames(CPUE_data) <- c("Yr", "Seas", "Fleet", "Mean", "SD")
+  yr <- CPUE_data$Yr
+
+  if(sum(!years.surveyindex %in% CPUE_data$Yr) > 0) {
+    warning("Not all years you requested for an index value are
+      available in the data file. Dropping years that don't match.")
+  }
+  years.surveyindex <- yr[yr %in% years.surveyindex & CPUE_data$Fleet == 2]
+  years.fisheryindex <- yr[yr %in% years.fisheryindex & CPUE_data$Fleet == 3]
+
+  bio.survey <- CPUE_data[which(CPUE_data$Fleet==2 & CPUE_data$Yr %in%
+    years.surveyindex),] # biomass for years w/ survey
+  bio.fishery <- CPUE_data[which(CPUE_data$Fleet==3 & CPUE_data$Yr
+    %in% years.fisheryindex),] # biomass for years w/ survey
+
+  if(length(bio.survey)==0 | length(bio.fishery)==0)
+    stop("Error: no matching years in either survey of fishery, index has length 0")
+
+  ## Add noise:
+  index.survey <- bio.survey$Mean*exp(rnorm(n=length(bio.survey$Mean),
+      mean=0, sd=sd_obs_surv)-sd_obs_surv^2/2)
+
+  ifelse(length(bio.survey)!=0, index.survey.text <-
+    paste(years.surveyindex, 1, 2, index.survey, sd_obs_surv),
+    index.survey.text <- NULL)
+
+  index.fishery <-
+    bio.fishery$Mean*exp(rnorm(n=length(bio.fishery$Mean), mean=0,
+        sd=sd_obs_fish)-sd_obs_fish^2/2)
+
+  ifelse(length(bio.fishery)!=0, index.fishery.text <-
+    paste(years.fisheryindex, 1, 3, index.fishery, sd_obs_fish),
+    index.fishery.text <- NULL)
+  ## Done adding noise.
+
+  ## Just for testing purposes. Create crude plots.
+  if(make_plot){
+    plot(bio.survey$Yr, bio.survey$Mean,  ylim=c(0, max(index.survey,
+          index.fishery)*1.1), type="l", col = "red", xlab = "Years",
+      ylab = "Index")
+    lines(bio.fishery$Yr, bio.fishery$Mean, col = "blue")
+    points(years.surveyindex, index.survey, pch=16, col="red")
+    points(years.fisheryindex, index.fishery, pch=16, col="blue")
+    legend("topright", legend = c("survey", "index"), fill = c("red",
+        "blue"), bty = "n")
+  }
+
+  ## Open the .dat file for the assessment model and find the right lines to
+  ## overwrite
+
+  ## Write to file how many lines to read
+  ind.N <- grep("#_N_cpue_and_surveyabundance_observations", x=dat.current)
+  dat.current[ind.N] <- switch(use_index,
+  all = {
+    paste((length(years.surveyindex)+length(years.fisheryindex)),	 "
+      #_N_cpue_and_surveyabundance_observations -- created by
+      add_noise_to_index R function")
+  },
+  fishery = {
+    paste(length(years.fisheryindex),	 "
+      #_N_cpue_and_surveyabundance_observations -- created by
+      add_noise_to_index R function")
+  },
+  survey = {
+    paste(length(years.surveyindex),	 "
+      #_N_cpue_and_surveyabundance_observations -- created by
+      add_noise_to_index R function")
+  }
+  )
+
+  ind.start <- grep("#_year seas index obs", x=dat.current)[1]
+  ind.end1 <- grep("#_N_fleets_with_discard", x=dat.current)[1] # TODO Check this should be [1]
+  #ind.end2 <- grep("#_N_discard_fleets", x=dat.current)[1]  # TODO Check this should be [1]
+  #ind.end <- c(ind.end1, ind.end2)	# in case people find these different ways
+  ind.end <- ind.end1
+  if(length(ind.end)==0)
+    stop("Couldn't locate where to print data in the .dat file.")
+
+  dat.new <- switch(use_index,
+    all = {
+      c(dat.current[1:ind.start], index.survey.text,
+        index.fishery.text, "",
+        dat.current[ind.end:length(dat.current)])
+    },
+    fishery = {
+      c(dat.current[1:ind.start], index.fishery.text, "",
+        dat.current[ind.end:length(dat.current)])
+    },
+    survey = {
+      c(dat.current[1:ind.start], index.survey.text, "",
+        dat.current[ind.end:length(dat.current)])
     }
-    ## End input checks
+    )
 
-    ## Start of sampling from the indices.  The general approach
-    ## here is to loop through each row to keep (depends on years
-    ## input) and resample depending on sds_obs All these rows are
-    ## then combined back together to form the final CPUE.
-    newcpue.list <- list()
-    k <- 1
-    for(i in 1:Nfleets){
-        fl <- fleets[i]
-        ## If only one sds given, extend it for all years
-        if(length(sds_obs[[i]])==1) sds_obs[[i]] <- rep(sds_obs[[i]], len=length(years[[i]]))
-        if(!is.na(fl)){
-            cpue.fl <- subset(cpue, index==fl & year %in% years[[i]])
-            if(length(years[[i]]) != nrow(cpue.fl))
-                stop(paste("A year specified in years was not found in the input file for fleet", fl))
-            cpue.fl$sds_obs<- sds_obs[[i]]
-            ## Now loop through each year and resample that row
-            for(yr in years[[i]]) {
-                xx <- subset(cpue.fl, year==yr)
-                sds.new <- sds_obs[[i]][which(yr == years[[i]])]
-                if(nrow(xx)==1){
-                    ## Sample from this year and fleet and recombine
-                    ## with the original data
-                    newcpue <- xx$obs*exp(rnorm(n=1, mean=0,
-                                                sd=sds.new)-sds.new^2/2)
-                    newcpue.df <- xx
-                    newcpue.df$obs <- newcpue
-                    newcpue.df$sds_obs <- sds.new
-                    newcpue.list[[k]] <- newcpue.df
-                    k <- k+1
-                } else {
-                    stop(paste0(nrow(xx), " rows found for fleet ", fl,
-                                " in year ", yr, " when should be 1"))
-                }
-            }
-        }
-    }
-    ## Bind all the rows together to form the new index
-    cpue.new <- do.call(rbind, newcpue.list)
-    if(make_plot) {library(ggplot2); ggplot(cpue.new, aes(x=year, y=obs, ymin=0,
-                                       colour=as.factor(index)))+geom_line()}
-    ## Just for testing purposes. Create crude plots.
-
-    ## Open the .dat file for the assessment model and find the right lines to
-    ## overwrite
-    newfile <- infile
-    newfile$CPUE <- cpue.new
-    if(write_file)
-        r4ss::SS_writedat(datlist = newfile, outfile = outfile, overwrite = T)
-    return(invisible(cpue.new))
+  ## Write it back to file, possibly overwriting the original
+  writeLines(text=dat.new, con=dat_file_out)
 }
+
+
