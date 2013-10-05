@@ -120,7 +120,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
   }
 
   if(parallel) {
-    foreach(parallel_scenario = scenarios, .packages = "ss3sim") %dopar% {
+    foreach(parallel_scenario = scenarios, .packages = "ss3sim", .verbose = TRUE) %dopar% {
       a <- get_caseargs(folder = case_folder, scenario = parallel_scenario)
       sp <- substr_r(parallel_scenario, 3)
       ss3sim_base(iterations, scenarios = parallel_scenario,
