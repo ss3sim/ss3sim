@@ -811,7 +811,7 @@ print(p)
 \end{enumerate}
 
 \subsection{Data file modifcations}
-The \texttt{data.ss_new} files produced when executing the OM
+The \texttt{data.ss\_new} files produced when executing the OM
 contain the expected values of the OM population dynamics. The data
 the EM model is fit to needs to be sampled with observation error
 from these expected values in order to mimic the random sampling
