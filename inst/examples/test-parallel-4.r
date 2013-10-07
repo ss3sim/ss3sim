@@ -11,13 +11,13 @@ em <- paste0(d, "/models/cod-em")
 sc <- expand_scenarios(d = c(0, 1), e = c(0, 1), species = "cod")
 
 time_par <- system.time({
-run_ss3sim(iterations = 1:20, scenarios = sc, case_folder =
+run_ss3sim(iterations = 1:5, scenarios = sc, case_folder =
   case_folder, om_model_dir = om, em_model_dir = em, parallel = TRUE)
 unlink(sc, recursive = TRUE)
 })
 
 time_seq <- system.time({
-run_ss3sim(iterations = 1:20, scenarios = sc, case_folder =
+run_ss3sim(iterations = 1:5, scenarios = sc, case_folder =
   case_folder, om_model_dir = om, em_model_dir = em, parallel = FALSE)
 unlink(sc, recursive = TRUE)
 })
