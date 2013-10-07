@@ -576,6 +576,53 @@ print(p)
 
 \clearpage
 
+\section{Parallel computing with \texttt{ss3sim}}
+\label{sec:parallel}
+
+\texttt{ss3sim} can easily run multiple scenarios in parallel 
+to speed up simulations.
+To run a simulation in parallel, 
+you need to (1) register multiple cores or clusters and 
+(2) then set the argument \texttt{parallel} in \texttt{run\_ss3sim} to TRUE.
+For example, we could have run the previous example in parallel.
+First, we'll register 4 cores:
+
+<<parallel-one>>=
+require(doParallel)
+registerDoParallel(cores = 4)
+@
+
+\noindent
+We can check to make sure we're set up to run in parallel:
+
+<<parallel-two>>=
+require(foreach)
+getDoParWorkers()
+@
+
+\noindent
+And then run our simulation on 4 cores simultaneously 
+by setting \texttt{parallel = TRUE}:
+
+<<parallel-three, eval=FALSE>>=
+run_ss3sim(iterations = 1:100, scenarios =
+  c("D1-E0-F0-G0-R0-S0-M0-cod",
+    "D2-E0-F0-G0-R0-S0-M0-cod",
+    "D1-E1-F0-G0-R0-S0-M0-cod",
+    "D2-E1-F0-G0-R0-S0-M0-cod"),
+  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+  bias_adjust = TRUE, parallel = TRUE)
+@
+
+\noindent
+In addition to the check with \texttt{getDoParWorkers()} above, 
+if the simulations are running in parallel, 
+you will also see simultaneous output messages 
+from \texttt{ss3sim} as the simulations run.
+On a 2.27 GHz Intel Xeon quad-core server running Ubuntu 10.04, 
+this example ran 1.9 times faster on 2 cores than on a single core,
+and 3.2 times faster on 4 cores.
+
 \section{Setting up an operating model}
 \label{sec:om-setup}
 
