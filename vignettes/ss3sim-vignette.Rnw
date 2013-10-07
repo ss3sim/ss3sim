@@ -134,7 +134,13 @@ The package functions will rename them after they are copied to appropriate fold
 These files should be derived from \texttt{.ss\_new} files but named as listed above.
 It's important to use \texttt{.ss\_new} files so the files have consistent formatting.
 Many of the functions in this package depend on that formatting.
-See sections \ref{sec:ss-new} for details.
+
+To obtain \texttt{.ss\_new} files,
+open a command window in the OM and EM folders
+and type \texttt{ss3}.
+Once the model is finished running,
+remove the \texttt{.ss\_new} file extension from the files needed
+and add the appropriate file extension.
 
 \subsection{Cases and scenarios}
 
@@ -320,8 +326,7 @@ em <- paste0(d, "/models/cod-em")
 
 We will base the simulation around the base-case files created
 for a cod-like species in the papers
-(Ono \textit{et al}.\ \textit{in review},
-Johnson \textit{et al}.\ \textit{in review}).
+\citep{ono2013} and \citep{johnson2013}.
 You can refer to these papers for details on how the models were set up.
 
 If we were starting from scratch,
@@ -550,8 +555,6 @@ p <- ggplot(ts_dat_sto, aes(x = year)) + xlab("Year") +
     colour = max_grad), alpha = 0.3, width = 0.15) + facet_grid(D~E) +
     scale_color_gradient(low = "gray", high = "red")
 print(p)
-#plot_ts_points(ts_dat_sto, y = "SpawnBio", vert = "D", vert2 = "E",
-#  color = "max_grad", relative_error = TRUE)
 @
 
 <<ssb-ts-plots, fig.height=5, fig.width=7, cache=TRUE, fig.cap="Spawning stock biomass time series.">>=
@@ -625,6 +628,22 @@ and 3.2 times faster on 4 cores.
 
 \section{Setting up an operating model}
 \label{sec:om-setup}
+
+\texttt{ss3sim} comes with 3 built-in \texttt{SS3} operating and estimation models:
+a cod-like (slow-growing and long-lived),
+flatfish-like (fast-growing and intermediate-lived),
+and sardine-like (fast-growing and short-lived).
+These models are based on
+North Sea cod (\textit{Gadus morhua}) (R. Methot, pers.\ comm.),
+Yellowtail flounder (\textit{Limanda ferruginea}) (R. Methot, pers.\ comm.),
+and California sardine (\textit{Sardinops caeruleus}) \citep{hill2012}.
+Further details on these models 
+are available in \citep{johnson2013} and \citep{ono2013}.
+
+Here, we outline the steps to take an existing \texttt{SS3} model 
+and modify it to work with the \texttt{ss3sim} package. 
+First, we cover setting up an operating model 
+and then in section~\ref{sec:em-setup} we cover setting up an estimation model.
 
 \subsection{Overview}
 
@@ -866,7 +885,8 @@ process done with real fisheries data. The \texttt{ss3sim} package
 provides three functions (detailed below) which carry out the random
 sampling process and generate \texttt{.dat} files to be used in the
 EM.
-\begin{enumerate}
+
+\begin{description}
 \item[\texttt{change\_index()}] This function samples from the
   biomass trends for the different fleets to simulate the collection
   of CPUE data. Since $q=1$ for both the OM and EM, the CPUE indices
@@ -888,8 +908,11 @@ EM.
   more information).
 \item[\texttt{change\_agecomp()}] Same as length compositions except
   acts on ages.
-\end{enumerate}
-\subsubsection{Dynamic Composition Binning}
+\end{description}
+
+\subsubsection{Dynamic composition binning}
+\label{sec:dybin}
+
 The functions \texttt{change\_lcomp()} and
 \texttt{change\_agecomp()} include optional arguments specifying the
 bins to use. This option may be useful for users who wish to explore
@@ -902,7 +925,7 @@ OM bins are $b_1=(0,1,2,3,4,5)$ then this could be collapsed into
 the bins $b_2=(0-1, 2-3, 4-5)$. Because of the way the function is
 written it is paramount that the bins given by the user be
 compatible with the OM bins. For instance, it is not possible
-(within the framework provided here) to include bins outiside of the
+(within the framework provided here) to include bins outside of the
 range of the OM bins. We have provided basic checks to the validity
 of the user provided bin structure. However, \textbf{we stress that
   dynamic binning is a complicated process and the user is
@@ -911,15 +934,6 @@ of the user provided bin structure. However, \textbf{we stress that
 how to explore and test the functions. An alternative way of testing
 bin structure would be to setup different OMs that have the bin
 structures desired.
-\section{Standardizing model files}
-\label{sec:ss-new}
-
-To obtain \texttt{.ss\_new} files
-open a command window in the OM and EM folders
-and type \texttt{ss3}.
-Once the model is finished running,
-remove the \texttt{.ss\_new} file extension from the files needed
-and add the appropriate file extension.
 
 \section{Putting \texttt{SS3} in your path}
 \label{sec:path}
