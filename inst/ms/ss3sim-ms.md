@@ -322,11 +322,11 @@ Table X: Comparison with related software? Possible columns: software, reference
 \clearpage
 
 Table 1: Main ss3sim functions and a description of their purpose. 
-A user can control the simulation through the function `run_ss3sim`. 
-`run_ss3sim` then calls `ss3sim_base` and the `change` functions. 
-The user controls what the `change` functions do through a series of plain-text case files. 
+Simulations can be run through the `run_ss3sim` function. 
+`run_ss3sim` then calls the `change` functions. 
+You can control what the `change` functions do through a series of plain-text case files. 
 For example, the case ID `D1` corresponds to the case files `lcomp1`, `agecomp1`, and `index1`, as described in the table. 
-A user could also choose to use the `change` functions directly as part of their own simulation structure.
+You could also use the `change` functions directly as part of your own simulation structure.
 
 ----------------------------------------------------------------
 Function name          Description
