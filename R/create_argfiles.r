@@ -65,6 +65,9 @@ create_argfiles <- function(functions = c("lcomp0-spp" =
     print(paste("Ignoring", names(x)[args_ignore], "in", functions[i]))
     x <- x[-args_ignore]
     d <- data.frame(args = names(x), vals = as.character(x))
+    if(functions[[i]] == "change_tv") {
+      d <- rbind(data.frame(args = "function_type", vals = "change_tv"), d)
+    }
     write.table(d, file = paste0(names(functions)[i], ext), sep = delim,
       row.names = FALSE, col.names = FALSE, quote = FALSE, ...)
   }
