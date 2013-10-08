@@ -648,7 +648,7 @@ flatfish-like (fast-growing and intermediate-lived),
 and sardine-like (fast-growing and short-lived).
 These models are based on
 North Sea cod (\textit{Gadus morhua}) (R. Methot, pers.\ comm.),
-Yellowtail flounder (\textit{Limanda ferruginea}) (R. Methot, pers.\ comm.),
+yellowtail flounder (\textit{Limanda ferruginea}) (R. Methot, pers.\ comm.),
 and California sardine (\textit{Sardinops caeruleus}) \citep{hill2012}.
 Further details on these models 
 are available in \citep{johnson2013} and \citep{ono2013}.
