@@ -37,7 +37,18 @@
 #' Character objects don't need to be quoted. However, be careful not
 #' to use your delimiter (set up as a semicolon) anywhere else in the
 #' file besides to denote columns. 
-
+#' 
+#' The function \code{\link{change_tv}} is a special case.
+#' To pass arguments to \code{\link{change_tv}} through a
+#' \code{\link{run_ss3sim}}: (1) create a case file with an arbitrary
+#' letter not used elsewhere (anything but D, E, F, or R) and include
+#' the line \code{function_type; change_tv} in your case file. For
+#' example, you might want to use M for natural mortality, S for
+#' selectivity, or G for growth.
+#' 
+#' This function (\code{create_argfiles}) automatically adds a line
+#' \code{function_type; change_tv} to the top of a case file
+#' \code{X0-spp.txt} as a starting point for \code{change_tv}.
 
 create_argfiles <- function(functions = c("lcomp0-spp" =
     "change_lcomp", "agecomp0-spp" = "change_agecomp", "index0-spp" =
