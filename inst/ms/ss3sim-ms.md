@@ -321,6 +321,43 @@ Table X: Comparison with related software? Possible columns: software, reference
 
 \clearpage
 
+Table 1: Main ss3sim functions and a description of their purpose. 
+A user can control the simulation through the function `run_ss3sim`. 
+`run_ss3sim` then calls `ss3sim_base` and the `change` functions. 
+The user controls what the `change` functions do through a series of plain-text case files. 
+For example, the case ID `D1` corresponds to the case files `lcomp1`, `agecomp1`, and `index1`, as described in the table. 
+A user could also choose to use the `change` functions directly as part of their own simulation structure.
+
+----------------------------------------------------------------
+Function name          Description
+---------------------- -----------------------------------------
+`run_ss3sim`           Main function to run ss3sim simulations.
+
+`ss3sim_base`          Underlying base simulation function. Can also be called directly.
+
+`change_f`             Controls fishing mortality. (Case file and ID `F`)
+
+`change_tv`            Adds time-varying features. For example, time-varying natural mortality, growth, or selectivity. (Any case file, e.g. `M`, `G`, or `S`, starting with "`function_type; change_tv`")
+
+`change_lcomp`         Controls how length composition data are sampled. (Case file `lcomp`, case ID `D`)
+
+`change_agecomp`       Controls how age composition data are sampled. (Case file `agecomp`, case ID `D`)
+
+`change_index`         Controls how the fishery and survey indices are sampled. (Case file `index`, case ID `D`)
+
+`change_e`             Controls which and how parameters are estimated. (Case file and ID `E`)
+
+`change_retro`         Controls the number of years to discard for a retrospective analysis. (Case file and ID `R`)
+
+`change_rec_devs`      Substitutes recruitment deviations.
+
+`get_results_scenario` Extract the results for a single scenario.
+
+`get_results_all`      Extract results from a series of scenarios.
+---------------------- -----------------------------------------
+
+
+
 # Figures
 
 \begin{center}
