@@ -374,10 +374,23 @@ Then we'll set up case ``estimation'' files in which the recruitment deviations
 are set to the nominal level of \texttt{0.001}.
 We'll name these files \texttt{E100-cod.txt} and \texttt{E101-cod.txt}.
 In the case files, the key element is setting
-\texttt{par\_name = SR\_sigmaR} and \texttt{par\_int = 0.001}.
+\texttt{par\_name = SR\_sigmaR} (the SS parameter name) and \texttt{par\_int = 0.001} (the initial value).
 The arguments \texttt{par\_name} and \texttt{par\_int} are set up
 to handle vectors of parameter names and values. In this example changing
-\texttt{SR\_sigmaR} will be the second parameter in the vector.
+\texttt{SR\_sigmaR} will be the second parameter in the vector. 
+You can look at all the case files in the package folder \texttt{/inst/extdata/eg-cases/}. 
+As an example, here is the file \texttt{E101-cod}:
+
+\begin{verbatim}
+natM_type;          1Parm      
+natM_n_breakpoints; NULL  
+natM_lorenzen;      NULL
+natM_val;           c(0.20,3)
+par_name;           LnQ_base_3_CPUE,SR_sigmaR
+par_int;            c(NA,0.001)
+par_phase;          c(-1,-1)
+forecast_num;       0
+\end{verbatim}
 
 When we run the simulations,
 we'll pass our deterministic recruitment deviations
