@@ -135,8 +135,8 @@ for easy data manipulation and visualization
 
 # An example simulation with ss3sim
 
-To demonstrate ss3sim, we demonstrate a simple example 
-in which we test the effect of 
+To demonstrate ss3sim, we will work through a simple example 
+in which we examine the effect of 
 high vs.\ low research survey effort 
 and the effect of fixing vs.\ estimating natural mortality (*M*).
 We have included all files to run this example in the package data 
@@ -146,29 +146,43 @@ and describe the example in greater detail in the accompanying vignette file (Te
 
 Any existing SS model can be used with ss3sim
 with minimal modifications (Text S1).
-Further, ss3sim comes with built-in SS models
-that represent three life histories:
+ss3sim also comes with built-in pre-modified SS models
+that represent three general life histories:
 cod-like (slow-growing and long-lived),
 flatfish-like (fast-growing and intermediate-lived),
 and sardine-like (fast-growing and short-lived).
 These models are based on
 North Sea cod (*Gadus morhua*) (R. Methot, pers.\ comm.),
 yellowtail flounder (*Limanda ferruginea*) (R. Methot, pers.\ comm.),
-and California sardine (*Sardinops caeruleus*) [@hill2012].
-Further details on these models are available in @johnson2013 and @ono2013. 
+and California sardine (*Sardinops caeruleus*) [@hill2012] (Text S1).
 We will base our example around the cod-like model.
 
 ## Setting up the case files
 
 <!--TODO what happens if there are no time varying parameters specified?-->
 
-ss3sim simulations are controlled by a set of semicolon-delimited plain-text files that describe alternative cases. 
+ss3sim comes with a high-level function `run_ss3sim`, 
+which can run all simulation steps 
+based on a specified scenario ID 
+and a set of semicolon-delimited plain-text files 
+that describe alternative cases (Fig. 1). 
 These files contain the argument values that will be passed 
 to the low-level ss3sim R functions (e.g. `change_e`) during the simulation.
+Alternatively, the low-level functions can be used on their own as part of a more customized simulation wrapper function.
+
 To use the high-level function `run_ss3sim`, the naming of the case files is important. 
 All case files are named according to the the type of case 
 (e.g. `E` for estimation, `D` for data, or `F` for fishing mortality), 
 a number representing the case number, and a three letter code representing the species or stock (e.g. `cod`) (Table 1, Text S1).
+
+We combine these case IDs with semicolons to create scenario IDs. 
+For example, one of our scenarios will 
+have the scenario ID ``D1-E0-F0-R0-cod``.
+This scenario ID tells `run_ss3sim` 
+to read the case files corresponding 
+to the first data (`D`) case 
+(`index1-cod.txt`, `lcomp1-cod.txt`, `agecomp1-cod.txt`), 
+the case 0 for estimation (case ID `E` and files `E0-cod.txt`), and so on.
 
 To investigate the effect of research survey effort,
 we will manipulate the argument `sd_obs_surv`
@@ -181,15 +195,7 @@ in the file `D2-cod.txt`.
 We will set up a base-case file describing fishing mortality (`F0-cod.txt`) 
 and we will specify that we don't want to run a retrospective analysis in the file `R0-cod.txt`.
 
-We combine these case IDs with semicolons to create scenario IDs. 
-For example, one of our scenarios will have the scenario ID ``D1-E0-F0-R0-cod``.
-This scenario ID tells `run_ss3sim` 
-to read the case files corresponding 
-to the first data (`D`) case 
-(`index1-cod.txt`, `lcomp1-cod.txt`, `agecomp1-cod.txt`), 
-the case 0 for estimation (case ID `E` and files `E0-cod.txt`), and so on.
-
-To start, we'll load the ss3sim package and locate three sets of folders:
+To start, we'll load the ss3sim package and locate three sets of folders within the package data:
 (1) the folder with the OM,
 (2) the folder with the EM,
 (3) and the folder with the plain-text case files.
@@ -202,17 +208,19 @@ em <- paste0(d, "/models/cod-em")
 case_folder <- paste0(d, "/eg-cases")
 ```
 
+# Running the simulations
+
 It is important to validate a simulation model first with minimal or no process and/or observation error to ensure unbiased and consistent recovery of parameters [@hilborn1992].
 Before we run our simulations, we tested our models without any process error to make sure we could recover our parameters of interest without bias (Text S1).
-ss3sim makes this simple by allowing you specify your own recruitment deviations and control pseudo-data sampling error (Text S1).
+ss3sim makes this simple by allowing you specify your own recruitment deviations and controlling sampling error (Text S1).
 
-We can then run 100 iterations of each simulation scenario with the following code.
+We can then run 100 iterations of each simulation scenario.
 We will set `bias_adjust = TRUE`, 
-to enable a correction that aims to produce mean-unbiased estimates 
+to enable a procedure that aims to produce mean-unbiased estimates 
 of biomass despite log-normal recruitment deviations [@methot2011].
 Although we won't use the option here, 
 we could run the simulations with parallel processing 
-to substantially reduce computing time (Text S1).
+to substantially reduce computing time by setting `parallel = TRUE` (Text S1).
 
 ```
 run_ss3sim(iterations = 1:100, scenarios =
