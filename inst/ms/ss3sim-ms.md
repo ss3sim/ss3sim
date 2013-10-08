@@ -135,12 +135,12 @@ for easy data manipulation and visualization
 
 # An example simulation with ss3sim
 
-To demonstrate ss3sim, we show a simple example 
+To demonstrate ss3sim, we demonstrate a simple example 
 in which we test the effect of 
 high vs.\ low research survey effort 
 and the effect of fixing vs.\ estimating natural mortality (*M*).
 We have included all files to run this example in the package data 
-and describe the example in greater detail in the accompanying vignette file.
+and describe the example in greater detail in the accompanying vignette file (Text S1).
 
 ## Setting up the SS models
 
@@ -153,7 +153,7 @@ flatfish-like (fast-growing and intermediate-lived),
 and sardine-like (fast-growing and short-lived).
 These models are based on
 North Sea cod (*Gadus morhua*) (R. Methot, pers.\ comm.),
-Yellowtail flounder (*Limanda ferruginea*) (R. Methot, pers.\ comm.),
+yellowtail flounder (*Limanda ferruginea*) (R. Methot, pers.\ comm.),
 and California sardine (*Sardinops caeruleus*) [@hill2012].
 Further details on these models are available in @johnson2013 and @ono2013. 
 We will base our example around the cod-like model.
@@ -168,7 +168,7 @@ to the low-level ss3sim R functions (e.g. `change_e`) during the simulation.
 To use the high-level function `run_ss3sim`, the naming of the case files is important. 
 All case files are named according to the the type of case 
 (e.g. `E` for estimation, `D` for data, or `F` for fishing mortality), 
-a number representing the case number, and a three letter code representing the species or stock (e.g. `cod`).
+a number representing the case number, and a three letter code representing the species or stock (e.g. `cod`) (Table 1, Text S1).
 
 To investigate the effect of research survey effort,
 we will manipulate the argument `sd_obs_surv`
@@ -181,10 +181,18 @@ in the file `D2-cod.txt`.
 We will set up a base-case file describing fishing mortality (`F0-cod.txt`) 
 and we will specify that we don't want to run a retrospective analysis in the file `R0-cod.txt`.
 
+We combine these case IDs with semicolons to create scenario IDs. 
+For example, one of our scenarios will have the scenario ID ``D1-E0-F0-R0-cod``.
+This scenario ID tells `run_ss3sim` 
+to read the case files corresponding 
+to the first data (`D`) case 
+(`index1-cod.txt`, `lcomp1-cod.txt`, `agecomp1-cod.txt`), 
+the case 0 for estimation (case ID `E` and files `E0-cod.txt`), and so on.
+
 To start, we'll load the ss3sim package and locate three sets of folders:
 (1) the folder with the OM,
 (2) the folder with the EM,
-(3) and the folder with the plain-text case files,
+(3) and the folder with the plain-text case files.
 
 ```
 library(ss3sim)
@@ -194,34 +202,37 @@ em <- paste0(d, "/models/cod-em")
 case_folder <- paste0(d, "/eg-cases")
 ```
 
-## Deterministic model testing
+It is important to validate a simulation model first with minimal or no process and/or observation error to ensure unbiased and consistent recovery of parameters [@hilborn1992].
+Before we run our simulations, we tested our models without any process error to make sure we could recover our parameters of interest without bias (Text S1).
+ss3sim makes this simple by allowing you specify your own recruitment deviations and control pseudo-data sampling error (Text S1).
 
-It is important to validate a simulation model first with minimal or no observation and process error to ensure unbiased and consistent recovery of parameters [@hilborn1992].
-We can test our model by passing a set of deterministic recruitment deviations to our simulation. 
-We'll set up a matrix of zeros with 100 rows for 100 years of data and 20 columns for 20 iterations:
+We can then run 100 iterations of each simulation scenario with the following code.
+We will set `bias_adjust = TRUE`, 
+to enable a correction that aims to produce mean-unbiased estimates 
+of biomass despite log-normal recruitment deviations [@methot2011].
+Although we won't use the option here, 
+we could run the simulations with parallel processing 
+to substantially reduce computing time (Text S1).
 
 ```
-recdevs_det <- matrix(0, nrow = 100, ncol = 20)
+run_ss3sim(iterations = 1:100, scenarios =
+  c("D1-E0-F0-R0-cod", "D2-E0-F0-R0-cod",
+    "D1-E1-F0-R0-cod", "D2-E1-F0-R0-cod"),
+  case_folder = case_folder, om_model_dir = om, 
+  em_model_dir = em, bias_adjust = TRUE)
 ```
 
-We've also set up deterministic case files (`E100` and `E101`) in which we set recruitment deviation standard deviation (`SR_sigmaR` in SS3) to the nominal level of 0.001.
-
+We can then collect the output from all the simulations in our current directory with one function call.
 
 ```
-run_ss3sim(iterations = 1:20, scenarios =
-  c("D1-E100-F0-R0-cod", "D2-E100-F0-R0-cod",
-    "D1-E101-F0-R0-cod", "D2-E101-F0-R0-cod"),
-  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
-  bias_adjust = TRUE, user_recdevs = recdevs_det)
+get_results_all()
 ```
 
-- reduce recdevs, reduce sigma R, bias correction
-- what to plot, what to look for, how good is OK?
-
-*Output analysis and visualization*:
-
-- examples using the included functions
-- brief take home of what we'd conclude
+This creates two files in our working directory: `final_results_scalar.csv` and `final_results_ts.csv` 
+containing scalar output values (e.g. maximum sustainable yield) 
+and time-series values (e.g. biomass each year). 
+There are separate columns for OM and EM values, making it simple to calculate 
+error metrics, such as relative error (Fig. 2).
 
 # How ss3sim complements other simulation software
 
@@ -260,7 +271,6 @@ Below we outline some key examples.
 <!--*The importance of contrast in index series*:-->
 
 *Time-varying model misspecification*:
-
 Ecological processes can vary through time in response to, for example,
 changes to fishing behaviour [@hilborn1992],
 regime shifts [@vert-pre2013], or
