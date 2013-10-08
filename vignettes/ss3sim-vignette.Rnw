@@ -592,6 +592,22 @@ print(p)
 
 \clearpage
 
+\section{Time varying parameters}
+
+You can specify any parameter defined in your SS model as time varying
+through the \texttt{change\_tv} function.
+
+Since the \texttt{change\_tv} function can be used for a number of
+purposes, it interacts differently with the case files than the other
+`change` functions.
+To pass arguments to \texttt{change\_tv}} through
+\texttt{run\_ss3sim}}: (1) create a case file with an arbitrary letter
+not used elsewhere (i.e. anything but D, E, F, or R) and include the line
+\texttt{function\_type; change\_tv} in your case file. For example,
+you might want to use M for natural mortality, S for selectivity, or G
+for growth.
+
+
 \section{Parallel computing with \texttt{ss3sim}}
 \label{sec:parallel}
 

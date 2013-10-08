@@ -3,8 +3,9 @@
 \title{Master function to run SS3 simulations}
 \usage{
   run_ss3sim(iterations, scenarios, case_folder,
-    om_model_dir, em_model_dir, seed = NULL,
-    parallel = FALSE, ...)
+    om_model_dir, em_model_dir,
+    case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), R = "R", E = "E"),
+    seed = NULL, parallel = FALSE, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -25,6 +26,12 @@
 
   \item{em_model_dir}{The folder containing the SS
   estimation model files.}
+
+  \item{case_files}{A named list that relates the case IDs
+  to the files to return. If you are passing time-varying
+  parameters beyond (or instead of) natural mortality (M),
+  then you will need to adjust these values to reflect your
+  scenarios.}
 
   \item{seed}{If set to a numeric vector then
   \code{set.seed} will be set to each successive value of

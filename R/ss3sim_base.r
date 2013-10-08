@@ -169,14 +169,16 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         data_out = pastef(sc, i, "om", "ss3.dat"))
 
       # Change time-varying parameters; e.g. M, selectivity, growth...
-      wd <- getwd() # change_param() etc. must be in the working directory
-      setwd(pastef(sc, i, "om"))
-      with(tv_params,
-        change_tv(change_tv_list      = tv_params,
-                  ctl_file_in         = "om.ctl",
-                  ctl_file_out        = "om.ctl"))
+      wd <- getwd() 
+      if(!is.null(tv_params)) {
+        setwd(pastef(sc, i, "om"))
+        with(tv_params,
+          change_tv(change_tv_list      = tv_params,
+                    ctl_file_in         = "om.ctl",
+                    ctl_file_out        = "om.ctl"))
 
-      setwd(wd)
+        setwd(wd)
+      }
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
 

@@ -4,7 +4,6 @@
 \usage{
   get_caseargs(folder, scenario, delimiter = "-",
     ext = ".txt",
-    case_vals = c("M", "F", "D", "R", "S", "G", "E"),
     case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), R = "R", S = "S", G = "G", E = "E"))
 }
 \arguments{
@@ -20,14 +19,8 @@
   \item{ext}{The file extension of the input files.
   Defaults to \code{".txt"}.}
 
-  \item{case_vals}{The case types that make up the scenario
-  ID. In the example above the \code{case_vals} would be
-  \code{c("M", "F", "D", "R")}}
-
-  \item{case_files}{A named list that relates the
-  \code{case_vals} to the files to return. If each
-  \code{case_val} has only one file then this is simple.
-  See the default values for a more complicated case.}
+  \item{case_files}{A named list that relates the case IDs
+  to the files to return.}
 }
 \value{
   A (nested) named list. The first level of the named list

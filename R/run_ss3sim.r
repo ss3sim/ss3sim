@@ -16,6 +16,10 @@
 #' files.
 #' @param em_model_dir The folder containing the SS estimation model
 #' files.
+#' @param case_files A named list that relates the case IDs to
+#' the files to return. If you are passing time-varying parameters
+#' beyond (or instead of) natural mortality (M), then you will need to
+#' adjust these values to reflect your scenarios.
 #' @param seed If set to a numeric vector then \code{set.seed} will be
 #' set to each successive value of the vector \code{seed} on each
 #' iteration. This can be useful to make simulations reproducible. If
@@ -73,6 +77,13 @@
 #' om <- paste0(d, "/models/cod-om")
 #' em <- paste0(d, "/models/cod-em")
 #'
+#' run_ss3sim(iterations = 1:1, scenarios = "D0-E0-F0-R0-cod",
+#'   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+#'   case_files = list(F = "F", D = c("index", "lcomp",
+#'       "agecomp"), R = "R", E = "E"))
+#'
+#' unlink("D0-E0-F0-G0-R0-S0-M0-cod", recursive = TRUE) # clean up
+#'
 #' run_ss3sim(iterations = 1:1, scenarios = "D0-E0-F0-G0-R0-S0-M0-cod",
 #'   case_folder = case_folder, om_model_dir = om, em_model_dir = em)
 #' unlink("D0-E0-F0-G0-R0-S0-M0-cod", recursive = TRUE) # clean up
@@ -111,8 +122,9 @@
 #' }
 
 run_ss3sim <- function(iterations, scenarios, case_folder,
-  om_model_dir, em_model_dir, seed = NULL, parallel = FALSE,
-  ...) {
+  om_model_dir, em_model_dir, case_files = list(M = "M", F = "F", D =
+    c("index", "lcomp", "agecomp"), R = "R", E = "E"), seed = NULL,
+  parallel = FALSE, ...) {
 
   if(parallel) {
     cores <- setup_parallel()
@@ -126,7 +138,8 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
   if(parallel) {
     foreach(parallel_scenario = scenarios, .packages = "ss3sim", .verbose =
             FALSE, .export = "substr_r") %dopar% {
-      a <- get_caseargs(folder = case_folder, scenario = parallel_scenario)
+      a <- get_caseargs(folder = case_folder, scenario = parallel_scenario, 
+        case_files = case_files)
       sp <- substr_r(parallel_scenario, 3)
       ss3sim_base(iterations, scenarios = parallel_scenario,
         tv_params = a$tv_params,
@@ -136,7 +149,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
         em_model_dir = em_model_dir, seed = seed, ...)
   }} else {
     output <- lapply(scenarios, function(x) {
-      a <- get_caseargs(folder = case_folder, scenario = x)
+      a <- get_caseargs(folder = case_folder, scenario = x, case_files = case_files)
       sp <- substr_r(x, 3)
       ss3sim_base(iterations, scenarios = x,
         tv_params = a$tv_params,
