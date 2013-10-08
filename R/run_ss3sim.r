@@ -82,8 +82,6 @@
 #'   case_files = list(F = "F", D = c("index", "lcomp",
 #'       "agecomp"), R = "R", E = "E"))
 #'
-#' unlink("D0-E0-F0-G0-R0-S0-M0-cod", recursive = TRUE) # clean up
-#'
 #' run_ss3sim(iterations = 1:1, scenarios = "D0-E0-F0-G0-R0-S0-M0-cod",
 #'   case_folder = case_folder, om_model_dir = om, em_model_dir = em)
 #' unlink("D0-E0-F0-G0-R0-S0-M0-cod", recursive = TRUE) # clean up
