@@ -113,8 +113,8 @@ across multiple computers or computer cores, thereby accelerating computation.
 ## The general stucture of an ss3sim simulation
 
 An ss3sim simulation requires three types of input:
-(1) a base model of the underlying truth, or operating model (OM);
-(2) a base model used to assess that truth,
+(1) a base SS model of the underlying truth, or operating model (OM);
+(2) a base SS model used to assess that truth,
 also known as the estimation model or method (EM);
 and (3) a set of plain-text files (case files)
 describing deviations from these base models.
