@@ -208,7 +208,7 @@ em <- paste0(d, "/models/cod-em")
 case_folder <- paste0(d, "/eg-cases")
 ```
 
-# Running the simulations
+## Running the simulations
 
 It is important to validate a simulation model first with minimal or no process and/or observation error to ensure unbiased and consistent recovery of parameters [@hilborn1992].
 Before we run our simulations, we tested our models without any process error to make sure we could recover our parameters of interest without bias (Text S1).
