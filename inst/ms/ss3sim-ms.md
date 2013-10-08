@@ -166,7 +166,7 @@ ss3sim simulations are controlled by a set of semicolon-delimited plain-text fil
 These files contain the argument values that will be passed 
 to the low-level ss3sim R functions (e.g. `change_e`) during the simulation.
 To use the high-level function `run_ss3sim`, the naming of the case files is important. 
-All case files are named with a letter representing the type of case 
+All case files are named according to the the type of case 
 (e.g. `E` for estimation, `D` for data, or `F` for fishing mortality), 
 a number representing the case number, and a three letter code representing the species or stock (e.g. `cod`).
 
