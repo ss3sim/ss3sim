@@ -58,6 +58,14 @@
   work with an operating model \code{.ctl} file.
 }
 \details{
+  To pass arguments to \code{\link{change_tv}} through a
+  \code{\link{run_ss3sim}}: (1) create a case file with an
+  arbitrary letter not used elsewhere (anything but D, E,
+  F, or R) and include the line \code{function_type;
+  change_tv} in your case file. For example, you might want
+  to use M for natural mortality, S for selectivity, or G
+  for growth.
+
   Although there are three ways to implement time-varying
   parameters within SS3, \code{ss3sim} only uses the
   environmental variable option. The \code{ctl_file_in}
