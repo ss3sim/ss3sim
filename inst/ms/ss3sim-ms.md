@@ -55,7 +55,7 @@ Simulation is a critical component to testing fishery stock-assessment methods
 [@hilborn1987; @hilborn1992; @rosenberg1994; @peterman2004].
 With simulation, we can evaluate the precision and bias of complex assessment methods
 in a controlled environment where we know the true state of nature [@hilborn1992].
-For example, simulation studies have been key to improving strategies for dealing with
+For example, recent simulation studies have been key to improving strategies for dealing with
 time-varying natural mortality [@lee2011; @jiao2012; @deroba2013]
 and uncertainty in steepness of the stock-recruit relationship [@lee2012],
 as well as determining what makes fisheries data informative [@magnusson2007; @wetzel2011a].
@@ -116,7 +116,7 @@ An ss3sim simulation requires three types of input:
 (1) a base model of the underlying truth, or operating model (OM);
 (2) a base model used to assess that truth,
 also known as the estimation model or method (EM);
-and (3) a set of plain text files (case files)
+and (3) a set of plain-text files (case files)
 describing deviations from these base models.
 Each unique combination of OM, EM, and case files are referred to as scenarios.
 These scenarios are usually run for multiple iterations,
@@ -135,24 +135,85 @@ for easy data manipulation and visualization
 
 # An example simulation with ss3sim
 
-(unsure how much of this will go in the main paper and how much will just be in the appendix...
-probably many of these details should go in an appendix with just enough elements
-to give a flavour for what can be done in the main paper)
+To demonstrate ss3sim, we show a simple example 
+in which we test the effect of 
+high vs.\ low research survey effort 
+and the effect of fixing vs.\ estimating natural mortality (*M*).
+We have included all files to run this example in the package data 
+and describe the example in greater detail in the accompanying vignette file.
 
-*Setting up the SS models*:
+## Setting up the SS models
 
-- choosing a specific conditioning model or generic conditioning type
-- setting up the OM and EM SS models
-- things to keep in mind
-- running through SS to format as `.ss_new` files and renaming
-- required files
+Any existing SS model can be used with ss3sim
+with minimal modifications (Text S1).
+Further, ss3sim comes with built-in SS models
+that represent three life histories:
+cod-like (slow-growing and long-lived),
+flatfish-like (fast-growing and intermediate-lived),
+and sardine-like (fast-growing and short-lived).
+These models are based on
+North Sea cod (*Gadus morhua*) (R. Methot, pers.\ comm.),
+Yellowtail flounder (*Limanda ferruginea*) (R. Methot, pers.\ comm.),
+and California sardine (*Sardinops caeruleus*) [@hill2012].
+Further details on these models are available in @johnson2013 and @ono2013. 
+We will base our example around the cod-like model.
 
-*Setting up the configuration files*:
+## Setting up the case files
 
-- the (simple) research question (increasing or decreasing survey effort crossed with estimating M or fixing M)
-- indicate which arguments to adjust
+<!--TODO what happens if there are no time varying parameters specified?-->
 
-*Deterministic model testing*:
+ss3sim simulations are controlled by a set of semicolon-delimited plain-text files that describe alternative cases. 
+These files contain the argument values that will be passed 
+to the low-level ss3sim R functions (e.g. `change_e`) during the simulation.
+To use the high-level function `run_ss3sim`, the naming of the case files is important. 
+All case files are named with a letter representing the type of case 
+(e.g. `E` for estimation, `D` for data, or `F` for fishing mortality), 
+a number representing the case number, and a three letter code representing the species or stock (e.g. `cod`).
+
+To investigate the effect of research survey effort,
+we will manipulate the argument `sd_obs_surv`
+that gets passed to `change_index`.
+In case 1, we'll specify the standard deviation at `0.1`
+and in case 2 we'll increase the standard deviation to `0.4`.
+We can do this by including the line: `sd_obs_surv; 0.1`
+in the file `D1-cod.txt` and the line: `sd_obs_surv; 0.4`
+in the file `D2-cod.txt`.
+We will set up a base-case file describing fishing mortality (`F0-cod.txt`) 
+and we will specify that we don't want to run a retrospective analysis in the file `R0-cod.txt`.
+
+To start, we'll load the ss3sim package and locate three sets of folders:
+(1) the folder with the OM,
+(2) the folder with the EM,
+(3) and the folder with the plain-text case files,
+
+```
+library(ss3sim)
+d <- system.file("extdata", package = "ss3sim")
+om <- paste0(d, "/models/cod-om")
+em <- paste0(d, "/models/cod-em")
+case_folder <- paste0(d, "/eg-cases")
+```
+
+## Deterministic model testing
+
+It is important to validate a simulation model first with minimal or no observation and process error to ensure unbiased and consistent recovery of parameters [@hilborn1992].
+We can test our model by passing a set of deterministic recruitment deviations to our simulation. 
+We'll set up a matrix of zeros with 100 rows for 100 years of data and 20 columns for 20 iterations:
+
+```
+recdevs_det <- matrix(0, nrow = 100, ncol = 20)
+```
+
+We've also set up deterministic case files (`E100` and `E101`) in which we set recruitment deviation standard deviation (`SR_sigmaR` in SS3) to the nominal level of 0.001.
+
+
+```
+run_ss3sim(iterations = 1:20, scenarios =
+  c("D1-E100-F0-R0-cod", "D2-E100-F0-R0-cod",
+    "D1-E101-F0-R0-cod", "D2-E101-F0-R0-cod"),
+  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+  bias_adjust = TRUE, user_recdevs = recdevs_det)
+```
 
 - reduce recdevs, reduce sigma R, bias correction
 - what to plot, what to look for, how good is OK?
@@ -187,21 +248,6 @@ Probably turn this into a small table:
     1. @lee2012
     2. @piner2011
     3. @lee2011
-
-##
-
-Any existing SS model can be used with ss3sim
-with minimal modifications (Text S1).
-Further, ss3sim comes with built-in SS models
-that represent three life histories:
-cod-like (slow-growing and long-lived),
-flatfish-like (fast-growing and intermediate-lived),
-and sardine-like (fast-growing and short-lived).
-These models are based on
-North Sea cod (*Gadus morhua*) (R. Methot, pers.\ comm.),
-Yellowtail flounder (*Limanda ferruginea*) (R. Methot, pers.\ comm.),
-and California sardine (*Sardinops caeruleus*) [@hill2012].
-Further details on these models are available in @johnson2013 and @ono2013.
 
 # Research opportunities with ss3sim
 
@@ -282,7 +328,7 @@ Table X: Comparison with related software? Possible columns: software, reference
 \end{center}
 
 Figure 1: Flow diagram of the main steps
-in an ss3sim simulation carried out using `run_ss3sim()`.
+in an ss3sim simulation carried out using `run_ss3sim`.
 Functions that are called internally are shown in a monospaced font.
 
 \clearpage
