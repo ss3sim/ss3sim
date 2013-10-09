@@ -43,8 +43,8 @@
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
 #'
-#' ## Generate with constant sample size across years
-#' ex1 <- change_agecomp(infile=infile, outfile="test1.dat", fleets=c(1,NA),
+#' ## Generate with a smaller number of fleet taking samples
+#' ex1 <- change_agecomp(infile=infile, outfile="test1.dat", fleets=c(2),
 #'                Nsamp=list(c(10,50)), years=list(c(1999,2000)))
 #'
 #' ## Generate with varying Nsamp by year for first fleet
