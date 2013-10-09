@@ -164,16 +164,20 @@ change_tv <- function(change_tv_list,
                                temp
                              })
   tab <- as.data.frame.table(table(lab))
+  if("mg" %in% tab$lab) {
   if(subset(tab, lab == "mg", select = "Freq") > 0 ) {
     ss3.ctl[mg.ch] <- paste(0, "#custom_MG-env_setup (0/1)")
     ss3.ctl[(mg.ch + 1)] <- "-1 2 1 0 -1 99 -2  # env link specification i.e fixed to 1"
     ss3.ctl[grep("#_env/block/dev_adjust_method", ss3.ctl)[1]] <- "1 #_env/block/dev_adjust_method"
   }
+  }
+  if("sx" %in% tab$lab) {
   if(subset(tab, lab == "sx", select = "Freq") > 0 ) {
     ss3.ctl[sx.ch] <- paste(0, "#custom_sel-env_setup (0/1)")
     ss3.ctl[(sx.ch + 1)] <- "-1 2 1 0 -1 99 -2 # env link specification i.e fixed to 1"
     ss3.ctl[grep("#_env/block/dev_adjust_method", ss3.ctl)[2]] <- "1 #_env/block/dev_adjust_method"
     }
+  }
 
   temp.data <- change_tv_list[lab == "mg" | lab == "sx"]
 for(i in seq_along(temp.data)) {
