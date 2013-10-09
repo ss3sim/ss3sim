@@ -9,9 +9,9 @@ get_args <- function(file) {
   y <- as.list(x$val)
   names(y) <- x$arg
 
-# if all numeric then eval(parse(text = 
-# if has [a-zA-Z]( then eval(parse(text = 
-# if has : then eval(parse(text = 
+# if all numeric then eval(parse(text =
+# if has [a-zA-Z]( then eval(parse(text =
+# if has : then eval(parse(text =
 # else use as character
   lapply(y, function(z) {
     if(is_f(as.character(z))) {
@@ -23,13 +23,14 @@ get_args <- function(file) {
 }
 
 #' Check if we should leave as character or convert to another class
-#' 
+#'
 #' @param x A character object
 is_f <- function(x) {
   if(!is.character(x)) stop("x must be a character")
   fn <- grepl("[a-zA-Z0-9]\\(", x) # is a function
   nu <- !grepl("[a-zA-Z]", x) # is not character (is numeric)
-  ifelse(fn | nu, TRUE, FALSE)
+  ## If a function, numeric, NULL or NA treat as a function
+  ifelse(fn | nu | x== "NULL" | x== "NA", TRUE, FALSE)
 }
 
 #' Take a vector of cases and return the case number
@@ -42,7 +43,7 @@ is_f <- function(x) {
 # @examples
 # get_caseval("M1-F1-D1-R1", "M")
 get_caseval <- function(scenario, case, delimiter = "-") {
-  if(!grepl(delimiter, scenario)) 
+  if(!grepl(delimiter, scenario))
     stop("Your case string doesn't contain your delimiter.")
   if(!is.character(scenario))
     stop("cases must be of class character")
@@ -61,7 +62,7 @@ get_caseval <- function(scenario, case, delimiter = "-") {
 #' columns: the first column contains the argument names and the
 #' second column contains the argument values. The two columns should
 #' be separated by a comma. The output is then returned in a named
-#' list. 
+#' list.
 #'
 #' @details
 #' The input plain text files should have arguments in the first
@@ -74,7 +75,7 @@ get_caseval <- function(scenario, case, delimiter = "-") {
 #' @param folder The folder to look for input files in.
 #' @param scenario A character object that has the cases separated by
 #' some delimiter. The combination of cases is referred to as a
-#' scenario. E.g. \code{"M1-F1-D1-R1-S1"}. 
+#' scenario. E.g. \code{"M1-F1-D1-R1-S1"}.
 #' @param delimiter The delimiter between the cases. Defaults to a
 #' dash.
 #' @param ext The file extension of the input files. Defaults to
@@ -108,31 +109,31 @@ get_caseval <- function(scenario, case, delimiter = "-") {
 #' # Clean up the files created above:
 #' file.remove(c("M1-cod.txt", "F2-cod.txt", "index3-cod.txt",
 #' "agecomp3-cod.txt", "lcomp3-cod.txt", "R4-cod.txt"))
-#' 
+#'
 #' # The following output is returned:
 #' # $M
 #' # $M$a
 #' # [1] 1
-#' # 
+#' #
 #' # $F
 #' # $F$b
 #' # [1] "Some words"
-#' # 
+#' #
 #' # $index
 #' # $index$d
 #' # [1] 1
-#' # 
+#' #
 #' # $lcomp
 #' # $lcomp$e
 #' # [1] 1
-#' # 
+#' #
 #' # $lcomp$f
 #' # [1] 99
-#' # 
+#' #
 #' # $agecomp
 #' # $agecomp$d
 #' # [1] 1
-#' # 
+#' #
 #' # $R
 #' # $R$c
 #' # [1] c(1, 2, 3)

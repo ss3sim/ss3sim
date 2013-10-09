@@ -98,9 +98,10 @@ change_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
     lcomp <- infile$lencomp
     newbins <- lengthbin_vector
     oldbins <- infile$lbin_vector
-    if (min(newbins) > min(oldbins)) newbins <- c(min(oldbins), newbins)
-    Nbins <- length(newbins)
-
+    if(!is.null(newbins)){
+        if (min(newbins) > min(oldbins)) newbins <- c(min(oldbins), newbins)
+        Nbins <- length(newbins)
+    }
     ## Check inputs for errors
     if(substr_r(outfile,4) != ".dat" & write_file)
         stop(paste0("outfile ", outfile, " needs to end in .dat"))
@@ -167,6 +168,7 @@ change_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
     k <- 1
     ## Loop through each fleet
     for(i in 1:length(fleets)){
+        fl <- fleets[[i]]
         if(!is.na(fl)){
             lcomp.fl <- subset(lcomp, FltSvy==fl & Yr %in% years[[i]])
             if(length(years[[i]]) != nrow(lcomp.fl))

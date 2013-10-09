@@ -94,11 +94,12 @@ change_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
     ## that
     agecomp <- infile$agecomp
     newbins <- agebin_vector
-    oldbins <- infile$agebin_vector
-    if (min(newbins) > min(oldbins)) newbins <- c(min(oldbins), newbins)
-    Nbins <- length(newbins)
-
-    ## Check inputs for errors
+    oldbins <- infile$aigebin_vector
+    if(!is.null(newbins)){
+        if (min(newbins) > min(oldbins)) newbins <- c(min(oldbins), newbins)
+        Nbins <- length(newbins)
+    }
+        ## Check inputs for errors
     if(substr_r(outfile,4) != ".dat" & write_file)
         stop(paste0("outfile ", outfile, " needs to end in .dat"))
     Nfleets <- length(fleets)
