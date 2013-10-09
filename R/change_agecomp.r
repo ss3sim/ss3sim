@@ -11,15 +11,18 @@
 #' @param outfile Character string of the name for the new file to be
 #' created. Must end in \code{.dat}.
 #' @param fleets Numeric vector giving the fleets to be used. This order also
-#' pertains to other arguments. A value of \code{NA} or missing value excludes that
-#' fleet from outfile (i.e. turn it off so no samples are written).
+#' pertains to other arguments. A missing value excludes that
+#' fleet from outfile (i.e. turn it off so no samples are written). If none of the fleet
+#' collected samples, keep the value to \code{fleets=NULL}.
 #' @param Nsamp A numeric list of the same length as \code{fleets}. Either single
-#' values or vectors the same length as the number of years can be passed
-#' through. Single values are repeated for all years.
+#' values or vectors of the same length as the number of years can be passed
+#' through. Single values are repeated for all years. If no fleet collected samples, 
+#' keep the value to \code{Nsamp=NULL}.
 #' @param years A numeric list of the same length as \code{fleets}. Each element
 #' specifies the years to sample from each fleet. Years left out are excluded in
 #' \code{outfile}, allowing the user to reduce (but not increase) the sample
-#' scheme as given in \code{infile}
+#' scheme as given in \code{infile}. If no fleet collected samples, 
+#' keep the value to \code{years=NULL}.
 #' @param agebin_vector A numeric vector giving the new age bins to use.
 #' \code{agebin_vector} must be within the [min;max] of population bin. This
 #' feature alows dynamic binning by the user, but is not fully tested. Users
@@ -39,20 +42,19 @@
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
-
+#'
 #' ## Generate with constant sample size across years
-#' ex1 <- sample_agecomp(infile=infile, outfile="test1.dat", fleets=c(1,2),
-#'                Nsamp=list(100,50), years=list(seq(1994, 2012, by=2),
-#'               2003:2012))
+#' ex1 <- change_agecomp(infile=infile, outfile="test1.dat", fleets=c(1,NA),
+#'                Nsamp=list(c(10,50)), years=list(c(1999,2000)))
 #'
 #' ## Generate with varying Nsamp by year for first fleet
-#' ex2 <- sample_agecomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
+#' ex2 <- change_agecomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
 #'                Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
 #'                years=list(seq(1994, 2012, by=2),
 #'                2003:2012))
 #'
 #' ## Generate with varying Nsamp by year for first fleet AND with different age bins
-#' ex3 <- sample_agecomp(infile=infile, outfile="codEM.dat", fleets=c(1,2),
+#' ex3 <- change_agecomp(infile=infile, outfile="codEM.dat", fleets=c(1,2),
 #'                Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
 #'                years=list(seq(1994, 2012, by=2),
 #'                2003:2012),	agebin_vector = seq(1,15,by=3))
@@ -70,7 +72,7 @@
 #' temp.list <- list()
 #' for(i in 1:500){
 #'     temp.list[[i]] <-
-#'         sample_agecomp(infile=infile, outfile="test1.dat",
+#'         change_agecomp(infile=infile, outfile="test1.dat",
 #'                        fleets=c(1,2), cpar=c(5,1), Nsamp=list(100,100),
 #'                        years=list(1995, 1995), write_file=F)
 #' }
@@ -103,20 +105,21 @@ change_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
     if(substr_r(outfile,4) != ".dat" & write_file)
         stop(paste0("outfile ", outfile, " needs to end in .dat"))
     Nfleets <- length(fleets)
-    if(length(unique(agecomp$FltSvy)) != Nfleets)
-        stop(paste0("Number of fleets specified (",Nfleets,
-                    ") does not match input file (",
-                    length(unique(agecomp$FltSvy)), ")"))
+    # if(length(unique(agecomp$FltSvy)) != Nfleets)
+        # stop(paste0("Number of fleets specified (",Nfleets,
+                    # ") does not match input file (",
+                    # length(unique(agecomp$FltSvy)), ")"))
     if(FALSE %in% (fleets %in% unique(agecomp$FltSvy)))
         stop(paste0("The specified fleet number does not match input file"))
-    if(class(Nsamp) != "list" | length(Nsamp) != Nfleets)
+    if(Nfleets!= 0 & class(Nsamp) != "list" | length(Nsamp) != Nfleets)
         stop("Nsamp needs to be a list of same length as fleets")
-    if(class(years) != "list" | length(years) != Nfleets)
+    if(Nfleets!= 0 & class(years) != "list" | length(years) != Nfleets)
         stop("years needs to be a list of same length as fleets")
-    for(i in fleets){
+    if (!is.null(fleets)){
+	for(i in 1:Nfleets){
         if(length(Nsamp[[i]])>1 & length(Nsamp[[i]]) != length(years[[i]]))
             stop(paste0("Length of Nsamp does not match length of years for fleet ",fleets[i]))
-    }
+    }}	
     if(length(cpar) == 1){
         ## If only 1 value provided, use it for all fleets
         cpar <- rep(cpar, times=Nfleets)
@@ -164,7 +167,8 @@ change_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
     newcomp.list <- list()                  # temp storage for the new rows
     k <- 1
     ## Loop through each fleet
-    for(i in 1:length(fleets)){
+    if (!is.null(fleets)){
+	for(i in 1:length(fleets)){
         fl <- fleets[i]
         if(!is.na(fl)){
             agecomp.fl <- subset(agecomp, FltSvy==fl & Yr %in% years[[i]])
@@ -184,10 +188,11 @@ change_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
                 k <- k+1
             }
         }
-    }
+    }}
     ## Combine new rows together into one data.frame
-    newcomp.final <- do.call(rbind, newcomp.list)
-
+    if(Nfleets>0) newcomp.final <- do.call(rbind, newcomp.list)
+	if(Nfleets==0) newcomp.final = data.frame("#")
+	
     ## Build the new dat file
     newfile <- infile
     newfile$agecomp <- newcomp.final
@@ -198,5 +203,4 @@ change_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
         r4ss::SS_writedat(datlist = newfile, outfile = outfile, overwrite = T)
     return(invisible(newcomp.final))
 }
-
 
