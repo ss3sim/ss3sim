@@ -219,7 +219,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                      fleets           = fleets,
                      Nsamp            = Nsamp,
                      years            = years,
-                     agebin_vector    = lengthbin_vector,
+                     agebin_vector    = agebin_vector,
                      cpar             = cpar))
 
       # Manipulate EM starter file for a possible retrospective analysis
