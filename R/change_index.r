@@ -52,6 +52,7 @@
 #'                 colour=as.factor(index)))+geom_point()
 #' }
 #'
+
 change_index <- function(infile, outfile, fleets, years, sds_obs,
                          make_plot = FALSE, write_file=TRUE){
     cpue <- infile$CPUE
@@ -89,19 +90,17 @@ change_index <- function(infile, outfile, fleets, years, sds_obs,
             cpue.fl <- subset(cpue, index==fl & year %in% years[[i]])
             if(length(years[[i]]) != nrow(cpue.fl))
                 stop(paste("A year specified in years was not found in the input file for fleet", fl))
-            cpue.fl$sds_obs<- sds_obs[[i]]
             ## Now loop through each year and resample that row
             for(yr in years[[i]]) {
                 xx <- subset(cpue.fl, year==yr)
-                sds.new <- sds_obs[[i]][which(yr == years[[i]])]
                 if(nrow(xx)==1){
                     ## Sample from this year and fleet and recombine
                     ## with the original data
-                    newcpue <- xx$obs*exp(rnorm(n=1, mean=0,
-                                                sd=sds.new)-sds.new^2/2)
+                    sds.new <- sds_obs[[i]][which(yr == years[[i]])]
                     newcpue.df <- xx
-                    newcpue.df$obs <- newcpue
-                    newcpue.df$sds_obs <- sds.new
+                    newcpue.df[1,4] <- xx$obs*exp(rnorm(n=1, mean=0,
+                                                sd=sds.new)-sds.new^2/2)
+                    newcpue.df[1,5] <- sds.new
                     newcpue.list[[k]] <- newcpue.df
                     k <- k+1
                 } else {
