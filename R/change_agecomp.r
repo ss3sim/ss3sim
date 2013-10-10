@@ -191,12 +191,13 @@ change_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
     }}
     ## Combine new rows together into one data.frame
     if(Nfleets>0) newcomp.final <- do.call(rbind, newcomp.list)
-	if(Nfleets==0) newcomp.final = data.frame("#")
+    if(Nfleets==0) newcomp.final = data.frame("#")
 	
     ## Build the new dat file
     newfile <- infile
     newfile$agecomp <- newcomp.final
-    newfile$N_agecomp <- nrow(newcomp.final)
+    if(Nfleets>0) newfile$N_agecomp <- nrow(newcomp.final)
+    if(Nfleets==0) newfile$N_agecomp <- 0
 
     ## Write the modified file
     if(write_file)
