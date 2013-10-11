@@ -94,11 +94,11 @@ running \texttt{SS3} models, and combining the output.
 \texttt{ss3sim} also contains some wrapper functions
 that tie all these low-level functions together
 into a complete simulation experiment.
-If you choose to use our wrapper function \texttt{run\_ss3sim()}
+If you choose to use our wrapper function \texttt{run\_ss3sim}
 then you will use a series of plain text control files
 to control the simulation.
 Much of this vignette focusses on
-how to effectively use \texttt{run\_ss3sim()},
+how to effectively use \texttt{run\_ss3sim},
 but feel free to take the low-level functions
 (\texttt{change} and \texttt{sample} functions)
 and use them as part of your own flexible simulation.
@@ -330,14 +330,14 @@ for a cod-like species in the papers
 You can refer to these papers for details on how the models were set up.
 
 If we were starting from scratch,
-we'd run the function \texttt{create\_argfiles},
+we would run the function \texttt{create\_argfiles},
 which would create a default set of configuration files
 in our R working directory.
 Instead we'll start with the configuration files from those papers.
 
 To investigate the effect of research survey effort,
 we will manipulate the argument \texttt{sd\_obs\_surv}
-that gets passed to \texttt{change\_index()}.
+that gets passed to \texttt{change\_index}.
 In case 1, we'll specify the standard deviation at 0.1
 and in case 2 we'll increase the standard deviation to 0.4.
 We can do this by including the line: \texttt{sd\_obs\_surv; 0.1}
@@ -345,7 +345,7 @@ in the file \texttt{D1-cod.txt} and the line: \texttt{sd\_obs\_surv; 0.4}
 in the file \texttt{D2-cod.txt}.
 
 To investigate the effect of fixing versus estimating \textit{M},
-we'll manipulate the argument \texttt{natM\_val} that gets passed to \texttt{change\_e()}.
+we'll manipulate the argument \texttt{natM\_val} that gets passed to \texttt{change\_e}.
 The first entry of \texttt{natM\_val} is the value which \textit{M} is fixed or
 initialized at and the second refers the phase.
 In case 0, we'll set the phase in which \textit{M} is estimated
@@ -394,7 +394,7 @@ forecast_num;       0
 
 When we run the simulations,
 we'll pass our deterministic recruitment deviations
-to the function \texttt{run\_ss3sim()}.
+to the function \texttt{run\_ss3sim}.
 Running 20 replicates should be enough
 to identify whether our models are performing as we expect.
 
@@ -410,7 +410,7 @@ run_ss3sim(iterations = 1:20, scenarios =
 
 We have written out the scenario names in full for clarity,
 but \texttt{ss3sim} also contains
-a convenience function \texttt{expand\_scenarios()}.
+a convenience function \texttt{expand\_scenarios}.
 With this function we could instead write:
 
 <<deterministic-runs-expand, eval=FALSE>>=
@@ -705,7 +705,7 @@ and then in section~\ref{sec:em-setup} we cover setting up an estimation model.
 \item
   Specify/change the specification of the model using the functions
   available in the \texttt{ss3sim} package
-  e.g \texttt{change\_e()}, \texttt{change\_sel()}
+  e.g \texttt{change\_e}, \texttt{change\_sel}
 \item
   Run the model again with no estimation using the \texttt{ss3 - noest} command
 \end{enumerate}
@@ -799,7 +799,7 @@ and then in section~\ref{sec:em-setup} we cover setting up an estimation model.
 \item
   If needed, change the specification of the \texttt{.ctl}
   using the functions available in the \texttt{ss3sim} package.
-  E.g \texttt{change\_growth()}, \texttt{change\_sel()}.
+  E.g \texttt{change\_growth}, \texttt{change\_sel}.
 \end{enumerate}
 
 \subsection{Data file modifications}
@@ -862,7 +862,7 @@ and then in section~\ref{sec:em-setup} we cover setting up an estimation model.
   Modify the \texttt{.dat} file
   so that it includes the user-specified process and observation errors.
   You can do this by using the functions in the \texttt{ss3sim} package.
-  E.g \texttt{change\_index()}, \texttt{change\_lcomp()}
+  E.g \texttt{change\_index}, \texttt{change\_lcomp}
 \end{enumerate}
 
 \subsection{Starter file modifications}
@@ -902,7 +902,7 @@ and then in section~\ref{sec:em-setup} we cover setting up an estimation model.
    where the number can range from \texttt{3} to \texttt{7}.
  \item Use the functions in the \texttt{ss3sim} package
    to change the estimation specification in the EM.
-   E.g \texttt{change\_e()}
+   E.g \texttt{change\_e}
 \end{enumerate}
 
 \subsection{Data file modifcations}
@@ -916,7 +916,7 @@ sampling process and generate \texttt{.dat} files to be used in the
 EM.
 
 \begin{description}
-\item[\texttt{change\_index()}] This function samples from the
+\item[\texttt{change\_index}] This function samples from the
   biomass trends for the different fleets to simulate the collection
   of CPUE data. Since $q=1$ for both the OM and EM, the CPUE indices
   are actually absolute indices of biomass. The result of the random
@@ -925,7 +925,7 @@ EM.
   which years and with what amount of noise. Note that the
   years/fleets specified to be sampled must be present in the OM
   file, so the user must setup the OM accordingly.
-\item[\texttt{change\_lcomp()}] This function samples from the
+\item[\texttt{change\_lcomp}] This function samples from the
   length composition using a Dirichlet distribution. The Dirichlet
   distribution can be thought of as a generalization of the
   multinomial distribution that has an additional parameter
@@ -935,15 +935,15 @@ EM.
   bin structure can be inputted as an argument and thus changed
   dynamically within a simulation (see \ref{sec:dybin} below for
   more information).
-\item[\texttt{change\_agecomp()}] Same as length compositions except
+\item[\texttt{change\_agecomp}] Same as length compositions except
   acts on ages.
 \end{description}
 
 \subsubsection{Dynamic composition binning}
 \label{sec:dybin}
 
-The functions \texttt{change\_lcomp()} and
-\texttt{change\_agecomp()} include optional arguments specifying the
+The functions \texttt{change\_lcomp} and
+\texttt{change\_agecomp} include optional arguments specifying the
 bins to use. This option may be useful for users who wish to explore
 the impact of different binning schemes of the same data. The user
 may specify a vector of values determining how to bin the data. The
