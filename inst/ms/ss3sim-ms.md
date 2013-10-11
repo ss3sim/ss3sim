@@ -1,6 +1,7 @@
 # ss3sim: An R package for fisheries stock assessment simulation with Stock Synthesis
 
-Sean C. Anderson^1*^, Kelli F. Johnson^2^, Cole C. Monnahan^3^, Kotaro Ono^2^, additional authors to be added as contributions are added...
+Sean C. Anderson^1*^, Kelli F. Johnson^2^, Cole C. Monnahan^3^, Kotaro Ono^2^, 
+additional authors to be added as contributions are added...
 
 ^1^Department of Biological Sciences,
 Simon Fraser University,
@@ -26,7 +27,8 @@ Short title: ss3sim: Simulation with Stock Synthesis
 Simulation is critical to testing fishery stock assessment methods.
 In the last decade, the statistical stock assessment framework
 Stock Synthesis (SS) has become widely-used around the world.
-However, there lacks a generalized and scriptable framework for running SS simulations.
+However, there lacks a generalized 
+and scriptable framework for running SS simulations.
 Here, we introduce ss3sim, an R package that facilitates
 large-scale, rapid, and reproducible simulation
 with the third version of SS, SS3.
@@ -130,7 +132,8 @@ ss3sim works, in general, by converting case file arguments
 (e.g. arguments specifying a given natural mortality trajectory)
 into manipulations of SS3 configuration files (`change` functions);
 running the OM;
-sampling the time-series of population dynamics with fishery dependent and independent surveys (`sample` functions);
+sampling the time-series of population dynamics 
+with fishery dependent and independent surveys (`sample` functions);
 running the EM;
 and synthesizing the output
 for easy data manipulation and visualization
@@ -169,12 +172,14 @@ and a set of semicolon-delimited plain-text files
 that describe alternative cases (Fig. 1). 
 These files contain the argument values that will be passed 
 to the low-level ss3sim R functions (e.g. `change_e`) during the simulation.
-Alternatively, the low-level functions can be used on their own as part of a more customized simulation wrapper function.
+Alternatively, the low-level functions can be used on their own 
+as part of a more customized simulation wrapper function.
 
 To use the high-level function `run_ss3sim`, the naming of the case files is important. 
 All case files are named according to the the type of case 
 (e.g. `E` for estimation, `D` for data, or `F` for fishing mortality), 
-a numeric value representing the case number, and a three letter code representing the species or stock (e.g. `cod`) (Table 1, Text S1).
+a numeric value representing the case number, 
+and a three letter code representing the species or stock (e.g. `cod`) (Table 1, Text S1).
 We combine these case IDs with hyphens to create scenario IDs. 
 For example, one of our scenarios will 
 have the ``D1-E0-F0-R0-cod``.
@@ -194,9 +199,11 @@ We can do this by including the line: `sd_obs_surv; 0.1`
 in the file `D1-cod.txt` and the line: `sd_obs_surv; 0.4`
 in the file `D2-cod.txt`.
 We will set up a base-case file describing fishing mortality (`F0-cod.txt`) 
-and we will specify that we do not want to run a retrospective analysis in the file `R0-cod.txt`.
+and we will specify that we do not want to run a retrospective analysis 
+in the file `R0-cod.txt`.
 
-To start, we'll load the ss3sim package and locate three sets of folders within the package data:
+To start, we'll load the ss3sim package 
+and locate three sets of folders within the package data:
 (1) the folder with the OM,
 (2) the folder with the EM,
 (3) and the folder with the plain-text case files.
@@ -211,8 +218,11 @@ case_folder <- paste0(d, "/eg-cases")
 
 ## Running the simulations
 
-It is important to validate a simulation model with minimal or no process and/or observation error to ensure unbiased and consistent recovery of parameters [@hilborn1992].
-ss3sim makes model validation simple by allowing users to specify their own recruitment deviations and control sampling error (Text S1).
+It is important to validate a simulation model 
+with minimal or no process and/or observation error 
+to ensure unbiased and consistent recovery of parameters [@hilborn1992].
+ss3sim makes model validation simple by allowing users 
+to specify their own recruitment deviations and control sampling error (Text S1).
 
 The cod-like model has already been validated, therefore
 we can now run 100 iterations of each simulation scenario.
@@ -231,13 +241,15 @@ run_ss3sim(iterations = 1:100, scenarios =
   em_model_dir = em, bias_adjust = TRUE)
 ```
 
-We can then collect the output from all the simulations in our current directory with one function call.
+We can then collect the output from all the simulations 
+in our current directory with one function call.
 
 ```
 get_results_all()
 ```
 
-This creates two files in our working directory: `final_results_scalar.csv` and `final_results_ts.csv` 
+This creates two files in our working directory: 
+`final_results_scalar.csv` and `final_results_ts.csv` 
 containing scalar output values (e.g. maximum sustainable yield) 
 and time-series values (e.g. biomass each year), respectively. 
 There are separate columns for OM and EM values, making it simple to calculate 
@@ -297,7 +309,8 @@ the effect of single or multiple time-varying parameters.
 *Patterns in recruitment deviations*:
 Typically, estimation methods assume
 independent normally-distributed recruitment deviations (REF).
-However, recruitment deviations are frequently auto-correlated and their variability can change through time (REF).
+However, recruitment deviations are frequently auto-correlated 
+and their variability can change through time (REF).
 ss3sim makes it simple
 to incorporate different recruitment deviation structures
 and consider how they affect model performance.
@@ -319,8 +332,10 @@ Retrospective patterns,
 in which model estimates are systematically biased
 with each additional year of data,
 are a major problem in stock assessment science [@mohn1999; @legault2008].
-Key questions are: what causes retrospective patterns and what assessment strategies reduce retrospective patterns [@legault2008]?
-ss3sim can run retrospective analyses as part of any simulation by adding a single argument --- the number of retrospective years to investigate.
+Key questions are: what causes retrospective patterns 
+and what assessment strategies reduce retrospective patterns [@legault2008]?
+ss3sim can run retrospective analyses as part of any simulation 
+by adding a single argument --- the number of retrospective years to investigate.
 
 # Conclusions
 
