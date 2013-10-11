@@ -1,16 +1,5 @@
-distribution; multinomial
-Nsamp; 100
-minyear; NA
-maxyear; NA
-years; 1938:2012
-svyears; seq(1974,2012,by=2)
-lbin_method; NA
-binwidth; NA
-minimum_size; NA
-maximum_size; NA
-N_lbins; NA
-lbin_vector; NA
-lencomp; NA
-fish_lcomp; TRUE
-sv_lcomp; TRUE
-cpar; 2
+Nsamp; list(c(rep(50, 5), rep(100, 5)), rep(100, 5))
+fleets; c(1,2)
+years; list(seq(1994, 2012, by=2), 2003:2012)
+lbin_vector; NULL
+cpar; c(2,1)

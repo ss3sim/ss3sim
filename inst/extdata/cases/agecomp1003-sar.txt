@@ -1,12 +1,5 @@
-distribution; c('dirichlet', 'multinomial')
-Nsamp; c(20,20,seq(40,80,10),rep(100,30))
-minyear; NA
-maxyear; NA
-years; c(seq(1938,1948,by=10), seq(1958, 1983, by=5), seq(1984,2012))
-svyears; NA
-N_agebins; NA
-agebin_vector; NA
-agecomp; NA
-fish_agecomp; TRUE
-sv_agecomp; FALSE
-cpar; 2
+Nsamp; list(c(20,20,seq(40,80,10),rep(100,30)))
+fleets; 1
+years; list(c(seq(1938,1948,by=10), seq(1958, 1983, by=5), seq(1984,2012)))
+agebin_vector; NULL
+cpar; c(2)

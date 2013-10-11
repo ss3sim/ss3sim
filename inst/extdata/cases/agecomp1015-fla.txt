@@ -1,12 +1,5 @@
-distribution; c('dirichlet', 'multinomial')
-Nsamp; c(100,rep(100,5))
-minyear; NA
-maxyear; NA
-years; 2012
-svyears; seq(2004,2012,by=2)
-N_agebins; NA
-agebin_vector; NA
-agecomp; NA
-fish_agecomp; FALSE
-sv_agecomp; TRUE
-cpar; 2
+Nsamp; list(rep(100,5))
+fleets; 2
+years; list(seq(2004,2012,by=2))
+agebin_vector; NULL
+cpar; 1
