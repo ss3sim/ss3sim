@@ -43,11 +43,13 @@ and synthesizes the results.
 The simulations can be run in parallel, speeding computation,
 and the source code is open source
 and free to be modified under a GPL-3 license.
+ss3sim can be easily used to answer questions about, for example, 
+time-varying model misspecification, 
+retrospective patterns, 
+and the relative importance of various types of fisheries data.
 We demonstrate the software with a simple example,
 discuss how ss3sim complements other simulation software,
-and outline research questions that ss3sim could address.
-
-<!--ss3sim can be easily used to answer questions about time-varying model misspecification, retrospective patterns-->
+and outline specific research questions that ss3sim could address.
 
 \clearpage
 
@@ -58,10 +60,9 @@ Simulation is a critical component to testing fishery stock assessment methods
 With simulation, we can evaluate the precision and bias of complex assessment methods
 in a controlled environment where we know the true state of nature [@hilborn1992].
 For example, recent simulation studies have been key to improving strategies for dealing with
-time-varying natural mortality [@lee2011; @jiao2012; @deroba2013]
+time-varying natural mortality [@lee2011; @jiao2012; @deroba2013; @johnson2013]
 and uncertainty in steepness of the stock-recruit relationship [@lee2012],
-as well as determining what makes fisheries data informative [@magnusson2007; @wetzel2011a].
-<!--should you cite the papers resulting from the package in the above paragraph?-->
+as well as determining what makes fisheries data informative [@magnusson2007; @wetzel2011a; @ono2013].
 
 Stock Synthesis (SS) [@methot2013] is a widely-used stock assessment framework.
 It implements statistical age-structured population dynamics modeling
@@ -84,8 +85,6 @@ Here, we introduce ss3sim,
 an R package that facilitates
 large-scale, rapid, and reproducible simulation
 with the widely-used SS framework. 
-<!--Should we be more specific and state within the SS3 framework 
-    rather than just SS because the package won't work with SS1 or SS2 models.-->
 We begin by outlining the general structure of ss3sim
 and describing its functions.
 We then demonstrate the software by developing a simple example.
@@ -118,8 +117,8 @@ across multiple computers or computer cores, thereby accelerating computation.
 ## The general structure of an ss3sim simulation
 
 An ss3sim simulation requires three types of input:
-(1) a base SS model of the underlying truth, or operating model (OM);
-(2) a base SS model used to assess that truth,
+(1) a base SS3 model of the underlying truth, or operating model (OM);
+(2) a base SS3 model used to assess that truth,
 also known as the estimation model or method (EM);
 and (3) a set of plain-text files (case files)
 describing deviations from these base models.
@@ -183,7 +182,6 @@ and a three letter code representing the species or stock (e.g. `cod`) (Table 1,
 We combine these case IDs with hyphens to create scenario IDs. 
 For example, one of our scenarios will 
 have the scenario ID ``D1-E0-F0-M0-R0-cod``.
-<!--The example above does not include the 'M' case-->
 This scenario ID tells `run_ss3sim` 
 to read the case files corresponding 
 to the first data (`D`) case 
@@ -224,14 +222,14 @@ to ensure unbiased and consistent recovery of parameters [@hilborn1992].
 ss3sim makes model validation simple by allowing users 
 to specify their own recruitment deviations and control sampling error (Text S1).
 
-The cod-like model has already been validated, therefore
+The cod-like model has already been validated (Text S1), therefore
 we can now run 100 iterations of each simulation scenario.
 We will set `bias_adjust = TRUE`, 
 to enable a procedure that aims to produce mean-unbiased estimates 
 of biomass despite log-normal recruitment deviations [@methot2011].
 Although we won't use the option here, 
 we could run the simulations with parallel processing 
-to substantially reduce computing time by setting `parallel = TRUE` (Text S1).
+to substantially reduce computing time (Text S1).
 
 ```
 run_ss3sim(iterations = 1:100, scenarios =
@@ -249,11 +247,11 @@ get_results_all()
 ```
 
 This creates two files in our working directory: 
-`final_results_scalar.csv` and `final_results_ts.csv` 
+`ss3sim_scalars.csv` and `ss3sim_ts.csv` 
 containing scalar output values (e.g. maximum sustainable yield) 
 and time-series values (e.g. biomass each year), respectively. 
 There are separate columns for OM and EM values, making it simple to calculate 
-error metrics, such as relative error (Fig. 2).
+error metrics, such as relative (Fig. 2) or absolute error.
 
 # How ss3sim complements other simulation software
 
@@ -287,7 +285,6 @@ ss3sim makes many research opportunities easily accessible.
 Below we outline some key examples.
 
 <!--Although the low-level functions (`change` and `sample`) functions can be combined or modified in a user's own wrapper function to address nearly any simulation-based research question, there are-->
-
 <!--*Domed selectivity*:-->
 <!--*The importance of contrast in index series*:-->
 
@@ -300,7 +297,7 @@ However, parameters such as natural mortality, catchability, and selectivity
 are commonly assumed to be time invariant (REFS).
 What are the consequences for stock assessment?
 Further, although many studies have tried to isolate the effects
-of single time-varying parameters [@lee2011; @jiao2012; @deroba2013],
+of single time-varying parameters [@lee2011; @jiao2012; @deroba2013; @johnson2013],
 few have considered the effect of multiple time-varying parameters, 
 where multiple time-varying parameters could interact in unexpected ways (REFS).
 ss3sim can easily incorporate
@@ -359,9 +356,9 @@ Table X: Comparison with related software? Possible columns: software, reference
 Table 1: Main ss3sim functions and a description of their purpose. 
 Simulations can be run through the `run_ss3sim` function. 
 `run_ss3sim` then calls the `change` functions. 
-You can control what the `change` functions do through a series of plain-text case files. 
+Users can control what the `change` functions do through a series of plain-text case files. 
 For example, the case ID `D1` corresponds to the case files `lcomp1`, `agecomp1`, and `index1`, as described in the table. 
-You can also use the `change` functions directly as part of your own simulation structure.
+Users can also use the `change` functions directly as part of their own simulation structure.
 
 ----------------------------------------------------------------
 Function name          Description
@@ -427,11 +424,6 @@ and fishing mortality (F) in the terminal year.
 We show the values across simulation iterations with dots
 and the distributions with beanplots (kernel density smoothers).
 
-<!--Comments on Figure 2.
-    1. Remove $_{historical}$ from the $M$ variable name in upper panel a.
-    2. Color the labels "Median", "50\% range", and "90\% range" by colors used in the plot.
-    3. Remove one of the lines on the right axis of the upper panel. One or the other is sufficient.
-    -->
 \clearpage
 
 # References
