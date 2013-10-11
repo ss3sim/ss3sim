@@ -1,4 +1,4 @@
-# ss3sim: An R package for fish stock-assessment simulation with Stock Synthesis
+# ss3sim: An R package for fisheries stock assessment simulation with Stock Synthesis
 
 Sean C. Anderson^1*^, Kelli F. Johnson^2^, Cole C. Monnahan^3^, Kotaro Ono^2^, additional authors to be added as contributions are added...
 
@@ -23,10 +23,10 @@ Short title: ss3sim: Simulation with Stock Synthesis
 
 # Abstract
 
-Simulation is critical to testing fishery stock-assessment methods.
-In the last decade, the statistical stock-assessment framework
+Simulation is critical to testing fishery stock assessment methods.
+In the last decade, the statistical stock assessment framework
 Stock Synthesis (SS) has become widely-used around the world.
-However, there lacks a generalized and scriptable framework to run SS simulations.
+However, there lacks a generalized and scriptable framework for running SS simulations.
 Here, we introduce ss3sim, an R package that facilitates
 large-scale, rapid, and reproducible simulation
 with the third version of SS, SS3.
@@ -38,7 +38,7 @@ ss3sim then generates an underlying truth,
 samples from that truth,
 modifies and runs an estimation model,
 and synthesizes the results.
-The simulations can be run in parallel to speed computation,
+The simulations can be run in parallel, speeding computation,
 and the source code is open source
 and free to be modified under a GPL-3 license.
 We demonstrate the software with a simple example,
@@ -51,7 +51,7 @@ and outline research questions that ss3sim could address.
 
 # Introduction
 
-Simulation is a critical component to testing fishery stock-assessment methods
+Simulation is a critical component to testing fishery stock assessment methods
 [@hilborn1987; @hilborn1992; @rosenberg1994; @peterman2004].
 With simulation, we can evaluate the precision and bias of complex assessment methods
 in a controlled environment where we know the true state of nature [@hilborn1992].
@@ -59,20 +59,21 @@ For example, recent simulation studies have been key to improving strategies for
 time-varying natural mortality [@lee2011; @jiao2012; @deroba2013]
 and uncertainty in steepness of the stock-recruit relationship [@lee2012],
 as well as determining what makes fisheries data informative [@magnusson2007; @wetzel2011a].
+<!--should you cite the papers resulting from the package in the above paragraph?-->
 
-Stock Synthesis [SS; @methot2013] is a widely-used stock-assessment framework.
+Stock Synthesis (SS) [@methot2013] is a widely-used stock assessment framework.
 It implements statistical age-structured population dynamics modeling
 using a wide range of minimally-processed data [@maunder2013; @methot2013].
 By using this framework,
 individuals conducting stock assessments and peer reviewers
 can focus on the underlying science, instead of the model code [@methot2013].
 Owing to these advantages, SS3 (the third version of the software)
-is one of the world's most commonly-used stock-assessment tools,
+is one of the world's most commonly-used stock assessment tools,
 particularly in the United States and Australia,
 where it has been used in 35 and 12 stock assessments as of 2012,
 respectively [@methot2013].
 
-Although SS is increasingly a standard for fisheries stock assessment,
+Although SS is increasingly becoming a standard for fisheries stock assessment,
 and the programming language R [@rcoreteam2013] has become the standard
 for statistical computing and visualization,
 there lacks a generalized framework
@@ -80,12 +81,14 @@ to link these components in a simulation context.
 Here, we introduce ss3sim,
 an R package that facilitates
 large-scale, rapid, and reproducible simulation
-with the widely-used SS framework.
+with the widely-used SS framework. 
+<!--Should we be more specific and state within the SS3 framework 
+    rather than just SS because the package won't work with SS1 or SS2 models.-->
 We begin by outlining the general structure of ss3sim
 and describing its functions.
 We then demonstrate the software by developing a simple example.
 We conclude by discussing how ss3sim complements other simulation software
-and outlining research questions
+and outlining research questions that
 our accessible and general SS simulation framework could address.
 
 # The ss3sim framework
@@ -95,7 +98,7 @@ our accessible and general SS simulation framework could address.
 We designed ss3sim to be reproducible, flexible, and rapid.
 *Reproducible*: ss3sim allows for the simulation to be documented
 in code and plain-text control files
-and allows for random seeds to be set observation and process error.
+and allows for random seeds to be set prior to generating observation and process error.
 Simulations are therefore repeatable.
 *Flexible*: ss3sim can implement all possible configurations of SS3.
 Further, ss3sim summarizes the entire simulation into comma-separated-value (`.csv`) files
@@ -110,7 +113,7 @@ across multiple computers or computer cores, thereby accelerating computation.
 <!--Finally, the package provides a number of visualization functions-->
 <!--to quickly explore simulation output.-->
 
-## The general stucture of an ss3sim simulation
+## The general structure of an ss3sim simulation
 
 An ss3sim simulation requires three types of input:
 (1) a base SS model of the underlying truth, or operating model (OM);
@@ -118,8 +121,8 @@ An ss3sim simulation requires three types of input:
 also known as the estimation model or method (EM);
 and (3) a set of plain-text files (case files)
 describing deviations from these base models.
-Each unique combination of OM, EM, and case files are referred to as scenarios.
-These scenarios are usually run for multiple iterations,
+Each unique combination of OM, EM, and case files are referred to as a scenario.
+Scenarios are usually run for multiple iterations,
 possibly adding unique process and observation error each time.
 A simulation therefore refers to the combination of all scenarios and iterations.
 
@@ -145,11 +148,11 @@ and describe the example in greater detail in the accompanying vignette file (Te
 ## Setting up the SS models
 
 Any existing SS model can be used with ss3sim
-with minimal modifications (Text S1).
-ss3sim also comes with built-in pre-modified SS models
+following minimal modifications (Text S1).
+ss3sim also comes with built-in pre-modified SS3 models
 that represent three general life histories:
 cod-like (slow-growing and long-lived),
-flatfish-like (fast-growing and intermediate-lived),
+flatfish-like (fast-growing and long-lived),
 and sardine-like (fast-growing and short-lived).
 These models are based on
 North Sea cod (*Gadus morhua*) (R. Methot, pers.\ comm.),
@@ -158,8 +161,6 @@ and California sardine (*Sardinops caeruleus*) [@hill2012] (Text S1).
 We will base our example around the cod-like model.
 
 ## Setting up the case files
-
-<!--TODO what happens if there are no time varying parameters specified?-->
 
 ss3sim comes with a high-level function `run_ss3sim`, 
 which can run all simulation steps 
@@ -173,16 +174,16 @@ Alternatively, the low-level functions can be used on their own as part of a mor
 To use the high-level function `run_ss3sim`, the naming of the case files is important. 
 All case files are named according to the the type of case 
 (e.g. `E` for estimation, `D` for data, or `F` for fishing mortality), 
-a number representing the case number, and a three letter code representing the species or stock (e.g. `cod`) (Table 1, Text S1).
-
-We combine these case IDs with semicolons to create scenario IDs. 
+a numeric value representing the case number, and a three letter code representing the species or stock (e.g. `cod`) (Table 1, Text S1).
+We combine these case IDs with hyphens to create scenario IDs. 
 For example, one of our scenarios will 
 have the ``D1-E0-F0-R0-cod``.
+<!--The example above does not include the 'M' case-->
 This scenario ID tells `run_ss3sim` 
 to read the case files corresponding 
 to the first data (`D`) case 
-(`index1-cod.txt`, `lcomp1-cod.txt`, `agecomp1-cod.txt`), 
-the case 0 for estimation (case ID `E` and files `E0-cod.txt`), and so on.
+(i.e. `index1-cod.txt`, `lcomp1-cod.txt`, `agecomp1-cod.txt`), 
+the 0 for estimation (E) case (i.e.`E0-cod.txt`), and so on.
 
 To investigate the effect of research survey effort,
 we will manipulate the argument `sd_obs_surv`
@@ -193,7 +194,7 @@ We can do this by including the line: `sd_obs_surv; 0.1`
 in the file `D1-cod.txt` and the line: `sd_obs_surv; 0.4`
 in the file `D2-cod.txt`.
 We will set up a base-case file describing fishing mortality (`F0-cod.txt`) 
-and we will specify that we don't want to run a retrospective analysis in the file `R0-cod.txt`.
+and we will specify that we do not want to run a retrospective analysis in the file `R0-cod.txt`.
 
 To start, we'll load the ss3sim package and locate three sets of folders within the package data:
 (1) the folder with the OM,
@@ -210,11 +211,11 @@ case_folder <- paste0(d, "/eg-cases")
 
 ## Running the simulations
 
-It is important to validate a simulation model first with minimal or no process and/or observation error to ensure unbiased and consistent recovery of parameters [@hilborn1992].
-Before we run our simulations, we tested our models without any process error to make sure we could recover our parameters of interest without bias (Text S1).
-ss3sim makes this simple by allowing you specify your own recruitment deviations and controlling sampling error (Text S1).
+It is important to validate a simulation model with minimal or no process and/or observation error to ensure unbiased and consistent recovery of parameters [@hilborn1992].
+ss3sim makes model validation simple by allowing users to specify their own recruitment deviations and control sampling error (Text S1).
 
-We can then run 100 iterations of each simulation scenario.
+The cod-like model has already been validated, therefore
+we can now run 100 iterations of each simulation scenario.
 We will set `bias_adjust = TRUE`, 
 to enable a procedure that aims to produce mean-unbiased estimates 
 of biomass despite log-normal recruitment deviations [@methot2011].
@@ -238,7 +239,7 @@ get_results_all()
 
 This creates two files in our working directory: `final_results_scalar.csv` and `final_results_ts.csv` 
 containing scalar output values (e.g. maximum sustainable yield) 
-and time-series values (e.g. biomass each year). 
+and time-series values (e.g. biomass each year), respectively. 
 There are separate columns for OM and EM values, making it simple to calculate 
 error metrics, such as relative error (Fig. 2).
 
@@ -282,14 +283,14 @@ Below we outline some key examples.
 Ecological processes can vary through time in response to, for example,
 changes to fishing behaviour [@hilborn1992],
 regime shifts [@vert-pre2013], or
-changes to climate [@walther2002]
+changes to climate [@walther2002].
 However, parameters such as natural mortality, catchability, and selectivity
 are commonly assumed to be time invariant (REFS).
 What are the consequences for stock assessment?
 Further, although many studies have tried to isolate the effects
 of single time-varying parameters [@lee2011; @jiao2012; @deroba2013],
-few have considered the effect of multiple time-varying parameters.
-and multiple time-varying parameters could interact in unexpected ways (REFS).
+few have considered the effect of multiple time-varying parameters, 
+where multiple time-varying parameters could interact in unexpected ways (REFS).
 ss3sim can easily incorporate
 the effect of single or multiple time-varying parameters.
 
@@ -311,13 +312,13 @@ which can be computationally intensive and time consuming.
 As a result, bias adjustment is routinely not used in practice (REF).
 ss3sim can turn bias adjustment on or off
 with a single argument and so could be easily used to test when
-and how bias adjustment makes an important difference in stock assessment.
+and how bias adjustment affects model performance.
 
 *Retrospective patterns*:
 Retrospective patterns,
 in which model estimates are systematically biased
 with each additional year of data,
-are a major problem in stock-assessment science [@mohn1999; @legault2008].
+are a major problem in stock assessment science [@mohn1999; @legault2008].
 Key questions are: what causes retrospective patterns and what assessment strategies reduce retrospective patterns [@legault2008]?
 ss3sim can run retrospective analyses as part of any simulation by adding a single argument --- the number of retrospective years to investigate.
 
@@ -332,6 +333,7 @@ ss3sim can run retrospective analyses as part of any simulation by adding a sing
 We thank Ian Taylor, André Punt, and Richard Methot, AND INSERT ALL FISH 600 PARTICIPANTS NOT LISTED AS AUTHORS for helpful discussions during the development of ss3sim.
 KFJ and KO were partially supported by NOAA grant 423 NA10OAR4320148.
 SCA was supported by Fulbright Canada, NSERC, and a Garfield Weston Foundation/B.C. Packers Ltd.\ Graduate Fellowship in Marine Sciences.
+CCS was partially supported for this work by Washington Sea Grant.
 
 # Tables
 
@@ -344,7 +346,7 @@ Simulations can be run through the `run_ss3sim` function.
 `run_ss3sim` then calls the `change` functions. 
 You can control what the `change` functions do through a series of plain-text case files. 
 For example, the case ID `D1` corresponds to the case files `lcomp1`, `agecomp1`, and `index1`, as described in the table. 
-You could also use the `change` functions directly as part of your own simulation structure.
+You can also use the `change` functions directly as part of your own simulation structure.
 
 ----------------------------------------------------------------
 Function name          Description
@@ -355,7 +357,7 @@ Function name          Description
 
 `change_f`             Controls fishing mortality. (Case file and ID `F`)
 
-`change_tv`            Adds time-varying features. For example, time-varying natural mortality, growth, or selectivity. (Any case file, e.g. `M`, `G`, or `S`, starting with "`function_type; change_tv`")
+`change_tv`            Adds time-varying features. For example, time-varying natural mortality, growth, or selectivity. (Any case file, e.g. `M`, starting with "`function_type; change_tv`")
 
 `change_lcomp`         Controls how length composition data are sampled. (Case file `lcomp`, case ID `D`)
 
@@ -406,10 +408,15 @@ of the relative errors and the line indicates the median.
 Lower panels (grey) show the distribution
 of relative error across four scalar variables:
 depletion, *M*, SSB at maximum sustainable yield (MSY),
-and fishing mortality (F) in the last year.
+and fishing mortality (F) in the terminal year.
 We show the values across simulation iterations with dots
 and the distributions with beanplots (kernel density smoothers).
 
+<!--Comments on Figure 2.
+    1. Remove $_{historical}$ from the $M$ variable name in upper panel a.
+    2. Color the labels "Median", "50\% range", and "90\% range" by colors used in the plot.
+    3. Remove one of the lines on the right axis of the upper panel. One or the other is sufficient.
+    -->
 \clearpage
 
 # References
