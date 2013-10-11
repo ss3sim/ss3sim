@@ -12,6 +12,12 @@ f_merge <- subset(ts_dat, year == max(ts_dat$year))[ ,c("scenario",
 scalar_dat <- join(scalar_dat, f_merge, by = c("scenario",
     "replicate"))
 
+scen <- c()
+scen[1] <- expression(sigma[H]~italic(M)[F])
+scen[2] <- expression(sigma[H]~italic(M)[E])
+scen[3] <- expression(sigma[L]~italic(M)[F])
+scen[4] <- expression(sigma[L]~italic(M)[E])
+
 scalar_dat <- transform(scalar_dat,
   steep     = (SR_BH_steep_om - SR_BH_steep_em)/SR_BH_steep_om,
   logR0     = (SR_LN_R0_om - SR_LN_R0_em)/SR_LN_R0_om,
@@ -90,15 +96,18 @@ d_ply(quant_dat, c("D", "E"), transform, {
   if(i %in% c(3, 4)) axis(1, col = axis_col, col.axis = axis_col, padj = -0.15)
   box(col = axis_col)
   abline(h = 0, col = "#FFFFFF95", lty = 0, lwd = 1)
+  mtext(paste(unique(D), unique(E), sep = "-"), side = 3, line =
+    -1.15, cex = 0.7, col = label_col, adj = 0.043)
+  #mtext(scen[ii], side = 3, line = -1.15, cex = 0.7, col = label_col, adj = 0.043)
   #mtext("SSB", adj = 0.05, line = -1.3, col = "grey50", cex = 0.75)
   #mtext(LETTERS[ii], adj = 0.05, line = -1.5, col = axis_col, cex = 0.7)
   if(ii == 1) {
-    text(1945, 0.15, "Median", pos = 4, col = "grey50")
-    text(1959, 0.25, "50% range", pos = 4, col = "grey50")
-    text(1978, 0.35, "90% range", pos = 4, col = "grey50")
-    arrows(1955, 0.10, 1955, 0, length = 0.06, col = "grey25")
-    arrows(1975, 0.20, 1975, 0.03, length = 0.06, col = "grey25")
-    arrows(1995, 0.30, 1995, 0.06, length = 0.06, col = "grey25")
+    text(1945, 0.15, "Median", pos = 4, col = cols[8])
+    text(1959, 0.25, "50% range", pos = 4, col = cols[6])
+    text(1978, 0.35, "90% range", pos = 4, col = cols[4])
+    arrows(1955, 0.10, 1955, 0, length = 0.06, col = cols[8])
+    arrows(1975, 0.20, 1975, 0.03, length = 0.06, col = cols[6])
+    arrows(1995, 0.30, 1995, 0.06, length = 0.06, col = cols[4])
   }
 })
 
@@ -121,6 +130,7 @@ d_ply(scalar_dat_long, "variable", function(x) {
     axis_col, col.axis = axis_col)
   axis(1, col = axis_col, col.axis = label_col, at = 1:4, labels =
     substr(levels(x$scenario), 1, 5), las = 3)
+    #scen, las = 3)
   box(col = axis_col)
   abline(h = 0, col = "#00000040", lty = 1, lwd = 1.5)
   #mtext(LETTERS[ii], adj = 0.05, line = -1.5, col = "grey40", cex = 0.8)
@@ -132,7 +142,7 @@ mtext("Relative error in SSB", side = 2, outer = TRUE, line = 2.2, cex
   = label_cex, col = label_col, adj = 0.8)
 mtext("Relative error", side = 2, outer = TRUE, line = 2.2, cex =
   label_cex, col = label_col, adj = 0.1)
-mtext(expression(Fixed~italic(M)[historical]~(E0)), side = 3, outer =
+mtext(expression(Fixed~italic(M)~(E0)), side = 3, outer =
   TRUE, cex = label_cex, adj = 0.18, line = 0.2, col = label_col)
 mtext(expression(Estimated~italic(M)~(E1)), side = 3, outer = TRUE,
   cex = label_cex, adj = 0.85, line = 0.2, col = label_col)
