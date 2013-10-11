@@ -11,10 +11,12 @@
 #' @param outfile Character string of the name for the new file to be
 #' created. Must end in \code{.dat}.
 #' @param fleets Numeric vector giving the fleets to be used. This order also
-#' pertains to other arguments. A value of \code{NA} or missing value excludes that
-#' fleet from outfile (i.e. turn it off so no samples are written).
+#' pertains to other arguments. A missing value excludes that
+#' fleet from outfile (i.e. turn it off so no samples are written).If none of the fleet
+#' collected samples, keep the value to \code{fleets=NULL}.
 #' @param years A Numeric list the same length as \code{fleets} giving
-#' the years.
+#' the years. If no fleet collected samples, 
+#' keep the value to \code{years=NULL}.
 #' @param sds_obs A Numeric list of the same length as \code{fleets}. Either
 #' single values or vectors the same length as the number of years can be
 #' passed. Single values are repeated for all years.
@@ -60,17 +62,17 @@ change_index <- function(infile, outfile, fleets, years, sds_obs,
     if(substr_r(outfile,4) != ".dat" & write_file)
         stop(paste0("outfile ", outfile, " needs to end in .dat"))
     Nfleets <- length(fleets)
-    if(length(unique(cpue$index)) != Nfleets)
-        stop(paste0("Number of fleets specified (",Nfleets,
-                    ") does not match input file (",
-                    length(unique(cpue$index)), ")"))
-    if(FALSE %in% (fleets[!is.na(fleets)] %in% unique(cpue$index)))
+    # if(length(unique(cpue$index)) != Nfleets)
+        # stop(paste0("Number of fleets specified (",Nfleets,
+                    # ") does not match input file (",
+                    # length(unique(cpue$index)), ")"))
+    if(FALSE %in% (fleets %in% unique(cpue$index)))
         stop(paste0("The specified fleet number specified does not match input file"))
-    if(class(sds_obs) != "list" | length(sds_obs) != Nfleets)
+    if(Nfleets!= 0 & class(sds_obs) != "list" | length(sds_obs) != Nfleets)
         stop("sds_obs needs to be a list of same length as fleets")
-    if(class(years) != "list" | length(years) != Nfleets)
+    if(Nfleets!= 0 & class(years) != "list" | length(years) != Nfleets)
         stop("years needs to be a list of same length as fleets")
-    for(i in 1:length(fleets)){
+    for(i in 1:Nfleets){
         if(length(sds_obs[[i]])>1 & length(sds_obs[[i]]) != length(years[[i]]))
             stop(paste0("Length of sds_obs does not match length of years for fleet ",fleets[i]))
     }
@@ -82,7 +84,8 @@ change_index <- function(infile, outfile, fleets, years, sds_obs,
     ## then combined back together to form the final CPUE.
     newcpue.list <- list()
     k <- 1
-    for(i in 1:Nfleets){
+     if (Nfleets!= 0){
+	 for(i in 1:Nfleets){
         fl <- fleets[i]
         ## If only one sds given, extend it for all years
         if(length(sds_obs[[i]])==1) sds_obs[[i]] <- rep(sds_obs[[i]], len=length(years[[i]]))
@@ -109,10 +112,13 @@ change_index <- function(infile, outfile, fleets, years, sds_obs,
                 }
             }
         }
-    }
+    }}
+	
     ## Bind all the rows together to form the new index
-    cpue.new <- do.call(rbind, newcpue.list)
-    if(make_plot) {
+    if(Nfleets>0) cpue.new <- do.call(rbind, newcpue.list)
+    if(Nfleets==0) cpue.new <- data.frame("#")	
+	
+    if(make_plot & Nfleets>0) {
       p <- ggplot2::ggplot(cpue.new, ggplot2::aes(x=year, y=obs, ymin=0,
         colour=as.factor(index)))+ggplot2::geom_line()
       print(p)
@@ -123,7 +129,8 @@ change_index <- function(infile, outfile, fleets, years, sds_obs,
     ## overwrite
     newfile <- infile
     newfile$CPUE <- cpue.new
-    newfile$N_cpue <- nrow(cpue.new)
+    if(Nfleets>0) newfile$N_cpue <- nrow(cpue.new)
+    if(Nfleets==0) newfile$N_cpue <- 0
     if(write_file)
         r4ss::SS_writedat(datlist = newfile, outfile = outfile, overwrite = T)
     return(invisible(cpue.new))
