@@ -357,6 +357,30 @@ We can do this by including the line: \texttt{natM\_val; c(NA,-1)}
 in the file \texttt{E0-cod.txt}
 and the line: \texttt{natM\_val; c(0.20,3)} in the file \texttt{E1-cod.txt}.
 
+\subsection{Checking the case files}
+
+It's a good idea to check that the case files 
+are manipulating the SS3 model files as we intended.
+One way we can do this is by 
+running the \texttt{change} functions directly on the SS3 model files
+and inspecting the modified files.
+Another way is to run a single iteration of your simulation 
+through \texttt{run\_ss3sim} 
+and carefully inspecting the OM and EM model files that it creates. 
+For example, we could run:
+
+<<case-file-checks, eval=FALSE>>=
+run_ss3sim(iterations = 1, scenarios =
+  c("D1-E100-F0-G0-R0-S0-M0-cod",
+    "D2-E100-F0-G0-R0-S0-M0-cod",
+    "D1-E101-F0-G0-R0-S0-M0-cod",
+    "D2-E101-F0-G0-R0-S0-M0-cod"),
+  case_folder = case_folder, om_model_dir = om, 
+  em_model_dir = em, user_recdevs = recdevs_det)
+@
+
+And then check the SS3 files that are created.
+
 \subsection{Running deterministic simulations to check the models for
 bias}
 
