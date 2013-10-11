@@ -273,10 +273,10 @@ Probably turn this into a small table:
 - not integrated analysis, not SS
 - but particularly relevant to Europe
 
-*"Hooalator"*
+*Fishery Simulation*
 
 - http://fisherysimulation.codeplex.com, Windows only, GUI..., works on
-  bootstrapped data only, therefore isn't as flexible as ss3sim. Used in:
+  bootstrapped data
     1. @lee2012
     2. @piner2011
     3. @lee2011
