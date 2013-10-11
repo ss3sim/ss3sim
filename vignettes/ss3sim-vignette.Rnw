@@ -156,7 +156,7 @@ because the functions assume that the last three letters
 represent a unique identifier.
 The different versions of each case are identified with numbers.
 For example, the base-case scenario for our cod stock might be:
-\texttt{D0-E0-F0-G0-M0-R0-S0-cod}.
+\texttt{D0-E0-F0-M0-R0-cod}.
 The order of the letters doesn't matter,
 as long as we use them consistently.
 
@@ -170,26 +170,22 @@ The default settings create these files:
 
 \begin{enumerate}
 \item
-  \texttt{E0-spp.txt}
+  \texttt{E0-spp.txt} (for estimation method cases)
 \item
-  \texttt{F0-spp.txt}
+  \texttt{F0-spp.txt} (for fishing mortality cases)
 \item
-  \texttt{G0-spp.txt}
+  \texttt{R0-spp.txt} (for retrospective cases)
 \item
-  \texttt{M0-spp.txt}
+  \texttt{index0-spp.txt} (controlled by the \texttt{D} (data) case)
 \item
-  \texttt{R0-spp.txt}
+  \texttt{agecomp0-spp.txt} (controlled by the \texttt{D} (data) case)
 \item
-  \texttt{S0-spp.txt}
+  \texttt{lcomp0-spp.txt} (controlled by the \texttt{D} (data) case)
 \item
-  \texttt{index0-spp.txt} (controlled by the \texttt{D} case)
-\item
-  \texttt{agecomp0-spp.txt} (controlled by the \texttt{D} case)
-\item
-  \texttt{lcomp0-spp.txt} (controlled by the \texttt{D} case)
+  \texttt{X0-spp.txt} (for a time-varying parameter)
 \end{enumerate}
 
-After running \texttt{create\_argfiles},
+After running \texttt{create\_argfiles()},
 look in your working directory for the template files.
 Change the case ID number (defaults to \texttt{0})
 and the species identifier to a three letter identifier.
@@ -210,17 +206,18 @@ For example, see \texttt{?change\_f}.
 
 You can use any simple \texttt{R} syntax to declare argument values.
 For example:
-\texttt{c(1, 2, 4)}, or \texttt{seq(1, 100)}, or \texttt{1:100}, or \texttt{matrix()}.
+\texttt{c(1, 2, 4)}, or \texttt{seq(1, 100)}, or \texttt{1:100}, or \texttt{matrix()}, or \texttt{NULL}.
 Character objects don't need to be quoted, but can be if you'd like.
 However, be careful not to use the delimiter (set up as a semicolon)
 anywhere else in the file besides to denote columns.
 You can add comments after any \texttt{\#} symbol.
 Internally, the functions evaluate in \texttt{R}
-any entries that have no character values (e.g. \texttt{1:100})
+any entries that have no character values (e.g. \texttt{1:100}),
 or have an alpha-numeric character followed by a \texttt{(}.
 Anything that is character only or has character mixed with numeric
 but doesn't have the regular expression \texttt{"{[}A-Za-z0-9{]}("}
-gets turned into a character argument.
+gets turned into a character argument. 
+(\texttt{NA} and \texttt{NULL} are special cases that are also passed on directly.)
 
 Putting that all together,
 here's what an example \texttt{F1-cod.txt} file might look like:
@@ -322,11 +319,18 @@ om <- paste0(d, "/models/cod-om")
 em <- paste0(d, "/models/cod-em")
 @
 
+See the folder \texttt{ss3sim/inst/extdata/eg-cases} 
+inside the \texttt{ss3sim} source code
+for all the case files that we used in this example simulation. 
+You can either download the source code 
+or find this folder at the location contained 
+in the \texttt{case\_folder} object defined in the previous chunk of R code.
+
 \subsection{Creating the case files}
 
 We will base the simulation around the base-case files created
 for a cod-like species in the papers
-\citep{ono2013} and \citep{johnson2013}.
+\citet{ono2013} and \citet{johnson2013}.
 You can refer to these papers for details on how the models were set up.
 
 If we were starting from scratch,
@@ -353,9 +357,31 @@ to \texttt{-1} (any negative number will work) and use the argument \texttt{NA}
 to fix \textit{M} at the true value.
 In case 1, we'll estimate \textit{M} in
 phase \texttt{3} and initialize the estimation of \textit{M} at \texttt{0.20}.
-We can do this by including the line: \texttt{natM\_val; c(NA,-1)}
+We can do this by including the line: \texttt{natM\_val; c(NA, -1)}
 in the file \texttt{E0-cod.txt}
-and the line: \texttt{natM\_val; c(0.20,3)} in the file \texttt{E1-cod.txt}.
+and the line: \texttt{natM\_val; c(0.20, 3)} in the file \texttt{E1-cod.txt}.
+This means that case \texttt{E1} will initialize \textit{M} at \texttt{0.20}
+and estimate \textit{M} in the third phase.
+
+\subsection{Time varying parameters}
+
+You can specify any parameter defined in your SS3 model as time varying
+through the \texttt{change\_tv} function.
+Since the \texttt{change\_tv} function can be used for a number of
+purposes, it interacts differently with the case files than the other
+`change` functions.
+To pass arguments to \texttt{change\_tv} through
+\texttt{run\_ss3sim}: (1) create a case file with an arbitrary letter
+not used elsewhere (i.e. anything but D, E, F, or R) and include the line
+\texttt{function\_type; change\_tv} in your case file. For example,
+you might want to use M for natural mortality, S for selectivity, or G
+for growth.
+
+Although we don't have any time varying processes in our example simulation,
+we include \texttt{M} case files 
+in which we describe \textit{M} as stationary at a constant value.
+Simply by changing the deviations from a vector of zeros,
+we could add time-varying \textit{M}.
 
 \subsection{Checking the case files}
 
@@ -371,21 +397,22 @@ For example, we could run:
 
 <<case-file-checks, eval=FALSE>>=
 run_ss3sim(iterations = 1, scenarios =
-  c("D1-E100-F0-G0-R0-S0-M0-cod",
-    "D2-E100-F0-G0-R0-S0-M0-cod",
-    "D1-E101-F0-G0-R0-S0-M0-cod",
-    "D2-E101-F0-G0-R0-S0-M0-cod"),
+  c("D1-E0-F0-G0-R0-S0-M0-cod",
+    "D2-E0-F0-G0-R0-S0-M0-cod",
+    "D1-E1-F0-G0-R0-S0-M0-cod",
+    "D2-E1-F0-G0-R0-S0-M0-cod"),
   case_folder = case_folder, om_model_dir = om, 
-  em_model_dir = em, user_recdevs = recdevs_det)
+  em_model_dir = em)
 @
 
-And then check the SS3 files that are created.
+\noindent
+And then check the \texttt{SS3} files that are created.
 
 \subsection{Running deterministic simulations to check the models for
 bias}
 
 We'll run some simulations to check our model for bias when process error is not
-included in the OM and no observation error in the EM (i.e. ``determinstic'').
+included in the OM.
 To do this, we'll start by setting up a 100 row (number of years) by 20 column
 (number of iterations) matrix of recruitment deviations, where all values are
 set to zero.
@@ -394,15 +421,18 @@ set to zero.
 recdevs_det <- matrix(0, nrow = 100, ncol = 20)
 @
 
-Then we'll set up case ``estimation'' files in which the recruitment deviations
+Then we'll set up case ``estimation'' files in which the 
+initialized values of the recruitment deviation 
+standard deviations, \texttt{SR\_sigmaR},
 are set to the nominal level of \texttt{0.001}.
 We'll name these files \texttt{E100-cod.txt} and \texttt{E101-cod.txt}.
 In the case files, the key element is setting
 \texttt{par\_name = SR\_sigmaR} (the SS parameter name) and \texttt{par\_int = 0.001} (the initial value).
 The arguments \texttt{par\_name} and \texttt{par\_int} are set up
-to handle vectors of parameter names and values. In this example changing
+to handle vectors of parameter names and values. 
+In this example, changing
 \texttt{SR\_sigmaR} will be the second parameter in the vector. 
-You can look at all the case files in the package folder \texttt{/inst/extdata/eg-cases/}. 
+Again, you can look at all the case files in the package folder \texttt{/inst/extdata/eg-cases/}. 
 As an example, here is the file \texttt{E101-cod}:
 
 \begin{verbatim}
@@ -424,10 +454,10 @@ to identify whether our models are performing as we expect.
 
 <<deterministic-runs, eval=FALSE>>=
 run_ss3sim(iterations = 1:20, scenarios =
-  c("D1-E100-F0-G0-R0-S0-M0-cod",
-    "D2-E100-F0-G0-R0-S0-M0-cod",
-    "D1-E101-F0-G0-R0-S0-M0-cod",
-    "D2-E101-F0-G0-R0-S0-M0-cod"),
+  c("D1-E100-F0-R0-M0-cod",
+    "D2-E100-F0-R0-M0-cod",
+    "D1-E101-F0-R0-M0-cod",
+    "D2-E101-F0-R0-M0-cod"),
   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
   bias_adjust = TRUE, user_recdevs = recdevs_det)
 @
@@ -438,7 +468,7 @@ a convenience function \texttt{expand\_scenarios}.
 With this function we could instead write:
 
 <<deterministic-runs-expand, eval=FALSE>>=
-x <- expand_scenarios(e = c(100, 101), d = c(1, 2), species = "cod")
+expand_scenarios(list(D = 1:2, E = 100:101, F = 0, M = 0, R = 0), species = "cod")
 run_ss3sim(iterations = 1:20, scenarios = x,
   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
   bias_adjust = TRUE, user_recdevs = recdevs_det)
@@ -455,10 +485,10 @@ for a specific iteration, to facilitate comparison between scenarios.
 
 <<stochastic-runs, eval=FALSE>>=
 run_ss3sim(iterations = 1:100, scenarios =
-  c("D1-E0-F0-G0-R0-S0-M0-cod",
-    "D2-E0-F0-G0-R0-S0-M0-cod",
-    "D1-E1-F0-G0-R0-S0-M0-cod",
-    "D2-E1-F0-G0-R0-S0-M0-cod"),
+  c("D1-E0-F0-R0-M0-cod",
+    "D2-E0-F0-R0-M0-cod",
+    "D1-E1-F0-R0-M0-cod",
+    "D2-E1-F0-R0-M0-cod"),
   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
   bias_adjust = TRUE)
 @
@@ -471,14 +501,14 @@ and combines the output into two \texttt{.csv} files:
 
 <<get-results, eval=FALSE>>=
 get_results_all(user_scenarios =
-  c("D1-E100-F0-G0-R0-S0-M0-cod",
-    "D2-E100-F0-G0-R0-S0-M0-cod",
-    "D1-E101-F0-G0-R0-S0-M0-cod",
-    "D2-E101-F0-G0-R0-S0-M0-cod",
-    "D1-E0-F0-G0-R0-S0-M0-cod",
-    "D2-E0-F0-G0-R0-S0-M0-cod",
-    "D1-E1-F0-G0-R0-S0-M0-cod",
-    "D2-E1-F0-G0-R0-S0-M0-cod"))
+  c("D1-E100-F0-R0-M0-cod",
+    "D2-E100-F0-R0-M0-cod",
+    "D1-E101-F0-R0-M0-cod",
+    "D2-E101-F0-R0-M0-cod",
+    "D1-E0-F0-R0-M0-cod",
+    "D2-E0-F0-R0-M0-cod",
+    "D1-E1-F0-R0-M0-cod",
+    "D2-E1-F0-R0-M0-cod"))
 @
 
 \noindent
@@ -615,22 +645,6 @@ print(p)
 @
 
 \clearpage
-
-\section{Time varying parameters}
-
-You can specify any parameter defined in your SS model as time varying
-through the \texttt{change\_tv} function.
-
-Since the \texttt{change\_tv} function can be used for a number of
-purposes, it interacts differently with the case files than the other
-`change` functions.
-To pass arguments to \texttt{change\_tv} through
-\texttt{run\_ss3sim}: (1) create a case file with an arbitrary letter
-not used elsewhere (i.e. anything but D, E, F, or R) and include the line
-\texttt{function\_type; change\_tv} in your case file. For example,
-you might want to use M for natural mortality, S for selectivity, or G
-for growth.
-
 
 \section{Parallel computing with \texttt{ss3sim}}
 \label{sec:parallel}
