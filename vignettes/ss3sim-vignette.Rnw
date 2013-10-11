@@ -265,10 +265,10 @@ and copies the operating and estimation models.
 The folder structure looks like:
 
 \begin{verbatim}
-  D0-E0-F0-G0-M0-R0-S0-cod/1/om
-  D0-E0-F0-G0-M0-R0-S0-cod/1/em
-  D0-E0-F0-G0-M0-R0-S0-cod/2/om
-  D0-E0-F0-G0-M0-R0-S0-cod/2/em
+  D0-E0-F0-M0-R0-cod/1/om
+  D0-E0-F0-M0-R0-cod/1/em
+  D0-E0-F0-M0-R0-cod/2/om
+  D0-E0-F0-M0-R0-cod/2/em
   ...
 \end{verbatim}
 
@@ -277,15 +277,15 @@ then there will be some additional folders.
 In that case the folders will look like:
 
 \begin{verbatim}
-  D0-E0-F0-G0-M0-R0-S0-cod/bias/1/om
-  D0-E0-F0-G0-M0-R0-S0-cod/bias/1/em
-  D0-E0-F0-G0-M0-R0-S0-cod/bias/2/om
-  D0-E0-F0-G0-M0-R0-S0-cod/bias/2/em
+  D0-E0-F0-M0-R0-cod/bias/1/om
+  D0-E0-F0-M0-R0-cod/bias/1/em
+  D0-E0-F0-M0-R0-cod/bias/2/om
+  D0-E0-F0-M0-R0-cod/bias/2/em
   ...
-  D0-E0-F0-G0-M0-R0-S0-cod/1/om
-  D0-E0-F0-G0-M0-R0-S0-cod/1/em
-  D0-E0-F0-G0-M0-R0-S0-cod/2/om
-  D0-E0-F0-G0-M0-R0-S0-cod/2/em
+  D0-E0-F0-M0-R0-cod/1/om
+  D0-E0-F0-M0-R0-cod/1/em
+  D0-E0-F0-M0-R0-cod/2/om
+  D0-E0-F0-M0-R0-cod/2/em
   ...
 \end{verbatim}
 
