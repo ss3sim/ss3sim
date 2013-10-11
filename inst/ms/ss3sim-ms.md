@@ -176,19 +176,19 @@ Alternatively, the low-level functions can be used on their own
 as part of a more customized simulation wrapper function.
 
 To use the high-level function `run_ss3sim`, the naming of the case files is important. 
-All case files are named according to the the type of case 
+All case files are named according to the type of case 
 (e.g. `E` for estimation, `D` for data, or `F` for fishing mortality), 
 a numeric value representing the case number, 
 and a three letter code representing the species or stock (e.g. `cod`) (Table 1, Text S1).
 We combine these case IDs with hyphens to create scenario IDs. 
 For example, one of our scenarios will 
-have the ``D1-E0-F0-R0-cod``.
+have the scenario ID ``D1-E0-F0-M0-R0-cod``.
 <!--The example above does not include the 'M' case-->
 This scenario ID tells `run_ss3sim` 
 to read the case files corresponding 
 to the first data (`D`) case 
 (i.e. `index1-cod.txt`, `lcomp1-cod.txt`, `agecomp1-cod.txt`), 
-the 0 for estimation (E) case (i.e.`E0-cod.txt`), and so on.
+the zero case for estimation (E) (i.e. `E0-cod.txt`), and so on.
 
 To investigate the effect of research survey effort,
 we will manipulate the argument `sd_obs_surv`
@@ -219,7 +219,7 @@ case_folder <- paste0(d, "/eg-cases")
 ## Running the simulations
 
 It is important to validate a simulation model 
-with minimal or no process and/or observation error 
+with minimal or no process or observation error 
 to ensure unbiased and consistent recovery of parameters [@hilborn1992].
 ss3sim makes model validation simple by allowing users 
 to specify their own recruitment deviations and control sampling error (Text S1).
