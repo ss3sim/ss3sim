@@ -322,7 +322,7 @@ om <- paste0(d, "/models/cod-om")
 em <- paste0(d, "/models/cod-em")
 @
 
-\subsection{Creating the input configuration files}
+\subsection{Creating the case files}
 
 We will base the simulation around the base-case files created
 for a cod-like species in the papers
@@ -330,7 +330,7 @@ for a cod-like species in the papers
 You can refer to these papers for details on how the models were set up.
 
 If we were starting from scratch,
-we would run the function \texttt{create\_argfiles},
+we would run the function \texttt{create\_argfiles()},
 which would create a default set of configuration files
 in our R working directory.
 Instead we'll start with the configuration files from those papers.
@@ -624,8 +624,8 @@ through the \texttt{change\_tv} function.
 Since the \texttt{change\_tv} function can be used for a number of
 purposes, it interacts differently with the case files than the other
 `change` functions.
-To pass arguments to \texttt{change\_tv}} through
-\texttt{run\_ss3sim}}: (1) create a case file with an arbitrary letter
+To pass arguments to \texttt{change\_tv} through
+\texttt{run\_ss3sim}: (1) create a case file with an arbitrary letter
 not used elsewhere (i.e. anything but D, E, F, or R) and include the line
 \texttt{function\_type; change\_tv} in your case file. For example,
 you might want to use M for natural mortality, S for selectivity, or G
