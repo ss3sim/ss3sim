@@ -346,9 +346,9 @@ by adding a single argument --- the number of retrospective years to investigate
 
 # Acknowledgements
 We thank Ian Taylor, André Punt, and Richard Methot, AND INSERT ALL FISH 600 PARTICIPANTS NOT LISTED AS AUTHORS for helpful discussions during the development of ss3sim.
-KFJ and KO were partially supported by NOAA grant 423 NA10OAR4320148.
 SCA was supported by Fulbright Canada, NSERC, and a Garfield Weston Foundation/B.C. Packers Ltd.\ Graduate Fellowship in Marine Sciences.
-CCS was partially supported for this work by Washington Sea Grant.
+KFJ and KO were partially supported by NOAA grant 423 NA10OAR4320148 and 
+CCM was partially supported by a Washington Sea Grant.
 
 # Tables
 
