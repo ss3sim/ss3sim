@@ -168,7 +168,7 @@ ss3sim comes with a high-level function `run_ss3sim`,
 which can run all simulation steps 
 based on a specified scenario ID 
 and a set of semicolon-delimited plain-text files 
-that describe alternative cases (Fig. 1). 
+that describe alternative cases (Figure 1). 
 These files contain the argument values that will be passed 
 to the low-level ss3sim R functions (e.g. `change_e`) during the simulation.
 Alternatively, the low-level functions can be used on their own 
@@ -251,7 +251,7 @@ This creates two files in our working directory:
 containing scalar output values (e.g. maximum sustainable yield) 
 and time-series values (e.g. biomass each year), respectively. 
 There are separate columns for OM and EM values, making it simple to calculate 
-error metrics, such as relative (Fig. 2) or absolute error.
+error metrics, such as relative (Figure 2) or absolute error.
 
 # How ss3sim complements other simulation software
 
