@@ -45,55 +45,40 @@
   first column that should be passed on to functions. The
   names should match exactly. The second column should
   contain the values to be passed to those arguments.
-  Multiple words should be enclosed in quotes. Vectors
-  (\code{"c(1, 2, 3"}) should also be enclosed in quotes as
-  shown.
+  Multiple words should be enclosed in quotes.
+
+  You can use any simple R syntax to declare argument
+  values. For example: \code{c(1, 2, 4)}, or \code{seq(1,
+  100)}, or \code{1:100}, or \code{matrix()}, or
+  \code{NULL}. Character objects don't need to be quoted,
+  but can be if you'd like. However, be careful not to use
+  the delimiter (set up as a semicolon) anywhere else in
+  the file besides to denote columns. You can add comments
+  after any \code{\#} symbol. Internally, the functions
+  evaluate in \code{R} any entries that have no character
+  values (e.g. \code{1:100}), or have an alpha-numeric
+  character followed by a \code{(}. Anything that is
+  character only or has character mixed with numeric but
+  doesn't have the regular expression \code{"[A-Za-z0-9]("}
+  gets turned into a character argument. (\code{NA} and
+  \code{NULL} are special cases that are also passed on
+  directly.)
 }
 \examples{
 \dontrun{
-# Create some demo input files first:
-wt <- function(x, f) write.table(x, f, row.names = FALSE, col.names =
-  FALSE, sep = "; ", quote = FALSE)
-wt(data.frame("a", 1), "M1-cod.txt")
-wt(data.frame("b", "Some words"), "F2-cod.txt")
-wt(data.frame("d", 1), "index3-cod.txt")
-wt(data.frame("d", 1), "agecomp3-cod.txt")
-wt(data.frame(c("e", "f"), c(1, 99)), "lcomp3-cod.txt")
-wt(data.frame("c", "c(1, 2, 3)"), "R4-cod.txt")
+# Find the example data folders:
+d <- system.file("extdata", package = "ss3sim")
+case_folder <- paste0(d, "/eg-cases")
 
-get_caseargs(".", "M1-F2-D3-R4-cod")
+# An example using the cases defined by default:
+get_caseargs(case_folder, scenario = "D0-E0-F0-M0-R0-cod")
 
-# Clean up the files created above:
-file.remove(c("M1-cod.txt", "F2-cod.txt", "index3-cod.txt",
-"agecomp3-cod.txt", "lcomp3-cod.txt", "R4-cod.txt"))
-
-# The following output is returned:
-# $M
-# $M$a
-# [1] 1
-#
-# $F
-# $F$b
-# [1] "Some words"
-#
-# $index
-# $index$d
-# [1] 1
-#
-# $lcomp
-# $lcomp$e
-# [1] 1
-#
-# $lcomp$f
-# [1] 99
-#
-# $agecomp
-# $agecomp$d
-# [1] 1
-#
-# $R
-# $R$c
-# [1] c(1, 2, 3)
+# With a custom time-varying case for selectivity, which we'll call
+# the S case. Here, we'll need to define which file the case S should
+# read from ("S*-cod.txt"):
+get_caseargs(case_folder, scenario = "D0-E0-F0-M0-R0-S0-cod",
+  case_files = list(E = "E", D = c("index", "lcomp", "agecomp"), F =
+    "F", M = "M", R = "R", S = "S"))
 }
 }
 
