@@ -184,10 +184,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
        extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
          data_out = pastef(sc, i, "em", "ss3.dat"))
 
-      # Copy the new ss3.dat to the em folder
-       #file.copy(from = pastef(sc, i, "om", "ss3.dat"), to =
-         #pastef(sc, i, "em", "ss3.dat"))
-
       # Survey biomass index
       SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
