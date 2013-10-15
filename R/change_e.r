@@ -30,7 +30,7 @@
 #' @examples
 #' \dontrun{
 #' d <- system.file("extdata", package = "ss3sim")
-#' ctl_file <- paste0(d, "/ss3sim_base_eg/cod_em/simple_cod_em.ctl")
+#' ctl_file <- paste0(d, "/models/cod-om/codOM.ctl")
 #' change_e(ctl_file_in = ctl_file, ctl_file_out = "change_e.ctl",
 #'          dat_file_in = "ss3.dat", for_file_in = "forecast.ss", 
 #'          natM_type = "n_breakpoints", natM_n_breakpoints = c(1,4),
@@ -40,6 +40,7 @@
 #'          forecast_num = 0, run_change_e_full = TRUE )
 #' # clean up
 #' file.remove("change_e.ctl")
+#' file.remove("control_pre_change_e.ss_new")
 #' }
 
 change_e <- function ( ctl_file_in = pastef("em.ctl"), ctl_file_out = pastef("em.ctl"), 

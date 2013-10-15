@@ -31,16 +31,18 @@
 \examples{
 \dontrun{
 d <- system.file("extdata", package = "ss3sim")
-om <- paste0(d, "/ss3sim_base_eg/cod_om")
-em <- paste0(d, "/ss3sim_base_eg/cod_em")
+om <- paste0(d, "/models/cod-om")
+em <- paste0(d, "/models/cod-em")
 file.copy(om, ".", recursive = TRUE)
 file.copy(em, ".", recursive = TRUE)
+
 # verify the correct files exist and change file names:
-verify_input(model_dir = "cod_om", type = "om")
-verify_input(model_dir = "cod_em", type = "om")
+verify_input(model_dir = "cod-om", type = "om")
+verify_input(model_dir = "cod-em", type = "em")
+
 # clean up:
-unlink("cod_om", recursive = TRUE)
-unlink("cod_em", recursive = TRUE)
+unlink("cod-om", recursive = TRUE)
+unlink("cod-em", recursive = TRUE)
 }
 }
 \author{

@@ -1,8 +1,0 @@
-natM_type;          "n_breakpoints"
-natM_n_breakpoints; c(1,4)
-natM_lorenzen;      NULL
-natM_val;           c(.2,2, .3,2)
-par_name;           _steep,LnQ_base_3_CPUE
-par_int;            c(NA,NA)
-par_phase;          c(-1,-1)
-
