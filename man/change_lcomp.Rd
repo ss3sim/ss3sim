@@ -79,7 +79,7 @@ ex2 <- change_lcomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
 ex3 <- change_lcomp(infile=infile, outfile="test3.dat", fleets=c(1,2),
              # Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
              # years=list(seq(1994, 2012, by=2), 2003:2012),
-         # lengthbin_vector = seq(9,30,by=2))
+        # lengthbin_vector = seq(9,30,by=2))
 
 plot(seq(20,150, by=5), as.numeric(ex3[1, -(1:6)]), type="b", col=2,
    # xlab="length Bin", ylab="Proportion of length",
@@ -115,5 +115,4 @@ points(temp/sum(temp), pch="-", col="red")
   Cole Monnahan and Kotaro Ono; modified from a version by
   Roberto Licandeo and Felipe Hurtado-Ferro
 }
-
 
