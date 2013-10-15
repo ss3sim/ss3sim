@@ -1,16 +1,5 @@
-distribution; c('dirichlet', 'multinomial')
-Nsamp; NA
-minyear; NA
-maxyear; NA
-years; NA
-svyears; NA
-lbin_method; NA
-binwidth; NA
-minimum_size; NA
-maximum_size; NA
-N_lbins; NA
-lbin_vector; NA
-lencomp; NA
-fish_lcomp; FALSE
-sv_lcomp; FALSE
-cpar; 2
+Nsamp; NULL 
+fleets; NULL
+years; NULL
+lbin_vector; NULL
+cpar; NULL

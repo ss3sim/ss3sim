@@ -1,12 +1,6 @@
-distribution; multinomial
-Nsamp; NA
-minyear; NA
-maxyear; NA
-years; NA
-svyears; NA
-N_agebins; NA
-agebin_vector; NA
-agecomp; NA
-fish_agecomp; FALSE
-sv_agecomp; FALSE
-cpar; 2
+Nsamp; NULL
+fleets; NULL
+years; NULL
+agebin_vector; NULL
+cpar; NULL
+

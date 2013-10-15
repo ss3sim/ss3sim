@@ -1,12 +1,3 @@
-# description:
-# author: MM
-# notes:
-start_surv; 2003
-end_surv; 2012
-freq_surv; 2
-sd_obs_surv; 0.2
-start_fish; 1938
-end_fish; 2012
-freq_fish; 1
-sd_obs_fish; 0.4
-use_index; "survey"
+fleets; c(2)
+years; list(seq(2004,2012,by=2))
+sds_obs; list(.2)

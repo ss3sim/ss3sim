@@ -1,12 +1,5 @@
-distribution; multinomial
-Nsamp; 100
-minyear; NA
-maxyear; NA
-years; 1938:2012
-svyears; seq(1974,2012,by=2)
-N_agebins; NA
-agebin_vector; NA
-agecomp; NA
-fish_agecomp; TRUE
-sv_agecomp; TRUE
-cpar; 2
+fleets; c(1, 2)
+Nsamp; list(100, 100)
+years; list(1938:2012, seq(1974,2012,by=2))
+agebin_vector; NULL
+cpar; c(1, 1)

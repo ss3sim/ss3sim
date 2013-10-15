@@ -1,115 +1,119 @@
 \name{change_lcomp}
 \alias{change_lcomp}
-\title{Change length comps}
+\title{Sample length compositions from expected values}
 \usage{
-  change_lcomp(infile, outfile,
-    distribution = "multinomial", Nsamp = 100, years = NA,
-    svyears = NA, fish_lcomp = TRUE, sv_lcomp = TRUE,
-    cpar = 2, minyear = NA, maxyear = NA, lbin_method = NA,
-    lbin_vector = NA, binwidth = NA, minimum_size = NA,
-    maximum_size = NA, N_lbins = NA, lencomp = NA)
+  change_lcomp(infile, outfile, fleets = c(1, 2), Nsamp,
+    years, cpar = 1, lengthbin_vector = NULL,
+    write_file = TRUE)
 }
 \arguments{
-  \item{infile}{SS data object from SS_readdat() in the
-  r4ss package. Make sure you select option "section=2"}
+  \item{infile}{SS data object as read in from
+  \code{SS_readdat} in the r4ss packlength. Make sure you
+  select option \code{section=2}.}
 
-  \item{outfile}{Name of the new file to be created. Path
-  may be global or local. Make sure to give extension .dat
-  to the file name.}
+  \item{outfile}{Character string of the name for the new
+  file to be created. Must end in \code{.dat}.}
 
-  \item{distribution}{Distribution to be used to sample the
-  length compositions. Options are "multinomial" and
-  "dirichlet". it could also be written in the form of a
-  vector if the fishery and survey composition data are not
-  sampled using the same distribution}
+  \item{fleets}{Numeric vector giving the fleets to be
+  used. This order also pertains to other arguments. A
+  value of \code{NA} can be passed to exclude that fleet
+  from outfile (i.e. turn it off). If none of the fleet
+  collected samples, keep the value to \code{fleets=NULL}.}
 
-  \item{Nsamp}{Number of samples drawn from a multinomial
-  distribution, or precision for the Dirichlet
-  distribution. This could either be a single value if the
-  sample size is the same for all years but could also be a
-  vector with its length equal to the number of years with
-  fishery and survey samples. For the latter, fishery
-  sample size precedes the survey sample size. Nsamp only
-  accepts numeric values and requires to be specified for
-  both the fishery and survey EVEN IF it is not used in the
-  end. Default to 100.}
+  \item{Nsamp}{A numeric list of the same length as
+  \code{fleets}. Either single values or vectors the same
+  length as the number of years can be passed through.
+  Single values are repeated for all years. If no fleet
+  collected samples, keep the value to \code{Nsamp=NULL}.}
 
-  \item{years}{vector of years for the fleet length comps.}
+  \item{years}{A numeric list of the same length as fleets.
+  Each element specifies the years to sample from each
+  fleet. Years left out are excluded in \code{outfile},
+  allowing the user to reduce (but not increase) the sample
+  scheme as given in \code{infile}. If no fleet collected
+  samples, keep the value to \code{years=NULL}.}
 
-  \item{svyears}{vector of years for the survey lenght
-  comps.}
+  \item{lengthbin_vector}{A numeric vector giving the new
+  length bins to use. \code{agebin_vector} must be within
+  the [min;max] of population bin. This feature allows
+  dynamic binning by the user, but is not fully tested.
+  Users should consult the vignette and carefully check the
+  function bins the data as desired before proceeding with
+  simulations.}
 
-  \item{minyear}{starting year for the fleet length comps.
-  Overridden by specifying "years". Not operational. Leave
-  to the default value of NA.}
+  \item{cpar}{A numeric value or vector the same length as
+  \code{fleets} controlling the variance of the Dirichlet
+  distribution used for sampling. A value of \code{1}
+  indicates the same standard deviation as a multinomial of
+  the given \code{Nsamp}, \code{2} indicates twice, etc.
+  Values greater than one indicate overdispersion, and less
+  underdispersion.}
 
-  \item{maxyear}{ending year for the fleet length comps.
-  Overridden by specifying "years". Not operational. Leave
-  to the default value of NA.}
-
-  \item{lbin_method}{method to generate model length bins.
-  Not operational yet. Leave to the default value of
-  NA.Leave to the default value of NA.}
-
-  \item{lbin_vector}{Vector of length bins for the
-  observations. Not operational yet. Leave to the default
-  value of NA.}
-
-  \item{binwidth}{Bin width}
-
-  \item{minimum_size,}{Minimum size}
-
-  \item{maximum_size}{Maximum size}
-
-  \item{N_lbins}{Number of length bins.}
-
-  \item{lencomp}{Matrix of length comps}
-
-  \item{fish_lcomp,}{TRUE or FALSE. This indicates whether
-  you want to keep the fishery lcomp data at all. default
-  to TRUE}
-
-  \item{sv_lcomp,}{TRUE or FALSE. This indicates whether
-  you want to keep the survey lcomp data at all. default to
-  TRUE}
-
-  \item{cpar}{parameter scaling the variance of the
-  Dirichlet and Multinomial distributions.}
+  \item{write_file}{A switch for whether to write
+  \code{outfile} to disk. Can be turned off to speed up
+  testing or exploration of the function (the new lcomp is
+  returned invisibly)}
 }
 \description{
-  Take a data.SS_new file, resample the length compositions
-  from the expected values, and return a new file with the
-  new length comp samples. Samples can have dimensions,
-  bins, sample sizes, and distributions which are different
-  than those coming from SS.
+  Take a \code{data.SS_new} file containing expected values
+  and sample to create observed length compositions which
+  are then written to file for use by the EM.
 }
 \examples{
 \dontrun{
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/example-om/data.ss_new")
 infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+## Generate with constant sample size across years
+ex1 <- change_lcomp(infile=infile, outfile="test1.dat", fleets=c(1,2),
+             # Nsamp=list(100,50), years=list(seq(1994, 2012, by=2),
+            # 2003:2012))
 
-# Generate a DAT file with the same dimensions as the original 'infile'
-change_lcomp(infile,outfile="newdat.dat")
+## Generate with varying Nsamp by year for first fleet
+ex2 <- change_lcomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
+             # Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
+             # years=list(seq(1994, 2012, by=2),
+             # 2003:2012))
 
-# Generate a DAT file with a smaller sample size
-change_lcomp(infile,outfile="newdat.dat", Nsamp=20)
+## Generate with varying Nsamp by year for first fleet AND with different length bins
+ex3 <- change_lcomp(infile=infile, outfile="test3.dat", fleets=c(1,2),
+             # Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
+             # years=list(seq(1994, 2012, by=2), 2003:2012),
+         # lengthbin_vector = seq(9,30,by=2))
 
-# Generate a DAT file with a shorter time series
-change_lcomp(infile,outfile="newdat.dat", Nsamp=100, years=1980:2012)
+plot(seq(20,150, by=5), as.numeric(ex3[1, -(1:6)]), type="b", col=2,
+   # xlab="length Bin", ylab="Proportion of length",
+   # main="Comparison of different length bin structures via lengthbin_vector")
+lines(0:15, as.numeric(ex1[1, -(1:9)]), type="b", col=1)
+legend("topright", legend=c("ex1", "ex3"), col=c(1,2), pch=1)
 
-# Generate a DAT file using Dirichlet distributed samples
-change_lcomp(infile,outfile="newdat.dat", Nsamp=100, distribution="dirichlet")
+unlink(x=c("test1.dat", "test2.dat", "test3.dat")) # clean up
 
-# Generate a DAT file using Dirichlet distributed samples for the fishery and Multinomial for the survey
-change_lcomp(infile,outfile="newdat.dat", Nsamp=100, distribution=c("dirichlet", "multinomial"))
-
-# Generate a DAT file using Dirichlet distributed samples for the fishery with 50 samples
-# and Multinomial for the survey with 100 samples
-change_lcomp(infile,outfile="newdat.dat", distribution=c("dirichlet", "multinomial"), years = seq(1994,2012,by=2), svyears=seq(2003,2012), Nsamp=c(rep(50,10), rep(100,10)))
+## Plot distributions for a particular year for a cpar of 5 and 1 to
+## demonstrate the impact of cpar
+temp.list <- list()
+for(i in 1:500){
+  # temp.list[[i]] <-
+      # sample_lcomp(infile=infile, outfile="test1.dat",
+                     # fleets=c(1,2), cpar=c(5,1), Nsamp=list(100,100),
+                     # years=list(1995, 1995), write_file=F)
+}
+xx <- do.call(rbind, temp.list)[,-(1:9)[-3]]
+xx <- reshape2::melt(xx, id.vars="FltSvy")
+par(mfrow=c(2,1))
+with(subset(xx, FltSvy==1), boxplot(value~variable, las=2,
+              # main="Overdispersed",  xlab="length bin"))
+temp <- as.numeric(subset(infile$lcomp, Yr==1995 & FltSvy == 1)[-(1:9)])
+points(temp/sum(temp), pch="-", col="red")
+with(subset(xx, FltSvy==2), boxplot(value~variable, las=2,
+              # main="Multinomial", xlab="length bin"))
+temp <- as.numeric(subset(infile$lcomp, Yr==1995 & FltSvy == 2)[-(1:9)])
+points(temp/sum(temp), pch="-", col="red")
 }
 }
 \author{
-  Felipe Hurtado-Ferro (modified by Kotaro Ono)
+  Cole Monnahan and Kotaro Ono; modified from a version by
+  Roberto Licandeo and Felipe Hurtado-Ferro
 }
+
 
