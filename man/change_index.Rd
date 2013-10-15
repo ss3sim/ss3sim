@@ -15,12 +15,13 @@
 
   \item{fleets}{Numeric vector giving the fleets to be
   used. This order also pertains to other arguments. A
-  value of \code{NA} or missing value excludes that fleet
-  from outfile (i.e. turn it off so no samples are
-  written).}
+  missing value excludes that fleet from outfile (i.e. turn
+  it off so no samples are written).If none of the fleet
+  collected samples, keep the value to \code{fleets=NULL}.}
 
   \item{years}{A Numeric list the same length as
-  \code{fleets} giving the years.}
+  \code{fleets} giving the years. If no fleet collected
+  samples, keep the value to \code{years=NULL}.}
 
   \item{sds_obs}{A Numeric list of the same length as
   \code{fleets}. Either single values or vectors the same

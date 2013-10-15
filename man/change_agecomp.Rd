@@ -16,20 +16,23 @@
 
   \item{fleets}{Numeric vector giving the fleets to be
   used. This order also pertains to other arguments. A
-  value of \code{NA} or missing value excludes that fleet
-  from outfile (i.e. turn it off so no samples are
-  written).}
+  missing value excludes that fleet from outfile (i.e. turn
+  it off so no samples are written). If none of the fleet
+  collected samples, keep the value to \code{fleets=NULL}.}
 
   \item{Nsamp}{A numeric list of the same length as
-  \code{fleets}. Either single values or vectors the same
-  length as the number of years can be passed through.
-  Single values are repeated for all years.}
+  \code{fleets}. Either single values or vectors of the
+  same length as the number of years can be passed through.
+  Single values are repeated for all years. If no fleet
+  collected samples, keep the value to \code{Nsamp=NULL}.}
 
   \item{years}{A numeric list of the same length as
   \code{fleets}. Each element specifies the years to sample
   from each fleet. Years left out are excluded in
   \code{outfile}, allowing the user to reduce (but not
-  increase) the sample scheme as given in \code{infile}}
+  increase) the sample scheme as given in \code{infile}. If
+  no fleet collected samples, keep the value to
+  \code{years=NULL}.}
 
   \item{agebin_vector}{A numeric vector giving the new age
   bins to use. \code{agebin_vector} must be within the
@@ -62,19 +65,19 @@
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/example-om/data.ss_new")
 infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
-## Generate with constant sample size across years
-ex1 <- sample_agecomp(infile=infile, outfile="test1.dat", fleets=c(1,2),
-               Nsamp=list(100,50), years=list(seq(1994, 2012, by=2),
-              2003:2012))
+
+## Generate with a smaller number of fleet taking samples
+ex1 <- change_agecomp(infile=infile, outfile="test1.dat", fleets=c(2),
+               Nsamp=list(c(10,50)), years=list(c(1999,2000)))
 
 ## Generate with varying Nsamp by year for first fleet
-ex2 <- sample_agecomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
+ex2 <- change_agecomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
                Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
                years=list(seq(1994, 2012, by=2),
                2003:2012))
 
 ## Generate with varying Nsamp by year for first fleet AND with different age bins
-ex3 <- sample_agecomp(infile=infile, outfile="codEM.dat", fleets=c(1,2),
+ex3 <- change_agecomp(infile=infile, outfile="codEM.dat", fleets=c(1,2),
                Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
                years=list(seq(1994, 2012, by=2),
                2003:2012),	agebin_vector = seq(1,15,by=3))
@@ -92,7 +95,7 @@ unlink(x=c("test1.dat", "test2.dat", "test3.dat")) # clean up
 temp.list <- list()
 for(i in 1:500){
     temp.list[[i]] <-
-        sample_agecomp(infile=infile, outfile="test1.dat",
+        change_agecomp(infile=infile, outfile="test1.dat",
                        fleets=c(1,2), cpar=c(5,1), Nsamp=list(100,100),
                        years=list(1995, 1995), write_file=F)
 }
