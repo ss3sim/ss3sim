@@ -21,6 +21,7 @@ License: GPL-3
 LazyData: true
 Suggests:
     knitr,
+    ggplot2,
     doParallel,
     foreach
 VignetteBuilder: knitr
@@ -31,8 +32,7 @@ Imports:
     r4ss (>= 1.20),
     gtools (>= 2.7.1),
     lubridate (>= 1.3.0),
-    reshape2 (>= 1.2.2),
-    ggplot2 (>= 0.9.3.1)
+    reshape2 (>= 1.2.2)
 Collate:
     'change_agecomp.r'
     'change_f.r'
