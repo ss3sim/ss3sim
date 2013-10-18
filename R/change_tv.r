@@ -132,14 +132,22 @@ change_tv <- function(change_tv_list,
                                     dimnames = list(NULL,
                                                     c("year", "variable", "value"))))
   } else {
-      ss3.dat.tbl <- as.data.frame(ss3.dat[(dat.tbl.ch[1] + 1) :
-                                           (dat.tbl.ch[2] - 1)],
-                                   stringsAsFactors = FALSE)
+      ss3.dat.tbl <- ss3.dat[(dat.tbl.ch[1] + 1) :
+                             (dat.tbl.ch[2] - 1)]
+      ss3.dat.tbl <- do.call("rbind", 
+                             sapply(ss3.dat.tbl, 
+                                   strsplit, split = " "))[,-1]
+      ss3.dat.tbl <- as.data.frame(ss3.dat.tbl,
+                                   stringsAsFactors = FALSE,
+                                   class = c("integer", "numeric", "numeric"),
+                                   rowames = NA)
+      colnames(ss3.dat.tbl) <- c("year", "variable", "value")
+      row.names(ss3.dat.tbl) <- NULL 
     }
   ss3.dat.bottom <- ss3.dat[dat.tbl.ch[2]:length(ss3.dat)]
 
-  mg.ch <- grep("#custom_MG-env_setup (0/1)",   ss3.ctl, fixed = TRUE)
-  sx.ch <- grep("#_custom_sel-env_setup (0/1)", ss3.ctl, fixed = TRUE)
+  mg.ch <- grep("custom_MG-env_setup (0/1)",  ss3.ctl, fixed = TRUE)
+  sx.ch <- grep("custom_sel-env_setup (0/1)", ss3.ctl, fixed = TRUE)
 
   fleet.names <- ss3.dat[grep("#_N_areas", ss3.dat)[1] + 1]
   fleet.names <- strsplit(fleet.names, "%")[[1]]
@@ -166,6 +174,13 @@ change_tv <- function(change_tv_list,
   tab <- as.data.frame.table(table(lab))
   if("mg" %in% tab$lab) {
   if(subset(tab, lab == "mg", select = "Freq") > 0 ) {
+    test.tmp <- regmatches(ss3.ctl[mg.ch], gregexpr("[[:digit:]]+", ss3.ctl[mg.ch]))
+      test.tmp <- as.numeric(unlist(test.tmp))[1]
+    if(test.tmp == 1) {
+      stop("ss3sim does not support the use of custom environmental linkages.
+            Instead specify, 0 #_custom_MG-env_setup (0/1), 
+            for the environmental linkage.")
+    }
     ss3.ctl[mg.ch] <- paste(0, "#custom_MG-env_setup (0/1)")
     ss3.ctl[(mg.ch + 1)] <- "-1 2 1 0 -1 99 -2  # env link specification i.e fixed to 1"
     ss3.ctl[grep("#_env/block/dev_adjust_method", ss3.ctl)[1]] <- "1 #_env/block/dev_adjust_method"
@@ -173,6 +188,13 @@ change_tv <- function(change_tv_list,
   }
   if("sx" %in% tab$lab) {
   if(subset(tab, lab == "sx", select = "Freq") > 0 ) {
+    test.tmp <- regmatches(ss3.ctl[sx.ch], gregexpr("[[:digit:]]+", ss3.ctl[sx.ch]))
+      test.tmp <- as.numeric(unlist(test.tmp))[1]
+    if(test.tmp == 1) {
+      stop("ss3sim does not support the use of custom environmental linkages.
+            Instead specify, 0 #_custom_sel-env_setup (0/1), 
+            for the environmental linkage.")
+    }    
     ss3.ctl[sx.ch] <- paste(0, "#custom_sel-env_setup (0/1)")
     ss3.ctl[(sx.ch + 1)] <- "-1 2 1 0 -1 99 -2 # env link specification i.e fixed to 1"
     ss3.ctl[grep("#_env/block/dev_adjust_method", ss3.ctl)[2]] <- "1 #_env/block/dev_adjust_method"
