@@ -1,3 +1,3 @@
-fleets; c(2, NA)
+fleets; c(2)
 years; list(1974:2012)
-sds_obs; list(0.1, NA)
+sds_obs; list(0.1)
