@@ -468,7 +468,8 @@ a convenience function \texttt{expand\_scenarios}.
 With this function we could instead write:
 
 <<deterministic-runs-expand, eval=FALSE>>=
-expand_scenarios(list(D = 1:2, E = 100:101, F = 0, M = 0, R = 0), species = "cod")
+x <- expand_scenarios(list(D = 1:2, E = 100:101, F = 0, M = 0, 
+    R = 0), species = "cod")
 run_ss3sim(iterations = 1:20, scenarios = x,
   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
   bias_adjust = TRUE, user_recdevs = recdevs_det)
@@ -489,8 +490,8 @@ run_ss3sim(iterations = 1:100, scenarios =
     "D2-E0-F0-R0-M0-cod",
     "D1-E1-F0-R0-M0-cod",
     "D2-E1-F0-R0-M0-cod"),
-  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
-  bias_adjust = TRUE)
+  case_folder = case_folder, om_model_dir = om, 
+  em_model_dir = em, bias_adjust = TRUE)
 @
 
 \subsection{Reading in the output and plotting the data}
