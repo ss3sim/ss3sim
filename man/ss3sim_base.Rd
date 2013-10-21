@@ -124,10 +124,10 @@
 d <- system.file("extdata", package = "ss3sim")
 om_model_dir <- paste0(d, "/models/cod-om")
 em_model_dir <- paste0(d, "/models/cod-em")
-a <- get_caseargs(folder = paste0(d, "/cases"), scenario =
-"M0-F0-D0-R0-S0-G0-E0-cod")
+a <- get_caseargs(folder = paste0(d, "/eg-cases"), scenario =
+"M0-F0-D0-R0-E0-cod")
 
-ss3sim_base(iterations = 1, scenarios = "M0-F0-D0-R0-S0-G0-E0-cod",
+ss3sim_base(iterations = 1, scenarios = "M0-F0-D0-R0-E0-cod",
 f_params = a$F, index_params = a$index, lcomp_params = a$lcomp,
 agecomp_params = a$agecomp, tv_params = a$tv_params, retro_params =
 a$R, estim_params = a$E, om_model_dir = om_model_dir, em_model_dir
