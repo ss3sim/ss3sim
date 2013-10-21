@@ -1,6 +1,6 @@
-# description: Base case fishing pattern - The Omninscient Manager - constant fishing mortality at F_msy
+# description: Base case fishing pattern - The Omniscient Manager - constant
+# fishing mortality at F_msy
 # author: CC 
-# notes: 
 years; 1913:2012
 years_alter; 1913:2012
 fvals; c(rep(0,25), rep(0.114,75))
