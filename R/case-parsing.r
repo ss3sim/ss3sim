@@ -123,8 +123,24 @@ get_caseargs <- function(folder, scenario, delimiter = "-", ext = ".txt",
     R = "R", E = "E")) {
   case_vals <- names(case_files)
   spp <- substr_r(scenario, 3) # take 3 last characters
+
+# Sanity checks:
+# Does the stock ID look wrong?
+  if (grepl("-", spp)) {
+    stop("There is a hyphen in the last 3 letters of your scenario ID. 
+Did you use a 3 letter stock ID? If not, the cases will not be parsed
+correctly.")
+  }
+
+# Check that all cases are contained in the scenario:
+  out_sink <- sapply(case_vals, function(x) {
+    if (!grepl(x, scenario))
+      stop(paste("Case", x, "isn't contained in scenario", scenario))
+  })
+
   case_vals <- sapply(case_vals, function(x)
     get_caseval(scenario, x, delimiter))
+
   args_out <- vector("list", length = length(case_files))
   names(args_out) <- names(case_files)
   for(i in 1:length(case_files)) {
