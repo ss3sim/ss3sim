@@ -1,26 +1,26 @@
-#' Methods to include time-varying parameters in the OM
+#' Methods to include time-varying parameters in a SS3 OM
 #'
-#' @description Takes an SS3 \code{.ctl}, \code{.par}, and \code{.dat}
-#' file and implements the use of environmental variables to enable
-#' time-varying parameters. Specifically set up to work with an
+#' @description Takes SS3 \code{.ctl}, \code{.par}, and \code{.dat}
+#' files and implements time-varying parameters using environmental variables.
+#' Specifically set up to work with an
 #' operating model \code{.ctl} file.
 #'
 #' @param change_tv_list A list of named vectors. Names correspond to
-#' parameters in the operating model that are currently constant
-#' across time and will be changed to vary across time according to
-#' the vector of deviations. The vector of deviations will function
-#' as additive deviations from the value specified in the \code{.par}
-#' file for the given parameter. Vectors of deviations, also referred
-#' to as environmental data, must be of \code{length = length of *.dat
-#' endyr-startyr+1}. Specify years without deviations as vectors of
-#' zero. Parameter names must be unique and be specified
-#' as the full parameter name in the \code{.ctl} file.
+#' parameters in the operating model that currently do not utilize
+#' environmental deviations. Parameters will change to vary with time according to
+#' the vectors of deviations. Vectors of deviations, also referred
+#' to as environmental data, must have a length equal to \code{
+#' endyr-startyr+1}, where \code{endyr} and \code{startyr} 
+#' are specified the \code{.dat} file. Specify years without deviations as 
+#' zero. Parameter names must be unique and match
+#' the full parameter name in the \code{.ctl} file.
 #' Names for stock recruit parameters must contain "devs", "R0", or 
 #' "steep", and only one stock recruit parameter can be time-varying
 #' per model.
 #' The feature will include an *additive* functional linkage
 #' between environmental data and the parameter where the
-#' link parameter is fixed at a value of one:
+#' link parameter is fixed at a value of one and the par value
+#' is specified in the \code{.par} file:
 #' \code{par\' (y) = par + link * env(y)}
 #' For catchability (q) the *additive* functional linkage
 #' is implemented on the log scale:
@@ -29,16 +29,16 @@
 #' @param ctl_file_out Output SS3 control file
 #' @param dat_file_in Input SS3 data file
 #' @param dat_file_out Output SS3 data file
-#' @param par_file_in Input SS3 paramater file
+#' @param par_file_in Input SS3 parameter file
 #' @param par_file_out Output SS3 parameter file
 #' @param starter_file_in Input SS3 starter file
 #' @param starter_file_out Output SS3 starter file
 #' @param report_file Input SS3 report file
-#' @author Kotaro Ono, Carey McGilliard, and Kelli Faye Johnson
+#' @author Kotaro Ono, Carey McGilliard, and Kelli Johnson
 #' @export
 #'
 #' @details 
-#' To pass arguments to \code{\link{change_tv}} through a
+#' To pass arguments to \code{\link{change_tv}} through
 #' \code{\link{run_ss3sim}}: (1) create a case file with an arbitrary
 #' letter not used elsewhere (anything but D, E, F, or R) and include
 #' the line \code{function_type; change_tv} in your case file. For
@@ -46,18 +46,18 @@
 #' selectivity, or G for growth.
 #'
 #' Although there are three ways to implement time-varying
-#' parameters within SS3, \code{ss3sim} only uses the environmental
+#' parameters within SS3, \code{ss3sim} and \code{change_tv} only use the environmental
 #' variable option. The \code{ctl_file_in} argument needs to be a
 #' \code{.ss_new} file because the documentation in \code{.ss_new}
 #' files are automated and standardized. This function takes advantage
-#' of the standard documentation the SS3 control file to determine
+#' of the standard documentation the \code{.ss_new} files to determine
 #' which lines to manipulate and where to add code in the
 #' \code{.ctl}, \code{.par}, and \code{.dat} files, code that is necessary
 #' to implement time-varying parameters.
-#' Within SS, time-varying parameters work on an annual time-step.
-#' Thus for models with multiple seasons, the time-varying parameters
+#' Within SS3, time-varying parameters work on an annual time-step.
+#' Thus, for models with multiple seasons, the time-varying parameters
 #' will remain constant for the entire year.
-#' ss3sim uses annual recruitment deviations and may not work
+#' \code{ss3sim} uses annual recruitment deviations and may not work
 #' with a model that ties recruitment deviations to environmental
 #' covariates. If you need to compare the environment to annual
 #' recruitment deviations, the preferred option is to transform the
@@ -75,7 +75,7 @@
 #' wd <- getwd()
 #' setwd(paste0(d, "/Simple"))
 #' change_tv(change_tv_list = list("NatM_p_1_Fem_GP_1" = c(rep(0, 20), rep(.1, 11)),
-#'                                 "SizeSel_1P_1_FISHERY1" = rnorm(31, 0, 0.05),"recdevs"=rep(1,31)),
+#'                                 "SR_BH_steep"=rnorm(31, 0, 0.05)),
 #'   ctl_file_in = ctl_file_in, ctl_file_out = "example.ctl",
 #'   dat_file_in = dat_file_in, dat_file_out = "example.dat",
 #'   starter_file_in = starter_file_in, starter_file_out = "starter.ss",
@@ -89,7 +89,7 @@
 change_tv <- function(change_tv_list,
   ctl_file_in = "control.ss_new", ctl_file_out = "om.ctl",
   dat_file_in = "ss3.dat", dat_file_out = "ss3.dat",
-  par_file_in = "ss3.par", par_file_out="ss3.par",
+  par_file_in = "ss3.par", par_file_out = "ss3.par",
   starter_file_in = "starter.ss", starter_file_out = "starter.ss",
   report_file = "Report.sso") {
 
@@ -120,6 +120,8 @@ change_tv <- function(change_tv_list,
           of parameters that are already specified as time-varying.")
   }
 
+# Divide .dat file at the environmental variable table
+  # If no environmental variables create an empty table to be filled later
   dat.varnum.text <- grep("#_N_environ_variables", ss3.dat,
                           fixed = TRUE, value = TRUE)
   dat.varnum <- as.numeric(gsub('([0-9]*).*','\\1', dat.varnum.text))
@@ -146,9 +148,6 @@ change_tv <- function(change_tv_list,
     }
   ss3.dat.bottom <- ss3.dat[dat.tbl.ch[2]:length(ss3.dat)]
 
-  mg.ch <- grep("custom_MG-env_setup (0/1)",  ss3.ctl, fixed = TRUE)
-  sx.ch <- grep("custom_sel-env_setup (0/1)", ss3.ctl, fixed = TRUE)
-
   fleet.names <- ss3.dat[grep("#_N_areas", ss3.dat)[1] + 1]
   fleet.names <- strsplit(fleet.names, "%")[[1]]
 
@@ -172,33 +171,80 @@ change_tv <- function(change_tv_list,
                                temp
                              })
   tab <- as.data.frame.table(table(lab))
+
+  mg.ch <- grep("custom_MG-env_setup (0/1)",  ss3.ctl, fixed = TRUE)
   if("mg" %in% tab$lab) {
   if(subset(tab, lab == "mg", select = "Freq") > 0 ) {
     test.tmp <- regmatches(ss3.ctl[mg.ch], gregexpr("[[:digit:]]+", ss3.ctl[mg.ch]))
       test.tmp <- as.numeric(unlist(test.tmp))[1]
-    if(test.tmp == 1) {
-      stop("ss3sim does not support the use of custom environmental linkages.
-            Instead specify, 0 #_custom_MG-env_setup (0/1), 
-            for the environmental linkage.")
+      if(test.tmp == 1) {
+        stop("ss3sim does not support the use of custom environmental linkages.
+              Instead specify, 
+              0 #_custom_MG-env_setup (0/1), 
+              for the environmental linkage.")
     }
     ss3.ctl[mg.ch] <- paste(0, "#custom_MG-env_setup (0/1)")
     ss3.ctl[(mg.ch + 1)] <- "-1 2 1 0 -1 99 -2  # env link specification i.e fixed to 1"
-    ss3.ctl[grep("#_env/block/dev_adjust_method", ss3.ctl)[1]] <- "1 #_env/block/dev_adjust_method"
+    adjust.ch <- grep("#_env/block/dev_adjust_method", ss3.ctl)[1]
+    test.tmp <- ss3.ctl[adjust.ch]
+      test.tmp <- as.numeric(strsplit(test.tmp, "#")[[1]][1])
+      if(is.na(test.tmp)) {
+        ss3.ctl[adjust.ch] <- "1 #_env/block/dev_adjust_method"
+      } else {
+      if(test.tmp == 2) {
+        warning("The time-varying adjustment constraint in the 
+                 natural mortality and growth section of the 
+                 given OM specifies a logistic transformation.
+                 ss3sim::change_tv implements additive environmental deviates 
+                 and constraining the adjusted parameter to the bounds 
+                 of the base parameter may lead to undesired transformations.
+                 To avoid this, either change the bounds of the base 
+                 parameter and ignore this warning or change the givent .ctl
+                 file to implement env, blocks, and deviations that are not
+                 constrained by bounds. To do the later find 
+                 2 #_env/block/dev_adjust_method
+                 in the .ctl file and change it to
+                 1 #_env/block/dev_adjust_method.")
+      }}
+
   }
   }
+  
+  sx.ch <- grep("custom_sel-env_setup (0/1)", ss3.ctl, fixed = TRUE)
   if("sx" %in% tab$lab) {
   if(subset(tab, lab == "sx", select = "Freq") > 0 ) {
     test.tmp <- regmatches(ss3.ctl[sx.ch], gregexpr("[[:digit:]]+", ss3.ctl[sx.ch]))
       test.tmp <- as.numeric(unlist(test.tmp))[1]
-    if(test.tmp == 1) {
-      stop("ss3sim does not support the use of custom environmental linkages.
-            Instead specify, 0 #_custom_sel-env_setup (0/1), 
-            for the environmental linkage.")
+      if(test.tmp == 1) {
+        stop("ss3sim does not support the use of custom environmental linkages.
+              Instead specify, 
+              0 #_custom_sel-env_setup (0/1), 
+              for the environmental linkage.")
     }    
     ss3.ctl[sx.ch] <- paste(0, "#custom_sel-env_setup (0/1)")
     ss3.ctl[(sx.ch + 1)] <- "-1 2 1 0 -1 99 -2 # env link specification i.e fixed to 1"
-    ss3.ctl[grep("#_env/block/dev_adjust_method", ss3.ctl)[2]] <- "1 #_env/block/dev_adjust_method"
-    }
+    adjust.ch <- grep("#_env/block/dev_adjust_method", ss3.ctl)[2]
+    test.tmp <- ss3.ctl[adjust.ch]
+      test.tmp <- as.numeric(strsplit(test.tmp, "#")[[1]][1])
+      if(is.na(test.tmp)) {
+        ss3.ctl[adjust.ch] <- "1 #_env/block/dev_adjust_method"
+      } else {
+      if(test.tmp == 2) {
+        warning("The time-varying adjustment constraint in the 
+                 selectivity section of the 
+                 given OM specifies a logistic transformation.
+                 ss3sim::change_tv implements additive environmental deviates 
+                 and constraining the adjusted parameter to the bounds 
+                 of the base parameter may lead to undesired transformations.
+                 To avoid this, either change the bounds of the base 
+                 parameter and ignore this warning or change the givent .ctl
+                 file to implement env, blocks, and deviations that are not
+                 constrained by bounds. To do the later find 
+                 2 #_env/block/dev_adjust_method
+                 in the .ctl file and change it to
+                 1 #_env/block/dev_adjust_method.")
+      }}  
+  }
   }
 
   temp.data <- change_tv_list[lab == "mg" | lab == "sx"]
@@ -233,40 +279,40 @@ for(i in seq_along(temp.data)) {
 }
 
 temp.data <- change_tv_list[lab == "sr"]
-if(length(temp.data) > 0) {
-  sr.ch <- grep("#_SR_env_link", ss3.ctl, fixed = TRUE)
-  sr.base <- as.numeric(gsub('([0-9]*).*','\\1',ss3.ctl[sr.ch+1]))
-  type <- ifelse(grepl("R0", names(temp.data), ignore.case = TRUE) == 1,
-                 "virgin",
-                 ifelse(grepl("steep", names(temp.data), ignore.case = TRUE) == 1,
-                 "steep",
-                 ifelse(grepl("dev", names(temp.data), ignore.case = TRUE) == 1, 
-                 "devs", "NA")))
-  if(type=="NA") {
-    stop("Did not recognize the name for the stock recruit parameter
-as recruitment deviations, virgin recruitment, or steepness, 
-please rename and rerun the scenario")
-  }
-  if(type == "devs") {
-    warning("ss3sim uses annual recruitment deviations and may not work
-with a model that ties recruitment deviations to environmental
-covariates. If you need to compare the environment to annual
-recruitment deviations, the preferred option is to transform the
-environmental variable into an age 0 pre-recruit survey. See
-page 55 of the SS3 version 3.24f manual for more information.")
-  }
-  if(length(temp.data) > 1 ) {
-    stop("Currently SS3 only allows one stock recruit paramater at a
-time, R0 or steepness, to vary with an environmental
-covariate.")
-  }
-
-  if(sr.base > 0) {
-    stop("Currently SS3 does not allow environmental deviations
-for multiple stock recruit parameters.
-Please remove the environmental covariate from the base OM
-and run the scenario again.")
-  }
+  if(length(temp.data) > 0) {
+    sr.ch <- grep("#_SR_env_link", ss3.ctl, fixed = TRUE)
+    sr.base <- as.numeric(gsub('([0-9]*).*','\\1',ss3.ctl[sr.ch+1]))
+    type <- ifelse(grepl("R0", names(temp.data), ignore.case = TRUE) == 1,
+                   "virgin",
+                   ifelse(grepl("steep", names(temp.data), ignore.case = TRUE) == 1,
+                   "steep",
+                   ifelse(grepl("dev", names(temp.data), ignore.case = TRUE) == 1, 
+                   "devs", "NA")))
+    if(type=="NA") {
+      stop("Did not recognize the name for the stock recruit parameter
+            as recruitment deviations, virgin recruitment, or steepness, 
+            please rename and rerun the scenario")
+    }
+    if(type == "devs") {
+      warning("ss3sim uses annual recruitment deviations and may not work
+               with a model that ties recruitment deviations to environmental
+               covariates. If you need to compare the environment to annual
+               recruitment deviations, the preferred option is to transform the
+               environmental variable into an age 0 pre-recruit survey. See
+               page 55 of the SS3 version 3.24f manual for more information.")
+    }
+    if(length(temp.data) > 1 ) {
+      stop("Currently SS3 only allows one stock recruit paramater at a
+            time, R0 or steepness, to vary with an environmental
+            covariate.")
+    }
+  
+    if(sr.base > 0) {
+      stop("Currently SS3 does not allow environmental deviations
+            for multiple stock recruit parameters.
+            Please remove the environmental covariate from the base OM
+            and run the scenario again.")
+    }
 
   sr.shortline.ch <- grep("# SR_envlink", ss3.ctl, fixed = TRUE)
   ss3.ctl[sr.shortline.ch] <- "-5 5 1 0 -1 99 -3 # SR_envlink"
