@@ -1,5 +1,0 @@
-Nsamp; list(c(rep(100, 30)), rep(100, 13))
-fleets; c(1,2)
-years; list(seq(1983,2012), seq(1988,2012,by=2))
-agebin_vector; NULL
-cpar; c(2,1)

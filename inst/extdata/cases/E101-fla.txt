@@ -1,9 +1,0 @@
-natM_type;          1Parm      
-natM_n_breakpoints; NULL  
-natM_lorenzen;      NULL
-natM_val;           c(0.15,-5)
-par_name;           LnQ_base_3_CPUE,SR_sigmaR
-par_int;            c(NA,0.001)
-par_phase;          c(-1,-1)
- 
-forecast_num;       0 
