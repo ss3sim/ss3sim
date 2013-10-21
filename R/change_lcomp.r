@@ -154,13 +154,13 @@ change_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
     for(i in 1:length(fleets)){
         fl <- fleets[[i]]
         if(!is.na(fl)){
-            lcomp.fl <- subset(lcomp, FltSvy==fl & Yr %in% years[[i]])
+            lcomp.fl <- lcomp[lcomp$FltSvy == fl & lcomp$Yr %in% years[[i]], ]
             if(length(years[[i]]) != nrow(lcomp.fl))
                 stop(paste("A year specified in years was not found in the input file for fleet", fl))
             lcomp.fl$Nsamp <- Nsamp[[i]]
             ## Now loop through each year and resample that row
             for(yr in years[[i]]) {
-                newcomp <- subset(lcomp.fl, Yr==yr)
+                newcomp <- lcomp.fl[lcomp.fl$Yr==yr, ]
                 ## First 1-9 cols aren't length bins so skip them
                 probs <- as.numeric(newcomp[-(1:6)]/sum(newcomp[-(1:6)]))
                 lambda <- newcomp$Nsamp/cpar[i]^2 - 1

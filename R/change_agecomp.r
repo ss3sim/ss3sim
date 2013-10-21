@@ -152,13 +152,13 @@ change_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
   for(i in 1:length(fleets)){
         fl <- fleets[i]
         if(!is.na(fl)){
-            agecomp.fl <- subset(agecomp, FltSvy==fl & Yr %in% years[[i]])
+            agecomp.fl <- agecomp[agecomp$FltSvy == fl & agecomp$Yr %in% years[[i]], ]
             if(length(years[[i]]) != nrow(agecomp.fl))
                 stop(paste("A year specified in years was not found in the input file for fleet", fl))
             agecomp.fl$Nsamp <- Nsamp[[i]]
             ## Now loop through each year and resample that row
             for(yr in years[[i]]) {
-                newcomp <- subset(agecomp.fl, Yr==yr)
+                newcomp <- agecomp.fl[agecomp.fl$Yr==yr, ]
                 ## First 1-9 cols aren't age bins so skip them
                 probs <- as.numeric(newcomp[-(1:9)]/sum(newcomp[-(1:9)]))
                 lambda <- newcomp$Nsamp/cpar[i]^2 - 1

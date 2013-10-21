@@ -6,7 +6,7 @@ inst/examples$
 ^\.git$
 ^\.DS_Store$
 ^\.Rapp.history$
-^\.gitattributes$
-^\.gitignore$
+\.gitattributes
+\.gitignore
 inst/ms$
 

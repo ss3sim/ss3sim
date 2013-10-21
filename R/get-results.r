@@ -292,7 +292,8 @@ get_results_scenario <- function(scenario, directory=getwd(),
         ts <- cbind(ts, scenario.ts)
         ## Other calcs
         ts$year <- ts$Yr_om
-        ts <- subset(ts, select=-c(Yr_om, Yr_em))
+        ts$Yr_om <- NULL
+        ts$Yr_em <- NULL
         scalar$max_grad <- scalar$max_grad_em
         ignore.cols <- which(names(scalar) %in% c("max_grad_om", "max_grad_em"))
         scalar <- scalar[ , -ignore.cols]

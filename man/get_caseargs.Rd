@@ -4,7 +4,8 @@
 \usage{
   get_caseargs(folder, scenario, delimiter = "-",
     ext = ".txt",
-    case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), R = "R", E = "E"))
+    case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), R = "R", E 
+= "E"))
 }
 \arguments{
   \item{folder}{The folder to look for input files in.}
