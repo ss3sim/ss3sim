@@ -8,4 +8,5 @@ inst/examples$
 ^\.Rapp.history$
 ^\.gitattributes$
 ^\.gitignore$
+inst/ms$
 
