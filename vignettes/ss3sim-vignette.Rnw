@@ -10,9 +10,6 @@
 % Try not to re-wrap unless necessary.
 % Avoid trailing whitespace.
 
-% TODO add section demonstrating parallel runs (if not, strip it from the
-% paper)
-
 \documentclass[12pt]{article}
 \usepackage{geometry}
 \usepackage{url}
@@ -397,10 +394,10 @@ For example, we could run:
 
 <<case-file-checks, eval=FALSE>>=
 run_ss3sim(iterations = 1, scenarios =
-  c("D1-E0-F0-G0-R0-S0-M0-cod",
-    "D2-E0-F0-G0-R0-S0-M0-cod",
-    "D1-E1-F0-G0-R0-S0-M0-cod",
-    "D2-E1-F0-G0-R0-S0-M0-cod"),
+  c("D1-E0-F0-R0-M0-cod",
+    "D2-E0-F0-R0-M0-cod",
+    "D1-E1-F0-R0-M0-cod",
+    "D2-E1-F0-R0-M0-cod"),
   case_folder = case_folder, om_model_dir = om, 
   em_model_dir = em)
 @
