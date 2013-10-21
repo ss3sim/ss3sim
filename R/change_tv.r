@@ -21,10 +21,10 @@
 #' between environmental data and the parameter where the
 #' link parameter is fixed at a value of one and the par value
 #' is specified in the \code{.par} file:
-#' \code{par\' (y) = par + link * env(y)}
-#' For catchability (q) the *additive* functional linkage
+#' \eqn{par'[y] = par + link * env[y]}.
+#' For catchability (\eqn{q}) the *additive* functional linkage
 #' is implemented on the log scale:
-#' \code{ln_{q}(y) = ln_{q Base} + link * env(y)}
+#' \eqn{ln(q'[y]) = ln(q) + link * env[y]}
 #' @param ctl_file_in Input SS3 control file
 #' @param ctl_file_out Output SS3 control file
 #' @param dat_file_in Input SS3 data file
@@ -47,16 +47,19 @@
 #'
 #' Although there are three ways to implement time-varying
 #' parameters within SS3, \code{ss3sim} and \code{change_tv} only use the environmental
-#' variable option. The \code{ctl_file_in} argument needs to be a
+#' variable option. 
+#' Within SS3, time-varying parameters work on an annual time-step.
+#' Thus, for models with multiple seasons, the time-varying parameters
+#' will remain constant for the entire year.
+#' 
+#' The \code{ctl_file_in} argument needs to be a
 #' \code{.ss_new} file because the documentation in \code{.ss_new}
 #' files are automated and standardized. This function takes advantage
 #' of the standard documentation the \code{.ss_new} files to determine
 #' which lines to manipulate and where to add code in the
 #' \code{.ctl}, \code{.par}, and \code{.dat} files, code that is necessary
 #' to implement time-varying parameters.
-#' Within SS3, time-varying parameters work on an annual time-step.
-#' Thus, for models with multiple seasons, the time-varying parameters
-#' will remain constant for the entire year.
+#'
 #' \code{ss3sim} uses annual recruitment deviations and may not work
 #' with a model that ties recruitment deviations to environmental
 #' covariates. If you need to compare the environment to annual
