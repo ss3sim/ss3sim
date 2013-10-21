@@ -1,6 +1,6 @@
 \name{change_index}
 \alias{change_index}
-\title{Sample the biomass with observation error to generate indices of abundance.}
+\title{Sample the biomass with observation error}
 \usage{
   change_index(infile, outfile, fleets, years, sds_obs,
     make_plot = FALSE, write_file = TRUE)
@@ -24,6 +24,11 @@
   giving the years as numeric vectors. If no fleet
   collected samples, keep the value to \code{years=NULL}.}
 
+  \item{write_file}{A switch for whether to write
+  \code{outfile} to disk. Can be turned off to speed up
+  testing or exploration of the function. The new data are
+  returned invisibly, as in the examples below.}
+
   \item{sds_obs}{A list the same length as \code{fleets}.
   The list should contain either single values or numeric
   vectors of the same length as the number of years which
@@ -33,12 +38,6 @@
   \item{make_plot}{A logical switch for whether to make a
   crude plot showing the results. Useful for testing and
   exploring the function.}
-
-  \item{write_file}{A logical switch for whether to write
-  \code{outfile} to disk. Can be switched to \code{FALSE}
-  to speed up testing or exploration of the function. (The
-  new indices are returned invisibly, as in the examples
-  below.)}
 }
 \value{
   A modified \code{.dat} file if \code{write_file=TRUE}. A

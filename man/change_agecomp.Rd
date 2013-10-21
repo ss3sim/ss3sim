@@ -7,40 +7,34 @@
     write_file = TRUE)
 }
 \arguments{
-  \item{infile}{SS data object as read in from
-  \code{SS_readdat} in the r4ss package. Make sure you
-  select option \code{section=2}.}
+  \item{infile}{An SS data object as read in from
+  \code{\link[r4ss]{SS_readdat}} in the r4ss package. Make
+  sure you select option \code{section=2}.}
 
-  \item{outfile}{Character string of the name for the new
-  file to be created. Must end in \code{.dat}.}
+  \item{outfile}{A character string of the new \code{.dat}
+  file name to be created. Must end in \code{.dat}.}
 
-  \item{fleets}{Numeric vector giving the fleets to be
+  \item{fleets}{A numeric vector giving the fleets to be
   used. This order also pertains to other arguments. A
-  missing value excludes that fleet from outfile (i.e. turn
-  it off so no samples are written). If none of the fleet
-  collected samples, keep the value to \code{fleets=NULL}.}
+  missing value excludes that fleet from \code{outfile}
+  (i.e. it turns it off so no samples are written). If none
+  of the fleet collected samples, keep the value to
+  \code{fleets=NULL}.}
+
+  \item{years}{A list the same length as \code{fleets}
+  giving the years as numeric vectors. If no fleet
+  collected samples, keep the value to \code{years=NULL}.}
+
+  \item{write_file}{A switch for whether to write
+  \code{outfile} to disk. Can be turned off to speed up
+  testing or exploration of the function. The new data are
+  returned invisibly, as in the examples below.}
 
   \item{Nsamp}{A numeric list of the same length as
   \code{fleets}. Either single values or vectors of the
   same length as the number of years can be passed through.
   Single values are repeated for all years. If no fleet
   collected samples, keep the value to \code{Nsamp=NULL}.}
-
-  \item{years}{A numeric list of the same length as
-  \code{fleets}. Each element specifies the years to sample
-  from each fleet. Years left out are excluded in
-  \code{outfile}, allowing the user to reduce (but not
-  increase) the sample scheme as given in \code{infile}. If
-  no fleet collected samples, keep the value to
-  \code{years=NULL}.}
-
-  \item{agebin_vector}{A numeric vector giving the new age
-  bins to use. \code{agebin_vector} must be within the
-  [min;max] of population bin. This feature alows dynamic
-  binning by the user, but is not fully tested. Users
-  should consult the vignette and carefully check the
-  function bins the data as desired before proceeding with
-  simulations.}
 
   \item{cpar}{A numeric value or vector the same length as
   \code{fleets} controlling the variance of the Dirichlet
@@ -50,10 +44,18 @@
   Values greater than one indicate overdispersion, and less
   underdispersion.}
 
-  \item{write_file}{A switch for whether to write
-  \code{outfile} to disk. Can be turned off to speed up
-  testing or exploration of the function (the new agecomp
-  is returned invisibly, as in the examples below)}
+  \item{agebin_vector}{A numeric vector giving the new age
+  bins to use. \code{agebin_vector} must be within the
+  [min;max] of population bin. This feature alows dynamic
+  binning by the user, but is not fully tested. Users
+  should consult the vignette and carefully check the
+  function bins the data as desired before proceeding with
+  simulations.}
+}
+\value{
+  A modified \code{.dat} file if \code{write_file=TRUE}. A
+  list object containing the modified \code{.dat} file is
+  returned invisibly.
 }
 \description{
   Take a \code{data.SS_new} file containing expected values

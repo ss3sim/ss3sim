@@ -1,4 +1,4 @@
-#' Sample the biomass with observation error to generate indices of abundance.
+#' Sample the biomass with observation error
 #'
 #' This function creates an index of abundance sampled from the expected
 #' available biomass for given fleets in given years. Let B_y be the biomass
@@ -7,32 +7,15 @@
 #' term adjusts the random samples so that their expected value is B_y
 #' (i.e. the log-normal bias correction).
 #'
-#' @param infile An SS data object as read in from
-#' \code{\link[r4ss]{SS_readdat}} in the r4ss package. Make sure you select
-#' option \code{section=2}.
-#' @param outfile A character string of the new \code{.dat} file name to be
-#' created. Must end in \code{.dat}.
-#' @param fleets A numeric vector giving the fleets to be used. This order also
-#' pertains to other arguments. A missing value excludes that fleet from
-#' \code{outfile} (i.e. it turns it off so no samples are written). If none of
-#' the fleet collected samples, keep the value to \code{fleets=NULL}.
-#' @param years A list the same length as \code{fleets} giving the years as
-#' numeric vectors. If no fleet collected samples, keep the value to
-#' \code{years=NULL}.
+#' @template lcomp-agecomp-index
 #' @param sds_obs A list the same length as \code{fleets}. The list should
 #' contain either single values or numeric vectors of the same length as the
 #' number of years which represent the standard deviation of the observation
 #' error. Single values are repeated for all years.
 #' @param make_plot A logical switch for whether to make a crude plot showing
 #' the results. Useful for testing and exploring the function.
-#' @param write_file A logical switch for whether to write \code{outfile} to
-#' disk. Can be switched to \code{FALSE} to speed up testing or exploration of
-#' the function. (The new indices are returned invisibly, as in the examples
-#' below.)
 #'
-#' @return
-#' A modified \code{.dat} file if \code{write_file=TRUE}. A list object
-#' containing the modified \code{.dat} file is returned invisibly.
+#' @template sampling-return
 #'
 #' @export
 #' @author Cole Monnahan, Kotaro Ono

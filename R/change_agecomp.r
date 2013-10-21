@@ -6,37 +6,18 @@
 #'
 #' @author Cole Monnahan and Kotaro Ono; modified from a version by Roberto
 #' Licandeo and Felipe Hurtado-Ferro
-#' @param infile SS data object as read in from \code{SS_readdat} in the r4ss
-#' package. Make sure you select option \code{section=2}.
-#' @param outfile Character string of the name for the new file to be
-#' created. Must end in \code{.dat}.
-#' @param fleets Numeric vector giving the fleets to be used. This order also
-#' pertains to other arguments. A missing value excludes that
-#' fleet from outfile (i.e. turn it off so no samples are written). If none of the fleet
-#' collected samples, keep the value to \code{fleets=NULL}.
-#' @param Nsamp A numeric list of the same length as \code{fleets}. Either single
-#' values or vectors of the same length as the number of years can be passed
-#' through. Single values are repeated for all years. If no fleet collected samples, 
-#' keep the value to \code{Nsamp=NULL}.
-#' @param years A numeric list of the same length as \code{fleets}. Each element
-#' specifies the years to sample from each fleet. Years left out are excluded in
-#' \code{outfile}, allowing the user to reduce (but not increase) the sample
-#' scheme as given in \code{infile}. If no fleet collected samples, 
-#' keep the value to \code{years=NULL}.
-#' @param agebin_vector A numeric vector giving the new age bins to use.
-#' \code{agebin_vector} must be within the [min;max] of population bin. This
-#' feature alows dynamic binning by the user, but is not fully tested. Users
-#' should consult the vignette and carefully check the function bins the data as
-#' desired before proceeding with simulations.
-#' @param cpar A numeric value or vector the same length as \code{fleets}
-#' controlling the variance of the Dirichlet distribution used for sampling. A
-#' value of \code{1} indicates the same standard deviation as a multinomial of the
-#' given \code{Nsamp}, \code{2} indicates twice, etc. Values greater than one indicate
-#' overdispersion, and less underdispersion.
-#' @param write_file A switch for whether to write \code{outfile} to disk. Can
-#' be turned off to speed up testing or exploration of the function (the new
-#' agecomp is returned invisibly, as in the examples below)
-
+#'
+#' @template lcomp-agecomp-index
+#' @template lcomp-agecomp
+#' @param agebin_vector A numeric vector giving the new age bins to
+#' use. \code{agebin_vector} must be within the [min;max] of
+#' population bin. This feature alows dynamic binning by the user, but
+#' is not fully tested. Users should consult the vignette and
+#' carefully check the function bins the data as desired before
+#' proceeding with simulations.
+#'
+#' @template sampling-return
+#'
 #' @examples
 #' \dontrun{
 #' d <- system.file("extdata", package = "ss3sim")
