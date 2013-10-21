@@ -31,7 +31,7 @@
 #' error. The default value is set to \code{0.01} seconds, just to be
 #' safe.
 #' @param ... Anything else to pass to \code{system}.
-#' @seealso \code{\link{ss3sim_base}}, \code{\link{run_fish600}}
+#' @seealso \code{\link{ss3sim_base}}, \code{\link{run_ss3sim}}
 #' @author Sean C. Anderson
 #' @export
 

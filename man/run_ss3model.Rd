@@ -58,6 +58,6 @@
   Sean C. Anderson
 }
 \seealso{
-  \code{\link{ss3sim_base}}, \code{\link{run_fish600}}
+  \code{\link{ss3sim_base}}, \code{\link{run_ss3sim}}
 }
 

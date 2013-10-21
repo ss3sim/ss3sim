@@ -7,28 +7,29 @@
 #' @param iterations Which iterations to run. A numeric vector. For
 #' example \code{1:100}.
 #' @param scenarios Which scenarios to run. A vector of character
-#' objects. For example \code{c("D0-E0-F0-G0-R0-S0-M0-cod",
-#' "D1-E0-F0-G0-R0-S0-M0-cod")}. Also, see
+#' objects. For example \code{c("D0-E0-F0-R0-M0-cod",
+#' "D1-E0-F0-R0-M0-cod")}. Also, see
 #' \code{\link{expand_scenarios}} for a shortcut to specifying the
 #' scenarios.
-#' @param case_folder The folder containing the case .txt files.
+#' @param case_folder The folder containing the case \code{.txt}
+#' files.
 #' @param om_model_dir The folder containing the SS operating model
 #' files.
 #' @param em_model_dir The folder containing the SS estimation model
 #' files.
-#' @param case_files A named list that relates the case IDs to
-#' the files to return. If you are passing time-varying parameters
-#' beyond (or instead of) natural mortality (M), then you will need to
-#' adjust these values to reflect your scenarios.
+#' @param case_files A named list that relates the case IDs to the
+#' files to return. If you are passing time-varying parameters beyond
+#' (or instead of) natural mortality (M), then you will need to adjust
+#' these values to reflect your scenarios.
 #' @param seed If set to a numeric vector then \code{set.seed} will be
 #' set to each successive value of the vector \code{seed} on each
 #' iteration. This can be useful to make simulations reproducible. If
 #' left set to \code{NULL} then the seed will not be set. See, for
-#' example, how this is set in \code{\link{run_fish600}} using the
-#' package data object \code{\link{fish600seeds}}. If set, there
-#' should be a seed value for each iteration. This only affects the
-#' observation error -- the process error (recruitment deviations) are
-#' already fixed according to \code{\link{recdevs}} by default.
+#' example, the package data object \code{\link{fish600seeds}}. If
+#' set, there should be a seed value for each iteration. This only
+#' affects the observation error -- the process error (recruitment
+#' deviations) are already fixed according to \code{\link{recdevs}} by
+#' default.
 #' @param ... Anything else to pass to \code{\link{ss3sim_base}}. This
 #' includes \code{bias_adjust} and \code{bias_nsim}. Also, you can
 #' pass additional options to \code{SS3} through the argument
@@ -56,17 +57,17 @@
 #' is. There will be folders named after your scenarios. They will
 #' look like this:
 #' \itemize{
-#' \item \code{D0-E0-F0-G0-M0-R0-S0-cod/bias/1/om}
-#' \item \code{D0-E0-F0-G0-M0-R0-S0-cod/bias/1/em}
-#' \item \code{D0-E0-F0-G0-M0-R0-S0-cod/bias/2/om}
+#' \item \code{D0-E0-F0-M0-R0-cod/bias/1/om}
+#' \item \code{D0-E0-F0-M0-R0-cod/bias/1/em}
+#' \item \code{D0-E0-F0-M0-R0-cod/bias/2/om}
 #' \item ...
-#' \item \code{D0-E0-F0-G0-M0-R0-S0-cod/1/om}
-#' \item \code{D0-E0-F0-G0-M0-R0-S0-cod/1/em}
-#' \item \code{D0-E0-F0-G0-M0-R0-S0-cod/2/om}
+#' \item \code{D0-E0-F0-M0-R0-cod/1/om}
+#' \item \code{D0-E0-F0-M0-R0-cod/1/em}
+#' \item \code{D0-E0-F0-M0-R0-cod/2/om}
 #' \item ...
 #' }
 #' @seealso \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
-#' \code{\link{run_bias_ss3}}, \code{\link{run_fish600}}
+#' \code{\link{run_bias_ss3}}
 #' @export
 #'
 #' @examples

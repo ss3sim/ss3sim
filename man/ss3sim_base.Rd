@@ -138,6 +138,6 @@ a$R, estim_params = a$E, om_model_dir = om_model_dir, em_model_dir
   Sean C. Anderson
 }
 \seealso{
-  \code{\link{run_ss3sim}}, \code{\link{run_fish600}}
+  \code{\link{run_ss3sim}}
 }
 

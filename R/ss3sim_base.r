@@ -67,7 +67,7 @@
 #' faster.
 #
 #' @author Sean C. Anderson
-#' @seealso \code{\link{run_ss3sim}}, \code{\link{run_fish600}}
+#' @seealso \code{\link{run_ss3sim}}
 #' @export
 #' @details
 #' This function is written to be flexible. You can specify the
