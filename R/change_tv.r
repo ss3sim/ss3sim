@@ -38,9 +38,9 @@
 #' @export
 #'
 #' @details 
-#' To pass arguments to \code{\link{change_tv}} through
+#' To pass arguments to \code{change_tv} through
 #' \code{\link{run_ss3sim}}: (1) create a case file with an arbitrary
-#' letter not used elsewhere (anything but D, E, F, or R) and include
+#' letter not used elsewhere (anything but D, E, F, or R) and (2) include
 #' the line \code{function_type; change_tv} in your case file. For
 #' example, you might want to use M for natural mortality, S for
 #' selectivity, or G for growth.

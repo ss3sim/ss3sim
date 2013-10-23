@@ -27,10 +27,10 @@
   feature will include an *additive* functional linkage
   between environmental data and the parameter where the
   link parameter is fixed at a value of one and the par
-  value is specified in the \code{.par} file: \code{par\'
-  (y) = par + link * env(y)} For catchability (q) the
+  value is specified in the \code{.par} file: \eqn{par'[y]
+  = par + link * env[y]}. For catchability (\eqn{q}) the
   *additive* functional linkage is implemented on the log
-  scale: \code{ln_{q}(y) = ln_{q Base} + link * env(y)}}
+  scale: \eqn{ln(q'[y]) = ln(q) + link * env[y]}}
 
   \item{ctl_file_in}{Input SS3 control file}
 
@@ -57,28 +57,30 @@
   an operating model \code{.ctl} file.
 }
 \details{
-  To pass arguments to \code{\link{change_tv}} through
+  To pass arguments to \code{change_tv} through
   \code{\link{run_ss3sim}}: (1) create a case file with an
   arbitrary letter not used elsewhere (anything but D, E,
-  F, or R) and include the line \code{function_type;
+  F, or R) and (2) include the line \code{function_type;
   change_tv} in your case file. For example, you might want
   to use M for natural mortality, S for selectivity, or G
   for growth.
 
   Although there are three ways to implement time-varying
   parameters within SS3, \code{ss3sim} and \code{change_tv}
-  only use the environmental variable option. The
-  \code{ctl_file_in} argument needs to be a \code{.ss_new}
-  file because the documentation in \code{.ss_new} files
-  are automated and standardized. This function takes
-  advantage of the standard documentation the
-  \code{.ss_new} files to determine which lines to
-  manipulate and where to add code in the \code{.ctl},
-  \code{.par}, and \code{.dat} files, code that is
-  necessary to implement time-varying parameters. Within
-  SS3, time-varying parameters work on an annual time-step.
+  only use the environmental variable option. Within SS3,
+  time-varying parameters work on an annual time-step.
   Thus, for models with multiple seasons, the time-varying
   parameters will remain constant for the entire year.
+
+  The \code{ctl_file_in} argument needs to be a
+  \code{.ss_new} file because the documentation in
+  \code{.ss_new} files are automated and standardized. This
+  function takes advantage of the standard documentation
+  the \code{.ss_new} files to determine which lines to
+  manipulate and where to add code in the \code{.ctl},
+  \code{.par}, and \code{.dat} files, code that is
+  necessary to implement time-varying parameters.
+
   \code{ss3sim} uses annual recruitment deviations and may
   not work with a model that ties recruitment deviations to
   environmental covariates. If you need to compare the
