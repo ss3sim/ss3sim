@@ -1,7 +1,6 @@
 \name{change_e}
 \alias{change_e}
-\title{Alter em.ctl to change which parameters are being estimated in the
-estimation model}
+\title{Methods to alter which parameters are estimated in a SS3 \code{.ctl} file.}
 \usage{
   change_e(ctl_file_in = pastef("em.ctl"),
     ctl_file_out = pastef("em.ctl"),
@@ -13,57 +12,97 @@ estimation model}
     run_change_e_full = TRUE)
 }
 \arguments{
-  \item{ctl_file_in}{The operating model control file to
-  manipulate}
+  \item{ctl_file_in}{Input SS3 control file}
 
-  \item{ctl_file_out}{Name of the resulting operating model
-  control file}
+  \item{ctl_file_out}{Output SS3 control file}
 
-  \item{dat_file_in}{The data file to manipulate for
-  forecasting}
+  \item{dat_file_in}{Input SS3 data file}
 
-  \item{for_file_in}{Name of forecast file to base
-  forecasts on.}
+  \item{for_file_in}{Input SS3 forecast file}
 
-  \item{natM_type}{A character value corresponding to
-  option 0:4 in stock synthesis (i.e. "1Parm",
-  "n_breakpoints", "Lorenzen", "agespecific",
-  "agespec_withseasinterpolate"), NULL will leave natM as
-  specified in em.ctl}
+  \item{natM_type}{A character string corresponding to
+  option 0:4 in SS3 (i.e. "1Parm", "n_breakpoints",
+  "Lorenzen", "agespecific",
+  "agespec_withseasinterpolate"). A value of NULL will
+  leave the configuration of natural mortality as specified
+  in \code{ctl_file_in}.}
 
   \item{natM_n_breakpoints}{A vector of ages at which you
-  want breakpoints, only used if you specify natM_type =
-  "n_breakpoints".}
+  want breakpoints. Only used if you specify
+  \code{natM_type = "n_breakpoints"}.}
 
   \item{natM_lorenzen}{The reference age for the Lorenzen
-  function should natM_type = "Lorenzen".}
+  function. Only used if you specify \code{natM_type =
+  "Lorenzen"}. Length should be one even if the \code{.ctl}
+  has two genders.}
 
-  \item{natM_val}{Vector of int and phase values for each
-  natM parameter.}
+  \item{natM_val}{A vector of numeric values.
+  Interpretation of the values are dependent upon
+  \code{natM_type}. If \code{natM_type = "agespecific"} or
+  \code{natM_type = "agespec_withseasinterpolate"} the
+  vector specifies the fixed natural mortality parameters
+  for each integer age. Specify values in the following
+  order: female area 1, female area 2, male area 1, male
+  area, etc. Ensure that there is one entry per integer age
+  x area x gender. If \code{natM_type = "1Param"},
+  \code{natM_type = "n_breakpoints"}, or \code{natM_type =
+  "Lorenzen"} the vector specifies the intitial and phase
+  values for each natM parameter (i.e. \code{c(int, phase,
+  int, phase, etc.)}, where the first two values could
+  correspond to ages 0-2 natural mortality and the third
+  and fourth value could correspond to ages 3-8 natural
+  mortality). For any specified intial value, the parameter
+  bounds will be altered to 50 percent above and below the
+  specified initial value, if the initial value lies above
+  or below the original bounds.}
 
-  \item{par_name}{Vector of values, separated by commas.
-  The values will later be turned into character values and
-  used to search for specific lines for each parameter in
-  the ctl file}
+  \item{par_name}{A vector of values, separated by commas.
+  Each value corresponds to a parameter that you wish to
+  turn on or off in the \code{ctl_file_in}. The values will
+  later be turned into character values and used to search
+  for specific lines for each parameter in the
+  \code{ctl_file_in}, therefore it is best to use full
+  parameter names as they are specified in
+  \code{ctl_file_in}.}
 
-  \item{par_int}{Vector of intial values, one for each
-  parameter in par_name, value can be NA if you do not wish
-  to change the int.}
+  \item{par_int}{A vector of intial values, one for each
+  parameter in \code{par_name}.  Values can be NA if you do
+  not wish to change the initial value for a given
+  parameter.}
 
-  \item{par_phase}{Vector of phase values, one for each
-  parameter in par_name, value can be NA if you do not wish
-  to change the phase.}
+  \item{par_phase}{A vector of phase values, one for each
+  parameter in \code{par_name}.  Values can be NA if you do
+  not wish to change the phase for a given parameter.}
 
-  \item{forecast_num}{Number of years to remove from the
-  data and instead perform forecasts for}
+  \item{forecast_num}{Number of years to perform forecasts.
+  For those years, the data will be removed from the
+  \code{dat_file_in}, enabling SS3 to generate forecasts
+  rather than use the data to fit the model.}
 
-  \item{run_change_e_full}{If FALSE change_e will only
-  manipulate for forecasting, if TRUE the full function
-  capability will be ran.}
+  \item{run_change_e_full}{If \code{FALSE} \code{change_e}
+  will only manipulate for forecasting, if \code{TRUE}
+  (default) the full function capability will be ran.}
 }
 \description{
-  Alter em.ctl to change which parameters are being
-  estimated in the estimation model
+  Takes SS3 \code{.ctl}, \code{.dat}, and
+  \code{forecast.ss} files and changes which parameters are
+  estimated, how natural mortality is estimated, and if
+  forecasts are performed. The function can be called by
+  itself or within \link{run_ss3sim} to alter an estimation
+  model \code{.ctl} file.
+}
+\details{
+  Turning parameters on and off is the main function of
+  \code{change_e}. \code{change_e} was not created with the
+  capability of adding parameters to a \code{.ctl} file.
+  The function can only add parameters for age specific
+  natural mortality, and only for models with one growth
+  morph. Furthermore, the function is designed to add
+  complexity to the natural mortality type and not remove
+  complexity. Therefore, the function will fail if natural
+  mortality in the \code{ctl_file_in} is not specified as
+  \code{"1Param"} and \code{natM_type} is anything other
+  than \code{NULL} or \code{"1Param"}.
 }
 \examples{
 \dontrun{
@@ -71,14 +110,13 @@ d <- system.file("extdata", package = "ss3sim")
 ctl_file <- paste0(d, "/models/cod-om/codOM.ctl")
 change_e(ctl_file_in = ctl_file, ctl_file_out = "change_e.ctl",
          dat_file_in = "ss3.dat", for_file_in = "forecast.ss",
-         natM_type = "n_breakpoints", natM_n_breakpoints = c(1,4),
-         natM_lorenzen = NULL, natM_val = c(.2,3,.4,5),
-         par_name = c("steep", "SizeSel_1P_1_Fishery"),
-         par_int = c(.3, 40), par_phase = c(3,2),
+         natM_type = "n_breakpoints", natM_n_breakpoints = c(1, 4),
+         natM_lorenzen = NULL, natM_val = c(.2, 3, 0.4, 5),
+         par_name = c("_steep", "SizeSel_1P_1_Fishery"),
+         par_int = c(0.3, 40), par_phase = c(3, 2),
          forecast_num = 0, run_change_e_full = TRUE )
 # clean up
 file.remove("change_e.ctl")
-file.remove("control_pre_change_e.ss_new")
 }
 }
 \author{
