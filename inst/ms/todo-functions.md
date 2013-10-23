@@ -37,7 +37,7 @@ Function                | Code cleaned  | Documented    | Exampled
 ----------------------- | ------------- | ------------  | -----------
 bias_ss3                |  [   ]          |  [   ]          |  [   ]
 change_agecomp          |  [SCA]          |  [SCA]          |  [partial] 
-change_e                |  [   ]          |  [   ]          |  [   ] *KFJ working on it
+change_e                |  [KFJ]          |  [KFJ]          |  [KFJ]
 change_f                |  [SCA]          |  [SCA]          |  [SCA]
 change_index            |  [   ]          |  [   ]          |  [   ]
 change_lcomp            |  [   ]          |  [   ]          |  [   ]
