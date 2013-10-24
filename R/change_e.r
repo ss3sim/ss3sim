@@ -239,12 +239,14 @@ changeMe <- function(grepChar, intVal, phaseVal, ctlIn = ss3.ctl) {
   if(!is.na(phaseVal)) grepChar_value[7] <- phaseVal
   ss3.ctl[grepChar_line] <- paste(grepChar_value, collapse = " ")
   return(ss3.ctl)
-   }
+}
+if(!is.null(par_name)) {   
    par_name <- unlist(strsplit(par_name, split = ","))
    for(y in seq(par_name)) {
    ss3.ctl <- changeMe(grepChar = par_name[y], intVal = par_int[y], phaseVal = par_phase[y])
    }
    writeLines(ss3.ctl, ctl_file_out)
+}
 }
  if(forecast_num > 0) {
  if(!file.exists(dat_file_in)) {
