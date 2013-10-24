@@ -45,12 +45,9 @@
 #' calculated. If \code{FALSE} then the Hessian will only be
 #' calculated for bias-adjustment runs thereby saving time.
 #' @param print_logfile Logical. Print a log file?
-#' @param sleep A time interval (in seconds) to pause on each iteration.  Useful
-#' if you want to reduce average CPU time -- perhaps because you're working on a
-#' shared server. Also can be useful if there is a delay in writing the files to
-#' disk, or them being available due to some indexing, and attemping to run the
-#' EM. If you get missing file errors try sleeping for a short period of time
-#' (e.g. \code{sleep}=.5)
+#' @param sleep A time interval (in seconds) to pause on each
+#' iteration. Useful if you want to reduce average CPU time --
+#' perhaps because you're working on a shared server.
 #' @param seed If set to a numeric vector then \code{set.seed} will be
 #' set to each successive value of the vector \code{seed} on each
 #' iteration. This can be useful to make simulations reproducible. If

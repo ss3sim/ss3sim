@@ -28,8 +28,8 @@
 #' on computer where the files are written over a network connection.
 #' If the output files haven't finished writing before R starts
 #' looking for the output then the simulation will crash with an
-#' error. The default value is set to \code{0.01} seconds, just to be
-#' safe.
+#' error about missing files. The default value is set to \code{0.01}
+#' seconds, just to be safe.
 #' @param ... Anything else to pass to \code{system}.
 #' @seealso \code{\link{ss3sim_base}}, \code{\link{run_ss3sim}}
 #' @author Sean C. Anderson
