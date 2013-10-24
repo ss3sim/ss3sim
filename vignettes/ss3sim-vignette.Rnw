@@ -213,7 +213,7 @@ any entries that have no character values (e.g. \texttt{1:100}),
 or have an alpha-numeric character followed by a \texttt{(}.
 Anything that is character only or has character mixed with numeric
 but doesn't have the regular expression \texttt{"{[}A-Za-z0-9{]}("}
-gets turned into a character argument. 
+gets turned into a character argument.
 (\texttt{NA} and \texttt{NULL} are special cases that are also passed on directly.)
 
 Putting that all together,
@@ -316,11 +316,11 @@ om <- paste0(d, "/models/cod-om")
 em <- paste0(d, "/models/cod-em")
 @
 
-See the folder \texttt{ss3sim/inst/extdata/eg-cases} 
+See the folder \texttt{ss3sim/inst/extdata/eg-cases}
 inside the \texttt{ss3sim} source code
-for all the case files that we used in this example simulation. 
-You can either download the source code 
-or find this folder at the location contained 
+for all the case files that we used in this example simulation.
+You can either download the source code
+or find this folder at the location contained
 in the \texttt{case\_folder} object defined in the previous chunk of R code.
 
 \subsection{Creating the case files}
@@ -365,23 +365,23 @@ and estimate \textit{M} in the third phase.
 You can specify any parameter, defined in your SS3 model, as time varying
 through the \texttt{change\_tv} function.
 The function works by adding an environmental deviate (env)
-to the base parameter (\texttt{par}), 
+to the base parameter (\texttt{par}),
 creating a time varying parameter (\texttt{par'}):
 $$par'_{y} = par + link * env_{y}$$.
-The link is pre-specified to a value of one and 
+The link is pre-specified to a value of one and
 par is the base value for the given parameter,
-as defined in the \texttt{.par} file. 
+as defined in the \texttt{.par} file.
 For all catchability parameters (\textit{q}) the deviate will be added to the
 log transform of the base parameter using the following formula:
 $$log(q'_{y}) = log(q) + link * env_{y}.
 The vector of deviates must contain one entry for every year of the simulation
-and can be specified as zero for years in which the parameter does not deviate. 
+and can be specified as zero for years in which the parameter does not deviate.
 
 Currently, the function only works to add time varying properties
-to a time invariant parameter. 
+to a time invariant parameter.
 It cannot alter the properties of parameters that already vary with time.
 Additionally, SS3 does not allow more than one stock recruit parameter
-to vary with time. Therefore, if the \texttt{.ctl} file already has a 
+to vary with time. Therefore, if the \texttt{.ctl} file already has a
 stock recruit parameter that varies with time and you try to implent another,
 the function will fail.
 
@@ -396,21 +396,21 @@ you might want to use M for natural mortality, S for selectivity, or G
 for growth.
 
 Although we don't have any time varying processes in our example simulation,
-we include \texttt{M} case files 
+we include \texttt{M} case files
 in which we describe \textit{M} as stationary at a constant value.
 Simply by changing the deviations from a vector of zeros,
 we could add time-varying \textit{M}.
 
 \subsection{Checking the case files}
 
-It's a good idea to check that the case files 
+It's a good idea to check that the case files
 are manipulating the SS3 model files as we intended.
-One way we can do this is by 
+One way we can do this is by
 running the \texttt{change} functions directly on the SS3 model files
 and inspecting the modified files.
-Another way is to run a single iteration of your simulation 
-through \texttt{run\_ss3sim} 
-and carefully inspecting the OM and EM model files that it creates. 
+Another way is to run a single iteration of your simulation
+through \texttt{run\_ss3sim}
+and carefully inspecting the OM and EM model files that it creates.
 For example, we could run:
 
 <<case-file-checks, eval=FALSE>>=
@@ -419,7 +419,7 @@ run_ss3sim(iterations = 1, scenarios =
     "D2-E0-F0-R0-M0-cod",
     "D1-E1-F0-R0-M0-cod",
     "D2-E1-F0-R0-M0-cod"),
-  case_folder = case_folder, om_model_dir = om, 
+  case_folder = case_folder, om_model_dir = om,
   em_model_dir = em)
 @
 
@@ -439,23 +439,23 @@ set to zero.
 recdevs_det <- matrix(0, nrow = 100, ncol = 20)
 @
 
-Then we'll set up case ``estimation'' files in which the 
-initialized values of the recruitment deviation 
+Then we'll set up case ``estimation'' files in which the
+initialized values of the recruitment deviation
 standard deviations, \texttt{SR\_sigmaR},
 are set to the nominal level of \texttt{0.001}.
 We'll name these files \texttt{E100-cod.txt} and \texttt{E101-cod.txt}.
 In the case files, the key element is setting
 \texttt{par\_name = SR\_sigmaR} (the SS parameter name) and \texttt{par\_int = 0.001} (the initial value).
 The arguments \texttt{par\_name} and \texttt{par\_int} are set up
-to handle vectors of parameter names and values. 
+to handle vectors of parameter names and values.
 In this example, changing
-\texttt{SR\_sigmaR} will be the second parameter in the vector. 
-Again, you can look at all the case files in the package folder \texttt{/inst/extdata/eg-cases/}. 
+\texttt{SR\_sigmaR} will be the second parameter in the vector.
+Again, you can look at all the case files in the package folder \texttt{/inst/extdata/eg-cases/}.
 As an example, here is the file \texttt{E101-cod}:
 
 \begin{verbatim}
-natM_type;          1Parm      
-natM_n_breakpoints; NULL  
+natM_type;          1Parm
+natM_n_breakpoints; NULL
 natM_lorenzen;      NULL
 natM_val;           c(0.20,3)
 par_name;           LnQ_base_3_CPUE,SR_sigmaR
@@ -486,7 +486,7 @@ a convenience function \texttt{expand\_scenarios}.
 With this function we could instead write:
 
 <<deterministic-runs-expand, eval=FALSE>>=
-x <- expand_scenarios(list(D = 1:2, E = 100:101, F = 0, M = 0, 
+x <- expand_scenarios(list(D = 1:2, E = 100:101, F = 0, M = 0,
     R = 0), species = "cod")
 run_ss3sim(iterations = 1:20, scenarios = x,
   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
@@ -508,7 +508,7 @@ run_ss3sim(iterations = 1:100, scenarios =
     "D2-E0-F0-R0-M0-cod",
     "D1-E1-F0-R0-M0-cod",
     "D2-E1-F0-R0-M0-cod"),
-  case_folder = case_folder, om_model_dir = om, 
+  case_folder = case_folder, om_model_dir = om,
   em_model_dir = em, bias_adjust = TRUE)
 @
 
@@ -665,25 +665,98 @@ print(p)
 
 \clearpage
 
+\section{Modifying the operating and estimation models}\label{sec:modify}
+\texttt{ss3sim} comes with 3 built-in \texttt{SS3} operating and estimation
+models: a cod-like (slow-growing and long-lived), flatfish-like (fast-growing
+and intermediate-lived), and sardine-like (fast-growing and short-lived).  These
+models are based on North Sea cod (\textit{Gadus morhua}) (R. Methot, pers.\
+comm.), yellowtail flounder (\textit{Limanda ferruginea}) (R. Methot, pers.\
+comm.), and California sardine (\textit{Sardinops caeruleus}) \citep{hill2012}.
+Further details on these models are available in \citep{johnson2013} and
+\citep{ono2013}. These models were stripped down and simplified to make them
+more generic for simulation testing. In doing this, we removed many of the
+subtle features of the model.
+
+However we recognize that while these models are generic and cover a wide range
+of life history types, they may not be suitable for all users. This section
+details strategies for modifying the existing \texttt{SS3} models.
+
+Before proceeding it is worth having a short discussion about the scope and
+place of \texttt{ss3sim} as a simulation package. The package was designed as a
+vehicle for examining structural differences in models: between an OM and EM
+(e.g. \cite{johnson2013}) or between multiple EMs (e.g. \cite{ono2013}). As such
+the specific details (e.g. many fleets, tagging data, seasons, etc.) of the
+models were not important and removed to produce a set of generic life history
+type models. That is to say that \texttt{ss3sim} is not designed for testing
+arbitrary \texttt{SS3} models, but rather properties of assessment models in
+general. Thus \texttt{ss3sim} is not ideal for quickly exploring properties of a
+particular assessment model.
+
+It is possible to create new models that will work within the \texttt{ss3sim}
+framework, but this task will be complicated and likely require extensive
+knowledge of \texttt{SS3} and R, as well as modification of the \texttt{ss3sim}
+functions. This process is described in more detail in sections
+\ref{sec:om-setup} and \ref{sec:em-setup}.
+
+Instead of creating entirely new models, we recommend adapting the current
+built-in models to match the desired properties for a simulation study. Since
+these models have been thoroughly tested and used with \texttt{ss3sim} already,
+they make an ideal starting place. Before proceeding it would be wise to examine
+the built-in models to determine how closely they match your desired model and
+whether simple changes can get you reasonably close for simulation.
+
+Say for example you want to modify the cod model to have different
+maturity, and then explore different sampling schemes using the
+\texttt{change\_index}, \texttt{change\_lcomps}, and \texttt{change\_agecomps}
+functions. The follow steps provide a basic guideline for how to accomplish this:
+\begin{itemize}
+\item Using the original cod model create the case argument files you desire for
+  your simulation and verify they run with the original cod model using the
+  function \texttt{run\_ss3sim}. It is probably best to do a shorter
+  deterministic (section \ref{eq:deterministic}) run. After running, read in the
+  data and do visual checks for proper functionality.
+\item Find the original cod model. This can be found in the ``/models'' folder
+  inside the package, located by
+\begin{verbatim}
+library(ss3sim)
+d <- system.file("extdata", package = "ss3sim")
+paste0(d, "/models/cod-om")
+\end{verbatim}
+  Make a copy of the cod models (OM and EM) and rename them as desired.
+\item Make a single change to either the \texttt{.dat} or \texttt{.ctl} files
+  for the new model. This change cannot break either model -- run them manually
+  if there is any question it might.
+\item Rerun step 1 and again verify it is still working. If errors occur in the
+  R function you will need to examine the function to determine why the error is
+  occuring and fix by changing the R function and reloading it.
+\item Repeat previous steps with all small changes until the models are
+  satisfactory.
+\item Turn off deterministic runs and run the simulation as with the built-in models.
+\item If your new model works well with the package and is significantly
+  different than what is built-in, please contact the \texttt{ss3sim} package
+  managers for inclusion in future releases.
+\end{itemize}
+
+
 \section{Using \texttt{ss3sim\_base} directly}
 
-If you'd prefer, you can skip 
-setting up the case files 
-and use \texttt{ss3sim\_base} directly 
-by passing lists of arguments. 
-The lists correspond to the arguments 
-to each of the \texttt{change} functions. 
-In this case, 
-the scenario ID only serves the function 
-of identifying the output folder name 
+If you'd prefer, you can skip
+setting up the case files
+and use \texttt{ss3sim\_base} directly
+by passing lists of arguments.
+The lists correspond to the arguments
+to each of the \texttt{change} functions.
+In this case,
+the scenario ID only serves the function
+of identifying the output folder name
 and could technically be any character string you'd like.
 
-For example, 
+For example,
 we could have run the scenario \texttt{D1-E0-F0-R0-M0-cod}
 that we ran before like this:
 
 <<ss3sim-base-eg, eval=FALSE>>=
-ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-R0-M0-cod", 
+ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-R0-M0-cod",
   f_params = list(years = 1913:2012, years_alter = 1913:2012, fvals
     = c(rep(0, 25), rep(0.114, 75))),
   index_params = list(fleets = 2, years = list(1974:2012), sds_obs =
@@ -707,10 +780,10 @@ ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-R0-M0-cod",
 \section{Parallel computing with \texttt{ss3sim}}
 \label{sec:parallel}
 
-\texttt{ss3sim} can easily run multiple scenarios in parallel 
+\texttt{ss3sim} can easily run multiple scenarios in parallel
 to speed up simulations.
-To run a simulation in parallel, 
-you need to (1) register multiple cores or clusters and 
+To run a simulation in parallel,
+you need to (1) register multiple cores or clusters and
 (2) then set the argument \texttt{parallel} in \texttt{run\_ss3sim} to TRUE.
 For example, we could have run the previous example in parallel.
 First, we'll register 4 cores:
@@ -729,7 +802,7 @@ getDoParWorkers()
 @
 
 \noindent
-And then run our simulation on 4 cores simultaneously 
+And then run our simulation on 4 cores simultaneously
 by setting \texttt{parallel = TRUE}:
 
 <<parallel-three, eval=FALSE>>=
@@ -743,322 +816,14 @@ run_ss3sim(iterations = 1:100, scenarios =
 @
 
 \noindent
-In addition to the check with \texttt{getDoParWorkers()} above, 
-if the simulations are running in parallel, 
-you will also see simultaneous output messages 
+In addition to the check with \texttt{getDoParWorkers()} above,
+if the simulations are running in parallel,
+you will also see simultaneous output messages
 from \texttt{ss3sim} as the simulations run.
-On a 2.27 GHz Intel Xeon quad-core server running Ubuntu 10.04, 
+On a 2.27 GHz Intel Xeon quad-core server running Ubuntu 10.04,
 this example ran 1.9 times faster on 2 cores than on a single core,
 and 3.2 times faster on 4 cores.
 
-\section{Setting up an operating model}
-\label{sec:om-setup}
-
-\texttt{ss3sim} comes with 3 built-in \texttt{SS3} operating and estimation models:
-a cod-like (slow-growing and long-lived),
-flatfish-like (fast-growing and intermediate-lived),
-and sardine-like (fast-growing and short-lived).
-These models are based on
-North Sea cod (\textit{Gadus morhua}) (R. Methot, pers.\ comm.),
-yellowtail flounder (\textit{Limanda ferruginea}) (R. Methot, pers.\ comm.),
-and California sardine (\textit{Sardinops caeruleus}) \citep{hill2012}.
-Further details on these models 
-are available in \citep{johnson2013} and \citep{ono2013}.
-
-Here, we outline the steps to take an existing \texttt{SS3} model 
-and modify it to work with the \texttt{ss3sim} package. 
-First, we cover setting up an operating model 
-and then in section~\ref{sec:em-setup} we cover setting up an estimation model.
-
-\subsection{Overview}
-
-\begin{enumerate}
-\item
-  Obtain an SS stock assessment.
-  This can either be an actual stock assessment,
-  from which you would like to base your simulation on,
-  or a simulated one, as long as it conforms to the structure needed for SS3.
-\item
-  Verify that the SS model contains at least the following file types:
-  \texttt{name.ctl}, \texttt{name.dat}, \texttt{starter.ss}, \texttt{forecast.ss}
-\item
-  If the model already contains the \texttt{ss3.par} file,
-  skip this step and move to the next step.
-  If the model doesn't contain the \texttt{ss3.par} file,
-  run the assessment model from a command window
-  using the command \texttt{ss3}
-  to generate the \texttt{ss3.par} file
-  with the maximum likelihood estimates.
-\item
-  Modify the \texttt{.ctl} file so catches
-  are driven by instantaneous fishing mortality rather than catch.
-\item
-  Modify the start and end years of the model in the \texttt{.dat} file to obtain the desired length.
-\item
-  Specify/add the time series of fishing mortality levels in the \texttt{.par} file
-\item
-  Run the model again with no estimation using the \texttt{ss3 - noest} command
-\item
-  Specify/change the specification of the model using the functions
-  available in the \texttt{ss3sim} package
-  e.g \texttt{change\_e}, \texttt{change\_sel}
-\item
-  Run the model again with no estimation using the \texttt{ss3 - noest} command
-\end{enumerate}
-
-\subsection{Starter file modifications}
-
-\begin{enumerate}
-\item
-  Use the \texttt{.par} file to inform model parameters. To do so change \\
-  \texttt{\# 0=use init values in control file} to \texttt{1}.
-  Parameter values specified in the \texttt{.ctl} file will now be ignored.
-\item
-  Generate detailed report files (containing age-structure information) by setting \\
-  \texttt{\# detailed age-structured reports in REPORT.SSO} to \texttt{1}.
-\item
-  Generate data by setting\\
-  \texttt{\# Number of datafiles to produce} to \texttt{3}. \\
-  If \texttt{X=1} it only generates the original data
-  If \texttt{X=2} it generates the original data and the expected value data (based on model specification)
-  If \texttt{X>=3} it generates all the above and \texttt{X-2} bootstrapped data
-\item
-  Turn off parameter estimation by changing\\
-  \texttt{\# Turn off estimation for parameters entering after this phase}\\
-  to \texttt{0}. Turning off parameter estimation facilitates running the model in
-  a deterministic fashion.
-\item
-  Turn off parameter jittering by setting\\
-  \texttt{\# jitter initial parm value by this fraction} to \texttt{0}.
-\item
-  Turn off retrospective analyses by setting\\
-  \texttt{\# retrospective year relative to end year}\\
-  to \texttt{0}. To analyze the data for retrospective patterns,
-  use the R case file.
-\item
-  Specify how catch is reported by setting \texttt{\# F\_report\_units}
-  to 1 if catch is reported in biomass or \texttt{2} if catch is reported in
-  numbers. Additionally, comment out the next line,
-  \texttt{\#\_min and max age over which average F will be calculated},
-  by removing all characters prior to the hash symbol.
-\item
-  Implement catches using instantaneous fishing mortality by changing\\
-  \texttt{\# F\_report\_basis} to \texttt{0}.
-\end{enumerate}
-
-\subsection{Control file modifications}
-
-\begin{enumerate}
-\item
-  Specify all environmental deviates
-  to be unconstrained by bounds by setting
-  \texttt{\#\_env/block/dev\_adjust\_method} to \texttt{1}.
-  If the method is set to \texttt{2},
-  parameters adjusted using environmental covariate inputs
-  will be adjusted using a logistic transformation to ensure that
-  the adjusted parameter will stay within the bounds of the base parameter.
-\item
-  Turn on recruitment deviations by specifying
-   \texttt{\#do\_recdev} to \texttt{1}.
-   Using the next two lines, specify the use of recruitment deviations
-   to begin and end with the start and end years of the model.
-\item Turn on additional advanced options for the recruitment deviations
-   by specifying \texttt{\# (0/1) to read 13 advanced options} to \texttt{1}.
-\item Set \texttt{\#\_recdev\_early\_start} to \texttt{0} so that
-  the model will use the\\ \texttt{\# first year of main recr\_devs}.
-\item Set \texttt{\#\_lambda for Fcast\_rec\_like occurring before endyr+1}
-   to \texttt{1}. This lambda is for the log likelihood of the
-   forecast recruitment deviations that occur before the first year of forecasting.
-   Values larger than one accommodate noisy data at the end of the time series.
-\item Recruitment is log-normally distributed in SS.
-   If inputting a normally distributed recruitment deviations specify\\
-   \texttt{\#\_max\_bias\_adj\_in\_MPD} to \texttt{-1}
-   so that SS performs the bias correction for you.
-   If inputting bias corrected normal recruitment deviation, specify it at \texttt{0}.
-   Either method will lead to the same end result.
-\item Use any negative value in line \texttt{\# F ballpark year},
-   to disable the use of a ballpark year to determine fishing mortality levels.
-\item Specify \texttt{\# F\_Method} to \texttt{2},
-   which facilitates the use of a vector of instantaneous fishing mortality levels.
-   The max harvest rate in the subsequent line will depend upon
-   the fishing mortality levels in your simulation.
-   Following the max harvest rate, specify a line with three value separated by
-   spaces. The first value is the overall start F value, followed by the phase.
-   The last value is the number of inputs.
-   Set the number of inputs to \texttt{1},
-   because the actual fishing mortality trajectory
-   will be specified in the \texttt{.dat} file.
-   Next, specify a single line with six values, separated by spaces,
-   where the values correspond to fleet number, start year, season, fishing
-   mortality level, the standard error of the fishing mortality level, and a negative
-   phase value. E.g \texttt{1 2000 1 0 0.01 -1}
-\item
-  If needed, change the specification of the \texttt{.ctl}
-  using the functions available in the \texttt{ss3sim} package.
-  E.g \texttt{change\_growth}, \texttt{change\_sel}.
-\end{enumerate}
-
-\subsection{Data file modifications}
-
-\begin{enumerate}
-\item Specify the start and end year for the simulation by modifying
-   \texttt{\#\_styr} and \texttt{\#\_endyr}.
-   Years can be specified as a number line
-   (i.e. \texttt{1}, \texttt{2}, \texttt{3}, \ldots) or
-   as actual years
-   (i.e. \texttt{1999}, \texttt{2000}, \texttt{2001}, \ldots)
-\item Specify the names for each fleet in an uncommented line
-   after the line \texttt{\#\_N\_areas}.
-   Names must be separated by a \texttt{\%} with no spaces.
-   It is these names which you will use in the plain text case files
-   to specify and change characteristics of each fleet throughout the simulation.
-   E.g \texttt{Fishery\%Survey1\%Survey2}
-\item Specify the mean body weight across all selected sizes and ages
-   to be specific to measured fish by setting \texttt{\#N observations}
-   to \texttt{0}. Subsequently, specify \texttt{1} degree of freedom for the
-   Student's T distribution used to evaluated the mean body weight deviations
-   in the following line. The degrees of freedom must be specified
-   even if there are zero mean body weight observations.
-\item Set the length bin method to 1 or 2 in the line labeled
-   \texttt{\# length bin method}.
-   Using a value of \texttt{1}, the bins refer to the population bins (=1cm).
-   Using a value of \texttt{2} instructs SS to generate the binwidths from a user specified
-   minimum and maximum value.
-   In the following three lines, specify the binwidth for population size composition data;
-   the minimum size, or the lower edge of the first bin and size at age zero;
-   and the maximum size, or lower edge of the last bin.
-   The length data bins MUST be wider than the population bin (=1),
-   but the boundaries do not have to align.
-\item Specify \texttt{\#\_comp\_tail\_compression} to any negative value
-   to turn off tail compression.
-\item Specify \texttt{\#\_add\_to\_comp} to a very small number E.g \texttt{1e-005}.
-   This specifies the value that will be added to each composition (age and length) data bins
-\item Set the length bin range method for the age composition data
-  (used when the conditional age at length data exists)
-   to 1, 2 or 3 in the line \texttt{\#\_Lbin\_method}
-   depending on the data you have or the purpose of the study
-\end{enumerate}
-
-\section{Setting up an estimation model}
-\label{sec:em-setup}
-
-\subsection{Overview}
-
-\begin{enumerate}
-\item
-  Copy working OM files
-\item
-  Modify the \texttt{.ctl} file to specify the parameters phase,
-  to include time-varying process (if wanted),
-  and so that observed catches drive the catches.
-\item
-  Specify the forecast file if forecasts are desired.
-  Use the \texttt{change\_e} function to perform forecasts.
-\item
-  Modify the \texttt{.dat} file
-  so that it includes the user-specified process and observation errors.
-  You can do this by using the functions in the \texttt{ss3sim} package.
-  E.g \texttt{change\_index}, \texttt{change\_lcomp}
-\end{enumerate}
-
-\subsection{Starter file modifications}
-\begin{enumerate}
-\item Change the names of the \texttt{.dat} and \texttt{.ctl} files
-   to your chosen naming scheme.
-\item Specify the model to use parameter values found in the \texttt{.ctl} file,
-   by changing \texttt{\# 0=use init values in control file; 1=use ss3.par}
-   to \texttt{0}.
-\item Turn on parameter estimation by changing\\
-   \texttt{\# Turn off estimation for parameters entering after this phase}
-   to a value larger than the max phase specified in the \texttt{.ctl} file.
-\end{enumerate}
-
-\subsection{Control file modifications}
-\begin{enumerate}
-\item Set the phases of the parameters to positive or negative value to
-   inform SS to estimate or fix the parameters, respectively.
-\item Set the \texttt{\#\_recdev phase}
-   to a positive value to estimate yearly recruitment deviations.
-\item If using bias adjustment set \texttt{\#\_recdev\_early\_phase}
-   to a positive value.
-   Estimates for the years and maximum bias adjustment
-   can initially be inputted with approximations
-   or use the bias adjustment function within \texttt{ss3sim}
-   to find appropriate values for the base case EM
-   and input them in the appropriate lines.
-\item Specify \texttt{\# F\_Method} to \texttt{3},
-   which allows the model to use catches to estimate
-   appropriate fishing mortality levels.
-   The max harvest rate in the subsequent line will depend upon
-   the fishing mortality levels in your simulation.
-   An additional line must be inserted after the maximum harvest rate
-   to specify the number of iterations used in the hybrid method.
-   Specify the line as follows
-   \texttt{3 \# F\_Method:  1=Pope; 2=instan. F; 3=hybrid (hybrid is recommended)},
-   where the number can range from \texttt{3} to \texttt{7}.
- \item Use the functions in the \texttt{ss3sim} package
-   to change the estimation specification in the EM.
-   E.g \texttt{change\_e}
-\end{enumerate}
-
-\subsection{Data file modifcations}
-The \texttt{data.ss\_new} files produced when executing the OM
-contain the expected values of the OM population dynamics. The data
-the EM model is fit to needs to be sampled with observation error
-from these expected values in order to mimic the random sampling
-process done with real fisheries data. The \texttt{ss3sim} package
-provides three functions (detailed below) which carry out the random
-sampling process and generate \texttt{.dat} files to be used in the
-EM.
-
-\begin{description}
-\item[\texttt{change\_index}] This function samples from the
-  biomass trends for the different fleets to simulate the collection
-  of CPUE data. Since $q=1$ for both the OM and EM, the CPUE indices
-  are actually absolute indices of biomass. The result of the random
-  sampling is a log-normal observed CPUE that is centered at the
-  expected value. The user can specify which fleets are sampled in
-  which years and with what amount of noise. Note that the
-  years/fleets specified to be sampled must be present in the OM
-  file, so the user must setup the OM accordingly.
-\item[\texttt{change\_lcomp}] This function samples from the
-  length composition using a Dirichlet distribution. The Dirichlet
-  distribution can be thought of as a generalization of the
-  multinomial distribution that has an additional parameter
-  controlling the variance of the random deviates (see section
-  \ref{sec:overdispersion}). The user can specify which fleets are
-  sampled in which years and with what amount of noise. Further, the
-  bin structure can be inputted as an argument and thus changed
-  dynamically within a simulation (see \ref{sec:dybin} below for
-  more information).
-\item[\texttt{change\_agecomp}] Same as length compositions except
-  acts on ages.
-\end{description}
-
-\subsubsection{Dynamic composition binning}
-\label{sec:dybin}
-
-The functions \texttt{change\_lcomp} and
-\texttt{change\_agecomp} include optional arguments specifying the
-bins to use. This option may be useful for users who wish to explore
-the impact of different binning schemes of the same data. The user
-may specify a vector of values determining how to bin the data. The
-function works by determining which OM bins to collapse and summing
-across these to form the new bins. Thus the specified bins need to
-coincide (i.e. be a subset) with the OM bins. For instance, of the
-OM bins are $b_1=(0,1,2,3,4,5)$ then this could be collapsed into
-the bins $b_2=(0-1, 2-3, 4-5)$. Because of the way the function is
-written it is paramount that the bins given by the user be
-compatible with the OM bins. For instance, it is not possible
-(within the framework provided here) to include bins outside of the
-range of the OM bins. We have provided basic checks to the validity
-of the user provided bin structure. However, \textbf{we stress that
-  dynamic binning is a complicated process and the user is
-  responsible for thoroughly testing their proposed binning
-  structure}. See the help file for these functions for examples of
-how to explore and test the functions. An alternative way of testing
-bin structure would be to setup different OMs that have the bin
-structures desired.
 
 \section{Putting \texttt{SS3} in your path}
 \label{sec:path}
@@ -1137,34 +902,71 @@ To add it to your path:
   and try typing \texttt{ss3 -?} and hitting return again.
 \end{enumerate}
 
-\section{Sampling age and length compositions}\label{sec:overdispersion}
-When simulating assessment models we need a way to mimic the way
-that the age/length compositions (comps) are sampled in reality.
-Under perfect mixing of fish and truly random sampling
-the distribution of samples would be multinomial (REF).
-However, in practice neither of these are true
-because the fish tend to aggregate by size and age,
-and it is difficult to take random samples.
-This causes the data to have more variance than expected,
-i.e.\ be overdispersed (REF).
-If a multinomial likelihood is assumed
-and the true sample size is used then in effect
-the model puts too much weight on the composition data,
+
+\section{Incorporating observation error}\label{sec:obs-error}
+Observation error (i.e. uncertainty arising from sampling the
+``truth'') can be added within the \texttt{ss3sim} framework in 3
+places: indices, length compositions, and age compositions. There are
+functions which take the expected values produced in the OM
+\texttt{.dat} files and samples from them to create the input
+\texttt{.dat} files for the EM. Since this sampling process is done
+dynamically with functions there is a lot of flexibility that can be
+added by the user.
+
+This section briefly details the background and functionality of these
+functions.
+
+\begin{description}
+\item[\texttt{change\_index}] This function samples from the biomass
+  trends for the different fleets to simulate the collection of CPUE
+  and survery index data. Since $q=1$ for both the OM and EM, the CPUE
+  indices are actually absolute indices of biomass. The result of the
+  random sampling is a log-normal observed CPUE that is centered at
+  the expected value. The user can specify which fleets are sampled in
+  which years and with what amount of noise. Note that the
+  years/fleets specified to be sampled must be present in the OM file,
+  so the user must setup the OM accordingly.
+\item[\texttt{change\_lcomp}] This function samples from the length
+  composition using a Dirichlet distribution. The Dirichlet
+  distribution can be thought of as a generalization of the
+  multinomial distribution that has an additional parameter
+  controlling the variance of the random deviates (see section
+  \ref{sec:comps}). The user can specify which fleets are sampled in
+  which years and with what amount of noise. Further, the bin
+  structure can be inputted as an argument and thus changed
+  dynamically within a simulation (see \ref{sec:dybin} below for more
+  information).
+\item[\texttt{change\_agecomp}] Same as length compositions except
+  acts on ages.
+\end{description}
+
+\subsection{Sampling age and length compositions}\label{sec:comps}
+[fixme: do we have these refs? Maybe Kot found some for his paper?]
+When simulating assessment models we need a way to mimic the way that
+the age/length compositions (comps) are sampled in reality.  Under
+perfect mixing of fish and truly random sampling the distribution of
+samples would be multinomial (REF).  However, in practice neither of
+these are true because the fish tend to aggregate by size and age, and
+it is difficult to take random samples.  This causes the data to have
+more variance than expected, i.e.\ be overdispersed (REF).  If a
+multinomial likelihood is assumed and the true sample size is used
+then in effect the model puts too much weight on the composition data,
 at the cost of fitting other sources of data less well (REF).
-Analysts thus need to ``tune'' their model
-to find a more appropriate sample size
-that more accurately reflects the information in the comp data.
+Analysts thus need to ``tune'' their model to find a more appropriate
+sample size that more accurately reflects the information in the comp
+data.
 
 In simulation work, the true underlying proportions
 in the population are known and true multinomial sampling is possible.
 There is some question about the realism
 behind providing the model with this kind of data,
 since it never happens in practice (REF).
-Thus, there is a need to generate more realistic data that has overdispersion.
+Thus, there is a need to generate more realistic data.
 In this package we use the Dirichlet distribution
-to generate such data for a specified level of overdispersion.
+to generate such data for a specified level of overdispersion, instead
+of manipulating the effective sample size.
 
-\subsection{Multinomial vs.\ Dirichlet distributions}
+\subsubsection{Multinomial vs.\ Dirichlet distributions}
 The following calculations are shown for age compositions
 but apply equally to length compositions.
 The multinomial distribution $\mathbf{m} \sim
@@ -1205,7 +1007,7 @@ The marginal distributions for the Dirichlet are beta distributed.
 In contrast to the multinomial above,
 the Dirichlet generates points on the real interval $[0,1]$.
 
-\subsection{Sampling with overdispersion}
+\subsubsection{Sampling with overdispersion}
 It is clear that $\lambda$ controls the amount of overdispersion
 in the generated samples: as it increases the variance decreases.
 Thus, it is simple to calculate what $\lambda$ should be
@@ -1234,18 +1036,106 @@ The following steps are used to generate overdispersed samples:
   with twice the standard deviation of the multinomial by setting $c=2$.
 \end{enumerate}
 
-The sampling functions provided in the package
-allows you to specify either a multinomial or Dirichlet distribution,
-as well as the level of overdispersion.
-Note that the package does not allow
-for tuning of the effective sample size,
-and the argument \texttt{cpar} controls the level of overdispersion
-in the sampling functions.
-See the function documentation for
-\texttt{change\_agecomp} and \texttt{change\_lcomp}
-for more detail.
+The composition sampling functions provided in the package allows you
+to specify the level of overdispersion.  Note that the package does
+not allow for tuning of the effective sample size, and the argument
+\texttt{cpar} controls the level of overdispersion in the sampling
+functions.  See the function documentation for
+\texttt{change\_agecomp} and \texttt{change\_lcomp} for more detail.
 
-\section{Stochastic reproducibility}
+\subsubsection{Dynamic composition binning} \label{sec:dybin}
+
+The functions \texttt{change\_lcomp} and \texttt{change\_agecomp}
+include optional arguments specifying the bins to use. The user may
+specify a vector of values determining how to bin the data.  This
+option may be useful for users who wish to explore the impact of
+different binning schemes of the same data. The function works by
+determining which OM bins to collapse and summing across these to form
+the new bins. Thus the specified bins need to coincide (i.e. be a
+subset) with the OM bins. For instance, of the OM bins are
+$b_1=(0,1,2,3,4,5)$ then this could be collapsed into the bins
+$b_2=(0-1, 2-3, 4-5)$. Because of the way the function is written it
+is paramount that the bins given by the user be compatible with the OM
+bins. For instance, it is not possible (within the framework provided
+here) to include bins outside of the range of the OM bins. We have
+provided basic checks to the validity of the user provided bin
+structure. However, \textbf{we stress that dynamic binning is a
+  complicated process and the user is responsible for thoroughly
+  testing their proposed binning structure}. See the help file for
+these functions for examples of how to explore and test the
+functions. An alternative way of testing bin structure would be to
+setup different models that have the bin structures desired.
+
+\subsection{Sampling indices}\label{sec:indices}
+Compared to sampling from the age and length compositions the indices
+are relatively straightforward. The OM \texttt{.dat} file contains the
+annual biomass values, and the \texttt{change\_index} function uses
+these values as the expected value for all fleets (CPUE from fisheries
+as well as scientific surveys). The function uses a bias adjusted
+log-normal distribution with expected values given by the OM biomass
+and a user-provided standard deviation term that controls the level of
+variance.
+
+More specifically, let
+\begin{align*}
+  B_y&=\text{the true (OM) biomass in year $y$}\\
+  \sigma_y&=\text{the standard deviation provided by the user}\\
+  X&\sim N(0, \sigma_y)=\text{a random variable}
+\end{align*}
+Then the sampled value, ${B_y^\text{obs}}$ is
+\begin{equation*}
+  \{B_y^\text{obs}}=B_y e^{X-\sigma_y^2/2}
+\end{equation*}
+which has expected value of $B_y$ due to the bias adjustment term
+$\sigma_y^2/2$. This process generates log-normal values centered at
+the true value. It is possible for the user to specify the amount of
+uncertainty (e.g. to mimic the amount of survey effort), but it is not
+possible to induce bias in this process. The user-supplied $\sigma$
+terms are written to the \texttt{.dat} file along with the sampled
+values, meaning that the EM has the correct level of uncertainty. Thus
+for all fleets the EM has unbiased estimates of $B_y$ and the true
+$\sigma_y$.
+
+\section{Incorporating process error}\label{sec:pro-error}
+Process error is incorporated into the OM in the form of deviates in
+recruitment (recdevs) from the stock-recruit relationship. Unlike the
+observation error, the process error affects the population dynamics
+and thus must be done before running the OM. The \texttt{ss3sim}
+package contains a built-in set of recruitment deviations for up to
+150 years and 1000 iterations that are used if none are passed by the
+user. The columns in the matrix represent iterations of the
+simulation, and the rows represent years. These built-in recruitment
+deviations are standard normal deviates and are multiplied by
+$\sigma_r$ (recruitment standard deviation) as specified in the OM,
+and bias adjusted within the package.That is,
+\begin{equation*}
+  \text{recdev}_i=\sigma_r z_i-\sigma_r^2/2
+\end{equation*}
+where $z_i$ is a standard normal deviate and the bias adjustment term
+($\sigma_r^2/2$) makes the deviates have an expected value of 0 after
+exponentiation.
+
+If are not specified, then the package will use these built-in
+recruitment deviations.  Alternative you can specify your own
+recruitment deviations, via the argument \texttt{user\_recdevs} to the
+top-level function \texttt{ss3sim\_base}. Ensure that you pass a matrix
+with at least enough columns (iterations) and rows (years). The
+user-supplied recruitment deviations are used exactly as specified
+(i.e. not multiplied by $\sigma_r$ as specified in the SS model),
+and\textbf{ it is up to you to bias correct them manually} by
+subtracting $\sigma_r^2 / 2$ as is done above. This functionality
+allows for flexibility in how the recruitment deviations are
+specified, for example running deterministic runs (section
+\ref{sec:deterministic}).
+
+Note that for both built-in and user-specified recdevs \texttt{ss3sim}
+will reuse the same set of recruitment deviations for all iterations
+across scenarios. For example if you have 2 scenarios and run 100
+iterations of each, the same set of recruitment deviations are used
+between these two scenarios. See section \ref{sec:reproduce} for more
+information.
+
+\section{Stochastic reproducibility}\label{sec:reproduce}
 
 In many cases, you may want to make
 the observation and process errors reproducible.
@@ -1253,35 +1143,285 @@ For instance, you may want to reuse process errors
 so that differences between scenarios
 are not confounded with process error.
 More broadly, you may want to make a simulation reproducible
-on another machine.
+on another machine by another user (such as a reviewer).
 
-You can make the observation error reproducible
-by setting the \texttt{seeds} argument in \texttt{ss3sim\_base}.
-For example, you might want to do this when running \texttt{run\_ss3sim}.
-The \texttt{seeds} argument takes a vector of seed values at least as long
-as the number of iterations you are running in your simulation.
+You can make the observation error reproducible by setting the
+\texttt{seed} argument in the top level functions,
+e.g. \texttt{ss3sim\_base}.  The \texttt{seed} argument takes a vector
+of seed values at least as long as the number of iterations you are
+running in your simulation and reuses them across different
+scenarios. If \texttt{seed} is not set then no seed is used.
 
-The process error (recruitment deviations)
-can be set manually by the user
-by passing a matrix of recruitment deviations
-to the argument \texttt{user\_recdevs}.
-The columns in the matrix represent iterations of the simulation,
-and the rows represent years.
-Ensure that you pass a matrix with at least enough columns and rows.
-The \texttt{ss3sim} package contains a built in set of recruitment deviations
-for up to 150 years and 1000 iterations.
-If \texttt{user\_recdevs} are not specified,
-then the package will use these built-in recruitment deviations.
-See \texttt{?recdevs} for documentation on how they were generated.
+The process error (recruitment deviations) are reused across scenarios
+and thus are by default reproducible for built-in and user-specified
+values. If you want the different scenarios to have different process
+error you will need to make separate calls to \texttt{run\_ss3sim} for
+each scenario and pass a different matrix of \texttt{user\_recdevs}
+(see section \ref{sec:pro-error}). For most applications this should
+not be necessary.
 
-Note that these built-in recruitment deviations are standard normal
-and are multiplied by $\sigma_r$ (recruitment standard deviation)
-as specified in the SS model, and bias adjusted within the package.
-If you specify your own recruitment deviations,
-the deviations are used exactly as specified (not multiplied by $\sigma_r$ as
-specified in the SS model),
-and it is up to you to bias correct them
-by subtracting $\sigma_r^2 / 2$.
+
+
+
+
+\appendix
+
+\section{Setting up an operating model}
+\label{sec:om-setup}
+In some cases the user may wish to adapt their own \texttt{SS3} model to work
+with the \texttt{ss3sim} package. This is possible but may be difficult because
+the functions in \texttt{ss3sim} were developed to work with these 3 models and
+a model with a different structure may cause errors in these functions. For
+instance, the \texttt{change\_index} function does not have the capability to
+handle more than one season (it could, but currently not developed to). Given
+the myriad options available in \texttt{SS3} it is extremely difficult to write
+auxilliary functions that will interact reliably with all combinations of these
+options. For this reason, we recommend that users strongly consider trying to
+modify an existing model rather than creating a new one
+(section \ref{sec:om-modify}). It is likely that the \texttt{ss3sim} functions
+will need to be modified in some way in the process, so the user should be
+familiar with both \texttt{SS3} and R.
+
+(fixme: should we make this bigger and its own section?)
+Here is a list of \texttt{SS3} features that are not currently implemented:
+\begin{itemize}
+\item Seasons, sexes, hermaphrodism
+\item Data other than suverys and age/length compositions: age-at-length,
+  discards, etc.
+\end{itemize}
+Some of the features may work within the \texttt{ss3sim} framework, but are untested.
+
+The main purpose of the OM is to generate data files that can be read into the
+EM. Thus the user needs to setup the \texttt{.dat} files in the OM such that
+they conform to the structure needed by the EM. Two key examples are with survey
+and age/length composition data. For the surveys (CPUE and scientific) the OM
+\texttt{.dat} file will determine which years are available to the sampling
+function \texttt{change\_index}, so if the year $y$ is desired in the EM it needs
+to be in the OM. In practice it may be easiest to just include all years in the
+OM if suveys will be dynamic (i.e. changing years between scenarios), or if it
+will be fixed for all scenarios to set it to match the EM exactly.
+
+Similarly with age/length compositions the OM \texttt{.dat} file will determine
+which years and bins are available to the sampling functions
+\texttt{change\_agecomp} and \texttt{change\_lcomp}. If dynamic binning is to be
+used, the user should setup the \texttt{.dat} file so that all desired
+combinations of bins are possible (see section \ref{sec:dybin} for more
+details). Specifically, the user must specify small enough bins (no smaller than
+the OM \texttt{.ctl} bins) so that they can easily be re-binned. Alternatively,
+if composition data is not to be explored in the simulation then the user can
+just set the OM \texttt{.dat} file to match the desired input for the EM
+\texttt{.dat}.
+
+For those users who choose to create a new \texttt{ss3sim} model, we outline the
+steps to take an existing \texttt{SS3} model and modify it to work with the
+\texttt{ss3sim} package.  First, we cover setting up an operating model and then
+in section \ref{sec:em-setup} we cover setting up an estimation model.
+
+\subsection{Starter file modifications}
+\begin{enumerate}
+\item
+  Use the \texttt{.par} file to inform model parameters. To do so change \\
+  \texttt{\# 0=use init values in control file} to \texttt{1}.
+  Parameter values specified in the \texttt{.ctl} file will now be ignored.
+\item
+  Generate detailed report files (containing age-structure information) by setting \\
+  \texttt{\# detailed age-structured reports in REPORT.SSO} to \texttt{1}.
+\item
+  Generate data by setting\\
+  \texttt{\# Number of datafiles to produce} to \texttt{3}. \\
+  If \texttt{X=1} it only generates the original data
+  If \texttt{X=2} it generates the original data and the expected value data (based on model specification)
+  If \texttt{X>=3} it generates all the above and \texttt{X-2} bootstrapped data
+\item
+  Turn off parameter estimation by changing\\
+  \texttt{\# Turn off estimation for parameters entering after this phase}\\
+  to \texttt{0}. Turning off parameter estimation facilitates running the model in
+  a deterministic fashion.
+\item
+  Turn off parameter jittering by setting\\
+  \texttt{\# jitter initial parm value by this fraction} to \texttt{0}.
+\item
+  Turn off retrospective analyses by setting\\
+  \texttt{\# retrospective year relative to end year}\\
+  to \texttt{0}. To analyze the data for retrospective patterns,
+  use the R case file.
+\item
+  Specify how catch is reported by setting \texttt{\# F\_report\_units}
+  to 1 if catch is reported in biomass or \texttt{2} if catch is reported in
+  numbers. Additionally, comment out the next line,
+  \texttt{\#\_min and max age over which average F will be calculated},
+  by removing all characters prior to the hash symbol.
+\item
+  Implement catches using instantaneous fishing mortality by changing\\
+  \texttt{\# F\_report\_basis} to \texttt{0}.
+\end{enumerate}
+
+\subsection{Control file modifications}
+\begin{enumerate}
+\item
+  Specify all environmental deviates
+  to be unconstrained by bounds by setting
+  \texttt{\#\_env/block/dev\_adjust\_method} to \texttt{1}.
+  If the method is set to \texttt{2},
+  parameters adjusted using environmental covariate inputs
+  will be adjusted using a logistic transformation to ensure that
+  the adjusted parameter will stay within the bounds of the base parameter.
+\item
+  Turn on recruitment deviations by specifying
+   \texttt{\#do\_recdev} to \texttt{1}.
+   Using the next two lines, specify the use of recruitment deviations
+   to begin and end with the start and end years of the model.
+\item Turn on additional advanced options for the recruitment deviations
+   by specifying \texttt{\# (0/1) to read 13 advanced options} to \texttt{1}.
+\item Set \texttt{\#\_recdev\_early\_start} to \texttt{0} so that
+  the model will use the\\ \texttt{\# first year of main recr\_devs}.
+\item Set \texttt{\#\_lambda for Fcast\_rec\_like occurring before endyr+1}
+   to \texttt{1}. This lambda is for the log likelihood of the
+   forecast recruitment deviations that occur before the first year of forecasting.
+   Values larger than one accommodate noisy data at the end of the time series.
+\item Recruitment is log-normally distributed in SS.
+   If inputting a normally distributed recruitment deviations specify\\
+   \texttt{\#\_max\_bias\_adj\_in\_MPD} to \texttt{-1}
+   so that SS performs the bias correction for you.
+   If inputting bias corrected normal recruitment deviation, specify it at \texttt{0}.
+   Either method will lead to the same end result.
+\item Use any negative value in line \texttt{\# F ballpark year},
+   to disable the use of a ballpark year to determine fishing mortality levels.
+\item Specify \texttt{\# F\_Method} to \texttt{2},
+   which facilitates the use of a vector of instantaneous fishing mortality levels.
+   The max harvest rate in the subsequent line will depend upon
+   the fishing mortality levels in your simulation.
+   Following the max harvest rate, specify a line with three value separated by
+   spaces. The first value is the overall start F value, followed by the phase.
+   The last value is the number of inputs.
+   Set the number of inputs to \texttt{1},
+   because the actual fishing mortality trajectory
+   will be specified in the \texttt{.dat} file.
+   Next, specify a single line with six values, separated by spaces,
+   where the values correspond to fleet number, start year, season, fishing
+   mortality level, the standard error of the fishing mortality level, and a negative
+   phase value. E.g \texttt{1 2000 1 0 0.01 -1}
+\item
+  If needed, change the specification of the \texttt{.ctl}
+  using the functions available in the \texttt{ss3sim} package.
+  E.g \texttt{change\_growth}, \texttt{change\_sel}.
+\end{enumerate}
+
+\subsection{Data file modifications}
+\begin{enumerate}
+\item Specify the start and end year for the simulation by modifying
+   \texttt{\#\_styr} and \texttt{\#\_endyr}.
+   Years can be specified as a number line
+   (i.e. \texttt{1}, \texttt{2}, \texttt{3}, \ldots) or
+   as actual years
+   (i.e. \texttt{1999}, \texttt{2000}, \texttt{2001}, \ldots)
+\item Specify the names for each fleet in an uncommented line
+   after the line \texttt{\#\_N\_areas}.
+   Names must be separated by a \texttt{\%} with no spaces.
+   It is these names which you will use in the plain text case files
+   to specify and change characteristics of each fleet throughout the simulation.
+   E.g \texttt{Fishery\%Survey1\%Survey2}
+\item Specify the mean body weight across all selected sizes and ages
+   to be specific to measured fish by setting \texttt{\#N observations}
+   to \texttt{0}. Subsequently, specify \texttt{1} degree of freedom for the
+   Student's T distribution used to evaluated the mean body weight deviations
+   in the following line. The degrees of freedom must be specified
+   even if there are zero mean body weight observations.
+\item Set the length bin method to 1 or 2 in the line labeled
+   \texttt{\# length bin method}.
+   Using a value of \texttt{1}, the bins refer to the population bins (=1cm).
+   Using a value of \texttt{2} instructs SS to generate the binwidths from a user specified
+   minimum and maximum value.
+   In the following three lines, specify the binwidth for population size composition data;
+   the minimum size, or the lower edge of the first bin and size at age zero;
+   and the maximum size, or lower edge of the last bin.
+   The length data bins MUST be wider than the population bin (=1),
+   but the boundaries do not have to align.
+\item Specify \texttt{\#\_comp\_tail\_compression} to any negative value
+   to turn off tail compression.
+\item Specify \texttt{\#\_add\_to\_comp} to a very small number E.g \texttt{1e-005}.
+   This specifies the value that will be added to each composition (age and length) data bins
+\item Set the length bin range method for the age composition data
+  (used when the conditional age at length data exists)
+   to 1, 2 or 3 in the line \texttt{\#\_Lbin\_method}
+   depending on the data you have or the purpose of the study
+\end{enumerate}
+\subsection{Testing the new operating model}
+After completing the above steps, check that the \texttt{SS3} model is
+functional by running a single iteration of the model and verifying that the
+data is read in correctly and expected values of the population dynamics are
+written to the \texttt{.dat} files (and sensical). We also advise manually
+testing the \texttt{ss3sim} R functions that manipulate the OM (e.g.,
+\texttt{change\_tv}) and check that the model still runs correctly after this
+manipulation. The help files for the functions demonstrate how to use the
+functions to test models. Note that the OM will not be a valid \texttt{SS3}
+model in the sense that ADMB will run and produce MLE estimates of parameters;
+it is intended to only be run for one iteration to generate the population
+dynamics of the starting values.
+
+\section{Setting up an estimation model}
+\label{sec:em-setup}
+Unlike the OM, the EM needs to be a valid ADMB model and run to achieve MLE
+estimates (and possibly standard errors). Thus the OM needs to be adapted to
+create a new EM.
+
+\subsection{Starter file modifications}
+\begin{enumerate}
+\item Change the names of the \texttt{.dat} and \texttt{.ctl} files
+   to your chosen naming scheme.
+\item Specify the model to use parameter values found in the \texttt{.ctl} file,
+   by changing \texttt{\# 0=use init values in control file; 1=use ss3.par}
+   to \texttt{0}.
+\item Turn on parameter estimation by changing\\
+   \texttt{\# Turn off estimation for parameters entering after this phase}
+   to a value larger than the max phase specified in the \texttt{.ctl} file.
+\end{enumerate}
+
+\subsection{Control file modifications}
+\begin{enumerate}
+\item Set the phases of the parameters to positive or negative value to
+   inform SS to estimate or fix the parameters, respectively.
+\item Set the \texttt{\#\_recdev phase}
+   to a positive value to estimate yearly recruitment deviations.
+\item If using bias adjustment set \texttt{\#\_recdev\_early\_phase}
+   to a positive value.
+   Estimates for the years and maximum bias adjustment
+   can initially be inputted with approximations
+   or use the bias adjustment function within \texttt{ss3sim}
+   to find appropriate values for the base case EM
+   and input them in the appropriate lines.
+\item Specify \texttt{\# F\_Method} to \texttt{3},
+   which allows the model to use catches to estimate
+   appropriate fishing mortality levels.
+   The max harvest rate in the subsequent line will depend upon
+   the fishing mortality levels in your simulation.
+   An additional line must be inserted after the maximum harvest rate
+   to specify the number of iterations used in the hybrid method.
+   Specify the line as follows
+   \texttt{3 \# F\_Method:  1=Pope; 2=instan. F; 3=hybrid (hybrid is recommended)},
+   where the number can range from \texttt{3} to \texttt{7}.
+ \item Use the functions in the \texttt{ss3sim} package
+   to change the estimation specification in the EM.
+   E.g \texttt{change\_e}
+\end{enumerate}
+
+\subsection{Data file modifcations}
+The \texttt{data.ss\_new} files produced when executing the OM contain the
+expected values of the OM population dynamics. The data the EM model is fit to
+needs to be sampled with observation error from these expected values in order
+to mimic the random sampling process done with real fisheries data. The
+\texttt{ss3sim} package provides three functions which carry out the random
+sampling process and generate \texttt{.dat} files to be used in the EM. See
+section \ref{sec:obs-error} for more details.
+
+\subsection{Testing the new estimation model}
+After completing the above steps run the model manually and verify that it loads
+the data properly and the objective. If it works correctly, try running
+deterministic cases on the model (section \ref{sec:deterministic}) and further
+verify that \texttt{ss3sim} functions that modify the EM (e.g.,
+\texttt{change\_e}). It is very possible that some of the functions will not
+work perfectly with the new models. In this case, it may be necessary to modify
+the \texttt{ss3sim} functions to be compatible with the new OM and EM.
 
 \bibliographystyle{apalike}
 \bibliography{refs}
