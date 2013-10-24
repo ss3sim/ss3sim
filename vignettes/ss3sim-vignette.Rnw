@@ -373,7 +373,8 @@ par is the base value for the given parameter,
 as defined in the \texttt{.par} file.
 For all catchability parameters (\textit{q}) the deviate will be added to the
 log transform of the base parameter using the following formula:
-$$log(q'_{y}) = log(q) + link * env_{y}.
+$log(q'_{y}) = log(q) + link * env_{y}$.
+
 The vector of deviates must contain one entry for every year of the simulation
 and can be specified as zero for years in which the parameter does not deviate.
 
@@ -1082,9 +1083,9 @@ More specifically, let
   \sigma_y&=\text{the standard deviation provided by the user}\\
   X&\sim N(0, \sigma_y)=\text{a random variable}
 \end{align*}
-Then the sampled value, ${B_y^\text{obs}}$ is
+Then the sampled value, $B_y^\text{obs}$ is
 \begin{equation*}
-  \{B_y^\text{obs}}=B_y e^{X-\sigma_y^2/2}
+  B_y^\text{obs}=B_y e^{X-\sigma_y^2/2}
 \end{equation*}
 which has expected value of $B_y$ due to the bias adjustment term
 $\sigma_y^2/2$. This process generates log-normal values centered at
