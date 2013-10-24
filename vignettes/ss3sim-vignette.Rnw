@@ -128,7 +128,7 @@ forecast.ss
 In both cases, nothing more and nothing less.
 The names of the \texttt{.ctl} and \texttt{.dat} files are not important.
 The package functions will rename them after they are copied to appropriate folders.
-These files should be derived from \texttt{.ss\_new} files but named as listed above.
+These files should be derived from \texttt{.ss\_new} files but with file extensions as shown above.
 It's important to use \texttt{.ss\_new} files so the files have consistent formatting.
 Many of the functions in this package depend on that formatting.
 
@@ -141,21 +141,23 @@ and add the appropriate file extension.
 
 \subsection{Cases and scenarios}
 
-The high-level wrapper function \texttt{run\_ss3sim},
+The high-level wrapper function \texttt{run\_ss3sim}
 uses unique case identifiers (IDs) that combine to create unique scenarios.
 The types of cases are:
 data quality (D), estimation (E), fishing mortality (F),
-growth (G), natural mortality (M),
-retrospective (R), and selectivity (S).
-These case IDs are followed by three-letter species identifier.
+growth (G),
+retrospective (R), 
+and any other letter describing a time varying case 
+(e.g.\ M for natural mortality or S for selectivity).
+These case IDs are followed by a three-letter species identifier.
 It's important to use three letters
 because the functions assume that the last three letters
 represent a unique identifier.
 The different versions of each case are identified with numbers.
-For example, the base-case scenario for our cod stock might be:
+For example, the base-case scenario for a cod stock might be:
 \texttt{D0-E0-F0-M0-R0-cod}.
 The order of the letters doesn't matter,
-as long as we use them consistently.
+as long as they are used consistently.
 
 \texttt{ss3sim} relies on a set of plain text files to control the simulation.
 These plain text files are read by \texttt{get\_caseval}
@@ -367,14 +369,19 @@ through the \texttt{change\_tv} function.
 The function works by adding an environmental deviate (env)
 to the base parameter (\texttt{par}),
 creating a time varying parameter (\texttt{par'}):
-$$par'_{y} = par + link * env_{y}$$.
+\begin{equation}
+par'_y = par + link * env_y.
+\end{equation}
+\noindent
 The link is pre-specified to a value of one and
 par is the base value for the given parameter,
 as defined in the \texttt{.par} file.
-For all catchability parameters (\textit{q}) the deviate will be added to the
-log transform of the base parameter using the following formula:
-$log(q'_{y}) = log(q) + link * env_{y}$.
-
+For all catchability parameters (\textit{q}), the deviate will be added to the
+log transform of the base parameter using the following equation:
+\begin{equation}
+log(q'_{y}) = log(q) + link * env_{y}.
+\end{equation}
+\noindent
 The vector of deviates must contain one entry for every year of the simulation
 and can be specified as zero for years in which the parameter does not deviate.
 
@@ -388,11 +395,15 @@ the function will fail.
 
 Since the \texttt{change\_tv} function can be used for a number of
 purposes, it interacts differently with the case files than the other
-`change` functions.
+\texttt{change} functions.
 To pass arguments to \texttt{change\_tv} through
 \texttt{run\_ss3sim}: (1) create a case file with an arbitrary letter
 not used elsewhere (i.e. anything but D, E, F, or R) and (2) include the line
-\texttt{function\_type; change\_tv} in your case file. For example,
+\begin{verbatim}
+function_type; change_tv
+\end{verbatim}
+\noindent
+in your case file. For example,
 you might want to use M for natural mortality, S for selectivity, or G
 for growth.
 
@@ -429,6 +440,7 @@ And then check the \texttt{SS3} files that are created.
 
 \subsection{Running deterministic simulations to check the models for
 bias}
+\label{sec:deterministic}
 
 We'll run some simulations to check our model for bias when process error is not
 included in the OM.
@@ -667,7 +679,7 @@ print(p)
 \clearpage
 
 \section{Modifying the operating and estimation models}\label{sec:modify}
-\texttt{ss3sim} comes with 3 built-in \texttt{SS3} operating and estimation
+\texttt{ss3sim} comes with three built-in \texttt{SS3} operating and estimation
 models: a cod-like (slow-growing and long-lived), flatfish-like (fast-growing
 and intermediate-lived), and sardine-like (fast-growing and short-lived).  These
 models are based on North Sea cod (\textit{Gadus morhua}) (R. Methot, pers.\
@@ -677,26 +689,25 @@ Further details on these models are available in \citep{johnson2013} and
 \citep{ono2013}. These models were stripped down and simplified to make them
 more generic for simulation testing. In doing this, we removed many of the
 subtle features of the model.
+While these models are generic and cover a wide range
+of life history types, they may not be suitable for all users. Therefore, in this section,
+we outline strategies for modifying the existing \texttt{SS3} models.
 
-However we recognize that while these models are generic and cover a wide range
-of life history types, they may not be suitable for all users. This section
-details strategies for modifying the existing \texttt{SS3} models.
-
-Before proceeding it is worth having a short discussion about the scope and
+Before proceeding it is worth considering the scope and
 place of \texttt{ss3sim} as a simulation package. The package was designed as a
 vehicle for examining structural differences in models: between an OM and EM
-(e.g. \cite{johnson2013}) or between multiple EMs (e.g. \cite{ono2013}). As such
-the specific details (e.g. many fleets, tagging data, seasons, etc.) of the
+\citep[e.g.][]{johnson2013} or between multiple EMs \citep[e.g.][]{ono2013}. Therefore,
+the specific details (e.g.\ many fleets, tagging data, seasons, etc.) of the
 models were not important and removed to produce a set of generic life history
-type models. That is to say that \texttt{ss3sim} is not designed for testing
+type models. Thus, \texttt{ss3sim} is not designed for testing
 arbitrary \texttt{SS3} models, but rather properties of assessment models in
-general. Thus \texttt{ss3sim} is not ideal for quickly exploring properties of a
+general, and \texttt{ss3sim} is not ideal for quickly exploring properties of a
 particular assessment model.
 
 It is possible to create new models that will work within the \texttt{ss3sim}
 framework, but this task will be complicated and likely require extensive
 knowledge of \texttt{SS3} and R, as well as modification of the \texttt{ss3sim}
-functions. This process is described in more detail in sections
+functions. This process is described in more detail in Appendices
 \ref{sec:om-setup} and \ref{sec:em-setup}.
 
 Instead of creating entirely new models, we recommend adapting the current
@@ -714,19 +725,19 @@ functions. The follow steps provide a basic guideline for how to accomplish this
 \item Using the original cod model create the case argument files you desire for
   your simulation and verify they run with the original cod model using the
   function \texttt{run\_ss3sim}. It is probably best to do a shorter
-  deterministic (section \ref{eq:deterministic}) run. After running, read in the
+  deterministic (section \ref{sec:deterministic}) run. After running, read in the
   data and do visual checks for proper functionality.
 \item Find the original cod model. This can be found in the ``/models'' folder
   inside the package, located by
 \begin{verbatim}
 library(ss3sim)
 d <- system.file("extdata", package = "ss3sim")
-paste0(d, "/models/cod-om")
+paste0(d, "/models")
 \end{verbatim}
   Make a copy of the cod models (OM and EM) and rename them as desired.
 \item Make a single change to either the \texttt{.dat} or \texttt{.ctl} files
-  for the new model. This change cannot break either model -- run them manually
-  if there is any question it might.
+  for the new model and run them manually with \texttt{SS3} 
+  if there is any question if they might break the model.
 \item Rerun step 1 and again verify it is still working. If errors occur in the
   R function you will need to examine the function to determine why the error is
   occuring and fix by changing the R function and reloading it.
@@ -785,8 +796,8 @@ ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-R0-M0-cod",
 to speed up simulations.
 To run a simulation in parallel,
 you need to (1) register multiple cores or clusters and
-(2) then set the argument \texttt{parallel} in \texttt{run\_ss3sim} to TRUE.
-For example, we could have run the previous example in parallel.
+(2) then setting the \texttt{parallel = TRUE} in \texttt{run\_ss3sim}.
+For example, we could have run the previous example in parallel with the following code.
 First, we'll register 4 cores:
 
 <<parallel-one>>=
@@ -1356,13 +1367,13 @@ testing the \texttt{ss3sim} R functions that manipulate the OM (e.g.,
 \texttt{change\_tv}) and check that the model still runs correctly after this
 manipulation. The help files for the functions demonstrate how to use the
 functions to test models. Note that the OM will not be a valid \texttt{SS3}
-model in the sense that ADMB will run and produce MLE estimates of parameters;
-it is intended to only be run for one iteration to generate the population
-dynamics of the starting values.
+model in the sense that ADMB will run and produce MLE (maximum likelihood
+estimation) estimates of parameters; it is intended to only be run for one
+iteration to generate the population dynamics of the starting values.
 
 \section{Setting up an estimation model}
 \label{sec:em-setup}
-Unlike the OM, the EM needs to be a valid ADMB model and run to achieve MLE
+Unlike the OM, the EM needs to be a valid \texttt{SS3} model and run to achieve MLE
 estimates (and possibly standard errors). Thus the OM needs to be adapted to
 create a new EM.
 
@@ -1416,13 +1427,14 @@ sampling process and generate \texttt{.dat} files to be used in the EM. See
 section \ref{sec:obs-error} for more details.
 
 \subsection{Testing the new estimation model}
-After completing the above steps run the model manually and verify that it loads
-the data properly and the objective. If it works correctly, try running
+After completing the above steps run the model manually and verify that it
+loads the data properly and the objective. If it works correctly, try running
 deterministic cases on the model (section \ref{sec:deterministic}) and further
 verify that \texttt{ss3sim} functions that modify the EM (e.g.,
-\texttt{change\_e}). It is very possible that some of the functions will not
-work perfectly with the new models. In this case, it may be necessary to modify
-the \texttt{ss3sim} functions to be compatible with the new OM and EM.
+\texttt{change\_e}) act correctly on the model. It is possible that some of the
+functions will not work perfectly with the new models. In this case, it may be
+necessary to modify the \texttt{ss3sim} functions to be compatible with the new
+OM and EM.
 
 \bibliographystyle{apalike}
 \bibliography{refs}
