@@ -98,19 +98,24 @@ our accessible and general SS simulation framework could address.
 
 We designed ss3sim to be reproducible, flexible, and rapid.
 *Reproducible*: ss3sim allows for the simulation to be documented
-in code and plain-text control files
+in R code and plain-text control files
 and allows for random seeds to be set prior to generating observation and process error.
-Simulations are therefore repeatable.
-*Flexible*: ss3sim can implement all possible configurations of SS3.
+Simulations are therefore repeatable across platforms using freely-available,
+open-source software.
+*Flexible*: ss3sim inherits the flexibility of SS3 and can implement many
+available stock assessment configurations by modifying built-in 
+generic life-history models.
 Further, ss3sim summarizes the entire simulation into comma-separated-value (`.csv`) files
 allowing for the output to be easily processed
 in nearly any statistical software, including R.
 Finally, the ss3sim code is written under a GPL-3 license and can be freely modified.
 *Rapid*: ss3sim relies on SS3,
-which uses ADMB as a backend optimization platform ---
+which uses AD Model Builder as a backend optimization platform ---
 the most rapid and robust optimization software available [@fournier2012].
 ss3sim also facilitates the deployment of simulations
-across multiple computers or computer cores, thereby accelerating computation.
+across multiple computers or computer cores, thereby accelerating
+computation. Lastly, ss3sim utilizes the r4ss package (@r4ss2013) suite of tools
+already published for reading/writing files and processing result data for the user.
 <!--Finally, the package provides a number of visualization functions-->
 <!--to quickly explore simulation output.-->
 
@@ -255,29 +260,63 @@ error metrics, such as relative (Figure 2) or absolute error.
 
 # How ss3sim complements other simulation software
 
-Probably turn this into a small table:
+The primary purpose of ss3sim is to explore the behavior and performance of SCA
+models under different assumptions about the OM or EM. In particular it provides
+a suite of functions for dynamically creating structural differences in OMs and
+EMs. This expedites testing the properties of stock assessment models, whether
+the differences are between the OM and EM (e.g. @johnson2013), or between
+multiple versions of the EM (e.g. @ono2014). ss3sim is thus ideal for answering
+questions about mismatches between OM and EM or different structures of EM for a
+given OM. The downside this approach is the functions only work for a subset of
+combinations of options available for SS3 models. Due to this and the nature of
+the goal of ss3sim we emphasize generic models that can be broadly applied to a
+variety of simulation studies. As a consequence it difficult to quickly adapt a
+new SS model to work within the framework. However, testing the properties of
+very specific assessment models is not the goal of ss3sim, and thus more generic
+models should be sufficient for most simulation studies conducted in this
+framework. Depending on the goal of the simulation study, there are other
+software frameworks available which may be a better alternative to ss3sim.
 
-*r4ss*
+Fisheries libraries in R (FLR, @kell2007) is an open-source framework developed
+specifically for evaluating fisheries management strategies using
+simulation. FLR aims to broadly incorporate a variety of disciplines beyond
+fisheries science and ecology into the development of new methods and software
+for evaluating alternative management strategies and procedures. Compared to
+ss3sim FLR is designed to explore broader questions regarding management
+strategies with flexible biological, economic, and management components
+(@hillary2009). As such, it is not designed to explore the impact of structural
+differences within the stock assessment models.
 
-- @r4ss2013
-- r4ss has functions to facilitate aspects of simulations, mostly focused on
-  reading and plotting output for stock assessment
-- ss3sim uses r4ss functions for some reading, writing, and bias adjustment
+The Fishery Simulation program (FS, http://fisherysimulation.codeplex.com) is
+primarily a file system management tool adapted to aid in stock assessment
+simulation. FS has the ability to distribute arbitrary stock assessment models,
+make simple changes to input text files, generate random process and observation
+errors (using the SS3 bootstrap option), run the models in parallel and collect
+desired results from output files. The FS is much closer to ss3sim in its scope
+than FLR in that it specifically focuses on the performance of stock assessment
+models. It differs from ss3sim mainly in that it uses simple text manipulation
+(e.g. change line 50 from 0 to 1) to alter models rather than the approach of
+ss3sim which uses flexible external functions. Since it does not rely on these
+external functions, there are few restrictions on which types of models can be
+used and it works well for testing arbitrary assessment models (e.g. @lee2012,
+@piner2011, @lee2011). In contrast, FS cannot make complicated structural
+changes to a model (e.g. add time-varying parameters, change years of surveys),
+making it difficult to induce and test structural differences between models. FS
+is also open-source but requires the Microsoft .NET framework and only available
+on the Windows
+platform.
 
-*FLR*
+[fixme: need to put copyright on those??; could add that its basically functionality is similar to some of our low-level functions that move files around, create folder,s, etc.].
 
-- @kell2007 for FLR and @hillary2009 for simulation in FLR
-- statistical catch-at-age only?
-- not integrated analysis, not SS
-- but particularly relevant to Europe
+[fixme: Took out the r4ss since it doesnt really fit here. We should just referene it somewhere else in the paper]
 
-*Fishery Simulation*
-
-- http://fisherysimulation.codeplex.com, Windows only, GUI..., works on
-  bootstrapped data
-    1. @lee2012
-    2. @piner2011
-    3. @lee2011
+<!-- r4ss is an R package that provides an interface to SS3 input and output files, -->
+<!-- focusing primarily on visual examination of model results.  -->
+<!-- *r4ss* -->
+<!-- - @r4ss2013 -->
+<!-- - r4ss has functions to facilitate aspects of simulations, mostly focused on -->
+<!--   reading and plotting output for stock assessment -->
+<!-- - ss3sim uses r4ss functions for some reading, writing, and bias adjustment -->
 
 # Research opportunities with ss3sim
 
@@ -348,9 +387,6 @@ KFJ and KO were partially supported by NOAA grant 423 NA10OAR4320148 and
 CCM was partially supported by a Washington Sea Grant.
 
 # Tables
-
-Table X: Comparison with related software? Possible columns: software, reference, platform (e.g. R, GUI...), short description/comparison, examples of papers using it
-
 \clearpage
 
 Table 1: Main ss3sim functions and a description of their purpose. 
