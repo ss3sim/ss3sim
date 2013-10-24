@@ -1103,7 +1103,7 @@ recruitment (recdevs) from the stock-recruit relationship. Unlike the
 observation error, the process error affects the population dynamics
 and thus must be done before running the OM. The \texttt{ss3sim}
 package contains a built-in set of recruitment deviations for up to
-150 years and 1000 iterations that are used if none are passed by the
+150 years and 500 iterations that are used if none are passed by the
 user. The columns in the matrix represent iterations of the
 simulation, and the rows represent years. These built-in recruitment
 deviations are standard normal deviates and are multiplied by
