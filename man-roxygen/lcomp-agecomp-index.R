@@ -1,6 +1,6 @@
 #' @param infile An SS data object as read in from
-#' \code{\link[r4ss]{SS_readdat}} in the r4ss package. Make sure you select
-#' option \code{section=2}.
+#' \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
+#' you select option \code{section=2}.
 #' @param outfile A character string of the new \code{.dat} file name to be
 #' created. Must end in \code{.dat}.
 #' @param fleets A numeric vector giving the fleets to be used. This order also
