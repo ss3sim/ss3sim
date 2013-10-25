@@ -2,8 +2,7 @@
 \alias{get_caseargs}
 \title{Take a scenario ID and return argument lists to pass to functions}
 \usage{
-  get_caseargs(folder, scenario, delimiter = "-",
-    ext = ".txt",
+  get_caseargs(folder, scenario, ext = ".txt",
     case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), R = "R", E 
 = "E"))
 }
@@ -11,17 +10,16 @@
   \item{folder}{The folder to look for input files in.}
 
   \item{scenario}{A character object that has the cases
-  separated by some delimiter. The combination of cases is
-  referred to as a scenario. E.g. \code{"M1-F1-D1-R1-S1"}.}
-
-  \item{delimiter}{The delimiter between the cases.
-  Defaults to a dash.}
+  separated by the "-" delimiter. The combination of cases
+  and stock ID is referred to as a scenario. E.g.
+  \code{"D0-E0-F0-M0-R0-cod"}. See the Details section.}
 
   \item{ext}{The file extension of the input files.
   Defaults to \code{".txt"}.}
 
   \item{case_files}{A named list that relates the case IDs
-  to the files to return.}
+  to the files to read the arguments from. See the Details
+  section.}
 }
 \value{
   A (nested) named list. The first level of the named list
@@ -34,19 +32,39 @@
 \description{
   This function calls a number of internal functions to go
   from a unique scenario identifier like
-  \code{"M1-F2-D3-R4-cod"} and read the corresponding input
-  files (like \code{"M1.txt"}) that have two columns: the
-  first column contains the argument names and the second
-  column contains the argument values. The two columns
-  should be separated by a comma. The output is then
-  returned in a named list.
+  \code{"D1-E2-F3-M0-R4-cod"} and read the corresponding
+  input files (like \code{"M0-cod.txt"}) that have two
+  columns: the first column contains the argument names and
+  the second column contains the argument values. The two
+  columns should be separated by a semicolon The output is
+  then returned in a named list with the intention of
+  passing these to \code{\link{run_ss3sim}} or
+  \code{\link{ss3sim_base}}.
 }
 \details{
-  The input plain text files should have arguments in the
-  first column that should be passed on to functions. The
-  names should match exactly. The second column should
-  contain the values to be passed to those arguments.
-  Multiple words should be enclosed in quotes.
+  Let's start with an example scenario
+  \code{"D0-E1-F0-M0-R0-cod"}. The single capital letters
+  refer to case IDs. The numbers refer to the case numbers.
+  The last block of text (\code{cod}) represents the stock
+  ID (any alphanumeric string of text will work) and is to
+  help the user identify different "stocks" (intended to
+  represent different SS3 models).
+
+  The stock IDs should correspond to how the case files are
+  named and the case IDs should correspond to the cases
+  described by the \code{case_files}. The case file names
+  will correspond to the list values plus the stock ID. For
+  example \code{list(D = c("index", "lcomp", "agecomp"))}
+  combined with the stock ID \code{cod} means that the case
+  \code{D1} will refer to the case files
+  \code{index-cod.txt, lcomp-cod.txt, agecomp-cod.txt}.
+
+  The case argument plain text files should have arguments
+  in the first column that should be passed on to
+  functions. The names should match exactly. The second
+  column (delimited by a semicolon) should contain the
+  values to be passed to those arguments. Multiple words
+  should be enclosed in quotes.
 
   You can use any simple R syntax to declare argument
   values. For example: \code{c(1, 2, 4)}, or \code{seq(1,
@@ -55,7 +73,7 @@
   but can be if you'd like. However, be careful not to use
   the delimiter (set up as a semicolon) anywhere else in
   the file besides to denote columns. You can add comments
-  after any \code{\#} symbol. Internally, the functions
+  after any \code{#} symbol. Internally, the functions
   evaluate in \code{R} any entries that have no character
   values (e.g. \code{1:100}), or have an alpha-numeric
   character followed by a \code{(}. Anything that is
@@ -66,7 +84,6 @@
   directly.)
 }
 \examples{
-\dontrun{
 # Find the example data folders:
 d <- system.file("extdata", package = "ss3sim")
 case_folder <- paste0(d, "/eg-cases")
@@ -80,6 +97,5 @@ get_caseargs(case_folder, scenario = "D0-E0-F0-M0-R0-cod")
 get_caseargs(case_folder, scenario = "D0-E0-F0-M0-R0-S0-cod",
   case_files = list(E = "E", D = c("index", "lcomp", "agecomp"), F =
     "F", M = "M", R = "R", S = "S"))
-}
 }
 
