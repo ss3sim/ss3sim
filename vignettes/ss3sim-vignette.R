@@ -37,8 +37,8 @@ get_results_all(user_scenarios =
     "D0-E1-F0-R0-M0-cod",
     "D1-E1-F0-R0-M0-cod"))
 
-scalar_dat <- read.csv("final_results_scalar.csv")
-ts_dat <- read.csv("final_results_ts.csv")
+scalar_dat <- read.csv("ss3sim_scalar.csv")
+ts_dat <- read.csv("ss3sim_ts.csv")
 
 save(ts_dat, file = "ts_dat.rda")
 save(scalar_dat, file = "scalar_dat.rda")

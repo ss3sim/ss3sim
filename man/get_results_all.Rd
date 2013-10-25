@@ -17,6 +17,10 @@
   that should be read in. Default is NULL, which indicates
   find all scenario folders in \code{directory}}
 }
+\value{
+  Creates two .csv files in the current working directory:
+  ss3sim_ts.csv and ss3sim_scalar.csv.
+}
 \description{
   This high level function extracts results from SS3 model
   runs. Give it a directory which contains directories for
@@ -39,9 +43,9 @@ library(ss3sim)
 ## This function reads in results for all runs in a particular directory
 get_results_all(overwrite_files=FALSE)
 
-## Rread in the final results produced by above function
-scalars <- read.csv("final_results_scalar.csv")
-ts <- read.csv("final_results_ts.csv")
+## Read in the final results produced by above function
+scalars <- read.csv("ss3sim_scalar.csv")
+ts <- read.csv("ss3sim_ts.csv")
 
 ## NOTE: For my case I had run different F cases (F0,F1, F2) for the base
 ## case. Thus below I've grouped by F. You might want to group by something

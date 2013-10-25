@@ -547,8 +547,8 @@ get_results_all(user_scenarios =
 Let's read in the \texttt{.csv} files:
 
 <<read-output, eval=FALSE>>=
-scalar_dat <- read.csv("final_results_scalar.csv")
-ts_dat <- read.csv("final_results_ts.csv")
+scalar_dat <- read.csv("ss3sim_scalar.csv")
+ts_dat <- read.csv("ss3sim_ts.csv")
 @
 
 Or if you'd like to follow along with the rest of the vignette
