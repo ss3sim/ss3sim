@@ -16,15 +16,14 @@
 }
 \description{
   This function is run within \code{\link{run_bias_ss3}}
-  and for a single run it: \itemize{ \item uses \code{r4ss}
+  and for a single run it: \itemize{ \item uses \pkg{r4ss}
   function \code{SS_output} to read in the output from a
-  single bias adjustment run \item uses \code{r4ss}
-  function \code{SS_fitbiasramp} to calculate the bias
-  adjustment parameters for that run \item Writes the bias
-  adjustment parameters to the file \code{AdjustBias.DAT}
-  within the \code{dir} folder, overwriting the file if
-  \code{iter = 1} (the first run) and appending the file
-  otherwise }
+  single bias adjustment run \item uses \pkg{r4ss} function
+  \code{SS_fitbiasramp} to calculate the bias adjustment
+  parameters for that run \item Writes the bias adjustment
+  parameters to the file \code{AdjustBias.DAT} within the
+  \code{dir} folder, overwriting the file if \code{iter =
+  1} (the first run) and appending the file otherwise }
 }
 \author{
   Carey McGilliard

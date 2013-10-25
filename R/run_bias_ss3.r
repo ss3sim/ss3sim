@@ -6,9 +6,9 @@
 #'
 #' @details
 #' This function: \itemize{
-#' \item uses the \code{r4ss} package to read in output from n SS
+#' \item uses the \pkg{r4ss} package to read in output from n SS
 #' runs,
-#' \item uses Ian Taylor's \code{r4ss} function to find values for the
+#' \item uses Ian Taylor's \pkg{r4ss} function to find values for the
 #' n bias adjustment parameters for each run,
 #' \item takes the average over runs for each bias adjustment
 #' parameter
