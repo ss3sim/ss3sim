@@ -1,8 +1,8 @@
 Package: ss3sim
 Type: Package
 Title: Generalized stock-assessment simulation with Stock Synthesis
-Version: 0.7.0
-Date: 2013-10-24
+Version: 0.7.1
+Date: 2013-10-25
 Authors@R: c(person("Sean", "Anderson", email =
     "sean@seananderson.ca", role = c("aut", "cre")),
     person("Curry", "Cunningham", role = "aut"),
