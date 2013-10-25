@@ -59,10 +59,12 @@ Simulation is a critical component to testing fishery stock assessment methods
 [@hilborn1987; @hilborn1992; @rosenberg1994; @peterman2004].
 With simulation, we can evaluate the precision and bias of complex assessment methods
 in a controlled environment where we know the true state of nature [@hilborn1992].
-For example, recent simulation studies have been key to improving strategies for dealing with
+For example, recent simulation studies 
+have been key to improving strategies for dealing with
 time-varying natural mortality [@lee2011; @jiao2012; @deroba2013; @johnson2013]
 and uncertainty in steepness of the stock-recruit relationship [@lee2012],
-as well as determining what makes fisheries data informative [@magnusson2007; @wetzel2011a; @ono2013].
+as well as determining what makes fisheries data informative 
+[@magnusson2007; @wetzel2011a; @ono2013].
 
 Stock Synthesis (SS) [@methot2013] is a widely-used stock assessment framework.
 It implements statistical age-structured population dynamics modeling
@@ -99,13 +101,15 @@ our accessible and general SS simulation framework could address.
 We designed ss3sim to be reproducible, flexible, and rapid.
 *Reproducible*: ss3sim allows for the simulation to be documented
 in R code and plain-text control files
-and allows for random seeds to be set prior to generating observation and process error.
+and allows for random seeds to be set 
+prior to generating observation and process error.
 Simulations are therefore repeatable across platforms 
 using freely-available, open-source software.
 *Flexible*: ss3sim inherits the flexibility of SS3 and can implement many
 available stock assessment configurations by modifying built-in 
 generic life-history models.
-Further, ss3sim summarizes the entire simulation into comma-separated-value (`.csv`) files
+Further, ss3sim summarizes the entire simulation 
+into comma-separated-value (`.csv`) files
 allowing for the output to be easily processed
 in nearly any statistical software, including R.
 Finally, the ss3sim code is written under a GPL-3 license and can be freely modified.
