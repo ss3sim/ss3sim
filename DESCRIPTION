@@ -68,3 +68,4 @@ Collate:
     'ss3sim_base.r'
     'change_tv.r'
     'setup_parallel.r'
+    'ss3sim.r'

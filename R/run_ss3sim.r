@@ -1,16 +1,20 @@
 #' Master function to run SS3 simulations
 #'
-#' This function first deals with parsing the case input files and
-#' then passes these arguments on to \code{\link{ss3sim_base}} to run
-#' the simulation.
+#' This is the main high-level wrapper function for running ss3sim
+#' simulation. This function first deals with parsing a scenario ID
+#' into case input files and then passes these arguments on to
+#' \code{\link{ss3sim_base}} to run the simulation. Alternatively, you
+#' might choose to run \code{\link{ss3sim_base}} directly and skip the
+#' case-file setup.
 #'
 #' @param iterations Which iterations to run. A numeric vector. For
 #' example \code{1:100}.
 #' @param scenarios Which scenarios to run. A vector of character
 #' objects. For example \code{c("D0-E0-F0-R0-M0-cod",
-#' "D1-E0-F0-R0-M0-cod")}. Also, see
-#' \code{\link{expand_scenarios}} for a shortcut to specifying the
-#' scenarios.
+#' "D1-E0-F0-R0-M0-cod")}. Also, see \code{\link{expand_scenarios}}
+#' for a shortcut to specifying the scenarios. See
+#' \code{\link{get_caseargs}} and the vignette for details on
+#' specifying the scenarios.
 #' @param case_folder The folder containing the case \code{.txt}
 #' files.
 #' @param om_model_dir The folder containing the SS operating model
@@ -20,7 +24,9 @@
 #' @param case_files A named list that relates the case IDs to the
 #' files to return. If you are passing time-varying parameters beyond
 #' (or instead of) natural mortality (M), then you will need to adjust
-#' these values to reflect your scenarios.
+#' these values to reflect your scenarios. This argument is passed to 
+#' \code{\link{get_caseargs}}. See that function for details and
+#' examples of how to specify this.
 #' @param seed If set to a numeric vector then \code{set.seed} will be
 #' set to each successive value of the vector \code{seed} on each
 #' iteration. This can be useful to make simulations reproducible. If
