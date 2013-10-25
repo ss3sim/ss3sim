@@ -70,24 +70,24 @@
 #' @examples
 #' \dontrun{
 #' d <- system.file("extdata", package = "ss3sim")
-#' ctl_file_in <- paste0(d, "/Simple/control.ss_new")
-#' dat_file_in <- paste0(d, "/Simple/simple.dat")
-#' starter_file_in <- paste0(d, "/Simple/starter.ss")
-#' par_file_in <- paste0(d, "/Simple/ss3.par")
-#' report_file <- paste0(d, "/Simple/Report.sso")
+#' simple <- paste0(d, "/Simple")
 #' wd <- getwd()
-#' setwd(paste0(d, "/Simple"))
-#' change_tv(change_tv_list = list("NatM_p_1_Fem_GP_1" = c(rep(0, 20), rep(.1, 11)),
-#'                                 "SR_BH_steep"=rnorm(31, 0, 0.05)),
-#'   ctl_file_in = ctl_file_in, ctl_file_out = "example.ctl",
-#'   dat_file_in = dat_file_in, dat_file_out = "example.dat",
-#'   starter_file_in = starter_file_in, starter_file_out = "starter.ss",
-#'   par_file_in = par_file_in, report_file = report_file
-#'   )
-# # clean up:
-# file.remove("example.ctl")
-# file.remove("example.dat")
-#' setwd(wd)}
+#' dir.create("Simple")
+#' file.copy(simple, ".", recursive = TRUE)
+#' setwd("Simple")
+#' 
+#' # Run SS3 to create control.ss_new and Report.sso:
+#' system("SS3 starter.ss -noest")
+#' 
+#' change_tv(change_tv_list = list("NatM_p_1_Fem_GP_1" = c(rep(0, 20),
+#'       rep(.1, 11)), "SR_BH_steep"=rnorm(31, 0, 0.05)), ctl_file_in =
+#'   "control.ss_new", ctl_file_out = "example.ctl", dat_file_in =
+#'   "simple.dat", dat_file_out = "example.dat")
+#' 
+#' # clean up:
+#' setwd("../")
+#' unlink("Simple")
+#' }
 
 change_tv <- function(change_tv_list,
   ctl_file_in = "control.ss_new", ctl_file_out = "om.ctl",
