@@ -15,7 +15,6 @@
 #' dir.create("oms/blockm-fla")
 #' copy_ss3models(model_dir = "oms", type = "om", iterations = 1:3)
 #' }
-#' @export
 
 copy_ss3models <- function(model_dir, scenarios,
   iterations = 1:100, type = c("om", "em")) {

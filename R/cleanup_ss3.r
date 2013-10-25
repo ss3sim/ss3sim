@@ -3,6 +3,7 @@
 #' Removes all of the unwanted output files from the specified
 #' directory.
 #'
+#' @export
 #' @param dir_name The directory of interest, the function ignores
 #' case (i.e. names can be specified as lower or upper case)
 #' @param clean_vector A vector of characters specifying the unwanted
