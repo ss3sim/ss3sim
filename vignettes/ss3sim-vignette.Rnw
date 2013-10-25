@@ -17,6 +17,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{graphicx}
+\usepackage{appendix}
 \usepackage[round]{natbib}
 \bibpunct{(}{)}{;}{a}{}{;}
 \newcommand{\Vof}[1]{\mathrm{Var}\left[#1 \right]}
@@ -86,7 +87,7 @@ See Section \ref{sec:path} for details.
 
 \section{An overview of the \texttt{ss3sim} simulation structure}
 
-\texttt{ss3sim} is an R package that is meant to make it relatively quick and easy
+\texttt{ss3sim} is an \texttt{R} package that is meant to make it relatively quick and easy
 to run simulations with the 3rd version of Stock Synthesis, \texttt{SS3}.
 The package consists of a series of functions
 that facilitate manipulating \texttt{SS3} configuration files,
@@ -218,7 +219,7 @@ However, be careful not to use the delimiter (set up as a semicolon)
 anywhere else in the file besides to denote columns.
 You can add comments after any \texttt{\#} symbol.
 Internally, the functions evaluate in \texttt{R}
-any entries that have no character values (e.g. \texttt{1:100}),
+any entries that have no character values (e.g.\ \texttt{1:100}),
 or have an alpha-numeric character followed by a \texttt{(}.
 Anything that is character only or has character mixed with numeric
 but doesn't have the regular expression \texttt{"{[}A-Za-z0-9{]}("}
@@ -343,7 +344,7 @@ You can refer to these papers for details on how the models were set up.
 If we were starting from scratch,
 we would run the function \texttt{create\_argfiles()},
 which would create a default set of configuration files
-in our R working directory.
+in our \texttt{R} working directory.
 Instead we'll start with the configuration files from those papers.
 
 To investigate the effect of research survey effort,
@@ -373,7 +374,8 @@ sds_obs; list(0.1)
 We won't describe the length or age composition sampling here in detail, but
 you can refer to the help files \texttt{?change\_lcomp} and
 \texttt{?change\_agecomp} along with the case files included in the package
-data.
+data. Also see Section \ref{sec:comps} where we describe the theory behind the
+age- and length-composition sampling in \texttt{ss3sim}.
 
 To investigate the effect of fixing versus estimating \textit{M},
 we'll manipulate the argument \texttt{natM\_val} that gets passed to \texttt{change\_e}.
@@ -727,7 +729,7 @@ purposes, it interacts differently with the case files than the other
 \texttt{change} functions.
 To pass arguments to \texttt{change\_tv} through
 \texttt{run\_ss3sim}: (1) create a case file with an arbitrary letter
-not used elsewhere (i.e. anything but D, E, F, or R) and (2) include the line
+not used elsewhere (i.e.\ anything but D, E, F, or R) and (2) include the line
 \begin{verbatim}
 function_type; change_tv
 \end{verbatim}
@@ -784,10 +786,10 @@ functions. The follow steps provide a basic guideline for how to accomplish this
 \item Using the original cod model create the case argument files you desire for
   your simulation and verify they run with the original cod model using the
   function \texttt{run\_ss3sim}. It is probably best to do a shorter
-  deterministic (section \ref{sec:deterministic}) run. After running, read in the
+  deterministic (Section \ref{sec:deterministic}) run. After running, read in the
   data and do visual checks for proper functionality.
-\item Find the original cod model. This can be found in the ``/models'' folder
-  inside the package, located by
+\item Find the original cod model. This can be found in the
+  \texttt{inst/extdata/models} folder inside the package, located by
 \begin{verbatim}
 library(ss3sim)
 d <- system.file("extdata", package = "ss3sim")
@@ -797,12 +799,13 @@ paste0(d, "/models")
 \item Make a single change to either the \texttt{.dat} or \texttt{.ctl} files
   for the new model and run them manually with \texttt{SS3} 
   if there is any question if they might break the model.
-\item Rerun step 1 and again verify it is still working. If errors occur in the
-  R function you will need to examine the function to determine why the error is
-  occuring and fix by changing the R function and reloading it.
+\item Rerun the model through \texttt{run\_ss3sim} and verify it is still
+  working. If errors occur in the
+  \texttt{R} function you will need to examine the function to determine why the error is
+  occurring and fix by changing the \texttt{R} function and reloading it.
 \item Repeat previous steps with all small changes until the models are
   satisfactory.
-\item Turn off deterministic runs and run the simulation as with the built-in models.
+\item Turn off deterministic runs and run the simulation stochastically.
 \item If your new model works well with the package and is significantly
   different than what is built-in, please contact the \texttt{ss3sim} package
   managers for inclusion in future releases.
@@ -854,10 +857,10 @@ ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-R0-M0-cod",
 \texttt{ss3sim} can easily run multiple scenarios in parallel
 to speed up simulations.
 To run a simulation in parallel,
-you need to (1) register multiple cores or clusters and
-(2) then setting the \texttt{parallel = TRUE} in \texttt{run\_ss3sim}.
+you need to register multiple cores or clusters and
+set \texttt{parallel = TRUE} in \texttt{run\_ss3sim}.
 For example, we could have run the previous example in parallel with the following code.
-First, we'll register 4 cores:
+First, we'll register four cores:
 
 <<parallel-one>>=
 require(doParallel)
@@ -873,7 +876,7 @@ getDoParWorkers()
 @
 
 \noindent
-And then run our simulation on 4 cores simultaneously
+And then run our simulation on four cores simultaneously
 by setting \texttt{parallel = TRUE}:
 
 <<parallel-three, eval=FALSE>>=
@@ -892,8 +895,8 @@ if the simulations are running in parallel,
 you will also see simultaneous output messages
 from \texttt{ss3sim} as the simulations run.
 On a 2.27 GHz Intel Xeon quad-core server running Ubuntu 10.04,
-this example ran 1.9 times faster on 2 cores than on a single core,
-and 3.2 times faster on 4 cores.
+this example ran 1.9 times faster on two cores than on a single core,
+and 3.2 times faster on four cores.
 
 
 \section{Putting \texttt{SS3} in your path}
@@ -951,7 +954,7 @@ To add it to your path:
   Find the latest version of the \texttt{ss3.exe} binary on your
   computer
 \item
-  Record the folder location. E.g. \texttt{C:/SS3.24o/}
+  Record the folder location. E.g.\ \texttt{C:/SS3.24o/}
 \item
   Click on the start menu and type \texttt{environment}
 \item
@@ -965,7 +968,7 @@ To add it to your path:
   In the \texttt{Edit User Variable} window
   add to the \textbf{end} of the \texttt{Variable value} section
   a semicolon and the \texttt{SS3} folder location you recorded earlier.
-  E.g. \texttt{;C:/SS3.24o/}
+  E.g.\ \texttt{;C:/SS3.24o/}
 \item
   Restart your computer
 \item
@@ -977,7 +980,7 @@ To add it to your path:
 \section{Incorporating observation error}
 \label{sec:obs-error}
 Observation error (i.e.\ uncertainty arising from sampling the
-``truth'') can be added within the \texttt{ss3sim} framework in 3
+``truth'') can be added within the \texttt{ss3sim} framework in three
 places: indices, length compositions, and age compositions. There are
 functions which take the expected values produced in the OM
 \texttt{.dat} files and samples from them to create the input
@@ -1002,7 +1005,7 @@ functions.
   composition using a Dirichlet distribution. The Dirichlet
   distribution can be thought of as a generalization of the
   multinomial distribution that has an additional parameter
-  controlling the variance of the random deviates (see section
+  controlling the variance of the random deviates (see Section
   \ref{sec:comps}). The user can specify which fleets are sampled in
   which years and with what amount of noise. Further, the bin
   structure can be inputted as an argument and thus changed
@@ -1086,7 +1089,7 @@ in the generated samples: as it increases the variance decreases.
 Thus, it is simple to calculate what $\lambda$ should be
 in order to have a specific level of variance in the samples.
 We know that the variance of the Dirichlet samples
-should never be smaller than that of a multinomial (i.e. under-dispersed)
+should never be smaller than that of a multinomial (i.e.\ under-dispersed)
 so it makes sense to use the multinomial variance
 (with a particular sample size $n$)
 as a baseline.
@@ -1124,7 +1127,7 @@ specify a vector of values determining how to bin the data.  This
 option may be useful for users who wish to explore the impact of
 different binning schemes of the same data. The function works by
 determining which OM bins to collapse and summing across these to form
-the new bins. Thus the specified bins need to coincide (i.e. be a
+the new bins. Thus the specified bins need to coincide (i.e.\ be a
 subset) with the OM bins. For instance, of the OM bins are
 $b_1=(0,1,2,3,4,5)$ then this could be collapsed into the bins
 $b_2=(0-1, 2-3, 4-5)$. Because of the way the function is written it
@@ -1162,7 +1165,7 @@ Then the sampled value, $B_y^\text{obs}$ is
 which has expected value of $B_y$ due to the bias adjustment term
 $\sigma_y^2/2$. This process generates log-normal values centered at
 the true value. It is possible for the user to specify the amount of
-uncertainty (e.g. to mimic the amount of survey effort), but it is not
+uncertainty (e.g.\ to mimic the amount of survey effort), but it is not
 possible to induce bias in this process. The user-supplied $\sigma$
 terms are written to the \texttt{.dat} file along with the sampled
 values, meaning that the EM has the correct level of uncertainty. Thus
@@ -1194,25 +1197,24 @@ recruitment deviations, via the argument \texttt{user\_recdevs} to the
 top-level function \texttt{ss3sim\_base}. Ensure that you pass a matrix
 with at least enough columns (iterations) and rows (years). The
 user-supplied recruitment deviations are used exactly as specified
-(i.e. not multiplied by $\sigma_r$ as specified in the SS model),
+(i.e.\ not multiplied by $\sigma_r$ as specified in the SS model),
 and\textbf{ it is up to you to bias correct them manually} by
 subtracting $\sigma_r^2 / 2$ as is done above. This functionality
 allows for flexibility in how the recruitment deviations are
-specified, for example running deterministic runs (section
+specified, for example running deterministic runs (Section
 \ref{sec:deterministic}).
 
 Note that for both built-in and user-specified recdevs \texttt{ss3sim}
 will reuse the same set of recruitment deviations for all iterations
-across scenarios. For example if you have 2 scenarios and run 100
+across scenarios. For example if you have two scenarios and run 100
 iterations of each, the same set of recruitment deviations are used
-between these two scenarios. See section \ref{sec:reproduce} for more
-information.
+between these two scenarios.
 
 \section{Stochastic reproducibility}\label{sec:reproduce}
 
 In many cases, you may want to make
-the observation and process errors reproducible.
-For instance, you may want to reuse process errors
+the observation and process error reproducible.
+For instance, you may want to reuse process error
 so that differences between scenarios
 are not confounded with process error.
 More broadly, you may want to make a simulation reproducible
@@ -1220,7 +1222,7 @@ on another machine by another user (such as a reviewer).
 
 You can make the observation error reproducible by setting the
 \texttt{seed} argument in the top level functions,
-e.g. \texttt{ss3sim\_base}.  The \texttt{seed} argument takes a vector
+e.g.\ \texttt{ss3sim\_base}.  The \texttt{seed} argument takes a vector
 of seed values at least as long as the number of iterations you are
 running in your simulation and reuses them across different
 scenarios. If \texttt{seed} is not set then no seed is used.
@@ -1230,16 +1232,23 @@ and thus are by default reproducible for built-in and user-specified
 values. If you want the different scenarios to have different process
 error you will need to make separate calls to \texttt{run\_ss3sim} for
 each scenario and pass a different matrix of \texttt{user\_recdevs}
-(see section \ref{sec:pro-error}). For most applications this should
+(see Section \ref{sec:pro-error}). For most applications this should
 not be necessary.
 
+\bibliographystyle{apalike}
+\bibliography{refs}
+
+\clearpage
+
 \appendix
+\appendixpage
+\addappheadtotoc
 
 \section{Setting up a new operating model}
 \label{sec:om-setup}
 In some cases the user may wish to adapt their own \texttt{SS3} model to work
 with the \texttt{ss3sim} package. This is possible but may be difficult because
-the functions in \texttt{ss3sim} were developed to work with these 3 models and
+the functions in \texttt{ss3sim} were developed to work with these three models and
 a model with a different structure may cause errors in these functions. For
 instance, the \texttt{change\_index} function does not have the capability to
 handle more than one season (it could, but currently not developed to). Given
@@ -1247,7 +1256,7 @@ the myriad options available in \texttt{SS3} it is extremely difficult to write
 auxilliary functions that will interact reliably with all combinations of these
 options. For this reason, we recommend that users strongly consider trying to
 modify an existing model rather than creating a new one
-(section \ref{sec:om-modify}). It is likely that the \texttt{ss3sim} functions
+(Section \ref{sec:om-modify}). It is likely that the \texttt{ss3sim} functions
 will need to be modified in some way in the process, so the user should be
 familiar with both \texttt{SS3} and R.
 
@@ -1267,14 +1276,14 @@ and age/length composition data. For the surveys (CPUE and scientific) the OM
 \texttt{.dat} file will determine which years are available to the sampling
 function \texttt{change\_index}, so if the year $y$ is desired in the EM it needs
 to be in the OM. In practice it may be easiest to just include all years in the
-OM if suveys will be dynamic (i.e. changing years between scenarios), or if it
+OM if suveys will be dynamic (i.e.\ changing years between scenarios), or if it
 will be fixed for all scenarios to set it to match the EM exactly.
 
 Similarly with age/length compositions the OM \texttt{.dat} file will determine
 which years and bins are available to the sampling functions
 \texttt{change\_agecomp} and \texttt{change\_lcomp}. If dynamic binning is to be
 used, the user should setup the \texttt{.dat} file so that all desired
-combinations of bins are possible (see section \ref{sec:dybin} for more
+combinations of bins are possible (see Section \ref{sec:dybin} for more
 details). Specifically, the user must specify small enough bins (no smaller than
 the OM \texttt{.ctl} bins) so that they can easily be re-binned. Alternatively,
 if composition data is not to be explored in the simulation then the user can
@@ -1284,7 +1293,7 @@ just set the OM \texttt{.dat} file to match the desired input for the EM
 For those users who choose to create a new \texttt{ss3sim} model, we outline the
 steps to take an existing \texttt{SS3} model and modify it to work with the
 \texttt{ss3sim} package.  First, we cover setting up an operating model and then
-in section \ref{sec:em-setup} we cover setting up an estimation model.
+in Section \ref{sec:em-setup} we cover setting up an estimation model.
 
 \subsection{Starter file modifications}
 \begin{enumerate}
@@ -1313,7 +1322,7 @@ in section \ref{sec:em-setup} we cover setting up an estimation model.
   Turn off retrospective analyses by setting\\
   \texttt{\# retrospective year relative to end year}\\
   to \texttt{0}. To analyze the data for retrospective patterns,
-  use the R case file.
+  use the \texttt{R} case file.
 \item
   Specify how catch is reported by setting \texttt{\# F\_report\_units}
   to 1 if catch is reported in biomass or \texttt{2} if catch is reported in
@@ -1381,9 +1390,9 @@ in section \ref{sec:em-setup} we cover setting up an estimation model.
 \item Specify the start and end year for the simulation by modifying
    \texttt{\#\_styr} and \texttt{\#\_endyr}.
    Years can be specified as a number line
-   (i.e. \texttt{1}, \texttt{2}, \texttt{3}, \ldots) or
+   (i.e.\ \texttt{1}, \texttt{2}, \texttt{3}, \ldots) or
    as actual years
-   (i.e. \texttt{1999}, \texttt{2000}, \texttt{2001}, \ldots)
+   (i.e.\ \texttt{1999}, \texttt{2000}, \texttt{2001}, \ldots)
 \item Specify the names for each fleet in an uncommented line
    after the line \texttt{\#\_N\_areas}.
    Names must be separated by a \texttt{\%} with no spaces.
@@ -1396,7 +1405,7 @@ in section \ref{sec:em-setup} we cover setting up an estimation model.
    Student's T distribution used to evaluated the mean body weight deviations
    in the following line. The degrees of freedom must be specified
    even if there are zero mean body weight observations.
-\item Set the length bin method to 1 or 2 in the line labeled
+\item Set the length bin method to 1 or 2 in the line labelled
    \texttt{\# length bin method}.
    Using a value of \texttt{1}, the bins refer to the population bins (=1cm).
    Using a value of \texttt{2} instructs SS to generate the binwidths from a user specified
@@ -1421,7 +1430,7 @@ After completing the above steps, check that the \texttt{SS3} model is
 functional by running a single iteration of the model and verifying that the
 data is read in correctly and expected values of the population dynamics are
 written to the \texttt{.dat} files (and sensical). We also advise manually
-testing the \texttt{ss3sim} R functions that manipulate the OM (e.g.,
+testing the \texttt{ss3sim} \texttt{R} functions that manipulate the OM (e.g.,
 \texttt{change\_tv}) and check that the model still runs correctly after this
 manipulation. The help files for the functions demonstrate how to use the
 functions to test models. Note that the OM will not be a valid \texttt{SS3}
@@ -1482,19 +1491,16 @@ needs to be sampled with observation error from these expected values in order
 to mimic the random sampling process done with real fisheries data. The
 \texttt{ss3sim} package provides three functions which carry out the random
 sampling process and generate \texttt{.dat} files to be used in the EM. See
-section \ref{sec:obs-error} for more details.
+Section \ref{sec:obs-error} for more details.
 
 \subsection{Testing the new estimation model}
 After completing the above steps run the model manually and verify that it
 loads the data properly and the objective. If it works correctly, try running
-deterministic cases on the model (section \ref{sec:deterministic}) and further
+deterministic cases on the model (Section \ref{sec:deterministic}) and further
 verify that \texttt{ss3sim} functions that modify the EM (e.g.,
 \texttt{change\_e}) act correctly on the model. It is possible that some of the
 functions will not work perfectly with the new models. In this case, it may be
 necessary to modify the \texttt{ss3sim} functions to be compatible with the new
 OM and EM.
-
-\bibliographystyle{apalike}
-\bibliography{refs}
 
 \end{document}
