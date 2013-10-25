@@ -16,7 +16,9 @@
   character objects. For example
   \code{c("D0-E0-F0-R0-M0-cod", "D1-E0-F0-R0-M0-cod")}.
   Also, see \code{\link{expand_scenarios}} for a shortcut
-  to specifying the scenarios.}
+  to specifying the scenarios. See
+  \code{\link{get_caseargs}} and the vignette for details
+  on specifying the scenarios.}
 
   \item{case_folder}{The folder containing the case
   \code{.txt} files.}
@@ -31,7 +33,9 @@
   to the files to return. If you are passing time-varying
   parameters beyond (or instead of) natural mortality (M),
   then you will need to adjust these values to reflect your
-  scenarios.}
+  scenarios. This argument is passed to
+  \code{\link{get_caseargs}}. See that function for details
+  and examples of how to specify this.}
 
   \item{seed}{If set to a numeric vector then
   \code{set.seed} will be set to each successive value of
@@ -68,9 +72,13 @@
   \code{D0-E0-F0-M0-R0-cod/2/om} \item ... }
 }
 \description{
-  This function first deals with parsing the case input
-  files and then passes these arguments on to
-  \code{\link{ss3sim_base}} to run the simulation.
+  This is the main high-level wrapper function for running
+  ss3sim simulation. This function first deals with parsing
+  a scenario ID into case input files and then passes these
+  arguments on to \code{\link{ss3sim_base}} to run the
+  simulation. Alternatively, you might choose to run
+  \code{\link{ss3sim_base}} directly and skip the case-file
+  setup.
 }
 \details{
   The operating model folder should contain:
