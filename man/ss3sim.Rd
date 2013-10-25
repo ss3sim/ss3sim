@@ -5,18 +5,16 @@
 \title{ss3sim: An R package for fisheries stock assessment simulation with
 Stock Synthesis}
 \description{
-  Simulation is critical to testing fishery stock
-  assessment methods. The ss3sim R package is designed to
-  facilitate large-scale, rapid, and reproducible
-  simulation with the widely-used Stock Synthesis 3 (SS3)
-  statistical catch-at-age stock-assessment framework.
+  The ss3sim R package is designed to facilitate
+  large-scale, rapid, and reproducible simulation with the
+  widely-used Stock Synthesis 3 (SS3) statistical
+  catch-at-age stock assessment framework.
 }
 \details{
   ss3sim was developed by graduate students and post
   doctoral researchers at the University of Washington in
-  the School of Aquatic and Fishery Sciences and the
-  Quantitative Ecology and Resource Management program. The
-  authors of individual functions are listed within the
+  the School of Aquatic and Fishery Sciences. The authors
+  of individual functions are listed within the
   documentation and all contributors are listed in the
   DESCRIPTION file.
 
