@@ -1,4 +1,2 @@
 # description: base case retro for cod
-# author: SCA
-# notes: 
 retro_yr; 0
