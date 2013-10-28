@@ -47,7 +47,7 @@ opts_chunk$set(dev = 'pdf')
   \and
   Juan L. Valero\footnotemark[2] \thanks{Center for the Advancement of
   Population Assessment Methodology, Scripps Institution of Oceanography, La
-  Jolla, CA 92037, USA} 
+  Jolla, CA 92037, USA}
   }
 \date{}
 \maketitle
@@ -790,6 +790,14 @@ general. Thus \texttt{ss3sim} is not ideal for quickly exploring properties of a
 particular assessment model and other software packages should be explored if
 that is your goal.
 
+Here is a list of \texttt{SS3} features that are not currently implemented in \texttt{ss3sim}:
+\begin{itemize}
+\item Seasons, sexes, hermaphrodism, area, movement
+\item Data other than suverys and age/length compositions: age-at-length,
+  discards, etc.
+\end{itemize}
+Some of the features may work within the \texttt{ss3sim} framework, but are untested.
+
 It is possible to create new models that will work within the \texttt{ss3sim}
 framework, but this task will be complicated and likely require extensive
 knowledge of \texttt{SS3} and R, as well as modification of the \texttt{ss3sim}
@@ -1285,15 +1293,6 @@ modify an existing model rather than creating a new one
 (Section \ref{sec:modify}). It is likely that the \texttt{ss3sim} functions
 will need to be modified in some way in the process, so the user should be
 familiar with both \texttt{SS3} and R.
-
-(fixme: should we make this bigger and its own section?)
-Here is a list of \texttt{SS3} features that are not currently implemented:
-\begin{itemize}
-\item Seasons, sexes, hermaphrodism, area, movement
-\item Data other than suverys and age/length compositions: age-at-length,
-  discards, etc.
-\end{itemize}
-Some of the features may work within the \texttt{ss3sim} framework, but are untested.
 
 The main purpose of the OM is to generate data files that can be read into the
 EM. Thus the user needs to setup the \texttt{.dat} files in the OM such that
