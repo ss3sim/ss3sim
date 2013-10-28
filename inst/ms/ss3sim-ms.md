@@ -138,7 +138,7 @@ possibly adding unique process and observation error each time.
 A simulation therefore refers to the combination of all scenarios and iterations.
 
 ss3sim works, in general, by converting case file arguments
-(e.g.\ arguments specifying a given natural mortality trajectory)
+(e.g. arguments specifying a given natural mortality trajectory)
 into manipulations of SS3 configuration files (`change` functions);
 running the OM;
 sampling the time-series of population dynamics 
@@ -180,15 +180,15 @@ based on a specified scenario ID
 and a set of semicolon-delimited plain-text files 
 that describe alternative cases (Figure 1). 
 These files contain the argument values that will be passed 
-to the low-level ss3sim R functions (e.g.\ `change_e`) during the simulation.
+to the low-level ss3sim R functions (e.g. `change_e`) during the simulation.
 Alternatively, the low-level functions can be used on their own 
 as part of a more customized simulation wrapper function.
 
 To use the high-level function `run_ss3sim`, the naming of the case files is important. 
 All case files are named according to the type of case 
-(e.g.\ `E` for estimation, `D` for data, or `F` for fishing mortality), 
+(e.g. `E` for estimation, `D` for data, or `F` for fishing mortality), 
 a numeric value representing the case number, 
-and a three letter code representing the species or stock (e.g.\ `cod`) (Table 1, Text S1).
+and a three letter code representing the species or stock (e.g. `cod`) (Table 1, Text S1).
 We combine these case IDs with hyphens to create scenario IDs. 
 For example, one of our scenarios will 
 have the scenario ID ``D1-E0-F0-M0-R0-cod``.
@@ -258,8 +258,8 @@ get_results_all()
 
 This creates two files in our working directory: 
 `ss3sim_scalars.csv` and `ss3sim_ts.csv` 
-containing scalar output values (e.g.\ maximum sustainable yield) 
-and time-series values (e.g.\ biomass each year), respectively. 
+containing scalar output values (e.g. maximum sustainable yield) 
+and time-series values (e.g. biomass each year), respectively. 
 There are separate columns for OM and EM values, making it simple to calculate 
 error metrics, such as relative (Figure 2) or absolute error.
 TODO add a couple sentences about the results.
@@ -272,8 +272,8 @@ about the OM or EM.
 In particular it provides a suite of functions 
 for dynamically creating structural differences in OMs and EMs. 
 This expedites testing the properties of stock assessment models,
-whether the differences are between the OM and EM [e.g.\ @johnson2013],
-or between multiple versions of the EM [e.g.\ @ono2013]. 
+whether the differences are between the OM and EM [e.g. @johnson2013],
+or between multiple versions of the EM [e.g. @ono2013]. 
 ss3sim is thus ideal for answering questions 
 about mismatches between OM and EM 
 or different structures of EM for a given OM. 
@@ -317,15 +317,15 @@ and collect desired results from output files.
 Thus FS is much closer to ss3sim in its scope than FLR 
 in that it specifically focuses on the performance of stock assessment models.
 It differs from ss3sim mainly in that it uses simple text manipulation
-(e.g.\ change line 50 from 0 to 1)
+(e.g. change line 50 from 0 to 1)
 to alter models rather than the approach of ss3sim, 
 which uses flexible external functions. 
 Since it does not rely on these external functions, 
 there are few restrictions on which types of models can be used
 and it works well for testing arbitrary assessment models 
-[e.g.\ @lee2012; @piner2011; @lee2011]. 
+[e.g. @lee2012; @piner2011; @lee2011]. 
 In contrast, FS cannot make complicated structural changes
-to a model (e.g.\ add time-varying parameters, change years of surveys),
+to a model (e.g. add time-varying parameters, change years of surveys),
 making it difficult to induce and test 
 structural differences between models. 
 FS is also open-source but requires the Microsoft .NET framework
@@ -400,7 +400,7 @@ by adding a single argument --- the number of retrospective years to investigate
 
 # Conclusions
 
-- benefit of using one well tested and well-understood modeling framework (SS) i.e. benefit to playing with all the switches and understanding one framework well versus having many tools that we superficially understand (based on Rick's comments at the conference)
+- benefit of using one well tested and well-understood modeling framework (SS) i.e.\ benefit to playing with all the switches and understanding one framework well versus having many tools that we superficially understand (based on Rick's comments at the conference)
 - why we developed generic low-level functions and high-level functions
 - researchers are free to develop their own low- and high-level functions because in an open-source MIT(?) licensed R package, users are free to modify functions as needed
 - (these points are somewhat random at the moment)
@@ -430,7 +430,7 @@ Function name          Description
 
 `change_f`             Controls fishing mortality. (Case file and ID `F`)
 
-`change_tv`            Adds time-varying features. For example, time-varying natural mortality, growth, or selectivity. (Any case file, e.g.\ `M`, starting with "`function_type; change_tv`")
+`change_tv`            Adds time-varying features. For example, time-varying natural mortality, growth, or selectivity. (Any case file, e.g. `M`, starting with "`function_type; change_tv`")
 
 `change_lcomp`         Controls how length composition data are sampled. (Case file `lcomp`, case ID `D`)
 
