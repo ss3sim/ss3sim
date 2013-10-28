@@ -153,8 +153,8 @@ The high-level wrapper function \texttt{run\_ss3sim}
 uses unique case identifiers (IDs) that combine to create unique scenarios.
 The types of cases are:
 data quality (D), estimation (E), fishing mortality (F),
-retrospective (R), 
-and any other letter describing a time varying case 
+retrospective (R),
+and any other letter describing a time varying case
 (e.g.\ M for natural mortality, S for selectivity, or G for growth).
 These case IDs are followed by a three-letter species identifier.
 It's important to use three letters
@@ -213,7 +213,7 @@ For example, see \texttt{?change\_f}.
 You can use any simple \texttt{R} syntax to declare argument values.
 For example,
 \texttt{c(1, 2, 4)}, or \texttt{seq(1, 100)}.
-Character objects don't need to be quoted as long as they are one word, 
+Character objects don't need to be quoted as long as they are one word,
 but can be if you'd like.
 However, be careful not to use the delimiter (set up as a semicolon)
 anywhere else in the file besides to denote columns.
@@ -255,10 +255,18 @@ the parameter estimates from that run are ignored.
 A minimum threshold of 80\% converged bias adjustment runs
 is used to ensure reliable parameter estimates.
 The mean bias adjustment runs are then used in the EM
-for all subsequent iterations within that scenario.
-%We expect bias adjustment parameters applicable
-%to all iterations within the scenario are more likely
-%to be found by averaging across multiple sets of parameters.
+for all subsequent ``iterations''
+(i.e. replicates using same models but different process and observation errors)
+within that scenario.
+We assume bias adjustment parameters applicable
+to all iterations within the scenario are more likely
+to be found by averaging across multiple sets of parameters.
+The bias adjustment process creates several files in the \texttt{bias} folder
+(for each scenario) which can be examained by the user.  \texttt{AdjustBias.DAT}
+contains the calculated adjustment parameters for each bias run, and
+\texttt{AvgBias.DAT} contains the average of these estimates which are used in
+all subsequent simulations for that scenario. Individual plots for each
+successful bias adjustment run are also created.
 If \texttt{bias\_adjust} is set to \texttt{FALSE},
 no bias adjustment runs are executed and no bias adjustment is performed.
 
@@ -276,9 +284,10 @@ The folder structure looks like:
   ...
 \end{verbatim}
 
-If you are using bias adjustment (\texttt{bias\_adjust = TRUE})
-then there will be some additional folders.
-In that case the folders will look like:
+The integer values after the scenario ID are the different iterations, the
+number of which are run is specified by the user. If you are using bias
+adjustment (\texttt{bias\_adjust = TRUE}) then there will be some additional
+folders.  In that case the folders will look like:
 
 \begin{verbatim}
   D0-E0-F0-M0-R0-cod/bias/1/om
@@ -328,10 +337,10 @@ em <- paste0(d, "/models/cod-em")
 
 See the folder \texttt{ss3sim/inst/extdata/eg-cases}
 inside the \texttt{ss3sim} source code
-for all the case files that we used in this example simulation.
+for all the case files that are used in this example simulation.
 You can either download the source code
 or find this folder at the location contained
-in the \texttt{case\_folder} object defined 
+in the \texttt{case\_folder} object defined
 in the previous chunk of \texttt{R} code.
 
 \subsection{Creating the case files}
@@ -350,7 +359,7 @@ Instead we'll start with the configuration files from those papers.
 To investigate the effect of research survey effort,
 we will manipulate the argument \texttt{sds\_obs}
 that gets passed to \texttt{change\_index}.
-This argument ultimately refers to the standard error 
+This argument ultimately refers to the standard error
 on the log(index) value, as defined in \texttt{SS3}.
 In case 0, we'll specify the standard deviation at 0.1
 and in case 1 we'll increase the standard deviation to 0.4.
@@ -362,12 +371,13 @@ The file \texttt{index0-cod.txt} will therefore look like:
 
 \begin{verbatim}
 fleets;  2
-years;   list(1974:2012)
+years;   list(seq(1974, 2012, by=2))
 sds_obs; list(0.1)
 \end{verbatim}
 
 \noindent
-\texttt{fleets} refers to the fleet type we want to sample from. \texttt{2} in
+\texttt{fleets} refers to the fleet number we want to sample from (as defined in
+the model), \texttt{2} in
 \texttt{codOM.dat} refers to the survey fleet. We then run our survey from
 1974 to 2012 with a standard error on the log(survey index) of 0.1.
 
@@ -383,7 +393,8 @@ The first entry of \texttt{natM\_val} is the value which \textit{M} is fixed or
 initialized at and the second refers the phase.
 In case 0, we'll set the phase in which \textit{M} is estimated
 to \texttt{-1} (any negative number will work) and use the argument \texttt{NA}
-to fix \textit{M} at the true value.
+to fix \textit{M} at the true value (i.e. do not modify it from what is in the
+OM).
 In case 1, we'll estimate \textit{M} in
 phase \texttt{3} and initialize the estimation of \textit{M} at \texttt{0.20}.
 We can do this by including the line: \texttt{natM\_val; c(NA, -1)}
@@ -394,8 +405,8 @@ and estimate \textit{M} in the third phase.
 For example, the complete case file \texttt{E0-cod.txt} is:
 
 \begin{verbatim}
-natM_type;          1Parm      
-natM_n_breakpoints; NULL  
+natM_type;          1Parm
+natM_n_breakpoints; NULL
 natM_lorenzen;      NULL
 natM_val;           c(NA,-1)
 par_name;           LnQ_base_3_CPUE
@@ -404,17 +415,17 @@ par_phase;          -1
 forecast_num;       0
 \end{verbatim}
 
-Since we won't be running a retrospective analysis 
+Since we won't be running a retrospective analysis
 in this example, this will be our \texttt{R0-cod.txt} file:
 
 \begin{verbatim}
 retro_yr; 0
 \end{verbatim}
 
-We'll set the fishing mortality $F$ to a constant level 
-at $F_\mathrm{MSY}$ ($F$ at maximum sustainable yield) 
-from when the fishery starts (at 25 years) 
-until the end of our simulation (100 years). 
+We'll set the fishing mortality $F$ to a constant level
+at $F_\mathrm{MSY}$ ($F$ at maximum sustainable yield)
+from when the fishery starts (at 25 years)
+until the end of our simulation (100 years).
 Therefore, this is our \texttt{F0-cod.txt}:
 
 \begin{verbatim}
@@ -434,8 +445,8 @@ dev;           rep(0, 100)
 \end{verbatim}
 
 Simply by changing the deviations from a vector of zeros,
-we could add time-varying \textit{M}. 
-In Section \ref{sec:time-varying} we describe how time-varying parameters are unique in \texttt{ss3sim} and how you can make any parameter 
+we could add time-varying \textit{M}.
+In Section \ref{sec:time-varying} we describe how time-varying parameters are unique in \texttt{ss3sim} and how you can make any parameter
 described in \texttt{SS3} time varying using this approach.
 
 \subsection{Checking the case files}
@@ -506,8 +517,10 @@ forecast_num;       0
 When we run the simulations,
 we'll pass our deterministic recruitment deviations
 to the function \texttt{run\_ss3sim}.
-Running 20 replicates should be enough
+Running 20 iterations should be enough
 to identify whether our models are performing as we expect.
+Note that by default 10 bias adjustment runs are performed since we specify that
+\texttt{bias_adjust=TRUE}.
 
 <<deterministic-runs, eval=FALSE>>=
 run_ss3sim(iterations = 1:20, scenarios =
@@ -532,10 +545,18 @@ run_ss3sim(iterations = 1:20, scenarios = x,
   bias_adjust = TRUE, user_recdevs = recdevs_det)
 @
 
+Note that due to the way that \texttt{SS3} is being used as an operating model,
+you may see an ADMB error in the console:
+\begin{verbatim}
+Error -- base = 0 in function prevariable& pow(const prevariable& v1, CGNU_DOUBLE u)
+\end{verbatim}
+\noindent
+However, this is not a problem since ADMB is not used to optimize the OM and the
+error can safely be ignored.
 \subsection{Running the stochastic simulations}
 
 The package contains a set of normally-distributed recruitment deviations,
-with a mean of \texttt{-0.5} and a standard deviation of \texttt{1} 
+with a mean of \texttt{-0.5} and a standard deviation of \texttt{1}
 (bias-corrected standard-normal deviations).
 To use the pre-specified deviations
 remove the argument \texttt{user\_recdevs} from \texttt{run\_sssim}.
@@ -565,7 +586,7 @@ contains values for which there is a single value (e.g.\ MSY) and the ``ts''
 file refers to values for which there are time series available (e.g.\ biomass
 for each year). The column names refer to the output from \texttt{SS3}, so it
 can be useful to consult the \texttt{SS3} manual for details.
-                                                                                          
+
 <<get-results, eval=FALSE>>=
 get_results_all(user_scenarios =
   c("D0-E100-F0-R0-M0-cod",
@@ -710,7 +731,7 @@ as defined in the \texttt{.par} file.
 For all catchability parameters (\textit{q}), the deviate will be added to the
 log transform of the base parameter using the following equation:
 \begin{equation}
-log(q'_{y}) = log(q) + link * env_{y}.
+  \log(q'_{y}) = \log(q) + link * env_{y}.
 \end{equation}
 \noindent
 The vector of deviates must contain one entry for every year of the simulation
@@ -760,10 +781,11 @@ vehicle for examining structural differences in models: between an OM and EM
 \citep[e.g.][]{johnson2013} or between multiple EMs \citep[e.g.][]{ono2013}. Therefore,
 the specific details (e.g.\ many fleets, tagging data, seasons, etc.) of the
 models were not important and removed to produce a set of generic life history
-type models. Thus, \texttt{ss3sim} is not designed for testing
+type models. \texttt{ss3sim} is not designed for testing
 arbitrary \texttt{SS3} models, but rather properties of assessment models in
-general, and \texttt{ss3sim} is not ideal for quickly exploring properties of a
-particular assessment model.
+general. Thus \texttt{ss3sim} is not ideal for quickly exploring properties of a
+particular assessment model and other software packages should be explored if
+that is your goal.
 
 It is possible to create new models that will work within the \texttt{ss3sim}
 framework, but this task will be complicated and likely require extensive
@@ -797,7 +819,7 @@ paste0(d, "/models")
 \end{verbatim}
   Make a copy of the cod models (OM and EM) and rename them as desired.
 \item Make a single change to either the \texttt{.dat} or \texttt{.ctl} files
-  for the new model and run them manually with \texttt{SS3} 
+  for the new model and run them manually with \texttt{SS3}
   if there is any question if they might break the model.
 \item Rerun the model through \texttt{run\_ss3sim} and verify it is still
   working. If errors occur in the
@@ -808,7 +830,7 @@ paste0(d, "/models")
 \item Turn off deterministic runs and run the simulation stochastically.
 \item If your new model works well with the package and is significantly
   different than what is built-in, please contact the \texttt{ss3sim} package
-  managers for inclusion in future releases.
+  managers for inclusion in future versions.
 \end{itemize}
 
 
@@ -902,12 +924,12 @@ and 3.2 times faster on four cores.
 \section{Putting \texttt{SS3} in your path}
 \label{sec:path}
 
-\texttt{SS3} must be in your path for the \texttt{ss3sim} package to work.
-Your path is a list of folders that your operating system looks in
+Instead of copying the \texttt{SS3} model file (\texttt{ss3.exe}) to each folder
+within a simulation and running it, \texttt{ss3sim} relies on a single binary file
+being available to the operating system regardless of the folder.
+To accomplish this, \texttt{SS3} must be in your system path, which is
+a list of folders that your operating system looks in
 whenever you type the name of a program on the command line.
-Having a binary in your path means that
-your operating system knows where to look for the file
-regardless of what folder you're working in.
 
 \subsection{For Unix (OS X and Linux)}
 
@@ -943,7 +965,7 @@ Sys.setenv(PATH=paste(Sys.getenv("PATH"),"/my/folder",sep=":"))
 
 \subsection{For Windows}
 
-To check if SS is in your path:
+To check if SS is in your path for Windows 7 and 8:
 open a DOS prompt and type \texttt{ss3 -?} and hit enter.
 If you get a line like \texttt{ss3 is not recognized...}
 then SS is not in your path.
@@ -951,7 +973,7 @@ To add it to your path:
 
 \begin{enumerate}
 \item
-  Find the latest version of the \texttt{ss3.exe} binary on your
+  Find the correct version of the \texttt{ss3.exe} binary on your
   computer
 \item
   Record the folder location. E.g.\ \texttt{C:/SS3.24o/}
@@ -968,7 +990,8 @@ To add it to your path:
   In the \texttt{Edit User Variable} window
   add to the \textbf{end} of the \texttt{Variable value} section
   a semicolon and the \texttt{SS3} folder location you recorded earlier.
-  E.g.\ \texttt{;C:/SS3.24o/}
+  E.g.\ \texttt{;C:/SS3.24o/}. \textbf{Do not overwrite what was previously in
+    the PATH variable}.
 \item
   Restart your computer
 \item
@@ -1156,7 +1179,7 @@ More specifically, let
 \begin{align*}
   B_y&=\text{the true (OM) biomass in year $y$}\\
   \sigma_y&=\text{the standard deviation provided by the user}\\
-  X&\sim N(0, \sigma_y)=\text{a random variable}
+  X\sim N(0, \sigma_y)&=\text{a random normal variable}
 \end{align*}
 Then the sampled value, $B_y^\text{obs}$ is
 \begin{equation*}
@@ -1256,14 +1279,14 @@ the myriad options available in \texttt{SS3} it is extremely difficult to write
 auxilliary functions that will interact reliably with all combinations of these
 options. For this reason, we recommend that users strongly consider trying to
 modify an existing model rather than creating a new one
-(Section \ref{sec:om-modify}). It is likely that the \texttt{ss3sim} functions
+(Section \ref{sec:modify}). It is likely that the \texttt{ss3sim} functions
 will need to be modified in some way in the process, so the user should be
 familiar with both \texttt{SS3} and R.
 
 (fixme: should we make this bigger and its own section?)
 Here is a list of \texttt{SS3} features that are not currently implemented:
 \begin{itemize}
-\item Seasons, sexes, hermaphrodism
+\item Seasons, sexes, hermaphrodism, area, movement
 \item Data other than suverys and age/length compositions: age-at-length,
   discards, etc.
 \end{itemize}
@@ -1285,7 +1308,8 @@ which years and bins are available to the sampling functions
 used, the user should setup the \texttt{.dat} file so that all desired
 combinations of bins are possible (see Section \ref{sec:dybin} for more
 details). Specifically, the user must specify small enough bins (no smaller than
-the OM \texttt{.ctl} bins) so that they can easily be re-binned. Alternatively,
+the population bin specified in the appropriate section in the OM \texttt{.dat} file)
+OM \texttt{.ctl} bins) so that they can easily be re-binned. Alternatively,
 if composition data is not to be explored in the simulation then the user can
 just set the OM \texttt{.dat} file to match the desired input for the EM
 \texttt{.dat}.
@@ -1407,13 +1431,13 @@ in Section \ref{sec:em-setup} we cover setting up an estimation model.
    even if there are zero mean body weight observations.
 \item Set the length bin method to 1 or 2 in the line labelled
    \texttt{\# length bin method}.
-   Using a value of \texttt{1}, the bins refer to the population bins (=1cm).
+   Using a value of \texttt{1}, the bins refer to the data bins (specified later).
    Using a value of \texttt{2} instructs SS to generate the binwidths from a user specified
    minimum and maximum value.
    In the following three lines, specify the binwidth for population size composition data;
    the minimum size, or the lower edge of the first bin and size at age zero;
    and the maximum size, or lower edge of the last bin.
-   The length data bins MUST be wider than the population bin (=1),
+   The length data bins MUST be wider than the population bin,
    but the boundaries do not have to align.
 \item Specify \texttt{\#\_comp\_tail\_compression} to any negative value
    to turn off tail compression.
@@ -1428,15 +1452,16 @@ in Section \ref{sec:em-setup} we cover setting up an estimation model.
 \subsection{Testing the new operating model}
 After completing the above steps, check that the \texttt{SS3} model is
 functional by running a single iteration of the model and verifying that the
-data is read in correctly and expected values of the population dynamics are
+data are read in correctly and expected values of the population dynamics are
 written to the \texttt{.dat} files (and sensical). We also advise manually
 testing the \texttt{ss3sim} \texttt{R} functions that manipulate the OM (e.g.,
 \texttt{change\_tv}) and check that the model still runs correctly after this
 manipulation. The help files for the functions demonstrate how to use the
 functions to test models. Note that the OM will not be a valid \texttt{SS3}
-model in the sense that ADMB will run and produce MLE (maximum likelihood
-estimator) estimates of parameters; it is intended to only be run for one
-iteration to generate the population dynamics of the starting values.
+model in the sense that ADMB cannot run and produce maximum likelihood
+estimates of parameters; it is intended to only be run for one
+iteration to generate the population dynamics using the starting values
+specified in the \texttt{.ctl} file.
 
 \section{Setting up a new estimation model}
 \label{sec:em-setup}
@@ -1484,7 +1509,7 @@ create a new EM.
    E.g \texttt{change\_e}
 \end{enumerate}
 
-\subsection{Data file modifcations}
+\subsection{Data file modifications}
 The \texttt{data.ss\_new} files produced when executing the OM contain the
 expected values of the OM population dynamics. The data the EM model is fit to
 needs to be sampled with observation error from these expected values in order
