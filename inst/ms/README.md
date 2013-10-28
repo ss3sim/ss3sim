@@ -1,12 +1,10 @@
 To contribute, you have a number of options:
 
-1. Create a branch of this repository and edit `ss3sim-ms.md`. Let me (Sean)
-   know afterwards by email or by starting an issue and I'll merge the changes
-   in.
+1. Create a branch of this repository and edit `ss3sim-ms.md`. 
 
-Steps: ([first set up Git and GitHub and clone the repository](https://github.com/seananderson/ss3sim/wiki/Working-with-Git-locally))
+[First set up Git and GitHub and clone the repository.](https://github.com/seananderson/ss3sim/wiki/Working-with-Git-locally)
 
-Then...
+Then:
 
 ```git
 git pull
@@ -16,7 +14,7 @@ git pull
 git checkout -b sean-ms-edits # pick an appropriate branch name
 ```
 
-Do your editing here in any text editor you'd like.
+Do your editing now in any text editor you'd like.
 
 ```git
 git add ss3sim-ms.md  # from within the /inst/ms/ folder
@@ -38,8 +36,19 @@ Now, to get back to the `master` branch, if you want:
 git checkout master
 ```
 
+And to get back to your branch:
+
+```git
+git checkout seans-ms-edits # replace with your branch name
+```
+
 Now, go to the GitHub ss3sim site and click the green button "Compare and pull request".
 
+Add a message summarizing your changes, if possible.
+
+Then click the green button "Send pull request".
+
+That's it!
 
 2. Download the file
    [`ss3sim-ms.pdf`](https://dl.dropboxusercontent.com/u/254940/ss3sim-ms.pdf)
