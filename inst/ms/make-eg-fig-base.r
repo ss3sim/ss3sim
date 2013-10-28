@@ -3,8 +3,10 @@
 
 library(plyr)
 
-load("../../vignettes/scalar_dat.rda")
-load("../../vignettes/ts_dat.rda")
+#load("../../vignettes/scalar_dat.rda")
+#load("../../vignettes/ts_dat.rda")
+load("~/Desktop/scalar_dat.rda")
+load("~/Desktop/ts_dat.rda")
 
 # Bring in F to scalars:
 f_merge <- subset(ts_dat, year == max(ts_dat$year))[ ,c("scenario",
@@ -69,7 +71,7 @@ label_col <- "grey40"
 label_cex <- 0.75
 axis_col <- "grey55"
 
-pdf("fig2.pdf", width = 5, height = 4.5)
+pdf("fig2-new-change-functions-corrected-index.pdf", width = 5, height = 4.5)
 layout(rbind(c(1, 1, 2, 2),
              c(1, 1, 2, 2),
              c(3, 3, 4, 4),
@@ -147,12 +149,12 @@ mtext(expression(Fixed~italic(M)~(E0)), side = 3, outer =
 mtext(expression(Estimated~italic(M)~(E1)), side = 3, outer = TRUE,
   cex = label_cex, adj = 0.85, line = 0.2, col = label_col)
 
-mtext(expression(sigma[survey]==0.1~(D1)), side = 4, outer = TRUE, cex
+mtext(expression(sigma[survey]==0.1~(D0)), side = 4, outer = TRUE, cex
   = label_cex, adj = 0.99, line = 0.6, col = label_col)
 mtext(expression(Higher~survey~effort), side = 4, outer = TRUE, cex =
   label_cex, adj = 1.025, line = 1.8, col = label_col)
 
-mtext(expression(sigma[survey]==0.4~(D2)), side = 4, outer = TRUE, cex
+mtext(expression(sigma[survey]==0.4~(D1)), side = 4, outer = TRUE, cex
   = label_cex, adj = 0.58, line = 0.6, col = label_col)
 mtext(expression(Lower~survey~effort), side = 4, outer = TRUE, cex =
   label_cex, adj = 0.58, line = 1.8, col = label_col)

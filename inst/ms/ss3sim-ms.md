@@ -1,7 +1,6 @@
 # ss3sim: An R package for fisheries stock assessment simulation with Stock Synthesis
 
-Sean C. Anderson^1*^, Kelli F. Johnson^2^, Cole C. Monnahan^3^, Kotaro Ono^2^, 
-additional authors to be added as contributions are added...
+Sean C. Anderson^1*^, Kelli F. Johnson^2^, Cole C. Monnahan^3^, Kotaro Ono^2^, Juan L. Valero^2,4^
 
 ^1^Department of Biological Sciences,
 Simon Fraser University,
@@ -14,6 +13,10 @@ Seattle, WA 98195-5020, USA
 ^3^Quantitative Ecology and Resource Management,
 University of Washington, Box 352182,
 Seattle, WA 98195-5020, USA
+
+^2,4^Center for the Advancement of Population Assessment Methodology,
+Scripps Institution of Oceanography, 
+La Jolla, CA 92037, USA
 
 ^*^Corresponding author: sean@seananderson.ca
 
@@ -198,8 +201,8 @@ the zero case for estimation (E) (i.e. `E0-cod.txt`), and so on.
 To investigate the effect of research survey effort,
 we will manipulate the argument `sd_obs_surv`
 that gets passed to `change_index`.
-In case 1, we'll specify the standard deviation at `0.1`
-and in case 2 we'll increase the standard deviation to `0.4`.
+In case 1, we will specify the standard deviation at `0.1`
+and in case 2 we will increase the standard deviation to `0.4`.
 We can do this by including the line: `sd_obs_surv; 0.1`
 in the file `D1-cod.txt` and the line: `sd_obs_surv; 0.4`
 in the file `D2-cod.txt`.
@@ -207,7 +210,7 @@ We will set up a base-case file describing fishing mortality (`F0-cod.txt`)
 and we will specify that we do not want to run a retrospective analysis 
 in the file `R0-cod.txt`.
 
-To start, we'll load the ss3sim package 
+To start, we will load the ss3sim package 
 and locate three sets of folders within the package data:
 (1) the folder with the OM,
 (2) the folder with the EM,
@@ -259,6 +262,7 @@ containing scalar output values (e.g. maximum sustainable yield)
 and time-series values (e.g. biomass each year), respectively. 
 There are separate columns for OM and EM values, making it simple to calculate 
 error metrics, such as relative (Figure 2) or absolute error.
+TODO add a couple sentences about the results.
 
 # How ss3sim complements other simulation software
 
@@ -396,7 +400,7 @@ by adding a single argument --- the number of retrospective years to investigate
 
 # Conclusions
 
-- benefit of using one well tested and well-understood modeling framework (SS) i.e. benefit to playing with all the switches and understanding one framework well versus having many tools that we superficially understand (based on Rick's comments at the conference)
+- benefit of using one well tested and well-understood modeling framework (SS) i.e.\ benefit to playing with all the switches and understanding one framework well versus having many tools that we superficially understand (based on Rick's comments at the conference)
 - why we developed generic low-level functions and high-level functions
 - researchers are free to develop their own low- and high-level functions because in an open-source MIT(?) licensed R package, users are free to modify functions as needed
 - (these points are somewhat random at the moment)
