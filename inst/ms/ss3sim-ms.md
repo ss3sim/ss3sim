@@ -1,7 +1,6 @@
 # ss3sim: An R package for fisheries stock assessment simulation with Stock Synthesis
 
-Sean C. Anderson^1*^, Kelli F. Johnson^2^, Cole C. Monnahan^3^, Kotaro Ono^2^, 
-additional authors to be added as contributions are added...
+Sean C. Anderson^1*^, Kelli F. Johnson^2^, Cole C. Monnahan^3^, Kotaro Ono^2^, Juan L. Valero^2,4^
 
 ^1^Department of Biological Sciences,
 Simon Fraser University,
@@ -14,6 +13,10 @@ Seattle, WA 98195-5020, USA
 ^3^Quantitative Ecology and Resource Management,
 University of Washington, Box 352182,
 Seattle, WA 98195-5020, USA
+
+^2,4^Center for the Advancement of Population Assessment Methodology,
+Scripps Institution of Oceanography, 
+La Jolla, CA 92037, USA
 
 ^*^Corresponding author: sean@seananderson.ca
 

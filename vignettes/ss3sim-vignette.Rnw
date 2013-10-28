@@ -41,11 +41,14 @@ opts_chunk$set(dev = 'pdf')
   University of Washington, Box 355020, Seattle, WA 98195-5020, USA}
   \and
   Cole C. Monnahan\thanks{Quantitative Ecology and Resource Management,
-    University of Washington, Box 352182, Seattle, WA 98195-5020, USA}
+  University of Washington, Box 352182, Seattle, WA 98195-5020, USA}
   \and
   Kotaro Ono\footnotemark[2]
   \and
-  others to be added \ldots}
+  Juan L. Valero\footnotemark[2] \thanks{Center for the Advancement of
+  Population Assessment Methodology, Scripps Institution of Oceanography, La
+  Jolla, CA 92037, USA} 
+  }
 \date{}
 \maketitle
 
