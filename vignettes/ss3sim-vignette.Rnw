@@ -523,7 +523,11 @@ to the function \texttt{run\_ss3sim}.
 Running 20 iterations should be enough
 to identify whether our models are performing as we expect.
 Note that by default 10 bias adjustment runs are performed since we specify that
-\texttt{bias_adjust=TRUE}.
+\texttt{bias\_adjust=TRUE}.
+
+TODO also make observation error on index deterministic and cut out multiple D
+cases here. Just E100 and E101 and D100 (with sd on the observation error of
+0.001).
 
 <<deterministic-runs, eval=FALSE>>=
 run_ss3sim(iterations = 1:20, scenarios =
@@ -556,6 +560,7 @@ Error -- base = 0 in function prevariable& pow(const prevariable& v1, CGNU_DOUBL
 \noindent
 However, this is not a problem since ADMB is not used to optimize the OM and the
 error can safely be ignored.
+
 \subsection{Running the stochastic simulations}
 
 The package contains a set of normally-distributed recruitment deviations,
