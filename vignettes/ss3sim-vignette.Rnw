@@ -55,8 +55,8 @@ opts_chunk$set(dev = 'pdf')
 \clearpage
 \tableofcontents
 
-%\setlength\parskip{0.1in}
-%\setlength\parindent{0in}
+\setlength\parskip{0.08in}
+\setlength\parindent{0in}
 
 \clearpage
 \section{Installing the \texttt{ss3sim} \texttt{R} package}
@@ -374,7 +374,7 @@ The file \texttt{index0-cod.txt} will therefore look like:
 
 \begin{verbatim}
 fleets;  2
-years;   list(seq(1974, 2012, by=2))
+years;   list(seq(1974, 2012, by = 2))
 sds_obs; list(0.1)
 \end{verbatim}
 
@@ -482,8 +482,8 @@ And then check the \texttt{SS3} files that are created.
 bias}
 \label{sec:deterministic}
 
-We'll run some simulations to check our model for bias when process error is not
-included in the OM.
+We'll run some simulations to check our model for bias when process noise and
+observation error are minimized.
 To do this, we'll start by setting up a 100 row (number of years) by 20 column
 (number of iterations) matrix of recruitment deviations, where all values are
 set to zero.
@@ -517,24 +517,28 @@ par_phase;          c(-1,-1)
 forecast_num;       0
 \end{verbatim}
 
+To minimize observation error on the survey index, 
+we will create a data case 100 
+that has a standard deviation on the survey observation error of 0.001.
+Therefore, our case file \texttt{index100-cod.txt} will look like this:
+
+\begin{verbatim}
+fleets;  2
+years;   list(seq(1974, 2012, by = 2))
+sds_obs; list(0.001)
+\end{verbatim}
+
 When we run the simulations,
 we'll pass our deterministic recruitment deviations
 to the function \texttt{run\_ss3sim}.
 Running 20 iterations should be enough
 to identify whether our models are performing as we expect.
-Note that by default 10 bias adjustment runs are performed since we specify that
+Note that by default 5 bias adjustment runs are performed since we specify that
 \texttt{bias\_adjust=TRUE}.
 
-TODO also make observation error on index deterministic and cut out multiple D
-cases here. Just E100 and E101 and D100 (with sd on the observation error of
-0.001).
-
 <<deterministic-runs, eval=FALSE>>=
-run_ss3sim(iterations = 1:20, scenarios =
-  c("D0-E100-F0-R0-M0-cod",
-    "D1-E100-F0-R0-M0-cod",
-    "D0-E101-F0-R0-M0-cod",
-    "D1-E101-F0-R0-M0-cod"),
+run_ss3sim(iterations = 1:20, 
+  scenarios = c("D100-E100-F0-R0-M0-cod", "D100-E101-F0-R0-M0-cod"),
   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
   bias_adjust = TRUE, user_recdevs = recdevs_det)
 @
@@ -545,7 +549,7 @@ a convenience function \texttt{expand\_scenarios}.
 With this function we could instead write:
 
 <<deterministic-runs-expand, eval=FALSE>>=
-x <- expand_scenarios(list(D = 0:1, E = 100:101, F = 0, M = 0,
+x <- expand_scenarios(list(D = 100, E = 100:101, F = 0, M = 0,
     R = 0), species = "cod")
 run_ss3sim(iterations = 1:20, scenarios = x,
   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
@@ -555,10 +559,11 @@ run_ss3sim(iterations = 1:20, scenarios = x,
 Note that due to the way that \texttt{SS3} is being used as an operating model,
 you may see an ADMB error in the console:
 \begin{verbatim}
-Error -- base = 0 in function prevariable& pow(const prevariable& v1, CGNU_DOUBLE u)
+Error -- base = 0 in function prevariable& pow(const prevariable& v1, 
+  CGNU_DOUBLE u)
 \end{verbatim}
 \noindent
-However, this is not a problem since ADMB is not used to optimize the OM and the
+However, this is not a problem since ADMB is not used to optimize the OM --- the
 error can safely be ignored.
 
 \subsection{Running the stochastic simulations}
@@ -597,10 +602,8 @@ can be useful to consult the \texttt{SS3} manual for details.
 
 <<get-results, eval=FALSE>>=
 get_results_all(user_scenarios =
-  c("D0-E100-F0-R0-M0-cod",
-    "D1-E100-F0-R0-M0-cod",
-    "D0-E101-F0-R0-M0-cod",
-    "D1-E101-F0-R0-M0-cod",
+  c("D100-E100-F0-R0-M0-cod",
+    "D100-E101-F0-R0-M0-cod",
     "D0-E0-F0-R0-M0-cod",
     "D1-E0-F0-R0-M0-cod",
     "D0-E1-F0-R0-M0-cod",
@@ -608,7 +611,7 @@ get_results_all(user_scenarios =
 @
 
 \noindent
-Let's read in the \texttt{.csv} files:
+We'll read in the \texttt{.csv} files:
 
 <<read-output, eval=FALSE>>=
 scalar_dat <- read.csv("ss3sim_scalar.csv")
@@ -764,8 +767,8 @@ function_type; change_tv
 \end{verbatim}
 \noindent
 in your case file. For example,
-you might want to use M for natural mortality, S for selectivity, or G
-for growth.
+you might want to use M for natural mortality, S for selectivity, 
+or G for growth.
 
 \section{Modifying the included operating and estimation models}
 \label{sec:modify}
