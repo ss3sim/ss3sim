@@ -23,137 +23,87 @@
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
-#'
+
+#' ## Turn off age comps by specifying fleets=NULL
+#' change_agecomp(infile=infile, outfile="test1.dat",
+#'                fleets=NULL, cpar=c(5,NA), Nsamp=list(100,100),
+#'                years=list(1995, 1995), write_file=T)
+
 #' ## Generate with a smaller number of fleet taking samples
 #' ex1 <- change_agecomp(infile=infile, outfile="test1.dat", fleets=c(2),
-#'                Nsamp=list(c(10,50)), years=list(c(1999,2000)))
-#'
+#'                       Nsamp=list(c(10,50)), years=list(c(1999,2000)))
+
 #' ## Generate with varying Nsamp by year for first fleet
 #' ex2 <- change_agecomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
-#'                Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
-#'                years=list(seq(1994, 2012, by=2),
-#'                2003:2012))
-#'
+#'                       Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
+#'                       years=list(seq(1994, 2012, by=2),
+#'                           2003:2012))
+
 #' ## Generate with varying Nsamp by year for first fleet AND with different age bins
-#' ex3 <- change_agecomp(infile=infile, outfile="codEM.dat", fleets=c(1,2),
-#'                Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
-#'                years=list(seq(1994, 2012, by=2),
-#'                2003:2012), agebin_vector = seq(1,15,by=3))
-#'
+#' ex3 <- change_agecomp(infile=infile, outfile="test3.dat", fleets=c(1,2),
+#'                       Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
+#'                       years=list(seq(1994, 2012, by=2),
+#'                           2003:2012), agebin_vector = seq(1,15,by=3))
 #' plot(seq(0,15, by=3), as.numeric(ex3[1, -(1:9)]), type="b", col=2,
 #'      xlab="Age Bin", ylab="Proportion of Age",
 #'      main="Comparison of different age bin structures via agebin_vector")
-#' lines(0:15, as.numeric(ex1[1, -(1:9)]), type="b", col=1)
-#' legend("topright", legend=c("ex1", "ex3"), col=c(1,2), pch=1)
-#'
-#' unlink(x=c("test1.dat", "test2.dat", "test3.dat")) # clean up
-#'
-#' ## Plot distributions for a particular year for a cpar of 5 and 1 to
-#' ## demonstrate the impact of cpar
-#' temp.list <- list()
-#' for(i in 1:500){
-#'     temp.list[[i]] <-
-#'         change_agecomp(infile=infile, outfile="test1.dat",
-#'                        fleets=c(1,2), cpar=c(5,1), Nsamp=list(100,100),
-#'                        years=list(1995, 1995), write_file=F)
+#' lines(0:15, as.numeric(ex2[1, -(1:9)]), type="b", col=1)
+#' legend("topright", legend=c("ex2", "ex3"), col=c(1,2), pch=1)
+#' unlink(x=paste0("test", 1:3, ".dat")) # clean up
+
+#' ## Run three  cases showing Multinomial, Dirichlet(1) and over-dispersed
+#' ## Dirichlet for different levels of sample sizes
+#' par(mfrow = c(1,3))
+#' for(samplesize in c(30, 100, 1000)){
+#'     ex4 <- change_agecomp(infile=infile, outfile="test4.dat", fleets=c(1,2),
+#'                           Nsamp=list(samplesize, samplesize), write_file = F,
+#'                           years=list(2000,2000), cpar=c(NA, 1))
+#'     ex5 <- change_agecomp(infile=infile, outfile="test5.dat", fleets=c(1,2),
+#'                           Nsamp=list(samplesize, samplesize), write_file = F,
+#'                           years=list(2000,2000), cpar=c(1, 1))
+#'     ex6 <- change_agecomp(infile=infile, outfile="test6.dat", fleets=c(1,2),
+#'                           Nsamp=list(samplesize, samplesize), write_file = F,
+#'                           years=list(2000,2000), cpar=c(5, 1))
+#'     true <- subset(infile$agecomp, FltSvy==1 & Yr == 2000)[-(1:9)]
+#'     true <- true/sum(true)
+#'     plot(0:15, subset(ex4, FltSvy==1)[1,-(1:9)], type="b", ylim=c(0,1),
+#'          col=1, xlab="Age", ylab="Proportion", main=paste("Sample size=",samplesize))
+#'     legend("topright", legend=c("Multinomial", "Dirichlet(1)", "Dirichlet(5)", "Truth"),
+#'            lty=1, col=1:4)
+#'     lines((0:15), subset(ex5, FltSvy==1)[1,-(1:9)], type="b", col=2)
+#'     lines((0:15), subset(ex6, FltSvy==1)[1,-(1:9)], type="b", col=3)
+#'     lines((0:15), true, col=4, lwd=2)
 #' }
-#' xx <- do.call(rbind, temp.list)[,-(1:9)[-3]]
-#' xx <- reshape2::melt(xx, id.vars="FltSvy")
-#' par(mfrow=c(2,1))
-#' with(subset(xx, FltSvy==1), boxplot(value~variable, las=2,
-#'                 main="Overdispersed",  xlab="Age bin"))
-#' temp <- as.numeric(subset(infile$agecomp, Yr==1995 & FltSvy == 1)[-(1:9)])
-#' points(temp/sum(temp), pch="-", col="red")
-#' with(subset(xx, FltSvy==2), boxplot(value~variable, las=2,
-#'                 main="Multinomial", xlab="Age bin"))
-#' temp <- as.numeric(subset(infile$agecomp, Yr==1995 & FltSvy == 2)[-(1:9)])
-#' points(temp/sum(temp), pch="-", col="red")
-#' #' }
+
+#'  ## Plot distributions for a particular year for a cpar of 5 and 1 to
+#'  ## demonstrate the impact of cpar
+#'  temp.list <- list()
+#'  for(i in 1:500){
+#'      temp.list[[i]] <-
+#'          change_agecomp(infile=infile, outfile="test1.dat",
+#'                         fleets=c(1,2), cpar=c(5,NA), Nsamp=list(100,100),
+#'                         years=list(1995, 1995), write_file=F)
+#'  }
+#'  xx <- do.call(rbind, temp.list)[,-(1:9)[-3]]
+#'  xx <- reshape2::melt(xx, id.vars="FltSvy")
+#'  par(mfrow=c(2,1))
+#'  with(subset(xx, FltSvy==1), boxplot(value~variable, las=2,
+#'                  main="Overdispersed",  xlab="Age bin"))
+#'  temp <- as.numeric(subset(infile$agecomp, Yr==1995 & FltSvy == 1)[-(1:9)])
+#'  points(temp/sum(temp), pch="-", col="red")
+#'  with(subset(xx, FltSvy==2), boxplot(value~variable, las=2,
+#'                  main="Multinomial", xlab="Age bin"))
+#'  temp <- as.numeric(subset(infile$agecomp, Yr==1995 & FltSvy == 2)[-(1:9)])
+#'  points(temp/sum(temp), pch="-", col="red")
+#' }
 #' @export
-
-
-##  d <- system.file("extdata", package = "ss3sim")
-##  f_in <- paste0(d, "/example-om/data.ss_new")
-##  infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
-
-##  ## Generate with a smaller number of fleet taking samples
-##  ex1 <- change_agecomp(infile=infile, outfile="test1.dat", fleets=c(2),
-##                 Nsamp=list(c(10,50)), years=list(c(1999,2000)))
-
-##  ## Generate with varying Nsamp by year for first fleet
-##  ex2 <- change_agecomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
-##                 Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
-##                 years=list(seq(1994, 2012, by=2),
-##                 2003:2012))
-
-##  ## Generate with varying Nsamp by year for first fleet AND with different age bins
-##  ex3 <- change_agecomp(infile=infile, outfile="test3.dat", fleets=c(1,2),
-##                 Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
-##                 years=list(seq(1994, 2012, by=2),
-##                 2003:2012), agebin_vector = seq(1,15,by=3))
-## plot(seq(0,15, by=3), as.numeric(ex3[1, -(1:9)]), type="b", col=2,
-##       xlab="Age Bin", ylab="Proportion of Age",
-##       main="Comparison of different age bin structures via agebin_vector")
-##  lines(0:15, as.numeric(ex2[1, -(1:9)]), type="b", col=1)
-##  legend("topright", legend=c("ex2", "ex3"), col=c(1,2), pch=1)
-
-## ## Run three  cases showing Multinomial, Dirichlet(1) and over-dispersed
-## ## Dirichlet.
-## par(mfrow = c(1,3))
-## for(samplesize in c(25, 100, 200)){
-## ex4 <- change_agecomp(infile=infile, outfile="test4.dat", fleets=c(1,2),
-##                 Nsamp=list(samplesize, samplesize), write_file = F,
-##                 years=list(2000,2000), cpar=c(NA, 1))
-## ex5 <- change_agecomp(infile=infile, outfile="test5.dat", fleets=c(1,2),
-##                 Nsamp=list(samplesize, samplesize), write_file = F,
-##                 years=list(2000,2000), cpar=c(1, 1))
-## ex6 <- change_agecomp(infile=infile, outfile="test6.dat", fleets=c(1,2),
-##                 Nsamp=list(samplesize, samplesize), write_file = F,
-##                 years=list(2000,2000), cpar=c(5.1, 1))
-## true <- subset(infile$agecomp, FltSvy==1 & Yr == 2000)[-(1:9)]
-## true <- true/sum(true)
-## plot(0:15, subset(ex4, FltSvy==1)[1,-(1:9)], type="b", ylim=c(0,1),
-##      col=1, xlab="Age", ylab="Proportion", main=paste("Sample size=",samplesize))
-## legend("topright", legend=c("Multinomial", "Dirichlet(1)", "Dirichlet(5)", "Truth"),
-##        lty=1, col=1:4)
-## lines((0:15), subset(ex5, FltSvy==1)[1,-(1:9)], type="b", col=2)
-## lines((0:15), subset(ex6, FltSvy==1)[1,-(1:9)], type="b", col=3)
-## lines((0:15), true, col=4, lwd=2)
-## }
-
-
-##  unlink(x=c("test1.dat", "test2.dat", "test3.dat")) # clean up
-
-##  ## Plot distributions for a particular year for a cpar of 5 and 1 to
-##  ## demonstrate the impact of cpar
-##  temp.list <- list()
-##  for(i in 1:500){
-##      temp.list[[i]] <-
-##          change_agecomp(infile=infile, outfile="test1.dat",
-##                         fleets=c(1,2), cpar=c(5,1), Nsamp=list(100,100),
-##                         years=list(1995, 1995), write_file=F)
-##  }
-##  xx <- do.call(rbind, temp.list)[,-(1:9)[-3]]
-##  xx <- reshape2::melt(xx, id.vars="FltSvy")
-##  par(mfrow=c(2,1))
-##  with(subset(xx, FltSvy==1), boxplot(value~variable, las=2,
-##                  main="Overdispersed",  xlab="Age bin"))
-##  temp <- as.numeric(subset(infile$agecomp, Yr==1995 & FltSvy == 1)[-(1:9)])
-##  points(temp/sum(temp), pch="-", col="red")
-##  with(subset(xx, FltSvy==2), boxplot(value~variable, las=2,
-##                  main="Multinomial", xlab="Age bin"))
-##  temp <- as.numeric(subset(infile$agecomp, Yr==1995 & FltSvy == 2)[-(1:9)])
-##  points(temp/sum(temp), pch="-", col="red")
-##   }
-
-
 
 change_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
                            years, cpar=1, agebin_vector=NULL, write_file=TRUE){
     ## The new agecomp is mostly based on the old one so start with
     ## that
-# browser();
-agecomp <- infile$agecomp
+
+    agecomp <- infile$agecomp
     newbins <- agebin_vector
     oldbins <- infile$agebin_vector
     if(!is.null(newbins)){
@@ -163,12 +113,13 @@ agecomp <- infile$agecomp
     ## Check inputs for errors
     if(substr_r(outfile,4) != ".dat" & write_file)
         stop(paste0("outfile ", outfile, " needs to end in .dat"))
-    Nfleets <- length(fleets)
-    if(FALSE %in% (fleets %in% unique(agecomp$FltSvy)))
+    Nfleets <- ifelse(is.null(fleets), 0, length(fleets))
+    print(Nfleets)
+    if(Nfleets >0 & FALSE %in% (fleets %in% unique(agecomp$FltSvy)))
         stop(paste0("The specified fleet number does not match input file"))
-    if(Nfleets!= 0 & class(Nsamp) != "list" | length(Nsamp) != Nfleets)
+    if(Nfleets!= 0 & (class(Nsamp) != "list" | length(Nsamp) != Nfleets))
         stop("Nsamp needs to be a list of same length as fleets")
-    if(Nfleets!= 0 & class(years) != "list" | length(years) != Nfleets)
+    if(Nfleets!= 0 & (class(years) != "list" | length(years) != Nfleets))
         stop("years needs to be a list of same length as fleets")
     ## If no fleets are specified then skip these
     if (Nfleets>0){
@@ -244,6 +195,8 @@ agecomp <- infile$agecomp
                             rmultinom(1, size=newcomp$Nsamp, prob=probs)/newcomp$Nsamp
                     } else { # use Dirichlet
                         lambda <- newcomp$Nsamp/cpar[i]^2 - 1
+                        if(lambda < 0)
+                            stop(paste("This parameterization of the Dirichlet leads to invalid values. Lambda=", lambda))
                         newcomp[-(1:9)] <- gtools::rdirichlet(1, probs * lambda)
                         ## use the effective sample size when using Dirichlet
                         effectiveN <- floor(newcomp$Nsamp/cpar[i]^2)
@@ -270,7 +223,3 @@ agecomp <- infile$agecomp
         r4ss::SS_writedat(datlist = newfile, outfile = outfile, overwrite = T)
     return(invisible(newcomp.final))
 }
-
-
-
-
