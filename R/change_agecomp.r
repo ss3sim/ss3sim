@@ -71,9 +71,6 @@
 #' #' }
 #' @export
 
-## substr_r <- function(x, n){
-##   substr(x, nchar(x)-n+1, nchar(x))
-## }
 
 ##  d <- system.file("extdata", package = "ss3sim")
 ##  f_in <- paste0(d, "/example-om/data.ss_new")
@@ -94,52 +91,60 @@
 ##                 Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
 ##                 years=list(seq(1994, 2012, by=2),
 ##                 2003:2012), agebin_vector = seq(1,15,by=3))
-## ## Run three  cases showing Multinomial, Dirichlet(1) and over-dispersed
-## ## Dirichlet.
-## ex4 <- change_agecomp(infile=infile, outfile="test4.dat", fleets=c(1,2),
-##                 Nsamp=list(100, 100),
-##                 years=list(1994:2012,1994:2012), cpar=c(NA, 1))
-## ex5 <- change_agecomp(infile=infile, outfile="test5.dat", fleets=c(1,2),
-##                 Nsamp=list(100, 100),
-##                 years=list(1994:2012,1994:2012), cpar=c(1, 1))
-## ex6 <- change_agecomp(infile=infile, outfile="test6.dat", fleets=c(1,2),
-##                 Nsamp=list(100, 100),
-##                 years=list(1994:2012,1994:2012), cpar=c(5.1, 1))
-
-## plot(0:15, subset(ex4, FltSvy==1)[10,-(1:9)], type="b", ylim=c(0,1),
-##      col=1)
-## lines((0:15), subset(ex5, FltSvy==1)[10,-(1:9)], type="b", col=2)
-## lines((0:15), subset(ex6, FltSvy==1)[10,-(1:9)], type="b", col=3)
-
-##  plot(seq(0,15, by=3), as.numeric(ex3[1, -(1:9)]), type="b", col=2,
+## plot(seq(0,15, by=3), as.numeric(ex3[1, -(1:9)]), type="b", col=2,
 ##       xlab="Age Bin", ylab="Proportion of Age",
 ##       main="Comparison of different age bin structures via agebin_vector")
 ##  lines(0:15, as.numeric(ex2[1, -(1:9)]), type="b", col=1)
 ##  legend("topright", legend=c("ex2", "ex3"), col=c(1,2), pch=1)
 
+## ## Run three  cases showing Multinomial, Dirichlet(1) and over-dispersed
+## ## Dirichlet.
+## par(mfrow = c(1,3))
+## for(samplesize in c(25, 100, 200)){
+## ex4 <- change_agecomp(infile=infile, outfile="test4.dat", fleets=c(1,2),
+##                 Nsamp=list(samplesize, samplesize), write_file = F,
+##                 years=list(2000,2000), cpar=c(NA, 1))
+## ex5 <- change_agecomp(infile=infile, outfile="test5.dat", fleets=c(1,2),
+##                 Nsamp=list(samplesize, samplesize), write_file = F,
+##                 years=list(2000,2000), cpar=c(1, 1))
+## ex6 <- change_agecomp(infile=infile, outfile="test6.dat", fleets=c(1,2),
+##                 Nsamp=list(samplesize, samplesize), write_file = F,
+##                 years=list(2000,2000), cpar=c(5.1, 1))
+## true <- subset(infile$agecomp, FltSvy==1 & Yr == 2000)[-(1:9)]
+## true <- true/sum(true)
+## plot(0:15, subset(ex4, FltSvy==1)[1,-(1:9)], type="b", ylim=c(0,1),
+##      col=1, xlab="Age", ylab="Proportion", main=paste("Sample size=",samplesize))
+## legend("topright", legend=c("Multinomial", "Dirichlet(1)", "Dirichlet(5)", "Truth"),
+##        lty=1, col=1:4)
+## lines((0:15), subset(ex5, FltSvy==1)[1,-(1:9)], type="b", col=2)
+## lines((0:15), subset(ex6, FltSvy==1)[1,-(1:9)], type="b", col=3)
+## lines((0:15), true, col=4, lwd=2)
+## }
+
+
 ##  unlink(x=c("test1.dat", "test2.dat", "test3.dat")) # clean up
 
- ## Plot distributions for a particular year for a cpar of 5 and 1 to
- ## demonstrate the impact of cpar
- temp.list <- list()
- for(i in 1:500){
-     temp.list[[i]] <-
-         change_agecomp(infile=infile, outfile="test1.dat",
-                        fleets=c(1,2), cpar=c(5,1), Nsamp=list(100,100),
-                        years=list(1995, 1995), write_file=F)
- }
- xx <- do.call(rbind, temp.list)[,-(1:9)[-3]]
- xx <- reshape2::melt(xx, id.vars="FltSvy")
- par(mfrow=c(2,1))
- with(subset(xx, FltSvy==1), boxplot(value~variable, las=2,
-                 main="Overdispersed",  xlab="Age bin"))
- temp <- as.numeric(subset(infile$agecomp, Yr==1995 & FltSvy == 1)[-(1:9)])
- points(temp/sum(temp), pch="-", col="red")
- with(subset(xx, FltSvy==2), boxplot(value~variable, las=2,
-                 main="Multinomial", xlab="Age bin"))
- temp <- as.numeric(subset(infile$agecomp, Yr==1995 & FltSvy == 2)[-(1:9)])
- points(temp/sum(temp), pch="-", col="red")
-  }
+##  ## Plot distributions for a particular year for a cpar of 5 and 1 to
+##  ## demonstrate the impact of cpar
+##  temp.list <- list()
+##  for(i in 1:500){
+##      temp.list[[i]] <-
+##          change_agecomp(infile=infile, outfile="test1.dat",
+##                         fleets=c(1,2), cpar=c(5,1), Nsamp=list(100,100),
+##                         years=list(1995, 1995), write_file=F)
+##  }
+##  xx <- do.call(rbind, temp.list)[,-(1:9)[-3]]
+##  xx <- reshape2::melt(xx, id.vars="FltSvy")
+##  par(mfrow=c(2,1))
+##  with(subset(xx, FltSvy==1), boxplot(value~variable, las=2,
+##                  main="Overdispersed",  xlab="Age bin"))
+##  temp <- as.numeric(subset(infile$agecomp, Yr==1995 & FltSvy == 1)[-(1:9)])
+##  points(temp/sum(temp), pch="-", col="red")
+##  with(subset(xx, FltSvy==2), boxplot(value~variable, las=2,
+##                  main="Multinomial", xlab="Age bin"))
+##  temp <- as.numeric(subset(infile$agecomp, Yr==1995 & FltSvy == 2)[-(1:9)])
+##  points(temp/sum(temp), pch="-", col="red")
+##   }
 
 
 
