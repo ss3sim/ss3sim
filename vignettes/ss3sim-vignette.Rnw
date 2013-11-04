@@ -772,31 +772,22 @@ or G for growth.
 
 \section{Modifying the included operating and estimation models}
 \label{sec:modify}
-\texttt{ss3sim} comes with three built-in \texttt{SS3} operating and estimation
-models: a cod-like (slow-growing and long-lived), flatfish-like (fast-growing
-and intermediate-lived), and sardine-like (fast-growing and short-lived).  These
-models are based on North Sea cod (\textit{Gadus morhua}) (R. Methot, pers.\
-comm.), yellowtail flounder (\textit{Limanda ferruginea}) (R. Methot, pers.\
-comm.), and California sardine (\textit{Sardinops caeruleus}) \citep{hill2012}.
-Further details on these models are available in \citep{johnson2013} and
-\citep{ono2013}. These models were stripped down and simplified to make them
-more generic for simulation testing. In doing this, we removed many of the
-subtle features of the model.
-While these models are generic and cover a wide range
-of life history types, they may not be suitable for all users. Therefore, in this section,
-we outline strategies for modifying the existing \texttt{SS3} models.
 
-Before proceeding it is worth considering the scope and
-place of \texttt{ss3sim} as a simulation package. The package was designed as a
-vehicle for examining structural differences in models: between an OM and EM
-\citep[e.g.][]{johnson2013} or between multiple EMs \citep[e.g.][]{ono2013}. Therefore,
-the specific details (e.g.\ many fleets, tagging data, seasons, etc.) of the
-models were not important and removed to produce a set of generic life history
-type models. \texttt{ss3sim} is not designed for testing
-arbitrary \texttt{SS3} models, but rather properties of assessment models in
-general. Thus \texttt{ss3sim} is not ideal for quickly exploring properties of a
-particular assessment model and other software packages should be explored if
-that is your goal.
+\texttt{ss3sim} comes with three built-in \texttt{SS3} operating and estimation models: a cod-like (slow-growing and long-lived), flatfish-like (fast-growing and intermediate-lived), and sardine-like (fast-growing and short-lived).  
+These models are based on North Sea cod (\textit{Gadus morhua}) (R. Methot, pers.\ comm.), yellowtail flounder (\textit{Limanda ferruginea}) (R. Methot, pers.\ comm.), and California sardine (\textit{Sardinops caeruleus}) \citep{hill2012}. 
+Further details on these models are available in \citep{johnson2013} and \citep{ono2013}. 
+These models were stripped down and simplified to make them more generic for simulation testing. 
+In doing this, we removed many of the subtle features of the model. 
+While these models are generic and cover a wide range of life history types, they may not be suitable for all users. 
+Therefore, in this section, we outline strategies for modifying the existing \texttt{SS3} models.
+
+Before proceeding it is worth considering the scope and place of \texttt{ss3sim} as a simulation package. 
+The package was designed as a tool for examining structural differences in models. 
+These differences could be between an OM and EM \citep[e.g.][]{johnson2013} or between multiple EMs \citep[e.g.][]{ono2013}. 
+Therefore, the specific details (e.g.\ many fleets, tagging data, seasons, etc.) 
+of the models were not important and removed to produce a set of generic life-history-type models. 
+\texttt{ss3sim} is not designed for testing arbitrary \texttt{SS3} models, but rather properties of assessment models in general. 
+Thus \texttt{ss3sim} is not ideal for quickly exploring properties of a particular assessment model and other software packages should be explored if that is your goal.
 
 Here is a list of \texttt{SS3} features that are not currently implemented in \texttt{ss3sim}:
 \begin{itemize}
