@@ -212,7 +212,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       SS.dat2 = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
       with(agecomp_params,
-        change_agecomp(infile         = SS.dat,
+        change_agecomp(infile         = SS.dat2,
                      outfile          = pastef(sc, i, "em", "ss3.dat"),
                      fleets           = fleets,
                      Nsamp            = Nsamp,
