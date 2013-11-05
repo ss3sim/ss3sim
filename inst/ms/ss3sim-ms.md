@@ -45,7 +45,7 @@ modifies and runs an estimation model,
 and synthesizes the results.
 The simulations can be run in parallel, speeding computation,
 and the source code is open source
-and free to be modified under a GPL-3 license.
+and free to be modified under a MIT license.
 ss3sim can be easily used to answer questions about, for example, 
 time-varying model misspecification, 
 retrospective patterns, 
@@ -115,7 +115,7 @@ Further, ss3sim summarizes the entire simulation
 into comma-separated-value (`.csv`) files
 allowing for the output to be easily processed
 in nearly any statistical software, including R.
-Finally, the ss3sim code is written under a GPL-3 license and can be freely modified.
+Finally, the ss3sim code is written under a MIT license and can be freely modified.
 *Rapid*: ss3sim relies on SS3,
 which uses AD Model Builder as a backend optimization platform ---
 the most rapid and robust optimization software available [@fournier2012].
