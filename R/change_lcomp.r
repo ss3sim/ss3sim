@@ -74,6 +74,7 @@
 #'
 #' #'
 #' @export
+#' @seealso \code{\link{change_agecomp}}
 
 change_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
                          years, cpar=1, lengthbin_vector=NULL, write_file=TRUE){
