@@ -120,7 +120,7 @@
 
 run_ss3sim <- function(iterations, scenarios, case_folder,
   om_model_dir, em_model_dir, case_files = list(M = "M", F = "F", D =
-    c("index", "lcomp", "agecomp"), R = "R", E = "E"), seed = NULL,
+    c("index", "lcomp", "agecomp"), R = "R", E = "E"),
   parallel = FALSE, ...) {
 
   if(parallel) {
@@ -143,7 +143,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
         f_params = a$F, index_params =
         a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp,
         retro_params = a$R, estim_params = a$E, om_model_dir = om_model_dir,
-        em_model_dir = em_model_dir, seed = seed, ...)
+        em_model_dir = em_model_dir, ...)
   }} else {
     output <- lapply(scenarios, function(x) {
       a <- get_caseargs(folder = case_folder, scenario = x, case_files = case_files)
@@ -153,7 +153,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
         f_params = a$F, index_params =
         a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp,
         retro_params = a$R, estim_params = a$E, om_model_dir = om_model_dir,
-        em_model_dir = em_model_dir, seed = seed, ...)
+        em_model_dir = em_model_dir, ...)
         })
   }
 
