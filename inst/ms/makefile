@@ -3,8 +3,8 @@ all: pdf docx cleanbib
 pdf:
 	pandoc -S --no-wrap --bibliography=refs.bib --csl=plos.csl --bibliography=refs.bib --latex-engine=xelatex ss3sim-ms.md -o manuscript.tex
 	perl -p -i -e "s/Fig. /Fig.~/g" manuscript.tex
-	perl -p -i -e "s/e.g. /e.g.~/g" manuscript.tex
-	perl -p -i -e "s/i.e. /i.e.~/g" manuscript.tex
+	perl -p -i -e "s/e\.g\. /e\.g\.~/g" manuscript.tex
+	perl -p -i -e "s/i\.e\. /i\.e\.~/g" manuscript.tex
 	xelatex ss3sim-ms
 	rm manuscript.tex *.log *.aux
 	cp ss3sim-ms.pdf ~/Dropbox/Public/
