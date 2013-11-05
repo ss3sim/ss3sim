@@ -4,7 +4,8 @@
 \usage{
   run_ss3sim(iterations, scenarios, case_folder,
     om_model_dir, em_model_dir,
-    case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), R = "R", E = "E"),
+    case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), R = "R", E 
+= "E"),
     seed = NULL, parallel = FALSE, ...)
 }
 \arguments{
@@ -35,18 +36,6 @@
   scenarios. This argument is passed to
   \code{\link{get_caseargs}}. See that function for details
   and examples of how to specify this.}
-
-  \item{seed}{If set to a numeric vector then
-  \code{set.seed} will be set to each successive value of
-  the vector \code{seed} on each iteration. This can be
-  useful to make simulations reproducible. If left set to
-  \code{NULL} then the seed will not be set. See, for
-  example, the package data object
-  \code{\link{fish600seeds}}. If set, there should be a
-  seed value for each iteration. This only affects the
-  observation error -- the process error (recruitment
-  deviations) are already fixed according to
-  \code{\link{recdevs}} by default.}
 
   \item{...}{Anything else to pass to
   \code{\link{ss3sim_base}}. This includes

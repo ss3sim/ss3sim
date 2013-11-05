@@ -1,0 +1,29 @@
+\name{get_recdevs}
+\alias{get_recdevs}
+\title{Return a set of recruitment deviations}
+\usage{
+  get_recdevs(iteration, n)
+}
+\arguments{
+  \item{iteration}{The iteration number. This is used as an
+  ID to set the random number seed.}
+
+  \item{n}{The length of the vector returned.}
+}
+\value{
+  A vector of standard normal recruitment deviations.
+}
+\description{
+  This function returns a set of pseudo-random recruitment
+  deviations based on an iteration number. Given the same
+  iteration number the function will return the same
+  recruitment deviations. The deviations are standard
+  normal. I.e., they have a mean of 0 and a standard
+  deviation of 1.
+}
+\examples{
+get_recdevs(1, 10)
+get_recdevs(1, 10)
+get_recdevs(2, 10)
+}
+

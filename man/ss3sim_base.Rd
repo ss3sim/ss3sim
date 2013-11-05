@@ -8,8 +8,7 @@
     retro_params = NULL, user_recdevs = NULL,
     bias_adjust = FALSE, bias_nsim = 5,
     bias_already_run = FALSE, hess_always = FALSE,
-    print_logfile = TRUE, sleep = 0, seed = NULL,
-    conv_crit = 0.2, ...)
+    print_logfile = TRUE, sleep = 0, conv_crit = 0.2, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -79,12 +78,6 @@
   each iteration. Useful if you want to reduce average CPU
   time -- perhaps because you're working on a shared
   server.}
-
-  \item{seed}{If set to a numeric vector then
-  \code{set.seed} will be set to each successive value of
-  the vector \code{seed} on each iteration. This can be
-  useful to make simulations reproducible. If left set to
-  \code{NULL} then the seed will not be set.}
 
   \item{conv_crit}{The maximum percentage of bias
   iterations that can produce a non-invertible Hessian

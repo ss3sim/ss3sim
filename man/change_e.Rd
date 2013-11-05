@@ -23,9 +23,9 @@
   \item{natM_type}{A character string corresponding to
   option 0:4 in SS3 (i.e. "1Parm", "n_breakpoints",
   "Lorenzen", "agespecific",
-  "agespec_withseasinterpolate"). A value of NULL will
-  leave the configuration of natural mortality as specified
-  in \code{ctl_file_in}.}
+  "agespec_withseasinterpolate"). A value of NA will leave
+  the configuration of natural mortality as specified in
+  \code{ctl_file_in}.}
 
   \item{natM_n_breakpoints}{A vector of ages at which you
   want breakpoints. Only used if you specify
