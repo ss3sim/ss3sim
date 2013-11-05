@@ -114,7 +114,6 @@ change_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
     if(substr_r(outfile,4) != ".dat" & write_file)
         stop(paste0("outfile ", outfile, " needs to end in .dat"))
     Nfleets <- ifelse(is.null(fleets), 0, length(fleets))
-    print(Nfleets)
     if(Nfleets >0 & FALSE %in% (fleets %in% unique(agecomp$FltSvy)))
         stop(paste0("The specified fleet number does not match input file"))
     if(Nfleets!= 0 & (class(Nsamp) != "list" | length(Nsamp) != Nfleets))
