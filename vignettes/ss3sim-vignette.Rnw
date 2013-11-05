@@ -851,7 +851,10 @@ setting up the case files
 and use \texttt{ss3sim\_base} directly
 by passing lists of arguments.
 The lists correspond to the arguments
-to each of the \texttt{change} functions.
+to each of the \texttt{change} functions
+without any references to the files that need to be modified.
+(Although if you passed the file names they would just be ignored.)
+
 In this case,
 the scenario ID only serves the function
 of identifying the output folder name
@@ -862,10 +865,14 @@ we could have run the scenario \texttt{D1-E0-F0-R0-M0-cod}
 that we ran before like this:
 
 <<ss3sim-base-eg, eval=FALSE>>=
-R1 <- list(years = 1913:2012, years_alter = 1913:2012, fvals =
+d <- system.file("extdata", package = "ss3sim")
+om <- paste0(d, "/models/cod-om")
+em <- paste0(d, "/models/cod-em")
+
+F1 <- list(years = 1913:2012, years_alter = 1913:2012, fvals =
   c(rep(0, 25), rep(0.114, 75)))
 
-index1 <- list(fleets = 2, years = list(1974:2012), sds_obs =
+index1 <- list(fleets = 2, years = list(seq(1974, 2012, by = 2)), sds_obs =
   list(0.1))
 
 lcomp1 <- list(fleets = c(1, 2), Nsamp = list(100, 100), years =
