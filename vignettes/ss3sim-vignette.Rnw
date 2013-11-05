@@ -1205,15 +1205,15 @@ values, meaning that the EM has the correct level of uncertainty. Thus
 for all fleets the EM has unbiased estimates of $B_y$ and the true
 $\sigma_y$.
 
-\section{Incorporating process error}\label{sec:pro-error}
+\section{Incorporating process error}
+\label{sec:pro-error}
+
 Process error is incorporated into the OM in the form of deviates in
-recruitment (recdevs) from the stock-recruit relationship. Unlike the
+recruitment (`recdevs') from the stock-recruit relationship. Unlike the
 observation error, the process error affects the population dynamics
-and thus must be done before running the OM. The \texttt{ss3sim}
-package contains a built-in set of recruitment deviations for up to
-150 years and 500 iterations that are used if none are passed by the
-user. The columns in the matrix represent iterations of the
-simulation, and the rows represent years. These built-in recruitment
+and thus must be done before running the OM.
+
+These built-in recruitment
 deviations are standard normal deviates and are multiplied by
 $\sigma_r$ (recruitment standard deviation) as specified in the OM,
 and bias adjusted within the package.That is,
@@ -1243,7 +1243,8 @@ across scenarios. For example if you have two scenarios and run 100
 iterations of each, the same set of recruitment deviations are used
 between these two scenarios.
 
-\section{Stochastic reproducibility}\label{sec:reproduce}
+\section{Stochastic reproducibility}
+\label{sec:reproduce}
 
 In many cases, you may want to make
 the observation and process error reproducible.
@@ -1253,20 +1254,26 @@ are not confounded with process error.
 More broadly, you may want to make a simulation reproducible
 on another machine by another user (such as a reviewer).
 
-You can make the observation error reproducible by setting the
-\texttt{seed} argument in the top level functions,
-e.g.\ \texttt{ss3sim\_base}.  The \texttt{seed} argument takes a vector
-of seed values at least as long as the number of iterations you are
-running in your simulation and reuses them across different
-scenarios. If \texttt{seed} is not set then no seed is used.
+By default \texttt{ss3sim} sets a seed based on the iteration number.
+This will create the same recruitment deviations for a given iteration number.
+You can therefore avoid having the same recruitment deviations for a given iteration number
+by either specifying your own recruitment deviation matrix through the \texttt{user\_recdevs} argument
+or by changing the iteration numbers
+(e.g.\ using iterations 101 to 200 instead of 1 to 100).
 
-The process error (recruitment deviations) are reused across scenarios
-and thus are by default reproducible for built-in and user-specified
-values. If you want the different scenarios to have different process
+If you want the different scenarios to have different process
 error you will need to make separate calls to \texttt{run\_ss3sim} for
 each scenario and pass a different matrix of \texttt{user\_recdevs}
 (see Section \ref{sec:pro-error}). For most applications this should
 not be necessary.
+
+The observation error seed
+(affecting the index, length composition, and age composition sampling)
+is set during the OM generation.
+Therefore, a given iteration-case-file-argument combination will generate repeatable results.
+Given that different case arguments can generate different sampling routines
+(e.g. stochastically sampling or not sampling from the age compositions or sampling a different number of years)
+the observation error is not necessarily comparable across different case arguments.
 
 \bibliographystyle{apalike}
 \bibliography{refs}
