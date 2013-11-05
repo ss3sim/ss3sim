@@ -24,7 +24,7 @@
 #' @param case_files A named list that relates the case IDs to the
 #' files to return. If you are passing time-varying parameters beyond
 #' (or instead of) natural mortality (M), then you will need to adjust
-#' these values to reflect your scenarios. This argument is passed to 
+#' these values to reflect your scenarios. This argument is passed to
 #' \code{\link{get_caseargs}}. See that function for details and
 #' examples of how to specify this.
 #' @param ... Anything else to pass to \code{\link{ss3sim_base}}. This
@@ -135,7 +135,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
   if(parallel) {
     foreach(parallel_scenario = scenarios, .packages = "ss3sim", .verbose =
             FALSE, .export = "substr_r") %dopar% {
-      a <- get_caseargs(folder = case_folder, scenario = parallel_scenario, 
+      a <- get_caseargs(folder = case_folder, scenario = parallel_scenario,
         case_files = case_files)
       sp <- substr_r(parallel_scenario, 3)
       ss3sim_base(iterations, scenarios = parallel_scenario,
