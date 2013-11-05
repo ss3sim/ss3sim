@@ -23,54 +23,57 @@
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
-#
-#'## Generate with constant sample size across years
+#'
+#' ## Generate with constant sample size across years
 #' ex1 <- change_lcomp(infile=infile, outfile="test1.dat", fleets=c(1,2),
-#'              # Nsamp=list(100,50), years=list(seq(1994, 2012, by=2),
-#'             # 2003:2012))
+#'                     Nsamp=list(100,50), years=list(seq(1994, 2012, by=2),
+#'                                             2003:2012))
 #'
 #' ## Generate with varying Nsamp by year for first fleet
 #' ex2 <- change_lcomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
-#'              # Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
-#'              # years=list(seq(1994, 2012, by=2),
-#'              # 2003:2012))
+#'                     Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
+#'                     years=list(seq(1994, 2012, by=2),
+#'                         2003:2012))
 #'
-#' ## Generate with varying Nsamp by year for first fleet AND with different length bins
+#' ## Generate with constant sample size across years AND with different length
+#' ## bins (same as ex1 except bins)
 #' ex3 <- change_lcomp(infile=infile, outfile="test3.dat", fleets=c(1,2),
-#'              # Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
-#'              # years=list(seq(1994, 2012, by=2), 2003:2012),
-#'         # lengthbin_vector = seq(9,30,by=2))
+#'                     Nsamp=list(100,50), years=list(seq(1994, 2012, by=2),
+#'                                             2003:2012), lengthbin_vector = seq(9,30,by=2))
 #'
-#' plot(seq(20,150, by=5), as.numeric(ex3[1, -(1:6)]), type="b", col=2,
-#'    # xlab="length Bin", ylab="Proportion of length",
-#'    # main="Comparison of different length bin structures via lengthbin_vector")
-#' lines(0:15, as.numeric(ex1[1, -(1:9)]), type="b", col=1)
+#' plot(seq(8,30,by=2), as.numeric(ex3[1, -(1:6)]), type="b", col=2,
+#'      xlab="Length Bin", ylab="Proportion of length",
+#'      main="Comparison of different length bin structures via lengthbin_vector")
+#' lines(seq(8, 30, by=.5), as.numeric(ex1[1, -(1:6)]), type="b", col=1)
 #' legend("topright", legend=c("ex1", "ex3"), col=c(1,2), pch=1)
 #'
 #' unlink(x=c("test1.dat", "test2.dat", "test3.dat")) # clean up
 #'
-#' ## Plot distributions for a particular year for a cpar of 5 and 1 to
-#' ## demonstrate the impact of cpar
-#' temp.list <- list()
+#' ## Plot distributions for a particular year to compare multinomial
+#' ## vs. overdispersed Dirichlet
+#' temp.list <- temp.list2 <- list()
 #' for(i in 1:500){
-#'   # temp.list[[i]] <-
-#'       # sample_lcomp(infile=infile, outfile="test1.dat",
-#'                      # fleets=c(1,2), cpar=c(5,1), Nsamp=list(100,100),
-#'                      # years=list(1995, 1995), write_file=F)
+#'     temp.list[[i]] <-
+#'         change_lcomp(infile=infile, outfile="test1.dat", fleets=c(2), cpar=c(3),
+#'                      Nsamp=list(100), years=list(1995), write_file=F)
+#'     temp.list2[[i]] <-
+#'         change_lcomp(infile=infile, outfile="test1.dat", fleets=c(2),
+#'                      cpar=c(NA), Nsamp=list(100), years=list(1995), write_file=F)
 #' }
-#' xx <- do.call(rbind, temp.list)[,-(1:9)[-3]]
-#' xx <- reshape2::melt(xx, id.vars="FltSvy")
+#' ## Organize the data for plotting
+#' x1 <- reshape2::melt(do.call(rbind, temp.list)[,-(1:6)[-3]], id.vars="FltSvy")
+#' x2 <- reshape2::melt(do.call(rbind, temp.list2)[,-(1:6)[-3]], id.vars="FltSvy")
 #' par(mfrow=c(2,1))
-#' with(subset(xx, FltSvy==1), boxplot(value~variable, las=2,
-#'               # main="Overdispersed",  xlab="length bin"))
-#' temp <- as.numeric(subset(infile$lcomp, Yr==1995 & FltSvy == 1)[-(1:9)])
+#' with(x1, boxplot(value~variable, las=2, ylim=c(0,.6), ylab="Proportion",
+#'                  main="Overdispersed (cpar=3)",  xlab="length bin"))
+#' temp <- as.numeric(subset(infile$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
 #' points(temp/sum(temp), pch="-", col="red")
-#' with(subset(xx, FltSvy==2), boxplot(value~variable, las=2,
-#'               # main="Multinomial", xlab="length bin"))
-#' temp <- as.numeric(subset(infile$lcomp, Yr==1995 & FltSvy == 2)[-(1:9)])
+#' with(x2, boxplot(value~variable, las=2, ylim=c(0,.6), ylab="Proportion",
+#'                  main="Multinomial", xlab="length bin"))
+#' temp <- as.numeric(subset(infile$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
 #' points(temp/sum(temp), pch="-", col="red")
-#
-#' }
+#'
+#' #' }
 #' @export
 
 change_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
@@ -87,34 +90,31 @@ change_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
     ## Check inputs for errors
     if(substr_r(outfile,4) != ".dat" & write_file)
         stop(paste0("outfile ", outfile, " needs to end in .dat"))
-    Nfleets <- length(fleets)
-    # if(length(unique(lcomp$FltSvy)) != Nfleets)
-        # stop(paste0("Number of fleets specified (",Nfleets,
-                    # ") does not match input file (",
-                    # length(unique(lcomp$FltSvy)), ")"))
+    Nfleets <- ifelse(is.null(fleets), 0, length(fleets))
     if(FALSE %in% (fleets %in% unique(lcomp$FltSvy)))
         stop(paste0("The specified fleet number does not match input file"))
     if(Nfleets!= 0 & class(Nsamp) != "list" | length(Nsamp) != Nfleets)
         stop("Nsamp needs to be a list of same length as fleets")
     if(Nfleets!= 0 & class(years) != "list" | length(years) != Nfleets)
         stop("years needs to be a list of same length as fleets")
-    if (!is.null(fleets)){
-    for(i in 1:Nfleets){
-        if(length(Nsamp[[i]])>1 & length(Nsamp[[i]]) != length(years[[i]]))
-            stop(paste0("Length of Nsamp does not match length of years for fleet ",fleets[i]))
-    }}
-    if(length(cpar) == 1){
-        ## If only 1 value provided, use it for all fleets
-        cpar <- rep(cpar, times=Nfleets)
-    } else if(length(cpar) != Nfleets){
-        stop(paste0("Length of cpar (", length(cpar),
-                    ") needs to be length of fleets (", Nfleets,
-                    ") or 1"))
+    if (Nfleets>0){
+        for(i in 1:Nfleets){
+            if(length(Nsamp[[i]])>1 & length(Nsamp[[i]]) != length(years[[i]]))
+                stop(paste0("Length of Nsamp does not match length of years for fleet ",fleets[i]))
+        }
+        if(length(cpar) == 1){
+            ## If only 1 value provided, use it for all fleets
+            cpar <- rep(cpar, times=Nfleets)
+        } else if(length(cpar) != Nfleets){
+            stop(paste0("Length of cpar (", length(cpar),
+                        ") needs to be length of fleets (", Nfleets,
+                        ") or 1"))
+        }
     }
     ## End input checks
 
     ## Recalculate length bins depending on user input
-    if (!is.null(newbins)) {
+    if (!is.null(newbins) & Nfleets>0) {
         if (class(newbins) != "numeric") {
             stop("lengthbin_vector must have a numeric input")
         }
@@ -150,28 +150,39 @@ change_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
     newcomp.list <- list()                  # temp storlength for the new rows
     k <- 1
     ## Loop through each fleet
-  if (!is.null(fleets)){
-    for(i in 1:length(fleets)){
-        fl <- fleets[[i]]
-        if(!is.na(fl)){
-            lcomp.fl <- lcomp[lcomp$FltSvy == fl & lcomp$Yr %in% years[[i]], ]
-            if(length(years[[i]]) != nrow(lcomp.fl))
-                stop(paste("A year specified in years was not found in the input file for fleet", fl))
-            lcomp.fl$Nsamp <- Nsamp[[i]]
-            ## Now loop through each year and resample that row
-            for(yr in years[[i]]) {
-                newcomp <- lcomp.fl[lcomp.fl$Yr==yr, ]
-                ## First 1-9 cols aren't length bins so skip them
-                probs <- as.numeric(newcomp[-(1:6)]/sum(newcomp[-(1:6)]))
-                lambda <- newcomp$Nsamp/cpar[i]^2 - 1
-                ## Replace expected values with sampled values
-                newcomp[-(1:6)] <-
-                    gtools::rdirichlet(1, as.numeric(probs) * lambda)
-                newcomp.list[[k]] <- newcomp
-                k <- k+1
+    if (Nfleets>0){
+        for(i in 1:length(fleets)){
+            fl <- fleets[[i]]
+            if(!is.na(fl)){
+                lcomp.fl <- lcomp[lcomp$FltSvy == fl & lcomp$Yr %in% years[[i]], ]
+                if(length(years[[i]]) != nrow(lcomp.fl))
+                    stop(paste("A year specified in years was not found in the input file for fleet", fl))
+                lcomp.fl$Nsamp <- Nsamp[[i]]
+                ## Now loop through each year and resample that row
+                for(yr in years[[i]]) {
+                    newcomp <- lcomp.fl[lcomp.fl$Yr==yr, ]
+                    ## Replace expected values with sampled values
+                    ## First 1-9 cols aren't length bins so skip them
+                    probs <- as.numeric(newcomp[-(1:6)]/sum(newcomp[-(1:6)]))
+                    ## If cpar is NA this signifies to use the multinomial
+                    if(is.na(cpar[i])){
+                        newcomp[-(1:6)] <-
+                            rmultinom(1, size=newcomp$Nsamp, prob=probs)/newcomp$Nsamp
+                    } else { # use Dirichlet
+                        lambda <- newcomp$Nsamp/cpar[i]^2 - 1
+                        if(lambda<0)
+                        stop(paste("Invalid Dirichlet parameter: Lambda=", lambda))
+                        newcomp[-(1:6)] <- gtools::rdirichlet(1,probs * lambda)
+                        ## Use the effective sample size when using Dirichlet
+                        effectiveN <- newcomp$Nsamp/cpar[i]^2
+                        newcomp$Nsamp <- effectiveN
+                    }
+                    newcomp.list[[k]] <- newcomp
+                    k <- k+1
+                }
             }
         }
-    }}
+    }
     ## Combine new rows together into one data.frame
     if(Nfleets>0) newcomp.final <- do.call(rbind, newcomp.list)
     if(Nfleets==0) newcomp.final = data.frame("#")
