@@ -48,10 +48,6 @@
 #' @param sleep A time interval (in seconds) to pause on each
 #' iteration. Useful if you want to reduce average CPU time --
 #' perhaps because you're working on a shared server.
-#' @param seed If set to a numeric vector then \code{set.seed} will be
-#' set to each successive value of the vector \code{seed} on each
-#' iteration. This can be useful to make simulations reproducible. If
-#' left set to \code{NULL} then the seed will not be set.
 #' @param conv_crit The maximum percentage of bias iterations that can
 #' produce a non-invertible Hessian before a warning will be produced.
 #' If this percentage is exceeded then a file \code{WARNINGS.txt} will
@@ -96,7 +92,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   tv_params, om_model_dir, em_model_dir,
   retro_params = NULL, user_recdevs = NULL, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
-  print_logfile = TRUE, sleep = 0, seed = NULL, conv_crit = 0.2, ...)
+  print_logfile = TRUE, sleep = 0, conv_crit = 0.2, ...)
 {
 
   # The first bias_nsim runs will be bias-adjustment runs
@@ -130,20 +126,9 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # This turns "bias/1" into "1" and leaves "1" unchanged
       this_run_num <- as.numeric(rev(strsplit(as.character(i), "/")[[1]])[1])
 
-      # set the seed for this iteration?
-      if(!is.null(seed[this_run_num])) {
-        if(is.na(seed[this_run_num]))
-          warning("Seed value missing, not setting the seed.")
-        else {
-          print(paste("Setting seed to", seed[this_run_num]))
-          set.seed(seed[this_run_num])
-        }
-      }
-
-      # recdevs is a matrix stored in the package 'data' folder
-      # Columns are for iterations and rows are for years
+      recdevs <- get_recdevs(iteration = this_run_num, n = 2000)
       if(is.null(user_recdevs)) {
-        sc_i_recdevs <- sigmar * recdevs[, this_run_num] - sigmar^2/2 # from the package data
+        sc_i_recdevs <- sigmar * recdevs - sigmar^2/2 # from the package data
       } else {
         sc_i_recdevs <- user_recdevs[, this_run_num] # user specified recdevs
       }

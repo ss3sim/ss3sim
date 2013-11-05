@@ -41,7 +41,6 @@ Collate:
     'change_rec_devs.r'
     'copy_ss3models.r'
     'pastef.r'
-    'recdevs.r'
     'run_ss3model.r'
     'run_ss3sim.r'
     'get_sigma.r'
@@ -63,3 +62,4 @@ Collate:
     'change_tv.r'
     'setup_parallel.r'
     'ss3sim.r'
+    'get_recdevs.r'
