@@ -19,7 +19,6 @@
 #' @template sampling-return
 #'
 #' @examples
-#' \dontrun{
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
@@ -73,7 +72,7 @@
 #' temp <- as.numeric(subset(infile$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
 #' points(temp/sum(temp), pch="-", col="red")
 #'
-#' #' }
+#' #'
 #' @export
 
 change_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
