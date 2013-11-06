@@ -118,6 +118,6 @@ for(samplesize in c(30, 100, 1000)){
   Roberto Licandeo and Felipe Hurtado-Ferro
 }
 \seealso{
-  \code\link{change_lcomp}
+  \code{\link{change_lcomp}}
 }
 

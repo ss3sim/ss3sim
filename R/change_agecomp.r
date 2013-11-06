@@ -73,7 +73,7 @@
 #'     lines((0:15), subset(ex6, FltSvy==1)[1,-(1:9)], type="b", col=3)
 #'     lines((0:15), true, col=4, lwd=2)
 #' }
-#' @seealso \code\link{change_lcomp}
+#' @seealso \code{\link{change_lcomp}}
 #' @export
 change_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
                            years, cpar=1, agebin_vector=NULL, write_file=TRUE){
