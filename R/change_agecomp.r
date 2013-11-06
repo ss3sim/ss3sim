@@ -19,7 +19,6 @@
 #' @template sampling-return
 #'
 #' @examples
-#' \dontrun{
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
@@ -74,35 +73,12 @@
 #'     lines((0:15), subset(ex6, FltSvy==1)[1,-(1:9)], type="b", col=3)
 #'     lines((0:15), true, col=4, lwd=2)
 #' }
-
-#'  ## Plot distributions for a particular year for a cpar of 5 and 1 to
-#'  ## demonstrate the impact of cpar
-#'  temp.list <- list()
-#'  for(i in 1:500){
-#'      temp.list[[i]] <-
-#'          change_agecomp(infile=infile, outfile="test1.dat",
-#'                         fleets=c(1,2), cpar=c(5,NA), Nsamp=list(100,100),
-#'                         years=list(1995, 1995), write_file=F)
-#'  }
-#'  xx <- do.call(rbind, temp.list)[,-(1:9)[-3]]
-#'  xx <- reshape2::melt(xx, id.vars="FltSvy")
-#'  par(mfrow=c(2,1))
-#'  with(subset(xx, FltSvy==1), boxplot(value~variable, las=2,
-#'                  main="Overdispersed",  xlab="Age bin"))
-#'  temp <- as.numeric(subset(infile$agecomp, Yr==1995 & FltSvy == 1)[-(1:9)])
-#'  points(temp/sum(temp), pch="-", col="red")
-#'  with(subset(xx, FltSvy==2), boxplot(value~variable, las=2,
-#'                  main="Multinomial", xlab="Age bin"))
-#'  temp <- as.numeric(subset(infile$agecomp, Yr==1995 & FltSvy == 2)[-(1:9)])
-#'  points(temp/sum(temp), pch="-", col="red")
-#' }
+#' @seealso \code\link{change_lcomp}
 #' @export
-
 change_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
                            years, cpar=1, agebin_vector=NULL, write_file=TRUE){
     ## The new agecomp is mostly based on the old one so start with
     ## that
-
     agecomp <- infile$agecomp
     newbins <- agebin_vector
     oldbins <- infile$agebin_vector
@@ -195,7 +171,7 @@ change_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
                     } else { # use Dirichlet
                         lambda <- newcomp$Nsamp/cpar[i]^2 - 1
                         if(lambda < 0)
-                            stop(paste("This parameterization of the Dirichlet leads to invalid values. Lambda=", lambda))
+                            stop(paste("Invalid Dirichlet parameter: Lambda=", lambda))
                         newcomp[-(1:9)] <- gtools::rdirichlet(1, probs * lambda)
                         ## use the effective sample size when using Dirichlet
                         effectiveN <- floor(newcomp$Nsamp/cpar[i]^2)

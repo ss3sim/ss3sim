@@ -4,8 +4,7 @@
 \usage{
   run_ss3sim(iterations, scenarios, case_folder,
     om_model_dir, em_model_dir,
-    case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), R = "R", E 
-= "E"),
+    case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), R = "R", E = "E"),
     seed = NULL, parallel = FALSE, ...)
 }
 \arguments{
