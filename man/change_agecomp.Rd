@@ -63,7 +63,6 @@
   then written to file for use by the EM.
 }
 \examples{
-\dontrun{
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/example-om/data.ss_new")
 infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
@@ -113,30 +112,12 @@ for(samplesize in c(30, 100, 1000)){
     lines((0:15), subset(ex6, FltSvy==1)[1,-(1:9)], type="b", col=3)
     lines((0:15), true, col=4, lwd=2)
 }
- ## Plot distributions for a particular year for a cpar of 5 and 1 to
- ## demonstrate the impact of cpar
- temp.list <- list()
- for(i in 1:500){
-     temp.list[[i]] <-
-         change_agecomp(infile=infile, outfile="test1.dat",
-                        fleets=c(1,2), cpar=c(5,NA), Nsamp=list(100,100),
-                        years=list(1995, 1995), write_file=F)
- }
- xx <- do.call(rbind, temp.list)[,-(1:9)[-3]]
- xx <- reshape2::melt(xx, id.vars="FltSvy")
- par(mfrow=c(2,1))
- with(subset(xx, FltSvy==1), boxplot(value~variable, las=2,
-                 main="Overdispersed",  xlab="Age bin"))
- temp <- as.numeric(subset(infile$agecomp, Yr==1995 & FltSvy == 1)[-(1:9)])
- points(temp/sum(temp), pch="-", col="red")
- with(subset(xx, FltSvy==2), boxplot(value~variable, las=2,
-                 main="Multinomial", xlab="Age bin"))
- temp <- as.numeric(subset(infile$agecomp, Yr==1995 & FltSvy == 2)[-(1:9)])
- points(temp/sum(temp), pch="-", col="red")
-}
 }
 \author{
   Cole Monnahan and Kotaro Ono; modified from a version by
   Roberto Licandeo and Felipe Hurtado-Ferro
+}
+\seealso{
+  \code\link{change_lcomp}
 }
 
