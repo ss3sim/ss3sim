@@ -517,8 +517,8 @@ par_phase;          c(-1,-1)
 forecast_num;       0
 \end{verbatim}
 
-To minimize observation error on the survey index, 
-we will create a data case 100 
+To minimize observation error on the survey index,
+we will create a data case 100
 that has a standard deviation on the survey observation error of 0.001.
 Therefore, our case file \texttt{index100-cod.txt} will look like this:
 
@@ -537,7 +537,7 @@ Note that by default 5 bias adjustment runs are performed since we specify that
 \texttt{bias\_adjust=TRUE}.
 
 <<deterministic-runs, eval=FALSE>>=
-run_ss3sim(iterations = 1:20, 
+run_ss3sim(iterations = 1:20,
   scenarios = c("D100-E100-F0-R0-M0-cod", "D100-E101-F0-R0-M0-cod"),
   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
   bias_adjust = TRUE, user_recdevs = recdevs_det)
@@ -559,7 +559,7 @@ run_ss3sim(iterations = 1:20, scenarios = x,
 Note that due to the way that \texttt{SS3} is being used as an operating model,
 you may see an ADMB error in the console:
 \begin{verbatim}
-Error -- base = 0 in function prevariable& pow(const prevariable& v1, 
+Error -- base = 0 in function prevariable& pow(const prevariable& v1,
   CGNU_DOUBLE u)
 \end{verbatim}
 \noindent
@@ -767,26 +767,26 @@ function_type; change_tv
 \end{verbatim}
 \noindent
 in your case file. For example,
-you might want to use M for natural mortality, S for selectivity, 
+you might want to use M for natural mortality, S for selectivity,
 or G for growth.
 
 \section{Modifying the included operating and estimation models}
 \label{sec:modify}
 
-\texttt{ss3sim} comes with three built-in \texttt{SS3} operating and estimation models: a cod-like (slow-growing and long-lived), flatfish-like (fast-growing and intermediate-lived), and sardine-like (fast-growing and short-lived).  
-These models are based on North Sea cod (\textit{Gadus morhua}) (R. Methot, pers.\ comm.), yellowtail flounder (\textit{Limanda ferruginea}) (R. Methot, pers.\ comm.), and California sardine (\textit{Sardinops caeruleus}) \citep{hill2012}. 
-Further details on these models are available in \citep{johnson2013} and \citep{ono2013}. 
-These models were stripped down and simplified to make them more generic for simulation testing. 
-In doing this, we removed many of the subtle features of the model. 
-While these models are generic and cover a wide range of life history types, they may not be suitable for all users. 
+\texttt{ss3sim} comes with three built-in \texttt{SS3} operating and estimation models: a cod-like (slow-growing and long-lived), flatfish-like (fast-growing and intermediate-lived), and sardine-like (fast-growing and short-lived).
+These models are based on North Sea cod (\textit{Gadus morhua}) (R. Methot, pers.\ comm.), yellowtail flounder (\textit{Limanda ferruginea}) (R. Methot, pers.\ comm.), and California sardine (\textit{Sardinops caeruleus}) \citep{hill2012}.
+Further details on these models are available in \citep{johnson2013} and \citep{ono2013}.
+These models were stripped down and simplified to make them more generic for simulation testing.
+In doing this, we removed many of the subtle features of the model.
+While these models are generic and cover a wide range of life history types, they may not be suitable for all users.
 Therefore, in this section, we outline strategies for modifying the existing \texttt{SS3} models.
 
-Before proceeding it is worth considering the scope and place of \texttt{ss3sim} as a simulation package. 
-The package was designed as a tool for examining structural differences in models. 
-These differences could be between an OM and EM \citep[e.g.][]{johnson2013} or between multiple EMs \citep[e.g.][]{ono2013}. 
-Therefore, the specific details (e.g.\ many fleets, tagging data, seasons, etc.) 
-of the models were not important and removed to produce a set of generic life-history-type models. 
-\texttt{ss3sim} is not designed for testing arbitrary \texttt{SS3} models, but rather properties of assessment models in general. 
+Before proceeding it is worth considering the scope and place of \texttt{ss3sim} as a simulation package.
+The package was designed as a tool for examining structural differences in models.
+These differences could be between an OM and EM \citep[e.g.][]{johnson2013} or between multiple EMs \citep[e.g.][]{ono2013}.
+Therefore, the specific details (e.g.\ many fleets, tagging data, seasons, etc.)
+of the models were not important and removed to produce a set of generic life-history-type models.
+\texttt{ss3sim} is not designed for testing arbitrary \texttt{SS3} models, but rather properties of assessment models in general.
 Thus \texttt{ss3sim} is not ideal for quickly exploring properties of a particular assessment model and other software packages should be explored if that is your goal.
 
 Here is a list of \texttt{SS3} features that are not currently implemented in \texttt{ss3sim}:
@@ -1035,7 +1035,7 @@ functions.
   years/fleets specified to be sampled must be present in the OM file,
   so the user must setup the OM accordingly.
 \item[\texttt{change\_lcomp}] This function samples from the length
-  composition using a Dirichlet distribution. The Dirichlet
+  composition using a multinomial or Dirichlet distribution. The Dirichlet
   distribution can be thought of as a generalization of the
   multinomial distribution that has an additional parameter
   controlling the variance of the random deviates (see Section
@@ -1050,17 +1050,18 @@ functions.
 
 \subsection{Sampling age and length compositions}
 \label{sec:comps}
-[fixme: do we have these refs? Maybe Kot found some for his paper?]
 When simulating assessment models we need a way to mimic the way that
 the age/length compositions (comps) are sampled in reality.  Under
 perfect mixing of fish and truly random sampling the distribution of
-samples would be multinomial (REF).  However, in practice neither of
+samples would be multinomial.  However, in practice neither of
 these are true because the fish tend to aggregate by size and age, and
-it is difficult to take random samples.  This causes the data to have
-more variance than expected, i.e.\ be overdispersed (REF).  If a
+it is difficult to take random samples \cite{pennington2002}.
+This causes the data to have
+more variance than expected, i.e.\ be overdispersed, and the effective sample
+size is smaller \cite{hulson2012, maunder2011}.  If a
 multinomial likelihood is assumed and the true sample size is used
 then in effect the model puts too much weight on the composition data,
-at the cost of fitting other sources of data less well (REF).
+at the cost of fitting other sources of data less well \cite{maunder2011}.
 Analysts thus need to ``tune'' their model to find a more appropriate
 sample size that more accurately reflects the information in the comp
 data.
@@ -1069,11 +1070,11 @@ In simulation work, the true underlying proportions
 in the population are known and true multinomial sampling is possible.
 There is some question about the realism
 behind providing the model with this kind of data,
-since it never happens in practice (REF).
+since it is unlikely to happen in practice \cite{pennington2002}.
 Thus, there is a need to generate more realistic data.
 In this package we use the Dirichlet distribution
-to generate such data for a specified level of overdispersion, instead
-of manipulating the effective sample size.
+to generate such data for a specified level of overdispersion, and then set the
+correct effective sample size.
 
 \subsubsection{Multinomial vs.\ Dirichlet distributions}
 The following calculations are shown for age compositions
@@ -1151,6 +1152,25 @@ not allow for tuning of the effective sample size, and the argument
 \texttt{cpar} controls the level of overdispersion in the sampling
 functions.  See the function documentation for
 \texttt{change\_agecomp} and \texttt{change\_lcomp} for more detail.
+
+\subsubsection{Effective sample size}
+For both multinomial and Dirichlet generated composition data the effective
+sample size is set automatically by the \texttt{change\_lcomp} and
+\texttt{change\_agecomp} functions. In the case of the multinomial the effective
+sample size is just the total sample size (i.e.\ how many fish were
+sampled). However, with the Dirichlet distribution the effective sample size
+depends on the parameters passed to these functions and is automatically
+calculated internally and passed on to the \texttt{.dat} file. The effective
+sample size is calculated as $N_{eff}=n/c^2$. Note that these values will not
+necessarily be integer-valued, and \texttt{SS3} handles this without issue.
+
+Given that the effective sample size is known and passed to the EM, there is
+much similarity between the multinomial and Dirichlet methods for generating
+data. The main difference arises when sample sizes ($n$) are small; in this case
+the multinomial will be restricted to few potential values (i.e.\ $0/n, 1/n,
+\ldots, n/n$), whereas the Dirichlet has values in $[0,1]$. Thus without the
+Dirichlet it would be impossible to generate realistic values that would come
+about from highly overdispersed data with a large $n$.
 
 \subsubsection{Dynamic composition binning} \label{sec:dybin}
 
