@@ -248,7 +248,7 @@
  7.94 27.79 15.88 0 -1 99 2 0 0 0 0 0 0 0 # SizeSel_1P_1_Fishery
  0 6.51 3.254926 0 -1 99 3 0 0 0 0 0 0 0 # SizeSel_1P_2_Fishery
  6.35 25.40 12.7 0 -1 99 2 0 0 0 0 0 0 0 # SizeSel_2P_1_Survey
- 0 10 6.51 0 -1 99 3 0 0 0 0 0 0 0 # SizeSel_2P_2_Survey
+ 0 6.51 3.254926 0 -1 99 3 0 0 0 0 0 0 0 # SizeSel_2P_2_Survey
  0 15 0 0 -1 99 -4 0 0 0 0 0 0 0 # AgeSel_1P_1_Fishery
  0 20 15 0 -1 99 -4 0 0 0 0 0 0 0 # AgeSel_1P_2_Fishery
  0 15 0 0 -1 99 -4 0 0 0 0 0 0 0 # AgeSel_2P_1_Survey
