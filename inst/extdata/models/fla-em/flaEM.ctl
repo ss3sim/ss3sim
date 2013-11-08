@@ -69,7 +69,7 @@
 #_Spawner-Recruitment
 3 #_SR_function: 2=Ricker; 3=std_B-H; 4=SCAA; 5=Hockey; 6=B-H_flattop; 7=survival_3Parm
 #_LO HI INIT PRIOR PR_type SD PHASE
- 5.2467 15.74 10.4934 10.3 -1 10 2 # SR_LN(R0)
+ 4.2 15.74 10.4934 10.3 -1 10 2 # SR_LN(R0)
  0.19 1 0.760619 0.7 -1 0.05 -4 # SR_BH_steep
  0 2 0.7 0.8 -1 0.8 -4 # SR_sigmaR
  -5 5 0 0 -1 1 -3 # SR_envlink

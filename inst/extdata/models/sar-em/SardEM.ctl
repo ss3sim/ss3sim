@@ -245,7 +245,7 @@
  11 0 0 0 # 2 Survey
  11 0 0 0 # 3 CPUE
 #_LO HI INIT PRIOR PR_type SD PHASE env-var use_dev dev_minyr dev_maxyr dev_stddev Block Block_Fxn
- 7.94 27.79 15.88 0 -1 99 2 0 0 0 0 0 0 0 # SizeSel_1P_1_Fishery
+ 6.4 27.79 15.88 0 -1 99 2 0 0 0 0 0 0 0 # SizeSel_1P_1_Fishery
  0 6.51 3.254926 0 -1 99 3 0 0 0 0 0 0 0 # SizeSel_1P_2_Fishery
  6.35 25.40 12.7 0 -1 99 2 0 0 0 0 0 0 0 # SizeSel_2P_1_Survey
  0 6.51 3.254926 0 -1 99 3 0 0 0 0 0 0 0 # SizeSel_2P_2_Survey
