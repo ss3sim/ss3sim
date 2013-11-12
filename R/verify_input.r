@@ -36,7 +36,7 @@
 verify_input <- function(model_dir, type = c("om", "em")) {
 
   if (type != "om" & type != "em") {
-    stop(paste("Misspecification of \"type\", read as:", type, 
+    stop(paste("Misspecification of \"type\", read as:", type,
         "-should be either \"om\" or \"em\""))
   }
 
@@ -78,12 +78,12 @@ verify_input <- function(model_dir, type = c("om", "em")) {
     file.loc <- data.frame(f.ctl, f.dat, f.par, f.starter, f.forecast)
     file.types <- c(".ctl file", ".dat file", "ss3.par file", "starter.ss
       file", "forecast.ss file")
-  } 
+  }
   if(type == "em") {
     file.loc <- data.frame(f.ctl, f.starter, f.forecast)
     file.types <- c(".ctl file", "starter.ss file", "forecast.ss file")
   }
-  missing.file <- which(is.na(file.loc)) # Which files are missing 
+  missing.file <- which(is.na(file.loc)) # Which files are missing
   if (length(missing.file) > 0) {
     stop(paste("Missing Files in", type, ":", file.types[missing.file], "\n"))
   }
