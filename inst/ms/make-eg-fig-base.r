@@ -71,7 +71,7 @@ label_col <- "grey40"
 label_cex <- 0.75
 axis_col <- "grey55"
 
-pdf("fig2-new-change-functions-corrected-index.pdf", width = 5, height = 4.5)
+pdf("fig2-20131109.pdf", width = 5, height = 4.5)
 layout(rbind(c(1, 1, 2, 2),
              c(1, 1, 2, 2),
              c(3, 3, 4, 4),
