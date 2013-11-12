@@ -26,7 +26,7 @@
 #' running the simulation model. This can be necessary on certain
 #' computers where file writing can be slightly delayed. For example,
 #' on computer where the files are written over a network connection.
-#' If the output files haven't finished writing before R starts
+#' If the output files haven't finished writing before \R starts
 #' looking for the output then the simulation will crash with an
 #' error about missing files. The default value is set to \code{0.01}
 #' seconds, just to be safe.
@@ -42,7 +42,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
   ## input checking:
   admb_options <- sanitize_admb_options(admb_options, "-nohess")
   admb_options <- sanitize_admb_options(admb_options, "-noest")
-    
+
   os <- .Platform$OS.type
 
   if(is.null(ss3path)) ss3path <- ""
@@ -51,9 +51,9 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
 
   for(sc in scenarios) {
     for(it in iterations) {
-      print(paste0("Running ", type, " for scenario: ", sc, "; iteration: ", it)) 
+      print(paste0("Running ", type, " for scenario: ", sc, "; iteration: ", it))
       if(os == "unix") {
-        system(paste0("cd ", pastef(sc, it, type), ";", ss3path, "SS3 ", 
+        system(paste0("cd ", pastef(sc, it, type), ";", ss3path, "SS3 ",
            ss_em_options, " ", admb_options), ignore.stdout = ignore.stdout, ...)
       } else {
         wd <- getwd()
@@ -64,7 +64,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
       }
     }
   }
-  Sys.sleep(admb_pause) 
+  Sys.sleep(admb_pause)
 }
 
 
@@ -81,7 +81,7 @@ sanitize_admb_options <- function(x, exclude = "-nohess") {
   x_split <- strsplit(x, " ")[[1]]
   x_split_g <- grep(exclude, x_split)
   if(sum(x_split_g) > 0) {
-    warning(paste("Removed admb_option", x_split[x_split_g])) 
+    warning(paste("Removed admb_option", x_split[x_split_g]))
     x_split_clean <- x_split[-x_split_g]
   } else {
     x_split_clean <- x_split
