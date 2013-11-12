@@ -1,18 +1,18 @@
 Package: ss3sim
 Type: Package
 Title: Generalized stock-assessment simulation with Stock Synthesis
-Version: 0.7.3
-Date: 2013-11-05
+Version: 0.7.4
+Date: 2013-11-12
 Authors@R: c(person("Sean", "Anderson", email =
     "sean@seananderson.ca", role = c("aut", "cre")),
-    person("Curry", "Cunningham", role = "aut"),
-    person("Felipe", "Hurtado-Ferro", role = "aut"),
     person("Kelli", "Johnson", role = "aut"),
-    person("Roberto", "Licandeo", role = "aut"),
-    person("Carey", "McGilliard", role = "aut"),
     person("Cole", "Monnahan", role = "aut"),
     person("Kotaro", "Ono", role = "aut"),
-    person("Juan", "Valero", role = "aut"))
+    person("Juan", "Valero", role = "aut"),
+    person("Curry", "Cunningham", role = "ctb"),
+    person("Felipe", "Hurtado-Ferro", role = "ctb"),
+    person("Roberto", "Licandeo", role = "ctb"),
+    person("Carey", "McGilliard", role = "ctb"))
 Author: Sean Anderson <sean@seananderson.ca>
 Maintainer: Sean C. Anderson <sean@seananderson.ca>
 Description: The ss3sim package develops a framework for conducting stock
