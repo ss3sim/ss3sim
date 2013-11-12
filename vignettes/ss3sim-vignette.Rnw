@@ -1,5 +1,5 @@
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{An introduction to ss3sim for stock-assessment simulation}
+%\VignetteIndexEntry{An introduction to ss3sim for stock assessment simulation testing}
 
 % Text width of 68 for the examples.
 % To make version control more useful:
@@ -22,6 +22,14 @@
 \bibpunct{(}{)}{;}{a}{}{;}
 \newcommand{\Vof}[1]{\mathrm{Var}\left[#1 \right]}
 \newcommand{\Eof}[1]{\mathrm{E}\left[ #1 \right]}
+
+\usepackage[dvipsnames,svgnames,x11names,hyperref]{xcolor}
+%\usepackage[usenames,dvipsnames]{color}
+\usepackage{hyperref}
+\hypersetup{colorlinks,breaklinks,
+allcolors=MidnightBlue
+}
+
 \begin{document}
 
 <<set-knitr-options, echo=FALSE>>=
@@ -32,7 +40,8 @@ opts_chunk$set(warning=FALSE, message=FALSE, tidy=FALSE, refresh=TRUE)
 opts_chunk$set(dev = 'pdf')
 @
 
-\title{An introduction to \texttt{ss3sim} for\\stock-assessment simulation}
+\title{An introduction to \texttt{ss3sim}, an \texttt{R} package for\\
+  stock assessment simulation testing\\with Stock Synthesis}
 \author{
   Sean C. Anderson\thanks{sean@seananderson.ca; Department of Biological
   Sciences, Simon Fraser University, Burnaby BC, V5A 1S6, Canada}
@@ -45,10 +54,10 @@ opts_chunk$set(dev = 'pdf')
   \and
   Kotaro Ono\footnotemark[2]
   \and
-  Juan L. Valero\footnotemark[2] \thanks{Center for the Advancement of
-  Population Assessment Methodology, Scripps Institution of Oceanography, La
-  Jolla, CA 92037, USA}
+  Juan L. Valero\thanks{Center for the Advancement of Population Assessment
+  Methodology, (CAPAM), 8901 La Jolla Shores Drive, La Jolla, CA 92937, USA}
   }
+
 \date{}
 \maketitle
 
@@ -61,15 +70,24 @@ opts_chunk$set(dev = 'pdf')
 \clearpage
 \section{Installing the \texttt{ss3sim} \texttt{R} package}
 
-The package can be installed with:
+\texttt{ss3sim} requires \texttt{R} version 3.0.0 or greater.
+The package can be run on OS X, Windows, or Linux. 
+Eventually \texttt{ss3sim} will be submitted to CRAN. 
+In the meantime, it can be installed with the following code:
 
 <<install-and-load, eval=FALSE>>=
-# dependencies if needed:
+# Dependencies if needed:
 install.packages(c("r4ss", "plyr", "gtools", "ggplot2", "lubridate",
   "reshape2"))
-# install devtools to install ss3sim directly from GitHub:
+
+# If you would like to run simulations in parallel:
+install.packages("doParallel", "foreach")
+
+# Install devtools to install ss3sim directly from GitHub:
 install.packages("devtools")
-devtools::install_github("ss3sim", "seananderson")
+
+# Install ss3sim:
+devtools::install_github("ss3sim", username = "seananderson")
 @
 
 \noindent
@@ -77,7 +95,7 @@ You can read the help files and access this vignette again with:
 
 <<help, eval=FALSE>>=
 help(package = "ss3sim")
-vignette("ss3sim-vignette")
+vignette("ss3sim-vignette", package = "ss3sim")
 @
 
 \noindent
@@ -90,9 +108,9 @@ See Section \ref{sec:path} for details.
 
 \section{An overview of the \texttt{ss3sim} simulation structure}
 
-\texttt{ss3sim} is an \texttt{R} package that is meant to make it relatively quick and easy
+\texttt{ss3sim} is an \texttt{R} package to make it relatively quick and easy
 to run simulations with the 3rd version of Stock Synthesis, \texttt{SS3}.
-The package consists of a series of functions
+The package consists of a series of low-level functions
 that facilitate manipulating \texttt{SS3} configuration files,
 running \texttt{SS3} models, and combining the output.
 \texttt{ss3sim} also contains some wrapper functions
@@ -111,8 +129,8 @@ and use them as part of your own flexible simulation.
 
 The \texttt{ss3sim} package is set up assuming there is
 an established base-case operating model (OM) and estimation model (EM) to
-work with. The \texttt{ss3sim} package comes with three generic built in
-models that can be used as is, modified, or replaced.%
+work with. The \texttt{ss3sim} package comes with three generic built-in
+model setups that can be used as is, modified, or replaced.%
 \footnote{See Section \ref{sec:modify} for details on these models and how to
 modify them. See Appendices \ref{sec:om-setup} and \ref{sec:em-setup} for
 details on creating your own OM and EMs.}
@@ -140,17 +158,19 @@ In both cases, nothing more and nothing less.
 The names of the \texttt{.ctl} and \texttt{.dat} files are not important.
 The package functions will rename them after they are copied to appropriate folders.
 These files should be derived from \texttt{.ss\_new} files but with file extensions as shown above.
-It's important to use \texttt{.ss\_new} files so the files have consistent formatting.
+It is important to use \texttt{.ss\_new} files so the files have consistent formatting.
 Many of the functions in this package depend on that formatting.
 
 To obtain \texttt{.ss\_new} files,
 open a command window in the OM and EM folders
-and type \texttt{ss3}.
+and type \texttt{ss3} to run the models.
 Once the model is finished running,
-remove the \texttt{.ss\_new} file extension from the files needed
+it will generate a number of files, including \texttt{.ss\_new} files.
+Remove the \texttt{.ss\_new} file extension from the files needed
 and add the appropriate file extension.
 
 \subsection{Cases and scenarios}
+\label{case-parsing}
 
 The high-level wrapper function \texttt{run\_ss3sim}
 uses unique case identifiers (IDs) that combine to create unique scenarios.
@@ -160,13 +180,13 @@ retrospective (R),
 and any other letter describing a time varying case
 (e.g.\ M for natural mortality, S for selectivity, or G for growth).
 These case IDs are followed by a three-letter species identifier.
-It's important to use three letters
+It is important to use three letters
 because the functions assume that the last three letters
 represent a unique identifier.
 The different versions of each case are identified with numbers.
 For example, the base-case scenario for a cod stock might be:
 \texttt{D0-E0-F0-M0-R0-cod}.
-The order of the letters doesn't matter,
+The order of the cases does not matter,
 as long as they are used consistently.
 
 \texttt{ss3sim} relies on a set of plain text files to control the simulation.
@@ -191,11 +211,12 @@ The default settings create these files:
 \item
   \texttt{lcomp0-spp.txt} (controlled by the \texttt{D} (data) case)
 \item
-  \texttt{X0-spp.txt} (for a time-varying parameter)
+  \texttt{X0-spp.txt} (for a time-varying parameter X, where X could be any time-varying case letter)
 \end{enumerate}
 
 After running \texttt{create\_argfiles()},
-look in your working directory for the template files.
+look in your working directory for the template input files.\footnote{
+You can use \texttt{getwd()} to see your current working directory or \texttt{setwd()} to set a different working directory.}
 Change the case ID number (defaults to \texttt{0})
 and the species identifier to a three letter identifier.
 For example, you might use \texttt{cod}, \texttt{sar}, or \texttt{fla}
@@ -216,21 +237,21 @@ For example, see \texttt{?change\_f}.
 You can use any simple \texttt{R} syntax to declare argument values.
 For example,
 \texttt{c(1, 2, 4)}, or \texttt{seq(1, 100)}.
-Character objects don't need to be quoted as long as they are one word,
-but can be if you'd like.
+Character objects do not need to be quoted as long as they are one word,
+but can be if you would like.
 However, be careful not to use the delimiter (set up as a semicolon)
 anywhere else in the file besides to denote columns.
 You can add comments after any \texttt{\#} symbol.
 Internally, the functions evaluate in \texttt{R}
 any entries that have no character values (e.g.\ \texttt{1:100}),
-or have an alpha-numeric character followed by a \texttt{(}.
+or have an alpha-numeric character followed by an opening parenthesis \texttt{(}.
 Anything that is character only or has character mixed with numeric
-but doesn't have the regular expression \texttt{"{[}A-Za-z0-9{]}("}
+but does not have the regular expression \texttt{"{[}A-Za-z0-9{]}("}
 gets turned into a character argument.
 (\texttt{NA} and \texttt{NULL} are special cases that are also passed on directly.)
 
 Putting that all together,
-here's what an example \texttt{F1-cod.txt} file might look like:
+below is what an example \texttt{F1-cod.txt} file might look like:
 
 \begin{verbatim}
 years; 1913:2012
@@ -247,15 +268,17 @@ of biomass \citep{methot2011}.
 The high-level wrapper function \texttt{run\_ss3sim}
 allows users to specify whether or not they would
 like to use the bias adjustment routine built into the package
-by setting \texttt{bias\_adjust} to \texttt{TRUE} or \texttt{FALSE}.
+by setting the argument \texttt{bias\_adjust} to \texttt{TRUE} or \texttt{FALSE}.
 If \texttt{TRUE}, the function runs \texttt{bias\_nsim} replicates
 for each scenario (located in the subfolder \texttt{bias}
 within a scenario folder) and then averages
 the bias-adjustment parameter estimates.
-If a bias adjustment run fails to converge,
-or the Hessian is not invertible,
-the parameter estimates from that run are ignored.
-A minimum threshold of 80\% converged bias adjustment runs
+The default number of bias-adjustment replicates is five.
+If a bias-adjustment replicate fails to converge 
+(checked by identifying whether the Hessian was invertible),
+the parameter estimates from that replicate are ignored.
+A minimum threshold of 80\% converged bias-adjustment replicates
+(adjustable via the \texttt{conv\_crit} argument)
 is used to ensure reliable parameter estimates.
 The mean bias adjustment runs are then used in the EM
 for all subsequent ``iterations''
@@ -264,14 +287,15 @@ within that scenario.
 We assume bias adjustment parameters applicable
 to all iterations within the scenario are more likely
 to be found by averaging across multiple sets of parameters.
+
 The bias adjustment process creates several files in the \texttt{bias} folder
-(for each scenario) which can be examained by the user.  \texttt{AdjustBias.DAT}
-contains the calculated adjustment parameters for each bias run, and
+(for each scenario) which can be examined by the user.  \texttt{AdjustBias.DAT}
+contains the calculated adjustment parameters for each bias replicate, and
 \texttt{AvgBias.DAT} contains the average of these estimates which are used in
 all subsequent simulations for that scenario. Individual plots for each
-successful bias adjustment run are also created.
+successful bias adjustment replicate are also created.
 If \texttt{bias\_adjust} is set to \texttt{FALSE},
-no bias adjustment runs are executed and no bias adjustment is performed.
+no bias adjustment replicates are executed and no bias adjustment is performed.
 
 \subsection{Output file structure}
 
@@ -287,8 +311,8 @@ The folder structure looks like:
   ...
 \end{verbatim}
 
-The integer values after the scenario ID are the different iterations, the
-number of which are run is specified by the user. If you are using bias
+The integer values after the scenario ID represent different iterations; the total
+number of iterations run are specified by the user. If you are using bias
 adjustment (\texttt{bias\_adjust = TRUE}) then there will be some additional
 folders.  In that case the folders will look like:
 
@@ -308,24 +332,24 @@ folders.  In that case the folders will look like:
 Note that the OM and EM folders will be renamed
 \texttt{om} and \texttt{em} within each iteration,
 the OM and EM are checked
-to make sure they contain the minimal files (as listed above),
+to make sure they contain the minimal files (as listed above in Section~\ref{case-parsing}),
 the filenames will be all lowercase,
 the data file is renamed \texttt{ss3.dat},
 the control files are renamed \texttt{om.ctl} or \texttt{em.ctl},
 and the starter and control files are adjusted
 to reflect these new file names.
 The functions in this package
-assume you've set your working directory in \texttt{R}
+assume you have set your working directory in \texttt{R}
 to be the base folder where you will store the scenario folders.
 
 \section{An example simulation with \texttt{ss3sim}}
 
 As an example, we will run a 2x2 simulation design in which we test
-(1) the effect of high and low research survey effort and
+(1) the effect of high and low precision on the index of abundance research survey and
 (2) the effect of fixing versus estimating natural mortality (\textit{M}).
-All of the files for this example are contained
+All of the required files for this example are contained
 within the \texttt{ss3sim} package.
-To start, we'll locate three sets of folders:
+To start, we will locate three sets of folders:
 the folder with the plain text case files,
 the folder with the OM,
 and the folder with the EM.
@@ -341,31 +365,33 @@ em <- paste0(d, "/models/cod-em")
 See the folder \texttt{ss3sim/inst/extdata/eg-cases}
 inside the \texttt{ss3sim} source code
 for all the case files that are used in this example simulation.
-You can either download the source code
+You can either download the source code 
+from \url{https://github.com/seananderson/ss3sim}
 or find this folder at the location contained
 in the \texttt{case\_folder} object defined
-in the previous chunk of \texttt{R} code.
+in the block of \texttt{R} code above this paragraph.
 
 \subsection{Creating the case files}
 
 We will base the simulation around the base-case files created
 for a cod-like species in the papers
-\citet{ono2013} and \citet{johnson2013}.
+\citet{ono2013} and \citet{johnson2013},
+both of which used the \texttt{ss3sim} package.
 You can refer to these papers for details on how the models were set up.
 
 If we were starting from scratch,
 we would run the function \texttt{create\_argfiles()},
 which would create a default set of configuration files
 in our \texttt{R} working directory.
-Instead we'll start with the configuration files from those papers.
+Instead we will start with the configuration files from those papers.
 
-To investigate the effect of research survey effort,
+To investigate the effect of different levels of precision on the survey index of abundance,
 we will manipulate the argument \texttt{sds\_obs}
 that gets passed to \texttt{change\_index}.
 This argument ultimately refers to the standard error
 on the log(index) value, as defined in \texttt{SS3}.
-In case 0, we'll specify the standard deviation at 0.1
-and in case 1 we'll increase the standard deviation to 0.4.
+In case 0, we will specify the standard deviation at 0.1
+and in case 1 we will increase the standard deviation to 0.4.
 We can do this by including the line: \texttt{sds\_obs; 0.1}
 in the file \texttt{D0-cod.txt} and the line: \texttt{sds\_obs; 0.4}
 in the file \texttt{D1-cod.txt}.
@@ -384,21 +410,23 @@ the model), \texttt{2} in
 \texttt{codOM.dat} refers to the survey fleet. We then run our survey from
 1974 to 2012 with a standard error on the log(survey index) of 0.1.
 
-We won't describe the length or age composition sampling here in detail, but
+We will not describe the length or age composition sampling here in detail, but
 you can refer to the help files \texttt{?change\_lcomp} and
 \texttt{?change\_agecomp} along with the case files included in the package
 data. Also see Section \ref{sec:comps} where we describe the theory behind the
 age- and length-composition sampling in \texttt{ss3sim}.
 
 To investigate the effect of fixing versus estimating \textit{M},
-we'll manipulate the argument \texttt{natM\_val} that gets passed to \texttt{change\_e}.
+we will manipulate the argument \texttt{natM\_val} that gets passed to \texttt{change\_e}.
 The first entry of \texttt{natM\_val} is the value which \textit{M} is fixed or
 initialized at and the second refers the phase.
-In case 0, we'll set the phase in which \textit{M} is estimated
-to \texttt{-1} (any negative number will work) and use the argument \texttt{NA}
+In case 0, we will set the phase in which \textit{M} is estimated
+to \texttt{-1} (any negative phase number will tell \texttt{SS3} 
+to not estimate a particular parameter) 
+and use the argument \texttt{NA}
 to fix \textit{M} at the true value (i.e. do not modify it from what is in the
 OM).
-In case 1, we'll estimate \textit{M} in
+In case 1, we will estimate \textit{M} in
 phase \texttt{3} and initialize the estimation of \textit{M} at \texttt{0.20}.
 We can do this by including the line: \texttt{natM\_val; c(NA, -1)}
 in the file \texttt{E0-cod.txt}
@@ -418,14 +446,14 @@ par_phase;          -1
 forecast_num;       0
 \end{verbatim}
 
-Since we won't be running a retrospective analysis
+Since we will not be running a retrospective analysis
 in this example, this will be our \texttt{R0-cod.txt} file:
 
 \begin{verbatim}
 retro_yr; 0
 \end{verbatim}
 
-We'll set the fishing mortality $F$ to a constant level
+We will set the fishing mortality $F$ to a constant level
 at $F_\mathrm{MSY}$ ($F$ at maximum sustainable yield)
 from when the fishery starts (at 25 years)
 until the end of our simulation (100 years).
@@ -437,7 +465,7 @@ years_alter; 1913:2012
 fvals;       c(rep(0,25), rep(0.114,75))
 \end{verbatim}
 
-Although we don't have any time-varying processes in our example simulation,
+Although we do not have any time-varying processes in this example simulation,
 we include \texttt{M} case files
 in which we describe \textit{M} as stationary at a constant value (\texttt{M0-cod.txt}):
 
@@ -447,17 +475,18 @@ param;         NatM_p_1_Fem_GP_1
 dev;           rep(0, 100)
 \end{verbatim}
 
-Simply by changing the deviations from a vector of zeros,
+Simply by changing the deviations from a vector of zeros 
+to any vector pattern of deviations,
 we could add time-varying \textit{M}.
 In Section \ref{sec:time-varying} we describe how time-varying parameters are unique in \texttt{ss3sim} and how you can make any parameter
 described in \texttt{SS3} time varying using this approach.
 
 \subsection{Checking the case files}
 
-It's a good idea to check that the case files
-are manipulating the \texttt{SS3} model files as we intended.
+It is a good idea to check that the case files
+are manipulating the \texttt{SS3} model files as intended.
 One way we can do this is by
-running the \texttt{change} functions directly on the SS3 model files
+running the \texttt{change} functions directly on the \texttt{SS3} model files
 using the arguments specified within the case files
 and inspecting the modified \texttt{SS3} files.
 Another way is to run a single iteration of your simulation
@@ -478,13 +507,15 @@ run_ss3sim(iterations = 1, scenarios =
 \noindent
 And then check the \texttt{SS3} files that are created.
 
-\subsection{Running deterministic simulations to check the models for
-bias}
+\subsection{Self testing: deterministic simulations to check the models for bias}
 \label{sec:deterministic}
 
-We'll run some simulations to check our model for bias when process noise and
+Self testing is a crucial step of any simulation testing study.
+One way to accomplish this is to set up an EM that is the same as the OM and including minimal error.
+
+We will run some simulations to check our EM for bias when process and
 observation error are minimized.
-To do this, we'll start by setting up a 100 row (number of years) by 20 column
+To do this, we will start by setting up a 100 row (number of years) by 20 column
 (number of iterations) matrix of recruitment deviations, where all values are
 set to zero.
 
@@ -492,11 +523,11 @@ set to zero.
 recdevs_det <- matrix(0, nrow = 100, ncol = 20)
 @
 
-Then we'll set up case ``estimation'' files in which the
+Then we will set up case ``estimation'' files in which the
 initialized values of the recruitment deviation
 standard deviations, \texttt{SR\_sigmaR},
 are set to the nominal level of \texttt{0.001}.
-We'll name these files \texttt{E100-cod.txt} and \texttt{E101-cod.txt}.
+We will name these files \texttt{E100-cod.txt} and \texttt{E101-cod.txt}.
 In the case files, the key element is setting
 \texttt{par\_name = SR\_sigmaR} (the SS parameter name) and \texttt{par\_int = 0.001} (the initial value).
 The arguments \texttt{par\_name} and \texttt{par\_int} are set up
@@ -529,7 +560,7 @@ sds_obs; list(0.001)
 \end{verbatim}
 
 When we run the simulations,
-we'll pass our deterministic recruitment deviations
+we will pass our deterministic recruitment deviations
 to the function \texttt{run\_ss3sim}.
 Running 20 iterations should be enough
 to identify whether our models are performing as we expect.
@@ -572,12 +603,14 @@ The package contains a set of normally-distributed recruitment deviations,
 with a mean of \texttt{-0.5} and a standard deviation of \texttt{1}
 (bias-corrected standard-normal deviations).
 To use the pre-specified deviations
-remove the argument \texttt{user\_recdevs} from \texttt{run\_sssim}.
+remove the argument \texttt{user\_recdevs} from \texttt{run\_ss3sim}.
 Process error will now be unique for each iteration but consistent across scenarios
 for a specific iteration, to facilitate comparison between scenarios.
 
-We'll only run 50 iterations here to save time and keep the package size
-down, but you would likely want to run many more iterations ($\ge 100$), perhaps testing
+We will only run 100 iterations here to save time 
+and keep the package size down, 
+but in a real simulation testing study 
+you may want to run many more iterations, perhaps testing
 how many iterations are required before the key results stabilize.
 
 <<stochastic-runs, eval=FALSE>>=
@@ -590,13 +623,13 @@ run_ss3sim(iterations = 1:100, scenarios =
   em_model_dir = em, bias_adjust = TRUE)
 @
 
-\subsection{Reading in the output and plotting the data}
+\subsection{Reading in the output and plotting the results}
 
 The function \texttt{get\_results\_all} reads in a set of scenarios
 and combines the output into two \texttt{.csv} files:
 \texttt{ss3sim\_scalar.csv} and \texttt{ss3sim\_ts.csv}. The ``scalar'' file
-contains values for which there is a single value (e.g.\ MSY) and the ``ts''
-file refers to values for which there are time series available (e.g.\ biomass
+contains values for which there is a single estimated value (e.g.\ MSY) and the ``ts''
+file refers to values for which there are time series of estimates available (e.g.\ biomass
 for each year). The column names refer to the output from \texttt{SS3}, so it
 can be useful to consult the \texttt{SS3} manual for details.
 
@@ -611,7 +644,7 @@ get_results_all(user_scenarios =
 @
 
 \noindent
-We'll read in the \texttt{.csv} files:
+We will read in the \texttt{.csv} files:
 
 <<read-output, eval=FALSE>>=
 scalar_dat <- read.csv("ss3sim_scalar.csv")
@@ -619,7 +652,7 @@ ts_dat <- read.csv("ss3sim_ts.csv")
 @
 
 \noindent
-Or if you'd like to follow along with the rest of the vignette
+Or if you would like to follow along with the rest of the vignette
 without running the simulations above,
 you can load a saved version of the output:
 
@@ -629,7 +662,7 @@ load("scalar_dat.rda")
 @
 
 \noindent
-First, we'll calculate some useful values in new columns and separate the
+First, we will calculate some useful values in new columns and separate the
 deterministic from the stochastic simulation runs:
 
 <<transform-output>>=
@@ -656,8 +689,8 @@ ts_dat_sto <- subset(ts_dat, E %in% c("E0", "E1"))
 @
 
 \noindent
-Now we'll turn the scalar data into long-data format so we can make a
-multipanel plot with \texttt{ggplot2}.
+Now we will turn the scalar data into long-data format so we can make a
+multipanel plot with the \texttt{R} package \texttt{ggplot2}.
 
 <<reshape-scalars>>=
 scalar_dat_long <- reshape2::melt(scalar_dat[,c("scenario", "D", "E",
@@ -669,7 +702,7 @@ scalar_dat_long <- plyr::rename(scalar_dat_long,
 @
 
 \noindent
-Now let's look at boxplots of the deterministic model runs.
+Now we can create boxplots of the deterministic model runs. The following code produces Figure~\ref{fig:relative-error-boxplots-det}.
 
 <<relative-error-boxplots-det, fig.height=7, fig.width=5, out.width="4in", cache=TRUE, fig.cap="Relative error box plots for deterministic runs. In case E100, \\textit{M} is fixed at the historical value; in E101 we estimate \\textit{M}. In case D2, the standard deviation on the survey index observation error is 0.4. In case D1, the standard deviation is quartered representing an increase in survey sampling effort.">>=
 library(ggplot2)
@@ -686,12 +719,16 @@ p <- ggplot(subset(scalar_dat_long, E %in% c("E100", "E101") &
 print(p)
 @
 
-\noindent
 Let's look at the relative error in estimates of spawning biomass.
-We'll colour the time series according to the maximum gradient.
+We will colour the time series according to the maximum gradient.
 Small values of the maximum gradient (approximately 0.001 or less)
-indicate that convergence is likely.
-Larger values (greater than 1) indicate that convergence is unlikely.
+indicate that model convergence is likely.
+Larger values (greater than 1) indicate that model convergence is unlikely.
+Results of individual iterations are jittered around the vertical axis 
+to aid in visualization.
+The following three blocks of code produce
+Figures~\ref{fig:plot-sto-ts}, \ref{fig:ssb-ts-plots}, 
+and \ref{fig:relative-error-boxplots-sto}.
 
 <<plot-sto-ts, fig.height=5, fig.width=7, fig.cap="Time series of relative error in spawning stock biomass.">>=
 library(ggplot2)
@@ -745,13 +782,15 @@ log transform of the base parameter using the following equation:
   \log(q'_{y}) = \log(q) + link * env_{y}.
 \end{equation}
 \noindent
-The vector of deviates must contain one entry for every year of the simulation
-and can be specified as zero for years in which the parameter does not deviate.
+The vector of deviates must contain one value for every year of the simulation
+and can be specified as zero for years in which the parameter does not deviate 
+from the base parameter value.
 
-Currently, the function only works to add time varying properties
-to a time invariant parameter.
+Currently, \texttt{change\_tv} function 
+only works to add time-varying properties
+to a time-invariant parameter.
 It cannot alter the properties of parameters that already vary with time.
-Additionally, SS3 does not allow more than one stock recruit parameter
+Additionally, \texttt{SS3} does not allow more than one stock recruit parameter
 to vary with time. Therefore, if the \texttt{.ctl} file already has a
 stock recruit parameter that varies with time and you try to implement another,
 the function will fail.
@@ -760,8 +799,10 @@ Since the \texttt{change\_tv} function can be used for a number of
 purposes, it interacts differently with the case files than the other
 \texttt{change} functions.
 To pass arguments to \texttt{change\_tv} through
-\texttt{run\_ss3sim}: (1) create a case file with an arbitrary letter
-not used elsewhere (i.e.\ anything but D, E, F, or R) and (2) include the line
+\texttt{run\_ss3sim} you need to: 
+(1) create a case file with an arbitrary letter
+not used elsewhere (i.e.\ anything but D, E, F, or R) and 
+(2) include the line:
 \begin{verbatim}
 function_type; change_tv
 \end{verbatim}
@@ -770,14 +811,17 @@ in your case file. For example,
 you might want to use M for natural mortality, S for selectivity,
 or G for growth.
 
-\section{Modifying the included operating and estimation models}
+\section{Modifying the operating and estimation models included in the \texttt{ss3sim} package}
 \label{sec:modify}
 
-\texttt{ss3sim} comes with three built-in \texttt{SS3} operating and estimation models: a cod-like (slow-growing and long-lived), flatfish-like (fast-growing and intermediate-lived), and sardine-like (fast-growing and short-lived).
-These models are based on North Sea cod (\textit{Gadus morhua}) (R. Methot, pers.\ comm.), yellowtail flounder (\textit{Limanda ferruginea}) (R. Methot, pers.\ comm.), and California sardine (\textit{Sardinops caeruleus}) \citep{hill2012}.
+\texttt{ss3sim} comes with three built-in \texttt{SS3} operating and estimation model setups: a cod-like (slow-growing and long-lived), flatfish-like (fast-growing and intermediate-lived), and sardine-like (fast-growing and short-lived).
+These model setups are based on North Sea cod (\textit{Gadus morhua}) (R. Methot, pers.\ comm.), yellowtail flounder (\textit{Limanda ferruginea}) (R. Methot, pers.\ comm.), and Pacific sardine (\textit{Sardinops sagax caeruleus}) \citep{hill2012}.
 Further details on these models are available in \citep{johnson2013} and \citep{ono2013}.
 These models were stripped down and simplified to make them more generic for simulation testing.
-In doing this, we removed many of the subtle features of the model.
+In doing this, we removed many of the subtle features of the model setups.
+
+TODO FINISHED EDITING HERE
+
 While these models are generic and cover a wide range of life history types, they may not be suitable for all users.
 Therefore, in this section, we outline strategies for modifying the existing \texttt{SS3} models.
 
@@ -846,7 +890,7 @@ paste0(d, "/models")
 
 \section{Using \texttt{ss3sim\_base} directly}
 
-If you'd prefer, you can skip
+If you would prefer, you can skip
 setting up the case files
 and use \texttt{ss3sim\_base} directly
 by passing lists of arguments.
@@ -858,7 +902,7 @@ without any references to the files that need to be modified.
 In this case,
 the scenario ID only serves the function
 of identifying the output folder name
-and could technically be any character string you'd like.
+and could technically be any character string you would like.
 
 For example,
 we could have run the scenario \texttt{D1-E0-F0-R0-M0-cod}
@@ -906,7 +950,7 @@ To run a simulation in parallel,
 you need to register multiple cores or clusters and
 set \texttt{parallel = TRUE} in \texttt{run\_ss3sim}.
 For example, we could have run the previous example in parallel with the following code.
-First, we'll register four cores:
+First, we will register four cores:
 
 <<parallel-one>>=
 require(doParallel)
@@ -974,11 +1018,11 @@ sudo cp ~/Downloads/SS3 /usr/bin/
 You will need to use \texttt{sudo}
 and enter your password after to have permission
 to move a file to a folder like \texttt{/usr/bin/}.
-If you've previously modified your path to add a non-standard location
+If you have previously modified your path to add a non-standard location
 for the \texttt{SS3} binary,
 you may need to also tell \texttt{R} about the new path.
 The path that \texttt{R} sees may not include additional paths
-that you've added through a configuration file like \texttt{.bash\_profile}.
+that you have added through a configuration file like \texttt{.bash\_profile}.
 You can add to the path that \texttt{R} sees
 by including a line like this in your \texttt{.Rprofile} file.
 (This is an invisible file in your home directory.)
@@ -1007,7 +1051,7 @@ To add it to your path:
   Choose \texttt{Edit environment variables for your account}
   under Control Panel
 \item
-  Click on \texttt{PATH} if it exists, create it if doesn't exist
+  Click on \texttt{PATH} if it exists, create it if does not exist
 \item
   Choose \texttt{PATH} and click edit
 \item
