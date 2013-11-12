@@ -51,8 +51,8 @@
   parses whether the user is on Unix or Windows and calls
   the binary correctly. This lower-level function is meant
   to be called by higher level functions such as
-  \code{\link{run_ss3sim}}, \code{\link{ss3sim_base}}, and
-  \code{\link{run_fish600}}.
+  \code{\link{run_ss3sim}}, \code{\link{ss3sim_base}}, or
+  your own custom function.
 }
 \author{
   Sean C. Anderson

@@ -15,8 +15,4 @@
   Take a scenario ID and a case type and return the case
   number
 }
-\examples{
-get_caseval("M2-F1-D1-R1", "M")
-get_caseval("M2-F1-D1-R1", "F")
-}
 

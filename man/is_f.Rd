@@ -11,11 +11,4 @@
   This function takes a character object and checks if it
   looks like an \R function.
 }
-\examples{
-is_f("testing")
-is_f("c(1, 2, 3")
-is_f("seq(1, 10)")
-is_f("NULL")
-is_f("NA")
-}
 
