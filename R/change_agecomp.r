@@ -26,7 +26,7 @@
 #' ## Turn off age comps by specifying fleets=NULL
 #' change_agecomp(infile=infile, outfile="test1.dat",
 #'                fleets=NULL, cpar=c(5,NA), Nsamp=list(100,100),
-#'                years=list(1995, 1995), write_file=T)
+#'                years=list(1995, 1995), write_file=TRUE)
 
 #' ## Generate with a smaller number of fleet taking samples
 #' ex1 <- change_agecomp(infile=infile, outfile="test1.dat", fleets=c(2),
@@ -55,13 +55,16 @@
 #' par(mfrow = c(1,3))
 #' for(samplesize in c(30, 100, 1000)){
 #'     ex4 <- change_agecomp(infile=infile, outfile="test4.dat", fleets=c(1,2),
-#'                           Nsamp=list(samplesize, samplesize), write_file = F,
+#'                           Nsamp=list(samplesize, samplesize),
+#'                           write_file = FALSE,
 #'                           years=list(2000,2000), cpar=c(NA, 1))
 #'     ex5 <- change_agecomp(infile=infile, outfile="test5.dat", fleets=c(1,2),
-#'                           Nsamp=list(samplesize, samplesize), write_file = F,
+#'                           Nsamp=list(samplesize, samplesize),
+#'                           write_file = FALSE,
 #'                           years=list(2000,2000), cpar=c(1, 1))
 #'     ex6 <- change_agecomp(infile=infile, outfile="test6.dat", fleets=c(1,2),
-#'                           Nsamp=list(samplesize, samplesize), write_file = F,
+#'                           Nsamp=list(samplesize, samplesize),
+#'                           write_file = FALSE,
 #'                           years=list(2000,2000), cpar=c(5, 1))
 #'     true <- subset(infile$agecomp, FltSvy==1 & Yr == 2000)[-(1:9)]
 #'     true <- true/sum(true)

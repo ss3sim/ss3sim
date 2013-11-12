@@ -51,13 +51,15 @@
 #' ## Plot distributions for a particular year to compare multinomial
 #' ## vs. overdispersed Dirichlet
 #' temp.list <- temp.list2 <- list()
-#' for(i in 1:100){
+#' for(i in 1:80){
 #'     temp.list[[i]] <-
 #'         change_lcomp(infile=infile, outfile="test1.dat", fleets=c(2), cpar=c(3),
-#'                      Nsamp=list(100), years=list(1995), write_file=F)
+#'                      Nsamp=list(100), years=list(1995),
+#'                      write_file=FALSE)
 #'     temp.list2[[i]] <-
 #'         change_lcomp(infile=infile, outfile="test1.dat", fleets=c(2),
-#'                      cpar=c(NA), Nsamp=list(100), years=list(1995), write_file=F)
+#'                      cpar=c(NA), Nsamp=list(100), years=list(1995),
+#'                      write_file=FALSE)
 #' }
 #' ## Organize the data for plotting
 #' x1 <- reshape2::melt(do.call(rbind, temp.list)[,-(1:6)[-3]], id.vars="FltSvy")
