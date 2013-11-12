@@ -1,3 +1,4 @@
+setwd("~/ss3sim-vignette-0.7.3/")
 library(ss3sim)
 d <- system.file("extdata", package = "ss3sim")
 case_folder <- paste0(d, "/eg-cases")
@@ -7,8 +8,8 @@ em <- paste0(d, "/models/cod-em")
 recdevs_det <- matrix(0, nrow = 100, ncol = 20)
 
 require(doParallel)
-registerDoParallel(cores = 4)
 require(foreach)
+registerDoParallel(cores = 4)
 
 run_ss3sim(iterations = 1:20, scenarios =
   c("D100-E100-F0-R0-M0-cod",
