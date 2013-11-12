@@ -22,7 +22,7 @@
 #' @examples \dontrun{
 #' create_argfiles()
 #' # Some example input lines:
-#' # 
+#' #
 #' # year1; 1990
 #' # years; 1990:2000
 #' # years; c(1980, 1990, 1995)
@@ -32,12 +32,12 @@
 #' @details
 #' The first column in the text files denotes the argument to be
 #' passed to a function. The second argument denotes the value to be
-#' passed. You can use any simple R syntax. For example: \code{c(1, 2,
+#' passed. You can use any simple \R syntax. For example: \code{c(1, 2,
 #' 4)}, or \code{seq(1, 100)} or \code{1:100} or \code{matrix()}.
 #' Character objects don't need to be quoted. However, be careful not
 #' to use your delimiter (set up as a semicolon) anywhere else in the
-#' file besides to denote columns. 
-#' 
+#' file besides to denote columns.
+#'
 #' The function \code{\link{change_tv}} is a special case.
 #' To pass arguments to \code{\link{change_tv}} through a
 #' \code{\link{run_ss3sim}}: (1) create a case file with an arbitrary
@@ -45,7 +45,7 @@
 #' the line \code{function_type; change_tv} in your case file. For
 #' example, you might want to use M for natural mortality, S for
 #' selectivity, or G for growth.
-#' 
+#'
 #' This function (\code{create_argfiles}) automatically adds a line
 #' \code{function_type; change_tv} to the top of a case file
 #' \code{X0-spp.txt} as a starting point for \code{change_tv}.
@@ -53,10 +53,10 @@
 create_argfiles <- function(functions = c("lcomp0-spp" =
     "change_lcomp", "agecomp0-spp" = "change_agecomp", "index0-spp" =
     "change_index", "F0-spp" = "change_f",
-    "R0-spp" = "change_retro", "E0-spp" = "change_e", 
-    "X0-spp" = "change_tv"), ext = ".txt", 
+    "R0-spp" = "change_retro", "E0-spp" = "change_e",
+    "X0-spp" = "change_tv"), ext = ".txt",
     delim = "; ", ignore = c("file", "dir", "make_plot"), ...) {
-  if(!is.character(functions)) 
+  if(!is.character(functions))
     stop("Functions must be a vector of character.")
   for(i in 1:length(functions)) {
     x <- formals(functions[i])
