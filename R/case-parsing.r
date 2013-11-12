@@ -22,9 +22,18 @@ get_args <- function(file) {
     )
 }
 
-#' Check if we should leave as character or convert to another class
+#' Check if a string is a function
+#'
+#' This function takes a character object and checks if it looks like
+#' an \R function.
 #'
 #' @param x A character object
+#' @examples
+#' is_f("testing")
+#' is_f("c(1, 2, 3")
+#' is_f("seq(1, 10)")
+#' is_f("NULL")
+#' is_f("NA")
 is_f <- function(x) {
   if(!is.character(x)) stop("x must be a character")
   fn <- grepl("[a-zA-Z0-9]\\(", x) # is a function
@@ -33,13 +42,14 @@ is_f <- function(x) {
   ifelse(fn | nu | x== "NULL" | x== "NA", TRUE, FALSE)
 }
 
-#' Take a vector of cases and return the case number
+#' Take a scenario ID and a case type and return the case number
 #'
 #' @param scenario A character object with the cases. E.g.
 #' \code{"M1-F1-D1-R1"}
 #' @param case The case you want to extract. E.g. \code{"M"}
-# @examples
-# get_caseval("M2-F1-D1-R1", "M")
+#' @examples
+#' get_caseval("M2-F1-D1-R1", "M")
+#' get_caseval("M2-F1-D1-R1", "F")
 get_caseval <- function(scenario, case) {
   if(!grepl("-", scenario))
     stop("Your case string doesn't contain your delimiter.")
@@ -52,26 +62,26 @@ get_caseval <- function(scenario, case) {
   as.numeric(substr(x[grep(case, x)], 2, 9))
 }
 
-#' Take a scenario ID and return argument lists to pass to functions
+#' Take a scenario ID and return argument lists
 #'
-#' This function calls a number of internal functions to go from a
-#' unique scenario identifier like \code{"D1-E2-F3-M0-R4-cod"} and read the
-#' corresponding input files (like \code{"M0-cod.txt"}) that have two
-#' columns: the first column contains the argument names and the
-#' second column contains the argument values. The two columns should
-#' be separated by a semicolon The output is then returned in a named
-#' list with the intention of passing these to
-#' \code{\link{run_ss3sim}} or \code{\link{ss3sim_base}}.
+#' This function calls a number of internal functions to go from a unique
+#' scenario identifier like \code{"D1-E2-F3-M0-R4-cod"} and read the
+#' corresponding input files (e.g. \code{"M0-cod.txt"}) that have two
+#' columns: the first column contains the argument names and the second
+#' column contains the argument values. The two columns should be
+#' separated by a semicolon. The output is then returned in a named list
+#' with the intention of passing these to \code{\link{run_ss3sim}} or
+#' \code{\link{ss3sim_base}}.
 #'
 #' @param folder The folder to look for input files in.
-#' @param scenario A character object that has the cases separated by
-#' the "-" delimiter. The combination of cases and stock ID is
-#' referred to as a scenario. E.g. \code{"D0-E0-F0-M0-R0-cod"}. See
-#' the Details section.
+#' @param scenario A character object that has the cases separated by the "-"
+#' delimiter. The combination of cases and stock ID is referred to as a
+#' scenario. E.g. \code{"D0-E0-F0-M0-R0-cod"}. See the Details section.
 #' @param ext The file extension of the input files. Defaults to
 #' \code{".txt"}.
-#' @param case_files A named list that relates the case IDs to the
-#' files to read the arguments from. See the Details section.
+#' @param case_files A named list that relates the case IDs (e.g. \code{"D"})
+#' to the files to read the arguments from (e.g. \code{c("index", "lcomp",
+#' "agecomp")}). See the Details section.
 #' @return
 #' A (nested) named list. The first level of the named list refers to
 #' the \code{case_files}. The second level of the named list refers to
@@ -80,12 +90,12 @@ get_caseval <- function(scenario, case) {
 #' column of the input text files).
 #'
 #' @details
-#' Let's start with an example scenario \code{"D0-E1-F0-M0-R0-cod"}.
-#' The single capital letters refer to case IDs. The numbers refer to
-#' the case numbers. The last block of text (\code{cod}) represents
-#' the stock ID (any alphanumeric string of text will work) and is to
-#' help the user identify different "stocks" (intended to represent
-#' different SS3 models).
+#' Let's start with an example scenario \code{"D0-E1-F0-M0-R0-cod"}. The
+#' single capital letters refer to case IDs. The numbers refer to the
+#' case numbers. The last block of text (\code{cod}) represents the
+#' stock ID (any alphanumeric string of text will work) and is to help
+#' the user identify different "stocks" (intended to represent different
+#' SS3 model setups).
 #'
 #' The stock IDs should correspond to how the case files are named and
 #' the case IDs should correspond to the cases described by the
@@ -93,32 +103,34 @@ get_caseval <- function(scenario, case) {
 #' values plus the stock ID. For example \code{list(D = c("index",
 #' "lcomp", "agecomp"))} combined with the stock ID \code{cod} means
 #' that the case \code{D1} will refer to the case files
-#' \code{index-cod.txt, lcomp-cod.txt, agecomp-cod.txt}.   
+#' \code{index-cod.txt, lcomp-cod.txt, agecomp-cod.txt}.
 #'
-#' The case argument plain text files should have arguments in the
-#' first column that should be passed on to functions. The names
-#' should match exactly. The second column (delimited by a semicolon)
-#' should contain the values to be passed to those arguments. Multiple
-#' words should be enclosed in quotes. 
+#' The case argument plain text files should have arguments in the first
+#' column that should be passed on to functions. The names should match
+#' exactly. The second column (delimited by a semicolon) should contain
+#' the values to be passed to those arguments. Multiple words should be
+#' enclosed in quotes.
 #'
-#' You can use any simple R syntax to declare argument values. For
+#' You can use any simple \R syntax to declare argument values. For
 #' example: \code{c(1, 2, 4)}, or \code{seq(1, 100)}, or \code{1:100},
 #' or \code{matrix()}, or \code{NULL}. Character objects don't need to
 #' be quoted, but can be if you'd like. However, be careful not to use
 #' the delimiter (set up as a semicolon) anywhere else in the file
 #' besides to denote columns. You can add comments after any \code{#}
-#' symbol. Internally, the functions evaluate in \code{R} any entries
-#' that have no character values (e.g. \code{1:100}), or have an
-#' alpha-numeric character followed by a \code{(}. Anything that is
-#' character only or has character mixed with numeric but doesn't have
-#' the regular expression \code{"[A-Za-z0-9]("} gets turned into a
-#' character argument. (\code{NA} and \code{NULL} are special cases
-#' that are also passed on directly.)
+#' symbol just like in R.
+#'
+#' Internally, the functions evaluate in \code{R} any entries that have
+#' no character values (e.g. \code{1:100}), or have an alpha-numeric
+#' character followed by a \code{(}. Anything that is character only or
+#' has character mixed with numeric but doesn't have the regular
+#' expression \code{"[A-Za-z0-9]("} gets turned into a character
+#' argument. (\code{NA} and \code{NULL} are special cases that are also
+#' passed on directly.)
 #'
 #' @examples
 #' # Find the example data folders:
-#' d <- system.file("extdata", package = "ss3sim")
-#' case_folder <- paste0(d, "/eg-cases")
+#' case_folder <- system.file("extdata", "eg-cases", package =
+#'   "ss3sim")
 #'
 #' # An example using the cases defined by default:
 #' get_caseargs(case_folder, scenario = "D0-E0-F0-M0-R0-cod")
@@ -132,7 +144,7 @@ get_caseval <- function(scenario, case) {
 #' @export
 
 get_caseargs <- function(folder, scenario, ext = ".txt",
-  case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), 
+  case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"),
     R = "R", E = "E")) {
   case_vals <- names(case_files)
 
@@ -204,4 +216,3 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
 substr_r <- function(x, n){
   substr(x, nchar(x)-n+1, nchar(x))
 }
-
