@@ -22,8 +22,8 @@
 }
 \examples{
 \dontrun{
-d <- system.file("extdata", package = "ss3sim")
-par_file <- paste0(d, "/models/cod-om/ss3.par")
+par_file <- system.file("extdata", "models", "cod-om", "ss3.par",
+  package = "ss3sim")
 change_rec_devs(recdevs_new = rlnorm(100), file_in = par_file,
   file_out = "test.par")
 # Now go look at the deviations after "recdev1:" in test.par in your

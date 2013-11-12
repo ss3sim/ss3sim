@@ -85,8 +85,8 @@
 \examples{
 \dontrun{
 # Without bias adjustment:
-d <- system.file("extdata", package = "ss3sim")
-case_folder <- paste0(d, "/eg-cases")
+case_folder <- system.file("extdata", "eg-cases", package =
+  "ss3sim")
 om <- paste0(d, "/models/cod-om")
 em <- paste0(d, "/models/cod-em")
 

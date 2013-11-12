@@ -86,8 +86,8 @@
 }
 \examples{
 # Find the example data folders:
-d <- system.file("extdata", package = "ss3sim")
-case_folder <- paste0(d, "/eg-cases")
+case_folder <- system.file("extdata", "eg-cases", package =
+  "ss3sim")
 
 # An example using the cases defined by default:
 get_caseargs(case_folder, scenario = "D0-E0-F0-M0-R0-cod")
