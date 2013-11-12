@@ -1,20 +1,42 @@
-#' Copy operating and estimation models while creating folder
+#' Copy the operating and estimation models and create a folder
 #' structure
 #'
 #' @param model_dir A directory containing the operating or estimation
-#' models. Each folder should be named according to a scenario ID.
-#' @param iterations The iterations to copy to. The function will
-#' create the folders as needed.
+#' model. Each folder should be named according to a scenario ID. (See
+#' the vignette \code{vignette("ss3sim-vignette")} or
+#' \code{\link{get_caseargs}} for details on the scenario ID format.)
+#' @param iterations A numeric vector of the iterations to copy to.
+#' The function will create the folders as needed.
 #' @param scenarios Which scenarios to copy to. Supply a vector of
 #' character elements.
 #' @param type Are you copying operating or estimation models? This
 #' affects whether the model folder gets named "om" or "em"
 #' @author Sean Anderson, Kelli Johnson
-#' @examples \dontrun{
-#' dir.create("oms/blockm-cod")
-#' dir.create("oms/blockm-fla")
-#' copy_ss3models(model_dir = "oms", type = "om", iterations = 1:3)
-#' }
+#' @export
+#' @return
+#' A set of nested folders starting with the scenario ID, then the
+#' iterations, then "om" or "em", and then the SS model files.
+#'
+#' @examples
+#' # Locate the package data:
+#' om_folder <- system.file("extdata", "models", "cod-om", package =
+#'   "ss3sim")
+#'
+#' # Copy the operating model:
+#' copy_ss3models(model_dir = om_folder, type = "om", iterations =
+#'   1:3, scenarios = "D0-E0-F0-M0-R0-testing")
+#' # Now look at your working directory in your file system
+#'
+#' # Copy the estimation model with two scenario IDs:
+#' copy_ss3models(model_dir = om_folder, type = "em", iterations = 1:2,
+#'   scenarios = c("D1-E0-F0-M0-R0-testing", "D1-E1-F0-M0-R0-testing"))
+#' # (Note that all the scenario argument does here is affect the
+#' # folder names.)
+#'
+#' # Clean up:
+#' unlink("D0-E0-F0-M0-R0-testing", recursive = TRUE)
+#' unlink("D1-E0-F0-M0-R0-testing", recursive = TRUE)
+#' unlink("D1-E1-F0-M0-R0-testing", recursive = TRUE)
 
 copy_ss3models <- function(model_dir, scenarios,
   iterations = 1:100, type = c("om", "em")) {
@@ -39,6 +61,4 @@ copy_ss3models <- function(model_dir, scenarios,
       }
     }
   }
-
 }
-
