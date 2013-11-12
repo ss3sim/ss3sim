@@ -44,7 +44,7 @@ modifies and runs an estimation model,
 and synthesizes the results.
 The simulations can be run in parallel, speeding computation,
 and the source code is open source
-and free to be modified under a MIT license.
+and free to be modified under an MIT license.
 ss3sim can be easily used to answer questions about, for example, 
 time-varying model misspecification, 
 retrospective patterns, 
@@ -114,12 +114,14 @@ our freely accessible and general SS simulation framework could address.
 ## Design goals of ss3sim
 
 We designed ss3sim to be reproducible, flexible, and rapid.
+
 *Reproducible*: ss3sim allows for the simulation testing structure to be documented
 in R code and plain-text control files.
 It allows for random seeds to be set 
 prior to generating observation and process error making
 simulations are therefore repeatable across computers and operating systems (Windows, OS X, and Linux)
 using freely-available, open-source software.
+
 *Flexible*: ss3sim inherits the flexibility of SS3 and can therefore implement many
 available stock assessment configurations by modifying built-in 
 generic life-history models.
@@ -128,6 +130,7 @@ into comma-separated-value (`.csv`) files
 allowing for the output to be easily processed
 in nearly any statistical software, including R.
 Finally, the ss3sim code is written under an open-source MIT license and can be freely modified.
+
 *Rapid*: ss3sim relies on SS3,
 which uses AD Model Builder as a backend optimization platform ---
 the most rapid and robust optimization software available [@fournier2012].
@@ -139,8 +142,8 @@ across multiple computers or computer cores, thereby accelerating computation.
 ## The general structure of an ss3sim simulation
 
 An ss3sim simulation requires three types of input:
-(1) a base SS3 model describing of the underlying truth, 
-or operating model (OM) in fisheries simulation testing terminology;
+(1) a base SS3 model describing the underlying truth, 
+or operating model (OM) in fisheries simulation terminology;
 (2) a base SS3 model to assess that truth,
 also known as the estimation model or method (EM);
 and (3) a set of plain-text files (case files)
@@ -245,8 +248,6 @@ case_folder <- paste0(d, "/eg-cases")
 
 ## Running the simulations
 
-<!--TODO bias_adjust = recruitment or biomass?-->
-
 It is important to validate a simulation testing framework
 with minimal or no process and observation error 
 to ensure unbiased and consistent recovery of parameters 
@@ -259,7 +260,7 @@ The cod-like model setup has already been validated (Text S1), therefore
 we can now run our simulation scenario.
 We will set `bias_adjust = TRUE`, 
 to enable a procedure that aims to produce mean-unbiased estimates 
-of recruitment despite log-normal recruitment deviations [@methot2011].
+of recruitment and biomass despite log-normal recruitment deviations [@methot2011].
 Although not used in this example,
 we could have run the simulations with parallel processing 
 to substantially reduce computing time (Text S1).
@@ -405,7 +406,6 @@ ss3sim makes it simple
 to incorporate different recruitment deviation structures
 and consider how they affect model performance.
 
-<!--TODO bias adjustment - biomass or recruitment?-->
 *The impact of bias adjustment*:
 Bias adjustment helps assure
 that the estimated recruitment deviations
