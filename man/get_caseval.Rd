@@ -1,6 +1,6 @@
 \name{get_caseval}
 \alias{get_caseval}
-\title{Take a vector of cases and return the case number}
+\title{Take a scenario ID and a case type and return the case number}
 \usage{
   get_caseval(scenario, case)
 }
@@ -12,6 +12,11 @@
   \code{"M"}}
 }
 \description{
-  Take a vector of cases and return the case number
+  Take a scenario ID and a case type and return the case
+  number
+}
+\examples{
+get_caseval("M2-F1-D1-R1", "M")
+get_caseval("M2-F1-D1-R1", "F")
 }
 

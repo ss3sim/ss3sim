@@ -1,6 +1,6 @@
 \name{is_f}
 \alias{is_f}
-\title{Check if we should leave as character or convert to another class}
+\title{Check if a string is a function}
 \usage{
   is_f(x)
 }
@@ -8,7 +8,14 @@
   \item{x}{A character object}
 }
 \description{
-  Check if we should leave as character or convert to
-  another class
+  This function takes a character object and checks if it
+  looks like an \R function.
+}
+\examples{
+is_f("testing")
+is_f("c(1, 2, 3")
+is_f("seq(1, 10)")
+is_f("NULL")
+is_f("NA")
 }
 

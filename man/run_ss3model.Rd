@@ -39,7 +39,7 @@
   on certain computers where file writing can be slightly
   delayed. For example, on computer where the files are
   written over a network connection. If the output files
-  haven't finished writing before R starts looking for the
+  haven't finished writing before \R starts looking for the
   output then the simulation will crash with an error about
   missing files. The default value is set to \code{0.01}
   seconds, just to be safe.}

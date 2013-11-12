@@ -35,7 +35,7 @@
 \details{
   The first column in the text files denotes the argument
   to be passed to a function. The second argument denotes
-  the value to be passed. You can use any simple R syntax.
+  the value to be passed. You can use any simple \R syntax.
   For example: \code{c(1, 2, 4)}, or \code{seq(1, 100)} or
   \code{1:100} or \code{matrix()}. Character objects don't
   need to be quoted. However, be careful not to use your

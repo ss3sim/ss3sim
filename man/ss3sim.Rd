@@ -2,10 +2,10 @@
 \name{ss3sim}
 \alias{ss3sim}
 \alias{ss3sim-package}
-\title{ss3sim: An R package for fisheries stock assessment simulation with
+\title{ss3sim: An \R package for fisheries stock assessment simulation with
 Stock Synthesis}
 \description{
-  The ss3sim R package is designed to facilitate
+  The ss3sim \R package is designed to facilitate
   large-scale, rapid, and reproducible simulation with the
   widely-used Stock Synthesis 3 (SS3) statistical
   catch-at-age stock assessment framework.
@@ -83,6 +83,6 @@ Stock Synthesis}
 
   See the package vignette
   \code{vignette("ss3sim-vignette")} for more extensive
-  explanation of how to use the ss3sim R package.
+  explanation of how to use the ss3sim \R package.
 }
 

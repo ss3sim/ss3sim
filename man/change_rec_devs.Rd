@@ -14,15 +14,21 @@
   \item{file_out}{Output SS3 par file.}
 }
 \description{
-  This function replaces the recdevs in the \code{ss3.par}
-  file with those specified in recdevs_new, as well as a
-  comment (for debugging). It then writes a new file with
-  name \code{file_out} into the working directory.
+  This function replaces the recruitment deviations in the
+  \code{ss3.par} file with those specified in
+  \code{recdevs_new}, as well as a comment (for debugging).
+  It then writes a new file with name \code{file_out} into
+  the working directory.
 }
 \examples{
 \dontrun{
-change_rec_devs(recdevs_new=rlnorm(58), file_out="test.par") ## give it wrong num.years
-change_rec_devs(recdevs_new=rlnorm(57), file_out="test.par") ## give it right ones
+d <- system.file("extdata", package = "ss3sim")
+par_file <- paste0(d, "/models/cod-om/ss3.par")
+change_rec_devs(recdevs_new = rlnorm(100), file_in = par_file,
+  file_out = "test.par")
+# Now go look at the deviations after "recdev1:" in test.par in your
+# working directory.
+unlink("test.par")
 }
 }
 \author{

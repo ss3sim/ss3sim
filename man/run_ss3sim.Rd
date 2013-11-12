@@ -48,9 +48,9 @@
   \code{doParallel}. See the example code below.}
 }
 \value{
-  The output will appear in whatever your current R working
-  directory is. There will be folders named after your
-  scenarios. They will look like this: \itemize{ \item
+  The output will appear in whatever your current \R
+  working directory is. There will be folders named after
+  your scenarios. They will look like this: \itemize{ \item
   \code{D0-E0-F0-M0-R0-cod/bias/1/om} \item
   \code{D0-E0-F0-M0-R0-cod/bias/1/em} \item
   \code{D0-E0-F0-M0-R0-cod/bias/2/om} \item ... \item

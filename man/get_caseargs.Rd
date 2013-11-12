@@ -1,6 +1,6 @@
 \name{get_caseargs}
 \alias{get_caseargs}
-\title{Take a scenario ID and return argument lists to pass to functions}
+\title{Take a scenario ID and return argument lists}
 \usage{
   get_caseargs(folder, scenario, ext = ".txt",
     case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), R = "R", E = "E"))
@@ -17,8 +17,9 @@
   Defaults to \code{".txt"}.}
 
   \item{case_files}{A named list that relates the case IDs
-  to the files to read the arguments from. See the Details
-  section.}
+  (e.g. \code{"D"}) to the files to read the arguments from
+  (e.g. \code{c("index", "lcomp", "agecomp")}). See the
+  Details section.}
 }
 \value{
   A (nested) named list. The first level of the named list
@@ -32,10 +33,10 @@
   This function calls a number of internal functions to go
   from a unique scenario identifier like
   \code{"D1-E2-F3-M0-R4-cod"} and read the corresponding
-  input files (like \code{"M0-cod.txt"}) that have two
+  input files (e.g. \code{"M0-cod.txt"}) that have two
   columns: the first column contains the argument names and
   the second column contains the argument values. The two
-  columns should be separated by a semicolon The output is
+  columns should be separated by a semicolon. The output is
   then returned in a named list with the intention of
   passing these to \code{\link{run_ss3sim}} or
   \code{\link{ss3sim_base}}.
@@ -47,7 +48,7 @@
   The last block of text (\code{cod}) represents the stock
   ID (any alphanumeric string of text will work) and is to
   help the user identify different "stocks" (intended to
-  represent different SS3 models).
+  represent different SS3 model setups).
 
   The stock IDs should correspond to how the case files are
   named and the case IDs should correspond to the cases
@@ -65,22 +66,23 @@
   values to be passed to those arguments. Multiple words
   should be enclosed in quotes.
 
-  You can use any simple R syntax to declare argument
+  You can use any simple \R syntax to declare argument
   values. For example: \code{c(1, 2, 4)}, or \code{seq(1,
   100)}, or \code{1:100}, or \code{matrix()}, or
   \code{NULL}. Character objects don't need to be quoted,
   but can be if you'd like. However, be careful not to use
   the delimiter (set up as a semicolon) anywhere else in
   the file besides to denote columns. You can add comments
-  after any \code{#} symbol. Internally, the functions
-  evaluate in \code{R} any entries that have no character
-  values (e.g. \code{1:100}), or have an alpha-numeric
-  character followed by a \code{(}. Anything that is
-  character only or has character mixed with numeric but
-  doesn't have the regular expression \code{"[A-Za-z0-9]("}
-  gets turned into a character argument. (\code{NA} and
-  \code{NULL} are special cases that are also passed on
-  directly.)
+  after any \code{#} symbol just like in R.
+
+  Internally, the functions evaluate in \code{R} any
+  entries that have no character values (e.g.
+  \code{1:100}), or have an alpha-numeric character
+  followed by a \code{(}. Anything that is character only
+  or has character mixed with numeric but doesn't have the
+  regular expression \code{"[A-Za-z0-9]("} gets turned into
+  a character argument. (\code{NA} and \code{NULL} are
+  special cases that are also passed on directly.)
 }
 \examples{
 # Find the example data folders:
