@@ -20,6 +20,8 @@ copy_ss3models <- function(model_dir, scenarios,
   iterations = 1:100, type = c("om", "em")) {
 
   type <- type[1]
+  if(!type %in% c("om", "em"))
+    stop("The value passed to the argument type must be either om or em.")
 
   for(sc in scenarios) {
     for(it in iterations) {
