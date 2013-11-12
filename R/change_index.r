@@ -105,11 +105,11 @@ change_index <- function(infile, outfile, fleets, years, sds_obs,
             }
         }
     }}
-  
+
     ## Bind all the rows together to form the new index
     if(Nfleets>0) cpue.new <- do.call(rbind, newcpue.list)
-    if(Nfleets==0) cpue.new <- data.frame("#")  
-  
+    if(Nfleets==0) cpue.new <- data.frame("#")
+
     if(make_plot & Nfleets>0) {
       p <- ggplot2::ggplot(cpue.new, ggplot2::aes(x=year, y=obs, ymin=0,
         colour=as.factor(index)))+ggplot2::geom_line()
