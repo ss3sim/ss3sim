@@ -28,12 +28,12 @@ get_args <- function(file) {
 #' an \R function.
 #'
 #' @param x A character object
-#' @examples
-#' is_f("testing")
-#' is_f("c(1, 2, 3")
-#' is_f("seq(1, 10)")
-#' is_f("NULL")
-#' is_f("NA")
+# @examples
+# is_f("testing")
+# is_f("c(1, 2, 3")
+# is_f("seq(1, 10)")
+# is_f("NULL")
+# is_f("NA")
 is_f <- function(x) {
   if(!is.character(x)) stop("x must be a character")
   fn <- grepl("[a-zA-Z0-9]\\(", x) # is a function
@@ -47,9 +47,9 @@ is_f <- function(x) {
 #' @param scenario A character object with the cases. E.g.
 #' \code{"M1-F1-D1-R1"}
 #' @param case The case you want to extract. E.g. \code{"M"}
-#' @examples
-#' get_caseval("M2-F1-D1-R1", "M")
-#' get_caseval("M2-F1-D1-R1", "F")
+# @examples
+# get_caseval("M2-F1-D1-R1", "M")
+# get_caseval("M2-F1-D1-R1", "F")
 get_caseval <- function(scenario, case) {
   if(!grepl("-", scenario))
     stop("Your case string doesn't contain your delimiter.")
