@@ -4,7 +4,7 @@
 #' whether the user is on Unix or Windows and calls the binary
 #' correctly. This lower-level function is meant to be called by
 #' higher level functions such as \code{\link{run_ss3sim}},
-#' \code{\link{ss3sim_base}}, and \code{\link{run_fish600}}.
+#' \code{\link{ss3sim_base}}, or your own custom function.
 #'
 #' @param scenarios Which scenarios to run. Controls which folder
 #' contains the model that SS3 should run on.
