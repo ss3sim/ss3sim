@@ -321,7 +321,7 @@ which may rely on options not yet programmed into the package functions.
 Depending on the simulation study goal,
 other software frameworks may provide better alternatives.
 
-One alternative framework is Fisheries libraries in R (FLR) [@kell2007] ---
+One alternative framework is *Fisheries libraries in R* (FLR) [@kell2007] ---
 an open-source R package developed specifically
 for evaluating fisheries management strategies through simulation.
 FLR aims to incorporate a variety of disciplines
@@ -334,7 +334,7 @@ with flexible biological, economic, and management components [@hillary2009].
 Thus, it is not specifically designed to explore the impact
 of structural differences within OMs and EMs.
 
-Another alternative stock-assessment simulation testing framework is Fishery Simulation
+Another alternative stock-assessment simulation testing framework is *Fishery Simulation*
 (FS, <http://fisherysimulation.codeplex.com>).
 FS is primarily a file management tool
 adapted to aid in simulation testing.
@@ -348,7 +348,8 @@ and collect results from output files.
 Thus, FS is closer to ss3sim in its scope than FLR
 in that it specifically focuses on the performance of stock-assessment models.
 
-FS differs from ss3sim mainly in that it uses simple text manipulation commands
+FS differs from ss3sim mainly in that
+it uses simple text manipulation commands
 (e.g. change line 50 from 0 to 1)
 to alter models rather than the approach of ss3sim,
 which uses flexible and modular functions.
@@ -357,7 +358,7 @@ FS works well for testing arbitrary assessment models
 [e.g. @lee2012; @piner2011; @lee2011].
 In contrast, FS cannot make complicated structural changes
 to a model (e.g. adding time-varying parameters or changing the survey years),
-making it difficult to induce and test
+making it more difficult to induce and test
 structural differences between OMs and EMs.
 In addition, the current version of FS
 is not an end-to-end package ---
@@ -370,11 +371,11 @@ and is therefore only available on the Windows operating system.
 
 The ss3sim package has been used so far
 to evaluate alternative approaches
-to deal with potentially varying natural mortality [@johnson2013],
+to deal with time-varying natural mortality [@johnson2013],
 the importance of composition data [@ono2013],
 and retrospective patterns in stock-assessment models.
 Along with those studies,
-ss3sim makes many relevant research opportunities easily approachable.
+ss3sim makes many important research opportunities easily approachable.
 Below we outline some examples.
 
 <!--Although the low-level functions (`change` and `sample`) functions can be combined or modified in a user's own wrapper function to address nearly any simulation-based research question, there are-->
@@ -389,14 +390,14 @@ climate change [@walther2002].
 However, parameters such as natural mortality, catchability, and selectivity
 are commonly assumed to be time invariant [@wilberg2006].
 The consequences of assuming time invariance of such parameters when facing temporal changes have not been formally evaluated in a systematic way. TODO TRUE?
-Further, although many studies have tried to isolate the effects
+Furthermore, although many studies have tried to isolate the effects
 of single time-varying parameters,
-such natural mortality [@lee2011; @jiao2012; @deroba2013; @johnson2013],
+such as natural mortality [@lee2011; @jiao2012; @deroba2013; @johnson2013],
 few have considered the effect of multiple time-varying parameters and their potential interaction (REFS).
 
 *Patterns in recruitment deviations*:
 Typically, estimation methods assume
-independent normally-distributed recruitment deviations
+independent normally-distributed recruitment deviations (in log space)
 around a spawning stock recruitment function (REF).
 However, recruitment deviations are frequently auto-correlated
 and their variability can change through time (REF).
