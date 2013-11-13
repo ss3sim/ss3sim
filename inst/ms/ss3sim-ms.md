@@ -14,7 +14,7 @@ Seattle, WA 98195-5020, USA
 University of Washington, Box 352182,
 Seattle, WA 98195-5020, USA
 
-^4^Center for the Advancement of Population Assessment Methodology,
+^4^Center for the Advancement of Population Assessment Methodology
 (CAPAM), 8901 La Jolla Shores Drive, La Jolla, CA 92937, USA
 
 ^*^Corresponding author: sean@seananderson.ca

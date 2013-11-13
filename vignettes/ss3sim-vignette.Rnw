@@ -55,7 +55,7 @@ opts_chunk$set(dev = 'pdf')
   Kotaro Ono\footnotemark[2]
   \and
   Juan L. Valero\thanks{Center for the Advancement of Population Assessment
-  Methodology, (CAPAM), 8901 La Jolla Shores Drive, La Jolla, CA 92937, USA}
+  Methodology (CAPAM), 8901 La Jolla Shores Drive, La Jolla, CA 92937, USA}
   }
 
 \date{}
