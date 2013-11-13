@@ -45,30 +45,30 @@ and synthesizes the results.
 The simulations can be run in parallel, speeding computation,
 and the source code is open source
 and free to be modified under an MIT license.
-ss3sim can be easily used to answer questions about, for example,
+We demonstrate the software with a simple example,
+discuss how ss3sim complements other simulation software,
+and outline specific research questions that ss3sim could address
+For example, ss3sim can be easily used to answer questions about
 time-varying model misspecification,
 retrospective patterns,
 and the relative importance of various types of fisheries data.
-We demonstrate the software with a simple example,
-discuss how ss3sim complements other simulation software,
-and outline specific research questions that ss3sim could address.
 
 \clearpage
 
 # Introduction
 
 Fisheries stock-assessment models are crucial
-to provide scientific advice and to evaluate the impact
+to providing scientific advice and to evaluating the impact
 of alternative management actions on fishery resources [@hilborn1992].
 Although a variety of stock-assessment methods and models
-are currently available to fishery scientists,
+are currently available,
 it is often not straightforward to choose among competing approaches
 that often lead to different modeling outcomes
 and associated scientific advice to management (REF).
 
 Simulation testing is a critical component
 to testing fishery stock-assessment methods,
-particularly given the potential for misspecification
+particularly given the potential for model misspecification
 [@hilborn1987; @hilborn1992; @rosenberg1994; @peterman2004].
 With simulation testing,
 we can evaluate the precision and bias
@@ -122,9 +122,9 @@ We designed ss3sim to be reproducible, flexible, and rapid.
 
 *Reproducible*: ss3sim allows for the simulation testing structure to be documented
 in R code and plain-text control files.
-It allows for random seeds to be set
-when generating observation and process error making
-simulation repeatable across computers
+It also allows for random seeds to be set
+when generating observation and process error,
+making simulations repeatable across computers
 and operating systems (Windows, OS X, and Linux).
 
 *Flexible*: ss3sim inherits the flexibility of SS3
@@ -132,8 +132,8 @@ and can therefore implement many
 available stock-assessment configurations by
 either modifying existing SS models (Text S1)
 or by modifying built-in generic life-history models.
-Further, ss3sim summarizes the simulation output
-into comma-separated-value (`.csv`) files
+Furthermore, ss3sim summarizes the simulation output
+into plain-text comma-separated-value (`.csv`) files
 allowing for the output to be easily processed
 in nearly any statistical software, including R.
 Finally, the ss3sim code is written
@@ -159,7 +159,7 @@ Scenarios are usually run for multiple iterations,
 possibly adding unique process and observation error each time.
 An ss3sim simulation therefore refers to the combination of all scenarios and iterations.
 
-ss3sim works, in general, by using case file arguments
+ss3sim works, in general, by reading case-file arguments
 (e.g. arguments specifying a given natural mortality trajectory over time)
 to modify SS3 configuration files (`change` functions);
 running the OM;
@@ -290,7 +290,7 @@ in our current directory with one function call:
 get_results_all()
 ```
 
-This creates two comma-separate plain-text files in our working directory:
+This creates two comma-separate-value files in our working directory:
 `ss3sim_scalars.csv` and `ss3sim_ts.csv`
 containing scalar output estimates (e.g. maximum sustainable yield)
 and time-series estimates (e.g. biomass each year), respectively.
@@ -310,14 +310,14 @@ for dynamically creating structural differences in OMs and EMs.
 This expedites testing the properties of alternative stock-assessment model configurations,
 whether the differences are between the OMs and EMs [@johnson2013],
 or between multiple versions of the EMs [@ono2013].
-ss3sim is thus ideal for answering questions
-about mismatches between OMs and EMs
-or different structures of EMs for a given OM.
-Because ss3sim relies on manipulating SS configuration files,
-it relies on certain model configurations.
-Therefore, ss3sim is less well-suited
+<!--ss3sim is thus ideal for answering questions-->
+<!--about mismatches between OMs and EMs-->
+<!--or different structures of EMs for a given OM.-->
+<!--However, because ss3sim relies on manipulating SS configuration files,-->
+<!--the package relies on certain SS model configurations.-->
+However, ss3sim is less well-suited
 for quickly exploring arbitrary SS model setups,
-which may rely on options not yet programmed into the package functions.
+which may rely on SS configurations not yet programmed into the ss3sim package functions.
 Depending on the simulation study goal,
 other software frameworks may provide better alternatives.
 
@@ -349,7 +349,7 @@ Thus, FS is closer to ss3sim in its scope than FLR
 in that it specifically focuses on the performance of stock-assessment models.
 
 FS differs from ss3sim mainly in that
-it uses simple text manipulation commands
+it uses simple user-specified text manipulation commands
 (e.g. change line 50 from 0 to 1)
 to alter models rather than the approach of ss3sim,
 which uses flexible and modular functions.
@@ -364,7 +364,7 @@ In addition, the current version of FS
 is not an end-to-end package ---
 additional code is necessary to
 to incorporate process and observation error in simulation testing.
-FS is also open-source but requires the Microsoft .NET framework
+Finally, FS is also open-source but requires the Microsoft .NET framework
 and is therefore only available on the Windows operating system.
 
 # Research opportunities with ss3sim
@@ -372,8 +372,8 @@ and is therefore only available on the Windows operating system.
 The ss3sim package has been used so far
 to evaluate alternative approaches
 to deal with time-varying natural mortality [@johnson2013],
-the importance of composition data [@ono2013],
-and retrospective patterns in stock-assessment models.
+the importance of length and age composition data [@ono2013],
+and the causes of retrospective patterns in stock-assessment models.
 Along with those studies,
 ss3sim makes many important research opportunities easily approachable.
 Below we outline some examples.
@@ -383,22 +383,27 @@ Below we outline some examples.
 <!--*The importance of contrast in index series*:-->
 
 *Time-varying model misspecification*:
-Ecological processes can vary through time in response to, for example,
+Ecological processes can vary through time in response to,
+for example,
 changes to fishing behaviour [@hilborn1992],
 regime shifts [@vert-pre2013], or
 climate change [@walther2002].
 However, parameters such as natural mortality, catchability, and selectivity
 are commonly assumed to be time invariant [@wilberg2006].
-The consequences of assuming time invariance of such parameters when facing temporal changes have not been formally evaluated in a systematic way. TODO TRUE?
-Furthermore, although many studies have tried to isolate the effects
+The consequences of assuming time invariance
+of such parameters when facing true temporal changes
+has been a long-standing discussion
+in fisheries science (REF).
+Furthermore, although many studies have tried
+to isolate the effects
 of single time-varying parameters,
 such as natural mortality [@lee2011; @jiao2012; @deroba2013; @johnson2013],
 few have considered the effect of multiple time-varying parameters and their potential interaction (REFS).
 
 *Patterns in recruitment deviations*:
 Typically, estimation methods assume
-independent normally-distributed recruitment deviations (in log space)
-around a spawning stock recruitment function (REF).
+independent log-normally-distributed recruitment deviations
+around a spawning stock recruitment function (@hilborn1992).
 However, recruitment deviations are frequently auto-correlated
 and their variability can change through time (REF).
 ss3sim makes it simple
@@ -413,7 +418,8 @@ of biomass [@methot2011].
 However, bias adjustment requires extra model runs
 to iteratively calculate the proper adjustment level,
 which can be computationally intensive and time consuming.
-As a result, bias adjustment is routinely not used in stock assessment OR SIMULATION STUDIES? TODO (REF).
+As a result, bias adjustment is routinely
+not used in stock assessment simulation testing (REF) (TODO OR STOCK ASSESSMENT ITSELF?).
 ss3sim can turn bias adjustment on or off
 with a single argument and so could be easily used to test when
 and how bias adjustment affects model performance.
@@ -430,22 +436,33 @@ by adding a single argument --- the number of retrospective years to investigate
 
 # Conclusions
 
+TODO cite @deroba2013a; @wilberg2006; @crone2013 in introduction
+
 TODO re-work this:
 The increasing complexity of modern statistical integrated models and expanding computing power allows for the inclusion of a multitude of processes in fisheries stock-assessment methods.
+
 However, with added complexity comes the potential for model misspecification and model misspecification is often not accounted for in the evaluation of alternative modeling approaches.
+
 Simulation testing allows for the formal evaluation of the ability of assessment models to accurately and precisely estimate parameters of interest under different conditions and levels of misspecification [@deroba2013a; @wilberg2006; @crone2013].
-However, most simulation testing work to date has been done using custom programmed frameworks tailored to the particular needs of each study.
+However, most simulation testing work to date has used custom frameworks tailored to the particular needs of each study.
+
 A recent large scale study [@deroba2013a] focused on evaluating the robustness of several stock-assessment models to observation error.
 Some of the challenges found steamed from the use of models that were very different, both in their fundamental structure and in their data requirements and use limitations.
+
 An alternative approach is to use a generalized modeling platform such as SS, where alternative model setups reflect only alternative assumptions about the true underlying dynamics of stocks or estimation approaches and assumptions, but always using the same modeling plat-form.
+
 Although several simulation testing studies have used the widely used fisheries stock-assessment platform SS [@lee2011; @lee2012; @piner2011; @crone2013a] a common end-to-end open access simulation testing framework is still lacking.
 ss3sim, allows for large-scale, rapid, and reproducible simulation with SS.
+
 The initial release of ss3sim describes the basic structure used in recent studies [@johnson2013; @ono2013]; however, future users are free to develop their own low- and high-level functions as needed, taken advantage of the open-source MIT-licensed R package structure, why we developed generic low-level functions and high-level functions
 
 # Acknowledgements
 
-We thank the participants and mentors of the University of Washington School of Aquatic and Fishery Sciences 2013 FISH 600 course. Participants:
-Curry Cunningham
+We thank the participants and mentors of the University of Washington School of Aquatic and Fishery Sciences 2013 FISH 600 course.
+Discussions with these individuals were instrumental to developing ss3sim.
+Many participants also contributed code and are listed within specific ss3sim R functions.
+Participants:
+Curry Cunningham,
 Felipe Hurtado-Ferro,
 Ricardo Licandeo,
 Carey McGilliard,
@@ -454,9 +471,9 @@ Cody Szuwalski,
 Katyana Vert-pre, and
 Athol Whitten.
 Mentors:
-Ian Taylor, André Punt, and Richard Methot.
-Discussions with these individuals were instrumental to developing ss3sim.
-Many participants also contributed code and are listed as authors within specific ss3sim R functions.
+Richard Methot,
+André Punt, and
+Ian Taylor.
 
 # Funding
 SCA was supported by Fulbright Canada, NSERC, and a Garfield Weston Foundation/B.C. Packers Ltd.\ Graduate Fellowship in Marine Sciences.
@@ -464,8 +481,9 @@ KFJ and KO were partially supported by NOAA grant 423 NA10OAR4320148 and
 CCM was partially supported by a Washington Sea Grant.
 TODO Juan: any funding to acknowledge?
 
-# Tables
 \clearpage
+
+# Tables
 
 Table 1: Main ss3sim functions and a description of their purpose.
 Simulations can be run through the `run_ss3sim` function.
