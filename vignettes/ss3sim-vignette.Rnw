@@ -831,7 +831,8 @@ test, or you may have multiple cases to investigate how different patterns of
 selectivity in the OM affect the EM. Now that the case argument files have been
 created, you need to tell \texttt{ss3sim} to use them, since they are outside of
 the mandatory set. This is done through the \texttt{case_files} argument in the
-\texttt{get_caseargs} function. In this case, we need to tell it to look for
+\texttt{get_caseargs} function, which is passed through by the
+\texttt{run_ss3sim}. In this case, we need to tell it to look for
 case argument files beginning with ``S'' (see the help file for more info):
 \begin{verbatim}
    case_files = list(E = "E", D = c("index", "lcomp", "agecomp"),
