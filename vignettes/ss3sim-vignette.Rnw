@@ -819,8 +819,11 @@ These model setups are based on North Sea cod (\textit{Gadus morhua}) (R. Methot
 Further details on these models are available in \citep{johnson2013} and \citep{ono2013}.
 These models were stripped down and simplified to make them more generic for simulation testing.
 In doing this, we removed many of the subtle features of the model setups.
-While these model setups are generic and cover a wide range of life history types, they may not be suitable for all users.
-Therefore, in this section, we outline strategies for modifying the existing \texttt{SS3} models.
+While these model setups are generic 
+and cover a wide range of life history types, 
+they may not be suitable for all users.
+Therefore, in this section, we outline strategies for modifying 
+the existing \texttt{SS3} models.
 
 Before proceeding it is worth considering the scope and place of \texttt{ss3sim} as a simulation package.
 The package was designed as a tool for examining structural differences in
@@ -994,15 +997,16 @@ and 3.2 times faster on four cores.
 \section{Putting \texttt{SS3} in your path}
 \label{sec:path}
 
-Instead of copying the \texttt{SS3} binary file (\texttt{ss3.exe}) to each folder
+Instead of copying the \texttt{SS3} binary file
+(\texttt{SS3} on Unix or \texttt{SS3.exe} on Windows) to each folder
 within a simulation and running it, \texttt{ss3sim} relies on a single binary file
 being available to the operating system regardless of the folder.
 To accomplish this, \texttt{SS3} must be in your system path, which is
 a list of folders that your operating system looks in
 whenever you type the name of a program on the command line.
-This approach saves storage on a space since the SS3 binary is about 2.2 MB and
-having it located in each folder can be prohibitive in a large scale simulation
-testing study.
+This approach saves storage space since the SS3 binary is 2--3 mb and
+having it located in each folder can be prohibitive 
+in a large scale simulation testing study.
 
 \subsection{For Unix (OS X and Linux)}
 
@@ -1040,7 +1044,7 @@ Sys.setenv(PATH=paste(Sys.getenv("PATH"),"/my/folder",sep=":"))
 
 To check if SS is in your path for Windows 7 and 8:
 open a DOS prompt and type \texttt{ss3 -?} and hit enter.
-If you get a line like ``\texttt{ss3 is not recognized...}''
+If you get a line like \texttt{ss3 is not recognized...}
 then SS3 is not in your path.
 To add the SS3 binary file to your path, follow these steps:
 
@@ -1077,7 +1081,8 @@ To add the SS3 binary file to your path, follow these steps:
 \label{sec:obs-error}
 Observation error (i.e.\ uncertainty arising from sampling the
 ``truth'') can be added within the \texttt{ss3sim} framework in three
-places: indices of abundance, length compositions, and age compositions. There are
+places: indices of abundance, length compositions, and age compositions.
+There are
 functions which take the expected values produced in the OM
 \texttt{.dat} files and samples from them to create the input
 \texttt{.dat} files for the EM. Since this sampling process is done
@@ -1130,7 +1135,8 @@ sample size that more accurately reflects the information in the composition
 data.
 
 In simulation work, the true underlying proportions
-in the population are known and therefore true multinomial sampling is possible.
+in the population are known and therefore 
+true multinomial sampling is possible.
 However, there is some question about the realism
 behind providing the model with this kind of data,
 since it is unlikely to happen in practice \citep{pennington2002}.
@@ -1307,8 +1313,9 @@ where $z_i$ is a standard normal deviate and the bias adjustment term
 ($\sigma_r^2/2$) makes the deviates have an expected value of 0 after
 exponentiation.
 
-If they are not specified, then the package will use these built-in
-recruitment deviations.  Alternatively you can specify your own
+If the recruitment deviations are not specified, 
+then the package will use these built-in
+recruitment deviations. Alternatively you can specify your own
 recruitment deviations, via the argument \texttt{user\_recdevs} to the
 top-level function \texttt{ss3sim\_base}. Ensure that you pass a matrix
 with at least enough columns (iterations) and rows (years). The
@@ -1372,13 +1379,16 @@ the observation error is not necessarily comparable across different case argume
 In some cases the user may wish to adapt their own \texttt{SS3} model to work
 with the \texttt{ss3sim} package. This is possible but may be difficult because
 the functions in \texttt{ss3sim} were developed to work with these three model setups and
-a model with a different structure may cause errors in these functions. This
-stems from the high flexibility of SS3, allowing for more complex model setups
-than those used while developing ss3sim. For
-instance, the \texttt{change\_index} function does not have the capability to
-handle more than one season (it could, but currently it is not developed to). Given
-the myriad options available in \texttt{SS3} it is extremely difficult to write
-auxilliary functions that will interact reliably with all combinations of these
+a model with a different structure may cause errors in these functions. 
+This stems from the high flexibility of SS3, 
+allowing for more complex model setups
+than those used while developing ss3sim. 
+For instance, the \texttt{change\_index} function 
+does not have the capability to
+handle more than one season 
+(it could, but currently it is not developed to). 
+Given the myriad options available in \texttt{SS3} it is extremely difficult to write
+auxiliary functions that will interact reliably with all combinations of these
 options. For this reason, we recommend that users strongly consider trying to
 modify an existing model rather than creating a new one
 (Section \ref{sec:modify}). It is likely that the \texttt{ss3sim} functions
@@ -1388,8 +1398,8 @@ familiar with both \texttt{SS3} and R.
 The main purpose of the OM is to generate data files that can be read into the
 EM. Thus the user needs to setup the \texttt{.dat} files in the OM such that
 they conform to the structure needed by the EM. Two key examples are with survey
-and age/length composition data. For the indices of abundance (CPUE and
-scientific survey) the OM
+and age/length composition data. 
+For the indices of abundance (CPUE and scientific survey) the OM
 \texttt{.dat} file will determine which years are available to the sampling
 function \texttt{change\_index}, so if the year $y$ is desired in the EM it needs
 to be in the OM. In practice it may be easiest to just include all years in the
