@@ -47,7 +47,7 @@ and the source code is open source
 and free to be modified under an MIT license.
 We demonstrate the software with a simple example,
 discuss how ss3sim complements other simulation software,
-and outline specific research questions that ss3sim could address
+and outline specific research questions that ss3sim could address.
 For example, ss3sim can be easily used to answer questions about
 time-varying model misspecification,
 retrospective patterns,
