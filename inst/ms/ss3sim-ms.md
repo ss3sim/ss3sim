@@ -173,11 +173,11 @@ for easy data manipulation and visualization
 # An example simulation with ss3sim
 
 To demonstrate ss3sim, we will work through a simple example
-in which we examine the effect on TODO XX of
+in which we examine the effect of
 high vs.\ low precision on a research survey index of abundance
 and fixing vs.\ estimating natural mortality (*M*).
-All files needed to run this example are available in the package data,
-and a more detailed description of this example
+All files to run this example are available in the package data,
+and a more detailed description
 is available in the accompanying vignette (Text S1).
 
 ## Setting up the SS models
@@ -324,10 +324,10 @@ other software frameworks may provide better alternatives.
 One alternative framework is *Fisheries libraries in R* (FLR) [@kell2007] ---
 an open-source R package developed specifically
 for evaluating fisheries management strategies through simulation.
-FLR aims to incorporate a variety of disciplines
-beyond fisheries science and ecology (TODO SUCH AS)
-into the development of new methods
-for evaluating alternative management strategies and procedures.
+<!--FLR aims to incorporate a variety of disciplines-->
+<!--beyond fisheries science and ecology (TODO SUCH AS)-->
+<!--into the development of new methods-->
+<!--for evaluating alternative management strategies and procedures.-->
 Compared to ss3sim, FLR is designed to explore broader questions
 regarding management strategies
 with flexible biological, economic, and management components [@hillary2009].
