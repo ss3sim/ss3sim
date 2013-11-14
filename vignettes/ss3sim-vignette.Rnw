@@ -759,7 +759,58 @@ p <- ggplot(subset(scalar_dat_long, E %in% c("E0", "E1")),
 print(p)
 @
 
-\clearpage
+\section{Using \texttt{ss3sim\_base} directly}
+
+Another alternative is to skip
+setting up the case files
+and use \texttt{ss3sim\_base} directly
+by passing lists of arguments.
+The lists correspond to the arguments
+to each of the \texttt{change} functions
+without any references to the files that need to be modified.
+(Although if you passed the file names they would just be ignored.)
+
+In this case,
+the scenario ID only serves the function
+of identifying the output folder name
+and could technically be any character string.
+
+For example,
+we could have run the scenario \texttt{D1-E0-F0-R0-M0-cod}
+that we ran before:
+
+<<ss3sim-base-eg, eval=FALSE>>=
+d <- system.file("extdata", package = "ss3sim")
+om <- paste0(d, "/models/cod-om")
+em <- paste0(d, "/models/cod-em")
+
+F1 <- list(years = 1913:2012, years_alter = 1913:2012, fvals =
+  c(rep(0, 25), rep(0.114, 75)))
+
+index1 <- list(fleets = 2, years = list(seq(1974, 2012, by = 2)),
+  sds_obs = list(0.1))
+
+lcomp1 <- list(fleets = c(1, 2), Nsamp = list(100, 100), years =
+  list(1938:2012, seq(1974, 2012, by = 2)), lengthbin_vector = NULL,
+  cpar = c(1, 1))
+
+agecomp1 <- list(fleets = c(1, 2), Nsamp = list(100, 100), years =
+  list(1938:2012, seq(1974, 2012, by = 2)), agebin_vector = NULL,
+  cpar = c(1, 1))
+
+E0 <- list(natM_type = "1Parm", natM_n_breakpoints = NULL,
+  natM_lorenzen = NULL, natM_val = c(NA,-1), par_name =
+  "LnQ_base_3_CPUE", par_int = NA, par_phase = -1, forecast_num = 0)
+
+M0 <- list(NatM_p_1_Fem_GP_1 = rep(0, 100))
+
+R0 <- list(retro_yr = 0)
+
+ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-R0-M0-cod",
+  f_params = F1, index_params = index1, lcomp_params = lcomp1,
+  agecomp_params = agecomp1, estim_params = E0, tv_params = M0,
+  retro_params = R0, om_model_dir = om, em_model_dir = em)
+@
 
 \section{Time-varying parameters in the OM}
 \label{sec:time-varying}
@@ -862,59 +913,6 @@ functions work outside of \texttt{ss3sim}, and then (2) running a single
 iteration and manually checking the produced files. If you write external
 functions for manipulating new aspects of SS3 models, please contact the
 \texttt{ss3sim} package developers for potential inclusion in future versions.
-
-\section{Using \texttt{ss3sim\_base} directly}
-
-Another alternative is to skip
-setting up the case files
-and use \texttt{ss3sim\_base} directly
-by passing lists of arguments.
-The lists correspond to the arguments
-to each of the \texttt{change} functions
-without any references to the files that need to be modified.
-(Although if you passed the file names they would just be ignored.)
-
-In this case,
-the scenario ID only serves the function
-of identifying the output folder name
-and could technically be any character string.
-
-For example,
-we could have run the scenario \texttt{D1-E0-F0-R0-M0-cod}
-that we ran before:
-
-<<ss3sim-base-eg, eval=FALSE>>=
-d <- system.file("extdata", package = "ss3sim")
-om <- paste0(d, "/models/cod-om")
-em <- paste0(d, "/models/cod-em")
-
-F1 <- list(years = 1913:2012, years_alter = 1913:2012, fvals =
-  c(rep(0, 25), rep(0.114, 75)))
-
-index1 <- list(fleets = 2, years = list(seq(1974, 2012, by = 2)),
-  sds_obs = list(0.1))
-
-lcomp1 <- list(fleets = c(1, 2), Nsamp = list(100, 100), years =
-  list(1938:2012, seq(1974, 2012, by = 2)), lengthbin_vector = NULL,
-  cpar = c(1, 1))
-
-agecomp1 <- list(fleets = c(1, 2), Nsamp = list(100, 100), years =
-  list(1938:2012, seq(1974, 2012, by = 2)), agebin_vector = NULL,
-  cpar = c(1, 1))
-
-E0 <- list(natM_type = "1Parm", natM_n_breakpoints = NULL,
-  natM_lorenzen = NULL, natM_val = c(NA,-1), par_name =
-  "LnQ_base_3_CPUE", par_int = NA, par_phase = -1, forecast_num = 0)
-
-M0 <- list(NatM_p_1_Fem_GP_1 = rep(0, 100))
-
-R0 <- list(retro_yr = 0)
-
-ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-R0-M0-cod",
-  f_params = F1, index_params = index1, lcomp_params = lcomp1,
-  agecomp_params = agecomp1, estim_params = E0, tv_params = M0,
-  retro_params = R0, om_model_dir = om, em_model_dir = em)
-@
 
 \section{Modifying the OM and EM models included with \texttt{ss3sim}}
 \label{sec:modify}
