@@ -761,7 +761,7 @@ print(p)
 
 \clearpage
 
-\subsection{Time varying parameters}
+\section{Time-varying parameters in the OM}
 \label{sec:time-varying}
 
 You can specify any parameter defined in your SS3 model
@@ -810,6 +810,47 @@ function_type; change_tv
 in your case file. For example,
 you might want to use M for natural mortality, S for selectivity,
 or G for growth.
+
+\section{Incorporating a new case ID}
+\texttt{ss3sim} is designed with a set of mandatory case IDs that must be
+specified for each run: data (\texttt{D}), estimation (\texttt{E}), fishing
+effort (\texttt{F}), natural mortality (\texttt{M}), and restrospective
+(\texttt{R}). In many instances a user may wish to include a new case ID beyond
+these mandatory ones. This section is designed to explain how to accomplish
+this within the \texttt{ss3sim} framework. Note that as currently developed,
+\texttt{ss3sim} incorporates all new cases by using the \texttt{change_tv}
+function, even if the changes are not time-varying. However, you can simply pass
+a constant vector of values to induce a constant change in a parameter.
+
+As an example, you might want to incorporate changes in selectivity
+(time-varying or not) in the OM to more accurately mimic the behavior of a real
+fishery. Using the help file for \texttt{change_tv}, creating a set of ``S''
+(for selectivity) case argument files which contain the changes required. You
+may only have a ``base case'' which applies to all scenarios in the simulation
+test, or you may have multiple cases to investigate how different patterns of
+selectivity in the OM affect the EM. Now that the case argument files have been
+created, you need to tell \texttt{ss3sim} to use them, since they are outside of
+the mandatory set. This is done through the \texttt{case_files} argument in the
+\texttt{get_caseargs} function. In this case, we need to tell it to look for
+case argument files beginning with ``S'' (see the help file for more info):
+\begin{verbatim}
+   case_files = list(E = "E", D = c("index", "lcomp", "agecomp"),
+        F = "F", M = "M", R = "R", S = "S")
+\end{verbatim}
+\noindent
+Note that \texttt{S} is simply added to the end of the default list of case
+IDs. The data case ID is a special case because its case argument files do not
+begin with \texttt{D}. This is because there are three functions associated with
+the data case, independently 0modifying three different parts of the
+\texttt{.dat} file. This provides an example of how you could incorporate
+multiple changes to selectivity through different functions (which you would
+need to write yourself). For example, you may want to add time-varying
+deviations to multiple parameters in the selectivity setup of the OM. You could
+then create R functions that modify selectivity in different ways, and pass them
+the same way the \texttt{D} case is handled above. We recommend verifying the
+functionality of any new cases by: (1) thoroughly verifying that your R
+functions work outside of \texttt{ss3sim}, and then (2) running a single
+iteration and manually checking the produced files.
 
 \section{Using \texttt{ss3sim\_base} directly}
 
