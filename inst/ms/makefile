@@ -1,4 +1,4 @@
-all: pdf docx cleanbib
+all: pdf
 
 pdf:
 	pandoc -S --no-wrap --bibliography=refs.bib --csl=plos.csl --bibliography=refs.bib --latex-engine=xelatex ss3sim-ms.md -o manuscript.tex
