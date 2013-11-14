@@ -851,7 +851,9 @@ then create R functions that modify selectivity in different ways, and pass them
 the same way the \texttt{D} case is handled above. We recommend verifying the
 functionality of any new cases by: (1) thoroughly verifying that your R
 functions work outside of \texttt{ss3sim}, and then (2) running a single
-iteration and manually checking the produced files.
+iteration and manually checking the produced files. If you write external
+functions for manipulating new aspects of SS3 models, please contact the
+\texttt{ss3sim} package developers for potential inclusion in future versions.
 
 \section{Using \texttt{ss3sim\_base} directly}
 
