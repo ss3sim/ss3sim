@@ -100,7 +100,7 @@ vignette("ss3sim-vignette", package = "ss3sim")
 
 \noindent
 We develop and test \texttt{ss3sim} around a specific version of SS3.
-Currently, \texttt{ss3sim} is tested to work with \texttt{SS3 Version 3.24O}.
+Currently, \texttt{ss3sim} is tested to work with SS3 Version 3.24O.
 You can download SS3 at \url{http://nft.nefsc.noaa.gov/Stock_Synthesis_3.htm}.
 \texttt{ss3sim} requires the SS3 binary to be in your path.
 This means that your operating system knows where the binary file is located.
@@ -759,150 +759,6 @@ p <- ggplot(subset(scalar_dat_long, E %in% c("E0", "E1")),
 print(p)
 @
 
-\clearpage
-
-\subsection{Time varying parameters}
-\label{sec:time-varying}
-
-You can specify any parameter defined in your SS3 model
-as time varying through the \texttt{change\_tv} function.
-The function works by adding an environmental deviate ($env$)
-to the base parameter ($par$),
-creating a time varying parameter ($par'$) for each year ($y$),
-\begin{equation}
-par'_y = par + link * env_y.
-\end{equation}
-\noindent
-The $link$ is pre-specified to a value of one and
-$par$ is the base value for the given parameter,
-as defined in the \texttt{.par} file.
-For all catchability parameters (\textit{q}), the deviate will be added to the
-log transform of the base parameter using the following equation:
-\begin{equation}
-  \log(q'_{y}) = \log(q) + link * env_{y}.
-\end{equation}
-\noindent
-The vector of deviates must contain one value for every year of the simulation
-and can be specified as zero for years in which the parameter does not deviate
-from the base parameter value.
-
-Currently, \texttt{change\_tv} function
-only works to add time-varying properties
-to a time-invariant parameter.
-It cannot alter the properties of parameters that already vary with time.
-Additionally, SS3 does not allow more than one stock recruit parameter
-to vary with time. Therefore, if the \texttt{.ctl} file already has a
-stock recruit parameter that varies with time and you try to implement another,
-the function will fail.
-
-Since the \texttt{change\_tv} function can be used for a number of
-purposes, it interacts differently with the case files than the other
-\texttt{change} functions.
-To pass arguments to \texttt{change\_tv} through
-\texttt{run\_ss3sim} you need to:
-(1) create a case file with an arbitrary letter
-not used elsewhere (i.e.\ anything but D, E, F, or R) and
-(2) include the line:
-\begin{verbatim}
-function_type; change_tv
-\end{verbatim}
-\noindent
-in your case file. For example,
-you might want to use M for natural mortality, S for selectivity,
-or G for growth.
-
-\section{Modifying the operating and estimation models included in the \texttt{ss3sim} package}
-\label{sec:modify}
-
-\texttt{ss3sim} comes with three built-in SS3 operating 
-and estimation model setups: 
-a cod-like (slow-growing and long-lived), 
-flatfish-like (fast-growing and intermediate-lived), 
-and sardine-like (fast-growing and short-lived).
-These model setups are based on 
-North Sea cod (\textit{Gadus morhua}, R. Methot, pers.\ comm.), 
-yellowtail flounder (\textit{Limanda ferruginea}, 
-R. Methot, pers.\ comm.), 
-and Pacific sardine \citep[\textit{Sardinops sagax caeruleus;}][]{hill2012}.
-Further details on these models 
-are available in \citet{johnson2013} and \citet{ono2013}.
-
-These models were stripped down and simplified to make them more generic for simulation testing.
-In doing this, we removed many of the subtle features of the model setups.
-While these model setups are generic 
-and cover a wide range of life history types, 
-they may not be suitable for all users.
-Therefore, in this section, we outline strategies for modifying 
-the existing SS3 models.
-
-Before proceeding it is worth considering the scope and place of \texttt{ss3sim} as a simulation package.
-The package was designed as a tool for examining structural differences in
-alternative model setups.
-These differences could be between an OM and EM \citep[e.g.][]{johnson2013} or between multiple EMs \citep[e.g.][]{ono2013}.
-Therefore, the specific details (e.g.\ many fleets, tagging data, seasons, etc.)
-of the original model setups were not important and removed to produce a set of generic life-history-type models.
-\texttt{ss3sim} is not designed for testing arbitrary SS3 models, but rather properties of assessment models in general.
-Thus \texttt{ss3sim} is not ideal for quickly exploring properties of a
-particular assessment model and other software packages should be explored if
-that is your goal (see accompanying for alternatives).
-
-
-Here is a list of SS3 features that are not currently implemented in \texttt{ss3sim}:
-\begin{itemize}
-\item Seasons, sexes, hermaphrodism, multiple areas, movement, growth morphs and platoons
-\item Data other than scientific surveys, commercial indices of abundance and age/length compositions: age-at-length,
-  discards, mean weights, etc.
-\end{itemize}
-Some of the features may work within the \texttt{ss3sim} framework, but are untested.
-
-It is possible to create new models that will work within the \texttt{ss3sim}
-framework, but this task will be complicated and likely require extensive
-knowledge of SS3 and R, as well as modification of the \texttt{ss3sim}
-functions. This process is described in more detail in Appendices
-\ref{sec:om-setup} and \ref{sec:em-setup}.
-
-Instead of creating entirely new models, we recommend adapting the current
-built-in models to match the desired model setups for a new simulation study. Since
-these models have been thoroughly tested and used with \texttt{ss3sim} already
-\cite{johnson2013, ono2013},
-they make an ideal starting place. Before proceeding it would be wise to examine
-the built-in models to determine how closely they match your desired model
-setups and whether simple changes can get you reasonably close for simulation purposes.
-
-Say for example you want to modify the cod model to have different
-maturity, and then explore different sampling schemes using the
-\texttt{change\_index}, \texttt{change\_lcomps}, and \texttt{change\_agecomps}
-functions. The following steps provide a basic guideline for how to accomplish this:
-\begin{itemize}
-\item Using the original cod model create the case argument files you desire for
-  your simulation and verify they run with the original cod model using the
-  function \texttt{run\_ss3sim}. It is probably best to do a shorter
-  deterministic (Section \ref{sec:deterministic}) run. After running, read in the
-  data and do visual checks for proper functionality.
-\item Find the original cod model. This can be found in the
-  \texttt{inst/extdata/models} folder inside the package, located by
-\begin{verbatim}
-library(ss3sim)
-d <- system.file("extdata", package = "ss3sim")
-paste0(d, "/models")
-\end{verbatim}
-  Make a copy of the cod models (OM and EM) and rename them as desired.
-\item Make a single change to either the \texttt{.dat} or \texttt{.ctl} files
-  for the new model and run them manually with SS3
-  if there is any question if they might break the model.
-\item Rerun the model through \texttt{run\_ss3sim} and verify it is still
-  working. If errors occur in the
-  \texttt{R} function you will need to examine the function to determine why the error is
-  occurring and fix by changing the \texttt{R} function and reloading it.
-\item Repeat previous steps with all small changes until the models are
-  satisfactory.
-\item Turn off deterministic runs and run the simulation stochastically.
-\item If your new model works well with the package and is significantly
-  different than what is built-in, please contact the \texttt{ss3sim} package
-  managers for inclusion in future versions.
-\end{itemize}
-
-
 \section{Using \texttt{ss3sim\_base} directly}
 
 Another alternative is to skip
@@ -956,136 +812,185 @@ ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-R0-M0-cod",
   retro_params = R0, om_model_dir = om, em_model_dir = em)
 @
 
-\section{Parallel computing with \texttt{ss3sim}}
-\label{sec:parallel}
+\section{Time-varying parameters in the OM}
+\label{sec:time-varying}
 
-\texttt{ss3sim} can easily run multiple scenarios in parallel
-to speed up simulations.
-To run a simulation in parallel,
-you need to register multiple cores or clusters and
-set \texttt{parallel = TRUE} in \texttt{run\_ss3sim}.
-For example, we could have run the previous example in parallel with the following code.
-First, we register four cores:
+The \texttt{ss3sim} package includes the capability for inducing time-varying
+changes in parameters in the OM. The package currently does not have built-in
+functions to turn on/off the estimation of time-varying parameters, so this
+cannot be done with case arguments. However, it is possible to create versions
+of an EM with and without time-varying estimation of a parameter. This approach
+would allow for testing of differences between estimating a single, constant
+parameter, vs.\ a time-varying estimate.
 
-<<parallel-one>>=
-require(doParallel)
-registerDoParallel(cores = 4)
-@
-
+You can specify any parameter defined in your  OM model
+as time varying through the \texttt{change\_tv} function.
+The function works by adding an environmental deviate ($env$)
+to the base parameter ($par$),
+creating a time varying parameter ($par'$) for each year ($y$),
+\begin{equation}
+par'_y = par + link * env_y.
+\end{equation}
 \noindent
-We can check to make sure we are set up to run in parallel:
-
-<<parallel-two>>=
-require(foreach)
-getDoParWorkers()
-@
-
+The $link$ is pre-specified to a value of one and
+$par$ is the base value for the given parameter,
+as defined in the \texttt{.par} file.
+For all catchability parameters (\textit{q}), the deviate will be added to the
+log transform of the base parameter using the following equation:
+\begin{equation}
+  \log(q'_{y}) = \log(q) + link * env_{y}.
+\end{equation}
 \noindent
-And then run our simulation on four cores simultaneously
-by setting \texttt{parallel = TRUE}:
+The vector of deviates must contain one value for every year of the simulation
+and can be specified as zero for years in which the parameter does not deviate
+from the base parameter value.
 
-<<parallel-three, eval=FALSE>>=
-run_ss3sim(iterations = 1:100, scenarios =
-  c("D1-E0-F0-R0-M0-cod",
-    "D2-E0-F0-R0-M0-cod",
-    "D1-E1-F0-R0-M0-cod",
-    "D2-E1-F0-R0-M0-cod"),
-  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
-  bias_adjust = TRUE, parallel = TRUE)
-@
+Currently, \texttt{change\_tv} function
+only works to add time-varying properties
+to a time-invariant parameter.
+It cannot alter the properties of parameters that already vary with time.
+Additionally, SS3 does not allow more than one stock recruit parameter
+to vary with time. Therefore, if the \texttt{.ctl} file already has a
+stock recruit parameter that varies with time and you try to implement another,
+the function will fail.
 
-\noindent
-In addition to the check with \texttt{getDoParWorkers()} above,
-if the simulations are running in parallel,
-you will also see simultaneous output messages
-from \texttt{ss3sim} as the simulations run.
-On a 2.27 GHz Intel Xeon quad-core server running Ubuntu 10.04,
-this example ran 1.9 times faster on two cores than on a single core,
-and 3.2 times faster on four cores.
-
-
-\section{Putting SS3 in your path}
-\label{sec:path}
-
-Instead of copying the SS3 binary file
-(SS3 on Unix or SS3.exe on Windows) to each folder
-within a simulation and running it, \texttt{ss3sim} relies on a single binary file
-being available to the operating system regardless of the folder.
-To accomplish this, SS3 must be in your system path, which is
-a list of folders that your operating system looks in
-whenever you type the name of a program on the command line.
-This approach saves storage space since the SS3 binary is 2--3 mb and
-having it located in each folder can be prohibitive 
-in a large scale simulation testing study.
-
-\subsection{For Unix (OS X and Linux)}
-
-To check if SS3 is in your path:
-open a Terminal window and type \texttt{which SS3} and hit enter.
-If you get nothing returned, then SS is not in your path.
-The easiest way to fix this is to move the SS3 binary
-to a folder that's already in your path.
-To find existing path folders type \texttt{echo \$PATH}
-in the terminal and hit enter.
-Now move the SS3 binary to one of these folders.
-For example, in a Terminal window type:
-
+Since the \texttt{change\_tv} function can be used for a number of
+purposes, it interacts differently with the case files than the other
+\texttt{change} functions.
+To pass arguments to \texttt{change\_tv} through
+\texttt{run\_ss3sim} you need to:
+(1) create a case file with an arbitrary letter
+not used elsewhere (i.e.\ anything but D, E, F, or R) and
+(2) include the line:
 \begin{verbatim}
-sudo cp ~/Downloads/SS3 /usr/bin/
+function_type; change_tv
 \end{verbatim}
+\noindent
+in your case file. For example,
+you might want to use M for natural mortality, S for selectivity,
+or G for growth.
 
-You will need to use \texttt{sudo}
-and enter your password after to have permission
-to move a file to a folder like \texttt{/usr/bin/}.
-If you have previously modified your path to add a non-standard location
-for the SS3 binary,
-you may need to also tell \texttt{R} about the new path.
-The path that \texttt{R} sees may not include additional paths
-that you have added through a configuration file like \texttt{.bash\_profile}.
-You can add to the path that \texttt{R} sees
-by including a line like this in your \texttt{.Rprofile} file.
-(This is an invisible file in your home directory.)
+\section{Incorporating a new case ID}
+\texttt{ss3sim} is designed with a set of mandatory case IDs that must be
+specified for each run: data (\texttt{D}), estimation (\texttt{E}), fishing
+effort (\texttt{F}), natural mortality (\texttt{M}), and restrospective
+(\texttt{R}). In many instances a user may wish to include a new case ID beyond
+these mandatory ones. This section is designed to explain how to accomplish
+this within the \texttt{ss3sim} framework. Note that as currently developed,
+\texttt{ss3sim} incorporates all new cases by using the \texttt{change\_tv}
+function, even if the changes are not time-varying. However, you can simply pass
+a constant vector of values to induce a constant change in a parameter.
 
+As an example, you might want to incorporate changes in selectivity
+(time-varying or not) in the OM to more accurately mimic the behavior of a real
+fishery. Using the help file for \texttt{change\_tv}, creating a set of ``S''
+(for selectivity) case argument files which contain the changes required. You
+may only have a ``base case'' which applies to all scenarios in the simulation
+test, or you may have multiple cases to investigate how different patterns of
+selectivity in the OM affect the EM. Now that the case argument files have been
+created, you need to tell \texttt{ss3sim} to use them, since they are outside of
+the mandatory set. This is done through the \texttt{case\_files} argument in the
+\texttt{get\_caseargs} function, which is passed through by the
+\texttt{run\_ss3sim}. In this case, we need to tell it to look for
+case argument files beginning with ``S'' (see the help file for more info):
 \begin{verbatim}
-Sys.setenv(PATH=paste(Sys.getenv("PATH"),"/my/folder",sep=":"))
+   case_files = list(E = "E", D = c("index", "lcomp", "agecomp"),
+        F = "F", M = "M", R = "R", S = "S")
 \end{verbatim}
+\noindent
+Note that \texttt{S} is simply added to the end of the default list of case
+IDs. The data case ID is a special case because its case argument files do not
+begin with \texttt{D}. This is because there are three functions associated with
+the data case, independently 0modifying three different parts of the
+\texttt{.dat} file. This provides an example of how you could incorporate
+multiple changes to selectivity through different functions (which you would
+need to write yourself). For example, you may want to add time-varying
+deviations to multiple parameters in the selectivity setup of the OM. You could
+then create R functions that modify selectivity in different ways, and pass them
+the same way the \texttt{D} case is handled above. We recommend verifying the
+functionality of any new cases by: (1) thoroughly verifying that your R
+functions work outside of \texttt{ss3sim}, and then (2) running a single
+iteration and manually checking the produced files. If you write external
+functions for manipulating new aspects of SS3 models, please contact the
+\texttt{ss3sim} package developers for potential inclusion in future versions.
 
-\subsection{For Windows}
+\section{Modifying the OM and EM models included with \texttt{ss3sim}}
+\label{sec:modify}
 
-To check if SS is in your path for Windows 7 and 8:
-open a DOS prompt and type \texttt{ss3 -?} and hit enter.
-If you get a line like \texttt{ss3 is not recognized...}
-then SS3 is not in your path.
-To add the SS3 binary file to your path, follow these steps:
+\texttt{ss3sim} comes with three built-in SS3 operating and estimation model setups: a cod-like (slow-growing and long-lived), flatfish-like (fast-growing and intermediate-lived), and sardine-like (fast-growing and short-lived).
+These model setups are based on North Sea cod (\textit{Gadus morhua},
+R. Methot, pers.\ comm.), yellowtail flounder (\textit{Limanda ferruginea}, R. Methot, pers.\ comm.), and Pacific sardine \citep[\textit{Sardinops sagax caeruleus;}][]{hill2012}.
+Further details on these models are available in \citet{johnson2013} and \citet{ono2013}.
+These models were stripped down and simplified to make them more generic for simulation testing.
+In doing this, we removed many of the subtle features of the model setups.
+While these model setups are generic and cover a wide range of life history types, they may not be suitable for all users.
+Therefore, in this section, we outline strategies for modifying the existing SS3 models.
 
-\begin{enumerate}
-\item
-  Find the correct version of the \texttt{ss3.exe} binary on your
-  computer
-\item
-  Record the folder location. E.g.\ \texttt{C:/SS3.24o/}
-\item
-  Click on the start menu and type \texttt{environment}
-\item
-  Choose \texttt{Edit environment variables for your account}
-  under Control Panel
-\item
-  Click on \texttt{PATH} if it exists, create it if does not exist
-\item
-  Choose \texttt{PATH} and click edit
-\item
-  In the \texttt{Edit User Variable} window
-  add to the \textbf{end} of the \texttt{Variable value} section
-  a semicolon and the SS3 folder location you recorded earlier.
-  E.g.\ \texttt{;C:/SS3.24o/}. \textbf{Do not overwrite what was previously in
-    the PATH variable}.
-\item
-  Restart your computer
-\item
-  Go back to the DOS prompt
-  and try typing \texttt{ss3 -?} and hitting return again.
-\end{enumerate}
+Before proceeding it is worth considering the scope and place of \texttt{ss3sim} as a simulation package.
+The package was designed as a tool for examining structural differences in
+alternative model setups.
+These differences could be between an OM and EM \citep[e.g.][]{johnson2013} or between multiple EMs \citep[e.g.][]{ono2013}.
+Therefore, the specific details (e.g.\ many fleets, tagging data, seasons, etc.)
+of the original model setups were not important and removed to produce a set of generic life-history-type models.
+\texttt{ss3sim} is not designed for testing arbitrary SS3 models, but rather properties of assessment models in general.
+Thus \texttt{ss3sim} is not ideal for quickly exploring properties of a
+particular assessment model and other software packages should be explored if
+that is your goal (see accompanying for alternatives).
 
+Here is a list of SS3 features that are not currently implemented in \texttt{ss3sim}:
+\begin{itemize}
+\item Seasons, sexes, hermaphrodism, multiple areas, movement, growth morphs and platoons
+\item Data other than scientific surveys, commercial indices of abundance and age/length compositions: age-at-length,
+  discards, mean weights, etc.
+\end{itemize}
+Some of the features may work within the \texttt{ss3sim} framework, but are untested.
+
+It is possible to create new models that will work within the \texttt{ss3sim}
+framework, but this task will be complicated and likely require extensive
+knowledge of SS3 and R, as well as modification of the \texttt{ss3sim}
+functions. This process is described in more detail in Appendices
+\ref{sec:om-setup} and \ref{sec:em-setup}.
+
+Instead of creating entirely new models, we recommend adapting the current
+built-in models to match the desired model setups for a new simulation study. Since
+these models have been thoroughly tested and used with \texttt{ss3sim} already
+\citep[see][]{johnson2013, ono2013},
+they make an ideal starting place. Before proceeding it would be wise to examine
+the built-in models to determine how closely they match your desired model
+setups and whether simple changes can get you reasonably close for simulation purposes.
+
+Say for example you want to modify the cod model to have different
+maturity, and then explore different sampling schemes using the
+\texttt{change\_index}, \texttt{change\_lcomps}, and \texttt{change\_agecomps}
+functions. The following steps provide a basic guideline for how to accomplish this:
+\begin{itemize}
+\item Using the original cod model create the case argument files you desire for
+  your simulation and verify they run with the original cod model using the
+  function \texttt{run\_ss3sim}. It is probably best to do a shorter
+  deterministic (Section \ref{sec:deterministic}) run. After running, read in the
+  data and do visual checks for proper functionality.
+\item Find the original cod model. This can be found in the
+  \texttt{inst/extdata/models} folder inside the package, located by
+\begin{verbatim}
+library(ss3sim)
+d <- system.file("extdata", package = "ss3sim")
+paste0(d, "/models")
+\end{verbatim}
+  Make a copy of the cod models (OM and EM) and rename them as desired.
+\item Make a single change to either the \texttt{.dat} or \texttt{.ctl} files
+  for the new model and run them manually with SS3
+  if there is any question if they might break the model.
+\item Rerun the model through \texttt{run\_ss3sim} and verify it is still
+  working. If errors occur in the
+  \texttt{R} function you will need to examine the function to determine why the error is
+  occurring and fix by changing the \texttt{R} function and reloading it.
+\item Repeat previous steps with all small changes until the models are
+  satisfactory.
+\item Turn off deterministic runs and run the simulation stochastically.
+\item If your new model works well with the package and is significantly
+  different than what is built-in, please contact the \texttt{ss3sim} package
+  managers for inclusion in future versions.
+\end{itemize}
 
 \section{Incorporating observation error}
 \label{sec:obs-error}
@@ -1139,7 +1044,7 @@ more variance than expected, i.e.\ be overdispersed, and the effective sample
 size is smaller \citep{hulson2012, maunder2011}.  If a
 multinomial likelihood is assumed and the true sample size is used
 then in effect the model puts too much weight on the composition data,
-at the cost of fitting other sources of data less well \cite{maunder2011}.
+at the cost of fitting other sources of data less well \citep{maunder2011}.
 Analysts thus need to ``tune'' their model to find a more appropriate
 sample size that more accurately reflects the information in the composition
 data.
@@ -1375,6 +1280,54 @@ Given that different case arguments can generate different sampling routines
 (e.g. stochastically sampling or not sampling from the age compositions or sampling a different number of years)
 the observation error is not necessarily comparable across different case arguments.
 
+\section{Parallel computing with \texttt{ss3sim}}
+\label{sec:parallel}
+
+\texttt{ss3sim} can easily run multiple scenarios in parallel
+to speed up simulations.
+To run a simulation in parallel,
+you need to register multiple cores or clusters and
+set \texttt{parallel = TRUE} in \texttt{run\_ss3sim}.
+For example, we could have run the previous example in parallel with the following code.
+First, we register four cores:
+
+<<parallel-one>>=
+require(doParallel)
+registerDoParallel(cores = 4)
+@
+
+\noindent
+We can check to make sure we are set up to run in parallel:
+
+<<parallel-two>>=
+require(foreach)
+getDoParWorkers()
+@
+
+\noindent
+And then run our simulation on four cores simultaneously
+by setting \texttt{parallel = TRUE}:
+
+<<parallel-three, eval=FALSE>>=
+run_ss3sim(iterations = 1:100, scenarios =
+  c("D1-E0-F0-R0-M0-cod",
+    "D2-E0-F0-R0-M0-cod",
+    "D1-E1-F0-R0-M0-cod",
+    "D2-E1-F0-R0-M0-cod"),
+  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+  bias_adjust = TRUE, parallel = TRUE)
+@
+
+\noindent
+In addition to the check with \texttt{getDoParWorkers()} above,
+if the simulations are running in parallel,
+you will also see simultaneous output messages
+from \texttt{ss3sim} as the simulations run.
+On a 2.27 GHz Intel Xeon quad-core server running Ubuntu 10.04,
+this example ran 1.9 times faster on two cores than on a single core,
+and 3.2 times faster on four cores.
+
+
 \bibliographystyle{apalike}
 \bibliography{refs}
 
@@ -1384,21 +1337,101 @@ the observation error is not necessarily comparable across different case argume
 \appendixpage
 \addappheadtotoc
 
+\section{Putting SS3 in your path}
+\label{sec:path}
+
+Instead of copying the SS3 binary file (\texttt{ss3.exe}) to each folder
+within a simulation and running it, \texttt{ss3sim} relies on a single binary file
+being available to the operating system regardless of the folder.
+To accomplish this, SS3 must be in your system path, which is
+a list of folders that your operating system looks in
+whenever you type the name of a program on the command line.
+This approach saves storage on a space since the SS3 binary is about 2.2 MB and
+having it located in each folder can be prohibitive in a large scale simulation
+testing study.
+
+\subsection{For Unix (OS X and Linux)}
+
+To check if SS3 is in your path:
+open a Terminal window and type \texttt{which SS3} and hit enter.
+If you get nothing returned, then SS is not in your path.
+The easiest way to fix this is to move the SS3 binary
+to a folder that's already in your path.
+To find existing path folders type \texttt{echo \$PATH}
+in the terminal and hit enter.
+Now move the SS3 binary to one of these folders.
+For example, in a Terminal window type:
+
+\begin{verbatim}
+sudo cp ~/Downloads/SS3 /usr/bin/
+\end{verbatim}
+
+You will need to use \texttt{sudo}
+and enter your password after to have permission
+to move a file to a folder like \texttt{/usr/bin/}.
+If you have previously modified your path to add a non-standard location
+for the SS3 binary,
+you may need to also tell \texttt{R} about the new path.
+The path that \texttt{R} sees may not include additional paths
+that you have added through a configuration file like \texttt{.bash\_profile}.
+You can add to the path that \texttt{R} sees
+by including a line like this in your \texttt{.Rprofile} file.
+(This is an invisible file in your home directory.)
+
+\begin{verbatim}
+Sys.setenv(PATH=paste(Sys.getenv("PATH"),"/my/folder",sep=":"))
+\end{verbatim}
+
+\subsection{For Windows}
+
+To check if SS is in your path for Windows 7 and 8:
+open a DOS prompt and type \texttt{ss3 -?} and hit enter.
+If you get a line like ``\texttt{ss3 is not recognized...}''
+then SS3 is not in your path.
+To add the SS3 binary file to your path, follow these steps:
+
+\begin{enumerate}
+\item
+  Find the correct version of the \texttt{ss3.exe} binary on your
+  computer
+\item
+  Record the folder location. E.g.\ \texttt{C:/SS3.24o/}
+\item
+  Click on the start menu and type \texttt{environment}
+\item
+  Choose \texttt{Edit environment variables for your account}
+  under Control Panel
+\item
+  Click on \texttt{PATH} if it exists, create it if does not exist
+\item
+  Choose \texttt{PATH} and click edit
+\item
+  In the \texttt{Edit User Variable} window
+  add to the \textbf{end} of the \texttt{Variable value} section
+  a semicolon and the SS3 folder location you recorded earlier.
+  E.g.\ \texttt{;C:/SS3.24o/}. \textbf{Do not overwrite what was previously in
+    the PATH variable}.
+\item
+  Restart your computer
+\item
+  Go back to the DOS prompt
+  and try typing \texttt{ss3 -?} and hitting return again.
+\end{enumerate}
+
+
+
 \section{Setting up a new operating model}
 \label{sec:om-setup}
 In some cases the user may wish to adapt their own SS3 model to work
 with the \texttt{ss3sim} package. This is possible but may be difficult because
 the functions in \texttt{ss3sim} were developed to work with these three model setups and
-a model with a different structure may cause errors in these functions. 
-This stems from the high flexibility of SS3, 
-allowing for more complex model setups
-than those used while developing ss3sim. 
-For instance, the \texttt{change\_index} function 
-does not have the capability to
-handle more than one season 
-(it could, but currently it is not developed to). 
-Given the myriad options available in SS3 it is extremely difficult to write
-auxiliary functions that will interact reliably with all combinations of these
+a model with a different structure may cause errors in these functions. This
+stems from the high flexibility of SS3, allowing for more complex model setups
+than those used while developing ss3sim. For
+instance, the \texttt{change\_index} function does not have the capability to
+handle more than one season (it could, but currently it is not developed to). Given
+the myriad options available in SS3 it is extremely difficult to write
+auxilliary functions that will interact reliably with all combinations of these
 options. For this reason, we recommend that users strongly consider trying to
 modify an existing model rather than creating a new one
 (Section \ref{sec:modify}). It is likely that the \texttt{ss3sim} functions
