@@ -99,20 +99,20 @@ vignette("ss3sim-vignette", package = "ss3sim")
 @
 
 \noindent
-We develop and test \texttt{ss3sim} around a specific version of \texttt{SS3}.
-Currently, \texttt{ss3sim} is tested to work with \texttt{SS3 Version 3.24O}.
-You can download \texttt{SS3} at \url{http://nft.nefsc.noaa.gov/Stock_Synthesis_3.htm}.
-\texttt{ss3sim} requires the \texttt{SS3} binary to be in your path.
+We develop and test \texttt{ss3sim} around a specific version of SS3.
+Currently, \texttt{ss3sim} is tested to work with SS3 Version 3.24O.
+You can download SS3 at \url{http://nft.nefsc.noaa.gov/Stock_Synthesis_3.htm}.
+\texttt{ss3sim} requires the SS3 binary to be in your path.
 This means that your operating system knows where the binary file is located.
 See Section \ref{sec:path} for details.
 
 \section{An overview of the \texttt{ss3sim} simulation structure}
 
 \texttt{ss3sim} is an \texttt{R} package to make it relatively quick and easy
-to run simulations with the 3rd version of Stock Synthesis, \texttt{SS3}.
+to run simulations with the 3rd version of Stock Synthesis, SS3.
 The package consists of a series of low-level functions
-that facilitate manipulating \texttt{SS3} configuration files,
-running \texttt{SS3} models, and combining the output.
+that facilitate manipulating SS3 configuration files,
+running SS3 models, and combining the output.
 \texttt{ss3sim} also contains some wrapper functions
 that tie all these low-level functions together
 into a complete simulation experiment.
@@ -389,7 +389,7 @@ To investigate the effect of different levels of precision on the survey index o
 we will manipulate the argument \texttt{sds\_obs}
 that gets passed to \texttt{change\_index}.
 This argument ultimately refers to the standard error
-on the log(index) value, as defined in \texttt{SS3}.
+on the log(index) value, as defined in SS3.
 In case 0, we will specify the standard deviation at 0.1
 and in case 1 we will increase the standard deviation to 0.4.
 We can do this by including the line: \texttt{sds\_obs; 0.1}
@@ -421,7 +421,7 @@ we will manipulate the argument \texttt{natM\_val} that gets passed to \texttt{c
 The first entry of \texttt{natM\_val} is the value which \textit{M} is fixed or
 initialized at and the second refers the phase.
 In case 0, we will set the phase in which \textit{M} is estimated
-to \texttt{-1} (any negative phase number will tell \texttt{SS3}
+to \texttt{-1} (any negative phase number will tell SS3
 to not estimate a particular parameter)
 and use the argument \texttt{NA}
 to fix \textit{M} at the true value (i.e. do not modify it from what is in the
@@ -479,16 +479,16 @@ Simply by changing the deviations from a vector of zeros
 to any vector pattern of deviations,
 we could add time-varying \textit{M}.
 In Section \ref{sec:time-varying} we describe how time-varying parameters are unique in \texttt{ss3sim} and how you can make any parameter
-described in \texttt{SS3} time varying using this approach.
+described in SS3 time varying using this approach.
 
 \subsection{Checking the case files}
 
 It is a good idea to check that the case files
-are manipulating the \texttt{SS3} model files as intended.
+are manipulating the SS3 model files as intended.
 One way we can do this is by
-running the \texttt{change} functions directly on the \texttt{SS3} model files
+running the \texttt{change} functions directly on the SS3 model files
 using the arguments specified within the case files
-and inspecting the modified \texttt{SS3} files.
+and inspecting the modified SS3 files.
 Another way is to run a single iteration of your simulation
 through \texttt{run\_ss3sim}
 and carefully inspect the OM and EM model files that it creates.
@@ -505,7 +505,7 @@ run_ss3sim(iterations = 1, scenarios =
 @
 
 \noindent
-And then check the \texttt{SS3} files that are created.
+And then check the SS3 files that are created.
 
 \subsection{Self testing: deterministic simulations to check the models for bias}
 \label{sec:deterministic}
@@ -587,7 +587,7 @@ run_ss3sim(iterations = 1:20, scenarios = x,
   bias_adjust = TRUE, user_recdevs = recdevs_det)
 @
 
-Note that due to the way that \texttt{SS3} is being used as an operating model,
+Note that due to the way that SS3 is being used as an operating model,
 you may see an ADMB error in the console:
 \begin{verbatim}
 Error -- base = 0 in function prevariable& pow(const prevariable& v1,
@@ -630,8 +630,8 @@ and combines the output into two \texttt{.csv} files:
 \texttt{ss3sim\_scalar.csv} and \texttt{ss3sim\_ts.csv}. The ``scalar'' file
 contains values for which there is a single estimated value (e.g.\ MSY) and the ``ts''
 file refers to values for which there are time series of estimates available (e.g.\ biomass
-for each year). The column names refer to the output from \texttt{SS3}, so it
-can be useful to consult the \texttt{SS3} manual for details.
+for each year). The column names refer to the output from SS3, so it
+can be useful to consult the SS3 manual for details.
 
 <<get-results, eval=FALSE>>=
 get_results_all(user_scenarios =
@@ -764,7 +764,7 @@ print(p)
 \subsection{Time varying parameters}
 \label{sec:time-varying}
 
-You can specify any parameter defined in your \texttt{SS3} model
+You can specify any parameter defined in your SS3 model
 as time varying through the \texttt{change\_tv} function.
 The function works by adding an environmental deviate ($env$)
 to the base parameter ($par$),
@@ -790,7 +790,7 @@ Currently, \texttt{change\_tv} function
 only works to add time-varying properties
 to a time-invariant parameter.
 It cannot alter the properties of parameters that already vary with time.
-Additionally, \texttt{SS3} does not allow more than one stock recruit parameter
+Additionally, SS3 does not allow more than one stock recruit parameter
 to vary with time. Therefore, if the \texttt{.ctl} file already has a
 stock recruit parameter that varies with time and you try to implement another,
 the function will fail.
@@ -814,13 +814,14 @@ or G for growth.
 \section{Modifying the operating and estimation models included in the \texttt{ss3sim} package}
 \label{sec:modify}
 
-\texttt{ss3sim} comes with three built-in \texttt{SS3} operating and estimation model setups: a cod-like (slow-growing and long-lived), flatfish-like (fast-growing and intermediate-lived), and sardine-like (fast-growing and short-lived).
-These model setups are based on North Sea cod (\textit{Gadus morhua}) (R. Methot, pers.\ comm.), yellowtail flounder (\textit{Limanda ferruginea}) (R. Methot, pers.\ comm.), and Pacific sardine (\textit{Sardinops sagax caeruleus}) \citep{hill2012}.
-Further details on these models are available in \citep{johnson2013} and \citep{ono2013}.
+\texttt{ss3sim} comes with three built-in SS3 operating and estimation model setups: a cod-like (slow-growing and long-lived), flatfish-like (fast-growing and intermediate-lived), and sardine-like (fast-growing and short-lived).
+These model setups are based on North Sea cod (\textit{Gadus morhua},
+R. Methot, pers.\ comm.), yellowtail flounder (\textit{Limanda ferruginea}, R. Methot, pers.\ comm.), and Pacific sardine \citep[\textit{Sardinops sagax caeruleus;}][]{hill2012}.
+Further details on these models are available in \citet{johnson2013} and \citet{ono2013}.
 These models were stripped down and simplified to make them more generic for simulation testing.
 In doing this, we removed many of the subtle features of the model setups.
 While these model setups are generic and cover a wide range of life history types, they may not be suitable for all users.
-Therefore, in this section, we outline strategies for modifying the existing \texttt{SS3} models.
+Therefore, in this section, we outline strategies for modifying the existing SS3 models.
 
 Before proceeding it is worth considering the scope and place of \texttt{ss3sim} as a simulation package.
 The package was designed as a tool for examining structural differences in
@@ -828,13 +829,13 @@ alternative model setups.
 These differences could be between an OM and EM \citep[e.g.][]{johnson2013} or between multiple EMs \citep[e.g.][]{ono2013}.
 Therefore, the specific details (e.g.\ many fleets, tagging data, seasons, etc.)
 of the original model setups were not important and removed to produce a set of generic life-history-type models.
-\texttt{ss3sim} is not designed for testing arbitrary \texttt{SS3} models, but rather properties of assessment models in general.
+\texttt{ss3sim} is not designed for testing arbitrary SS3 models, but rather properties of assessment models in general.
 Thus \texttt{ss3sim} is not ideal for quickly exploring properties of a
 particular assessment model and other software packages should be explored if
 that is your goal (see accompanying for alternatives).
 
 
-Here is a list of \texttt{SS3} features that are not currently implemented in \texttt{ss3sim}:
+Here is a list of SS3 features that are not currently implemented in \texttt{ss3sim}:
 \begin{itemize}
 \item Seasons, sexes, hermaphrodism, multiple areas, movement, growth morphs and platoons
 \item Data other than scientific surveys, commercial indices of abundance and age/length compositions: age-at-length,
@@ -844,14 +845,14 @@ Some of the features may work within the \texttt{ss3sim} framework, but are unte
 
 It is possible to create new models that will work within the \texttt{ss3sim}
 framework, but this task will be complicated and likely require extensive
-knowledge of \texttt{SS3} and R, as well as modification of the \texttt{ss3sim}
+knowledge of SS3 and R, as well as modification of the \texttt{ss3sim}
 functions. This process is described in more detail in Appendices
 \ref{sec:om-setup} and \ref{sec:em-setup}.
 
 Instead of creating entirely new models, we recommend adapting the current
 built-in models to match the desired model setups for a new simulation study. Since
 these models have been thoroughly tested and used with \texttt{ss3sim} already
-\cite{johnson2013, ono2013},
+\citep[see][]{johnson2013, ono2013},
 they make an ideal starting place. Before proceeding it would be wise to examine
 the built-in models to determine how closely they match your desired model
 setups and whether simple changes can get you reasonably close for simulation purposes.
@@ -875,7 +876,7 @@ paste0(d, "/models")
 \end{verbatim}
   Make a copy of the cod models (OM and EM) and rename them as desired.
 \item Make a single change to either the \texttt{.dat} or \texttt{.ctl} files
-  for the new model and run them manually with \texttt{SS3}
+  for the new model and run them manually with SS3
   if there is any question if they might break the model.
 \item Rerun the model through \texttt{run\_ss3sim} and verify it is still
   working. If errors occur in the
@@ -991,13 +992,13 @@ this example ran 1.9 times faster on two cores than on a single core,
 and 3.2 times faster on four cores.
 
 
-\section{Putting \texttt{SS3} in your path}
+\section{Putting SS3 in your path}
 \label{sec:path}
 
-Instead of copying the \texttt{SS3} binary file (\texttt{ss3.exe}) to each folder
+Instead of copying the SS3 binary file (\texttt{ss3.exe}) to each folder
 within a simulation and running it, \texttt{ss3sim} relies on a single binary file
 being available to the operating system regardless of the folder.
-To accomplish this, \texttt{SS3} must be in your system path, which is
+To accomplish this, SS3 must be in your system path, which is
 a list of folders that your operating system looks in
 whenever you type the name of a program on the command line.
 This approach saves storage on a space since the SS3 binary is about 2.2 MB and
@@ -1006,14 +1007,14 @@ testing study.
 
 \subsection{For Unix (OS X and Linux)}
 
-To check if \texttt{SS3} is in your path:
+To check if SS3 is in your path:
 open a Terminal window and type \texttt{which SS3} and hit enter.
 If you get nothing returned, then SS is not in your path.
-The easiest way to fix this is to move the \texttt{SS3} binary
+The easiest way to fix this is to move the SS3 binary
 to a folder that's already in your path.
 To find existing path folders type \texttt{echo \$PATH}
 in the terminal and hit enter.
-Now move the \texttt{SS3} binary to one of these folders.
+Now move the SS3 binary to one of these folders.
 For example, in a Terminal window type:
 
 \begin{verbatim}
@@ -1024,7 +1025,7 @@ You will need to use \texttt{sudo}
 and enter your password after to have permission
 to move a file to a folder like \texttt{/usr/bin/}.
 If you have previously modified your path to add a non-standard location
-for the \texttt{SS3} binary,
+for the SS3 binary,
 you may need to also tell \texttt{R} about the new path.
 The path that \texttt{R} sees may not include additional paths
 that you have added through a configuration file like \texttt{.bash\_profile}.
@@ -1062,7 +1063,7 @@ To add the SS3 binary file to your path, follow these steps:
 \item
   In the \texttt{Edit User Variable} window
   add to the \textbf{end} of the \texttt{Variable value} section
-  a semicolon and the \texttt{SS3} folder location you recorded earlier.
+  a semicolon and the SS3 folder location you recorded earlier.
   E.g.\ \texttt{;C:/SS3.24o/}. \textbf{Do not overwrite what was previously in
     the PATH variable}.
 \item
@@ -1124,7 +1125,7 @@ more variance than expected, i.e.\ be overdispersed, and the effective sample
 size is smaller \citep{hulson2012, maunder2011}.  If a
 multinomial likelihood is assumed and the true sample size is used
 then in effect the model puts too much weight on the composition data,
-at the cost of fitting other sources of data less well \cite{maunder2011}.
+at the cost of fitting other sources of data less well \citep{maunder2011}.
 Analysts thus need to ``tune'' their model to find a more appropriate
 sample size that more accurately reflects the information in the composition
 data.
@@ -1225,7 +1226,7 @@ sampled, the number of sampled tows, etc.). However, with the Dirichlet distribu
 depends on the parameters passed to these functions and is automatically
 calculated internally and passed on to the \texttt{.dat} file. The effective
 sample size is calculated as $N_{eff}=n/c^2$. Note that these values will not
-necessarily be integer-valued, and \texttt{SS3} handles this without issue.
+necessarily be integer-valued, and SS3 handles this without issue.
 
 Given that the effective sample size is known and passed to the EM, there is
 much similarity between the multinomial and Dirichlet methods for generating
@@ -1369,7 +1370,7 @@ the observation error is not necessarily comparable across different case argume
 
 \section{Setting up a new operating model}
 \label{sec:om-setup}
-In some cases the user may wish to adapt their own \texttt{SS3} model to work
+In some cases the user may wish to adapt their own SS3 model to work
 with the \texttt{ss3sim} package. This is possible but may be difficult because
 the functions in \texttt{ss3sim} were developed to work with these three model setups and
 a model with a different structure may cause errors in these functions. This
@@ -1377,13 +1378,13 @@ stems from the high flexibility of SS3, allowing for more complex model setups
 than those used while developing ss3sim. For
 instance, the \texttt{change\_index} function does not have the capability to
 handle more than one season (it could, but currently it is not developed to). Given
-the myriad options available in \texttt{SS3} it is extremely difficult to write
+the myriad options available in SS3 it is extremely difficult to write
 auxilliary functions that will interact reliably with all combinations of these
 options. For this reason, we recommend that users strongly consider trying to
 modify an existing model rather than creating a new one
 (Section \ref{sec:modify}). It is likely that the \texttt{ss3sim} functions
 will need to be modified in some way in the process, so the user should be
-familiar with both \texttt{SS3} and R.
+familiar with both SS3 and R.
 
 The main purpose of the OM is to generate data files that can be read into the
 EM. Thus the user needs to setup the \texttt{.dat} files in the OM such that
@@ -1409,7 +1410,7 @@ just set the OM \texttt{.dat} file to match the desired input for the EM
 \texttt{.dat}.
 
 For those users who choose to create a new \texttt{ss3sim} model setup, we outline the
-steps to take an existing \texttt{SS3} model and modify it to work with the
+steps to take an existing SS3 model and modify it to work with the
 \texttt{ss3sim} package.  First, we cover setting up an operating model and then
 in Section \ref{sec:em-setup} we cover setting up an estimation model.
 
@@ -1546,14 +1547,14 @@ in Section \ref{sec:em-setup} we cover setting up an estimation model.
 \end{enumerate}
 
 \subsection{Testing the new operating model}
-After completing the above steps, check that the \texttt{SS3} model setup is
+After completing the above steps, check that the SS3 model setup is
 functional by running a single iteration of the model and verifying that the
 data are read in correctly and expected values of the population dynamics are
 written to the \texttt{.dat} files (and sensical). We also advise manually
 testing the \texttt{ss3sim} \texttt{R} functions that manipulate the OM (e.g.,
 \texttt{change\_tv}) and check that the model setup still runs correctly after this
 manipulation. The help files for the functions demonstrate how to use the
-functions to test models. Note that the OM will not be a valid \texttt{SS3}
+functions to test models. Note that the OM will not be a valid SS3
 model in the sense that ADMB cannot run and produce maximum likelihood
 estimates of parameters; it is intended to only be run for one
 iteration to generate the population dynamics using values
@@ -1561,7 +1562,7 @@ specified in the input files.
 
 \section{Setting up a new estimation model}
 \label{sec:em-setup}
-Unlike the OM, the EM needs to be a valid \texttt{SS3} model setup and run to achieve MLE
+Unlike the OM, the EM needs to be a valid SS3 model setup and run to achieve MLE
 estimates (and possibly standard errors). Thus the OM needs to be adapted to
 create a new EM.
 
