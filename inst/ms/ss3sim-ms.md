@@ -69,7 +69,7 @@ and associated scientific advice to management (REF).
 Simulation testing is a critical component
 to testing fishery stock-assessment methods,
 particularly given the potential for model misspecification
-[@hilborn1987; @hilborn1992; @rosenberg1994; @peterman2004].
+[@hilborn1987; @hilborn1992; @rosenberg1994; @peterman2004; @deroba2013a].
 With simulation testing,
 we can evaluate the precision and bias
 of alternative complex assessment methods
@@ -95,15 +95,19 @@ particularly in the United States and Australia,
 where it has been used in 35 and 12 stock assessments as of 2012,
 respectively [@methot2013].
 
-Although SS is increasingly becoming a standard for fisheries stock assessment,
+Although SS is increasingly becoming a standard for fisheries stock assessment
+and has commonly been used in simulation testing
+[@lee2011; @lee2012; @pine2011; @crone2013a],
 and the programming language R [@rcoreteam2013] has become the standard
 for statistical computing and visualization,
 there lacks a generalized framework
 to link these components in a simulation context.
+Most simulation testing work to date has used custom frameworks tailored to the particular needs of each study.
 The only available R package to interface with SS is r4ss [@r4ss2013],
-which primarily allows reading, processing, and plotting with SS output,
+which primarily allows reading, processing, and plotting of SS output,
 but not a simulation framework.
-Here, we introduce ss3sim,
+
+Here we introduce ss3sim,
 an R package that facilitates
 large-scale, rapid, and reproducible simulation testing
 with the widely-used SS framework.
@@ -147,6 +151,16 @@ across multiple computers or computer cores, thereby accelerating computation.
 
 ## The general structure of an ss3sim simulation
 
+ss3sim comes with both low-level functions
+that modify SS3 configuration files
+and high-level functions that combine these low-level functions
+into a complete simulation experiment (Figure 1, Table 1).
+In this paper we will focus on the structure
+of the high-level function `run_ss3sim`;
+however, the low-level functions
+can be used on their own
+as part of a more customized simulation wrapper function (Text S1).
+
 An ss3sim simulation requires three types of input:
 (1) a base SS3 model describing the underlying truth,
 or operating model (OM);
@@ -159,7 +173,7 @@ Scenarios are usually run for multiple iterations,
 possibly adding unique process and observation error each time.
 An ss3sim simulation therefore refers to the combination of all scenarios and iterations.
 
-ss3sim works, in general, by reading case-file arguments
+The `run_ss3sim` function works by reading case-file arguments
 (e.g. arguments specifying a given natural mortality trajectory over time)
 to modify SS3 configuration files (`change` functions);
 running the OM;
@@ -199,8 +213,8 @@ We will base our example around the cod-like model.
 
 ## Setting up the case files
 
-ss3sim comes with a high-level function `run_ss3sim`,
-which can run all simulation steps
+The high-level function `run_ss3sim`
+can run all simulation steps
 based on a specified scenario ID
 and a set of semicolon-delimited plain-text files
 that describe alternative cases (Figure 1).
@@ -208,17 +222,16 @@ These files contain the argument values that will be passed
 to the low-level ss3sim R functions
 (e.g. `change_e`, a function controlling which and how parameters are estimated;
 Table 1).
-Alternatively, the low-level functions can be used on their own
-as part of a more customized simulation wrapper function.
 
-To use the high-level function `run_ss3sim`, the naming of the case files is important.
+To use `run_ss3sim`, the naming of the case files is important.
 All case files are named according to the type of case
-(e.g. `E` for estimation, `D` for data, or `F` for fishing mortality),
+(e.g. `E` for estimation or `F` for fishing mortality),
 a numeric value representing the case number,
-and a three letter code representing the species or stock (e.g. `cod`) (Table 1, Text S1).
+and an alphanumeric identifier
+representing the species or stock (e.g. `cod`) (Table 1, Text S1).
 We combine these case IDs with hyphens to create scenario IDs.
 For example, one of our scenarios will
-ave the scenario ID ``D1-E0-F0-M0-R0-cod``.
+have the scenario ID ``D1-E0-F0-M0-R0-cod``.
 This scenario ID tells `run_ss3sim`
 to read the case files corresponding
 to the first data (`D`) case
@@ -240,6 +253,8 @@ in the file `R0-cod.txt`.
 We will set up the file `E0-cod.txt`
 to fix the estimation of $M$ at the true value
 and case `E1-cod.txt` to estimate a stationary $M$ (Text S1).
+All of these text files are available in the package data
+in the folder `inst/extdata/eg-cases/`.
 
 To start, we will load the ss3sim package into an R session
 and locate three sets of folders within the package data:
@@ -300,7 +315,7 @@ The `.csv` files contain separate columns for OM and EM values,
 making it simple to calculate error metrics,
 such as relative or absolute error.
 In addition to parameter estimates,
-the result files contain performance metrics,
+the `.csv` files contain performance metrics,
 such as the maximum gradient,
 whether the covariance matrix was successfully calculated,
 and model run-time, which can be used to gauge model convergence.
@@ -338,7 +353,7 @@ or between multiple versions of the EMs [@ono2013].
 However, ss3sim is less well-suited
 for quickly exploring arbitrary SS model setups,
 which may rely on SS configurations not yet programmed into the ss3sim package functions.
-Depending on the simulation study goal,
+Therefore, depending on the simulation study goal,
 other software frameworks may provide better alternatives.
 
 One alternative framework is *Fisheries libraries in R* (FLR) [@kell2007] ---
@@ -370,9 +385,9 @@ in that it specifically focuses on the performance of stock-assessment models.
 
 FS differs from ss3sim mainly in that
 it uses simple user-specified text manipulation commands
-(e.g. change line 50 from 0 to 1)
+(e.g. "change line 50 from 0 to 1")
 to alter models rather than the approach of ss3sim,
-which uses flexible and modular functions.
+which uses modular functions taylored to specific purposes.
 Since FS does not rely on pre-built manipulation functions,
 FS works well for testing arbitrary assessment models
 [e.g. @lee2012; @piner2011; @lee2011].
@@ -425,7 +440,7 @@ Typically, estimation methods assume
 independent log-normally-distributed recruitment deviations
 around a spawning stock recruitment function (@hilborn1992).
 However, recruitment deviations are frequently auto-correlated
-and their variability can change through time (REF).
+and their variability can change through time [@beamish1995; @pyper1998].
 ss3sim makes it simple
 to incorporate different recruitment deviation structures
 and consider how they affect model performance.
@@ -456,25 +471,30 @@ by adding a single argument --- the number of retrospective years to investigate
 
 # Conclusions
 
-TODO cite @deroba2013a; @wilberg2006; @crone2013 in introduction
+TODO IN PROGRESS AND TO BE CUT DOWN:
 
-TODO re-work this:
 The increasing complexity of modern statistical integrated models and expanding computing power allows for the inclusion of a multitude of processes in fisheries stock-assessment methods.
-
 However, with added complexity comes the potential for model misspecification and model misspecification is often not accounted for in the evaluation of alternative modeling approaches.
 
 Simulation testing allows for the formal evaluation of the ability of assessment models to accurately and precisely estimate parameters of interest under different conditions and levels of misspecification [@deroba2013a; @wilberg2006; @crone2013].
-However, most simulation testing work to date has used custom frameworks tailored to the particular needs of each study.
+
+However, most simulation testing work to date has used custom frameworks
+tailored to the particular needs of each study.
+
 
 A recent large scale study [@deroba2013a] focused on evaluating the robustness of several stock-assessment models to observation error.
-Some of the challenges found steamed from the use of models that were very different, both in their fundamental structure and in their data requirements and use limitations.
+That study encountered challenges due to fundamental differences in the structure, data requirements, and limitations of different stock-assessment models.
+An alternative approach is to focus on a single generalized modeling platform such as SS, where alternative model setups reflect only alternative assumptions about the true underlying dynamics of stocks or estimation approaches and assumptions.
 
-An alternative approach is to use a generalized modeling platform such as SS, where alternative model setups reflect only alternative assumptions about the true underlying dynamics of stocks or estimation approaches and assumptions, but always using the same modeling plat-form.
+The initial release of ss3sim describes the basic structure used in recent studies [@johnson2013; @ono2013]. However, the current version of ss3sim could be used to address many other important questions in stock assessment science. Furthermore, the open-source package format allows users to extend the functionality for their own needs, potentially contributing back to the main code base.
 
-Although several simulation testing studies have used the widely used fisheries stock-assessment platform SS [@lee2011; @lee2012; @piner2011; @crone2013a] a common end-to-end open access simulation testing framework is still lacking.
-ss3sim, allows for large-scale, rapid, and reproducible simulation with SS.
 
-The initial release of ss3sim describes the basic structure used in recent studies [@johnson2013; @ono2013]; however, future users are free to develop their own low- and high-level functions as needed, taken advantage of the open-source MIT-licensed R package structure, why we developed generic low-level functions and high-level functions
+
+<!--For intro: Although several simulation testing studies have used the widely
+    used fisheries stock-assessment platform SS [@lee2011; @lee2012;
+    @piner2011; @crone2013a] a common end-to-end open access simulation testing
+    framework is still lacking. ss3sim, allows for large-scale, rapid, and
+    reproducible simulation with SS.-->
 
 # Acknowledgements
 
