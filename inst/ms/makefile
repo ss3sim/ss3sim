@@ -1,13 +1,27 @@
-all: pdf
+all: plos
 
-pdf:
-	pandoc -S --no-wrap --bibliography=refs.bib --csl=plos.csl --bibliography=refs.bib --latex-engine=xelatex ss3sim-ms.md -o manuscript.tex
+plos:
+	pandoc -S --no-wrap --bibliography=refs.bib --natbib ss3sim-ms.md -o manuscript.tex
 	perl -p -i -e "s/Fig. /Fig.~/g" manuscript.tex
+	perl -p -i -e "s/citep/cite/g" manuscript.tex
+	perl -p -i -e "s/citet/cite/g" manuscript.tex
 	perl -p -i -e "s/e\.g\. /e\.g\.~/g" manuscript.tex
 	perl -p -i -e "s/i\.e\. /i\.e\.~/g" manuscript.tex
-	xelatex ss3sim-ms
-	rm manuscript.tex *.log *.aux
+	perl -p -i -e "s/\\\section/\\\section\*/g" manuscript.tex
+	perl -p -i -e "s/\\\subsection/\\\subsection\*/g" manuscript.tex
+	perl -p -i -e "s/Andre Punt/Andr\\\'{e} Punt/g" manuscript.tex
+	pdflatex ss3sim-ms
+	bibtex ss3sim-ms
+	pdflatex ss3sim-ms
+	pdflatex ss3sim-ms
+	#rm manuscript.tex
 	cp ss3sim-ms.pdf ~/Dropbox/Public/
+
+clean:
+	rm *.log
+	rm *.aux
+	rm *.bbl
+	rm *.blg
 
 docx:
 	pandoc -S --bibliography=refs.bib --csl=plos.csl --reference-docx=reference.docx ss3sim-ms.md -o ss3sim-ms.docx

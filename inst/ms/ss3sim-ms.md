@@ -1,29 +1,3 @@
-# ss3sim: An R package for fisheries stock-assessment simulation with Stock Synthesis
-
-Sean C. Anderson^1*^, Kelli F. Johnson^2^, Cole C. Monnahan^3^, Kotaro Ono^2^, Juan L. Valero^4^
-
-^1^Department of Biological Sciences,
-Simon Fraser University,
-Burnaby BC, V5A 1S6, Canada
-
-^2^School of Aquatic and Fishery Sciences,
-University of Washington, Box 355020,
-Seattle, WA 98195-5020, USA
-
-^3^Quantitative Ecology and Resource Management,
-University of Washington, Box 352182,
-Seattle, WA 98195-5020, USA
-
-^4^Center for the Advancement of Population Assessment Methodology
-(CAPAM), 8901 La Jolla Shores Drive, La Jolla, CA 92937, USA
-
-^*^Corresponding author: sean@seananderson.ca
-
-Short title: ss3sim: Simulation with Stock Synthesis
-<!--< 50 characters-->
-
-\clearpage
-
 # Abstract
 
 Simulation testing is an important approach to evaluating fishery stock-assessment methods.
@@ -52,8 +26,6 @@ For example, ss3sim can be easily used to answer questions about
 time-varying model misspecification,
 retrospective patterns,
 and the relative importance of various types of fisheries data.
-
-\clearpage
 
 # Introduction
 
@@ -97,7 +69,7 @@ respectively [@methot2013].
 
 Although SS is increasingly becoming a standard for fisheries stock assessment
 and has commonly been used in simulation testing
-[@lee2011; @lee2012; @pine2011; @crone2013a],
+[@lee2011; @lee2012; @piner2011; @crone2013a],
 and the programming language R [@rcoreteam2013] has become the standard
 for statistical computing and visualization,
 there lacks a generalized framework
@@ -305,6 +277,7 @@ in our current directory with one function call:
 get_results_all()
 ```
 
+\noindent
 This command creates two comma-separate-value files in our working directory:
 `ss3sim_scalars.csv` and `ss3sim_ts.csv`,
 which contain scalar output estimates (e.g. maximum sustainable yield)
@@ -520,11 +493,14 @@ KFJ and KO were partially supported by NOAA grant 423 NA10OAR4320148 and
 CCM was partially supported by a Washington Sea Grant.
 TODO Juan: any funding to acknowledge?
 
+\bibliography{refs}
+\clearpage
+
 \clearpage
 
 # Tables
 
-Table 1: Main ss3sim functions and a description of their purpose.
+**Table 1. Main ss3sim functions and a description of their purpose.**
 Simulations can be run through the `run_ss3sim` function.
 `run_ss3sim` then calls the `change` functions.
 Users can control what the `change` functions do through a series of plain-text case files.
@@ -561,40 +537,44 @@ Function name          Description
 `get_results_all`      Extracts results for a series of scenarios.
 ---------------------- -----------------------------------------
 
-# Figures
-
-\begin{center}
-\includegraphics[width=3.9in]{sim-steps.pdf}
-\end{center}
-
-Figure 1: Flow diagram of the main steps
-in an ss3sim simulation carried out using `run_ss3sim`.
-Functions that are called internally are shown in a monospaced font.
-
 \clearpage
 
-\begin{center}
-\includegraphics[width=5.0in]{fig2-20131109.pdf}
-\end{center}
+# Figure Legends
 
-Figure 2: Example output from ss3sim simulations.
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics[width=4in]{sim-steps.pdf}
+\end{center}
+\caption{
+{\bf Flow diagram of the main steps
+in an ss3sim simulation carried out using \texttt{run\_ss3sim}.}
+Functions that are called internally are shown in a monospaced font.
+}
+\label{fig:sim-steps}
+\end{figure}
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics[width=5in]{fig2-20131109.pdf}
+\end{center}
+\caption{
+{\bf Example output from an ss3sim simulation.}
 We ran a crossed simulation in which we considered
-(1) the effect of fixing natural mortality (*M*)
-at its historical value (0.2; case E0) or estimating *M* (case E1) and
+(1) the effect of fixing natural mortality ($M$)
+at its historical value (0.2; case E0) or estimating $M$ (case E1) and
 (2) the effect of high survey effort
 ($\sigma_\mathrm{survey} = 0.1$; case D1)
 or low survey effort ($\sigma_\mathrm{survey} = 0.4$; case D2).
 Upper panels (blue) show time series of relative error
 in spawning stock biomass (SSB).
-The shaded regions indicate 50% and 90%
+The shaded regions indicate 50\% and 90\%
 of the relative errors and the line indicates the median.
 Lower panels (grey) show the distribution
 of relative error across four scalar variables:
-depletion, *M*, SSB at maximum sustainable yield (MSY),
-and fishing mortality (F) in the terminal year.
+depletion, $M$, SSB at maximum sustainable yield (MSY),
+and fishing mortality ($F$) in the terminal year.
 We show the values across simulation iterations with dots
 and the distributions with beanplots (kernel density smoothers).
-
-\clearpage
-
-# References
+}
+\label{fig:results}
+\end{figure}
