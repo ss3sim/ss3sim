@@ -290,26 +290,26 @@ in our current directory with one function call:
 get_results_all()
 ```
 
-This creates two comma-separate-value files in our working directory,
+This creates two comma-separate-value files in our working directory:
 `ss3sim_scalars.csv` and `ss3sim_ts.csv`,
-which contain information on parameter estimates and other management quantities.
-`ss3sim_scalars.csv` contains
-scalar output estimates (e.g. maximum sustainable yield)
-and `ss3sim_ts.csv` contains
-time-series estimates (e.g. biomass in each year).
-These estimates come from the `Report.sso` files produced on each iteration
+which contain scalar output estimates (e.g. maximum sustainable yield)
+and time-series estimates (e.g. biomass each year), respectively.
+These estimates come from the `Report.sso` files produced from each run of SS
 and are read by the r4ss [@r4ss2013] R package.
 The `.csv` files contain separate columns for OM and EM values,
 making it simple to calculate error metrics,
 such as relative or absolute error.
-The `.csv` files also contain performance metrics,
-such as the maximum gradient, successful calculation of the covariance matrix,
-and run-time, which can be used to gauge model convergence.
-These files are organized into the "long" format by scenario and iteration
+In addition to parameter estimates,
+the result files contain performance metrics,
+such as the maximum gradient,
+whether the covariance matrix was successfully calculated,
+and model run-time, which can be used to gauge model convergence.
+These results are organized into "long" data format,
+with columns for scenario and iteration,
 for quick analysis and plotting using
 common R packages such as ggplot2 [@wickham2009].
 
-For the above example, the relative error in SSB over time is,
+For our example simulation, the relative error in SSB over time is,
 as expected, lower when the true value of $M$ is specified rather than estimated
 (Figure 2, top panels E0 vs. E1).
 Furthermore, lower precision on the research survey index of abundance
