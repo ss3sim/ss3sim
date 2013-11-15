@@ -177,7 +177,7 @@ change_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
                             stop(paste("Invalid Dirichlet parameter: Lambda=", lambda))
                         newcomp[-(1:9)] <- gtools::rdirichlet(1, probs * lambda)
                         ## use the effective sample size when using Dirichlet
-                        effectiveN <- floor(newcomp$Nsamp/cpar[i]^2)
+                        effectiveN <- newcomp$Nsamp/cpar[i]^2
                         newcomp$Nsamp <- effectiveN
                     }
                     newcomp.list[[k]] <- newcomp
