@@ -291,12 +291,23 @@ get_results_all()
 ```
 
 This creates two comma-separate-value files in our working directory:
-`ss3sim_scalars.csv` and `ss3sim_ts.csv`
-containing scalar output estimates (e.g. maximum sustainable yield)
-and time-series estimates (e.g. biomass each year), respectively.
-There are separate columns for OM and EM values, making it simple to calculate
-error metrics, such as relative (Figure 2) or absolute error.
-TODO add a couple sentences about the results.
+`ss3sim_scalars.csv` and `ss3sim_ts.csv` containing scalar output estimates
+(e.g. maximum sustainable yield) and time-series estimates (e.g. biomass in each
+year), respectively. Functions from r4ss are used to read in the `Report.sso`
+files to collect information on parameters and other management quantities
+calculated by SS3. There are separate columns for OM and EM values, making it
+simple to calculate error metrics, such as relative or absolute error. The
+results also contain performance metrics, such as the maximum gradient,
+successful calculation of the covariance matrix, and run-time, which can be used
+to guage model convergence. These files are organized into the "long" format by
+scenario and iteration for quick analysis and plotting using common R
+packages. For the example above, the relative error in SSB over time is, as
+expected, lower when the true value of $M$ is specified rather than estimated
+(Figure 2, top panel). Further, the difference between low and high survey
+effort is most noticeably at the end of the time series, affecting estimates of
+terminal year depletion and $F$, but not $SSB_{\text{MSY}}$ or $M$ (Figure 2).
+
+
 
 # How ss3sim complements other simulation software
 
