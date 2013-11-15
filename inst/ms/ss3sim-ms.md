@@ -120,6 +120,9 @@ which uses AD Model Builder as a backend optimization platform ---
 the most rapid and robust optimization software available [@fournier2012].
 `ss3sim` also facilitates the deployment of simulations
 across multiple computers or computer cores, thereby accelerating computation.
+Perhaps most importantly, `ss3sim` can substantially reduce the time
+to develop a large-scale simulation study,
+allowing users to focus on the research questions themselves.
 
 ## The general structure of an ss3sim simulation
 
