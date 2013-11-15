@@ -90,9 +90,9 @@ We conclude by discussing how `ss3sim` complements other currently available sim
 and by outlining some research questions that
 our freely accessible and general SS simulation framework could address.
 
-# The `ss3sim` framework
+# The ss3sim framework
 
-## Design goals of `ss3sim`
+## Design goals of ss3sim
 
 We designed `ss3sim` to be reproducible, flexible, and rapid.
 
@@ -121,7 +121,7 @@ the most rapid and robust optimization software available [@fournier2012].
 `ss3sim` also facilitates the deployment of simulations
 across multiple computers or computer cores, thereby accelerating computation.
 
-## The general structure of an `ss3sim` simulation
+## The general structure of an ss3sim simulation
 
 `ss3sim` comes with both low-level functions
 that modify SS3 configuration files
@@ -156,7 +156,7 @@ and synthesizing the output
 for easy data manipulation and visualization
 (`get` functions) (Figure 1).
 
-# An example simulation with `ss3sim`
+# An example simulation with ss3sim
 
 To demonstrate `ss3sim`, we will work through a simple example
 in which we examine the effect of
@@ -306,7 +306,7 @@ results in greater relative error in SSB in recent years
 and greater relative error of terminal-year depletion and F, but not
 SSB at maximum sustainable yield, or $M$ (Figure 2, lower panels).
 
-# How `ss3sim` complements other simulation software
+# How ss3sim complements other simulation software
 
 The general purpose of `ss3sim`
 is to explore the behaviour and performance
@@ -375,7 +375,7 @@ to incorporate process and observation error in simulation testing.
 Finally, FS is also open-source but requires the Microsoft .NET framework
 and is therefore only available on the Windows operating system.
 
-# Research opportunities with `ss3sim`
+# Research opportunities with ss3sim
 
 The `ss3sim` package has been used so far
 to evaluate alternative approaches
