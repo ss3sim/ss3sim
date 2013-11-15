@@ -106,7 +106,7 @@ d_ply(quant_dat, c("D", "E"), transform, {
 })
 
 panel_labs <- c(expression(Depletion), expression(italic(M)),
-  expression(SSB[MSY]), expression(F))
+  expression(SSB[MSY]), expression(italic(F)))
 
 par(mar = c(.2,.2,1.7,0))
 d_ply(scalar_dat_long, "variable", function(x) {
