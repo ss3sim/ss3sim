@@ -290,24 +290,33 @@ in our current directory with one function call:
 get_results_all()
 ```
 
-This creates two comma-separate-value files in our working directory:
-`ss3sim_scalars.csv` and `ss3sim_ts.csv` containing scalar output estimates
-(e.g. maximum sustainable yield) and time-series estimates (e.g. biomass in each
-year), respectively. Functions from r4ss are used to read in the `Report.sso`
-files to collect information on parameters and other management quantities
-calculated by SS3. There are separate columns for OM and EM values, making it
-simple to calculate error metrics, such as relative or absolute error. The
-results also contain performance metrics, such as the maximum gradient,
-successful calculation of the covariance matrix, and run-time, which can be used
-to guage model convergence. These files are organized into the "long" format by
-scenario and iteration for quick analysis and plotting using common R
-packages. For the example above, the relative error in SSB over time is, as
-expected, lower when the true value of $M$ is specified rather than estimated
-(Figure 2, top panel). Further, the difference between low and high survey
-effort is most noticeably at the end of the time series, affecting estimates of
-terminal year depletion and $F$, but not $SSB_{\text{MSY}}$ or $M$ (Figure 2).
+This creates two comma-separate-value files in our working directory,
+`ss3sim_scalars.csv` and `ss3sim_ts.csv`,
+which contain information on parameter estimates and other management quantities.
+`ss3sim_scalars.csv` contains
+scalar output estimates (e.g. maximum sustainable yield)
+and `ss3sim_ts.csv` contains
+time-series estimates (e.g. biomass in each year).
+These estimates come from the `Report.sso` files produced on each iteration
+and are read by the r4ss [@r4ss2013] R package.
+The `.csv` files contain separate columns for OM and EM values,
+making it simple to calculate error metrics,
+such as relative or absolute error.
+The `.csv` files also contain performance metrics,
+such as the maximum gradient, successful calculation of the covariance matrix,
+and run-time, which can be used to gauge model convergence.
+These files are organized into the "long" format by scenario and iteration
+for quick analysis and plotting using
+common R packages such as ggplot2 [@wickham2009].
 
-
+For the above example, the relative error in SSB over time is,
+as expected, lower when the true value of $M$ is specified rather than estimated
+(Figure 2, top panels E0 vs. E1).
+Furthermore, lower precision on the research survey index of abundance
+results in greater relative error in SSB in recent years
+(Figure 2, top panels D0 vs. D1),
+and greater relative error of terminal-year depletion and $F$, but not
+$SSB_{\text{MSY}}$ or $M$ (Figure 2, lower panels).
 
 # How ss3sim complements other simulation software
 
