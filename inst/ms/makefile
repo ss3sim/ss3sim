@@ -11,11 +11,13 @@ plos:
 	perl -p -i -e "s/\\\subsection/\\\subsection\*/g" manuscript.tex
 	perl -p -i -e "s/Andre Punt/Andr\\\'{e} Punt/g" manuscript.tex
 	pdflatex ss3sim-ms
+	cp ss3sim-ms.pdf ~/Dropbox/Public/
+
+bib:
+	pdflatex ss3sim-ms
 	bibtex ss3sim-ms
 	pdflatex ss3sim-ms
 	pdflatex ss3sim-ms
-	#rm manuscript.tex
-	cp ss3sim-ms.pdf ~/Dropbox/Public/
 
 clean:
 	rm *.log
