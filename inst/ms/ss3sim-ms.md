@@ -283,7 +283,7 @@ This command creates two comma-separate-value files in our working directory:
 which contain scalar output estimates (e.g. maximum sustainable yield)
 and time-series estimates (e.g. biomass each year), respectively.
 These estimates come from the `Report.sso` files produced from each run of SS
-and are read by the `r4ss` [@r4ss2013] `R` package.
+and are read by the `r4ss` `R` package.
 The `.csv` files contain separate columns for OM and EM values,
 making it simple to calculate error metrics,
 such as relative or absolute error.
@@ -332,7 +332,7 @@ other software frameworks may provide better alternatives.
 One alternative framework is *Fisheries libraries in R* (`FLR`) [@kell2007] ---
 an open-source `R` package developed specifically
 for evaluating fisheries management strategies through simulation.
-<!--FLR aims to incorporate a variety of disciplines-->
+<!--`FLR` aims to incorporate a variety of disciplines-->
 <!--beyond fisheries science and ecology (TODO SUCH AS)-->
 <!--into the development of new methods-->
 <!--for evaluating alternative management strategies and procedures.-->
@@ -353,7 +353,7 @@ and observation errors
 (using the SS3 bootstrap option),
 run simulations in parallel
 and collect results from output files.
-Thus, FS is closer to `ss3sim` in its scope than FLR
+Thus, FS is closer to `ss3sim` in its scope than `FLR`
 in that it specifically focuses on the performance of stock-assessment models.
 
 FS differs from `ss3sim` mainly in that
