@@ -316,7 +316,7 @@ Furthermore, lower precision on the research survey index of abundance
 results in greater relative error in SSB in recent years
 (Figure 2, top panels D0 vs. D1),
 and greater relative error of terminal-year depletion and $F$, but not
-$SSB_{\text{MSY}}$ or $M$ (Figure 2, lower panels).
+SSB~MSY~ or $M$ (Figure 2, lower panels).
 
 # How ss3sim complements other simulation software
 
