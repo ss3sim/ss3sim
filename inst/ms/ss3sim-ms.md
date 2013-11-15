@@ -521,13 +521,13 @@ Function name          Description
 
 `change_f`             Controls fishing mortality. (Case file and ID `F`)
 
-`change_tv`            Adds time-varying features. For example, time-varying natural mortality, growth, or selectivity. (Any case file, e.g. `M`, starting with "`function_type; change_tv`")
-
 `change_lcomp`         Controls how length composition data are sampled. (Case file `lcomp`, case ID `D`)
 
 `change_agecomp`       Controls how age composition data are sampled. (Case file `agecomp`, case ID `D`)
 
 `change_index`         Controls how the fishery and survey indices are sampled. (Case file `index`, case ID `D`)
+
+`change_tv`            Adds time-varying features. For example, time-varying natural mortality, growth, or selectivity. (Any case file and ID, e.g. `M`, starting with "`function_type; change_tv`")
 
 `change_e`             Controls which and how parameters are estimated. (Case file and ID `E`)
 
@@ -535,11 +535,12 @@ Function name          Description
 
 `change_rec_devs`      Substitutes recruitment deviations.
 
-`get_results_scenario` Extract the results for a single scenario.
+`run_bias_ss3`         Determines the level of adjustment to ensure mean-unbiased estimates of recruitment and biomass.
 
-`get_results_all`      Extract results from a series of scenarios.
+`get_results_scenario` Extracts results for a single scenario.
+
+`get_results_all`      Extracts results for a series of scenarios.
 ---------------------- -----------------------------------------
-
 
 # Figures
 
