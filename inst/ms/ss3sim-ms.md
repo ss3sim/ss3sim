@@ -305,7 +305,7 @@ in our current directory with one function call:
 get_results_all()
 ```
 
-This creates two comma-separate-value files in our working directory:
+This command creates two comma-separate-value files in our working directory:
 `ss3sim_scalars.csv` and `ss3sim_ts.csv`,
 which contain scalar output estimates (e.g. maximum sustainable yield)
 and time-series estimates (e.g. biomass each year), respectively.
@@ -324,14 +324,14 @@ with columns for scenario and iteration,
 for quick analysis and plotting using
 common R packages such as ggplot2 [@wickham2009].
 
-For our example simulation, the relative error in SSB over time is,
+For our example simulation, the relative error in spawning stock biomass (SSB) over time is,
 as expected, lower when the true value of $M$ is specified rather than estimated
 (Figure 2, top panels E0 vs. E1).
 Furthermore, lower precision on the research survey index of abundance
 results in greater relative error in SSB in recent years
 (Figure 2, top panels D0 vs. D1),
-and greater relative error of terminal-year depletion and $F$, but not
-SSB~MSY~ or $M$ (Figure 2, lower panels).
+and greater relative error of terminal-year depletion and F, but not
+SSB at maximum sustainable yield, or $M$ (Figure 2, lower panels).
 
 # How ss3sim complements other simulation software
 
@@ -390,7 +390,7 @@ to alter models rather than the approach of ss3sim,
 which uses modular functions taylored to specific purposes.
 Since FS does not rely on pre-built manipulation functions,
 FS works well for testing arbitrary assessment models
-[e.g. @lee2012; @piner2011; @lee2011].
+[@lee2012; @piner2011; @lee2011].
 In contrast, FS cannot make complicated structural changes
 to a model (e.g. adding time-varying parameters or changing the survey years),
 making it more difficult to induce and test
@@ -424,11 +424,11 @@ changes to fishing behaviour [@hilborn1992],
 regime shifts [@vert-pre2013], or
 climate change [@walther2002].
 However, parameters such as natural mortality, catchability, and selectivity
-are commonly assumed to be time invariant [@wilberg2006].
-The consequences of assuming time invariance
+are commonly assumed to be time invariant and
+the consequences of assuming time invariance
 of such parameters when facing true temporal changes
 has been a long-standing discussion
-in fisheries science (REF).
+in fisheries science [@royama1992; @wilberg2006; @fu2001].
 Furthermore, although many studies have tried
 to isolate the effects
 of single time-varying parameters,
@@ -512,10 +512,9 @@ Katyana Vert-pre, and
 Athol Whitten.
 Mentors:
 Richard Methot,
-André Punt, and
+Andre Punt, and
 Ian Taylor.
 
-# Funding
 SCA was supported by Fulbright Canada, NSERC, and a Garfield Weston Foundation/B.C. Packers Ltd.\ Graduate Fellowship in Marine Sciences.
 KFJ and KO were partially supported by NOAA grant 423 NA10OAR4320148 and
 CCM was partially supported by a Washington Sea Grant.
@@ -539,21 +538,21 @@ Function name          Description
 
 `ss3sim_base`          Underlying base simulation function. Can also be called directly.
 
+`change_rec_devs`      Substitutes recruitment deviations.
+
 `change_f`             Controls fishing mortality. (Case file and ID `F`)
-
-`change_lcomp`         Controls how length composition data are sampled. (Case file `lcomp`, case ID `D`)
-
-`change_agecomp`       Controls how age composition data are sampled. (Case file `agecomp`, case ID `D`)
-
-`change_index`         Controls how the fishery and survey indices are sampled. (Case file `index`, case ID `D`)
 
 `change_tv`            Adds time-varying features. For example, time-varying natural mortality, growth, or selectivity. (Any case file and ID, e.g. `M`, starting with "`function_type; change_tv`")
 
-`change_e`             Controls which and how parameters are estimated. (Case file and ID `E`)
+`change_index`         Controls how the fishery and survey indices are sampled. (Case file `index`, case ID `D`)
+
+`change_agecomp`       Controls how age composition data are sampled. (Case file `agecomp`, case ID `D`)
+
+`change_lcomp`         Controls how length composition data are sampled. (Case file `lcomp`, case ID `D`)
 
 `change_retro`         Controls the number of years to discard for a retrospective analysis. (Case file and ID `R`)
 
-`change_rec_devs`      Substitutes recruitment deviations.
+`change_e`             Controls which and how parameters are estimated. (Case file and ID `E`)
 
 `run_bias_ss3`         Determines the level of adjustment to ensure mean-unbiased estimates of recruitment and biomass.
 
