@@ -106,7 +106,7 @@ and operating systems (Windows, OS X, and Linux).
 *Flexible*: `ss3sim` inherits the flexibility of SS3
 and can therefore implement many
 available stock-assessment configurations by
-either modifying existing SS models (Text S1)
+either modifying existing SS3 models (Text S1)
 or by modifying built-in generic life-history models.
 Furthermore, `ss3sim` summarizes the simulation output
 into plain-text comma-separated-value (`.csv`) files
