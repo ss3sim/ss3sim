@@ -179,10 +179,7 @@ data quality (D), estimation (E), fishing mortality (F),
 retrospective (R),
 and any other letter describing a time varying case
 (e.g.\ M for natural mortality, S for selectivity, or G for growth).
-These case IDs are followed by a three-letter species identifier.
-It is important to use three letters
-because the functions assume that the last three letters
-represent a unique identifier.
+These case IDs are followed by an alphanumeric stock or species identifier (e.g. \texttt{cod}).
 The different versions of each case are identified with numbers.
 For example, the base-case scenario for a cod stock might be:
 \texttt{D0-E0-F0-M0-R0-cod}.
