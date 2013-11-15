@@ -36,16 +36,16 @@
 #
 #_growth_parms
 #_LO HI INIT PRIOR PR_type SD PHASE env-var use_dev dev_minyr dev_maxyr dev_stddev Block Block_Fxn
- 0.02 1 0.4 0 -1 99 -3 0 0 0 0 0 0 0 # NatM_p_1_Fem_GP_1
- 3 20 10 0 -1 99 3 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1
- 7.5 37.5 25 0 -1 99 3 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1
- 0.02 1.1 0.40 0 -1 99 3 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1
- 0.007 0.385 0.14 0 -1 99 3 0 0 0 0 0 0 0 # CV_young_Fem_GP_1
- 0.0025 0.1375 0.05 0 -1 99 3 0 0 0 0 0 0 0 # CV_old_Fem_GP_1
+ 0.002 2 0.4 0 -1 99 -3 0 0 0 0 0 0 0 # NatM_p_1_Fem_GP_1
+ 0.05 100 10 0 -1 99 3 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1
+ .125 250 25 0 -1 99 3 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1
+ 0.002 2 0.40 0 -1 99 3 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1
+ 7e-04 0.7 0.14 0 -1 99 3 0 0 0 0 0 0 0 # CV_young_Fem_GP_1
+ 0.00025 0.25 0.05 0 -1 99 3 0 0 0 0 0 0 0 # CV_old_Fem_GP_1
  0 3 1.68384e-005 0 -1 99 -3 0 0 0 0 0 0 0 # Wtlen_1_Fem
- 2.21 3.833 2.948247 0 -1 99 -3 0 0 0 0 0 0 0 # Wtlen_2_Fem
- 7.94 23.82 15.88 0 -1 99 -3 0 0 0 0 0 0 0 # Mat50%_Fem
- -2.488 1.583 -0.90461 0 -1 99 -3 0 0 0 0 0 0 0 # Mat_slope_Fem
+ 0.01474124 14.74123 2.948247 0 -1 99 -3 0 0 0 0 0 0 0 # Wtlen_2_Fem
+ 0.0794 79.4 15.88 0 -1 99 -3 0 0 0 0 0 0 0 # Mat50%_Fem
+ -5 5 -0.90461 0 -1 99 -3 0 0 0 0 0 0 0 # Mat_slope_Fem
  -3 3 1 0 -1 99 -3 0 0 0 0 0 0 0 # Eggs/kg_inter_Fem
  -4 4 0 0 -1 99 -3 0 0 0 0 0 0 0 # Eggs/kg_slope_wt_Fem
  -4 4 0 0 -1 99 -3 0 0 0 0 0 0 0 # RecrDist_GP_1
@@ -69,9 +69,9 @@
 #_Spawner-Recruitment
 3 #_SR_function: 2=Ricker; 3=std_B-H; 4=SCAA; 5=Hockey; 6=B-H_flattop; 7=survival_3Parm
 #_LO HI INIT PRIOR PR_type SD PHASE
- 8 24 16.00 0 -1 99 1 # SR_LN(R0)
- 0.1475 1 0.59 0 -1 99 -1 # SR_BH_steep
- 0 2 0.727 0 -1 99 -3 # SR_sigmaR
+ .08 80 16.00 0 -1 99 1 # SR_LN(R0)
+ 0.00295 2.95 0.59 0 -1 99 -1 # SR_BH_steep
+ 0.003635 3.635 0.727 0 -1 99 -3 # SR_sigmaR
  -5 5 0 0 -1 99 -3 # SR_envlink
  -5 5 0 0 -1 99 -2 # SR_R1_offset
  0 0 0 0 -1 99 -3 # SR_autocorr
@@ -228,9 +228,9 @@
 #_Cond 0 #_If q has random component, then 0=read one parm for each fleet with random q; 1=read a parm for each year of index
 #_Q_parms(if_any);Qunits_are_ln(q)
 # LO HI INIT PRIOR PR_type SD PHASE
- -3 3 0 0 -1 99 -5 # LnQ_base_1_Fishery
- -3 3 0 0 -1 99 5 # LnQ_base_2_Survey
- -3 3 0 0 -1 99 5 # LnQ_base_3_CPUE
+ -20 20 0 0 -1 99 -5 # LnQ_base_1_Fishery
+ -20 20 0 0 -1 99 5 # LnQ_base_2_Survey
+ -20 20 0 0 -1 99 5 # LnQ_base_3_CPUE
 #
 #_size_selex_types
 #discard_options:_0=none;_1=define_retention;_2=retention&mortality;_3=all_discarded_dead
@@ -245,10 +245,10 @@
  11 0 0 0 # 2 Survey
  11 0 0 0 # 3 CPUE
 #_LO HI INIT PRIOR PR_type SD PHASE env-var use_dev dev_minyr dev_maxyr dev_stddev Block Block_Fxn
- 6.4 27.79 15.88 0 -1 99 2 0 0 0 0 0 0 0 # SizeSel_1P_1_Fishery
- 0 6.51 3.254926 0 -1 99 3 0 0 0 0 0 0 0 # SizeSel_1P_2_Fishery
- 6.35 25.40 12.7 0 -1 99 2 0 0 0 0 0 0 0 # SizeSel_2P_1_Survey
- 0 6.51 3.254926 0 -1 99 3 0 0 0 0 0 0 0 # SizeSel_2P_2_Survey
+ 0.794 79.4 15.88 0 -1 99 2 0 0 0 0 0 0 0 # SizeSel_1P_1_Fishery
+ 0.01627 16.27 3.254926 0 -1 99 3 0 0 0 0 0 0 0 # SizeSel_1P_2_Fishery
+ 0.0635 63.5 12.7 0 -1 99 2 0 0 0 0 0 0 0 # SizeSel_2P_1_Survey
+ 0.01627 16.27 3.254926 0 -1 99 3 0 0 0 0 0 0 0 # SizeSel_2P_2_Survey
  0 15 0 0 -1 99 -4 0 0 0 0 0 0 0 # AgeSel_1P_1_Fishery
  0 20 15 0 -1 99 -4 0 0 0 0 0 0 0 # AgeSel_1P_2_Fishery
  0 15 0 0 -1 99 -4 0 0 0 0 0 0 0 # AgeSel_2P_1_Survey
