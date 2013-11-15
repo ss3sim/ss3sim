@@ -25,3 +25,7 @@ vignettes/cache/
 vignettes/auto
 
 inst/ms/manuscript.tex
+
+*.bbl
+
+*.blg
