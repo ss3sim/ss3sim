@@ -3,22 +3,14 @@
 
 library(plyr)
 
-#load("../../vignettes/scalar_dat.rda")
-#load("../../vignettes/ts_dat.rda")
-load("~/Desktop/scalar_dat.rda")
-load("~/Desktop/ts_dat.rda")
+load("../../vignettes/scalar_dat.rda")
+load("../../vignettes/ts_dat.rda")
 
 # Bring in F to scalars:
 f_merge <- subset(ts_dat, year == max(ts_dat$year))[ ,c("scenario",
   "replicate", "F_om", "F_em")]
 scalar_dat <- join(scalar_dat, f_merge, by = c("scenario",
     "replicate"))
-
-scen <- c()
-scen[1] <- expression(sigma[H]~italic(M)[F])
-scen[2] <- expression(sigma[H]~italic(M)[E])
-scen[3] <- expression(sigma[L]~italic(M)[F])
-scen[4] <- expression(sigma[L]~italic(M)[E])
 
 scalar_dat <- transform(scalar_dat,
   steep     = (SR_BH_steep_om - SR_BH_steep_em)/SR_BH_steep_om,
@@ -132,7 +124,6 @@ d_ply(scalar_dat_long, "variable", function(x) {
     axis_col, col.axis = axis_col)
   axis(1, col = axis_col, col.axis = label_col, at = 1:4, labels =
     substr(levels(x$scenario), 1, 5), las = 3)
-    #scen, las = 3)
   box(col = axis_col)
   abline(h = 0, col = "#00000040", lty = 1, lwd = 1.5)
   #mtext(LETTERS[ii], adj = 0.05, line = -1.5, col = "grey40", cex = 0.8)
