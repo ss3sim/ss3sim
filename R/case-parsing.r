@@ -153,7 +153,7 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
           NULL)[[1]]))+1, nchar(scenario))
 
   if(grepl("^[A-Z][0-9]+$", spp)) {
-    cat(paste("Using", spp, "as the stock ID.\n"))
+    message(paste("Using", spp, "as the stock ID.\n"))
   }
 
 # remove the stock ID from the scenario:
@@ -165,6 +165,15 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
       stop(paste("Case", x, "isn't contained in scenario", scenario))
   })
 
+# Check that all scenario-declared cases have files:
+  scenario_cases <- gsub("[0-9]*", "", strsplit(scenario, "-")[[1]])
+  missing_casefiles <- scenario_cases[!scenario_cases %in% case_vals]
+  if(length(missing_casefiles) > 0) {
+    stop(paste("The case", missing_casefiles,
+      "is declared in your scenario ID but not in the argument case_files.\n"))
+  }
+
+# Add case values to the letters:
   case_vals <- sapply(case_vals, function(x)
     get_caseval(scenario, x))
 
