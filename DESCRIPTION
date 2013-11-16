@@ -1,8 +1,8 @@
 Package: ss3sim
 Type: Package
 Title: Generalized stock-assessment simulation with Stock Synthesis
-Version: 0.7.4
-Date: 2013-11-12
+Version: 0.7.5
+Date: 2013-11-16
 Authors@R: c(person("Sean", "Anderson", email =
     "sean@seananderson.ca", role = c("aut", "cre")),
     person("Kelli", "Johnson", role = "aut"),
@@ -17,7 +17,7 @@ Author: Sean Anderson <sean@seananderson.ca>
 Maintainer: Sean C. Anderson <sean@seananderson.ca>
 Description: The ss3sim package develops a framework for conducting stock
     assessment simulation with Stock Synthesis 3 (SS3).
-License: MIT
+License: MIT + file LICENSE
 LazyData: true
 Suggests:
     knitr,
