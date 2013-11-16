@@ -186,20 +186,19 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
   names(args_out2) <- unlist(case_files)
   argvalues_out <- lapply(args_out2, function(x) get_args(pastef(folder, x)))
 
-  # TODO this should check for the value of "function_type" too
   # now, check for all "function_type = change_tv" and concatenate these
   # into a list to pass to change_param()
   change_param_args <- sapply(argvalues_out, function(x) {
-    if("function_type" %in% names(x)) {
-      y <- list(temporary_name = x$dev)
-      names(y) <- x$param
-      y
-      }
-    })
+    if ("function_type" %in% names(x)) {
+      if (x$function_type == "change_tv") {
+        y <- list(temporary_name = x$dev)
+        names(y) <- x$param
+        y
+      }}})
 
   # remove elements that aren't time varying:
   args_null <- sapply(change_param_args, function(x) is.null(x))
-  if(!length(which(args_null)) == length(args_null)) { # some are time varying
+  if (!length(which(args_null)) == length(args_null)) { # some are time varying
     change_param_args[which(args_null)] <- NULL
     # and re-arrange to pass to change_params
     change_param_args_short <- lapply(change_param_args, "[[", 1)
