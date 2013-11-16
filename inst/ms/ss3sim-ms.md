@@ -164,7 +164,7 @@ for easy data manipulation and visualization
 To demonstrate `ss3sim`, we will work through a simple example
 in which we examine the effect of
 high vs.\ low precision on a research survey index of abundance
-and fixing vs.\ estimating natural mortality (*M*).
+and fixing vs.\ estimating natural mortality ($M$).
 All files to run this example are available in the package data,
 and a more detailed description
 is available in the accompanying vignette (Text S1).
@@ -222,28 +222,38 @@ and in case 1 we will increase the standard deviation to `0.4`.
 We can do this by including the line: `sds_obs; list(0.1)`
 in the file `index0-cod.txt` and the line: `sds_obs; list(0.4)`
 in the file `index1-cod.txt`.
-We will also set up a base-case file describing fishing mortality (`F0-cod.txt`), a file describing a stationary natural mortality ($M$) trajectory (`M0-cod.txt`),
+We will also set up a base-case file describing fishing mortality (`F0-cod.txt`), a file describing a stationary $M$ trajectory (`M0-cod.txt`),
 and we will specify that we do not want to run a retrospective analysis
 in the file `R0-cod.txt`.
 We will set up the file `E0-cod.txt`
 to fix the estimation of $M$ at the true value
 and case `E1-cod.txt` to estimate a stationary $M$ (Text S1).
+
 All of these text files are available in the package data
 in the folder `inst/extdata/eg-cases/`.
+As an example, here is what the complete `index0-cod.txt` file looks like:
+
+    fleets; 2
+    years; list(seq(1974, 2012, by = 2))
+    sds_obs; list(0.1)
+
+\noindent
+`fleets`, `years`, and `sds_obs`
+refer to the arguments in the function `change_index`
+and users can read the help
+for this function with `?change_index` in `R`.
 
 To start, we will load the `ss3sim` package into an `R` session
 and locate three sets of folders within the package data:
-(1) the folder with the OM,
-(2) the folder with the EM,
-(3) and the folder with the plain-text case files:
+the folder with the OM,
+the folder with the EM,
+and the folder with the plain-text case files:
 
-```
-library(ss3sim)
-d <- system.file("extdata", package = "ss3sim")
-om <- paste0(d, "/models/cod-om")
-em <- paste0(d, "/models/cod-em")
-case_folder <- paste0(d, "/eg-cases")
-```
+    library(ss3sim)
+    d <- system.file("extdata", package = "ss3sim")
+    om <- paste0(d, "/models/cod-om")
+    em <- paste0(d, "/models/cod-em")
+    case_folder <- paste0(d, "/eg-cases")
 
 ## Running the simulations
 
@@ -265,26 +275,22 @@ we could have run the simulations with parallel processing
 to substantially reduce computing time (Text S1).
 We can run this simulation scenario with the following code:
 
-```
-run_ss3sim(iterations = 1:100, scenarios =
-  c("D0-E0-F0-M0-R0-cod", "D1-E0-F0-M0-R0-cod",
-    "D0-E1-F0-M0-R0-cod", "D1-E1-F0-M0-R0-cod"),
-  case_folder = case_folder, om_model_dir = om,
-  em_model_dir = em, bias_adjust = TRUE)
-```
+    run_ss3sim(iterations = 1:100, scenarios =
+      c("D0-E0-F0-M0-R0-cod", "D1-E0-F0-M0-R0-cod",
+        "D0-E1-F0-M0-R0-cod", "D1-E1-F0-M0-R0-cod"),
+      case_folder = case_folder, om_model_dir = om,
+      em_model_dir = em, bias_adjust = TRUE)
 
 We can then collect the output from all the simulations
 in our current directory with one function call:
 
-```
-get_results_all()
-```
+    get_results_all()
 
 \noindent
-This command creates two comma-separate-value files in our working directory:
+This command creates two files in our working directory:
 `ss3sim_scalars.csv` and `ss3sim_ts.csv`,
 which contain scalar output estimates (e.g. maximum sustainable yield)
-and time-series estimates (e.g. biomass each year), respectively.
+and time-series estimates (e.g. biomass each year).
 These estimates come from the `Report.sso` files produced from each run of SS
 and are read by the `r4ss` `R` package.
 The `.csv` files contain separate columns for OM and EM values,
@@ -360,10 +366,10 @@ Thus, FS is closer to `ss3sim` in its scope than `FLR`
 in that it specifically focuses on the performance of stock-assessment models.
 
 FS differs from `ss3sim` mainly in that
-it uses simple user-specified text manipulation commands
+it uses user-specified text manipulation commands
 (e.g. "change line 50 from 0 to 1")
-to alter models rather than the approach of `ss3sim`,
-which uses modular functions taylored to specific purposes.
+to alter model setups rather than the approach of `ss3sim`,
+which uses modular functions tailored to specific purposes.
 Since FS does not rely on pre-built manipulation functions,
 FS works well for testing arbitrary assessment models
 [@lee2012; @piner2011; @lee2011].
@@ -409,7 +415,7 @@ Furthermore, although many studies have tried
 to isolate the effects
 of single time-varying parameters,
 such as natural mortality [@lee2011; @jiao2012; @deroba2013; @johnson2013],
-few have considered the effect of multiple time-varying parameters and their potential interaction (REFS).
+few have considered the effect of multiple time-varying parameters and their potential interaction.
 
 *Patterns in recruitment deviations*:
 Typically, estimation methods assume
