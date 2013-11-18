@@ -29,6 +29,10 @@ docx:
 	pandoc -S --bibliography=refs.bib --csl=plos.csl --reference-docx=reference.docx ss3sim-ms.md -o ss3sim-ms.docx
 	mv ss3sim-ms.docx ~/Dropbox/Public/
 
+rft:
+	latex2rtf ss3sim-ms.tex
+	mv ss3sim-ms.rtf ~/Dropbox/Public/
+
 md:
 	pandoc -S --bibliography=refs.bib --csl=plos.csl ss3sim-ms.md -o ss3sim-ms-with-refs.md
 
