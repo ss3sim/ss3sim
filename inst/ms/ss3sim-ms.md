@@ -6,7 +6,7 @@ Stock Synthesis (SS) has become widely-used around the world.
 However, there lacks a generalized
 and scriptable framework for running SS simulations.
 Here, we introduce `ss3sim`, an `R` package that facilitates
-large-scale, rapid, and reproducible simulation
+large-scale, rapid, and reproducible simulation testing
 with the third version of SS, SS3.
 `ss3sim` requires only minor modifications to an existing SS3 model
 along with a set of plain-text control files describing
@@ -88,7 +88,7 @@ and by describing its functions.
 We then demonstrate the software by developing a simple example.
 We conclude by discussing how `ss3sim` complements other currently available simulation software
 and by outlining some research questions that
-our freely accessible and general SS simulation framework could address.
+our freely accessible and general SS simulation-testing framework could address.
 
 # The ss3sim framework
 
@@ -106,8 +106,8 @@ and operating systems (Windows, OS X, and Linux).
 *Flexible*: `ss3sim` inherits the flexibility of SS3
 and can therefore implement many
 available stock-assessment configurations by
-either modifying existing SS3 models (Text S1)
-or by modifying built-in generic life-history models.
+either modifying existing SS3 model configurations (Text S1)
+or by modifying built-in generic life-history model configurations.
 Furthermore, `ss3sim` summarizes the simulation output
 into plain-text comma-separated-value (`.csv`) files
 allowing for the output to be easily processed
@@ -121,7 +121,7 @@ the most rapid and robust optimization software available [@fournier2012].
 `ss3sim` also facilitates the deployment of simulations
 across multiple computers or computer cores, thereby accelerating computation.
 Perhaps most importantly, `ss3sim` can substantially reduce the time
-to develop a large-scale simulation study,
+to develop a large-scale simulation-testing study,
 allowing users to focus on the research questions themselves.
 
 ## The general structure of an ss3sim simulation
@@ -137,9 +137,9 @@ can be used on their own
 as part of a more customized simulation wrapper function (Text S1).
 
 An `ss3sim` simulation requires three types of input:
-(1) a base SS3 model describing the underlying truth,
+(1) a base SS3 model configuration describing the underlying truth,
 or operating model (OM);
-(2) a base SS3 model to assess that truth,
+(2) a base SS3 model configuration to assess that truth,
 also known as the estimation model or method (EM);
 and (3) a set of plain-text files (case files)
 describing alternative model configurations and deviations from these base models.
@@ -169,22 +169,20 @@ All files to run this example are available in the package data,
 and a more detailed description
 is available in the accompanying vignette (Text S1).
 
-## Setting up the SS models
+## Setting up the SS model configurations
 
-<!--TODO model vs. model setup?-->
-
-Many existing SS model setups can be used with `ss3sim`
+Many existing SS model configurations can be used with `ss3sim`
 following minimal modifications (Text S1).
 `ss3sim` also comes with built-in pre-modified SS3 model setups
 that represent three general life histories:
 cod-like (slow-growing and long-lived),
 flatfish-like (fast-growing and long-lived),
 and sardine-like (fast-growing and short-lived).
-These model setups are based on
+These model configurations are based on
 North Sea cod (*Gadus morhua*) (R. Methot, pers.\ comm.),
 yellowtail flounder (*Limanda ferruginea*) (R. Methot, pers.\ comm.),
 and Pacific sardine (*Sardinops sagax caeruleus*) [@hill2012] (Text S1).
-We will base our example around the cod-like model.
+We will base our example around the cod-like model setup.
 
 ## Setting up the case files
 
@@ -368,13 +366,13 @@ in that it specifically focuses on the performance of stock-assessment models.
 FS differs from `ss3sim` mainly in that
 it uses user-specified text manipulation commands
 (e.g. "change line 50 from 0 to 1")
-to alter model setups rather than the approach of `ss3sim`,
+to alter model configurations rather than the approach of `ss3sim`,
 which uses modular functions tailored to specific purposes.
 Since FS does not rely on pre-built manipulation functions,
-FS works well for testing arbitrary assessment models
+FS works well for testing arbitrary assessment models and model configurations
 [@lee2012; @piner2011; @lee2011].
 In contrast, FS cannot make complicated structural changes
-to a model (e.g. adding time-varying parameters or changing the survey years),
+to a model setup (e.g. adding time-varying parameters or changing the survey years),
 making it more difficult to induce and test
 structural differences between OMs and EMs.
 In addition, the current version of FS
@@ -420,7 +418,7 @@ few have considered the effect of multiple time-varying parameters and their pot
 *Patterns in recruitment deviations*:
 Typically, estimation methods assume
 independent log-normally-distributed recruitment deviations
-around a spawning stock recruitment function (@hilborn1992).
+around a spawning stock recruitment function.
 However, recruitment deviations are frequently auto-correlated
 and their variability can change through time [@beamish1995; @pyper1998].
 `ss3sim` makes it simple
@@ -435,8 +433,6 @@ of biomass [@methot2011].
 However, bias adjustment requires extra model runs
 to iteratively calculate the proper adjustment level,
 which can be computationally intensive and time consuming.
-As a result, bias adjustment is routinely
-not used in stock assessment simulation testing (REF) (TODO OR STOCK ASSESSMENT ITSELF?).
 `ss3sim` can turn bias adjustment on or off
 with a single argument and so could be easily used to test when
 and how bias adjustment affects model performance.
@@ -497,10 +493,15 @@ Richard Methot,
 Andre Punt, and
 Ian Taylor.
 
-SCA was supported by Fulbright Canada, NSERC, and a Garfield Weston Foundation/B.C. Packers Ltd.\ Graduate Fellowship in Marine Sciences.
+SCA was supported by Fulbright Canada
+(generously hosted by Trevor A. Branch), NSERC,
+and a Garfield Weston Foundation/B.C. Packers Ltd.\ Graduate Fellowship
+in Marine Sciences.
 KFJ and KO were partially supported by NOAA grant 423 NA10OAR4320148 and
 CCM was partially supported by a Washington Sea Grant.
-TODO Juan: any funding to acknowledge?
+This research addresses the methods component
+of the good practices guide to stock assessment program
+of the Center for the Advancement of Population Assessment Methodology (CAPAM).
 
 \bibliography{refs}
 \clearpage
@@ -510,11 +511,14 @@ TODO Juan: any funding to acknowledge?
 # Tables
 
 **Table 1. Main `ss3sim` functions and a description of their purpose.**
-Simulations can be run through the `run_ss3sim` function.
-`run_ss3sim` then calls the `change` functions.
+Simulations can be run through the `run_ss3sim` function,
+which then calls the `change` functions.
 Users can control what the `change` functions do through a series of plain-text case files.
 For example, the case ID `D1` corresponds to the case files `lcomp1`, `agecomp1`, and `index1`, as described in the table.
-Users can also use the `change` functions directly as part of their own simulation structure.
+Users can also skip setting up case files
+and specify arguments to `ss3sim_base` directly,
+or use the `change` functions
+as part of their own simulation structure (Text S1).
 
 ----------------------------------------------------------------
 Function name          Description
