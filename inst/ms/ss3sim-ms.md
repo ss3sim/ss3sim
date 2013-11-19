@@ -174,7 +174,7 @@ In `R`, the development version of `ss3sim` can be installed with:
 
     install.packages(devtools)
     devtools::install_github("ss3sim", username = "seananderson",
-      dependencies = "Imports")
+      dependencies = TRUE)
 
 \noindent
 We plan to make `ss3sim` available on CRAN [@cran2013].
