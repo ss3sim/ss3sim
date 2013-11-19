@@ -169,6 +169,8 @@ All files to run this example are available in the package data,
 and a more detailed description
 is available in the accompanying vignette (Text S1).
 
+\clearpage
+
 `ss3sim` requires `R` version 3.0.0 or greater.
 In `R`, the development version of `ss3sim` can be installed with:
 
@@ -521,8 +523,9 @@ This research addresses the methods component
 of the good practices guide to stock assessment program
 of the Center for the Advancement of Population Assessment Methodology (CAPAM).
 
-\bibliography{refs}
 \clearpage
+
+\bibliography{refs}
 
 \clearpage
 
