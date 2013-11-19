@@ -28,6 +28,8 @@ time-varying model misspecification,
 retrospective patterns,
 and the relative importance of various kinds of fisheries data.
 
+**Keywords**: SS3
+
 \clearpage
 
 # Introduction
@@ -166,6 +168,19 @@ and fixing vs.\ estimating natural mortality ($M$).
 All files to run this example are available in the package data,
 and a more detailed description
 is available in the accompanying vignette (Text S1).
+
+`ss3sim` requires `R` version 3.0.0 or greater.
+In `R`, the development version of `ss3sim` can be installed with:
+
+    install.packages(devtools)
+    devtools::install_github("ss3sim", username = "seananderson",
+      dependencies = "Imports")
+
+\noindent
+We plan to make `ss3sim` available on CRAN [@cran2013].
+`ss3sim` also requires that Stock Synthesis is installed.
+Since `ss3sim` has been tested specifically with SS3 Version 3.24O,
+we provide archived copies of this version at <http://bit.ly/ss3v324o>.
 
 ## Setting up the SS model configurations
 
@@ -511,6 +526,48 @@ of the Center for the Advancement of Population Assessment Methodology (CAPAM).
 
 \clearpage
 
+# Figure Legends
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics[width=4in]{sim-steps.pdf}
+\end{center}
+\caption{
+{\bf Flow diagram of the main steps
+in an \texttt{ss3sim} simulation carried out using \texttt{run\_ss3sim}.}
+Functions that are called internally are shown in a monospaced font.
+}
+\label{fig:sim-steps}
+\end{figure}
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics[width=5in]{fig2-20131109.pdf}
+\end{center}
+\caption{
+{\bf Example output from an \texttt{ss3sim} simulation.}
+We ran a crossed simulation in which we considered
+(1) the effect of fixing natural mortality ($M$)
+at its historical value (0.2; case E0) or estimating $M$ (case E1) and
+(2) the effect of high survey effort
+($\sigma_\mathrm{survey} = 0.1$; case D1)
+or low survey effort ($\sigma_\mathrm{survey} = 0.4$; case D2).
+Upper panels (blue) show time series of relative error
+in spawning stock biomass (SSB).
+The shaded regions indicate 50\% and 90\%
+of the relative errors and the line indicates the median.
+Lower panels (grey) show the distribution
+of relative error across four scalar variables:
+depletion, $M$, SSB at maximum sustainable yield (MSY),
+and fishing mortality ($F$) in the terminal year.
+We show the values across simulation iterations with dots
+and the distributions with beanplots (kernel density smoothers).
+}
+\label{fig:results}
+\end{figure}
+
+\clearpage
+
 # Tables
 
 **Table 1. Main `ss3sim` functions and a description of their purpose.**
@@ -555,44 +612,3 @@ Function name          Description
 `get_results_all`      Extracts results for a series of scenarios.
 ---------------------- -----------------------------------------
 
-\clearpage
-
-# Figure Legends
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics[width=4in]{sim-steps.pdf}
-\end{center}
-\caption{
-{\bf Flow diagram of the main steps
-in an \texttt{ss3sim} simulation carried out using \texttt{run\_ss3sim}.}
-Functions that are called internally are shown in a monospaced font.
-}
-\label{fig:sim-steps}
-\end{figure}
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics[width=5in]{fig2-20131109.pdf}
-\end{center}
-\caption{
-{\bf Example output from an \texttt{ss3sim} simulation.}
-We ran a crossed simulation in which we considered
-(1) the effect of fixing natural mortality ($M$)
-at its historical value (0.2; case E0) or estimating $M$ (case E1) and
-(2) the effect of high survey effort
-($\sigma_\mathrm{survey} = 0.1$; case D1)
-or low survey effort ($\sigma_\mathrm{survey} = 0.4$; case D2).
-Upper panels (blue) show time series of relative error
-in spawning stock biomass (SSB).
-The shaded regions indicate 50\% and 90\%
-of the relative errors and the line indicates the median.
-Lower panels (grey) show the distribution
-of relative error across four scalar variables:
-depletion, $M$, SSB at maximum sustainable yield (MSY),
-and fishing mortality ($F$) in the terminal year.
-We show the values across simulation iterations with dots
-and the distributions with beanplots (kernel density smoothers).
-}
-\label{fig:results}
-\end{figure}
