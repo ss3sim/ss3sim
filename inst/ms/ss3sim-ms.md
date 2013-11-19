@@ -18,8 +18,8 @@ samples from that truth,
 modifies and runs an estimation model,
 and synthesizes the results.
 The simulations can be run in parallel, speeding computation,
-and the source code is open source
-and free to be modified under an MIT license.
+and the source code is
+free to be modified under an open-source MIT license.
 We demonstrate the software with a simple example,
 discuss how `ss3sim` complements other simulation software,
 and outline specific research questions that `ss3sim` could address.
@@ -27,6 +27,8 @@ For example, `ss3sim` can be easily used to answer questions about
 time-varying model misspecification,
 retrospective patterns,
 and the relative importance of various kinds of fisheries data.
+
+\clearpage
 
 # Introduction
 
@@ -94,14 +96,12 @@ our freely accessible and general SS simulation-testing framework could address.
 ## Design goals of ss3sim
 
 We designed `ss3sim` to be reproducible, flexible, and rapid.
-
 *Reproducible*: `ss3sim` allows for the simulation testing structure to be documented
 in `R` code and plain-text control files.
 It also allows for random seeds to be set
 when generating observation and process error,
 making simulations repeatable across computers
 and operating systems (Windows, OS X, and Linux).
-
 *Flexible*: `ss3sim` inherits the flexibility of SS3
 and can therefore implement many
 available stock-assessment configurations by
@@ -113,15 +113,14 @@ allowing for the output to be easily processed
 in nearly any statistical software, including `R`.
 Finally, the `ss3sim` code is written
 under an open-source MIT license and can be freely modified.
-
 *Rapid*: `ss3sim` relies on SS3,
 which uses AD Model Builder as a backend optimization platform ---
 the most rapid and robust optimization software available [@fournier2012].
 `ss3sim` also facilitates the deployment of simulations
 across multiple computers or computer cores, thereby accelerating computation.
 Perhaps most importantly, `ss3sim` can substantially reduce the time
-to develop a large-scale simulation-testing study,
-allowing users to focus on research itself.
+to develop a large-scale simulation-testing experiment,
+allowing users to focus on the research questions themselves.
 
 ## The general structure of an ss3sim simulation
 
@@ -448,7 +447,7 @@ by adding a single argument --- the number of retrospective years to investigate
 
 # Conclusions
 
-The increasing complexity of modern statistical integrated models and expanding computing power allows for the inclusion of a multitude of processes in fisheries stock-assessment methods.
+The increasing complexity of modern statistical integrated models and expanding computing power allows for the inclusion of a multitude of processes in fisheries stock-assessment methods [@deroba2013a] (REMOVE THIS REF OR BETTER REF?).
 However, with added complexity comes the potential for model misspecification.
 Simulation testing allows for the formal evaluation of the ability of assessment models to accurately and precisely estimate parameters of interest under different conditions and levels of misspecification [@deroba2013a; @wilberg2006; @crone2013].
 
@@ -456,7 +455,7 @@ Most simulation testing work to date has used custom frameworks
 tailored to the particular needs of each study.
 Although the complexity of many studies requires a custom framework, leading by example, we encourage authors to publish their simulation frameworks and, where possible, to develop their simulation frameworks in a generalized format that allows others to build on them.
 The initial release of `ss3sim` describes the basic structure used in recent studies [@johnson2013; @ono2013] and the current version of `ss3sim` could be used to address many other important questions in stock assessment science.
-We hope that users will both benefit both from `ss3sim` in its current form and extend it for their own needs, potentially contributing back to the main code base.
+We hope that users will both benefit from `ss3sim` in its current form and extend it for their own needs, potentially contributing back to the main code base.
 
 <!--A recent large scale study [@deroba2013a] focused on evaluating the robustness of several stock-assessment models to observation error. That study encountered challenges due to fundamental differences in the structure, data requirements, and limitations of different stock-assessment models. An alternative approach is to focus on a single generalized modeling platform such as SS, where alternative model setups reflect only alternative assumptions about the true underlying dynamics of stocks or estimation approaches and assumptions.-->
 
