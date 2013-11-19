@@ -3,12 +3,11 @@
 Simulation testing is an important approach
 to evaluating fishery stock-assessment methods.
 In the last decade, the fisheries stock-assessment modeling framework
-Stock Synthesis (SS) has become widely-used around the world.
+Stock Synthesis (SS3) has become widely-used around the world.
 However, there lacks a generalized
-and scriptable framework for running SS simulations.
+and scriptable framework for running SS3 simulations.
 Here, we introduce `ss3sim`, an `R` package that facilitates
-large-scale, rapid, and reproducible simulation testing
-with the third version of SS, SS3.
+large-scale, rapid, and reproducible simulation testing with SS3.
 `ss3sim` requires only minor modifications to an existing SS3 model configuration
 along with a set of plain-text control files describing
 alternative states of nature, sampling scenarios,
@@ -20,13 +19,16 @@ and synthesizes the results.
 The simulations can be run in parallel, speeding computation,
 and the source code is
 free to be modified under an open-source MIT license.
-We demonstrate the software with a simple example,
-discuss how `ss3sim` complements other simulation software,
-and outline specific research questions that `ss3sim` could address.
+`ss3sim` is designed to explore differences in structure
+between the underlying truth and assumptions of an estimation model,
+or between multiple estimation models.
 For example, `ss3sim` can be easily used to answer questions about
 time-varying model misspecification,
 retrospective patterns,
 and the relative importance of various kinds of fisheries data.
+Here we demonstrate the software with a simple example,
+discuss how `ss3sim` complements other simulation software,
+and outline specific research questions that `ss3sim` could address.
 
 \clearpage
 
@@ -37,7 +39,7 @@ to providing scientific advice and to evaluating the impact
 of alternative management actions on fishery resources [@gulland1983; @hilborn1992].
 Although a variety of stock-assessment methods and models
 are currently available,
-choosing among competing models 
+choosing among competing models
 it is often not straightforward, and the choice
 often leads to different modeling outcomes
 and associated scientific advice to management.
@@ -58,39 +60,40 @@ and uncertainty in steepness of the stock-recruit relationship [@lee2012],
 as well as determining what makes fisheries data informative
 [@magnusson2007; @wetzel2011a; @ono2013].
 
-Stock Synthesis (SS)
+Stock Synthesis (SS3, the third version of the software)
 is a widely-used fisheries stock-assessment modeling framework [@methot2013].
 It implements statistical age-structured population dynamics modeling,
 using a wide range of minimally-processed data [@maunder2013; @methot2013].
 By using this generalized framework,
 individuals conducting fisheries stock assessments and peer reviewers
 can focus on the underlying science, instead of the model code [@methot2013].
-Owing to these advantages, SS3 (the third version of the software)
+Owing to these advantages, SS3
 is one of the world's most commonly-used stock-assessment tools,
 particularly in the United States and Australia,
 where it has been used in 35 and 12 stock assessments as of 2012,
-respectively [@methot2013]. SS3 is also commonly used framework for stock assessment simulation testing [@lee2011; @lee2012; @piner2011; @crone2013a; @hurtadoferro2013].
+respectively [@methot2013]. SS3 is also commonly used as a framework for stock assessment simulation testing [@lee2011; @lee2012; @piner2011; @crone2013a; @hurtadoferro2013].
 
-Although SS is increasingly becoming a standard for fisheries stock assessment
+Although SS3 is increasingly becoming a standard for fisheries stock assessment
 and the programming language `R` [@rcoreteam2013] has become the standard
-for statistical computing and visualization,
+for statistical computing and visualization; however,
 there lacks a generalized framework
 to link these components in a simulation context.
-Most simulation testing work to date has used custom frameworks tailored to the particular needs of each study.
+As a result, most stock-assessment simulation-testing work to date has used custom frameworks tailored to the particular needs of each study.
 The only available `R` package to interface with SS is `r4ss` [@r4ss2013],
 which primarily facilitates reading, processing, and plotting of SS output,
 but does not provide a simulation framework.
+<!--TODO COLE: I like this sentence but not sure it belongs here. This paragraph is about linking R and SS3, not about what other people have done. One doesn't need R to use a generalized framework for simulation testing.  Maybe better to argue that (1) no consistent framework exists, so people use ad hoc software, then (2) R is a good option for developing a framework b/c it is so common and r4ss exists.-->
 
 Here we introduce `ss3sim`,
 an `R` package that facilitates
 large-scale, rapid, and reproducible simulation testing
-with the widely-used SS framework.
+with the widely-used SS3 framework.
 We begin by outlining the general structure of `ss3sim`
 and by describing its functions.
 We then demonstrate the software by developing a simple example.
 We conclude by discussing how `ss3sim` complements other currently available simulation software
 and by outlining some research questions that
-our freely accessible and general SS simulation-testing framework could address.
+our freely accessible and general SS3 simulation-testing framework could address.
 
 # The ss3sim framework
 
@@ -181,7 +184,7 @@ In `R`, the development version of `ss3sim` can be installed with:
 We plan to make `ss3sim` available on CRAN [@cran2013].
 `ss3sim` also requires that Stock Synthesis is installed.
 Since `ss3sim` has been tested specifically with SS3 Version 3.24O,
-we provide archived copies of this version for linux and windows at <http://bit.ly/ss3v324o>.
+we provide archived copies of this version at <http://bit.ly/ss3v324o>.
 
 ## Setting up the SS model configurations
 
@@ -298,7 +301,7 @@ in our current directory with one function call:
 
 \noindent
 This command creates two files in our working directory:
-<!---Not true, it creates 3 files, should we get rid of the residual file?--->
+<!---TODO Not true, it creates 3 files, should we get rid of the residual file?--->
 `ss3sim_scalars.csv` and `ss3sim_ts.csv`,
 which contain scalar output estimates (e.g. maximum sustainable yield)
 and time-series estimates (e.g. biomass each year).
@@ -506,7 +509,7 @@ Katyana Vert-pre, and
 Athol Whitten.
 Mentors:
 Richard Methot,
-Andr&#233 Punt, and
+Andre Punt, and
 Ian Taylor.
 
 SCA was supported by Fulbright Canada
