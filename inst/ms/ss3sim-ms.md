@@ -218,7 +218,8 @@ and in case 1 we will increase the standard deviation to `0.4`.
 We can do this by including the line: `sds_obs; list(0.1)`
 in the file `index0-cod.txt` and the line: `sds_obs; list(0.4)`
 in the file `index1-cod.txt`.
-We will also set up a base-case file describing fishing mortality (`F0-cod.txt`), a file describing a stationary $M$ trajectory (`M0-cod.txt`),
+We will also set up a base-case file describing fishing mortality (`F0-cod.txt`),
+a file describing a stationary $M$ trajectory (`M0-cod.txt`),
 and we will specify that we do not want to run a retrospective analysis
 in the file `R0-cod.txt`.
 We will set up the file `E0-cod.txt`
@@ -302,7 +303,8 @@ with columns for scenario and iteration,
 for quick analysis and plotting using
 common `R` packages such as ggplot2 [@wickham2009].
 
-For our example simulation, the relative error in spawning stock biomass (SSB) over time is,
+For our example simulation,
+the relative error in spawning stock biomass (SSB) over time is,
 as expected, lower when the true value of $M$ is specified rather than estimated
 (Figure 2, top panels E0 vs. E1).
 Furthermore, lower precision on the research survey index of abundance
@@ -320,7 +322,8 @@ and EM configurations across alternative states of nature
 specified by OMs.
 In particular, `ss3sim` provides a suite of functions
 for dynamically creating structural differences in OMs and EMs.
-This expedites testing the properties of alternative stock-assessment model configurations,
+This expedites testing the properties
+of alternative stock-assessment model configurations,
 whether the differences are between OMs and EMs [@johnson2013],
 or between multiple versions of EMs [@ono2013].
 <!--ss3sim is thus ideal for answering questions-->
@@ -330,17 +333,14 @@ or between multiple versions of EMs [@ono2013].
 <!--the package relies on certain SS model configurations.-->
 However, `ss3sim` is less well-suited
 for quickly exploring arbitrary SS model setups,
-which may rely on SS configurations not yet programmed into the `ss3sim` package functions.
+which may rely on SS configurations
+not yet programmed into the `ss3sim` package functions.
 Therefore, depending on the simulation study goal,
 other software frameworks may provide better alternatives.
 
 One alternative framework is *Fisheries Libraries in R* (`FLR`) [@kell2007] ---
 an open-source `R` package developed specifically
 for evaluating fisheries management strategies through simulation.
-<!--`FLR` aims to incorporate a variety of disciplines-->
-<!--beyond fisheries science and ecology (TODO SUCH AS)-->
-<!--into the development of new methods-->
-<!--for evaluating alternative management strategies and procedures.-->
 Compared to `ss3sim`, `FLR` is designed to explore broader questions
 regarding management strategies
 with flexible biological, economic, and management components [@hillary2009].
@@ -390,10 +390,6 @@ and the causes of retrospective patterns in stock-assessment models.
 Along with those studies,
 `ss3sim` makes many important research opportunities easily approachable.
 Below we outline some examples.
-
-<!--Although the low-level functions (`change` and `sample`) functions can be combined or modified in a user's own wrapper function to address nearly any simulation-based research question, there are-->
-<!--*Domed selectivity*:-->
-<!--*The importance of contrast in index series*:-->
 
 *Time-varying model misspecification*:
 Ecological processes can vary through time in response to,
@@ -447,30 +443,45 @@ by adding a single argument --- the number of retrospective years to investigate
 
 # Conclusions
 
-The increasing complexity of modern statistical integrated models and expanding computing power allows for the inclusion of a multitude of processes in fisheries stock-assessment methods [@deroba2013a] (REMOVE THIS REF OR BETTER REF?).
-However, with added complexity comes the potential for model misspecification.
-Simulation testing allows for the formal evaluation of the ability of assessment models to accurately and precisely estimate parameters of interest under different conditions and levels of misspecification [@deroba2013a; @wilberg2006; @crone2013].
+The increasing complexity of modern statistical integrated models
+and expanding computing power
+allows for the inclusion of a multitude of processes
+in fisheries stock-assessment methods [@deroba2013a] (REMOVE THIS REF OR BETTER REF?).
+However, with added complexity
+comes the potential for model misspecification.
+Simulation testing allows for the formal evaluation
+of the ability of assessment models
+to accurately and precisely
+estimate parameters of interest
+under different conditions and levels of misspecification
+[@deroba2013a; @wilberg2006; @crone2013].
 
 Most simulation testing work to date has used custom frameworks
-tailored to the particular needs of each study.
-Although the complexity of many studies requires a custom framework, leading by example, we encourage authors to publish their simulation frameworks and, where possible, to develop their simulation frameworks in a generalized format that allows others to build on them.
-The initial release of `ss3sim` describes the basic structure used in recent studies [@johnson2013; @ono2013] and the current version of `ss3sim` could be used to address many other important questions in stock assessment science.
-We hope that users will both benefit from `ss3sim` in its current form and extend it for their own needs, potentially contributing back to the main code base.
-
-<!--A recent large scale study [@deroba2013a] focused on evaluating the robustness of several stock-assessment models to observation error. That study encountered challenges due to fundamental differences in the structure, data requirements, and limitations of different stock-assessment models. An alternative approach is to focus on a single generalized modeling platform such as SS, where alternative model setups reflect only alternative assumptions about the true underlying dynamics of stocks or estimation approaches and assumptions.-->
-
-
-<!--For intro: Although several simulation testing studies have used the widely
-    used fisheries stock-assessment platform SS [@lee2011; @lee2012;
-    @piner2011; @crone2013a] a common end-to-end open access simulation testing
-    framework is still lacking. `ss3sim`, allows for large-scale, rapid, and
-    reproducible simulation with SS.-->
+tailored to the particular needs of each study
+(COULD PROVIDE CITATIONS, BUT MAYBE BETTER NOT TO CALL OUT STUDIES).
+Although the complexity of many studies
+requires a custom framework,
+leading by example, we encourage authors
+to publish their simulation frameworks and, where possible,
+to develop their simulation frameworks in a generalized format
+that allows others to build on them.
+The initial release of `ss3sim`
+describes the basic structure used in recent studies [@johnson2013; @ono2013]
+and the current version of `ss3sim`
+could be used to address many other
+important questions in stock assessment science.
+We hope that users will both benefit
+from `ss3sim` in its current form
+and extend it for their own needs,
+potentially contributing back to the main code base.
 
 # Acknowledgements
 
-We thank the participants and mentors of the University of Washington School of Aquatic and Fishery Sciences 2013 FISH 600 course.
+We thank the participants and mentors
+of the University of Washington School of Aquatic and Fishery Sciences 2013 FISH 600 course.
 Discussions with these individuals were instrumental to developing `ss3sim`.
-Many participants also contributed code and are listed within specific `ss3sim` `R` functions.
+Many participants also contributed code
+and are listed within specific `ss3sim` `R` functions.
 Participants:
 Curry Cunningham,
 Felipe Hurtado-Ferro,
@@ -505,8 +516,10 @@ of the Center for the Advancement of Population Assessment Methodology (CAPAM).
 **Table 1. Main `ss3sim` functions and a description of their purpose.**
 Simulations can be run through the `run_ss3sim` function,
 which then calls the `change` functions.
-Users can control what the `change` functions do through a series of plain-text case files.
-For example, the case ID `D1` corresponds to the case files `lcomp1`, `agecomp1`, and `index1`, as described in the table.
+Users can control what the `change` functions do
+through a series of plain-text case files.
+For example, the case ID `D1` corresponds
+to the case files `lcomp1`, `agecomp1`, and `index1`, as described in the table.
 Users can also skip setting up case files
 and specify arguments to `ss3sim_base` directly,
 or use the `change` functions
