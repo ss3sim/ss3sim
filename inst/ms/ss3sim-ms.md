@@ -28,8 +28,6 @@ time-varying model misspecification,
 retrospective patterns,
 and the relative importance of various kinds of fisheries data.
 
-**Keywords**: SS3
-
 \clearpage
 
 # Introduction
