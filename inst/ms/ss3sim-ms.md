@@ -73,7 +73,7 @@ particularly in the United States and Australia,
 where it has been used in 35 and 12 stock assessments as of 2012,
 respectively [@methot2013]. SS3 is also commonly used as a framework for stock assessment simulation testing [@lee2011; @lee2012; @piner2011; @crone2013a; @hurtadoferro2013].
 
-Although SS3 is increasingly becoming a standard for fisheries stock assessment
+SS3 is increasingly becoming a standard for fisheries stock assessment
 and the programming language `R` [@rcoreteam2013] has become the standard
 for statistical computing and visualization; however,
 there lacks a generalized framework
