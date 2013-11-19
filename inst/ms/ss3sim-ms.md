@@ -1,6 +1,7 @@
 # Abstract
 
-Simulation testing is an important approach to evaluating fishery stock-assessment methods.
+Simulation testing is an important approach
+to evaluating fishery stock-assessment methods.
 In the last decade, the fisheries stock-assessment modeling framework
 Stock Synthesis (SS) has become widely-used around the world.
 However, there lacks a generalized
@@ -8,7 +9,7 @@ and scriptable framework for running SS simulations.
 Here, we introduce `ss3sim`, an `R` package that facilitates
 large-scale, rapid, and reproducible simulation testing
 with the third version of SS, SS3.
-`ss3sim` requires only minor modifications to an existing SS3 model
+`ss3sim` requires only minor modifications to an existing SS3 model configuration
 along with a set of plain-text control files describing
 alternative states of nature, sampling scenarios,
 and assessment scenarios.
@@ -25,18 +26,18 @@ and outline specific research questions that `ss3sim` could address.
 For example, `ss3sim` can be easily used to answer questions about
 time-varying model misspecification,
 retrospective patterns,
-and the relative importance of various types of fisheries data.
+and the relative importance of various kinds of fisheries data.
 
 # Introduction
 
 Fisheries stock-assessment models are crucial
 to providing scientific advice and to evaluating the impact
-of alternative management actions on fishery resources [@hilborn1992].
+of alternative management actions on fishery resources [@gulland1983; @hilborn1992].
 Although a variety of stock-assessment methods and models
 are currently available,
 it is often not straightforward to choose among competing approaches
 that often lead to different modeling outcomes
-and associated scientific advice to management (REF).
+and associated scientific advice to management.
 
 Simulation testing is a critical component
 to testing fishery stock-assessment methods,
@@ -46,7 +47,7 @@ With simulation testing,
 we can evaluate the precision and bias
 of alternative complex assessment methods
 in a controlled environment
-where we know the true state of nature [@hilborn1992].
+where we know the true state of nature.
 Recent simulation studies
 have been key to improving strategies for dealing with, for example,
 time-varying natural mortality [@lee2011; @jiao2012; @deroba2013; @johnson2013]
@@ -54,8 +55,8 @@ and uncertainty in steepness of the stock-recruit relationship [@lee2012],
 as well as determining what makes fisheries data informative
 [@magnusson2007; @wetzel2011a; @ono2013].
 
-Stock Synthesis (SS) [@methot2013]
-is a widely-used fisheries stock-assessment modeling framework.
+Stock Synthesis (SS)
+is a widely-used fisheries stock-assessment modeling framework [@methot2013].
 It implements statistical age-structured population dynamics modeling
 using a wide range of minimally-processed data [@maunder2013; @methot2013].
 By using this generalized framework,
@@ -65,11 +66,9 @@ Owing to these advantages, SS3 (the third version of the software)
 is one of the world's most commonly-used stock-assessment tools,
 particularly in the United States and Australia,
 where it has been used in 35 and 12 stock assessments as of 2012,
-respectively [@methot2013].
+respectively [@methot2013]. SS3 has also commonly been used in stock assessment simulation testing [@lee2011; @lee2012; @piner2011; @crone2013a; @hurtadoferro2013].
 
 Although SS is increasingly becoming a standard for fisheries stock assessment
-and has commonly been used in simulation testing
-[@lee2011; @lee2012; @piner2011; @crone2013a],
 and the programming language `R` [@rcoreteam2013] has become the standard
 for statistical computing and visualization,
 there lacks a generalized framework
@@ -122,7 +121,7 @@ the most rapid and robust optimization software available [@fournier2012].
 across multiple computers or computer cores, thereby accelerating computation.
 Perhaps most importantly, `ss3sim` can substantially reduce the time
 to develop a large-scale simulation-testing study,
-allowing users to focus on the research questions themselves.
+allowing users to focus on research itself.
 
 ## The general structure of an ss3sim simulation
 
@@ -196,8 +195,8 @@ to the low-level `ss3sim` `R` functions
 (e.g. `change_e`, a function controlling which and how parameters are estimated;
 Table 1).
 
-To use `run_ss3sim`, the naming of the case files is important.
-All case files are named according to the type of case
+To use `run_ss3sim`
+all case files must be named according to the type of case
 (e.g. `E` for estimation or `F` for fishing mortality),
 a numeric value representing the case number,
 and an alphanumeric identifier
@@ -214,8 +213,8 @@ the zero case for estimation (E) (i.e. `E0-cod.txt`), and so on.
 To investigate the effect of different levels of precision
 of a research survey index of abundance,
 we will manipulate the argument `sds_obs`
-that gets passed to `change_index`.
-In case 0, we will specify the standard deviation of the index of abundance at `0.1`
+that gets passed to the function `change_index`.
+In data case 0, we will specify the standard deviation of the index of abundance at `0.1`
 and in case 1 we will increase the standard deviation to `0.4`.
 We can do this by including the line: `sds_obs; list(0.1)`
 in the file `index0-cod.txt` and the line: `sds_obs; list(0.4)`
@@ -298,7 +297,7 @@ In addition to parameter estimates,
 the `.csv` files contain performance metrics,
 such as the maximum gradient,
 whether the covariance matrix was successfully calculated,
-and model run-time, which can be used to gauge model convergence.
+and model run-time, which can be used in combination to gauge model convergence.
 These results are organized into "long" data format,
 with columns for scenario and iteration,
 for quick analysis and plotting using
@@ -323,8 +322,8 @@ specified by OMs.
 In particular, `ss3sim` provides a suite of functions
 for dynamically creating structural differences in OMs and EMs.
 This expedites testing the properties of alternative stock-assessment model configurations,
-whether the differences are between the OMs and EMs [@johnson2013],
-or between multiple versions of the EMs [@ono2013].
+whether the differences are between OMs and EMs [@johnson2013],
+or between multiple versions of EMs [@ono2013].
 <!--ss3sim is thus ideal for answering questions-->
 <!--about mismatches between OMs and EMs-->
 <!--or different structures of EMs for a given OM.-->
@@ -336,7 +335,7 @@ which may rely on SS configurations not yet programmed into the `ss3sim` package
 Therefore, depending on the simulation study goal,
 other software frameworks may provide better alternatives.
 
-One alternative framework is *Fisheries libraries in R* (`FLR`) [@kell2007] ---
+One alternative framework is *Fisheries Libraries in R* (`FLR`) [@kell2007] ---
 an open-source `R` package developed specifically
 for evaluating fisheries management strategies through simulation.
 <!--`FLR` aims to incorporate a variety of disciplines-->
@@ -449,23 +448,17 @@ by adding a single argument --- the number of retrospective years to investigate
 
 # Conclusions
 
-TODO IN PROGRESS AND TO BE CUT DOWN:
-
 The increasing complexity of modern statistical integrated models and expanding computing power allows for the inclusion of a multitude of processes in fisheries stock-assessment methods.
-However, with added complexity comes the potential for model misspecification and model misspecification is often not accounted for in the evaluation of alternative modeling approaches.
-
+However, with added complexity comes the potential for model misspecification.
 Simulation testing allows for the formal evaluation of the ability of assessment models to accurately and precisely estimate parameters of interest under different conditions and levels of misspecification [@deroba2013a; @wilberg2006; @crone2013].
 
-However, most simulation testing work to date has used custom frameworks
+Most simulation testing work to date has used custom frameworks
 tailored to the particular needs of each study.
+Although the complexity of many studies requires a custom framework, leading by example, we encourage authors to publish their simulation frameworks and, where possible, to develop their simulation frameworks in a generalized format that allows others to build on them.
+The initial release of `ss3sim` describes the basic structure used in recent studies [@johnson2013; @ono2013] and the current version of `ss3sim` could be used to address many other important questions in stock assessment science.
+We hope that users will both benefit both from `ss3sim` in its current form and extend it for their own needs, potentially contributing back to the main code base.
 
-
-A recent large scale study [@deroba2013a] focused on evaluating the robustness of several stock-assessment models to observation error.
-That study encountered challenges due to fundamental differences in the structure, data requirements, and limitations of different stock-assessment models.
-An alternative approach is to focus on a single generalized modeling platform such as SS, where alternative model setups reflect only alternative assumptions about the true underlying dynamics of stocks or estimation approaches and assumptions.
-
-The initial release of `ss3sim` describes the basic structure used in recent studies [@johnson2013; @ono2013]. However, the current version of `ss3sim` could be used to address many other important questions in stock assessment science. Furthermore, the open-source package format allows users to extend the functionality for their own needs, potentially contributing back to the main code base.
-
+<!--A recent large scale study [@deroba2013a] focused on evaluating the robustness of several stock-assessment models to observation error. That study encountered challenges due to fundamental differences in the structure, data requirements, and limitations of different stock-assessment models. An alternative approach is to focus on a single generalized modeling platform such as SS, where alternative model setups reflect only alternative assumptions about the true underlying dynamics of stocks or estimation approaches and assumptions.-->
 
 
 <!--For intro: Although several simulation testing studies have used the widely
