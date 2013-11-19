@@ -425,7 +425,7 @@ to incorporate different recruitment deviation structures
 and consider how they affect model performance.
 
 *The impact of bias adjustment*:
-Bias adjustment helps assure
+Bias adjustment helps ensure
 that the estimated recruitment deviations
 are mean-unbiased leading to unbiased estimates
 of biomass [@methot2011].
