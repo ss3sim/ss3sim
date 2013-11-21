@@ -89,8 +89,8 @@ an `R` package that facilitates
 large-scale, rapid, and reproducible simulation testing
 with the widely-used SS3 framework.
 We begin by outlining the general structure of `ss3sim`
-and by describing its functions.
-We then demonstrate the software by developing a simple example.
+by describing its functions,
+and then demonstrate the software by developing a simple example.
 We conclude by discussing how `ss3sim` complements other currently available simulation software
 and by outlining some research questions that
 our freely accessible and general SS3 simulation-testing framework could address.
@@ -100,31 +100,32 @@ our freely accessible and general SS3 simulation-testing framework could address
 ## Design goals of ss3sim
 
 We designed `ss3sim` to be reproducible, flexible, and rapid.
-*Reproducible*: `ss3sim` allows for the simulation testing structure to be documented
-in `R` code and plain-text control files.
-It also allows for random seeds to be set
-when generating observation and process error,
-making simulations repeatable across computers
+*Reproducible*: `ss3sim` simulations are produced
+using `R` code, plain-text control files, and SS3 model configurations.
+`ss3sim` also allows for random seeds to be set
+when generating observation and process error.
+In combination these features make simulations repeatable across computers
 and operating systems (Windows, OS X, and Linux).
 *Flexible*: `ss3sim` inherits the flexibility of SS3
 and can therefore implement many
 available stock-assessment configurations by
-either modifying existing SS3 model configurations (Text S1)
-or by modifying built-in generic life-history model configurations.
+either modifying existing SS3 model configurations
+or by modifying built-in generic life-history model configurations (Text S1).
 Furthermore, `ss3sim` summarizes the simulation output
 into plain-text comma-separated-value (`.csv`) files
-allowing the output to be easily processed
-in nearly any statistical software, including `R`.
+allowing the output to be processed
+in `R` (or other statistical software) across operating systems.
 Finally, the `ss3sim` code is written
 under an open-source MIT license and can be freely modified.
 *Rapid*: `ss3sim` relies on SS3,
 which uses AD Model Builder as a backend optimization platform ---
-the most rapid and robust optimization software available [@fournier2012].
+the most rapid and robust non-linear optimization software available for complex, highly-parameterized stock assessment models [@fournier2012].
 `ss3sim` also facilitates the deployment of simulations
-across multiple computers or computer cores, thereby accelerating computation.
-Perhaps most importantly, `ss3sim` can substantially reduce the time needed
-to develop a large-scale simulation-testing experiment,
-allowing users to focus on the research questions themselves.
+across multiple computers or computer cores (i.e. parallelization), thereby accelerating computation.
+By using a vetted model like SS3 and framework `ss3sim`,
+the time to develop, test, and verify a large-scale simulation
+can be reduced substantially,
+shifting focus to the research questions themselves.
 
 ## The general structure of an ss3sim simulation
 
@@ -136,7 +137,8 @@ In this paper we will focus on the structure
 of the high-level function `run_ss3sim`;
 however, the low-level functions
 can be used on their own
-as part of a more customized simulation wrapper function (Text S1).
+as part of a customized simulation wrapper function.
+<!--TODO COLE This isn't really discussed in the vignette I don’t think. We might want to add a section about how to use the functions outside of ss3sim. Unless you meant the base function, which really isn’t a “customized simulation”. I’m thinking more: hey I want to use FS but I can use change_tv() on my models..-->
 
 An `ss3sim` simulation requires three types of input:
 (1) a base SS3 model configuration describing the underlying truth,
@@ -144,19 +146,19 @@ or operating model (OM);
 (2) a base SS3 model configuration to assess that truth,
 also known as the estimation model or method (EM);
 and (3) a set of plain-text files (case files)
-describing alternative model configurations and deviations from these base models.
+describing alternative model configurations and deviations from these base models
+(e.g. different fishing mortality or $M$ trajectories).
 We refer to each unique combination of OM, EM, and case files as a scenario.
 Scenarios are usually run for multiple iterations,
 possibly with each iteration having unique process and observation error.
 An `ss3sim` simulation therefore refers to the combination of all scenarios and iterations.
 
-The `run_ss3sim` function works by reading case-file arguments
-(e.g. arguments specifying a given $M$ trajectory over time)
-used to modify SS3 configuration files (`change` functions);
+The `run_ss3sim` function works by modifying SS3 configuration files as specified in the case-file arguments
+(`change` functions);
 running the OM;
 sampling from the time-series of true population dynamics
-with fishery dependent and independent surveys (`sample` functions);
-running the EM;
+(`sample` functions);
+running the EM to get maximum-likelihood estimates of parameters and derive quantities;
 and synthesizing the output
 for easy data manipulation and visualization
 (`get` functions) (Figure 1).
@@ -165,41 +167,37 @@ for easy data manipulation and visualization
 
 To demonstrate `ss3sim`, we will work through a simple example
 in which we examine the effect of
-high vs.\ low precision on a research survey index of abundance
-and fixing vs.\ estimating $M$.
-All files to run this example are available in the package data,
+(1) high vs.\ low precision of a fishery independent index of abundance
+and (2) fixing vs.\ estimating $M$.
+All files to run this example are included in the package data,
 and a more detailed description
 is available in the accompanying vignette (Text S1).
 
 \clearpage
 
-`ss3sim` requires `R` version 3.0.0 or greater.
+`ss3sim` requires `R` version 3.0.0 or greater
+and SS3 (see Text S1 for more detailed instructions).
 In `R`, the development version of `ss3sim` can be installed with:
 
     install.packages(devtools)
     devtools::install_github("ss3sim", username = "seananderson",
       dependencies = TRUE)
 
-\noindent
-We plan to make `ss3sim` available on CRAN [@cran2013].
-`ss3sim` also requires that Stock Synthesis is installed.
-Since `ss3sim` has been tested specifically with SS3 Version 3.24O,
-we provide archived copies of this version at <http://bit.ly/ss3v324o>.
+<!--TODO ADD TO VIGNETTE: we provide archived copies of this version at <http://bit.ly/ss3v324o>.-->
 
 ## Setting up the SS3 model configurations
 
-Many existing SS3 model configurations can be used with `ss3sim`
-following minimal modifications (Text S1).
-`ss3sim` also comes with built-in pre-modified SS3 model setups
+`ss3sim` comes with built-in SS3 model configurations
 that represent three general life histories:
 cod-like (slow-growing and long-lived),
 flatfish-like (fast-growing and long-lived),
 and sardine-like (fast-growing and short-lived).
 These model configurations are based on
-North Sea cod (*Gadus morhua*) (R. Methot, pers.\ comm.),
-yellowtail flounder (*Limanda ferruginea*) (R. Methot, pers.\ comm.),
+North Sea cod (*Gadus morhua*; R. Methot, pers.\ comm.),
+yellowtail flounder (*Limanda ferruginea*; R. Methot, pers.\ comm.),
 and Pacific sardine (*Sardinops sagax caeruleus*) [@hill2012] (Text S1).
-We will base our example around the cod-like model setup.
+We recommend modifying these built-in models to match a desired scenario, although it is possible to modify an existing SS3 model to work with `ss3sim` (Text S1).
+We will base our example around an unmodified cod-like model setup.
 
 ## Setting up the case files
 
