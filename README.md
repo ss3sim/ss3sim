@@ -18,10 +18,10 @@ deviate from these base models that you want to compare (configuration
 arguments provided as plain-text control files).
 
 You can find examples of these SS3 operating and estimation models [within the
-package data][models]. Plain-text case files for current simulation
-projects run by the developers of the package are [also available][cases] and
-the case files for the examples used in the paper and vignette 
-[available][eg-cases].
+package data][models]. Plain-text case files for some current simulation
+projects run by the developers of the package are [also available][cases]
+along with the [case files for the examples][eg-cases] used in the paper and
+vignette.
 
 `ss3sim` works by converting simulation arguments (e.g. a given natural
 mortality trajectory) into manipulations of `SS3` configuration files. It
