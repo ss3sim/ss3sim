@@ -55,7 +55,10 @@
   values \code{~N(-0.5, 1)}. The mean of -0.5 is so the
   deviations will be mean unbiased after exponentiation.
   This could also be a matrix of 0s for deterministic model
-  checking.}
+  checking. Note that user specified recruitment deviations
+  are not bias adjusted (by subtracting half the variance
+  from the mean), but the built in default recruitment
+  deviations are.}
 
   \item{bias_adjust}{Run bias adjustment first? See
   \code{\link{run_bias_ss3}}.}
