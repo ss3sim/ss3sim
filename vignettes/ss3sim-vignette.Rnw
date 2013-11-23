@@ -50,12 +50,12 @@ opts_chunk$set(dev = 'pdf')
   University of Washington, Box 355020, Seattle, WA 98195-5020, USA}
   \and
   Cole C. Monnahan\thanks{Quantitative Ecology and Resource Management,
-  University of Washington, Box 352182, Seattle, WA 98195-5020, USA}
+  University of Washington, Box 352182, Seattle, WA 98195-2182, USA}
   \and
   Kotaro Ono\footnotemark[2]
   \and
   Juan L. Valero\thanks{Center for the Advancement of Population Assessment
-  Methodology (CAPAM), 8901 La Jolla Shores Drive, La Jolla, CA 92937, USA}
+  Methodology (CAPAM), 8901 La Jolla Shores Drive, La Jolla, CA 92037, USA}
   }
 
 \date{}
@@ -101,10 +101,12 @@ vignette("ss3sim-vignette", package = "ss3sim")
 \noindent
 We develop and test \texttt{ss3sim} around a specific version of SS3.
 Currently, \texttt{ss3sim} is tested to work with SS3 Version 3.24O.
-You can download SS3 at \url{http://nft.nefsc.noaa.gov/Stock_Synthesis_3.htm}.
+Since this is a more recent version than is provided at the normal download location
+\url{http://nft.nefsc.noaa.gov/Stock_Synthesis_3.htm},
+We provide copies of the 3.24O binaries at \url{http://bit.ly/ss3v324o}.
 \texttt{ss3sim} requires the SS3 binary to be in your path.
 This means that your operating system knows where the binary file is located.
-See Section \ref{sec:path} for details.
+See Appendix \ref{sec:path} for details.
 
 \section{An overview of the \texttt{ss3sim} simulation structure}
 
@@ -758,7 +760,7 @@ print(p)
 
 \section{Using \texttt{ss3sim\_base} directly}
 
-Another alternative is to skip
+An alternative approach to using \texttt{ss3sim} is to skip
 setting up the case files
 and use \texttt{ss3sim\_base} directly
 by passing lists of arguments.
