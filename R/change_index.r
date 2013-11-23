@@ -109,12 +109,14 @@ stop(paste("A year specified in years was not found in the input file for fleet"
     if(Nfleets>0) cpue.new <- do.call(rbind, newcpue.list)
     if(Nfleets==0) cpue.new <- data.frame("#")
 
+    ## Crude plots:
     if(make_plot & Nfleets>0) {
-      p <- ggplot2::ggplot(cpue.new, ggplot2::aes(x=year, y=obs, ymin=0,
-        colour=as.factor(index)))+ggplot2::geom_line()
-      print(p)
+      plot(cpue.new$year, cpue.new$obs, ylim = c(0, max(cpue.new$obs)*1.05), 
+        type = "p", xlab = "Year", ylab = "Observed", 
+        pch = cpue.new$index)
+      legend("bottomright", pch = unique(cpue.new$index), legend = 
+          unique(cpue.new$index), title = "Index", bty = "n")
     }
-    ## Just for testing purposes. Create crude plots.
 
     ## Open the .dat file for the assessment model and find the right lines to
     ## overwrite
