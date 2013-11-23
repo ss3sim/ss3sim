@@ -81,12 +81,12 @@ change_index <- function(infile, outfile, fleets, years, sds_obs,
         ## If only one sds given, extend it for all years
         if(length(sds_obs[[i]])==1) sds_obs[[i]] <- rep(sds_obs[[i]], len=length(years[[i]]))
         if(!is.na(fl)){
-            cpue.fl <- subset(cpue, index==fl & year %in% years[[i]])
+            cpue.fl <- cpue[cpue$index == fl & cpue$year %in% years[[i]], ]
             if(length(years[[i]]) != nrow(cpue.fl))
 stop(paste("A year specified in years was not found in the input file for fleet", fl))
             ## Now loop through each year and resample that row
             for(yr in years[[i]]) {
-                xx <- subset(cpue.fl, year==yr)
+                xx <- cpue.fl[cpue.fl$year == yr, ]
                 if(nrow(xx)==1){
                     ## Sample from this year and fleet and recombine
                     ## with the original data
