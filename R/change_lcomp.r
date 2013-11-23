@@ -1,21 +1,20 @@
 #' Sample length compositions from expected values
-#'
-#' Take a \code{data.SS_new} file containing expected values and sample to
-#' create observed length compositions which are then written to file for use by
-#' the EM.
-#'
-#' @author Cole Monnahan and Kotaro Ono; modified from a version by Roberto
-#' Licandeo and Felipe Hurtado-Ferro
-#'
+#' 
+#' Take a \code{data.SS_new} file containing expected values and sample to 
+#' create observed length compositions which are then written to file for use
+#' by the EM.
+#' 
+#' @author Cole Monnahan and Kotaro Ono; modified from a version by Roberto 
+#'   Licandeo and Felipe Hurtado-Ferro
+#'   
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
-#' @param lengthbin_vector A numeric vector giving the new length bins
-#' to use. \code{lengthbin_vector} must be within the [min;max] of
-#' population bin. This feature allows dynamic binning by the user,
-#' but is not fully tested. Users should consult the vignette and
-#' carefully check the function bins the data as desired before
-#' proceeding with simulations.
-#'
+#' @param lengthbin_vector A numeric vector giving the new length bins to use.
+#'   \code{lengthbin_vector} must be within the [min;max] of population bin.
+#'   This feature allows dynamic binning by the user, but is not fully tested.
+#'   Users should consult the vignette and carefully check the function bins
+#'   the data as desired before proceeding with simulations.
+#'   
 #' @template sampling-return
 #'
 #' @examples
@@ -38,7 +37,7 @@
 #' ## bins (same as ex1 except bins)
 #' ex3 <- change_lcomp(infile=infile, outfile="test3.dat", fleets=c(1,2),
 #'                     Nsamp=list(100,50), years=list(seq(1994, 2012, by=2),
-#'                                             2003:2012), lengthbin_vector = seq(9,30,by=2))
+#'                           2003:2012), lengthbin_vector = seq(9,30,by=2))
 #'
 #' plot(seq(8,30,by=2), as.numeric(ex3[1, -(1:6)]), type="b", col=2,
 #'      xlab="Length Bin", ylab="Proportion of length",
@@ -53,7 +52,7 @@
 #' temp.list <- temp.list2 <- list()
 #' for(i in 1:50){
 #'     temp.list[[i]] <-
-#'         change_lcomp(infile=infile, outfile="test1.dat", fleets=c(2), cpar=c(3),
+#'       change_lcomp(infile=infile, outfile="test1.dat", fleets=c(2), cpar=c(3),
 #'                      Nsamp=list(100), years=list(1995),
 #'                      write_file=FALSE)
 #'     temp.list2[[i]] <-
@@ -74,7 +73,6 @@
 #' temp <- as.numeric(subset(infile$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
 #' points(temp/sum(temp), pch="-", col="red")
 #'
-#' #'
 #' @export
 #' @seealso \code{\link{change_agecomp}}
 
@@ -122,7 +120,7 @@ change_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
         }
         if (min(newbins) < min(oldbins) |
             max(newbins) > max(oldbins)) {
-            stop("lengthbin_vector must be within the [min;max] of population bin")
+      stop("lengthbin_vector must be within the [min;max] of population bin")
         }
         ## Adjust the "old" length bins to the "new" one
         if (length(oldbins) != Nbins) {
@@ -131,7 +129,7 @@ change_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
             ## across appropriate columns to create the new columns
             temp.index <- 1:length(unique(newbin.index))
             temp <- sapply(temp.index, function(x)
-                           apply(as.matrix(lcomp[, 6+which(newbin.index==x)]),1, sum))
+         apply(as.matrix(lcomp[, 6+which(newbin.index==x)]),1, sum))
             new.lcomp <- cbind(lcomp[,1:6], temp)
             names(new.lcomp)[-(1:6)] <-
                 c(paste0("l", newbins[-Nbins], "-",
@@ -158,7 +156,8 @@ change_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
             if(!is.na(fl)){
                 lcomp.fl <- lcomp[lcomp$FltSvy == fl & lcomp$Yr %in% years[[i]], ]
                 if(length(years[[i]]) != nrow(lcomp.fl))
-                    stop(paste("A year specified in years was not found in the input file for fleet", fl))
+                    stop(
+paste("A year specified in years was not found in the input file for fleet", fl))
                 lcomp.fl$Nsamp <- Nsamp[[i]]
                 ## Now loop through each year and resample that row
                 for(yr in years[[i]]) {
@@ -169,7 +168,7 @@ change_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
                     ## If cpar is NA this signifies to use the multinomial
                     if(is.na(cpar[i])){
                         newcomp[-(1:6)] <-
-                            rmultinom(1, size=newcomp$Nsamp, prob=probs)/newcomp$Nsamp
+                    rmultinom(1, size=newcomp$Nsamp, prob=probs)/newcomp$Nsamp
                     } else { # use Dirichlet
                         lambda <- newcomp$Nsamp/cpar[i]^2 - 1
                         if(lambda<0)

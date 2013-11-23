@@ -45,10 +45,10 @@
   underdispersion.}
 
   \item{lengthbin_vector}{A numeric vector giving the new
-  length bins to use. \code{lengthbin_vector} must be
-  within the [min;max] of population bin. This feature
+  length bins to use.  \code{lengthbin_vector} must be
+  within the [min;max] of population bin.  This feature
   allows dynamic binning by the user, but is not fully
-  tested. Users should consult the vignette and carefully
+  tested.  Users should consult the vignette and carefully
   check the function bins the data as desired before
   proceeding with simulations.}
 }
@@ -82,7 +82,7 @@ ex2 <- change_lcomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
 ## bins (same as ex1 except bins)
 ex3 <- change_lcomp(infile=infile, outfile="test3.dat", fleets=c(1,2),
                     Nsamp=list(100,50), years=list(seq(1994, 2012, by=2),
-                                            2003:2012), lengthbin_vector = seq(9,30,by=2))
+                          2003:2012), lengthbin_vector = seq(9,30,by=2))
 
 plot(seq(8,30,by=2), as.numeric(ex3[1, -(1:6)]), type="b", col=2,
      xlab="Length Bin", ylab="Proportion of length",
@@ -97,7 +97,7 @@ unlink(x=c("test1.dat", "test2.dat", "test3.dat")) # clean up
 temp.list <- temp.list2 <- list()
 for(i in 1:50){
     temp.list[[i]] <-
-        change_lcomp(infile=infile, outfile="test1.dat", fleets=c(2), cpar=c(3),
+      change_lcomp(infile=infile, outfile="test1.dat", fleets=c(2), cpar=c(3),
                      Nsamp=list(100), years=list(1995),
                      write_file=FALSE)
     temp.list2[[i]] <-
@@ -117,8 +117,6 @@ with(x2, boxplot(value~variable, las=2, ylim=c(0,.6), ylab="Proportion",
                  main="Multinomial", xlab="length bin"))
 temp <- as.numeric(subset(infile$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
 points(temp/sum(temp), pch="-", col="red")
-
-#'
 }
 \author{
   Cole Monnahan and Kotaro Ono; modified from a version by

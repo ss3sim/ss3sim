@@ -1,6 +1,6 @@
 \name{ss3sim_base}
 \alias{ss3sim_base}
-\title{Run both the operating model and assessment model}
+\title{Base wrapper fun to run an ss3sim simulation}
 \usage{
   ss3sim_base(iterations, scenarios, f_params,
     index_params, lcomp_params, agecomp_params,
@@ -52,15 +52,18 @@
   iterations and the rows represent years. Note that these
   will be multiplied by sigma R. So, under normal
   conditions this matrix should contain standard-normal
-  values \code{~N(0, 1)}.}
+  values \code{~N(-0.5, 1)}. The mean of -0.5 is so the
+  deviations will be mean unbiased after exponentiation.
+  This could also be a matrix of 0s for deterministic model
+  checking.}
 
   \item{bias_adjust}{Run bias adjustment first? See
   \code{\link{run_bias_ss3}}.}
 
   \item{bias_nsim}{If bias adjustment is run, how many
-  simulations should the bias be estimated from? It will
-  take the mean of the adjustment factors across these
-  runs.}
+  simulations should the bias adjustment factor be
+  estimated from? It will take the mean of the adjustment
+  factors across these runs.}
 
   \item{bias_already_run}{If you've already run the bias
   runs for a scenario (the bias folders and \code{.dat}
@@ -68,7 +71,7 @@
   to avoid re-running the bias adjustment routine.}
 
   \item{hess_always}{If \code{TRUE} then the Hessian will
-  always be calculated. If \code{FALSE} then the Hessian
+  always be calculated.  If \code{FALSE} then the Hessian
   will only be calculated for bias-adjustment runs thereby
   saving time.}
 
@@ -83,7 +86,7 @@
   iterations that can produce a non-invertible Hessian
   before a warning will be produced. If this percentage is
   exceeded then a file \code{WARNINGS.txt} will be
-  produced. Currently, the simulations will continue to
+  produced.  Currently, the simulations will continue to
   run.}
 
   \item{...}{Anything extra to pass to
@@ -94,7 +97,8 @@
   passed to the \code{\link{system}} call that runs
   \code{SS3}. If you are on a Windows computer then you
   might want to pass \code{show.output.on.console = FALSE}
-  to make the simulations runs faster.}
+  to make the simulations runs faster by not printing
+  output to the console.}
 }
 \description{
   This function is a wrapper function that can call
@@ -102,7 +106,8 @@
   sample the output (add recruitment deviations, survey the
   data, etc.), and run the estimation model.
   \code{ss3sim_base} is the main internal function for
-  ss3sim.
+  ss3sim. It is intended to be used through
+  \code{\link{run_ss3sim}}, but can also be used directly.
 }
 \details{
   This function is written to be flexible. You can specify

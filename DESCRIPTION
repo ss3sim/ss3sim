@@ -1,8 +1,8 @@
 Package: ss3sim
 Type: Package
 Title: Generalized stock-assessment simulation with Stock Synthesis
-Version: 0.7.5
-Date: 2013-11-16
+Version: 0.7.6
+Date: 2013-11-23
 Authors@R: c(person("Sean", "Anderson", email =
     "sean@seananderson.ca", role = c("aut", "cre")),
     person("Kelli", "Johnson", role = "aut"),
@@ -13,7 +13,7 @@ Authors@R: c(person("Sean", "Anderson", email =
     person("Felipe", "Hurtado-Ferro", role = "ctb"),
     person("Roberto", "Licandeo", role = "ctb"),
     person("Carey", "McGilliard", role = "ctb"))
-Author: Sean Anderson <sean@seananderson.ca>
+Author: Sean C. Anderson <sean@seananderson.ca>
 Maintainer: Sean C. Anderson <sean@seananderson.ca>
 Description: The ss3sim package develops a framework for conducting stock
     assessment simulation with Stock Synthesis 3 (SS3).
@@ -54,7 +54,7 @@ Collate:
     'change_retro.r'
     'change_e.r'
     'get_fish600_casefolder.r'
-    'get_fish600_modelfolder.r'
+    'get_model_folder.r'
     'expand_scenarios.r'
     'get-results.r'
     'fish600seeds.r'

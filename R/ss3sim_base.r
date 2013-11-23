@@ -1,76 +1,72 @@
-#' Run both the operating model and assessment model
-#'
-#' This function is a wrapper function that can call
-#' \code{\link{run_ss3model}} for the operating model, sample the
-#' output (add recruitment deviations, survey the data, etc.), and run
-#' the estimation model. \code{ss3sim_base} is the main internal
-#' function for ss3sim.
-#'
+#' Base wrapper fun to run an ss3sim simulation
+#' 
+#' This function is a wrapper function that can call \code{\link{run_ss3model}} 
+#' for the operating model, sample the output (add recruitment deviations, 
+#' survey the data, etc.), and run the estimation model. \code{ss3sim_base} is 
+#' the main internal function for ss3sim. It is intended to be used through
+#' \code{\link{run_ss3sim}}, but can also be used directly.
+#' 
 #' @param iterations Which iterations to run. A numeric vector.
 #' @param scenarios Which scenarios to run.
-#' @param tv_params A named list containing all the
-#' \code{\link{change_tv}} (time-varying) options.
-#' @param f_params A named list containing all the
-#' \code{\link{change_f}} options.
-#' @param index_params A named list containing all the
-#' \code{\link{change_index}} options.
-#' @param lcomp_params A named list containing all the
-#' \code{\link{change_lcomp}} options.
-#' @param agecomp_params A named list containing all the
-#' \code{\link{change_agecomp}} options.
-#' @param retro_params A named list containing all the
-#' \code{\link{change_retro}} options.
-#' @param estim_params A named list containing all the
-#' \code{\link{change_e}} options.
-#' @param om_model_dir The directory with the operating model you want
-#' to copy and use for the specified simulations.
-#' @param em_model_dir The directory with the estimation model you want
-#' to copy and use for the specified simulations.
-#' @param user_recdevs An optional 100x100 matrix of recruitment
-#' deviations to replace the recruitment deviations built into the
-#' package (\code{\link{recdevs}}). The columns represent run
-#' iterations and the rows represent years. Note that these will be
-#' multiplied by sigma R. So, under normal conditions this matrix
-#' should contain standard-normal values \code{~N(0, 1)}.
-#' @param bias_adjust Run bias adjustment first? See
-#' \code{\link{run_bias_ss3}}.
-#' @param bias_nsim If bias adjustment is run, how many simulations
-#' should the bias be estimated from? It will take the mean of the
-#' adjustment factors across these runs.
-#' @param bias_already_run If you've already run the bias runs for a
-#' scenario (the bias folders and \code{.dat} files already exist)
-#' then you can set this to \code{TRUE} to avoid re-running the bias
-#' adjustment routine.
-#' @param hess_always If \code{TRUE} then the Hessian will always be
-#' calculated. If \code{FALSE} then the Hessian will only be
-#' calculated for bias-adjustment runs thereby saving time.
+#' @param tv_params A named list containing all the \code{\link{change_tv}} 
+#'   (time-varying) options.
+#' @param f_params A named list containing all the \code{\link{change_f}} 
+#'   options.
+#' @param index_params A named list containing all the 
+#'   \code{\link{change_index}} options.
+#' @param lcomp_params A named list containing all the 
+#'   \code{\link{change_lcomp}} options.
+#' @param agecomp_params A named list containing all the 
+#'   \code{\link{change_agecomp}} options.
+#' @param retro_params A named list containing all the 
+#'   \code{\link{change_retro}} options.
+#' @param estim_params A named list containing all the \code{\link{change_e}} 
+#'   options.
+#' @param om_model_dir The directory with the operating model you want to copy 
+#'   and use for the specified simulations.
+#' @param em_model_dir The directory with the estimation model you want to copy 
+#'   and use for the specified simulations.
+#' @param user_recdevs An optional 100x100 matrix of recruitment deviations to 
+#'   replace the recruitment deviations built into the package 
+#'   (\code{\link{recdevs}}). The columns represent run iterations and the rows 
+#'   represent years. Note that these will be multiplied by sigma R. So, under 
+#'   normal conditions this matrix should contain standard-normal values 
+#'   \code{~N(-0.5, 1)}. The mean of -0.5 is so the deviations will be mean 
+#'   unbiased after exponentiation. This could also be a matrix of 0s for
+#'   deterministic model checking.
+#' @param bias_adjust Run bias adjustment first? See \code{\link{run_bias_ss3}}.
+#' @param bias_nsim If bias adjustment is run, how many simulations should the 
+#'   bias adjustment factor be estimated from? It will take the mean of the
+#'   adjustment factors across these runs.
+#' @param bias_already_run If you've already run the bias runs for a scenario 
+#'   (the bias folders and \code{.dat} files already exist) then you can set 
+#'   this to \code{TRUE} to avoid re-running the bias adjustment routine.
+#' @param hess_always If \code{TRUE} then the Hessian will always be calculated.
+#'   If \code{FALSE} then the Hessian will only be calculated for 
+#'   bias-adjustment runs thereby saving time.
 #' @param print_logfile Logical. Print a log file?
-#' @param sleep A time interval (in seconds) to pause on each
-#' iteration. Useful if you want to reduce average CPU time --
-#' perhaps because you're working on a shared server.
-#' @param conv_crit The maximum percentage of bias iterations that can
-#' produce a non-invertible Hessian before a warning will be produced.
-#' If this percentage is exceeded then a file \code{WARNINGS.txt} will
-#' be produced. Currently, the simulations will continue to run.
-#' @param ... Anything extra to pass to \code{\link{run_ss3model}}.
-#' For example, you may want to pass additional options to \code{SS3}
-#' through the argument \code{admb_options}.
-#' Anything that doesn't match a named argument in
-#' \code{\link{run_ss3model}} will be passed to the
-#' \code{\link{system}} call that runs \code{SS3}. If you are on a
-#' Windows computer then you might want to pass
-#' \code{show.output.on.console = FALSE} to make the simulations runs
-#' faster.
-#
+#' @param sleep A time interval (in seconds) to pause on each iteration. Useful 
+#'   if you want to reduce average CPU time -- perhaps because you're working on
+#'   a shared server.
+#' @param conv_crit The maximum percentage of bias iterations that can produce a
+#'   non-invertible Hessian before a warning will be produced. If this 
+#'   percentage is exceeded then a file \code{WARNINGS.txt} will be produced. 
+#'   Currently, the simulations will continue to run.
+#' @param ... Anything extra to pass to \code{\link{run_ss3model}}. For example,
+#'   you may want to pass additional options to \code{SS3} through the argument 
+#'   \code{admb_options}. Anything that doesn't match a named argument in 
+#'   \code{\link{run_ss3model}} will be passed to the \code{\link{system}} call 
+#'   that runs \code{SS3}. If you are on a Windows computer then you might want 
+#'   to pass \code{show.output.on.console = FALSE} to make the simulations runs 
+#'   faster by not printing output to the console.
 #' @author Sean C. Anderson
 #' @seealso \code{\link{run_ss3sim}}
 #' @export
 #' @details
-#' This function is written to be flexible. You can specify the
-#' natural mortality, fishing mortality, survey index,
-#' length comp, and age comp parameters in the function call as list
-#' objects. For a generic higher-level function, see
-#' \code{\link{run_ss3sim}}.
+#' This function is written to be flexible. You can specify the natural
+#' mortality, fishing mortality, survey index, length comp, and age comp
+#' parameters in the function call as list objects. For a generic higher-level
+#' function, see \code{\link{run_ss3sim}}.
 #' @examples
 #' \dontrun{
 #' # Pull in file paths from the package example data:
@@ -314,4 +310,3 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     } # end iterations
   } # end scenarios
 }
-

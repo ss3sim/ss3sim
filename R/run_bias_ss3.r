@@ -1,12 +1,12 @@
-#' Determine level of bias adjustment for SS runs
+#' Determine level of bias adjustment for SS3 runs
 #'
-#' Determine level of bias adjustment from multiple SS runs.
-#' IMPORTANT: The Hessian must be calculated for the SS runs that
+#' Determine level of bias adjustment from multiple SS3 runs.
+#' IMPORTANT: The Hessian must be calculated for the SS3 runs that
 #' this function uses.
 #'
 #' @details
 #' This function: \itemize{
-#' \item uses the \pkg{r4ss} package to read in output from n SS
+#' \item uses the \pkg{r4ss} package to read in output from n SS3
 #' runs,
 #' \item uses Ian Taylor's \pkg{r4ss} function to find values for the
 #' n bias adjustment parameters for each run,
@@ -48,16 +48,24 @@
 # adjustment is complete (e.g. \code{1:100})
 #'
 #' @examples \dontrun{
+#' # Create a temporary folder for the output:
+#' temp_path <- file.path(tempdir(), "ss3sim-bias-example")
+#' dir.create(temp_path, showWarnings = FALSE)
+#' 
 #' d <- system.file("extdata", package = "ss3sim")
 #' case_folder <- paste0(d, "/eg-cases")
 #' om <- paste0(d, "/models/cod-om")
 #' em <- paste0(d, "/models/cod-em")
-#' run_ss3sim(iterations = 1:1, scenarios = "D1-E0-F0-G0-R0-S0-M0-cod",
-#'   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
-#'   bias_adjust = TRUE, bias_nsim = 2)
+#' wd <- getwd()
+#' setwd(temp_path)
 #' # (Note that bias_nsim should be bigger, say 10, but it is set to 2
 #' # here so the example runs faster.)
+#' run_ss3sim(iterations = 1:1, scenarios = "D1-E0-F0-R0-M0-cod",
+#'   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+#'   bias_adjust = TRUE, bias_nsim = 2)
+#' setwd(wd) 
 #' }
+#' 
 #' @seealso \code{link{run_ss3sim}}, \code{\link{ss3sim_base}},
 #' \code{\link{run_ss3model}}, \code{\link{bias_ss3}}
 #' @references
@@ -70,7 +78,6 @@ run_bias_ss3 <-function(dir, outdir, nsim, conv_crit = 0.2) {
   mysims = 1:nsim
   sapply(mysims, bias_ss3, dir = dir)
 
-
   # Read in the raw bias adjustment parameters for each run,
   # calculated from Ian Taylor's r4ss function:
   bias.table <-read.table(paste(dir,"/",outfile,sep=""),header = FALSE)
@@ -82,7 +89,6 @@ run_bias_ss3 <-function(dir, outdir, nsim, conv_crit = 0.2) {
   names(bias.table)[names(bias.table) == "V4"] = "bias3"
   names(bias.table)[names(bias.table) == "V5"] = "bias4"
   names(bias.table)[names(bias.table) == "V6"] = "bias5"
-
 
   #Find the average over nsim runs of each bias adjustment parameter
   avg.df = data.frame(
@@ -132,11 +138,17 @@ run_bias_ss3 <-function(dir, outdir, nsim, conv_crit = 0.2) {
   # what is the value before the character string?
   # val1 <- as.numeric(as.vector(substr(SS_ctl[ParamLine1], start=1, stop=colnum1-1)))
 
-  SS_ctlB[ParamLine1] = paste0(avg.df$bias1, " #_last_early_yr_nobias_adj_in_MPD")
-  SS_ctlB[ParamLine1 + 1] = paste0(avg.df$bias2, " #_first_yr_fullbias_adj_in_MPD")
-  SS_ctlB[ParamLine1 + 2] = paste0(avg.df$bias3, " #_last_yr_fullbias_adj_in_MPD")
-  SS_ctlB[ParamLine1 + 3] = paste0(avg.df$bias4, " #_first_recent_yr_nobias_adj_in_MPD")
-  SS_ctlB[ParamLine1 + 4] = paste0(avg.df$bias5, " #_max_bias_adj_in_MPD (-1 to override ramp and set biasadj=1.0 for all estimated recdevs)")
+  SS_ctlB[ParamLine1] = 
+    paste0(avg.df$bias1, " #_last_early_yr_nobias_adj_in_MPD")
+  SS_ctlB[ParamLine1 + 1] = 
+    paste0(avg.df$bias2, " #_first_yr_fullbias_adj_in_MPD")
+  SS_ctlB[ParamLine1 + 2] = 
+    paste0(avg.df$bias3, " #_last_yr_fullbias_adj_in_MPD")
+  SS_ctlB[ParamLine1 + 3] = 
+    paste0(avg.df$bias4, " #_first_recent_yr_nobias_adj_in_MPD")
+  SS_ctlB[ParamLine1 + 4] = 
+    paste0(avg.df$bias5, 
+      " #_max_bias_adj_in_MPD (-1 to override ramp and set biasadj=1.0 for all estimated recdevs)")
 
   writeLines(SS_ctlB, con = paste(dir, "/", "em.ctl", sep = ""))
   #}
@@ -148,4 +160,3 @@ run_bias_ss3 <-function(dir, outdir, nsim, conv_crit = 0.2) {
         #iRealSim, "/em/"), overwrite = T, copy.mode = TRUE)
   #}
 }
-
