@@ -75,14 +75,14 @@
   the file besides to denote columns. You can add comments
   after any \code{#} symbol just like in R.
 
-  Internally, the functions evaluate in \code{R} any
-  entries that have no character values (e.g.
-  \code{1:100}), or have an alpha-numeric character
-  followed by a \code{(}. Anything that is character only
-  or has character mixed with numeric but doesn't have the
-  regular expression \code{"[A-Za-z0-9]("} gets turned into
-  a character argument. (\code{NA} and \code{NULL} are
-  special cases that are also passed on directly.)
+  Internally, the functions evaluate in \R any entries that
+  have no character values (e.g. \code{1:100}), or have an
+  alpha-numeric character followed by a \code{(}. Anything
+  that is character only or has character mixed with
+  numeric but doesn't have the regular expression
+  \code{"[A-Za-z0-9]("} gets turned into a character
+  argument. (\code{NA} and \code{NULL} are special cases
+  that are also passed on directly.)
 }
 \examples{
 # Find the example data folders:

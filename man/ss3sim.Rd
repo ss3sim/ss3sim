@@ -2,7 +2,7 @@
 \name{ss3sim}
 \alias{ss3sim}
 \alias{ss3sim-package}
-\title{ss3sim: An \R package for fisheries stock assessment simulation with
+\title{ss3sim: An \R package for fisheries stock assessment simulation testing with
 Stock Synthesis}
 \description{
   The ss3sim \R package is designed to facilitate
@@ -24,7 +24,7 @@ Stock Synthesis}
   truth (an SS3 estimation model), (3) and a set of cases
   that deviate from these base models that you want to
   compare (configuration arguments provided as plain-text
-  control files).
+  cases files).
 
   You can find examples of these SS3 operating and
   estimation models within the package data
@@ -61,9 +61,7 @@ Stock Synthesis}
   years to discard for a retrospective analysis.
 
   \item \code{\link{change_rec_devs}}: Substitutes
-  recruitment deviations.
-
-  }
+  recruitment deviations. }
 
   2. \code{run} functions that conduct simulations. These
   functions generate a folder structure, call manipulation

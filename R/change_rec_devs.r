@@ -11,17 +11,18 @@
 #' @author Cole Monnahan
 #' @export
 
-#' @examples \dontrun{
+#' @examples
+#' # Create a temporary folder for the output:
+#' temp_path <- file.path(tempdir(), "ss3sim-recdev-example")
+#' dir.create(temp_path, showWarnings = FALSE)
+#' 
 #' par_file <- system.file("extdata", "models", "cod-om", "ss3.par",
 #'   package = "ss3sim")
 #' change_rec_devs(recdevs_new = rlnorm(100), file_in = par_file,
-#'   file_out = "test.par")
-#' # Now go look at the deviations after "recdev1:" in test.par in your
-#' # working directory.
-#' unlink("test.par")
-#' }
+#'   file_out = paste0(temp_path, "/test.par"))
 
-change_rec_devs <- function(recdevs_new, file_in="ss3.par", file_out="ss3.par"){
+change_rec_devs <- function(recdevs_new, file_in="ss3.par", 
+  file_out="ss3.par"){
   ## This is the pattern on the line before the vector of current recdevs
   pattern <- "# recdev1"
 

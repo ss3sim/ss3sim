@@ -1,6 +1,6 @@
 \name{run_bias_ss3}
 \alias{run_bias_ss3}
-\title{Determine level of bias adjustment for SS runs}
+\title{Determine level of bias adjustment for SS3 runs}
 \usage{
   run_bias_ss3(dir, outdir, nsim, conv_crit = 0.2)
 }
@@ -29,13 +29,13 @@
   run.}
 }
 \description{
-  Determine level of bias adjustment from multiple SS runs.
-  IMPORTANT: The Hessian must be calculated for the SS runs
-  that this function uses.
+  Determine level of bias adjustment from multiple SS3
+  runs. IMPORTANT: The Hessian must be calculated for the
+  SS3 runs that this function uses.
 }
 \details{
   This function: \itemize{ \item uses the \pkg{r4ss}
-  package to read in output from n SS runs, \item uses Ian
+  package to read in output from n SS3 runs, \item uses Ian
   Taylor's \pkg{r4ss} function to find values for the n
   bias adjustment parameters for each run, \item takes the
   average over runs for each bias adjustment parameter
@@ -50,15 +50,22 @@
 }
 \examples{
 \dontrun{
+# Create a temporary folder for the output:
+temp_path <- file.path(tempdir(), "ss3sim-bias-example")
+dir.create(temp_path, showWarnings = FALSE)
+
 d <- system.file("extdata", package = "ss3sim")
 case_folder <- paste0(d, "/eg-cases")
 om <- paste0(d, "/models/cod-om")
 em <- paste0(d, "/models/cod-em")
-run_ss3sim(iterations = 1:1, scenarios = "D1-E0-F0-G0-R0-S0-M0-cod",
-  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
-  bias_adjust = TRUE, bias_nsim = 2)
+wd <- getwd()
+setwd(temp_path)
 # (Note that bias_nsim should be bigger, say 10, but it is set to 2
 # here so the example runs faster.)
+run_ss3sim(iterations = 1:1, scenarios = "D1-E0-F0-R0-M0-cod",
+  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+  bias_adjust = TRUE, bias_nsim = 2)
+setwd(wd)
 }
 }
 \author{

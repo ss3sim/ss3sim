@@ -12,7 +12,7 @@
   correspond to the functions to grab the arguments from.}
 
   \item{ext}{The file extension to create the configuration
-  files with. Defaults to \code{".txt"}.}
+  files with.  Defaults to \code{".txt"}.}
 
   \item{delim}{The delimiter. Defaults to \code{"; "}.}
 
@@ -27,10 +27,10 @@
   for specified functions. Look in your working directory
   for the template files. Change the case ID number
   (defaults to \code{0}) and the species identifier to a
-  three letter identifier. For the FISH600 project use one
-  of \code{cod}, \code{sar}, or \code{fla} for cod,
-  sardine, or flatfish. An example filename would be
-  \code{M1-sar.txt} or \code{lcomp2-fla.txt}.
+  three letter identifier. To use one of the built-in model
+  setups, use one of \code{cod}, \code{sar}, or \code{fla}
+  for cod, sardine, or flatfish. An example filename would
+  be \code{M1-sar.txt} or \code{lcomp2-fla.txt}.
 }
 \details{
   The first column in the text files denotes the argument

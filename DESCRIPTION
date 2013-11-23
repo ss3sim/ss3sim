@@ -54,7 +54,7 @@ Collate:
     'change_retro.r'
     'change_e.r'
     'get_fish600_casefolder.r'
-    'get_fish600_modelfolder.r'
+    'get_model_folder.r'
     'expand_scenarios.r'
     'get-results.r'
     'fish600seeds.r'

@@ -1,6 +1,6 @@
 \name{change_tv}
 \alias{change_tv}
-\title{Methods to include time-varying parameters in a SS3 OM}
+\title{Methods to include time-varying parameters in an SS3 OM}
 \usage{
   change_tv(change_tv_list, ctl_file_in = "control.ss_new",
     ctl_file_out = "om.ctl", dat_file_in = "ss3.dat",
@@ -53,8 +53,8 @@
 \description{
   Takes SS3 \code{.ctl}, \code{.par}, and \code{.dat} files
   and implements time-varying parameters using
-  environmental variables. Specifically set up to work with
-  an operating model \code{.ctl} file.
+  environmental variables.  Specifically set up to work
+  with an operating model \code{.ctl} file.
 }
 \details{
   To pass arguments to \code{change_tv} through

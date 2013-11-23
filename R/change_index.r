@@ -1,22 +1,22 @@
 #' Sample the biomass with observation error
-#'
-#' This function creates an index of abundance sampled from the expected
-#' available biomass for given fleets in given years. Let B_y be the biomass
-#' from the OM for year y. Then the sampled value is calculated as:
-#' B_y*exp(rnorm(1, 0, \code{sds_obs})-\code{sds_obs}^2/2). The second
-#' term adjusts the random samples so that their expected value is B_y
-#' (i.e. the log-normal bias correction).
-#'
+#' 
+#' This function creates an index of abundance sampled from the expected 
+#' available biomass for given fleets in given years. Let B_y be the biomass 
+#' from the OM for year y. Then the sampled value is calculated as: 
+#' B_y*exp(rnorm(1, 0, \code{sds_obs})-\code{sds_obs}^2/2). The second term
+#' adjusts the random samples so that their expected value is B_y (i.e. the
+#' log-normal bias correction).
+#' 
 #' @template lcomp-agecomp-index
-#' @param sds_obs A list the same length as \code{fleets}. The list should
-#' contain either single values or numeric vectors of the same length as the
-#' number of years which represent the standard deviation of the observation
-#' error. Single values are repeated for all years.
-#' @param make_plot A logical switch for whether to make a crude plot showing
-#' the results. Useful for testing and exploring the function.
-#'
+#' @param sds_obs A list the same length as \code{fleets}. The list should 
+#'   contain either single values or numeric vectors of the same length as the
+#'   number of years which represent the standard deviation of the observation
+#'   error. Single values are repeated for all years.
+#' @param make_plot A logical switch for whether to make a crude plot showing 
+#'   the results. Useful for testing and exploring the function.
+#'   
 #' @template sampling-return
-#'
+#'   
 #' @export
 #' @author Cole Monnahan, Kotaro Ono
 #' @examples \dontrun{
@@ -65,8 +65,7 @@ change_index <- function(infile, outfile, fleets, years, sds_obs,
     if(Nfleets!= 0 & class(years) != "list" | length(years) != Nfleets)
         stop("years needs to be a list of same length as fleets")
     for(i in 1:Nfleets){
-        if(length(sds_obs[[i]])>1 & length(sds_obs[[i]]) != length(years[[i]]))
-            stop(paste0("Length of sds_obs does not match length of years for fleet ",fleets[i]))
+        if(length(sds_obs[[i]])>1 & length(sds_obs[[i]]) != length(years[[i]]))       stop(paste0("Length of sds_obs does not match length of years for fleet ",fleets[i]))
     }
     ## End input checks
 
@@ -84,7 +83,7 @@ change_index <- function(infile, outfile, fleets, years, sds_obs,
         if(!is.na(fl)){
             cpue.fl <- subset(cpue, index==fl & year %in% years[[i]])
             if(length(years[[i]]) != nrow(cpue.fl))
-                stop(paste("A year specified in years was not found in the input file for fleet", fl))
+stop(paste("A year specified in years was not found in the input file for fleet", fl))
             ## Now loop through each year and resample that row
             for(yr in years[[i]]) {
                 xx <- subset(cpue.fl, year==yr)

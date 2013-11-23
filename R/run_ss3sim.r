@@ -1,53 +1,49 @@
 #' Master function to run SS3 simulations
-#'
-#' This is the main high-level wrapper function for running ss3sim
-#' simulation. This function first deals with parsing a scenario ID
-#' into case input files and then passes these arguments on to
-#' \code{\link{ss3sim_base}} to run the simulation. Alternatively, you
-#' might choose to run \code{\link{ss3sim_base}} directly and skip the
-#' case-file setup.
-#'
-#' @param iterations Which iterations to run. A numeric vector. For
-#' example \code{1:100}.
-#' @param scenarios Which scenarios to run. A vector of character
-#' objects. For example \code{c("D0-E0-F0-R0-M0-cod",
-#' "D1-E0-F0-R0-M0-cod")}. Also, see \code{\link{expand_scenarios}}
-#' for a shortcut to specifying the scenarios. See
-#' \code{\link{get_caseargs}} and the vignette for details on
-#' specifying the scenarios.
-#' @param case_folder The folder containing the case \code{.txt}
-#' files.
-#' @param om_model_dir The folder containing the SS operating model
-#' files.
-#' @param em_model_dir The folder containing the SS estimation model
-#' files.
-#' @param case_files A named list that relates the case IDs to the
-#' files to return. If you are passing time-varying parameters beyond
-#' (or instead of) natural mortality (M), then you will need to adjust
-#' these values to reflect your scenarios. This argument is passed to
-#' \code{\link{get_caseargs}}. See that function for details and
-#' examples of how to specify this.
-#' @param ... Anything else to pass to \code{\link{ss3sim_base}}. This
-#' includes \code{bias_adjust} and \code{bias_nsim}. Also, you can
-#' pass additional options to \code{SS3} through the argument
-#' \code{admb_options}.
-#' @param parallel A logical argument that controls whether the
-#' scenarios are run in parallel. You will need to register multiple
-#' cores first with a package such as \code{doParallel}. See the
-#' example code below.
+#' 
+#' This is the main high-level wrapper function for running ss3sim simulations.
+#' This function first deals with parsing a scenario ID into case input files
+#' and then passes these arguments on to \code{\link{ss3sim_base}} to run a
+#' simulation. Alternatively, you might choose to run \code{\link{ss3sim_base}}
+#' directly and skip the case-file setup.
+#' 
+#' @param iterations Which iterations to run. A numeric vector. For example
+#'   \code{1:100}.
+#' @param scenarios Which scenarios to run. A vector of character objects. For
+#'   example \code{c("D0-E0-F0-R0-M0-cod", "D1-E0-F0-R0-M0-cod")}. Also, see
+#'   \code{\link{expand_scenarios}} for a shortcut to specifying the scenarios.
+#'   See \code{\link{get_caseargs}} and the vignette for details on specifying
+#'   the scenarios.
+#' @param case_folder The folder containing the plain-text case files.
+#' @param om_model_dir The folder containing the SS3 operating model 
+#'   configuration files.
+#' @param em_model_dir The folder containing the SS3 estimation model 
+#'   configuration files.
+#' @param case_files A named list that relates the case IDs to the files to
+#'   return. If you are passing time-varying parameters beyond (or instead of)
+#'   natural mortality (M), then you will need to adjust these values to reflect
+#'   your scenarios. This argument is passed to \code{\link{get_caseargs}}. See
+#'   that function for details and examples of how to specify this.
+#' @param ... Anything else to pass to \code{\link{ss3sim_base}}. This could
+#'   include \code{bias_adjust} and \code{bias_nsim}. Also, you can pass
+#'   additional options to the \code{SS3} command through the argument
+#'   \code{admb_options}.
+#' @param parallel A logical argument that controls whether the scenarios are
+#'   run in parallel. You will need to register multiple cores first with a
+#'   package such as \pkg{doParallel} and have the \pkg{foreach} package
+#'   installed. See the example below.
 #' @author Sean C. Anderson
-#'
-#' @details
-#' The operating model folder should contain: \code{forecast.ss},
-#' \code{yourmodel.ctl}, \code{yourmodel.dat}, \code{ss3.par}, and
-#' \code{starter.ss}. Nothing more and nothing less. The files should
-#' be the versions that are returned from an SS run as \code{.ss_new}
-#' files. This is important because it creates consistent formatting
-#' which many of the functions in this package depend on. Rename the
-#' \code{.ss_new} files as listed above (and in all lowercase). The
-#' estimation model folder should contain all the same files listed
-#' above except the \code{ss3.par} and \code{yourmodel.dat} files,
-#' which are unnecessary but can be included if desired.
+#'   
+#' @details The operating model folder should contain: \code{forecast.ss}, 
+#' \code{yourmodel.ctl}, \code{yourmodel.dat}, \code{ss3.par}, and 
+#' \code{starter.ss}. The files should be the versions that are returned from an
+#' SS run as \code{.ss_new} files. This is important because it creates
+#' consistent formatting which many of the functions in this package depend on.
+#' Rename the \code{.ss_new} files as listed above (and in all lowercase). The
+#' estimation model folder should contain all the same files listed above except
+#' the \code{ss3.par} and \code{yourmodel.dat} files, which are unnecessary but
+#' can be included if desired. See the vignette for details on modifying an
+#' existing \code{SS3} model to run with \pkg{ss3sim}. Alternatively, you might
+#' consider modifying one of the built in model configurations.
 #'
 #' @return
 #' The output will appear in whatever your current \R working directory
@@ -64,7 +60,7 @@
 #' \item ...
 #' }
 #' @seealso \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
-#' \code{\link{run_bias_ss3}}
+#' \code{\link{run_bias_ss3}}, \code{\link{get_caseargs}}
 #' @export
 #'
 #' @examples
@@ -86,36 +82,36 @@
 #'       "agecomp"), R = "R", E = "E"))
 #'
 #' # With bias adjustment:
-#' # (Note that bias_nsim should be bigger, say 10, but it is set to 2
-#' # here so the example runs faster.)
-#' run_ss3sim(iterations = 1:1, scenarios = "D1-E0-F0-G0-R0-S0-M0-cod",
+#' # (Note that bias_nsim should be bigger, say 5 or 10, but it is set
+#' # to 2 here so the example runs faster.)
+#' run_ss3sim(iterations = 1:1, scenarios = "D1-E0-F0-R0-M0-cod",
 #'   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
 #'   bias_adjust = TRUE, bias_nsim = 2)
 #'
 #' # Restarting the previous run using the existing bias-adjustment
 #' # output
-#' run_ss3sim(iterations = 2:3, scenarios = "D1-E0-F0-G0-R0-S0-M0-cod",
+#' run_ss3sim(iterations = 2:3, scenarios = "D1-E0-F0-R0-M0-cod",
 #'   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
 #'   bias_adjust = FALSE, bias_already_run = TRUE)
-#' unlink("D1-E0-F0-G0-R0-S0-M0-cod", recursive = TRUE) # clean up
+#' unlink("D1-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
 #'
-#' # A deterministic run for model checking:
+#' # A run with deterministic process error for model checking:
 #' recdevs_det <- matrix(0, nrow = 100, ncol = 20)
-#' run_ss3sim(iterations = 1:20, scenarios = "D0-E100-F0-G0-R0-S0-M0-cod",
+#' run_ss3sim(iterations = 1:20, scenarios = "D0-E100-F0-R0-M0-cod",
 #'   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
 #'   bias_adjust = TRUE, bias_nsim = 2, user_recdevs = recdevs_det)
-#' unlink("D0-E100-F0-G0-R0-S0-M0-cod", recursive = TRUE) # clean up
+#' unlink("D0-E100-F0-R0-M0-cod", recursive = TRUE) # clean up
 #'
 #' # An example of a run using parallel processing across 2 cores:
 #' require(doParallel)
 #' registerDoParallel(cores = 2)
 #' require(foreach)
 #' getDoParWorkers() # check how many cores are registered
-#' run_ss3sim(iterations = 1, scenarios = c("D0-E0-F0-G0-R0-S0-M0-cod",
-#'     "D1-E0-F0-G0-R0-S0-M0-cod"), case_folder = case_folder,
+#' run_ss3sim(iterations = 1, scenarios = c("D0-E0-F0-R0-M0-cod",
+#'     "D1-E0-F0-R0-M0-cod"), case_folder = case_folder,
 #'   om_model_dir = om, em_model_dir = em, parallel = TRUE)
-#' unlink("D0-E0-F0-G0-R0-S0-M0-cod", recursive = TRUE) # clean up
-#' unlink("D1-E0-F0-G0-R0-S0-M0-cod", recursive = TRUE) # clean up
+#' unlink("D0-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
+#' unlink("D1-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
 #' }
 
 run_ss3sim <- function(iterations, scenarios, case_folder,
@@ -157,7 +153,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
         })
   }
 
-    print(paste("Completed iterations:", paste(iterations, collapse = ", "),
+    message(paste("Completed iterations:", paste(iterations, collapse = ", "),
         "for scenarios:", paste(scenarios, collapse = ", ")))
 
 }

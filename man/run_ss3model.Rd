@@ -1,6 +1,6 @@
 \name{run_ss3model}
 \alias{run_ss3model}
-\title{Run the operating models for a specified set of scenario IDs}
+\title{Run an operating or estimation model for a specified set of scenario IDs}
 \usage{
   run_ss3model(scenarios, iterations, type = c("om", "em"),
     ss3path = NULL, admb_options = "", hess = FALSE,
@@ -17,11 +17,13 @@
   models?}
 
   \item{ss3path}{The path to your SS3 binary the binary is
-  not in your path. For example, if \code{SS3} was in the
+  not in your path.  For example, if \code{SS3} was in the
   folder \code{/usr/bin/} then \code{ss3path =
   "/usr/bin/"}. Make sure to append a slash to the end of
   this path. Defaults to \code{NULL}, which means the
-  function will assume the binary is already in your path.}
+  function will assume the binary is already in your path.
+  See the vignette for details.
+  \code{vignette("ss3sim-vignette")}}
 
   \item{hess}{Calculate the Hessian on estimation model
   runs?}

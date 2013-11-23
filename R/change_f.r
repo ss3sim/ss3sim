@@ -1,27 +1,27 @@
 #' Alter the fishing mortality (F) values in an \code{ss3.par} file
-#'
-#' Takes an SS3 \code{.par} file and changes the F values for
-#' specified years.
-#'
+#' 
+#' Takes an SS3 \code{.par} file and changes the F values for specified years.
+#' 
 #' @author Curry James Cunningham
-#'
+#'   
 #' @param years Vector of years for which F values are specified
 #' @param years_alter Vector of years for the which F values will be altered
 #' @param fvals Vector of F values to be entered into \code{ss3.par} file
 #' @param file_in Input SS3 par file.
-#' @param file_out Output SS3 par file. 
+#' @param file_out Output SS3 par file.
 #' @examples 
-#' \dontrun{
+#' # Create a temporary folder for the output:
+#' temp_path <- file.path(tempdir(), "ss3sim-f-example")
+#' dir.create(temp_path, showWarnings = FALSE)
+#' 
 #' d <- system.file("extdata", package = "ss3sim")
 #' par_file <- paste0(d, "/change_f/ss3.par")
 #' change_f(years = 1:49, years_alter = 2, fvals = 9999, file_in =
-#' par_file, file_out = "test.par")
-#' # clean up
-#' file.remove("test.par")
-#' }
+#' par_file, file_out = paste0(temp_path, "/test.par"))
 #' @export
 
-change_f <- function(years, years_alter, fvals, file_in="ss3.par", file_out="ss3.par") {
+change_f <- function(years, years_alter, fvals, file_in="ss3.par", 
+  file_out="ss3.par") {
 	
   n.years_alter <- length(years_alter)
 
@@ -37,9 +37,9 @@ change_f <- function(years, years_alter, fvals, file_in="ss3.par", file_out="ss3
   
   for(y in 1:n.years_alter) {
   	temp.year <- which(years == years_alter[y])
-    temp.loc <- which(ss3.par == paste('# F_rate[', temp.year, ']:', sep='')) # Temporary location
+    temp.loc <- which(ss3.par == paste('# F_rate[', temp.year, ']:', sep=''))
     ss3.par.new[temp.loc+1] <- fvals[y]
-  } # next y
+  }
   
   # Write new .par file
   writeLines(ss3.par.new, con=file_out)

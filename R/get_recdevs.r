@@ -1,12 +1,11 @@
 #' Return a set of recruitment deviations
 #'
-#' This function returns a set of pseudo-random recruitment deviations
-#' based on an iteration number. Given the same iteration number the
-#' function will return the same recruitment deviations. The
-#' deviations are standard normal. I.e., they have a mean of 0 and a
-#' standard deviation of 1.
-#' @param iteration The iteration number. This is used as an ID to set
-#' the random number seed.
+#' This function returns a set of pseudo-random recruitment deviations based
+#' on an iteration number. Given the same iteration number the function will
+#' return the same recruitment deviations. The deviations are standard normal.
+#' I.e., they have a mean of 0 and a standard deviation of 1.
+#' @param iteration The iteration number. This is used as an ID to set the
+#'   random number seed.
 #' @param n The length of the vector returned.
 #' @return A vector of standard normal recruitment deviations.
 #' @examples

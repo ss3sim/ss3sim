@@ -1,37 +1,38 @@
 #' Verify and standardize SS3 input files
-#'
-#' This function verifies the contents of operating model (om) and estimation
-#' model (em) folders. If the contents are correct, the \code{.ctl} and
-#' \code{.dat} files are renamed to standardized names and the `starter.ss`
-#' file is updated to reflect these names. If the contents are incorrect then
-#' a warning is issued and the simulation is aborted.
+#' 
+#' This function verifies the contents of operating model (\code{om}) and
+#' estimation model (\code{em}) folders. If the contents are correct, the
+#' \code{.ctl} and \code{.dat} files are renamed to standardized names and the
+#' \code{starter.ss} file is updated to reflect these names. If the contents
+#' are incorrect then a warning is issued and the simulation is aborted.
 #'
 #' @author Curry James Cunningham; modified by Sean Anderson
 #' @details This is a helper function to be used within the larger wrapper
 #' simulation functions.
 #' @return
-#' Returns a version of the folder with sanitized files or an error if
-#' some files are missing.
+#' Returns a version of the folder with sanitized files or an error if some
+#' files are missing.
 #
 #' @param model_dir Directory name for model. This folder should
 #' contain the \code{.ctl}, \code{.dat}, files etc.
 #' @param type One of "om" or "em" for operating or estimating model.
 #' @export
-#' @examples \dontrun{
+#' @examples
+#' # Create a temporary folder for the output:
+#' temp_path <- file.path(tempdir(), "ss3sim-verify-example")
+#' dir.create(temp_path, showWarnings = FALSE)
+#' 
 #' d <- system.file("extdata", package = "ss3sim")
+#' 
 #' om <- paste0(d, "/models/cod-om")
 #' em <- paste0(d, "/models/cod-em")
-#' file.copy(om, ".", recursive = TRUE)
-#' file.copy(em, ".", recursive = TRUE)
 #'
-#' # verify the correct files exist and change file names:
-#' verify_input(model_dir = "cod-om", type = "om")
-#' verify_input(model_dir = "cod-em", type = "em")
+#' file.copy(om, temp_path, recursive = TRUE)
+#' file.copy(em, temp_path, recursive = TRUE)
 #'
-#' # clean up:
-#' unlink("cod-om", recursive = TRUE)
-#' unlink("cod-em", recursive = TRUE)
-#' }
+#' # Verify the correct files exist and change file names:
+#' verify_input(model_dir = paste0(temp_path, "/cod-om"), type = "om")
+#' verify_input(model_dir = paste0(temp_path, "/cod-em"), type = "em")
 
 verify_input <- function(model_dir, type = c("om", "em")) {
 

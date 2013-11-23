@@ -1,4 +1,4 @@
-#' ss3sim: An \R package for fisheries stock assessment simulation with
+#' ss3sim: An \R package for fisheries stock assessment simulation testing with
 #' Stock Synthesis
 #'
 #' The ss3sim \R package is designed to facilitate large-scale, rapid,
@@ -16,7 +16,7 @@
 #' model of how you will assess that truth (an SS3 estimation model),
 #' (3) and a set of cases that deviate from these base models that you
 #' want to compare (configuration arguments provided as plain-text
-#' control files).
+#' cases files).
 #'
 #' You can find examples of these SS3 operating and estimation models
 #' within the package data (\code{inst/extdata/models/}). The package
@@ -29,7 +29,6 @@
 #' These manipulations generate an underlying "truth" (operating
 #' models) and control our assessment of those models (estimation
 #' models).
-
 #' \itemize{
 #' \item \code{\link{change_f}}: Controls fishing mortality.
 #'
@@ -53,7 +52,6 @@
 #'
 #' \item \code{\link{change_rec_devs}}: Substitutes recruitment
 #' deviations.
-#'
 #' }
 #'
 #' 2. \code{run} functions that conduct simulations. These functions
@@ -66,7 +64,6 @@
 #' \item \code{\link{ss3sim_base}}: Underlying base simulation
 #' function. Can also be called directly.
 #' }
-#'
 #'
 #' 3. \code{get} functions for synthesizing the output.
 #' \itemize{

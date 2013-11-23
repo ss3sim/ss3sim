@@ -1,12 +1,10 @@
 #' Calculate run time
-#'
-#' Internal function used by \code{get_results_scenario} to calculate
-#' the runtime (in minutes) from a \code{Report.sso} file.
-#'
-#' @param start_time Vector of characters as read in from the r4ss
-#' report file
-#' @param end_time Vector of characters as read in from the r4ss
-#' report file
+#' 
+#' Internal function used by \code{get_results_scenario} to calculate the
+#' runtime (in minutes) from a \code{Report.sso} file.
+#' 
+#' @param start_time Vector of characters as read in from the r4ss report file
+#' @param end_time Vector of characters as read in from the r4ss report file
 #' @author Cole Monnahan
 
 calculate_runtime <- function(start_time, end_time) {
@@ -28,20 +26,21 @@ calculate_runtime <- function(start_time, end_time) {
 }
 
 #' Extract SS3 simulation output
-#'
-#' This high level function extracts results from SS3 model runs. Give it a
-#' directory which contains directories for different "scenario" runs,
-#' within which are replicates and potentially bias adjustment runs. It
-#' writes two data.frames to file: one for single scalar values (e.g.
-#' MSY) and a second that contains output for each year of the same model
-#' (timeseries, e.g. biomass(year)). These can always be joined later.
-#'
-#' @param directory The directory which contains scenario folders with
-#' results.
-#' @param overwrite_files A switch to determine if existing files should be
-#' overwritten, useful for testing purposes or if new replicates are run.
-#' @param user_scenarios A character vector of scenarios that should be read in.
-#' Default is NULL, which indicates find all scenario folders in \code{directory}
+#' 
+#' This high level function extracts results from SS3 model runs. Give it a 
+#' directory which contains directories for different "scenario" runs, within
+#' which are replicates and potentially bias adjustment runs. It writes two
+#' data.frames to file: one for single scalar values (e.g. MSY) and a second
+#' that contains output for each year of the same model (timeseries, e.g.
+#' biomass(year)). These can always be joined later.
+#' 
+#' @param directory The directory which contains scenario folders with 
+#'   results.
+#' @param overwrite_files A switch to determine if existing files should be 
+#'   overwritten, useful for testing purposes or if new replicates are run.
+#' @param user_scenarios A character vector of scenarios that should be read
+#'   in. Default is NULL, which indicates find all scenario folders in
+#'   \code{directory}
 #' @export
 #' @return
 #' Creates two .csv files in the current working directory:
@@ -78,19 +77,19 @@ calculate_runtime <- function(start_time, end_time) {
 #' scalars <- transform(scalars,
 #'                        SSB_MSY=(SSB_MSY_em-SSB_MSY_om)/SSB_MSY_om)
 #' g <- ggplot(scalars)
-#' g+geom_boxplot(aes(x=F,y=SSB_MSY))+facet_grid(species~.)
+#' g+geom_boxplot(aes(x=FALSE,y=SSB_MSY))+facet_grid(species~.)
 #'
 #' ## steepness
 #' scalars <- transform(scalars,
-#'                        SR_BH_steep=(SR_BH_steep_om-SR_BH_steep_em)/SR_BH_steep_om)
+#'                SR_BH_steep=(SR_BH_steep_om-SR_BH_steep_em)/SR_BH_steep_om)
 #' g <- ggplot(scalars)
-#' g+geom_boxplot(aes(x=F,y=SR_BH_steep))+facet_grid(species~.)
+#' g+geom_boxplot(aes(x=FALSE,y=SR_BH_steep))+facet_grid(species~.)
 #'
 #' ## SSB unfished
 #' scalars <- transform(scalars,
-#'                        SSB_Unfished=(SSB_Unfished_om-SSB_Unfished_em)/SSB_Unfished_om)
+#'          SSB_Unfished=(SSB_Unfished_om-SSB_Unfished_em)/SSB_Unfished_om)
 #' g <- ggplot(scalars)
-#' g+geom_boxplot(aes(x=F,y=SSB_Unfished))+facet_grid(species~.)
+#' g+geom_boxplot(aes(x=FALSE,y=SSB_Unfished))+facet_grid(species~.)
 #'
 #' ##  log(R0)
 #' scalars <- transform(scalars,
@@ -109,22 +108,25 @@ calculate_runtime <- function(start_time, end_time) {
 #'
 #' ## Look at recruitment
 #' ts <- transform(ts, Recruit_0=(Recruit_0_em-Recruit_0_om)/Recruit_0_om)
-#' g <- ggplot(ts, aes(x=year))+ ylab("Relative bias in recruitment") + xlab("Year")
+#' g <- ggplot(ts, aes(x=year))+ ylab("Relative bias in recruitment") + 
+#' xlab("Year")
 #' g+geom_jitter(aes(y=Recruit_0), size=.1, alpha=.3)+
 #'     geom_smooth(method="loess",aes(y=Recruit_0), color="red") +
 #'     facet_grid(species~., )+
 #'     geom_hline(yintercept = 0, lty = 2)
 #' }
 
-get_results_all <- function(directory=getwd(), overwrite_files=FALSE, user_scenarios=NULL){
+get_results_all <- function(directory=getwd(), overwrite_files=FALSE, 
+  user_scenarios=NULL){
 
     on.exit(setwd(directory))
     ## Get unique scenarios that exist in the folder. Might be other random
     ## stuff in the folder so be careful to extract only scenario folders.
-    all.dirs <- list.dirs(path=directory, full.names=F, recursive=F)
+    all.dirs <- list.dirs(path=directory, full.names=FALSE, recursive=FALSE)
     ## To select scenarios that has at least 2 files (1 iteration folder and 1
     ## bias folder) i.e to only examine cases that passed the convergence test
-    nb.iter <- sapply(1:length(all.dirs), function(x) length(list.files(all.dirs[x])))
+    nb.iter <- sapply(1:length(all.dirs), 
+      function(x) length(list.files(all.dirs[x])))
     select.dirs <- all.dirs[which(nb.iter>1)]
     temp.dirs <- sapply(1:length(select.dirs), function(i) {
         x <- unlist(strsplit(select.dirs[i], split="/"))
@@ -173,25 +175,24 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE, user_scena
     print(paste("Final result files written to", directory))
 }
 
-
 #' Extract SS3 simulation results for one scenario.
-#'
-#' Function that extracts results from all replicates inside a supplied
-#' scenario folder. The function writes 3 .csv files to the scenario folder:
-#' (1) scalar metrics with one value per replicate (e.g. $R_0$, $h$), (2) a
-#' timeseries data ('ts') which contains multiple values per replicate (e.g.
-#' $SSB_y$ for a range of years $y$), and (3) residuals on the log scale from
-#' the surveys across all replicates (this feature is not fully tested!). The
+#' 
+#' Function that extracts results from all replicates inside a supplied 
+#' scenario folder. The function writes 3 .csv files to the scenario folder: 
+#' (1) scalar metrics with one value per replicate (e.g. $R_0$, $h$), (2) a 
+#' timeseries data ('ts') which contains multiple values per replicate (e.g. 
+#' $SSB_y$ for a range of years $y$), and (3) residuals on the log scale from 
+#' the surveys across all replicates (this feature is not fully tested!). The 
 #' function \code{get_results_all} loops through these .csv files and combines
 #' them together into a single "final" dataframe.
-#'
-#' @param scenario A single character giving the scenario from which to
-#' extract results.
+#' 
+#' @param scenario A single character giving the scenario from which to 
+#'   extract results.
 #' @param directory The directory which contains the scenario folder.
-#' @param overwrite_files A boolean (default is FALSE) for whether to delete
-#' any files previously created with this function. This is intended to be
-#' used if replicates were added since the last time it was called, or any
-#' changes were made to this function.
+#' @param overwrite_files A boolean (default is FALSE) for whether to delete 
+#'   any files previously created with this function. This is intended to be 
+#'   used if replicates were added since the last time it was called, or any 
+#'   changes were made to this function.
 #' @author Cole Monnahan
 #' @family get-results
 #' @export
@@ -223,7 +224,8 @@ get_results_scenario <- function(scenario, directory=getwd(),
             file.remove(scalar.file, ts.file)
         } else {
             ## Stop the progress
-            stop(paste0("Files already exist for ", scenario," and overwrite_files=F"))
+            stop(paste0("Files already exist for ", scenario," 
+              and overwrite_files=FALSE"))
         }
     }
     ## Check for bias correction for this scenario, grab it if exists otherwise
@@ -232,8 +234,8 @@ get_results_scenario <- function(scenario, directory=getwd(),
     names(bias) <- c("bias1","bias2","bias3","bias4","bias5",
                      "bias.converged","bias.tried")
     if(length(grep("bias", dir()))==1){
-        bias[1:5] <- unlist(read.table(file="bias/AvgBias.DAT", header=T))
-        bias.file <- read.table(file="bias/AdjustBias.DAT", header=F)
+        bias[1:5] <- unlist(read.table(file="bias/AvgBias.DAT", header=TRUE))
+        bias.file <- read.table(file="bias/AdjustBias.DAT", header=FALSE)
         ## The ones with NAs mean it didn't converge
         bias[6] <- nrow(na.omit(bias.file))
         bias[7] <- nrow(bias.file)
@@ -250,12 +252,12 @@ get_results_scenario <- function(scenario, directory=getwd(),
     resids.list <- list()
     for(rep in reps.dirs){
         ## print(paste0("Starting", scen, "-", rep))
-        report.em <- r4ss::SS_output(paste0(rep,"/em/"), covar=F, verbose=F,
-                               compfile="none", forecast=TRUE, warn=T, readwt=F,
-                               printstats=F, NoCompOK=T)
-        report.om <- r4ss::SS_output(paste0(rep,"/om/"), covar=F, verbose=F,
-                               compfile="none", forecast=F, warn=T, readwt=F,
-                               printstats=F, NoCompOK=T)
+      report.em <- r4ss::SS_output(paste0(rep,"/em/"), covar=FALSE, 
+        verbose=FALSE,compfile="none", forecast=TRUE, warn=TRUE, readwt=FALSE,
+        printstats=FALSE, NoCompOK=TRUE)
+      report.om <- r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE, verbose=FALSE,
+        compfile="none", forecast=FALSE, warn=TRUE, readwt=FALSE,
+        printstats=FALSE, NoCompOK=TRUE)
         ## Grab the residuals for the indices
         resids <- log(report.em$cpue$Obs) - log(report.em$cpue$Exp)
         resids.long <- data.frame(report.em$cpue[,c("FleetName", "Yr")], resids)
@@ -280,13 +282,13 @@ get_results_scenario <- function(scenario, directory=getwd(),
         ## parse the scenarios into columns for plotting later
         scenario.scalar <-
             data.frame(do.call(rbind, strsplit(as.character(scalar$scenario),
-                                               "-")), stringsAsFactors=F)
+                                               "-")), stringsAsFactors=FALSE)
         names(scenario.scalar) <-
             c(substr(as.vector(as.character(
                 scenario.scalar[1,-ncol(scenario.scalar)])), 1,1) ,"species")
         scenario.ts <-
             data.frame(do.call(rbind, strsplit(as.character(ts$scenario), "-")),
-                       row.names=row.names(ts), stringsAsFactors=F)
+                       row.names=row.names(ts), stringsAsFactors=FALSE)
         names(scenario.ts) <-
             c(substr(as.vector(as.character(
                 scenario.ts[1,-ncol(scenario.ts)])), 1,1) ,"species")
@@ -316,7 +318,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
     }
     ## Create df for the residuals
     resids <- do.call(rbind, resids.list)
-    write.table(x=resids, file=resids.file, sep=",", row.names=F)
+    write.table(x=resids, file=resids.file, sep=",", row.names=FALSE)
     ## End of loops for extracting results
     print(paste0("Result files created for ",scenario, " with ",
                  length(reps.dirs), " replicates"))
@@ -333,7 +335,8 @@ get_results_scenario <- function(scenario, directory=getwd(),
 #' @author Cole Monnahan
 get_results_timeseries <- function(report.file){
     years <- report.file$startyr:(report.file$endyr +
-                                  ifelse(is.na(report.file$nforecastyears)==TRUE, 0,
+                                  ifelse(is.na(report.file$nforecastyears) == 
+                                      TRUE, 0,
                                          report.file$nforecastyears))
     xx <- subset(report.file$timeseries,
                  select=c("Yr","SpawnBio", "Recruit_0", "F:_1"))
@@ -358,7 +361,8 @@ get_results_scalar <- function(report.file){
     TotYield_MSY <-  der[which(der$LABEL=="TotYield_MSY"),]$Value
     SSB_Unfished <-  der[which(der$LABEL=="SSB_Unfished"),]$Value
     Catch_endyear <-
-        rev(report.file$timeseries[,grep("dead\\(B\\)", names(report.file$timeseries))])[1]
+        rev(report.file$timeseries[,grep("dead\\(B\\)", 
+          names(report.file$timeseries))])[1]
     pars <- data.frame(t(report.file$parameters$Value))
     names(pars) <- report.file$parameters$Label
     ## Remove the recruitment devs and efforts as these are in the ts file
@@ -376,11 +380,10 @@ get_results_scalar <- function(report.file){
     warn <- report.file$warnings
     warn.line <- grep("Number_of_active_parameters", warn, fixed=TRUE)
     params_on_bound <-
-        ifelse(length(warn.line)==1, as.numeric(strsplit(warn[warn.line], split=":")[[1]][2]), NA)
+        ifelse(length(warn.line)==1, 
+          as.numeric(strsplit(warn[warn.line], split=":")[[1]][2]), NA)
     ## Combine into final df and return it
     df <- cbind(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion,
                 NLL, params_on_bound, pars, Catch_endyear)
     return(invisible(df))
 }
-
-

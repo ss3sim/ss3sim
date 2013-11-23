@@ -11,13 +11,13 @@
   \item{startfile_out}{Output \code{starter.ss} file}
 
   \item{retro_yr}{Which retrospective year to enter into
-  the starter file. Should be 0 (no retrospective analysis)
-  or a negative value.}
+  the starter file.  Should be 0 (no retrospective
+  analysis) or a negative value.}
 }
 \description{
   A retrospective analysis tests the effect of peeling back
   the number of operating model years observable to the
-  estimation model. This function alters the SS starter
+  estimation model. This function alters the SS3 starter
   file to run a retrospective analysis.
 }
 \details{
@@ -28,19 +28,21 @@
   starter file 6 separate times.
 }
 \examples{
+# Create a temporary folder for the output:
+temp_path <- file.path(tempdir(), "ss3sim-retro-example")
+dir.create(temp_path, showWarnings = FALSE)
+
 # Locate the package data:
 starterfile <- system.file("extdata", "models", "cod-om",
  "starter.ss", package = "ss3sim")
 
 # No retrospective analysis:
-change_retro(starterfile, "retro-0-starter.ss", retro_yr = 0)
+change_retro(starterfile, paste0(temp_path, "/retro-0-starter.ss"),
+retro_yr = 0)
 
 # A retrospective analysis of 5 years:
-change_retro(starterfile, "retro-5-starter.ss", retro_yr = -5)
-
-# clean up:
-unlink("retro-0-starter.ss")
-unlink("retro-5-starter.ss")
+change_retro(starterfile, paste0(temp_path, "/retro-5-starter.ss"),
+retro_yr = -5)
 }
 \author{
   Sean C. Anderson

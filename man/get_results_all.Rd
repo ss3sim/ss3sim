@@ -62,19 +62,19 @@ g+geom_boxplot(aes(F,max_grad))+facet_grid(species~., scales="free")
 scalars <- transform(scalars,
                        SSB_MSY=(SSB_MSY_em-SSB_MSY_om)/SSB_MSY_om)
 g <- ggplot(scalars)
-g+geom_boxplot(aes(x=F,y=SSB_MSY))+facet_grid(species~.)
+g+geom_boxplot(aes(x=FALSE,y=SSB_MSY))+facet_grid(species~.)
 
 ## steepness
 scalars <- transform(scalars,
-                       SR_BH_steep=(SR_BH_steep_om-SR_BH_steep_em)/SR_BH_steep_om)
+               SR_BH_steep=(SR_BH_steep_om-SR_BH_steep_em)/SR_BH_steep_om)
 g <- ggplot(scalars)
-g+geom_boxplot(aes(x=F,y=SR_BH_steep))+facet_grid(species~.)
+g+geom_boxplot(aes(x=FALSE,y=SR_BH_steep))+facet_grid(species~.)
 
 ## SSB unfished
 scalars <- transform(scalars,
-                       SSB_Unfished=(SSB_Unfished_om-SSB_Unfished_em)/SSB_Unfished_om)
+         SSB_Unfished=(SSB_Unfished_om-SSB_Unfished_em)/SSB_Unfished_om)
 g <- ggplot(scalars)
-g+geom_boxplot(aes(x=F,y=SSB_Unfished))+facet_grid(species~.)
+g+geom_boxplot(aes(x=FALSE,y=SSB_Unfished))+facet_grid(species~.)
 
 ##  log(R0)
 scalars <- transform(scalars,
@@ -93,7 +93,8 @@ g+geom_jitter(aes(y=SpawnBio, group=replicate), size=.1, alpha=.3)+
 
 ## Look at recruitment
 ts <- transform(ts, Recruit_0=(Recruit_0_em-Recruit_0_om)/Recruit_0_om)
-g <- ggplot(ts, aes(x=year))+ ylab("Relative bias in recruitment") + xlab("Year")
+g <- ggplot(ts, aes(x=year))+ ylab("Relative bias in recruitment") +
+xlab("Year")
 g+geom_jitter(aes(y=Recruit_0), size=.1, alpha=.3)+
     geom_smooth(method="loess",aes(y=Recruit_0), color="red") +
     facet_grid(species~., )+
