@@ -1,4 +1,7 @@
 #' Get the folder location of the FISH600 case files
+#' 
+#' This function is used by some developers of ss3sim for simulations. This
+#' function links to the "cases" folder in \code{extdata}.
 #' @export
 #' @return A character object showing the location of the FISH600 case
 #' files in the package \code{extdata} folder.
