@@ -62,13 +62,13 @@ as well as determining what makes fisheries data informative
 
 Stock Synthesis (SS3, the third version of the software)
 is a widely-used fisheries stock assessment modeling framework [@methot2013].
-It implements statistical age-structured population dynamics modeling,
+SS3 implements statistical age-structured population dynamics modeling,
 using a wide range of minimally-processed data [@maunder2013; @methot2013].
 By using this generalized framework,
 individuals conducting fisheries stock assessments and peer reviewers
 can focus on the underlying science, instead of the model code [@methot2013].
 Owing to these advantages, SS3
-is one of the world's most commonly-used stock assessment tools,
+is one of the world's most commonly-used stock assessment models,
 particularly in the United States and Australia,
 where it has been used in 35 and 12 stock assessments as of 2012,
 respectively [@methot2013].
@@ -83,7 +83,7 @@ to link these components in a simulation context.
 As a result, most stock assessment simulation-testing work to date has used custom frameworks tailored to the particular needs of each study.
 The only available `R` package to interface with SS3 is `r4ss` [@r4ss2013],
 which primarily facilitates reading, processing, and plotting of SS output,
-but does not provide a simulation framework.
+but does not provide a simulation-testing framework.
 <!--TODO COLE: I like this sentence but not sure it belongs here. This paragraph is about linking R and SS3, not about what other people have done. One doesn't need R to use a generalized framework for simulation testing.  Maybe better to argue that (1) no consistent framework exists, so people use ad hoc software, then (2) R is a good option for developing a framework b/c it is so common and r4ss exists.-->
 
 Here we introduce `ss3sim`,
@@ -97,7 +97,7 @@ We conclude by discussing how `ss3sim` complements
 other currently available simulation software
 and by outlining some research questions that
 our freely accessible and general SS3 simulation-testing
-framework could address in addition.
+framework could address.
 
 # The ss3sim framework
 
@@ -108,7 +108,7 @@ We designed `ss3sim` to be reproducible, flexible, and rapid.
 using `R` code, plain-text control files, and SS3 model configurations.
 `ss3sim` also allows for random seeds to be set
 when generating observation and process error.
-In combination these features make simulations repeatable across computers
+In combination, these features make simulations repeatable across computers
 and operating systems (Windows, OS X, and Linux).
 *Flexible*: `ss3sim` inherits the flexibility of SS3
 and can therefore implement many
@@ -118,7 +118,7 @@ or by modifying built-in generic life-history model configurations (Text S1).
 Furthermore, `ss3sim` summarizes the simulation output
 into plain-text comma-separated-value (`.csv`) files
 allowing the output to be processed
-in `R` (or other statistical software) across operating systems.
+in `R` or other statistical software.
 Finally, the `ss3sim` code is written
 under an open-source MIT license and can be freely modified.
 *Rapid*: `ss3sim` relies on SS3,
@@ -126,7 +126,7 @@ which uses AD Model Builder as a backend optimization platform ---
 the most rapid and robust non-linear optimization software available [@fournier2012].
 `ss3sim` also facilitates the deployment of simulations
 across multiple computers or computer cores (i.e. parallelization), thereby accelerating computation.
-By using a vetted model like SS3 and framework `ss3sim`,
+By using a vetted model like SS3 with the tested `ss3sim` framework,
 the time to develop, test, and verify a large-scale simulation
 can be reduced substantially,
 shifting focus to the research questions themselves.
@@ -162,7 +162,7 @@ The `run_ss3sim` function works by modifying SS3 configuration files as specifie
 running the OM;
 sampling from the time-series of true population dynamics
 (`sample` functions);
-running the EM to get maximum-likelihood estimates of parameters and derive quantities;
+running the EM to get maximum-likelihood estimates of parameters and to derive quantities;
 and synthesizing the output
 for easy data manipulation and visualization
 (`get` functions) (Figure 1).
@@ -328,7 +328,7 @@ as expected, smaller when the true value of $M$ is specified rather than estimat
 Furthermore, lower precision in the research survey index of abundance
 results in greater relative error in spawning stock biomass in recent years
 (Figure 2, top panels D0 vs. D1),
-and greater relative error of terminal-year depletion and fishing mortality, but not
+and greater relative error in terminal-year depletion and fishing mortality, but not
 spawning stock biomass at maximum sustainable yield, or $M$ (Figure 2, lower panels).
 
 # How ss3sim complements other simulation software
@@ -345,8 +345,8 @@ of alternative stock assessment model configurations,
 whether the differences are between OMs and EMs [@johnson2013],
 or between multiple versions of EMs [@ono2013].
 However, `ss3sim` is less suited
-for quickly exploring arbitrary SSS model setups,
-which may rely on SSS configurations
+for quickly exploring arbitrary SS3 model setups,
+which may rely on SS3 configurations
 not yet programmed into the `ss3sim` package functions.
 Therefore, depending on the simulation study goal,
 other software frameworks may provide better alternatives.
@@ -476,11 +476,11 @@ tailored to the particular needs of each study
 [@deroba2013a; @lee2011; @deroba2013; @lee2012; @piner2011; @crone2013a].
 Although the complexity of many studies
 requires a custom framework,
-We encourage authors
-to publish their simulation frameworks such as we have done here,
+we encourage authors
+to publish their simulation frameworks, as we have done here,
 and where possible,
 to develop their simulation frameworks in a generalized format
-that allows others to reproduce and build on them.
+that allows others build on.
 The initial release of `ss3sim`
 describes the basic structure used in recent studies [@johnson2013; @ono2013]
 and the current version of `ss3sim`
