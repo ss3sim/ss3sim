@@ -783,7 +783,7 @@ d <- system.file("extdata", package = "ss3sim")
 om <- paste0(d, "/models/cod-om")
 em <- paste0(d, "/models/cod-em")
 
-F1 <- list(years = 1913:2012, years_alter = 1913:2012, fvals =
+F0 <- list(years = 1913:2012, years_alter = 1913:2012, fvals =
   c(rep(0, 25), rep(0.114, 75)))
 
 index1 <- list(fleets = 2, years = list(seq(1974, 2012, by = 2)),
@@ -806,7 +806,7 @@ M0 <- list(NatM_p_1_Fem_GP_1 = rep(0, 100))
 R0 <- list(retro_yr = 0)
 
 ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-R0-M0-cod",
-  f_params = F1, index_params = index1, lcomp_params = lcomp1,
+  f_params = F0, index_params = index1, lcomp_params = lcomp1,
   agecomp_params = agecomp1, estim_params = E0, tv_params = M0,
   retro_params = R0, om_model_dir = om, em_model_dir = em)
 @
