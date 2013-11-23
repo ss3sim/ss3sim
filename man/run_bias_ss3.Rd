@@ -78,7 +78,7 @@ setwd(wd)
   68(10):1744-1760.
 }
 \seealso{
-  \code{link{run_ss3sim}}, \code{\link{ss3sim_base}},
+  \code{\link{run_ss3sim}}, \code{\link{ss3sim_base}},
   \code{\link{run_ss3model}}, \code{\link{bias_ss3}}
 }
 

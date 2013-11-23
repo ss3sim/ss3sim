@@ -66,7 +66,7 @@
 #' setwd(wd) 
 #' }
 #' 
-#' @seealso \code{link{run_ss3sim}}, \code{\link{ss3sim_base}},
+#' @seealso \code{\link{run_ss3sim}}, \code{\link{ss3sim_base}},
 #' \code{\link{run_ss3model}}, \code{\link{bias_ss3}}
 #' @references
 #' Methot, R. D. and Taylor, I. G. (2011). Adjusting for bias due to
