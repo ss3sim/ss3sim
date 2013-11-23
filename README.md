@@ -71,7 +71,7 @@ help(package = "ss3sim")
 ```
 
 For details on using `ss3sim` for stock-assessment simulation, see the
-[in-progress vignette][vignette] [PDF] and the [in-progress paper][paper].
+[in-progress vignette][vignette] [PDF] and the [in-progress paper][paper] [PDF].
 
 [DESCRIPTION]: https://github.com/seananderson/ss3sim/blob/master/DESCRIPTION
 [models]: https://github.com/seananderson/ss3sim/tree/master/inst/extdata/models
