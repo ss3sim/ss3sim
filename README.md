@@ -15,7 +15,7 @@ An `ss3sim` simulation requires three types of input: (1) a base model of the
 underlying truth (an SS3 operating model), (2) a base model of how you will
 assess that truth (an SS3 estimation model), (3) and a set of cases that
 deviate from these base models that you want to compare (configuration
-arguments provided as plain-text control files). 
+arguments provided as plain-text control files).
 
 You can find examples of these SS3 operating and estimation models [within the
 package data][models]. All plain-text control files for current simulation
@@ -46,18 +46,29 @@ An illustration of the `ss3sim` simulation structure and relevant R functions
 
 The package can be installed and loaded with:
 
-    # dependencies if needed:
-    install.packages(c("r4ss", "plyr", "gtools", "ggplot2", "lubridate", "reshape2"))
-    install.packages("devtools")
+```S
+# Dependencies if needed:
+install.packages(c("r4ss", "plyr", "gtools", "ggplot2", "lubridate", "reshape2"))
 
-    # install the package
-    devtools::install_github("ss3sim", username = "seananderson")
+# If you would like to run simulations in parallel:
+install.packages("doParallel", "foreach")
 
-    library(ss3sim)
+# Install devtools to install ss3sim directly from GitHub:
+install.packages("devtools")
+
+# Install ss3sim:
+devtools::install_github("ss3sim", username = "seananderson")
+
+# Load ss3sim:
+library(ss3sim)
+```
 
 You can read the help files with:
 
-    help(package = "ss3sim")
+```S
+?ss3sim
+help(package = "ss3sim")
+```
 
 For details on using `ss3sim` for stock-assessment simulation, see the
 [in-progress vignette][vignette] [PDF] and the [in-progress paper][paper].
