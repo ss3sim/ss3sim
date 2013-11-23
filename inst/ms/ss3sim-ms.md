@@ -40,7 +40,7 @@ of alternative management actions on fishery resources [@gulland1983; @hilborn19
 Although a variety of stock assessment methods and models
 are currently available,
 choosing among competing models
-it is often not straightforward, and the choice
+is often not straightforward, and the choice
 often leads to different modeling outcomes
 and associated scientific advice to management.
 
