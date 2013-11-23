@@ -9,4 +9,4 @@ inst/examples$
 \.gitattributes
 \.gitignore
 inst/ms$
-
+^vignettes/ss3sim-vignette.out$
