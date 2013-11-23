@@ -40,8 +40,8 @@ opts_chunk$set(warning=FALSE, message=FALSE, tidy=FALSE, refresh=TRUE)
 opts_chunk$set(dev = 'pdf')
 @
 
-\title{An introduction to \texttt{ss3sim}, an \texttt{R} package for\\
-  stock assessment simulation testing\\with Stock Synthesis}
+\title{An introduction to \texttt{ss3sim} --- an \texttt{R} package for
+  stock assessment simulation testing with\\Stock Synthesis 3}
 \author{
   Sean C. Anderson\thanks{sean@seananderson.ca; Department of Biological
   Sciences, Simon Fraser University, Burnaby BC, V5A 1S6, Canada}

@@ -29,3 +29,7 @@ inst/ms/manuscript.tex
 *.bbl
 
 *.blg
+
+vignettes/ss3sim-vignette-concordance.tex
+
+vignettes/ss3sim-vignette.synctex.gz
