@@ -196,8 +196,9 @@ These model configurations are based on
 North Sea cod (*Gadus morhua*; R. Methot, pers.\ comm.),
 yellowtail flounder (*Limanda ferruginea*; R. Methot, pers.\ comm.),
 and Pacific sardine (*Sardinops sagax caeruleus*) [@hill2012] (Text S1).
-We recommend modifying these built-in models to match a desired scenario, although it is possible to modify an existing SS3 model to work with `ss3sim` (Text S1).
-We will base our example around an unmodified cod-like model setup.
+We recommend modifying these built-in models to match a desired scenario,
+although it is possible to modify an existing SS3 model to work with `ss3sim` (Text S1).
+We will base our example around the built-in cod-like model setup.
 
 ## Setting up the case files
 
@@ -208,7 +209,7 @@ and a set of semicolon-delimited plain-text files
 that describe alternative cases (Figure 1).
 These files contain argument values that will be passed
 to the low-level `ss3sim` `R` functions
-(e.g. `change_e`, a function controlling which and how parameters are estimated;
+(e.g. `change_index`, a function that controls how the fishery and survey indices are sampled;
 Table 1).
 
 To use `run_ss3sim`
@@ -216,7 +217,7 @@ all case files must be named according to the type of case
 (e.g. `E` for estimation or `F` for fishing mortality),
 a numeric value representing the case number,
 and an alphanumeric identifier
-representing the species or stock (e.g. `cod`) (Table 1, Text S1).
+representing the species or stock (e.g. `cod`; Table 1, Text S1).
 We combine these case IDs with hyphens to create scenario IDs.
 For example, one of our scenarios will
 have the scenario ID ``D1-E0-F0-M0-R0-cod``.
@@ -224,10 +225,10 @@ This scenario ID tells `run_ss3sim`
 to read the case files corresponding
 to the first data (`D`) case
 (i.e. `index1-cod.txt`, `lcomp1-cod.txt`, `agecomp1-cod.txt`),
-the zero case for estimation (E) (i.e. `E0-cod.txt`), and so on.
+the zero case for estimation (`E`; i.e. `E0-cod.txt`), and so on.
 
 To investigate the effect of different levels of precision
-of a research survey index of abundance,
+of a fishery independent index of abundance,
 we will manipulate the argument `sds_obs`
 that gets passed to the function `change_index`.
 In data case 0, we will specify the standard deviation of the index of abundance at `0.1`
@@ -301,8 +302,8 @@ in our current directory with one function call:
 This command creates two files in our working directory:
 <!---TODO Not true, it creates 3 files, should we get rid of the residual file?--->
 `ss3sim_scalars.csv` and `ss3sim_ts.csv`,
-which contain scalar output estimates (e.g. maximum sustainable yield)
-and time-series estimates (e.g. biomass each year).
+which contain scalar output estimates (e.g. steepness and maximum sustainable yield)
+and time-series estimates (e.g. recruitment and biomass each year).
 These estimates come from the `Report.sso` files produced from each run of SS3
 and are read by the `r4ss` `R` package.
 The `.csv` files contain separate columns for OM and EM values,
@@ -312,31 +313,32 @@ In addition to parameter estimates,
 the `.csv` files contain performance metrics,
 such as the maximum gradient,
 whether the covariance matrix was successfully calculated,
-and the number of parameters estimated at or near the bounds, which can be used in combination to gauge model convergence.
+and the number of parameters stuck on a bound, which in combination
+can be used to gauge model performance and convergence.
 These results are organized into "long" data format,
 with columns for scenario and iteration,
 facilitating quick analysis and plotting using
-common `R` packages such as ggplot2 [@wickham2009].
+common `R` packages such as `ggplot2` [@wickham2009].
 
 For our example simulation,
-the relative error in spawning stock biomass (SSB) over time is,
+the relative error in spawning stock biomass over time is,
 as expected, smaller when the true value of $M$ is specified rather than estimated
 (Figure 2, top panels E0 vs. E1).
 Furthermore, lower precision in the research survey index of abundance
-results in greater relative error in SSB in recent years
+results in greater relative error in spawning stock biomass in recent years
 (Figure 2, top panels D0 vs. D1),
-and greater relative error of terminal-year depletion and F, but not
-SSB at maximum sustainable yield, or $M$ (Figure 2, lower panels).
+and greater relative error of terminal-year depletion and fishing mortality, but not
+spawning stock biomass at maximum sustainable yield, or $M$ (Figure 2, lower panels).
 
 # How ss3sim complements other simulation software
 
 The general purpose of `ss3sim`
-is to explore the behaviour and performance
-of alternative sampling scenarios
-and EM configurations across alternative states of nature
-as specified by the OM.
+is to explore model behaviour and performance
+across combinations of EM configurations
+and alternative states of nature
+specified by the OM.
 In particular, `ss3sim` provides a suite of functions
-for dynamically creating structural differences in OMs and EMs.
+for dynamically creating structural differences in both OMs and EMs.
 This expedites testing the properties
 of alternative stock-assessment model configurations,
 whether the differences are between OMs and EMs [@johnson2013],
@@ -373,9 +375,10 @@ in that it specifically focuses on the performance of stock-assessment models.
 
 FS differs from `ss3sim` mainly in that
 it uses user-specified text manipulation commands
-(e.g. "change line 50 from 0 to 1")
+(e.g. change line 50 from 0 to 1)
 to alter model configurations rather than the approach of `ss3sim`,
-which uses modular functions tailored to specific purposes.
+which uses modular functions tailored to specific purposes
+(e.g. add a particular time-varying mortality trajectory to a particular OM).
 FS works well for testing arbitrary assessment models and model configurations
 because it does not rely on pre-built manipulation functions
 [@lee2012; @piner2011; @lee2011].
@@ -427,7 +430,7 @@ However, recruitment deviations are frequently auto-correlated
 and their variability can change through time [@beamish1995; @pyper1998].
 `ss3sim` makes it simple
 to incorporate different recruitment deviation structures
-and consider how they affect model performance.
+and test how they affect model performance.
 
 *The impact of bias adjustment*:
 Bias adjustment helps ensure
@@ -447,16 +450,16 @@ in which model estimates are systematically biased
 with each additional year of data,
 are a major problem in stock-assessment science [@mohn1999; @legault2008].
 Key questions are: what causes retrospective patterns
-and what assessment approaches reduce retrospective patterns [@legault2008]?
+and what assessment approaches reduce retrospective patterns [@legault2008].
 `ss3sim` can run retrospective analyses as part of any simulation
 by adding a single argument --- the number of retrospective years to investigate.
 
 # Conclusions
 
-The increasing complexity of modern statistical integrated models
+The increasing complexity of modern integrated-analysis stock-assessment models
 and expanding computing power
-allows for the inclusion of a multitude of processes
-in fisheries stock-assessment methods [@maunder2013].
+allows for the inclusion of multiple sources of data
+and estimation of complex processes [@maunder2013].
 However, with added complexity
 comes the potential for model misspecification.
 Simulation testing allows for the formal evaluation
@@ -467,13 +470,15 @@ under different conditions and levels of misspecification
 [@deroba2013a; @wilberg2006; @crone2013].
 
 Most simulation testing work to date has used custom frameworks
-tailored to the particular needs of each study.
+tailored to the particular needs of each study
+[@deroba2013a; @lee2011; @deroba2013; @lee2012; @piner2011; @crone2013a].
 Although the complexity of many studies
 requires a custom framework,
-leading by example, we encourage authors
-to publish their simulation frameworks and, where possible,
+We encourage authors
+to publish their simulation frameworks such as we have done here,
+and where possible,
 to develop their simulation frameworks in a generalized format
-that allows others to build on them.
+that allows others to reproduce and build on them.
 The initial release of `ss3sim`
 describes the basic structure used in recent studies [@johnson2013; @ono2013]
 and the current version of `ss3sim`
@@ -482,13 +487,13 @@ important questions in stock assessment science.
 We hope that users will both benefit
 from `ss3sim` in its current form
 and extend it for their own needs,
-potentially contributing back to the main code base.
+potentially contributing back to future versions.
 
 # Acknowledgements
 
 We thank the participants and mentors
-of the University of Washington School of Aquatic and Fishery Sciences 2013 FISH 600 course.
-Discussions with these individuals were instrumental to developing `ss3sim`.
+of the University of Washington's School of Aquatic and Fishery Sciences 2013 FISH 600 course.
+Discussions with these individuals were instrumental to the conceptual and technical development of `ss3sim`.
 Many participants also contributed code
 and are listed within specific `ss3sim` `R` functions.
 Participants:
@@ -502,15 +507,15 @@ Katyana Vert-pre, and
 Athol Whitten.
 Mentors:
 Richard Methot,
-Andre Punt, and
+Andre Punt,
+Jim Ianelli, and
 Ian Taylor.
 
 SCA was supported by Fulbright Canada
 (generously hosted by Trevor A. Branch), NSERC,
 and a Garfield Weston Foundation/B.C. Packers Ltd.\ Graduate Fellowship
 in Marine Sciences.
-KFJ and KO were partially supported by NOAA grant 423 NA10OAR4320148 and
-CCM was partially supported by a Washington Sea Grant.
+KFJ and KO were partially supported by NOAA grant 423 NA10OAR4320148.
 This research addresses the methods component
 of the good practices guide to stock assessment program
 of the Center for the Advancement of Population Assessment Methodology (CAPAM).
@@ -549,11 +554,9 @@ at its historical value (0.2; case E0) or estimating $M$ (case E1) and
 or low survey effort ($\sigma_\mathrm{survey} = 0.4$; case D1).
 Upper panels (blue) show time series of relative error
 in spawning stock biomass (SSB).
-The shaded regions indicate 50\% and 90\%
-of the relative errors and the line indicates the median.
 Lower panels (grey) show the distribution
 of relative error across four scalar variables:
-depletion, $M$, SSB at maximum sustainable yield (MSY),
+depletion, $M$, spawning stock biomass (SSB) at maximum sustainable yield (MSY),
 and fishing mortality ($F$) in the terminal year.
 We show the values across simulation iterations with dots
 and the distributions with beanplots (kernel density smoothers).
