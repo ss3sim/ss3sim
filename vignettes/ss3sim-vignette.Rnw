@@ -703,18 +703,14 @@ scalar_dat_long <- plyr::rename(scalar_dat_long,
 \noindent
 Now we can create boxplots of the deterministic model runs. The following code produces Figure~\ref{fig:relative-error-boxplots-det}.
 
-<<relative-error-boxplots-det, fig.height=7, fig.width=5, out.width="4in", cache=TRUE, fig.cap="Relative error box plots for deterministic runs. In case E100, \\textit{M} is fixed at the historical value; in E101 we estimate \\textit{M}. In case D2, the standard deviation on the survey index observation error is 0.4. In case D1, the standard deviation is quartered representing an increase in survey sampling effort.">>=
+<<relative-error-boxplots-det, fig.height=7, fig.width=5, out.width="4in", cache=TRUE, fig.cap="Relative error box plots for deterministic runs. In case E100, \\textit{M} is fixed at the historical value; in E101 we estimate \\textit{M}. In case D100, the standard deviation on the survey index observation error is 0.001.">>=
 library(ggplot2)
 p <- ggplot(subset(scalar_dat_long, E %in% c("E100", "E101") &
        variable != "SR_sigmaR"), aes(D, relative_error)) +
      geom_boxplot() +
      geom_hline(aes(yintercept = 0), lty = 2) +
      facet_grid(variable~E) +
-     geom_jitter(aes(colour = max_grad),
-     position = position_jitter(height = 0, width = 0.1),
-       alpha = 0.4, size = 1.5) +
-     scale_color_gradient(low = "darkgrey", high = "red") +
-     theme_bw()
+     theme_bw() + ylim(-0.4, 0.4)
 print(p)
 @
 
@@ -745,7 +741,7 @@ p <- ggplot(ts_dat_sto, aes(year, SpawnBio_em, group = replicate)) +
 print(p)
 @
 
-<<relative-error-boxplots-sto, fig.height=7, fig.width=5, out.width="4in", cache=TRUE, fig.cap="Relative error box plots for stochastic runs. In case E0, \\textit{M} is fixed at the historical value; in E1 we estimate \\textit{M}. In case D2, the standard deviation on the survey index observation error is 0.4. In case D1, the standard deviation is quartered representing an increase in survey sampling effort.">>=
+<<relative-error-boxplots-sto, fig.height=7, fig.width=5, out.width="4in", cache=TRUE, fig.cap="Relative error box plots for stochastic runs. In case E0, \\textit{M} is fixed at the historical value; in E1 we estimate \\textit{M}. In case D1, the standard deviation on the survey index observation error is 0.4. In case D0, the standard deviation is quartered representing an increase in survey sampling effort.">>=
 p <- ggplot(subset(scalar_dat_long, E %in% c("E0", "E1")),
        aes(D, relative_error)) +
      geom_boxplot() + geom_hline(aes(yintercept = 0), lty = 2) +
