@@ -65,12 +65,19 @@
 #'
 #' @examples
 #' \dontrun{
-#' # Without bias adjustment:
-#' case_folder <- system.file("extdata", "eg-cases", package =
-#'   "ss3sim")
+#' # Create a temporary folder for the output and set the working directory:
+#' temp_path <- file.path(tempdir(), "ss3sim-example")
+#' dir.create(temp_path, showWarnings = FALSE)
+#' wd <- getwd()
+#' setwd(temp_path)
+#'
+#' # Find the data in the ss3sim package:
+#' d <- system.file("extdata", package = "ss3sim")
 #' om <- paste0(d, "/models/cod-om")
 #' em <- paste0(d, "/models/cod-em")
+#' case_folder <- paste0(d, "/eg-cases")
 #'
+#' # Without bias adjustment:
 #' run_ss3sim(iterations = 1:1, scenarios = "D0-E0-F0-R0-M0-cod",
 #'   case_folder = case_folder, om_model_dir = om, em_model_dir = em)
 #' unlink("D0-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
@@ -80,6 +87,7 @@
 #'   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
 #'   case_files = list(F = "F", D = c("index", "lcomp",
 #'       "agecomp"), R = "R", E = "E"))
+#' unlink("D0-E0-F0-R0-cod", recursive = TRUE) # clean up
 #'
 #' # With bias adjustment:
 #' # (Note that bias_nsim should be bigger, say 5 or 10, but it is set
@@ -112,6 +120,9 @@
 #'   om_model_dir = om, em_model_dir = em, parallel = TRUE)
 #' unlink("D0-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
 #' unlink("D1-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
+#' 
+#' # Return to original working directory:
+#' setwd(wd)
 #' }
 
 run_ss3sim <- function(iterations, scenarios, case_folder,
