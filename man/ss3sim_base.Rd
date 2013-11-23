@@ -118,6 +118,18 @@
 }
 \examples{
 \dontrun{
+# Create a temporary folder for the output and set the working directory:
+temp_path <- file.path(tempdir(), "ss3sim-base-example")
+dir.create(temp_path, showWarnings = FALSE)
+wd <- getwd()
+setwd(temp_path)
+
+# Find the data in the ss3sim package:
+d <- system.file("extdata", package = "ss3sim")
+om <- paste0(d, "/models/cod-om")
+em <- paste0(d, "/models/cod-em")
+case_folder <- paste0(d, "/eg-cases")
+
 # Pull in file paths from the package example data:
 d <- system.file("extdata", package = "ss3sim")
 om_model_dir <- paste0(d, "/models/cod-om")
@@ -130,6 +142,38 @@ f_params = a$F, index_params = a$index, lcomp_params = a$lcomp,
 agecomp_params = a$agecomp, tv_params = a$tv_params, retro_params =
 a$R, estim_params = a$E, om_model_dir = om_model_dir, em_model_dir
 = em_model_dir)
+unlink("M0-F0-D0-R0-E0-cod", recursive = TRUE) # clean up
+
+# Or, create the argument lists directly in R and skip the case file setup:
+
+F0 <- list(years = 1913:2012, years_alter = 1913:2012, fvals = c(rep(0,
+  25), rep(0.114, 75)))
+
+index1 <- list(fleets = 2, years = list(seq(1974, 2012, by = 2)), sds_obs =
+  list(0.1))
+
+lcomp1 <- list(fleets = c(1, 2), Nsamp = list(100, 100), years =
+  list(1938:2012, seq(1974, 2012, by = 2)), lengthbin_vector = NULL, cpar =
+  c(1, 1))
+
+agecomp1 <- list(fleets = c(1, 2), Nsamp = list(100, 100), years =
+  list(1938:2012, seq(1974, 2012, by = 2)), agebin_vector = NULL, cpar =
+  c(1, 1))
+
+E0 <- list(natM_type = "1Parm", natM_n_breakpoints = NULL, natM_lorenzen =
+  NULL, natM_val = c(NA,-1), par_name = "LnQ_base_3_CPUE", par_int = NA,
+  par_phase = -1, forecast_num = 0)
+
+M0 <- list(NatM_p_1_Fem_GP_1 = rep(0, 100))
+
+R0 <- list(retro_yr = 0)
+
+ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-R0-M0-cod",
+  f_params = F0, index_params = index1, lcomp_params = lcomp1,
+  agecomp_params = agecomp1, estim_params = E0, tv_params = M0,
+  retro_params = R0, om_model_dir = om, em_model_dir = em)
+
+unlink("D1-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
 }
 }
 \author{
