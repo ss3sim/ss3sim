@@ -18,8 +18,10 @@ deviate from these base models that you want to compare (configuration
 arguments provided as plain-text control files).
 
 You can find examples of these SS3 operating and estimation models [within the
-package data][models]. All plain-text control files for current simulation
-projects run by the developers of the package are [also available][cases].
+package data][models]. Plain-text case files for current simulation
+projects run by the developers of the package are [also available][cases] and
+the case files for the examples used in the paper and vignette 
+[available][eg-cases].
 
 `ss3sim` works by converting simulation arguments (e.g. a given natural
 mortality trajectory) into manipulations of `SS3` configuration files. It
@@ -76,6 +78,7 @@ For details on using `ss3sim` for stock-assessment simulation, see the
 [DESCRIPTION]: https://github.com/seananderson/ss3sim/blob/master/DESCRIPTION
 [models]: https://github.com/seananderson/ss3sim/tree/master/inst/extdata/models
 [cases]: https://github.com/seananderson/ss3sim/tree/master/inst/extdata/cases
+[eg-cases]: https://github.com/seananderson/ss3sim/tree/master/inst/extdata/eg-cases
 [vignette]: https://dl.dropboxusercontent.com/u/254940/ss3sim-vignette.pdf
 [paper]: https://dl.dropboxusercontent.com/u/254940/ss3sim-ms.pdf
 [SS3]: http://nft.nefsc.noaa.gov/Stock_Synthesis_3.htm
