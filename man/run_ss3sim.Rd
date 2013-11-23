@@ -110,6 +110,7 @@ run_ss3sim(iterations = 1:1, scenarios = "D0-E0-F0-R0-cod",
   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
   case_files = list(F = "F", D = c("index", "lcomp",
       "agecomp"), R = "R", E = "E"))
+unlink("D0-E0-F0-R0-cod", recursive = TRUE) # clean up
 
 # With bias adjustment:
 # (Note that bias_nsim should be bigger, say 5 or 10, but it is set
