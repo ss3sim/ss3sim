@@ -1,6 +1,6 @@
 Package: ss3sim
 Type: Package
-Title: Stock-assessment simulation testing with Stock Synthesis 3
+Title: Stock assessment simulation testing with Stock Synthesis 3
 Version: 0.7.6
 Date: 2013-11-23
 Authors@R: c(person("Sean", "Anderson", email =
