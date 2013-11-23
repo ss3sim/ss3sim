@@ -1,10 +1,10 @@
 #' Master function to run SS3 simulations
 #' 
-#' This is the main high-level wrapper function for running ss3sim simulations.
-#' This function first deals with parsing a scenario ID into case input files
-#' and then passes these arguments on to \code{\link{ss3sim_base}} to run a
-#' simulation. Alternatively, you might choose to run \code{\link{ss3sim_base}}
-#' directly and skip the case-file setup.
+#' This is the main high-level wrapper function for running ss3sim
+#' simulations. This function first deals with parsing a scenario ID into case
+#' input files and then passes these arguments on to \code{\link{ss3sim_base}}
+#' to run a simulation. Alternatively, you might choose to run
+#' \code{\link{ss3sim_base}} directly and skip the case-file setup.
 #' 
 #' @param iterations Which iterations to run. A numeric vector. For example
 #'   \code{1:100}.
@@ -18,18 +18,19 @@
 #'   configuration files.
 #' @param em_model_dir The folder containing the SS3 estimation model 
 #'   configuration files.
-#' @param case_files A named list that relates the case IDs to the files to
+#' @param case_files A named list that relates the case IDs to the files to 
 #'   return. If you are passing time-varying parameters beyond (or instead of)
-#'   natural mortality (M), then you will need to adjust these values to reflect
-#'   your scenarios. This argument is passed to \code{\link{get_caseargs}}. See
-#'   that function for details and examples of how to specify this.
-#' @param ... Anything else to pass to \code{\link{ss3sim_base}}. This could
-#'   include \code{bias_adjust} and \code{bias_nsim}. Also, you can pass
-#'   additional options to the \code{SS3} command through the argument
+#'   natural mortality (M), then you will need to adjust these values to
+#'   reflect your scenarios. This argument is passed to
+#'   \code{\link{get_caseargs}}. See that function for details and examples of
+#'   how to specify this.
+#' @param ... Anything else to pass to \code{\link{ss3sim_base}}. This could 
+#'   include \code{bias_adjust} and \code{bias_nsim}. Also, you can pass 
+#'   additional options to the \code{SS3} command through the argument 
 #'   \code{admb_options}.
-#' @param parallel A logical argument that controls whether the scenarios are
-#'   run in parallel. You will need to register multiple cores first with a
-#'   package such as \pkg{doParallel} and have the \pkg{foreach} package
+#' @param parallel A logical argument that controls whether the scenarios are 
+#'   run in parallel. You will need to register multiple cores first with a 
+#'   package such as \pkg{doParallel} and have the \pkg{foreach} package 
 #'   installed. See the example below.
 #' @author Sean C. Anderson
 #'   
@@ -139,6 +140,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
   # workspace until you go back into an exported function
   # therefore we need to add subst_r to the .export list
   # for foreach to work on Windows:
+  parallel_scenario <- NULL # to satisfy R CMD check
   if(parallel) {
     foreach(parallel_scenario = scenarios, .packages = "ss3sim", .verbose =
             FALSE, .export = "substr_r") %dopar% {

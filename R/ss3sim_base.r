@@ -26,16 +26,16 @@
 #'   and use for the specified simulations.
 #' @param em_model_dir The directory with the estimation model you want to copy 
 #'   and use for the specified simulations.
-#' @param user_recdevs An optional 100x100 matrix of recruitment deviations to
-#'   replace the recruitment deviations built into the package 
-#'   (\code{\link{recdevs}}). The columns represent run iterations and the
-#'   rows represent years. Note that these will be multiplied by sigma R. So,
-#'   under normal conditions this matrix should contain standard-normal values
-#'   \code{~N(-0.5, 1)}. The mean of -0.5 is so the deviations will be mean 
-#'   unbiased after exponentiation. This could also be a matrix of 0s for 
-#'   deterministic model checking. Note that user specified recruitment
-#'   deviations are not bias adjusted (by subtracting half the variance from
-#'   the mean), but the built in default recruitment deviations are.
+#' @param user_recdevs An optional matrix of recruitment deviations to replace
+#'   the recruitment deviations built into the package. The columns represent
+#'   run iterations and the rows represent years. Note that these will be
+#'   multiplied by sigma R. So, under normal conditions this matrix should
+#'   contain standard-normal values \code{~N(-0.5, 1)}. The mean of -0.5 is so
+#'   the deviations will be mean unbiased after exponentiation. This could
+#'   also be a matrix of 0s for deterministic model checking. Note that user
+#'   specified recruitment deviations are not bias adjusted (by subtracting
+#'   half the variance from the mean), but the built in default recruitment
+#'   deviations are.
 #' @param bias_adjust Run bias adjustment first? See \code{\link{run_bias_ss3}}.
 #' @param bias_nsim If bias adjustment is run, how many simulations should the 
 #'   bias adjustment factor be estimated from? It will take the mean of the
