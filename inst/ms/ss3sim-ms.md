@@ -21,7 +21,7 @@ and the source code is
 free to be modified under an open-source MIT license.
 `ss3sim` is designed to explore differences in structure
 between the underlying truth and assumptions of an estimation model,
-or between multiple estimation models.
+or between multiple estimation model configurations.
 For example, `ss3sim` can be easily used to answer questions about
 time-varying model misspecification,
 retrospective patterns,
@@ -71,7 +71,9 @@ Owing to these advantages, SS3
 is one of the world's most commonly-used stock assessment tools,
 particularly in the United States and Australia,
 where it has been used in 35 and 12 stock assessments as of 2012,
-respectively [@methot2013]. SS3 is also commonly used as a framework for stock assessment simulation testing [@lee2011; @lee2012; @piner2011; @crone2013a; @hurtadoferro2013].
+respectively [@methot2013].
+SS3 is also commonly used as a framework
+for stock assessment simulation testing [@lee2011; @lee2012; @piner2011; @crone2013a; @hurtadoferro2013].
 
 SS3 is increasingly becoming a standard for fisheries stock assessment
 and the programming language `R` [@rcoreteam2013] has become the standard
@@ -91,9 +93,11 @@ with the widely-used SS3 framework.
 We begin by outlining the general structure of `ss3sim`
 by describing its functions,
 and then demonstrate the software by developing a simple example.
-We conclude by discussing how `ss3sim` complements other currently available simulation software
+We conclude by discussing how `ss3sim` complements
+other currently available simulation software
 and by outlining some research questions that
-our freely accessible and general SS3 simulation-testing framework could address.
+our freely accessible and general SS3 simulation-testing
+framework could address in addition.
 
 # The ss3sim framework
 
@@ -119,7 +123,7 @@ Finally, the `ss3sim` code is written
 under an open-source MIT license and can be freely modified.
 *Rapid*: `ss3sim` relies on SS3,
 which uses AD Model Builder as a backend optimization platform ---
-the most rapid and robust non-linear optimization software available for complex, highly-parameterized stock assessment models [@fournier2012].
+the most rapid and robust non-linear optimization software available [@fournier2012].
 `ss3sim` also facilitates the deployment of simulations
 across multiple computers or computer cores (i.e. parallelization), thereby accelerating computation.
 By using a vetted model like SS3 and framework `ss3sim`,
@@ -129,11 +133,11 @@ shifting focus to the research questions themselves.
 
 ## The general structure of an ss3sim simulation
 
-`ss3sim` comes with both low-level functions
+`ss3sim` consists of both low-level functions
 that modify SS3 configuration files
 and high-level functions that combine these low-level functions
 into a complete simulation experiment (Figure 1, Table 1).
-In this paper we will focus on the structure
+In this paper we will focus on the structure and use
 of the high-level function `run_ss3sim`;
 however, the low-level functions
 can be used on their own
@@ -172,9 +176,6 @@ and (2) fixing vs.\ estimating $M$.
 All files to run this example are included in the package data,
 and a more detailed description
 is available in the accompanying vignette (Text S1).
-
-\clearpage
-
 `ss3sim` requires `R` version 3.0.0 or greater
 and SS3 (see Text S1 for more detailed instructions).
 In `R`, the development version of `ss3sim` can be installed with:
@@ -420,7 +421,8 @@ Furthermore, although many studies have tried
 to isolate the effects
 of single time-varying parameters,
 such as $M$ [@lee2011; @jiao2012; @deroba2013; @johnson2013],
-few have considered the effect of multiple time-varying parameters and their potential interaction.
+few have considered the effect of
+multiple time-varying parameters and their potential interaction.
 
 *Patterns in recruitment deviations*:
 Typically, estimation methods assume
@@ -492,8 +494,10 @@ potentially contributing back to future versions.
 # Acknowledgements
 
 We thank the participants and mentors
-of the University of Washington's School of Aquatic and Fishery Sciences 2013 FISH 600 course.
-Discussions with these individuals were instrumental to the conceptual and technical development of `ss3sim`.
+of the University of Washington's
+School of Aquatic and Fishery Sciences 2013 FISH 600 course.
+Discussions with these individuals were instrumental
+to the conceptual and technical development of `ss3sim`.
 Many participants also contributed code
 and are listed within specific `ss3sim` `R` functions.
 Participants:
