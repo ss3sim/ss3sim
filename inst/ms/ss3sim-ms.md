@@ -8,7 +8,7 @@ However, there lacks a generalized
 and scriptable framework for running SS3 simulations.
 Here, we introduce `ss3sim`, an `R` package that facilitates
 large-scale, rapid, and reproducible simulation testing with SS3.
-`ss3sim` requires only minor modifications to an existing SS3 model configuration
+`ss3sim` requires an existing SS3 model configuration
 along with a set of plain-text control files describing
 alternative states of nature, sampling scenarios,
 and assessment scenarios.
@@ -22,11 +22,11 @@ free to be modified under an open-source MIT license.
 `ss3sim` is designed to explore differences in structure
 between the underlying truth and assumptions of an estimation model,
 or between multiple estimation model configurations.
-For example, `ss3sim` can be easily used to answer questions about
+For example, `ss3sim` can be used to answer questions about
 time-varying model misspecification,
 retrospective patterns,
-and the relative importance of various kinds of fisheries data.
-Here we demonstrate the software with a simple example,
+and the relative importance of various types of fisheries data.
+We demonstrate the software with a simple example,
 discuss how `ss3sim` complements other simulation software,
 and outline specific research questions that `ss3sim` could address.
 
@@ -73,25 +73,27 @@ particularly in the United States and Australia,
 where it has been used in 35 and 12 stock assessments as of 2012,
 respectively [@methot2013].
 SS3 is also commonly used as a framework
-for stock assessment simulation testing [@lee2011; @lee2012; @piner2011; @crone2013a; @hurtadoferro2013].
+for stock assessment simulation testing
+[@lee2011; @jiao2012; @lee2012; @crone2013a; @hurtadoferro2013].
 
-SS3 is increasingly becoming a standard for fisheries stock assessment
-and the programming language `R` [@rcoreteam2013] has become the standard
-for statistical computing and visualization; however,
-there lacks a generalized framework
-to link these components in a simulation context.
-As a result, most stock assessment simulation-testing work to date has used custom frameworks tailored to the particular needs of each study.
-The only available `R` package to interface with SS3 is `r4ss` [@r4ss2013],
-which primarily facilitates reading, processing, and plotting of SS output,
-but does not provide a simulation-testing framework.
-<!--TODO COLE: I like this sentence but not sure it belongs here. This paragraph is about linking R and SS3, not about what other people have done. One doesn't need R to use a generalized framework for simulation testing.  Maybe better to argue that (1) no consistent framework exists, so people use ad hoc software, then (2) R is a good option for developing a framework b/c it is so common and r4ss exists.-->
+Although SS3 is increasingly becoming a standard for fisheries stock assessment,
+there lacks a generalized framework for simulation testing with SS3.
+As a result, most stock assessment simulation-testing work to date
+has used custom frameworks tailored to the particular needs of each study
+[@magnusson2007; @wetzel2011a; @jiao2012; @wilberg2006; @deroba2013a; @deroba2013; @crone2013a; @hurtadoferro2013].
+The programming language `R` [@rcoreteam2013] is an ideal language
+to write such a generalized framework in because
+(1) `R` has become the standard
+for statistical computing and visualization and
+(2) the package `r4ss` [@r4ss2013] is available for `R`;
+`r4ss` facilitates reading, processing, and plotting of SS3 model output.
 
 Here we introduce `ss3sim`,
 an `R` package that facilitates
 large-scale, rapid, and reproducible simulation testing
 with the widely-used SS3 framework.
 We begin by outlining the general structure of `ss3sim`
-by describing its functions,
+and describing its functions,
 and then demonstrate the software by developing a simple example.
 We conclude by discussing how `ss3sim` complements
 other currently available simulation software
@@ -142,7 +144,11 @@ of the high-level function `run_ss3sim`;
 however, the low-level functions
 can be used on their own
 as part of a customized simulation wrapper function.
-<!--TODO COLE This isn't really discussed in the vignette I don’t think. We might want to add a section about how to use the functions outside of ss3sim. Unless you meant the base function, which really isn’t a “customized simulation”. I’m thinking more: hey I want to use FS but I can use change_tv() on my models..-->
+<!--TODO COLE This isn't really discussed in the vignette I don’t think. We
+    might want to add a section about how to use the functions outside of
+    ss3sim. Unless you meant the base function, which really isn’t a
+    “customized simulation”. I’m thinking more: hey I want to use FS but I can
+    use change_tv() on my models..-->
 
 An `ss3sim` simulation requires three types of input:
 (1) a base SS3 model configuration describing the underlying truth,
@@ -183,8 +189,6 @@ In `R`, the development version of `ss3sim` can be installed with:
     install.packages(devtools)
     devtools::install_github("ss3sim", username = "seananderson",
       dependencies = TRUE)
-
-<!--TODO ADD TO VIGNETTE: we provide archived copies of this version at <http://bit.ly/ss3v324o>.-->
 
 ## Setting up the SS3 model configurations
 
@@ -473,14 +477,14 @@ under different conditions and levels of misspecification
 
 Most simulation testing work to date has used custom frameworks
 tailored to the particular needs of each study
-[@deroba2013a; @lee2011; @deroba2013; @lee2012; @piner2011; @crone2013a].
+[@magnusson2007; @wetzel2011a; @jiao2012; @wilberg2006; @deroba2013a; @deroba2013; @crone2013a; @hurtadoferro2013].
 Although the complexity of many studies
 requires a custom framework,
 we encourage authors
 to publish their simulation frameworks, as we have done here,
 and where possible,
 to develop their simulation frameworks in a generalized format
-that allows others build on.
+that allows others build on them.
 The initial release of `ss3sim`
 describes the basic structure used in recent studies [@johnson2013; @ono2013]
 and the current version of `ss3sim`
