@@ -1,8 +1,8 @@
 # Abstract
 
 Simulation testing is an important approach
-to evaluating fishery stock-assessment methods.
-In the last decade, the fisheries stock-assessment modeling framework
+to evaluating fishery stock assessment methods.
+In the last decade, the fisheries stock assessment modeling framework
 Stock Synthesis (SS3) has become widely-used around the world.
 However, there lacks a generalized
 and scriptable framework for running SS3 simulations.
@@ -34,10 +34,10 @@ and outline specific research questions that `ss3sim` could address.
 
 # Introduction
 
-Fisheries stock-assessment models are crucial
+Fisheries stock assessment models are crucial
 to providing scientific advice and to evaluating the impact
 of alternative management actions on fishery resources [@gulland1983; @hilborn1992].
-Although a variety of stock-assessment methods and models
+Although a variety of stock assessment methods and models
 are currently available,
 choosing among competing models
 it is often not straightforward, and the choice
@@ -45,7 +45,7 @@ often leads to different modeling outcomes
 and associated scientific advice to management.
 
 Simulation testing is a critical component
-to testing fishery stock-assessment methods,
+to testing fishery stock assessment methods,
 particularly given the potential for model misspecification
 [@hilborn1987; @hilborn1992; @rosenberg1994; @peterman2004; @deroba2013a].
 With simulation testing
@@ -61,14 +61,14 @@ as well as determining what makes fisheries data informative
 [@magnusson2007; @wetzel2011a; @ono2013].
 
 Stock Synthesis (SS3, the third version of the software)
-is a widely-used fisheries stock-assessment modeling framework [@methot2013].
+is a widely-used fisheries stock assessment modeling framework [@methot2013].
 It implements statistical age-structured population dynamics modeling,
 using a wide range of minimally-processed data [@maunder2013; @methot2013].
 By using this generalized framework,
 individuals conducting fisheries stock assessments and peer reviewers
 can focus on the underlying science, instead of the model code [@methot2013].
 Owing to these advantages, SS3
-is one of the world's most commonly-used stock-assessment tools,
+is one of the world's most commonly-used stock assessment tools,
 particularly in the United States and Australia,
 where it has been used in 35 and 12 stock assessments as of 2012,
 respectively [@methot2013]. SS3 is also commonly used as a framework for stock assessment simulation testing [@lee2011; @lee2012; @piner2011; @crone2013a; @hurtadoferro2013].
@@ -78,7 +78,7 @@ and the programming language `R` [@rcoreteam2013] has become the standard
 for statistical computing and visualization; however,
 there lacks a generalized framework
 to link these components in a simulation context.
-As a result, most stock-assessment simulation-testing work to date has used custom frameworks tailored to the particular needs of each study.
+As a result, most stock assessment simulation-testing work to date has used custom frameworks tailored to the particular needs of each study.
 The only available `R` package to interface with SS3 is `r4ss` [@r4ss2013],
 which primarily facilitates reading, processing, and plotting of SS output,
 but does not provide a simulation framework.
@@ -108,7 +108,7 @@ In combination these features make simulations repeatable across computers
 and operating systems (Windows, OS X, and Linux).
 *Flexible*: `ss3sim` inherits the flexibility of SS3
 and can therefore implement many
-available stock-assessment configurations by
+available stock assessment configurations by
 either modifying existing SS3 model configurations
 or by modifying built-in generic life-history model configurations (Text S1).
 Furthermore, `ss3sim` summarizes the simulation output
@@ -340,7 +340,7 @@ specified by the OM.
 In particular, `ss3sim` provides a suite of functions
 for dynamically creating structural differences in both OMs and EMs.
 This expedites testing the properties
-of alternative stock-assessment model configurations,
+of alternative stock assessment model configurations,
 whether the differences are between OMs and EMs [@johnson2013],
 or between multiple versions of EMs [@ono2013].
 However, `ss3sim` is less suited
@@ -359,11 +359,11 @@ with flexible biological, economic, and management components [@hillary2009].
 Thus, it is not specifically designed to explore the impact
 of structural differences within OMs and EMs.
 
-Another alternative stock-assessment simulation testing framework is *Fishery Simulation*
+Another alternative stock assessment simulation testing framework is *Fishery Simulation*
 (FS, <http://fisherysimulation.codeplex.com>).
 FS is primarily a file management tool
 adapted to aid in simulation testing.
-FS can work with stock-assessment models besides SS3,
+FS can work with stock assessment models besides SS3,
 make simple changes to input text files,
 generate random process (using a built-in random number generator)
 and observation errors
@@ -371,7 +371,7 @@ and observation errors
 run simulations in parallel,
 and collect results from output files.
 Thus, FS is closer to `ss3sim` in its scope than `FLR`
-in that it specifically focuses on the performance of stock-assessment models.
+in that it specifically focuses on the performance of stock assessment models.
 
 FS differs from `ss3sim` mainly in that
 it uses user-specified text manipulation commands
@@ -399,7 +399,7 @@ The `ss3sim` package has been used so far
 to evaluate alternative approaches
 when $M$ is thought to vary across time [@johnson2013],
 the importance of length- and age-composition data [@ono2013],
-and the causes of retrospective patterns in stock-assessment models.
+and the causes of retrospective patterns in stock assessment models.
 Along with those studies,
 `ss3sim` makes many important research opportunities easily approachable.
 Below we outline some examples.
@@ -448,7 +448,7 @@ and how bias adjustment affects model performance.
 Retrospective patterns,
 in which model estimates are systematically biased
 with each additional year of data,
-are a major problem in stock-assessment science [@mohn1999; @legault2008].
+are a major problem in stock assessment science [@mohn1999; @legault2008].
 Key questions are: what causes retrospective patterns
 and what assessment approaches reduce retrospective patterns [@legault2008].
 `ss3sim` can run retrospective analyses as part of any simulation
@@ -456,7 +456,7 @@ by adding a single argument --- the number of retrospective years to investigate
 
 # Conclusions
 
-The increasing complexity of modern integrated-analysis stock-assessment models
+The increasing complexity of modern integrated-analysis stock assessment models
 and expanding computing power
 allows for the inclusion of multiple sources of data
 and estimation of complex processes [@maunder2013].
