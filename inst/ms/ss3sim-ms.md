@@ -96,7 +96,7 @@ We begin by outlining the general structure of `ss3sim`
 and describing its functions,
 and then demonstrate the software by developing a simple example.
 We conclude by discussing how `ss3sim` complements
-other currently available simulation software
+other simulation testing software
 and by outlining some research questions that
 our freely accessible and general SS3 simulation-testing
 framework could address.
@@ -185,10 +185,10 @@ is available in the accompanying vignette (Text S1).
 `ss3sim` requires `R` version 3.0.0 or greater
 and SS3 (see Text S1 for more detailed instructions).
 In `R`, the development version of `ss3sim` can be installed with:
+\clearpage
 
     install.packages(devtools)
-    devtools::install_github("ss3sim", username = "seananderson",
-      dependencies = TRUE)
+    devtools::install_github("ss3sim", username = "seananderson", dependencies = TRUE)
 
 ## Setting up the SS3 model configurations
 
