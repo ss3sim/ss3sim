@@ -33,7 +33,7 @@
 }
 \examples{
 \dontrun{
-## Put this R script in a folder which contains the Scenario folders, then run
+## Put this R script in a folder which contains the scenario folders, then run
 ## the code below.
 
 ## Exploring ss3 model results

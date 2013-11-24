@@ -48,7 +48,7 @@ calculate_runtime <- function(start_time, end_time) {
 #' @author Cole Monnahan
 #' @family get-results
 #' @examples \dontrun{
-#' ## Put this R script in a folder which contains the Scenario folders, then run
+#' ## Put this R script in a folder which contains the scenario folders, then run
 #' ## the code below.
 #'
 #' ## Exploring ss3 model results
