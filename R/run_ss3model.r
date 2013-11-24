@@ -1,11 +1,11 @@
 #' Run an operating or estimation model for a specified set of scenario IDs
-#' 
+#'
 #' This function takes care of calling SS3. Importantly, it parses whether the
 #' user is on Unix or Windows and calls the binary correctly. This lower-level
 #' function is meant to be called by higher level functions such as
 #' \code{\link{run_ss3sim}}, \code{\link{ss3sim_base}}, or your own custom
 #' function.
-#' 
+#'
 #' @param scenarios Which scenarios to run. Controls which folder contains the
 #'   model that SS3 should run on.
 #' @param iterations Which iterations to run. Controls which folder contains
@@ -50,7 +50,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
 
   for(sc in scenarios) {
     for(it in iterations) {
-      print(paste0("Running ", type, " for scenario: ", sc, "; iteration: ", it))
+      message(paste0("Running ", type, " for scenario: ", sc, "; iteration: ", it))
       if(os == "unix") {
         system(paste0("cd ", pastef(sc, it, type), ";", ss3path, "SS3 ",
            ss_em_options, " ", admb_options), ignore.stdout = ignore.stdout, ...)
