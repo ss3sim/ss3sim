@@ -26,30 +26,31 @@
 #' ## Turn off age comps by specifying fleets=NULL
 #' change_agecomp(infile=infile, outfile="test1.dat",
 #'                fleets=NULL, cpar=c(5,NA), Nsamp=list(100,100),
-#'                years=list(1995, 1995), write_file=TRUE)
+#'                years=list(1995, 1995), write_file=FALSE)
 
 #' ## Generate with a smaller number of fleet taking samples
 #' ex1 <- change_agecomp(infile=infile, outfile="test1.dat", fleets=c(2),
-#'                       Nsamp=list(c(10,50)), years=list(c(1999,2000)))
+#'                       Nsamp=list(c(10,50)), years=list(c(1999,2000)),
+#'                       write_file=FALSE)
 
 #' ## Generate with varying Nsamp by year for first fleet
 #' ex2 <- change_agecomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
 #'                       Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
 #'                       years=list(seq(1994, 2012, by=2),
-#'                           2003:2012))
+#'                           2003:2012), write_file=FALSE)
 
 #' ## Generate with varying Nsamp by year for first fleet AND with different age bins
 #' ex3 <- change_agecomp(infile=infile, outfile="test3.dat", fleets=c(1,2),
 #'                       Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
 #'                       years=list(seq(1994, 2012, by=2),
-#'                           2003:2012), agebin_vector = seq(1,15,by=3))
+#'                           2003:2012), agebin_vector = seq(1,15,by=3),
+#'                           write_file=FALSE)
 #' plot(seq(0,15, by=3), as.numeric(ex3[1, -(1:9)]), type="b", col=2,
 #'      xlab="Age Bin", ylab="Proportion of Age",
 #'      main="Comparison of different age bin structures via agebin_vector")
 #' lines(0:15, as.numeric(ex2[1, -(1:9)]), type="b", col=1)
 #' legend("topright", legend=c("ex2", "ex3"), col=c(1,2), pch=1)
-#' unlink(x=paste0("test", 1:3, ".dat")) # clean up
-
+#' 
 #' ## Run three  cases showing Multinomial, Dirichlet(1) and over-dispersed
 #' ## Dirichlet for different levels of sample sizes
 #' par(mfrow = c(1,3))
