@@ -125,7 +125,7 @@ Finally, the `ss3sim` code is written
 under an open-source MIT license and can be freely modified.
 *Rapid*: `ss3sim` relies on SS3,
 which uses AD Model Builder as a back-end optimization platform ---
-the most rapid and robust non-linear optimization software available [@fournier2012].
+the most rapid and robust non-linear optimization software [@fournier2012; @bolker2013].
 `ss3sim` also facilitates the deployment of simulations
 across multiple computers or computer cores (i.e. parallelization), thereby accelerating computation.
 By using a vetted model like SS3 with the tested `ss3sim` framework,
@@ -143,7 +143,7 @@ In this paper we will focus on the structure and use
 of the high-level function `run_ss3sim`;
 however, the low-level functions
 can be used on their own
-as part of a customized simulation wrapper function.
+as part of a customized simulation.
 <!--TODO COLE This isn't really discussed in the vignette I don’t think. We
     might want to add a section about how to use the functions outside of
     ss3sim. Unless you meant the base function, which really isn’t a
@@ -151,24 +151,27 @@ as part of a customized simulation wrapper function.
     use change_tv() on my models..-->
 
 An `ss3sim` simulation requires three types of input:
-(1) a base SS3 model configuration describing the underlying truth,
+(1) a base SS3 model configuration describing
+the underlying true population dynamics,
 or operating model (OM);
-(2) a base SS3 model configuration to assess that truth,
+(2) a base SS3 model configuration to assess that truth
+based on data generated using the OM,
 also known as the estimation model or method (EM);
 and (3) a set of plain-text files (case files)
 describing alternative model configurations and deviations from these base models
 (e.g. different fishing mortality or $M$ trajectories).
 We refer to each unique combination of OM, EM, and case files as a scenario.
 Scenarios are usually run for multiple iterations,
-possibly with each iteration having unique process and observation error.
+possibly adding unique process and observation error to the OM each time.
 An `ss3sim` simulation therefore refers to the combination of all scenarios and iterations.
 
 The `run_ss3sim` function works by modifying SS3 configuration files as specified in the case-file arguments
-(`change` functions);
-running the OM;
+(`change` functions),
+running the OM,
 sampling from the time-series of true population dynamics
-(`sample` functions);
-running the EM to get maximum-likelihood estimates of parameters and to derive quantities;
+to generate a dataset (`sample` functions),
+running the EM to get maximum-likelihood estimates
+of parameters and to derive quantities,
 and synthesizing the output
 for easy data manipulation and visualization
 (`get` functions) (Figure 1).
@@ -307,7 +310,8 @@ in our current directory with one function call:
 This command creates two files in our working directory:
 <!---TODO Not true, it creates 3 files, should we get rid of the residual file?--->
 `ss3sim_scalars.csv` and `ss3sim_ts.csv`,
-which contain scalar output estimates (e.g. steepness and maximum sustainable yield)
+which contain scalar output estimates
+(e.g. steepness and maximum sustainable yield)
 and time-series estimates (e.g. recruitment and biomass each year).
 These estimates come from the `Report.sso` files produced from each run of SS3
 and are read by the `r4ss` `R` package.
@@ -327,13 +331,16 @@ common `R` packages such as `ggplot2` [@wickham2009].
 
 For our example simulation,
 the relative error in spawning stock biomass over time is,
-as expected, smaller when the true value of $M$ is specified rather than estimated
+as expected, smaller when the true value of $M$
+is specified rather than estimated
 (Figure 2, top panels E0 vs. E1).
 Furthermore, lower precision in the research survey index of abundance
 results in greater relative error in spawning stock biomass in recent years
 (Figure 2, top panels D0 vs. D1),
-and greater relative error in terminal-year depletion and fishing mortality, but not
-spawning stock biomass at maximum sustainable yield, or $M$ (Figure 2, lower panels).
+and greater relative error in terminal-year depletion
+and fishing mortality, but not in
+spawning stock biomass at maximum sustainable yield,
+or $M$ (Figure 2, lower panels).
 
 # How ss3sim complements other simulation software
 
@@ -364,7 +371,8 @@ with flexible biological, economic, and management components [@hillary2009].
 Thus, it is not specifically designed to explore the impact
 of structural differences within OMs and EMs.
 
-Another alternative stock assessment simulation testing framework is *Fishery Simulation*
+Another alternative stock assessment
+simulation testing framework is *Fishery Simulation*
 (FS, <http://fisherysimulation.codeplex.com>).
 FS is primarily a file management tool
 adapted to aid in simulation testing.
@@ -393,7 +401,7 @@ limiting its ability to to induce and test
 structural differences between OMs and EMs.
 In addition, the current version of FS
 is not an end-to-end package ---
-additional code is necessary to
+additional code is necessary
 to incorporate process and observation error in simulation testing.
 Finally, although FS is also open-source, it requires the Microsoft .NET framework
 and is therefore only compatible with the Windows operating system.
@@ -462,22 +470,29 @@ by adding a single argument --- the number of retrospective years to investigate
 
 # Conclusions
 
-The increasing complexity of modern integrated-analysis stock assessment models
+The increasing complexity of
+modern integrated stock assessment models
 and expanding computing power
 allows for the inclusion of multiple sources of data
 and estimation of complex processes [@maunder2013].
-However, with added complexity
-comes the potential for model misspecification.
+However, the combination of complex models
+and large quantities of data are commonly associated
+with model misspecification,
+which can be difficult to detect
+based on residual patterns alone [@maunder2013].
+Therefore, it is important to investigate
+the consequences of model misspecification.
 Simulation testing allows for the formal evaluation
 of the ability of assessment models
 to accurately and precisely
 estimate parameters of interest
 under different conditions and levels of misspecification
-[@deroba2013a; @wilberg2006; @crone2013].
+[@wilberg2006; @deroba2013a; @crone2013].
 
 Most simulation testing work to date has used custom frameworks
 tailored to the particular needs of each study
-[@magnusson2007; @wetzel2011a; @jiao2012; @wilberg2006; @deroba2013a; @deroba2013; @crone2013a; @hurtadoferro2013].
+[@wilberg2006; @magnusson2007; @wetzel2011a; @jiao2012;
+@deroba2013a; @deroba2013; @crone2013a; @hurtadoferro2013].
 Although the complexity of many studies
 requires a custom framework,
 we encourage authors
@@ -507,7 +522,7 @@ and are listed within specific `ss3sim` `R` functions.
 Participants:
 Curry Cunningham,
 Felipe Hurtado-Ferro,
-Ricardo Licandeo,
+Roberto Licandeo,
 Carey McGilliard,
 Melissa Muradian,
 Cody Szuwalski,
