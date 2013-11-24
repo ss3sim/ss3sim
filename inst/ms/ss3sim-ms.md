@@ -124,7 +124,7 @@ in `R` or other statistical software.
 Finally, the `ss3sim` code is written
 under an open-source MIT license and can be freely modified.
 *Rapid*: `ss3sim` relies on SS3,
-which uses AD Model Builder as a backend optimization platform ---
+which uses AD Model Builder as a back-end optimization platform ---
 the most rapid and robust non-linear optimization software available [@fournier2012].
 `ss3sim` also facilitates the deployment of simulations
 across multiple computers or computer cores (i.e. parallelization), thereby accelerating computation.
