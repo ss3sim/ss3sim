@@ -280,20 +280,19 @@ and the folder with the plain-text case files:
 
 ## Running the simulations
 
-It is important to validate a simulation testing framework
-with minimal or no process and observation error
-to ensure unbiased and consistent recovery of parameters
-under ideal conditions [@hilborn1992].
-`ss3sim` makes model validation simple by allowing users
+It is important to validate a simulation testing framework [@rykiel1996].
+One approach is to test the ability of the model to consistently recover
+precise and unbiased parameter estimates under ideal conditions
+with minimal process and observation error [@hilborn1992].
+`ss3sim` makes this form of model validation simple by allowing users
 to specify process error (i.e. recruitment deviations)
-and control sampling error (Text S1).
-
-The cod-like model setup has already been validated (Text S1), therefore
+and sampling error (Text S1).
+Since, the cod-like model setup has already been validated (Text S1),
 we can now run our simulation scenario.
 We will set `bias_adjust = TRUE`
 to enable a procedure that aims to produce mean-unbiased estimates
 of recruitment and biomass despite log-normal recruitment deviations [@methot2011].
-We can run this simulation scenario with the following code:
+We can run 100 iterations of the simulation scenarios with the following code:
 
     run_ss3sim(iterations = 1:100, scenarios =
       c("D0-E0-F0-M0-R0-cod", "D1-E0-F0-M0-R0-cod",
