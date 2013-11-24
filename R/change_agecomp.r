@@ -53,7 +53,7 @@
 #' 
 #' ## Run three  cases showing Multinomial, Dirichlet(1) and over-dispersed
 #' ## Dirichlet for different levels of sample sizes
-#' par(mfrow = c(1,3))
+#' op <- par(mfrow = c(1,3))
 #' for(samplesize in c(30, 100, 1000)){
 #'     ex4 <- change_agecomp(infile=infile, outfile="test4.dat", fleets=c(1,2),
 #'                           Nsamp=list(samplesize, samplesize),
@@ -77,6 +77,7 @@
 #'     lines((0:15), subset(ex6, FltSvy==1)[1,-(1:9)], type="b", col=3)
 #'     lines((0:15), true, col=4, lwd=2)
 #' }
+#' par(op)
 #' @seealso \code{\link{change_lcomp}}
 #' @export
 change_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,

@@ -25,27 +25,26 @@
 #' ## Generate with constant sample size across years
 #' ex1 <- change_lcomp(infile=infile, outfile="test1.dat", fleets=c(1,2),
 #'                     Nsamp=list(100,50), years=list(seq(1994, 2012, by=2),
-#'                                             2003:2012))
+#'                                             2003:2012), write_file = FALSE)
 #'
 #' ## Generate with varying Nsamp by year for first fleet
 #' ex2 <- change_lcomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
 #'                     Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
 #'                     years=list(seq(1994, 2012, by=2),
-#'                         2003:2012))
+#'                         2003:2012), write_file = FALSE)
 #'
 #' ## Generate with constant sample size across years AND with different length
 #' ## bins (same as ex1 except bins)
 #' ex3 <- change_lcomp(infile=infile, outfile="test3.dat", fleets=c(1,2),
 #'                     Nsamp=list(100,50), years=list(seq(1994, 2012, by=2),
-#'                           2003:2012), lengthbin_vector = seq(9,30,by=2))
+#'                           2003:2012), lengthbin_vector = seq(9,30,by=2), 
+#'                           write_file = FALSE)
 #'
 #' plot(seq(8,30,by=2), as.numeric(ex3[1, -(1:6)]), type="b", col=2,
 #'      xlab="Length Bin", ylab="Proportion of length",
 #'      main="Comparison of different length bin structures via lengthbin_vector")
 #' lines(seq(8, 30, by=.5), as.numeric(ex1[1, -(1:6)]), type="b", col=1)
 #' legend("topright", legend=c("ex1", "ex3"), col=c(1,2), pch=1)
-#'
-#' unlink(x=c("test1.dat", "test2.dat", "test3.dat")) # clean up
 #'
 #' ## Plot distributions for a particular year to compare multinomial
 #' ## vs. overdispersed Dirichlet
@@ -63,7 +62,7 @@
 #' ## Organize the data for plotting
 #' x1 <- reshape2::melt(do.call(rbind, temp.list)[,-(1:6)[-3]], id.vars="FltSvy")
 #' x2 <- reshape2::melt(do.call(rbind, temp.list2)[,-(1:6)[-3]], id.vars="FltSvy")
-#' par(mfrow=c(2,1))
+#' op <- par(mfrow=c(2,1))
 #' with(x1, boxplot(value~variable, las=2, ylim=c(0,.6), ylab="Proportion",
 #'                  main="Overdispersed (cpar=3)",  xlab="length bin"))
 #' temp <- as.numeric(subset(infile$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
@@ -72,6 +71,7 @@
 #'                  main="Multinomial", xlab="length bin"))
 #' temp <- as.numeric(subset(infile$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
 #' points(temp/sum(temp), pch="-", col="red")
+#' par(op)
 #'
 #' @export
 #' @seealso \code{\link{change_agecomp}}
