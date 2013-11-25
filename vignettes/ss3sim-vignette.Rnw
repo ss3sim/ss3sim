@@ -24,7 +24,6 @@
 \newcommand{\Eof}[1]{\mathrm{E}\left[ #1 \right]}
 
 \usepackage[dvipsnames,svgnames,x11names,hyperref]{xcolor}
-%\usepackage[usenames,dvipsnames]{color}
 \usepackage{hyperref}
 \hypersetup{colorlinks,breaklinks,
 allcolors=MidnightBlue
@@ -97,6 +96,7 @@ devtools::install_github("ss3sim", username = "seananderson")
 You can read the help files and access this vignette again with:
 
 <<help, eval=FALSE>>=
+?ss3sim
 help(package = "ss3sim")
 vignette("ss3sim-vignette", package = "ss3sim")
 @
