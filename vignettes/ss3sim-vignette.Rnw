@@ -46,13 +46,13 @@ opts_chunk$set(dev = 'pdf')
   Sean C. Anderson\thanks{sean@seananderson.ca; Department of Biological
   Sciences, Simon Fraser University, Burnaby BC, V5A 1S6, Canada}
   \and
-  Kelli F. Johnson\thanks{School of Aquatic and Fishery Sciences,
-  University of Washington, Box 355020, Seattle, WA 98195-5020, USA}
-  \and
   Cole C. Monnahan\thanks{Quantitative Ecology and Resource Management,
   University of Washington, Box 352182, Seattle, WA 98195-2182, USA}
   \and
-  Kotaro Ono\footnotemark[2]
+  Kelli F. Johnson\thanks{School of Aquatic and Fishery Sciences,
+  University of Washington, Box 355020, Seattle, WA 98195-5020, USA}
+  \and
+  Kotaro Ono\footnotemark[3]
   \and
   Juan L. Valero\thanks{Center for the Advancement of Population Assessment
   Methodology (CAPAM), 8901 La Jolla Shores Drive, La Jolla, CA 92037, USA}
