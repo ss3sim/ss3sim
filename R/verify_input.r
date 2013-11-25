@@ -13,8 +13,8 @@
 #' Returns a version of the folder with sanitized files or an error if some
 #' files are missing.
 #
-#' @param model_dir Directory name for model. This folder should
-#' contain the \code{.ctl}, \code{.dat}, files etc.
+#' @param model_dir Directory name for model. This folder should contain the
+#'   \code{.ctl}, \code{.dat}, files etc.
 #' @param type One of "om" or "em" for operating or estimating model.
 #' @export
 #' @examples
