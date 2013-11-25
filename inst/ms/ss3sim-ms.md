@@ -532,7 +532,6 @@ Richard Methot,
 Andre Punt,
 Jim Ianelli, and
 Ian Taylor.
-
 SCA was supported by Fulbright Canada
 (generously hosted by Trevor A. Branch), NSERC,
 and a Garfield Weston Foundation/B.C. Packers Ltd.\ Graduate Fellowship
