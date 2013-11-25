@@ -32,12 +32,15 @@ allcolors=MidnightBlue
 
 \begin{document}
 
-<<set-knitr-options, echo=FALSE>>=
+<<set-knitr-options, cache=FALSE, echo=FALSE>>=
 library(knitr)
 opts_chunk$set(fig.align='center', fig.pos="htpb", cache=TRUE, echo=TRUE,
 message=FALSE, autodep=TRUE, fig.path='figure/', fig.width=5, par=TRUE)
 opts_chunk$set(warning=FALSE, message=FALSE, tidy=FALSE, refresh=TRUE)
 opts_chunk$set(dev = 'pdf')
+opts_knit$set(out.format = "latex")
+thm = knit_theme$get("github.css")
+knit_theme$set(thm)
 @
 
 \title{An introduction to \texttt{ss3sim} --- an \texttt{R} package for
