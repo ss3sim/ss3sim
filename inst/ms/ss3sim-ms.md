@@ -188,10 +188,10 @@ is available in the accompanying vignette (Text S1).
 `ss3sim` requires `R` version 3.0.0 or greater
 and SS3 (see Text S1 for more detailed instructions).
 In `R`, the development version of `ss3sim` can be installed with:
-\clearpage
 
     install.packages(devtools)
-    devtools::install_github("ss3sim", username = "seananderson", dependencies = TRUE)
+    devtools::install_github("ss3sim", username = "seananderson",
+      dependencies = TRUE)
 
 ## Setting up the SS3 model configurations
 
