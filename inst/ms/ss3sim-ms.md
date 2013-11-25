@@ -445,17 +445,17 @@ and their variability can change through time [@beamish1995; @pyper1998].
 to incorporate different recruitment deviation structures
 and test how they affect model performance.
 
-*The impact of bias adjustment*:
-Bias adjustment helps ensure
-that the estimated recruitment deviations
-are mean-unbiased leading to unbiased estimates
-of biomass [@methot2011].
-However, bias adjustment requires extra model runs
-to iteratively calculate the proper adjustment level,
-which can be computationally intensive and time consuming.
-`ss3sim` can turn bias adjustment on or off
-with a single argument and so could easily be used to test when
-and how bias adjustment affects model performance.
+<!--*The impact of bias adjustment*:-->
+<!--Bias adjustment helps ensure-->
+<!--that the estimated recruitment deviations-->
+<!--are mean-unbiased leading to unbiased estimates-->
+<!--of biomass [@methot2011].-->
+<!--However, bias adjustment requires extra model runs-->
+<!--to iteratively calculate the proper adjustment level,-->
+<!--which can be computationally intensive and time consuming.-->
+<!--`ss3sim` can turn bias adjustment on or off-->
+<!--with a single argument and so could easily be used to test when-->
+<!--and how bias adjustment affects model performance.-->
 
 *Retrospective patterns*:
 Retrospective patterns,
