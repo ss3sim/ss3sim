@@ -851,7 +851,7 @@ It cannot alter the properties of parameters that already vary with time.
 Also, it will not work with custom environmental linkages.
 Environmental linkages for all parameters in the OM
 must be declared by a single line
-(i.e. \texttt{0 #\_custom\_mg-env\_setup (0/1)}
+(i.e. \texttt{0 \#\_custom\_mg-env\_setup (0/1)}
 prior to using \texttt{change\_tv}.
 Additionally, SS3 does not allow more than one stock recruit parameter
 to vary with time. Therefore, if the \texttt{.ctl} file already has a
@@ -1028,7 +1028,7 @@ functions.
 \begin{description}
 \item[\texttt{change\_index}] This function samples from the biomass
   trends for the different fleets to simulate the collection of CPUE
-  and survery index data. Since $q=1$ for both the OM and EM, the CPUE
+  and survey index data. Since $q=1$ for both the OM and EM, the CPUE
   indices are actually absolute indices of biomass. The result of the
   random sampling is a log-normal observed CPUE that is centered at
   the expected value. The user can specify which fleets are sampled in
