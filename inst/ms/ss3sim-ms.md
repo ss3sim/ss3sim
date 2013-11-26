@@ -569,7 +569,7 @@ Functions that are called internally are shown in a monospaced font.
 {\bf Example output from an \texttt{ss3sim} simulation.}
 We ran a crossed simulation in which we considered
 (1) the effect of fixing natural mortality ($M$)
-at its historical value (0.2; case E0) or estimating $M$ (case E1) and
+at its true value (0.2; case E0) or estimating $M$ (case E1) and
 (2) the effect of high survey effort
 ($\sigma_\mathrm{survey} = 0.1$; case D0)
 or low survey effort ($\sigma_\mathrm{survey} = 0.4$; case D1).
@@ -577,7 +577,7 @@ Upper panels (blue) show time series of relative error
 in spawning stock biomass (SSB).
 Lower panels (grey) show the distribution
 of relative error across four scalar variables:
-depletion, $M$, spawning stock biomass (SSB) at maximum sustainable yield (MSY),
+depletion, $M$, SSB at maximum sustainable yield ($SSB_{MSY}$),
 and fishing mortality ($F$) in the terminal year.
 We show the values across simulation iterations with dots
 and the distributions with beanplots (kernel density smoothers).
@@ -610,7 +610,7 @@ Function name          Description
 
 `change_rec_devs`      Substitutes recruitment deviations.
 
-`change_f`             Controls fishing mortality. (Case file and ID `F`)
+`change_f`             Adds fishing mortality time series. (Case file and ID `F`)
 
 `change_tv`            Adds time-varying features. For example, time-varying natural mortality, growth, or selectivity. (Any case file and ID, e.g. `M`, starting with "`function_type; change_tv`")
 
