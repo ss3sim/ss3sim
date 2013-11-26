@@ -871,7 +871,7 @@ or G for growth.
 \section{Incorporating a new case ID}
 \texttt{ss3sim} is designed with a set of mandatory case IDs that must be
 specified for each run: data (\texttt{D}), estimation (\texttt{E}), fishing
-effort (\texttt{F}),and retrospective (\texttt{R}). 
+effort (\texttt{F}),and retrospective (\texttt{R}).
 Also, by default, \texttt{run\_ss3sim} is set up to require a natural mortality
 (\texttt{M}) case.
 In many instances a user may wish to include a new case ID.
@@ -892,7 +892,7 @@ created, you need to tell \texttt{ss3sim} to use them, since they are outside of
 the mandatory set. This is done through the \texttt{case\_files} argument in the
 \texttt{get\_caseargs} function, which is passed through by the
 \texttt{run\_ss3sim}. In this case, we need to tell it to look for
-case argument files beginning with ``S'' 
+case argument files beginning with ``S''
 (see the help file for \texttt{get\_caseargs} for more information):
 <<custom-case-eg, eval=FALSE>>=
 case_files = list(E = "E", D = c("index", "lcomp", "agecomp"),
@@ -900,19 +900,19 @@ case_files = list(E = "E", D = c("index", "lcomp", "agecomp"),
 @
 \noindent
 Note that \texttt{S} is simply added to the end of the default list of case
-IDs. 
+IDs.
 
 Note that the data case ID is a special case because its case argument files do not
 begin with \texttt{D}. This is because there are three functions associated with
 the data case, independently modifying three different parts of the
-\texttt{.dat} file. 
+\texttt{.dat} file.
 
 This provides a template for how you could incorporate
 multiple changes to selectivity (for example) through different functions (which you would
 need to write yourself). For example, you may want to add time-varying
 deviations to multiple parameters in the selectivity setup of the OM. You could
 then create functions that modify selectivity in different ways, and pass them
-the same way the \texttt{D} case is handled above. 
+the same way the \texttt{D} case is handled above.
 
 We recommend verifying the
 functionality of any new cases by: (1) thoroughly verifying that your R
@@ -1057,7 +1057,7 @@ sample size that more accurately reflects the information in the composition
 data.
 
 In simulation work, the true underlying proportions
-in the population are known and therefore 
+in the population are known and therefore
 true multinomial sampling is possible.
 However, there is some question about the realism
 behind providing the model with this kind of data,
@@ -1235,7 +1235,7 @@ where $z_i$ is a standard normal deviate and the bias adjustment term
 ($\sigma_r^2/2$) makes the deviates have an expected value of 0 after
 exponentiation.
 
-If the recruitment deviations are not specified, 
+If the recruitment deviations are not specified,
 then the package will use these built-in
 recruitment deviations. Alternatively you can specify your own
 recruitment deviations, via the argument \texttt{user\_recdevs} to the
@@ -1448,7 +1448,7 @@ familiar with both SS3 and R.
 The main purpose of the OM is to generate data files that can be read into the
 EM. Thus the user needs to setup the \texttt{.dat} files in the OM such that
 they conform to the structure needed by the EM. Two key examples are with survey
-and age/length composition data. 
+and age/length composition data.
 For the indices of abundance (CPUE and scientific survey) the OM
 \texttt{.dat} file will determine which years are available to the sampling
 function \texttt{change\_index}, so if the year $y$ is desired in the EM it needs
