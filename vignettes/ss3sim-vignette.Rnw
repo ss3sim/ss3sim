@@ -427,7 +427,7 @@ to \texttt{-1} (any negative phase number will tell SS3
 to not estimate a particular parameter)
 and use the argument \texttt{NA}
 to fix \textit{M} at the true value (i.e. do not modify it from what is in the
-OM).
+EM \texttt{.ctl} file).
 In case 1, we will estimate \textit{M} in
 phase \texttt{3} and initialize the estimation of \textit{M} at \texttt{0.20}.
 We can do this by including the line: \texttt{natM\_val; c(NA, -1)}
@@ -457,8 +457,8 @@ retro_yr; 0
 
 We will set the fishing mortality $F$ to a constant level
 at $F_\mathrm{MSY}$ ($F$ at maximum sustainable yield)
-from when the fishery starts (at 25 years)
-until the end of our simulation (100 years).
+from when the fishery starts (in year 25)
+until the end of our simulation (year 100).
 Therefore, this is our \texttt{F0-cod.txt}:
 
 \begin{verbatim}
@@ -469,7 +469,7 @@ fvals;       c(rep(0,25), rep(0.114,75))
 
 Although we do not have any time-varying processes in this example simulation,
 we include \texttt{M} case files
-in which we describe \textit{M} as stationary at a constant value (\texttt{M0-cod.txt}):
+in which we describe \textit{M} as stationary (\texttt{M0-cod.txt}):
 
 \begin{verbatim}
 function_type; change_tv
@@ -512,8 +512,8 @@ And then check the SS3 files that are created.
 \subsection{Self testing: deterministic simulations to check the models for bias}
 \label{sec:deterministic}
 
-Self testing is a crucial step of any simulation testing study.
-One way to accomplish this is to set up an EM that is the same as the OM and including minimal error.
+Self testing is a crucial step of any simulation study.
+One way to accomplish this is to set up an EM that is the same as the OM and include minimal error.
 
 We will run some simulations to check our EM for bias when process and
 observation error are minimized.
@@ -847,6 +847,11 @@ Currently, \texttt{change\_tv} function
 only works to add time-varying properties
 to a time-invariant parameter.
 It cannot alter the properties of parameters that already vary with time.
+Nor can it work with custom environmental linkages.
+Environmental linkages for all parameters in the OM
+must be declared by a single line
+(i.e. \texttt{0 #\_custom\_mg-env\_setup (0/1)}
+prior to using \texttt{change\_tv}.
 Additionally, SS3 does not allow more than one stock recruit parameter
 to vary with time. Therefore, if the \texttt{.ctl} file already has a
 stock recruit parameter that varies with time and you try to implement another,
@@ -924,7 +929,7 @@ functions for manipulating new aspects of SS3 models, please contact the
 \section{Modifying the OM and EM models included with \texttt{ss3sim}}
 \label{sec:modify}
 
-\texttt{ss3sim} comes with three built-in SS3 operating and estimation model setups: a cod-like (slow-growing and long-lived), flatfish-like (fast-growing and intermediate-lived), and sardine-like (fast-growing and short-lived).
+\texttt{ss3sim} comes with three built-in SS3 operating and estimation model setups: a cod-like (slow-growing and long-lived), flatfish-like (fast-growing and long-lived), and sardine-like (fast-growing and short-lived).
 These model setups are based on North Sea cod (\textit{Gadus morhua},
 R. Methot, pers.\ comm.), yellowtail flounder (\textit{Limanda ferruginea}, R. Methot, pers.\ comm.), and Pacific sardine \citep[\textit{Sardinops sagax caeruleus;}][]{hill2012}.
 Further details on these models are available in \citet{johnson2013} and \citet{ono2013}.
@@ -946,7 +951,7 @@ that is your goal (see accompanying for alternatives).
 
 Here is a list of SS3 features that are not currently implemented in \texttt{ss3sim}:
 \begin{itemize}
-\item Seasons, sexes, hermaphrodism, multiple areas, movement, growth morphs and platoons
+\item Seasons, sexes, hermaphrodism, multiple areas, movement, growth morphs, and platoons
 \item Data other than scientific surveys, commercial indices of abundance and age/length compositions: age-at-length,
   discards, mean weights, etc.
 \end{itemize}
@@ -1353,7 +1358,7 @@ being available to the operating system regardless of the folder.
 To accomplish this, SS3 must be in your system path, which is
 a list of folders that your operating system looks in
 whenever you type the name of a program on the command line.
-This approach saves storage on a space since the SS3 binary is about 2.2 MB and
+This approach saves on storage space since the SS3 binary is about 2.2 MB and
 having it located in each folder can be prohibitive in a large scale simulation
 testing study.
 
@@ -1437,7 +1442,7 @@ stems from the high flexibility of SS3, allowing for more complex model setups
 than those used while developing ss3sim. For
 instance, the \texttt{change\_index} function does not have the capability to
 handle more than one season (it could, but currently it is not developed to). Given
-the myriad options available in SS3 it is extremely difficult to write
+the myriad of options available in SS3 it is extremely difficult to write
 auxiliary functions that will interact reliably with all combinations of these
 options. For this reason, we recommend that users strongly consider trying to
 modify an existing model rather than creating a new one
@@ -1461,9 +1466,9 @@ which years and bins are available to the sampling functions
 \texttt{change\_agecomp} and \texttt{change\_lcomp}. If dynamic binning is to be
 used, the user should setup the \texttt{.dat} file so that all desired
 combinations of bins are possible (see Section \ref{sec:dybin} for more
-details). Specifically, the user must specify small enough bins (no smaller than
+details). Specifically, the user must specify small enough OM \texttt{.ctl} bins (no smaller than
 the population bin specified in the appropriate section in the OM \texttt{.dat} file)
-OM \texttt{.ctl} bins so that they can easily be re-binned. Alternatively,
+so that they can easily be re-binned. Alternatively,
 if composition data is not to be explored in the simulation then the user can
 just set the OM \texttt{.dat} file to match the desired input for the EM
 \texttt{.dat}.
