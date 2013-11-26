@@ -577,7 +577,7 @@ Upper panels (blue) show time series of relative error
 in spawning stock biomass (SSB).
 Lower panels (grey) show the distribution
 of relative error across four scalar variables:
-depletion, $M$, SSB at maximum sustainable yield ($SSB_{MSY}$),
+depletion, $M$, SSB at maximum sustainable yield ($\mathrm{SSB}_\mathrm{MSY}$),
 and fishing mortality ($F$) in the terminal year.
 We show the values across simulation iterations with dots
 and the distributions with beanplots (kernel density smoothers).
