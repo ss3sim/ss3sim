@@ -19,7 +19,7 @@ and synthesizes the results.
 The simulations can be run in parallel, speeding computation,
 and the source code is
 free to be modified under an open-source MIT license.
-`ss3sim` is designed to explore differences in structure
+`ss3sim` is designed to explore structural differences
 between the underlying truth and assumptions of an estimation model,
 or between multiple estimation model configurations.
 For example, `ss3sim` can be used to answer questions about
