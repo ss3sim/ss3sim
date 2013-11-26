@@ -513,7 +513,8 @@ And then check the SS3 files that are created.
 \label{sec:deterministic}
 
 Self testing is a crucial step of any simulation study.
-One way to accomplish this is to set up an EM that is the same as the OM and include minimal error.
+One way to accomplish this is to set up an EM that is the same as the OM
+and include minimal error.
 
 We will run some simulations to check our EM for bias when process and
 observation error are minimized.
@@ -847,7 +848,7 @@ Currently, \texttt{change\_tv} function
 only works to add time-varying properties
 to a time-invariant parameter.
 It cannot alter the properties of parameters that already vary with time.
-Nor can it work with custom environmental linkages.
+Also, it will not work with custom environmental linkages.
 Environmental linkages for all parameters in the OM
 must be declared by a single line
 (i.e. \texttt{0 #\_custom\_mg-env\_setup (0/1)}
@@ -929,7 +930,10 @@ functions for manipulating new aspects of SS3 models, please contact the
 \section{Modifying the OM and EM models included with \texttt{ss3sim}}
 \label{sec:modify}
 
-\texttt{ss3sim} comes with three built-in SS3 operating and estimation model setups: a cod-like (slow-growing and long-lived), flatfish-like (fast-growing and long-lived), and sardine-like (fast-growing and short-lived).
+\texttt{ss3sim} comes with three built-in SS3 operating and estimation model setups:
+a cod-like (slow-growing and long-lived),
+flatfish-like (fast-growing and long-lived),
+and sardine-like (fast-growing and short-lived).
 These model setups are based on North Sea cod (\textit{Gadus morhua},
 R. Methot, pers.\ comm.), yellowtail flounder (\textit{Limanda ferruginea}, R. Methot, pers.\ comm.), and Pacific sardine \citep[\textit{Sardinops sagax caeruleus;}][]{hill2012}.
 Further details on these models are available in \citet{johnson2013} and \citet{ono2013}.
@@ -951,8 +955,10 @@ that is your goal (see accompanying for alternatives).
 
 Here is a list of SS3 features that are not currently implemented in \texttt{ss3sim}:
 \begin{itemize}
-\item Seasons, sexes, hermaphrodism, multiple areas, movement, growth morphs, and platoons
-\item Data other than scientific surveys, commercial indices of abundance and age/length compositions: age-at-length,
+\item Seasons, sexes, hermaphrodism, multiple areas,
+  movement, growth morphs, and platoons
+\item Data other than scientific surveys,
+  commercial indices of abundance and age/length compositions: age-at-length,
   discards, mean weights, etc.
 \end{itemize}
 Some of the features may work within the \texttt{ss3sim} framework, but are untested.
@@ -1442,7 +1448,7 @@ stems from the high flexibility of SS3, allowing for more complex model setups
 than those used while developing ss3sim. For
 instance, the \texttt{change\_index} function does not have the capability to
 handle more than one season (it could, but currently it is not developed to). Given
-the myriad of options available in SS3 it is extremely difficult to write
+the many options available in SS3 it is extremely difficult to write
 auxiliary functions that will interact reliably with all combinations of these
 options. For this reason, we recommend that users strongly consider trying to
 modify an existing model rather than creating a new one
