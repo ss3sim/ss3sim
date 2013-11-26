@@ -62,12 +62,12 @@ as well as determining what makes fisheries data informative
 
 Stock Synthesis (SS3, the third version of the software)
 is a widely-used fisheries stock assessment modeling framework [@methot2013].
-SS3 implements statistical age-structured population dynamics modeling,
+SS3 implements statistical age-structured population modeling,
 using a wide range of minimally-processed data [@maunder2013; @methot2013].
 By using this generalized framework,
 individuals conducting fisheries stock assessments and peer reviewers
 can focus on the underlying science, instead of the model code [@methot2013].
-Owing to these advantages, SS3
+Owing in part to these advantages, SS3
 is one of the world's most commonly-used stock assessment models,
 particularly in the United States and Australia,
 where it has been used in 35 and 12 stock assessments as of 2012,
@@ -85,8 +85,8 @@ The programming language `R` [@rcoreteam2013] is an ideal language
 to write such a generalized framework in because
 (1) `R` has become the standard
 for statistical computing and visualization and
-(2) the package `r4ss` [@r4ss2013] is available for `R`;
-`r4ss` facilitates reading, processing, and plotting of SS3 model output.
+(2) the `R` package `r4ss` [@r4ss2013]
+facilitates reading, processing, and plotting of SS3 model output.
 
 Here we introduce `ss3sim`,
 an `R` package that facilitates
@@ -94,7 +94,7 @@ large-scale, rapid, and reproducible simulation testing
 with the widely-used SS3 framework.
 We begin by outlining the general structure of `ss3sim`
 and describing its functions,
-and then demonstrate the software by developing a simple example.
+and then demonstrate the software with a simple example.
 We conclude by discussing how `ss3sim` complements
 other simulation testing software
 and by outlining some research questions that
@@ -307,12 +307,12 @@ in our current directory with one function call:
 
 \noindent
 This command creates two files in our working directory:
-<!---TODO Not true, it creates 3 files, should we get rid of the residual file?--->
+<!---TODO Not true, it creates 3 files, should we get rid of the residual file?-->
 `ss3sim_scalars.csv` and `ss3sim_ts.csv`,
 which contain scalar output estimates
 (e.g. steepness and maximum sustainable yield)
 and time-series estimates (e.g. recruitment and biomass each year).
-These estimates come from the `Report.sso` files produced from each run of SS3
+These estimates come from the report files produced from each run of SS3
 and are read by the `r4ss` `R` package.
 The `.csv` files contain separate columns for OM and EM values,
 making it simple to calculate error metrics,
