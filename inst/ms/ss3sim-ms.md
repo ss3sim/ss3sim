@@ -37,13 +37,10 @@ and outline specific research questions that `ss3sim` could address.
 Fisheries stock assessment models are crucial
 to providing scientific advice and to evaluating the impact
 of alternative management actions on fishery resources [@gulland1983; @hilborn1992].
-<!--TODO ANDRE: this next sentence is unclear:-->
-Although a variety of stock assessment methods and models
-are currently available,
-choosing among competing models
-is often not straightforward, and the choice
-often leads to different modeling outcomes
-and associated scientific advice to management.
+Although a variety of stock assessment approaches are available,
+it is often not straightforward to choose among competing approaches that
+may lead to different modeling outcomes and associated scientific advice to
+management.
 
 Simulation testing is a critical component
 to testing fishery stock assessment methods,
@@ -69,7 +66,7 @@ By using this generalized framework,
 individuals conducting fisheries stock assessments and peer reviewers
 can focus on the underlying science, instead of the model code [@methot2013].
 Owing in part to these advantages, SS3
-is one of the world's most commonly-used stock assessment methods,
+is one of the world's most commonly-used stock assessment modelling frameworks,
 particularly in the United States and Australia,
 where it has been used in 35 and 12 stock assessments as of 2012,
 respectively [@methot2013].
@@ -129,9 +126,9 @@ which uses AD Model Builder as a back-end optimization platform @fournier2012] -
 the most rapid and robust non-linear optimization software [@bolker2013].
 `ss3sim` also facilitates the deployment of simulations
 across multiple computers or computer cores (i.e. parallelization), thereby accelerating computation.
-<!--TODO ANDRE: vetted by whom?-->
-By using a vetted method like SS3 with the tested `ss3sim` framework,
-the time to develop, test, and verify a large-scale simulation
+By using the vetted SS3 framework [@methot2013]
+with the tested `ss3sim` package [@johnson2013; @ono2013],
+the time to develop a large-scale simulation
 can be reduced substantially,
 shifting focus to the research questions themselves.
 
@@ -146,11 +143,6 @@ of the high-level function `run_ss3sim`;
 however, the low-level functions
 can be used on their own
 as part of a customized simulation.
-<!--TODO COLE This isn't really discussed in the vignette I don’t think. We
-    might want to add a section about how to use the functions outside of
-    ss3sim. Unless you meant the base function, which really isn’t a
-    “customized simulation”. I’m thinking more: hey I want to use FS but I can
-    use change_tv() on my models..-->
 
 An `ss3sim` simulation requires three types of input:
 (1) a base SS3 model configuration describing
@@ -282,11 +274,10 @@ and the folder with the plain-text case files:
 
 ## Running the simulations
 
-<!--TODO ANDRE: consider specifying what you mean by validation here:-->
-It is important to validate a simulation testing framework [@rykiel1996].
-One approach is to test the ability of the framework to consistently recover
-precise and unbiased parameter estimates under ideal conditions
-with minimal process and observation error [@hilborn1992].
+It is important to validate a simulation testing framework
+with minimal or no process and observation error
+to ensure unbiased and consistent recovery of parameters
+under ideal conditions [@hilborn1992; @rykiel1996].
 `ss3sim` makes this form of model validation simple by allowing users
 to specify process error (i.e. recruitment deviations)
 and sampling error (Text S1).
@@ -310,7 +301,6 @@ in our current directory with one function call:
 
 \noindent
 This command creates two files in our working directory:
-<!---TODO Not true, it creates 3 files, should we get rid of the residual file?-->
 `ss3sim_scalars.csv` and `ss3sim_ts.csv`,
 which contain scalar output estimates
 (e.g. steepness and maximum sustainable yield)
@@ -378,7 +368,6 @@ simulation testing framework is *Fishery Simulation*
 (FS, <http://fisherysimulation.codeplex.com>).
 FS is primarily a file management tool
 adapted to aid in simulation testing.
-<!--TODO ANDRE: confirm that this is correct:-->
 FS can work with stock assessment models besides SS3,
 make simple changes to input text files,
 generate random process (using a built-in random number generator)
@@ -411,7 +400,6 @@ and is therefore only compatible with the Windows operating system.
 
 # Research opportunities with ss3sim
 
-<!--TODO ANDRE: consider describing what we mean by "alternative"-->
 The `ss3sim` package has been used so far
 to evaluate alternative assessment approaches
 when $M$ is thought to vary across time [@johnson2013],
@@ -484,11 +472,10 @@ and large quantities of data are commonly associated
 with model misspecification,
 which can be difficult to detect
 based on residual patterns alone [@maunder2013].
-<!--TODO ANDRE: Redraft not to imply that simulation testing only related to model misspecification-->
 Therefore, it is important to investigate
 the consequences of model misspecification.
-Simulation testing allows for the formal evaluation
-of the ability of assessment models
+One important role of simulation testing is formally evaluating
+the ability of assessment models
 to accurately and precisely
 estimate parameters of interest
 under different conditions and levels of misspecification
