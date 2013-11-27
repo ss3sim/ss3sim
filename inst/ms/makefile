@@ -13,6 +13,9 @@ plos:
 	pdflatex ss3sim-ms
 	cp ss3sim-ms.pdf ~/Dropbox/Public/
 
+letter:
+	xelatex ss3sim-letter
+
 bib:
 	pdflatex ss3sim-ms
 	bibtex ss3sim-ms
