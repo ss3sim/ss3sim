@@ -12,3 +12,5 @@ clean:
 	rm -rf cache
 	rm -rf figure
 
+tags:
+	ctags ss3sim-vignette.Rnw
