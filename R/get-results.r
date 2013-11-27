@@ -211,8 +211,13 @@ get_results_scenario <- function(scenario, directory=getwd(),
   overwrite_files=FALSE){
     ## This function moves the wd around so make sure to reset on exit,
     ## especially in case of an error
-    old.wd <- getwd(); on.exit(setwd(old.wd))
-    setwd(directory); setwd(scenario)
+    old_wd <- getwd()
+    on.exit(setwd(old_wd))
+    if (file.exists(pastef(directory, scenario))) {
+      setwd(pastef(directory, scenario))
+    } else {
+      stop(paste("Scenario", scenario, "does not exist in", directory))
+    }
     ## Stop if the files already exist or maybe delete them
     scalar.file <- paste0("results_scalar_",scenario,".csv")
     ts.file <- paste0("results_ts_",scenario,".csv")
