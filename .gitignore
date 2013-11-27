@@ -1,7 +1,6 @@
 .Rproj.user
 .Rhistory
 .RData
-
 *.Rproj
 *.Rapp.history
 *.log
@@ -9,10 +8,8 @@
 *.fdb_latexmk
 *.aux
 *.vim
-
 inst/ms/figure/*
 inst/ms/ss3sim-ms.pdf
-
 vignettes/figure/
 vignettes/ss3sim-vignette.aux
 vignettes/ss3sim-vignette.tex
@@ -23,13 +20,9 @@ vignettes/ss3sim-vignette.bbl
 vignettes/ss3sim-vignette.out
 vignettes/cache/
 vignettes/auto
-
 inst/ms/manuscript.tex
-
 *.bbl
-
 *.blg
-
 vignettes/ss3sim-vignette-concordance.tex
-
 vignettes/ss3sim-vignette.synctex.gz
+tags
