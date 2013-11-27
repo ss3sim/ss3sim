@@ -139,6 +139,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   print_logfile = TRUE, sleep = 0, conv_crit = 0.2, ...)
 {
 
+  # In case ss3sim_base is stopped before finishing:
+  old_wd <- getwd()
+  on.exit(setwd(old_wd))
+
   # The first bias_nsim runs will be bias-adjustment runs
   if(bias_adjust) {
     iterations <- c(paste0("bias/", c(1:bias_nsim)), iterations)
