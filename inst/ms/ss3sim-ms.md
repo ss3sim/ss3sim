@@ -10,8 +10,8 @@ Here, we introduce `ss3sim`, an `R` package that facilitates
 large-scale, rapid, and reproducible simulation testing with SS3.
 `ss3sim` requires an existing SS3 model configuration
 along with a set of plain-text control files describing
-alternative states of nature, sampling scenarios,
-and assessment scenarios.
+alternative population dynamics, fishery properties,
+sampling scenarios, and assessment approaches.
 `ss3sim` then generates an underlying truth,
 samples from that truth,
 modifies and runs an estimation model,
@@ -50,7 +50,7 @@ With simulation testing
 we can evaluate the precision and bias
 of alternative assessment methods
 in a controlled environment
-where we know the true state of nature.
+where we know the true dynamics of fisheries resources under exploitation.
 Recent simulation studies
 have been key to improving strategies for dealing with, for example,
 time-varying natural mortality ($M$) [@lee2011; @jiao2012; @deroba2013; @johnson2013]
@@ -339,7 +339,7 @@ or $M$ (Figure 2, lower panels).
 The general purpose of `ss3sim`
 is to explore model behaviour and performance
 across combinations of EM configurations
-and alternative states of nature
+and alternative dynamics of fisheries resources under exploitation
 specified by the OM.
 In particular, `ss3sim` provides a suite of functions
 for dynamically creating structural differences in both OMs and EMs.
