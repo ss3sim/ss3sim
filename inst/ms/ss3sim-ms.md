@@ -536,7 +536,7 @@ of the Center for the Advancement of Population Assessment Methodology (CAPAM).
 
 \clearpage
 
-\bibliography{refs}
+\bibliography{ss3sim-ms}
 
 \clearpage
 
