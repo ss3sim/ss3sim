@@ -5,7 +5,7 @@ to evaluating fishery stock assessment methods.
 In the last decade, the fisheries stock assessment modeling framework
 Stock Synthesis (SS3) has become widely-used around the world.
 However, there lacks a generalized
-and scriptable framework for running SS3 simulations.
+and scriptable framework for SS3 simulation testing.
 Here, we introduce `ss3sim`, an `R` package that facilitates
 large-scale, rapid, and reproducible simulation testing with SS3.
 `ss3sim` requires an existing SS3 model configuration
@@ -23,7 +23,7 @@ free to be modified under an open-source MIT license.
 between the underlying truth and assumptions of an estimation model,
 or between multiple estimation model configurations.
 For example, `ss3sim` can be used to answer questions about
-time-varying model misspecification,
+model misspecification,
 retrospective patterns,
 and the relative importance of various types of fisheries data.
 We demonstrate the software with a simple example,
@@ -37,6 +37,7 @@ and outline specific research questions that `ss3sim` could address.
 Fisheries stock assessment models are crucial
 to providing scientific advice and to evaluating the impact
 of alternative management actions on fishery resources [@gulland1983; @hilborn1992].
+<!--TODO ANDRE: this next sentence is unclear:-->
 Although a variety of stock assessment methods and models
 are currently available,
 choosing among competing models
@@ -50,7 +51,7 @@ particularly given the potential for model misspecification
 [@hilborn1987; @hilborn1992; @rosenberg1994; @peterman2004; @deroba2013a].
 With simulation testing
 we can evaluate the precision and bias
-of alternative complex assessment methods
+of alternative assessment methods
 in a controlled environment
 where we know the true state of nature.
 Recent simulation studies
@@ -68,7 +69,7 @@ By using this generalized framework,
 individuals conducting fisheries stock assessments and peer reviewers
 can focus on the underlying science, instead of the model code [@methot2013].
 Owing in part to these advantages, SS3
-is one of the world's most commonly-used stock assessment models,
+is one of the world's most commonly-used stock assessment methods,
 particularly in the United States and Australia,
 where it has been used in 35 and 12 stock assessments as of 2012,
 respectively [@methot2013].
@@ -124,11 +125,12 @@ in `R` or other statistical software.
 Finally, the `ss3sim` code is written
 under an open-source MIT license and can be freely modified.
 *Rapid*: `ss3sim` relies on SS3,
-which uses AD Model Builder as a back-end optimization platform ---
-the most rapid and robust non-linear optimization software [@fournier2012; @bolker2013].
+which uses AD Model Builder as a back-end optimization platform @fournier2012] ---
+the most rapid and robust non-linear optimization software [@bolker2013].
 `ss3sim` also facilitates the deployment of simulations
 across multiple computers or computer cores (i.e. parallelization), thereby accelerating computation.
-By using a vetted model like SS3 with the tested `ss3sim` framework,
+<!--TODO ANDRE: vetted by whom?-->
+By using a vetted method like SS3 with the tested `ss3sim` framework,
 the time to develop, test, and verify a large-scale simulation
 can be reduced substantially,
 shifting focus to the research questions themselves.
@@ -204,8 +206,8 @@ These model configurations are based on
 North Sea cod (*Gadus morhua*; R. Methot, pers.\ comm.),
 yellowtail flounder (*Limanda ferruginea*; R. Methot, pers.\ comm.),
 and Pacific sardine (*Sardinops sagax caeruleus*) [@hill2012] (Text S1).
-We recommend modifying these built-in models to match a desired scenario,
-although it is possible to modify an existing SS3 model to work with `ss3sim` (Text S1).
+We recommend modifying these built-in model configurations to match a desired scenario,
+although it is possible to modify an existing SS3 model configurations to work with `ss3sim` (Text S1).
 We will base our example around the built-in cod-like model setup.
 
 ## Setting up the case files
@@ -280,8 +282,9 @@ and the folder with the plain-text case files:
 
 ## Running the simulations
 
+<!--TODO ANDRE: consider specifying what you mean by validation here:-->
 It is important to validate a simulation testing framework [@rykiel1996].
-One approach is to test the ability of the model to consistently recover
+One approach is to test the ability of the framework to consistently recover
 precise and unbiased parameter estimates under ideal conditions
 with minimal process and observation error [@hilborn1992].
 `ss3sim` makes this form of model validation simple by allowing users
@@ -375,6 +378,7 @@ simulation testing framework is *Fishery Simulation*
 (FS, <http://fisherysimulation.codeplex.com>).
 FS is primarily a file management tool
 adapted to aid in simulation testing.
+<!--TODO ANDRE: confirm that this is correct:-->
 FS can work with stock assessment models besides SS3,
 make simple changes to input text files,
 generate random process (using a built-in random number generator)
@@ -407,8 +411,9 @@ and is therefore only compatible with the Windows operating system.
 
 # Research opportunities with ss3sim
 
+<!--TODO ANDRE: consider describing what we mean by "alternative"-->
 The `ss3sim` package has been used so far
-to evaluate alternative approaches
+to evaluate alternative assessment approaches
 when $M$ is thought to vary across time [@johnson2013],
 the importance of length- and age-composition data [@ono2013],
 and the causes of retrospective patterns in stock assessment models.
@@ -479,6 +484,7 @@ and large quantities of data are commonly associated
 with model misspecification,
 which can be difficult to detect
 based on residual patterns alone [@maunder2013].
+<!--TODO ANDRE: Redraft not to imply that simulation testing only related to model misspecification-->
 Therefore, it is important to investigate
 the consequences of model misspecification.
 Simulation testing allows for the formal evaluation
