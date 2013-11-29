@@ -14,6 +14,9 @@
   the starter file.  Should be 0 (no retrospective
   analysis) or a negative value.}
 }
+\value{
+  A modified SS3 starter file.
+}
 \description{
   A retrospective analysis tests the effect of peeling back
   the number of operating model years observable to the

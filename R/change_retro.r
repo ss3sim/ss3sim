@@ -1,34 +1,35 @@
 #' Alter a starter file for a retrospective analysis
-#' 
-#' A retrospective analysis tests the effect of peeling back the number of 
-#' operating model years observable to the estimation model. This function 
+#'
+#' A retrospective analysis tests the effect of peeling back the number of
+#' operating model years observable to the estimation model. This function
 #' alters the SS3 starter file to run a retrospective analysis.
-#' 
+#'
 #' @details Note that the starter file is set up to run a single retrospective
 #'   run. Therefore, if you would like to run retrospective analyses for, say,
-#'   0, 1, 2, 3, 4, and 5 years, you will need to use this function to adjust 
+#'   0, 1, 2, 3, 4, and 5 years, you will need to use this function to adjust
 #'   the starter file 6 separate times.
-#'   
+#'
 #' @param startfile_in Input \code{starter.ss} file
 #' @param startfile_out Output \code{starter.ss} file
-#' @param retro_yr Which retrospective year to enter into the starter file. 
+#' @param retro_yr Which retrospective year to enter into the starter file.
 #'   Should be 0 (no retrospective analysis) or a negative value.
 #' @author Sean C. Anderson
+#' @return A modified SS3 starter file.
 #' @examples
 #' # Create a temporary folder for the output:
 #' temp_path <- file.path(tempdir(), "ss3sim-retro-example")
 #' dir.create(temp_path, showWarnings = FALSE)
-#' 
+#'
 #' # Locate the package data:
 #' starterfile <- system.file("extdata", "models", "cod-om",
 #'  "starter.ss", package = "ss3sim")
-#' 
+#'
 #' # No retrospective analysis:
-#' change_retro(starterfile, paste0(temp_path, "/retro-0-starter.ss"), 
+#' change_retro(starterfile, paste0(temp_path, "/retro-0-starter.ss"),
 #' retro_yr = 0)
-#' 
+#'
 #' # A retrospective analysis of 5 years:
-#' change_retro(starterfile, paste0(temp_path, "/retro-5-starter.ss"), 
+#' change_retro(starterfile, paste0(temp_path, "/retro-5-starter.ss"),
 #' retro_yr = -5)
 #' @export
 
