@@ -14,7 +14,7 @@
   = 10} bias adjustment runs)}
 
   \item{outdir}{Folder containing the run folders for a
-  given scenario (e.g. \code{"M1-F1-D1-R1-cod"} that
+  given scenario (e.g.  \code{"M1-F1-D1-R1-cod"} that
   contains \code{"M1-F1-D1-R1-cod/1/"}
   \code{"M1-F1-D1-R1-cod/2/"}, etc.)}
 
@@ -23,9 +23,9 @@
 
   \item{conv_crit}{The maximum percentage of bias
   iterations that can produce a non-invertible Hessian
-  before a warning will be produced. If this percentage is
+  before a warning will be produced.  If this percentage is
   exceeded then a file \code{WARNINGS.txt} will be
-  produced. Currently, the simulations will continue to
+  produced.  Currently, the simulations will continue to
   run.}
 }
 \description{
