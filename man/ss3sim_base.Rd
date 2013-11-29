@@ -176,6 +176,8 @@ ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-R0-M0-cod",
   retro_params = R0, om_model_dir = om, em_model_dir = em)
 
 unlink("D1-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
+
+setwd(wd)
 }
 }
 \author{
