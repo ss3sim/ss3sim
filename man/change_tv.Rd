@@ -36,6 +36,11 @@
 
   \item{report_file}{Input SS3 report file}
 }
+\value{
+  The function creates modified versions of the
+  \code{.par}, \code{.starter}, \code{.ctl}, and
+  \code{.dat} files.
+}
 \description{
   \code{change_tv} takes SS3 \code{.ctl}, \code{.par}, and
   \code{.dat} files and implements time-varying parameters

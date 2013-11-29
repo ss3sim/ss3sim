@@ -19,6 +19,8 @@
 #' @param starter_file_out Output SS3 starter file
 #' @param report_file Input SS3 report file
 #' @author Kotaro Ono, Carey McGilliard, and Kelli Johnson
+#' @return The function creates modified versions of the \code{.par},
+#'   \code{.starter}, \code{.ctl}, and \code{.dat} files.
 #'
 #' @details
 #' Although there are three ways to implement time-varying parameters within
