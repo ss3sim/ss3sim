@@ -13,24 +13,10 @@
 \arguments{
   \item{change_tv_list}{A list of named vectors. Names
   correspond to parameters in the operating model that
-  currently do not utilize environmental deviations.
-  Parameters will change to vary with time according to the
-  vectors of deviations. Vectors of deviations, also
-  referred to as environmental data, must have a length
-  equal to \code{ endyr-startyr+1}, where \code{endyr} and
-  \code{startyr} are specified the \code{.dat} file.
-  Specify years without deviations as zero. Parameter names
-  must be unique and match the full parameter name in the
-  \code{.ctl} file. Names for stock recruit parameters must
-  contain "devs", "R0", or "steep", and only one stock
-  recruit parameter can be time-varying per model. The
-  feature will include an *additive* functional linkage
-  between environmental data and the parameter where the
-  link parameter is fixed at a value of one and the par
-  value is specified in the \code{.par} file: \eqn{par'[y]
-  = par + link * env[y]}. For catchability (\eqn{q}) the
-  *additive* functional linkage is implemented on the log
-  scale: \eqn{ln(q'[y]) = ln(q) + link * env[y]}}
+  currently do not use environmental deviations and the
+  vectors correspond to deviations. See the section
+  "Specifying the \code{change_tv_list}" below for help on
+  specifying this argument.}
 
   \item{ctl_file_in}{Input SS3 control file}
 
@@ -51,20 +37,13 @@
   \item{report_file}{Input SS3 report file}
 }
 \description{
-  Takes SS3 \code{.ctl}, \code{.par}, and \code{.dat} files
-  and implements time-varying parameters using
-  environmental variables.  Specifically set up to work
-  with an operating model \code{.ctl} file.
+  \code{change_tv} takes SS3 \code{.ctl}, \code{.par}, and
+  \code{.dat} files and implements time-varying parameters
+  using environmental variables. \code{change_tv} is
+  specifically set up to work with an operating model
+  \code{.ctl} file.
 }
 \details{
-  To pass arguments to \code{change_tv} through
-  \code{\link{run_ss3sim}}: (1) create a case file with an
-  arbitrary letter not used elsewhere (anything but D, E,
-  F, or R) and (2) include the line \code{function_type;
-  change_tv} in your case file. For example, you might want
-  to use M for natural mortality, S for selectivity, or G
-  for growth.
-
   Although there are three ways to implement time-varying
   parameters within SS3, \code{ss3sim} and \code{change_tv}
   only use the environmental variable option. Within SS3,
@@ -89,11 +68,50 @@
   variable into an age 0 pre-recruit survey. See page 55 of
   the SS3 version 3.24f manual for more information.
 }
+\section{Specifying the \code{change_tv_list}}{
+  Parameters will change to vary with time according to the
+  vectors of deviations passed to \code{change_tv_list}.
+  Vectors of deviations, also referred to as environmental
+  data, must have a length equal to \code{
+  endyr-startyr+1}, where \code{endyr} and \code{startyr}
+  are specified the \code{.dat} file. Specify years without
+  deviations as zero.
+
+  Parameter names must be unique and match the full
+  parameter name in the \code{.ctl} file. Names for stock
+  recruit parameters must contain "devs", "R0", or "steep",
+  and only one stock recruit parameter can be time-varying
+  per model.
+
+  This feature will include an *additive* functional
+  linkage between environmental data and the parameter
+  where the link parameter is fixed at a value of one and
+  the par value is specified in the \code{.par} file:
+  \eqn{par'[y] = par + link * env[y]}.
+
+  For catchability (\eqn{q}) the *additive* functional
+  linkage is implemented on the log scale: \eqn{ln(q'[y]) =
+  ln(q) + link * env[y]}
+}
+
+\section{Passing arguments to \code{change_tv} through \code{\link{run_ss3sim}}}{
+  (1) create a case file with an arbitrary letter not used
+  elsewhere (anything but D, E, F, or R) and (2) include
+  the line \code{function_type; change_tv} in your case
+  file. For example, you might want to use M for natural
+  mortality, S for selectivity, or G for growth.
+}
 \examples{
 \dontrun{
+# Create a temporary folder for the output and set the working directory:
+temp_path <- file.path(tempdir(), "ss3sim-tv-example")
+dir.create(temp_path, showWarnings = FALSE)
+wd <- getwd()
+setwd(temp_path)
+
+# Find the SS3 "Simple" model in the package data:
 d <- system.file("extdata", package = "ss3sim")
 simple <- paste0(d, "/Simple")
-wd <- getwd()
 dir.create("Simple")
 file.copy(simple, ".", recursive = TRUE)
 setwd("Simple")
@@ -106,9 +124,10 @@ change_tv(change_tv_list = list("NatM_p_1_Fem_GP_1" = c(rep(0, 20),
   "control.ss_new", ctl_file_out = "example.ctl", dat_file_in =
   "simple.dat", dat_file_out = "example.dat")
 
-# clean up:
+# Clean up:
 setwd("../")
 unlink("Simple")
+setwd(wd)
 }
 }
 \author{
