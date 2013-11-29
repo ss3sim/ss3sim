@@ -205,14 +205,15 @@ specify, 0 #_custom_MG-env_setup (0/1), for the environmental linkage.")
       if(test.tmp == 2) {
         warning(
 "The time-varying adjustment constraint in the natural mortality and growth
-section of the given OM specifies a logistic transformation. ss3sim::change_tv
+section of the given OM specifies a logistic transformation. change_tv
 implements additive environmental deviates and constraining the adjusted
 parameter to the bounds of the base parameter may lead to undesired
 transformations. To avoid this, either change the bounds of the base parameter
-and ignore this warning or change the givent .ctl file to implement env, blocks,
-and deviations that are not constrained by bounds. To do the later find 2
-#_env/block/dev_adjust_method in the .ctl file and change it to 1
-#_env/block/dev_adjust_method.")
+and ignore this warning or change the .ctl file to implement env, blocks,
+and deviations that are not constrained by bounds. To do the later, find
+2 #_env/block/dev_adjust_method
+in the .ctl file and change it to
+1 #_env/block/dev_adjust_method.")
       }}
 
   }
