@@ -1,83 +1,85 @@
 #' Methods to alter which parameters are estimated in a SS3 \code{.ctl} file.
 #'
-#' @description Takes SS3 \code{.ctl}, \code{.dat}, 
-#' and \code{forecast.ss} files and changes which parameters are estimated, 
-#' how natural mortality is estimated, and if forecasts are performed. The 
-#' function can be called by itself or within \link{run_ss3sim} to alter
-#' an estimation model \code{.ctl} file.
+#' @description Takes SS3 \code{.ctl}, \code{.dat}, and \code{forecast.ss} files
+#' and changes which parameters are estimated, how natural mortality is
+#' estimated, and if forecasts are performed. The function can be called by
+#' itself or within \link{run_ss3sim} to alter an estimation model \code{.ctl}
+#' file.
 #'
 #' @param ctl_file_in Input SS3 control file
 #' @param ctl_file_out Output SS3 control file
 #' @param dat_file_in Input SS3 data file
 #' @param for_file_in Input SS3 forecast file
-#' @param natM_type A character string corresponding to option 0:4 in
-#' SS3 (i.e. "1Parm", "n_breakpoints",
-#' "Lorenzen", "agespecific", "agespec_withseasinterpolate").  
-#' A value of NA will leave the configuration of natural mortality
-#' as specified in \code{ctl_file_in}.
-#' @param natM_n_breakpoints A vector of ages at which you want breakpoints.  
-#' Only used if you specify \code{natM_type = "n_breakpoints"}.
-#' @param natM_lorenzen The reference age for the Lorenzen function.  
-#' Only used if you specify \code{natM_type = "Lorenzen"}.
-#' Length should be one even if the \code{.ctl} has two genders.
-#' @param natM_val A vector of numeric values. Interpretation of the values are 
-#' dependent upon \code{natM_type}. If \code{natM_type = "agespecific"} or
-#' \code{natM_type = "agespec_withseasinterpolate"} the vector specifies
-#' the fixed natural mortality parameters for each integer age. 
-#' Specify values in the following order: female area 1,
-#' female area 2, male area 1, male area, etc. Ensure that there is one
-#' entry per integer age x area x gender.
-#' If \code{natM_type = "1Param"}, \code{natM_type = "n_breakpoints"}, or
-#' \code{natM_type = "Lorenzen"} the vector specifies the 
-#' intitial and phase values for each natM parameter
-#' (i.e. \code{c(int, phase, int, phase, etc.)}, 
-#' where the first two values could correspond to ages 0-2 natural mortality 
-#' and the third and fourth value 
-#' could correspond to ages 3-8 natural mortality). 
-#' For any specified intial value, the parameter bounds will be altered to 
-#' 50 percent above and below the specified initial value,
-#' if the initial value lies above or below the original bounds.
-#' @param par_name A vector of values, separated by commas. 
-#' Each value corresponds to a parameter that you wish to turn on or off
-#' in the \code{ctl_file_in}. The values will later be
-#' turned into character values and used to search for
-#' specific lines for each parameter in the \code{ctl_file_in},
-#' therefore it is best to use full parameter names as they are specified
-#' in \code{ctl_file_in}. 
-#' @param par_int A vector of intial values, one for each parameter 
-#' in \code{par_name}.  Values can be NA if you do not wish to change
-#' the initial value for a given parameter.
-#' @param par_phase A vector of phase values, one for each parameter 
-#' in \code{par_name}.  Values can be NA if you do not wish to change 
-#' the phase for a given parameter.
+#' @param natM_type A character string corresponding to option 0:4 in SS3 (i.e.
+#'   "1Parm", "n_breakpoints", "Lorenzen", "agespecific",
+#'   "agespec_withseasinterpolate").  A value of NA will leave the
+#'   configuration of natural mortality as specified in \code{ctl_file_in}.
+#' @param natM_n_breakpoints A vector of ages at which you want breakpoints.
+#'   Only used if you specify \code{natM_type = "n_breakpoints"}.
+#' @param natM_lorenzen The reference age for the Lorenzen function.  Only used
+#'   if you specify \code{natM_type = "Lorenzen"}.  Length should be one even
+#'   if the \code{.ctl} has two genders.
+#' @param natM_val A vector of numeric values. Interpretation of the values are
+#'   dependent upon \code{natM_type}. If \code{natM_type = "agespecific"} or
+#'   \code{natM_type = "agespec_withseasinterpolate"} the vector specifies the
+#'   fixed natural mortality parameters for each integer age.  Specify values
+#'   in the following order: female area 1, female area 2, male area 1, male
+#'   area, etc. Ensure that there is one entry per integer age x area x gender.
+#'   If \code{natM_type = "1Param"}, \code{natM_type = "n_breakpoints"}, or
+#'   \code{natM_type = "Lorenzen"} the vector specifies the intitial and phase
+#'   values for each natM parameter (i.e. \code{c(int, phase, int, phase,
+#'   etc.)}, where the first two values could correspond to ages 0-2 natural
+#'   mortality and the third and fourth value could correspond to ages 3-8
+#'   natural mortality).  For any specified intial value, the parameter bounds
+#'   will be altered to 50 percent above and below the specified initial value,
+#'   if the initial value lies above or below the original bounds.
+#' @param par_name A vector of values, separated by commas.  Each value
+#'   corresponds to a parameter that you wish to turn on or off in the
+#'   \code{ctl_file_in}. The values will later be turned into character values
+#'   and used to search for specific lines for each parameter in the
+#'   \code{ctl_file_in}, therefore it is best to use full parameter names as
+#'   they are specified in \code{ctl_file_in}.
+#' @param par_int A vector of intial values, one for each parameter in
+#'   \code{par_name}.  Values can be NA if you do not wish to change the
+#'   initial value for a given parameter.
+#' @param par_phase A vector of phase values, one for each parameter in
+#'   \code{par_name}.  Values can be NA if you do not wish to change the phase
+#'   for a given parameter.
 #' @param forecast_num Number of years to perform forecasts. For those years,
-#' the data will be removed from the \code{dat_file_in},
-#' enabling SS3 to generate forecasts rather than use the data 
-#' to fit the model. 
-#' @param run_change_e_full If \code{FALSE} \code{change_e}
-#' will only manipulate for forecasting,
-#' if \code{TRUE} (default) the full function capability will be ran.  
+#'   the data will be removed from the \code{dat_file_in}, enabling SS3 to
+#'   generate forecasts rather than use the data to fit the model.
+#' @param run_change_e_full If \code{FALSE} \code{change_e} will only
+#'   manipulate for forecasting, if \code{TRUE} (default) the full function
+#'   capability will be ran.
 #'
-#' @details 
-#' Turning parameters on and off is the main function of \code{change_e}.
-#' \code{change_e} was not created with the capability of adding parameters
-#' to a \code{.ctl} file.  The function can only add parameters for age specific
-#' natural mortality, and only for models with one growth morph.  
-#' Furthermore, the function is designed to add complexity to the 
-#' natural mortality type and not remove complexity.
-#' Therefore, the function will fail if natural mortality in the 
-#' \code{ctl_file_in} is not specified as \code{"1Param"} and 
-#' \code{natM_type} is anything other than \code{NULL} or
-#' \code{"1Param"}.
-#' 
+#' @details Turning parameters on and off is the main function of
+#'   \code{change_e}.  \code{change_e} was not created with the capability of
+#'   adding parameters to a \code{.ctl} file.  The function can only add
+#'   parameters for age specific natural mortality, and only for models with
+#'   one growth morph.  Furthermore, the function is designed to add complexity
+#'   to the natural mortality type and not remove complexity.  Therefore, the
+#'   function will fail if natural mortality in the \code{ctl_file_in} is not
+#'   specified as \code{"1Param"} and \code{natM_type} is anything other than
+#'   \code{NULL} or \code{"1Param"}.
+#'
+#' @return
+#' Altered versions of SS3 \code{.ctl}, \code{.dat}, and, \code{forecast.ss}
+#' files.
+#'
 #' @author Kelli Johnson
 #' @export
 #' @examples
 #' \dontrun{
+#' # Create a temporary folder for the output and set the working directory:
+#' temp_path <- file.path(tempdir(), "ss3sim-tv-example")
+#' dir.create(temp_path, showWarnings = FALSE)
+#' wd <- getwd()
+#' setwd(temp_path)
+#'
 #' d <- system.file("extdata", package = "ss3sim")
 #' ctl_file <- paste0(d, "/models/cod-om/codOM.ctl")
 #' change_e(ctl_file_in = ctl_file, ctl_file_out = "change_e.ctl",
-#'          dat_file_in = "ss3.dat", for_file_in = "forecast.ss", 
+#'          dat_file_in = "ss3.dat", for_file_in = "forecast.ss",
 #'          natM_type = "n_breakpoints", natM_n_breakpoints = c(1, 4),
 #'          natM_lorenzen = NULL, natM_val = c(.2, 3, 0.4, 5),
 #'          par_name = c("_steep", "SizeSel_1P_1_Fishery"),
@@ -85,17 +87,18 @@
 #'          forecast_num = 0, run_change_e_full = TRUE )
 #' # clean up
 #' file.remove("change_e.ctl")
+#' setwd(wd)
 #' }
 
-change_e <- function(ctl_file_in = pastef("em.ctl"), 
-    ctl_file_out = pastef("em.ctl"), dat_file_in = pastef("ss3.dat"), 
-    for_file_in = "forecasts.ss", natM_type = "1Parm", 
+change_e <- function(ctl_file_in = pastef("em.ctl"),
+    ctl_file_out = pastef("em.ctl"), dat_file_in = pastef("ss3.dat"),
+    for_file_in = "forecasts.ss", natM_type = "1Parm",
     natM_n_breakpoints = NULL, natM_lorenzen = NULL, natM_val = c(NA,NA),
     par_name = NULL, par_int = "NA", par_phase = "NA",
     forecast_num = 0, run_change_e_full = TRUE) {
 if(run_change_e_full) {
   if(!file.exists(ctl_file_in)) {
-    stop("Ctl file for the estimation model does not exist, 
+    stop("Ctl file for the estimation model does not exist,
           change_e failed.")
   }
   #Read in the ctl file for the estimation model
@@ -105,7 +108,7 @@ if(run_change_e_full) {
   male <- TRUE %in% grepl("Mal", gen)
 
   natM.val <- pmatch(tolower(natM_type),
-                     c("1parm", "n_breakpoints", "lorenzen", 
+                     c("1parm", "n_breakpoints", "lorenzen",
                        "agespecific", "agespec_withseasinterpolate")) - 1
   if(!is.na(natM.val)) {
     # change the natM type from 1Parm to correct type
@@ -115,8 +118,8 @@ if(run_change_e_full) {
     natM.type.val[[1]][1] <- natM.val
     ss3.ctl[natM.type.line] <- paste(natM.type.val[[1]], collapse = " #")
     if(natM.type.org > 0) {
-      stop("change_e can only change a .ctl from a simple 
-            1 parameter natural mortality type 
+      stop("change_e can only change a .ctl from a simple
+            1 parameter natural mortality type
             to a more complicated parameter setup
             and not the other way around.")
     }
@@ -137,15 +140,15 @@ if(run_change_e_full) {
               phase_female_2, int_male_1, phase_male_1, etc.).")
       }
   	  ss3.ctl[natM.input] <- paste(natM_breakpoints, "#_N_breakpoints")
-  	  ss3.ctl <- append(ss3.ctl, 
+  	  ss3.ctl <- append(ss3.ctl,
   	                   values = paste0(paste(natM_n_breakpoints, collapse = " "),
-                                       " # age(real) at M breakpoints"), 
+                                       " # age(real) at M breakpoints"),
   	                   after = natM.input)
   	}
     if(natM.val == 2) {
       if(length(natM_lorenzen) > 1) {
         stop("SS3, version O, uses a single age value for the Lorenzen
-              function even if there are multiple genders. Modify the 
+              function even if there are multiple genders. Modify the
               function call so that natM_lorenzen is of length = 1")
       }
       ss3.ctl[natM.input] <- paste(natM_lorenzen,
@@ -153,7 +156,7 @@ if(run_change_e_full) {
     }
     if(natM.val == 3 | natM.val == 4) {
        ss3.ctl[natM.input] <- paste0(" #_Age_natmort_by gender x growthpattern")
-       ss3.ctl <- append(ss3.ctl, values = paste(natM_val, collapse = " "), 
+       ss3.ctl <- append(ss3.ctl, values = paste(natM_val, collapse = " "),
                         after = natM.input)
        ss3.ctl <- ss3.ctl[-grep("# NatM_", ss3.ctl)]
       }
@@ -222,8 +225,8 @@ if(run_change_e_full) {
 changeMe <- function(grepChar, intVal, phaseVal, ctlIn = ss3.ctl) {
   val <- grep(pattern = grepChar, x = ctlIn, fixed = TRUE)[1]
     if(is.na(val)) {
-      stop(paste("Could not locate the parameter", 
-                 grepChar, "in the .ctl file.", 
+      stop(paste("Could not locate the parameter",
+                 grepChar, "in the .ctl file.",
                  "Check that the parameter is spelled",
                  "correctly and in the correct case.",
                  "Have you standardized your .ctl file",
@@ -240,7 +243,7 @@ changeMe <- function(grepChar, intVal, phaseVal, ctlIn = ss3.ctl) {
   ss3.ctl[grepChar_line] <- paste(grepChar_value, collapse = " ")
   return(ss3.ctl)
 }
-if(!is.null(par_name)) {   
+if(!is.null(par_name)) {
    par_name <- unlist(strsplit(par_name, split = ","))
    for(y in seq(par_name)) {
    ss3.ctl <- changeMe(grepChar = par_name[y], intVal = par_int[y], phaseVal = par_phase[y])
@@ -266,13 +269,13 @@ if(!is.null(par_name)) {
       for_forecast_value <- unlist(strsplit(ss3.for[for_forecast_line], split = ""))
       for_forecast_value[1] <- 2
       ss3.for[for_forecast_line] <- paste(for_forecast_value, collapse = "")
-      
+
       for_number_line <- grep("N forecast years", ss3.for)
       for_number_value <- unlist(strsplit(ss3.for[for_number_line], split = ""))
       for_number_value[1] <- forecast_num
       ss3.for[for_number_line] <- paste(for_number_value, collapse = "")
-      
+
       writeLines(ss3.for, "forecast.ss")
  }
-  
+
 }
