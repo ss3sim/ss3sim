@@ -2,46 +2,48 @@
 #'
 #' This function is run within \code{\link{run_bias_ss3}} and for a
 #' single run it: \itemize{
-#' \item uses \pkg{r4ss} function \code{SS_output} to read in the
+#'   \item uses \pkg{r4ss} function \code{\link[r4ss]{SS_output}} to read in the
 #' output from a single bias adjustment run
-#' \item uses \pkg{r4ss} function \code{SS_fitbiasramp} to calculate
-#' the bias adjustment parameters for that run
-#' \item Writes the bias adjustment parameters to the file
-#' \code{AdjustBias.DAT} within the \code{dir} folder, overwriting
-#' the file if \code{iter = 1} (the first run) and appending the file
-#' otherwise
+#'   \item uses \pkg{r4ss} function \code{\link[r4ss]{SS_fitbiasramp}} to
+#'     calculate the bias adjustment parameters for that run
+#' \item Writes the bias adjustment parameters to the file \code{AdjustBias.DAT}
+#'   within the \code{dir} folder, overwriting the file if \code{iter = 1} (the
+#'   first run) and appending the file otherwise
 #' }
 #' @author Carey McGilliard
-#' @param iter Replicate number, used to identify this iteration
-#' if there are multiple adjustment runs.
-#' @param dir Passes \code{dir} from the function
-#' \code{\link{run_bias_ss3}} to \code{bias_ss3} In
-#' \code{\link{run_bias_ss3}} this is run within an \code{sapply}
-#' function for each of the bias adjustment runs.
+#' @param iter Replicate number. Used to identify this iteration if there are
+#'   multiple adjustment runs.
+#' @param dir Passes \code{dir} from the function \code{\link{run_bias_ss3}} to
+#'   \code{bias_ss3}. In \code{\link{run_bias_ss3}} this is run within an
+#'   \code{\link[base]{sapply}} function for each of the bias adjustment runs.
 #' @seealso \code{\link{run_bias_ss3}}, \code{\link{run_ss3sim}},
-#' \code{link{ss3sim_base}}
+#'   \code{\link{ss3sim_base}}
 #' @export
+#' @return
+#' A plain text file containing the bias adjustment variables is created at
+#' \code{dir/AdjustBias.DAT}. A PDF figure is created in
+#' \code{dir/biasramp-N.pdf}, where \code{N} represents the iteration number.
 #' @references
-#' Methot, R. D. and Taylor, I. G. (2011). Adjusting for bias due to
-#' variability of estimated recruitments in fishery assessment models.
-#' Can. J. Fish. Aquat. Sci., 68(10):1744-1760.
+#' Methot, R. D. and Taylor, I. G. (2011). Adjusting for bias due to variability
+#' of estimated recruitments in fishery assessment models. Can. J. Fish. Aquat.
+#' Sci., 68(10):1744-1760.
 
 bias_ss3 <- function(iter, dir) {
   outfile = "AdjustBias.DAT"
   if(file.exists(paste0(dir, "/", iter, "/em/covar.sso"))==TRUE)
   {
-  myoutput = r4ss::SS_output(dir = paste0(dir, "/", iter, "/em"), repfile =
-    "Report.sso", compfile = "CompReport.sso", covarfile =
-    "covar.sso", forecast = FALSE)
-  pdf(paste0(dir, "/biasramp-", iter, ".pdf"))
-  biasvars = try(r4ss::SS_fitbiasramp(replist = myoutput), TRUE)
-  dev.off()
+    myoutput = r4ss::SS_output(dir = paste0(dir, "/", iter, "/em"), repfile =
+      "Report.sso", compfile = "CompReport.sso", covarfile =
+      "covar.sso", forecast = FALSE)
+    pdf(paste0(dir, "/biasramp-", iter, ".pdf"))
+    biasvars = try(r4ss::SS_fitbiasramp(replist = myoutput), TRUE)
+    dev.off()
   }
 
   if(file.exists(paste0(dir, "/", iter, "/em/covar.sso"))==FALSE)
   {
-  biasvars = list()
-  biasvars$df = matrix(rep(NA,5),nrow=5)
+    biasvars = list()
+    biasvars$df = matrix(rep(NA,5),nrow=5)
   }
 
   if (is.list(biasvars) == TRUE) {
@@ -53,15 +55,11 @@ bias_ss3 <- function(iter, dir) {
   if (iter == 1) {
     write.table(bias.df, file = paste0(dir, "/", outfile),
       row.names = FALSE, col.names = FALSE, quote = FALSE,
-      append = F)
+      append = FALSE)
   }
   else {
     write.table(bias.df, file = paste0(dir, "/", outfile),
       row.names = FALSE, col.names = FALSE, quote = FALSE,
-      append = T)
+      append = TRUE)
   }
 }
-
-
-
-
