@@ -1,17 +1,17 @@
 #' ss3sim: An \R package for fisheries stock assessment simulation testing with
-#' Stock Synthesis
+#' Stock Synthesis 3
 #'
-#' The ss3sim \R package is designed to facilitate large-scale, rapid,
+#' The \pkg{ss3sim} \R package is designed to facilitate large-scale, rapid,
 #' and reproducible simulation with the widely-used Stock Synthesis 3
 #' (SS3) statistical catch-at-age stock assessment framework.
 #'
-#' ss3sim was developed by graduate students and post doctoral
+#' \pkg{ss3sim} was developed by graduate students and post doctoral
 #' researchers at the University of Washington in the School of
 #' Aquatic and Fishery Sciences. The authors of individual functions
-#' are listed within the documentation and all contributors are listed
-#' in the DESCRIPTION file.
+#' are listed within the function documentation and all contributors are listed
+#' in the \code{DESCRIPTION} file.
 #'
-#' An ss3sim simulation requires three types of input: (1) a base
+#' An \pkg{ss3sim} simulation requires three types of input: (1) a base
 #' model of the underlying truth (an SS3 operating model), (2) a base
 #' model of how you will assess that truth (an SS3 estimation model),
 #' (3) and a set of cases that deviate from these base models that you
@@ -23,9 +23,9 @@
 #' data also contains example plain-text control files in the folder
 #' \code{inst/extdata/cases} and \code{inst/extdata/eg-cases}.
 #'
-#' The main ss3sim functions are divided into three types:
+#' The main \pkg{ss3sim} functions are divided into three types:
 #'
-#' 1. \code{change} functions that manipulate SS configuration files.
+#' 1. \code{change} functions that manipulate SS3 configuration files.
 #' These manipulations generate an underlying "truth" (operating
 #' models) and control our assessment of those models (estimation
 #' models).
@@ -55,10 +55,10 @@
 #' }
 #'
 #' 2. \code{run} functions that conduct simulations. These functions
-#' generate a folder structure, call manipulation functions, run `SS3`
+#' generate a folder structure, call manipulation functions, run SS3
 #' as needed, and save the output.
 #' \itemize{
-#' \item \code{\link{run_ss3sim}}: Main function to run ss3sim
+#' \item \code{\link{run_ss3sim}}: Main function to run \pkg{ss3sim}
 #' simulations.
 #'
 #' \item \code{\link{ss3sim_base}}: Underlying base simulation
@@ -75,7 +75,7 @@
 #' }
 #'
 #' See the package vignette \code{vignette("ss3sim-vignette")} for
-#' more extensive explanation of how to use the ss3sim \R package.
+#' more extensive explanation of how to use the \pkg{ss3sim} \R package.
 #'
 #' @docType package
 #' @name ss3sim
