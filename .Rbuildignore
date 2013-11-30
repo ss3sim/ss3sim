@@ -10,3 +10,4 @@ inst/examples$
 \.gitignore
 inst/ms$
 ^vignettes/ss3sim-vignette.out$
+vignettes/Makefile
