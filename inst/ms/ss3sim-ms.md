@@ -9,7 +9,7 @@ and scriptable framework for SS3 simulation testing.
 Here, we introduce `ss3sim`, an `R` package that facilitates
 large-scale, rapid, and reproducible simulation testing with SS3.
 `ss3sim` requires an existing SS3 model configuration
-along with a set of plain-text control files describing
+along with plain-text control files describing
 alternative population dynamics, fishery properties,
 sampling scenarios, and assessment approaches.
 `ss3sim` then generates an underlying truth,
@@ -25,7 +25,7 @@ or between multiple estimation model configurations.
 For example, `ss3sim` can be used to answer questions about
 model misspecification,
 retrospective patterns,
-and the relative importance of various types of fisheries data.
+and the relative importance of different types of fisheries data.
 We demonstrate the software with a simple example,
 discuss how `ss3sim` complements other simulation software,
 and outline specific research questions that `ss3sim` could address.
@@ -281,7 +281,7 @@ under ideal conditions [@hilborn1992; @rykiel1996].
 `ss3sim` makes this form of model validation simple by allowing users
 to specify process error (i.e. recruitment deviations)
 and sampling error (Text S1).
-Since, the cod-like model setup has already been validated (Text S1),
+Since, we have already validated the cod-like model setup (Text S1),
 we can now run our simulation scenario.
 We will set `bias_adjust = TRUE`
 to enable a procedure that aims to produce mean-unbiased estimates
@@ -421,7 +421,7 @@ the consequences of assuming time invariance
 of such parameters when facing true temporal changes
 has been a long-standing discussion
 in fisheries science [@royama1992; @wilberg2006; @fu2001].
-Furthermore, although many studies have tried
+Furthermore, although studies have tried
 to isolate the effects
 of single time-varying parameters,
 such as $M$ [@lee2011; @jiao2012; @deroba2013; @johnson2013],
@@ -474,11 +474,10 @@ which can be difficult to detect
 based on residual patterns alone [@maunder2013].
 Therefore, it is important to investigate
 the consequences of model misspecification.
-One important role of simulation testing is formally evaluating
-the ability of assessment models
-to accurately and precisely
-estimate parameters of interest
-under different conditions and levels of misspecification
+Investigating the consequences of model misspecification
+on the ability of assessment models
+to accurately and precisely estimate parameters
+is one important role of simulation testing
 [@wilberg2006; @deroba2013a; @crone2013].
 
 Most simulation testing work to date has used custom frameworks
@@ -491,11 +490,11 @@ we encourage authors
 to publish their simulation frameworks, as we have done here,
 and where possible,
 to develop their simulation frameworks in a generalized format
-that allows others build on them.
+that allows others to build on them.
 The initial release of `ss3sim`
 describes the basic structure used in recent studies [@johnson2013; @ono2013]
 and the current version of `ss3sim`
-could be used to address many other
+could be used to address other
 important questions in stock assessment science.
 We hope that users will both benefit
 from `ss3sim` in its current form
