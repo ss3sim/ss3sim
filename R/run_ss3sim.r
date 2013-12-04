@@ -61,7 +61,8 @@
 #' \item ...
 #' }
 #' @seealso \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
-#' \code{\link{run_bias_ss3}}, \code{\link{get_caseargs}}
+#' \code{\link{run_bias_ss3}}, \code{\link{get_caseargs}}, 
+#' \code{\link{expand_scenarios}}
 #' @export
 #'
 #' @examples
