@@ -1,8 +1,8 @@
 #' Get the folder location of an included SS3 model configuration
-#' 
-#' This function returns the location of one of the built-in model 
+#'
+#' This function returns the location of one of the built-in model
 #' configurations.
-#' 
+#'
 #' @param folder_name The model folder name. One of \code{"cod-om", "cod-em",
 #' "fla-om", "fla-em", "sar-om", "sar-em"} representing cod, flatfish, and
 #' sardine-like model configurations and operating (om) and estimating model
