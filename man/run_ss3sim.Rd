@@ -61,7 +61,7 @@
 }
 \description{
   This is the main high-level wrapper function for running
-  ss3sim simulations. This function first deals with
+  \pkg{ss3sim} simulations. This function first deals with
   parsing a scenario ID into case input files and then
   passes these arguments on to \code{\link{ss3sim_base}} to
   run a simulation. Alternatively, you might choose to run
@@ -153,6 +153,7 @@ setwd(wd)
 }
 \seealso{
   \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
-  \code{\link{run_bias_ss3}}, \code{\link{get_caseargs}}
+  \code{\link{run_bias_ss3}}, \code{\link{get_caseargs}},
+  \code{\link{expand_scenarios}}
 }
 

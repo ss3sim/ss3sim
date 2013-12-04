@@ -48,16 +48,18 @@
   \item{user_recdevs}{An optional matrix of recruitment
   deviations to replace the recruitment deviations built
   into the package. The columns represent run iterations
-  and the rows represent years. Note that these will be
-  multiplied by sigma R. So, under normal conditions this
-  matrix should contain standard-normal values
-  \code{~N(-0.5, 1)}. The mean of -0.5 is so the deviations
-  will be mean unbiased after exponentiation. This could
-  also be a matrix of 0s for deterministic model checking.
-  Note that user specified recruitment deviations are not
-  bias adjusted (by subtracting half the variance from the
-  mean), but the built in default recruitment deviations
-  are.}
+  and the rows represent years. \code{user_recdevs} can be
+  a matrix of 0s for deterministic model checking. For
+  traditional stochastic simulations these would be
+  independent and normally distributed deviations with a
+  standard deviation equal to the desired sigma R. Note
+  that these recruitment deviations will be used verbatim
+  (after exponentiation).  \code{user_recdevs} will *not*
+  be multiplied by sigma R and they will *not* be
+  log-normal bias corrected. If \code{user_recdevs} are
+  specified as anything besides \code{NULL} the package
+  will issue a warning about this.  Biased recruitment
+  deviations can lead to biased model results.}
 
   \item{bias_adjust}{Run bias adjustment first? See
   \code{\link{run_bias_ss3}}.}
@@ -102,20 +104,32 @@
   to make the simulations runs faster by not printing
   output to the console.}
 }
+\value{
+  The output will appear in whatever your current \R
+  working directory is. There will be folders named after
+  your scenarios. They will look like this: \itemize{ \item
+  \code{D0-E0-F0-M0-R0-cod/bias/1/om} \item
+  \code{D0-E0-F0-M0-R0-cod/bias/1/em} \item
+  \code{D0-E0-F0-M0-R0-cod/bias/2/om} \item ... \item
+  \code{D0-E0-F0-M0-R0-cod/1/om} \item
+  \code{D0-E0-F0-M0-R0-cod/1/em} \item
+  \code{D0-E0-F0-M0-R0-cod/2/om} \item ... }
+}
 \description{
   This function is a wrapper function that can call
   \code{\link{run_ss3model}} for the operating model,
   sample the output (add recruitment deviations, survey the
   data, etc.), and run the estimation model.
   \code{ss3sim_base} is the main internal function for
-  ss3sim. It is intended to be used through
+  \pkg{ss3sim}. It is intended to be used through
   \code{\link{run_ss3sim}}, but can also be used directly.
 }
 \details{
   This function is written to be flexible. You can specify
-  the natural mortality, fishing mortality, survey index,
-  length comp, and age comp parameters in the function call
-  as list objects. For a generic higher-level function, see
+  the fishing mortality, survey index, length composition,
+  age composition, and time-varying parameters in the
+  function call as list objects (see the example below).
+  For a generic higher-level function, see
   \code{\link{run_ss3sim}}.
 }
 \examples{

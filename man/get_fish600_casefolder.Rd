@@ -9,8 +9,8 @@
   case files in the package \code{extdata} folder.
 }
 \description{
-  This function is used by some developers of ss3sim for
-  simulations. This function links to the "cases" folder in
-  \code{extdata}.
+  This function is used by some developers of \pkg{ss3sim}
+  for simulations. This function links to the "cases"
+  folder in \code{extdata}.
 }
 

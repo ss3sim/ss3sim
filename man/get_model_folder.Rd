@@ -9,8 +9,8 @@
   \code{"cod-om", "cod-em", "fla-om", "fla-em", "sar-om",
   "sar-em"} representing cod, flatfish, and sardine-like
   model configurations and operating (om) and estimating
-  model (em) varieties. See the ss3sim paper or vignette
-  for further details.}
+  model (em) varieties. See the \pkg{ss3sim} paper or
+  vignette for further details.}
 }
 \value{
   A character object showing the location of the
