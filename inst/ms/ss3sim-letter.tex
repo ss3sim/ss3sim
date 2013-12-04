@@ -1,4 +1,4 @@
-\documentclass[letterpaper,12pt]{letter}
+\documentclass[letterpaper,11pt]{letter}
 \usepackage{geometry}
 \geometry{letterpaper}
 \usepackage{graphicx}
@@ -8,13 +8,8 @@
 \setsansfont{Calibri}
 \setmonofont{Inconsolata}
 \setmainfont{Linux Libertine}
-% To reduce the vertical space at the top:
-\topmargin -3.3cm
-\textheight 28cm
-%\oddsidemargin 0.3cm
-%\evensidemargin 0.3cm
-%\textwidth 16.1cm 
-
+\topmargin -2cm
+\textheight 22.5cm
 \address{Sean C. Anderson\\Biological Sciences\\
   Simon Fraser University\\Burnaby, BC, V5A 1S6\\
   Canada\\sean@seananderson.ca}
@@ -22,37 +17,65 @@
 \begin{document}
 \begin{letter}{}
 \pagestyle{empty}
-\opening{Dear XX}
+\opening{Dear Editor}
+
+% You should supply an approximately one page cover letter that:
+% Concisely summarizes why your paper is a valuable addition to the scientific literature
+% Briefly relates your study to previously published work
+% Specifies the type of article you are submitting (for example, research article, systematic review, meta-analysis, clinical trial)
+% Suggests appropriate PLOS ONE Academic Editors to handle your manuscript (view a complete listing of our academic editors)
+% Lists any recommended or opposed reviewers
 
 Please find enclosed a manuscript entitled ``ss3sim: An R package for fisheries
-stock-assessment simulation with Stock Synthesis'' that we wish to submit for
-possible publication in PLOS ONE.
+stock assessment simulation with Stock Synthesis'' that we wish to submit for
+possible publication as a research article in PLOS ONE.
 
-XX
+Simulation testing is an important component to developing, verifying, and
+understanding increasingly complex fishery stock assessment methods. One of the
+more widely used stock assessment methods is Stock Synthesis 3 (SS3). However,
+there lacks a generalized framework for simulation testing with SS3 --- most
+stock assessment simulation-testing work to date has used custom frameworks
+tailored to the particular needs of each study.
 
-We confirm that XX. All authors have approved the manuscript and agree with its
-submission to PLOS ONE.
+In our paper, we introduce ss3sim, an R package that facilitates large-scale,
+rapid, and reproducible simulation testing. We describe how ss3sim works,
+illustrate a simple example with code, compare the package to other related
+software, and outline important research questions our package could address.
+We also include an R vignette as Supplementary Material, which describes in
+greater detail how to use the package and contains fully reproducible example
+code. To our knowledge, this is the first generalized and open-source software
+package focused specifically on fisheries stock assessment stimulation testing.
 
-Confirm all acknowledgements.
+We confirm that this manuscript has not been published elsewhere and is not
+under consideration by another journal. All authors have approved the
+manuscript and agree with its submission to PLOS ONE.
 
-We would like to suggest the following TODO XX independent referees:
+We would like to suggest the following possible independent referees:
 
-\begin{itemize}
-  \item Mark Maunder
-  \item Kevin R. Piner
-  \item Arni Magnusson
-  \item Alan Hicks
-  \item Jon Deroba
-  \item Simon Hoyle
-  \item David Sampson
-\end{itemize}
+\begin{description}
+  \item [Mark N. Maunder] mmaunder@iattc.org, Inter-American Tropical Tuna
+    Commission, 8604 La Jolla Shores Drive, La Jolla, CA, 92037-1508, USA
+  \item [Kevin R. Piner] kevin.piner@noaa.gov, NOAA Fisheries, SWFSC, 8604 La
+    Jolla Shore Drive, La Jolla, CA 92037, USA
+  \item [Arni Magnusson] arnima@hafro.is, Marine Research Institute, Skulagata
+    4, PO Box 1390, 121 Reykjavik, Iceland
+  \item [Alan C. Hicks] EMAIL ADDRESS
+  \item [Jonathan J. Deroba] jonathan.deroba@noaa.gov, National Marine Fisheries
+    Service, Northeast Fisheries Science Center, 166 Water Street, Woods Hole,
+    MA 02543, USA
+  \item [Simon D. Hoyle] EMAIL Oceanic Fisheries Program, Secretariat of the Pacific
+    Community, Nouméa CEDEX, New Caledonia
+  \item [David B. Sampson] david.sampson@oregonstate.edu, Oregon State
+    University, Coastal Oregon Marine Experiment Station, 2030 S. Marine Science
+    Drive Newport, OR, 97365, USA
+\end{description}
 
 Thank you for considering our manuscript for publication and we look forward to
 hearing from you.
 
-\vspace{14mm}
+\bigskip
 \closing{Sincerely,\\
-\fromname{Sean Anderson, Cole Monnahan, Kelli Johnson, Kotaro Ono, Juan Valero}}
+Sean Anderson, Cole Monnahan,\\Kelli Johnson, Kotaro Ono,\\Juan Valero}
 
 \end{letter}
 \end{document}
