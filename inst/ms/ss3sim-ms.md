@@ -294,8 +294,10 @@ We can run 100 iterations of the simulation scenarios with the following code:
       case_folder = case_folder, om_model_dir = om,
       em_model_dir = em, bias_adjust = TRUE)
 
-We can then collect the output from all the simulations
-in our current directory with one function call:
+This produces a folder structure in our working directory
+containing all of the SS3 output files.
+We can then collect the output
+with one function call:
 
     get_results_all()
 
