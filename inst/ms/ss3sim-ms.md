@@ -543,7 +543,7 @@ of the Center for the Advancement of Population Assessment Methodology (CAPAM).
 
 \begin{figure}[!ht]
 \begin{center}
-\includegraphics[width=3.27in]{sim-steps.pdf}
+%\includegraphics[width=3.27in]{sim-steps.pdf}
 \end{center}
 \caption{
 {\bf Flow diagram of the main steps
@@ -555,7 +555,7 @@ Functions that are called internally are shown in a monospaced font.
 
 \begin{figure}[!ht]
 \begin{center}
-\includegraphics[width=4.86in]{fig2-20131109.pdf}
+%\includegraphics[width=4.86in]{fig2-20131109.pdf}
 \end{center}
 \caption{
 {\bf Example output from an \texttt{ss3sim} simulation.}
