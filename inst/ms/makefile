@@ -40,8 +40,8 @@ md:
 	pandoc -S --bibliography=ss3sim-ms.bib --csl=plos.csl ss3sim-ms.md -o ss3sim-ms-with-refs.md
 
 cleanbib:
-	bibtool ss3sim-ms.bib -s > ss3sim-ms.bib
-	mv ss3sim-ms.bib ss3sim-ms.bib
+	bibtool ss3sim-ms.bib -s > ss3sim-ms2.bib
+	mv ss3sim-ms2.bib ss3sim-ms.bib
 
 vignette:
 	./knit
