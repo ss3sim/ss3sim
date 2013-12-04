@@ -3,8 +3,8 @@
 #' This function is a wrapper function that can call \code{\link{run_ss3model}}
 #' for the operating model, sample the output (add recruitment deviations,
 #' survey the data, etc.), and run the estimation model. \code{ss3sim_base} is
-#' the main internal function for ss3sim. It is intended to be used through
-#' \code{\link{run_ss3sim}}, but can also be used directly.
+#' the main internal function for \pkg{ss3sim}. It is intended to be used
+#' through \code{\link{run_ss3sim}}, but can also be used directly.
 #'
 #' @param iterations Which iterations to run. A numeric vector.
 #' @param scenarios Which scenarios to run.
@@ -63,13 +63,28 @@
 #'   to pass \code{show.output.on.console = FALSE} to make the simulations runs
 #'   faster by not printing output to the console.
 #' @author Sean C. Anderson
+#' @return
+#' The output will appear in whatever your current \R working directory
+#' is. There will be folders named after your scenarios. They will
+#' look like this:
+#' \itemize{
+#' \item \code{D0-E0-F0-M0-R0-cod/bias/1/om}
+#' \item \code{D0-E0-F0-M0-R0-cod/bias/1/em}
+#' \item \code{D0-E0-F0-M0-R0-cod/bias/2/om}
+#' \item ...
+#' \item \code{D0-E0-F0-M0-R0-cod/1/om}
+#' \item \code{D0-E0-F0-M0-R0-cod/1/em}
+#' \item \code{D0-E0-F0-M0-R0-cod/2/om}
+#' \item ...
+#' }
 #' @seealso \code{\link{run_ss3sim}}
 #' @export
 #' @details
-#' This function is written to be flexible. You can specify the natural
-#' mortality, fishing mortality, survey index, length comp, and age comp
-#' parameters in the function call as list objects. For a generic higher-level
-#' function, see \code{\link{run_ss3sim}}.
+#' This function is written to be flexible. You can specify the fishing
+#' mortality, survey index, length composition, age composition, and 
+#' time-varying parameters in the function call as list objects (see the 
+#' example below). For a generic higher-level function, see 
+#' \code{\link{run_ss3sim}}.
 #' @examples
 #' \dontrun{
 #' # Create a temporary folder for the output and set the working directory:
