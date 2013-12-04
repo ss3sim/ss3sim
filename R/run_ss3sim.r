@@ -1,6 +1,6 @@
 #' Master function to run SS3 simulations
 #'
-#' This is the main high-level wrapper function for running ss3sim
+#' This is the main high-level wrapper function for running \pkg{ss3sim}
 #' simulations. This function first deals with parsing a scenario ID into case
 #' input files and then passes these arguments on to \code{\link{ss3sim_base}}
 #' to run a simulation. Alternatively, you might choose to run
