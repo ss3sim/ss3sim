@@ -63,7 +63,9 @@ label_col <- "grey40"
 label_cex <- 0.75
 axis_col <- "grey55"
 
-pdf("fig2-20131109.pdf", width = 5, height = 4.5)
+#pdf("fig2-20131109.pdf", width = 5, height = 4.5)
+postscript("fig2.eps", horizontal = FALSE, onefile = FALSE, paper =
+  "special", width = 4.86, height = 4.374)
 layout(rbind(c(1, 1, 2, 2),
              c(1, 1, 2, 2),
              c(3, 3, 4, 4),
@@ -89,7 +91,7 @@ d_ply(quant_dat, c("D", "E"), transform, {
     axis_col, col.axis = axis_col)
   if(i %in% c(3, 4)) axis(1, col = axis_col, col.axis = axis_col, padj = -0.15)
   box(col = axis_col)
-  abline(h = 0, col = "#FFFFFF95", lty = 0, lwd = 1)
+  abline(h = 0, col = "#FFFFFF", lty = 0, lwd = 1)
   mtext(paste(unique(D), unique(E), sep = "-"), side = 3, line =
     -1.15, cex = 0.7, col = label_col, adj = 0.043)
   #mtext(scen[ii], side = 3, line = -1.15, cex = 0.7, col = label_col, adj = 0.043)
@@ -114,18 +116,19 @@ d_ply(scalar_dat_long, "variable", function(x) {
   plot(1, 1, xlim = c(.6, 4.4), ylim = c(-0.6, 0.6), type = "n",
     axes = FALSE, ann = FALSE, yaxs = "i")
   cols_ii <- cols4
+  abline(h = 0, col = axis_col, lty = 1, lwd = 1)
   beanplot::beanplot(relative_error ~ scenario, data = x, add = TRUE,
     border = NA, axes = FALSE, col = cols_ii[c(5, 3, 4, 8)], what =
     c(0, 1, 0, 0), log = FALSE)
-  points(jitter(as.numeric(x$scenario), amount = 0.07),
-    x$relative_error, col = paste0(cols_ii[3], "80"), pch = 20, cex =
-    0.2)
+  points(jitter(as.numeric(x$scenario), amount = 0.09),
+    #x$relative_error, col = paste0(cols_ii[3], "80"), pch = 20, cex =
+    x$relative_error, col = "#D0D0D0", pch = 20, cex =
+    0.17)
   if(ii %in% 5) axis(2, las = 1, at = seq(-0.6, 0.6, 0.3), col =
     axis_col, col.axis = axis_col)
   axis(1, col = axis_col, col.axis = label_col, at = 1:4, labels =
     substr(levels(x$scenario), 1, 5), las = 3)
   box(col = axis_col)
-  abline(h = 0, col = "#00000040", lty = 1, lwd = 1.5)
   #mtext(LETTERS[ii], adj = 0.05, line = -1.5, col = "grey40", cex = 0.8)
   text(0.5, 0.48, panel_labs[ii-4], col = label_col, pos = 4, cex = 1.05)
 })
