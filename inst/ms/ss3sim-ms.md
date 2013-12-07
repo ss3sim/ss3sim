@@ -7,7 +7,7 @@ Stock Synthesis (SS3) has become widely-used around the world.
 However, there lacks a generalized
 and scriptable framework for SS3 simulation testing.
 Here, we introduce `ss3sim`, an `R` package that facilitates
-large-scale, rapid, and reproducible simulation testing with SS3.
+large-scale, rapid, and reproducible end-to-end simulation testing with SS3.
 `ss3sim` requires an existing SS3 model configuration
 along with plain-text control files describing
 alternative population dynamics, fishery properties,
@@ -54,9 +54,10 @@ where we know the true dynamics of fisheries resources under exploitation.
 Recent simulation studies
 have been key to improving strategies for dealing with, for example,
 time-varying natural mortality ($M$) [@lee2011; @jiao2012; @deroba2013; @johnson2013]
-and uncertainty in steepness of the stock-recruit relationship [@lee2012],
+uncertainty in steepness of the stock-recruit relationship [@lee2012],
+and environmental variability [@schirripa2009],
 as well as determining what makes fisheries data informative
-[@magnusson2007; @wetzel2011a; @ono2013].
+[@magnusson2007; @wetzel2011a; @ono2013; @yin2004].
 
 Stock Synthesis (SS3, the third version of the software)
 is a widely-used fisheries stock assessment modeling framework [@methot2013].
@@ -70,15 +71,16 @@ is one of the world's most commonly-used stock assessment modelling frameworks,
 particularly in the United States and Australia,
 where it has been used in 35 and 12 stock assessments as of 2012,
 respectively [@methot2013].
-SS3 is also commonly used as a framework
+Stock Synthesis is also commonly used as a framework
 for stock assessment simulation testing
-[@lee2011; @jiao2012; @lee2012; @crone2013a; @hurtadoferro2013].
+[@helu2000; @yin2004; @schirripa2009; @lee2011; @jiao2012; @lee2012; @crone2013a; @hurtadoferro2013].
 
 Although SS3 is increasingly becoming a standard for fisheries stock assessment,
 there lacks a generalized framework for simulation testing with SS3.
 As a result, most stock assessment simulation-testing work to date
 has used custom frameworks tailored to the particular needs of each study
-[@magnusson2007; @wetzel2011a; @jiao2012; @wilberg2006; @deroba2013a; @deroba2013; @crone2013a; @hurtadoferro2013].
+[@helu2000; @yin2004; @magnusson2007; @wetzel2011a; @jiao2012;
+@wilberg2006; @deroba2013a; @deroba2013; @crone2013a; @hurtadoferro2013].
 The programming language `R` [@rcoreteam2013] is an ideal language
 to write such a generalized framework in because
 (1) `R` has become the standard
@@ -88,7 +90,7 @@ facilitates reading, processing, and plotting of SS3 model output.
 
 Here we introduce `ss3sim`,
 an `R` package that facilitates
-large-scale, rapid, and reproducible simulation testing
+large-scale, rapid, and reproducible end-to-end simulation testing
 with the widely-used SS3 framework.
 We begin by outlining the general structure of `ss3sim`
 and describing its functions,
@@ -365,6 +367,8 @@ with flexible biological, economic, and management components [@hillary2009].
 Thus, it is not specifically designed to explore the impact
 of structural differences within OMs and EMs.
 
+<!--There are a number of software packages available for generating operating models, and sometimes sampling from those operating models. These packages however are not complete simulation testing environments. They still must be combined with an estimation method-->
+
 Another alternative stock assessment
 simulation testing framework is *Fishery Simulation*
 (FS, <http://fisherysimulation.codeplex.com>).
@@ -440,18 +444,6 @@ and their variability can change through time [@beamish1995; @pyper1998].
 to incorporate different recruitment deviation structures
 and test how they affect model performance.
 
-<!--*The impact of bias adjustment*:-->
-<!--Bias adjustment helps ensure-->
-<!--that the estimated recruitment deviations-->
-<!--are mean-unbiased leading to unbiased estimates-->
-<!--of biomass [@methot2011].-->
-<!--However, bias adjustment requires extra model runs-->
-<!--to iteratively calculate the proper adjustment level,-->
-<!--which can be computationally intensive and time consuming.-->
-<!--`ss3sim` can turn bias adjustment on or off-->
-<!--with a single argument and so could easily be used to test when-->
-<!--and how bias adjustment affects model performance.-->
-
 *Retrospective patterns*:
 Retrospective patterns,
 in which model estimates are systematically biased
@@ -484,8 +476,8 @@ is one important role of simulation testing
 
 Most simulation testing work to date has used custom frameworks
 tailored to the particular needs of each study
-[@wilberg2006; @magnusson2007; @wetzel2011a; @jiao2012;
-@deroba2013a; @deroba2013; @crone2013a; @hurtadoferro2013].
+[@helu2000; @yin2004; @magnusson2007; @wetzel2011a; @jiao2012;
+@wilberg2006; @deroba2013a; @deroba2013; @crone2013a; @hurtadoferro2013].
 Although the complexity of many studies
 requires a custom framework,
 we encourage authors
@@ -537,8 +529,6 @@ KFJ and KO were partially supported by NOAA grant 423 NA10OAR4320148.
 This research addresses the methods component
 of the good practices guide to stock assessment program
 of the Center for the Advancement of Population Assessment Methodology (CAPAM).
-
-\clearpage
 
 \bibliography{ss3sim-ms}
 
