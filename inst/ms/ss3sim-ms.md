@@ -189,6 +189,13 @@ In `R`, the development version of `ss3sim` can be installed with:
     devtools::install_github("ss3sim", username = "seananderson",
       dependencies = TRUE)
 
+\noindent
+You can read the documentation and open the vignette (Text S1) with:
+
+    ?ss3sim
+    help(package = "ss3sim")
+    vignette("ss3sim-vignette")
+
 ## Setting up the SS3 model configurations
 
 `ss3sim` comes with built-in SS3 model configurations
