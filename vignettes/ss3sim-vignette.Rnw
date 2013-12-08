@@ -105,7 +105,7 @@ vignette("ss3sim-vignette", package = "ss3sim")
 We develop and test \texttt{ss3sim} around a specific version of SS3.
 Currently, \texttt{ss3sim} is tested to work with SS3 Version 3.24O.
 Since this is a more recent version than is provided at the normal download location\\
-\url{http://nft.nefsc.noaa.gov/Stock_Synthesis_3.htm},
+\url{http://nft.nefsc.noaa.gov/SS3.html},
 we provide copies of the 3.24O binaries (with the permission of R. Methot) at\\
 \url{https://github.com/seananderson/ss3sim/tree/ss3-binaries/inst/ss3}.
 
