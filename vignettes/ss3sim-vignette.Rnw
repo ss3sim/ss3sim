@@ -130,7 +130,7 @@ to control the simulation.
 Much of this vignette focusses on
 how to effectively use \texttt{run\_ss3sim},
 but feel free to take the low-level functions
-(\texttt{change} and \texttt{sample} functions)
+(\texttt{change} functions)
 and use them as part of your own flexible simulation.
 
 \subsection{Setting up the file structure}
