@@ -53,7 +53,7 @@ The package can be installed and loaded with:
 install.packages(c("r4ss", "plyr", "gtools", "ggplot2", "lubridate", "reshape2"))
 
 # If you would like to run simulations in parallel:
-install.packages("doParallel", "foreach")
+install.packages(c("doParallel", "foreach"))
 
 # Install devtools to install ss3sim directly from GitHub:
 install.packages("devtools")
