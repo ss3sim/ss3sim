@@ -57,7 +57,6 @@ Collate:
     'get_model_folder.r'
     'expand_scenarios.r'
     'get-results.r'
-    'fish600seeds.r'
     'ss3sim_base.r'
     'change_tv.r'
     'setup_parallel.r'
