@@ -1391,12 +1391,35 @@ sudo cp ~/Downloads/SS3 /usr/bin/
 You will need to use \texttt{sudo}
 and enter your password after to have permission
 to move a file to a folder like \texttt{/usr/bin/}.
+
+Also note that you may need to add executable permissions to the SS3 binary
+after downloading it.
+You can do that by switching to the folder where you placed the binary
+(\texttt{cd /usr/bin/} if you followed the instructions above),
+and running the command:
+
+\begin{verbatim}
+sudo chmod +x SS3
+\end{verbatim}
+
+Check that SS3 is now executable and in your path:
+
+\begin{verbatim}
+which SS3
+\end{verbatim}
+
+If you followed the instructions above, you will see the following line returned:
+
+\begin{verbatim}
+/usr/bin/SS3
+\end{verbatim}
+
 If you have previously modified your path to add a non-standard location
 for the SS3 binary,
 you may need to also tell \texttt{R} about the new path.
 The path that \texttt{R} sees may not include additional paths
 that you have added through a configuration file like \texttt{.bash\_profile}.
-You can add to the path that \texttt{R} sees
+If needed, you can add to the path that \texttt{R} sees
 by including a line like this in your \texttt{.Rprofile} file.
 (This is an invisible file in your home directory.)
 
