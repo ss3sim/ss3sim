@@ -78,18 +78,18 @@ Eventually \texttt{ss3sim} will be submitted to CRAN.
 In the meantime, it can be installed with the following code:
 
 <<install-and-load, eval=FALSE>>=
-# Dependencies if needed:
-install.packages(c("r4ss", "plyr", "gtools", "ggplot2", "lubridate",
-  "reshape2"))
-
-# If you would like to run simulations in parallel:
-install.packages(c("doParallel", "foreach"))
-
 # Install devtools to install ss3sim directly from GitHub:
 install.packages("devtools")
 
 # Install ss3sim:
-devtools::install_github("ss3sim", username = "seananderson")
+devtools::install_github("ss3sim", username = "seananderson",
+  dependencies = TRUE)
+
+# If you would like to run simulations in parallel, also install:
+install.packages(c("doParallel", "foreach"))
+
+# This vignette uses ggplot2 to make plots, you can install it with:
+install.packages("ggplot2")
 @
 
 \noindent
