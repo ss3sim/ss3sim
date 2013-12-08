@@ -187,7 +187,7 @@ data quality (D), estimation (E), fishing mortality (F),
 retrospective (R),
 and any other letter describing a time varying case
 (e.g.\ M for natural mortality, S for selectivity, or G for growth).
-These case IDs are followed by an alphanumeric stock or species identifier (e.g. \texttt{cod}).
+These case IDs are followed by an alphanumeric stock or species identifier (e.g.\ \texttt{cod}).
 The different versions of each case are identified with numbers.
 For example, the base-case scenario for a cod stock might be:
 \texttt{D0-E0-F0-M0-R0-cod}.
@@ -287,7 +287,7 @@ A minimum threshold of 80\% converged bias-adjustment replicates
 is used to ensure reliable parameter estimates.
 The mean bias adjustment runs are then used in the EM
 for all subsequent ``iterations''
-(i.e. replicates using same models but different process and observation errors)
+(i.e.\ replicates using same models but different process and observation errors)
 within that scenario.
 We assume bias adjustment parameters applicable
 to all iterations within the scenario are more likely
@@ -429,7 +429,7 @@ In case 0, we will set the phase in which \textit{M} is estimated
 to \texttt{-1} (any negative phase number will tell SS3
 to not estimate a particular parameter)
 and use the argument \texttt{NA}
-to fix \textit{M} at the true value (i.e. do not modify it from what is in the
+to fix \textit{M} at the true value (i.e.\ do not modify it from what is in the
 EM \texttt{.ctl} file).
 In case 1, we will estimate \textit{M} in
 phase \texttt{3} and initialize the estimation of \textit{M} at \texttt{0.20}.
@@ -516,7 +516,7 @@ And then check the SS3 files that are created.
 \label{sec:deterministic}
 
 Self testing is a crucial step of any simulation study.
-One way to accomplish this is to set up an EM that is the same as the OM
+One way to accomplish this is to set up an EM that is similar to the OM
 and include minimal error.
 
 We will run some simulations to check our EM for bias when process and
@@ -535,7 +535,7 @@ standard deviations, \texttt{SR\_sigmaR},
 are set to the nominal level of \texttt{0.001}.
 We will name these files \texttt{E100-cod.txt} and \texttt{E101-cod.txt}.
 In the case files, the key element is setting
-\texttt{par\_name = SR\_sigmaR} (the SS parameter name) and \texttt{par\_int = 0.001} (the initial value).
+\texttt{par\_name = SR\_sigmaR} (the SS3 parameter name) and \texttt{par\_int = 0.001} (the initial value).
 The arguments \texttt{par\_name} and \texttt{par\_int} are set up
 to handle vectors of parameter names and values.
 In this example, changing
@@ -633,8 +633,8 @@ run_ss3sim(iterations = 1:100, scenarios =
 
 The function \texttt{get\_results\_all} reads in a set of scenarios
 and combines the output into two \texttt{.csv} files:
-\texttt{ss3sim\_scalar.csv} and \texttt{ss3sim\_ts.csv}. The ``scalar'' file
-contains values for which there is a single estimated value (e.g.\ MSY) and the ``ts''
+\texttt{ss3sim\_scalar.csv} and \texttt{ss3sim\_ts.csv}. The \texttt{scalar} file
+contains values for which there is a single estimated value (e.g.\ MSY) and the \texttt{ts}
 file refers to values for which there are time series of estimates available (e.g.\ biomass
 for each year). The column names refer to the output from SS3, so it
 can be useful to consult the SS3 manual for details.
@@ -710,7 +710,7 @@ scalar_dat_long <- plyr::rename(scalar_dat_long,
 \noindent
 Now we can create boxplots of the deterministic model runs. The following code produces Figure~\ref{fig:relative-error-boxplots-det}.
 
-<<relative-error-boxplots-det, fig.height=7, fig.width=5, out.width="4in", cache=TRUE, fig.cap="Relative error box plots for deterministic runs. In case E100, \\textit{M} is fixed at the historical value; in E101 we estimate \\textit{M}. In case D100, the standard deviation on the survey index observation error is 0.001.">>=
+<<relative-error-boxplots-det, fig.height=7, fig.width=5, out.width="4in", cache=TRUE, fig.cap="Relative error box plots for deterministic runs. In case E100, \\textit{M} is fixed at the true value; in E101 we estimate \\textit{M}. In case D100, the standard deviation on the survey index observation error is 0.001.">>=
 library(ggplot2)
 p <- ggplot(subset(scalar_dat_long, E %in% c("E100", "E101") &
        variable != "SR_sigmaR"), aes(D, relative_error)) +
@@ -748,7 +748,7 @@ p <- ggplot(ts_dat_sto, aes(year, SpawnBio_em, group = replicate)) +
 print(p)
 @
 
-<<relative-error-boxplots-sto, fig.height=7, fig.width=5, out.width="4in", cache=TRUE, fig.cap="Relative error box plots for stochastic runs. In case E0, \\textit{M} is fixed at the historical value; in E1 we estimate \\textit{M}. In case D1, the standard deviation on the survey index observation error is 0.4. In case D0, the standard deviation is quartered representing an increase in survey sampling effort.">>=
+<<relative-error-boxplots-sto, fig.height=7, fig.width=5, out.width="4in", cache=TRUE, fig.cap="Relative error box plots for stochastic runs. In case E0, \\textit{M} is fixed at the true value; in E1 we estimate \\textit{M}. In case D1, the standard deviation on the survey index observation error is 0.4. In case D0, the standard deviation is quartered representing an increase in survey sampling effort.">>=
 p <- ggplot(subset(scalar_dat_long, E %in% c("E0", "E1")),
        aes(D, relative_error)) +
      geom_boxplot() + geom_hline(aes(yintercept = 0), lty = 2) +
@@ -854,7 +854,7 @@ It cannot alter the properties of parameters that already vary with time.
 Also, it will not work with custom environmental linkages.
 Environmental linkages for all parameters in the OM
 must be declared by a single line
-(i.e. \texttt{0 \#\_custom\_mg-env\_setup (0/1)}
+(i.e.\ \texttt{0 \#\_custom\_mg-env\_setup (0/1)}
 prior to using \texttt{change\_tv}.
 Additionally, SS3 does not allow more than one stock recruit parameter
 to vary with time. Therefore, if the \texttt{.ctl} file already has a
@@ -1151,7 +1151,7 @@ The following steps are used to generate overdispersed samples:
   with twice the standard deviation of the multinomial by setting $c=2$.
 \end{enumerate}
 
-The composition sampling functions provided in the package allows you
+The composition sampling functions provided in the package allow you
 to specify the level of overdispersion.  Note that the package does
 not allow for tuning of the effective sample size, and the argument
 \texttt{cpar} controls the level of overdispersion in the sampling
@@ -1201,11 +1201,12 @@ functions. An alternative way of testing bin structure would be to
 setup different models that have the bin structures desired.
 
 \subsection{Sampling indices}\label{sec:indices}
-Compared to sampling from the age and length compositions the abundance indices
-are relatively straightforward. The OM \texttt{.dat} file contains the
+Compared to sampling from the age and length compositions,
+sampling from the abundance indices
+is relatively straightforward. The OM \texttt{.dat} file contains the
 annual biomass values, and the \texttt{change\_index} function uses
 these true values as the expected value for all fleets (CPUE from fisheries
-as well as scientific surveys). The function uses a bias adjusted
+as well as scientific surveys). The function uses a bias-adjusted
 log-normal distribution with expected values given by the OM biomass
 and a user-provided standard deviation term that controls the level of
 variance.
@@ -1226,9 +1227,9 @@ the true value. It is possible for the user to specify the amount of
 uncertainty (e.g.\ to mimic the amount of survey effort), but it is not
 possible to induce bias in this process. The user-supplied $\sigma$
 terms are written to the \texttt{.dat} file along with the sampled
-values, meaning that the EM has the correct level of uncertainty. Thus
-for all fleets the EM has unbiased estimates of $B_y$ and the true
-$\sigma_y$.
+values, meaning that the EM has the correct level of uncertainty. Thus,
+the EM has unbiased estimates of $B_y$ and the true
+$\sigma_y$ for all fleets.
 
 \section{Incorporating process error}
 \label{sec:pro-error}
@@ -1246,7 +1247,7 @@ and bias adjusted within the package.That is,
   \text{recdev}_i=\sigma_r z_i-\sigma_r^2/2
 \end{equation*}
 where $z_i$ is a standard normal deviate and the bias adjustment term
-($\sigma_r^2/2$) makes the deviates have an expected value of 0 after
+($\sigma_r^2/2$) makes the deviates have an expected value of 1 after
 exponentiation.
 
 If the recruitment deviations are not specified,
@@ -1256,18 +1257,18 @@ recruitment deviations, via the argument \texttt{user\_recdevs} to the
 top-level function \texttt{ss3sim\_base}. Ensure that you pass a matrix
 with at least enough columns (iterations) and rows (years). The
 user-supplied recruitment deviations are used exactly as specified
-(i.e.\ not multiplied by $\sigma_r$ as specified in the SS model),
+(i.e.\ not multiplied by $\sigma_r$ as specified in the SS3 model),
 and\textbf{ it is up to you to bias correct them manually} by
 subtracting $\sigma_r^2 / 2$ as is done above. This functionality
 allows for flexibility in how the recruitment deviations are
 specified, for example running deterministic runs (Section
-\ref{sec:deterministic}).
+\ref{sec:deterministic}) or adding serial correlation.
 
 Note that for both built-in and user-specified recdevs \texttt{ss3sim}
 will reuse the same set of recruitment deviations for all iterations
 across scenarios. For example if you have two scenarios and run 100
 iterations of each, the same set of recruitment deviations are used
-between these two scenarios.
+between those two scenarios.
 
 \section{Stochastic reproducibility}
 \label{sec:reproduce}
@@ -1290,15 +1291,15 @@ or by changing the iteration numbers
 If you want the different scenarios to have different process
 error you will need to make separate calls to \texttt{run\_ss3sim} for
 each scenario and pass a different matrix of \texttt{user\_recdevs}
-(see Section \ref{sec:pro-error}). For most applications this should
-not be necessary.
+(see Section \ref{sec:pro-error}) or pass different iteration numbers.
+For most applications this should not be necessary.
 
 The observation error seed
 (affecting the index, length composition, and age composition sampling)
 is set during the OM generation.
 Therefore, a given iteration-case-file-argument combination will generate repeatable results.
 Given that different case arguments can generate different sampling routines
-(e.g. stochastically sampling or not sampling from the age compositions or sampling a different number of years)
+(e.g.\ stochastically sampling or not sampling from the age compositions or sampling a different number of years)
 the observation error is not necessarily comparable across different case arguments.
 
 \section{Parallel computing with \texttt{ss3sim}}
@@ -1348,7 +1349,7 @@ On a 2.27 GHz Intel Xeon quad-core server running Ubuntu 10.04,
 this example ran 1.9 times faster on two cores than on a single core,
 and 3.2 times faster on four cores.
 
-
+\clearpage
 \bibliographystyle{apalike}
 \bibliography{refs}
 
@@ -1368,7 +1369,7 @@ To accomplish this, SS3 must be in your system path, which is
 a list of folders that your operating system looks in
 whenever you type the name of a program on the command line.
 This approach saves on storage space since the SS3 binary is about 2.2 MB and
-having it located in each folder can be prohibitive in a large scale simulation
+having it located in each folder can be prohibitive in a large-scale simulation
 testing study.
 
 \subsection{For Unix (OS X and Linux)}
@@ -1439,8 +1440,7 @@ To add the SS3 binary file to your path, follow these steps:
   and try typing \texttt{ss3 -?} and hitting return again.
 \end{enumerate}
 
-
-
+\clearpage
 \section{Setting up a new operating model}
 \label{sec:om-setup}
 In some cases the user may wish to adapt their own SS3 model to work
@@ -1592,7 +1592,7 @@ in Section \ref{sec:em-setup} we cover setting up an estimation model.
    Names must be separated by a \texttt{\%} with no spaces.
    It is these names which you will use in the plain text case files
    to specify and change characteristics of each fleet throughout the simulation.
-   E.g. \texttt{Fishery\%Survey1\%Survey2}
+   E.g.\ \texttt{Fishery\%Survey1\%Survey2}
 \item Specify the number of mean body weight observations across all selected sizes and ages
    to be specific to measured fish by setting \texttt{\#N observations}
    to \texttt{0}. Subsequently, specify \texttt{1} degree of freedom for the
@@ -1633,6 +1633,7 @@ estimates of parameters; it is intended to only be run for one
 iteration to generate the population dynamics using values
 specified in the input files.
 
+\clearpage
 \section{Setting up a new estimation model}
 \label{sec:em-setup}
 Unlike the OM, the EM needs to be a valid SS3 model setup and run to achieve MLE
@@ -1674,7 +1675,7 @@ create a new EM.
    to \texttt{7}.
  \item Use the functions in the \texttt{ss3sim} package
    to change the estimation specification in the EM.
-   E.g. \texttt{change\_e}
+   E.g.\ \texttt{change\_e}
 \end{enumerate}
 
 \subsection{Data file modifications}
