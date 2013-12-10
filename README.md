@@ -2,7 +2,7 @@
 
 `ss3sim` is a software package for the statistical programming language
 [R][r-project] that facilitates large-scale, rapid, and reproducible
-stock-assessment simulation with the widely-used [Stock Synthesis 3][SS3]
+stock-assessment simulation testing with the widely-used [Stock Synthesis 3][SS3]
 (SS3) statistical catch-at-age stock-assessment framework.
 
 `ss3sim` was developed by graduate students and post doctoral researchers at
@@ -49,31 +49,29 @@ An illustration of the `ss3sim` simulation structure and relevant R functions
 The package can be installed and loaded with:
 
 ```S
-# Dependencies if needed:
-install.packages(c("r4ss", "plyr", "gtools", "ggplot2", "lubridate", "reshape2"))
-
-# If you would like to run simulations in parallel:
-install.packages(c("doParallel", "foreach"))
-
 # Install devtools to install ss3sim directly from GitHub:
 install.packages("devtools")
 
+# If you would like to run simulations in parallel, also install:
+install.packages(c("doParallel", "foreach"))
+
 # Install ss3sim:
-devtools::install_github("ss3sim", username = "seananderson")
+devtools::install_github("ss3sim", username = "seananderson", dependencies = TRUE)
 
 # Load ss3sim:
 library(ss3sim)
 ```
 
-You can read the help files with:
+You can read the help files and access the vignette with:
 
 ```S
 ?ss3sim
 help(package = "ss3sim")
+vignette("ss3sim-vignette", package = "ss3sim")
 ```
 
 For details on using `ss3sim` for stock-assessment simulation, see the
-[in-progress vignette][vignette] [PDF] and the [in-progress paper][paper] [PDF].
+[vignette][vignette] [PDF] and the [paper][paper], which has been submitted to PLOS ONE [PDF].
 
 [DESCRIPTION]: https://github.com/seananderson/ss3sim/blob/master/DESCRIPTION
 [models]: https://github.com/seananderson/ss3sim/tree/master/inst/extdata/models
