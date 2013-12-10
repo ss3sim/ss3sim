@@ -70,8 +70,10 @@ help(package = "ss3sim")
 vignette("ss3sim-vignette", package = "ss3sim")
 ```
 
-For details on using `ss3sim` for stock-assessment simulation, see the
-[vignette][vignette] [PDF] and the [paper][paper], which has been submitted to PLOS ONE [PDF].
+For reproducible examples of `ss3sim` simulations as well as details on installing
+the correct version of SS3, and adding SS3 to your operating system's path so
+`ss3sim` can find the software, see the [vignette][vignette] [PDF]. Also, see the
+[paper][paper], which has been submitted to PLOS ONE [PDF].
 
 [DESCRIPTION]: https://github.com/seananderson/ss3sim/blob/master/DESCRIPTION
 [models]: https://github.com/seananderson/ss3sim/tree/master/inst/extdata/models
