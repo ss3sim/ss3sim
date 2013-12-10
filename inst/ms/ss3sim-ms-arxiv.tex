@@ -1,4 +1,4 @@
-\documentclass[11pt]{article}
+\documentclass[12pt]{article}
 \pdfoutput=1
 
 % amsmath package, useful for mathematical formulas
@@ -15,10 +15,8 @@
 
 \usepackage{color}
 
-% Use doublespacing - comment out for single spacing
-\usepackage{setspace}
-%\doublespacing
-%\onehalfspacing
+\usepackage{afterpage}
+\usepackage{booktabs}
 
 
 % Text layout
@@ -121,6 +119,43 @@ We designed \texttt{ss3sim} to be reproducible, flexible, and rapid. \emph{Repro
 
 \texttt{ss3sim} consists of both low-level functions that modify SS3 configuration files and high-level functions that combine these low-level functions into a complete simulation experiment (Figure 1, Table 1). In this paper we will focus on the structure and use of the high-level function \texttt{run\_ss3sim}; however, the low-level functions can be used on their own as part of a customized simulation.
 
+\begin{table}[htpb]
+  \centering
+\caption{\textbf{Main \texttt{ss3sim} functions and a description of their purpose.} Simulations can be run through the \texttt{run\_ss3sim} function, which then calls the \texttt{change} functions. Users can control what the \texttt{change} functions do through a series of plain-text case files. For example, the case ID \texttt{D1} corresponds to the case files \texttt{lcomp1}, \texttt{agecomp1}, and \texttt{index1}, as described in the table. Users can also skip setting up case files and specify arguments to \texttt{ss3sim\_base} directly, or use the \texttt{change} functions as part of their own simulation structure (Text S1).}
+  \begin{tabular}{p{4.5cm}p{10cm}}
+    \toprule
+Function name &          Description\\
+    \midrule
+    \texttt{run\_ss3sim} &           Main high-level function to run \texttt{ss3sim} simulations.\\
+
+    \texttt{ss3sim\_base} &          Underlying base simulation function. Can also be called directly.\\
+
+    \texttt{change\_rec\_devs} &      Substitutes recruitment deviations.\\
+
+    \texttt{change\_f} &             Adds fishing mortality time series. (Case file and ID \texttt{F})\\
+
+    \texttt{change\_tv} &            Adds time-varying features. For example, time-varying natural mortality, growth, or selectivity. (Any case file and ID, e.g. \texttt{M}, starting with \texttt{function\_type; change\_tv})\\
+
+    \texttt{change\_index} &         Controls how the fishery and survey indices are sampled. (Case file \texttt{index}, case ID \texttt{D})\\
+
+    \texttt{change\_agecomp} &       Controls how age composition data are sampled. (Case file \texttt{agecomp}, case ID \texttt{D})\\
+
+    \texttt{change\_lcomp} &         Controls how length composition data are sampled. (Case file \texttt{lcomp}, case ID \texttt{D})\\
+
+    \texttt{change\_retro} &         Controls the number of years to discard for a retrospective analysis. (Case file and ID \texttt{R})\\
+
+    \texttt{change\_e} &             Controls which and how parameters are estimated. (Case file and ID \texttt{E})\\
+
+    \texttt{run\_bias\_ss3} &         Determines the level of adjustment to ensure mean-unbiased estimates of recruitment and biomass.\\
+
+    \texttt{get\_results\_scenario} & Extracts results for a single scenario.\\
+
+    \texttt{get\_results\_all} &      Extracts results for a series of scenarios.\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=3.27in]{sim-steps.pdf}
@@ -133,99 +168,6 @@ Functions that are called internally are shown in a monospaced font.
 \label{fig:sim-steps}
 \end{figure}
 
-\begin{small}
-\LTcapwidth=\textwidth
-\begin{longtable}[c]{@{}ll@{}}
-\caption{\textbf{Main \texttt{ss3sim} functions and a description of their purpose.} Simulations can be run through the \texttt{run\_ss3sim} function, which then calls the \texttt{change} functions. Users can control what the \texttt{change} functions do through a series of plain-text case files. For example, the case ID \texttt{D1} corresponds to the case files \texttt{lcomp1}, \texttt{agecomp1}, and \texttt{index1}, as described in the table. Users can also skip setting up case files and specify arguments to \texttt{ss3sim\_base} directly, or use the \texttt{change} functions as part of their own simulation structure (Text S1).}\\
-\hline\noalign{\medskip}
-\begin{minipage}[b]{0.32\columnwidth}\raggedright
-Function name
-\end{minipage} & \begin{minipage}[b]{0.57\columnwidth}\raggedright
-Description
-\end{minipage}
-\\\noalign{\medskip}
-\hline\noalign{\medskip}
-\begin{minipage}[t]{0.32\columnwidth}\raggedright
-\texttt{run\_ss3sim}
-\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
-Main high-level function to run \texttt{ss3sim} simulations.
-\end{minipage}
-\\\noalign{\medskip}
-\begin{minipage}[t]{0.32\columnwidth}\raggedright
-\texttt{ss3sim\_base}
-\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
-Underlying base simulation function. Can also be called directly.
-\end{minipage}
-\\\noalign{\medskip}
-\begin{minipage}[t]{0.32\columnwidth}\raggedright
-\texttt{change\_rec\_devs}
-\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
-Substitutes recruitment deviations.
-\end{minipage}
-\\\noalign{\medskip}
-\begin{minipage}[t]{0.32\columnwidth}\raggedright
-\texttt{change\_f}
-\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
-Adds fishing mortality time series. (Case file and ID \texttt{F})
-\end{minipage}
-\\\noalign{\medskip}
-\begin{minipage}[t]{0.32\columnwidth}\raggedright
-\texttt{change\_tv}
-\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
-Adds time-varying features. For example, time-varying natural mortality, growth, or selectivity. (Any case file and ID, e.g.~\texttt{M}, starting with ``\texttt{function\_type; change\_tv}'')
-\end{minipage}
-\\\noalign{\medskip}
-\begin{minipage}[t]{0.32\columnwidth}\raggedright
-\texttt{change\_index}
-\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
-Controls how the fishery and survey indices are sampled. (Case file \texttt{index}, case ID \texttt{D})
-\end{minipage}
-\\\noalign{\medskip}
-\begin{minipage}[t]{0.32\columnwidth}\raggedright
-\texttt{change\_agecomp}
-\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
-Controls how age composition data are sampled. (Case file \texttt{agecomp}, case ID \texttt{D})
-\end{minipage}
-\\\noalign{\medskip}
-\begin{minipage}[t]{0.32\columnwidth}\raggedright
-\texttt{change\_lcomp}
-\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
-Controls how length composition data are sampled. (Case file \texttt{lcomp}, case ID \texttt{D})
-\end{minipage}
-\\\noalign{\medskip}
-\begin{minipage}[t]{0.32\columnwidth}\raggedright
-\texttt{change\_retro}
-\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
-Controls the number of years to discard for a retrospective analysis. (Case file and ID \texttt{R})
-\end{minipage}
-\\\noalign{\medskip}
-\begin{minipage}[t]{0.32\columnwidth}\raggedright
-\texttt{change\_e}
-\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
-Controls which and how parameters are estimated. (Case file and ID \texttt{E})
-\end{minipage}
-\\\noalign{\medskip}
-\begin{minipage}[t]{0.32\columnwidth}\raggedright
-\texttt{run\_bias\_ss3}
-\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
-Determines the level of adjustment to ensure mean-unbiased estimates of recruitment and biomass.
-\end{minipage}
-\\\noalign{\medskip}
-\begin{minipage}[t]{0.32\columnwidth}\raggedright
-\texttt{get\_results\_scenario}
-\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
-Extracts results for a single scenario.
-\end{minipage}
-\\\noalign{\medskip}
-\begin{minipage}[t]{0.32\columnwidth}\raggedright
-\texttt{get\_results\_all}
-\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
-Extracts results for a series of scenarios.
-\end{minipage}
-\\\noalign{\medskip}
-\hline
-\end{longtable}
-\end{small}
 
 An \texttt{ss3sim} simulation requires three types of input: (1) a base SS3 model configuration describing the underlying true population dynamics, or operating model (OM); (2) a base SS3 model configuration to assess that truth based on data generated using the OM, also known as the estimation model or method (EM); and (3) a set of plain-text files (case files) describing alternative model configurations and deviations from these base models (e.g.~different fishing mortality or $M$ trajectories). We refer to each unique combination of OM, EM, and case files as a scenario. Scenarios are usually run for multiple iterations, possibly adding unique process and observation error to the OM each time. An \texttt{ss3sim} simulation therefore refers to the combination of all scenarios and iterations.
 
@@ -262,7 +204,9 @@ To use \texttt{run\_ss3sim} all case files must be named according to the type o
 
 To investigate the effect of different levels of precision of a fishery independent index of abundance, we will manipulate the argument \texttt{sds\_obs} that gets passed to the function \texttt{change\_index}. In data case 0, we will specify the standard deviation of the index of abundance at \texttt{0.1} and in case 1 we will increase the standard deviation to \texttt{0.4}. We can do this by including the line: \texttt{sds\_obs; list(0.1)} in the file \texttt{index0-cod.txt} and the line: \texttt{sds\_obs; list(0.4)} in the file \texttt{index1-cod.txt}. We will also set up a base-case file describing fishing mortality (\texttt{F0-cod.txt}), a file describing a stationary $M$ trajectory (\texttt{M0-cod.txt}), and specify that we do not want to run a retrospective analysis in the file \texttt{R0-cod.txt}. We will set up the file \texttt{E0-cod.txt} to fix the estimation of $M$ at the true value and case \texttt{E1-cod.txt} to estimate a stationary $M$ (Text S1).
 
-All of these text files are available in the package data in the folder \texttt{inst/extdata/eg-cases/}. As an example, here is what the complete \texttt{index0-cod.txt} file looks like:
+All of these text files are available in the package data in the folder\\ \texttt{inst/extdata/eg-cases/}. As an example, here is what the complete \texttt{index0-cod.txt} file looks like:
+
+%\clearpage
 
 \begin{verbatim}
 fleets; 2
@@ -302,7 +246,7 @@ get_results_all()
 \end{verbatim}
 
 \noindent
-This command creates two files in our working directory: \texttt{ss3sim\_scalars.csv} and \texttt{ss3sim\_ts} \texttt{.csv}, which contain scalar output estimates (e.g.~steepness and maximum sustainable yield) and time-series estimates (e.g.~recruitment and biomass each year). These estimates come from the report files produced from each run of SS3 and are read by the \texttt{r4ss} \texttt{R} package. The \texttt{.csv} files contain separate columns for OM and EM values, making it simple to calculate error metrics, such as relative or absolute error. In addition to parameter estimates, the \texttt{.csv} files contain performance metrics, such as the maximum gradient, whether the covariance matrix was successfully calculated, and the number of parameters stuck on a bound, which in combination can be used to gauge model performance and convergence. These results are organized into ``long'' data format, with columns for scenario and iteration, facilitating quick analysis and plotting using common \texttt{R} packages such as \texttt{ggplot2} \cite{wickham2009}.
+This command creates two files in our working directory: \texttt{ss3sim\_scalars.csv} and \texttt{ss3sim\_ts.csv}, which contain scalar output estimates (e.g.~steepness and maximum sustainable yield) and time-series estimates (e.g.~recruitment and biomass each year). These estimates come from the report files produced from each run of SS3 and are read by the \texttt{r4ss} \texttt{R} package. The \texttt{.csv} files contain separate columns for OM and EM values, making it simple to calculate error metrics, such as relative or absolute error. In addition to parameter estimates, the \texttt{.csv} files contain performance metrics, such as the maximum gradient, whether the covariance matrix was successfully calculated, and the number of parameters stuck on a bound, which in combination can be used to gauge model performance and convergence. These results are organized into ``long'' data format, with columns for scenario and iteration, facilitating quick analysis and plotting using common \texttt{R} packages such as \texttt{ggplot2} \cite{wickham2009}.
 
 For our example simulation, the relative error in spawning stock biomass over time is, as expected, smaller when the true value of $M$ is specified rather than estimated (Figure 2, top panels E0 vs.~E1). Furthermore, lower precision in the research survey index of abundance results in greater relative error in spawning stock biomass in recent years (Figure 2, top panels D0 vs.~D1), and greater relative error in terminal-year depletion and fishing mortality, but not in spawning stock biomass at maximum sustainable yield, or $M$ (Figure 2, lower panels).
 
@@ -360,7 +304,7 @@ Most simulation testing work to date has used custom frameworks tailored to the 
 
 We thank the participants and mentors of the University of Washington's School of Aquatic and Fishery Sciences 2013 FISH 600 course. Discussions with these individuals were instrumental to the conceptual and technical development of \texttt{ss3sim}. Many participants also contributed code and are listed within specific \texttt{ss3sim} \texttt{R} functions. Participants: Curry Cunningham, Felipe Hurtado-Ferro, Roberto Licandeo, Carey McGilliard, Melissa Muradian, Cody Szuwalski, Katyana Vert-pre, and Athol Whitten. Mentors: Richard Methot, Andr\'{e} Punt, Jim Ianelli, and Ian Taylor. We thank Jim Ianelli, Andr\'{e} Punt, and Ian Stewart for comments that improved our manuscript.
 
-SCA was supported by Fulbright Canada (generously hosted by Trevor A. Branch), NSERC, and a Garfield Weston Foundation/B.C. Packers Ltd.~Graduate Fellowship in Marine Sciences. KFJ and KO were partially supported by NOAA grant 423 NA10OAR4320148. This research addresses the methods component of the good practices guide to stock assessment program of the Center for the Advancement of Population Assessment Methodology (CAPAM).
+SCA was supported by Fulbright Canada (generously hosted by Trevor A. Branch), NSERC, and a Garfield Weston Foundation/B.C. Packers Ltd.~Graduate Fellowship in Marine Sciences. KFJ and KO were partially supported by NOAA grant 423 NA10O-AR4320148. This research addresses the methods component of the good practices guide to stock assessment program of the Center for the Advancement of Population Assessment Methodology (CAPAM).
 
 %\bibliography{ss3sim-ms}
 \begin{thebibliography}{10}
