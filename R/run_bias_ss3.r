@@ -97,7 +97,7 @@ run_bias_ss3 <-function(dir, outdir, nsim, conv_crit = 0.2) {
   # then create a WARNING.txt file
   if(sum(as.numeric(is.na(bias.table$bias1)))/length(bias.table$bias1) > conv_crit) {
     WARNINGS <- paste(
-"WARNINGS: more than 20% of cases produces non invertible hessian.
+"WARNINGS: more than conv_crit% of cases produced non invertible Hessians.
 These are iterations ",
       paste(which(is.na(bias.table$bias1)), collapse = ","))
     write.table(WARNINGS, file = paste0(dir, "/WARNINGS.txt"))
