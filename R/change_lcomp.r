@@ -1,12 +1,12 @@
 #' Sample length compositions from expected values
-#' 
-#' Take a \code{data.SS_new} file containing expected values and sample to 
+#'
+#' Take a \code{data.SS_new} file containing expected values and sample to
 #' create observed length compositions which are then written to file for use
 #' by the EM.
-#' 
-#' @author Cole Monnahan and Kotaro Ono; modified from a version by Roberto 
+#'
+#' @author Cole Monnahan and Kotaro Ono; modified from a version by Roberto
 #'   Licandeo and Felipe Hurtado-Ferro
-#'   
+#'
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
 #' @param lengthbin_vector A numeric vector giving the new length bins to use.
@@ -14,7 +14,7 @@
 #'   This feature allows dynamic binning by the user, but is not fully tested.
 #'   Users should consult the vignette and carefully check the function bins
 #'   the data as desired before proceeding with simulations.
-#'   
+#'
 #' @template sampling-return
 #'
 #' @examples
@@ -37,7 +37,7 @@
 #' ## bins (same as ex1 except bins)
 #' ex3 <- change_lcomp(infile=infile, outfile="test3.dat", fleets=c(1,2),
 #'                     Nsamp=list(100,50), years=list(seq(1994, 2012, by=2),
-#'                           2003:2012), lengthbin_vector = seq(9,30,by=2), 
+#'                           2003:2012), lengthbin_vector = seq(9,30,by=2),
 #'                           write_file = FALSE)
 #'
 #' plot(seq(8,30,by=2), as.numeric(ex3[1, -(1:6)]), type="b", col=2,

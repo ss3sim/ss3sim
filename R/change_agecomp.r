@@ -50,7 +50,7 @@
 #'      main="Comparison of different age bin structures via agebin_vector")
 #' lines(0:15, as.numeric(ex2[1, -(1:9)]), type="b", col=1)
 #' legend("topright", legend=c("ex2", "ex3"), col=c(1,2), pch=1)
-#' 
+#'
 #' ## Run three  cases showing Multinomial, Dirichlet(1) and over-dispersed
 #' ## Dirichlet for different levels of sample sizes
 #' op <- par(mfrow = c(1,3))
