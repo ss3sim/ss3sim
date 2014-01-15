@@ -1,5 +1,11 @@
 all: plos
 
+arxiv:
+	pdflatex ss3sim-arxiv
+	bibtex ss3sim-arxiv
+	pdflatex ss3sim-arxiv
+	pdflatex ss3sim-arxiv
+
 plos:
 	pandoc -S --no-wrap --bibliography=ss3sim-ms.bib --natbib ss3sim-ms.md -o manuscript.tex
 	perl -p -i -e "s/Fig. /Fig.~/g" manuscript.tex
