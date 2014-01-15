@@ -2,8 +2,8 @@
 \alias{change_index}
 \title{Sample the biomass with observation error}
 \usage{
-  change_index(infile, outfile, fleets, years, sds_obs,
-    make_plot = FALSE, write_file = TRUE)
+change_index(infile, outfile, fleets, years, sds_obs, make_plot = FALSE,
+  write_file = TRUE)
 }
 \arguments{
   \item{infile}{An SS data object as read in from
@@ -40,18 +40,18 @@
   exploring the function.}
 }
 \value{
-  A modified \code{.dat} file if \code{write_file=TRUE}. A
-  list object containing the modified \code{.dat} file is
-  returned invisibly.
+A modified \code{.dat} file if \code{write_file=TRUE}. A
+list object containing the modified \code{.dat} file is
+returned invisibly.
 }
 \description{
-  This function creates an index of abundance sampled from
-  the expected available biomass for given fleets in given
-  years. Let B_y be the biomass from the OM for year y.
-  Then the sampled value is calculated as: B_y*exp(rnorm(1,
-  0, \code{sds_obs})-\code{sds_obs}^2/2). The second term
-  adjusts the random samples so that their expected value
-  is B_y (i.e. the log-normal bias correction).
+This function creates an index of abundance sampled from
+the expected available biomass for given fleets in given
+years. Let B_y be the biomass from the OM for year y. Then
+the sampled value is calculated as: B_y*exp(rnorm(1, 0,
+\code{sds_obs})-\code{sds_obs}^2/2). The second term
+adjusts the random samples so that their expected value is
+B_y (i.e. the log-normal bias correction).
 }
 \examples{
 \dontrun{
@@ -82,6 +82,6 @@ ggplot(ex3, aes(x=year, y=obs, group=index, ymin=0,
 }
 }
 \author{
-  Cole Monnahan, Kotaro Ono
+Cole Monnahan, Kotaro Ono
 }
 

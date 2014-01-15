@@ -2,8 +2,8 @@
 \alias{get_results_all}
 \title{Extract SS3 simulation output}
 \usage{
-  get_results_all(directory = getwd(),
-    overwrite_files = FALSE, user_scenarios = NULL)
+get_results_all(directory = getwd(), overwrite_files = FALSE,
+  user_scenarios = NULL)
 }
 \arguments{
   \item{directory}{The directory which contains scenario
@@ -18,18 +18,18 @@
   find all scenario folders in \code{directory}}
 }
 \value{
-  Creates two .csv files in the current working directory:
-  ss3sim_ts.csv and ss3sim_scalar.csv.
+Creates two .csv files in the current working directory:
+ss3sim_ts.csv and ss3sim_scalar.csv.
 }
 \description{
-  This high level function extracts results from SS3 model
-  runs. Give it a directory which contains directories for
-  different "scenario" runs, within which are replicates
-  and potentially bias adjustment runs. It writes two
-  data.frames to file: one for single scalar values (e.g.
-  MSY) and a second that contains output for each year of
-  the same model (timeseries, e.g. biomass(year)). These
-  can always be joined later.
+This high level function extracts results from SS3 model
+runs. Give it a directory which contains directories for
+different "scenario" runs, within which are replicates and
+potentially bias adjustment runs. It writes two data.frames
+to file: one for single scalar values (e.g. MSY) and a
+second that contains output for each year of the same model
+(timeseries, e.g. biomass(year)). These can always be
+joined later.
 }
 \examples{
 \dontrun{
@@ -102,11 +102,11 @@ g+geom_jitter(aes(y=Recruit_0), size=.1, alpha=.3)+
 }
 }
 \author{
-  Cole Monnahan
+Cole Monnahan
 }
 \seealso{
-  Other get.results: \code{\link{get_results_scalar}},
-  \code{\link{get_results_scenario}},
-  \code{\link{get_results_timeseries}}
+Other get.results: \code{\link{get_results_scalar}};
+\code{\link{get_results_scenario}};
+\code{\link{get_results_timeseries}}
 }
 

@@ -2,7 +2,7 @@
 \alias{substr_r}
 \title{Substring from right}
 \usage{
-  substr_r(x, n)
+substr_r(x, n)
 }
 \arguments{
   \item{x}{A character object}
@@ -11,9 +11,9 @@
   extract}
 }
 \description{
-  Substring from right
+Substring from right
 }
 \references{
-  http://stackoverflow.com/questions/7963898/extracting-the-last-n-characters-from-a-string-in-r
+http://stackoverflow.com/questions/7963898/extracting-the-last-n-characters-from-a-string-in-r
 }
 

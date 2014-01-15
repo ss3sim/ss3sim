@@ -2,8 +2,8 @@
 \alias{change_retro}
 \title{Alter a starter file for a retrospective analysis}
 \usage{
-  change_retro(startfile_in = "starter.ss",
-    startfile_out = "starter.ss", retro_yr = 0)
+change_retro(startfile_in = "starter.ss", startfile_out = "starter.ss",
+  retro_yr = 0)
 }
 \arguments{
   \item{startfile_in}{Input \code{starter.ss} file}
@@ -15,20 +15,20 @@
   analysis) or a negative value.}
 }
 \value{
-  A modified SS3 starter file.
+A modified SS3 starter file.
 }
 \description{
-  A retrospective analysis tests the effect of peeling back
-  the number of operating model years observable to the
-  estimation model. This function alters the SS3 starter
-  file to run a retrospective analysis.
+A retrospective analysis tests the effect of peeling back
+the number of operating model years observable to the
+estimation model. This function alters the SS3 starter file
+to run a retrospective analysis.
 }
 \details{
-  Note that the starter file is set up to run a single
-  retrospective run. Therefore, if you would like to run
-  retrospective analyses for, say, 0, 1, 2, 3, 4, and 5
-  years, you will need to use this function to adjust the
-  starter file 6 separate times.
+Note that the starter file is set up to run a single
+retrospective run. Therefore, if you would like to run
+retrospective analyses for, say, 0, 1, 2, 3, 4, and 5
+years, you will need to use this function to adjust the
+starter file 6 separate times.
 }
 \examples{
 # Create a temporary folder for the output:
@@ -48,6 +48,6 @@ change_retro(starterfile, paste0(temp_path, "/retro-5-starter.ss"),
 retro_yr = -5)
 }
 \author{
-  Sean C. Anderson
+Sean C. Anderson
 }
 

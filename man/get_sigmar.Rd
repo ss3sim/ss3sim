@@ -2,18 +2,18 @@
 \alias{get_sigmar}
 \title{Get recruitment deviation sigma}
 \usage{
-  get_sigmar(om)
+get_sigmar(om)
 }
 \arguments{
   \item{om}{The name of the operating model, which should
   be the prefix of the \code{.ctl} file, eg. "myOM".}
 }
 \description{
-  Use the name of the operating model to open the ctl file
-  and obtain the INIT value for sigmaR (recruitment
-  deviations sigma)
+Use the name of the operating model to open the ctl file
+and obtain the INIT value for sigmaR (recruitment
+deviations sigma)
 }
 \author{
-  Kelli Johnson
+Kelli Johnson
 }
 

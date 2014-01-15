@@ -2,8 +2,8 @@
 \alias{expand_scenarios}
 \title{Create vectors of scenario IDs}
 \usage{
-  expand_scenarios(cases = list(D = 0, E = 0, F = 0, M = 0, R = 0),
-    species = c("cod", "fla", "sar"))
+expand_scenarios(cases = list(D = 0, E = 0, F = 0, M = 0, R = 0),
+  species = c("cod", "fla", "sar"))
 }
 \arguments{
   \item{cases}{A named list of cases. The names in the list
@@ -13,14 +13,13 @@
   designating the species/stock.}
 }
 \value{
-  A character vector of scenario IDs. The case IDs will be
-  alphabetically sorted.
+A character vector of scenario IDs. The case IDs will be
+alphabetically sorted.
 }
 \description{
-  Create vectors of scenarios from inputs. For passing to
-  \code{\link{run_ss3sim}}, or
-  \code{\link{get_results_all}}. Default case values are
-  the base case (\code{0}).
+Create vectors of scenarios from inputs. For passing to
+\code{\link{run_ss3sim}}, or \code{\link{get_results_all}}.
+Default case values are the base case (\code{0}).
 }
 \examples{
 expand_scenarios()
@@ -28,9 +27,9 @@ expand_scenarios(cases = list(D = 0:3, E = 0, F = 0, M = 0, R = 0),
 species = "cod")
 }
 \author{
-  Cole Monnahan and Sean Anderson
+Cole Monnahan and Sean Anderson
 }
 \seealso{
-  \code{\link{run_ss3sim}}, \code{\link{get_results_all}}
+\code{\link{run_ss3sim}}, \code{\link{get_results_all}}
 }
 

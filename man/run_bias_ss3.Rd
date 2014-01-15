@@ -2,7 +2,7 @@
 \alias{run_bias_ss3}
 \title{Determine level of bias adjustment for SS3 runs}
 \usage{
-  run_bias_ss3(dir, outdir, nsim, conv_crit = 0.2)
+run_bias_ss3(dir, outdir, nsim, conv_crit = 0.2)
 }
 \arguments{
   \item{dir}{Folder for all of the bias adjustment runs
@@ -29,24 +29,23 @@
   run.}
 }
 \description{
-  Determine level of bias adjustment from multiple SS3
-  runs. IMPORTANT: The Hessian must be calculated for the
-  SS3 runs that this function uses.
+Determine level of bias adjustment from multiple SS3 runs.
+IMPORTANT: The Hessian must be calculated for the SS3 runs
+that this function uses.
 }
 \details{
-  This function: \itemize{ \item uses the \pkg{r4ss}
-  package to read in output from n SS3 runs, \item uses Ian
-  Taylor's \pkg{r4ss} function to find values for the n
-  bias adjustment parameters for each run, \item takes the
-  average over runs for each bias adjustment parameter
-  \item writes out the unaveraged and averaged
-  (\code{AdjustBias.DAT} and \code{AvgBias.DAT},
-  respectively) bias adjustment parameters to the
-  \code{dir} folder \item takes a \code{control.ss_new}
-  file from one of the n SS runs, changes the n bias
-  adjustment parameters, and writes the whole updated
-  \code{control.ss_new} file with new bias adjustment
-  parameters to an \code{em.ctl} file }
+This function: \itemize{ \item uses the \pkg{r4ss} package
+to read in output from n SS3 runs, \item uses Ian Taylor's
+\pkg{r4ss} function to find values for the n bias
+adjustment parameters for each run, \item takes the average
+over runs for each bias adjustment parameter \item writes
+out the unaveraged and averaged (\code{AdjustBias.DAT} and
+\code{AvgBias.DAT}, respectively) bias adjustment
+parameters to the \code{dir} folder \item takes a
+\code{control.ss_new} file from one of the n SS runs,
+changes the n bias adjustment parameters, and writes the
+whole updated \code{control.ss_new} file with new bias
+adjustment parameters to an \code{em.ctl} file }
 }
 \examples{
 \dontrun{
@@ -69,16 +68,16 @@ setwd(wd)
 }
 }
 \author{
-  Carey McGilliard
+Carey McGilliard
 }
 \references{
-  Methot, R. D. and Taylor, I. G. (2011). Adjusting for
-  bias due to variability of estimated recruitments in
-  fishery assessment models. Can. J. Fish. Aquat. Sci.,
-  68(10):1744-1760.
+Methot, R. D. and Taylor, I. G. (2011). Adjusting for bias
+due to variability of estimated recruitments in fishery
+assessment models. Can. J. Fish. Aquat. Sci.,
+68(10):1744-1760.
 }
 \seealso{
-  \code{\link{run_ss3sim}}, \code{\link{ss3sim_base}},
-  \code{\link{run_ss3model}}, \code{\link{bias_ss3}}
+\code{\link{run_ss3sim}}, \code{\link{ss3sim_base}},
+\code{\link{run_ss3model}}, \code{\link{bias_ss3}}
 }
 

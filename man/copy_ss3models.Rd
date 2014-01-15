@@ -3,8 +3,8 @@
 \title{Copy the operating and estimation models and create a folder
 structure}
 \usage{
-  copy_ss3models(model_dir, scenarios, iterations = 1:100,
-    type = c("om", "em"))
+copy_ss3models(model_dir, scenarios, iterations = 1:100, type = c("om",
+  "em"))
 }
 \arguments{
   \item{model_dir}{A directory containing the operating or
@@ -25,13 +25,13 @@ structure}
   "om" or "em"}
 }
 \value{
-  A set of nested folders starting with the scenario ID,
-  then the iterations, then "om" or "em", and then the SS
-  model files.
+A set of nested folders starting with the scenario ID, then
+the iterations, then "om" or "em", and then the SS model
+files.
 }
 \description{
-  Copy the operating and estimation models and create a
-  folder structure
+Copy the operating and estimation models and create a
+folder structure
 }
 \examples{
 # Locate the package data:
@@ -55,6 +55,6 @@ unlink("D1-E0-F0-M0-R0-testing", recursive = TRUE)
 unlink("D1-E1-F0-M0-R0-testing", recursive = TRUE)
 }
 \author{
-  Sean Anderson, Kelli Johnson
+Sean Anderson, Kelli Johnson
 }
 

@@ -2,7 +2,7 @@
 \alias{get_model_folder}
 \title{Get the folder location of an included SS3 model configuration}
 \usage{
-  get_model_folder(folder_name)
+get_model_folder(folder_name)
 }
 \arguments{
   \item{folder_name}{The model folder name. One of
@@ -13,13 +13,13 @@
   vignette for further details.}
 }
 \value{
-  A character object showing the location of the
-  appropriate model configuration folder in the package
-  \code{extdata} folder.
+A character object showing the location of the appropriate
+model configuration folder in the package \code{extdata}
+folder.
 }
 \description{
-  This function returns the location of one of the built-in
-  model configurations.
+This function returns the location of one of the built-in
+model configurations.
 }
 \examples{
 get_model_folder("cod-em")

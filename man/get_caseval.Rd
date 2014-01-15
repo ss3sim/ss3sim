@@ -2,7 +2,7 @@
 \alias{get_caseval}
 \title{Take a scenario ID and a case type and return the case number}
 \usage{
-  get_caseval(scenario, case)
+get_caseval(scenario, case)
 }
 \arguments{
   \item{scenario}{A character object with the cases. E.g.
@@ -12,7 +12,7 @@
   \code{"M"}}
 }
 \description{
-  Take a scenario ID and a case type and return the case
-  number
+Take a scenario ID and a case type and return the case
+number
 }
 

@@ -2,14 +2,11 @@
 \alias{change_e}
 \title{Methods to alter which parameters are estimated in a SS3 \code{.ctl} file.}
 \usage{
-  change_e(ctl_file_in = pastef("em.ctl"),
-    ctl_file_out = pastef("em.ctl"),
-    dat_file_in = pastef("ss3.dat"),
-    for_file_in = "forecasts.ss", natM_type = "1Parm",
-    natM_n_breakpoints = NULL, natM_lorenzen = NULL,
-    natM_val = c(NA, NA), par_name = NULL, par_int = "NA",
-    par_phase = "NA", forecast_num = 0,
-    run_change_e_full = TRUE)
+change_e(ctl_file_in = pastef("em.ctl"), ctl_file_out = pastef("em.ctl"),
+  dat_file_in = pastef("ss3.dat"), for_file_in = "forecasts.ss",
+  natM_type = "1Parm", natM_n_breakpoints = NULL, natM_lorenzen = NULL,
+  natM_val = c(NA, NA), par_name = NULL, par_int = "NA",
+  par_phase = "NA", forecast_num = 0, run_change_e_full = TRUE)
 }
 \arguments{
   \item{ctl_file_in}{Input SS3 control file}
@@ -84,29 +81,29 @@
   (default) the full function capability will be ran.}
 }
 \value{
-  Altered versions of SS3 \code{.ctl}, \code{.dat}, and,
-  \code{forecast.ss} files.
+Altered versions of SS3 \code{.ctl}, \code{.dat}, and,
+\code{forecast.ss} files.
 }
 \description{
-  Takes SS3 \code{.ctl}, \code{.dat}, and
-  \code{forecast.ss} files and changes which parameters are
-  estimated, how natural mortality is estimated, and if
-  forecasts are performed. The function can be called by
-  itself or within \link{run_ss3sim} to alter an estimation
-  model \code{.ctl} file.
+Takes SS3 \code{.ctl}, \code{.dat}, and \code{forecast.ss}
+files and changes which parameters are estimated, how
+natural mortality is estimated, and if forecasts are
+performed. The function can be called by itself or within
+\link{run_ss3sim} to alter an estimation model \code{.ctl}
+file.
 }
 \details{
-  Turning parameters on and off is the main function of
-  \code{change_e}.  \code{change_e} was not created with
-  the capability of adding parameters to a \code{.ctl}
-  file.  The function can only add parameters for age
-  specific natural mortality, and only for models with one
-  growth morph.  Furthermore, the function is designed to
-  add complexity to the natural mortality type and not
-  remove complexity.  Therefore, the function will fail if
-  natural mortality in the \code{ctl_file_in} is not
-  specified as \code{"1Param"} and \code{natM_type} is
-  anything other than \code{NULL} or \code{"1Param"}.
+Turning parameters on and off is the main function of
+\code{change_e}.  \code{change_e} was not created with the
+capability of adding parameters to a \code{.ctl} file.  The
+function can only add parameters for age specific natural
+mortality, and only for models with one growth morph.
+Furthermore, the function is designed to add complexity to
+the natural mortality type and not remove complexity.
+Therefore, the function will fail if natural mortality in
+the \code{ctl_file_in} is not specified as \code{"1Param"}
+and \code{natM_type} is anything other than \code{NULL} or
+\code{"1Param"}.
 }
 \examples{
 \dontrun{
@@ -131,6 +128,6 @@ setwd(wd)
 }
 }
 \author{
-  Kelli Johnson
+Kelli Johnson
 }
 

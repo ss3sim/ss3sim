@@ -2,23 +2,23 @@
 \alias{get_results_scalar}
 \title{Extract scalar quantities from a model run.}
 \usage{
-  get_results_scalar(report.file)
+get_results_scalar(report.file)
 }
 \arguments{
   \item{report.file}{An SS_output list for a model (OM or
   EM).}
 }
 \description{
-  Extract scalar quantities from an \code{SS_output} list
-  from a model run. Returns a data.frame of the results (a
-  single row) which can be rbinded later.
+Extract scalar quantities from an \code{SS_output} list
+from a model run. Returns a data.frame of the results (a
+single row) which can be rbinded later.
 }
 \author{
-  Cole Monnahan
+Cole Monnahan
 }
 \seealso{
-  Other get.results: \code{\link{get_results_all}},
-  \code{\link{get_results_scenario}},
-  \code{\link{get_results_timeseries}}
+Other get.results: \code{\link{get_results_all}};
+\code{\link{get_results_scenario}};
+\code{\link{get_results_timeseries}}
 }
 

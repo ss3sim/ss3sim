@@ -2,8 +2,7 @@
 \alias{get_results_scenario}
 \title{Extract SS3 simulation results for one scenario.}
 \usage{
-  get_results_scenario(scenario, directory = getwd(),
-    overwrite_files = FALSE)
+get_results_scenario(scenario, directory = getwd(), overwrite_files = FALSE)
 }
 \arguments{
   \item{scenario}{A single character giving the scenario
@@ -19,17 +18,16 @@
   were made to this function.}
 }
 \description{
-  Function that extracts results from all replicates inside
-  a supplied scenario folder. The function writes 3 .csv
-  files to the scenario folder: (1) scalar metrics with one
-  value per replicate (e.g. $R_0$, $h$), (2) a timeseries
-  data ('ts') which contains multiple values per replicate
-  (e.g. $SSB_y$ for a range of years $y$), and (3)
-  residuals on the log scale from the surveys across all
-  replicates (this feature is not fully tested!). The
-  function \code{get_results_all} loops through these .csv
-  files and combines them together into a single "final"
-  dataframe.
+Function that extracts results from all replicates inside a
+supplied scenario folder. The function writes 3 .csv files
+to the scenario folder: (1) scalar metrics with one value
+per replicate (e.g. $R_0$, $h$), (2) a timeseries data
+('ts') which contains multiple values per replicate (e.g.
+$SSB_y$ for a range of years $y$), and (3) residuals on the
+log scale from the surveys across all replicates (this
+feature is not fully tested!). The function
+\code{get_results_all} loops through these .csv files and
+combines them together into a single "final" dataframe.
 }
 \examples{
 \dontrun{
@@ -45,11 +43,11 @@ get_results_scenario(c("D0-E0-F0-G0-R0-S0-M0-cod"))
 }
 }
 \author{
-  Cole Monnahan
+Cole Monnahan
 }
 \seealso{
-  Other get.results: \code{\link{get_results_all}},
-  \code{\link{get_results_scalar}},
-  \code{\link{get_results_timeseries}}
+Other get.results: \code{\link{get_results_all}};
+\code{\link{get_results_scalar}};
+\code{\link{get_results_timeseries}}
 }
 

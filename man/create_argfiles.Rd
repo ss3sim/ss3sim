@@ -2,9 +2,10 @@
 \alias{create_argfiles}
 \title{Create template argument input files}
 \usage{
-  create_argfiles(functions = c(`lcomp0-spp` = "change_lcomp", `agecomp0-spp` = "change_agecomp", `index0-spp` = "change_index", `F0-spp` = "change_f", `R0-spp` = "change_retro", `E0-spp` = "change_e", `X0-spp` = "change_tv"),
-    ext = ".txt", delim = "; ",
-    ignore = c("file", "dir", "make_plot"), ...)
+create_argfiles(functions = c(`lcomp0-spp` = "change_lcomp", `agecomp0-spp` =
+  "change_agecomp", `index0-spp` = "change_index", `F0-spp` = "change_f",
+  `R0-spp` = "change_retro", `E0-spp` = "change_e", `X0-spp` = "change_tv"),
+  ext = ".txt", delim = "; ", ignore = c("file", "dir", "make_plot"), ...)
 }
 \arguments{
   \item{functions}{A named vector. The names correspond to
@@ -23,38 +24,37 @@
   \item{...}{Anything else to pass to \code{write.table}.}
 }
 \description{
-  Creates template input files based on the argument lists
-  for specified functions. Look in your working directory
-  for the template files. Change the case ID number
-  (defaults to \code{0}) and the species identifier to a
-  three letter identifier. To use one of the built-in model
-  setups, use one of \code{cod}, \code{sar}, or \code{fla}
-  for cod, sardine, or flatfish. An example filename would
-  be \code{M1-sar.txt} or \code{lcomp2-fla.txt}.
+Creates template input files based on the argument lists
+for specified functions. Look in your working directory for
+the template files. Change the case ID number (defaults to
+\code{0}) and the species identifier to a three letter
+identifier. To use one of the built-in model setups, use
+one of \code{cod}, \code{sar}, or \code{fla} for cod,
+sardine, or flatfish. An example filename would be
+\code{M1-sar.txt} or \code{lcomp2-fla.txt}.
 }
 \details{
-  The first column in the text files denotes the argument
-  to be passed to a function. The second argument denotes
-  the value to be passed. You can use any simple \R syntax.
-  For example: \code{c(1, 2, 4)}, or \code{seq(1, 100)} or
-  \code{1:100} or \code{matrix()}. Character objects don't
-  need to be quoted. However, be careful not to use your
-  delimiter (set up as a semicolon) anywhere else in the
-  file besides to denote columns.
+The first column in the text files denotes the argument to
+be passed to a function. The second argument denotes the
+value to be passed. You can use any simple \R syntax. For
+example: \code{c(1, 2, 4)}, or \code{seq(1, 100)} or
+\code{1:100} or \code{matrix()}. Character objects don't
+need to be quoted. However, be careful not to use your
+delimiter (set up as a semicolon) anywhere else in the file
+besides to denote columns.
 
-  The function \code{\link{change_tv}} is a special case.
-  To pass arguments to \code{\link{change_tv}} through a
-  \code{\link{run_ss3sim}}: (1) create a case file with an
-  arbitrary letter not used elsewhere (anything but D, E,
-  F, or R) and include the line \code{function_type;
-  change_tv} in your case file. For example, you might want
-  to use M for natural mortality, S for selectivity, or G
-  for growth.
+The function \code{\link{change_tv}} is a special case. To
+pass arguments to \code{\link{change_tv}} through a
+\code{\link{run_ss3sim}}: (1) create a case file with an
+arbitrary letter not used elsewhere (anything but D, E, F,
+or R) and include the line \code{function_type; change_tv}
+in your case file. For example, you might want to use M for
+natural mortality, S for selectivity, or G for growth.
 
-  This function (\code{create_argfiles}) automatically adds
-  a line \code{function_type; change_tv} to the top of a
-  case file \code{X0-spp.txt} as a starting point for
-  \code{change_tv}.
+This function (\code{create_argfiles}) automatically adds a
+line \code{function_type; change_tv} to the top of a case
+file \code{X0-spp.txt} as a starting point for
+\code{change_tv}.
 }
 \examples{
 \dontrun{
@@ -68,6 +68,6 @@ create_argfiles()
 }
 }
 \author{
-  Sean Anderson
+Sean Anderson
 }
 

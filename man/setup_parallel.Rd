@@ -2,9 +2,9 @@
 \alias{setup_parallel}
 \title{Setup parallel processing}
 \usage{
-  setup_parallel()
+setup_parallel()
 }
 \description{
-  Setup parallel processing
+Setup parallel processing
 }
 

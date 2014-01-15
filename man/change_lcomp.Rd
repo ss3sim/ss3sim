@@ -2,9 +2,8 @@
 \alias{change_lcomp}
 \title{Sample length compositions from expected values}
 \usage{
-  change_lcomp(infile, outfile, fleets = c(1, 2), Nsamp,
-    years, cpar = 1, lengthbin_vector = NULL,
-    write_file = TRUE)
+change_lcomp(infile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
+  lengthbin_vector = NULL, write_file = TRUE)
 }
 \arguments{
   \item{infile}{An SS data object as read in from
@@ -53,14 +52,14 @@
   proceeding with simulations.}
 }
 \value{
-  A modified \code{.dat} file if \code{write_file=TRUE}. A
-  list object containing the modified \code{.dat} file is
-  returned invisibly.
+A modified \code{.dat} file if \code{write_file=TRUE}. A
+list object containing the modified \code{.dat} file is
+returned invisibly.
 }
 \description{
-  Take a \code{data.SS_new} file containing expected values
-  and sample to create observed length compositions which
-  are then written to file for use by the EM.
+Take a \code{data.SS_new} file containing expected values
+and sample to create observed length compositions which are
+then written to file for use by the EM.
 }
 \examples{
 d <- system.file("extdata", package = "ss3sim")
@@ -119,10 +118,10 @@ points(temp/sum(temp), pch="-", col="red")
 par(op)
 }
 \author{
-  Cole Monnahan and Kotaro Ono; modified from a version by
-  Roberto Licandeo and Felipe Hurtado-Ferro
+Cole Monnahan and Kotaro Ono; modified from a version by
+Roberto Licandeo and Felipe Hurtado-Ferro
 }
 \seealso{
-  \code{\link{change_agecomp}}
+\code{\link{change_agecomp}}
 }
 

@@ -2,10 +2,9 @@
 \alias{run_ss3sim}
 \title{Master function to run SS3 simulations}
 \usage{
-  run_ss3sim(iterations, scenarios, case_folder,
-    om_model_dir, em_model_dir,
-    case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), R = "R", E = "E"),
-    parallel = FALSE, ...)
+run_ss3sim(iterations, scenarios, case_folder, om_model_dir, em_model_dir,
+  case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), R =
+  "R", E = "E"), parallel = FALSE, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -49,42 +48,41 @@
   installed. See the example below.}
 }
 \value{
-  The output will appear in whatever your current \R
-  working directory is. There will be folders named after
-  your scenarios. They will look like this: \itemize{ \item
-  \code{D0-E0-F0-M0-R0-cod/bias/1/om} \item
-  \code{D0-E0-F0-M0-R0-cod/bias/1/em} \item
-  \code{D0-E0-F0-M0-R0-cod/bias/2/om} \item ... \item
-  \code{D0-E0-F0-M0-R0-cod/1/om} \item
-  \code{D0-E0-F0-M0-R0-cod/1/em} \item
-  \code{D0-E0-F0-M0-R0-cod/2/om} \item ... }
+The output will appear in whatever your current \R working
+directory is. There will be folders named after your
+scenarios. They will look like this: \itemize{ \item
+\code{D0-E0-F0-M0-R0-cod/bias/1/om} \item
+\code{D0-E0-F0-M0-R0-cod/bias/1/em} \item
+\code{D0-E0-F0-M0-R0-cod/bias/2/om} \item ... \item
+\code{D0-E0-F0-M0-R0-cod/1/om} \item
+\code{D0-E0-F0-M0-R0-cod/1/em} \item
+\code{D0-E0-F0-M0-R0-cod/2/om} \item ... }
 }
 \description{
-  This is the main high-level wrapper function for running
-  \pkg{ss3sim} simulations. This function first deals with
-  parsing a scenario ID into case input files and then
-  passes these arguments on to \code{\link{ss3sim_base}} to
-  run a simulation. Alternatively, you might choose to run
-  \code{\link{ss3sim_base}} directly and skip the case-file
-  setup.
+This is the main high-level wrapper function for running
+\pkg{ss3sim} simulations. This function first deals with
+parsing a scenario ID into case input files and then passes
+these arguments on to \code{\link{ss3sim_base}} to run a
+simulation. Alternatively, you might choose to run
+\code{\link{ss3sim_base}} directly and skip the case-file
+setup.
 }
 \details{
-  The operating model folder should contain:
-  \code{forecast.ss}, \code{yourmodel.ctl},
-  \code{yourmodel.dat}, \code{ss3.par}, and
-  \code{starter.ss}. The files should be the versions that
-  are returned from an SS run as \code{.ss_new} files. This
-  is important because it creates consistent formatting
-  which many of the functions in this package depend on.
-  Rename the \code{.ss_new} files as listed above (and in
-  all lowercase). The estimation model folder should
-  contain all the same files listed above except the
-  \code{ss3.par} and \code{yourmodel.dat} files, which are
-  unnecessary but can be included if desired. See the
-  vignette for details on modifying an existing \code{SS3}
-  model to run with \pkg{ss3sim}. Alternatively, you might
-  consider modifying one of the built in model
-  configurations.
+The operating model folder should contain:
+\code{forecast.ss}, \code{yourmodel.ctl},
+\code{yourmodel.dat}, \code{ss3.par}, and
+\code{starter.ss}. The files should be the versions that
+are returned from an SS run as \code{.ss_new} files. This
+is important because it creates consistent formatting which
+many of the functions in this package depend on. Rename the
+\code{.ss_new} files as listed above (and in all
+lowercase). The estimation model folder should contain all
+the same files listed above except the \code{ss3.par} and
+\code{yourmodel.dat} files, which are unnecessary but can
+be included if desired. See the vignette for details on
+modifying an existing \code{SS3} model to run with
+\pkg{ss3sim}. Alternatively, you might consider modifying
+one of the built in model configurations.
 }
 \examples{
 \dontrun{
@@ -149,11 +147,11 @@ setwd(wd)
 }
 }
 \author{
-  Sean C. Anderson
+Sean C. Anderson
 }
 \seealso{
-  \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
-  \code{\link{run_bias_ss3}}, \code{\link{get_caseargs}},
-  \code{\link{expand_scenarios}}
+\code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
+\code{\link{run_bias_ss3}}, \code{\link{get_caseargs}},
+\code{\link{expand_scenarios}}
 }
 

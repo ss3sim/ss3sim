@@ -2,7 +2,7 @@
 \alias{verify_input}
 \title{Verify and standardize SS3 input files}
 \usage{
-  verify_input(model_dir, type = c("om", "em"))
+verify_input(model_dir, type = c("om", "em"))
 }
 \arguments{
   \item{model_dir}{Directory name for model. This folder
@@ -12,21 +12,21 @@
   estimating model.}
 }
 \value{
-  Returns a version of the folder with sanitized files or
-  an error if some files are missing.
+Returns a version of the folder with sanitized files or an
+error if some files are missing.
 }
 \description{
-  This function verifies the contents of operating model
-  (\code{om}) and estimation model (\code{em}) folders. If
-  the contents are correct, the \code{.ctl} and \code{.dat}
-  files are renamed to standardized names and the
-  \code{starter.ss} file is updated to reflect these names.
-  If the contents are incorrect then a warning is issued
-  and the simulation is aborted.
+This function verifies the contents of operating model
+(\code{om}) and estimation model (\code{em}) folders. If
+the contents are correct, the \code{.ctl} and \code{.dat}
+files are renamed to standardized names and the
+\code{starter.ss} file is updated to reflect these names.
+If the contents are incorrect then a warning is issued and
+the simulation is aborted.
 }
 \details{
-  This is a helper function to be used within the larger
-  wrapper simulation functions.
+This is a helper function to be used within the larger
+wrapper simulation functions.
 }
 \examples{
 # Create a temporary folder for the output:
@@ -46,6 +46,6 @@ verify_input(model_dir = paste0(temp_path, "/cod-om"), type = "om")
 verify_input(model_dir = paste0(temp_path, "/cod-em"), type = "em")
 }
 \author{
-  Curry James Cunningham; modified by Sean Anderson
+Curry James Cunningham; modified by Sean Anderson
 }
 

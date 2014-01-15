@@ -2,9 +2,9 @@
 \alias{run_ss3model}
 \title{Run an operating or estimation model for a specified set of scenario IDs}
 \usage{
-  run_ss3model(scenarios, iterations, type = c("om", "em"),
-    ss3path = NULL, admb_options = "", hess = FALSE,
-    ignore.stdout = TRUE, admb_pause = 0.05, ...)
+run_ss3model(scenarios, iterations, type = c("om", "em"), ss3path = NULL,
+  admb_options = "", hess = FALSE, ignore.stdout = TRUE,
+  admb_pause = 0.05, ...)
 }
 \arguments{
   \item{scenarios}{Which scenarios to run. Controls which
@@ -49,17 +49,17 @@
   \item{...}{Anything else to pass to \code{system}.}
 }
 \description{
-  This function takes care of calling SS3. Importantly, it
-  parses whether the user is on Unix or Windows and calls
-  the binary correctly. This lower-level function is meant
-  to be called by higher level functions such as
-  \code{\link{run_ss3sim}}, \code{\link{ss3sim_base}}, or
-  your own custom function.
+This function takes care of calling SS3. Importantly, it
+parses whether the user is on Unix or Windows and calls the
+binary correctly. This lower-level function is meant to be
+called by higher level functions such as
+\code{\link{run_ss3sim}}, \code{\link{ss3sim_base}}, or
+your own custom function.
 }
 \author{
-  Sean C. Anderson
+Sean C. Anderson
 }
 \seealso{
-  \code{\link{ss3sim_base}}, \code{\link{run_ss3sim}}
+\code{\link{ss3sim_base}}, \code{\link{run_ss3sim}}
 }
 

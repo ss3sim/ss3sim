@@ -2,13 +2,11 @@
 \alias{change_tv}
 \title{Methods to include time-varying parameters in an SS3 OM}
 \usage{
-  change_tv(change_tv_list, ctl_file_in = "control.ss_new",
-    ctl_file_out = "om.ctl", dat_file_in = "ss3.dat",
-    dat_file_out = "ss3.dat", par_file_in = "ss3.par",
-    par_file_out = "ss3.par",
-    starter_file_in = "starter.ss",
-    starter_file_out = "starter.ss",
-    report_file = "Report.sso")
+change_tv(change_tv_list, ctl_file_in = "control.ss_new",
+  ctl_file_out = "om.ctl", dat_file_in = "ss3.dat",
+  dat_file_out = "ss3.dat", par_file_in = "ss3.par",
+  par_file_out = "ss3.par", starter_file_in = "starter.ss",
+  starter_file_out = "starter.ss", report_file = "Report.sso")
 }
 \arguments{
   \item{change_tv_list}{A list of named vectors. Names
@@ -37,41 +35,40 @@
   \item{report_file}{Input SS3 report file}
 }
 \value{
-  The function creates modified versions of the
-  \code{.par}, \code{.starter}, \code{.ctl}, and
-  \code{.dat} files.
+The function creates modified versions of the \code{.par},
+\code{.starter}, \code{.ctl}, and \code{.dat} files.
 }
 \description{
-  \code{change_tv} takes SS3 \code{.ctl}, \code{.par}, and
-  \code{.dat} files and implements time-varying parameters
-  using environmental variables. \code{change_tv} is
-  specifically set up to work with an operating model
-  \code{.ctl} file.
+\code{change_tv} takes SS3 \code{.ctl}, \code{.par}, and
+\code{.dat} files and implements time-varying parameters
+using environmental variables. \code{change_tv} is
+specifically set up to work with an operating model
+\code{.ctl} file.
 }
 \details{
-  Although there are three ways to implement time-varying
-  parameters within SS3, \code{ss3sim} and \code{change_tv}
-  only use the environmental variable option. Within SS3,
-  time-varying parameters work on an annual time-step.
-  Thus, for models with multiple seasons, the time-varying
-  parameters will remain constant for the entire year.
+Although there are three ways to implement time-varying
+parameters within SS3, \code{ss3sim} and \code{change_tv}
+only use the environmental variable option. Within SS3,
+time-varying parameters work on an annual time-step. Thus,
+for models with multiple seasons, the time-varying
+parameters will remain constant for the entire year.
 
-  The \code{ctl_file_in} argument needs to be a
-  \code{.ss_new} file because the documentation in
-  \code{.ss_new} files are automated and standardized. This
-  function takes advantage of the standard documentation
-  the \code{.ss_new} files to determine which lines to
-  manipulate and where to add code in the \code{.ctl},
-  \code{.par}, and \code{.dat} files, code that is
-  necessary to implement time-varying parameters.
+The \code{ctl_file_in} argument needs to be a
+\code{.ss_new} file because the documentation in
+\code{.ss_new} files are automated and standardized. This
+function takes advantage of the standard documentation the
+\code{.ss_new} files to determine which lines to manipulate
+and where to add code in the \code{.ctl}, \code{.par}, and
+\code{.dat} files, code that is necessary to implement
+time-varying parameters.
 
-  \code{ss3sim} uses annual recruitment deviations and may
-  not work with a model that ties recruitment deviations to
-  environmental covariates. If you need to compare the
-  environment to annual recruitment deviations, the
-  preferred option is to transform the environmental
-  variable into an age 0 pre-recruit survey. See page 55 of
-  the SS3 version 3.24f manual for more information.
+\code{ss3sim} uses annual recruitment deviations and may
+not work with a model that ties recruitment deviations to
+environmental covariates. If you need to compare the
+environment to annual recruitment deviations, the preferred
+option is to transform the environmental variable into an
+age 0 pre-recruit survey. See page 55 of the SS3 version
+3.24f manual for more information.
 }
 \section{Specifying the \code{change_tv_list}}{
   Parameters will change to vary with time according to the
@@ -136,6 +133,6 @@ setwd(wd)
 }
 }
 \author{
-  Kotaro Ono, Carey McGilliard, and Kelli Johnson
+Kotaro Ono, Carey McGilliard, and Kelli Johnson
 }
 

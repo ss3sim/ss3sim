@@ -2,12 +2,12 @@
 \alias{pastef}
 \title{Paste with "/" as the separator}
 \usage{
-  pastef(...)
+pastef(...)
 }
 \arguments{
   \item{...}{Objects to paste together}
 }
 \description{
-  Paste with "/" as the separator
+Paste with "/" as the separator
 }
 

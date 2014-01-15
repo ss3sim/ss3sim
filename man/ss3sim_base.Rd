@@ -2,13 +2,11 @@
 \alias{ss3sim_base}
 \title{Base wrapper fun to run an ss3sim simulation}
 \usage{
-  ss3sim_base(iterations, scenarios, f_params,
-    index_params, lcomp_params, agecomp_params,
-    estim_params, tv_params, om_model_dir, em_model_dir,
-    retro_params = NULL, user_recdevs = NULL,
-    bias_adjust = FALSE, bias_nsim = 5,
-    bias_already_run = FALSE, hess_always = FALSE,
-    print_logfile = TRUE, sleep = 0, conv_crit = 0.2, ...)
+ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
+  agecomp_params, estim_params, tv_params, om_model_dir, em_model_dir,
+  retro_params = NULL, user_recdevs = NULL, bias_adjust = FALSE,
+  bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
+  print_logfile = TRUE, sleep = 0, conv_crit = 0.2, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -105,32 +103,32 @@
   output to the console.}
 }
 \value{
-  The output will appear in whatever your current \R
-  working directory is. There will be folders named after
-  your scenarios. They will look like this: \itemize{ \item
-  \code{D0-E0-F0-M0-R0-cod/bias/1/om} \item
-  \code{D0-E0-F0-M0-R0-cod/bias/1/em} \item
-  \code{D0-E0-F0-M0-R0-cod/bias/2/om} \item ... \item
-  \code{D0-E0-F0-M0-R0-cod/1/om} \item
-  \code{D0-E0-F0-M0-R0-cod/1/em} \item
-  \code{D0-E0-F0-M0-R0-cod/2/om} \item ... }
+The output will appear in whatever your current \R working
+directory is. There will be folders named after your
+scenarios. They will look like this: \itemize{ \item
+\code{D0-E0-F0-M0-R0-cod/bias/1/om} \item
+\code{D0-E0-F0-M0-R0-cod/bias/1/em} \item
+\code{D0-E0-F0-M0-R0-cod/bias/2/om} \item ... \item
+\code{D0-E0-F0-M0-R0-cod/1/om} \item
+\code{D0-E0-F0-M0-R0-cod/1/em} \item
+\code{D0-E0-F0-M0-R0-cod/2/om} \item ... }
 }
 \description{
-  This function is a wrapper function that can call
-  \code{\link{run_ss3model}} for the operating model,
-  sample the output (add recruitment deviations, survey the
-  data, etc.), and run the estimation model.
-  \code{ss3sim_base} is the main internal function for
-  \pkg{ss3sim}. It is intended to be used through
-  \code{\link{run_ss3sim}}, but can also be used directly.
+This function is a wrapper function that can call
+\code{\link{run_ss3model}} for the operating model, sample
+the output (add recruitment deviations, survey the data,
+etc.), and run the estimation model. \code{ss3sim_base} is
+the main internal function for \pkg{ss3sim}. It is intended
+to be used through \code{\link{run_ss3sim}}, but can also
+be used directly.
 }
 \details{
-  This function is written to be flexible. You can specify
-  the fishing mortality, survey index, length composition,
-  age composition, and time-varying parameters in the
-  function call as list objects (see the example below).
-  For a generic higher-level function, see
-  \code{\link{run_ss3sim}}.
+This function is written to be flexible. You can specify
+the fishing mortality, survey index, length composition,
+age composition, and time-varying parameters in the
+function call as list objects (see the example below). For
+a generic higher-level function, see
+\code{\link{run_ss3sim}}.
 }
 \examples{
 \dontrun{
@@ -195,9 +193,9 @@ setwd(wd)
 }
 }
 \author{
-  Sean C. Anderson
+Sean C. Anderson
 }
 \seealso{
-  \code{\link{run_ss3sim}}
+\code{\link{run_ss3sim}}
 }
 
