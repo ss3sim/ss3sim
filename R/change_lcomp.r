@@ -49,7 +49,7 @@
 #' ## Plot distributions for a particular year to compare multinomial
 #' ## vs. overdispersed Dirichlet
 #' temp.list <- temp.list2 <- list()
-#' for(i in 1:50){
+#' for(i in 1:40){
 #'     temp.list[[i]] <-
 #'       change_lcomp(infile=infile, outfile="test1.dat", fleets=c(2), cpar=c(3),
 #'                      Nsamp=list(100), years=list(1995),
