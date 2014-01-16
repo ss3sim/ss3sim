@@ -1,19 +1,48 @@
-citHeader("To cite package ss3sim in publications use:")
+citHeader("To cite ss3sim in publications use:")
 
-citEntry(
- entry="Manual",
- title="ss3sim: An R package for generalized stock-assessment simulation with
- Stock Synthesis",
- author="S. C. Anderson and C. Cunningham and F. Hurtado-Ferro and K. F.
- Johnson and R. Licandeo and C. McGilliard and C. Monnahan and K. Ono and
- J. Valero",
- year = "2013",
- url = "https://github.com/seananderson/ss3sim",
- textVersion="Anderson, S. C., Cunningham, C., Hurtado-Ferro, F., Johnson, K.
- F., Licandeo, R., McGilliard, C., Monnahan, C., Ono, K. and Valero, J. 2013.
- ss3sim: Generalized stock-assessment simulation with Stock Synthesis.
- https://github.com/seananderson/ss3sim"
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
+vers <- paste("R package version", meta$Version)
+
+citEntry(entry = "Manual",
+  title        = paste("ss3sim: Fisheries stock assessment",
+                       "simulation with Stock Synthesis"),
+  author       = personList(as.person("Sean C. Anderson"),
+                            as.person("Cole C. Monnahan"),
+                            as.person("Kelli F. Johnson"),
+                            as.person("Kotaro Ono"),
+                            as.person("Juan Valero"),
+                            as.person("Curry J. Cunningham"),
+                            as.person("Felipe Hurtado-Ferro"),
+                            as.person("Roberto Licandeo"),
+                            as.person("Carey R. McGilliard"),
+                            as.person("Melissa L. Muradian"),
+                            as.person("Cody S. Szuwalski"),
+                            as.person("Katyana A. Vert-pre"),
+                            as.person("Athol R. Whitten")),
+  year         = year,
+  note         = vers,
+  textVersion  =
+  paste("Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, Valero, J, ",
+        "Cunningham, CJ, Hurtado-Ferro, F, Licandeo, R, McGilliard, CR, ",
+        "Muradian, ML, Szuwalski, CS, Vert-pre, KA, and Whitten, AR (",
+        year,
+        "). ss3sim: Fisheries stock-assessment simulation testing ",
+        "with Stock Synthesis 3. ", vers, ".", sep = "")
 )
 
-citFooter("An accompanying paper and vignette describing ss3sim is in
-development")
+citEntry(entry = "Article",
+  title        = paste("ss3sim: An R package for fisheries stock assessment", 
+                       "simulation with Stock Synthesis"),
+  author       = personList(as.person("Sean C. Anderson"),
+                            as.person("Cole C. Monnahan"),
+                            as.person("Kelli F. Johnson"),
+                            as.person("Kotaro Ono"),
+                            as.person("Juan Valero")),
+  year         = 2013,
+  journal      = "arXiv:1312.6450",
+  textVersion  =
+  paste("Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K,",
+        "and Valero, JL (2013).",
+        "ss3sim: An R package for fisheries stock assessment",
+        "simulation with Stock Synthesis. arXiv:1312.6450.")
+)
