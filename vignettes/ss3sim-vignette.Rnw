@@ -82,8 +82,7 @@ In the meantime, it can be installed with the following code:
 install.packages("devtools")
 
 # Install ss3sim:
-devtools::install_github("ss3sim", username = "seananderson",
-  dependencies = TRUE)
+devtools::install_github("ss3sim/ss3sim", dependencies = TRUE)
 
 # If you would like to run simulations in parallel, also install:
 install.packages(c("doParallel", "foreach"))
@@ -107,7 +106,7 @@ Currently, \texttt{ss3sim} is tested to work with SS3 Version 3.24O.
 Since this is a more recent version than is provided at the normal download location\\
 \url{http://nft.nefsc.noaa.gov/SS3.html},
 we provide copies of the 3.24O binaries (with the permission of R. Methot) at\\
-\url{https://github.com/seananderson/ss3sim/tree/ss3-binaries/inst/ss3}.
+\url{https://github.com/ss3sim/ss3sim/tree/ss3-binaries/inst/ss3}.
 
 \noindent
 \texttt{ss3sim} requires the SS3 binary to be in your path.
@@ -371,7 +370,7 @@ See the folder \texttt{ss3sim/inst/extdata/eg-cases}
 inside the \texttt{ss3sim} source code
 for all the case files that are used in this example simulation.
 You can either download the source code
-from \url{https://github.com/seananderson/ss3sim}
+from \url{https://github.com/ss3sim/ss3sim}
 or find this folder at the location contained
 in the \texttt{case\_folder} object defined
 in the block of \texttt{R} code above this paragraph.
