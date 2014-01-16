@@ -22,7 +22,7 @@ citEntry(entry = "Manual",
   year         = year,
   note         = vers,
   textVersion  =
-  paste("Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, Valero, J, ",
+  paste("Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, Valero, JL, ",
         "Cunningham, CJ, Hurtado-Ferro, F, Licandeo, R, McGilliard, CR, ",
         "Muradian, ML, Szuwalski, CS, Vert-pre, KA, and Whitten, AR (",
         year,
