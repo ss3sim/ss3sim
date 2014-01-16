@@ -27,7 +27,7 @@ citEntry(entry = "Manual",
         "Muradian, ML, Szuwalski, CS, Vert-pre, KA, and Whitten, AR (",
         year,
         "). ss3sim: Fisheries stock-assessment simulation testing ",
-        "with Stock Synthesis 3. ", vers, ".", sep = "")
+        "with Stock Synthesis. ", vers, ".", sep = "")
 )
 
 citEntry(entry = "Article",
