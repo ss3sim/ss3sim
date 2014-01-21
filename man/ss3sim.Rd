@@ -24,6 +24,15 @@ models within the package data
 contains example plain-text control files in the folder
 \code{inst/extdata/cases} and \code{inst/extdata/eg-cases}.
 
+To carry out \pkg{ss3sim} simulations, you will need to
+have SS3 installed on your computer and the binary needs to
+be in the path that \R sees. See the section "Installing
+the ss3sim R package" in the vignette
+\code{vignette("ss3sim-vignette")} for instructions on
+installing SS3. See the Appendix A "Putting SS3 in your
+path" in the vignette for instructions on making sure SS3
+will work from within \R.
+
 The main \pkg{ss3sim} functions are divided into three
 types:
 
