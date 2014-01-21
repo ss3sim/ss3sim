@@ -19,7 +19,7 @@ get_results_all(directory = getwd(), overwrite_files = FALSE,
 }
 \value{
 Creates two .csv files in the current working directory:
-ss3sim_ts.csv and ss3sim_scalar.csv.
+\code{ss3sim_ts.csv} and \code{ss3sim_scalar.csv}.
 }
 \description{
 This high level function extracts results from SS3 model
