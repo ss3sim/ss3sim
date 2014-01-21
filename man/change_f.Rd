@@ -19,6 +19,9 @@ change_f(years, years_alter, fvals, file_in = "ss3.par",
 
   \item{file_out}{Output SS3 par file.}
 }
+\value{
+A modified SS3 \code{.par} file.
+}
 \description{
 Takes an SS3 \code{.par} file and changes the F values for
 specified years.

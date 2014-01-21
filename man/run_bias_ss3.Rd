@@ -62,7 +62,7 @@ setwd(temp_path)
 # (Note that bias_nsim should be bigger, say 10, but it is set to 2
 # here so the example runs faster.)
 run_ss3sim(iterations = 1:1, scenarios = "D1-E0-F0-R0-M0-cod",
-  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+  case_folder = case_folder, om_dir = om, em_dir = em,
   bias_adjust = TRUE, bias_nsim = 2)
 setwd(wd)
 }

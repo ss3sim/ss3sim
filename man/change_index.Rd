@@ -47,11 +47,12 @@ returned invisibly.
 \description{
 This function creates an index of abundance sampled from
 the expected available biomass for given fleets in given
-years. Let B_y be the biomass from the OM for year y. Then
-the sampled value is calculated as: B_y*exp(rnorm(1, 0,
-\code{sds_obs})-\code{sds_obs}^2/2). The second term
-adjusts the random samples so that their expected value is
-B_y (i.e. the log-normal bias correction).
+years. Let B_y be the biomass from the operating model for
+year y. Then the sampled value is calculated as:
+B_y*exp(rnorm(1, 0, \code{sds_obs})-\code{sds_obs}^2/2).
+The second term adjusts the random samples so that their
+expected value is B_y (i.e. the log-normal bias
+correction).
 }
 \examples{
 \dontrun{

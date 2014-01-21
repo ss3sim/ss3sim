@@ -5,8 +5,8 @@
 get_results_scalar(report.file)
 }
 \arguments{
-  \item{report.file}{An SS_output list for a model (OM or
-  EM).}
+  \item{report.file}{An SS_output list for a model
+  (operating model or estimation model).}
 }
 \description{
 Extract scalar quantities from an \code{SS_output} list

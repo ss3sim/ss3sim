@@ -12,6 +12,9 @@ change_rec_devs(recdevs_new, file_in = "ss3.par", file_out = "ss3.par")
 
   \item{file_out}{Output SS3 par file.}
 }
+\value{
+A modified SS3 \code{.par} file.
+}
 \description{
 This function replaces the recruitment deviations in the
 \code{ss3.par} file with those specified in

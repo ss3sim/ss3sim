@@ -6,7 +6,7 @@ get_results_timeseries(report.file)
 }
 \arguments{
   \item{report.file}{An \code{SS_output} list for a model
-  (OM or EM).}
+  (operating model or estimation model).}
 }
 \description{
 Extract time series from an \code{SS_output} list from a

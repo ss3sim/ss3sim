@@ -39,14 +39,15 @@ run_ss3model(scenarios, iterations, type = c("om", "em"), ss3path = NULL,
   \item{admb_pause}{A length of time (in seconds) to pause
   after running the simulation model. This can be necessary
   on certain computers where file writing can be slightly
-  delayed. For example, on computer where the files are
+  delayed. For example, on computers where the files are
   written over a network connection. If the output files
   haven't finished writing before \R starts looking for the
   output then the simulation will crash with an error about
   missing files. The default value is set to \code{0.01}
   seconds, just to be safe.}
 
-  \item{...}{Anything else to pass to \code{system}.}
+  \item{...}{Anything else to pass to
+  \code{\link[base]{system}}.}
 }
 \description{
 This function takes care of calling SS3. Importantly, it

@@ -1,6 +1,6 @@
 \name{change_tv}
 \alias{change_tv}
-\title{Methods to include time-varying parameters in an SS3 OM}
+\title{Methods to include time-varying parameters in an SS3 operating model}
 \usage{
 change_tv(change_tv_list, ctl_file_in = "control.ss_new",
   ctl_file_out = "om.ctl", dat_file_in = "ss3.dat",
@@ -47,7 +47,7 @@ specifically set up to work with an operating model
 }
 \details{
 Although there are three ways to implement time-varying
-parameters within SS3, \code{ss3sim} and \code{change_tv}
+parameters within SS3, \pkg{ss3sim} and \code{change_tv}
 only use the environmental variable option. Within SS3,
 time-varying parameters work on an annual time-step. Thus,
 for models with multiple seasons, the time-varying
@@ -62,8 +62,8 @@ and where to add code in the \code{.ctl}, \code{.par}, and
 \code{.dat} files, code that is necessary to implement
 time-varying parameters.
 
-\code{ss3sim} uses annual recruitment deviations and may
-not work with a model that ties recruitment deviations to
+\pkg{ss3sim} uses annual recruitment deviations and may not
+work with a model that ties recruitment deviations to
 environmental covariates. If you need to compare the
 environment to annual recruitment deviations, the preferred
 option is to transform the environmental variable into an

@@ -37,7 +37,7 @@ om <- paste0(d, "/models/cod-om")
 em <- paste0(d, "/models/cod-em")
 run_ss3sim(iterations = 1:2, scenarios =
   c("D0-E0-F0-G0-R0-S0-M0-cod"),
-  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+  case_folder = case_folder, om_dir = om, em_dir = em,
   bias_adjust = FALSE)
 get_results_scenario(c("D0-E0-F0-G0-R0-S0-M0-cod"))
 }

@@ -3,7 +3,7 @@
 \title{Base wrapper fun to run an ss3sim simulation}
 \usage{
 ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
-  agecomp_params, estim_params, tv_params, om_model_dir, em_model_dir,
+  agecomp_params, estim_params, tv_params, om_dir, em_dir,
   retro_params = NULL, user_recdevs = NULL, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
   print_logfile = TRUE, sleep = 0, conv_crit = 0.2, ...)
@@ -35,13 +35,11 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   \item{estim_params}{A named list containing all the
   \code{\link{change_e}} options.}
 
-  \item{om_model_dir}{The directory with the operating
-  model you want to copy and use for the specified
-  simulations.}
+  \item{om_dir}{The directory with the operating model you
+  want to copy and use for the specified simulations.}
 
-  \item{em_model_dir}{The directory with the estimation
-  model you want to copy and use for the specified
-  simulations.}
+  \item{em_dir}{The directory with the estimation model you
+  want to copy and use for the specified simulations.}
 
   \item{user_recdevs}{An optional matrix of recruitment
   deviations to replace the recruitment deviations built
@@ -112,6 +110,11 @@ scenarios. They will look like this: \itemize{ \item
 \code{D0-E0-F0-M0-R0-cod/1/om} \item
 \code{D0-E0-F0-M0-R0-cod/1/em} \item
 \code{D0-E0-F0-M0-R0-cod/2/om} \item ... }
+
+The input and output file structure of an \pkg{ss3sim}
+simulation:
+
+\figure{filestructure.png}
 }
 \description{
 This function is a wrapper function that can call
@@ -129,6 +132,10 @@ age composition, and time-varying parameters in the
 function call as list objects (see the example below). For
 a generic higher-level function, see
 \code{\link{run_ss3sim}}.
+
+The steps carried out within \code{ss3sim_base}:
+
+\figure{simsteps.png}
 }
 \examples{
 \dontrun{
@@ -146,16 +153,16 @@ case_folder <- paste0(d, "/eg-cases")
 
 # Pull in file paths from the package example data:
 d <- system.file("extdata", package = "ss3sim")
-om_model_dir <- paste0(d, "/models/cod-om")
-em_model_dir <- paste0(d, "/models/cod-em")
+om_dir <- paste0(d, "/models/cod-om")
+em_dir <- paste0(d, "/models/cod-em")
 a <- get_caseargs(folder = paste0(d, "/eg-cases"), scenario =
 "M0-F0-D0-R0-E0-cod")
 
 ss3sim_base(iterations = 1, scenarios = "M0-F0-D0-R0-E0-cod",
 f_params = a$F, index_params = a$index, lcomp_params = a$lcomp,
 agecomp_params = a$agecomp, tv_params = a$tv_params, retro_params =
-a$R, estim_params = a$E, om_model_dir = om_model_dir, em_model_dir
-= em_model_dir)
+a$R, estim_params = a$E, om_dir = om_dir, em_dir
+= em_dir)
 unlink("M0-F0-D0-R0-E0-cod", recursive = TRUE) # clean up
 
 # Or, create the argument lists directly in R and skip the case file setup:
@@ -185,7 +192,7 @@ R0 <- list(retro_yr = 0)
 ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-R0-M0-cod",
   f_params = F0, index_params = index1, lcomp_params = lcomp1,
   agecomp_params = agecomp1, estim_params = E0, tv_params = M0,
-  retro_params = R0, om_model_dir = om, em_model_dir = em)
+  retro_params = R0, om_dir = om, em_dir = em)
 
 unlink("D1-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
 
@@ -193,7 +200,8 @@ setwd(wd)
 }
 }
 \author{
-Sean C. Anderson
+Sean Anderson with contributions from many others as listed
+in the DESCRIPTION file.
 }
 \seealso{
 \code{\link{run_ss3sim}}
