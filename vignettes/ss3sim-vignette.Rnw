@@ -504,8 +504,8 @@ run_ss3sim(iterations = 1, scenarios =
     "D1-E0-F0-R0-M0-cod",
     "D0-E1-F0-R0-M0-cod",
     "D1-E1-F0-R0-M0-cod"),
-  case_folder = case_folder, om_model_dir = om,
-  em_model_dir = em)
+  case_folder = case_folder, om_dir = om,
+  em_dir = em)
 @
 
 \noindent
@@ -575,7 +575,7 @@ Note that by default 5 bias adjustment runs are performed since we specify that
 <<deterministic-runs, eval=FALSE>>=
 run_ss3sim(iterations = 1:20,
   scenarios = c("D100-E100-F0-R0-M0-cod", "D100-E101-F0-R0-M0-cod"),
-  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+  case_folder = case_folder, om_dir = om, em_dir = em,
   bias_adjust = TRUE, user_recdevs = recdevs_det)
 @
 
@@ -588,7 +588,7 @@ With this function we could instead write:
 x <- expand_scenarios(list(D = 100, E = 100:101, F = 0, M = 0,
     R = 0), species = "cod")
 run_ss3sim(iterations = 1:20, scenarios = x,
-  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+  case_folder = case_folder, om_dir = om, em_dir = em,
   bias_adjust = TRUE, user_recdevs = recdevs_det)
 @
 
@@ -624,8 +624,8 @@ run_ss3sim(iterations = 1:100, scenarios =
     "D1-E0-F0-R0-M0-cod",
     "D0-E1-F0-R0-M0-cod",
     "D1-E1-F0-R0-M0-cod"),
-  case_folder = case_folder, om_model_dir = om,
-  em_model_dir = em, bias_adjust = TRUE)
+  case_folder = case_folder, om_dir = om,
+  em_dir = em, bias_adjust = TRUE)
 @
 
 \subsection{Reading in the output and plotting the results}
@@ -810,7 +810,7 @@ R0 <- list(retro_yr = 0)
 ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-R0-M0-cod",
   f_params = F0, index_params = index1, lcomp_params = lcomp1,
   agecomp_params = agecomp1, estim_params = E0, tv_params = M0,
-  retro_params = R0, om_model_dir = om, em_model_dir = em)
+  retro_params = R0, om_dir = om, em_dir = em)
 @
 
 \section{Time-varying parameters in the OM}
@@ -1335,7 +1335,7 @@ run_ss3sim(iterations = 1:100, scenarios =
     "D2-E0-F0-R0-M0-cod",
     "D1-E1-F0-R0-M0-cod",
     "D2-E1-F0-R0-M0-cod"),
-  case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+  case_folder = case_folder, om_dir = om, em_dir = em,
   bias_adjust = TRUE, parallel = TRUE)
 @
 

@@ -2,9 +2,10 @@
 #'
 #' This is the main high-level wrapper function for running \pkg{ss3sim}
 #' simulations. This function first deals with parsing a scenario ID into case
-#' input files and then passes these arguments on to \code{\link{ss3sim_base}}
-#' to run a simulation. Alternatively, you might choose to run
-#' \code{\link{ss3sim_base}} directly and skip the case-file setup.
+#' arguments, reads the appropriate case files, and then passes these arguments
+#' on to \code{\link{ss3sim_base}} to run a simulation. Alternatively, you might
+#' choose to run \code{\link{ss3sim_base}} directly and skip the case-file
+#' setup.
 #'
 #' @param iterations Which iterations to run. A numeric vector. For example
 #'   \code{1:100}.
@@ -14,9 +15,9 @@
 #'   See \code{\link{get_caseargs}} and the vignette for details on specifying
 #'   the scenarios.
 #' @param case_folder The folder containing the plain-text case files.
-#' @param om_model_dir The folder containing the SS3 operating model
+#' @param om_dir The folder containing the SS3 operating model
 #'   configuration files.
-#' @param em_model_dir The folder containing the SS3 estimation model
+#' @param em_dir The folder containing the SS3 estimation model
 #'   configuration files.
 #' @param case_files A named list that relates the case IDs to the files to
 #'   return. If you are passing time-varying parameters beyond (or instead of)
@@ -44,7 +45,7 @@
 #' the \code{ss3.par} and \code{yourmodel.dat} files, which are unnecessary but
 #' can be included if desired. See the vignette for details on modifying an
 #' existing \code{SS3} model to run with \pkg{ss3sim}. Alternatively, you might
-#' consider modifying one of the built in model configurations.
+#' consider modifying one of the built-in model configurations.
 #'
 #' @return
 #' The output will appear in whatever your current \R working directory
@@ -60,8 +61,14 @@
 #' \item \code{D0-E0-F0-M0-R0-cod/2/om}
 #' \item ...
 #' }
+#'
+#' An illustration of the input and output file structure
+#' of an \pkg{ss3sim} simulation:
+#' \figure{filestructure.png}{An illustration of the input and output file
+#' structure for an ss3sim simulation.}
+#'
 #' @seealso \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
-#' \code{\link{run_bias_ss3}}, \code{\link{get_caseargs}}, 
+#' \code{\link{run_bias_ss3}}, \code{\link{get_caseargs}},
 #' \code{\link{expand_scenarios}}
 #' @export
 #'
@@ -81,12 +88,12 @@
 #'
 #' # Without bias adjustment:
 #' run_ss3sim(iterations = 1:1, scenarios = "D0-E0-F0-R0-M0-cod",
-#'   case_folder = case_folder, om_model_dir = om, em_model_dir = em)
+#'   case_folder = case_folder, om_dir = om, em_dir = em)
 #' unlink("D0-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
 #'
 #' # An example specifying the case files:
 #' run_ss3sim(iterations = 1:1, scenarios = "D0-E0-F0-R0-cod",
-#'   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+#'   case_folder = case_folder, om_dir = om, em_dir = em,
 #'   case_files = list(F = "F", D = c("index", "lcomp",
 #'       "agecomp"), R = "R", E = "E"))
 #' unlink("D0-E0-F0-R0-cod", recursive = TRUE) # clean up
@@ -95,20 +102,20 @@
 #' # (Note that bias_nsim should be bigger, say 5 or 10, but it is set
 #' # to 2 here so the example runs faster.)
 #' run_ss3sim(iterations = 1:1, scenarios = "D1-E0-F0-R0-M0-cod",
-#'   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+#'   case_folder = case_folder, om_dir = om, em_dir = em,
 #'   bias_adjust = TRUE, bias_nsim = 2)
 #'
 #' # Restarting the previous run using the existing bias-adjustment
 #' # output
 #' run_ss3sim(iterations = 2:3, scenarios = "D1-E0-F0-R0-M0-cod",
-#'   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+#'   case_folder = case_folder, om_dir = om, em_dir = em,
 #'   bias_adjust = FALSE, bias_already_run = TRUE)
 #' unlink("D1-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
 #'
 #' # A run with deterministic process error for model checking:
 #' recdevs_det <- matrix(0, nrow = 100, ncol = 20)
 #' run_ss3sim(iterations = 1:20, scenarios = "D0-E100-F0-R0-M0-cod",
-#'   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+#'   case_folder = case_folder, om_dir = om, em_dir = em,
 #'   bias_adjust = TRUE, bias_nsim = 2, user_recdevs = recdevs_det)
 #' unlink("D0-E100-F0-R0-M0-cod", recursive = TRUE) # clean up
 #'
@@ -119,7 +126,7 @@
 #' getDoParWorkers() # check how many cores are registered
 #' run_ss3sim(iterations = 1, scenarios = c("D0-E0-F0-R0-M0-cod",
 #'     "D1-E0-F0-R0-M0-cod"), case_folder = case_folder,
-#'   om_model_dir = om, em_model_dir = em, parallel = TRUE)
+#'   om_dir = om, em_dir = em, parallel = TRUE)
 #' unlink("D0-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
 #' unlink("D1-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
 #'
@@ -128,7 +135,7 @@
 #' }
 
 run_ss3sim <- function(iterations, scenarios, case_folder,
-  om_model_dir, em_model_dir, case_files = list(M = "M", F = "F", D =
+  om_dir, em_dir, case_files = list(M = "M", F = "F", D =
     c("index", "lcomp", "agecomp"), R = "R", E = "E"),
   parallel = FALSE, ...) {
 
@@ -152,8 +159,8 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
         tv_params = a$tv_params,
         f_params = a$F, index_params =
         a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp,
-        retro_params = a$R, estim_params = a$E, om_model_dir = om_model_dir,
-        em_model_dir = em_model_dir, ...)
+        retro_params = a$R, estim_params = a$E, om_dir = om_dir,
+        em_dir = em_dir, ...)
   }} else {
     output <- lapply(scenarios, function(x) {
       a <- get_caseargs(folder = case_folder, scenario = x, case_files = case_files)
@@ -162,8 +169,8 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
         tv_params = a$tv_params,
         f_params = a$F, index_params =
         a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp,
-        retro_params = a$R, estim_params = a$E, om_model_dir = om_model_dir,
-        em_model_dir = em_model_dir, ...)
+        retro_params = a$R, estim_params = a$E, om_dir = om_dir,
+        em_dir = em_dir, ...)
         })
   }
 

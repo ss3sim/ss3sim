@@ -26,7 +26,7 @@ citEntry(entry = "Manual",
         "Cunningham, CJ, Hurtado-Ferro, F, Licandeo, R, McGilliard, CR, ",
         "Muradian, ML, Szuwalski, CS, Vert-pre, KA, and Whitten, AR (",
         year,
-        "). ss3sim: Fisheries stock-assessment simulation testing ",
+        "). ss3sim: Fisheries stock assessment simulation testing ",
         "with Stock Synthesis. ", vers, ".", sep = "")
 )
 

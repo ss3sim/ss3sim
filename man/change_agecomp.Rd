@@ -59,7 +59,7 @@ returned invisibly.
 \description{
 Take a \code{data.SS_new} file containing expected values
 and sample to create observed age compositions which are
-then written to file for use by the EM.
+then written to file for use by the estimation model.
 }
 \examples{
 d <- system.file("extdata", package = "ss3sim")

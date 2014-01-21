@@ -9,6 +9,7 @@
 #' @param fvals Vector of F values to be entered into \code{ss3.par} file
 #' @param file_in Input SS3 par file.
 #' @param file_out Output SS3 par file.
+#' @return A modified SS3 \code{.par} file.
 #' @examples
 #' # Create a temporary folder for the output:
 #' temp_path <- file.path(tempdir(), "ss3sim-f-example")

@@ -1,4 +1,4 @@
-#' Methods to include time-varying parameters in an SS3 OM
+#' Methods to include time-varying parameters in an SS3 operating model
 #'
 #' \code{change_tv} takes SS3 \code{.ctl}, \code{.par}, and \code{.dat} files
 #' and implements time-varying parameters using environmental variables.
@@ -24,7 +24,7 @@
 #'
 #' @details
 #' Although there are three ways to implement time-varying parameters within
-#' SS3, \code{ss3sim} and \code{change_tv} only use the environmental variable
+#' SS3, \pkg{ss3sim} and \code{change_tv} only use the environmental variable
 #' option. Within SS3, time-varying parameters work on an annual time-step.
 #' Thus, for models with multiple seasons, the time-varying parameters will
 #' remain constant for the entire year.
@@ -36,7 +36,7 @@
 #' add code in the \code{.ctl}, \code{.par}, and \code{.dat} files, code that
 #' is necessary to implement time-varying parameters.
 #'
-#' \code{ss3sim} uses annual recruitment deviations and may not work with a
+#' \pkg{ss3sim} uses annual recruitment deviations and may not work with a
 #' model that ties recruitment deviations to environmental covariates. If you
 #' need to compare the environment to annual recruitment deviations, the
 #' preferred option is to transform the environmental variable into an age 0
@@ -207,7 +207,7 @@ specify, 0 #_custom_MG-env_setup (0/1), for the environmental linkage.")
       if(test.tmp == 2) {
         warning(
 "The time-varying adjustment constraint in the natural mortality and growth
-section of the given OM specifies a logistic transformation. change_tv
+section of the given operating model specifies a logistic transformation. change_tv
 implements additive environmental deviates and constraining the adjusted
 parameter to the bounds of the base parameter may lead to undesired
 transformations. To avoid this, either change the bounds of the base parameter
@@ -242,7 +242,7 @@ specify, 0 #_custom_sel-env_setup (0/1), for the environmental linkage.")
       if(test.tmp == 2) {
         warning(
 "The time-varying adjustment constraint in the selectivity section of the given
-OM specifies a logistic transformation. ss3sim::change_tv implements additive
+operating model specifies a logistic transformation. ss3sim::change_tv implements additive
 environmental deviates and constraining the adjusted parameter to the bounds of
 the base parameter may lead to undesired transformations. To avoid this, either
 change the bounds of the base parameter and ignore this warning or change the
@@ -316,7 +316,7 @@ temp.data <- change_tv_list[lab == "sr"]
     if(sr.base > 0) {
       stop("Currently SS3 does not allow environmental deviations
             for multiple stock recruit parameters.
-            Please remove the environmental covariate from the base OM
+            Please remove the environmental covariate from the base operating model
             and run the scenario again.")
     }
 

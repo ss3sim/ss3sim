@@ -203,7 +203,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
 #' em <- paste0(d, "/models/cod-em")
 #' run_ss3sim(iterations = 1:2, scenarios =
 #'   c("D0-E0-F0-G0-R0-S0-M0-cod"),
-#'   case_folder = case_folder, om_model_dir = om, em_model_dir = em,
+#'   case_folder = case_folder, om_dir = om, em_dir = em,
 #'   bias_adjust = FALSE)
 #' get_results_scenario(c("D0-E0-F0-G0-R0-S0-M0-cod"))
 #' }
@@ -334,7 +334,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
 #' Extract time series from an \code{SS_output} list from a model run.
 #' Returns a data.frame of the results for SSB, recruitment and effort by year.
 #'
-#' @param report.file An \code{SS_output} list for a model (OM or EM).
+#' @param report.file An \code{SS_output} list for a model (operating model or estimation model).
 #' @export
 #' @family get-results
 #' @author Cole Monnahan
@@ -356,7 +356,7 @@ get_results_timeseries <- function(report.file){
 #'
 #' Extract scalar quantities from an \code{SS_output} list from a model run.
 #' Returns a data.frame of the results (a single row) which can be rbinded later.
-#' @param report.file An SS_output list for a model (OM or EM).
+#' @param report.file An SS_output list for a model (operating model or estimation model).
 #' @family get-results
 #' @export
 #' @author Cole Monnahan

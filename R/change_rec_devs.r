@@ -8,6 +8,7 @@
 #' @param recdevs_new A vector of new recruitment deviations.
 #' @param file_in Input SS3 par file.
 #' @param file_out Output SS3 par file.
+#' @return A modified SS3 \code{.par} file.
 #' @author Cole Monnahan
 #' @export
 

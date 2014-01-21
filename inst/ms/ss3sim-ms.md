@@ -300,8 +300,8 @@ We can run 100 iterations of the simulation scenarios with the following code:
     run_ss3sim(iterations = 1:100, scenarios =
       c("D0-E0-F0-M0-R0-cod", "D1-E0-F0-M0-R0-cod",
         "D0-E1-F0-M0-R0-cod", "D1-E1-F0-M0-R0-cod"),
-      case_folder = case_folder, om_model_dir = om,
-      em_model_dir = em, bias_adjust = TRUE)
+      case_folder = case_folder, om_dir = om,
+      em_dir = em, bias_adjust = TRUE)
 
 This produces a folder structure in our working directory
 containing all of the SS3 output files.

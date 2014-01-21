@@ -1,15 +1,8 @@
-#' ss3sim: An \R package for fisheries stock assessment simulation testing with
-#' Stock Synthesis 3
+#' ss3sim: Fisheries stock assessment simulation testing with Stock Synthesis
 #'
-#' The \pkg{ss3sim} \R package is designed to facilitate large-scale, rapid,
-#' and reproducible simulation with the widely-used Stock Synthesis 3
-#' (SS3) statistical catch-at-age stock assessment framework.
-#'
-#' \pkg{ss3sim} was developed by graduate students and post doctoral
-#' researchers at the University of Washington in the School of
-#' Aquatic and Fishery Sciences. The authors of individual functions
-#' are listed within the function documentation and all contributors are listed
-#' in the \code{DESCRIPTION} file.
+#' The \pkg{ss3sim} \R package is designed to facilitate rapid, reproducible,
+#' and flexible simulation with the widely-used Stock Synthesis 3 (SS3)
+#' statistical catch-at-age stock assessment framework.
 #'
 #' An \pkg{ss3sim} simulation requires three types of input: (1) a base
 #' model of the underlying truth (an SS3 operating model), (2) a base
@@ -76,6 +69,16 @@
 #'
 #' See the package vignette \code{vignette("ss3sim-vignette")} for
 #' more extensive explanation of how to use the \pkg{ss3sim} \R package.
+#'
+#' \pkg{ss3sim} was developed by graduate students and post doctoral researchers
+#' at the University of Washington (School of Aquatic and Fishery Sciences and
+#' Quantitative Ecology and Resource Management departments) and Simon Fraser
+#' University. The authors of individual functions are listed within the
+#' function documentation and all contributors are listed in the
+#' \code{DESCRIPTION} file.
+#'
+#' If you are using \pkg{ss3sim} in a publication, please cite the package as
+#' indicated by running \code{citation("ss3sim")} in the \R console.
 #'
 #' @docType package
 #' @name ss3sim
