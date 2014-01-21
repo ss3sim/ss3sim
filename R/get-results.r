@@ -44,7 +44,7 @@ calculate_runtime <- function(start_time, end_time) {
 #' @export
 #' @return
 #' Creates two .csv files in the current working directory:
-#' ss3sim_ts.csv and ss3sim_scalar.csv.
+#' \code{ss3sim_ts.csv} and \code{ss3sim_scalar.csv}.
 #' @author Cole Monnahan
 #' @family get-results
 #' @examples \dontrun{
