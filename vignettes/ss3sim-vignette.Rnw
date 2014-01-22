@@ -10,7 +10,7 @@
 % Try not to re-wrap unless necessary.
 % Avoid trailing whitespace.
 
-\documentclass[12pt]{article}
+\documentclass[11pt]{article}
 \usepackage{geometry}
 \usepackage{url}
 \usepackage{amssymb}
