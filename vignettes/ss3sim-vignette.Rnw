@@ -60,15 +60,16 @@ knit_theme$set(thm)
   Sean C. Anderson\thanks{sean@seananderson.ca; Department of Biological
   Sciences, Simon Fraser University, Burnaby BC, V5A 1S6, Canada}
   \and
-  Cole C. Monnahan\thanks{Quantitative Ecology and Resource Management,
+  Cole C. Monnahan\thanks{monnahc@uw.edu; Quantitative Ecology and Resource Management,
   University of Washington, Box 352182, Seattle, WA 98195-2182, USA}
   \and
-  Kelli F. Johnson\thanks{School of Aquatic and Fishery Sciences,
+  Kelli F. Johnson\thanks{kfjohns@uw.edu; School of Aquatic and Fishery Sciences,
   University of Washington, Box 355020, Seattle, WA 98195-5020, USA}
   \and
-  Kotaro Ono\footnotemark[3]
+  Kotaro Ono\thanks{kotarono@uw.edu; School of Aquatic and Fishery Sciences,
+  University of Washington, Box 355020, Seattle, WA 98195-5020, USA}
   \and
-  Juan L. Valero\thanks{Center for the Advancement of Population Assessment
+  Juan L. Valero\thanks{juan@myuw.net; Center for the Advancement of Population Assessment
   Methodology (CAPAM), 8901 La Jolla Shores Drive, La Jolla, CA 92037, USA}
   }
 
@@ -78,7 +79,7 @@ knit_theme$set(thm)
 \clearpage
 \tableofcontents
 
-\setlength\parskip{0.08in}
+\setlength\parskip{0.11in}
 \setlength\parindent{0in}
 
 \clearpage
@@ -86,7 +87,6 @@ knit_theme$set(thm)
 
 \texttt{ss3sim} requires \texttt{R} version 3.0.0 or greater.
 The package can be run on OS X, Windows, or Linux.
-
 The CRAN version of \texttt{ss3sim} can be installed
 in an \texttt{R} console with:
 
@@ -131,7 +131,7 @@ vignette("ss3sim-vignette")
 \noindent
 We develop and test \texttt{ss3sim} around a specific version of SS3.
 Currently, \texttt{ss3sim} is tested to work with SS3 Version 3.24O.
-Since this is a more recent version than is provided at the normal download location\\
+Since this is a more recent version than is provided at the normal download location
 \url{http://nft.nefsc.noaa.gov/SS3.html},
 we provide copies of the 3.24O binaries (with the permission of R. Methot) at\\
 \url{https://github.com/ss3sim/ss3sim/tree/ss3-binaries/inst/ss3}.
@@ -140,6 +140,17 @@ we provide copies of the 3.24O binaries (with the permission of R. Methot) at\\
 \texttt{ss3sim} requires the SS3 binary to be in your path.
 This means that your operating system knows where the binary file is located.
 See Appendix \ref{sec:path} for details.
+
+Please direct any questions, suggestions, or bug reports to the \texttt{ss3sim}
+issue tracker: \url{https://github.com/ss3sim/ss3sim/issues}, or to an author
+as listed on the title page of this vignette.
+
+If you use \texttt{ss3sim} in a publication, please cite the package as
+indicated by running\\ \texttt{citation("ss3sim")} in the \texttt{R} console:
+
+<<citation>>=
+citation("ss3sim")
+@
 
 \section{An overview of the \texttt{ss3sim} simulation structure}
 
@@ -221,7 +232,7 @@ For example, the base-case scenario for a cod stock might be:
 The order of the cases does not matter,
 as long as they are used consistently.
 
-\texttt{ss3sim} relies on a set of plain text files to control the simulation.
+\texttt{ss3sim} relies on a set of plain text files to control the simulation (Figure~\ref{fig:files}).
 These plain text files are read by \texttt{get\_caseval}
 and turned into argument lists that are passed to \texttt{run\_ss3sim}.
 The function \texttt{create\_argfiles} creates template input files.
@@ -245,6 +256,20 @@ The default settings create these files:
 \item
   \texttt{X0-spp.txt} (for a time-varying parameter X, where X could be any time-varying case letter)
 \end{enumerate}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=5.0in]{file-structure.pdf}
+\caption{Illustration of input and output folder and file structure for an
+\texttt{ss3sim} simulation. Folders are shown in blue, input files in orange,
+and output files in grey. All input and output files are in plain text format.
+Case files (orange files at bottom left) combine cases (e.g.\ M0 for a given
+natural mortality trajectory) with species or life-history OMs and EMs (e.g.\
+cod-like or sardine-like). Alternatively, a user can skip setting up case files
+and specify the simulation cases directly in \texttt{R} code (see section \ref{sec:ss3simbase}.}
+\label{fig:files}
+\end{figure}
+
 
 After running \texttt{create\_argfiles()},
 look in your working directory for the template input files.\footnote{
@@ -332,7 +357,7 @@ no bias adjustment replicates are executed and no bias adjustment is performed.
 \subsection{Output file structure}
 
 Internally, the function \texttt{copy\_ss3models} creates a folder structure
-and copies the operating and estimation models.
+and copies the operating and estimation models (Figure~\ref{fig:files}).
 The folder structure looks like:
 
 \begin{verbatim}
@@ -789,6 +814,7 @@ print(p)
 @
 
 \section{Using \texttt{ss3sim\_base} directly}
+\label{sec:ss3simbase}
 
 An alternative approach to using \texttt{ss3sim} is to skip
 setting up the case files
