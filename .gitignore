@@ -31,3 +31,5 @@ Session.vim
 *.pdfsync
 
 *.pdf
+
+inst/ms/file-structure.eps
