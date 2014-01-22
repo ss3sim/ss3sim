@@ -15,8 +15,11 @@ Or, install the development version from GitHub:
 ```S
 install.packages("devtools")
 devtools::install_github("ss3sim/ss3sim", dependencies = TRUE)
+```
 
-# If you would like to run simulations in parallel, then also run:
+If you would like to run simulations in parallel, then also run:
+
+```S
 install.packages(c("doParallel", "foreach"))
 ```
 
