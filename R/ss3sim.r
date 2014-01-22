@@ -84,7 +84,7 @@
 #' function documentation and all contributors are listed in the
 #' \code{DESCRIPTION} file.
 #'
-#' If you are using \pkg{ss3sim} in a publication, please cite the package as
+#' If you use \pkg{ss3sim} in a publication, please cite the package as
 #' indicated by running \code{citation("ss3sim")} in the \R console.
 #'
 #' @docType package
