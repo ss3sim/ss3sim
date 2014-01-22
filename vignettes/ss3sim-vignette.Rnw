@@ -26,9 +26,6 @@
 
 \usepackage[dvipsnames,svgnames,x11names,hyperref]{xcolor}
 \usepackage{hyperref}
-\hypersetup{colorlinks,breaklinks,
-allcolors=MidnightBlue
-}
 \hypersetup{colorlinks,breaklinks,allcolors=MidnightBlue}
 
 \usepackage{fancyhdr}
@@ -44,6 +41,7 @@ allcolors=MidnightBlue
 \renewcommand{\footrulewidth}{0.5pt}
 
 \begin{document}
+\thispagestyle{empty}
 
 <<set-knitr-options, cache=FALSE, echo=FALSE>>=
 library(knitr)
@@ -88,11 +86,20 @@ knit_theme$set(thm)
 
 \texttt{ss3sim} requires \texttt{R} version 3.0.0 or greater.
 The package can be run on OS X, Windows, or Linux.
-Eventually \texttt{ss3sim} will be submitted to CRAN.
-In the meantime, it can be installed with the following code:
+
+The CRAN version of \texttt{ss3sim} can be installed
+in an \texttt{R} console with:
+
+<<install-cran, eval=FALSE>>=
+install.packages("ss3sim")
+@
+
+\noindent
+The development version of \texttt{ss3sim} can be installed from GitHub
+with the following code:
 
 <<install-and-load, eval=FALSE>>=
-# Install devtools to install ss3sim directly from GitHub:
+# Install devtools first:
 install.packages("devtools")
 
 # Install ss3sim:
@@ -106,12 +113,19 @@ install.packages("ggplot2")
 @
 
 \noindent
+You can then load the package with:
+
+<<load-package, eval=FALSE>>=
+library(ss3sim)
+@
+
+\noindent
 You can read the help files and access this vignette again with:
 
 <<help, eval=FALSE>>=
 ?ss3sim
 help(package = "ss3sim")
-vignette("ss3sim-vignette", package = "ss3sim")
+vignette("ss3sim-vignette")
 @
 
 \noindent
@@ -1568,7 +1582,7 @@ in Section \ref{sec:em-setup} we cover setting up an estimation model.
 \begin{enumerate}
 \item
   Specify all environmental deviates
-  to be unconstrained by bounds by setting
+  to be unconstrained by bounds by setting\\
   \texttt{\#\_env/block/dev\_adjust\_method} to \texttt{1}.
   If the method is set to \texttt{2},
   parameters adjusted using environmental covariate inputs
@@ -1580,7 +1594,7 @@ in Section \ref{sec:em-setup} we cover setting up an estimation model.
    Using the next two lines, specify the use of recruitment deviations
    to begin and end with the start and end years of the model.
 \item Turn on additional advanced options for the recruitment deviations
-   by specifying \texttt{\# (0/1) to read 13 advanced options} to \texttt{1}.
+   by specifying\\ \texttt{\# (0/1) to read 13 advanced options} to \texttt{1}.
 \item Set \texttt{\#\_recdev\_early\_start} to \texttt{0} so that
   the model will use the\\ \texttt{\# first year of main recr\_devs}.
 \item Set \texttt{\#\_lambda for Fcast\_rec\_like occurring before endyr+1}
@@ -1588,7 +1602,7 @@ in Section \ref{sec:em-setup} we cover setting up an estimation model.
    forecast recruitment deviations that occur before the first year of forecasting.
    Values larger than one accommodate noisy data at the end of the time series.
 \item Recruitment is log-normally distributed in SS.
-   If inputting a normally distributed recruitment deviations specify\\
+   If inputting a normally distributed recruitment deviations specify
    \texttt{\#\_max\_bias\_adj\_in\_MPD} to \texttt{-1}
    so that SS performs the bias correction for you.
    If inputting bias corrected normal recruitment deviation, specify it at \texttt{0}.
@@ -1681,7 +1695,7 @@ create a new EM.
 \item Change the names of the \texttt{.dat} and \texttt{.ctl} files
    to your chosen naming scheme.
 \item Specify the model to use parameter values found in the \texttt{.ctl} file,
-   by changing \texttt{\# 0=use init values in control file; 1=use ss3.par}
+   by changing\\ \texttt{\# 0=use init values in control file; 1=use ss3.par}
    to \texttt{0}.
 \item Turn on parameter estimation by changing\\
    \texttt{\# Turn off estimation for parameters entering after this phase}
