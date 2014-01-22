@@ -83,7 +83,7 @@ An illustration of the ss3sim simulation structure and relevant R functions
 
 ## Citing ss3sim
 
-If you use ss3sim in publication a, please cite ss3sim as shown by `citation("ss3sim")`:
+If you use ss3sim in a publication, please cite ss3sim as shown by `citation("ss3sim")`:
 
 Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, Valero, JL, Cunningham, CJ, Hurtado-Ferro, F, Licandeo, R, McGilliard, CR, Szuwalski, CS, Vert-pre, KA, and Whitten, AR (2014). ss3sim: Fisheries stock assessment simulation testing with Stock Synthesis. R package version 0.8.0.
 
