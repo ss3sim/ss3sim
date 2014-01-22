@@ -22,12 +22,26 @@
 \bibpunct{(}{)}{;}{a}{}{;}
 \newcommand{\Vof}[1]{\mathrm{Var}\left[#1 \right]}
 \newcommand{\Eof}[1]{\mathrm{E}\left[ #1 \right]}
+\textheight 20.5cm
 
 \usepackage[dvipsnames,svgnames,x11names,hyperref]{xcolor}
 \usepackage{hyperref}
 \hypersetup{colorlinks,breaklinks,
 allcolors=MidnightBlue
 }
+\hypersetup{colorlinks,breaklinks,allcolors=MidnightBlue}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[LE,RO]{\sffamily\thepage}
+\fancyfoot[LO,RE]{\sffamily An introduction to \texttt{ss3sim}}
+\fancyhead[RE]{\sffamily\nouppercase{\rightmark}}
+\fancyhead[LO]{\sffamily\nouppercase{\leftmark}}
+%\fancyhead[RE]{\nouppercase{\rightmark}}
+%\fancyhead[LO]{\nouppercase{\leftmark}}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
 
 \begin{document}
 
