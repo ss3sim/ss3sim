@@ -16,7 +16,7 @@ Or, install the development version from GitHub:
 install.packages("devtools")
 devtools::install_github("ss3sim/ss3sim", dependencies = TRUE)
 
-# If you would like to run simulations in parallel, also install:
+# If you would like to run simulations in parallel, then also run:
 install.packages(c("doParallel", "foreach"))
 ```
 
@@ -75,6 +75,8 @@ ss3sim functions are divided into three types:
 
 3. `get` functions for synthesizing the output.
 
+The main simulation function, `run_ss3sim()` runs the following steps:
+
 ![An illustration of the ss3sim simulation structure and relevant R functions](https://raw.github.com/seananderson/ss3sim/master/inst/ms/sim-steps.png)
 
 An illustration of the ss3sim simulation structure and relevant R functions
@@ -87,7 +89,7 @@ Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, Valero, JL, Cunningham, CJ, Hur
 
 Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, and Valero, JL (2013). ss3sim: An R package for fisheries stock assessment simulation with Stock Synthesis. arXiv:1312.6450.
 
-```bibtex
+```tex
 @Manual{,
     title = {ss3sim: Fisheries stock assessment simulation with Stock
       Synthesis},
