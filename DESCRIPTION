@@ -13,6 +13,7 @@ Authors@R: c(person("Sean", "Anderson", email =
     person("Felipe", "Hurtado-Ferro", role = "aut"),
     person("Roberto", "Licandeo", role = "aut"),
     person("Carey", "McGilliard", role = "aut"),
+    person("Melissa", "Muradian", role = "ctb"),
     person("Cody", "Szuwalski", role = "aut"),
     person("Katyana", "Vert-pre", role = "aut"),
     person("Athol", "Whitten", role = "aut"))
