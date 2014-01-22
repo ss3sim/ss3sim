@@ -1,62 +1,45 @@
-.background{
+.background {
   color: #F8F8F8;
 }
-.number{
-	color: #DE935F ;
+
+/*numeric:*/
+.num {
+  color: #1E1E1E;
 }
 
-.functioncall{
-	color: #3977b2;
+/*string:*/
+.str {
+  color: #DD1144;
 }
 
-.string{
-	color: #DD1144;
+/*comment:*/
+.com {
+  color: #999988;
+}
+.opt {
+  color: #1E1E1E;
+}
+.std {
+  color: #1E1E1E;
 }
 
-.keyword{
-	font-weight: bolder;
-	color: #B294BB;
+.kwa {
+  color: #295F94;
+  font-weight: bold;
 }
 
-.argument{
-	color: #CC6666 ;
+/*<-:*/
+.kwb {
+  color: #000000;
 }
 
-.comment{
-	color: #999988 ;
+/*argument names:*/
+.kwc {
+  color: #1E1E1E;
 }
 
-.roxygencomment{
-	color: #969896;
+/*function name:*/
+.kwd {
+  color: #3977b2;
+  font-weight: bold;
 }
-
-.formalargs{
-	color: #CC6666;
-}
-
-.eqformalargs{
-	color: #1E1E1E;
-}
-
-.assignement{
-	color: #1E1E1E;
-}
-
-.package{
-	font-weight: bolder;
-	color: #F0C674;
-}
-
-.slot{
-	font-style:italic;
-	color: #1E1E1E;
-}
-
-.symbol{
-	color: #00f90e ;
-}
-
-.prompt{
-	color: #333333;
-}
-
