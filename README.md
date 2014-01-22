@@ -84,6 +84,12 @@ The main simulation function, `run_ss3sim()` runs the following steps:
 
 An illustration of the ss3sim simulation structure and relevant R functions
 
+## Example output from an ss3sim simulation
+
+![An example of ss3sim output](https://raw.github.com/seananderson/ss3sim/master/inst/ms/fig2-20131109.png)
+
+Example output from an ss3sim simulation. We ran a crossed simulation in which we considered (1) the effect of fixing natural mortality ($M$) at its true value (0.2; case E0) or estimating $M$ (case E1) and (2) the effect of high survey effort ($\sigma_\mathrm{survey} = 0.1$; case D0) or low survey effort ($\sigma_\mathrm{survey} = 0.4$; case D1). Upper panels (blue) show time series of relative error in spawning stock biomass (SSB). Lower panels (grey) show the distribution of relative error across four scalar variables: depletion, $M$, SSB at maximum sustainable yield ($\mathrm{SSB}_\mathrm{MSY}$), and fishing mortality ($F$) in the terminal year. We show the values across simulation iterations with dots and the distributions with beanplots (kernel density smoothers).
+
 ## Citing ss3sim
 
 If you use ss3sim in a publication, please cite ss3sim as shown by `citation("ss3sim")`:
