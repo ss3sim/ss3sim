@@ -13,6 +13,7 @@ plos:
 	perl -p -i -e "s/citet/cite/g" manuscript.tex
 	perl -p -i -e "s/e\.g\. /e\.g\.~/g" manuscript.tex
 	perl -p -i -e "s/i\.e\. /i\.e\.~/g" manuscript.tex
+	perl -p -i -e "s/vs. /vs.~/g" manuscript.tex
 	perl -p -i -e "s/\\\section/\\\section\*/g" manuscript.tex
 	perl -p -i -e "s/\\\subsection/\\\subsection\*/g" manuscript.tex
 	perl -p -i -e "s/Andre Punt/Andr\\\'{e} Punt/g" manuscript.tex
