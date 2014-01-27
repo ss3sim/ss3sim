@@ -81,7 +81,7 @@ Since we have already validated the cod-like model setup (Text S1), we can now r
     em <- paste0(d, "/models/cod-em")
     case_folder <- paste0(d, "/eg-cases")
 
-We can then run the simulation with one call to the `run_ss3sim` function. We will set bias_adjust = TRUE to enable a procedure that aims to produce mean-unbiased estimates of recruitment and biomass despite log-normal recruitment deviations [@methot2011]. We can run 100 iterations of the simulation scenarios with the following code:
+We can then run the simulation with one call to the `run_ss3sim` function. We will set `bias_adjust = TRUE` to enable a procedure that aims to produce mean-unbiased estimates of recruitment and biomass despite log-normal recruitment deviations [@methot2011]. We can run 100 iterations of the simulation scenarios with the following code:
 
     run_ss3sim(iterations = 1:100, scenarios =
       c("D0-E0-F0-M0-R0-cod", "D1-E0-F0-M0-R0-cod",
@@ -90,7 +90,7 @@ We can then run the simulation with one call to the `run_ss3sim` function. We wi
       em_model_dir = em, bias_adjust = TRUE)
 
 \noindent
-This produces a folder structure in our working directory containing all of the SS3 output files. We can then collect the output with one function call:
+This produces a folder structure in our working directory containing all of the SS3 output files (Figure 2). We can then collect the output with one function call:
 
     get_results_all()
 
