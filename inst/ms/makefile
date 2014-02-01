@@ -18,7 +18,12 @@ plos:
 	perl -p -i -e "s/\\\section/\\\section\*/g" manuscript.tex
 	perl -p -i -e "s/\\\subsection/\\\subsection\*/g" manuscript.tex
 	perl -p -i -e "s/Andre Punt/Andr\\\'{e} Punt/g" manuscript.tex
+	pandoc ~/Dropbox/ms/ss3sim-response/ss3sim-response.md -o ss3sim-response.tex
 	pdflatex ss3sim-ms
+	bibtex ss3sim-ms
+	pdflatex ss3sim-ms
+	pdflatex ss3sim-ms
+	rm ss3sim-response.tex
 	cp ss3sim-ms.pdf ~/Dropbox/Public/
 
 letter:
