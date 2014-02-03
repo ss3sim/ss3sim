@@ -153,7 +153,7 @@ SCA was supported by Fulbright Canada (generously hosted by Trevor Branch), NSER
 
 \begin{figure}[!ht]
 \caption{
-{\bf Illustration of input and output folder and file structure for an ss3sim simulation.} Folders are shown in blue, input files in orange, and output files in grey. All input and output files are in plain text format. OM refers to \textit{operating model} and EM to \textit{estimation model}. Case files (orange files at bottom left) combine cases (e.g. `M0` for a given natural mortality trajectory) with species or life-history OMs and EMs (e.g. cod-like or sardine-like). Alternatively, a user can skip setting up case files and specify the simulation cases directly in \texttt{R} code (see the accompanying vignette [Text S1]).
+{\bf Illustration of input and output folder and file structure for an ss3sim simulation.} Folders are shown in blue, input files in orange, and output files in grey. All input and output files are in plain text format. OM refers to \textit{operating model} and EM to \textit{estimation model}. Case files (orange files at bottom left) combine cases (e.g. \texttt{M0} for a given natural mortality trajectory) with species or life-history OMs and EMs (e.g. cod-like or sardine-like). Alternatively, a user can skip setting up case files and specify the simulation cases directly in \texttt{R} code (see the accompanying vignette [Text S1]).
 }
 \end{figure}
 
