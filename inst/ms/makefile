@@ -26,6 +26,11 @@ plos:
 	rm ss3sim-response.tex
 	cp ss3sim-ms.pdf ~/Dropbox/Public/
 
+diff:
+	latexdiff ss3sim-first-submission.tex ss3sim-ms.tex > ss3sim-ms-diff.tex
+	pdflatex ss3sim-ms-diff
+	pdflatex ss3sim-ms-diff
+
 letter:
 	xelatex ss3sim-letter
 
