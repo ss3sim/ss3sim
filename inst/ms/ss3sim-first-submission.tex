@@ -1,0 +1,441 @@
+% Template for PLoS
+% Version 1.0 January 2009
+%
+% To compile to pdf, run:
+% latex plos.template
+% bibtex plos.template
+% latex plos.template
+% latex plos.template
+% dvipdf plos.template
+
+\documentclass[11pt]{article}
+
+% amsmath package, useful for mathematical formulas
+\usepackage{amsmath}
+% amssymb package, useful for mathematical symbols
+\usepackage{amssymb}
+
+% graphicx package, useful for including eps and pdf graphics
+% include graphics with the command \includegraphics
+\usepackage{graphicx}
+
+% cite package, to clean up citations in the main text. Do not remove.
+\usepackage{cite}
+
+\usepackage{color}
+
+% Use doublespacing - comment out for single spacing
+\usepackage{setspace}
+%\doublespacing
+\onehalfspacing
+
+
+% Text layout
+\topmargin 0.0cm
+\oddsidemargin 0.5cm
+\evensidemargin 0.5cm
+\textwidth 16cm
+\textheight 21cm
+
+% Bold the 'Figure #' in the caption and separate it with a period
+% Captions will be left justified
+\usepackage[labelfont=bf,labelsep=period,justification=raggedright]{caption}
+
+% Use the PLoS provided bibtex style
+\bibliographystyle{plos2009}
+
+% Remove brackets from numbering in List of References
+\makeatletter
+\renewcommand{\@biblabel}[1]{\quad#1.}
+\makeatother
+
+
+% Leave date blank
+\date{}
+
+\pagestyle{myheadings}
+%% ** EDIT HERE **
+\usepackage{url}
+\usepackage{longtable}
+\usepackage{fixltx2e}
+\usepackage{lineno}
+
+%% ** EDIT HERE **
+%% PLEASE INCLUDE ALL MACROS BELOW
+
+%% END MACROS SECTION
+
+\begin{document}
+
+% Title must be 150 characters or less
+\begin{flushleft}
+{\Large
+\textbf{ss3sim: An R package for fisheries stock assessment simulation with Stock Synthesis}
+}
+% Insert Author names, affiliations and corresponding author email.
+\\
+Sean C. Anderson$^{1,\ast}$,
+Cole C. Monnahan$^{2}$
+Kelli F. Johnson$^{3}$,
+Kotaro Ono$^{3}$
+Juan L. Valero$^{4}$
+\\
+\bf{1} Department of Biological Sciences,
+Simon Fraser University,
+Burnaby BC, V5A 1S6, Canada
+\\
+\bf{2} Quantitative Ecology and Resource Management,
+University of Washington, Box 352182,
+Seattle, WA 98195-2182, USA
+\\
+\bf{3} School of Aquatic and Fishery Sciences,
+University of Washington, Box 355020,
+Seattle, WA 98195-5020, USA
+\\
+\bf{4} Center for the Advancement of Population Assessment Methodology
+(CAPAM), 8901 La Jolla Shores Drive, La Jolla, CA 92037, USA
+\\
+$\ast$ E-mail: sean@seananderson.ca
+\end{flushleft}
+
+
+\linenumbers
+\modulolinenumbers[2]
+
+\section*{Abstract}
+
+Simulation testing is an important approach to evaluating fishery stock assessment methods. In the last decade, the fisheries stock assessment modeling framework Stock Synthesis (SS3) has become widely-used around the world. However, there lacks a generalized and scriptable framework for SS3 simulation testing. Here, we introduce \texttt{ss3sim}, an \texttt{R} package that facilitates large-scale, rapid, and reproducible end-to-end simulation testing with SS3. \texttt{ss3sim} requires an existing SS3 model configuration along with plain-text control files describing alternative population dynamics, fishery properties, sampling scenarios, and assessment approaches. \texttt{ss3sim} then generates an underlying truth, samples from that truth, modifies and runs an estimation model, and synthesizes the results. The simulations can be run in parallel, speeding computation, and the source code is free to be modified under an open-source MIT license. \texttt{ss3sim} is designed to explore structural differences between the underlying truth and assumptions of an estimation model, or between multiple estimation model configurations. For example, \texttt{ss3sim} can be used to answer questions about model misspecification, retrospective patterns, and the relative importance of different types of fisheries data. We demonstrate the software with a simple example, discuss how \texttt{ss3sim} complements other simulation software, and outline specific research questions that \texttt{ss3sim} could address.
+
+\clearpage
+
+\section*{Introduction}
+
+Fisheries stock assessment models are crucial to providing scientific advice and to evaluating the impact of alternative management actions on fishery resources \cite{gulland1983, hilborn1992}. Although a variety of stock assessment approaches are available, it is often not straightforward to choose among competing approaches that may lead to different modeling outcomes and associated scientific advice to management.
+
+Simulation testing is a critical component to testing fishery stock assessment methods, particularly given the potential for model misspecification \cite{hilborn1987, hilborn1992, rosenberg1994, peterman2004, deroba2013a}. With simulation testing we can evaluate the precision and bias of alternative assessment methods in a controlled environment where we know the true dynamics of fisheries resources under exploitation. Recent simulation studies have been key to improving strategies for dealing with, for example, time-varying natural mortality ($M$) \cite{lee2011, jiao2012, deroba2013, johnson2013} uncertainty in steepness of the stock-recruit relationship \cite{lee2012}, and environmental variability \cite{schirripa2009}, as well as determining what makes fisheries data informative \cite{magnusson2007, wetzel2011a, ono2013, yin2004}.
+
+Stock Synthesis (SS3, the third version of the software) is a widely-used fisheries stock assessment modeling framework \cite{methot2013}. SS3 implements statistical age-structured population modeling, using a wide range of minimally-processed data \cite{maunder2013, methot2013}. By using this generalized framework, individuals conducting fisheries stock assessments and peer reviewers can focus on the underlying science, instead of the model code \cite{methot2013}. Owing in part to these advantages, SS3 is one of the world's most commonly-used stock assessment modelling frameworks, particularly in the United States and Australia, where it has been used in 35 and 12 stock assessments as of 2012, respectively \cite{methot2013}. Stock Synthesis is also commonly used as a framework for stock assessment simulation testing \cite{helu2000, yin2004, schirripa2009, lee2011, jiao2012, lee2012, crone2013a, hurtadoferro2013}.
+
+Although SS3 is increasingly becoming a standard for fisheries stock assessment, there lacks a generalized framework for simulation testing with SS3. As a result, most stock assessment simulation-testing work to date has used custom frameworks tailored to the particular needs of each study \cite{helu2000, yin2004, magnusson2007, wetzel2011a, jiao2012, wilberg2006, deroba2013a, deroba2013, crone2013a, hurtadoferro2013}. The programming language \texttt{R} \cite{rcoreteam2013} is an ideal language to write such a generalized framework in because (1) \texttt{R} has become the standard for statistical computing and visualization and (2) the \texttt{R} package \texttt{r4ss} \cite{r4ss2013} facilitates reading, processing, and plotting of SS3 model output.
+
+Here we introduce \texttt{ss3sim}, an \texttt{R} package that facilitates large-scale, rapid, and reproducible end-to-end simulation testing with the widely-used SS3 framework. We begin by outlining the general structure of \texttt{ss3sim} and describing its functions, and then demonstrate the software with a simple example. We conclude by discussing how \texttt{ss3sim} complements other simulation testing software and by outlining some research questions that our freely accessible and general SS3 simulation-testing framework could address.
+
+\section*{The ss3sim framework}
+
+\subsection*{Design goals of ss3sim}
+
+We designed \texttt{ss3sim} to be reproducible, flexible, and rapid. \emph{Reproducible}: \texttt{ss3sim} simulations are produced using \texttt{R} code, plain-text control files, and SS3 model configurations. \texttt{ss3sim} also allows for random seeds to be set when generating observation and process error. In combination, these features make simulations repeatable across computers and operating systems (Windows, OS X, and Linux). \emph{Flexible}: \texttt{ss3sim} inherits the flexibility of SS3 and can therefore implement many available stock assessment configurations by either modifying existing SS3 model configurations or by modifying built-in generic life-history model configurations (Text S1). Furthermore, \texttt{ss3sim} summarizes the simulation output into plain-text comma-separated-value (\texttt{.csv}) files allowing the output to be processed in \texttt{R} or other statistical software. Finally, the \texttt{ss3sim} code is written under an open-source MIT license and can be freely modified. \emph{Rapid}: \texttt{ss3sim} relies on SS3, which uses AD Model Builder as a back-end optimization platform \cite{fournier2012}{]} --- the most rapid and robust non-linear optimization software \cite{bolker2013}. \texttt{ss3sim} also facilitates the deployment of simulations across multiple computers or computer cores (i.e.~parallelization), thereby accelerating computation. By using the vetted SS3 framework \cite{methot2013} with the tested \texttt{ss3sim} package \cite{johnson2013, ono2013}, the time to develop a large-scale simulation can be reduced substantially, shifting focus to the research questions themselves.
+
+\subsection*{The general structure of an ss3sim simulation}
+
+\texttt{ss3sim} consists of both low-level functions that modify SS3 configuration files and high-level functions that combine these low-level functions into a complete simulation experiment (Figure 1, Table 1). In this paper we will focus on the structure and use of the high-level function \texttt{run\_ss3sim}; however, the low-level functions can be used on their own as part of a customized simulation.
+
+An \texttt{ss3sim} simulation requires three types of input: (1) a base SS3 model configuration describing the underlying true population dynamics, or operating model (OM); (2) a base SS3 model configuration to assess that truth based on data generated using the OM, also known as the estimation model or method (EM); and (3) a set of plain-text files (case files) describing alternative model configurations and deviations from these base models (e.g.~different fishing mortality or $M$ trajectories). We refer to each unique combination of OM, EM, and case files as a scenario. Scenarios are usually run for multiple iterations, possibly adding unique process and observation error to the OM each time. An \texttt{ss3sim} simulation therefore refers to the combination of all scenarios and iterations.
+
+The \texttt{run\_ss3sim} function works by modifying SS3 configuration files as specified in the case-file arguments (\texttt{change} functions), running the OM, sampling from the time-series of true population dynamics to generate a dataset (\texttt{sample} functions), running the EM to get maximum-likelihood estimates of parameters and to derive quantities, and synthesizing the output for easy data manipulation and visualization (\texttt{get} functions) (Figure 1).
+
+\section*{An example simulation with ss3sim}
+
+To demonstrate \texttt{ss3sim}, we will work through a simple example in which we examine the effect of (1) high vs.~low precision of a fishery independent index of abundance and (2) fixing vs.~estimating $M$. All files to run this example are included in the package data, and a more detailed description is available in the accompanying vignette (Text S1). \texttt{ss3sim} requires \texttt{R} version 3.0.0 or greater and SS3 (see Text S1 for more detailed instructions). In \texttt{R}, the development version of \texttt{ss3sim} can be installed with:
+
+\begin{verbatim}
+install.packages(devtools)
+devtools::install_github("ss3sim", username = "seananderson",
+  dependencies = TRUE)
+\end{verbatim}
+
+\noindent
+You can read the documentation and open the vignette (Text S1) with:
+
+\begin{verbatim}
+?ss3sim
+help(package = "ss3sim")
+vignette("ss3sim-vignette")
+\end{verbatim}
+
+\subsection*{Setting up the SS3 model configurations}
+
+\texttt{ss3sim} comes with built-in SS3 model configurations that represent three general life histories: cod-like (slow-growing and long-lived), flatfish-like (fast-growing and long-lived), and sardine-like (fast-growing and short-lived). These model configurations are based on North Sea cod (\emph{Gadus morhua}; R. Methot, pers.~comm.), yellowtail flounder (\emph{Limanda ferruginea}; R. Methot, pers.~comm.), and Pacific sardine (\emph{Sardinops sagax caeruleus}) \cite{hill2012} (Text S1). We recommend modifying these built-in model configurations to match a desired scenario, although it is possible to modify an existing SS3 model configurations to work with \texttt{ss3sim} (Text S1). We will base our example around the built-in cod-like model setup.
+
+\subsection*{Setting up the case files}
+
+The high-level function \texttt{run\_ss3sim} can run all simulation steps based on a specified scenario ID and a set of semicolon-delimited plain-text files that describe alternative cases (Figure 1). These files contain argument values that will be passed to the low-level \texttt{ss3sim} \texttt{R} functions (e.g.~\texttt{change\_index}, a function that controls how the fishery and survey indices are sampled; Table 1).
+
+To use \texttt{run\_ss3sim} all case files must be named according to the type of case (e.g.~\texttt{E} for estimation or \texttt{F} for fishing mortality), a numeric value representing the case number, and an alphanumeric identifier representing the species or stock (e.g.~\texttt{cod}; Table 1, Text S1). We combine these case IDs with hyphens to create scenario IDs. For example, one of our scenarios will have the scenario ID \texttt{D1-E0-F0-M0-R0-cod}. This scenario ID tells \texttt{run\_ss3sim} to read the case files corresponding to the first data (\texttt{D}) case (i.e.~\texttt{index1-cod.txt}, \texttt{lcomp1-cod.txt}, \texttt{agecomp1-cod.txt}), the zero case for estimation (\texttt{E}; i.e.~\texttt{E0-cod.txt}), and so on.
+
+To investigate the effect of different levels of precision of a fishery independent index of abundance, we will manipulate the argument \texttt{sds\_obs} that gets passed to the function \texttt{change\_index}. In data case 0, we will specify the standard deviation of the index of abundance at \texttt{0.1} and in case 1 we will increase the standard deviation to \texttt{0.4}. We can do this by including the line: \texttt{sds\_obs; list(0.1)} in the file \texttt{index0-cod.txt} and the line: \texttt{sds\_obs; list(0.4)} in the file \texttt{index1-cod.txt}. We will also set up a base-case file describing fishing mortality (\texttt{F0-cod.txt}), a file describing a stationary $M$ trajectory (\texttt{M0-cod.txt}), and specify that we do not want to run a retrospective analysis in the file \texttt{R0-cod.txt}. We will set up the file \texttt{E0-cod.txt} to fix the estimation of $M$ at the true value and case \texttt{E1-cod.txt} to estimate a stationary $M$ (Text S1).
+
+All of these text files are available in the package data in the folder \texttt{inst/extdata/eg-cases/}. As an example, here is what the complete \texttt{index0-cod.txt} file looks like:
+
+\begin{verbatim}
+fleets; 2
+years; list(seq(1974, 2012, by = 2))
+sds_obs; list(0.1)
+\end{verbatim}
+
+\noindent
+\texttt{fleets}, \texttt{years}, and \texttt{sds\_obs} refer to the arguments in the function \texttt{change\_index} and users can read the help for this function with \texttt{?change\_index} in \texttt{R}.
+
+To start, we will load the \texttt{ss3sim} package into an \texttt{R} session and locate three sets of folders within the package data: the folder with the OM, the folder with the EM, and the folder with the plain-text case files:
+
+\begin{verbatim}
+library(ss3sim)
+d <- system.file("extdata", package = "ss3sim")
+om <- paste0(d, "/models/cod-om")
+em <- paste0(d, "/models/cod-em")
+case_folder <- paste0(d, "/eg-cases")
+\end{verbatim}
+
+\subsection*{Running the simulations}
+
+It is important to validate a simulation testing framework with minimal or no process and observation error to ensure unbiased and consistent recovery of parameters under ideal conditions \cite{hilborn1992, rykiel1996}. \texttt{ss3sim} makes this form of model validation simple by allowing users to specify process error (i.e.~recruitment deviations) and sampling error (Text S1). Since, we have already validated the cod-like model setup (Text S1), we can now run our simulation scenario. We will set \texttt{bias\_adjust = TRUE} to enable a procedure that aims to produce mean-unbiased estimates of recruitment and biomass despite log-normal recruitment deviations \cite{methot2011}. We can run 100 iterations of the simulation scenarios with the following code:
+
+\begin{verbatim}
+run_ss3sim(iterations = 1:100, scenarios =
+  c("D0-E0-F0-M0-R0-cod", "D1-E0-F0-M0-R0-cod",
+    "D0-E1-F0-M0-R0-cod", "D1-E1-F0-M0-R0-cod"),
+  case_folder = case_folder, om_model_dir = om,
+  em_model_dir = em, bias_adjust = TRUE)
+\end{verbatim}
+
+This produces a folder structure in our working directory containing all of the SS3 output files. We can then collect the output with one function call:
+
+\begin{verbatim}
+get_results_all()
+\end{verbatim}
+
+\noindent
+This command creates two files in our working directory: \texttt{ss3sim\_scalars.csv} and \texttt{ss3sim\_ts.csv}, which contain scalar output estimates (e.g.~steepness and maximum sustainable yield) and time-series estimates (e.g.~recruitment and biomass each year). These estimates come from the report files produced from each run of SS3 and are read by the \texttt{r4ss} \texttt{R} package. The \texttt{.csv} files contain separate columns for OM and EM values, making it simple to calculate error metrics, such as relative or absolute error. In addition to parameter estimates, the \texttt{.csv} files contain performance metrics, such as the maximum gradient, whether the covariance matrix was successfully calculated, and the number of parameters stuck on a bound, which in combination can be used to gauge model performance and convergence. These results are organized into ``long'' data format, with columns for scenario and iteration, facilitating quick analysis and plotting using common \texttt{R} packages such as \texttt{ggplot2} \cite{wickham2009}.
+
+For our example simulation, the relative error in spawning stock biomass over time is, as expected, smaller when the true value of $M$ is specified rather than estimated (Figure 2, top panels E0 vs.~E1). Furthermore, lower precision in the research survey index of abundance results in greater relative error in spawning stock biomass in recent years (Figure 2, top panels D0 vs.~D1), and greater relative error in terminal-year depletion and fishing mortality, but not in spawning stock biomass at maximum sustainable yield, or $M$ (Figure 2, lower panels).
+
+\section*{How ss3sim complements other simulation software}
+
+The general purpose of \texttt{ss3sim} is to explore model behaviour and performance across combinations of EM configurations and alternative dynamics of fisheries resources under exploitation specified by the OM. In particular, \texttt{ss3sim} provides a suite of functions for dynamically creating structural differences in both OMs and EMs. This expedites testing the properties of alternative stock assessment model configurations, whether the differences are between OMs and EMs \cite{johnson2013}, or between multiple versions of EMs \cite{ono2013}. However, \texttt{ss3sim} is less suited for quickly exploring arbitrary SS3 model setups, which may rely on SS3 configurations not yet programmed into the \texttt{ss3sim} package functions. Therefore, depending on the simulation study goal, other software frameworks may provide better alternatives.
+
+One alternative framework is \emph{Fisheries Libraries in R} (\texttt{FLR}) \cite{kell2007} --- an open-source \texttt{R} package developed specifically for evaluating fisheries management strategies through simulation. Compared to \texttt{ss3sim}, \texttt{FLR} is designed to explore broader questions regarding management strategies with flexible biological, economic, and management components \cite{hillary2009}. Thus, it is not specifically designed to explore the impact of structural differences within OMs and EMs.
+
+Another alternative stock assessment simulation testing framework is \emph{Fishery Simulation} (FS, \url{http://fisherysimulation.codeplex.com}). FS is primarily a file management tool adapted to aid in simulation testing. FS can work with stock assessment models besides SS3, make simple changes to input text files, generate random process (using a built-in random number generator) and observation errors (using the SS3 bootstrap option), run simulations in parallel, and collect results from output files. Thus, FS is closer to \texttt{ss3sim} in its scope than \texttt{FLR} in that it specifically focuses on the performance of stock assessment models.
+
+FS differs from \texttt{ss3sim} mainly in that it uses user-specified text manipulation commands (e.g.~change line 50 from 0 to 1) to alter model configurations rather than the approach of \texttt{ss3sim}, which uses modular functions tailored to specific purposes (e.g.~add a particular time-varying mortality trajectory to a particular OM). FS works well for testing arbitrary assessment models and model configurations because it does not rely on pre-built manipulation functions \cite{lee2012, piner2011, lee2011}. In contrast, FS cannot make complicated structural changes to a model setup (e.g.~adding time-varying parameters or changing the survey years), limiting its ability to to induce and test structural differences between OMs and EMs. In addition, the current version of FS is not an end-to-end package --- additional code is necessary to incorporate process and observation error in simulation testing. Finally, although FS is also open-source, it requires the Microsoft .NET framework and is therefore only compatible with the Windows operating system.
+
+\section*{Research opportunities with ss3sim}
+
+The \texttt{ss3sim} package has been used so far to evaluate alternative assessment approaches when $M$ is thought to vary across time \cite{johnson2013}, the importance of length- and age-composition data \cite{ono2013}, and the causes of retrospective patterns in stock assessment models. Along with those studies, \texttt{ss3sim} makes many important research opportunities easily approachable. Below we outline some examples.
+
+\emph{Time-varying model misspecification}: Ecological processes can vary through time in response to, for example, changes to fishing behaviour \cite{hilborn1992}, regime shifts \cite{vert-pre2013}, or climate change \cite{walther2002}. However, parameters such as $M$, catchability, and selectivity are commonly assumed to be time invariant and the consequences of assuming time invariance of such parameters when facing true temporal changes has been a long-standing discussion in fisheries science \cite{royama1992, wilberg2006, fu2001}. Furthermore, although studies have tried to isolate the effects of single time-varying parameters, such as $M$ \cite{lee2011, jiao2012, deroba2013, johnson2013}, few have considered the effect of multiple time-varying parameters and their potential interaction.
+
+\emph{Patterns in recruitment deviations}: Typically, estimation methods assume independent log-normally-distributed recruitment deviations around a spawning stock recruitment function. However, recruitment deviations are frequently auto-correlated and their variability can change through time \cite{beamish1995, pyper1998}. \texttt{ss3sim} makes it simple to incorporate different recruitment deviation structures and test how they affect model performance.
+
+\emph{Retrospective patterns}: Retrospective patterns, in which model estimates are systematically biased with each additional year of data, are a major problem in stock assessment science \cite{mohn1999, legault2008}. Key questions are: what causes retrospective patterns and what assessment approaches reduce retrospective patterns \cite{legault2008}. \texttt{ss3sim} can run retrospective analyses as part of any simulation by adding a single argument --- the number of retrospective years to investigate.
+
+\section*{Conclusions}
+
+The increasing complexity of modern integrated stock assessment models and expanding computing power allows for the inclusion of multiple sources of data and estimation of complex processes \cite{maunder2013}. However, the combination of complex models and large quantities of data are commonly associated with model misspecification, which can be difficult to detect based on residual patterns alone \cite{maunder2013}. Therefore, it is important to investigate the consequences of model misspecification. Investigating the consequences of model misspecification on the ability of assessment models to accurately and precisely estimate parameters is one important role of simulation testing \cite{wilberg2006, deroba2013a, crone2013}.
+
+Most simulation testing work to date has used custom frameworks tailored to the particular needs of each study \cite{helu2000, yin2004, magnusson2007, wetzel2011a, jiao2012, wilberg2006, deroba2013a, deroba2013, crone2013a, hurtadoferro2013}. Although the complexity of many studies requires a custom framework, we encourage authors to publish their simulation frameworks, as we have done here, and where possible, to develop their simulation frameworks in a generalized format that allows others to build on them. The initial release of \texttt{ss3sim} describes the basic structure used in recent studies \cite{johnson2013, ono2013} and the current version of \texttt{ss3sim} could be used to address other important questions in stock assessment science. We hope that users will both benefit from \texttt{ss3sim} in its current form and extend it for their own needs, potentially contributing back to future versions.
+
+\section*{Acknowledgements}
+
+We thank the participants and mentors of the University of Washington's School of Aquatic and Fishery Sciences 2013 FISH 600 course. Discussions with these individuals were instrumental to the conceptual and technical development of \texttt{ss3sim}. Many participants also contributed code and are listed within specific \texttt{ss3sim} \texttt{R} functions. Participants: Curry Cunningham, Felipe Hurtado-Ferro, Roberto Licandeo, Carey McGilliard, Melissa Muradian, Cody Szuwalski, Katyana Vert-pre, and Athol Whitten. Mentors: Richard Methot, Andr\'{e} Punt, Jim Ianelli, and Ian Taylor. We thank Jim Ianelli, Andr\'{e} Punt, and Ian Stewart for comments that improved our manuscript.
+
+SCA was supported by Fulbright Canada (generously hosted by Trevor A. Branch), NSERC, and a Garfield Weston Foundation/B.C. Packers Ltd.~Graduate Fellowship in Marine Sciences. KFJ and KO were partially supported by NOAA grant 423 NA10OAR4320148. This research addresses the methods component of the good practices guide to stock assessment program of the Center for the Advancement of Population Assessment Methodology (CAPAM).
+
+\bibliography{ss3sim-ms}
+
+\clearpage
+
+\section*{Figure Legends}
+
+\begin{figure}[!ht]
+\begin{center}
+%\includegraphics[width=3.27in]{sim-steps.pdf}
+\end{center}
+\caption{
+{\bf Flow diagram of the main steps
+in an \texttt{ss3sim} simulation carried out using \texttt{run\_ss3sim}.}
+Functions that are called internally are shown in a monospaced font.
+}
+\label{fig:sim-steps}
+\end{figure}
+
+\begin{figure}[!ht]
+\begin{center}
+%\includegraphics[width=4.86in]{fig2-20131109.pdf}
+\end{center}
+\caption{
+{\bf Example output from an \texttt{ss3sim} simulation.}
+We ran a crossed simulation in which we considered
+(1) the effect of fixing natural mortality ($M$)
+at its true value (0.2; case E0) or estimating $M$ (case E1) and
+(2) the effect of high survey effort
+($\sigma_\mathrm{survey} = 0.1$; case D0)
+or low survey effort ($\sigma_\mathrm{survey} = 0.4$; case D1).
+Upper panels (blue) show time series of relative error
+in spawning stock biomass (SSB).
+Lower panels (grey) show the distribution
+of relative error across four scalar variables:
+depletion, $M$, SSB at maximum sustainable yield ($\mathrm{SSB}_\mathrm{MSY}$),
+and fishing mortality ($F$) in the terminal year.
+We show the values across simulation iterations with dots
+and the distributions with beanplots (kernel density smoothers).
+}
+\label{fig:results}
+\end{figure}
+
+\clearpage
+
+\section*{Tables}
+
+\textbf{Table 1. Main \texttt{ss3sim} functions and a description of their purpose.} Simulations can be run through the \texttt{run\_ss3sim} function, which then calls the \texttt{change} functions. Users can control what the \texttt{change} functions do through a series of plain-text case files. For example, the case ID \texttt{D1} corresponds to the case files \texttt{lcomp1}, \texttt{agecomp1}, and \texttt{index1}, as described in the table. Users can also skip setting up case files and specify arguments to \texttt{ss3sim\_base} directly, or use the \texttt{change} functions as part of their own simulation structure (Text S1).
+
+\begin{longtable}[c]{@{}ll@{}}
+\hline\noalign{\medskip}
+\begin{minipage}[b]{0.32\columnwidth}\raggedright
+Function name
+\end{minipage} & \begin{minipage}[b]{0.57\columnwidth}\raggedright
+Description
+\end{minipage}
+\\\noalign{\medskip}
+\hline\noalign{\medskip}
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
+\texttt{run\_ss3sim}
+\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
+Main high-level function to run \texttt{ss3sim} simulations.
+\end{minipage}
+\\\noalign{\medskip}
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
+\texttt{ss3sim\_base}
+\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
+Underlying base simulation function. Can also be called directly.
+\end{minipage}
+\\\noalign{\medskip}
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
+\texttt{change\_rec\_devs}
+\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
+Substitutes recruitment deviations.
+\end{minipage}
+\\\noalign{\medskip}
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
+\texttt{change\_f}
+\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
+Adds fishing mortality time series. (Case file and ID \texttt{F})
+\end{minipage}
+\\\noalign{\medskip}
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
+\texttt{change\_tv}
+\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
+Adds time-varying features. For example, time-varying natural mortality, growth, or selectivity. (Any case file and ID, e.g.~\texttt{M}, starting with ``\texttt{function\_type; change\_tv}'')
+\end{minipage}
+\\\noalign{\medskip}
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
+\texttt{change\_index}
+\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
+Controls how the fishery and survey indices are sampled. (Case file \texttt{index}, case ID \texttt{D})
+\end{minipage}
+\\\noalign{\medskip}
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
+\texttt{change\_agecomp}
+\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
+Controls how age composition data are sampled. (Case file \texttt{agecomp}, case ID \texttt{D})
+\end{minipage}
+\\\noalign{\medskip}
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
+\texttt{change\_lcomp}
+\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
+Controls how length composition data are sampled. (Case file \texttt{lcomp}, case ID \texttt{D})
+\end{minipage}
+\\\noalign{\medskip}
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
+\texttt{change\_retro}
+\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
+Controls the number of years to discard for a retrospective analysis. (Case file and ID \texttt{R})
+\end{minipage}
+\\\noalign{\medskip}
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
+\texttt{change\_e}
+\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
+Controls which and how parameters are estimated. (Case file and ID \texttt{E})
+\end{minipage}
+\\\noalign{\medskip}
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
+\texttt{run\_bias\_ss3}
+\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
+Determines the level of adjustment to ensure mean-unbiased estimates of recruitment and biomass.
+\end{minipage}
+\\\noalign{\medskip}
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
+\texttt{get\_results\_scenario}
+\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
+Extracts results for a single scenario.
+\end{minipage}
+\\\noalign{\medskip}
+\begin{minipage}[t]{0.32\columnwidth}\raggedright
+\texttt{get\_results\_all}
+\end{minipage} & \begin{minipage}[t]{0.57\columnwidth}\raggedright
+Extracts results for a series of scenarios.
+\end{minipage}
+\\\noalign{\medskip}
+\hline
+\end{longtable}
+
+% Please keep the abstract between 250 and 300 words
+%\section*{Abstract}
+
+% Please keep the Author Summary between 150 and 200 words
+% Use first person. PLoS ONE authors please skip this step.
+% Author Summary not valid for PLoS ONE submissions.
+%\section*{Author Summary}
+
+%\section*{Introduction}
+
+% Results and Discussion can be combined.
+%\section*{Results}
+
+%\subsection*{Subsection 1}
+
+%\subsection*{Subsection 2}
+
+%\section*{Discussion}
+
+% You may title this section "Methods" or "Models".
+% "Models" is not a valid title for PLoS ONE authors. However, PLoS ONE
+% authors may use "Analysis"
+%\section*{Materials and Methods}
+
+% Do NOT remove this, even if you are not including acknowledgments
+%\section*{Acknowledgments}
+
+
+%\section*{References}
+% The bibtex filename
+%\bibliography{template}
+
+%\section*{Figure Legends}
+%\begin{figure}[!ht]
+%\begin{center}
+%%\includegraphics[width=4in]{figure_name.2.eps}
+%\end{center}
+%\caption{
+%{\bf Bold the first sentence.}  Rest of figure 2  caption.  Caption
+%should be left justified, as specified by the options to the caption
+%package.
+%}
+%\label{Figure_label}
+%\end{figure}
+
+
+%\section*{Tables}
+%\begin{table}[!ht]
+%\caption{
+%\bf{Table title}}
+%\begin{tabular}{|c|c|c|}
+%table information
+%\end{tabular}
+%\begin{flushleft}Table caption
+%\end{flushleft}
+%\label{tab:label}
+% \end{table}
+
+\end{document}
+
