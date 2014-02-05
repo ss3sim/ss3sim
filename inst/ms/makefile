@@ -1,10 +1,17 @@
-all: plos
+all: plossubmit
 
 arxiv:
 	pdflatex ss3sim-arxiv
 	bibtex ss3sim-arxiv
 	pdflatex ss3sim-arxiv
 	pdflatex ss3sim-arxiv
+
+plossubmit:
+	pandoc ~/Dropbox/ms/ss3sim-response/ss3sim-response.md -o ss3sim-response.tex
+	pdflatex ss3sim-ms
+	#pdflatex ss3sim-ms
+	rm ss3sim-response.tex
+	cp ss3sim-ms.pdf ~/Dropbox/Public/
 
 plos:
 	pandoc -S --no-wrap --bibliography=ss3sim-ms.bib --natbib ss3sim-ms.md -o manuscript.tex
