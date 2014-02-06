@@ -71,7 +71,7 @@
 							<string>0.238424</string>
 						</dict>
 						<key>Font</key>
-						<string>Consolas</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>10</real>
 					</dict>
@@ -112,7 +112,7 @@
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 Consolas;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;\red61\green61\blue61;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -131,7 +131,7 @@
 					<key>FontInfo</key>
 					<dict>
 						<key>Font</key>
-						<string>Helvetica</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>11</real>
 					</dict>
@@ -172,7 +172,7 @@
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -191,6 +191,13 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 		<dict>
 			<key>Class</key>
 			<string>LineGraphic</string>
+			<key>FontInfo</key>
+			<dict>
+				<key>Font</key>
+				<string>ArialMT</string>
+				<key>Size</key>
+				<real>10</real>
+			</dict>
 			<key>ID</key>
 			<integer>182</integer>
 			<key>Points</key>
@@ -227,6 +234,13 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 		<dict>
 			<key>Class</key>
 			<string>LineGraphic</string>
+			<key>FontInfo</key>
+			<dict>
+				<key>Font</key>
+				<string>ArialMT</string>
+				<key>Size</key>
+				<real>10</real>
+			</dict>
 			<key>ID</key>
 			<integer>167</integer>
 			<key>Points</key>
@@ -263,6 +277,13 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 		<dict>
 			<key>Class</key>
 			<string>LineGraphic</string>
+			<key>FontInfo</key>
+			<dict>
+				<key>Font</key>
+				<string>ArialMT</string>
+				<key>Size</key>
+				<real>10</real>
+			</dict>
 			<key>ID</key>
 			<integer>166</integer>
 			<key>Points</key>
@@ -314,7 +335,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 							<string>0.238424</string>
 						</dict>
 						<key>Font</key>
-						<string>Consolas</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>10</real>
 					</dict>
@@ -355,7 +376,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 Consolas;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;\red61\green61\blue61;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -374,7 +395,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 					<key>FontInfo</key>
 					<dict>
 						<key>Font</key>
-						<string>Helvetica</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>11</real>
 					</dict>
@@ -415,7 +436,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -443,7 +464,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 					<key>FontInfo</key>
 					<dict>
 						<key>Font</key>
-						<string>Helvetica</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>11</real>
 					</dict>
@@ -484,7 +505,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -508,7 +529,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 							<string>0.238424</string>
 						</dict>
 						<key>Font</key>
-						<string>Consolas</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>10</real>
 					</dict>
@@ -549,7 +570,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 Consolas;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;\red61\green61\blue61;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -582,7 +603,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 							<string>0.238424</string>
 						</dict>
 						<key>Font</key>
-						<string>Consolas</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>10</real>
 					</dict>
@@ -623,7 +644,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 Consolas;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;\red61\green61\blue61;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -642,7 +663,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 					<key>FontInfo</key>
 					<dict>
 						<key>Font</key>
-						<string>Helvetica</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>11</real>
 					</dict>
@@ -683,7 +704,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -716,7 +737,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 							<string>0.238424</string>
 						</dict>
 						<key>Font</key>
-						<string>Consolas</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>10</real>
 					</dict>
@@ -757,7 +778,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 Consolas;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;\red61\green61\blue61;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -776,7 +797,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 					<key>FontInfo</key>
 					<dict>
 						<key>Font</key>
-						<string>Helvetica</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>11</real>
 					</dict>
@@ -817,7 +838,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -850,7 +871,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 							<string>0.238424</string>
 						</dict>
 						<key>Font</key>
-						<string>Consolas</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>10</real>
 					</dict>
@@ -891,7 +912,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 Consolas;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;\red61\green61\blue61;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -910,7 +931,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 					<key>FontInfo</key>
 					<dict>
 						<key>Font</key>
-						<string>Helvetica</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>11</real>
 					</dict>
@@ -951,7 +972,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -984,7 +1005,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 							<string>0.238424</string>
 						</dict>
 						<key>Font</key>
-						<string>Consolas</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>10</real>
 					</dict>
@@ -1025,7 +1046,7 @@ mortality, growth, maturity, fecundity, selectivity) in .par file}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 Consolas;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;\red61\green61\blue61;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -1045,7 +1066,7 @@ change_index(), change_agecomp(), change_lcomp()}</string>
 					<key>FontInfo</key>
 					<dict>
 						<key>Font</key>
-						<string>Helvetica</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>11</real>
 					</dict>
@@ -1086,7 +1107,7 @@ change_index(), change_agecomp(), change_lcomp()}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -1124,7 +1145,7 @@ age-composition data, and length-composition data}</string>
 							<string>0.238424</string>
 						</dict>
 						<key>Font</key>
-						<string>Consolas</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>10</real>
 					</dict>
@@ -1165,7 +1186,7 @@ age-composition data, and length-composition data}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 Consolas;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;\red61\green61\blue61;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -1184,7 +1205,7 @@ age-composition data, and length-composition data}</string>
 					<key>FontInfo</key>
 					<dict>
 						<key>Font</key>
-						<string>Helvetica</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>11</real>
 					</dict>
@@ -1225,7 +1246,7 @@ age-composition data, and length-composition data}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -1258,7 +1279,7 @@ age-composition data, and length-composition data}</string>
 							<string>0.238424</string>
 						</dict>
 						<key>Font</key>
-						<string>Consolas</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>10</real>
 					</dict>
@@ -1299,7 +1320,7 @@ age-composition data, and length-composition data}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 Consolas;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;\red61\green61\blue61;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -1318,7 +1339,7 @@ age-composition data, and length-composition data}</string>
 					<key>FontInfo</key>
 					<dict>
 						<key>Font</key>
-						<string>Helvetica</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>11</real>
 					</dict>
@@ -1359,7 +1380,7 @@ age-composition data, and length-composition data}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -1382,7 +1403,7 @@ age-composition data, and length-composition data}</string>
 			<key>FontInfo</key>
 			<dict>
 				<key>Font</key>
-				<string>Helvetica</string>
+				<string>ArialMT</string>
 				<key>Size</key>
 				<real>11</real>
 			</dict>
@@ -1423,7 +1444,7 @@ age-composition data, and length-composition data}</string>
 				<integer>0</integer>
 				<key>Text</key>
 				<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -1442,7 +1463,7 @@ age-composition data, and length-composition data}</string>
 			<key>FontInfo</key>
 			<dict>
 				<key>Font</key>
-				<string>Helvetica</string>
+				<string>ArialMT</string>
 				<key>Size</key>
 				<real>11</real>
 			</dict>
@@ -1483,7 +1504,7 @@ age-composition data, and length-composition data}</string>
 				<integer>0</integer>
 				<key>Text</key>
 				<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -1502,7 +1523,7 @@ age-composition data, and length-composition data}</string>
 			<key>FontInfo</key>
 			<dict>
 				<key>Font</key>
-				<string>Helvetica</string>
+				<string>ArialMT</string>
 				<key>Size</key>
 				<real>11</real>
 			</dict>
@@ -1543,7 +1564,7 @@ age-composition data, and length-composition data}</string>
 				<integer>0</integer>
 				<key>Text</key>
 				<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -1572,7 +1593,7 @@ age-composition data, and length-composition data}</string>
 							<string>0.238424</string>
 						</dict>
 						<key>Font</key>
-						<string>Consolas</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>10</real>
 					</dict>
@@ -1613,7 +1634,7 @@ age-composition data, and length-composition data}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 Consolas;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;\red61\green61\blue61;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -1632,7 +1653,7 @@ age-composition data, and length-composition data}</string>
 					<key>FontInfo</key>
 					<dict>
 						<key>Font</key>
-						<string>Helvetica</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>11</real>
 					</dict>
@@ -1673,7 +1694,7 @@ age-composition data, and length-composition data}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -1701,7 +1722,7 @@ age-composition data, and length-composition data}</string>
 					<key>FontInfo</key>
 					<dict>
 						<key>Font</key>
-						<string>Helvetica</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>11</real>
 					</dict>
@@ -1742,7 +1763,7 @@ age-composition data, and length-composition data}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -1767,7 +1788,7 @@ copy bias-adjusted .ctl file if needed}</string>
 							<string>0.238424</string>
 						</dict>
 						<key>Font</key>
-						<string>Consolas</string>
+						<string>ArialMT</string>
 						<key>Size</key>
 						<real>10</real>
 					</dict>
@@ -1808,7 +1829,7 @@ copy bias-adjusted .ctl file if needed}</string>
 						<integer>0</integer>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 Consolas;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;\red61\green61\blue61;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -1831,7 +1852,7 @@ copy bias-adjusted .ctl file if needed}</string>
 			<key>FontInfo</key>
 			<dict>
 				<key>Font</key>
-				<string>Helvetica</string>
+				<string>ArialMT</string>
 				<key>Size</key>
 				<real>11</real>
 			</dict>
@@ -1872,7 +1893,7 @@ copy bias-adjusted .ctl file if needed}</string>
 				<integer>0</integer>
 				<key>Text</key>
 				<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -1888,6 +1909,13 @@ copy bias-adjusted .ctl file if needed}</string>
 			<string>{{74.769265349799696, 483.38771555832841}, {318.46151733398438, 146.87693786621094}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
+			<key>FontInfo</key>
+			<dict>
+				<key>Font</key>
+				<string>ArialMT</string>
+				<key>Size</key>
+				<real>10</real>
+			</dict>
 			<key>ID</key>
 			<integer>190</integer>
 			<key>Shape</key>
@@ -1934,6 +1962,13 @@ copy bias-adjusted .ctl file if needed}</string>
 			<string>{{74.769265349799696, 333.86422422087395}, {318.46151733398438, 141.55426025390625}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
+			<key>FontInfo</key>
+			<dict>
+				<key>Font</key>
+				<string>ArialMT</string>
+				<key>Size</key>
+				<real>10</real>
+			</dict>
 			<key>ID</key>
 			<integer>175</integer>
 			<key>Shape</key>
@@ -1980,6 +2015,13 @@ copy bias-adjusted .ctl file if needed}</string>
 			<string>{{74.769265349799667, 4.3846156399629734}, {317.69225601896028, 123.97190093994141}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
+			<key>FontInfo</key>
+			<dict>
+				<key>Font</key>
+				<string>ArialMT</string>
+				<key>Size</key>
+				<real>10</real>
+			</dict>
 			<key>ID</key>
 			<integer>158</integer>
 			<key>Shape</key>
@@ -2026,6 +2068,13 @@ copy bias-adjusted .ctl file if needed}</string>
 			<string>{{74.000004034775515, 135.55651686600669}, {318.46151733398438, 190.75119018554688}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
+			<key>FontInfo</key>
+			<dict>
+				<key>Font</key>
+				<string>ArialMT</string>
+				<key>Size</key>
+				<real>10</real>
+			</dict>
 			<key>ID</key>
 			<integer>159</integer>
 			<key>Shape</key>
@@ -2075,7 +2124,7 @@ copy bias-adjusted .ctl file if needed}</string>
 			<key>FontInfo</key>
 			<dict>
 				<key>Font</key>
-				<string>Helvetica</string>
+				<string>ArialMT</string>
 				<key>Size</key>
 				<real>11</real>
 			</dict>
@@ -2111,7 +2160,7 @@ copy bias-adjusted .ctl file if needed}</string>
 				<integer>0</integer>
 				<key>Text</key>
 				<string>{\rtf1\ansi\ansicpg1252\cocoartf1265
-\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
@@ -2127,6 +2176,13 @@ and iterations}</string>
 		<dict>
 			<key>Class</key>
 			<string>LineGraphic</string>
+			<key>FontInfo</key>
+			<dict>
+				<key>Font</key>
+				<string>ArialMT</string>
+				<key>Size</key>
+				<real>10</real>
+			</dict>
 			<key>ID</key>
 			<integer>171</integer>
 			<key>Points</key>
@@ -2215,7 +2271,7 @@ and iterations}</string>
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2013-12-07 00:23:03 +0000</string>
+	<string>2014-02-05 22:16:16 +0000</string>
 	<key>Modifier</key>
 	<string>Sean Anderson</string>
 	<key>NotesVisible</key>
@@ -2252,16 +2308,6 @@ and iterations}</string>
 		<array>
 			<string>int</string>
 			<string>0</string>
-		</array>
-		<key>NSPrinter</key>
-		<array>
-			<string>coded</string>
-			<string>BAtzdHJlYW10eXBlZIHoA4QBQISEhAlOU1ByaW50ZXIAhIQITlNPYmplY3QAhZKEhIQITlNTdHJpbmcBlIQBKyRFMk8gb2ZmaWNlIHByaW50ZXIgMiAxNDIuMDU4LjExOC4yMTmGhg==</string>
-		</array>
-		<key>NSPrinterName</key>
-		<array>
-			<string>string</string>
-			<string>E2O office printer 2 142.058.118.219</string>
 		</array>
 		<key>NSRightMargin</key>
 		<array>
