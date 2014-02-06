@@ -67,14 +67,15 @@ stocks are underway \cite{methot2013}.
 Stock Synthesis is also commonly used as a framework for stock assessment
 simulation testing \cite{helu2000, yin2004, schirripa2009, lee2011, jiao2012,
   lee2012, crone2013a, hurtadoferro2013}, \R{B12}but there lacks a generalized
-framework. As a result, most stock assessment simulation-testing work using SS3
-to date has relied on custom frameworks \cite{helu2000, yin2004, magnusson2007,
-  wetzel2011a, jiao2012, wilberg2006, deroba2013, deroba2014, crone2013a,
-  hurtadoferro2013}. \R{A1:2}Although custom-designed modeling frameworks can
-be tailored to the specific needs of a particular stock assessment or
-simulation study, the use of a generalized framework allows other scientists to
-validate, reuse, and build upon previous work, thereby improving efficiency and
-resulting in more reliable outcomes.
+structure for simulation testing with SS3. As a result, most stock
+assessment simulation-testing work using SS3 to date has relied on custom
+frameworks \cite{helu2000, yin2004, magnusson2007, wetzel2011a, jiao2012,
+  wilberg2006, deroba2013, deroba2014, crone2013a, hurtadoferro2013}.
+\R{A1:2}Although custom-designed modeling frameworks can be tailored to the
+specific needs of a particular stock assessment or simulation study, the use of
+a generalized framework allows other scientists to validate, reuse, and build
+upon previous work, thereby improving efficiency and resulting in more reliable
+outcomes.
 
 The programming language \textsf{R} \cite{rcoreteam2013} is an ideal language
 in which to write such a generalized framework because (1) \textsf{R} has
@@ -413,7 +414,7 @@ allowing the user to directly specify any vector of deviations.
 \emph{Retrospective patterns}: Retrospective patterns, in which model estimates
 are systematically biased with each additional year of data, are a major
 problem in stock assessment science \cite{mohn1999, legault2008}. Key questions
-are: what causes retrospective patterns and which assessment approaches reduce
+include what causes retrospective patterns and which assessment approaches reduce
 them \cite{legault2008}. \textbf{ss3sim} can run retrospective analyses as part
 of any simulation by adding a single argument: the number of retrospective
 years to investigate.
@@ -431,12 +432,12 @@ develop a further understanding of a model's abilities.
 
 We anticipate that \textbf{ss3sim} will facilitate the development of reliable
 assessment methods, applicable to age-structured stock assessment frameworks in
-general, that meet the requirements and assessment demands of many regional
+general, which meet the requirements and assessment demands of many regional
 fisheries management organizations and national assessment agencies. For
-example, Johnson \emph{et al.} \cite{johnson2014} used \textbf{ss3sim} to
+example, Johnson et~al.~\cite{johnson2014} used \textbf{ss3sim} to
 develop guidelines for how to model natural mortality (when it is suspected of
 being time varying but age invariant) across life histories and fishing
-patterns. As another example, Ono \emph{et al.} \cite{ono2014} used
+patterns. As another example, Ono et~al.~\cite{ono2014} used
 \textbf{ss3sim} to identify the most informative combination of quantity,
 quality, and timing of data, depending on life history and
 stock-assessment-derived metrics of interest. General guidelines such as these,
@@ -472,9 +473,9 @@ SCA was supported by Fulbright Canada (generously hosted by Trevor Branch),
 NSERC, and a Garfield Weston Foundation/B.C. Packers Ltd. Graduate Fellowship
 in Marine Sciences. This work was partially funded by the Joint Institute for
 the Study of the Atmosphere and Ocean (JISAO) under NOAA Cooperative Agreement
-No.~NA10OAR4320148, Contribution No.~2193 and 2195. This research addresses the
-methods component of the good practices guide to stock assessment program of
-the Center for the Advancement of Population Assessment Methodology (CAPAM).
+No.~NA10OAR4320148, Contribution No.~2193. This research addresses the methods
+component of the good practices guide to stock assessment program of the Center
+for the Advancement of Population Assessment Methodology (CAPAM).
 
 %\bibliography{ss3sim-ms}
 
@@ -583,7 +584,7 @@ Wetzel CR, Punt AE (2011) Performance of a fisheries catch-at-age model ({Stock
 Ono K, Licandeo R, Muradian M, Cunningham CJ, Anderson SC, et~al. (2014) The
   importance of length and age composition data in statistical age-structured
   models for marine species.
-\newblock ICES J Mar Sci. In press.
+\newblock ICES J Mar Sci. In press. DOI: 10.1093/icesjms/fsu007.
 \bibAnnoteFile{ono2014}
 
 \bibitem{yin2004}
@@ -819,9 +820,10 @@ true value (0.2; case E0) or estimating $M$ (case E1) and (2) the effect of
 high survey effort ($\sigma_\mathrm{survey} = 0.1$; case D0) or low survey
 effort ($\sigma_\mathrm{survey} = 0.4$; case D1). Upper panels (blue) show time
 series of relative error in spawning stock biomass (SSB). Lower panels (grey)
-show the distribution of relative error across four scalar variables:
-depletion, $M$, SSB at maximum sustainable yield ($\mathrm{SSB}_\mathrm{MSY}$),
-and fishing mortality ($F$) in the terminal year. We show the values across
+show the distribution of relative error across four scalar variables: depletion
+(the ratio of terminal year spawning biomass to unfished spawning biomass),
+$M$, SSB at maximum sustainable yield ($\mathrm{SSB}_\mathrm{MSY}$), and
+fishing mortality ($F$) in the terminal year. We show the values across
 simulation iterations with dots and the distributions with beanplots (kernel
 density smoothers).
 }
