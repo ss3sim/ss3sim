@@ -1,4 +1,4 @@
-# Create Figure 2 for the paper
+# Create Figure 3 for the paper
 # SCA
 
 library(plyr)
@@ -63,8 +63,17 @@ label_col <- "grey40"
 label_cex <- 0.75
 axis_col <- "grey55"
 
+# Need to load Arial font for PLOS:
+#library("extrafont")
+#loadfonts(device = "postscript")
+
 #pdf("fig2-20131109.pdf", width = 5, height = 4.5)
-postscript("fig2.eps", horizontal = FALSE, onefile = FALSE, paper =
+
+Arial <- Type1Font(family="Arial", metrics=c("arial.afm", "arialbd.afm",
+    "ariali.afm", "arialbi.afm"))
+postscriptFonts(Arial=Arial)
+
+postscript("fig3.eps", horizontal = FALSE, onefile = FALSE, paper =
   "special", width = 4.86, height = 4.374)
 layout(rbind(c(1, 1, 2, 2),
              c(1, 1, 2, 2),
