@@ -34,9 +34,13 @@ plos:
 	cp ss3sim-ms.pdf ~/Dropbox/Public/
 
 diff:
-	latexdiff ss3sim-first-submission.tex ss3sim-ms.tex > ss3sim-ms-diff.tex
+	#cp manuscript-plos.tex ms-temp.tex
+	#perl -p -i -e "s/\\\textsf{R}/R/g" ms-temp.tex
+	#perl -p -i -e "s/\\\textbf{ss3sim}/ss3sim/g" ms-temp.tex
+	#perl -p -i -e "s/\\\textbf{r4ss}/r4ss/g" ms-temp.tex
+	latexdiff ss3sim-first-submission.tex ss3sim-ms-for-diff.tex > ss3sim-ms-diff.tex
 	pdflatex ss3sim-ms-diff
-	pdflatex ss3sim-ms-diff
+	#pdflatex ss3sim-ms-diff
 
 letter:
 	xelatex ss3sim-letter
