@@ -20,9 +20,13 @@
 \usepackage{appendix}
 \usepackage[round]{natbib}
 \bibpunct{(}{)}{;}{a}{}{;}
+
+\textheight 20.5cm
+
 \newcommand{\Vof}[1]{\mathrm{Var}\left[#1 \right]}
 \newcommand{\Eof}[1]{\mathrm{E}\left[ #1 \right]}
-\textheight 20.5cm
+\let\proglang=\textsf
+\let\pkg=\textbf
 
 \usepackage[dvipsnames,svgnames,x11names,hyperref]{xcolor}
 \usepackage{hyperref}
@@ -32,7 +36,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyfoot[LE,RO]{\sffamily\thepage}
-\fancyfoot[LO,RE]{\sffamily An introduction to \texttt{ss3sim}}
+\fancyfoot[LO,RE]{\sffamily An introduction to \pkg{ss3sim}}
 \fancyhead[RE]{\sffamily\nouppercase{\rightmark}}
 \fancyhead[LO]{\sffamily\nouppercase{\leftmark}}
 %\fancyhead[RE]{\nouppercase{\rightmark}}
@@ -50,11 +54,11 @@ message=FALSE, autodep=TRUE, fig.path='figure/', fig.width=5, par=TRUE)
 opts_chunk$set(warning=FALSE, message=FALSE, tidy=FALSE, refresh=TRUE)
 opts_chunk$set(dev = 'pdf')
 opts_knit$set(out.format = "latex")
-thm = knit_theme$get("github.css")
+thm = knit_theme$get("solarized-light.css")
 knit_theme$set(thm)
 @
 
-\title{An introduction to \texttt{ss3sim} --- an \texttt{R} package for
+\title{An introduction to \pkg{ss3sim} --- an \proglang{R} package for
   stock assessment simulation testing with\\Stock Synthesis 3}
 \author{
   Sean C. Anderson\thanks{sean@seananderson.ca; Department of Biological
@@ -83,19 +87,19 @@ knit_theme$set(thm)
 \setlength\parindent{0in}
 
 \clearpage
-\section{Installing the \texttt{ss3sim} \texttt{R} package}
+\section{Installing the \textbf{ss3sim} \textsf{R} package}
 
-\texttt{ss3sim} requires \texttt{R} version 3.0.0 or greater.
+\pkg{ss3sim} requires \proglang{R} version 3.0.0 or greater.
 The package can be run on OS X, Windows, or Linux.
-The CRAN version of \texttt{ss3sim} can be installed
-in an \texttt{R} console with:
+The CRAN version of \pkg{ss3sim} can be installed
+in an \proglang{R} console with:
 
 <<install-cran, eval=FALSE>>=
 install.packages("ss3sim")
 @
 
 \noindent
-The development version of \texttt{ss3sim} can be installed from GitHub
+The development version of \pkg{ss3sim} can be installed from GitHub
 with the following code:
 
 <<install-and-load, eval=FALSE>>=
@@ -129,37 +133,37 @@ vignette("ss3sim-vignette")
 @
 
 \noindent
-We develop and test \texttt{ss3sim} around a specific version of SS3.
-Currently, \texttt{ss3sim} is tested to work with SS3 Version 3.24O.
+We develop and test \pkg{ss3sim} around a specific version of SS3.
+Currently, \pkg{ss3sim} is tested to work with SS3 Version 3.24O.
 Since this is a more recent version than is provided at the normal download location
 \url{http://nft.nefsc.noaa.gov/SS3.html},
 we provide copies of the 3.24O binaries (with the permission of R. Methot) at\\
 \url{https://github.com/ss3sim/ss3sim/tree/ss3-binaries/inst/ss3}.
 
 \noindent
-\texttt{ss3sim} requires the SS3 binary to be in your path.
+\pkg{ss3sim} requires the SS3 binary to be in your path.
 This means that your operating system knows where the binary file is located.
 See Appendix \ref{sec:path} for details.
 
-Please direct any questions, suggestions, or bug reports to the \texttt{ss3sim}
+Please direct any questions, suggestions, or bug reports to the \pkg{ss3sim}
 issue tracker: \url{https://github.com/ss3sim/ss3sim/issues}, or to an author
 as listed on the title page of this vignette.
 
-If you use \texttt{ss3sim} in a publication, please cite the package as
-indicated by running\\ \texttt{citation("ss3sim")} in the \texttt{R} console:
+If you use \pkg{ss3sim} in a publication, please cite the package as
+indicated by running\\ \texttt{citation("ss3sim")} in the \proglang{R} console:
 
 <<citation>>=
 citation("ss3sim")
 @
 
-\section{An overview of the \texttt{ss3sim} simulation structure}
+\section{An overview of the \textbf{ss3sim} simulation structure}
 
-\texttt{ss3sim} is an \texttt{R} package to make it relatively quick and easy
+\pkg{ss3sim} is an \proglang{R} package to make it relatively quick and easy
 to run simulations with the 3rd version of Stock Synthesis, SS3.
 The package consists of a series of low-level functions
 that facilitate manipulating SS3 configuration files,
 running SS3 models, and combining the output.
-\texttt{ss3sim} also contains some wrapper functions
+\pkg{ss3sim} also contains some wrapper functions
 that tie all these low-level functions together
 into a complete simulation experiment.
 If you choose to use our wrapper function \texttt{run\_ss3sim}
@@ -173,9 +177,9 @@ and use them as part of your own flexible simulation.
 
 \subsection{Setting up the file structure}
 
-The \texttt{ss3sim} package is set up assuming there is
+The \pkg{ss3sim} package is set up assuming there is
 an established base-case operating model (OM) and estimation model (EM) to
-work with. The \texttt{ss3sim} package comes with three generic built-in
+work with. The \pkg{ss3sim} package comes with three generic built-in
 model setups that can be used as is, modified, or replaced.%
 \footnote{See Section \ref{sec:modify} for details on these models and how to
 modify them. See Appendices \ref{sec:om-setup} and \ref{sec:em-setup} for
@@ -232,7 +236,7 @@ For example, the base-case scenario for a cod stock might be:
 The order of the cases does not matter,
 as long as they are used consistently.
 
-\texttt{ss3sim} relies on a set of plain text files to control the simulation (Figure~\ref{fig:files}).
+\pkg{ss3sim} relies on a set of plain text files to control the simulation (Figure~\ref{fig:files}).
 These plain text files are read by \texttt{get\_caseval}
 and turned into argument lists that are passed to \texttt{run\_ss3sim}.
 The function \texttt{create\_argfiles} creates template input files.
@@ -261,12 +265,12 @@ The default settings create these files:
 \centering
 \includegraphics[width=5.0in]{file-structure.pdf}
 \caption{Illustration of input and output folder and file structure for an
-\texttt{ss3sim} simulation. Folders are shown in blue, input files in orange,
+\pkg{ss3sim} simulation. Folders are shown in blue, input files in orange,
 and output files in grey. All input and output files are in plain text format.
 Case files (orange files at bottom left) combine cases (e.g.\ M0 for a given
 natural mortality trajectory) with species or life-history OMs and EMs (e.g.\
 cod-like or sardine-like). Alternatively, a user can skip setting up case files
-and specify the simulation cases directly in \texttt{R} code (see section \ref{sec:ss3simbase}.}
+and specify the simulation cases directly in \proglang{R} code (see section \ref{sec:ss3simbase}.}
 \label{fig:files}
 \end{figure}
 
@@ -291,7 +295,7 @@ See the help for a \texttt{change} function
 to see the arguments that need to be declared.
 For example, see \texttt{?change\_f}.
 
-You can use any simple \texttt{R} syntax to declare argument values.
+You can use any simple \proglang{R} syntax to declare argument values.
 For example,
 \texttt{c(1, 2, 4)}, or \texttt{seq(1, 100)}.
 Character objects do not need to be quoted as long as they are one word,
@@ -299,7 +303,7 @@ but can be if you would like.
 However, be careful not to use the delimiter (set up as a semicolon)
 anywhere else in the file besides to denote columns.
 You can add comments after any \texttt{\#} symbol.
-Internally, the functions evaluate in \texttt{R}
+Internally, the functions evaluate in \proglang{R}
 any entries that have no character values (e.g.\ \texttt{1:100}),
 or have an alpha-numeric character followed by an opening parenthesis \texttt{(}.
 Anything that is character only or has character mixed with numeric
@@ -396,16 +400,16 @@ the control files are renamed \texttt{om.ctl} or \texttt{em.ctl},
 and the starter and control files are adjusted
 to reflect these new file names.
 The functions in this package
-assume you have set your working directory in \texttt{R}
+assume you have set your working directory in \proglang{R}
 to be the base folder where you will store the scenario folders.
 
-\section{An example simulation with \texttt{ss3sim}}
+\section{An example simulation with \textbf{ss3sim}}
 
 As an example, we will run a 2x2 simulation design in which we test
 (1) the effect of high and low precision on the index of abundance research survey and
 (2) the effect of fixing versus estimating natural mortality (\textit{M}).
 All of the required files for this example are contained
-within the \texttt{ss3sim} package.
+within the \pkg{ss3sim} package.
 To start, we will locate three sets of folders:
 the folder with the plain text case files,
 the folder with the OM,
@@ -420,26 +424,26 @@ em <- paste0(d, "/models/cod-em")
 @
 
 See the folder \texttt{ss3sim/inst/extdata/eg-cases}
-inside the \texttt{ss3sim} source code
+inside the \pkg{ss3sim} source code
 for all the case files that are used in this example simulation.
 You can either download the source code
 from \url{https://github.com/ss3sim/ss3sim}
 or find this folder at the location contained
 in the \texttt{case\_folder} object defined
-in the block of \texttt{R} code above this paragraph.
+in the block of \proglang{R} code above this paragraph.
 
 \subsection{Creating the case files}
 
 We will base the simulation around the base-case files created
 for a cod-like species in the papers
 \citet{ono2013} and \citet{johnson2013},
-both of which used the \texttt{ss3sim} package.
+both of which used the \pkg{ss3sim} package.
 You can refer to these papers for details on how the models were set up.
 
 If we were starting from scratch,
 we would run the function \texttt{create\_argfiles()},
 which would create a default set of configuration files
-in our \texttt{R} working directory.
+in our \proglang{R} working directory.
 Instead we will start with the configuration files from those papers.
 
 To investigate the effect of different levels of precision on the survey index of abundance,
@@ -471,7 +475,7 @@ We will not describe the length or age composition sampling here in detail, but
 you can refer to the help files \texttt{?change\_lcomp} and
 \texttt{?change\_agecomp} along with the case files included in the package
 data. Also see Section \ref{sec:comps} where we describe the theory behind the
-age- and length-composition sampling in \texttt{ss3sim}.
+age- and length-composition sampling in \pkg{ss3sim}.
 
 To investigate the effect of fixing versus estimating \textit{M},
 we will manipulate the argument \texttt{natM\_val} that gets passed to \texttt{change\_e}.
@@ -535,7 +539,7 @@ dev;           rep(0, 100)
 Simply by changing the deviations from a vector of zeros
 to any vector pattern of deviations,
 we could add time-varying \textit{M}.
-In Section \ref{sec:time-varying} we describe how time-varying parameters are unique in \texttt{ss3sim} and how you can make any parameter
+In Section \ref{sec:time-varying} we describe how time-varying parameters are unique in \pkg{ss3sim} and how you can make any parameter
 described in SS3 time varying using this approach.
 
 \subsection{Checking the case files}
@@ -633,7 +637,7 @@ run_ss3sim(iterations = 1:20,
 @
 
 We have written out the scenario names in full for clarity,
-but \texttt{ss3sim} also contains
+but \pkg{ss3sim} also contains
 a convenience function \texttt{expand\_scenarios}.
 With this function we could instead write:
 
@@ -748,7 +752,7 @@ ts_dat_sto <- subset(ts_dat, E %in% c("E0", "E1"))
 
 \noindent
 Now we will turn the scalar data into long-data format so we can make a
-multipanel plot with the \texttt{R} package \texttt{ggplot2}.
+multipanel plot with the \proglang{R} package \pkg{ggplot2}.
 
 <<reshape-scalars>>=
 scalar_dat_long <- reshape2::melt(scalar_dat[,c("scenario", "D", "E",
@@ -816,7 +820,7 @@ print(p)
 \section{Using \texttt{ss3sim\_base} directly}
 \label{sec:ss3simbase}
 
-An alternative approach to using \texttt{ss3sim} is to skip
+An alternative approach to using \pkg{ss3sim} is to skip
 setting up the case files
 and use \texttt{ss3sim\_base} directly
 by passing lists of arguments.
@@ -870,7 +874,7 @@ ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-R0-M0-cod",
 \section{Time-varying parameters in the OM}
 \label{sec:time-varying}
 
-The \texttt{ss3sim} package includes the capability for inducing time-varying
+The \pkg{ss3sim} package includes the capability for inducing time-varying
 changes in parameters in the OM. The package currently does not have built-in
 functions to turn on/off the estimation of time-varying parameters, so this
 cannot be done with case arguments. However, it is possible to create versions
@@ -931,15 +935,15 @@ you might want to use M for natural mortality, S for selectivity,
 or G for growth.
 
 \section{Incorporating a new case ID}
-\texttt{ss3sim} is designed with a set of mandatory case IDs that must be
+\pkg{ss3sim} is designed with a set of mandatory case IDs that must be
 specified for each run: data (\texttt{D}), estimation (\texttt{E}), fishing
-effort (\texttt{F}),and retrospective (\texttt{R}).
+effort (\texttt{F}),and retrospective (\proglang{R}).
 Also, by default, \texttt{run\_ss3sim} is set up to require a natural mortality
 (\texttt{M}) case.
 In many instances a user may wish to include a new case ID.
 This section is designed to explain how to accomplish
-this within the \texttt{ss3sim} framework. Note that as currently developed,
-\texttt{ss3sim} incorporates all new cases by using the \texttt{change\_tv}
+this within the \pkg{ss3sim} framework. Note that as currently developed,
+\pkg{ss3sim} incorporates all new cases by using the \texttt{change\_tv}
 function, even if the changes are not time-varying. However, you can simply pass
 a constant vector of values to induce a constant change in a parameter.
 
@@ -950,7 +954,7 @@ fishery. Using the help file for \texttt{change\_tv}, we can create a set of ``S
 may choose to only have a ``base case'' which applies to all scenarios in the simulation
 test, or you may have multiple cases to investigate how different patterns of
 selectivity in the OM affect the EM. Now that the case argument files have been
-created, you need to tell \texttt{ss3sim} to use them, since they are outside of
+created, you need to tell \pkg{ss3sim} to use them, since they are outside of
 the mandatory set. This is done through the \texttt{case\_files} argument in the
 \texttt{get\_caseargs} function, which is passed through by the
 \texttt{run\_ss3sim}. In this case, we need to tell it to look for
@@ -978,15 +982,15 @@ the same way the \texttt{D} case is handled above.
 
 We recommend verifying the
 functionality of any new cases by: (1) thoroughly verifying that your R
-functions work outside of \texttt{ss3sim}, and then (2) running a single
+functions work outside of \pkg{ss3sim}, and then (2) running a single
 iteration and manually checking the produced files. If you write external
 functions for manipulating new aspects of SS3 models, please contact the
-\texttt{ss3sim} package developers for potential inclusion in future versions.
+\pkg{ss3sim} package developers for potential inclusion in future versions.
 
-\section{Modifying the OM and EM models included with \texttt{ss3sim}}
+\section{Modifying the OM and EM models included with \textbf{ss3sim}}
 \label{sec:modify}
 
-\texttt{ss3sim} comes with three built-in SS3 operating and estimation model setups:
+\pkg{ss3sim} comes with three built-in SS3 operating and estimation model setups:
 a cod-like (slow-growing and long-lived),
 flatfish-like (fast-growing and long-lived),
 and sardine-like (fast-growing and short-lived).
@@ -998,18 +1002,18 @@ In doing this, we removed many of the subtle features of the model setups.
 While these model setups are generic and cover a wide range of life history types, they may not be suitable for all users.
 Therefore, in this section, we outline strategies for modifying the existing SS3 models.
 
-Before proceeding it is worth considering the scope and place of \texttt{ss3sim} as a simulation package.
+Before proceeding it is worth considering the scope and place of \pkg{ss3sim} as a simulation package.
 The package was designed as a tool for examining structural differences in
 alternative model setups.
 These differences could be between an OM and EM \citep[e.g.][]{johnson2013} or between multiple EMs \citep[e.g.][]{ono2013}.
 Therefore, the specific details (e.g.\ many fleets, tagging data, seasons, etc.)
 of the original model setups were not important and removed to produce a set of generic life-history-type models.
-\texttt{ss3sim} is not designed for testing arbitrary SS3 models, but rather properties of assessment models in general.
-Thus \texttt{ss3sim} is not ideal for quickly exploring properties of a
+\pkg{ss3sim} is not designed for testing arbitrary SS3 models, but rather properties of assessment models in general.
+Thus \pkg{ss3sim} is not ideal for quickly exploring properties of a
 particular assessment model and other software packages should be explored if
 that is your goal (see accompanying for alternatives).
 
-Here is a list of SS3 features that are not currently implemented in \texttt{ss3sim}:
+Here is a list of SS3 features that are not currently implemented in \pkg{ss3sim}:
 \begin{itemize}
 \item Seasons, sexes, hermaphrodism, multiple areas,
   movement, growth morphs, and platoons
@@ -1017,17 +1021,17 @@ Here is a list of SS3 features that are not currently implemented in \texttt{ss3
   commercial indices of abundance and age/length compositions: age-at-length,
   discards, mean weights, etc.
 \end{itemize}
-Some of the features may work within the \texttt{ss3sim} framework, but are untested.
+Some of the features may work within the \pkg{ss3sim} framework, but are untested.
 
-It is possible to create new models that will work within the \texttt{ss3sim}
+It is possible to create new models that will work within the \pkg{ss3sim}
 framework, but this task will be complicated and likely require extensive
-knowledge of SS3 and R, as well as modification of the \texttt{ss3sim}
+knowledge of SS3 and R, as well as modification of the \pkg{ss3sim}
 functions. This process is described in more detail in Appendices
 \ref{sec:om-setup} and \ref{sec:em-setup}.
 
 Instead of creating entirely new models, we recommend adapting the current
 built-in models to match the desired model setups for a new simulation study. Since
-these models have been thoroughly tested and used with \texttt{ss3sim} already
+these models have been thoroughly tested and used with \pkg{ss3sim} already
 \citep[see][]{johnson2013, ono2013},
 they make an ideal starting place. Before proceeding it would be wise to examine
 the built-in models to determine how closely they match your desired model
@@ -1056,20 +1060,20 @@ paste0(d, "/models")
   if there is any question if they might break the model.
 \item Rerun the model through \texttt{run\_ss3sim} and verify it is still
   working. If errors occur in the
-  \texttt{R} function you will need to examine the function to determine why the error is
-  occurring and fix by changing the \texttt{R} function and reloading it.
+  \proglang{R} function you will need to examine the function to determine why the error is
+  occurring and fix by changing the \proglang{R} function and reloading it.
 \item Repeat previous steps with all small changes until the models are
   satisfactory.
 \item Turn off deterministic runs and run the simulation stochastically.
 \item If your new model works well with the package and is significantly
-  different than what is built-in, please contact the \texttt{ss3sim} package
+  different than what is built-in, please contact the \pkg{ss3sim} package
   managers for inclusion in future versions.
 \end{itemize}
 
 \section{Incorporating observation error}
 \label{sec:obs-error}
 Observation error (i.e.\ uncertainty arising from sampling the
-``truth'') can be added within the \texttt{ss3sim} framework in three
+``truth'') can be added within the \pkg{ss3sim} framework in three
 places: indices of abundance, length compositions, and age compositions.
 There are
 functions which take the expected values produced in the OM
@@ -1295,7 +1299,7 @@ and thus must be done before running the OM.
 These built-in recruitment
 deviations are standard normal deviates and are multiplied by
 $\sigma_r$ (recruitment standard deviation) as specified in the OM,
-and bias adjusted within the package.That is,
+and bias adjusted within the package. That is,
 \begin{equation*}
   \text{recdev}_i=\sigma_r z_i-\sigma_r^2/2
 \end{equation*}
@@ -1317,7 +1321,7 @@ allows for flexibility in how the recruitment deviations are
 specified, for example running deterministic runs (Section
 \ref{sec:deterministic}) or adding serial correlation.
 
-Note that for both built-in and user-specified recdevs \texttt{ss3sim}
+Note that for both built-in and user-specified recdevs \pkg{ss3sim}
 will reuse the same set of recruitment deviations for all iterations
 across scenarios. For example if you have two scenarios and run 100
 iterations of each, the same set of recruitment deviations are used
@@ -1334,7 +1338,7 @@ are not confounded with process error.
 More broadly, you may want to make a simulation reproducible
 on another machine by another user (such as a reviewer).
 
-By default \texttt{ss3sim} sets a seed based on the iteration number.
+By default \pkg{ss3sim} sets a seed based on the iteration number.
 This will create the same recruitment deviations for a given iteration number.
 You can therefore avoid having the same recruitment deviations for a given iteration number
 by either specifying your own recruitment deviation matrix through the \texttt{user\_recdevs} argument
@@ -1355,10 +1359,10 @@ Given that different case arguments can generate different sampling routines
 (e.g.\ stochastically sampling or not sampling from the age compositions or sampling a different number of years)
 the observation error is not necessarily comparable across different case arguments.
 
-\section{Parallel computing with \texttt{ss3sim}}
+\section{Parallel computing with \textbf{ss3sim}}
 \label{sec:parallel}
 
-\texttt{ss3sim} can easily run multiple scenarios in parallel
+\pkg{ss3sim} can easily run multiple scenarios in parallel
 to speed up simulations.
 To run a simulation in parallel,
 you need to register multiple cores or clusters and
@@ -1397,7 +1401,7 @@ run_ss3sim(iterations = 1:100, scenarios =
 In addition to the check with \texttt{getDoParWorkers()} above,
 if the simulations are running in parallel,
 you will also see simultaneous output messages
-from \texttt{ss3sim} as the simulations run.
+from \pkg{ss3sim} as the simulations run.
 On a 2.27 GHz Intel Xeon quad-core server running Ubuntu 10.04,
 this example ran 1.9 times faster on two cores than on a single core,
 and 3.2 times faster on four cores.
@@ -1416,7 +1420,7 @@ and 3.2 times faster on four cores.
 \label{sec:path}
 
 Instead of copying the SS3 binary file (\texttt{ss3.exe}) to each folder
-within a simulation and running it, \texttt{ss3sim} relies on a single binary file
+within a simulation and running it, \pkg{ss3sim} relies on a single binary file
 being available to the operating system regardless of the folder.
 To accomplish this, SS3 must be in your system path, which is
 a list of folders that your operating system looks in
@@ -1469,10 +1473,10 @@ If you followed the instructions above, you will see the following line returned
 
 If you have previously modified your path to add a non-standard location
 for the SS3 binary,
-you may need to also tell \texttt{R} about the new path.
-The path that \texttt{R} sees may not include additional paths
+you may need to also tell \proglang{R} about the new path.
+The path that \proglang{R} sees may not include additional paths
 that you have added through a configuration file like \texttt{.bash\_profile}.
-If needed, you can add to the path that \texttt{R} sees
+If needed, you can add to the path that \proglang{R} sees
 by including a line like this in your \texttt{.Rprofile} file.
 (This is an invisible file in your home directory.)
 
@@ -1520,18 +1524,18 @@ To add the SS3 binary file to your path, follow these steps:
 \section{Setting up a new operating model}
 \label{sec:om-setup}
 In some cases the user may wish to adapt their own SS3 model to work
-with the \texttt{ss3sim} package. This is possible but may be difficult because
-the functions in \texttt{ss3sim} were developed to work with these three model setups and
+with the \pkg{ss3sim} package. This is possible but may be difficult because
+the functions in \pkg{ss3sim} were developed to work with these three model setups and
 a model with a different structure may cause errors in these functions. This
 stems from the high flexibility of SS3, allowing for more complex model setups
-than those used while developing ss3sim. For
+than those used while developing \textbf{ss3sim.} For
 instance, the \texttt{change\_index} function does not have the capability to
 handle more than one season (it could, but currently it is not developed to). Given
 the many options available in SS3 it is extremely difficult to write
 auxiliary functions that will interact reliably with all combinations of these
 options. For this reason, we recommend that users strongly consider trying to
 modify an existing model rather than creating a new one
-(Section \ref{sec:modify}). It is likely that the \texttt{ss3sim} functions
+(Section \ref{sec:modify}). It is likely that the \pkg{ss3sim} functions
 will need to be modified in some way in the process, so the user should be
 familiar with both SS3 and R.
 
@@ -1558,9 +1562,9 @@ if composition data is not to be explored in the simulation then the user can
 just set the OM \texttt{.dat} file to match the desired input for the EM
 \texttt{.dat}.
 
-For those users who choose to create a new \texttt{ss3sim} model setup, we outline the
+For those users who choose to create a new \pkg{ss3sim} model setup, we outline the
 steps to take an existing SS3 model and modify it to work with the
-\texttt{ss3sim} package.  First, we cover setting up an operating model and then
+\pkg{ss3sim} package.  First, we cover setting up an operating model and then
 in Section \ref{sec:em-setup} we cover setting up an estimation model.
 
 \subsection{Starter file modifications}
@@ -1592,7 +1596,7 @@ in Section \ref{sec:em-setup} we cover setting up an estimation model.
   Turn off retrospective analyses by setting\\
   \texttt{\# retrospective year relative to end year}\\
   to \texttt{0}. To analyze the data for retrospective patterns,
-  use the \texttt{R} case file.
+  use the \proglang{R} case file.
 \item
   Specify how catch is reported by setting \texttt{\# F\_report\_units}
   to 1 if catch is reported in biomass or \texttt{2} if catch is reported in
@@ -1651,7 +1655,7 @@ in Section \ref{sec:em-setup} we cover setting up an estimation model.
    phase value. E.g \texttt{1 2000 1 0 0.01 -1}
 \item
   If needed, change the specification of the \texttt{.ctl}
-  using the functions available in the \texttt{ss3sim} package.
+  using the functions available in the \pkg{ss3sim} package.
   E.g \texttt{change\_growth}, \texttt{change\_sel}.
 \end{enumerate}
 
@@ -1700,7 +1704,7 @@ After completing the above steps, check that the SS3 model setup is
 functional by running a single iteration of the model and verifying that the
 data are read in correctly and expected values of the population dynamics are
 written to the \texttt{.dat} files (and sensical). We also advise manually
-testing the \texttt{ss3sim} \texttt{R} functions that manipulate the OM (e.g.,
+testing the \pkg{ss3sim} \proglang{R} functions that manipulate the OM (e.g.,
 \texttt{change\_tv}) and check that the model setup still runs correctly after this
 manipulation. The help files for the functions demonstrate how to use the
 functions to test models. Note that the OM will not be a valid SS3
@@ -1738,7 +1742,7 @@ create a new EM.
    to a positive value.
    Estimates for the years and maximum bias adjustment
    can initially be inputted with approximations
-   or use the bias adjustment function within \texttt{ss3sim}
+   or use the bias adjustment function within \pkg{ss3sim}
    to find appropriate values for the base case EM
    and input them in the appropriate lines.
 \item Specify \texttt{\# F\_Method} to \texttt{3},
@@ -1749,7 +1753,7 @@ create a new EM.
    An additional line must be inserted after the maximum harvest rate
    to specify the number of iterations used in the hybrid method from \texttt{3}
    to \texttt{7}.
- \item Use the functions in the \texttt{ss3sim} package
+ \item Use the functions in the \pkg{ss3sim} package
    to change the estimation specification in the EM.
    E.g.\ \texttt{change\_e}
 \end{enumerate}
@@ -1759,7 +1763,7 @@ The \texttt{data.ss\_new} files produced when executing the OM contain the
 expected values of the OM population dynamics. The data the EM model is fit to
 needs to be sampled with observation error from these expected values in order
 to mimic the random sampling process done with real fisheries data. The
-\texttt{ss3sim} package provides three functions which carry out the random
+\pkg{ss3sim} package provides three functions which carry out the random
 sampling process and generate \texttt{.dat} files to be used in the EM. See
 Section \ref{sec:obs-error} for more details.
 
@@ -1768,10 +1772,10 @@ After completing the above steps run the model manually and verify that it
 loads the data properly and the objective function value (negative
 log-likelihood) is sensible. If it works correctly, try running
 deterministic cases on the model (Section \ref{sec:deterministic}) and further
-verify that \texttt{ss3sim} functions that modify the EM (e.g.,
+verify that \pkg{ss3sim} functions that modify the EM (e.g.,
 \texttt{change\_e}) act correctly on the model setup. It is possible that some of the
 functions will not work perfectly with the new model setups. In this case, it may be
-necessary to modify the \texttt{ss3sim} functions to be compatible with the new
+necessary to modify the \pkg{ss3sim} functions to be compatible with the new
 OM and EM.
 
 \end{document}
