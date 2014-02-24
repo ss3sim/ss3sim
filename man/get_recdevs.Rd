@@ -2,7 +2,7 @@
 \alias{get_recdevs}
 \title{Return a set of recruitment deviations}
 \usage{
-get_recdevs(iteration, n)
+get_recdevs(iteration, n, seed = 21)
 }
 \arguments{
   \item{iteration}{The iteration number. This is used as an

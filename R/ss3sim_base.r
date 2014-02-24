@@ -45,6 +45,11 @@
 #'   non-invertible Hessian before a warning will be produced. If this
 #'   percentage is exceeded then a file \code{WARNINGS.txt} will be produced.
 #'   Currently, the simulations will continue to run.
+#' @param seed The seed value to pass to \code{\link{get_recdevs}} when
+#'   generating recruitment deviations. The generated recruitment deviations
+#'   depend on the iteration value, but also on the value of \code{seed}. A 
+#'   given combinatination of iteration, number of years, and `seed` value will
+#'   result in the same recruitment deviations.
 #' @param ... Anything extra to pass to \code{\link{run_ss3model}}. For example,
 #'   you may want to pass additional options to \code{SS3} through the argument
 #'   \code{admb_options}. Anything that doesn't match a named argument in
@@ -153,7 +158,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   tv_params, om_dir, em_dir,
   retro_params = NULL, user_recdevs = NULL, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
-  print_logfile = TRUE, sleep = 0, conv_crit = 0.2, ...)
+  print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21, ...)
 {
 
   # In case ss3sim_base is stopped before finishing:
@@ -191,7 +196,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # This turns "bias/1" into "1" and leaves "1" unchanged
       this_run_num <- as.numeric(rev(strsplit(as.character(i), "/")[[1]])[1])
 
-      recdevs <- get_recdevs(iteration = this_run_num, n = 2000)
+      recdevs <- get_recdevs(iteration = this_run_num, n = 2000, seed = seed)
       if(is.null(user_recdevs)) {
         sc_i_recdevs <- sigmar * recdevs - sigmar^2/2 # from the package data
       } else {

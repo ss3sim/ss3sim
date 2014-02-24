@@ -14,8 +14,8 @@
 #' get_recdevs(2, 10)
 #' @export
 
-get_recdevs <- function(iteration, n) {
-  set.seed(21)
+get_recdevs <- function(iteration, n, seed = 21) {
+  set.seed(seed)
   x <- sample(1:1e6)[iteration]
   set.seed(x)
   rnorm(n, 0, 1)
