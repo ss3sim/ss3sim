@@ -48,8 +48,8 @@
 #' @param seed The seed value to pass to \code{\link{get_recdevs}} when
 #'   generating recruitment deviations. The generated recruitment deviations
 #'   depend on the iteration value, but also on the value of \code{seed}. A 
-#'   given combinatination of iteration, number of years, and `seed` value will
-#'   result in the same recruitment deviations.
+#'   given combinatination of iteration, number of years, and \code{seed} value 
+#'   will result in the same recruitment deviations.
 #' @param ... Anything extra to pass to \code{\link{run_ss3model}}. For example,
 #'   you may want to pass additional options to \code{SS3} through the argument
 #'   \code{admb_options}. Anything that doesn't match a named argument in

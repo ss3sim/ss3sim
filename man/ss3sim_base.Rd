@@ -94,7 +94,7 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   deviations. The generated recruitment deviations depend
   on the iteration value, but also on the value of
   \code{seed}. A given combinatination of iteration, number
-  of years, and `seed` value will result in the same
+  of years, and \code{seed} value will result in the same
   recruitment deviations.}
 
   \item{...}{Anything extra to pass to
