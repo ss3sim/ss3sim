@@ -1406,7 +1406,6 @@ On a 2.27 GHz Intel Xeon quad-core server running Ubuntu 10.04,
 this example ran 1.9 times faster on two cores than on a single core,
 and 3.2 times faster on four cores.
 
-\clearpage
 \bibliographystyle{apalike}
 \bibliography{refs}
 
