@@ -715,8 +715,8 @@ without running the simulations above,
 you can load a saved version of the output:
 
 <<load-output>>=
-load("ts_dat.rda")
-load("scalar_dat.rda")
+data("ts_dat", package = "ss3sim")
+data("scalar_dat", package = "ss3sim")
 @
 
 \noindent
