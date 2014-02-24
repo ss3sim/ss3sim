@@ -146,10 +146,12 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
     if(cores == 1) parallel <- FALSE
   }
 
-  if(ncol(user_recdevs) < max(iterations)) {
-    stop(paste("The number of columns in user_recdevs is less than the",
-               "specified number of iterations."))
-  } # nrow(user_recdevs) is checked within ss3sim_base
+  if(!is.null(user_recdevs)) {
+    if(ncol(user_recdevs) < max(iterations)) {
+      stop(paste("The number of columns in user_recdevs is less than the",
+                 "specified number of iterations."))
+    }
+  }
 
   # Note that inside a foreach loop you pop out of your current
   # workspace until you go back into an exported function
