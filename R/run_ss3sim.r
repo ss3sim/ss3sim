@@ -25,14 +25,16 @@
 #'   reflect your scenarios. This argument is passed to
 #'   \code{\link{get_caseargs}}. See that function for details and examples of
 #'   how to specify this.
-#' @param ... Anything else to pass to \code{\link{ss3sim_base}}. This could
-#'   include \code{bias_adjust} and \code{bias_nsim}. Also, you can pass
-#'   additional options to the \code{SS3} command through the argument
-#'   \code{admb_options}.
+#' @template user_recdevs
 #' @param parallel A logical argument that controls whether the scenarios are
 #'   run in parallel. You will need to register multiple cores first with a
 #'   package such as \pkg{doParallel} and have the \pkg{foreach} package
 #'   installed. See the example below.
+#' @param ... Anything else to pass to \code{\link{ss3sim_base}}. This could
+#'   include \code{bias_adjust} and \code{bias_nsim}. Also, you can pass
+#'   additional options to the \code{SS3} command through the argument
+#'   \code{admb_options}.
+
 #' @author Sean C. Anderson
 #'
 #' @details The operating model folder should contain: \code{forecast.ss},
@@ -136,13 +138,18 @@
 
 run_ss3sim <- function(iterations, scenarios, case_folder,
   om_dir, em_dir, case_files = list(M = "M", F = "F", D =
-    c("index", "lcomp", "agecomp"), R = "R", E = "E"),
+    c("index", "lcomp", "agecomp"), R = "R", E = "E"), user_recdevs = NULL,
   parallel = FALSE, ...) {
 
   if(parallel) {
     cores <- setup_parallel()
     if(cores == 1) parallel <- FALSE
   }
+
+  if(ncol(user_recdevs) < max(iterations)) {
+    stop(paste("The number of columns in user_recdevs is less than the",
+               "specified number of iterations."))
+  } # nrow(user_recdevs) is checked within ss3sim_base
 
   # Note that inside a foreach loop you pop out of your current
   # workspace until you go back into an exported function
@@ -160,7 +167,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
         f_params = a$F, index_params =
         a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp,
         retro_params = a$R, estim_params = a$E, om_dir = om_dir,
-        em_dir = em_dir, ...)
+        em_dir = em_dir, user_recdevs = user_recdevs, ...)
   }} else {
     output <- lapply(scenarios, function(x) {
       a <- get_caseargs(folder = case_folder, scenario = x, case_files = case_files)
@@ -170,7 +177,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
         f_params = a$F, index_params =
         a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp,
         retro_params = a$R, estim_params = a$E, om_dir = om_dir,
-        em_dir = em_dir, ...)
+        em_dir = em_dir, user_recdevs = user_recdevs, ...)
         })
   }
 
