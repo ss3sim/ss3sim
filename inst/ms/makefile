@@ -1,10 +1,14 @@
-all: plossubmit
+all: plosaccepted
 
 arxiv:
-	pdflatex ss3sim-arxiv
-	bibtex ss3sim-arxiv
-	pdflatex ss3sim-arxiv
-	pdflatex ss3sim-arxiv
+	pdflatex ss3sim-ms-arxiv
+	pdflatex ss3sim-ms-arxiv
+	pdflatex ss3sim-ms-arxiv
+
+plosaccepted:
+	pdflatex ss3sim-ms-plos.tex
+	pdflatex ss3sim-ms-plos.tex
+	pdflatex ss3sim-ms-plos.tex
 
 plossubmit:
 	pandoc ~/Dropbox/ms/ss3sim-response/ss3sim-response.md -o ss3sim-response.tex
