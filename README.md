@@ -39,7 +39,7 @@ vignette("ss3sim-vignette", package = "ss3sim")
 For reproducible examples of ss3sim simulations as well as details on installing
 the correct version of SS3, and adding SS3 to your operating system's path so
 ss3sim can find the software, see the [vignette][vignette] [PDF]. Also, see the
-[paper on arXiv][paper], which is in review at PLOS ONE.
+[paper on arXiv][paper], which in press at PLOS ONE.
 
 ## The ss3sim simulation setup
 
