@@ -13,3 +13,4 @@
 ^vignettes/Makefile$
 ^R/tags$
 ^Session\.vim$
+NEWS\.md
