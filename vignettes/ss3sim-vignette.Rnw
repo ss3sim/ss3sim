@@ -1529,7 +1529,7 @@ with the \pkg{ss3sim} package. This is possible but may be difficult because
 the functions in \pkg{ss3sim} were developed to work with these three model setups and
 a model with a different structure may cause errors in these functions. This
 stems from the high flexibility of SS3, allowing for more complex model setups
-than those used while developing \textbf{ss3sim.} For
+than those used while developing \pkg{ss3sim}. For
 instance, the \texttt{change\_index} function does not have the capability to
 handle more than one season (it could, but currently it is not developed to). Given
 the many options available in SS3 it is extremely difficult to write
