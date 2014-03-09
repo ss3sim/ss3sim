@@ -42,7 +42,7 @@ citEntry(entry = "Article",
   doi          = "10.1371/journal.pone.0092725",
   textVersion  =
   paste("Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K,",
-        "and Valero, JL (2013).",
+        "and Valero, JL (2014).",
         "ss3sim: An R package for fisheries stock assessment",
         "simulation with Stock Synthesis. PLOS ONE. In press.",
         "DOI: 10.1371/journal.pone.0092725.")
