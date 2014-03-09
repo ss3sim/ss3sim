@@ -436,7 +436,7 @@ in the block of \proglang{R} code above this paragraph.
 
 We will base the simulation around the base-case files created
 for a cod-like species in the papers
-\citet{ono2013} and \citet{johnson2013},
+\citet{ono2014} and \citet{johnson2014},
 both of which used the \pkg{ss3sim} package.
 You can refer to these papers for details on how the models were set up.
 
@@ -996,7 +996,7 @@ flatfish-like (fast-growing and long-lived),
 and sardine-like (fast-growing and short-lived).
 These model setups are based on North Sea cod (\textit{Gadus morhua},
 R. Methot, pers.\ comm.), yellowtail flounder (\textit{Limanda ferruginea}, R. Methot, pers.\ comm.), and Pacific sardine \citep[\textit{Sardinops sagax caeruleus;}][]{hill2012}.
-Further details on these models are available in \citet{johnson2013} and \citet{ono2013}.
+Further details on these models are available in \citet{johnson2014} and \citet{ono2014}.
 These models were stripped down and simplified to make them more generic for simulation testing.
 In doing this, we removed many of the subtle features of the model setups.
 While these model setups are generic and cover a wide range of life history types, they may not be suitable for all users.
@@ -1005,7 +1005,7 @@ Therefore, in this section, we outline strategies for modifying the existing SS3
 Before proceeding it is worth considering the scope and place of \pkg{ss3sim} as a simulation package.
 The package was designed as a tool for examining structural differences in
 alternative model setups.
-These differences could be between an OM and EM \citep[e.g.][]{johnson2013} or between multiple EMs \citep[e.g.][]{ono2013}.
+These differences could be between an OM and EM \citep[e.g.][]{johnson2014} or between multiple EMs \citep[e.g.][]{ono2014}.
 Therefore, the specific details (e.g.\ many fleets, tagging data, seasons, etc.)
 of the original model setups were not important and removed to produce a set of generic life-history-type models.
 \pkg{ss3sim} is not designed for testing arbitrary SS3 models, but rather properties of assessment models in general.
@@ -1032,7 +1032,7 @@ functions. This process is described in more detail in Appendices
 Instead of creating entirely new models, we recommend adapting the current
 built-in models to match the desired model setups for a new simulation study. Since
 these models have been thoroughly tested and used with \pkg{ss3sim} already
-\citep[see][]{johnson2013, ono2013},
+\citep[see][]{johnson2014, ono2014},
 they make an ideal starting place. Before proceeding it would be wise to examine
 the built-in models to determine how closely they match your desired model
 setups and whether simple changes can get you reasonably close for simulation purposes.
