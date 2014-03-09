@@ -94,30 +94,25 @@ Example output from an ss3sim simulation. This example shows a crossed simulatio
 
 If you use ss3sim in a publication, please cite ss3sim as shown by `citation("ss3sim")`:
 
-Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, Valero, JL, Cunningham, CJ, Hurtado-Ferro, F, Licandeo, R, McGilliard, CR, Szuwalski, CS, Vert-pre, KA, and Whitten, AR (2014). ss3sim: Fisheries stock assessment simulation testing with Stock Synthesis. R package version 0.8.0.
+Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, Valero, JL, Cunningham, CJ, Hurtado-Ferro, F, Licandeo, R, McGilliard, CR, Szuwalski, CS, Vert-pre, KA, and Whitten, AR (2014). ss3sim: Fisheries stock assessment simulation testing with Stock Synthesis. R package version 0.8.2.
 
-Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, and Valero, JL (2013). ss3sim: An R package for fisheries stock assessment simulation with Stock Synthesis. arXiv:1312.6450.
+Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, and Valero, JL (2014). ss3sim: An R package for fisheries stock assessment simulation with Stock Synthesis. PLOS ONE. In press. DOI: 10.1371/journal.pone.0092725.
 
 ```tex
 @Manual{,
-    title = {ss3sim: Fisheries stock assessment simulation with Stock
-      Synthesis},
-    author = {Sean C. Anderson and Cole C. Monnahan and Kelli F.
-      Johnson and Kotaro Ono and Juan L. Valero and Curry J. Cunningham
-      and Felipe Hurtado-Ferro and Roberto Licandeo and Carey R.
-      McGilliard and Cody S. Szuwalski and Katyana A. Vert-pre and
-      Athol R. Whitten},
-    year = {2014},
-    note = {R package version 0.8.0},
-  }
-  @Article{,
-    title = {ss3sim: An R package for fisheries stock assessment
-      simulation with Stock Synthesis},
-    author = {Sean C. Anderson and Cole C. Monnahan and Kelli F.
-      Johnson and Kotaro Ono and Juan L. Valero},
-    year = {2013},
-    journal = {arXiv:1312.6450},
-  }
+  title = {ss3sim: Fisheries stock assessment simulation with Stock Synthesis},
+  author = {Sean C. Anderson and Cole C. Monnahan and Kelli F. Johnson and Kotaro Ono and Juan L. Valero and Curry J. Cunningham and Felipe Hurtado-Ferro and Roberto Licandeo and Carey R. McGilliard and Cody S. Szuwalski and Katyana A. Vert-pre and Athol R. Whitten},
+  year = {2014},
+  note = {R package version 0.8.2},
+}
+
+@Article{,
+  title = {ss3sim: An R package for fisheries stock assessment simulation with Stock Synthesis},
+  author = {Sean C. Anderson and Cole C. Monnahan and Kelli F. Johnson and Kotaro Ono and Juan L. Valero},
+  year = {2014},
+  journal = {PLOS ONE},
+  doi = {10.1371/journal.pone.0092725},
+}
 ```
 
 [DESCRIPTION]: https://github.com/seananderson/ss3sim/blob/master/DESCRIPTION
