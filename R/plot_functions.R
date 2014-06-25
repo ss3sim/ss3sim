@@ -1,0 +1,225 @@
+#' Plot scalar values as points.
+#'
+#' @template plot-functions
+#' @export
+#' @author Cole Monnahan
+#' @examples
+#' ## The data are loaded automatically with the package
+#' library(ggplot2)
+#' scalar_dat$depletion <- with(scalar_dat, (depletion_om-depletion_em)/depletion_om)
+#' plot.scalar.points(scalar_dat, x='E', y="depletion", horiz='D',
+#'                    color="max_grad", rel=TRUE )
+plot.scalar.points <- function(data, x, y, horiz=NULL, horiz2=NULL,
+             vert=NULL, vert2=NULL, color=NULL,
+             relative.error=FALSE, axes.free=TRUE){
+    ## Verify the inputs are correct, throws informative error if not
+    verify_plot_arguments(data=data, x=x, y=y, horiz=horiz, horiz2=horiz2,
+                          vert=vert, vert2=vert2, color=color,
+                          relative.error=relative.error, axes.free=axes.free)
+    ## Build up the ggplot object
+    g <- ggplot(data=data)
+    if(relative.error){
+        g <- g+coord_cartesian(ylim=c(-1,1))+ylab(paste("relative error for:", y))
+        g <- g+geom_hline(yintercept=0, col="red")
+    }
+    ## Use helper function to build formula for facet_grid
+    form <- facet_form(horiz, horiz2, vert, vert2)
+    if(is.null(color)){
+        g <- g+geom_jitter(aes_string(x=x, y=y), size=1,
+                           position=position_jitter(height=0))
+    } else {
+        g <- g+geom_jitter(aes_string(x=x, y=y, color=color), size=1,
+                           position=position_jitter(height=0)) +
+                               scale_color_gradient(low="black", high="red")
+    }
+    if(!is.null(form))
+        g <- g+facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))
+    ## Print and return the plot object
+    print(g)
+    return(invisible(g))
+}
+
+plot.scalar.boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
+                                vert=NULL, vert2=NULL,
+                                relative.error=FALSE, axes.free=TRUE){
+    ## Verify the inputs are correct, throws informative error if not
+    verify_plot_arguments(data=data, x=x, y=y, horiz=horiz, horiz2=horiz2,
+                          vert=vert, vert2=vert2, color=color,
+                          relative.error=relative.error, axes.free=axes.free)
+    ## Build up the ggplot object
+    g <- ggplot(data=data)
+    if(relative.error){
+        g <- g+coord_cartesian(ylim=c(-1,1))+ylab(paste("relative error for:", y))
+        g <- g+geom_hline(yintercept=0, col="red")
+    }
+    ## Use helper function to build formula for facet_grid
+    form <- facet_form(horiz, horiz2, vert, vert2)
+    g <- g+geom_boxplot(aes_string(x=x,y=y), size=.2, outlier.size=1,
+                        outlier.colour=rgb(0,0,0,.5))
+    if(!is.null(form))
+        g <- g + facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))
+    print(g)
+    return(invisible(g))
+}
+plot.ts.boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
+                            vert2=NULL, relative.error=FALSE,
+                            axes.free=TRUE){
+    ## Verify the inputs are correct, throws informative error if not
+    verify_plot_arguments(data=data, x=x, y=y, horiz=horiz, horiz2=horiz2,
+                          vert=vert, vert2=vert2, color=color,
+                          relative.error=relative.error, axes.free=axes.free)
+    ## Build up the ggplot object
+    g <- ggplot(data=data, aes(x=year))+ xlab("Year")
+    if(relative.error){
+        g <- g+coord_cartesian(ylim=c(-1,1))+ylab(paste("relative error for:", y))
+        g <- g+geom_hline(yintercept=0, col="red")
+    }
+    ## Use helper function to build formula for facet_grid
+    form <- facet_form(horiz, horiz2, vert, vert2)
+    g <- g+geom_boxplot(aes_string(y=y,group="year"),
+                        outlier.colour=rgb(0,0,0,.3),  lwd=.3,
+                        outlier.size=.8, fatten=3)
+    if(!is.null(form))
+        g <- g+ facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))
+    print(g)
+    return(invisible(g))
+}
+plot.ts.points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
+                           vert2=NULL, relative.error=FALSE, color=NULL,
+                           axes.free=TRUE){
+    ## Verify the inputs are correct, throws informative error if not
+    verify_plot_arguments(data=data, x=x, y=y, horiz=horiz, horiz2=horiz2,
+                          vert=vert, vert2=vert2, color=color,
+                          relative.error=relative.error, axes.free=axes.free)
+    ## Build up the ggplot object
+    g <- ggplot(data=data, aes(x=year))+ xlab("Year")
+    if(relative.error){
+        g <- g+coord_cartesian(ylim=c(-1,1))+ylab(paste("relative error for:", y))
+        g <- g+geom_hline(yintercept=0, col="red")
+    }
+    form <- facet_form(horiz, horiz2, vert, vert2)
+    if(is.null(color)){
+        g <- g+geom_jitter(aes_string(y=y,group="year"),
+                           alpha=.5, size=1, position=position_jitter(height=0))+
+                  facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))
+
+    } else {
+        g <- g+geom_jitter(aes_string(y=y,group="year", colour=color),
+                           alpha=.5, size=1,
+                           position=position_jitter(height=0)) +
+               facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))+
+                   scale_color_gradient(low="black", high="red")
+    }
+    print(g)
+    return(invisible(g))
+}
+plot.ts.lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
+                           vert2=NULL, relative.error=FALSE, color=NULL,
+                           axes.free=TRUE){
+    ## Verify the inputs are correct, throws informative error if not
+    verify_plot_arguments(data=data, x=x, y=y, horiz=horiz, horiz2=horiz2,
+                          vert=vert, vert2=vert2, color=color,
+                          relative.error=relative.error, axes.free=axes.free)
+    ## Build up the ggplot object
+    g <- ggplot(data=data, aes(x=year))+ xlab("Year")
+    if(relative.error){
+        g <- g+coord_cartesian(ylim=c(-1,1))+ylab(paste("relative error for:", y))
+        g <- g+geom_hline(yintercept=0, col="red")
+    }
+    ## Use helper function to build formula for facet_grid
+    form <- facet_form(horiz, horiz2, vert, vert2)
+    if(is.null(color)){
+        g <- g+geom_line(aes_string(y=y,group="ID"), alpha=.5, lws=.5)+
+                  facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))
+
+    } else {
+        g <- g+geom_line(aes_string(y=y,group="ID", color=color), alpha=.5, lws=.5)+
+                  facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))+
+                   scale_color_gradient(low="black", high="red")
+    }
+    print(g)
+    return(invisible(g))
+}
+
+#' A helper function for building a ggplot facet. Used internally by the
+#' plotting functions.
+#' @author Cole Monnahan
+#' @return A formula which can be used in \code{facet_grid}, or NULL if all
+#' arguments are NULL
+facet_form <- function(horiz=NULL, horiz2=NULL, vert=NULL, vert2=NULL){
+    h <- !is.null(horiz)
+    h2 <- !is.null(horiz2)
+    v <- !is.null(vert)
+    v2 <- !is.null(vert2)
+    ## All NULL means no faceting
+    if( !h & !h2 & !v & !v2) return(NULL)
+    ## If user provides horiz2 but not horiz1, switch them, likewise with vert
+    if(!h & h2) {
+        horiz <- horiz2
+        horiz2 <- NULL
+        h2 <- FALSE
+        h <- TRUE
+    }
+    if(!v & v2) {
+        vert <- vert2
+        vert2 <- NULL
+        v2 <- FALSE
+        v <- TRUE
+    }
+    ## Build the formula, depending on nested cases
+    if(!h & !h2) {
+        if(v & !v2) form <- as.formula(paste(". ~", vert))
+        else form <- as.formula(paste(". ~", vert, "+", vert2))
+    }
+    else if(h & !h2) {
+        if(!v & !v2) form <- as.formula(paste(horiz,"~ ."))
+        else if(v & !v2) form <- as.formula(paste(horiz,"~", vert))
+        else form <- as.formula(paste(horiz,"~", vert, "+", vert2))
+    }
+    else if(h & h2){
+        if(!v & !v2) form <- as.formula(paste(horiz,"+", horiz2, "~ ."))
+        else if(v & !v2) form <- as.formula(paste(horiz, "+", horiz2, "~", vert))
+        else form <- as.formula(paste(horiz,"+", horiz2, "~", vert, "+", vert2))
+    }
+    else stop("Incompatible horiz and vert arguments")
+    return(form)
+}
+
+#' A helper function to check the correct input for the plotting functions.
+#' @author Cole Monnahan
+#'
+verify_plot_arguments <- function(data, x, y, horiz, horiz2, vert, vert2,
+                                  color, relative.error, axes.free){
+    ## Check them
+    if(!is.data.frame(data))
+        stop("data must be data.frame")
+    else if(nrow(data)<2)
+        stop("data has too few rows")
+    if(!is.character(x) | !x %in% names(data))
+        stop("x must be character matching column in data")
+    if(!is.character(y) | !y %in% names(data))
+        stop("y must be character matching column in data")
+    if(!is.null(horiz)){
+        if(!is.character(horiz) | !horiz %in% names(data))
+            stop("horiz must be character matching column in data")
+    }
+    if(!is.null(horiz2)){
+        if(!is.character(horiz2) | !horiz2 %in% names(data))
+            stop("horiz2 must be character matching column in data")
+    }
+    if(!is.null(vert)){
+        if(!is.character(vert) | !vert %in% names(data))
+            stop("vert must be character matching column in data")
+    }
+    if(!is.null(vert2)){
+        if(!is.character(vert2) | !vert2 %in% names(data))
+            stop("vert2 must be character matching column in data")
+    }
+    if(!is.null(color)){
+        if(!is.character(color) | !color %in% names(data))
+            stop("color must be character matching column in data")
+    }
+    stopifnot(is.logical(relative.error))
+    stopifnot(is.logical(axes.free))
+    ## No need to return anything, throws an error if something wrong
+}
