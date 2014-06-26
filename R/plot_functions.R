@@ -4,6 +4,14 @@
 #' @export
 #' @import ggplot2
 #' @author Cole Monnahan
+#' @param x (For use with scalar plots only, ts plots use 'year'). A
+#' character string denoting which column to use as the x variable. Column
+#' should be a factor (e.g. "F" or "species").
+#' @param color A character string denoting which column to use to map
+#' color. Not valid for boxplot functions. Useful for looking at EM
+#' performance criteria against other dimensions of the EM or OM. See
+#' example below for how to merge in a metric from a scalar dataset to a ts
+#' dataset.
 plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL,
              vert=NULL, vert2=NULL, color=NULL,
              relative.error=FALSE, axes.free=TRUE){
@@ -39,6 +47,9 @@ plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #' @export
 #' @import ggplot2
 #' @author Cole Monnahan
+#' @param x (For use with scalar plots only, ts plots use 'year'). A
+#' character string denoting which column to use as the x variable. Column
+#' should be a factor (e.g. "F" or "species").
 plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
                                 vert=NULL, vert2=NULL,
                                 relative.error=FALSE, axes.free=TRUE){
@@ -96,6 +107,11 @@ plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' @export
 #' @import ggplot2
 #' @author Cole Monnahan
+#' @param color A character string denoting which column to use to map
+#' color. Not valid for boxplot functions. Useful for looking at EM
+#' performance criteria against other dimensions of the EM or OM. See
+#' example below for how to merge in a metric from a scalar dataset to a ts
+#' dataset.
 plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                            vert2=NULL, relative.error=FALSE, color=NULL,
                            axes.free=TRUE){
@@ -131,6 +147,11 @@ plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' @export
 #' @import ggplot2
 #' @author Cole Monnahan
+#' @param color A character string denoting which column to use to map
+#' color. Not valid for boxplot functions. Useful for looking at EM
+#' performance criteria against other dimensions of the EM or OM. See
+#' example below for how to merge in a metric from a scalar dataset to a ts
+#' dataset.
 plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                            vert2=NULL, relative.error=FALSE, color=NULL,
                            axes.free=TRUE){
@@ -161,6 +182,15 @@ plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 
 #' A helper function for building a ggplot facet. Used internally by the
 #' plotting functions.
+#'
+#' @param horiz,horiz2 A character string denoting which column to use as
+#' the first (\code{horiz}) and second (\code{horiz2}) level of faceting in
+#' the horizontal direction. E.g. "M" or "species". A value of NULL (default)
+#' indicates no faceting.
+#' @param vert,vert2 A character string denoting which column to use as
+#' the first (\code{vert}) and second (\code{vert2}) level of faceting in
+#' the vertical direction. E.g. "M" or "species". A value of NULL (default)
+#' indicates no faceting.
 #' @author Cole Monnahan
 #' @return A formula which can be used in \code{facet_grid}, or NULL if all
 #' arguments are NULL
@@ -204,11 +234,21 @@ facet_form <- function(horiz=NULL, horiz2=NULL, vert=NULL, vert2=NULL){
 }
 
 #' A helper function to check the correct input for the plotting functions.
-#' @author Cole Monnahan
 #'
+#' @author Cole Monnahan
+#' @template plot-functions
+#' @param color A character string denoting which column to use to map
+#' color. Not valid for boxplot functions. Useful for looking at EM
+#' performance criteria against other dimensions of the EM or OM. See
+#' example below for how to merge in a metric from a scalar dataset to a ts
+#' dataset.
+#' @param x (For use with scalar plots only, ts plots use 'year'). A
+#' character string denoting which column to use as the x variable. Column
+#' should be a factor (e.g. "F" or "species").
+#' @return Nothing is returned; an informative error is throw if an
+#' argument is invalid.
 verify_plot_arguments <- function(data, x, y, horiz, horiz2, vert, vert2,
                                   color, relative.error, axes.free){
-    ## Check them
     if(!is.data.frame(data))
         stop("data must be data.frame")
     else if(nrow(data)<2)

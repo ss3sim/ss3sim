@@ -18,9 +18,6 @@
 #' @param data A valid data frame containing scalar or timeseries values
 #' from a \pkg{ss3sim} simulation. That data are generated from
 #' \code{\link{get_results_all}}.
-#' @param x (For use with scalar plots only, ts plots use 'year'). A
-#' character string denoting which column to use as the x variable. Column
-#' can be a factor (e.g. "F" or "species").
 #' @param y A character string denoting which column to use as the y
 #' variable. Must be a numeric column.
 #' @param horiz,horiz2 A character string denoting which column to use as
@@ -37,11 +34,6 @@
 #' red line at y=0 is added.
 #' @param axes.free Boolean for whether the y-axis scales should be free
 #' in \code{facet_grid}.
-#' @param color A character string denoting which column to use to map
-#' color. Not valid for boxplot functions. Useful for looking at EM
-#' performance criteria against other dimensions of the EM or OM. See
-#' example below for how to merge in a metric from a scalar dataset to a ts
-#' dataset.
 #' @examples
 #' ## The package comes with scalar_dat and ts_dat result objects from the
 #' ## example simulation. Using these as examples.

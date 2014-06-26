@@ -6,9 +6,91 @@
 verify_plot_arguments(data, x, y, horiz, horiz2, vert, vert2, color,
   relative.error, axes.free)
 }
+\arguments{
+  \item{data}{A valid data frame containing scalar or
+  timeseries values from a \pkg{ss3sim} simulation. That
+  data are generated from \code{\link{get_results_all}}.}
+
+  \item{y}{A character string denoting which column to use
+  as the y variable. Must be a numeric column.}
+
+  \item{horiz,horiz2}{A character string denoting which
+  column to use as the first (\code{horiz}) and second
+  (\code{horiz2}) level of faceting in the horizontal
+  direction. E.g. "M" or "species". A value of NULL
+  (default) indicates no faceting.}
+
+  \item{vert,vert2}{A character string denoting which
+  column to use as the first (\code{vert}) and second
+  (\code{vert2}) level of faceting in the vertical
+  direction. E.g. "M" or "species". A value of NULL
+  (default) indicates no faceting.}
+
+  \item{relative.error}{Boolean for whether the y-axis
+  should be interpreted as relative error. If \code{TRUE},
+  \code{ylim} is set to \code{c(-1,1)}, the y axis label is
+  changed automatically, and a red line at y=0 is added.}
+
+  \item{axes.free}{Boolean for whether the y-axis scales
+  should be free in \code{facet_grid}.}
+
+  \item{color}{A character string denoting which column to
+  use to map color. Not valid for boxplot functions. Useful
+  for looking at EM performance criteria against other
+  dimensions of the EM or OM. See example below for how to
+  merge in a metric from a scalar dataset to a ts dataset.}
+
+  \item{x}{(For use with scalar plots only, ts plots use
+  'year'). A character string denoting which column to use
+  as the x variable. Column should be a factor (e.g. "F" or
+  "species").}
+}
+\value{
+Nothing is returned; an informative error is throw if an
+argument is invalid.
+}
 \description{
 A helper function to check the correct input for the
 plotting functions.
+}
+\details{
+The \pkg{ss3sim} plotting functions are simply wrappers for
+\pkg{ggplot2} code, specific to the output from
+\pkg{ss3sim} simulation scalar and timeseries (ts) objects.
+They are designed to quickly explore simulation output,
+rather than publication-level figures. The functions use
+the \code{aes_string} function within \pkg{ggplot2} such
+that arguments are passed as characters that refer to
+columns of \code{data}.
+
+Note that there are some subtle differences between the
+functions. Scalar plots require a value for \code{x}, while
+for ts plots \code{x} is invalid because it is fixed
+internally as 'year', since it makes no sense to use
+another column. Boxplots cannot have a color mapped to them
+like points or lines, and thus \code{color} is not a valid
+argument. The ts point and line plots are grouped
+internally by 'ID', which is a combination of scenario and
+replicate.
+}
+\section{Output}{
+  These functions print the \code{ggplot} object, but also
+  return it invisibly for saving or printing again later.
+}
+\examples{
+## The package comes with scalar_dat and ts_dat result objects from the
+## example simulation. Using these as examples.
+scalar_dat$depletion <- with(scalar_dat, (depletion_om-depletion_em)/depletion_om)
+plot_scalar_points(scalar_dat, x='E', y="depletion", horiz='D',
+                   color="max_grad", rel=TRUE )
+plot_scalar_boxplot(scalar_dat, x='E', y="depletion", horiz='D',rel=TRUE )
+ts_dat$SpawnBio <- with(ts_dat, (SpawnBio_om-SpawnBio_em)/SpawnBio_om)
+## Merge in max_grad, a performance metric, to use for color
+ts_dat <- merge(scalar_dat[, c("ID", "max_grad")], ts_dat)
+plot_ts_points(ts_dat, y="SpawnBio", horiz='D', vert='E', rel=TRUE,
+               color='max_grad')
+plot_ts_lines(ts_dat, y="SpawnBio", horiz='D', vert='E', rel=TRUE, color='max_grad')
+plot_ts_boxplot(ts_dat, y="SpawnBio", horiz='D',vert='E', rel=TRUE )
 }
 \author{
 Cole Monnahan

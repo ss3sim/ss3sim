@@ -6,6 +6,19 @@ plotting functions.}
 \usage{
 facet_form(horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL)
 }
+\arguments{
+  \item{horiz,horiz2}{A character string denoting which
+  column to use as the first (\code{horiz}) and second
+  (\code{horiz2}) level of faceting in the horizontal
+  direction. E.g. "M" or "species". A value of NULL
+  (default) indicates no faceting.}
+
+  \item{vert,vert2}{A character string denoting which
+  column to use as the first (\code{vert}) and second
+  (\code{vert2}) level of faceting in the vertical
+  direction. E.g. "M" or "species". A value of NULL
+  (default) indicates no faceting.}
+}
 \value{
 A formula which can be used in \code{facet_grid}, or NULL
 if all arguments are NULL

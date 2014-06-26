@@ -11,11 +11,6 @@ plot_ts_points(data, y, horiz = NULL, horiz2 = NULL, vert = NULL,
   timeseries values from a \pkg{ss3sim} simulation. That
   data are generated from \code{\link{get_results_all}}.}
 
-  \item{x}{(For use with scalar plots only, ts plots use
-  'year'). A character string denoting which column to use
-  as the x variable. Column can be a factor (e.g. "F" or
-  "species").}
-
   \item{y}{A character string denoting which column to use
   as the y variable. Must be a numeric column.}
 

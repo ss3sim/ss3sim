@@ -11,11 +11,6 @@ plot_scalar_boxplot(data, x, y, horiz = NULL, horiz2 = NULL, vert = NULL,
   timeseries values from a \pkg{ss3sim} simulation. That
   data are generated from \code{\link{get_results_all}}.}
 
-  \item{x}{(For use with scalar plots only, ts plots use
-  'year'). A character string denoting which column to use
-  as the x variable. Column can be a factor (e.g. "F" or
-  "species").}
-
   \item{y}{A character string denoting which column to use
   as the y variable. Must be a numeric column.}
 
@@ -39,11 +34,10 @@ plot_scalar_boxplot(data, x, y, horiz = NULL, horiz2 = NULL, vert = NULL,
   \item{axes.free}{Boolean for whether the y-axis scales
   should be free in \code{facet_grid}.}
 
-  \item{color}{A character string denoting which column to
-  use to map color. Not valid for boxplot functions. Useful
-  for looking at EM performance criteria against other
-  dimensions of the EM or OM. See example below for how to
-  merge in a metric from a scalar dataset to a ts dataset.}
+  \item{x}{(For use with scalar plots only, ts plots use
+  'year'). A character string denoting which column to use
+  as the x variable. Column should be a factor (e.g. "F" or
+  "species").}
 }
 \description{
 Plot scalar values as boxplots.
