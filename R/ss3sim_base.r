@@ -47,8 +47,8 @@
 #'   Currently, the simulations will continue to run.
 #' @param seed The seed value to pass to \code{\link{get_recdevs}} when
 #'   generating recruitment deviations. The generated recruitment deviations
-#'   depend on the iteration value, but also on the value of \code{seed}. A 
-#'   given combinatination of iteration, number of years, and \code{seed} value 
+#'   depend on the iteration value, but also on the value of \code{seed}. A
+#'   given combinatination of iteration, number of years, and \code{seed} value
 #'   will result in the same recruitment deviations.
 #' @param ... Anything extra to pass to \code{\link{run_ss3model}}. For example,
 #'   you may want to pass additional options to \code{SS3} through the argument
@@ -73,11 +73,11 @@
 #' \item \code{D0-E0-F0-M0-R0-cod/2/om}
 #' \item ...
 #' }
-#' 
-#' The input and output file structure of an \pkg{ss3sim} simulation:
-#' 
-#' \figure{filestructure.png}
-#' 
+#'
+# The input and output file structure of an \pkg{ss3sim} simulation:
+#
+# \figure{filestructure.png}
+#'
 #' @seealso \code{\link{run_ss3sim}}
 #' @export
 #' @details
@@ -86,11 +86,11 @@
 #' time-varying parameters in the function call as list objects (see the
 #' example below). For a generic higher-level function, see
 #' \code{\link{run_ss3sim}}.
-#' 
-#' The steps carried out within \code{ss3sim_base}:
-#' 
-#' \figure{simsteps.png}
-#' 
+#'
+# The steps carried out within \code{ss3sim_base}:
+#
+# \figure{simsteps.png}
+#'
 #' @examples
 #' \dontrun{
 #' # Create a temporary folder for the output and set the working directory:

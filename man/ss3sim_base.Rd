@@ -119,11 +119,6 @@ scenarios. They will look like this: \itemize{ \item
 \code{D0-E0-F0-M0-R0-cod/1/om} \item
 \code{D0-E0-F0-M0-R0-cod/1/em} \item
 \code{D0-E0-F0-M0-R0-cod/2/om} \item ... }
-
-The input and output file structure of an \pkg{ss3sim}
-simulation:
-
-\figure{filestructure.png}
 }
 \description{
 This function is a wrapper function that can call
@@ -141,10 +136,6 @@ age composition, and time-varying parameters in the
 function call as list objects (see the example below). For
 a generic higher-level function, see
 \code{\link{run_ss3sim}}.
-
-The steps carried out within \code{ss3sim_base}:
-
-\figure{simsteps.png}
 }
 \examples{
 \dontrun{
