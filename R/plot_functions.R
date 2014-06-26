@@ -3,12 +3,6 @@
 #' @template plot-functions
 #' @export
 #' @author Cole Monnahan
-#' @examples
-#' ## The data are loaded automatically with the package
-#' library(ggplot2)
-#' scalar_dat$depletion <- with(scalar_dat, (depletion_om-depletion_em)/depletion_om)
-#' plot.scalar.points(scalar_dat, x='E', y="depletion", horiz='D',
-#'                    color="max_grad", rel=TRUE )
 plot.scalar.points <- function(data, x, y, horiz=NULL, horiz2=NULL,
              vert=NULL, vert2=NULL, color=NULL,
              relative.error=FALSE, axes.free=TRUE){
@@ -38,13 +32,17 @@ plot.scalar.points <- function(data, x, y, horiz=NULL, horiz2=NULL,
     print(g)
     return(invisible(g))
 }
-
+#' Plot scalar values as boxplots.
+#'
+#' @template plot-functions
+#' @export
+#' @author Cole Monnahan
 plot.scalar.boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
                                 vert=NULL, vert2=NULL,
                                 relative.error=FALSE, axes.free=TRUE){
     ## Verify the inputs are correct, throws informative error if not
     verify_plot_arguments(data=data, x=x, y=y, horiz=horiz, horiz2=horiz2,
-                          vert=vert, vert2=vert2, color=color,
+                          vert=vert, vert2=vert2, color=NULL,
                           relative.error=relative.error, axes.free=axes.free)
     ## Build up the ggplot object
     g <- ggplot(data=data)
@@ -61,12 +59,17 @@ plot.scalar.boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
     print(g)
     return(invisible(g))
 }
+#' Plot timeseries values as boxplots.
+#'
+#' @template plot-functions
+#' @export
+#' @author Cole Monnahan
 plot.ts.boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                             vert2=NULL, relative.error=FALSE,
                             axes.free=TRUE){
     ## Verify the inputs are correct, throws informative error if not
-    verify_plot_arguments(data=data, x=x, y=y, horiz=horiz, horiz2=horiz2,
-                          vert=vert, vert2=vert2, color=color,
+    verify_plot_arguments(data=data, x=NULL, y=y, horiz=horiz, horiz2=horiz2,
+                          vert=vert, vert2=vert2, color=NULL,
                           relative.error=relative.error, axes.free=axes.free)
     ## Build up the ggplot object
     g <- ggplot(data=data, aes(x=year))+ xlab("Year")
@@ -84,11 +87,16 @@ plot.ts.boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
     print(g)
     return(invisible(g))
 }
+#' Plot timeseries values as points.
+#'
+#' @template plot-functions
+#' @export
+#' @author Cole Monnahan
 plot.ts.points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                            vert2=NULL, relative.error=FALSE, color=NULL,
                            axes.free=TRUE){
     ## Verify the inputs are correct, throws informative error if not
-    verify_plot_arguments(data=data, x=x, y=y, horiz=horiz, horiz2=horiz2,
+    verify_plot_arguments(data=data, x=NULL, y=y, horiz=horiz, horiz2=horiz2,
                           vert=vert, vert2=vert2, color=color,
                           relative.error=relative.error, axes.free=axes.free)
     ## Build up the ggplot object
@@ -113,11 +121,16 @@ plot.ts.points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
     print(g)
     return(invisible(g))
 }
+#' Plot timeseries values as lines.
+#'
+#' @template plot-functions
+#' @export
+#' @author Cole Monnahan
 plot.ts.lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                            vert2=NULL, relative.error=FALSE, color=NULL,
                            axes.free=TRUE){
     ## Verify the inputs are correct, throws informative error if not
-    verify_plot_arguments(data=data, x=x, y=y, horiz=horiz, horiz2=horiz2,
+    verify_plot_arguments(data=data, x=NULL, y=y, horiz=horiz, horiz2=horiz2,
                           vert=vert, vert2=vert2, color=color,
                           relative.error=relative.error, axes.free=axes.free)
     ## Build up the ggplot object
@@ -195,8 +208,12 @@ verify_plot_arguments <- function(data, x, y, horiz, horiz2, vert, vert2,
         stop("data must be data.frame")
     else if(nrow(data)<2)
         stop("data has too few rows")
-    if(!is.character(x) | !x %in% names(data))
-        stop("x must be character matching column in data")
+    ## x is a special case since the timeseries objects don't let the user
+    ## specify it
+    if(!is.null(x)){
+        if(!is.character(x) | !x %in% names(data))
+            stop("x must be character matching column in data")
+    }
     if(!is.character(y) | !y %in% names(data))
         stop("y must be character matching column in data")
     if(!is.null(horiz)){

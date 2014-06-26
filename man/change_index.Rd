@@ -7,53 +7,46 @@ change_index(infile, outfile, fleets, years, sds_obs, make_plot = FALSE,
   write_file = TRUE)
 }
 \arguments{
-  \item{infile}{An SS data object as read in from
-  \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package.
-  Make sure you select option \code{section=2}.}
+\item{infile}{An SS data object as read in from
+\code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
+you select option \code{section=2}.}
 
-  \item{outfile}{A character string of the new \code{.dat}
-  file name to be created. Must end in \code{.dat}.}
+\item{outfile}{A character string of the new \code{.dat} file name to be
+created. Must end in \code{.dat}.}
 
-  \item{fleets}{A numeric vector giving the fleets to be
-  used. This order also pertains to other arguments. A
-  missing value excludes that fleet from \code{outfile}
-  (i.e. it turns it off so no samples are written). If none
-  of the fleet collected samples, keep the value to
-  \code{fleets=NULL}.}
+\item{fleets}{A numeric vector giving the fleets to be used. This order also
+pertains to other arguments. A missing value excludes that fleet from
+\code{outfile} (i.e. it turns it off so no samples are written). If none of
+the fleet collected samples, keep the value to \code{fleets=NULL}.}
 
-  \item{years}{A list the same length as \code{fleets}
-  giving the years as numeric vectors. If no fleet
-  collected samples, keep the value to \code{years=NULL}.}
+\item{years}{A list the same length as \code{fleets} giving the years as
+numeric vectors. If no fleet collected samples, keep the value to
+\code{years=NULL}.}
 
-  \item{write_file}{A switch for whether to write
-  \code{outfile} to disk. Can be turned off to speed up
-  testing or exploration of the function. The new data are
-  returned invisibly, as in the examples below.}
+\item{write_file}{A switch for whether to write \code{outfile} to
+disk. Can be turned off to speed up testing or exploration of the
+function. The new data are returned invisibly, as in the examples
+below.}
 
-  \item{sds_obs}{A list the same length as \code{fleets}.
-  The list should contain either single values or numeric
-  vectors of the same length as the number of years which
-  represent the standard deviation of the observation
-  error. Single values are repeated for all years.}
+\item{sds_obs}{A list the same length as \code{fleets}. The list should
+contain either single values or numeric vectors of the same length as the
+number of years which represent the standard deviation of the observation
+error. Single values are repeated for all years.}
 
-  \item{make_plot}{A logical switch for whether to make a
-  crude plot showing the results. Useful for testing and
-  exploring the function.}
+\item{make_plot}{A logical switch for whether to make a crude plot showing
+  the results. Useful for testing and exploring the function.}
 }
 \value{
-A modified \code{.dat} file if \code{write_file=TRUE}. A
-list object containing the modified \code{.dat} file is
-returned invisibly.
+A modified \code{.dat} file if \code{write_file=TRUE}. A list object
+containing the modified \code{.dat} file is returned invisibly.
 }
 \description{
-This function creates an index of abundance sampled from
-the expected available biomass for given fleets in given
-years. Let B_y be the biomass from the operating model for
-year y. Then the sampled value is calculated as:
-B_y*exp(rnorm(1, 0, \code{sds_obs})-\code{sds_obs}^2/2).
-The second term adjusts the random samples so that their
-expected value is B_y (i.e. the log-normal bias
-correction).
+This function creates an index of abundance sampled from the expected
+available biomass for given fleets in given years. Let B_y be the biomass
+from the operating model for year y. Then the sampled value is calculated as:
+B_y*exp(rnorm(1, 0, \code{sds_obs})-\code{sds_obs}^2/2). The second term
+adjusts the random samples so that their expected value is B_y (i.e. the
+log-normal bias correction).
 }
 \examples{
 \dontrun{

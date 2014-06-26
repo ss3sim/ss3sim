@@ -6,29 +6,25 @@
 get_results_scenario(scenario, directory = getwd(), overwrite_files = FALSE)
 }
 \arguments{
-  \item{scenario}{A single character giving the scenario
-  from which to extract results.}
+\item{scenario}{A single character giving the scenario from which to
+extract results.}
 
-  \item{directory}{The directory which contains the
-  scenario folder.}
+\item{directory}{The directory which contains the scenario folder.}
 
-  \item{overwrite_files}{A boolean (default is FALSE) for
-  whether to delete any files previously created with this
-  function. This is intended to be used if replicates were
-  added since the last time it was called, or any changes
-  were made to this function.}
+\item{overwrite_files}{A boolean (default is FALSE) for whether to delete
+any files previously created with this function. This is intended to be
+used if replicates were added since the last time it was called, or any
+changes were made to this function.}
 }
 \description{
-Function that extracts results from all replicates inside a
-supplied scenario folder. The function writes 3 .csv files
-to the scenario folder: (1) scalar metrics with one value
-per replicate (e.g. $R_0$, $h$), (2) a timeseries data
-('ts') which contains multiple values per replicate (e.g.
-$SSB_y$ for a range of years $y$), and (3) residuals on the
-log scale from the surveys across all replicates (this
-feature is not fully tested!). The function
-\code{get_results_all} loops through these .csv files and
-combines them together into a single "final" dataframe.
+Function that extracts results from all replicates inside a supplied
+scenario folder. The function writes 3 .csv files to the scenario folder:
+(1) scalar metrics with one value per replicate (e.g. $R_0$, $h$), (2) a
+timeseries data ('ts') which contains multiple values per replicate (e.g.
+$SSB_y$ for a range of years $y$), and (3) residuals on the log scale from
+the surveys across all replicates (this feature is not fully tested!). The
+function \code{get_results_all} loops through these .csv files and combines
+them together into a single "final" dataframe.
 }
 \examples{
 \dontrun{
@@ -48,7 +44,7 @@ Cole Monnahan
 }
 \seealso{
 Other get.results: \code{\link{get_results_all}};
-\code{\link{get_results_scalar}};
-\code{\link{get_results_timeseries}}
+  \code{\link{get_results_scalar}};
+  \code{\link{get_results_timeseries}}
 }
 

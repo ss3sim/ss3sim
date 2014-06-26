@@ -7,25 +7,21 @@ change_f(years, years_alter, fvals, file_in = "ss3.par",
   file_out = "ss3.par")
 }
 \arguments{
-  \item{years}{Vector of years for which F values are
-  specified}
+\item{years}{Vector of years for which F values are specified}
 
-  \item{years_alter}{Vector of years for the which F values
-  will be altered}
+\item{years_alter}{Vector of years for the which F values will be altered}
 
-  \item{fvals}{Vector of F values to be entered into
-  \code{ss3.par} file}
+\item{fvals}{Vector of F values to be entered into \code{ss3.par} file}
 
-  \item{file_in}{Input SS3 par file.}
+\item{file_in}{Input SS3 par file.}
 
-  \item{file_out}{Output SS3 par file.}
+\item{file_out}{Output SS3 par file.}
 }
 \value{
 A modified SS3 \code{.par} file.
 }
 \description{
-Takes an SS3 \code{.par} file and changes the F values for
-specified years.
+Takes an SS3 \code{.par} file and changes the F values for specified years.
 }
 \examples{
 # Create a temporary folder for the output:
