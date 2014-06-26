@@ -7,8 +7,10 @@ verify_plot_arguments(data, x, y, horiz, horiz2, vert, vert2, color,
   relative.error, axes.free)
 }
 \description{
-A helper function to check the correct input for the plotting functions.
+A helper function to check the correct input for the
+plotting functions.
 }
 \author{
 Cole Monnahan
 }
+

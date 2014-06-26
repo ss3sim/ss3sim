@@ -7,13 +7,14 @@ plotting functions.}
 facet_form(horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL)
 }
 \value{
-A formula which can be used in \code{facet_grid}, or NULL if all
-arguments are NULL
+A formula which can be used in \code{facet_grid}, or NULL
+if all arguments are NULL
 }
 \description{
-A helper function for building a ggplot facet. Used internally by the
-plotting functions.
+A helper function for building a ggplot facet. Used
+internally by the plotting functions.
 }
 \author{
 Cole Monnahan
 }
+

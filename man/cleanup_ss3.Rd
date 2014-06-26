@@ -12,12 +12,13 @@ cleanup_ss3(dir_name, clean_vector = c("admodel.*", "ss3.eva", "fmin.log",
   "wtatage.ss_new"))
 }
 \arguments{
-\item{dir_name}{The directory of interest, the function ignores
-case (i.e. names can be specified as lower or upper case)}
+  \item{dir_name}{The directory of interest, the function
+  ignores case (i.e. names can be specified as lower or
+  upper case)}
 
-\item{clean_vector}{A vector of characters specifying the unwanted
-files to be removed. The function allows the use of wildcards (i.e.
-"*").}
+  \item{clean_vector}{A vector of characters specifying the
+  unwanted files to be removed. The function allows the use
+  of wildcards (i.e. "*").}
 }
 \description{
 Removes all of the unwanted output files from the specified

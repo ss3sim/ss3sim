@@ -7,10 +7,10 @@ names and the second column into the list values.}
 get_args(file)
 }
 \arguments{
-\item{file}{The file name as character}
+  \item{file}{The file name as character}
 }
 \description{
-Take a csv file, read it, and turn the first column into the list
-names and the second column into the list values.
+Take a csv file, read it, and turn the first column into
+the list names and the second column into the list values.
 }
 
