@@ -100,9 +100,9 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
     }
     ## Combine all scenarios together and save into big final files
     scalar.all <- do.call(plyr::rbind.fill, scalar.list)
-    scalar.all$ID <- with(scalar.all, paste(scenario, replicate, sep="-"))
+    scalar.all$ID <- paste(scalar.all$scenario, scalar.all$replicate, sep = "-")
     ts.all <- do.call(plyr::rbind.fill, ts.list)
-    ts.all$ID <- with(ts.all, paste(scenario, replicate, sep="-"))
+    ts.all$ID <- paste(ts.all$scenario, ts.all$replicate, sep="-")
     write.csv(scalar.all, file="ss3sim_scalar.csv")
     write.csv(ts.all, file="ss3sim_ts.csv")
     message(paste("Final result files written to", directory))
