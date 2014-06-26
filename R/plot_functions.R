@@ -2,6 +2,7 @@
 #'
 #' @template plot-functions
 #' @export
+#' @import ggplot2
 #' @author Cole Monnahan
 plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL,
              vert=NULL, vert2=NULL, color=NULL,
@@ -36,6 +37,7 @@ plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #'
 #' @template plot-functions
 #' @export
+#' @import ggplot2
 #' @author Cole Monnahan
 plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
                                 vert=NULL, vert2=NULL,
@@ -63,6 +65,7 @@ plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #'
 #' @template plot-functions
 #' @export
+#' @import ggplot2
 #' @author Cole Monnahan
 plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                             vert2=NULL, relative.error=FALSE,
@@ -91,6 +94,7 @@ plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #'
 #' @template plot-functions
 #' @export
+#' @import ggplot2
 #' @author Cole Monnahan
 plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                            vert2=NULL, relative.error=FALSE, color=NULL,
@@ -125,6 +129,7 @@ plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #'
 #' @template plot-functions
 #' @export
+#' @import ggplot2
 #' @author Cole Monnahan
 plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                            vert2=NULL, relative.error=FALSE, color=NULL,
