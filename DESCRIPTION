@@ -29,7 +29,7 @@ Suggests:
     foreach
 VignetteBuilder: knitr
 Depends:
-    R (>= 3.0.0),
+    R (>= 3.0.0)
 Imports:
     plyr (>= 1.8),
     r4ss (>= 1.20),
