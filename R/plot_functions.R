@@ -3,7 +3,7 @@
 #' @template plot-functions
 #' @export
 #' @author Cole Monnahan
-plot.scalar.points <- function(data, x, y, horiz=NULL, horiz2=NULL,
+plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL,
              vert=NULL, vert2=NULL, color=NULL,
              relative.error=FALSE, axes.free=TRUE){
     ## Verify the inputs are correct, throws informative error if not
@@ -37,7 +37,7 @@ plot.scalar.points <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #' @template plot-functions
 #' @export
 #' @author Cole Monnahan
-plot.scalar.boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
+plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
                                 vert=NULL, vert2=NULL,
                                 relative.error=FALSE, axes.free=TRUE){
     ## Verify the inputs are correct, throws informative error if not
@@ -64,7 +64,7 @@ plot.scalar.boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #' @template plot-functions
 #' @export
 #' @author Cole Monnahan
-plot.ts.boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
+plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                             vert2=NULL, relative.error=FALSE,
                             axes.free=TRUE){
     ## Verify the inputs are correct, throws informative error if not
@@ -92,7 +92,7 @@ plot.ts.boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' @template plot-functions
 #' @export
 #' @author Cole Monnahan
-plot.ts.points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
+plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                            vert2=NULL, relative.error=FALSE, color=NULL,
                            axes.free=TRUE){
     ## Verify the inputs are correct, throws informative error if not
@@ -126,7 +126,7 @@ plot.ts.points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' @template plot-functions
 #' @export
 #' @author Cole Monnahan
-plot.ts.lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
+plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                            vert2=NULL, relative.error=FALSE, color=NULL,
                            axes.free=TRUE){
     ## Verify the inputs are correct, throws informative error if not
