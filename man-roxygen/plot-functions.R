@@ -1,16 +1,27 @@
-#' @section Description: The \code{ss3sim} plotting functions are simply
+#' @details The \code{ss3sim} plotting functions are simply
 #' wrappers for \code{ggplot2} code, specific to the output from
 #' \code{ss3sim} simulation scalar and timeseries (ts) objects. They are
 #' designed to quickly explore simulation output, rather than
-#' publication-level figures.
+#' publication-level figures. The functions use the \code{aes_string}
+#' function within \code{ggplot2} such that arguments are passed as
+#' characters that refer to columns of \code{data}.
+#'
+#' Note that there are some subtle differences between the
+#' functions. Scalar plots require a value for \code{x}, while for ts plots
+#' \code{x} is invalid because it is fixed internally as 'year', since it
+#' makes no sense to use another column. Boxplots cannot have a color
+#' mapped to them like points or lines, and thus \code{color} is not a
+#' valid argument. The ts point and line plots are grouped internally by
+#' 'ID', which is a combination of scenario and replicate.
 #' @section Output: These functions print the \code{ggplot} object, but
 #' also return it invisibly for saving or printing again later.
-#' @param data A data frame containing scalar or timeseries values from a
-#' \code{ss3sim} simulation.
-#' @param x A character string denoting which column to use as the $x$
-#' variable. Column can be a factor (e.g. "F") or numeric
-#' (e.g. "SpawnBio_om") depending on the plot function being used.
-#' @param y A character string denoting which column to use as the $y$
+#' @param data A valid data frame containing scalar or timeseries values
+#' from a \code{ss3sim} simulation. That data are generated from
+#' \link{\code{get_results_all}}.
+#' @param x (For use with scalar plots only, ts plots use 'year'). A
+#' character string denoting which column to use as the x variable. Column
+#' can be a factor (e.g. "F" or "species").
+#' @param y A character string denoting which column to use as the y
 #' variable. Must be a numeric column.
 #' @param horiz,horiz2 A character string denoting which column to use as
 #' the first (\code{horiz}) and second (\code{horiz2}) level of faceting in
@@ -20,11 +31,29 @@
 #' the first (\code{vert}) and second (\code{vert2}) level of faceting in
 #' the vertical direction. E.g. "M" or "species". A value of NULL (default)
 #' indicates no faceting.
-#' @param relative.error Boolean for whether the $y$-axis should be
+#' @param relative.error Boolean for whether the y-axis should be
 #' interpreted as relative error. If \code{TRUE}, \code{ylim} is set to
-#' \code{c(-1,1)}, the $y$ axis label is changed automatically, and a
-#' red line at $y=0$ is added.
-#' @param axes.free Boolean for whether the $y$-axis scales should be free
+#' \code{c(-1,1)}, the y axis label is changed automatically, and a
+#' red line at y=0 is added.
+#' @param axes.free Boolean for whether the y-axis scales should be free
 #' in \code{facet_grid}.
 #' @param color A character string denoting which column to use to map
-#' color. Not valid for boxplot functions.
+#' color. Not valid for boxplot functions. Useful for looking at EM
+#' performance criteria against other dimensions of the EM or OM. See
+#' example below for how to merge in a metric from a scalar dataset to a ts
+#' dataset.
+#' @examples
+#' ## The package comes with scalar_dat and ts_dat result objects from the
+#' ## example simulation. Using these as examples.
+#' scalar_dat$depletion <- with(scalar_dat, (depletion_om-depletion_em)/depletion_om)
+#' plot.scalar.points(scalar_dat, x='E', y="depletion", horiz='D',
+#'                    color="max_grad", rel=TRUE )
+#' plot.scalar.boxplot(scalar_dat, x='E', y="depletion", horiz='D',rel=TRUE )
+#' ts_dat$SpawnBio <- with(ts_dat, (SpawnBio_om-SpawnBio_em)/SpawnBio_om)
+#' ## Merge in max_grad, a performance metric, to use for color
+#' ts_dat <- merge(scalar_dat[, c("ID", "max_grad")], ts_dat)
+#' plot.ts.points(ts_dat, y="SpawnBio", horiz='D', vert='E', rel=TRUE,
+#'                color='max_grad')
+#' plot.ts.lines(ts_dat, y="SpawnBio", horiz='D', vert='E', rel=TRUE, color='max_grad')
+#' plot.ts.boxplot(ts_dat, y="SpawnBio", horiz='D',vert='E', rel=TRUE )
+
