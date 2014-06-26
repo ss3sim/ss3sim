@@ -1,9 +1,9 @@
-#' @details The \code{ss3sim} plotting functions are simply
-#' wrappers for \code{ggplot2} code, specific to the output from
-#' \code{ss3sim} simulation scalar and timeseries (ts) objects. They are
+#' @details The \pkg{ss3sim} plotting functions are simply
+#' wrappers for \pkg{ggplot2} code, specific to the output from
+#' \pkg{ss3sim} simulation scalar and timeseries (ts) objects. They are
 #' designed to quickly explore simulation output, rather than
 #' publication-level figures. The functions use the \code{aes_string}
-#' function within \code{ggplot2} such that arguments are passed as
+#' function within \pkg{ggplot2} such that arguments are passed as
 #' characters that refer to columns of \code{data}.
 #'
 #' Note that there are some subtle differences between the
@@ -16,7 +16,7 @@
 #' @section Output: These functions print the \code{ggplot} object, but
 #' also return it invisibly for saving or printing again later.
 #' @param data A valid data frame containing scalar or timeseries values
-#' from a \code{ss3sim} simulation. That data are generated from
+#' from a \pkg{ss3sim} simulation. That data are generated from
 #' \link{\code{get_results_all}}.
 #' @param x (For use with scalar plots only, ts plots use 'year'). A
 #' character string denoting which column to use as the x variable. Column
@@ -46,13 +46,13 @@
 #' ## The package comes with scalar_dat and ts_dat result objects from the
 #' ## example simulation. Using these as examples.
 #' scalar_dat$depletion <- with(scalar_dat, (depletion_om-depletion_em)/depletion_om)
-#' plot.scalar.points(scalar_dat, x='E', y="depletion", horiz='D',
+#' plot_scalar_points(scalar_dat, x='E', y="depletion", horiz='D',
 #'                    color="max_grad", rel=TRUE )
-#' plot.scalar.boxplot(scalar_dat, x='E', y="depletion", horiz='D',rel=TRUE )
+#' plot_scalar_boxplot(scalar_dat, x='E', y="depletion", horiz='D',rel=TRUE )
 #' ts_dat$SpawnBio <- with(ts_dat, (SpawnBio_om-SpawnBio_em)/SpawnBio_om)
 #' ## Merge in max_grad, a performance metric, to use for color
 #' ts_dat <- merge(scalar_dat[, c("ID", "max_grad")], ts_dat)
-#' plot.ts.points(ts_dat, y="SpawnBio", horiz='D', vert='E', rel=TRUE,
+#' plot_ts_points(ts_dat, y="SpawnBio", horiz='D', vert='E', rel=TRUE,
 #'                color='max_grad')
-#' plot.ts.lines(ts_dat, y="SpawnBio", horiz='D', vert='E', rel=TRUE, color='max_grad')
-#' plot.ts.boxplot(ts_dat, y="SpawnBio", horiz='D',vert='E', rel=TRUE )
+#' plot_ts_lines(ts_dat, y="SpawnBio", horiz='D', vert='E', rel=TRUE, color='max_grad')
+#' plot_ts_boxplot(ts_dat, y="SpawnBio", horiz='D',vert='E', rel=TRUE )
