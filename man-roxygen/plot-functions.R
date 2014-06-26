@@ -17,7 +17,7 @@
 #' also return it invisibly for saving or printing again later.
 #' @param data A valid data frame containing scalar or timeseries values
 #' from a \pkg{ss3sim} simulation. That data are generated from
-#' \link{\code{get_results_all}}.
+#' \code{\link{get_results_all}}.
 #' @param x (For use with scalar plots only, ts plots use 'year'). A
 #' character string denoting which column to use as the x variable. Column
 #' can be a factor (e.g. "F" or "species").
