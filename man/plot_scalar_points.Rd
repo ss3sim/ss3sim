@@ -34,8 +34,7 @@ plot_scalar_points(data, x, y, horiz = NULL, horiz2 = NULL, vert = NULL,
   \item{axes.free}{Boolean for whether the y-axis scales
   should be free in \code{facet_grid}.}
 
-  \item{x}{(For use with scalar plots only, ts plots use
-  'year'). A character string denoting which column to use
+  \item{x}{A character string denoting which column to use
   as the x variable. Column should be a factor (e.g. "F" or
   "species").}
 

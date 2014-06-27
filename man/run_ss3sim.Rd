@@ -74,11 +74,6 @@ scenarios. They will look like this: \itemize{ \item
 \code{D0-E0-F0-M0-R0-cod/1/om} \item
 \code{D0-E0-F0-M0-R0-cod/1/em} \item
 \code{D0-E0-F0-M0-R0-cod/2/om} \item ... }
-
-An illustration of the input and output file structure of
-an \pkg{ss3sim} simulation: \figure{filestructure.png}{An
-illustration of the input and output file structure for an
-ss3sim simulation.}
 }
 \description{
 This is the main high-level wrapper function for running

@@ -40,8 +40,7 @@ verify_plot_arguments(data, x, y, horiz, horiz2, vert, vert2, color,
   dimensions of the EM or OM. See example below for how to
   merge in a metric from a scalar dataset to a ts dataset.}
 
-  \item{x}{(For use with scalar plots only, ts plots use
-  'year'). A character string denoting which column to use
+  \item{x}{A character string denoting which column to use
   as the x variable. Column should be a factor (e.g. "F" or
   "species").}
 }
