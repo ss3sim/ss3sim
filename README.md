@@ -55,7 +55,7 @@ projects run by the developers of the package are [also available][cases]
 along with the [case files for the examples][eg-cases] used in the paper and
 vignette.
 
-![An illustration of the input and output file and folder structure.](https://raw2.github.com/ss3sim/ss3sim/master/man/figures/filestructure.png)
+![An illustration of the input and output file and folder structure.](https://raw.githubusercontent.com/ss3sim/ss3sim/f763cfb462a9e68db670155070cd554812a65160/man/figures/filestructure.png)
 
 An illustration of the input and output file and folder structure.
 
