@@ -34,6 +34,7 @@
 #' red line at y=0 is added.
 #' @param axes.free Boolean for whether the y-axis scales should be free
 #' in \code{facet_grid}.
+#' @author Cole Monnahan
 #' @examples
 #' ## The package comes with scalar_dat and ts_dat result objects from the
 #' ## example simulation. Using these as examples.
