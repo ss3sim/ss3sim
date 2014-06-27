@@ -64,10 +64,10 @@
 #' \item ...
 #' }
 #'
-#' An illustration of the input and output file structure
-#' of an \pkg{ss3sim} simulation:
-#' \figure{filestructure.png}{An illustration of the input and output file
-#' structure for an ss3sim simulation.}
+# An illustration of the input and output file structure
+# of an \pkg{ss3sim} simulation:
+# \figure{filestructure.png}{An illustration of the input and output file
+# structure for an ss3sim simulation.}
 #'
 #' @seealso \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
 #' \code{\link{run_bias_ss3}}, \code{\link{get_caseargs}},
