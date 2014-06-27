@@ -3,15 +3,8 @@
 #' @template plot-functions
 #' @export
 #' @import ggplot2
-#' @author Cole Monnahan
-#' @param x (For use with scalar plots only, ts plots use 'year'). A
-#' character string denoting which column to use as the x variable. Column
-#' should be a factor (e.g. "F" or "species").
-#' @param color A character string denoting which column to use to map
-#' color. Not valid for boxplot functions. Useful for looking at EM
-#' performance criteria against other dimensions of the EM or OM. See
-#' example below for how to merge in a metric from a scalar dataset to a ts
-#' dataset.
+#' @template plot-functions-x
+#' @template plot-functions-color
 plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL,
              vert=NULL, vert2=NULL, color=NULL,
              relative.error=FALSE, axes.free=TRUE){
@@ -46,10 +39,7 @@ plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #' @template plot-functions
 #' @export
 #' @import ggplot2
-#' @author Cole Monnahan
-#' @param x (For use with scalar plots only, ts plots use 'year'). A
-#' character string denoting which column to use as the x variable. Column
-#' should be a factor (e.g. "F" or "species").
+#' @template plot-functions-x
 plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
                                 vert=NULL, vert2=NULL,
                                 relative.error=FALSE, axes.free=TRUE){
@@ -77,7 +67,6 @@ plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #' @template plot-functions
 #' @export
 #' @import ggplot2
-#' @author Cole Monnahan
 plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                             vert2=NULL, relative.error=FALSE,
                             axes.free=TRUE){
@@ -86,7 +75,7 @@ plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                           vert=vert, vert2=vert2, color=NULL,
                           relative.error=relative.error, axes.free=axes.free)
     ## Build up the ggplot object
-    g <- ggplot(data=data, aes(x=year))+ xlab("Year")
+    g <- ggplot(data=data, aes_string(x="year"))+ xlab("Year")
     if(relative.error){
         g <- g+coord_cartesian(ylim=c(-1,1))+ylab(paste("relative error for:", y))
         g <- g+geom_hline(yintercept=0, col="red")
@@ -106,12 +95,7 @@ plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' @template plot-functions
 #' @export
 #' @import ggplot2
-#' @author Cole Monnahan
-#' @param color A character string denoting which column to use to map
-#' color. Not valid for boxplot functions. Useful for looking at EM
-#' performance criteria against other dimensions of the EM or OM. See
-#' example below for how to merge in a metric from a scalar dataset to a ts
-#' dataset.
+#' @template plot-functions-color
 plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                            vert2=NULL, relative.error=FALSE, color=NULL,
                            axes.free=TRUE){
@@ -120,7 +104,7 @@ plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                           vert=vert, vert2=vert2, color=color,
                           relative.error=relative.error, axes.free=axes.free)
     ## Build up the ggplot object
-    g <- ggplot(data=data, aes(x=year))+ xlab("Year")
+    g <- ggplot(data=data, aes_string(x="year"))+ xlab("Year")
     if(relative.error){
         g <- g+coord_cartesian(ylim=c(-1,1))+ylab(paste("relative error for:", y))
         g <- g+geom_hline(yintercept=0, col="red")
@@ -146,12 +130,7 @@ plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' @template plot-functions
 #' @export
 #' @import ggplot2
-#' @author Cole Monnahan
-#' @param color A character string denoting which column to use to map
-#' color. Not valid for boxplot functions. Useful for looking at EM
-#' performance criteria against other dimensions of the EM or OM. See
-#' example below for how to merge in a metric from a scalar dataset to a ts
-#' dataset.
+#' @template plot-functions-color
 plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                            vert2=NULL, relative.error=FALSE, color=NULL,
                            axes.free=TRUE){
@@ -160,7 +139,7 @@ plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                           vert=vert, vert2=vert2, color=color,
                           relative.error=relative.error, axes.free=axes.free)
     ## Build up the ggplot object
-    g <- ggplot(data=data, aes(x=year))+ xlab("Year")
+    g <- ggplot(data=data, aes_string(x="year"))+ xlab("Year")
     if(relative.error){
         g <- g+coord_cartesian(ylim=c(-1,1))+ylab(paste("relative error for:", y))
         g <- g+geom_hline(yintercept=0, col="red")
@@ -194,6 +173,7 @@ plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' @author Cole Monnahan
 #' @return A formula which can be used in \code{facet_grid}, or NULL if all
 #' arguments are NULL
+
 facet_form <- function(horiz=NULL, horiz2=NULL, vert=NULL, vert2=NULL){
     h <- !is.null(horiz)
     h2 <- !is.null(horiz2)
@@ -235,16 +215,9 @@ facet_form <- function(horiz=NULL, horiz2=NULL, vert=NULL, vert2=NULL){
 
 #' A helper function to check the correct input for the plotting functions.
 #'
-#' @author Cole Monnahan
 #' @template plot-functions
-#' @param color A character string denoting which column to use to map
-#' color. Not valid for boxplot functions. Useful for looking at EM
-#' performance criteria against other dimensions of the EM or OM. See
-#' example below for how to merge in a metric from a scalar dataset to a ts
-#' dataset.
-#' @param x (For use with scalar plots only, ts plots use 'year'). A
-#' character string denoting which column to use as the x variable. Column
-#' should be a factor (e.g. "F" or "species").
+#' @template plot-functions-color
+#' @template plot-functions-x
 #' @return Nothing is returned; an informative error is throw if an
 #' argument is invalid.
 verify_plot_arguments <- function(data, x, y, horiz, horiz2, vert, vert2,
