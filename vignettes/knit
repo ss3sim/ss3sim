@@ -1,4 +1,0 @@
-#!/usr/bin/Rscript
-
-library(knitr)
-knit("ss3sim-vignette.Rnw")
