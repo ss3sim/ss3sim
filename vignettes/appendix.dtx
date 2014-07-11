@@ -1,0 +1,1050 @@
+% \iffalse meta-comment
+% apendix.dtx
+% Author: Peter Wilson, Herries Press
+% Maintainer: Will Robertson (will dot robertson at latex-project dot org)
+% Copyright 1998--2004 Peter R. Wilson
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3c of this license or (at your option) any 
+% later version: <http://www.latex-project.org/lppl.txt>
+%
+% This work has the LPPL maintenance status "maintained".
+% The Current Maintainer of this work is Will Robertson.
+%
+% This work consists of the files listed in the README file.
+%
+% 
+%<*driver>
+\documentclass{ltxdoc}
+\EnableCrossrefs
+\CodelineIndex
+\setcounter{StandardModuleDepth}{1}
+\begin{document}
+  \DocInput{appendix.dtx}
+\end{document}
+%</driver>
+%
+% \fi
+%
+% \CheckSum{481}
+%
+% \DoNotIndex{\',\.,\@M,\@@input,\@addtoreset,\@arabic,\@badmath}
+% \DoNotIndex{\@centercr,\@cite}
+% \DoNotIndex{\@dotsep,\@empty,\@float,\@gobble,\@gobbletwo,\@ignoretrue}
+% \DoNotIndex{\@input,\@ixpt,\@m}
+% \DoNotIndex{\@minus,\@mkboth,\@ne,\@nil,\@nomath,\@plus,\@set@topoint}
+% \DoNotIndex{\@tempboxa,\@tempcnta,\@tempdima,\@tempdimb}
+% \DoNotIndex{\@tempswafalse,\@tempswatrue,\@viipt,\@viiipt,\@vipt}
+% \DoNotIndex{\@vpt,\@warning,\@xiipt,\@xipt,\@xivpt,\@xpt,\@xviipt}
+% \DoNotIndex{\@xxpt,\@xxvpt,\\,\ ,\addpenalty,\addtolength,\addvspace}
+% \DoNotIndex{\advance,\Alph,\alph}
+% \DoNotIndex{\arabic,\ast,\begin,\begingroup,\bfseries,\bgroup,\box}
+% \DoNotIndex{\bullet}
+% \DoNotIndex{\cdot,\cite,\CodelineIndex,\cr,\day,\DeclareOption}
+% \DoNotIndex{\def,\DisableCrossrefs,\divide,\DocInput,\documentclass}
+% \DoNotIndex{\DoNotIndex,\egroup,\ifdim,\else,\fi,\em,\endtrivlist}
+% \DoNotIndex{\EnableCrossrefs,\end,\end@dblfloat,\end@float,\endgroup}
+% \DoNotIndex{\endlist,\everycr,\everypar,\ExecuteOptions,\expandafter}
+% \DoNotIndex{\fbox}
+% \DoNotIndex{\filedate,\filename,\fileversion,\fontsize,\framebox,\gdef}
+% \DoNotIndex{\global,\halign,\hangindent,\hbox,\hfil,\hfill,\hrule}
+% \DoNotIndex{\hsize,\hskip,\hspace,\hss,\if@tempswa,\ifcase,\or,\fi,\fi}
+% \DoNotIndex{\ifhmode,\ifvmode,\ifnum,\iftrue,\ifx,\fi,\fi,\fi,\fi,\fi}
+% \DoNotIndex{\input}
+% \DoNotIndex{\jobname,\kern,\leavevmode,\let,\leftmark}
+% \DoNotIndex{\list,\llap,\long,\m@ne,\m@th,\mark,\markboth,\markright}
+% \DoNotIndex{\month,\newcommand,\newcounter,\newenvironment}
+% \DoNotIndex{\NeedsTeXFormat,\newdimen}
+% \DoNotIndex{\newlength,\newpage,\nobreak,\noindent,\null,\number}
+% \DoNotIndex{\numberline,\OldMakeindex,\OnlyDescription,\p@}
+% \DoNotIndex{\pagestyle,\par,\paragraph,\paragraphmark,\parfillskip}
+% \DoNotIndex{\penalty,\PrintChanges,\PrintIndex,\ProcessOptions}
+% \DoNotIndex{\protect,\ProvidesClass,\raggedbottom,\raggedright}
+% \DoNotIndex{\refstepcounter,\relax,\renewcommand,\reset@font}
+% \DoNotIndex{\rightmargin,\rightmark,\rightskip,\rlap,\rmfamily,\roman}
+% \DoNotIndex{\roman,\secdef,\selectfont,\setbox,\setcounter,\setlength}
+% \DoNotIndex{\settowidth,\sfcode,\skip,\sloppy,\slshape,\space}
+% \DoNotIndex{\symbol,\the,\trivlist,\typeout,\tw@,\undefined,\uppercase}
+% \DoNotIndex{\usecounter,\usefont,\usepackage,\vfil,\vfill,\viiipt}
+% \DoNotIndex{\viipt,\vipt,\vskip,\vspace}
+% \DoNotIndex{\wd,\xiipt,\year,\z@}
+%
+% \changes{v1.0}{1998/11/29}{First public release}
+% \changes{v1.0a}{1999/07/28}{Added text about includes}
+% \changes{v1.1}{2000/02/29}{Extended appendices}
+% \changes{v1.1}{2000/02/29}{Added subappendices}
+% \changes{v1.1a}{2001/03/15}{Fixed problem with \cs{addappheadtotoc}}
+% \changes{v1.2}{2002/08/06}{Compatibility with hyperref bookmarks}
+% \changes{v1.2}{2002/08/06}{Don't need the ifthen package any more}
+% \changes{v1.2a}{2004/04/16}{Changed license and contact details}
+% \changes{v1.2b}{2009/09/02}{New maintainer (Will Robertson)}
+%
+% \def\dtxfile{appendix.dtx}
+% \def\fileversion{v1.1}  \def\filedate{2000/02/29}
+% \def\fileversion{v1.1a} \def\filedate{2001/03/15}
+% \def\fileversion{v1.2}  \def\filedate{2002/08/06}
+% \def\fileversion{v1.2a} \def\filedate{2004/04/16}
+% \def\fileversion{v1.2b} \def\filedate{2009/09/02}
+%
+% \newcommand*{\Lpack}[1]{\textsf {#1}}           ^^A typeset a package
+% \newcommand*{\Lopt}[1]{\textsf {#1}}            ^^A typeset an option
+% \newcommand*{\file}[1]{\texttt {#1}}            ^^A typeset a file
+% \newcommand*{\Lcount}[1]{\textsl {\small#1}}    ^^A typeset a counter
+% \newcommand*{\pstyle}[1]{\textsl {#1}}          ^^A typeset a pagestyle
+% \newcommand*{\Lenv}[1]{\texttt {#1}}            ^^A typeset an environment
+%
+% \title{The \Lpack{appendix} package\thanks{This
+%        file (\texttt{\dtxfile}) has version number \fileversion, last revised
+%        \filedate.}}
+%
+% \author{
+%   Author: Peter Wilson, Herries Press\\
+%   Maintainer: Will Robertson\\
+%   \texttt{will dot robertson at latex-project dot org}
+% }
+% \date{\filedate}
+% \maketitle
+% \begin{abstract}
+%    The \Lpack{appendix} package provides some facilities for modifying the
+% typesetting of appendix titles. Further, |(sub)appendices| environments
+% are available that can be used, for example, for per chapter/section
+% appendices.
+%
+% The package
+% is designed to work only with classes that have a |\chapter| and/or
+% |\section| command. It has not been tested with other packages
+% that change the definitions of the sectioning commands. 
+% \end{abstract}
+% \tableofcontents
+%
+%
+%
+%
+% \section{Introduction}
+%
+% In the standard classes the |\appendix| command does the following:
+% \begin{itemize}
+% \item For classes with Chapters:
+%    \begin{itemize}
+%    \item Resets the chapter and section counters to zero
+%    \item Sets |\@chapapp| to |\appendixname|.
+%    \item Redefines |\thechapter| to produce alphabetic appendix numbers.
+%    \end{itemize}
+% \item For the other classes
+%    \begin{itemize}
+%    \item Resets the section and subsection counters to zero.
+%    \item Redefines |\thesection| to produce alphabetic appendix numbers.
+%    \end{itemize}
+%  \end{itemize}
+%
+% The \Lpack{appendix} package provides additional appendixing capabilities.
+% It cooperates with the \Lpack{hyperref} 
+% package\footnote{With thanks to Hylke W. van Dijk 
+% (\texttt{hylke@ubicom.tudelft.nl}) who pointed out that version~1.1 did 
+% not and set me on the track for supporting the \Lpack{hyperref} package.}
+% but may be problematic when used with packages that change the definition
+% of the sectioning commands.
+%
+% Portions of the package were developed as part of a class
+% and package bundle for typesetting ISO standards~\cite{PRW96i}.
+% This manual is typeset according to the conventions of the
+% \LaTeX{} \textsc{docstrip} utility which enables the automatic
+% extraction of the \LaTeX{} macro source files~\cite{GOOSSENS94}.
+%
+%    Section~\ref{sec:usc} describes the usage of the package.
+% Commented source code for the package is in Section~\ref{sec:code}.
+%
+% \section{The \Lpack{appendix} package} \label{sec:usc}
+%
+% The \Lpack{appendix} package provides some commands that can be
+% used in addition to the |\appendix| command. It also provides
+% a new environment that can be used instead of the |\appendix| command.
+% The environment provides some addtional actions with respect to
+% the simple |\appendix|. First the new commands will be described and
+% then the new environment will be discussed.
+%
+% \DescribeMacro{\appendixpage}
+%  The |\appendixpage| command will typeset a heading in the style of
+% a |\part| heading for the class. The wording of the heading is
+% given by the value of |\appendixpagename|.
+%
+% \DescribeMacro{\addappheadtotoc}
+% This command will insert general heading into the Table of Contents (ToC).
+% The text is given by the value of |\appendixtocname|. If used, the command
+% must come before the first appendix, as it is meant to be used to introduce
+% the appendix titles in the ToC.
+%
+% \changes{v1.1a}{2001/03/15}{Added NOTE about \cs{addappheadtotoc} page number}
+% The above commands can be used in conjunction with the traditional
+% |\appendix| command, which they should immediately follow. For example:
+% \begin{verbatim}
+% \appendix
+% \appendixpage
+% \addappheadtotoc
+% \end{verbatim}
+%
+% \DescribeMacro{\noappendicestocpagenum}
+% \DescribeMacro{\appendicestocpagenum}
+% By default the |\addappheadtotoc| command puts a page number
+% in the ToC. This can be prevented by using |\noappendicestocpagenum|.
+% For symmetry, the |\appendicestocpagenum| command ensures that
+% a page number is put in the ToC.
+%
+% \textbf{NOTE:} Unless |\noappendicestocpagenum| is used 
+% the |\addappheadtotoc| command uses the 
+% current page number
+% when it makes the entry in the ToC. The |\appendixpage| command puts
+% a heading in the document like a |\part| heading; in un-chaptered documents
+% the |\part| heading appears in the ordinary run of the text like a 
+% |\section| heading, but in chaptered documents it is on a page by itself.
+% That is, in chaptered documents |\appendixpage| does a |\clear[double]page|
+% typesets the heading, and then does another |\clear[double]page|. Therefore,
+% in a chaptered document the above sequence of 
+% commands will use the page number
+% \emph{after} the |\appendixpage| as the ToC 
+% entry\footnote{With thanks to Eduardo Jacob (\texttt{edu@kender.es})
+% for pointing this out.} and if the ordering
+% is reversed (i.e., |\addappheadtotoc| |\appendixname|) then the page number
+% \emph{before} |\appendixname| will be used as the ToC entry. For chaptered
+% documents it is probably best to do: \\
+% |    \clearpage % or \cleardoublepage| \\
+% |    \addappheadtotoc| \\
+% |    \appendixpage| \\
+% which will use the page number of |\appendixpage| as the ToC entry.
+% 
+%
+% \DescribeMacro{\appendixname}
+% \DescribeMacro{\appendixtocname}
+% \DescribeMacro{\appendixpagename}
+% The |\appendixname| command is defined in those classes that provide
+% for chapters. It is provided in this package whether or not it has
+% been defined in the class. It's default value is `Appendix'.
+% The default value of both |\appendixtocname| and |\appendixpagename| is 
+% `Appendices'. These names can all be changed via |\renewcommand|.
+% For example,
+% \begin{verbatim}
+% \renewcommand{\appendixtocname}{List of appendices}
+% \end{verbatim}
+%
+% \DescribeEnv{appendices}
+% The |appendices| environment can be used instead of the |\appendix|
+% command. It provides more functionality than is possible from the 
+% combination of the |\appendix|, |\addappheadtotoc| and |\appendixpage|
+% commands.
+% The functions of the |appendices| environment are usually accessed through
+% the package options, but there are declarations that mey be used insted. 
+% The options are:
+% \begin{itemize}
+% \item \Lopt{toc} Put a header (e.g., `Appendices') into the Table
+%       of Contents (the ToC) before listing the appendices. (This
+%       is done by calling the |\addappheadtotoc| command.)
+% \item \Lopt{page} Puts a title (e.g., `Appendices') into the document
+%       at the point where the |appendices| environment is begun.
+%       (This is done by calling the |\appendixpage| command.)
+% \item \Lopt{title} Adds a name (e.g., `Appendix') before each appendix
+%       title in the body of the document. 
+%       The name is given by the value of |\appendixname|.
+%       Note that this is the default behaviour for classes that have
+%       chapters.
+% \item \Lopt{titletoc} Adds a name (e.g., `Appendix') before each
+%        appendix listed in the ToC.
+%       The name is given by the value of |\appendixname|.
+% \item \Lopt{header} Adds a name (e.g., `Appendix') before each appendix
+%        in page headers.
+%       The name is given by the value of |\appendixname|.
+%       Note that this is the default behaviour for classes that have
+%       chapters.
+% \end{itemize}
+%
+%    Depending on the particular package options that are set and the
+% document class, the
+% |appendices| environment may change the definition of elements of
+% the sectioning commands (e.g., |\chapter| or |\section|).
+% This may be a problem if the environment
+% is used in conjunction with any other package that makes changes to
+% these commands. If this is the case, then you will have to examine the
+% code for the |appendices| environment and make any necessary changes
+% to one or the other of the packages (via your own package file).
+% The changes to the sectional heading commands are discarded at the
+% end of the |appendices| environment.
+%
+% \DescribeMacro{\appendixtocon}
+% \DescribeMacro{\appendixtocoff}
+% |\appendixtocon| is a declaration equivalent to the \Lopt{toc} option.
+% The |\appendixtocoff| declaration is equivalent to not using that option.
+%
+% \DescribeMacro{\appendixpageon}
+% \DescribeMacro{\appendixpageoff}
+% |\appendixpagecon| is a declaration equivalent to the \Lopt{page} option.
+% The |\appendixpageoff| declaration is equivalent to not using 
+% that option.
+%
+% \DescribeMacro{\appendixtitleon}
+% \DescribeMacro{\appendixtitleoff}
+% |\appendixtitleon| is a declaration equivalent to the \Lopt{title} option.
+% The |\appendixtitleoff| declaration is equivalent to not using 
+% that option.
+%
+% \DescribeMacro{\appendixtitletocon}
+% \DescribeMacro{\appendixtitletocoff}
+% |\appendixtitletocon| is a declaration equivalent to the \Lopt{titletoc} option.
+% The |\appendixtitletocoff| declaration is equivalent to not using 
+% that option.
+%
+% \DescribeMacro{\appendixheaderon}
+% \DescribeMacro{\appendixheaderoff}
+% |\appendixheaderon| is a declaration equivalent to the \Lopt{header} option.
+% The |\appendixheaderoff| declaration is equivalent to not using 
+% that option.
+%
+% \DescribeMacro{\restoreapp}
+%     The |appendices| environment restores the prior value of the 
+% chapter/section counter at the end of the environment, so the
+% environment may be used between the main document divisions. By default,
+% the appendix counter value is saved and restored by the environment. That
+% means that appendices in a series of |appendices| environments will
+% be lettered sequentially. To make the lettering start from A each time,
+% put the following into the preamble: \\
+% |\renewcommand{\restoreapp}{}|
+%
+% \DescribeEnv{subappendices}
+% Within the |subappendices| environment, an appendix is introduced by a
+% |\section| command in chaptered documents, otherwise it is introduced
+% by a |\subsection| command. Effectively, this provides for appendices 
+% at the end of a main document division, as an integral
+% part of the division. The |subappendices| environment supports only
+% the \Lopt{title} and \Lopt{titletoc} options.
+%
+% \DescribeMacro{\setthesection}
+% \DescribeMacro{\setthesubsection}
+% By default, the `subappendices' are numbered like normal (sub)sections,
+% except that the (sub)section number itself is typeset as an uppercase
+% letter. This behaviour can be changed by redefining these |\setthe...|
+% commands. For example, to just have a letter not prepended by the main
+% division number, do: \\
+% |\renewcommand{\setthesection}{\Alph{section}}| or \\
+% |\renewcommand{\setthesubsection}{\Alph{subsection}}| as appropriate.
+%
+% \subsection{Known problems}
+%
+%    There is an unfortunate interaction between the \LaTeX{} kernel commands
+% |\include| and |\addcontentsline|. If these are used like this:
+% \begin{verbatim}
+% \addcontentsline{toc}{...}{addtotoc}
+% \include{import}
+% \end{verbatim}
+% then the text of the |\addcontentsline| command (`addtotoc' in the example)
+% is not written to the
+% appropriate (toc) file until \textit{after} the included file has written all
+% its entries out to the (toc) file. As far as I can tell, there is no way 
+% around this behaviour without rewriting parts of the \LaTeX{} kernel code.
+% 
+%     It is thus up to the author to avoid putting an |\addcontentsline| command
+% (or a command that internally uses |\addcontentsline|, as does the
+% |\addappheadtotoc| command) before
+% an |\include|d file that writes out to the same file. Things work as
+% expected if the |\addcontentsline| command is placed within the |\include|d
+% file, or if the imported file is |\input|ed instead of |\include|d.
+%
+% \StopEventually{}
+%
+% \section{The package code} \label{sec:code}
+%
+%    Announce the name and version of the package, which requires
+% \LaTeXe.
+%    \begin{macrocode}
+%<*usc>
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{appendix}[2009/09/02 v1.2b extra appendix facilities]
+
+%    \end{macrocode}
+%
+% In order to try and avoid name clashes with other packages, each internal
+% name will include the character string |@pp|.
+%
+%
+% \begin{macro}{\if@knownclass@pp}
+% \begin{macro}{\if@chapter@pp}
+%    These are used when we need to decide what appendix style is being used
+%    for the document. Assume the \Lpack{article} class or other without
+% chapters.
+% \changes{v1.1a}{2001/03/15}{Checking on sectional commands, not classes}
+%    \begin{macrocode}
+\newif\if@chapter@pp\@chapter@ppfalse
+\newif\if@knownclass@pp\@knownclass@ppfalse
+%    \end{macrocode}
+%    Check the sectioning commands.
+%    \begin{macrocode}
+\@ifundefined{chapter}{%
+  \@ifundefined{section}{}{\@knownclass@pptrue}}{%
+  \@chapter@pptrue\@knownclass@pptrue}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\phantomsection}
+% \begin{macro}{\the@pps}
+% \begin{macro}{\if@pphyper}
+% We need to provide |\phantomsection| if \Lpack{hyperref} is not
+% used and, whether or not \Lpack{hyperref} is used, we need to define
+% a counter here to support potential hyperrefs (used to disambiguate
+% (sub)appendices).
+% |\if@pphyper| is TRUE if the \Lpack{hyperref} package is used.
+% \changes{v1.2}{2002/08/06}{Added the \texttt{@pps} counter}
+% \changes{v1.2}{2002/08/06}{Added \cs{if@pphyper}}
+%    \begin{macrocode}
+\providecommand{\phantomsection}{}
+\newcounter{@pps}
+  \renewcommand{\the@pps}{\alph{@pps}}
+\newif\if@pphyper
+  \@pphyperfalse
+\AtBeginDocument{%
+  \@ifpackageloaded{hyperref}{\@pphypertrue}{}}
+
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\if@dotoc@pp}
+% \begin{macro}{\if@dotitle@pp}
+% \begin{macro}{\if@dotitletoc@pp}
+% \begin{macro}{\if@dohead@pp}
+% \begin{macro}{\if@dopage@pp}
+%    A set of booleans for the options. Default is the |appendices|
+% environment does nothing more than the |\appendix| command does
+% unless one or more options are set.
+%    \begin{macrocode}
+\newif\if@dotoc@pp\@dotoc@ppfalse
+\newif\if@dotitle@pp\@dotitle@ppfalse
+\newif\if@dotitletoc@pp\@dotitletoc@ppfalse
+\newif\if@dohead@pp\@dohead@ppfalse
+\newif\if@dopage@pp\@dopage@ppfalse
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+%    Now we can do the five options.
+%    \begin{macrocode}
+\DeclareOption{toc}{\@dotoc@pptrue}
+\DeclareOption{title}{\@dotitle@pptrue}
+\DeclareOption{titletoc}{\@dotitletoc@pptrue}
+\DeclareOption{header}{\@dohead@pptrue}
+\DeclareOption{page}{\@dopage@pptrue}
+%    \end{macrocode}
+% Process the options now.
+%    \begin{macrocode}
+\ProcessOptions\relax
+%    \end{macrocode}
+%
+% Issue a warning if |\chapter| and |\section| are undefined, then
+% quit.
+%    \begin{macrocode}
+\newcommand{\@ppendinput}{}
+\if@knownclass@pp\else
+  \PackageWarningNoLine{appendix}%
+    {There is no \protect\chapter\space or \protect\section\space command.\MessageBreak
+     The appendix package will not be used}
+  \renewcommand{\@ppendinput}{\endinput}
+\fi
+\@ppendinput
+
+%    \end{macrocode}
+%
+% \begin{macro}{\appendixtocon}
+% \begin{macro}{\appendixtocoff}
+% Declarative forms of the \Lopt{toc} option.
+% \changes{v1.2}{2002/08/06}{Added declarations for the options}
+%    \begin{macrocode}
+\newcommand{\appendixtocon}{\@dotoc@pptrue}
+\newcommand{\appendixtocoff}{\@dotoc@ppfalse}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\appendixpageon}
+% \begin{macro}{\appendixpageoff}
+% Declarative forms of the \Lopt{page} option.
+%    \begin{macrocode}
+\newcommand{\appendixpageon}{\@dopage@pptrue}
+\newcommand{\appendixpageoff}{\@dopage@ppfalse}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\appendixtitleon}
+% \begin{macro}{\appendixtitleoff}
+% Declarative forms of the \Lopt{title} option.
+%    \begin{macrocode}
+\newcommand{\appendixtitleon}{\@dotitle@pptrue}
+\newcommand{\appendixtitleoff}{\@dotitle@ppfalse}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\appendixtitletocon}
+% \begin{macro}{\appendixtitletocoff}
+% Declarative forms of the \Lopt{titletoc} option.
+%    \begin{macrocode}
+\newcommand{\appendixtitletocon}{\@dotitletoc@pptrue}
+\newcommand{\appendixtitletocoff}{\@dotitletoc@ppfalse}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\appendixheaderon}
+% \begin{macro}{\appendixheaderoff}
+% Declarative forms of the \Lopt{header} option.
+%    \begin{macrocode}
+\newcommand{\appendixheaderon}{\@dohead@pptrue}
+\newcommand{\appendixheaderoff}{\@dohead@ppfalse}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\@ppsavesec}
+% \begin{macro}{\@pprestoresec}
+% \begin{macro}{\@ppsaveapp}
+% \begin{macro}{\restoreapp}
+%  For the |appendices| environment we need to save and restore the
+% main document division number and the appendix number. The |\restoreapp|
+% command is the one for the user.
+% \changes{v1.1}{2000/02/29}{Added commands to save and restore sectional numbering}
+%    \begin{macrocode}
+\newcounter{@ppsavesec}
+\newcounter{@ppsaveapp}
+\setcounter{@ppsaveapp}{0}
+\newcommand{\@ppsavesec}{%
+  \if@chapter@pp \setcounter{@ppsavesec}{\value{chapter}} \else
+                 \setcounter{@ppsavesec}{\value{section}} \fi}
+\newcommand{\@pprestoresec}{%
+  \if@chapter@pp \setcounter{chapter}{\value{@ppsavesec}} \else
+                 \setcounter{section}{\value{@ppsavesec}} \fi}
+\newcommand{\@ppsaveapp}{%
+  \if@chapter@pp \setcounter{@ppsaveapp}{\value{chapter}} \else
+                 \setcounter{@ppsaveapp}{\value{section}} \fi}
+\newcommand{\restoreapp}{%
+  \if@chapter@pp \setcounter{chapter}{\value{@ppsaveapp}} \else
+                 \setcounter{section}{\value{@ppsaveapp}} \fi}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\appendixname}
+% \begin{macro}{\appendixtocname}
+% \begin{macro}{\appendixpagename}
+%  These commands hold the names that might be used. |\appendixname|
+% may have been defined in the class. The others are new.
+%    \begin{macrocode}
+\providecommand{\appendixname}{Appendix}
+\newcommand{\appendixtocname}{Appendices}
+\newcommand{\appendixpagename}{Appendices}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\appendixpage}
+% The command to typeset a page announcing the start of the appendices.
+% It is based on the |\part| definition (either from the \Lpack{book}
+% class or the \Lpack{article} class). 
+%    \begin{macrocode}
+\newcommand{\appendixpage}{%
+  \if@chapter@pp \@chap@pppage \else \@sec@pppage \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\clear@ppage}
+%  The non-chaptered classes do not define |\if@openright|, but we need to 
+% use this for chaptered documents to clear the appropriate pages.
+% |\clear@ppage| does the right thing, but must only be called in
+% chapter related code, otherwise there will be error message like 
+% |extra \else| or |extra \fi|.
+%    \begin{macrocode}
+\newcommand{\clear@ppage}{%
+  \if@openright\cleardoublepage\else\clearpage\fi}
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chap@pppage}
+% Do an appendix page in chapter style.
+% Copy code from the \Lpack{book} class |\part| command, but use 
+% |\appendixpagename| as the title.
+%    \begin{macrocode}
+\newcommand{\@chap@pppage}{%
+  \clear@ppage
+  \thispagestyle{plain}%
+  \if@twocolumn\onecolumn\@tempswatrue\else\@tempswafalse\fi
+  \null\vfil
+  \markboth{}{}%
+  {\centering
+   \interlinepenalty \@M
+   \normalfont
+   \Huge \bfseries \appendixpagename\par}%
+%    \end{macrocode}
+% Add to ToC if requested
+%    \begin{macrocode}
+  \if@dotoc@pp
+    \addappheadtotoc
+  \fi
+%    \end{macrocode}
+% In the \Lpack{book} class the |\part| command is finished off by calling
+% |\@endpart|. There are two problems with this in this package. (1)
+% |\@endpart| is not defined in \Lpack{article} style classes and (2)
+% it always throws a blank page which does not look good if the \Lopt{openany}
+% option is used. So, code it all up here.
+%    \begin{macrocode}
+  \vfil\newpage
+  \if@twoside
+    \if@openright
+      \null
+      \thispagestyle{empty}%
+      \newpage
+    \fi
+  \fi
+  \if@tempswa
+    \twocolumn
+  \fi
+}
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@sec@pppage}
+% Copy code from the \Lpack{article} class |\part| command, but use 
+% |\appendixpagename| as 
+% the title.
+%    \begin{macrocode}
+\newcommand{\@sec@pppage}{%
+  \par
+  \addvspace{4ex}%
+  \@afterindentfalse
+  {\parindent \z@ \raggedright
+   \interlinepenalty \@M
+   \normalfont
+   \huge \bfseries \appendixpagename%
+   \markboth{}{}\par}%
+%    \end{macrocode}
+% Add to ToC if requested
+%    \begin{macrocode}
+  \if@dotoc@pp
+    \addappheadtotoc
+  \fi
+  \nobreak
+  \vskip 3ex
+  \@afterheading
+}
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\if@pptocpage}
+% \begin{macro}{\noappendicestocpagenum}
+% \begin{macro}{\appendicestocpagenum}
+% \begin{macro}{\addappheadtotoc}
+% The |\addappheadtotoc| command adds an `appendices' line to the ToC. 
+% The style is the same
+% as used in \Lpack{tocbibind} for the `List of figures' line. That is,
+% as a Chapter heading or a Section heading. |\if@pptocpage| controls
+% whether ot not a page number is put into the ToC.
+% \changes{v1.2}{2002/08/06}{Added \cs{noappendicestocpagenum} and changed
+%                           \cs{addappheadtotoc}}
+%    \begin{macrocode}
+\newif\if@pptocpage
+  \@pptocpagetrue
+\newcommand{\noappendicestocpagenum}{\@pptocpagefalse}
+\newcommand{\appendicestocpagenum}{\@pptocpagetrue}
+\newcommand{\addappheadtotoc}{%
+  \phantomsection
+  \if@chapter@pp
+%    \end{macrocode}
+% Chaptered document
+%    \begin{macrocode}
+    \if@pptocpage
+      \addcontentsline{toc}{chapter}{\appendixtocname}%
+    \else
+      \if@pphyper
+        \addtocontents{toc}%
+          {\protect\contentsline{chapter}{\appendixtocname}{}{\@currentHref}}%
+      \else
+        \addtocontents{toc}%
+          {\protect\contentsline{chapter}{\appendixtocname}{}}%
+      \fi
+    \fi      
+  \else
+%    \end{macrocode}
+% Not a chaptered document
+%    \begin{macrocode}
+    \if@pptocpage
+      \addcontentsline{toc}{section}{\appendixtocname}%
+    \else
+      \if@pphyper
+        \addtocontents{toc}%
+          {\protect\contentsline{section}{\appendixtocname}{}{\@currentHref}}%
+      \else
+        \addtocontents{toc}%
+          {\protect\contentsline{section}{\appendixtocname}{}}%
+      \fi
+    \fi
+  \fi
+}
+
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% For my reference,
+% here is the standard version of the |\appendix| macro, but modified for
+% both chaptered and unchaptered documents.
+% \begin{verbatim}
+% \newcommand{\appendix}{\par
+%   \if@chapter@pp
+%     \setcounter{chapter}{0}%
+%     \setcounter{section}{0}%
+%     \gdef\@chapapp{\appendixname}%
+%     \gdef\thechapter{\@Alph\c@chapter}
+%   \else
+%     \setcounter{section}{0}%
+%     \setcounter{subsection}{0}%
+%     \gdef\thesection{\@Alph\c@section}
+%   \fi
+% }
+% \end{verbatim}
+%
+% And this equivalently is what the \Lpack{hyperref} package does.
+% \begin{verbatim}
+% \def\Hy@chapterstring{chapter}
+% \def\Hy@appendixstring{appendix}
+% \def\Hy@chapapp{\Hy@chapterstring}
+% \let\Hy@org@appendix\appendix
+% \def\appendix{%
+%    \Hy@org@appendix
+%    \if@chapter@pp
+%      \gdef\theHchapter{\Alph{chapter}}%
+%    \else
+%      \gdef\theHsection{\Alph{section}}%
+%    \fi
+%    \xdef\Hy@chapapp{\Hy@appendixstring}%
+% }
+% \end{verbatim}
+%
+% \begin{macro}{\theH@pps}
+% We are going to use |\theH@pps| to disambiguate contents of appendices
+% that might have the same hyperref marks. It is |\provide|d as if 
+% the \Lpack{appendix} and \Lpack{hyperref} are in the `wrong' order
+% then somehow \Lpack{hyperref} defines it before \Lpack{appendix}
+% can get to it.
+% \changes{v1.2}{2002/08/06}{Added \cs{theH@pps}}
+%    \begin{macrocode}
+\providecommand{\theH@pps}{\alph{@pps}}
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@resets@pp}
+% Resets the appropriate sectioning counters and names. This does almost
+% exactly
+% what the default |\appendix| command does, except that it saves and 
+% restores sectional numbering. It saves the sectional number at the start
+% and restores the appendix number at the end.
+% \changes{v1.1}{2000/02/29}{Added number save/restore to \cs{@reset@pp}}
+% \changes{v1.2}{2002/08/06}{Added hyperref code to \cs{@reset@pp}}
+%    \begin{macrocode}
+\newcommand{\@resets@pp}{\par
+  \@ppsavesec
+  \stepcounter{@pps}
+  \setcounter{section}{0}%
+  \if@chapter@pp
+    \setcounter{chapter}{0}%
+    \renewcommand\@chapapp{\appendixname}%
+    \renewcommand\thechapter{\@Alph\c@chapter}%
+  \else
+    \setcounter{subsection}{0}%
+    \renewcommand\thesection{\@Alph\c@section}%
+  \fi
+  \if@pphyper
+%    \end{macrocode}
+% Now handle the \Lpack{hyperref} tweaks.
+%    \begin{macrocode}
+    \if@chapter@pp
+      \renewcommand{\theHchapter}{\theH@pps.\Alph{chapter}}%
+    \else
+      \renewcommand{\theHsection}{\theH@pps.\Alph{section}}%
+    \fi
+    \def\Hy@chapapp{\appendixname}%
+  \fi
+  \restoreapp
+}
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{environment}{appendices}
+%  This is the heart of the package. Start it off by doing the resetting
+% done by the |\appendix| command. Then do the simple options before
+% getting into the complications of redefinitions. Remember to take care
+% of an interaction between |\addappheadtotoc| and |\appendixpage|.
+% \changes{v1.1a}{2001/03/15}{Changed implementation of easy options in \texttt{appendices} environment}
+%    \begin{macrocode}
+\newenvironment{appendices}{%
+  \@resets@pp
+  \if@dotoc@pp 
+    \if@dopage@pp              % both page and toc
+      \if@chapter@pp           % chapters
+        \clear@ppage
+      \fi
+      \appendixpage
+    \else                      % toc only
+       \if@chapter@pp          % chapters
+         \clear@ppage
+       \fi
+      \addappheadtotoc
+    \fi
+  \else
+    \if@dopage@pp              % page only
+      \appendixpage
+    \fi
+  \fi
+%    \end{macrocode}
+% There is only one other option applicable to the chapter style, so do
+% it now and clear the way for doing the section style. To implement
+% the \Lopt{titletoc} option, we redefine the |\addcontentsline| command.
+%    \begin{macrocode}
+  \if@chapter@pp
+    \if@dotitletoc@pp \@redotocentry@pp{chapter} \fi
+  \else
+%    \end{macrocode}
+% The rest of the code is specific to the section style. While we're in the 
+% mood we might as well finish off doing the \Lopt{titletoc} option.
+%    \begin{macrocode}
+    \if@dotitletoc@pp \@redotocentry@pp{section} \fi
+%    \end{macrocode}
+% The next piece of code implements the \Lopt{header} option by providing
+% a special version of |\sectionmark|.
+%    \begin{macrocode}
+    \if@dohead@pp 
+      \def\sectionmark##1{%
+        \if@twoside
+          \markboth{\@formatsecmark@pp{##1}}{}
+        \else
+          \markright{\@formatsecmark@pp{##1}}{}
+        \fi}
+    \fi
+%    \end{macrocode}
+% The next piece of code implements the \Lopt{title} option by doing cunning
+% things with the |\@seccntformat|.\footnote{From a posting to 
+% \texttt{comp.tex.tex} by Donald Arseneau on 13 August 1998.}
+%    \begin{macrocode}
+    \if@dotitle@pp
+      \def\sectionname{\appendixname}
+      \def\@seccntformat##1{\@ifundefined{##1name}{}{\csname ##1name\endcsname\ }%
+        \csname the##1\endcsname\quad}
+    \fi
+  \fi}{%
+%    \end{macrocode}
+% At the end of the environment, save the appendix number and restore the
+% sectional number.
+% \changes{v1.1}{2000/02/29}{Changed end of appendix environment}
+%    \begin{macrocode}
+  \@ppsaveapp\@pprestoresec}
+
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{macro}{\setthesection}
+% \begin{macro}{\setthesubsection}
+% The user commands for specifying the numbering style for subappendices.
+% \changes{v1.1}{2000/02/29}{Added \cs{setthesection} and \cs{setthesubsection} commands}
+%    \begin{macrocode}
+\newcommand{\setthesection}{\thechapter.\Alph{section}}
+\newcommand{\setthesubsection}{\thesection.\Alph{subsection}}
+
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\@resets@ppsub}
+% Similar to |\@resets@pp| except that it is for use within the 
+% |subappendices| envirionment; as such, it is a bit simpler.
+% \changes{v1.1}{2000/02/29}{Added \cs{@resets@ppsub} command}
+% \changes{v1.2}{2002/08/07}{Added hyperref code to \cs{@resets@ppsub}}
+%    \begin{macrocode}
+\newcommand{\@resets@ppsub}{\par
+  \stepcounter{@pps}
+  \if@chapter@pp
+    \setcounter{section}{0}
+    \renewcommand{\thesection}{\setthesection}
+  \else
+    \setcounter{subsection}{0}
+    \renewcommand{\thesubsection}{\setthesubsection}
+  \fi
+  \if@pphyper
+%    \end{macrocode}
+% Now handle the \Lpack{hyperref} tweaks.
+%    \begin{macrocode}
+    \if@chapter@pp
+      \renewcommand{\theHsection}{\theH@pps.\setthesection}%
+    \else
+      \renewcommand{\theHsubsection}{\theH@pps.\setthesubsection}%
+    \fi
+    \def\Hy@chapapp{\appendixname}%
+  \fi
+}
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{environment}{subappendices}
+%  The environment for subappendices. Start it off by doing the resetting
+% of the |\(sub)section| command. 
+% \changes{v1.1}{2000/02/29}{Added subappendices environment}
+%    \begin{macrocode}
+\newenvironment{subappendices}{%
+  \@resets@ppsub
+%    \end{macrocode}
+% There are two options applicable to the chapter style. To implement
+% the \Lopt{titletoc} option, we redefine the |\addcontentsline| command.
+%    \begin{macrocode}
+  \if@chapter@pp
+    \if@dotitletoc@pp \@redotocentry@pp{section} \fi
+%    \end{macrocode}
+% To implement the \Lopt{title} option we do cunning things with the
+% |\@seccntformat| command.
+%    \begin{macrocode}
+    \if@dotitle@pp
+      \def\sectionname{\appendixname}
+      \def\@seccntformat##1{\@ifundefined{##1name}{}{\csname ##1name\endcsname\ }%
+        \csname the##1\endcsname\quad}
+    \fi
+  \else
+%    \end{macrocode}
+% The rest of the code is for the section style.
+%    \begin{macrocode}
+    \if@dotitletoc@pp \@redotocentry@pp{subsection} \fi
+    \if@dotitle@pp
+      \def\subsectionname{\appendixname}
+      \def\@seccntformat##1{\@ifundefined{##1name}{}{\csname ##1name\endcsname\ }%
+        \csname the##1\endcsname\quad}
+    \fi
+  \fi}{}
+
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{macro}{\@formatsecmark@pp}
+% Formats the page header for a redefined |\sectionmark|.
+%    \begin{macrocode}
+\newcommand{\@formatsecmark@pp}[1]{%
+  \MakeUppercase{\appendixname\space
+    \ifnum \c@secnumdepth >\z@
+      \thesection\quad
+    \fi
+    #1}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@redotocentry@pp}
+% In order to implement the \Lopt{titletoc} option we redefine the
+% |\addcontentsline| command which is used to put entries into the ToC.
+% |\@redotocentry@pp{|\meta{sect}|}| does the redefinition, where \meta{sect}
+% is the name of the sectional heading (i.e., either chapter or section).
+% \changes{v1.2}{2002/08/06}{Replaced ifthen package code in 
+%                \cs{@redotocentry@pp} by \cs{ifx} code.}
+% \changes{v1.2}{2002/08/06}{HW mods to \cs{@redotocentry@pp}}
+%    \begin{macrocode}
+\newcommand{\@redotocentry@pp}[1]{%
+%    \end{macrocode}
+% Save the original definition of |\addcontentsline|. Then start the 
+% redefinition.
+%    \begin{macrocode}
+  \let\oldacl@pp=\addcontentsline
+  \def\addcontentsline##1##2##3{%
+%    \end{macrocode}
+% Check if writing to ToC and appropriate section.
+%    \begin{macrocode}
+    \def\@pptempa{##1}\def\@pptempb{toc}%
+    \ifx\@pptempa\@pptempb
+%    \end{macrocode}
+% Adding to the ToC file, so check on the sectioning command.
+%    \begin{macrocode}
+      \def\@pptempa{##2}\def\@pptempb{#1}%
+      \ifx\@pptempa\@pptempb
+%    \end{macrocode}
+% The sectioning command is the same as that specified by the argument to 
+% |\@redotocentry@pp|, so get on with the redefinition.
+%    \begin{macrocode}
+	\oldacl@pp{##1}{##2}{\appendixname\space ##3}%
+      \else
+%    \end{macrocode}
+% The heading was different from the argument. No redefinition is required, so
+% call the original |\addcontentsline|.
+%    \begin{macrocode}
+        \oldacl@pp{##1}{##2}{##3}%
+      \fi
+    \else
+%    \end{macrocode}
+% Adding to a file that is not the ToC. No redefinition is required, so
+% call the original |\addcontentsline|.
+%    \begin{macrocode}
+      \oldacl@pp{##1}{##2}{##3}%
+    \fi}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+%
+%    The end of this package.
+%    \begin{macrocode}
+%</usc>
+%    \end{macrocode}
+%
+%
+% \bibliographystyle{alpha}
+%
+% \begin{thebibliography}{GMS94}
+%
+% \bibitem[GMS94]{GOOSSENS94}
+% Michel Goossens, Frank Mittelbach, and Alexander Samarin.
+% \newblock {\em The LaTeX Companion}.
+% \newblock Addison-Wesley Publishing Company, 1994.
+%
+% \bibitem[Wil96]{PRW96i}
+% Peter~R. Wilson.
+% \newblock {\em {LaTeX for standards: The LaTeX package files user manual}}.
+% \newblock NIST Report NISTIR, June 1996.
+%
+% \end{thebibliography}
+%
+% \PrintIndex
+% \Finale
+%
+\endinput
+
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+
+
