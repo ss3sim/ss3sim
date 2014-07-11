@@ -78,7 +78,9 @@ ts_dat <- merge(scalar_dat[, c("ID", "max_grad")], ts_dat)
 plot_ts_points(ts_dat, y="SpawnBio", horiz='D', vert='E', rel=TRUE,
                color='max_grad')
 plot_ts_lines(ts_dat, y="SpawnBio", horiz='D', vert='E', rel=TRUE, color='max_grad')
+\dontrun{
 plot_ts_boxplot(ts_dat, y="SpawnBio", horiz='D',vert='E', rel=TRUE )
+}
 }
 \author{
 Cole Monnahan
