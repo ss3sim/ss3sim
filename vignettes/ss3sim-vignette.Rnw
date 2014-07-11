@@ -58,7 +58,7 @@ thm = knit_theme$get("solarized-light.css")
 knit_theme$set(thm)
 @
 
-\title{An introduction to \pkg{ss3sim} --- an \proglang{R} package for
+\title{An introduction to \pkg{ss3sim}\\An \proglang{R} package for
   stock assessment simulation testing with\\Stock Synthesis 3}
 \author{
   Sean C. Anderson\thanks{sean@seananderson.ca; Department of Biological
