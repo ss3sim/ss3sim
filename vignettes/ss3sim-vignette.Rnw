@@ -30,7 +30,7 @@
 
 \usepackage[dvipsnames,svgnames,x11names,hyperref]{xcolor}
 \usepackage{hyperref}
-\hypersetup{colorlinks=TRUE,breaklinks=TRUE,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue}
+\hypersetup{colorlinks=TRUE,breaklinks=TRUE,linkcolor=DodgerBlue3,urlcolor=DodgerBlue3,citecolor=DodgerBlue3}
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
