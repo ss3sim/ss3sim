@@ -1,6 +1,6 @@
-# ss3sim: An R package for stock assessment simulation with Stock Synthesis
+# ss3sim
 
-ss3sim facilitates flexible, rapid, and reproducible fisheries stock assessment simulation testing with the widely-used [Stock Synthesis 3][SS3] (SS3) statistical age-structured stock assessment framework.
+ss3sim is an R package that facilitates flexible, rapid, and reproducible fisheries stock assessment simulation testing with the widely-used [Stock Synthesis 3][SS3] (SS3) statistical age-structured stock assessment framework.
 
 ## Contents
 
