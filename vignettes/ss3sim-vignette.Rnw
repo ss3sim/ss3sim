@@ -132,6 +132,8 @@ help(package = "ss3sim")
 vignette("ss3sim-vignette")
 @
 
+See \citet{anderson2014a} for an overview of \pkg{ss3sim}.
+
 \noindent
 We develop and test \pkg{ss3sim} around a specific version of SS3.
 Currently, \pkg{ss3sim} is tested to work with SS3 Version 3.24O.
