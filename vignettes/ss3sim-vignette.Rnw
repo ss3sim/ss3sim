@@ -17,7 +17,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{graphicx}
-\usepackage{appendix}
+%\usepackage{appendix}
 \usepackage[round]{natbib}
 \bibpunct{(}{)}{;}{a}{}{;}
 
@@ -145,7 +145,7 @@ we provide copies of the 3.24O binaries (with the permission of R. Methot) at\\
 \noindent
 \pkg{ss3sim} requires the SS3 binary to be in your path.
 This means that your operating system knows where the binary file is located.
-See Appendix \ref{sec:path} for details.
+See Section \ref{sec:path} for details.
 
 Please direct any questions, suggestions, or bug reports to the \pkg{ss3sim}
 issue tracker: \url{https://github.com/ss3sim/ss3sim/issues}, or to an author
@@ -184,7 +184,7 @@ an established base-case operating model (OM) and estimation model (EM) to
 work with. The \pkg{ss3sim} package comes with three generic built-in
 model setups that can be used as is, modified, or replaced.%
 \footnote{See Section \ref{sec:modify} for details on these models and how to
-modify them. See Appendices \ref{sec:om-setup} and \ref{sec:em-setup} for
+modify them. See Section \ref{sec:om-setup} and \ref{sec:em-setup} for
 details on creating your own OM and EMs.}
 Each OM and EM should be in its own folder.
 The OM folder should have the files:
@@ -1028,7 +1028,7 @@ Some of the features may work within the \pkg{ss3sim} framework, but are unteste
 It is possible to create new models that will work within the \pkg{ss3sim}
 framework, but this task will be complicated and likely require extensive
 knowledge of SS3 and R, as well as modification of the \pkg{ss3sim}
-functions. This process is described in more detail in Appendices
+functions. This process is described in more detail in Sections
 \ref{sec:om-setup} and \ref{sec:em-setup}.
 
 Instead of creating entirely new models, we recommend adapting the current
@@ -1410,14 +1410,14 @@ On a 2.27 GHz Intel Xeon quad-core server running Ubuntu 10.04,
 this example ran 1.9 times faster on two cores than on a single core,
 and 3.2 times faster on four cores.
 
-\bibliographystyle{apalike}
-\bibliography{refs}
+%\bibliographystyle{apalike}
+%\bibliography{refs}
 
-\clearpage
+%\clearpage
 
-\appendix
-\appendixpage
-\addappheadtotoc
+%\appendix
+%\appendixpage
+%\addappheadtotoc
 
 \section{Putting SS3 in your path}
 \label{sec:path}
@@ -1780,5 +1780,8 @@ verify that \pkg{ss3sim} functions that modify the EM (e.g.,
 functions will not work perfectly with the new model setups. In this case, it may be
 necessary to modify the \pkg{ss3sim} functions to be compatible with the new
 OM and EM.
+
+\bibliographystyle{apalike}
+\bibliography{refs}
 
 \end{document}
