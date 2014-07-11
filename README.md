@@ -133,6 +133,9 @@ Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, and Valero, JL (2014). ss3sim: 
   author = {Sean C. Anderson and Cole C. Monnahan and Kelli F. Johnson and Kotaro Ono and Juan L. Valero},
   year = {2014},
   journal = {PLOS ONE},
+  volume  = {9},
+  number  = {4},
+  pages   = {e92725},  
   doi = {10.1371/journal.pone.0092725},
 }
 ```
