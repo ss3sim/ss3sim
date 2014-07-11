@@ -89,7 +89,7 @@ knit_theme$set(thm)
 \clearpage
 \section{Installing the \textbf{ss3sim} \textsf{R} package}
 
-\pkg{ss3sim} requires \proglang{R} version 3.0.0 or greater.
+\pkg{ss3sim} requires \proglang{R} version 3.1.0 or greater.
 The package can be run on OS X, Windows, or Linux.
 The CRAN version of \pkg{ss3sim} can be installed
 in an \proglang{R} console with:
