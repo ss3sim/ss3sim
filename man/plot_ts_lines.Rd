@@ -68,21 +68,10 @@ replicate.
   return it invisibly for saving or printing again later.
 }
 \examples{
-## The package comes with scalar_dat and ts_dat result objects from the
-## example simulation. Using these as examples.
-scalar_dat$depletion <- with(scalar_dat, (depletion_om-depletion_em)/depletion_om)
-plot_scalar_points(scalar_dat, x='E', y="depletion", horiz='D',
-                   color="max_grad", rel=TRUE )
-plot_scalar_boxplot(scalar_dat, x='E', y="depletion", horiz='D',rel=TRUE )
 ts_dat$SpawnBio <- with(ts_dat, (SpawnBio_om-SpawnBio_em)/SpawnBio_om)
-## Merge in max_grad, a performance metric, to use for color
+# Merge in max_grad, a performance metric, to use for color
 ts_dat <- merge(scalar_dat[, c("ID", "max_grad")], ts_dat)
-plot_ts_points(ts_dat, y="SpawnBio", horiz='D', vert='E', rel=TRUE,
-               color='max_grad')
 plot_ts_lines(ts_dat, y="SpawnBio", horiz='D', vert='E', rel=TRUE, color='max_grad')
-\dontrun{
-plot_ts_boxplot(ts_dat, y="SpawnBio", horiz='D',vert='E', rel=TRUE )
-}
 }
 \author{
 Cole Monnahan

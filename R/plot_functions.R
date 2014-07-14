@@ -5,6 +5,10 @@
 #' @import ggplot2
 #' @template plot-functions-x
 #' @template plot-functions-color
+#' @examples
+#' scalar_dat$depletion <- with(scalar_dat, (depletion_om-depletion_em)/depletion_om)
+#' plot_scalar_points(scalar_dat, x='E', y="depletion", horiz='D',
+#'                    color="max_grad", rel=TRUE )
 plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL,
              vert=NULL, vert2=NULL, color=NULL,
              relative.error=FALSE, axes.free=TRUE){
@@ -40,6 +44,9 @@ plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #' @export
 #' @import ggplot2
 #' @template plot-functions-x
+#' @examples
+#' scalar_dat$depletion <- with(scalar_dat, (depletion_om-depletion_em)/depletion_om)
+#' plot_scalar_boxplot(scalar_dat, x='E', y="depletion", horiz='D',rel=TRUE )
 plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
                                 vert=NULL, vert2=NULL,
                                 relative.error=FALSE, axes.free=TRUE){
@@ -67,6 +74,13 @@ plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #' @template plot-functions
 #' @export
 #' @import ggplot2
+#' @examples
+#' \dontrun{
+#' ts_dat$SpawnBio <- with(ts_dat, (SpawnBio_om-SpawnBio_em)/SpawnBio_om)
+#' # Merge in max_grad, a performance metric, to use for color
+#' ts_dat <- merge(scalar_dat[, c("ID", "max_grad")], ts_dat)
+#' plot_ts_boxplot(ts_dat, y="SpawnBio", horiz='D',vert='E', rel=TRUE )
+#' }
 plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                             vert2=NULL, relative.error=FALSE,
                             axes.free=TRUE){
@@ -96,6 +110,12 @@ plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' @export
 #' @import ggplot2
 #' @template plot-functions-color
+#' @examples
+#' ts_dat$SpawnBio <- with(ts_dat, (SpawnBio_om-SpawnBio_em)/SpawnBio_om)
+#' # Merge in max_grad, a performance metric, to use for color
+#' ts_dat <- merge(scalar_dat[, c("ID", "max_grad")], ts_dat)
+#' plot_ts_points(ts_dat, y="SpawnBio", horiz='D', vert='E', rel=TRUE,
+#'                color='max_grad')
 plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                            vert2=NULL, relative.error=FALSE, color=NULL,
                            axes.free=TRUE){
@@ -131,6 +151,11 @@ plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' @export
 #' @import ggplot2
 #' @template plot-functions-color
+#' @examples
+#' ts_dat$SpawnBio <- with(ts_dat, (SpawnBio_om-SpawnBio_em)/SpawnBio_om)
+#' # Merge in max_grad, a performance metric, to use for color
+#' ts_dat <- merge(scalar_dat[, c("ID", "max_grad")], ts_dat)
+#' plot_ts_lines(ts_dat, y="SpawnBio", horiz='D', vert='E', rel=TRUE, color='max_grad')
 plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                            vert2=NULL, relative.error=FALSE, color=NULL,
                            axes.free=TRUE){
