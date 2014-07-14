@@ -1,3 +1,24 @@
+# ss3sim 0.8.2.99
+
+## New features
+
+* Add Cole Monnahan's ss3sim plotting functions (#134).
+
+## Bug fixes and changes
+
+* Fix `change_rec_dev()` to appropriately throw error if wrong number of
+  recruitment deviations are supplied (#136).
+
+* Bump required version of r4ss to 1.22.1 since 1.22.0 did not export functions
+  that ss3sim needs.
+
+* Vignette no longer uses LaTeX `appendix.sty`, which causes build errors on CRAN
+  Mavericks build.
+
+* CITATION file now points to complete PLOS ONE citation.
+
+* ss3sim now requires R 3.1.0 since we cannot easily test on earlier versions.
+
 # ss3sim 0.8.2
 
 ## New features
