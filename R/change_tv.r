@@ -87,7 +87,7 @@
 #' setwd("Simple")
 #'
 #' # Run SS3 to create control.ss_new and Report.sso:
-#' system("SS3 starter.ss -noest")
+#' system("ssv3.24o_safe starter.ss -noest")
 #'
 #' change_tv(change_tv_list = list("NatM_p_1_Fem_GP_1" = c(rep(0, 20),
 #'       rep(.1, 11)), "SR_BH_steep"=rnorm(31, 0, 0.05)), ctl_file_in =
@@ -106,6 +106,8 @@ change_tv <- function(change_tv_list,
   par_file_in = "ss3.par", par_file_out = "ss3.par",
   starter_file_in = "starter.ss", starter_file_out = "starter.ss",
   report_file = "Report.sso") {
+
+  ss_bin <- "ssv3.24o_safe"
 
   ss3.ctl    <- readLines(con = ctl_file_in)
   ss3.dat    <- readLines(con = dat_file_in)
@@ -412,9 +414,9 @@ for(i in seq_along(temp.data)) {
     #Call ss3 for a run that includes the environmental link
     os <- .Platform$OS.type
       if(os == "unix") {
-        system("SS3 -noest", ignore.stdout = TRUE)
+        system(paste(ss_bin, "-noest"), ignore.stdout = TRUE)
       } else {
-        system("SS3 -noest", show.output.on.console = FALSE, invisible = TRUE, ignore.stdout = TRUE)
+        system(paste(ss_bin, "-noest"), show.output.on.console = FALSE, invisible = TRUE, ignore.stdout = TRUE)
       }
 
     #Change starter file option back to using .par!
