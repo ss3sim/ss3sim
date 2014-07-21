@@ -67,6 +67,20 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
   Sys.sleep(admb_pause)
 }
 
+#' Rename SS3-version-specific files
+#'
+#' @param path The path to the folder with the files.
+#' @param ss_bin A character value giving the SS binary name
+#' @param extensions A character vector of file extensions to rename without
+#'   periods preceding the values.
+#' @author Sean C. Anderson                                  
+rename_ss3_files <- function(path, ss_bin, extensions) {
+  for(i in seq_along(extensions)) {
+    file.rename(from = paste0(path, "/", ss_bin, ".", extensions[i]),
+                to   = paste0(path, "/", "ss3",  ".", extensions[i]))
+  }
+}
+
 #' Check admb options to make sure there aren't flags there shouldn't
 #' be
 #'
