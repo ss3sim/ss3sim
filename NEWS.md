@@ -6,9 +6,6 @@
 
 ## Bug fixes and changes
 
-* Fix `change_rec_dev()` to appropriately throw error if wrong number of
-  recruitment deviations are supplied (#136).
-
 * Bump required version of r4ss to 1.22.1 since 1.22.0 did not export functions
   that ss3sim needs.
 
