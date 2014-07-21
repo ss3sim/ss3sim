@@ -43,6 +43,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
   admb_options <- sanitize_admb_options(admb_options, "-noest")
 
   os <- .Platform$OS.type
+  ss_bin <- "ssv3.24o_safe"
 
   if(is.null(ss3path)) ss3path <- ""
 
@@ -53,13 +54,17 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
       message(paste0("Running ", toupper(type), " for scenario: ", sc,
         "; iteration: ", it))
       if(os == "unix") {
-        system(paste0("cd ", pastef(sc, it, type), ";", ss3path, "SS3 ",
+        system(paste0("cd ", pastef(sc, it, type), ";", ss3path, paste0(ss_bin, " "),
            ss_em_options, " ", admb_options), ignore.stdout = ignore.stdout, ...)
+        rename_ss3_files(path = pastef(sc, it, type), ss_bin = ss_bin,
+          extensions = c("par", "rep", "log", "bar"))
       } else {
         wd <- getwd()
         setwd(pastef(sc, it, type))
-        system(paste0(ss3path, "SS3 ", ss_em_options, admb_options),
+        system(paste0(ss3path, paste0(ss_bin, " "), ss_em_options, admb_options),
           invisible = TRUE, ignore.stdout = ignore.stdout, ...)
+        rename_ss3_files(path = "", ss_bin = ss_bin,
+          extensions = c("par", "rep", "log", "bar"))
         setwd(wd)
       }
     }
