@@ -56,7 +56,9 @@
 #'   \code{\link{run_ss3model}} will be passed to the \code{\link{system}} call
 #'   that runs \code{SS3}. If you are on a Windows computer then you might want
 #'   to pass \code{show.output.on.console = FALSE} to make the simulations runs
-#'   faster by not printing output to the console.
+#'   faster by not printing output to the console. Also, see the argument
+#'   \code{ss_mode} to choose between safe or optimized SS3 executables
+#'   (default is safe mode).
 #' @author Sean Anderson with contributions from many others as listed in
 #'   the DESCRIPTION file.
 #' @return
