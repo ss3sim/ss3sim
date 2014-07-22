@@ -5,7 +5,7 @@
 \usage{
 run_ss3model(scenarios, iterations, type = c("om", "em"), ss3path = NULL,
   admb_options = "", hess = FALSE, ignore.stdout = TRUE,
-  admb_pause = 0.05, ...)
+  admb_pause = 0.05, ss_mode = c("safe", "optimized"), ...)
 }
 \arguments{
   \item{scenarios}{Which scenarios to run. Controls which
@@ -46,6 +46,12 @@ run_ss3model(scenarios, iterations, type = c("om", "em"), ss3path = NULL,
   output then the simulation will crash with an error about
   missing files. The default value is set to \code{0.01}
   seconds, just to be safe.}
+
+  \item{ss3_mode}{Which version of the SS3 executable
+  should be run? \code{"safe"} or \code{"optimized"}? Safe
+  mode is useful for model building and testing. Optimized
+  will be slightly faster for running simulations. Default
+  is safe mode.}
 
   \item{...}{Anything else to pass to
   \code{\link[base]{system}}.}
