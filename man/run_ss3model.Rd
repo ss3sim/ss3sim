@@ -64,6 +64,25 @@ called by higher level functions such as
 \code{\link{run_ss3sim}}, \code{\link{ss3sim_base}}, or
 your own custom function.
 }
+\details{
+ss3sim requires you to place the SS3 executable(s) in your
+path. See the vignette \code{vignette("ss3sim-vignette")}
+for details on this process. The executables themselves can
+be downloaded from:
+\url{https://www.dropbox.com/sh/zg0sec6j20sfyyz/AACQiuk787qW882U2euVKoPna}
+
+There are two versions of the executables: safe and
+optimized (\code{opt}). Safe mode is best used during model
+development and testing. Optimized mode will be slightly
+faster and can be used for simulation if desired. The
+default is safe mode. \pkg{ss3sim} assumes that you at
+least have the safe-mode SS3 binary in your path. If you
+wish to use optimized mode then you must also have the
+\code{opt} executable version in your path. These
+executables must be named exactly as they are at the link
+above. You can choose the SS mode by setting the argument
+\code{ss_mode} to \code{"safe"} or \code{"optimized"}.
+}
 \author{
 Sean C. Anderson
 }

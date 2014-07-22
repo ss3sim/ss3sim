@@ -140,12 +140,12 @@ Currently, \pkg{ss3sim} is tested to work with SS3 Version 3.24O.
 Since this is a more recent version than is provided at the normal download location
 \url{http://nft.nefsc.noaa.gov/SS3.html},
 we provide copies of the 3.24O binaries (with the permission of R. Methot) at\\
-\url{https://github.com/ss3sim/ss3sim/tree/ss3-binaries/inst/ss3}.
+\url{https://www.dropbox.com/sh/zg0sec6j20sfyyz/AACQiuk787qW882U2euVKoPna}.
 
 \noindent
 \pkg{ss3sim} requires the SS3 binary to be in your path.
 This means that your operating system knows where the binary file is located.
-See Section \ref{sec:path} for details.
+See Section \ref{sec:path} for details. See \texttt{?run\_ss3model} for instructions on how to specify the safe vs.\ the optimized binary.
 
 Please direct any questions, suggestions, or bug reports to the \pkg{ss3sim}
 issue tracker: \url{https://github.com/ss3sim/ss3sim/issues}, or to an author
@@ -1422,7 +1422,7 @@ and 3.2 times faster on four cores.
 \section{Putting SS3 in your path}
 \label{sec:path}
 
-Instead of copying the SS3 binary file (\texttt{ss3.exe}) to each folder
+Instead of copying the SS3 binary file (\texttt{ss3.exe} or \texttt{ss3}) to each folder
 within a simulation and running it, \pkg{ss3sim} relies on a single binary file
 being available to the operating system regardless of the folder.
 To accomplish this, SS3 must be in your system path, which is
