@@ -43,7 +43,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
   admb_options <- sanitize_admb_options(admb_options, "-noest")
 
   os <- .Platform$OS.type
-  ss_bin <- "ssv3.24o_safe"
+  ss_bin <- "ssv3_24o_safe"
 
   if(is.null(ss3path)) ss3path <- ""
 
@@ -53,7 +53,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
     for(it in iterations) {
       message(paste0("Running ", toupper(type), " for scenario: ", sc,
         "; iteration: ", it))
-      if(os == "unix") {
+            if(os == "unix") {
         system(paste0("cd ", pastef(sc, it, type), ";", ss3path, paste0(ss_bin, " "),
            ss_em_options, " ", admb_options), ignore.stdout = ignore.stdout, ...)
         rename_ss3_files(path = pastef(sc, it, type), ss_bin = ss_bin,
@@ -62,7 +62,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
         wd <- getwd()
         setwd(pastef(sc, it, type))
         system(paste0(ss3path, paste0(ss_bin, " "), ss_em_options, admb_options),
-          invisible = TRUE, ignore.stdout = ignore.stdout, ...)
+          invisible = FALSE, ignore.stdout = FALSE, ...)
         rename_ss3_files(path = "", ss_bin = ss_bin,
           extensions = c("par", "rep", "log", "bar"))
         setwd(wd)
@@ -78,7 +78,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
 #' @param ss_bin A character value giving the SS binary name
 #' @param extensions A character vector of file extensions to rename without
 #'   periods preceding the values.
-#' @author Sean C. Anderson                                  
+#' @author Sean C. Anderson
 rename_ss3_files <- function(path, ss_bin, extensions) {
   for(i in seq_along(extensions)) {
     file.rename(from = paste0(path, "/", ss_bin, ".", extensions[i]),
