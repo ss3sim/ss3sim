@@ -47,11 +47,11 @@ run_ss3model(scenarios, iterations, type = c("om", "em"), ss3path = NULL,
   missing files. The default value is set to \code{0.01}
   seconds, just to be safe.}
 
-  \item{ss3_mode}{Which version of the SS3 executable
-  should be run? \code{"safe"} or \code{"optimized"}? Safe
-  mode is useful for model building and testing. Optimized
-  will be slightly faster for running simulations. Default
-  is safe mode.}
+  \item{ss_mode}{Which version of the SS3 executable should
+  be run? \code{"safe"} or \code{"optimized"}? Safe mode is
+  useful for model building and testing. Optimized will be
+  slightly faster for running simulations. Default is safe
+  mode.}
 
   \item{...}{Anything else to pass to
   \code{\link[base]{system}}.}

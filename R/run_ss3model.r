@@ -44,7 +44,7 @@
 #'   finished writing before \R starts looking for the output then the
 #'   simulation will crash with an error about missing files. The default
 #'   value is set to \code{0.01} seconds, just to be safe.
-#' @param ss3_mode Which version of the SS3 executable should be run?
+#' @param ss_mode Which version of the SS3 executable should be run?
 #'   \code{"safe"} or \code{"optimized"}? Safe mode is useful for model building
 #'   and testing. Optimized will be slightly faster for running simulations.
 #'   Default is safe mode.
