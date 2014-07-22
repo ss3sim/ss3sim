@@ -107,6 +107,7 @@ change_tv <- function(change_tv_list,
   starter_file_in = "starter.ss", starter_file_out = "starter.ss",
   report_file = "Report.sso") {
 
+  # Always use safe mode here:
   ss_bin <- "ssv3_24o_safe"
 
   ss3.ctl    <- readLines(con = ctl_file_in)
