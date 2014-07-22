@@ -12,6 +12,7 @@ case_folder <- paste0(d, "/eg-cases")
 
 # Without bias adjustment:
 run_ss3sim(iterations = 1:1, scenarios = "D0-E0-F0-R0-M0-cod",
-  case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "optimized")
-#setwd(wd)
+  case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "safe")
 unlink("D0-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
+#setwd(wd)
+#unlink(temp_dir, recursive = TRUE) # clean up
