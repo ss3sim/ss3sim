@@ -69,7 +69,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
   if(ss_mode == "optimized") ss_mode <- "opt"
 
   os <- .Platform$OS.type
-  ss_bin <- paste0("ssv3_24o_", ss_mode)
+  ss_bin <- paste0("ss3_24o_", ss_mode)
 
   if(is.null(ss3path)) ss3path <- ""
 
