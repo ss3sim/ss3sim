@@ -57,7 +57,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
   ss3path = NULL, admb_options = "", hess = FALSE, ignore.stdout =
   TRUE, admb_pause = 0.05, ss_mode = c("safe", "optimized"), ...) {
 
-  ## input checking:
+  # Input checking:
   admb_options <- sanitize_admb_options(admb_options, "-nohess")
   admb_options <- sanitize_admb_options(admb_options, "-noest")
   ss_mode <- ss_mode[1]
@@ -70,6 +70,12 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
 
   os <- .Platform$OS.type
   ss_bin <- paste0("ss3_24o_", ss_mode)
+
+  # Is SS3 in the path?
+  bin <- Sys.which(ss_bin)[[1]]
+  if(bin == "") stop(paste0("The expected SS3 executable, ", ss_bin,
+      ", was not found in your path. See the ss3sim vignette and ?run_ss3model",
+      " for instructions."))
 
   if(is.null(ss3path)) ss3path <- ""
 
