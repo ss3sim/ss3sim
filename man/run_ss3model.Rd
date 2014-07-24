@@ -5,7 +5,7 @@
 \usage{
 run_ss3model(scenarios, iterations, type = c("om", "em"), ss3path = NULL,
   admb_options = "", hess = FALSE, ignore.stdout = TRUE,
-  admb_pause = 0.05, ...)
+  admb_pause = 0.05, ss_mode = c("safe", "optimized"), ...)
 }
 \arguments{
   \item{scenarios}{Which scenarios to run. Controls which
@@ -47,6 +47,12 @@ run_ss3model(scenarios, iterations, type = c("om", "em"), ss3path = NULL,
   missing files. The default value is set to \code{0.01}
   seconds, just to be safe.}
 
+  \item{ss_mode}{Which version of the SS3 executable should
+  be run? \code{"safe"} or \code{"optimized"}? Safe mode is
+  useful for model building and testing. Optimized will be
+  slightly faster for running simulations. Default is safe
+  mode.}
+
   \item{...}{Anything else to pass to
   \code{\link[base]{system}}.}
 }
@@ -57,6 +63,25 @@ binary correctly. This lower-level function is meant to be
 called by higher level functions such as
 \code{\link{run_ss3sim}}, \code{\link{ss3sim_base}}, or
 your own custom function.
+}
+\details{
+ss3sim requires you to place the SS3 executable(s) in your
+path. See the vignette \code{vignette("ss3sim-vignette")}
+for details on this process. The executables themselves can
+be downloaded from:
+\url{https://www.dropbox.com/sh/zg0sec6j20sfyyz/AACQiuk787qW882U2euVKoPna}
+
+There are two versions of the executables: safe and
+optimized (\code{opt}). Safe mode is best used during model
+development and testing. Optimized mode will be slightly
+faster and can be used for simulation if desired. The
+default is safe mode. \pkg{ss3sim} assumes that you at
+least have the safe-mode SS3 binary in your path. If you
+wish to use optimized mode then you must also have the
+\code{opt} executable version in your path. These
+executables must be named exactly as they are at the link
+above. You can choose the SS mode by setting the argument
+\code{ss_mode} to \code{"safe"} or \code{"optimized"}.
 }
 \author{
 Sean C. Anderson

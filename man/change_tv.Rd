@@ -120,7 +120,7 @@ file.copy(simple, ".", recursive = TRUE)
 setwd("Simple")
 
 # Run SS3 to create control.ss_new and Report.sso:
-system("SS3 starter.ss -noest")
+system("ss3_24o_safe starter.ss -noest")
 
 change_tv(change_tv_list = list("NatM_p_1_Fem_GP_1" = c(rep(0, 20),
       rep(.1, 11)), "SR_BH_steep"=rnorm(31, 0, 0.05)), ctl_file_in =

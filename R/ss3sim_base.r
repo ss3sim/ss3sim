@@ -1,4 +1,4 @@
-#' Base wrapper fun to run an ss3sim simulation
+#' Base wrapper function to run an ss3sim simulation
 #'
 #' This function is a wrapper function that can call \code{\link{run_ss3model}}
 #' for the operating model, sample the output (add recruitment deviations,
@@ -48,7 +48,7 @@
 #' @param seed The seed value to pass to \code{\link{get_recdevs}} when
 #'   generating recruitment deviations. The generated recruitment deviations
 #'   depend on the iteration value, but also on the value of \code{seed}. A
-#'   given combinatination of iteration, number of years, and \code{seed} value
+#'   given combination of iteration, number of years, and \code{seed} value
 #'   will result in the same recruitment deviations.
 #' @param ... Anything extra to pass to \code{\link{run_ss3model}}. For example,
 #'   you may want to pass additional options to \code{SS3} through the argument
@@ -56,7 +56,9 @@
 #'   \code{\link{run_ss3model}} will be passed to the \code{\link{system}} call
 #'   that runs \code{SS3}. If you are on a Windows computer then you might want
 #'   to pass \code{show.output.on.console = FALSE} to make the simulations runs
-#'   faster by not printing output to the console.
+#'   faster by not printing output to the console. Also, see the argument
+#'   \code{ss_mode} to choose between safe or optimized SS3 executables
+#'   (default is safe mode).
 #' @author Sean Anderson with contributions from many others as listed in
 #'   the DESCRIPTION file.
 #' @return
