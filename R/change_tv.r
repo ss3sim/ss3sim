@@ -412,6 +412,14 @@ for(i in seq_along(temp.data)) {
     ss3.starter[usepar.ch-1] <- ctl_file_out
     writeLines(ss3.starter, con = starter_file_out)
 
+    # Is SS3 in the path?
+    bin <- Sys.which(ss_bin)[[1]]
+    if(bin == "") stop(paste0("The expected SS3 executable, ", ss_bin,
+      ", was not found in your path. See the ss3sim vignette and ?run_ss3model",
+      " for instructions. Note that the change_tv function always uses",
+      " the safe version of SS3, so you must have the safe executable in",
+      " your path and optionally the optimized executable."))
+
     #Call ss3 for a run that includes the environmental link
     os <- .Platform$OS.type
       if(os == "unix") {
