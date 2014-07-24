@@ -49,8 +49,8 @@ vignette("ss3sim-vignette")
 
 For reproducible examples of ss3sim simulations as well as details on installing
 the correct version of SS3, and adding SS3 to your operating system's path so
-ss3sim can find the software, see the [vignette][vignette] [PDF]. Also, see the
-[paper on arXiv][paper], which in press at PLOS ONE.
+ss3sim can find the software, see the [vignette][vignette] (PDF). Also, see the
+[paper][paper], which describes the package.
 
 ## The ss3sim simulation setup
 
@@ -79,7 +79,7 @@ these manipulations at the appropriate stage in the simulation.
 
 ss3sim functions are divided into three types:
 
-1. `change` functions that manipulate SS configuration files. These
+1. `change` and `sample` functions that manipulate SS configuration files. These
    manipulations generate an underlying "truth" (operating models) and control
    our assessment of those models (estimation models).
 
@@ -117,7 +117,7 @@ If you use ss3sim in a publication, please cite ss3sim as shown by `citation("ss
 
 Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, Valero, JL, Cunningham, CJ, Hurtado-Ferro, F, Licandeo, R, McGilliard, CR, Szuwalski, CS, Vert-pre, KA, and Whitten, AR (2014). ss3sim: Fisheries stock assessment simulation testing with Stock Synthesis. R package version 0.8.2.
 
-Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, and Valero, JL (2014). ss3sim: An R package for fisheries stock assessment simulation with Stock Synthesis. PLOS ONE. In press. DOI: 10.1371/journal.pone.0092725.
+Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, and Valero, JL (2014). ss3sim: An R package for fisheries stock assessment simulation with Stock Synthesis. PLOS ONE. 9(4): e92725. DOI: 10.1371/journal.pone.0092725.
 
 
 ```tex
@@ -146,7 +146,7 @@ Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, and Valero, JL (2014). ss3sim: 
 [cases]: https://github.com/seananderson/ss3sim/tree/master/inst/extdata/cases
 [eg-cases]: https://github.com/seananderson/ss3sim/tree/master/inst/extdata/eg-cases
 [vignette]: https://dl.dropboxusercontent.com/u/254940/ss3sim-vignette.pdf
-[paper]: http://arxiv.org/abs/1312.6450
+[paper]: http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0092725
 [SS3]: http://nft.nefsc.noaa.gov/Stock_Synthesis_3.htm
 [r-project]: http://www.r-project.org/
 [SAFS]: http://fish.washington.edu/
