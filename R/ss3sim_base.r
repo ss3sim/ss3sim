@@ -13,11 +13,11 @@
 #' @param f_params A named list containing all the \code{\link{change_f}}
 #'   options.
 #' @param index_params A named list containing all the
-#'   \code{\link{change_index}} options.
+#'   \code{\link{sample_index}} options.
 #' @param lcomp_params A named list containing all the
-#'   \code{\link{change_lcomp}} options.
+#'   \code{\link{sample_lcomp}} options.
 #' @param agecomp_params A named list containing all the
-#'   \code{\link{change_agecomp}} options.
+#'   \code{\link{sample_agecomp}} options.
 #' @param retro_params A named list containing all the
 #'   \code{\link{change_retro}} options.
 #' @param estim_params A named list containing all the \code{\link{change_e}}
@@ -249,7 +249,7 @@ deviations can lead to biased model results.")
       SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
       with(index_params,
-        change_index(infile          = SS.dat,
+        sample_index(infile          = SS.dat,
                      outfile         = pastef(sc, i, "em", "ss3.dat"),
                      fleets          = fleets,
                      years           = years,
@@ -259,7 +259,7 @@ deviations can lead to biased model results.")
       SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
       with(lcomp_params,
-        change_lcomp(infile           = SS.dat,
+        sample_lcomp(infile           = SS.dat,
                      outfile          = pastef(sc, i, "em", "ss3.dat"),
                      fleets           = fleets,
                      Nsamp            = Nsamp,
@@ -271,7 +271,7 @@ deviations can lead to biased model results.")
       SS.dat2 = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
       with(agecomp_params,
-        change_agecomp(infile         = SS.dat2,
+        sample_agecomp(infile         = SS.dat2,
                      outfile          = pastef(sc, i, "em", "ss3.dat"),
                      fleets           = fleets,
                      Nsamp            = Nsamp,

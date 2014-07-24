@@ -450,7 +450,7 @@ Instead we will start with the configuration files from those papers.
 
 To investigate the effect of different levels of precision on the survey index of abundance,
 we will manipulate the argument \texttt{sds\_obs}
-that gets passed to \texttt{change\_index}.
+that gets passed to \texttt{sample\_index}.
 This argument ultimately refers to the standard error
 on the log(index) value, as defined in SS3.
 In case 0, we will specify the standard deviation at 0.1
@@ -474,8 +474,8 @@ the model), \texttt{2} in
 1974 to 2012 with a standard error on the log(survey index) of 0.1.
 
 We will not describe the length or age composition sampling here in detail, but
-you can refer to the help files \texttt{?change\_lcomp} and
-\texttt{?change\_agecomp} along with the case files included in the package
+you can refer to the help files \texttt{?sample\_lcomp} and
+\texttt{?sample\_agecomp} along with the case files included in the package
 data. Also see Section \ref{sec:comps} where we describe the theory behind the
 age- and length-composition sampling in \pkg{ss3sim}.
 
@@ -1041,7 +1041,7 @@ setups and whether simple changes can get you reasonably close for simulation pu
 
 Say for example you want to modify the cod model to have different
 maturity, and then explore different sampling schemes using the
-\texttt{change\_index}, \texttt{change\_lcomps}, and \texttt{change\_agecomps}
+\texttt{sample\_index}, \texttt{sample\_lcomp}, and \texttt{sample\_agecomp}
 functions. The following steps provide a basic guideline for how to accomplish this:
 \begin{itemize}
 \item Using the original cod model create the case argument files you desire for
@@ -1088,7 +1088,7 @@ This section briefly details the background and functionality of these
 functions.
 
 \begin{description}
-\item[\texttt{change\_index}] This function samples from the biomass
+\item[\texttt{sample\_index}] This function samples from the biomass
   trends for the different fleets to simulate the collection of CPUE
   and survey index data. Since $q=1$ for both the OM and EM, the CPUE
   indices are actually absolute indices of biomass. The result of the
@@ -1097,7 +1097,7 @@ functions.
   which years and with what amount of noise. Note that the
   years/fleets specified to be sampled must be present in the OM file,
   so the user must setup the OM accordingly.
-\item[\texttt{change\_lcomp}] This function samples from the length
+\item[\texttt{sample\_lcomp}] This function samples from the length
   composition using a multinomial or Dirichlet distribution. The Dirichlet
   distribution can be thought of as a generalization of the
   multinomial distribution that has an additional parameter
@@ -1107,7 +1107,7 @@ functions.
   structure can be inputted as an argument and thus changed
   dynamically within a simulation (see \ref{sec:dybin} below for more
   information).
-\item[\texttt{change\_agecomp}] Same as length compositions except
+\item[\texttt{sample\_agecomp}] Same as length compositions except
   that it acts on age compositions.
 \end{description}
 
@@ -1215,12 +1215,12 @@ to specify the level of overdispersion.  Note that the package does
 not allow for tuning of the effective sample size, and the argument
 \texttt{cpar} controls the level of overdispersion in the sampling
 functions.  See the function documentation for
-\texttt{change\_agecomp} and \texttt{change\_lcomp} for more detail.
+\texttt{sample\_agecomp} and \texttt{sample\_lcomp} for more detail.
 
 \subsubsection{Effective sample size}
 For both multinomial and Dirichlet generated composition data the effective
-sample size is set automatically by the \texttt{change\_lcomp} and
-\texttt{change\_agecomp} functions. In the case of the multinomial the effective
+sample size is set automatically by the \texttt{sample\_lcomp} and
+\texttt{sample\_agecomp} functions. In the case of the multinomial the effective
 sample size is just the total sample size (i.e.\ how many fish were
 sampled, the number of sampled tows, etc.). However, with the Dirichlet distribution the effective sample size
 depends on the parameters passed to these functions and is automatically
@@ -1238,7 +1238,7 @@ about from highly overdispersed data with a large $n$.
 
 \subsubsection{Dynamic composition binning} \label{sec:dybin}
 
-The functions \texttt{change\_lcomp} and \texttt{change\_agecomp}
+The functions \texttt{sample\_lcomp} and \texttt{sample\_agecomp}
 include optional arguments specifying the bins to use. The user may
 specify a vector of values determining how to bin the data.  This
 option may be useful for users who wish to explore the impact of
@@ -1263,7 +1263,7 @@ setup different models that have the bin structures desired.
 Compared to sampling from the age and length compositions,
 sampling from the abundance indices
 is relatively straightforward. The OM \texttt{.dat} file contains the
-annual biomass values, and the \texttt{change\_index} function uses
+annual biomass values, and the \texttt{sample\_index} function uses
 these true values as the expected value for all fleets (CPUE from fisheries
 as well as scientific surveys). The function uses a bias-adjusted
 log-normal distribution with expected values given by the OM biomass
@@ -1532,7 +1532,7 @@ the functions in \pkg{ss3sim} were developed to work with these three model setu
 a model with a different structure may cause errors in these functions. This
 stems from the high flexibility of SS3, allowing for more complex model setups
 than those used while developing \pkg{ss3sim}. For
-instance, the \texttt{change\_index} function does not have the capability to
+instance, the \texttt{sample\_index} function does not have the capability to
 handle more than one season (it could, but currently it is not developed to). Given
 the many options available in SS3 it is extremely difficult to write
 auxiliary functions that will interact reliably with all combinations of these
@@ -1548,14 +1548,14 @@ they conform to the structure needed by the EM. Two key examples are with survey
 and age/length composition data.
 For the indices of abundance (CPUE and scientific survey) the OM
 \texttt{.dat} file will determine which years are available to the sampling
-function \texttt{change\_index}, so if the year $y$ is desired in the EM it needs
+function \texttt{sample\_index}, so if the year $y$ is desired in the EM it needs
 to be in the OM. In practice it may be easiest to just include all years in the
 OM if surveys will be dynamic (i.e.\ changing years between scenarios), or if it
 will be fixed for all scenarios to set it to match the EM exactly.
 
 Similarly with age/length compositions the OM \texttt{.dat} file will determine
 which years and bins are available to the sampling functions
-\texttt{change\_agecomp} and \texttt{change\_lcomp}. If dynamic binning is to be
+\texttt{sample\_agecomp} and \texttt{sample\_lcomp}. If dynamic binning is to be
 used, the user should setup the \texttt{.dat} file so that all desired
 combinations of bins are possible (see Section \ref{sec:dybin} for more
 details). Specifically, the user must specify small enough OM \texttt{.ctl} bins (no smaller than

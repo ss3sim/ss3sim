@@ -22,13 +22,13 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   \code{\link{change_f}} options.}
 
   \item{index_params}{A named list containing all the
-  \code{\link{change_index}} options.}
+  \code{\link{sample_index}} options.}
 
   \item{lcomp_params}{A named list containing all the
-  \code{\link{change_lcomp}} options.}
+  \code{\link{sample_lcomp}} options.}
 
   \item{agecomp_params}{A named list containing all the
-  \code{\link{change_agecomp}} options.}
+  \code{\link{sample_agecomp}} options.}
 
   \item{retro_params}{A named list containing all the
   \code{\link{change_retro}} options.}
