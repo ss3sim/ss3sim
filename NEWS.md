@@ -2,9 +2,19 @@
 
 ## New features
 
+* Add the option to use the optimized SS executables (#138 and #147).
+
 * Add Cole Monnahan's ss3sim plotting functions (#134).
 
 ## Bug fixes and changes
+
+* `change_lcomp`, `change_agecomp`, and `change_index` are now `sample_lcomp`,
+  `sample_agecomp`, and `sample_index`. The old functions point to the new
+  functions with warnings that they are depreciated. Existing code should
+  continue to work (#145).
+
+* ss3sim now requires the SS3 binary to be named according to the version (#138
+  and #147).
 
 * Bump required version of r4ss to 1.22.1 since 1.22.0 did not export functions
   that ss3sim needs.
