@@ -1,7 +1,6 @@
 .Rproj.user
 .Rhistory
 .RData
-*.Rproj
 *.Rapp.history
 *.log
 *.fls
