@@ -12,7 +12,8 @@ library(r4ss)
 
 ## I made a copy of the hake-om folder on 7/2/14 so we could test stuff and
 ## not break the original. Run it to get the initial output files.
-file.copy("hakeOM.dat", "hakeOM_original.dat")
+setwd("C:/Users/Christine/Documents/GitHub/ss3sim/inst/extdata/models/cod-om")
+file.copy("codOM.dat", "codOM_original.dat")
 system("ss3 -maxfn 1 -nohess")
 replist <- SS_output(dir=getwd(), covar=FALSE)
 TSCplot(replist)
