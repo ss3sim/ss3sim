@@ -2,6 +2,7 @@
 
 export(bias_ss3)
 export(change_agecomp)
+export(change_bins)
 export(change_e)
 export(change_f)
 export(change_index)
@@ -37,3 +38,5 @@ export(sample_lcomp)
 export(ss3sim_base)
 export(verify_input)
 import(ggplot2)
+importFrom(r4ss,SS_readdat)
+importFrom(r4ss,SS_writedat)
