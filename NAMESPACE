@@ -2,7 +2,7 @@
 
 export(bias_ss3)
 export(change_agecomp)
-export(change_bins)
+export(change_bin)
 export(change_e)
 export(change_f)
 export(change_index)
