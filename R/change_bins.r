@@ -61,14 +61,18 @@ change_bins <- function(file_in, file_out, bin_vector, type = c("length", "age")
     }
 
     datfile$lbin_vector <- bin_vector
+    datfile$N_lbins <- length(datfile$lbin_vector)
     newdummy <- data.frame(matrix(1, nrow = nrow(datfile$lencomp),
       ncol = length(datfile$lbin_vector)))
     # Find ID columns and data columns to replace:
     names(newdummy) <- paste0("l", datfile$lbin_vector)
     old_len_columns <- grep("^l[0-9.]+$", names(datfile$lencomp))
-    # Substitute new bins:
     id_columns <- seq_along(names(datfile$lencomp))[-old_len_columns]
+    # Substitute new bins:
     datfile$lencomp <- data.frame(datfile$lencomp[, id_columns], newdummy)
+    # change population length bin width
+    # (original file could have smaller value)
+    datfile$binwidth <- 1
   }
 
   if(type[1] == "age") {
@@ -79,13 +83,14 @@ change_bins <- function(file_in, file_out, bin_vector, type = c("length", "age")
     }
 
     datfile$agebin_vector <- bin_vector
+    datfile$N_agebins <- length(datfile$agebin_vector)
     newdummy <- data.frame(matrix(1, nrow = nrow(datfile$agecomp),
       ncol = length(datfile$agebin_vector)))
     # Find ID columns and data columns to replace:
     names(newdummy) <- paste0("a", datfile$agebin_vector)
     old_age_columns <- grep("^a[0-9.]+$", names(datfile$agecomp))
-    # Substitute new bins:
     id_columns <- seq_along(names(datfile$agecomp))[-old_age_columns]
+    # Substitute new bins:
     datfile$agecomp <- data.frame(datfile$agecomp[, id_columns], newdummy)
   }
 
