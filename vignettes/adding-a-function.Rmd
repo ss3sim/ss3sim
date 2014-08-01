@@ -1,0 +1,34 @@
+<!--
+%\VignetteEngine{knitr}
+%\VignetteIndexEntry{Adding new manipulation functions}
+-->
+
+# Adding a new SS3 manipulation function to ss3sim
+
+1. Write your change function in the `/R` folder. 
+  - Aim for singular names (e.g. `change_bin`). 
+  - Input and output file arguments should be written as `file_in` and `file_out` or if multiple types are needed then add a prefix. E.g. `dat_file_in`. 
+  - Unless otherwise necessary, arguments should take SS file names (as character values) and do the reading internally using r4ss functions (as opposed to taking lists that have already been read in by r4ss). Yes, there are a few places in ss3sim (e.g. the sampling functions) that take an already-read version as an argument value. We should standardize that eventually. 
+  - `devtools::document()` and `devtools::check(cran = TRUE)` your new code. 
+  - Also make sure you have an example and can run `devtools::dev_example("your_change_function")`. Note that your example *should not* run SS3 itself.
+
+2. Now go to `/R/case-parsing.r`. 
+  - You need to pick a capital letter to represent your case. This should be different than any existing case letter. E.g., at the time of writing this, the letters D, E, F, M, R, and S are being used.
+  - Add your new letter to the `get_caseargs` default argument values if you want it to be a default case.
+
+3. Go to `/R/run_ss3sim.r`.
+  - Add your new case letter to the argument list in `run_ss3sim`.
+  - Add your new case letter to the list of arguments passed on to `ss3sim_base`. There are two places to do this. (1) The parallel section and (2) the sequential section.
+
+4. Go to `/R/ss3sim_base.r`.
+  - Add an argument to `ss3sim_base` that matches the `params` name you used in `run_ss3sim`. For example, `f_params`. Make sure to also document the new argument with roxygen2 `@param` syntax.
+  - Now add a call to your function within the code of `ss3sim_base`.
+  - Run `devtools::document()`
+
+5. Test your new function and make sure that all existing examples continue to work.
+  - You will probably have to add new case files for the example models.
+  - You may have to update some of the example code in the functions. Remember to run `devtools::document()` after editing the examples.
+  - You may have to update some of the code in the vignette.
+  - In general, the user should be able to easily bypass your function and have it do nothing.
+  - You can check all the examples with `devtools::run_examples`.
+  - Of course, do another `devtools::check(cran = TRUE)`. This will also test the vignette building.
