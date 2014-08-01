@@ -1,6 +1,6 @@
 #' Change age or length bins in an SS operating model
 #'
-#' \code{change_bins} alters the bin structure for the age or length composition
+#' \code{change_bin} alters the bin structure for the age or length composition
 #' data in an SS operating model. By adding dummy data at the appropriate bin
 #' sizes to the SS \code{.dat} file, SS will record age or length composition
 #' data in the appropriate bins when the operating model is run.
@@ -27,17 +27,17 @@
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
-#' l <- change_bins(f_in, file_out = NULL, type = "length",
+#' l <- change_bin(f_in, file_out = NULL, type = "length",
 #'   bin_vector = seq(2, 8, 2), write_file = FALSE)
 #' print(l$lbin_vector)
 #' print(head(l$lencomp))
 #'
-#' a <- change_bins(f_in, file_out = NULL, type = "age",
+#' a <- change_bin(f_in, file_out = NULL, type = "age",
 #'   bin_vector = seq(2, 8, 2), write_file = FALSE)
 #' print(a$agebin_vector)
 #' print(head(a$agecomp))
 
-change_bins <- function(file_in, file_out, bin_vector, type = c("length", "age"),
+change_bin <- function(file_in, file_out, bin_vector, type = c("length", "age"),
   write_file = TRUE) {
 
   if(!type[1] %in% c("length", "age")) {
@@ -46,20 +46,18 @@ change_bins <- function(file_in, file_out, bin_vector, type = c("length", "age")
   if(!is.numeric(bin_vector)) {
     stop("bin_vector must be numeric")
   }
-  if(length(bin_vector) < 3) {
-    warning(paste("The length of bin_vector looks small; are you sure you",
-       "input a full vector of bins and not a bin size?"))
+  if(length(bin_vector) == 1) {
+    warning(paste("length(bin_vector) == 1; are you sure you",
+       "input a full numeric vector of bins and not a bin size?"))
   }
 
   datfile <- SS_readdat(file = file_in, verbose = FALSE)
+  if(datafile$Ngenders > 1) {
+    stop(paste("_Ngenders is greater than 1 in the operating model.",
+        "change_bin only works with single-gender models."))
+  }
 
   if(type[1] == "length") {
-
-    if(length(unique(datfile$lencomp$Gender)) > 1) {
-      stop(paste("There are 2 genders defined in the length composition",
-          "data; change_bin only works with single-gender models."))
-    }
-
     datfile$lbin_vector <- bin_vector
     datfile$N_lbins <- length(datfile$lbin_vector)
     newdummy <- data.frame(matrix(1, nrow = nrow(datfile$lencomp),
@@ -76,12 +74,6 @@ change_bins <- function(file_in, file_out, bin_vector, type = c("length", "age")
   }
 
   if(type[1] == "age") {
-
-    if(length(unique(datfile$agecomp$Gender)) > 1) {
-      stop(paste("There are 2 genders defined in the age composition",
-          "data; change_bin only works with single-gender models."))
-    }
-
     datfile$agebin_vector <- bin_vector
     datfile$N_agebins <- length(datfile$agebin_vector)
     newdummy <- data.frame(matrix(1, nrow = nrow(datfile$agecomp),
