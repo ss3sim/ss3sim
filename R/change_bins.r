@@ -54,6 +54,12 @@ change_bins <- function(file_in, file_out, bin_vector, type = c("length", "age")
   datfile <- SS_readdat(file = file_in, verbose = FALSE)
 
   if(type[1] == "length") {
+
+    if(length(unique(datfile$lencomp$Gender)) > 1) {
+      stop(paste("There are 2 genders defined in the length composition",
+          "data; change_bin only works with single-gender models."))
+    }
+
     datfile$lbin_vector <- bin_vector
     newdummy <- data.frame(matrix(1, nrow = nrow(datfile$lencomp),
       ncol = length(datfile$lbin_vector)))
@@ -66,6 +72,12 @@ change_bins <- function(file_in, file_out, bin_vector, type = c("length", "age")
   }
 
   if(type[1] == "age") {
+
+    if(length(unique(datfile$agecomp$Gender)) > 1) {
+      stop(paste("There are 2 genders defined in the age composition",
+          "data; change_bin only works with single-gender models."))
+    }
+
     datfile$agebin_vector <- bin_vector
     newdummy <- data.frame(matrix(1, nrow = nrow(datfile$agecomp),
       ncol = length(datfile$agebin_vector)))
