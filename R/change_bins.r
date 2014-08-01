@@ -72,7 +72,7 @@ change_bins <- function(file_in, file_out, bin_vector, type = c("length", "age")
     datfile$lencomp <- data.frame(datfile$lencomp[, id_columns], newdummy)
     # change population length bin width
     # (original file could have smaller value)
-    datfile$binwidth <- 1
+    datfile$binwidth <- min(abs(diff(bin_vector)))
   }
 
   if(type[1] == "age") {
