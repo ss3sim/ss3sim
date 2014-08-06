@@ -52,7 +52,7 @@ change_bin <- function(file_in, file_out, bin_vector, type = c("length", "age"),
   }
 
   datfile <- SS_readdat(file = file_in, verbose = FALSE)
-  if(datafile$Ngenders > 1) {
+  if(datfile$Ngenders > 1) {
     stop(paste("_Ngenders is greater than 1 in the operating model.",
         "change_bin only works with single-gender models."))
   }
@@ -70,7 +70,7 @@ change_bin <- function(file_in, file_out, bin_vector, type = c("length", "age"),
     datfile$lencomp <- data.frame(datfile$lencomp[, id_columns], newdummy)
     # change population length bin width
     # (original file could have smaller value)
-    datfile$binwidth <- min(abs(diff(bin_vector)))
+    datfile$binwidth <- 1 #min(abs(diff(bin_vector)))
   }
 
   if(type[1] == "age") {
