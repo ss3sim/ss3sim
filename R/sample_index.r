@@ -25,11 +25,11 @@
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
 #' outfile <- "test.dat"
-#' ex1 <- change_index(infile, outfile, fleets=c(2,3),
+#' ex1 <- sample_index(infile, outfile, fleets=c(2,3),
 #'                     years=list(1938:2012, 1938:2012) ,
 #'                     sds_obs=list(1e-6, 1e-6), write_file=FALSE,
 #'                     make_plot = TRUE)
-#' ex2 <- change_index(infile, outfile, fleets=c(2,3),
+#' ex2 <- sample_index(infile, outfile, fleets=c(2,3),
 #'                     years=list(1938:2012, 1938:2012) ,
 #'                     sds_obs=list(.05, .05), write_file=FALSE,
 #'                     make_plot = TRUE)
@@ -38,7 +38,7 @@
 #'                 colour=as.factor(index)))+geom_line() + geom_point(data=ex2,
 #'                 aes(x=year, y=obs, colour=as.factor(index), group=index))
 #' ## Exclude a fleet and have varying sds_obs by year
-#' ex3 <- change_index(infile, outfile, fleets=c(2,NA),
+#' ex3 <- sample_index(infile, outfile, fleets=c(2,NA),
 #'                     years=list(1938:2012, 1950),
 #'                     sds_obs=list(seq(.001, .1, len=75), .1),
 #'                     write_file=FALSE)
@@ -47,7 +47,7 @@
 #' }
 #'
 
-change_index <- function(infile, outfile, fleets, years, sds_obs,
+sample_index <- function(infile, outfile, fleets, years, sds_obs,
                          make_plot = FALSE, write_file=TRUE){
     cpue <- infile$CPUE
     ## Check inputs for errors
@@ -129,4 +129,22 @@ stop(paste("A year specified in years was not found in the input file for fleet"
     if(write_file)
         r4ss::SS_writedat(datlist = newfile, outfile = outfile, overwrite = T)
     return(invisible(cpue.new))
+}
+
+
+#' (Depreciated) Sample the biomass with observation error
+#'
+#' \code{change_index} is a depreciated function. Please use
+#' \code{\link{sample_index}} instead. \code{change_index} will be removed
+#' in the next major version.
+#'
+#' @param ... Arguments that get passed to \code{\link{sample_index}}.
+#'
+#' @export
+
+change_index <- function(...) {
+  warning(paste("change_index is a depreciated function.",
+    "Please use sample_index instead. change_index will",
+    "be removed in the next major version."))
+  sample_index(...)
 }

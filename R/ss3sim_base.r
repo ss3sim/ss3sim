@@ -1,4 +1,4 @@
-#' Base wrapper fun to run an ss3sim simulation
+#' Base wrapper function to run an ss3sim simulation
 #'
 #' This function is a wrapper function that can call \code{\link{run_ss3model}}
 #' for the operating model, sample the output (add recruitment deviations,
@@ -13,11 +13,11 @@
 #' @param f_params A named list containing all the \code{\link{change_f}}
 #'   options.
 #' @param index_params A named list containing all the
-#'   \code{\link{change_index}} options.
+#'   \code{\link{sample_index}} options.
 #' @param lcomp_params A named list containing all the
-#'   \code{\link{change_lcomp}} options.
+#'   \code{\link{sample_lcomp}} options.
 #' @param agecomp_params A named list containing all the
-#'   \code{\link{change_agecomp}} options.
+#'   \code{\link{sample_agecomp}} options.
 #' @param retro_params A named list containing all the
 #'   \code{\link{change_retro}} options.
 #' @param estim_params A named list containing all the \code{\link{change_e}}
@@ -48,7 +48,7 @@
 #' @param seed The seed value to pass to \code{\link{get_recdevs}} when
 #'   generating recruitment deviations. The generated recruitment deviations
 #'   depend on the iteration value, but also on the value of \code{seed}. A
-#'   given combinatination of iteration, number of years, and \code{seed} value
+#'   given combination of iteration, number of years, and \code{seed} value
 #'   will result in the same recruitment deviations.
 #' @param ... Anything extra to pass to \code{\link{run_ss3model}}. For example,
 #'   you may want to pass additional options to \code{SS3} through the argument
@@ -56,7 +56,9 @@
 #'   \code{\link{run_ss3model}} will be passed to the \code{\link{system}} call
 #'   that runs \code{SS3}. If you are on a Windows computer then you might want
 #'   to pass \code{show.output.on.console = FALSE} to make the simulations runs
-#'   faster by not printing output to the console.
+#'   faster by not printing output to the console. Also, see the argument
+#'   \code{ss_mode} to choose between safe or optimized SS3 executables
+#'   (default is safe mode).
 #' @author Sean Anderson with contributions from many others as listed in
 #'   the DESCRIPTION file.
 #' @return
@@ -249,7 +251,7 @@ deviations can lead to biased model results.")
       SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
       with(index_params,
-        change_index(infile          = SS.dat,
+        sample_index(infile          = SS.dat,
                      outfile         = pastef(sc, i, "em", "ss3.dat"),
                      fleets          = fleets,
                      years           = years,
@@ -259,7 +261,7 @@ deviations can lead to biased model results.")
       SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
       with(lcomp_params,
-        change_lcomp(infile           = SS.dat,
+        sample_lcomp(infile           = SS.dat,
                      outfile          = pastef(sc, i, "em", "ss3.dat"),
                      fleets           = fleets,
                      Nsamp            = Nsamp,
@@ -271,7 +273,7 @@ deviations can lead to biased model results.")
       SS.dat2 = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
       with(agecomp_params,
-        change_agecomp(infile         = SS.dat2,
+        sample_agecomp(infile         = SS.dat2,
                      outfile          = pastef(sc, i, "em", "ss3.dat"),
                      fleets           = fleets,
                      Nsamp            = Nsamp,

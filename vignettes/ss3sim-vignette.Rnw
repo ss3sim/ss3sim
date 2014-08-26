@@ -17,7 +17,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{graphicx}
-\usepackage{appendix}
+%\usepackage{appendix}
 \usepackage[round]{natbib}
 \bibpunct{(}{)}{;}{a}{}{;}
 
@@ -30,7 +30,7 @@
 
 \usepackage[dvipsnames,svgnames,x11names,hyperref]{xcolor}
 \usepackage{hyperref}
-\hypersetup{colorlinks,breaklinks,allcolors=MidnightBlue}
+\hypersetup{colorlinks=TRUE,breaklinks=TRUE,linkcolor=DodgerBlue3,urlcolor=DodgerBlue3,citecolor=DodgerBlue3}
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
@@ -58,7 +58,7 @@ thm = knit_theme$get("solarized-light.css")
 knit_theme$set(thm)
 @
 
-\title{An introduction to \pkg{ss3sim} --- an \proglang{R} package for
+\title{An introduction to \pkg{ss3sim}\\An \proglang{R} package for
   stock assessment simulation testing with\\Stock Synthesis 3}
 \author{
   Sean C. Anderson\thanks{sean@seananderson.ca; Department of Biological
@@ -89,7 +89,7 @@ knit_theme$set(thm)
 \clearpage
 \section{Installing the \textbf{ss3sim} \textsf{R} package}
 
-\pkg{ss3sim} requires \proglang{R} version 3.0.0 or greater.
+\pkg{ss3sim} requires \proglang{R} version 3.1.0 or greater.
 The package can be run on OS X, Windows, or Linux.
 The CRAN version of \pkg{ss3sim} can be installed
 in an \proglang{R} console with:
@@ -132,18 +132,20 @@ help(package = "ss3sim")
 vignette("ss3sim-vignette")
 @
 
+See \citet{anderson2014a} for an overview of \pkg{ss3sim}.
+
 \noindent
 We develop and test \pkg{ss3sim} around a specific version of SS3.
 Currently, \pkg{ss3sim} is tested to work with SS3 Version 3.24O.
 Since this is a more recent version than is provided at the normal download location
 \url{http://nft.nefsc.noaa.gov/SS3.html},
 we provide copies of the 3.24O binaries (with the permission of R. Methot) at\\
-\url{https://github.com/ss3sim/ss3sim/tree/ss3-binaries/inst/ss3}.
+\url{https://www.dropbox.com/sh/zg0sec6j20sfyyz/AACQiuk787qW882U2euVKoPna}.
 
 \noindent
 \pkg{ss3sim} requires the SS3 binary to be in your path.
 This means that your operating system knows where the binary file is located.
-See Appendix \ref{sec:path} for details.
+See Section \ref{sec:path} for details. See \texttt{?run\_ss3model} for instructions on how to specify the safe vs.\ the optimized binary.
 
 Please direct any questions, suggestions, or bug reports to the \pkg{ss3sim}
 issue tracker: \url{https://github.com/ss3sim/ss3sim/issues}, or to an author
@@ -182,7 +184,7 @@ an established base-case operating model (OM) and estimation model (EM) to
 work with. The \pkg{ss3sim} package comes with three generic built-in
 model setups that can be used as is, modified, or replaced.%
 \footnote{See Section \ref{sec:modify} for details on these models and how to
-modify them. See Appendices \ref{sec:om-setup} and \ref{sec:em-setup} for
+modify them. See Section \ref{sec:om-setup} and \ref{sec:em-setup} for
 details on creating your own OM and EMs.}
 Each OM and EM should be in its own folder.
 The OM folder should have the files:
@@ -448,7 +450,7 @@ Instead we will start with the configuration files from those papers.
 
 To investigate the effect of different levels of precision on the survey index of abundance,
 we will manipulate the argument \texttt{sds\_obs}
-that gets passed to \texttt{change\_index}.
+that gets passed to \texttt{sample\_index}.
 This argument ultimately refers to the standard error
 on the log(index) value, as defined in SS3.
 In case 0, we will specify the standard deviation at 0.1
@@ -472,8 +474,8 @@ the model), \texttt{2} in
 1974 to 2012 with a standard error on the log(survey index) of 0.1.
 
 We will not describe the length or age composition sampling here in detail, but
-you can refer to the help files \texttt{?change\_lcomp} and
-\texttt{?change\_agecomp} along with the case files included in the package
+you can refer to the help files \texttt{?sample\_lcomp} and
+\texttt{?sample\_agecomp} along with the case files included in the package
 data. Also see Section \ref{sec:comps} where we describe the theory behind the
 age- and length-composition sampling in \pkg{ss3sim}.
 
@@ -1026,7 +1028,7 @@ Some of the features may work within the \pkg{ss3sim} framework, but are unteste
 It is possible to create new models that will work within the \pkg{ss3sim}
 framework, but this task will be complicated and likely require extensive
 knowledge of SS3 and R, as well as modification of the \pkg{ss3sim}
-functions. This process is described in more detail in Appendices
+functions. This process is described in more detail in Sections
 \ref{sec:om-setup} and \ref{sec:em-setup}.
 
 Instead of creating entirely new models, we recommend adapting the current
@@ -1039,7 +1041,7 @@ setups and whether simple changes can get you reasonably close for simulation pu
 
 Say for example you want to modify the cod model to have different
 maturity, and then explore different sampling schemes using the
-\texttt{change\_index}, \texttt{change\_lcomps}, and \texttt{change\_agecomps}
+\texttt{sample\_index}, \texttt{sample\_lcomp}, and \texttt{sample\_agecomp}
 functions. The following steps provide a basic guideline for how to accomplish this:
 \begin{itemize}
 \item Using the original cod model create the case argument files you desire for
@@ -1086,7 +1088,7 @@ This section briefly details the background and functionality of these
 functions.
 
 \begin{description}
-\item[\texttt{change\_index}] This function samples from the biomass
+\item[\texttt{sample\_index}] This function samples from the biomass
   trends for the different fleets to simulate the collection of CPUE
   and survey index data. Since $q=1$ for both the OM and EM, the CPUE
   indices are actually absolute indices of biomass. The result of the
@@ -1095,7 +1097,7 @@ functions.
   which years and with what amount of noise. Note that the
   years/fleets specified to be sampled must be present in the OM file,
   so the user must setup the OM accordingly.
-\item[\texttt{change\_lcomp}] This function samples from the length
+\item[\texttt{sample\_lcomp}] This function samples from the length
   composition using a multinomial or Dirichlet distribution. The Dirichlet
   distribution can be thought of as a generalization of the
   multinomial distribution that has an additional parameter
@@ -1105,7 +1107,7 @@ functions.
   structure can be inputted as an argument and thus changed
   dynamically within a simulation (see \ref{sec:dybin} below for more
   information).
-\item[\texttt{change\_agecomp}] Same as length compositions except
+\item[\texttt{sample\_agecomp}] Same as length compositions except
   that it acts on age compositions.
 \end{description}
 
@@ -1213,12 +1215,12 @@ to specify the level of overdispersion.  Note that the package does
 not allow for tuning of the effective sample size, and the argument
 \texttt{cpar} controls the level of overdispersion in the sampling
 functions.  See the function documentation for
-\texttt{change\_agecomp} and \texttt{change\_lcomp} for more detail.
+\texttt{sample\_agecomp} and \texttt{sample\_lcomp} for more detail.
 
 \subsubsection{Effective sample size}
 For both multinomial and Dirichlet generated composition data the effective
-sample size is set automatically by the \texttt{change\_lcomp} and
-\texttt{change\_agecomp} functions. In the case of the multinomial the effective
+sample size is set automatically by the \texttt{sample\_lcomp} and
+\texttt{sample\_agecomp} functions. In the case of the multinomial the effective
 sample size is just the total sample size (i.e.\ how many fish were
 sampled, the number of sampled tows, etc.). However, with the Dirichlet distribution the effective sample size
 depends on the parameters passed to these functions and is automatically
@@ -1236,7 +1238,7 @@ about from highly overdispersed data with a large $n$.
 
 \subsubsection{Dynamic composition binning} \label{sec:dybin}
 
-The functions \texttt{change\_lcomp} and \texttt{change\_agecomp}
+The functions \texttt{sample\_lcomp} and \texttt{sample\_agecomp}
 include optional arguments specifying the bins to use. The user may
 specify a vector of values determining how to bin the data.  This
 option may be useful for users who wish to explore the impact of
@@ -1261,7 +1263,7 @@ setup different models that have the bin structures desired.
 Compared to sampling from the age and length compositions,
 sampling from the abundance indices
 is relatively straightforward. The OM \texttt{.dat} file contains the
-annual biomass values, and the \texttt{change\_index} function uses
+annual biomass values, and the \texttt{sample\_index} function uses
 these true values as the expected value for all fleets (CPUE from fisheries
 as well as scientific surveys). The function uses a bias-adjusted
 log-normal distribution with expected values given by the OM biomass
@@ -1408,19 +1410,19 @@ On a 2.27 GHz Intel Xeon quad-core server running Ubuntu 10.04,
 this example ran 1.9 times faster on two cores than on a single core,
 and 3.2 times faster on four cores.
 
-\bibliographystyle{apalike}
-\bibliography{refs}
+%\bibliographystyle{apalike}
+%\bibliography{refs}
 
-\clearpage
+%\clearpage
 
-\appendix
-\appendixpage
-\addappheadtotoc
+%\appendix
+%\appendixpage
+%\addappheadtotoc
 
 \section{Putting SS3 in your path}
 \label{sec:path}
 
-Instead of copying the SS3 binary file (\texttt{ss3.exe}) to each folder
+Instead of copying the SS3 binary file (\texttt{ss3.exe} or \texttt{ss3}) to each folder
 within a simulation and running it, \pkg{ss3sim} relies on a single binary file
 being available to the operating system regardless of the folder.
 To accomplish this, SS3 must be in your system path, which is
@@ -1530,7 +1532,7 @@ the functions in \pkg{ss3sim} were developed to work with these three model setu
 a model with a different structure may cause errors in these functions. This
 stems from the high flexibility of SS3, allowing for more complex model setups
 than those used while developing \pkg{ss3sim}. For
-instance, the \texttt{change\_index} function does not have the capability to
+instance, the \texttt{sample\_index} function does not have the capability to
 handle more than one season (it could, but currently it is not developed to). Given
 the many options available in SS3 it is extremely difficult to write
 auxiliary functions that will interact reliably with all combinations of these
@@ -1546,14 +1548,14 @@ they conform to the structure needed by the EM. Two key examples are with survey
 and age/length composition data.
 For the indices of abundance (CPUE and scientific survey) the OM
 \texttt{.dat} file will determine which years are available to the sampling
-function \texttt{change\_index}, so if the year $y$ is desired in the EM it needs
+function \texttt{sample\_index}, so if the year $y$ is desired in the EM it needs
 to be in the OM. In practice it may be easiest to just include all years in the
 OM if surveys will be dynamic (i.e.\ changing years between scenarios), or if it
 will be fixed for all scenarios to set it to match the EM exactly.
 
 Similarly with age/length compositions the OM \texttt{.dat} file will determine
 which years and bins are available to the sampling functions
-\texttt{change\_agecomp} and \texttt{change\_lcomp}. If dynamic binning is to be
+\texttt{sample\_agecomp} and \texttt{sample\_lcomp}. If dynamic binning is to be
 used, the user should setup the \texttt{.dat} file so that all desired
 combinations of bins are possible (see Section \ref{sec:dybin} for more
 details). Specifically, the user must specify small enough OM \texttt{.ctl} bins (no smaller than
@@ -1778,5 +1780,8 @@ verify that \pkg{ss3sim} functions that modify the EM (e.g.,
 functions will not work perfectly with the new model setups. In this case, it may be
 necessary to modify the \pkg{ss3sim} functions to be compatible with the new
 OM and EM.
+
+\bibliographystyle{apalike}
+\bibliography{refs}
 
 \end{document}

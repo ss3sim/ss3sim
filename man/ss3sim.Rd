@@ -37,23 +37,24 @@ will work from within \R.
 The main \pkg{ss3sim} functions are divided into three
 types:
 
-1. \code{change} functions that manipulate SS3
-configuration files. These manipulations generate an
-underlying "truth" (operating models) and control our
-assessment of those models (estimation models). \itemize{
-\item \code{\link{change_f}}: Controls fishing mortality.
+1. \code{change} and \code{sample} functions that
+manipulate SS3 configuration files. These manipulations
+generate an underlying "truth" (operating models) and
+control our assessment of those models (estimation models).
+\itemize{ \item \code{\link{change_f}}: Controls fishing
+mortality.
 
 \item \code{\link{change_tv}}: Adds time-varying features.
 For example, time-varying natural mortality, growth, or
 selectivity.
 
-\item \code{\link{change_lcomp}}: Controls how length
+\item \code{\link{sample_lcomp}}: Controls how length
 composition data are sampled.
 
-\item \code{\link{change_agecomp}}: Controls how age
+\item \code{\link{sample_agecomp}}: Controls how age
 composition data are sampled.
 
-\item \code{\link{change_index}}: Controls how the fishery
+\item \code{\link{sample_index}}: Controls how the fishery
 and survey indices are sampled.
 
 \item \code{\link{change_e}}: Controls which and how
