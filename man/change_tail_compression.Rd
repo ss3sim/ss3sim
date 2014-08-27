@@ -8,10 +8,10 @@ change_tail_compression(tail_compression, file_in, file_out)
 \arguments{
   \item{tail_compression}{The new tail_compression value to
   be used. Must be a numeric value, as a proportion. For
-  example 0.1 means 10%. See the SS3 manual for further
-  information. A NULL value indicates no action, a negative
-  value indicates to SS3 to ignore it (not use that
-  feature).}
+  example 0.1 means 10 percent. See the SS3 manual for
+  further information. A NULL value indicates no action, a
+  negative value indicates to SS3 to ignore it (not use
+  that feature).}
 
   \item{file_in}{Input SS3 dat file.}
 

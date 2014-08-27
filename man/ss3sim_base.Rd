@@ -36,6 +36,9 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   \item{estim_params}{A named list containing all the
   \code{\link{change_e}} options.}
 
+  \item{tc_params}{A named list containing all the
+  \code{\link{change_tail_compression}} options.}
+
   \item{om_dir}{The directory with the operating model you
   want to copy and use for the specified simulations.}
 
