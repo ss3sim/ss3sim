@@ -261,7 +261,6 @@ deviations can lead to biased model results.")
 
       ## Add tail compression option. If NULL is passed (the base case),
       ## ignore it.
-      print(tc_params)
       if(!is.null(tc_params)){
           wd <- getwd()
           setwd(pastef(sc, i, "em"))
@@ -377,6 +376,8 @@ deviations can lead to biased model results.")
         print(index_params)
         cat("\n\n# lcomp arguments\n")
         print(lcomp_params)
+        cat("\n\n# tail compression arguments\n")
+        print(tc_params)
         cat("\n\n# agecomp arguments\n")
         print(agecomp_params)
         cat("\n\n# retro arguments\n")
