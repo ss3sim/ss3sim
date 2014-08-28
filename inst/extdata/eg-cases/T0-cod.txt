@@ -2,4 +2,3 @@
 tail_compression; 0
 file_in; ss3.dat 
 file_out; ss3.dat
- 
