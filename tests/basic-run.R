@@ -1,7 +1,9 @@
 # Basic tests that should all run without errors
 
-
-devtools::load_all("..")
+devtools::install("..")
+library(ss3sim)
+## this way was breaking parallel for Cole's windows machines
+## devtools::load_all("..")
 
 ## Setup:
 
