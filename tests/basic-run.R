@@ -1,5 +1,7 @@
 # Basic tests that should all run without errors
 
+devtools::load_all("..")
+
 ## Setup:
 # Find the data in the ss3sim package:
 d <- system.file("extdata", package = "ss3sim")
