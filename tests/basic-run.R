@@ -4,8 +4,11 @@
 #wd <- getwd()
 #setwd(temp_path)
 
+devtools::load_all('..')
+
 # Find the data in the ss3sim package:
-d <- system.file("extdata", package = "ss3sim")
+## d <- system.file("extdata", package = "ss3sim")
+d <- '../inst/extdata'
 om <- paste0(d, "/models/cod-om")
 em <- paste0(d, "/models/cod-em")
 case_folder <- paste0(d, "/eg-cases")
@@ -14,5 +17,15 @@ case_folder <- paste0(d, "/eg-cases")
 run_ss3sim(iterations = 1:1, scenarios = "D0-E0-F0-R0-M0-cod",
   case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "safe")
 unlink("D0-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
+
+## in parallel..
+## install.packages(c("doParallel", "foreach"))
+require(doParallel)
+registerDoParallel(cores = 4)
+require(foreach)
+getDoParWorkers()
+run_ss3sim(iterations = 1:1, scenarios = "D0-E0-F0-R0-M0-cod", parallel=TRUE,
+  case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "safe")
+
 #setwd(wd)
 #unlink(temp_dir, recursive = TRUE) # clean up
