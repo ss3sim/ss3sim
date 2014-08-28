@@ -1781,6 +1781,141 @@ functions will not work perfectly with the new model setups. In this case, it ma
 necessary to modify the \pkg{ss3sim} functions to be compatible with the new
 OM and EM.
 
+
+
+\section{Adding a new SS3 manipulation function}
+
+You can create your own new function to manipulate SS3 configuration files during an \pkg{ss3sim} simulation. All this function needs to do is read in the appropriate SS3 files, manipulate them in some way, and write them back out. You then need to insert your new function into the main \pkg{ss3sim} simulation routine so it gets called at the appropriate time. The following instructions briefly outline all the steps to this process. Feel free to contact any of the \pkg{ss3sim} developers for help. If you create a new manipulation function it would be great to get it incorporated into the official package.
+
+The new manipulation function can be used by one or more cases.
+Cases can be mandatory (must be included in all scenarios, like \texttt{F} and \texttt{D})
+or optional like \texttt{S} where if not specified then nothing occurs.
+
+\begin{enumerate}
+\item
+  Write your change function in the \texttt{/R} folder.
+
+\begin{itemize}
+\item
+  Aim for singular names (e.g. \texttt{change\_bin}).
+\item
+  Input and output file arguments should be written as \texttt{file\_in}
+  and \texttt{file\_out} or if multiple types are needed then add a
+  prefix. E.g. \texttt{dat\_file\_in}.
+\item
+  In general try to match argument names as best as possible. A good
+  approach is to start with a similar function and modify as needed.
+\item
+  Unless otherwise necessary, arguments should take SS file names (as
+  character values) and do the reading internally using r4ss functions
+  (as opposed to taking lists that have already been read in by r4ss).
+  Currently, there are a few places in ss3sim (e.g.~the sampling functions)
+  that take an already-read version as an argument value. This will be
+  standardized eventually.
+\item
+  Use \pkg{roxygen2} \texttt{@param}, \texttt{@author}, etc. to document your function. Then
+  run \texttt{devtools::document()} and
+  \texttt{devtools::check(cran = TRUE)} on your new code.
+  Test that the documentation is right with
+  \texttt{devtools::dev\_help("your\_change\_function")}.
+\item
+  Also make sure you have an example and can run\\
+  \texttt{devtools::dev\_example("your\_change\_function")}. Note that
+  your example \emph{should not} run SS3 itself. See other functions for
+  how to create a working example from packaged files.
+\end{itemize}
+
+\item
+  Now go to \texttt{/R/case-parsing.r}.
+
+\begin{itemize}
+\item
+  You need to pick a capital letter to represent your case. This should
+  be different than any existing case letter. E.g., at the time of
+  writing this, the letters D, E, F, G, M, R, and S are being used.
+\item
+  Add your new letter to the \texttt{get\_caseargs} default argument
+  values if you want it to be a mandatory case. Otherwise your new case
+  letter must be passed explicitly in the \texttt{run\_ss3sim} call.
+\end{itemize}
+
+\item
+  Go to \texttt{/R/ss3sim\_base.r}.
+
+\begin{itemize}
+\item
+  Add a new argument to the function \texttt{ss3sim\_base} that
+  corresponds to your new case. For example, \texttt{f\_params}. Make
+  sure to also document the new argument with roxygen2 \texttt{@param}
+  syntax.
+\item
+  Now that your case arguments are passed to this function, you can use
+  them in the function call. So add a call to your function within the
+  code of \texttt{ss3sim\_base}. Where in the code depends on when your
+  function needs to be run in the flow of a simulation. The
+  \texttt{change\_f} needs to occur before the OM runs, and the sampling
+  of data occurs after the OM runs.
+\item
+  Run \texttt{devtools::document()} to update the argument list for
+  \texttt{ss3sim\_base} and check it.
+\end{itemize}
+
+\item
+  Go to \texttt{/R/run\_ss3sim.r}.
+
+\begin{itemize}
+\item
+  \texttt{run\_ss3sim} calls \texttt{ss3sim\_base} so \texttt{run\_ss3sim} needs to be
+  updated to include your new case argument from step 3.
+\item
+  The variable \texttt{a} is a list of list of arguments, one element of
+  which is your new set of arguments. For instance \texttt{a\$F} will
+  contain the vector of \texttt{F} values.
+\item
+  Update the call to \texttt{ss3sim\_base} to include your new argument.
+  There are two places to do this. (1) The parallel section and (2) the
+  sequential section. For instance \texttt{f\_params=a\$F}.
+\item
+  If the case is optional and not passed, the element of the list will
+  be NULL. That is, \texttt{a\$X} will be NULL if the case \texttt{X}
+  isn't used. You can test for this in \texttt{ss3sim\_base} and skip
+  your function, effectively turning it off if there is no case argument
+  available. This will also prevent previous code from breaking.
+\end{itemize}
+
+\item
+  Test your new function and make sure that all existing examples
+  continue to work.
+
+\begin{itemize}
+\item
+  First test that \texttt{get\_caseargs} reads in and parses your case
+  files properly. If your case isn't mandatory you need to explicitly
+  pass the cases to the \texttt{case\_files} argument. E.g. if your case
+  is \texttt{X}then
+  \texttt{case\_files=list(M="M", F="F", D=c("index", "lcomp", "agecomp"), R="R", E="E", X="X")}.
+  This function will return a list of lists of the case arguments read
+  from file.
+\item
+  You will have to do more work if your case is mandatory, since it will
+  break any previous scenarios. You will have to: add new case files for
+  the example models, the example code in the functions, and the
+  vignette code.
+\item
+  Remember to run \texttt{devtools::document()} after editing the
+  examples.
+\item
+  In general, the user should be able to easily bypass your function and
+  have it do nothing.
+\item
+  You can check all the examples with \texttt{devtools::run\_examples()}.
+\item
+  Of course, do another \texttt{devtools::check(cran = TRUE)}. This will
+  also test the vignette building.
+\end{itemize}
+
+\end{enumerate}
+
 \bibliographystyle{apalike}
 \bibliography{refs}
 
