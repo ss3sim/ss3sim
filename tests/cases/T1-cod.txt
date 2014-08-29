@@ -1,0 +1,3 @@
+tail_compression; .05
+file_in; ss3.dat
+file_out; ss3.dat
