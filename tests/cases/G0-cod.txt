@@ -1,0 +1,4 @@
+# A sample case file for arbitrary growth change_tv() arguments
+function_type; change_tv
+param; VonBert_K_Fem_GP_1
+dev; rep(0, 100)

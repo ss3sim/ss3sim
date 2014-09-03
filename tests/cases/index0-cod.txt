@@ -1,0 +1,3 @@
+fleets; 2
+years; list(seq(1974, 2012, by = 2))
+sds_obs; list(0.1)

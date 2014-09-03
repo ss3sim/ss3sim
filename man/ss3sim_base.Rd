@@ -5,9 +5,10 @@
 \usage{
 ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   agecomp_params, estim_params, tv_params, om_dir, em_dir,
-  retro_params = NULL, user_recdevs = NULL, bias_adjust = FALSE,
-  bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
-  print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21, ...)
+  retro_params = NULL, tc_params = NULL, user_recdevs = NULL,
+  bias_adjust = FALSE, bias_nsim = 5, bias_already_run = FALSE,
+  hess_always = FALSE, print_logfile = TRUE, sleep = 0, conv_crit = 0.2,
+  seed = 21, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -35,6 +36,9 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
 
   \item{estim_params}{A named list containing all the
   \code{\link{change_e}} options.}
+
+  \item{tc_params}{A named list containing all the
+  \code{\link{change_tail_compression}} options.}
 
   \item{om_dir}{The directory with the operating model you
   want to copy and use for the specified simulations.}
