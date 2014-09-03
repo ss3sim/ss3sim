@@ -24,6 +24,8 @@
 #'   options.
 #' @param tc_params A named list containing all the
 #' \code{\link{change_tail_compression}} options.
+#' @param lc_params A named list containing all of the
+#' \code{\link{change_lcomp_constant}}.
 #' @param om_dir The directory with the operating model you want to copy
 #'   and use for the specified simulations.
 #' @param em_dir The directory with the estimation model you want to copy
@@ -266,6 +268,18 @@ deviations can lead to biased model results.")
           setwd(pastef(sc, i, "em"))
           with(tc_params,
                change_tail_compression(tail_compression=tail_compression,
+                                       file_in=file_in,
+                                       file_out=file_out))
+          setwd(wd)
+      }
+
+      ## Add robustification constant to length comps. If NULL is passed (the base case),
+      ## ignore it.
+      if(!is.null(lc_params)){
+          wd <- getwd()
+          setwd(pastef(sc, i, "em"))
+          with(lc_params,
+               change_lcomp_constant(lcomp_constant=lcomp_constant,
                                        file_in=file_in,
                                        file_out=file_out))
           setwd(wd)
