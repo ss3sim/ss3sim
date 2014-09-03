@@ -55,3 +55,4 @@ Ian Taylor, Sean Anderson
 \seealso{
 \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
 }
+
