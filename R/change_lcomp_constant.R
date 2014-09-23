@@ -1,16 +1,21 @@
-#' Replace the robustification constant for length composition data.
+#' Set the robustification constant for length composition data.
 #'
 #' This function replaces the robustification value for length composition
 #' data in a \code{dat} file (\code{file_in}) with those specified in
 #' \code{lcomp_constant}. It then writes a new file with name
 #' \code{file_out} into the working directory.
 #'
-#' @param lcomp_constant The new lcomp_constant value to be used. Must
-#' be a numeric value, as a proportion. For example 0.1 means 10
-#' percent. See the SS3 manual for further information. A NULL value
-#' indicates no action, a negative value indicates to SS3 to ignore it (not
-#' use that feature).
-#' @param file_in Input SS3 dat file.
+#' @details The robustification constant is added to both the observed and
+#' expected proportions of length composition data, before being normalized
+#' internally. It is designed to help stabilize the model, but is unclear
+#' how and when to use it for optimal effect. The same value is used for
+#' all length data.
+#' @param lcomp_constant The new value to be used. Must be a numeric value,
+#' as a proportion. For example 0.1 means 10 percent. See the SS3 manual
+#' for further information. A NULL value indicates no action resulting in
+#' using the current value, and a value of 0 will effectively turn off the
+#' feature.
+#' @param file_in Input SS3 data file.
 #' @param file_out Output SS3 dat file. Typically the same as \code{file_in}.
 #' @return A modified SS3 \code{.dat} file, and that file returned
 #' invisibly (for testing) as a vector of character lines.
