@@ -1,3 +1,5 @@
+## updated by Merrill Rudd
+
 #' Calculate run time
 #'
 #' Internal function used by \code{get_results_scenario} to calculate the
