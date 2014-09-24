@@ -14,6 +14,9 @@
 #' @param type One of \code{"length"} or \code{"age"}. This controls whether the
 #'   function acts on the age composition or length composition data. Default is
 #'   \code{"length"}.
+#' @param pop_bin Choose a real number to choose the population bin width. This option 
+#' only works if \code{"lbin_method"} is set to \code{"2"}. Default is
+#'   \code{"NULL"} which leaves the original value.
 #' @param write_file Should the \code{.dat} file be written? The new \code{.dat}
 #'   file will always be returned invisibly by the function. Setting
 #'   \code{write_file = FALSE} can be useful for testing. Note that you must
@@ -37,7 +40,7 @@
 #' print(a$agebin_vector)
 #' print(head(a$agecomp))
 
-change_bin <- function(file_in, file_out, bin_vector, type = c("length", "age"),
+change_bin <- function(file_in, file_out, bin_vector, type = c("length", "age"), pop_bin=NULL, 
   write_file = TRUE) {
 
   if(!type[1] %in% c("length", "age")) {
@@ -50,13 +53,22 @@ change_bin <- function(file_in, file_out, bin_vector, type = c("length", "age"),
     warning(paste("length(bin_vector) == 1; are you sure you",
        "input a full numeric vector of bins and not a bin size?"))
   }
-
+  if(length(pop_bin)!=1 & !is.null(pop_bin)) {
+    stop("pop bin should be a real number")
+  }
+  
   datfile <- SS_readdat(file = file_in, verbose = FALSE)
   if(datfile$Ngenders > 1) {
     stop(paste("_Ngenders is greater than 1 in the operating model.",
         "change_bin only works with single-gender models."))
   }
 
+  if(datfile$lbin_method != 2 & !is.null(pop_bin)) {
+    stop(paste("the current model doesn't support a change in 'pop_bin' with a 'lbin_method' different than option 2"))
+  }
+
+  if(!is.null(pop_bin)) datfile$binwidth <- pop_bin
+  
   if(type[1] == "length") {
     datfile$lbin_vector <- bin_vector
     datfile$N_lbins <- length(datfile$lbin_vector)
@@ -70,7 +82,7 @@ change_bin <- function(file_in, file_out, bin_vector, type = c("length", "age"),
     datfile$lencomp <- data.frame(datfile$lencomp[, id_columns], newdummy)
     # change population length bin width
     # (original file could have smaller value)
-    datfile$binwidth <- 1 #min(abs(diff(bin_vector)))
+    # datfile$binwidth <- 1 #min(abs(diff(bin_vector)))
   }
 
   if(type[1] == "age") {
