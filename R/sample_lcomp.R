@@ -9,11 +9,9 @@
 #'
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
-#' @param lengthbin_vector A numeric vector giving the new length bins to use.
-#'   \code{lengthbin_vector} must be within the [min;max] of population bin.
-#'   This feature allows dynamic binning by the user, but is not fully tested.
-#'   Users should consult the vignette and carefully check the function bins
-#'   the data as desired before proceeding with simulations.
+#' @param lengthbin_vector Depreciated argument. Does nothing and will be
+#'   removed in a future major version update. Instead, see
+#'   \code{change_bin}.
 #'
 #' @template sampling-return
 #'
@@ -32,19 +30,6 @@
 #'                     Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
 #'                     years=list(seq(1994, 2012, by=2),
 #'                         2003:2012), write_file = FALSE)
-#'
-#' ## Generate with constant sample size across years AND with different length
-#' ## bins (same as ex1 except bins)
-#' ex3 <- sample_lcomp(infile=infile, outfile="test3.dat", fleets=c(1,2),
-#'                     Nsamp=list(100,50), years=list(seq(1994, 2012, by=2),
-#'                           2003:2012), lengthbin_vector = seq(9,30,by=2),
-#'                           write_file = FALSE)
-#'
-#' plot(seq(8,30,by=2), as.numeric(ex3[1, -(1:6)]), type="b", col=2,
-#'      xlab="Length Bin", ylab="Proportion of length",
-#'      main="Comparison of different length bin structures via lengthbin_vector")
-#' lines(seq(8, 30, by=.5), as.numeric(ex1[1, -(1:6)]), type="b", col=1)
-#' legend("topright", legend=c("ex1", "ex3"), col=c(1,2), pch=1)
 #'
 #' ## Plot distributions for a particular year to compare multinomial
 #' ## vs. overdispersed Dirichlet
@@ -77,16 +62,9 @@
 #' @seealso \code{\link{sample_agecomp}}
 
 sample_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
-  years, cpar=1, lengthbin_vector=NULL, write_file=TRUE){
-  ## The new lcomp is mostly based on the old one so start with
-  ## that
+  years, cpar = 1, write_file = TRUE, lengthbin_vector = NULL){
+  ## The new lcomp is mostly based on the old one so start with that
   lcomp <- infile$lencomp
-  newbins <- lengthbin_vector
-  oldbins <- infile$lbin_vector
-  if(!is.null(newbins)){
-    if (min(newbins) > min(oldbins)) newbins <- c(min(oldbins), newbins)
-    Nbins <- length(newbins)
-  }
   ## Check inputs for errors
   if(substr_r(outfile,4) != ".dat" & write_file)
     stop(paste0("outfile ", outfile, " needs to end in .dat"))
@@ -100,7 +78,8 @@ sample_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
   if (Nfleets>0){
     for(i in 1:Nfleets){
       if(length(Nsamp[[i]])>1 & length(Nsamp[[i]]) != length(years[[i]]))
-        stop(paste0("Length of Nsamp does not match length of years for fleet ",fleets[i]))
+        stop(paste0("Length of Nsamp does not match length of years for fleet ",
+          fleets[i]))
     }
     if(length(cpar) == 1){
       ## If only 1 value provided, use it for all fleets
@@ -113,41 +92,12 @@ sample_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
   }
   ## End input checks
 
-  ## Recalculate length bins depending on user input
-  if (!is.null(newbins) & Nfleets>0) {
-    if (class(newbins) != "numeric") {
-      stop("lengthbin_vector must have a numeric input")
-    }
-    if (min(newbins) < min(oldbins) |
-        max(newbins) > max(oldbins)) {
-      stop("lengthbin_vector must be within the [min;max] of population bin")
-    }
-    ## Adjust the "old" length bins to the "new" one
-    if (length(oldbins) != Nbins) {
-      newbin.index <- findInterval(oldbins, newbins)
-      ## Calculate new bins by consolidating old bins, and then and sum
-      ## across appropriate columns to create the new columns
-      temp.index <- 1:length(unique(newbin.index))
-      temp <- sapply(temp.index, function(x)
-        apply(as.matrix(lcomp[, 6+which(newbin.index==x)]),1, sum))
-      new.lcomp <- cbind(lcomp[,1:6], temp)
-      names(new.lcomp)[-(1:6)] <-
-        c(paste0("l", newbins[-Nbins], "-",
-          newbins[-1]), paste0("l>",newbins[Nbins]))
-
-      ## Change the corresponding locations in the .dat file
-      infile$N_lbins <- Nbins
-      infile$lbin_vector <- newbins
-      lcomp <- new.lcomp
-    }
-  }
-
   ## Resample from the length data
   ## The general approach here is to loop through each row to keep
   ## (depends on years input) and resample depending on Nsamp and
   ## cvar. All these rows are then combined back together to form
   ## the final lcomp.
-  newcomp.list <- list()                  # temp storlength for the new rows
+  newcomp.list <- list() # temp storlength for the new rows
   k <- 1
   ## Loop through each fleet
   if (Nfleets>0){
@@ -156,8 +106,8 @@ sample_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
       if(!is.na(fl)){
         lcomp.fl <- lcomp[lcomp$FltSvy == fl & lcomp$Yr %in% years[[i]], ]
         if(length(years[[i]]) != nrow(lcomp.fl))
-          stop(
-            paste("A year specified in years was not found in the input file for fleet", fl))
+          stop(paste("A year specified in years was not found in the input",
+                     "file for fleet", fl))
         lcomp.fl$Nsamp <- Nsamp[[i]]
         ## Now loop through each year and resample that row
         for(yr in years[[i]]) {

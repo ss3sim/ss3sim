@@ -44,13 +44,9 @@ sample_agecomp(infile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
   Values greater than one indicate overdispersion, and less
   underdispersion.}
 
-  \item{agebin_vector}{A numeric vector giving the new age
-  bins to use. \code{agebin_vector} must be within the
-  [min;max] of population bin. This feature alows dynamic
-  binning by the user, but is not fully tested. Users
-  should consult the vignette and carefully check the
-  function bins the data as desired before proceeding with
-  simulations.}
+  \item{agebin_vector}{Depreciated argument. Does nothing
+  and will be removed in a future major version update.
+  Instead, see \code{change_bin}.}
 }
 \value{
 A modified \code{.dat} file if \code{write_file=TRUE}. A
@@ -66,30 +62,22 @@ then written to file for use by the estimation model.
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/example-om/data.ss_new")
 infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+
 ## Turn off age comps by specifying fleets=NULL
 sample_agecomp(infile=infile, outfile="test1.dat",
                fleets=NULL, cpar=c(5,NA), Nsamp=list(100,100),
                years=list(1995, 1995), write_file=FALSE)
+
 ## Generate with a smaller number of fleet taking samples
 ex1 <- sample_agecomp(infile=infile, outfile="test1.dat", fleets=c(2),
                       Nsamp=list(c(10,50)), years=list(c(1999,2000)),
                       write_file=FALSE)
+
 ## Generate with varying Nsamp by year for first fleet
 ex2 <- sample_agecomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
                       Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
                       years=list(seq(1994, 2012, by=2),
                           2003:2012), write_file=FALSE)
-## Generate with varying Nsamp by year for first fleet AND with different age bins
-ex3 <- sample_agecomp(infile=infile, outfile="test3.dat", fleets=c(1,2),
-                      Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
-                      years=list(seq(1994, 2012, by=2),
-                          2003:2012), agebin_vector = seq(1,15,by=3),
-                          write_file=FALSE)
-plot(seq(0,15, by=3), as.numeric(ex3[1, -(1:9)]), type="b", col=2,
-     xlab="Age Bin", ylab="Proportion of Age",
-     main="Comparison of different age bin structures via agebin_vector")
-lines(0:15, as.numeric(ex2[1, -(1:9)]), type="b", col=1)
-legend("topright", legend=c("ex2", "ex3"), col=c(1,2), pch=1)
 
 ## Run three  cases showing Multinomial, Dirichlet(1) and over-dispersed
 ## Dirichlet for different levels of sample sizes
@@ -110,8 +98,10 @@ for(samplesize in c(30, 100, 1000)){
     true <- subset(infile$agecomp, FltSvy==1 & Yr == 2000)[-(1:9)]
     true <- true/sum(true)
     plot(0:15, subset(ex4, FltSvy==1)[1,-(1:9)], type="b", ylim=c(0,1),
-         col=1, xlab="Age", ylab="Proportion", main=paste("Sample size=",samplesize))
-    legend("topright", legend=c("Multinomial", "Dirichlet(1)", "Dirichlet(5)", "Truth"),
+         col=1, xlab="Age", ylab="Proportion", main=paste("Sample size=",
+         samplesize))
+    legend("topright", legend=c("Multinomial", "Dirichlet(1)",
+                                "Dirichlet(5)", "Truth"),
            lty=1, col=1:4)
     lines((0:15), subset(ex5, FltSvy==1)[1,-(1:9)], type="b", col=2)
     lines((0:15), subset(ex6, FltSvy==1)[1,-(1:9)], type="b", col=3)
