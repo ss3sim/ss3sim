@@ -313,7 +313,7 @@ get_results_scalar <- function(report.file){
     names(pars) <- gsub("\\)","", names(pars))
     max_grad <- report.file$maximum_gradient_component
     depletion <- report.file$current_depletion
-    NLL_vec <- getNLL_components(report.file)
+    NLL_vec <- get_nll_components(report.file)
     ## get the number of params on bounds from the warning.sso file, useful for
     ## checking convergence issues
     warn <- report.file$warnings
@@ -327,16 +327,22 @@ get_results_scalar <- function(report.file){
     return(invisible(df))
 }
 
-getNLL_components <- function(report.file){
+#' Get negative log likelihood (NLL) values from a report file list
+#'
+#' @param report.file An SS_output list for a model
+#' @author Merrill Rudd
+get_nll_components <- function(report.file){
     ## Possible likelihood components from SS3.tpl
-    NLL_components <- c("TOTAL", "Catch", "Equil_catch", "Survey", "Discard", "Mean_body_wt",
-        "Length_comp", "Age_comp", "Size_at_age", "SizeFreq", "Morphcomp", "Tag_comp",
-        "Tag_negbin", "Recruitment", "Forecast_Recruitment", "Parm_priors", "Parm_softbounds",
-        "Parm_devs", "Crash_Pen")
+    NLL_components <- c("TOTAL", "Catch", "Equil_catch", "Survey", "Discard",
+      "Mean_body_wt", "Length_comp", "Age_comp", "Size_at_age", "SizeFreq",
+      "Morphcomp", "Tag_comp", "Tag_negbin", "Recruitment",
+      "Forecast_Recruitment", "Parm_priors", "Parm_softbounds", "Parm_devs",
+      "Crash_Pen")
     NLL_names <- paste("NLL", NLL_components, sep="_")
 
     like_mat <- report.file$likelihoods_used
-    vec <- sapply(NLL_components, function(x) ifelse(length(like_mat[which(rownames(like_mat)==x), 1])==0,
+    vec <- sapply(NLL_components, function(x)
+      ifelse(length(like_mat[which(rownames(like_mat)==x), 1])==0,
                 NA, like_mat[which(rownames(like_mat)==x), 1]))
     names(vec) <- NLL_names
 
