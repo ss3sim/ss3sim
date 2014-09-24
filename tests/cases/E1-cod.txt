@@ -1,4 +1,4 @@
-# E1 in Johnson et al. 2013
+# E1 in Johnson et al. 2014
 # fixed M at M that produces 130% MSY
 natM_type;          1Parm
 natM_n_breakpoints; NULL
