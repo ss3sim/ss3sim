@@ -278,7 +278,7 @@ deviations can lead to biased model results.")
       if(!is.null(lc_params)){
           wd <- getwd()
           setwd(pastef(sc, i, "em"))
-          with(tc_params, change_lcomp_constant(
+          with(lc_params, change_lcomp_constant(
               lcomp_constant=lcomp_constant,
               file_in=file_in,
               file_out=file_out))
