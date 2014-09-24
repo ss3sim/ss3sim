@@ -297,7 +297,7 @@ See the help for a \texttt{change} function
 to see the arguments that need to be declared.
 For example, see \texttt{?change\_f}.
 
-You can use any simple \proglang{R} syntax to declare argument values.
+You can use any \proglang{R} syntax to declare argument values.
 For example,
 \texttt{c(1, 2, 4)}, or \texttt{seq(1, 100)}.
 Character objects do not need to be quoted as long as they are one word,
@@ -305,13 +305,6 @@ but can be if you would like.
 However, be careful not to use the delimiter (set up as a semicolon)
 anywhere else in the file besides to denote columns.
 You can add comments after any \texttt{\#} symbol.
-Internally, the functions evaluate in \proglang{R}
-any entries that have no character values (e.g.\ \texttt{1:100}),
-or have an alpha-numeric character followed by an opening parenthesis \texttt{(}.
-Anything that is character only or has character mixed with numeric
-but does not have the regular expression \texttt{"{[}A-Za-z0-9{]}("}
-gets turned into a character argument.
-(\texttt{NA} and \texttt{NULL} are special cases that are also passed on directly.)
 
 Putting that all together,
 below is what an example \texttt{F1-cod.txt} file might look like:

@@ -5,4 +5,5 @@
 devtools::load_all('..')
 
 source("test_tail_compression.R")
+source("test_lcomp_constant.R")
 

@@ -15,7 +15,8 @@ from a model run. Returns a data.frame of the results (a
 single row) which can be rbinded later.
 }
 \author{
-Cole Monnahan
+Cole Monnahan; updated by Merrill Rudd to include
+additional likelihoods
 }
 \seealso{
 Other get.results: \code{\link{get_results_all}};

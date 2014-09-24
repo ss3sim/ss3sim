@@ -9,37 +9,18 @@ get_args <- function(file) {
   y <- as.list(x$val)
   names(y) <- x$arg
 
-# if all numeric then eval(parse(text =
-# if has [a-zA-Z]( then eval(parse(text =
-# if has : then eval(parse(text =
-# else use as character
+  # turn into correct class:
   lapply(y, function(z) {
-    if(is_f(as.character(z))) {
-      eval(parse(text = z)) # turn into correct class
-    } else {
-      as.character(z)
-    }}
-    )
-}
-
-#' Check if a string is a function
-#'
-#' This function takes a character object and checks if it looks like
-#' an \R function.
-#'
-#' @param x A character object
-# @examples
-# is_f("testing")
-# is_f("c(1, 2, 3")
-# is_f("seq(1, 10)")
-# is_f("NULL")
-# is_f("NA")
-is_f <- function(x) {
-  if(!is.character(x)) stop("x must be a character")
-  fn <- grepl("[a-zA-Z0-9]\\(", x) # is a function
-  nu <- !grepl("[a-zA-Z]", x) # is not character (is numeric)
-  ## If a function, numeric, NULL or NA treat as a function
-  ifelse(fn | nu | x== "NULL" | x== "NA", TRUE, FALSE)
+      if(!is.na(z)) {
+        if(z == "change_tv") { # or function change_tv becomes the argument!
+          "change_tv"
+        } else {
+          tryCatch(eval(parse(text = z)), error = function(e) as.character(z))
+        }
+      } else {
+        NA
+      }
+    })
 }
 
 #' Take a scenario ID and a case type and return the case number
