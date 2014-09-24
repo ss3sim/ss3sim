@@ -10,8 +10,9 @@ change_lcomp_constant(lcomp_constant, file_in, file_out)
   numeric value, as a proportion. For example 0.1 means 10
   percent. See the SS3 manual for further information. A
   NULL value indicates no action resulting in using the
-  current value, and a value of 0 will effectively turn off
-  the feature.}
+  current value, and a value of 0 will throw an error since
+  that leads to an error when zeroes exist in the data.
+  Instead use a very small value like 1e-07.}
 
   \item{file_in}{Input SS3 data file.}
 

@@ -13,8 +13,9 @@
 #' @param lcomp_constant The new value to be used. Must be a numeric value,
 #' as a proportion. For example 0.1 means 10 percent. See the SS3 manual
 #' for further information. A NULL value indicates no action resulting in
-#' using the current value, and a value of 0 will effectively turn off the
-#' feature.
+#' using the current value, and a value of 0 will throw an error since that
+#' leads to an error when zeroes exist in the data. Instead use a very
+#' small value like 1e-07.
 #' @param file_in Input SS3 data file.
 #' @param file_out Output SS3 dat file. Typically the same as \code{file_in}.
 #' @return A modified SS3 \code{.dat} file, and that file returned
@@ -41,6 +42,7 @@ change_lcomp_constant <- function(lcomp_constant, file_in, file_out){
     if(!file.exists(file_in))
         stop(paste(file_in, "not found in change_lcomp_constant function"))
     stopifnot(is.numeric(lcomp_constant))
+    if(lcomp_constant<=0) stop("lcomp_constant must be greater than 0")
     dat <- readLines(file_in)
     ## The data sections are repeated in the data.ss_new files, so only use
     ## first one
