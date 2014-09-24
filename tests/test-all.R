@@ -59,14 +59,27 @@ test_ss3sim <- function(scenario, reset_expectations = FALSE, ...) {
     expect_ts <- readRDS(paste0("expectations/", scenario, "-ts.rds"))
   }
 
-  expect_equal(select(results_scalar, ends_with("om")),
-    select(expect_scalar, ends_with("om")))
-  expect_equal(select(results_scalar, ends_with("em")),
-    select(expect_scalar, ends_with("em")))
-  expect_equal(select(results_ts, ends_with("om")),
-    select(expect_ts, ends_with("om")))
-  expect_equal(select(results_ts, ends_with("em")),
-    select(expect_ts, ends_with("em")))
+  # only match those with identical names:
+  # (in case we've added columns to the output)
+  m_scalar <- names(expect_scalar)[names(expect_scalar) %in%
+      names(results_scalar)]
+  m_ts <- names(expect_ts)[names(expect_ts) %in%
+      names(results_ts)]
+  if(length(m_scalar) != length(names(results_scalar))) {
+    warning("It looks like there are new columns in results_scalar")
+  }
+  if(length(m_ts) != length(names(results_ts))) {
+    warning("It looks like there are new columns in results_ts")
+  }
+
+  expect_equal(select(results_scalar[,m_scalar], ends_with("om")),
+    select(expect_scalar[,m_scalar], ends_with("om")))
+  expect_equal(select(results_scalar[,m_scalar], ends_with("em")),
+    select(expect_scalar[,m_scalar], ends_with("em")))
+  expect_equal(select(results_ts[,m_ts], ends_with("om")),
+    select(expect_ts[,m_ts], ends_with("om")))
+  expect_equal(select(results_ts[,m_ts], ends_with("em")),
+    select(expect_ts[,m_ts], ends_with("em")))
 
   unlink(scenario, TRUE)
   file.remove("ss3sim_scalar.csv", "ss3sim_ts.csv")
