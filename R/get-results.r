@@ -312,15 +312,8 @@ get_results_scalar <- function(report.file){
     names(pars) <- gsub("\\(","_", names(pars))
     names(pars) <- gsub("\\)","", names(pars))
     max_grad <- report.file$maximum_gradient_component
-    NLL_total <- report.file$likelihoods_used[1,1]
-    NLL_catch <- report.file$likelihoods_used[2,1]
-    NLL_equilcatch <- report.file$likelihoods_used[3,1]
-    NLL_survey <- report.file$likelihoods_used[4,1]
-    NLL_lcomp <- report.file$likelihoods_used[5,1] #length comp
-    NLL_acomp <- report.file$likelihoods_used[6,1] #age comp
-    NLL_rec <- report.file$likelihoods_used[7,1] #recruitment
-    NLL_frec <- report.file$likelihoods_used[8,1] #forecast recruitment
     depletion <- report.file$current_depletion
+    NLL_vec <- getNLL_components(report.file)
     ## get the number of params on bounds from the warning.sso file, useful for
     ## checking convergence issues
     warn <- report.file$warnings
@@ -330,7 +323,22 @@ get_results_scalar <- function(report.file){
           as.numeric(strsplit(warn[warn.line], split=":")[[1]][2]), NA)
     ## Combine into final df and return it
     df <- cbind(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion,
-                NLL_total, NLL_catch, NLL_equilcatch, NLL_survey, NLL_lcomp,
-                NLL_acomp, NLL_rec, NLL_frec, params_on_bound, pars, Catch_endyear)
+                params_on_bound, pars, Catch_endyear, t(NLL_vec))
     return(invisible(df))
+}
+
+getNLL_components <- function(report.file){
+    ## Possible likelihood components from SS3.tpl
+    NLL_components <- c("TOTAL", "Catch", "Equil_catch", "Survey", "Discard", "Mean_body_wt",
+        "Length_comp", "Age_comp", "Size_at_age", "SizeFreq", "Morphcomp", "Tag_comp",
+        "Tag_negbin", "Recruitment", "Forecast_Recruitment", "Parm_priors", "Parm_softbounds",
+        "Parm_devs", "Crash_Pen")
+    NLL_names <- paste("NLL", NLL_components, sep="_")
+
+    like_mat <- report.file$likelihoods_used
+    vec <- sapply(NLL_components, function(x) ifelse(length(like_mat[which(rownames(like_mat)==x), 1])==0,
+                NA, like_mat[which(rownames(like_mat)==x), 1]))
+    names(vec) <- NLL_names
+
+    return(vec)
 }
