@@ -32,6 +32,7 @@ print("The first two values should be the same, the third different:")
 print( results$NLL_em[c(1,3,2)])
 
 ## End of session so clean up
+
 file.remove("ss3sim_scalar.csv", "ss3sim_ts.csv")
 unlink("D0-E0-F0-R0-M0-C0-cod", TRUE)
 unlink("D0-E0-F0-R0-M0-C1-cod", TRUE)
