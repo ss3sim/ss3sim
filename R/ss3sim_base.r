@@ -24,6 +24,8 @@
 #'   options.
 #' @param tc_params A named list containing all the
 #' \code{\link{change_tail_compression}} options.
+#' @param lc_params A named list containing all of the
+#' \code{\link{change_lcomp_constant}} options.
 #' @param om_dir The directory with the operating model you want to copy
 #'   and use for the specified simulations.
 #' @param em_dir The directory with the estimation model you want to copy
@@ -160,7 +162,8 @@
 ss3sim_base <- function(iterations, scenarios, f_params,
   index_params, lcomp_params, agecomp_params, estim_params,
   tv_params, om_dir, em_dir,
-  retro_params = NULL, tc_params = NULL, user_recdevs = NULL, bias_adjust = FALSE,
+  retro_params = NULL, tc_params = NULL, lc_params = NULL,
+  user_recdevs = NULL, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
   print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21, ...)
 {
@@ -264,10 +267,21 @@ deviations can lead to biased model results.")
       if(!is.null(tc_params)){
           wd <- getwd()
           setwd(pastef(sc, i, "em"))
-          with(tc_params,
-               change_tail_compression(tail_compression=tail_compression,
-                                       file_in=file_in,
-                                       file_out=file_out))
+          with(tc_params, change_tail_compression(
+              tail_compression=tail_compression,
+              file_in=file_in,
+              file_out=file_out))
+          setwd(wd)
+      }
+      ## Add robustification constant to length comps. If NULL is passed (the base case),
+      ## ignore it.
+      if(!is.null(lc_params)){
+          wd <- getwd()
+          setwd(pastef(sc, i, "em"))
+          with(lc_params, change_lcomp_constant(
+              lcomp_constant=lcomp_constant,
+              file_in=file_in,
+              file_out=file_out))
           setwd(wd)
       }
 
@@ -378,6 +392,8 @@ deviations can lead to biased model results.")
         print(lcomp_params)
         cat("\n\n# tail compression arguments\n")
         print(tc_params)
+        cat("\n\n# length comp constant arguments\n")
+        print(lc_params)
         cat("\n\n# agecomp arguments\n")
         print(agecomp_params)
         cat("\n\n# retro arguments\n")

@@ -1,0 +1,3 @@
+lcomp_constant; .1
+file_in; ss3.dat
+file_out; ss3.dat
