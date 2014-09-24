@@ -1,5 +1,3 @@
-## updated by Merrill Rudd
-
 #' Calculate run time
 #'
 #' Internal function used by \code{get_results_scenario} to calculate the
@@ -294,7 +292,8 @@ get_results_timeseries <- function(report.file){
 #' @param report.file An SS_output list for a model (operating model or estimation model).
 #' @family get-results
 #' @export
-#' @author Cole Monnahan
+#' @author Cole Monnahan; updated by Merrill Rudd to include additional
+#'   likelihoods
 get_results_scalar <- function(report.file){
     der <- report.file$derived_quants
     SSB_MSY <-  der[which(der$LABEL=="SSB_MSY"),]$Value
@@ -316,7 +315,7 @@ get_results_scalar <- function(report.file){
     NLL_total <- report.file$likelihoods_used[1,1]
     NLL_catch <- report.file$likelihoods_used[2,1]
     NLL_equilcatch <- report.file$likelihoods_used[3,1]
-    NLL_survey <- report.file$likelihoods_used[4,1] 
+    NLL_survey <- report.file$likelihoods_used[4,1]
     NLL_lcomp <- report.file$likelihoods_used[5,1] #length comp
     NLL_acomp <- report.file$likelihoods_used[6,1] #age comp
     NLL_rec <- report.file$likelihoods_used[7,1] #recruitment
