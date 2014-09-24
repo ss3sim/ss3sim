@@ -292,7 +292,8 @@ get_results_timeseries <- function(report.file){
 #' @param report.file An SS_output list for a model (operating model or estimation model).
 #' @family get-results
 #' @export
-#' @author Cole Monnahan
+#' @author Cole Monnahan; updated by Merrill Rudd to include additional
+#'   likelihoods
 get_results_scalar <- function(report.file){
     der <- report.file$derived_quants
     SSB_MSY <-  der[which(der$LABEL=="SSB_MSY"),]$Value
@@ -311,7 +312,14 @@ get_results_scalar <- function(report.file){
     names(pars) <- gsub("\\(","_", names(pars))
     names(pars) <- gsub("\\)","", names(pars))
     max_grad <- report.file$maximum_gradient_component
-    NLL <- report.file$likelihoods_used[1,1]
+    NLL_total <- report.file$likelihoods_used[1,1]
+    NLL_catch <- report.file$likelihoods_used[2,1]
+    NLL_equilcatch <- report.file$likelihoods_used[3,1]
+    NLL_survey <- report.file$likelihoods_used[4,1]
+    NLL_lcomp <- report.file$likelihoods_used[5,1] #length comp
+    NLL_acomp <- report.file$likelihoods_used[6,1] #age comp
+    NLL_rec <- report.file$likelihoods_used[7,1] #recruitment
+    NLL_frec <- report.file$likelihoods_used[8,1] #forecast recruitment
     depletion <- report.file$current_depletion
     ## get the number of params on bounds from the warning.sso file, useful for
     ## checking convergence issues
@@ -322,6 +330,7 @@ get_results_scalar <- function(report.file){
           as.numeric(strsplit(warn[warn.line], split=":")[[1]][2]), NA)
     ## Combine into final df and return it
     df <- cbind(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion,
-                NLL, params_on_bound, pars, Catch_endyear)
+                NLL_total, NLL_catch, NLL_equilcatch, NLL_survey, NLL_lcomp,
+                NLL_acomp, NLL_rec, NLL_frec, params_on_bound, pars, Catch_endyear)
     return(invisible(df))
 }
