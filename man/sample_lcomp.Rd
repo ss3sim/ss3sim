@@ -4,7 +4,7 @@
 \title{Sample length compositions from expected values}
 \usage{
 sample_lcomp(infile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
-  lengthbin_vector = NULL, write_file = TRUE)
+  write_file = TRUE, lengthbin_vector = NULL)
 }
 \arguments{
   \item{infile}{An SS data object as read in from
@@ -44,13 +44,9 @@ sample_lcomp(infile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
   Values greater than one indicate overdispersion, and less
   underdispersion.}
 
-  \item{lengthbin_vector}{A numeric vector giving the new
-  length bins to use.  \code{lengthbin_vector} must be
-  within the [min;max] of population bin.  This feature
-  allows dynamic binning by the user, but is not fully
-  tested.  Users should consult the vignette and carefully
-  check the function bins the data as desired before
-  proceeding with simulations.}
+  \item{lengthbin_vector}{Depreciated argument. Does
+  nothing and will be removed in a future major version
+  update. Instead, see \code{change_bin}.}
 }
 \value{
 A modified \code{.dat} file if \code{write_file=TRUE}. A
@@ -77,19 +73,6 @@ ex2 <- sample_lcomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
                     Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
                     years=list(seq(1994, 2012, by=2),
                         2003:2012), write_file = FALSE)
-
-## Generate with constant sample size across years AND with different length
-## bins (same as ex1 except bins)
-ex3 <- sample_lcomp(infile=infile, outfile="test3.dat", fleets=c(1,2),
-                    Nsamp=list(100,50), years=list(seq(1994, 2012, by=2),
-                          2003:2012), lengthbin_vector = seq(9,30,by=2),
-                          write_file = FALSE)
-
-plot(seq(8,30,by=2), as.numeric(ex3[1, -(1:6)]), type="b", col=2,
-     xlab="Length Bin", ylab="Proportion of length",
-     main="Comparison of different length bin structures via lengthbin_vector")
-lines(seq(8, 30, by=.5), as.numeric(ex1[1, -(1:6)]), type="b", col=1)
-legend("topright", legend=c("ex1", "ex3"), col=c(1,2), pch=1)
 
 ## Plot distributions for a particular year to compare multinomial
 ## vs. overdispersed Dirichlet
