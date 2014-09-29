@@ -220,6 +220,7 @@ deviations can lead to biased model results.")
           "om", "ss3.par"))
 
       # Change F
+      f_params <- add_nulls(f_params, c("years", "years_alter", "fvals"))
       with(f_params,
         change_f(years               = years,
                  years_alter         = years_alter,
@@ -238,6 +239,7 @@ deviations can lead to biased model results.")
       wd <- getwd()
       if(!is.null(tv_params)) {
         setwd(pastef(sc, i, "om"))
+        # not running add_null() b/c parameters in tv_params are userspecified
         with(tv_params,
           change_tv(change_tv_list      = tv_params,
                     ctl_file_in         = "om.ctl",
@@ -255,6 +257,7 @@ deviations can lead to biased model results.")
       # Survey biomass index
       SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
+      index_params <- add_nulls(index_params, c("fleets", "years", "sds_obs"))
       with(index_params,
         sample_index(infile          = SS.dat,
                      outfile         = pastef(sc, i, "em", "ss3.dat"),
@@ -267,6 +270,7 @@ deviations can lead to biased model results.")
       if(!is.null(tc_params)){
           wd <- getwd()
           setwd(pastef(sc, i, "em"))
+          tc_params <- add_nulls(tc_params, "tail_compression")
           with(tc_params, change_tail_compression(
               tail_compression=tail_compression,
               file_in=file_in,
@@ -278,6 +282,7 @@ deviations can lead to biased model results.")
       if(!is.null(lc_params)){
           wd <- getwd()
           setwd(pastef(sc, i, "em"))
+          lc_params <- add_nulls(lc_params, "lcomp_constant")
           with(lc_params, change_lcomp_constant(
               lcomp_constant=lcomp_constant,
               file_in=file_in,
@@ -288,6 +293,8 @@ deviations can lead to biased model results.")
       # Add error in the length comp data
       SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
+      lcomp_params <- add_nulls(lcomp_params,
+        c("fleets", "Nsamp", "years", "cpar"))
       with(lcomp_params,
         sample_lcomp(infile           = SS.dat,
                      outfile          = pastef(sc, i, "em", "ss3.dat"),
@@ -299,6 +306,8 @@ deviations can lead to biased model results.")
       # Add error in the age comp data
       SS.dat2 = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
+      agecomp_params <- add_nulls(agecomp_params,
+        c("fleets", "Nsamp", "years", "cpar"))
       with(agecomp_params,
         sample_agecomp(infile         = SS.dat2,
                      outfile          = pastef(sc, i, "em", "ss3.dat"),
@@ -309,6 +318,7 @@ deviations can lead to biased model results.")
 
       # Manipulate EM starter file for a possible retrospective analysis
       if(!is.null(retro_params)) {
+      retro_params <- add_nulls(retro_params, "retro_yr")
       with(retro_params,
         change_retro(startfile_in    = pastef(sc, i, "em", "starter.ss"),
                      startfile_out   = pastef(sc, i, "em", "starter.ss"),
@@ -329,6 +339,10 @@ deviations can lead to biased model results.")
         run_change_e_full <- TRUE
 
       setwd(pastef(sc, i, "em"))
+      estim_params <- add_nulls(estim_params,
+        c("natM_type", "natM_n_breakpoints", "natM_lorenzen", "natM_val",
+          "par_name", "par_int", "par_phase", "forecast_num",
+          "run_change_e_full"))
       with(estim_params,
        change_e(ctl_file_in          = "em.ctl",
                 ctl_file_out         = "em.ctl",

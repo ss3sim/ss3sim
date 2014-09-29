@@ -79,7 +79,11 @@ change_e(ctl_file_in = pastef("em.ctl"), ctl_file_out = pastef("em.ctl"),
 
   \item{run_change_e_full}{If \code{FALSE} \code{change_e}
   will only manipulate for forecasting, if \code{TRUE}
-  (default) the full function capability will be ran.}
+  (default) the full function capability will be ran. For
+  legacy reasons, setting this argument to \code{NULL} will
+  be interpretted the same as setting it to \code{TRUE},
+  although using this functionality is discouraged and will
+  likely be removed in a future major version update.}
 }
 \value{
 Altered versions of SS3 \code{.ctl}, \code{.dat}, and,
