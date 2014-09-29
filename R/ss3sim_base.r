@@ -8,22 +8,22 @@
 #'
 #' @param iterations Which iterations to run. A numeric vector.
 #' @param scenarios Which scenarios to run.
-#' @param tv_params A named list containing all the \code{\link{change_tv}}
-#'   (time-varying) options.
-#' @param f_params A named list containing all the \code{\link{change_f}}
-#'   options.
-#' @param index_params A named list containing all the
-#'   \code{\link{sample_index}} options.
-#' @param lcomp_params A named list containing all the
-#'   \code{\link{sample_lcomp}} options.
-#' @param agecomp_params A named list containing all the
-#'   \code{\link{sample_agecomp}} options.
-#' @param retro_params A named list containing all the
-#'   \code{\link{change_retro}} options.
-#' @param estim_params A named list containing all the \code{\link{change_e}}
-#'   options.
-#' @param tc_params A named list containing all the
-#' \code{\link{change_tail_compression}} options.
+#' @param tv_params A named list containing arguments for \code{\link{change_tv}}
+#'   (time-varying).
+#' @param f_params A named list containing arguments for \code{\link{change_f}}
+#'  .
+#' @param index_params A named list containing arguments for
+#'   \code{\link{sample_index}}.
+#' @param lcomp_params A named list containing arguments for
+#'   \code{\link{sample_lcomp}}.
+#' @param agecomp_params A named list containing arguments for
+#'   \code{\link{sample_agecomp}}.
+#' @param retro_params A named list containing arguments for
+#'   \code{\link{change_retro}}.
+#' @param estim_params A named list containing arguments for \code{\link{change_e}}
+#'  .
+#' @param tc_params A named list containing arguments for
+#' \code{\link{change_tail_compression}}.
 #' @param om_dir The directory with the operating model you want to copy
 #'   and use for the specified simulations.
 #' @param em_dir The directory with the estimation model you want to copy
