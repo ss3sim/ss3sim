@@ -294,7 +294,6 @@ deviations can lead to biased model results.")
                      fleets           = fleets,
                      Nsamp            = Nsamp,
                      years            = years,
-                     lengthbin_vector = lengthbin_vector,
                      cpar             = cpar))
 
       # Add error in the age comp data
@@ -306,7 +305,6 @@ deviations can lead to biased model results.")
                      fleets           = fleets,
                      Nsamp            = Nsamp,
                      years            = years,
-                     agebin_vector    = agebin_vector,
                      cpar             = cpar))
 
       # Manipulate EM starter file for a possible retrospective analysis
