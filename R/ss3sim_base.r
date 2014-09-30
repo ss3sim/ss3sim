@@ -341,8 +341,7 @@ deviations can lead to biased model results.")
       setwd(pastef(sc, i, "em"))
       estim_params <- add_nulls(estim_params,
         c("natM_type", "natM_n_breakpoints", "natM_lorenzen", "natM_val",
-          "par_name", "par_int", "par_phase", "forecast_num",
-          "run_change_e_full"))
+          "par_name", "par_int", "par_phase", "forecast_num"))
       with(estim_params,
        change_e(ctl_file_in          = "em.ctl",
                 ctl_file_out         = "em.ctl",

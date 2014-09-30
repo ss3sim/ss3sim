@@ -50,10 +50,7 @@
 #'   generate forecasts rather than use the data to fit the model.
 #' @param run_change_e_full If \code{FALSE} \code{change_e} will only
 #'   manipulate for forecasting, if \code{TRUE} (default) the full function
-#'   capability will be ran. For legacy reasons, setting this argument to
-#'   \code{NULL} will be interpretted the same as setting it to \code{TRUE},
-#'   although using this functionality is discouraged and will likely be removed
-#'   in a future major version update.
+#'   capability will be ran.
 #'
 #' @details Turning parameters on and off is the main function of
 #'   \code{change_e}.  \code{change_e} was not created with the capability of
@@ -99,13 +96,6 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
     natM_n_breakpoints = NULL, natM_lorenzen = NULL, natM_val = c(NA,NA),
     par_name = NULL, par_int = "NA", par_phase = "NA",
     forecast_num = 0, run_change_e_full = TRUE) {
-
-
-# should be removed in a future major update:
-# here because in the package case files and early papers
-# this argument was often not included in the case files
-# but was intended as TRUE
-  if(is.null(run_change_e_full)) run_change_e_full <- TRUE
 
   if(run_change_e_full) {
   if(!file.exists(ctl_file_in)) {
