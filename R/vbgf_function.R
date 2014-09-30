@@ -52,12 +52,13 @@ sample_fit_VBGF<-function(n.samples,length.data,start.L1,start.L2,start.k,start.
   
   get_log_likelihood<-function(logL1,logL2,logk,logsigma){
     #Returns the negative log likelihood function
-    sigma<-exp(logsigma)*length.df[,1]
+    
     L1<-exp(logL1)
     L2<-exp(logL2)
     k<-exp(logk)
+    sigma<-exp(logsigma)*length.df[,1]
     predLength<-vbgf_func(L1,L2,k,length.df[,1],a3)
-    logLik<-sum(log(1/sigma)-((log(predLength)-log(length.df[,2]))^2)/(2*sigma^2))
+    logLik<-sum(-log(sigma)-((log(predLength)-log(length.df[,2]))^2)/(2*sigma^2))
     return(-logLik)
   }
   #Fit using MLE
@@ -108,7 +109,7 @@ meanLengths<-aggregate(FISH_LENGTH~age1,mean,data=filteredCommHake)
 L1<-meanLengths[meanLengths$age1==2,2]
 L2<-meanLengths[meanLengths$age1==10,2]
 vbgfmod<-sim_test(ages,L1,L2,k=0.3,sigma=2,a3=2,startL1=l1.guess,startL2=l2.guess,startK=k.guess,startSig=sigma.guess,
-                  A=12,numSamplesPerAge=1000,numSamplesToFit=1000)
+                  A=12,numSamplesPerAge=1000,numSamplesToFit=5000)
 
 #Check parameters
 logEst<-vbgfmod@coef
