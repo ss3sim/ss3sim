@@ -4,8 +4,20 @@
 #'
 #' @author Curry James Cunningham
 #'
-#' @param years Vector of years for which F values are specified
-#' @param years_alter Vector of years for the which F values will be altered
+#' @param years Vector of years for which F values are specified,
+#' if there is more than one fleet or season the catches must be ordered by
+#' season:year:fishey (e.g., season1year1fishery1, season2year1fishery1,
+#' season1year2fishery1). The actual vector does not have to correspond to
+#' true years but must be the correct length (e.g., instead of 
+#' \code{2000:2004} you can use \code{1:5}). Use this argument to create 
+#' an index to old values. \code{years_alter} will use values in this vector.
+#' For example, with two seasons and one fishery that operates for 4 years
+#' you could use the following: \code{1:8}.
+#' @param years_alter Vector of years for the which F values will be altered.
+#' If there is more than one fishery or season, use the mapping system
+#' created in \code{years} because actual year values cannot be recycled.
+#' For example, to change the second season of the second year in the
+#' example above, use: \code{4}.
 #' @param fvals Vector of F values to be entered into \code{ss3.par} file
 #' @param file_in Input SS3 par file.
 #' @param file_out Output SS3 par file.
