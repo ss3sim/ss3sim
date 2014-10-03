@@ -5,10 +5,10 @@
 \usage{
 ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   agecomp_params, estim_params, tv_params, om_dir, em_dir,
-  retro_params = NULL, tc_params = NULL, user_recdevs = NULL,
-  bias_adjust = FALSE, bias_nsim = 5, bias_already_run = FALSE,
-  hess_always = FALSE, print_logfile = TRUE, sleep = 0, conv_crit = 0.2,
-  seed = 21, ...)
+  retro_params = NULL, tc_params = NULL, bin_params = NULL,
+  user_recdevs = NULL, bias_adjust = FALSE, bias_nsim = 5,
+  bias_already_run = FALSE, hess_always = FALSE, print_logfile = TRUE,
+  sleep = 0, conv_crit = 0.2, seed = 21, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -16,29 +16,32 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
 
   \item{scenarios}{Which scenarios to run.}
 
-  \item{tv_params}{A named list containing all the
-  \code{\link{change_tv}} (time-varying) options.}
+  \item{tv_params}{A named list containing arguments for
+  \code{\link{change_tv}} (time-varying).}
 
-  \item{f_params}{A named list containing all the
-  \code{\link{change_f}} options.}
+  \item{f_params}{A named list containing arguments for
+  \code{\link{change_f}} .}
 
-  \item{index_params}{A named list containing all the
-  \code{\link{sample_index}} options.}
+  \item{index_params}{A named list containing arguments for
+  \code{\link{sample_index}}.}
 
-  \item{lcomp_params}{A named list containing all the
-  \code{\link{sample_lcomp}} options.}
+  \item{lcomp_params}{A named list containing arguments for
+  \code{\link{sample_lcomp}}.}
 
-  \item{agecomp_params}{A named list containing all the
-  \code{\link{sample_agecomp}} options.}
+  \item{agecomp_params}{A named list containing arguments
+  for \code{\link{sample_agecomp}}.}
 
-  \item{retro_params}{A named list containing all the
-  \code{\link{change_retro}} options.}
+  \item{retro_params}{A named list containing arguments for
+  \code{\link{change_retro}}.}
 
-  \item{estim_params}{A named list containing all the
-  \code{\link{change_e}} options.}
+  \item{estim_params}{A named list containing arguments for
+  \code{\link{change_e}} .}
 
-  \item{tc_params}{A named list containing all the
-  \code{\link{change_tail_compression}} options.}
+  \item{tc_params}{A named list containing arguments for
+  \code{\link{change_tail_compression}}.}
+
+  \item{bin_params}{A named list containing arguments for
+  \code{\link{change_bin}}.}
 
   \item{om_dir}{The directory with the operating model you
   want to copy and use for the specified simulations.}
