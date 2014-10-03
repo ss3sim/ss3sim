@@ -230,16 +230,18 @@ deviations can lead to biased model results.")
                  file_in             = pastef(sc, i, "om", "ss3.par"),
                  file_out            = pastef(sc, i, "om", "ss3.par")))
 
-      ## Change the comp data structure in the OM to produce the expected
-      ## values we want.
+      # Change the comp data structure in the OM to produce the expected
+      # values we want.
       if(!is.null(bin_params)){
-          wd <- getwd()
-          setwd(pastef(sc, i, "om"))
-          with(bin_params,
-               change_bin(file_in=file_in, file_out=file_out,
-                          bin_vector=bin_vector, type=type,
-                          pop_bin=pop_bin, write_file=write_file))
-          setwd(wd)
+         bin_params <- add_nulls(bin_params, c("bin_vector", "type", "pop_bin"))
+         with(bin_params,
+           change_bin(
+                 file_in    = pastef(sc, i, "om", "ss3.dat"),
+                 file_out   = pastef(sc, i, "om", "ss3.dat"),
+                 bin_vector = bin_vector,
+                 type       = type,
+                 pop_bin    = pop_bin,
+                 write_file = TRUE))
       }
 
       # Run the operating model
@@ -280,29 +282,25 @@ deviations can lead to biased model results.")
                      years           = years,
                      sds_obs         = sds_obs))
 
-      ## Add tail compression option. If NULL is passed (the base case),
-      ## ignore it.
+      # Add tail compression option. If NULL is passed (the base case),
+      # ignore it.
       if(!is.null(tc_params)){
-          wd <- getwd()
-          setwd(pastef(sc, i, "em"))
-          tc_params <- add_nulls(tc_params, c("tail_compression", "file_in", "file_out"))
-          with(tc_params, change_tail_compression(
-              tail_compression=tail_compression,
-              file_in=file_in,
-              file_out=file_out))
-          setwd(wd)
+          tc_params <- add_nulls(tc_params, "tail_compression")
+          with(tc_params,
+            change_tail_compression(
+                  tail_compression = tail_compression,
+                  file_in          = pastef(sc, i, "em", "ss3.dat"),
+                  file_out         = pastef(sc, i, "em", "ss3.dat")))
       }
-      ## Add robustification constant to length comps. If NULL is passed (the base case),
-      ## ignore it.
+      # Add robustification constant to length comps. If NULL is passed
+      # (the base case), ignore it.
       if(!is.null(lc_params)){
-          wd <- getwd()
-          setwd(pastef(sc, i, "em"))
-          lc_params <- add_nulls(lc_params, c("lcomp_constant", "file_in", "file_out"))
-          with(lc_params, change_lcomp_constant(
-              lcomp_constant=lcomp_constant,
-              file_in=file_in,
-              file_out=file_out))
-          setwd(wd)
+          lc_params <- add_nulls(lc_params, "lcomp_constant")
+          with(lc_params,
+            change_lcomp_constant(
+                    lcomp_constant = lcomp_constant,
+                    file_in        = pastef(sc, i, "em", "ss3.dat"),
+                    file_out       = pastef(sc, i, "em", "ss3.dat")))
       }
 
       # Add error in the length comp data
