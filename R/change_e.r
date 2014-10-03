@@ -96,7 +96,8 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
     natM_n_breakpoints = NULL, natM_lorenzen = NULL, natM_val = c(NA,NA),
     par_name = NULL, par_int = "NA", par_phase = "NA",
     forecast_num = 0, run_change_e_full = TRUE) {
-if(run_change_e_full) {
+
+  if(run_change_e_full) {
   if(!file.exists(ctl_file_in)) {
     stop("Ctl file for the estimation model does not exist,
           change_e failed.")

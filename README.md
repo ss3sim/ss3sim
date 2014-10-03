@@ -1,5 +1,7 @@
 # ss3sim
 
+[![Build Status](https://travis-ci.org/ss3sim/ss3sim.png?branch=master)](https://travis-ci.org/ss3sim/ss3sim)
+
 ss3sim is an R package that facilitates flexible, rapid, and reproducible fisheries stock assessment simulation testing with the widely-used [Stock Synthesis 3][SS3] (SS3) statistical age-structured stock assessment framework.
 
 ## Contents

@@ -1,12 +1,23 @@
 # ss3sim 0.8.2.99
 
-## New features
+* Add new change functions: `change_tail_compression()`, `change_bin()`, and
+  `change_lcomp_constant()`.
+
+* Add Travis CI testing of the package https://travis-ci.org/ss3sim/ss3sim
+
+* Added much more extensive testing of the package in the root `tests` folder. 
+  This is for internal testing only and not bundled with the package (#156).
+
+* Allow for missing arguments in case files. This allows us to add new
+  arguments to existing functions without breaking old code. A missing 
+  argument gets passed as `NULL` via the `add_nulls()` function. (within #148)
+
+* Re-write case file parsing to be more robust and allow for scientific
+  notations (#157).
 
 * Add the option to use the optimized SS executables (#138 and #147).
 
 * Add Cole Monnahan's ss3sim plotting functions (#134).
-
-## Bug fixes and changes
 
 * `change_lcomp`, `change_agecomp`, and `change_index` are now `sample_lcomp`,
   `sample_agecomp`, and `sample_index`. The old functions point to the new
@@ -19,8 +30,8 @@
 * Bump required version of r4ss to 1.22.1 since 1.22.0 did not export functions
   that ss3sim needs.
 
-* Vignette no longer uses LaTeX `appendix.sty`, which causes build errors on CRAN
-  Mavericks build.
+* Vignette no longer uses LaTeX `appendix.sty`, which causes build errors on 
+  CRAN Mavericks build.
 
 * CITATION file now points to complete PLOS ONE citation.
 

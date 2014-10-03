@@ -1,7 +1,7 @@
 # Basic tests that should all run without errors
 
 devtools::install("..")
-library(ss3sim)
+# library(ss3sim)
 ## this way was breaking parallel for Cole's windows machines
 ## devtools::load_all("..")
 
@@ -9,6 +9,7 @@ library(ss3sim)
 
 # Find the data in the ss3sim package:
 ## d <- system.file("extdata", package = "ss3sim")
+setwd("tests")
 d <- '../inst/extdata'
 om <- paste0(d, "/models/cod-om")
 em <- paste0(d, "/models/cod-em")
