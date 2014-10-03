@@ -12,10 +12,12 @@ get_args <- function(file) {
   # turn into correct class:
   lapply(y, function(z) {
       if(!is.na(z)) {
-        if(z == "change_tv") { # or function change_tv becomes the argument!
-          "change_tv"
+        x <- tryCatch(eval(parse(text = z)),
+          error = function(e) as.character(z))
+        if(is.function(x)) { # or function contents will be parsed!
+          as.character(z)
         } else {
-          tryCatch(eval(parse(text = z)), error = function(e) as.character(z))
+          x
         }
       } else {
         NA
