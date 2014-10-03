@@ -24,6 +24,8 @@
 #'  .
 #' @param tc_params A named list containing arguments for
 #' \code{\link{change_tail_compression}}.
+#' @param lc_params A named list containing arguments for
+#' \code{\link{change_lcomp_constant}}.
 #' @param bin_params A named list containing arguments for
 #' \code{\link{change_bin}}.
 #' @param om_dir The directory with the operating model you want to copy
@@ -283,7 +285,7 @@ deviations can lead to biased model results.")
       if(!is.null(tc_params)){
           wd <- getwd()
           setwd(pastef(sc, i, "em"))
-          tc_params <- add_nulls(tc_params, "tail_compression")
+          tc_params <- add_nulls(tc_params, c("tail_compression", "file_in", "file_out"))
           with(tc_params, change_tail_compression(
               tail_compression=tail_compression,
               file_in=file_in,
@@ -295,7 +297,7 @@ deviations can lead to biased model results.")
       if(!is.null(lc_params)){
           wd <- getwd()
           setwd(pastef(sc, i, "em"))
-          lc_params <- add_nulls(lc_params, "lcomp_constant")
+          lc_params <- add_nulls(lc_params, c("lcomp_constant", "file_in", "file_out"))
           with(lc_params, change_lcomp_constant(
               lcomp_constant=lcomp_constant,
               file_in=file_in,

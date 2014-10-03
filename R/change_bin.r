@@ -11,9 +11,9 @@
 #'   file to output.
 #' @param bin_vector A numeric vector of bins to substitute into the \code{.dat}
 #'   file.
-#' @param type One of \code{"length"} or \code{"age"}. This controls whether the
+#' @param type One of \code{"len"} or \code{"age"}. This controls whether the
 #'   function acts on the age composition or length composition data. Default is
-#'   \code{"length"}.
+#'   \code{"len"}.
 #' @param pop_bin Choose a real number to choose the population bin width. This option
 #' only works if \code{"lbin_method"} is set to \code{"2"}. Default is
 #'   \code{"NULL"} which leaves the original value.
@@ -40,12 +40,10 @@
 #' print(a$agebin_vector)
 #' print(head(a$agecomp))
 
-change_bin <- function(file_in, file_out, bin_vector, type = c("length", "age"), pop_bin=NULL,
+change_bin <- function(file_in, file_out, bin_vector, type = c("len", "age"), pop_bin=NULL,
   write_file = TRUE) {
 
-  if(!type[1] %in% c("length", "age")) {
-    stop("type must be one of length or age")
-  }
+  type <- match.arg(type)
   if(!is.numeric(bin_vector)) {
     stop("bin_vector must be numeric")
   }
@@ -69,7 +67,7 @@ change_bin <- function(file_in, file_out, bin_vector, type = c("length", "age"),
 
   if(!is.null(pop_bin)) datfile$binwidth <- pop_bin
 
-  if(type[1] == "length") {
+  if(type[1] == "len") {
     datfile$lbin_vector <- bin_vector
     datfile$N_lbins <- length(datfile$lbin_vector)
     newdummy <- data.frame(matrix(1, nrow = nrow(datfile$lencomp),
