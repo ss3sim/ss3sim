@@ -416,13 +416,10 @@ deviations can lead to biased model results.")
         print(lcomp_params)
         cat("\n\n# tail compression arguments\n")
         print(tc_params)
-<<<<<<< HEAD
         cat("\n\n# change_bin arguments\n")
         print(bin_params)
-=======
         cat("\n\n# length comp constant arguments\n")
         print(lc_params)
->>>>>>> master
         cat("\n\n# agecomp arguments\n")
         print(agecomp_params)
         cat("\n\n# retro arguments\n")
