@@ -30,7 +30,7 @@
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
-#' l <- change_bin(f_in, file_out = NULL, type = "length",
+#' l <- change_bin(f_in, file_out = NULL, type = "len",
 #'   bin_vector = seq(2, 8, 2), write_file = FALSE)
 #' print(l$lbin_vector)
 #' print(head(l$lencomp))
