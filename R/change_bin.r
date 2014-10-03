@@ -14,7 +14,7 @@
 #' @param type One of \code{"length"} or \code{"age"}. This controls whether the
 #'   function acts on the age composition or length composition data. Default is
 #'   \code{"length"}.
-#' @param pop_bin Choose a real number to choose the population bin width. This option 
+#' @param pop_bin Choose a real number to choose the population bin width. This option
 #' only works if \code{"lbin_method"} is set to \code{"2"}. Default is
 #'   \code{"NULL"} which leaves the original value.
 #' @param write_file Should the \code{.dat} file be written? The new \code{.dat}
@@ -40,7 +40,7 @@
 #' print(a$agebin_vector)
 #' print(head(a$agecomp))
 
-change_bin <- function(file_in, file_out, bin_vector, type = c("length", "age"), pop_bin=NULL, 
+change_bin <- function(file_in, file_out, bin_vector, type = c("length", "age"), pop_bin=NULL,
   write_file = TRUE) {
 
   if(!type[1] %in% c("length", "age")) {
@@ -56,7 +56,7 @@ change_bin <- function(file_in, file_out, bin_vector, type = c("length", "age"),
   if(length(pop_bin)!=1 & !is.null(pop_bin)) {
     stop("pop bin should be a real number")
   }
-  
+
   datfile <- SS_readdat(file = file_in, verbose = FALSE)
   if(datfile$Ngenders > 1) {
     stop(paste("_Ngenders is greater than 1 in the operating model.",
@@ -68,7 +68,7 @@ change_bin <- function(file_in, file_out, bin_vector, type = c("length", "age"),
   }
 
   if(!is.null(pop_bin)) datfile$binwidth <- pop_bin
-  
+
   if(type[1] == "length") {
     datfile$lbin_vector <- bin_vector
     datfile$N_lbins <- length(datfile$lbin_vector)
@@ -99,7 +99,7 @@ change_bin <- function(file_in, file_out, bin_vector, type = c("length", "age"),
   }
 
   if(write_file) {
-    SS_writedat(datlist = datfile, outfile = file_out)
+    SS_writedat(datlist = datfile, outfile = file_out, overwrite=TRUE)
   }
 
   invisible(datfile)

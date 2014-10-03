@@ -165,7 +165,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
         case_files = case_files)
       sp <- substr_r(parallel_scenario, 3)
       ss3sim_base(iterations, scenarios = parallel_scenario,
-        tv_params = a$tv_params, tc_params = a$T,
+        tv_params = a$tv_params, tc_params = a$T, bin_params= a$B,
         f_params = a$F, index_params =
         a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp,
         retro_params = a$R, estim_params = a$E, om_dir = om_dir,
@@ -175,7 +175,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
       a <- get_caseargs(folder = case_folder, scenario = x, case_files = case_files)
       sp <- substr_r(x, 3)
       ss3sim_base(iterations, scenarios = x,
-        tv_params = a$tv_params, tc_params = a$T,
+        tv_params = a$tv_params, tc_params = a$T, bin_params= a$B,
         f_params = a$F, index_params =
         a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp,
         retro_params = a$R, estim_params = a$E, om_dir = om_dir,

@@ -24,6 +24,8 @@
 #'  .
 #' @param tc_params A named list containing arguments for
 #' \code{\link{change_tail_compression}}.
+#' @param bin_params A named list containing arguments for
+#' \code{\link{change_bin}}.
 #' @param om_dir The directory with the operating model you want to copy
 #'   and use for the specified simulations.
 #' @param em_dir The directory with the estimation model you want to copy
@@ -160,7 +162,8 @@
 ss3sim_base <- function(iterations, scenarios, f_params,
   index_params, lcomp_params, agecomp_params, estim_params,
   tv_params, om_dir, em_dir,
-  retro_params = NULL, tc_params = NULL, user_recdevs = NULL, bias_adjust = FALSE,
+  retro_params = NULL, tc_params = NULL, bin_params = NULL,
+  user_recdevs = NULL, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
   print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21, ...)
 {
@@ -224,6 +227,18 @@ deviations can lead to biased model results.")
                  file_in             = pastef(sc, i, "om", "ss3.par"),
                  file_out            = pastef(sc, i, "om", "ss3.par")))
 
+      ## Change the comp data structure in the OM to produce the expected
+      ## values we want.
+      if(!is.null(bin_params)){
+          wd <- getwd()
+          setwd(pastef(sc, i, "om"))
+          with(bin_params,
+               change_bin(file_in=file_in, file_out=file_out,
+                          bin_vector=bin_vector, type=type,
+                          pop_bin=pop_bin, write_file=write_file))
+          setwd(wd)
+      }
+
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
 
@@ -242,6 +257,7 @@ deviations can lead to biased model results.")
 
         setwd(wd)
       }
+
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
 
@@ -378,6 +394,8 @@ deviations can lead to biased model results.")
         print(lcomp_params)
         cat("\n\n# tail compression arguments\n")
         print(tc_params)
+        cat("\n\n# change_bin arguments\n")
+        print(bin_params)
         cat("\n\n# agecomp arguments\n")
         print(agecomp_params)
         cat("\n\n# retro arguments\n")
