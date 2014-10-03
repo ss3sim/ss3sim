@@ -49,6 +49,9 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   \item{bin_params}{A named list containing arguments for
   \code{\link{change_bin}}.}
 
+  \item{lc_params}{A named list containing arguments for
+  \code{\link{change_lcomp_constant}}.}
+
   \item{user_recdevs}{An optional matrix of recruitment
   deviations to replace the recruitment deviations built
   into the package. The columns represent run iterations

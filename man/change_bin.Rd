@@ -3,7 +3,7 @@
 \alias{change_bin}
 \title{Change age or length bins in an SS operating model}
 \usage{
-change_bin(file_in, file_out, bin_vector, type = c("length", "age"),
+change_bin(file_in, file_out, bin_vector, type = c("len", "age"),
   pop_bin = NULL, write_file = TRUE)
 }
 \arguments{
@@ -16,9 +16,9 @@ change_bin(file_in, file_out, bin_vector, type = c("length", "age"),
   \item{bin_vector}{A numeric vector of bins to substitute
   into the \code{.dat} file.}
 
-  \item{type}{One of \code{"length"} or \code{"age"}. This
+  \item{type}{One of \code{"len"} or \code{"age"}. This
   controls whether the function acts on the age composition
-  or length composition data. Default is \code{"length"}.}
+  or length composition data. Default is \code{"len"}.}
 
   \item{pop_bin}{Choose a real number to choose the
   population bin width. This option only works if
@@ -44,7 +44,7 @@ run.
 \examples{
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/example-om/data.ss_new")
-l <- change_bin(f_in, file_out = NULL, type = "length",
+l <- change_bin(f_in, file_out = NULL, type = "len",
   bin_vector = seq(2, 8, 2), write_file = FALSE)
 print(l$lbin_vector)
 print(head(l$lencomp))
