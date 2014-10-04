@@ -5,19 +5,19 @@ get_args <- function(file) {
 
   x <- read.csv(file, stringsAsFactors = FALSE, col.names =
     c("arg", "val"), header = FALSE, strip.white = TRUE, sep = ";",
-    comment.char = "#")
+    comment.char = "#", quote = "")
   y <- as.list(x$val)
   names(y) <- x$arg
 
   # turn into correct class:
   lapply(y, function(z) {
       if(!is.na(z)) {
-        x <- tryCatch(eval(parse(text = z)),
+        y <- tryCatch(eval(parse(text = z)),
           error = function(e) as.character(z))
-        if(is.function(x)) { # or function contents will be parsed!
+        if(is.function(y)) { # or function contents will be parsed!
           as.character(z)
         } else {
-          x
+          y
         }
       } else {
         NA
