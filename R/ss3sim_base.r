@@ -187,6 +187,11 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       copy_ss3models(model_dir = em_dir, scenarios = sc,
         iterations = i, type = "em")
 
+      # Make fake .dat files to silence SS3/ADMB:
+      fake_dat <- c("om/ss3_24o_opt.dat", "om/ss3_24o_safe.dat",
+        "em/ss3_24o_opt.dat", "em/ss3_24o_safe.dat")
+      sapply(fake_dat, function(fi) write("\n", pastef(pastef(sc, i, fi))))
+
       # If we're bias adjusting, then copy over the .ctl file to the
       # em folder
       if(bias_already_run) {
@@ -426,6 +431,8 @@ deviations can lead to biased model results.")
 
         sink()
       }
+
+      file.remove(pastef(sc, i, fake_dat))
 
       # Pause to reduce average CPUE use?
       Sys.sleep(sleep)
