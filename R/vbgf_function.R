@@ -9,7 +9,7 @@ remove.packages("ss3sim")
 devtools::install_github("ss3sim/ss3sim")
 library(ss3sim)
 library(r4ss)
-library(nlme)
+library(bbmle)
 
 ## I made a copy of the hake-om folder on 7/2/14 so we could test stuff and
 ## not break the original. Run it to get the initial output files.
@@ -98,17 +98,16 @@ l2.guess<-log(800)
 l1.guess<-log(100)
 k.guess<-log(0.3)
 a3guess<-2
-sigma.guess<-log(1)
+sigma.guess<-log(10)
 
 
 #Test using fake data
 #Generate the data 
-lines.to.sample<-sample(1:nrow(filteredCommHake),size=10000,replace=FALSE)
-ages<-filteredCommHake[lines.to.sample,5]
-meanLengths<-aggregate(FISH_LENGTH~age1,mean,data=filteredCommHake)
-L1<-meanLengths[meanLengths$age1==2,2]
-L2<-meanLengths[meanLengths$age1==10,2]
-vbgfmod<-sim_test(ages,L1,L2,k=0.3,sigma=2,a3=2,startL1=l1.guess,startL2=l2.guess,startK=k.guess,startSig=sigma.guess,
+
+ages<-sample(1:20,size=100000,replace=T)
+L1<-300
+L2<-1000
+vbgfmod<-sim_test(ages,L1,L2,k=0.3,sigma=10,a3=2,startL1=l1.guess,startL2=l2.guess,startK=k.guess,startSig=sigma.guess,
                   A=12,numSamplesPerAge=1000,numSamplesToFit=5000)
 
 #Check parameters
