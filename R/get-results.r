@@ -54,8 +54,8 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
      ## Get unique scenarios that exist in the folder. Might be other random
     ## stuff in the folder so be careful to extract only scenario folders.
     all.dirs <- list.dirs(path=directory, full.names=FALSE, recursive=FALSE)
-    temp.dirs <- sapply(1:length(select.dirs), function(i) {
-        x <- unlist(strsplit(select.dirs[i], split="/"))
+    temp.dirs <- sapply(1:length(all.dirs), function(i) {
+        x <- unlist(strsplit(all.dirs[i], split="/"))
         return(x[length(x)])
     })
     ## Choose whether to do all scenarios or the vector passed by user
@@ -86,7 +86,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         }
         ## Check if still there and skip if already so, otherwise read in
         ## and save to file
-        else if(!file.exists(scalar.file) |  !file.exists(ts.file)){
+        if(!file.exists(scalar.file) |  !file.exists(ts.file)){
             get_results_scenario(scenario=scen, directory=directory,
                                  overwrite_files=overwrite_files)
         }
@@ -188,9 +188,11 @@ get_results_scenario <- function(scenario, directory=getwd(),
       report.em <- r4ss::SS_output(paste0(rep,"/em/"), covar=FALSE,
         verbose=FALSE,compfile="none", forecast=TRUE, warn=TRUE, readwt=FALSE,
         printstats=FALSE, NoCompOK=TRUE)
-      report.om <- r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE, verbose=FALSE,
+      # if(file.exists(paste0(rep,"/om/Report.sso"))==FALSE)
+      #     stop(paste("Error: SS Report File doesn't exist for scenario", scenario))
+      report.om <- tryCatch(r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE, verbose=FALSE,
         compfile="none", forecast=FALSE, warn=TRUE, readwt=FALSE,
-        printstats=FALSE, NoCompOK=TRUE)
+        printstats=FALSE, NoCompOK=TRUE))
         ## Grab the residuals for the indices
         resids <- log(report.em$cpue$Obs) - log(report.em$cpue$Exp)
         resids.long <- data.frame(report.em$cpue[,c("FleetName", "Yr")], resids)
