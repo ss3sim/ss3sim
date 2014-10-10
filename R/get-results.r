@@ -190,9 +190,15 @@ get_results_scenario <- function(scenario, directory=getwd(),
         printstats=FALSE, NoCompOK=TRUE)
       # if(file.exists(paste0(rep,"/om/Report.sso"))==FALSE)
       #     stop(paste("Error: SS Report File doesn't exist for scenario", scenario))
-      report.om <- tryCatch(r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE, verbose=FALSE,
-        compfile="none", forecast=FALSE, warn=TRUE, readwt=FALSE,
-        printstats=FALSE, NoCompOK=TRUE))
+      report.om <- tryCatch({
+        r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE, 
+        verbose=FALSE, compfile="none", forecast=FALSE, warn=TRUE, readwt=FALSE,
+        printstats=FALSE, NoCompOK=TRUE)
+        },
+        error=function(e){
+            message(paste("Error reading SS files within", scenario))
+            message(e)
+        })
         ## Grab the residuals for the indices
         resids <- log(report.em$cpue$Obs) - log(report.em$cpue$Exp)
         resids.long <- data.frame(report.em$cpue[,c("FleetName", "Yr")], resids)
