@@ -25,6 +25,23 @@ calculate_runtime <- function(start_time, end_time) {
   return(run.mins)
 }
 
+#' Identify ss3sim scenarios within a directory
+#'
+#' @param directory The directory which contains scenario folders with
+#'    results.
+#' @author Merrill Rudd
+id_scenarios <- function(directory){
+    ## Get unique scenarios that exist in the folder. Might be other random
+    ## stuff in the folder so be careful to extract only scenario folders.
+    all.dirs <- list.dirs(path=directory, full.names=FALSE, recursive=FALSE)
+    temp.dirs <- sapply(1:length(all.dirs), function(i) {
+        x <- unlist(strsplit(all.dirs[i], split="/"))
+        return(x[length(x)])
+    })
+    scenarios <- temp.dirs[grepl("[A-Z0-9-]+-[a-z]+",temp.dirs)]
+    return(scenarios)
+}
+
 #' Extract SS3 simulation output
 #'
 #' This high level function extracts results from SS3 model runs. Give it a
@@ -51,18 +68,17 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
   user_scenarios=NULL){
 
     on.exit(setwd(directory))
-     ## Get unique scenarios that exist in the folder. Might be other random
-    ## stuff in the folder so be careful to extract only scenario folders.
-    all.dirs <- list.dirs(path=directory, full.names=FALSE, recursive=FALSE)
-    temp.dirs <- sapply(1:length(all.dirs), function(i) {
-        x <- unlist(strsplit(all.dirs[i], split="/"))
-        return(x[length(x)])
-    })
+     
     ## Choose whether to do all scenarios or the vector passed by user
     if(is.null(user_scenarios)) {
-        scenarios <- temp.dirs[grepl("[A-Z0-9-]+-[a-z]+",temp.dirs)]
+        scenarios <- id_scenarios(directory=directory)
     } else {
-        scenarios <- user_scenarios
+        temp_scenarios <- id_scenarios(directory=directory)
+        if(all(user_scenarios %in% temp_scenarios)){
+            scenarios <- user_scenarios
+        } else{
+            stop(paste(user_scenarios[which(user_scenarios %in% temp_scenarios==FALSE)], 
+                "not in directory"))}
     }
 
     if(length(scenarios)==0)
