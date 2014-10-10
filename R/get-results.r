@@ -51,14 +51,9 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
   user_scenarios=NULL){
 
     on.exit(setwd(directory))
-    ## Get unique scenarios that exist in the folder. Might be other random
+     ## Get unique scenarios that exist in the folder. Might be other random
     ## stuff in the folder so be careful to extract only scenario folders.
     all.dirs <- list.dirs(path=directory, full.names=FALSE, recursive=FALSE)
-    ## To select scenarios that has at least 2 files (1 iteration folder and 1
-    ## bias folder) i.e to only examine cases that passed the convergence test
-    nb.iter <- sapply(1:length(all.dirs),
-      function(x) length(list.files(all.dirs[x])))
-    select.dirs <- all.dirs[which(nb.iter>1)]
     temp.dirs <- sapply(1:length(select.dirs), function(i) {
         x <- unlist(strsplit(select.dirs[i], split="/"))
         return(x[length(x)])
