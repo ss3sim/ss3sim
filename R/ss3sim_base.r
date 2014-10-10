@@ -255,6 +255,10 @@ deviations can lead to biased model results.")
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
 
+      # Copy over wtatage.ss_new to EM; needed for empirical weight at age
+      file.copy(pastef(sc, i, "om", "wtatage.ss_new"),
+        pastef(sc, i, "em", "wtatage.ss_new"))
+
       # Read in the data.ss_new file and move it to the em folder
        extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
          data_out = pastef(sc, i, "em", "ss3.dat"))
