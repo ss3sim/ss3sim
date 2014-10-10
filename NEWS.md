@@ -1,5 +1,7 @@
 # ss3sim 0.8.2.99
 
+* Copy wtatage.ss_new from OM to EM (#163).
+
 * Add new change functions: `change_tail_compression()`, `change_bin()`, and
   `change_lcomp_constant()`.
 
