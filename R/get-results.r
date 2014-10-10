@@ -25,6 +25,23 @@ calculate_runtime <- function(start_time, end_time) {
   return(run.mins)
 }
 
+#' Identify ss3sim scenarios within a directory
+#'
+#' @param directory The directory which contains scenario folders with
+#'    results.
+#' @author Merrill Rudd
+id_scenarios <- function(directory){
+    ## Get unique scenarios that exist in the folder. Might be other random
+    ## stuff in the folder so be careful to extract only scenario folders.
+    all.dirs <- list.dirs(path=directory, full.names=FALSE, recursive=FALSE)
+    temp.dirs <- sapply(1:length(all.dirs), function(i) {
+        x <- unlist(strsplit(all.dirs[i], split="/"))
+        return(x[length(x)])
+    })
+    scenarios <- temp.dirs[grepl("[A-Z0-9-]+-[a-z]+",temp.dirs)]
+    return(scenarios)
+}
+
 #' Extract SS3 simulation output
 #'
 #' This high level function extracts results from SS3 model runs. Give it a
@@ -51,23 +68,17 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
   user_scenarios=NULL){
 
     on.exit(setwd(directory))
-    ## Get unique scenarios that exist in the folder. Might be other random
-    ## stuff in the folder so be careful to extract only scenario folders.
-    all.dirs <- list.dirs(path=directory, full.names=FALSE, recursive=FALSE)
-    ## To select scenarios that has at least 2 files (1 iteration folder and 1
-    ## bias folder) i.e to only examine cases that passed the convergence test
-    nb.iter <- sapply(1:length(all.dirs),
-      function(x) length(list.files(all.dirs[x])))
-    select.dirs <- all.dirs[which(nb.iter>1)]
-    temp.dirs <- sapply(1:length(select.dirs), function(i) {
-        x <- unlist(strsplit(select.dirs[i], split="/"))
-        return(x[length(x)])
-    })
+     
     ## Choose whether to do all scenarios or the vector passed by user
     if(is.null(user_scenarios)) {
-        scenarios <- temp.dirs[substr_r(temp.dirs,4) %in% c("-cod", "-fla","-sar")]
+        scenarios <- id_scenarios(directory=directory)
     } else {
-        scenarios <- user_scenarios
+        temp_scenarios <- id_scenarios(directory=directory)
+        if(all(user_scenarios %in% temp_scenarios)){
+            scenarios <- user_scenarios
+        } else{
+            stop(paste(user_scenarios[which(user_scenarios %in% temp_scenarios==FALSE)], 
+                "not in directory"))}
     }
 
     if(length(scenarios)==0)
@@ -91,7 +102,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         }
         ## Check if still there and skip if already so, otherwise read in
         ## and save to file
-        else if(!file.exists(scalar.file) |  !file.exists(ts.file)){
+        if(!file.exists(scalar.file) |  !file.exists(ts.file)){
             get_results_scenario(scenario=scen, directory=directory,
                                  overwrite_files=overwrite_files)
         }
@@ -193,9 +204,17 @@ get_results_scenario <- function(scenario, directory=getwd(),
       report.em <- r4ss::SS_output(paste0(rep,"/em/"), covar=FALSE,
         verbose=FALSE,compfile="none", forecast=TRUE, warn=TRUE, readwt=FALSE,
         printstats=FALSE, NoCompOK=TRUE)
-      report.om <- r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE, verbose=FALSE,
-        compfile="none", forecast=FALSE, warn=TRUE, readwt=FALSE,
+      # if(file.exists(paste0(rep,"/om/Report.sso"))==FALSE)
+      #     stop(paste("Error: SS Report File doesn't exist for scenario", scenario))
+      report.om <- tryCatch({
+        r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE, 
+        verbose=FALSE, compfile="none", forecast=FALSE, warn=TRUE, readwt=FALSE,
         printstats=FALSE, NoCompOK=TRUE)
+        },
+        error=function(e){
+            message(paste("Error reading SS files within", scenario))
+            message(e)
+        })
         ## Grab the residuals for the indices
         resids <- log(report.em$cpue$Obs) - log(report.em$cpue$Exp)
         resids.long <- data.frame(report.em$cpue[,c("FleetName", "Yr")], resids)
