@@ -65,7 +65,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
     })
     ## Choose whether to do all scenarios or the vector passed by user
     if(is.null(user_scenarios)) {
-        scenarios <- temp.dirs[substr_r(temp.dirs,4) %in% c("-cod", "-fla","-sar")]
+        scenarios <- temp.dirs[grepl("[A-Z0-9-]+-[a-z]+",temp.dirs)]
     } else {
         scenarios <- user_scenarios
     }
