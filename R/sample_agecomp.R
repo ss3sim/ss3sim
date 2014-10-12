@@ -12,6 +12,12 @@
 #' @param agebin_vector Depreciated argument. Does nothing and will be
 #'   removed in a future major version update. Instead, see
 #'   \code{change_bin}.
+#' @param keep_conditional A logical if conditional age-at-length data
+#'   should be kept or removed entirely from the \code{.dat} file.
+#'   \code{sample_agecomp} only works on the age composition data
+#'   and not on the conditional age-at-length data. To sample the 
+#'   conditional data set \code{keep_conditional} to \code{TRUE}
+#'   and use \link{\code{sample_ccomp}}.
 #'
 #' @template sampling-return
 #'
@@ -65,10 +71,11 @@
 #'     lines((0:15), true, col=4, lwd=2)
 #' }
 #' par(op)
-#' @seealso \code{\link{sample_lcomp}}
+#' @seealso \code{\link{sample_lcomp}} \code{\link{sample_ccomp}}
 #' @export
 sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
-                           years, cpar=1, agebin_vector=NULL, write_file=TRUE){
+                           years, cpar=1, agebin_vector=NULL, write_file=TRUE,
+                           keep_conditional = TRUE){
     ## The new agecomp is mostly based on the old one so start with
     ## that
     agecomp <- infile$agecomp
@@ -99,6 +106,13 @@ sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
         }
     }
     ## End input checks
+
+    ## Check to see if conditional age-at-length data should be kept
+    if(keep_conditional){
+        conditional_data <- subset(agecomp, Lbin_lo >= 0)
+    }
+      agecomp <- subset(agecomp, Lbin_lo < 0)
+    
 
     ## Resample from the age data
     ## The general approach here is to loop through each row to keep
@@ -151,9 +165,15 @@ sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
 
     ## Build the new dat file
     newfile <- infile
-    newfile$agecomp <- newcomp.final
+    if(keep_conditional) {
+        newcomp.final <- rbind(newcomp.final, conditional_data)
+        newfile$agecomp <- newcomp.final
+    } else {
+        newfile$agecomp <- newcomp.final
+    }
     if(Nfleets>0) newfile$N_agecomp <- nrow(newcomp.final)
-    if(Nfleets==0) newfile$N_agecomp <- 0
+    if(Nfleets==0 & keep_conditional == FALSE) newfile$N_agecomp <- 0
+    if(Nfleets==0 & keep_conditional == TRUE) newfile$N_agecomp <- nrow(newcomp.final)
 
     ## Write the modified file
     if(write_file)
