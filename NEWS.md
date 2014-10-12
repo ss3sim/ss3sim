@@ -1,5 +1,11 @@
 # ss3sim 0.8.2.99
 
+* Merrill updated the get-results functions to work without bias runs, to
+  check for folders that look like ss3sim runs, and to issue a warning if
+  there are problems reading the files (#155).
+
+* Copy wtatage.ss_new from OM to EM (#163).
+
 * Add new change functions: `change_tail_compression()`, `change_bin()`, and
   `change_lcomp_constant()`.
 

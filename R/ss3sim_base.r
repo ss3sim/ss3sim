@@ -189,6 +189,11 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       copy_ss3models(model_dir = em_dir, scenarios = sc,
         iterations = i, type = "em")
 
+      # Make fake .dat files to silence SS3/ADMB:
+      fake_dat <- c("om/ss3_24o_opt.dat", "om/ss3_24o_safe.dat",
+        "em/ss3_24o_opt.dat", "em/ss3_24o_safe.dat")
+      sapply(fake_dat, function(fi) write("\n", pastef(pastef(sc, i, fi))))
+
       # If we're bias adjusting, then copy over the .ctl file to the
       # em folder
       if(bias_already_run) {
@@ -266,6 +271,10 @@ deviations can lead to biased model results.")
 
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
+
+      # Copy over wtatage.ss_new to EM; needed for empirical weight at age
+      file.copy(pastef(sc, i, "om", "wtatage.ss_new"),
+        pastef(sc, i, "em", "wtatage.ss_new"))
 
       # Read in the data.ss_new file and move it to the em folder
        extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
@@ -441,6 +450,8 @@ deviations can lead to biased model results.")
 
         sink()
       }
+
+      file.remove(pastef(sc, i, fake_dat))
 
       # Pause to reduce average CPUE use?
       Sys.sleep(sleep)
