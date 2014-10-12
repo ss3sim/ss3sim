@@ -85,6 +85,11 @@ change_bin <- function(file_in, file_out, bin_vector,
 
   type <- match.arg(type, choices = c("len", "age", "cal", "mla", "mwa"),
                     several.ok = TRUE)
+    
+    #add backward compatibility for when bin_vector is a vector and not list
+  if(is.vector(bin_vector)) {
+    bin_vector <- list(bin_vector)
+  }
     if(is.null(names(bin_vector))) {
       names(bin_vector) <- type[seq(length(bin_vector))]
     }
