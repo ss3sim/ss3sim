@@ -10,7 +10,7 @@ change_tv(change_tv_list, ctl_file_in = "control.ss_new",
   starter_file_out = "starter.ss", report_file = "Report.sso")
 }
 \arguments{
-  \item{change_tv_list}{A list of named vectors. Names
+  \item{change_tv_list}{*A list of named vectors. Names
   correspond to parameters in the operating model that
   currently do not use environmental deviations and the
   vectors correspond to deviations. See the section
@@ -71,6 +71,15 @@ option is to transform the environmental variable into an
 age 0 pre-recruit survey. See page 55 of the SS3 version
 3.24f manual for more information.
 }
+\section{Which arguments to specifiy in case files}{
+  All function argument descriptions that start with an
+  asterisk (*) will be passed through the case files to
+  \code{\link{run_ss3sim}}. If one of these arguments is
+  not specified in a case file, then a value of \code{NULL}
+  will be passed, which may or may not be an appropriate
+  value. Other arguments will be ignored if specified.
+}
+
 \section{Specifying the \code{change_tv_list}}{
   Parameters will change to vary with time according to the
   vectors of deviations passed to \code{change_tv_list}.

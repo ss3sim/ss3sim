@@ -6,8 +6,8 @@
 change_tail_compression(tail_compression, file_in, file_out)
 }
 \arguments{
-  \item{tail_compression}{The new tail_compression value to
-  be used. Must be a numeric value, as a proportion. For
+  \item{tail_compression}{*The new tail_compression value
+  to be used. Must be a numeric value, as a proportion. For
   example 0.1 means 10 percent. See the SS3 manual for
   further information. A NULL value indicates no action, a
   negative value indicates to SS3 to ignore it (not use
@@ -28,6 +28,14 @@ length composition data in a \code{dat} file
 (\code{file_in}) with those specified in
 \code{tail_compression}. It then writes a new file with
 name \code{file_out} into the working directory.
+}
+\section{Which arguments to specifiy in case files}{
+  All function argument descriptions that start with an
+  asterisk (*) will be passed through the case files to
+  \code{\link{run_ss3sim}}. If one of these arguments is
+  not specified in a case file, then a value of \code{NULL}
+  will be passed, which may or may not be an appropriate
+  value. Other arguments will be ignored if specified.
 }
 \examples{
 ## Create a temporary folder for the output:

@@ -14,6 +14,7 @@
 #'   \code{change_bin}.
 #'
 #' @template sampling-return
+#' @template casefile-footnote
 #'
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")

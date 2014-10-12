@@ -8,7 +8,7 @@
 #' log-normal bias correction).
 #'
 #' @template lcomp-agecomp-index
-#' @param sds_obs A list the same length as \code{fleets}. The list should
+#' @param sds_obs *A list the same length as \code{fleets}. The list should
 #'   contain either single values or numeric vectors of the same length as the
 #'   number of years which represent the standard deviation of the observation
 #'   error. Single values are repeated for all years.
@@ -16,6 +16,7 @@
 #'   the results. Useful for testing and exploring the function.
 #'
 #' @template sampling-return
+#' @template casefile-footnote
 #'
 #' @export
 #' @author Cole Monnahan, Kotaro Ono

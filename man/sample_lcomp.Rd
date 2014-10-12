@@ -14,24 +14,24 @@ sample_lcomp(infile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
   \item{outfile}{A character string of the new \code{.dat}
   file name to be created. Must end in \code{.dat}.}
 
-  \item{fleets}{A numeric vector giving the fleets to be
+  \item{fleets}{*A numeric vector giving the fleets to be
   used. This order also pertains to other arguments. A
   missing value excludes that fleet from \code{outfile}
   (i.e. it turns it off so no samples are written). If none
   of the fleet collected samples, keep the value to
   \code{fleets=NULL}.}
 
-  \item{Nsamp}{A numeric list of the same length as
+  \item{Nsamp}{*A numeric list of the same length as
   \code{fleets}. Either single values or vectors of the
   same length as the number of years can be passed through.
   Single values are repeated for all years. If no fleet
   collected samples, keep the value to \code{Nsamp=NULL}.}
 
-  \item{years}{A list the same length as \code{fleets}
+  \item{years}{*A list the same length as \code{fleets}
   giving the years as numeric vectors. If no fleet
   collected samples, keep the value to \code{years=NULL}.}
 
-  \item{cpar}{A numeric value or vector the same length as
+  \item{cpar}{*A numeric value or vector the same length as
   \code{fleets} controlling the variance of the Dirichlet
   distribution used for sampling. A value of \code{1}
   indicates the same standard deviation as a multinomial of
@@ -57,6 +57,14 @@ returned invisibly.
 Take a \code{data.SS_new} file containing expected values
 and sample to create observed length compositions which are
 then written to file for use by the estimation model.
+}
+\section{Which arguments to specifiy in case files}{
+  All function argument descriptions that start with an
+  asterisk (*) will be passed through the case files to
+  \code{\link{run_ss3sim}}. If one of these arguments is
+  not specified in a case file, then a value of \code{NULL}
+  will be passed, which may or may not be an appropriate
+  value. Other arguments will be ignored if specified.
 }
 \examples{
 d <- system.file("extdata", package = "ss3sim")

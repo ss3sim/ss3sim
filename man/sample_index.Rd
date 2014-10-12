@@ -14,18 +14,18 @@ sample_index(infile, outfile, fleets, years, sds_obs, make_plot = FALSE,
   \item{outfile}{A character string of the new \code{.dat}
   file name to be created. Must end in \code{.dat}.}
 
-  \item{fleets}{A numeric vector giving the fleets to be
+  \item{fleets}{*A numeric vector giving the fleets to be
   used. This order also pertains to other arguments. A
   missing value excludes that fleet from \code{outfile}
   (i.e. it turns it off so no samples are written). If none
   of the fleet collected samples, keep the value to
   \code{fleets=NULL}.}
 
-  \item{years}{A list the same length as \code{fleets}
+  \item{years}{*A list the same length as \code{fleets}
   giving the years as numeric vectors. If no fleet
   collected samples, keep the value to \code{years=NULL}.}
 
-  \item{sds_obs}{A list the same length as \code{fleets}.
+  \item{sds_obs}{*A list the same length as \code{fleets}.
   The list should contain either single values or numeric
   vectors of the same length as the number of years which
   represent the standard deviation of the observation
@@ -54,6 +54,14 @@ B_y*exp(rnorm(1, 0, \code{sds_obs})-\code{sds_obs}^2/2).
 The second term adjusts the random samples so that their
 expected value is B_y (i.e. the log-normal bias
 correction).
+}
+\section{Which arguments to specifiy in case files}{
+  All function argument descriptions that start with an
+  asterisk (*) will be passed through the case files to
+  \code{\link{run_ss3sim}}. If one of these arguments is
+  not specified in a case file, then a value of \code{NULL}
+  will be passed, which may or may not be an appropriate
+  value. Other arguments will be ignored if specified.
 }
 \examples{
 \dontrun{

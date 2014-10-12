@@ -10,8 +10,11 @@
 #' @param file_out Output SS3 par file.
 #' @return A modified SS3 \code{.par} file.
 #' @author Cole Monnahan
+#' @details This function does not need to be specified in a case file if you
+#'   are running and ss3sim simulation through case files with
+#'   \code{\link{run_ss3sim}}.
 #' @export
-
+#'
 #' @examples
 #' # Create a temporary folder for the output:
 #' temp_path <- file.path(tempdir(), "ss3sim-recdev-example")

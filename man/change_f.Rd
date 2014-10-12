@@ -7,7 +7,7 @@ change_f(years, years_alter, fvals, file_in = "ss3.par",
   file_out = "ss3.par")
 }
 \arguments{
-  \item{years}{Vector of years for which F values are
+  \item{years}{*Vector of years for which F values are
   specified, if there is more than one fleet or season the
   catches must be ordered by season:year:fishey (e.g.,
   season1year1fishery1, season2year1fishery1,
@@ -20,14 +20,14 @@ change_f(years, years_alter, fvals, file_in = "ss3.par",
   that operates for 4 years you could use the following:
   \code{1:8}.}
 
-  \item{years_alter}{Vector of years for the which F values
-  will be altered. If there is more than one fishery or
-  season, use the mapping system created in \code{years}
+  \item{years_alter}{*Vector of years for the which F
+  values will be altered. If there is more than one fishery
+  or season, use the mapping system created in \code{years}
   because actual year values cannot be recycled. For
   example, to change the second season of the second year
   in the example above, use: \code{4}.}
 
-  \item{fvals}{Vector of F values to be entered into
+  \item{fvals}{*Vector of F values to be entered into
   \code{ss3.par} file}
 
   \item{file_in}{Input SS3 par file.}
@@ -40,6 +40,14 @@ A modified SS3 \code{.par} file.
 \description{
 Takes an SS3 \code{.par} file and changes the F values for
 specified years.
+}
+\section{Which arguments to specifiy in case files}{
+  All function argument descriptions that start with an
+  asterisk (*) will be passed through the case files to
+  \code{\link{run_ss3sim}}. If one of these arguments is
+  not specified in a case file, then a value of \code{NULL}
+  will be passed, which may or may not be an appropriate
+  value. Other arguments will be ignored if specified.
 }
 \examples{
 # Create a temporary folder for the output:

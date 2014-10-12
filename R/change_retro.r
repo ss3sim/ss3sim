@@ -11,10 +11,11 @@
 #'
 #' @param startfile_in Input \code{starter.ss} file
 #' @param startfile_out Output \code{starter.ss} file
-#' @param retro_yr Which retrospective year to enter into the starter file.
+#' @param retro_yr *Which retrospective year to enter into the starter file.
 #'   Should be 0 (no retrospective analysis) or a negative value.
 #' @author Sean C. Anderson
 #' @return A modified SS3 starter file.
+#' @template casefile-footnote
 #' @examples
 #' # Create a temporary folder for the output:
 #' temp_path <- file.path(tempdir(), "ss3sim-retro-example")

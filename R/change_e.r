@@ -10,16 +10,16 @@
 #' @param ctl_file_out Output SS3 control file
 #' @param dat_file_in Input SS3 data file
 #' @param for_file_in Input SS3 forecast file
-#' @param natM_type A character string corresponding to option 0:4 in SS3 (i.e.
+#' @param natM_type *A character string corresponding to option 0:4 in SS3 (i.e.
 #'   "1Parm", "n_breakpoints", "Lorenzen", "agespecific",
 #'   "agespec_withseasinterpolate").  A value of NA will leave the
 #'   configuration of natural mortality as specified in \code{ctl_file_in}.
-#' @param natM_n_breakpoints A vector of ages at which you want breakpoints.
+#' @param natM_n_breakpoints *A vector of ages at which you want breakpoints.
 #'   Only used if you specify \code{natM_type = "n_breakpoints"}.
-#' @param natM_lorenzen The reference age for the Lorenzen function.  Only used
+#' @param natM_lorenzen *The reference age for the Lorenzen function.  Only used
 #'   if you specify \code{natM_type = "Lorenzen"}.  Length should be one even
 #'   if the \code{.ctl} has two genders.
-#' @param natM_val A vector of numeric values. Interpretation of the values are
+#' @param natM_val *A vector of numeric values. Interpretation of the values are
 #'   dependent upon \code{natM_type}. If \code{natM_type = "agespecific"} or
 #'   \code{natM_type = "agespec_withseasinterpolate"} the vector specifies the
 #'   fixed natural mortality parameters for each integer age.  Specify values
@@ -33,22 +33,22 @@
 #'   natural mortality).  For any specified intial value, the parameter bounds
 #'   will be altered to 50 percent above and below the specified initial value,
 #'   if the initial value lies above or below the original bounds.
-#' @param par_name A vector of values, separated by commas.  Each value
+#' @param par_name *A vector of values, separated by commas.  Each value
 #'   corresponds to a parameter that you wish to turn on or off in the
 #'   \code{ctl_file_in}. The values will later be turned into character values
 #'   and used to search for specific lines for each parameter in the
 #'   \code{ctl_file_in}, therefore it is best to use full parameter names as
 #'   they are specified in \code{ctl_file_in}.
-#' @param par_int A vector of intial values, one for each parameter in
+#' @param par_int *A vector of intial values, one for each parameter in
 #'   \code{par_name}.  Values can be NA if you do not wish to change the
 #'   initial value for a given parameter.
-#' @param par_phase A vector of phase values, one for each parameter in
+#' @param par_phase *A vector of phase values, one for each parameter in
 #'   \code{par_name}.  Values can be NA if you do not wish to change the phase
 #'   for a given parameter.
-#' @param forecast_num Number of years to perform forecasts. For those years,
+#' @param forecast_num *Number of years to perform forecasts. For those years,
 #'   the data will be removed from the \code{dat_file_in}, enabling SS3 to
 #'   generate forecasts rather than use the data to fit the model.
-#' @param run_change_e_full If \code{FALSE} \code{change_e} will only
+#' @param run_change_e_full *If \code{FALSE} \code{change_e} will only
 #'   manipulate for forecasting, if \code{TRUE} (default) the full function
 #'   capability will be ran.
 #'
@@ -61,7 +61,7 @@
 #'   function will fail if natural mortality in the \code{ctl_file_in} is not
 #'   specified as \code{"1Param"} and \code{natM_type} is anything other than
 #'   \code{NULL} or \code{"1Param"}.
-#'
+#' @template casefile-footnote
 #' @return
 #' Altered versions of SS3 \code{.ctl}, \code{.dat}, and, \code{forecast.ss}
 #' files.

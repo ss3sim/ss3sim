@@ -10,7 +10,7 @@
 #' internally. It is designed to help stabilize the model, but is unclear
 #' how and when to use it for optimal effect. The same value is used for
 #' all length data.
-#' @param lcomp_constant The new value to be used. Must be a numeric value,
+#' @param lcomp_constant *The new value to be used. Must be a numeric value,
 #' as a proportion. For example 0.1 means 10 percent. See the SS3 manual
 #' for further information. A NULL value indicates no action resulting in
 #' using the current value, and a value of 0 will throw an error since that
@@ -20,6 +20,7 @@
 #' @param file_out Output SS3 dat file. Typically the same as \code{file_in}.
 #' @return A modified SS3 \code{.dat} file, and that file returned
 #' invisibly (for testing) as a vector of character lines.
+#' @template casefile-footnote
 #' @author Cole Monnahan
 #' @export
 

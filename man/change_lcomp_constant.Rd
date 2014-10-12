@@ -6,9 +6,9 @@
 change_lcomp_constant(lcomp_constant, file_in, file_out)
 }
 \arguments{
-  \item{lcomp_constant}{The new value to be used. Must be a
-  numeric value, as a proportion. For example 0.1 means 10
-  percent. See the SS3 manual for further information. A
+  \item{lcomp_constant}{*The new value to be used. Must be
+  a numeric value, as a proportion. For example 0.1 means
+  10 percent. See the SS3 manual for further information. A
   NULL value indicates no action resulting in using the
   current value, and a value of 0 will throw an error since
   that leads to an error when zeroes exist in the data.
@@ -37,6 +37,14 @@ being normalized internally. It is designed to help
 stabilize the model, but is unclear how and when to use it
 for optimal effect. The same value is used for all length
 data.
+}
+\section{Which arguments to specifiy in case files}{
+  All function argument descriptions that start with an
+  asterisk (*) will be passed through the case files to
+  \code{\link{run_ss3sim}}. If one of these arguments is
+  not specified in a case file, then a value of \code{NULL}
+  will be passed, which may or may not be an appropriate
+  value. Other arguments will be ignored if specified.
 }
 \examples{
 ## Create a temporary folder for the output:
