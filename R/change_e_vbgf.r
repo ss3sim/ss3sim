@@ -1,8 +1,12 @@
-#Find out what this package is needed for
-library(bbmle)
-#Make sure that reshape2 is a dependency as well
-#Ask Christine if we can get rid of n.samples or
-#where we need to get this out of the datfile
+#' External estimation procedure for von Bertalanffy growth
+#'
+#' @export
+#' @import bbmle
+#TODO:
+#Determine where n.samples should come from only using the data at hand
+# i.e. if the number of samples is less than blah use blah
+#document these functions
+#make sure that when the package is loaded that these functions are available to change_e
 
   #Function to predict length given VBGF parameters
   vbgf_func <- function(L1, L2, k, ages, a3){
@@ -11,19 +15,20 @@ library(bbmle)
   }
 
 
-sample_fit_VBGF <- function(n.samples,length.data,start.L1,start.L2,start.k,start.logsigma,a3,A){
+sample_fit_VBGF <- function(n.samples = NULL,length.data,start.L1,
+                            start.L2,start.k,start.logsigma,a3,A){
   #function takes data, number of samples, start values, start age
   #Data must have colums ordered: Year, Length, Weight, Sex, age
   #Then fits VBGF to subsampled data
   #Remove fish younger than a3 and older than A
   length.data<-length.data[length.data[, 1] > a3, ]
   length.data<-length.data[length.data[, 1] < A, ]
-  lines.to.sample<-sample(1:nrow(length.data),size=n.samples,replace=FALSE)
+  #lines.to.sample<-sample(1:nrow(length.data),size=n.samples,replace=FALSE)
 
   #Subsample data
-  ages<-length.data[lines.to.sample,1]
-  length.comp<-length.data[lines.to.sample,2]
-  length.df<-data.frame(cbind(ages,length.comp))
+  #ages<-length.data[lines.to.sample,1]
+  #length.comp<-length.data[lines.to.sample,2]
+  #length.df<-data.frame(cbind(ages,length.comp))
   
   #Returns the negative log likelihood function
   get_log_likelihood<-function(logL1,logL2,logk,logsigma){
@@ -36,6 +41,6 @@ sample_fit_VBGF <- function(n.samples,length.data,start.L1,start.L2,start.k,star
     return(-logLik)
   }
   #Fit using MLE
-  mod <- mle2(get_log_likelihood,start=list(logL1=start.L1,logL2=start.L2,logk=start.k,logsigma=start.logsigma))
+  mod <- bbmle::mle2(get_log_likelihood,start=list(logL1=start.L1,logL2=start.L2,logk=start.k,logsigma=start.logsigma))
   return(mod)
 }

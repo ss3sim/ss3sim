@@ -143,6 +143,7 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
       sample_fit_VBGF(length.data = data, start.L1 = start.pars$L1,
         start.L2 = start.pars$L2, start.k = start.pars$k, 
         start.logsigma = start.pars$logsigma, a3 = limitages$a3, A = limitages$A)
+    #TODO: do something if the estimation routine fails
     change_e_vbgf_pars <- exp(change_e_vbgf@fullcoef)
     names(change_e_vbgf_pars) <- gsub("log", "", names(change_e_vbgf_pars))
     #Get par estimates and append them to par_name par_int and par_phase
