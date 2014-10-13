@@ -96,7 +96,7 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
     natM_n_breakpoints = NULL, natM_lorenzen = NULL, natM_val = c(NA,NA),
     par_name = NULL, par_int = "NA", par_phase = "NA",
     forecast_num = 0, run_change_e_full = TRUE) {
-
+  
   if(run_change_e_full) {
   if(!file.exists(ctl_file_in)) {
     stop("Ctl file for the estimation model does not exist,
@@ -104,6 +104,56 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
   }
   #Read in the ctl file for the estimation model
   ss3.ctl <- readLines(ctl_file_in)
+
+    #Run external estimator for growth if needed
+  if(any(par_init == "change_e_vbgf")) {
+    data.all <- r4ss::SS_readdat(dat_file_in, verbose = FALSE, section = 2)
+    if(!"MeanSize_at_Age_obs" %in% names(data.all)) {
+      stop("Error in change_e while computing external growth estimates: dat file does not contain mean size-at-age data.")
+    }
+    #Remove unnecessary data columns so reshape2::melt can transform from wide to long
+    data <- data.all$MeanSize_at_Age_obs[, 
+      -c(grep("N", colnames(data.all$MeanSize_at_Age_obs)), 
+         match(c("Gender", "Part", "AgeErr", "Ignore"), 
+               colnames(data.all$MeanSize_at_Age_obs)))
+      ]
+      data <- reshape2::melt(data, 
+        id.vars = c("Yr", "Seas", "Fleet"), value.name = "length")
+      data$variable <- as.numeric(gsub("a", "", data$variable))
+      colnames(data)[match("variable", colnames(data))] <- "age"  
+    #Get start values
+    parsmatch <- data.frame("true" = c("L_at_Amin_Fem_GP_1", "L_at_Amax_Fem_GP_1",
+                                       "VonBert_K_Fem_GP_1", "CV_young_Fem_GP_1"), 
+                            "change_e_vbgf" = c("L1", "L2", "k", "sigma"))
+    pars <- r4ss::SS_parlines(ctl_file_in, verbose = FALSE)
+    start.pars <- sapply(parsmatch$true, function(x) {
+      temp <- subset(pars, Label == x, select = INIT)
+      names(temp) <- parsmatch$change_e_vbgf[substitute(x)[[3]]]
+      return(temp)
+      })
+    limitages <- list(a3 = grep("Growth_Age_for_L1", ss3.ctl, value = TRUE),
+                      A = grep("Growth_Age_for_L2", ss3.ctl, value = TRUE))
+    limitages <- lapply(limitages, function(x) {
+      temp <- unlist(strsplit(x, split = " "))
+      as.numeric(temp[which(nchar(temp) > 0)][1])
+      })
+    
+    #Fit function found in change_e_vbgf.R
+    change_e_vbgf <- 
+      sample_fit_VBGF(length.data = data, start.L1 = start.pars$L1,
+        start.L2 = start.pars$L2, start.k = start.pars$k, 
+        start.logsigma = start.pars$logsigma, a3 = limitages$a3, A = limitages$A)
+    change_e_vbgf_pars <- exp(change_e_vbgf@fullcoef)
+    names(change_e_vbgf_pars) <- gsub("log", "", names(change_e_vbgf_pars))
+    #Get par estimates and append them to par_name par_int and par_phase
+    changeinits <- which(par_int == "change_e_vbgf")
+    ss3names <- par_name[changeinits]
+    #This is if the output is parameter names
+    par_int[changeinits] <- change_e_vbgf_pars[
+      match(parsmatch$change_e_vbgf[match(ss3names, parsmatch$true)],
+            names(change_e_vbgf_pars))]
+  }
+
   # Determine how many genders the model has
   gen <- grep("NatM", ss3.ctl, value = TRUE)
   male <- TRUE %in% grepl("Mal", gen)
