@@ -59,7 +59,7 @@
 #' par(op)
 #'
 #' @export
-#' @seealso \code{\link{sample_agecomp}}
+#' @seealso \code{\link{sample_agecomp}} \code{\link{sample_ccomp}}
 
 sample_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
   years, cpar = 1, write_file = TRUE, lengthbin_vector = NULL){

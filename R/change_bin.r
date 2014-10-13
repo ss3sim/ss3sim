@@ -14,7 +14,7 @@
 #' Currently, \code{.dat} files with multiple genders cannot be manipulated
 #' with \code{change_bin}.
 #' Use \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}},
-#' and \code{\link{sample_cond}} to reduce the data.
+#' and \code{\link{sample_ccomp}} to reduce the data.
 #'
 #' @param file_in A character value giving the location of an SS \code{.dat}
 #'   file to input.
