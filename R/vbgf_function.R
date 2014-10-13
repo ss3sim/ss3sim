@@ -66,7 +66,7 @@ sample_fit_VBGF<-function(n.samples,length.data,start.L1,start.L2,start.k,start.
   return(mod)
 }
 
-sim_test<-function(ages,L1,L2,k,sigma,a3,startL1,startL2,startK,startSig,A,numSamplesPerAge,numSamplesToFit){
+sim_test<-function(ages,L1,L2,k,sigma,a3,startL1,startL2,startK,startSigYoung, startSigOld,A){
   #Function to run a simulation test on the function
   #ages = age values to generate lengths for
   #L1,L2,k, sigma = values to generate data with
@@ -75,12 +75,13 @@ sim_test<-function(ages,L1,L2,k,sigma,a3,startL1,startL2,startK,startSig,A,numSa
   #numSamplesToFit=how many samples to take of the full data for estimation
   #Calculate means of each age
   fakeMeans<-vbgf_func(L1=L1,L2=L2,k=k,sort(unique(ages)),a3)
-  fakeData<-matrix(nrow=length(unique(ages))*numSamplesPerAge,ncol=2)
-  fakeData[,1]<-sort(rep(unique(ages),numSamplesPerAge))
+  fakeData<-matrix(nrow=length(unique(ages))*1000,ncol=2)
+  fakeData[,1]<-sort(rep(unique(ages),1000))
+  
   #Add variation that increases with age
   vect<-NULL
   for(i in 1:length(unique(ages))){
-    vect<-c(vect,rnorm(numSamplesPerAge,fakeMeans[i],sigma*i))
+    vect<-c(vect,rnorm(1000,fakeMeans[i],sigma*i))
   }
   fakeData[,2]<-vect
   
@@ -88,17 +89,17 @@ sim_test<-function(ages,L1,L2,k,sigma,a3,startL1,startL2,startK,startSig,A,numSa
   plot(fakeData[,1],fakeData[,2])
   
   #Fit model
-  vbgfmod<-sample_fit_VBGF(numSamplesToFit,fakeData,startL1,startL2,startK,startSig,a3,A)
+  vbgfmod<-sample_fit_VBGF(fakeData,log(startL1),log(startL2),log(startK),start.cv.young=startSigYoung, a3,A)
   return(vbgfmod)
 }
 
 
 #Start values for optim
-l2.guess<-log(800)
-l1.guess<-log(100)
-k.guess<-log(0.3)
+l2.guess<-800
+l1.guess<-100
+k.guess<-0.3
 a3guess<-2
-sigma.guess<-log(10)
+sigma.guess<-2
 
 
 #Test using fake data
@@ -107,8 +108,7 @@ sigma.guess<-log(10)
 ages<-sample(1:20,size=100000,replace=T)
 L1<-300
 L2<-1000
-vbgfmod<-sim_test(ages,L1,L2,k=0.3,sigma=10,a3=2,startL1=l1.guess,startL2=l2.guess,startK=k.guess,startSig=sigma.guess,
-                  A=12,numSamplesPerAge=1000,numSamplesToFit=5000)
+vbgfmod<-sim_test(ages,L1,L2,k=0.3,sigma=10,a3=2,startL1=l1.guess,startL2=l2.guess,startK=k.guess,startSigYoung=sigma.guess,A=12)
 
 #Check parameters
 logEst<-vbgfmod@coef
