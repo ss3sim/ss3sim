@@ -1,7 +1,7 @@
 #' External estimation procedure for von Bertalanffy growth
 #'
 #' @export
-#' @import bbmle
+#' @importFrom bbmle mle2
 #TODO:
 #Determine where n.samples should come from only using the data at hand
 # i.e. if the number of samples is less than blah use blah
@@ -29,7 +29,7 @@ sample_fit_VBGF <- function(n.samples = NULL,length.data,start.L1,
   #ages<-length.data[lines.to.sample,1]
   #length.comp<-length.data[lines.to.sample,2]
   #length.df<-data.frame(cbind(ages,length.comp))
-  
+
   #Returns the negative log likelihood function
   get_log_likelihood<-function(logL1,logL2,logk,logsigma){
     L1 <- exp(logL1)
@@ -41,6 +41,6 @@ sample_fit_VBGF <- function(n.samples = NULL,length.data,start.L1,
     return(-logLik)
   }
   #Fit using MLE
-  mod <- bbmle::mle2(get_log_likelihood,start=list(logL1=start.L1,logL2=start.L2,logk=start.k,logsigma=start.logsigma))
+  mod <- mle2(get_log_likelihood,start=list(logL1=start.L1,logL2=start.L2,logk=start.k,logsigma=start.logsigma))
   return(mod)
 }
