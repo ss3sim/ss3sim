@@ -40,8 +40,8 @@
 #' print(a$agebin_vector)
 #' print(head(a$agecomp))
 
-change_bin <- function(file_in, file_out, bin_vector, type = c("len", "age"), pop_bin=NULL,
-  write_file = TRUE) {
+change_bin <- function(file_in, file_out, bin_vector, type = c("len", "age"),
+  pop_bin = NULL, write_file = TRUE) {
 
   type <- match.arg(type)
   if(!is.numeric(bin_vector)) {
@@ -62,7 +62,8 @@ change_bin <- function(file_in, file_out, bin_vector, type = c("len", "age"), po
   }
 
   if(datfile$lbin_method != 2 & !is.null(pop_bin)) {
-    stop(paste("the current model doesn't support a change in 'pop_bin' with a 'lbin_method' different than option 2"))
+    stop(paste("the current model doesn't support a change in 'pop_bin' with a",
+    "lbin_method different than option 2"))
   }
 
   if(!is.null(pop_bin)) datfile$binwidth <- pop_bin
