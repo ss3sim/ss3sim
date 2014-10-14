@@ -48,7 +48,7 @@ change_bin <- function(file_in, file_out, bin_vector, type = c("len", "age"), po
     stop("bin_vector must be numeric")
   }
   if(length(bin_vector) == 1) {
-    warning(paste("length(bin_vector) == 1; are you sure you",
+    stop(paste("length(bin_vector) == 1; are you sure you",
        "input a full numeric vector of bins and not a bin size?"))
   }
   if(length(pop_bin)!=1 & !is.null(pop_bin)) {
