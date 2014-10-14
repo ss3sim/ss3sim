@@ -3,8 +3,6 @@
 #' @export
 #' @importFrom bbmle mle2
 #TODO:
-#Determine where n.samples should come from only using the data at hand
-# i.e. if the number of samples is less than blah use blah
 #document these functions
 #make sure that when the package is loaded that these functions are available to change_e
 
