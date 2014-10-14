@@ -14,8 +14,23 @@
 #' @template casefile-footnote
 #' @author Sean C. Anderson
 #' @return A modified SS3 control file.
-# @examples
 #' @export
+#' @examples
+#' # Create a temporary folder for the output:
+#' temp_path <- file.path(tempdir(), "ss3sim-maturity-example")
+#' dir.create(temp_path, showWarnings = FALSE)
+#' wd <- getwd()
+#' setwd(temp_path)
+#'
+#' # Locate the package data:
+#' ctlfile <- system.file("extdata", "models", "cod-em",
+#'  "codEM.ctl", package = "ss3sim")
+#'
+#' # Change the maturity option from 1 to 5:
+#' change_maturity(ctlfile, "test.ctl", maturity_option = 5L)
+#'
+#' unlink("test.ctl")
+#' setwd(wd)
 
 change_maturity <- function(file_in = "em.ctl", file_out = "em.ctl",
   maturity_option = 1L) {
