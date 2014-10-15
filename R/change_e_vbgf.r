@@ -36,9 +36,15 @@ sample_fit_VBGF <- function(length.data,start.L1,start.L2,start.k,start.cv.young
   #Fit using MLE
   mod <- mle2(get_log_likelihood,start=list(logL1=start.L1,logL2=start.L2,logk=start.k,logsigma=.5))
   
-  #Put estimated coefficients in EM terms
-  expCoef<-exp(mod@coef)
-  cv.young<-expCoef[4]*a3
-  cv.old<-expCoef[4]*A
-  return(list("L1"=expCoef[1],"L2"=expCoef[2],"K"=expCoef[3],"cv.young"=cv.young,"cv.old"=cv.old))
+  if(mod@details$convergence == 1){
+  return(list("L1"=999,"L2"=999,"K"=999,"cv.young"=999,"cv.old"=999))
+  } else {
+      #Put estimated coefficients in EM terms
+      expCoef <- exp(mod@coef)
+      cv.young <- expCoef[4]*a3
+      cv.old <- expCoef[4]*A
+      return(list("L1" = expCoef[1], "L2" = expCoef[2], 
+        "K" = expCoef[3], "cv.young" = cv.young, "cv.old" = cv.old))
+  }
+
 }
