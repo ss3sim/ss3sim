@@ -131,6 +131,7 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
                             "change_e_vbgf" = c("L1", "L2", "K", "cv.young", "cv.old"))
     pars <- r4ss::SS_parlines(ctl_file_in, verbose = FALSE)
     start.pars <- sapply(parsmatch$true, function(x) {
+      # TODO subset() needs to be removed from this line to avoid CRAN errors:
       temp <- subset(pars, Label == x, select = INIT)
       names(temp) <- parsmatch$change_e_vbgf[substitute(x)[[3]]]
       return(temp)
