@@ -49,8 +49,8 @@
 #'   is stored in the same matrix as the age composition data. Thus, it is 
 #'   necessary that the conditional age-at-length data use the same binning 
 #'   structure as the age composition data. If \code{type = "caa"} and not
-#'   \code{type = c{"age", "caa"} one will only add conditional age-at-length
-#'   using the binning structure of the current \code{.dat} file. 
+#'   \code{type = c("age", "caa")} one will only add conditional age-at-length
+#'   using the binning structure of the current \code{.dat} file.
 #'   \code{change_bin} will only add conditional age-at-length with a binning
 #'   width equal to 1 age bin (i.e. Lbin_lo == Lbin_hi).
 #'   Also note that if \code{type = c("mla", "mwa")} no entries are currently
