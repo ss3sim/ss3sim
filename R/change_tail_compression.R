@@ -5,7 +5,7 @@
 #' \code{tail_compression}. It then writes a new file with name
 #' \code{file_out} into the working directory.
 #'
-#' @param tail_compression The new tail_compression value to be used. Must
+#' @param tail_compression *The new tail_compression value to be used. Must
 #' be a numeric value, as a proportion. For example 0.1 means 10
 #' percent. See the SS3 manual for further information. A NULL value
 #' indicates no action, a negative value indicates to SS3 to ignore it (not
@@ -14,6 +14,7 @@
 #' @param file_out Output SS3 dat file. Typically the same as \code{file_in}.
 #' @return A modified SS3 \code{.dat} file, and that file returned
 #' invisibly (for testing) as a vector of character lines.
+#' @template casefile-footnote
 #' @author Cole Monnahan
 #' @export
 

@@ -1,5 +1,8 @@
 # ss3sim 0.8.2.99
 
+* Function argument descriptions now indicate which ones need to be specified
+  in case files (#161).
+
 * Merrill updated the get-results functions to work without bias runs, to
   check for folders that look like ss3sim runs, and to issue a warning if
   there are problems reading the files (#155).

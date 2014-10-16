@@ -12,7 +12,7 @@
 #' @param lengthbin_vector Depreciated argument. Does nothing and will be
 #'   removed in a future major version update. Instead, see
 #'   \code{change_bin}.
-#'
+#' @template casefile-footnote
 #' @template sampling-return
 #'
 #' @examples

@@ -52,6 +52,12 @@
 #'
 #' \item \code{\link{change_rec_devs}}: Substitutes recruitment
 #' deviations.
+#'
+#' \item \code{\link{change_lcomp_constant}}: Set the robustification constant
+#' for length composition data.
+#'
+#' \item \code{\link{change_tail_compression}}: Replace tail compression value
+#' for length composition data.
 #' }
 #'
 #' 2. \code{run} functions that conduct simulations. These functions

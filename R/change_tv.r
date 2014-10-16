@@ -5,7 +5,7 @@
 #' \code{change_tv} is specifically set up to work with an operating model
 #' \code{.ctl} file.
 #'
-#' @param change_tv_list A list of named vectors. Names correspond to parameters
+#' @param change_tv_list *A list of named vectors. Names correspond to parameters
 #' in the operating model that currently do not use environmental deviations and
 #' the vectors correspond to deviations. See the section "Specifying the
 #' \code{change_tv_list}" below for help on specifying this argument.
@@ -21,7 +21,7 @@
 #' @author Kotaro Ono, Carey McGilliard, and Kelli Johnson
 #' @return The function creates modified versions of the \code{.par},
 #'   \code{.starter}, \code{.ctl}, and \code{.dat} files.
-#'
+#' @template casefile-footnote
 #' @details
 #' Although there are three ways to implement time-varying parameters within
 #' SS3, \pkg{ss3sim} and \code{change_tv} only use the environmental variable

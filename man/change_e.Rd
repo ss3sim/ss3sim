@@ -18,23 +18,23 @@ change_e(ctl_file_in = pastef("em.ctl"), ctl_file_out = pastef("em.ctl"),
 
   \item{for_file_in}{Input SS3 forecast file}
 
-  \item{natM_type}{A character string corresponding to
+  \item{natM_type}{*A character string corresponding to
   option 0:4 in SS3 (i.e. "1Parm", "n_breakpoints",
   "Lorenzen", "agespecific",
   "agespec_withseasinterpolate").  A value of NA will leave
   the configuration of natural mortality as specified in
   \code{ctl_file_in}.}
 
-  \item{natM_n_breakpoints}{A vector of ages at which you
+  \item{natM_n_breakpoints}{*A vector of ages at which you
   want breakpoints. Only used if you specify
   \code{natM_type = "n_breakpoints"}.}
 
-  \item{natM_lorenzen}{The reference age for the Lorenzen
+  \item{natM_lorenzen}{*The reference age for the Lorenzen
   function.  Only used if you specify \code{natM_type =
   "Lorenzen"}.  Length should be one even if the
   \code{.ctl} has two genders.}
 
-  \item{natM_val}{A vector of numeric values.
+  \item{natM_val}{*A vector of numeric values.
   Interpretation of the values are dependent upon
   \code{natM_type}. If \code{natM_type = "agespecific"} or
   \code{natM_type = "agespec_withseasinterpolate"} the
@@ -54,7 +54,7 @@ change_e(ctl_file_in = pastef("em.ctl"), ctl_file_out = pastef("em.ctl"),
   below the specified initial value, if the initial value
   lies above or below the original bounds.}
 
-  \item{par_name}{A vector of values, separated by commas.
+  \item{par_name}{*A vector of values, separated by commas.
   Each value corresponds to a parameter that you wish to
   turn on or off in the \code{ctl_file_in}. The values will
   later be turned into character values and used to search
@@ -63,21 +63,21 @@ change_e(ctl_file_in = pastef("em.ctl"), ctl_file_out = pastef("em.ctl"),
   parameter names as they are specified in
   \code{ctl_file_in}.}
 
-  \item{par_int}{A vector of intial values, one for each
+  \item{par_int}{*A vector of intial values, one for each
   parameter in \code{par_name}.  Values can be NA if you do
   not wish to change the initial value for a given
   parameter.}
 
-  \item{par_phase}{A vector of phase values, one for each
+  \item{par_phase}{*A vector of phase values, one for each
   parameter in \code{par_name}.  Values can be NA if you do
   not wish to change the phase for a given parameter.}
 
-  \item{forecast_num}{Number of years to perform forecasts.
-  For those years, the data will be removed from the
-  \code{dat_file_in}, enabling SS3 to generate forecasts
-  rather than use the data to fit the model.}
+  \item{forecast_num}{*Number of years to perform
+  forecasts. For those years, the data will be removed from
+  the \code{dat_file_in}, enabling SS3 to generate
+  forecasts rather than use the data to fit the model.}
 
-  \item{run_change_e_full}{If \code{FALSE} \code{change_e}
+  \item{run_change_e_full}{*If \code{FALSE} \code{change_e}
   will only manipulate for forecasting, if \code{TRUE}
   (default) the full function capability will be ran.}
 }
@@ -105,6 +105,14 @@ Therefore, the function will fail if natural mortality in
 the \code{ctl_file_in} is not specified as \code{"1Param"}
 and \code{natM_type} is anything other than \code{NULL} or
 \code{"1Param"}.
+}
+\section{Which arguments to specifiy in case files}{
+  All function argument descriptions that start with an
+  asterisk (*) will be passed through the case files to
+  \code{\link{run_ss3sim}}. If one of these arguments is
+  not specified in a case file, then a value of \code{NULL}
+  will be passed, which may or may not be an appropriate
+  value. Other arguments will be ignored if specified.
 }
 \examples{
 \dontrun{

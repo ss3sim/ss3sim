@@ -23,6 +23,11 @@ This function replaces the recruitment deviations in the
 It then writes a new file with name \code{file_out} into
 the working directory.
 }
+\details{
+This function does not need to be specified in a case file
+if you are running and ss3sim simulation through case files
+with \code{\link{run_ss3sim}}.
+}
 \examples{
 # Create a temporary folder for the output:
 temp_path <- file.path(tempdir(), "ss3sim-recdev-example")

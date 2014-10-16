@@ -20,6 +20,7 @@
 #'   and use \link{\code{sample_ccomp}}.
 #'
 #' @template sampling-return
+#' @template casefile-footnote
 #'
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
