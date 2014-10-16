@@ -1,16 +1,16 @@
 #' Change the data that is available as output from an SS operating model.
 #'
 #' \code{change_bin} alters the bin structure for the age or length composition
-#' data in an SS operating model. 
+#' data in an SS operating model.
 #' Original data is removed and dummy data is added at the appropriate bin
 #' sizes to the SS \code{.dat} file, causing SS to record age or length composition
 #' data in the appropriate bins when the operating model is run.
 #' Additionally the code will introduce dummy conditional length-at-age
 #' or size- (weight or length) at-age data to the \code{.dat} file.
-#' For each data type altered, \code{change_bin} will add data in a 
-#' full factorial manner, working with existing fleets, seasons, 
-#' population ages, and ageing error matrices; 
-#' potentially adding many rows of data. 
+#' For each data type altered, \code{change_bin} will add data in a
+#' full factorial manner, working with existing fleets, seasons,
+#' population ages, and ageing error matrices;
+#' potentially adding many rows of data.
 #' Currently, \code{.dat} files with multiple genders cannot be manipulated
 #' with \code{change_bin}.
 #' Use \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}},
@@ -21,15 +21,15 @@
 #' @param file_out A character value giving the location of an SS \code{.dat}
 #'   file to output.
 #' @param bin_vector A named list of vectors. Named elements provide
-#'   the desired bin structure for each data \code{type}, 
-#'   where the \code{type} is an additional argument. 
+#'   the desired bin structure for each data \code{type},
+#'   where the \code{type} is an additional argument.
 #'   List should be named to map the appropriate vector to each \code{type}.
 #'   If names are forgotten, list elements will be named according to the
 #'   order of entries in \code{type}.
 #'   Each vector of bins is substituted into the \code{.dat} file.
 #' @param type A vector that can take the one or all of the following entries:
-#'   \code{"len"}, \code{"age"}, \code{"cal"}, \code{"mla"}, \code{"mwa"}. 
-#'   \code{type} controls what data structures the function acts on, 
+#'   \code{"len"}, \code{"age"}, \code{"cal"}, \code{"mla"}, \code{"mwa"}.
+#'   \code{type} controls what data structures the function acts on,
 #'   with \code{"len"} augmenting the length composition data,
 #'   \code{"age"} augmenting the age composition, \code{"cal"} augmenting
 #'   the conditional age at length, \code{"mla"} augmenting the mean length
@@ -46,8 +46,8 @@
 #'   FALSE}.
 #'
 #' @details Within the \code{.dat} file, the conditional age-at-length data
-#'   is stored in the same matrix as the age composition data. Thus, it is 
-#'   necessary that the conditional age-at-length data use the same binning 
+#'   is stored in the same matrix as the age composition data. Thus, it is
+#'   necessary that the conditional age-at-length data use the same binning
 #'   structure as the age composition data. If \code{type = "caa"} and not
 #'   \code{type = c("age", "caa")} one will only add conditional age-at-length
 #'   using the binning structure of the current \code{.dat} file.
@@ -72,20 +72,20 @@
 #'   bin_vector = list("age" = seq(2, 8, 2)), write_file = FALSE)
 #' print(a$agebin_vector)
 #' print(head(a$agecomp))
-#' 
-#' e <- change_bin(f_in, file_out = NULL, 
+#'
+#' e <- change_bin(f_in, file_out = NULL,
 #'   type = c("len", "age", "cal", "mla", "mwa"),
 #'   bin_vector = list("len" = seq(2, 8, 2), "age" = seq(2, 8, 2),
 #'     "cal" = 10:20), write_file = FALSE)
 #' print(a$agebin_vector)
 #' print(head(a$agecomp))
-change_bin <- function(file_in, file_out, bin_vector, 
+change_bin <- function(file_in, file_out, bin_vector,
   type = "len", pop_bin = NULL,
   write_file = TRUE) {
 
   type <- match.arg(type, choices = c("len", "age", "cal", "mla", "mwa"),
                     several.ok = TRUE)
-    
+
     #add backward compatibility for when bin_vector is a vector and not list
   if(is.vector(bin_vector)) {
     bin_vector <- list(bin_vector)
@@ -103,7 +103,7 @@ change_bin <- function(file_in, file_out, bin_vector,
        "input a full numeric vector of bins and not a bin size?"))
   }
   #TODO: look at making pop_bin of length two with the first argument pertaining
-  #to the number of length population bins and the second argument pertaining to 
+  #to the number of length population bins and the second argument pertaining to
   #the age population bins.
   #The ageing error matrices must also be changed
   #because they have one column per population length bin
@@ -163,14 +163,14 @@ change_bin <- function(file_in, file_out, bin_vector,
     my.vector <- bin_vector$cal
     #generate the years to add data for
     #original code from IT used ageyrs <- sort(unique(datfile$agecomp$Yr))
-    #new code implements data for every year of the model in case OM 
+    #new code implements data for every year of the model in case OM
     #does not currently have any age data
     ageyrs <- seq(datfile$styr, datfile$endyr, 1)
     seas <- seq_along(datfile$nseas)
     fleets <- seq(datfile$Nfleet + datfile$Nsurveys)
     ageerr <- seq_along(datfile$N_ageerror_definitions)
-    CAALdata <- expand.grid(Yr = ageyrs, Seas = seas, FltSvy = fleets, 
-                            Gender = 0, Part = 0, Ageerr = ageerr, 
+    CAALdata <- expand.grid(Yr = ageyrs, Seas = seas, FltSvy = fleets,
+                            Gender = 0, Part = 0, Ageerr = ageerr,
                             Lbin_lo = my.vector)
     # copy Lbin_lo to Lbin_hi
     CAALdata$Lbin_hi <- CAALdata$Lbin_lo
@@ -181,7 +181,7 @@ change_bin <- function(file_in, file_out, bin_vector,
     dummy <- data.frame(matrix(1, nrow = nrow(CAALdata),
                                ncol = length(datfile$agebin_vector)))
     names(dummy) <- paste0("a", datfile$agebin_vector)
-    # add dummy values to the right of the first set of columns 
+    # add dummy values to the right of the first set of columns
     CAALdata <- cbind(CAALdata, dummy)
     # add new data frame below existing age data
     datfile$agecomp <- rbind(datfile$agecomp, CAALdata)
@@ -208,11 +208,11 @@ change_bin <- function(file_in, file_out, bin_vector,
                          "AgeErr" = ageerr,
                          "Ignore" = 1000)
     orig.col <- dim(dummy)[2]
-    dummy <- cbind(dummy, 
+    dummy <- cbind(dummy,
                    data.frame(matrix(1, nrow = nrow(dummy),
                     ncol = length(datfile$agebin_vector) * 2)))
-    colnames(dummy)[(orig.col + 1) : dim(dummy)[2]] <- 
-      c(paste0("f", datfile$agebin_vector), 
+    colnames(dummy)[(orig.col + 1) : dim(dummy)[2]] <-
+      c(paste0("f", datfile$agebin_vector),
         paste0("N_f", datfile$agebin_vector))
     if(all(c("mla", "mwa") %in% type)) {
       dummy.mwa <- dummy
