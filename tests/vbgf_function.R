@@ -36,7 +36,7 @@ vbgf_func<-function(L1,L2,k,ages,a3){
   return(predLength)
 }
 
-sample_fit_VBGF<-function(n.samples,length.data,start.L1,start.L2,start.k,start.logsigma,a3,A){
+sample_fit_vbgf<-function(n.samples,length.data,start.L1,start.L2,start.k,start.logsigma,a3,A){
   #function takes data, number of samples, start values, start age
   #Data must have colums ordered: Year, Length, Weight, Sex, age
   #Then fits VBGF to subsampled data
@@ -49,10 +49,10 @@ sample_fit_VBGF<-function(n.samples,length.data,start.L1,start.L2,start.k,start.
   ages<-length.data[lines.to.sample,1]
   length.comp<-length.data[lines.to.sample,2]
   length.df<-data.frame(cbind(ages,length.comp))
-  
+
   get_log_likelihood<-function(logL1,logL2,logk,logsigma){
     #Returns the negative log likelihood function
-    
+
     L1<-exp(logL1)
     L2<-exp(logL2)
     k<-exp(logk)
@@ -77,19 +77,19 @@ sim_test<-function(ages,L1,L2,k,sigma,a3,startL1,startL2,startK,startSigYoung, s
   fakeMeans<-vbgf_func(L1=L1,L2=L2,k=k,sort(unique(ages)),a3)
   fakeData<-matrix(nrow=length(unique(ages))*1000,ncol=2)
   fakeData[,1]<-sort(rep(unique(ages),1000))
-  
+
   #Add variation that increases with age
   vect<-NULL
   for(i in 1:length(unique(ages))){
     vect<-c(vect,rnorm(1000,fakeMeans[i],sigma*i))
   }
   fakeData[,2]<-vect
-  
+
   #Plot data to check it
   plot(fakeData[,1],fakeData[,2])
-  
+
   #Fit model
-  vbgfmod<-sample_fit_VBGF(fakeData,log(startL1),log(startL2),log(startK),start.cv.young=startSigYoung, a3,A)
+  vbgfmod<-sample_fit_vbgf(fakeData,log(startL1),log(startL2),log(startK),start.cv.young=startSigYoung, a3,A)
   return(vbgfmod)
 }
 
@@ -103,7 +103,7 @@ sigma.guess<-2
 
 
 #Test using fake data
-#Generate the data 
+#Generate the data
 
 ages<-sample(1:20,size=100000,replace=T)
 L1<-300
@@ -118,4 +118,4 @@ exp(logEst)
 
 
 #Fit the model to hake data
-vbgfmod<-sample_fit_VBGF(1000,filteredCommHake,l1.guess,l2.guess,k.guess,sigma.guess,2,12)
+vbgfmod<-sample_fit_vbgf(1000,filteredCommHake,l1.guess,l2.guess,k.guess,sigma.guess,2,12)
