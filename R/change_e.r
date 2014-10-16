@@ -96,7 +96,7 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
     natM_n_breakpoints = NULL, natM_lorenzen = NULL, natM_val = c(NA,NA),
     par_name = NULL, par_int = "NA", par_phase = "NA",
     forecast_num = 0, run_change_e_full = TRUE) {
-  
+
   if(run_change_e_full) {
   if(!file.exists(ctl_file_in)) {
     stop("Ctl file for the estimation model does not exist,
@@ -112,22 +112,22 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
       stop("Error in change_e while computing external growth estimates: dat file does not contain mean size-at-age data.")
     }
     #Remove unnecessary data columns so reshape2::melt can transform from wide to long
-    data <- data.all$MeanSize_at_Age_obs[data.all$MeanSize_at_Age_obs$AgeErr >= 0, 
-      -c(grep("N", colnames(data.all$MeanSize_at_Age_obs)), 
-         match(c("Gender", "Part", "AgeErr", "Ignore"), 
+    data <- data.all$MeanSize_at_Age_obs[data.all$MeanSize_at_Age_obs$AgeErr >= 0,
+      -c(grep("N", colnames(data.all$MeanSize_at_Age_obs)),
+         match(c("Gender", "Part", "AgeErr", "Ignore"),
                colnames(data.all$MeanSize_at_Age_obs)))
       ]
       if(dim(data)[1] < 1) {
         stop("Error in change_e: no length-at-age data in the MeanSize_at_Age_obs")
       }
-      data <- reshape2::melt(data, 
+      data <- reshape2::melt(data,
         id.vars = c("Yr", "Seas", "Fleet"), value.name = "length")
       data$variable <- as.numeric(gsub("a", "", data$variable))
-      colnames(data)[match("variable", colnames(data))] <- "age"  
+      colnames(data)[match("variable", colnames(data))] <- "age"
     #Get start values
     parsmatch <- data.frame("true" = c("L_at_Amin_Fem_GP_1", "L_at_Amax_Fem_GP_1",
                                        "VonBert_K_Fem_GP_1", "CV_young_Fem_GP_1",
-                                       "CV_old_Fem_GP_1"), 
+                                       "CV_old_Fem_GP_1"),
                             "change_e_vbgf" = c("L1", "L2", "K", "cv.young", "cv.old"))
     pars <- r4ss::SS_parlines(ctl_file_in, verbose = FALSE)
     start.pars <- sapply(parsmatch$true, function(x) {
@@ -141,11 +141,10 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
       temp <- unlist(strsplit(x, split = " "))
       as.numeric(temp[which(nchar(temp) > 0)][1])
       })
-    
-    #Fit function found in change_e_vbgf.R
-    change_e_vbgf <- 
-      sample_fit_VBGF(length.data = data, start.L1 = start.pars$L1,
-        start.L2 = start.pars$L2, start.k = start.pars$K, 
+
+    change_e_vbgf <-
+      sample_fit_vbgf(length.data = data, start.L1 = start.pars$L1,
+        start.L2 = start.pars$L2, start.k = start.pars$K,
         start.cv.young = start.pars$cv.young, a3 = limitages$a3, A = limitages$A)
     #TODO: do something if the estimation routine fails
     #Get par estimates and append them to par_name par_int and par_phase
