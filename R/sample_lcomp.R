@@ -31,6 +31,7 @@
 #'                     years=list(seq(1994, 2012, by=2),
 #'                         2003:2012), write_file = FALSE)
 #'
+#' \donttest{
 #' ## Plot distributions for a particular year to compare multinomial
 #' ## vs. overdispersed Dirichlet
 #' temp.list <- temp.list2 <- list()
@@ -57,6 +58,7 @@
 #' temp <- as.numeric(subset(infile$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
 #' points(temp/sum(temp), pch="-", col="red")
 #' par(op)
+#' }
 #'
 #' @export
 #' @seealso \code{\link{sample_agecomp}}

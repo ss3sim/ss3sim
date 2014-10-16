@@ -82,6 +82,7 @@ ex2 <- sample_lcomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
                     years=list(seq(1994, 2012, by=2),
                         2003:2012), write_file = FALSE)
 
+\donttest{
 ## Plot distributions for a particular year to compare multinomial
 ## vs. overdispersed Dirichlet
 temp.list <- temp.list2 <- list()
@@ -108,6 +109,7 @@ with(x2, boxplot(value~variable, las=2, ylim=c(0,.6), ylab="Proportion",
 temp <- as.numeric(subset(infile$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
 points(temp/sum(temp), pch="-", col="red")
 par(op)
+}
 }
 \author{
 Cole Monnahan and Kotaro Ono; modified from a version by

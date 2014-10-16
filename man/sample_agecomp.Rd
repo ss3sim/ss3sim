@@ -95,6 +95,7 @@ ex2 <- sample_agecomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
                       years=list(seq(1994, 2012, by=2),
                           2003:2012), write_file=FALSE)
 
+\donttest{
 ## Run three  cases showing Multinomial, Dirichlet(1) and over-dispersed
 ## Dirichlet for different levels of sample sizes
 op <- par(mfrow = c(1,3))
@@ -125,11 +126,12 @@ for(samplesize in c(30, 100, 1000)){
 }
 par(op)
 }
+}
 \author{
 Cole Monnahan and Kotaro Ono; modified from a version by
 Roberto Licandeo and Felipe Hurtado-Ferro
 }
 \seealso{
-\code{\link{sample_lcomp}} \code{\link{sample_ccomp}}
+\code{\link{sample_lcomp}}
 }
 

@@ -15,7 +15,7 @@
 #' @param keep_conditional A logical if conditional age-at-length data
 #'   should be kept or removed entirely from the \code{.dat} file.
 #'   \code{sample_agecomp} only works on the age composition data
-#'   and not on the conditional age-at-length data. To sample the 
+#'   and not on the conditional age-at-length data. To sample the
 #'   conditional data set \code{keep_conditional} to \code{TRUE}
 #'   and use \link{\code{sample_ccomp}}.
 #'
@@ -43,6 +43,7 @@
 #'                       years=list(seq(1994, 2012, by=2),
 #'                           2003:2012), write_file=FALSE)
 #'
+#' \donttest{
 #' ## Run three  cases showing Multinomial, Dirichlet(1) and over-dispersed
 #' ## Dirichlet for different levels of sample sizes
 #' op <- par(mfrow = c(1,3))
@@ -72,7 +73,8 @@
 #'     lines((0:15), true, col=4, lwd=2)
 #' }
 #' par(op)
-#' @seealso \code{\link{sample_lcomp}} \code{\link{sample_ccomp}}
+#' }
+#' @seealso \code{\link{sample_lcomp}}
 #' @export
 sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
                            years, cpar=1, agebin_vector=NULL, write_file=TRUE,
@@ -113,7 +115,7 @@ sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
         conditional_data <- subset(agecomp, Lbin_lo >= 0)
     }
       agecomp <- subset(agecomp, Lbin_lo < 0)
-    
+
 
     ## Resample from the age data
     ## The general approach here is to loop through each row to keep
