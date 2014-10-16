@@ -32,3 +32,5 @@ Session.vim
 *.pdf
 
 inst/ms/file-structure.eps
+
+vignettes/knit
