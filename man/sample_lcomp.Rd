@@ -114,6 +114,6 @@ Cole Monnahan and Kotaro Ono; modified from a version by
 Roberto Licandeo and Felipe Hurtado-Ferro
 }
 \seealso{
-\code{\link{sample_agecomp}} \code{\link{sample_ccomp}}
+\code{\link{sample_agecomp}}
 }
 
