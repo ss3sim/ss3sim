@@ -78,26 +78,6 @@ age bin (i.e. Lbin_lo == Lbin_hi).  Also note that if
 \code{type = c("mla", "mwa")} no entries are currently
 necessary in the \code{bin_vector}.
 }
-\examples{
-d <- system.file("extdata", package = "ss3sim")
-f_in <- paste0(d, "/example-om/data.ss_new")
-l <- change_bin(f_in, file_out = NULL, type = "len",
-  bin_vector = list("len" = seq(2, 8, 2)), write_file = FALSE)
-print(l$lbin_vector)
-print(head(l$lencomp))
-
-a <- change_bin(f_in, file_out = NULL, type = "age",
-  bin_vector = list("age" = seq(2, 8, 2)), write_file = FALSE)
-print(a$agebin_vector)
-print(head(a$agecomp))
-
-e <- change_bin(f_in, file_out = NULL,
-  type = c("len", "age", "cal", "mla", "mwa"),
-  bin_vector = list("len" = seq(2, 8, 2), "age" = seq(2, 8, 2),
-    "cal" = 10:20), write_file = FALSE)
-print(a$agebin_vector)
-print(head(a$agecomp))
-}
 \author{
 Ian Taylor, Sean Anderson
 }
