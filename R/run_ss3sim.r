@@ -138,8 +138,8 @@
 
 run_ss3sim <- function(iterations, scenarios, case_folder,
   om_dir, em_dir, case_files = list(M = "M", F = "F", D =
-    c("index", "lcomp", "agecomp"), R = "R", E = "E"), user_recdevs = NULL,
-  parallel = FALSE, ...) {
+      c("index", "lcomp", "agecomp"), R = "R", E = "E"),
+  user_recdevs = NULL, parallel = FALSE, ...) {
 
   if(parallel) {
     cores <- setup_parallel()
@@ -149,41 +149,51 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
   if(!is.null(user_recdevs)) {
     if(ncol(user_recdevs) < max(iterations)) {
       stop(paste("The number of columns in user_recdevs is less than the",
-                 "specified number of iterations."))
+        "specified number of iterations."))
     }
   }
 
+  # Get arguments for each scenario:
+  arg_list <- lapply(scenarios, function(scenario) {
+    a <- get_caseargs(folder = case_folder, scenario = scenario,
+      case_files = case_files)
+    list(
+      iterations     = iterations,
+      scenarios      = scenario,
+      user_recdevs   = user_recdevs,
+      em_dir         = em_dir,
+      om_dir         = om_dir,
+      tv_params      = a$tv_params,
+      tc_params      = a$T,
+      lc_params      = a$C,
+      f_params       = a$F,
+      index_params   = a$index,
+      lcomp_params   = a$lcomp,
+      agecomp_params = a$agecomp,
+      retro_params   = a$R,
+      estim_params   = a$E)
+  })
+
   # Note that inside a foreach loop you pop out of your current
-  # workspace until you go back into an exported function
+  # environment until you go back into an exported function
   # therefore we need to add subst_r to the .export list
   # for foreach to work on Windows:
   parallel_scenario <- NULL # to satisfy R CMD check
-  if(parallel) {
-    foreach(parallel_scenario = scenarios, .packages = "ss3sim", .verbose =
-            FALSE, .export = "substr_r") %dopar% {
-      a <- get_caseargs(folder = case_folder, scenario = parallel_scenario,
-        case_files = case_files)
-      sp <- substr_r(parallel_scenario, 3)
-      ss3sim_base(iterations, scenarios = parallel_scenario,
-        tv_params = a$tv_params, tc_params = a$T, lc_params = a$C,
-        f_params = a$F, index_params =
-        a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp,
-        retro_params = a$R, estim_params = a$E, om_dir = om_dir,
-        em_dir = em_dir, user_recdevs = user_recdevs, ...)
-  }} else {
-    output <- lapply(scenarios, function(x) {
-      a <- get_caseargs(folder = case_folder, scenario = x, case_files = case_files)
-      sp <- substr_r(x, 3)
-      ss3sim_base(iterations, scenarios = x,
-        tv_params = a$tv_params, tc_params = a$T, lc_params = a$C,
-        f_params = a$F, index_params =
-        a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp,
-        retro_params = a$R, estim_params = a$E, om_dir = om_dir,
-        em_dir = em_dir, user_recdevs = user_recdevs, ...)
-        })
+
+  if (parallel) {
+    foreach(x = arg_list, .packages = "ss3sim",
+      .verbose = FALSE, .export = "substr_r") %dopar% {
+        do.call("ss3sim_base", c(x, list(...)))
+      }
+  } else {
+    ignored_output <- lapply(arg_list, function(x) {
+      do.call("ss3sim_base", c(x, list(...)))
+    })
+    # to understand what we just did, play with this toy code:
+    # aa <- list(x = 1:2, y = 3:4)
+    # do.call("plot", c(aa, list(pch = 20)))
   }
 
     message(paste("Completed iterations:", paste(iterations, collapse = ", "),
-        "for scenarios:", paste(scenarios, collapse = ", ")))
-
-}
+      "for scenarios:", paste(scenarios, collapse = ", ")))
+  }
