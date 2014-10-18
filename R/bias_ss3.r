@@ -18,6 +18,7 @@
 #'   \code{\link[base]{sapply}} function for each of the bias adjustment runs.
 #' @seealso \code{\link{run_bias_ss3}}, \code{\link{run_ss3sim}},
 #'   \code{\link{ss3sim_base}}
+#' @importFrom r4ss SS_output SS_fitbiasramp
 #' @export
 #' @return
 #' A plain text file containing the bias adjustment variables is created at
@@ -32,11 +33,11 @@ bias_ss3 <- function(iter, dir) {
   outfile = "AdjustBias.DAT"
   if(file.exists(paste0(dir, "/", iter, "/em/covar.sso"))==TRUE)
   {
-    myoutput = r4ss::SS_output(dir = paste0(dir, "/", iter, "/em"), repfile =
+    myoutput = SS_output(dir = paste0(dir, "/", iter, "/em"), repfile =
       "Report.sso", compfile = "CompReport.sso", covarfile =
       "covar.sso", forecast = FALSE, verbose = FALSE)
     pdf(paste0(dir, "/biasramp-", iter, ".pdf"))
-    biasvars = try(r4ss::SS_fitbiasramp(replist = myoutput), TRUE)
+    biasvars = try(SS_fitbiasramp(replist = myoutput), TRUE)
     dev.off()
   }
 
