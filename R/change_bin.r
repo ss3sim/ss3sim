@@ -60,6 +60,7 @@
 #' @export
 #' @seealso \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
 #' @author Ian Taylor, Sean Anderson
+<<<<<<< HEAD
 # @examples
 # d <- system.file("extdata", package = "ss3sim")
 # f_in <- paste0(d, "/example-om/data.ss_new")
@@ -99,7 +100,7 @@ change_bin <- function(file_in, file_out, bin_vector,
   }
   if(any(sapply(bin_vector, length) == 1)) {
     bad <- which(sapply(bin_vector, length) == 1)
-    warning(paste("length(bin_vector[[", bad, "]]) == 1; are you sure you",
+    stop(paste("length(bin_vector[[", bad, "]]) == 1; are you sure you",
        "input a full numeric vector of bins and not a bin size?"))
   }
   #TODO: look at making pop_bin of length two with the first argument pertaining
@@ -118,7 +119,8 @@ change_bin <- function(file_in, file_out, bin_vector,
   }
 
   if(datfile$lbin_method != 2 & !is.null(pop_bin)) {
-    stop(paste("the current model doesn't support a change in 'pop_bin' with a 'lbin_method' different than option 2"))
+    stop(paste("the current model doesn't support a change in 'pop_bin' with a",
+    "lbin_method different than option 2"))
   }
 
   if(!is.null(pop_bin)) datfile$binwidth <- pop_bin
