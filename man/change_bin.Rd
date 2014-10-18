@@ -79,7 +79,7 @@ age bin (i.e. Lbin_lo == Lbin_hi).  Also note that if
 necessary in the \code{bin_vector}.
 }
 \author{
-Ian Taylor, Sean Anderson
+Ian Taylor, Sean Anderson, Kelli Johnson
 }
 \seealso{
 \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
