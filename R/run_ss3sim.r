@@ -30,6 +30,11 @@
 #'   run in parallel. You will need to register multiple cores first with a
 #'   package such as \pkg{doParallel} and have the \pkg{foreach} package
 #'   installed. See the example below.
+#' @param parallel_iterations Logical. By default \code{parallel = TRUE} will
+#'   run scenarios in parallel. If you set \code{parallel = TRUE} and
+#'   \code{parallel_iterations = TRUE} then the iterations will be run in
+#'   parallel. This would be useful if you were only running one scenario
+#'   but you wanted to run it faster.
 #' @param ... Anything else to pass to \code{\link{ss3sim_base}}. This could
 #'   include \code{bias_adjust} and \code{bias_nsim}. Also, you can pass
 #'   additional options to the \code{SS3} command through the argument
@@ -139,7 +144,8 @@
 run_ss3sim <- function(iterations, scenarios, case_folder,
   om_dir, em_dir, case_files = list(M = "M", F = "F", D =
       c("index", "lcomp", "agecomp"), R = "R", E = "E"),
-  user_recdevs = NULL, parallel = FALSE, ...) {
+  user_recdevs = NULL, parallel = FALSE, parallel_iterations = FALSE,
+  ...) {
 
   if(parallel) {
     cores <- setup_parallel()
@@ -158,7 +164,6 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
     a <- get_caseargs(folder = case_folder, scenario = scenario,
       case_files = case_files)
     list(
-      iterations     = iterations,
       scenarios      = scenario,
       user_recdevs   = user_recdevs,
       em_dir         = em_dir,
@@ -178,22 +183,46 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
   # environment until you go back into an exported function
   # therefore we need to add subst_r to the .export list
   # for foreach to work on Windows:
-  parallel_scenario <- NULL # to satisfy R CMD check
+
+  x <- NULL # to satisfy R CMD check in the foreach() call below
+  it_ <- NULL # to satisfy R CMD check in the foreach() call below
 
   if (parallel) {
-    foreach(x = arg_list, .packages = "ss3sim",
-      .verbose = FALSE, .export = "substr_r") %dopar% {
-        do.call("ss3sim_base", c(x, list(...)))
-      }
+    if (parallel_iterations) {
+      ignore <- lapply(arg_list, function(x) {
+        # First run bias-adjustment runs if requested:
+        dotdotdot <- list(...) # needed so we can nullify bias arguments
+        if ("bias_adjust" %in% names(dotdotdot)) {
+          if (dotdotdot$bias_adjust) {
+            message("Running bias adjustment sequentially first.")
+            do.call("ss3sim_base", c(x, list(iterations = NULL, ...)))
+          }
+        }
+        # Now run regular iterations:
+        message("Running iterations in parallel.")
+        foreach(it_ = iterations, .packages = "ss3sim",
+          .verbose = FALSE, .export = "substr_r") %dopar% {
+            dotdotdot$bias_adjust <- NULL
+            dotdotdot$bias_already_run <- NULL
+            do.call("ss3sim_base",  c(x, list(iterations = it_,
+              bias_adjust = FALSE, bias_already_run = TRUE, dotdotdot)))}
+      })
+    } else {
+      message("Running scenarios in parallel.")
+      foreach(x = arg_list, .packages = "ss3sim",
+        .verbose = FALSE, .export = "substr_r") %dopar% {
+          do.call("ss3sim_base", c(x, list(iterations = iterations, ...)))}
+    }
   } else {
-    ignored_output <- lapply(arg_list, function(x) {
-      do.call("ss3sim_base", c(x, list(...)))
+    message("Running scenarios and iterations sequentially.")
+    ignore <- lapply(arg_list, function(x) {
+      do.call("ss3sim_base", c(x, list(iterations = iterations, ...)))
     })
     # to understand what we just did, play with this toy code:
     # aa <- list(x = 1:2, y = 3:4)
     # do.call("plot", c(aa, list(pch = 20)))
   }
 
-    message(paste("Completed iterations:", paste(iterations, collapse = ", "),
-      "for scenarios:", paste(scenarios, collapse = ", ")))
-  }
+  message(paste("Completed iterations:", paste(iterations, collapse = ", "),
+    "for scenarios:", paste(scenarios, collapse = ", ")))
+}
