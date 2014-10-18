@@ -17,7 +17,7 @@
 #'   \code{sample_agecomp} only works on the age composition data
 #'   and not on the conditional age-at-length data. To sample the
 #'   conditional data set \code{keep_conditional} to \code{TRUE}
-#'   and use \link{\code{sample_ccomp}}.
+#'   and use \code{\link{sample_ccomp}}.
 #'
 #' @template sampling-return
 #' @template casefile-footnote
