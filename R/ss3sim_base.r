@@ -67,6 +67,7 @@
 #'   (default is safe mode).
 #' @author Sean Anderson with contributions from many others as listed in
 #'   the DESCRIPTION file.
+#' @importFrom r4ss SS_readdat
 #' @return
 #' The output will appear in whatever your current \R working directory
 #' is. There will be folders named after your scenarios. They will
@@ -281,7 +282,7 @@ deviations can lead to biased model results.")
          data_out = pastef(sc, i, "em", "ss3.dat"))
 
       # Survey biomass index
-      SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
+      SS.dat = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
       index_params <- add_nulls(index_params, c("fleets", "years", "sds_obs"))
       with(index_params,
@@ -313,7 +314,7 @@ deviations can lead to biased model results.")
       }
 
       # Add error in the length comp data
-      SS.dat = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
+      SS.dat = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
       lcomp_params <- add_nulls(lcomp_params,
         c("fleets", "Nsamp", "years", "cpar"))
@@ -326,7 +327,7 @@ deviations can lead to biased model results.")
                      cpar             = cpar))
 
       # Add error in the age comp data
-      SS.dat2 = r4ss::SS_readdat(pastef(sc, i, "em", "ss3.dat"),
+      SS.dat2 = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
       agecomp_params <- add_nulls(agecomp_params,
         c("fleets", "Nsamp", "years", "cpar"))

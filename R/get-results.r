@@ -68,7 +68,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
   user_scenarios=NULL){
 
     on.exit(setwd(directory))
-     
+
     ## Choose whether to do all scenarios or the vector passed by user
     if(is.null(user_scenarios)) {
         scenarios <- id_scenarios(directory=directory)
@@ -77,7 +77,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         if(all(user_scenarios %in% temp_scenarios)){
             scenarios <- user_scenarios
         } else{
-            stop(paste(user_scenarios[which(user_scenarios %in% temp_scenarios==FALSE)], 
+            stop(paste(user_scenarios[which(user_scenarios %in% temp_scenarios==FALSE)],
                 "not in directory"))}
     }
 
@@ -138,6 +138,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
 #'   used if replicates were added since the last time it was called, or any
 #'   changes were made to this function.
 #' @author Cole Monnahan
+#' @importFrom r4ss SS_output
 #' @family get-results
 #' @export
 #' @examples \dontrun{
@@ -201,13 +202,13 @@ get_results_scenario <- function(scenario, directory=getwd(),
     resids.list <- list()
     for(rep in reps.dirs){
         ## message(paste0("Starting", scen, "-", rep))
-      report.em <- r4ss::SS_output(paste0(rep,"/em/"), covar=FALSE,
+      report.em <- SS_output(paste0(rep,"/em/"), covar=FALSE,
         verbose=FALSE,compfile="none", forecast=TRUE, warn=TRUE, readwt=FALSE,
         printstats=FALSE, NoCompOK=TRUE)
       # if(file.exists(paste0(rep,"/om/Report.sso"))==FALSE)
       #     stop(paste("Error: SS Report File doesn't exist for scenario", scenario))
       report.om <- tryCatch({
-        r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE, 
+        SS_output(paste0(rep,"/om/"), covar=FALSE,
         verbose=FALSE, compfile="none", forecast=FALSE, warn=TRUE, readwt=FALSE,
         printstats=FALSE, NoCompOK=TRUE)
         },

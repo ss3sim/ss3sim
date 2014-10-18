@@ -21,6 +21,7 @@
 #'
 #' @template sampling-return
 #' @template casefile-footnote
+#' @importFrom r4ss SS_writedat
 #'
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
@@ -180,7 +181,7 @@ sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
 
     ## Write the modified file
     if(write_file)
-        r4ss::SS_writedat(datlist = newfile, outfile = outfile, overwrite = T)
+        SS_writedat(datlist = newfile, outfile = outfile, overwrite = T)
     return(invisible(newcomp.final))
 }
 
