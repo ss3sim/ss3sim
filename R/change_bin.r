@@ -60,7 +60,6 @@
 #' @export
 #' @seealso \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
 #' @author Ian Taylor, Sean Anderson
-<<<<<<< HEAD
 # @examples
 # d <- system.file("extdata", package = "ss3sim")
 # f_in <- paste0(d, "/example-om/data.ss_new")
