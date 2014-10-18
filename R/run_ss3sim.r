@@ -142,8 +142,9 @@
 #' }
 
 run_ss3sim <- function(iterations, scenarios, case_folder,
-  om_dir, em_dir, case_files = list(M = "M", F = "F", D =
-      c("index", "lcomp", "agecomp"), R = "R", E = "E"),
+  om_dir, em_dir,
+  case_files =
+    list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), R = "R", E = "E"),
   user_recdevs = NULL, parallel = FALSE, parallel_iterations = FALSE,
   ...) {
 
@@ -169,8 +170,8 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
       em_dir         = em_dir,
       om_dir         = om_dir,
       tv_params      = a$tv_params,
-      tc_params      = a$T,
-      lc_params      = a$C,
+      tc_params      = a$tail_compression,
+      lc_params      = a$lcomp_constant,
       f_params       = a$F,
       index_params   = a$index,
       lcomp_params   = a$lcomp,
