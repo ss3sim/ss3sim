@@ -104,9 +104,8 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
   }
   #Read in the ctl file for the estimation model
   ss3.ctl <- readLines(ctl_file_in)
-
-    #Run external estimator for growth if needed
-  if(any(par_init == "change_e_vbgf")) {
+  #Run external estimator for growth if needed
+  if(any(grepl("change_e_vbgf", par_int))) {
     data.all <- r4ss::SS_readdat(dat_file_in, verbose = FALSE, section = 2)
     if(!"MeanSize_at_Age_obs" %in% names(data.all)) {
       stop("Error in change_e while computing external growth estimates: dat file does not contain mean size-at-age data.")
