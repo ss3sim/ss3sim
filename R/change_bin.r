@@ -8,8 +8,7 @@
 #' Additionally the code will introduce dummy conditional length-at-age
 #' or size- (weight or length) at-age data to the \code{.dat} file.
 #' For each data type altered, \code{change_bin} will add data in a
-#' full factorial manner, working with existing fleets, seasons,
-#' population ages, and ageing error matrices;
+#' full factorial manner, working with existing fleets for all years;
 #' potentially adding many rows of data.
 #' Currently, \code{.dat} files with multiple genders cannot be manipulated
 #' with \code{change_bin}.
@@ -21,12 +20,15 @@
 #' @param file_out A character value giving the location of an SS \code{.dat}
 #'   file to output.
 #' @param bin_vector A named list of vectors. Named elements provide
-#'   the desired bin structure for each data \code{type},
-#'   where the \code{type} is an additional argument.
+#'   the desired bin structure for each data \code{type}.
+#'   If \code{type = "len"} or \code{type = "age"} \code{bin_vector} should 
+#'   be a vector of new bins. Whereas if \code{type = "cal"}, \code{bin_vector}
+#'   should be a vector of lower length bins for Lbin_lo.
+#'   Lbin_hi will be calculated from the Lbin_lo of the subsequent bin, with
+#'   the edge of the final bin matching the highest population length bin.
 #'   List should be named to map the appropriate vector to each \code{type}.
 #'   If names are forgotten, list elements will be named according to the
 #'   order of entries in \code{type}.
-#'   Each vector of bins is substituted into the \code{.dat} file.
 #' @param type A vector that can take the one or all of the following entries:
 #'   \code{"len"}, \code{"age"}, \code{"cal"}, \code{"mla"}, \code{"mwa"}.
 #'   \code{type} controls what data structures the function acts on,
@@ -49,10 +51,8 @@
 #'   is stored in the same matrix as the age composition data. Thus, it is
 #'   necessary that the conditional age-at-length data use the same binning
 #'   structure as the age composition data. If \code{type = "caa"} and not
-#'   \code{type = c("age", "caa")} one will only add conditional age-at-length
+#'   \code{type = c("age", "caa")} the function will add conditional age-at-length
 #'   using the binning structure of the current \code{.dat} file.
-#'   \code{change_bin} will only add conditional age-at-length with a binning
-#'   width equal to 1 age bin (i.e. Lbin_lo == Lbin_hi).
 #'   Also note that if \code{type = c("mla", "mwa")} no entries are currently
 #'   necessary in the \code{bin_vector}.
 #'
@@ -77,31 +77,73 @@
 #   type = c("len", "age", "cal", "mla", "mwa"),
 #   bin_vector = list("len" = seq(2, 8, 2), "age" = seq(2, 8, 2),
 #     "cal" = 10:20), write_file = FALSE)
-# print(a$agebin_vector)
-# print(head(a$agecomp))
+# print(e$agebin_vector)
+# print(tail(e$agecomp))
+# print(head(e$MeanSize_at_Age_obs))
+
 change_bin <- function(file_in, file_out, bin_vector,
   type = "len", pop_bin = NULL,
   write_file = TRUE) {
 
   type <- match.arg(type, choices = c("len", "age", "cal", "mla", "mwa"),
                     several.ok = TRUE)
+  datfile <- SS_readdat(file = file_in, verbose = FALSE)
 
-    #add backward compatibility for when bin_vector is a vector and not list
-  if(is.vector(bin_vector)) {
-    bin_vector <- list(bin_vector)
+  ##Checks and balances
+  #check .dat file
+  if(!file.exists(file_in)) {
+    stop(paste(file_in, "was not found while running change_e"))
   }
-    if(is.null(names(bin_vector))) {
-      names(bin_vector) <- type[seq(length(bin_vector))]
+  if(datfile$Ngenders > 1) {
+    stop(paste("_Ngenders is greater than 1 in the operating model.",
+        "change_bin only works with single-gender models."))
+  }
+  if(datfile$lbin_method != 2 & !is.null(pop_bin)) {
+    stop(paste("the current model doesn't support a change in 'pop_bin' with a",
+    "lbin_method different than option 2"))
+  }
+
+  #add backward compatibility for when bin_vector is a vector and not list
+  if(class(bin_vector) != "list") {
+    stop("bin_vector in change_bin must be a named list.")
+  }
+  #Check for a vector for every type
+  if(any(c("mla", "mwa") %in% type)) {
+    for(i in grep("m", type)){
+      if("age" %in% type) {
+        bin_vector[[type[i]]] <- bin_vector[[which(type == "age")]]
+      } else {bin_vector[[type[i]]] <- datfile$agebin_vector}
     }
+  }
+  #bin_vector names in same order as type, if its not named.
+  if(is.null(names(bin_vector))) {
+      names(bin_vector) <- type[seq(length(bin_vector))]
+  }
+  if("age" %in% type & rev(bin_vector$age)[1] > datfile$Nages) {
+    stop("bin_vector for ages in change_bin extends beyond population ages")
+  }
+  if(!any(sapply(bin_vector, is.numeric))) stop("bin_vector must be numeric")
 
-  if(!any(sapply(bin_vector, is.numeric))) {
-    stop("bin_vector must be numeric")
-  }
-  if(any(sapply(bin_vector, length) == 1)) {
-    bad <- which(sapply(bin_vector, length) == 1)
-    stop(paste("length(bin_vector[[", bad, "]]) == 1; are you sure you",
-       "input a full numeric vector of bins and not a bin size?"))
-  }
+  ##Generate dummy data for all routines
+  years <- seq(datfile$styr, datfile$endyr, 1)
+  fleets <- seq(datfile$Nfleet + datfile$Nsurveys)
+  dummy <- expand.grid("Year" = years, "Season" = 1,"Fleet" = fleets, 
+                       "Gender" = 0, "Part" = 0, "AgeErr" = 1)
+  dummy.data <- lapply(bin_vector, function(x) {
+    partname <- eval.parent(quote(names(X)))[substitute(x)[[3]]]
+    newname <- goodnames[match(partname, goodnames$types), "create"]
+    newdata <- data.frame(matrix(1, nrow = nrow(dummy), ncol = length(x)))
+    names(newdata) <- paste0(newname, x)
+    goodnames <- data.frame("types" = c("len", "age", "cal", "mla", "mwa"),
+                            "create" = c("l", "a", "a", "f", "f"),
+                            stringsAsFactors = FALSE)
+    if(grepl("m", partname)) {
+      newdata <- cbind(newdata, 
+                       setNames(newdata, gsub("f", "N_f", names(newdata))))
+    }
+    return(newdata)
+  })
+
   #TODO: look at making pop_bin of length two with the first argument pertaining
   #to the number of length population bins and the second argument pertaining to
   #the age population bins.
@@ -110,117 +152,54 @@ change_bin <- function(file_in, file_out, bin_vector,
   if(length(pop_bin)!=1 & !is.null(pop_bin)) {
     stop("pop bin should be a real number")
   }
-
-  datfile <- SS_readdat(file = file_in, verbose = FALSE)
-  if(datfile$Ngenders > 1) {
-    stop(paste("_Ngenders is greater than 1 in the operating model.",
-        "change_bin only works with single-gender models."))
-  }
-
-  if(datfile$lbin_method != 2 & !is.null(pop_bin)) {
-    stop(paste("the current model doesn't support a change in 'pop_bin' with a",
-    "lbin_method different than option 2"))
-  }
-
   if(!is.null(pop_bin)) datfile$binwidth <- pop_bin
 
-  #TODO: the "len" and "age" types do not create factorial data
-  #they only change the bins of the current data structure
-  #benefits of this is you would not have to use sample functions
-  #cons is if all the data is not in the OM you have no way to add
-  #factorial length data
   if("len" %in% type) {
     datfile$lbin_vector <- bin_vector$len
     datfile$N_lbins <- length(datfile$lbin_vector)
-    newdummy <- data.frame(matrix(1, nrow = nrow(datfile$lencomp),
-      ncol = length(datfile$lbin_vector)))
-    # Find ID columns and data columns to replace:
-    names(newdummy) <- paste0("l", datfile$lbin_vector)
-    old_len_columns <- grep("^l[0-9.]+$", names(datfile$lencomp))
-    id_columns <- seq_along(names(datfile$lencomp))[-old_len_columns]
-    # Substitute new bins:
-    datfile$lencomp <- data.frame(datfile$lencomp[, id_columns], newdummy)
-    # change population length bin width
-    # (original file could have smaller value)
-    # datfile$binwidth <- 1 #min(abs(diff(bin_vector)))
+    datfile$lencomp <- cbind(dummy, dummy.data$len)
+    datfile$N_lencomp <- nrow(datfile$lencomp)
   }
 
   if("age" %in% type) {
     datfile$agebin_vector <- bin_vector$age
     datfile$N_agebins <- length(datfile$agebin_vector)
-    newdummy <- data.frame(matrix(1, nrow = nrow(datfile$agecomp),
-      ncol = length(datfile$agebin_vector)))
-    # Find ID columns and data columns to replace:
-    names(newdummy) <- paste0("a", datfile$agebin_vector)
-    old_age_columns <- grep("^a[0-9.]+$", names(datfile$agecomp))
-    id_columns <- seq_along(names(datfile$agecomp))[-old_age_columns]
-    # Substitute new bins:
-    datfile$agecomp <- data.frame(datfile$agecomp[, id_columns], newdummy)
-  }
-
-  if("cal" %in% type) {
-    # Add conditional-age-at-length data to existing data file
-    # get dimensions of years and fleets from marginal age data
-    my.vector <- bin_vector$cal
-    #generate the years to add data for
-    #original code from IT used ageyrs <- sort(unique(datfile$agecomp$Yr))
-    #new code implements data for every year of the model in case OM
-    #does not currently have any age data
-    ageyrs <- seq(datfile$styr, datfile$endyr, 1)
-    seas <- seq_along(datfile$nseas)
-    fleets <- seq(datfile$Nfleet + datfile$Nsurveys)
-    ageerr <- seq_along(datfile$N_ageerror_definitions)
-    CAALdata <- expand.grid(Yr = ageyrs, Seas = seas, FltSvy = fleets,
-                            Gender = 0, Part = 0, Ageerr = ageerr,
-                            Lbin_lo = my.vector)
-    # copy Lbin_lo to Lbin_hi
-    CAALdata$Lbin_hi <- CAALdata$Lbin_lo
-    # add sample size, this value does not matter b/c we are taking the expected values
-    # and resampling from them. The previous sentence was verified by KFJ.
-    CAALdata$Nsamp <- 100
-    # create dummy values for ages
-    dummy <- data.frame(matrix(1, nrow = nrow(CAALdata),
-                               ncol = length(datfile$agebin_vector)))
-    names(dummy) <- paste0("a", datfile$agebin_vector)
-    # add dummy values to the right of the first set of columns
-    CAALdata <- cbind(CAALdata, dummy)
-    # add new data frame below existing age data
-    datfile$agecomp <- rbind(datfile$agecomp, CAALdata)
+    datfile$agecomp <- data.frame(dummy, "Lbin_lo" = -1, "Lbin_hi" = -1, 
+                                  "Nsamp" = 1, dummy.data$age)
     datfile$N_agecomp <- nrow(datfile$agecomp)
   }
 
+  if("cal" %in% type) {
+    if(any(c(range(bin_vector$cal)[1] < datfile$lbin_vector[1],
+             range(bin_vector$cal)[2] > range(datfile$lbin_vector)[2]))){
+      stop("Conditional age-at-length bin vector falls outside of length bins")
+    }
+    binvals <- data.frame("Lbin_lo" = rep(bin_vector$cal, each = nrow(dummy)),
+                          "Lbin_hi" = rep(c(bin_vector$cal[-1] - 1, 
+                                            rev(datfile$lbin_vector)[1]), 
+                                          each = nrow(dummy)))
+    caldummy <- do.call("rbind", 
+      replicate(length(bin_vector$cal), dummy, simplify = FALSE))
+    dummy.data$cal <- data.frame(matrix(1, ncol = datfile$N_agebins, 
+                                        nrow = nrow(caldummy)))
+    # add new data frame below existing age data
+    datfile$agecomp <- rbind(datfile$agecomp,
+      setNames(cbind(data.frame(caldummy, "Lbin_lo" = binvals$Lbin_lo,
+        "Lbin_hi" = binvals$Lbin_hi, "Nsamp" = 1), dummy.data$cal),
+        names(datfile$agecomp)))
+    datfile$N_agecomp <- nrow(datfile$agecomp)
+  }
   if(any(c("mla", "mwa") %in% type)) {
-    yrs <- seq(datfile$styr, datfile$endyr, 1)
-    seas <- seq_along(datfile$nseas)
-    fleets <- seq(datfile$Nfleet + datfile$Nsurveys)
-    #if “AgeErr” is positive, then the observation is mean length-at-age.
-    #if  “AgeErr”  is  negative,  then  the observation is mean bodywt-at-age
-    #and the abs(AgeErr) is used as AgeErr.
+    mdummy <- data.frame(dummy, "Ignore" = 1000)
+    mdummy$AgeErr <- ifelse("mla" %in% type, 1, -1)
     if("mla" %in% type){
-      ageerr <- seq_along(datfile$N_ageerror_definitions)
-    } else{
-      ageerr <- seq_along(datfile$N_ageerror_definitions) * -1
-    }
-    dummy <- expand.grid("#_Yr" = yrs,
-                         "Seas" = seas,
-                         "Fleet" = fleets,
-                         "Gender" = 0,
-                         "Partition" = 0,
-                         "AgeErr" = ageerr,
-                         "Ignore" = 1000)
-    orig.col <- dim(dummy)[2]
-    dummy <- cbind(dummy,
-                   data.frame(matrix(1, nrow = nrow(dummy),
-                    ncol = length(datfile$agebin_vector) * 2)))
-    colnames(dummy)[(orig.col + 1) : dim(dummy)[2]] <-
-      c(paste0("f", datfile$agebin_vector),
-        paste0("N_f", datfile$agebin_vector))
+      mdummy <- cbind(mdummy, dummy.data$mla)
+    } else{mdummy <- cbind(mdummy, dummy.data$mwa)}
     if(all(c("mla", "mwa") %in% type)) {
-      dummy.mwa <- dummy
-      dummy.mwa$AgeErr <- dummy.mwa$AgeErr * -1
-      dummy <- rbind(dummy, dummy.mwa)
+      mdummy <- do.call("rbind", replicate(2, mdummy, simplify = FALSE))
+      mdummy$AgeErr[(nrow(dummy) + 1):nrow(mdummy)] <- -1
     }
-    datfile$MeanSize_at_Age_obs <- dummy
+    datfile$MeanSize_at_Age_obs <- mdummy
     datfile$N_MeanSize_at_Age_obs <- nrow(datfile$MeanSize_at_Age_obs)
   }
 
