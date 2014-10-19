@@ -78,12 +78,11 @@ sample_calcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
                     ## Replace expected values with sampled values
                     ## First 1-9 cols aren't data so skip them
                     means <- as.numeric(newcomp.lbin[-(1:9)])
-                    sds <- means*cv[[i]]
+                    sds <- means*cv[i]
                     ## These are the moments on the natural scale, so
                     ## convert to log scale and generate data
                     means.log <- log(means^2/sqrt(sds^2+means^2))
                     sds.log <- sqrt(log(1 + sds^2/means^2))
-                    x <- exp(rnorm(1e6, mu, sdd))
                     samples.list <- lapply(1:length(means), function(kk)
                         exp(rnorm(n=newcomp.lbin$Nsamp, mean=means.log[kk], sd=sds.log[kk])))
                     ## Take means and combine into vector to put back

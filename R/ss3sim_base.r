@@ -163,8 +163,8 @@
 #' }
 
 ss3sim_base <- function(iterations, scenarios, f_params,
-  index_params, lcomp_params, agecomp_params, estim_params,
-  tv_params, om_dir, em_dir,
+  index_params, lcomp_params, agecomp_params, calcomp_params=NULL,
+  estim_params, tv_params, om_dir, em_dir,
   retro_params = NULL, tc_params = NULL, bin_params = NULL, lc_params = NULL,
   user_recdevs = NULL, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
@@ -314,31 +314,47 @@ deviations can lead to biased model results.")
       }
 
       # Add error in the length comp data
-      SS.dat = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
-        verbose = FALSE)
-      lcomp_params <- add_nulls(lcomp_params,
-        c("fleets", "Nsamp", "years", "cpar"))
-      with(lcomp_params,
-        sample_lcomp(infile           = SS.dat,
-                     outfile          = pastef(sc, i, "em", "ss3.dat"),
-                     fleets           = fleets,
-                     Nsamp            = Nsamp,
-                     years            = years,
-                     cpar             = cpar))
-
+      if(!is.null(lcomp_params)){
+          SS.dat = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
+          verbose = FALSE)
+          lcomp_params <- add_nulls(lcomp_params,
+                     c("fleets", "Nsamp", "years", "cpar"))
+          with(lcomp_params,
+               sample_lcomp(infile           = SS.dat,
+                            outfile          = pastef(sc, i, "em", "ss3.dat"),
+                            fleets           = fleets,
+                            Nsamp            = Nsamp,
+                            years            = years,
+                            cpar             = cpar))
+      }
       # Add error in the age comp data
-      SS.dat2 = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
-        verbose = FALSE)
-      agecomp_params <- add_nulls(agecomp_params,
-        c("fleets", "Nsamp", "years", "cpar"))
-      with(agecomp_params,
-        sample_agecomp(infile         = SS.dat2,
-                     outfile          = pastef(sc, i, "em", "ss3.dat"),
-                     fleets           = fleets,
-                     Nsamp            = Nsamp,
-                     years            = years,
-                     cpar             = cpar))
-
+      if(!is.null(agecomp_params)){
+          SS.dat2 = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
+          verbose = FALSE)
+          agecomp_params <- add_nulls(agecomp_params,
+                       c("fleets", "Nsamp", "years", "cpar"))
+          with(agecomp_params,
+               sample_agecomp(infile         = SS.dat2,
+                              outfile        = pastef(sc, i, "em", "ss3.dat"),
+                              fleets         = fleets,
+                              Nsamp          = Nsamp,
+                              years          = years,
+                              cpar           = cpar))
+      }
+      # Add error in the conditional age at length comp data
+      if(!is.null(calcomp_params)){
+          SS.dat3 = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
+          verbose = FALSE)
+          calcomp_params <- add_nulls(calcomp_params,
+                    c("fleets", "Nsamp", "years", "cv"))
+        with(calcomp_params,
+             sample_calcomp(infile           = SS.dat3,
+                            outfile          = pastef(sc, i, "em", "ss3.dat"),
+                            fleets           = fleets,
+                            Nsamp            = Nsamp,
+                            years            = years,
+                            cv               = cv))
+      }
       # Manipulate EM starter file for a possible retrospective analysis
       if(!is.null(retro_params)) {
       retro_params <- add_nulls(retro_params, "retro_yr")
