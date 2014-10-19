@@ -119,6 +119,10 @@ change_bin <- function(file_in, file_out, bin_vector,
   if(is.null(names(bin_vector))) {
       names(bin_vector) <- type[seq(length(bin_vector))]
   }
+  if(any(names(bin_vector) == "")){
+    need <- which(names(bin_vector) == "")
+    names(bin_vector)[need] <- type[need]
+  }
   if("age" %in% type & rev(bin_vector$age)[1] > datfile$Nages) {
     stop("bin_vector for ages in change_bin extends beyond population ages")
   }
@@ -130,13 +134,14 @@ change_bin <- function(file_in, file_out, bin_vector,
   dummy <- expand.grid("Year" = years, "Season" = 1,"Fleet" = fleets, 
                        "Gender" = 0, "Part" = 0, "AgeErr" = 1)
   dummy.data <- lapply(bin_vector, function(x) {
+    goodnames <- data.frame("types" = c("len", "age", "cal", "mla", "mwa"),
+                            "create" = c("l", "a", "a", "f", "f"),
+                            stringsAsFactors = FALSE)
     partname <- eval.parent(quote(names(X)))[substitute(x)[[3]]]
     newname <- goodnames[match(partname, goodnames$types), "create"]
     newdata <- data.frame(matrix(1, nrow = nrow(dummy), ncol = length(x)))
     names(newdata) <- paste0(newname, x)
-    goodnames <- data.frame("types" = c("len", "age", "cal", "mla", "mwa"),
-                            "create" = c("l", "a", "a", "f", "f"),
-                            stringsAsFactors = FALSE)
+
     if(grepl("m", partname)) {
       newdata <- cbind(newdata, 
                        setNames(newdata, gsub("f", "N_f", names(newdata))))
@@ -202,7 +207,6 @@ change_bin <- function(file_in, file_out, bin_vector,
     datfile$MeanSize_at_Age_obs <- mdummy
     datfile$N_MeanSize_at_Age_obs <- nrow(datfile$MeanSize_at_Age_obs)
   }
-
   if(write_file) {
     SS_writedat(datlist = datfile, outfile = file_out, overwrite=TRUE)
   }
