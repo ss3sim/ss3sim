@@ -22,11 +22,9 @@
 #' @param bin_vector A named list of vectors. Named elements provide
 #'   the desired bin structure for each data \code{type}.
 #'   If \code{type = "len"} or \code{type = "age"} \code{bin_vector} should 
-#'   be a vector of new bins. Whereas if \code{type = "cal"}, \code{bin_vector}
-#'   should be a vector of lower length bins for Lbin_lo.
-#'   Lbin_hi will be calculated from the Lbin_lo of the subsequent bin, with
-#'   the edge of the final bin matching the highest population length bin.
-#'   List should be named to map the appropriate vector to each \code{type}.
+#'   be a vector of new bins.
+#'   For other types in \code{bin_vector} the bins are determined from 
+#'   the current or specified length and age bins. 
 #'   If names are forgotten, list elements will be named according to the
 #'   order of entries in \code{type}.
 #' @param type A vector that can take the one or all of the following entries:
@@ -84,7 +82,6 @@
 change_bin <- function(file_in, file_out, bin_vector = NULL,
   type = "len", pop_bin = NULL,
   write_file = TRUE) {
-
   type <- match.arg(type, choices = c("len", "age", "cal", "mla", "mwa"),
                     several.ok = TRUE)
   datfile <- SS_readdat(file = file_in, verbose = FALSE)
@@ -109,6 +106,11 @@ change_bin <- function(file_in, file_out, bin_vector = NULL,
         bin_vector[[type[i]]] <- bin_vector[[which(type == "age")]]
       } else {bin_vector[[type[i]]] <- datfile$agebin_vector}
     }
+  }
+  if("cal" %in% type) {
+    if("len" %in% type) {
+      bin_vector[["cal"]] <- bin_vector[[which(type == "len")]]
+    } else {bin_vector[["cal"]] <- datfile$lbin_vector}
   }
   #bin_vector names in same order as type, if its not named.
   if(is.null(names(bin_vector))) {
@@ -172,16 +174,10 @@ change_bin <- function(file_in, file_out, bin_vector = NULL,
   }
 
   if("cal" %in% type) {
-    if(any(c(range(bin_vector$cal)[1] < datfile$lbin_vector[1],
-             range(bin_vector$cal)[2] > range(datfile$lbin_vector)[2]))){
-      stop("Conditional age-at-length bin vector falls outside of length bins")
-    }
-    binvals <- data.frame("Lbin_lo" = rep(bin_vector$cal, each = nrow(dummy)),
-                          "Lbin_hi" = rep(c(bin_vector$cal[-1] - 1, 
-                                            rev(datfile$lbin_vector)[1]), 
-                                          each = nrow(dummy)))
+    binvals <- data.frame("Lbin_lo" = rep(seq_along(datfile$lbin_vector), each = nrow(dummy)),
+                          "Lbin_hi" = rep(seq_along(datfile$lbin_vector), each = nrow(dummy)))
     caldummy <- do.call("rbind", 
-      replicate(length(bin_vector$cal), dummy, simplify = FALSE))
+      replicate(length(datfile$lbin_vector), dummy, simplify = FALSE))
     dummy.data$cal <- data.frame(matrix(1, ncol = datfile$N_agebins, 
                                         nrow = nrow(caldummy)))
     # add new data frame below existing age data
