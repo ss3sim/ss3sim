@@ -81,7 +81,7 @@
 # print(tail(e$agecomp))
 # print(head(e$MeanSize_at_Age_obs))
 
-change_bin <- function(file_in, file_out, bin_vector,
+change_bin <- function(file_in, file_out, bin_vector = NULL,
   type = "len", pop_bin = NULL,
   write_file = TRUE) {
 
@@ -102,11 +102,6 @@ change_bin <- function(file_in, file_out, bin_vector,
     stop(paste("the current model doesn't support a change in 'pop_bin' with a",
     "lbin_method different than option 2"))
   }
-
-  #add backward compatibility for when bin_vector is a vector and not list
-  if(class(bin_vector) != "list") {
-    stop("bin_vector in change_bin must be a named list.")
-  }
   #Check for a vector for every type
   if(any(c("mla", "mwa") %in% type)) {
     for(i in grep("m", type)){
@@ -123,8 +118,10 @@ change_bin <- function(file_in, file_out, bin_vector,
     need <- which(names(bin_vector) == "")
     names(bin_vector)[need] <- type[need]
   }
-  if("age" %in% type & rev(bin_vector$age)[1] > datfile$Nages) {
+  if("age" %in% type){
+    if(rev(bin_vector$age)[1] > datfile$Nages){
     stop("bin_vector for ages in change_bin extends beyond population ages")
+    }
   }
   if(!any(sapply(bin_vector, is.numeric))) stop("bin_vector must be numeric")
 
