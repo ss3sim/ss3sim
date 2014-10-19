@@ -5,7 +5,8 @@
 \usage{
 run_ss3sim(iterations, scenarios, case_folder, om_dir, em_dir,
   case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), R =
-  "R", E = "E"), user_recdevs = NULL, parallel = FALSE, ...)
+  "R", E = "E"), user_recdevs = NULL, parallel = FALSE,
+  parallel_iterations = FALSE, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -57,6 +58,14 @@ run_ss3sim(iterations, scenarios, case_folder, om_dir, em_dir,
   register multiple cores first with a package such as
   \pkg{doParallel} and have the \pkg{foreach} package
   installed. See the example below.}
+
+  \item{parallel_iterations}{Logical. By default
+  \code{parallel = TRUE} will run scenarios in parallel. If
+  you set \code{parallel = TRUE} and
+  \code{parallel_iterations = TRUE} then the iterations
+  will be run in parallel. This would be useful if you were
+  only running one scenario but you wanted to run it
+  faster.}
 
   \item{...}{Anything else to pass to
   \code{\link{ss3sim_base}}. This could include

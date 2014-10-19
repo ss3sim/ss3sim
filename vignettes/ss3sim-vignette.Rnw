@@ -866,6 +866,55 @@ ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-R0-M0-cod",
   retro_params = R0, om_dir = om, em_dir = em)
 @
 
+\section{An example of customizing the case specifications}
+
+You don't need to stick with the scenario ID scheme laid out
+by default in \pkg{ss3sim}.
+You are free to choose your own scheme by adjusting the list
+of values passed to the \texttt{case\_files} argument
+in \texttt{run\_ss3sim()}.
+
+Below is an example where we'll specify the arguments to the
+sampling functions via their own case files. We'll arbitrarily call these
+cases X, Y, and Z.
+
+We'll start by copying over some case arguments built into the package.
+We'll copy what was called
+\texttt{index0-cod.txt}, \texttt{lcomp0-cod.txt}, and \texttt{agecomp0-cod.txt}
+into \texttt{X-cod.txt}, \texttt{Y-cod.txt}, and \texttt{Z-cod.txt}.
+Then we'll set up our custom \texttt{case\_files} list and call
+\texttt{run\_ss3sim()}:
+
+<<alternative-case-lists, eval=FALSE>>=
+case_folder <- system.file("extdata", "eg-cases", package = "ss3sim")
+om <- system.file("extdata", "models/cod-om", package = "ss3sim")
+em <- system.file("extdata", "models/cod-em", package = "ss3sim")
+files <- list.files(case_folder, pattern = "0-cod")
+
+temp_case_folder <- "ss3sim-example-cases"
+dir.create(temp_case_folder)
+file.copy(paste0(case_folder, "/", files), temp_case_folder)
+
+# now make X, Y, and Z case files:
+setwd(temp_case_folder)
+file.copy("index0-cod.txt", "X0-cod.txt")
+file.copy("lcomp0-cod.txt", "Y0-cod.txt")
+file.copy("agecomp0-cod.txt", "Z0-cod.txt")
+setwd("..")
+
+# our custom specification:
+case_files <- list(M = "M", F = "F", R = "R", E = "E",
+  X = "index", Y = "lcomp", Z = "agecomp")
+
+# and use run_ss3sim() with our new case_file list:
+run_ss3sim(iterations = 1,
+  scenarios = "X0-Y0-Z0-E0-F0-R0-M0-cod",
+  case_folder = temp_case_folder,
+  om_dir = om, em_dir = em,
+  case_files = case_files)
+@
+
+
 \section{Time-varying parameters in the OM}
 \label{sec:time-varying}
 

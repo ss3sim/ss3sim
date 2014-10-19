@@ -30,6 +30,11 @@
 #'   run in parallel. You will need to register multiple cores first with a
 #'   package such as \pkg{doParallel} and have the \pkg{foreach} package
 #'   installed. See the example below.
+#' @param parallel_iterations Logical. By default \code{parallel = TRUE} will
+#'   run scenarios in parallel. If you set \code{parallel = TRUE} and
+#'   \code{parallel_iterations = TRUE} then the iterations will be run in
+#'   parallel. This would be useful if you were only running one scenario
+#'   but you wanted to run it faster.
 #' @param ... Anything else to pass to \code{\link{ss3sim_base}}. This could
 #'   include \code{bias_adjust} and \code{bias_nsim}. Also, you can pass
 #'   additional options to the \code{SS3} command through the argument
@@ -137,9 +142,11 @@
 #' }
 
 run_ss3sim <- function(iterations, scenarios, case_folder,
-  om_dir, em_dir, case_files = list(M = "M", F = "F", D =
-    c("index", "lcomp", "agecomp"), R = "R", E = "E"), user_recdevs = NULL,
-  parallel = FALSE, ...) {
+  om_dir, em_dir,
+  case_files =
+    list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), R = "R", E = "E"),
+  user_recdevs = NULL, parallel = FALSE, parallel_iterations = FALSE,
+  ...) {
 
   if(parallel) {
     cores <- setup_parallel()
@@ -149,41 +156,75 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
   if(!is.null(user_recdevs)) {
     if(ncol(user_recdevs) < max(iterations)) {
       stop(paste("The number of columns in user_recdevs is less than the",
-                 "specified number of iterations."))
+        "specified number of iterations."))
     }
   }
 
+  # Get arguments for each scenario:
+  arg_list <- lapply(scenarios, function(scenario) {
+    a <- get_caseargs(folder = case_folder, scenario = scenario,
+      case_files = case_files)
+    list(
+      scenarios      = scenario,
+      user_recdevs   = user_recdevs,
+      em_dir         = em_dir,
+      om_dir         = om_dir,
+      tv_params      = a$tv_params,
+      tc_params      = a$tail_compression,
+      lc_params      = a$lcomp_constant,
+      bin_params     = a$bin,
+      f_params       = a$F,
+      index_params   = a$index,
+      lcomp_params   = a$lcomp,
+      agecomp_params = a$agecomp,
+      retro_params   = a$R,
+      estim_params   = a$E)
+  })
+
   # Note that inside a foreach loop you pop out of your current
-  # workspace until you go back into an exported function
+  # environment until you go back into an exported function
   # therefore we need to add subst_r to the .export list
   # for foreach to work on Windows:
-  parallel_scenario <- NULL # to satisfy R CMD check
-  if(parallel) {
-    foreach(parallel_scenario = scenarios, .packages = "ss3sim", .verbose =
-            FALSE, .export = "substr_r") %dopar% {
-      a <- get_caseargs(folder = case_folder, scenario = parallel_scenario,
-        case_files = case_files)
-      sp <- substr_r(parallel_scenario, 3)
-      ss3sim_base(iterations, scenarios = parallel_scenario,
-        tv_params = a$tv_params, tc_params = a$T, bin_params= a$B, lc_params = a$C,
-        f_params = a$F, index_params =
-        a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp,
-        retro_params = a$R, estim_params = a$E, om_dir = om_dir,
-        em_dir = em_dir, user_recdevs = user_recdevs, ...)
-  }} else {
-    output <- lapply(scenarios, function(x) {
-      a <- get_caseargs(folder = case_folder, scenario = x, case_files = case_files)
-      sp <- substr_r(x, 3)
-      ss3sim_base(iterations, scenarios = x,
-        tv_params = a$tv_params, tc_params = a$T, bin_params= a$B,, lc_params = a$C,
-        f_params = a$F, index_params =
-        a$index, lcomp_params = a$lcomp, agecomp_params = a$agecomp,
-        retro_params = a$R, estim_params = a$E, om_dir = om_dir,
-        em_dir = em_dir, user_recdevs = user_recdevs, ...)
-        })
+
+  x <- NULL # to satisfy R CMD check in the foreach() call below
+  it_ <- NULL # to satisfy R CMD check in the foreach() call below
+
+  if (parallel) {
+    if (parallel_iterations) {
+      ignore <- lapply(arg_list, function(x) {
+        # First run bias-adjustment runs if requested:
+        dotdotdot <- list(...) # needed so we can nullify bias arguments
+        if ("bias_adjust" %in% names(dotdotdot)) {
+          if (dotdotdot$bias_adjust) {
+            message("Running bias adjustment sequentially first.")
+            do.call("ss3sim_base", c(x, list(iterations = NULL, ...)))
+          }
+        }
+        # Now run regular iterations:
+        message("Running iterations in parallel.")
+        foreach(it_ = iterations, .packages = "ss3sim",
+          .verbose = FALSE, .export = "substr_r") %dopar% {
+            dotdotdot$bias_adjust <- NULL
+            dotdotdot$bias_already_run <- NULL
+            do.call("ss3sim_base",  c(x, list(iterations = it_,
+              bias_adjust = FALSE, bias_already_run = TRUE, dotdotdot)))}
+      })
+    } else {
+      message("Running scenarios in parallel.")
+      foreach(x = arg_list, .packages = "ss3sim",
+        .verbose = FALSE, .export = "substr_r") %dopar% {
+          do.call("ss3sim_base", c(x, list(iterations = iterations, ...)))}
+    }
+  } else {
+    message("Running scenarios and iterations sequentially.")
+    ignore <- lapply(arg_list, function(x) {
+      do.call("ss3sim_base", c(x, list(iterations = iterations, ...)))
+    })
+    # to understand what we just did, play with this toy code:
+    # aa <- list(x = 1:2, y = 3:4)
+    # do.call("plot", c(aa, list(pch = 20)))
   }
 
-    message(paste("Completed iterations:", paste(iterations, collapse = ", "),
-        "for scenarios:", paste(scenarios, collapse = ", ")))
-
+  message(paste("Completed iterations:", paste(iterations, collapse = ", "),
+    "for scenarios:", paste(scenarios, collapse = ", ")))
 }
