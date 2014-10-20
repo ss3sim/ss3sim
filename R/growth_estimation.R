@@ -31,11 +31,11 @@ vbgf_func <- function(L1, L2, k, ages, a3){
 #' sigma is the slope of the CV line where the CV of an age = sigma*age.
 #' @param data_ data.frame, column 1 is ages and column 2 is lengths
 #' @param a3 numeric, the youngest age well sampled in the data.
-get_vbgf_loglik <- function(logL1, logL2, logk, logsigma){
+get_vbgf_loglik <- function(logL1, logL2, logk, logsigma,logcv.young){
   L1 <- exp(logL1)
   L2 <- exp(logL2)
   k <- exp(logk)
-  sigma <- exp(logsigma)*data_$age
+  sigma <- exp(logcv.young) + exp(logsigma)*(data_$age-a3)
   predLength <- vbgf_func(L1, L2, k, data_[, 1], a3)
   logLik <- sum(-log(sigma) - ((log(predLength) -
       log(data_[, 2]))^2)/(2*sigma^2))
@@ -55,11 +55,11 @@ get_vbgf_loglik <- function(logL1, logL2, logk, logsigma){
 #' @param A integer, the oldest age well sampled in the data.
 sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
   start.cv.young, a3, A){
-get_vbgf_loglik <- function(logL1, logL2, logk, logsigma){
+get_vbgf_loglik <- function(logL1, logL2, logk, logsigma, logcv.young){
   L1 <- exp(logL1)
   L2 <- exp(logL2)
   k <- exp(logk)
-  sigma <- exp(logsigma)*data_$age
+  sigma <-   exp(logcv.young)+ exp(logsigma)*(data_$age-a3)
   predLength <- vbgf_func(L1, L2, k, data_[, 1], a3)
   logLik <- sum(-log(sigma) - ((log(predLength) -
       log(data_[, 2]))^2)/(2*sigma^2))
@@ -72,17 +72,16 @@ get_vbgf_loglik <- function(logL1, logL2, logk, logsigma){
   length.df <- length.data[length.data$age > a3, ]
   length.df <- length.df[length.df$age < A, ]
   data_ <- length.df[, colnames(length.df) %in% c("length", "age")]
-
-  start.sigma<-log(start.cv.young/a3)
+  start.sigma<-log(start.cv.young)
   #Fit using MLE
   mod <- mle2(get_vbgf_loglik,
-    start = list(logL1 = log(start.L1), logL2 = log(start.L2), logk = log(start.k), logsigma = .5))
+    start = list(logL1 = log(start.L1), logL2 = log(start.L2), logk = log(start.k), logsigma = start.sigma,logcv.young=log(start.cv.young)))
   if(mod@details$convergence == 1){
     out <- list("L1" = 999, "L2" = 999, "K" = 999, "cv.young" = 999, "cv.old" = 999)
   } else {
     #Put estimated coefficients in EM terms
     expCoef <- exp(mod@coef)
-    cv.young <- expCoef[4]*a3
+    cv.young <- expCoef[5]
     cv.old <- expCoef[4]*A
     out <- list("L1" = expCoef[1], "L2" = expCoef[2],
       "K" = expCoef[3], "cv.young" = cv.young, "cv.old" = cv.old)
