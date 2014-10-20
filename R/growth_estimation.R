@@ -30,11 +30,11 @@ vbgf_func <- function(L1, L2, k, ages, a3){
 #' sigma is the slope of the CV line where the CV of an age = sigma*age.
 #' @param data_ data.frame, column 1 is ages and column 2 is lengths
 #' @param a3 numeric, the youngest age well sampled in the data.
-get_vbgf_loglik <- function(logL1, logL2, logk, logsigma, data_, a3){
+get_vbgf_loglik <- function(logL1, logL2, logk, logsigma){
   L1 <- exp(logL1)
   L2 <- exp(logL2)
   k <- exp(logk)
-  sigma <- exp(logsigma)*data_[,1]
+  sigma <- exp(logsigma)*data_$age
   predLength <- vbgf_func(L1, L2, k, data_[, 1], a3)
   logLik <- sum(-log(sigma) - ((log(predLength) -
       log(data_[, 2]))^2)/(2*sigma^2))
@@ -55,19 +55,28 @@ get_vbgf_loglik <- function(logL1, logL2, logk, logsigma, data_, a3){
 #' @param A integer, the oldest age well sampled in the data.
 sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
   start.cv.young, a3, A){
-
+get_vbgf_loglik <- function(logL1, logL2, logk, logsigma){
+  L1 <- exp(logL1)
+  L2 <- exp(logL2)
+  k <- exp(logk)
+  sigma <- exp(logsigma)*data_$age
+  predLength <- vbgf_func(L1, L2, k, data_[, 1], a3)
+  logLik <- sum(-log(sigma) - ((log(predLength) -
+      log(data_[, 2]))^2)/(2*sigma^2))
+  -logLik
+}
   #function takes data, number of samples, start values, start age
   #Data must have colums ordered: Year, Length, Weight, Sex, age
   #Then fits VBGF to subsampled data
   #Remove fish younger than a3 and older than A
-  length.df <- length.data[length.data[, 1] > a3, ]
-  length.df <- length.df[length.df[, 1] < A, ]
+  length.df <- length.data[length.data$age > a3, ]
+  length.df <- length.df[length.df$age < A, ]
+  data_ <- length.df[, colnames(length.df) %in% c("length", "age")]
 
   start.sigma<-log(start.cv.young/a3)
   #Fit using MLE
   mod <- mle2(get_vbgf_loglik,
-    start = list(logL1 = start.L1, logL2 = start.L2, logk = start.k, logsigma = .5),
-    data_ = length.df, a3 = a3)
+    start = list(logL1 = start.L1, logL2 = start.L2, logk = start.k, logsigma = .5))
 
   if(mod@details$convergence == 1){
     out <- list("L1" = 999, "L2" = 999, "K" = 999, "cv.young" = 999, "cv.old" = 999)
