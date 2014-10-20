@@ -1,12 +1,13 @@
 #' Predict length given VBGF parameters
 #'
-#' External estimation procedure for von Bertalanffy growth
+#' @description External estimation procedure for von Bertalanffy growth.
 #'
-#' @param L1 description
-#' @param L2 description
-#' @param k description
-#' @param ages description
-#' @param a3 description
+#' @param L1 mean length at youngest age which is well sampled in the data (a3)
+#' @param L2 mean length at oldest age which is well sampled in the data (A)
+#' @param k von bertalanffy growth rate parameter
+#' @param ages vector of ages in the data for which you want to predict mean length-at-age
+#' @param a3 youngest age which is well sampled in the data
+#' @return a vector of lengths predicted which correspond to the input ages vector.
 #'
 #' @importFrom bbmle mle2
 
@@ -18,6 +19,17 @@ vbgf_func <- function(L1, L2, k, ages, a3){
   predLength
 }
 
+
+#' @description Function to estimate the log likelihood of a fit to length and age data
+#' Uses mle2 to minimize the negative log likelihood and uses vbgf_func to predict
+#' data.
+#' @param logL1 numeric,  log(L1) parameter.
+#' @param logL2 numeric, log(L2) parameter.
+#' @param logk numeric, log(k) parameter.
+#' @param logsigma numeric, log(sigma) parameter, where
+#' sigma is the slope of the CV line where the CV of an age = sigma*age.
+#' @param data_ data.frame, column 1 is ages and column 2 is lengths
+#' @param a3 numeric, the youngest age well sampled in the data.
 get_vbgf_loglik <- function(logL1, logL2, logk, logsigma, data_, a3){
   L1 <- exp(logL1)
   L2 <- exp(logL2)
@@ -29,6 +41,18 @@ get_vbgf_loglik <- function(logL1, logL2, logk, logsigma, data_, a3){
   -logLik
 }
 
+
+#' @description Function to estimate the log likelihood of a fit to length and age data
+#' Uses mle2 to minimize the negative log likelihood and uses vbgf_func to predict
+#' data.
+#' @param length.data data.frame which contains the lengths and ages
+#'  to fit the vbgf model..
+#' @param start.L1 numeric, starting guess for mle2 for L1 parameter.
+#' @param start.L2 numeric, starting guess for mle2 for L2 parameter.
+#' @param start.k numeric, starting guess for mle2 for k parameter.
+#' @param start.cv.young, starting guess for mle2 for cv.young parameter.
+#' @param a3 integer, the youngest age well sampled in the data.
+#' @param A integer, the oldest age well sampled in the data.
 sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
   start.cv.young, a3, A){
 
@@ -37,7 +61,7 @@ sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
   #Then fits VBGF to subsampled data
   #Remove fish younger than a3 and older than A
   length.df <- length.data[length.data[, 1] > a3, ]
-  length.df <- length.data[length.df[, 1] < A, ]
+  length.df <- length.df[length.df[, 1] < A, ]
 
   start.sigma<-log(start.cv.young/a3)
   #Fit using MLE
