@@ -18,6 +18,10 @@
 #'   \code{\link{sample_lcomp}}.
 #' @param agecomp_params A named list containing arguments for
 #'   \code{\link{sample_agecomp}}.
+#' @param calcomp_params A named list containing arguments for
+#'   \code{\link{sample_calcomp}}, for conditional age-at-length data.
+#' @param wtatage_params A named list containing arguments for
+#'   \code{\link{sample_wtatage}}, for empirical weight-at-age data.
 #' @param retro_params A named list containing arguments for
 #'   \code{\link{change_retro}}.
 #' @param estim_params A named list containing arguments for \code{\link{change_e}}
@@ -273,14 +277,6 @@ deviations can lead to biased model results.")
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
 
-      # Copy over wtatage.ss_new to EM; needed for empirical weight at age
-      file.copy(pastef(sc, i, "om", "wtatage.ss_new"),
-        pastef(sc, i, "em", "wtatage.ss_new"))
-
-      # Read in the data.ss_new file and move it to the em folder
-       extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
-         data_out = pastef(sc, i, "em", "ss3.dat"))
-
       # Survey biomass index
       SS.dat = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
@@ -355,7 +351,28 @@ deviations can lead to biased model results.")
                             years            = years,
                             cv               = cv))
       }
-      # Manipulate EM starter file for a possible retrospective analysis
+      # Add error in the empirical weight-at-age comp data
+      if(!is.null(wtatage_params)){
+          wtatage_params <-
+              add_nulls(wtatage_params, c("fleets", "Nsamp", "years", "cv"))
+          ## A value of NULL for fleets signifies not to use this function,
+          ## so exit early if this is the case.
+          if(!is.null(wtatage_params$fleets)){
+              ## Make sure W@A option is turned on in the EM
+              change_maturity(file_in=pastef(sc, i, "em", "ss3.ctl"),
+                              file_out=pastef(sc, i, "em", "ss3.ctl"),
+                              maturity_option=5)
+              with(wtatage_params,
+                   sample_wtatage(infile           = pastef(sc, i, "om", "wtatage.ss_new"),
+                                  outfile          = pastef(sc, i, "em", "wtatage.ss"),
+                                  fleets           = fleets,
+                                  Nsamp            = Nsamp,
+                                  years            = years,
+                                  cv               = cv,
+                                  write_file       = TRUE))
+          }
+      }
+      ## Manipulate EM starter file for a possible retrospective analysis
       if(!is.null(retro_params)) {
       retro_params <- add_nulls(retro_params, "retro_yr")
       with(retro_params,

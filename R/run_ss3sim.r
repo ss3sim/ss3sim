@@ -178,6 +178,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
       lcomp_params   = a$lcomp,
       agecomp_params = a$agecomp,
       calcomp_params = a$calcomp,
+      wtatage_params = a$wtatage,
       retro_params   = a$R,
       estim_params   = a$E)
   })
