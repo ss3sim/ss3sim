@@ -137,6 +137,7 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
       })
     limitages <- list(a3 = grep("Growth_Age_for_L1", ss3.ctl, value = TRUE),
                       A = grep("Growth_Age_for_L2", ss3.ctl, value = TRUE))
+    #A = as.numeric(gsub("N_a", "", rev(colnames(data.all$MeanSize_at_Age_obs))[1])
     limitages <- lapply(limitages, function(x) {
       temp <- unlist(strsplit(x, split = " "))
       as.numeric(temp[which(nchar(temp) > 0)][1])
@@ -154,9 +155,11 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
     par_int[changeinits] <- as.numeric(unlist(change_e_vbgf[
       match(parsmatch$change_e_vbgf[sapply(ss3names, grep, parsmatch$true)],
             names(change_e_vbgf))]))
-    par_int <- as.numeric(par_int)
+      par_int <- sapply(par_int, function(x) {
+        if(as.numeric(x)) {as.numeric(x)
+        }else{x}
+        })
   }
-
   # Determine how many genders the model has
   gen <- grep("NatM", ss3.ctl, value = TRUE)
   male <- TRUE %in% grepl("Mal", gen)
