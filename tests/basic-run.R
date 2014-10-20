@@ -27,6 +27,10 @@ library(foreach)
 registerDoParallel(cores = 2)
 getDoParWorkers() # check
 
+#procs <- Sys.getenv("PBS_NP")
+#library(parallel)
+#cl <- makeCluster(2, type = "MPI")
+
 # parallel iterations:
 run_ss3sim(iterations = 1:2, scenarios = "D0-E0-F0-R0-M0-cod",
   case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "safe",
