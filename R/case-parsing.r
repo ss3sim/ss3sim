@@ -191,23 +191,23 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
   for (i in seq_along(argvalues_out)) {
     change_case_function <- paste0("change_", tolower(names(argvalues_out)[i]))
     sample_case_function <- paste0("sample_", tolower(names(argvalues_out)[i]))
-    fxn_type <- "change" # might be changed later
     # special case... legacy effect:
     if (change_case_function == "change_r")
       change_case_function <- "change_retro"
+
+    fxn_name <- change_case_function # might be changed later
 
     fxn_formals <- tryCatch(names(formals(change_case_function)),
       error = function(e) "")
     if (fxn_formals[1] == "..." | fxn_formals[1] == "") {
       fxn_formals <- names(formals(sample_case_function))
-      fxn_type <- "sample"
+      fxn_name <- sample_case_function
     }
     matches <- names(argvalues_out[[i]]) %in% fxn_formals
 
     if (sum(matches) != length(matches)) {
       stop(paste0(names(argvalues_out[[i]])[!matches],
-        " is not an argument in the function ",
-        fxn_type, "_", names(argvalues_out)[[i]]))
+        " is not an argument in the function ", fxn_name))
     }
   }
 
