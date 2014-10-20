@@ -21,10 +21,10 @@
 #'   file to output.
 #' @param bin_vector A named list of vectors. Named elements provide
 #'   the desired bin structure for each data \code{type}.
-#'   If \code{type = "len"} or \code{type = "age"} \code{bin_vector} should 
+#'   If \code{type = "len"} or \code{type = "age"} \code{bin_vector} should
 #'   be a vector of new bins.
-#'   For other types in \code{bin_vector} the bins are determined from 
-#'   the current or specified length and age bins. 
+#'   For other types in \code{bin_vector} the bins are determined from
+#'   the current or specified length and age bins.
 #'   If names are forgotten, list elements will be named according to the
 #'   order of entries in \code{type}.
 #' @param type A vector that can take the one or all of the following entries:
@@ -130,7 +130,7 @@ change_bin <- function(file_in, file_out, bin_vector = NULL,
   ##Generate dummy data for all routines
   years <- seq(datfile$styr, datfile$endyr, 1)
   fleets <- seq(datfile$Nfleet + datfile$Nsurveys)
-  dummy <- expand.grid("Year" = years, "Season" = 1,"Fleet" = fleets, 
+  dummy <- expand.grid("Year" = years, "Season" = 1,"Fleet" = fleets,
                        "Gender" = 0, "Part" = 0, "AgeErr" = 1)
   dummy.data <- lapply(bin_vector, function(x) {
     goodnames <- data.frame("types" = c("len", "age", "cal", "mla", "mwa"),
@@ -142,7 +142,7 @@ change_bin <- function(file_in, file_out, bin_vector = NULL,
     names(newdata) <- paste0(newname, x)
 
     if(grepl("m", partname)) {
-      newdata <- cbind(newdata, 
+      newdata <- cbind(newdata,
                        setNames(newdata, gsub("f", "N_f", names(newdata))))
     }
     return(newdata)
@@ -168,7 +168,7 @@ change_bin <- function(file_in, file_out, bin_vector = NULL,
   if("age" %in% type) {
     datfile$agebin_vector <- bin_vector$age
     datfile$N_agebins <- length(datfile$agebin_vector)
-    datfile$agecomp <- data.frame(dummy, "Lbin_lo" = -1, "Lbin_hi" = -1, 
+    datfile$agecomp <- data.frame(dummy, "Lbin_lo" = -1, "Lbin_hi" = -1,
                                   "Nsamp" = 1, dummy.data$age)
     datfile$N_agecomp <- nrow(datfile$agecomp)
   }
@@ -176,9 +176,9 @@ change_bin <- function(file_in, file_out, bin_vector = NULL,
   if("cal" %in% type) {
     binvals <- data.frame("Lbin_lo" = rep(seq_along(datfile$lbin_vector), each = nrow(dummy)),
                           "Lbin_hi" = rep(seq_along(datfile$lbin_vector), each = nrow(dummy)))
-    caldummy <- do.call("rbind", 
+    caldummy <- do.call("rbind",
       replicate(length(datfile$lbin_vector), dummy, simplify = FALSE))
-    dummy.data$cal <- data.frame(matrix(1, ncol = datfile$N_agebins, 
+    dummy.data$cal <- data.frame(matrix(1, ncol = datfile$N_agebins,
                                         nrow = nrow(caldummy)))
     # add new data frame below existing age data
     datfile$agecomp <- rbind(datfile$agecomp,
@@ -201,7 +201,8 @@ change_bin <- function(file_in, file_out, bin_vector = NULL,
     datfile$N_MeanSize_at_Age_obs <- nrow(datfile$MeanSize_at_Age_obs)
   }
   if(write_file) {
-    SS_writedat(datlist = datfile, outfile = file_out, overwrite=TRUE)
+    SS_writedat(datlist = datfile, outfile = file_out, overwrite=TRUE,
+                verbose = FALSE)
   }
 
   invisible(datfile)

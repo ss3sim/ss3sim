@@ -129,7 +129,8 @@ stop(paste("A year specified in years was not found in the input file for fleet"
     if(Nfleets>0) newfile$N_cpue <- nrow(cpue.new)
     if(Nfleets==0) newfile$N_cpue <- 0
     if(write_file)
-        SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE)
+        SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
+                    verbose = FALSE)
     return(invisible(cpue.new))
 }
 

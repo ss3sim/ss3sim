@@ -181,7 +181,8 @@ sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
 
     ## Write the modified file
     if(write_file)
-        SS_writedat(datlist = newfile, outfile = outfile, overwrite = T)
+        SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
+                    verbose = FALSE)
     return(invisible(newcomp.final))
 }
 
