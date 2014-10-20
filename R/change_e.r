@@ -110,19 +110,38 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
     if(!"MeanSize_at_Age_obs" %in% names(data.all)) {
       stop("Error in change_e while computing external growth estimates: dat file does not contain mean size-at-age data.")
     }
-    #Remove unnecessary data columns so reshape2::melt can transform from wide to long
-    data <- data.all$MeanSize_at_Age_obs[data.all$MeanSize_at_Age_obs$AgeErr >= 0,
-      -c(grep("N", colnames(data.all$MeanSize_at_Age_obs)),
-         match(c("Gender", "Part", "AgeErr", "Ignore"),
-               colnames(data.all$MeanSize_at_Age_obs)))
+    data.old <- data.all$MeanSize_at_Age_obs[data.all$MeanSize_at_Age_obs$AgeErr >= 0,
+      -c(match(c("Gender", "Part", "AgeErr", "Ignore"),
+         colnames(data.all$MeanSize_at_Age_obs)))
       ]
-      if(dim(data)[1] < 1) {
+      if(dim(data.old)[1] < 1) {
         stop("Error in change_e: no length-at-age data in the MeanSize_at_Age_obs")
       }
-      data <- reshape2::melt(data,
-        id.vars = c("Yr", "Seas", "Fleet"), value.name = "length")
-      data$variable <- as.numeric(gsub("a", "", data$variable))
-      colnames(data)[match("variable", colnames(data))] <- "age"
+    data.new <- list()
+    true.cv <- 0.1
+    for(r in seq(nrow(data.old))) {
+      use <- data.old[r, -(1:3)]
+      means <- log(use[1:(length(use) / 2)])
+      ns <- use[-c(1:(length(use) / 2))]
+      my.list <- list()
+      for(age in seq_along(means)) {
+        mean <- as.numeric(means[age])
+        sd <- mean * true.cv
+        temp <- rnorm(as.numeric(ns[age]), mean, sd)
+        my.age <- as.numeric(gsub("a", "", colnames(data.old)[3 + age]))
+        my.list[[age]] <- data.frame("age" = my.age, "length" = exp(temp))
+      }
+      data.new[[r]] <- do.call("rbind", my.list)
+    }
+    data.new[[1]]
+
+    #Remove unnecessary data columns so reshape2::melt can transform from wide to long
+    data <- do.call("rbind", data.new)
+
+      # data <- reshape2::melt(data,
+      #   id.vars = c("Yr", "Seas", "Fleet"), value.name = "length")
+      # data$variable <- as.numeric(gsub("a", "", data$variable))
+      # colnames(data)[match("variable", colnames(data))] <- "age"
     #Get start values
     parsmatch <- data.frame("true" = c("L_at_Amin_Fem_GP_1", "L_at_Amax_Fem_GP_1",
                                        "VonBert_K_Fem_GP_1", "CV_young_Fem_GP_1",
