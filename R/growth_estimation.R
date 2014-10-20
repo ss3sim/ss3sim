@@ -37,7 +37,7 @@ sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
   #Then fits VBGF to subsampled data
   #Remove fish younger than a3 and older than A
   length.df <- length.data[length.data[, 1] > a3, ]
-  length.df <- length.df[length.df[, 1] < A, ]
+  length.df <- length.data[length.df[, 1] < A, ]
 
   start.sigma<-log(start.cv.young/a3)
   #Fit using MLE
