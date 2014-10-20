@@ -151,9 +151,10 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
     changeinits <- which(par_int == "change_e_vbgf")
     ss3names <- par_name[changeinits]
     #This is if the output is parameter names
-    par_int[changeinits] <- change_e_vbgf[[
-      match(parsmatch$change_e_vbgf[match(ss3names, parsmatch$true)],
-            names(change_e_vbgf))]]
+    par_int[changeinits] <- as.numeric(unlist(change_e_vbgf[
+      match(parsmatch$change_e_vbgf[sapply(ss3names, grep, parsmatch$true)],
+            names(change_e_vbgf))]))
+    par_int <- as.numeric(par_int)
   }
 
   # Determine how many genders the model has
