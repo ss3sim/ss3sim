@@ -76,8 +76,7 @@ get_vbgf_loglik <- function(logL1, logL2, logk, logsigma){
   start.sigma<-log(start.cv.young/a3)
   #Fit using MLE
   mod <- mle2(get_vbgf_loglik,
-    start = list(logL1 = start.L1, logL2 = start.L2, logk = start.k, logsigma = .5))
-
+    start = list(logL1 = log(start.L1), logL2 = log(start.L2), logk = log(start.k), logsigma = .5))
   if(mod@details$convergence == 1){
     out <- list("L1" = 999, "L2" = 999, "K" = 999, "cv.young" = 999, "cv.old" = 999)
   } else {
