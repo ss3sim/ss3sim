@@ -4,11 +4,12 @@
 \title{Base wrapper function to run an ss3sim simulation}
 \usage{
 ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
-  agecomp_params, estim_params, tv_params, om_dir, em_dir,
-  retro_params = NULL, tc_params = NULL, bin_params = NULL,
-  lc_params = NULL, user_recdevs = NULL, bias_adjust = FALSE,
-  bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
-  print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21, ...)
+  agecomp_params, calcomp_params = NULL, wtatage_params = NULL,
+  estim_params, tv_params, om_dir, em_dir, retro_params = NULL,
+  tc_params = NULL, bin_params = NULL, lc_params = NULL,
+  user_recdevs = NULL, bias_adjust = FALSE, bias_nsim = 5,
+  bias_already_run = FALSE, hess_always = FALSE, print_logfile = TRUE,
+  sleep = 0, conv_crit = 0.2, seed = 21, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -27,6 +28,14 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
 
   \item{agecomp_params}{A named list containing arguments
   for \code{\link{sample_agecomp}}.}
+
+  \item{calcomp_params}{A named list containing arguments
+  for \code{\link{sample_calcomp}}, for conditional
+  age-at-length data.}
+
+  \item{wtatage_params}{A named list containing arguments
+  for \code{\link{sample_wtatage}}, for empirical
+  weight-at-age data.}
 
   \item{estim_params}{A named list containing arguments for
   \code{\link{change_e}} .}

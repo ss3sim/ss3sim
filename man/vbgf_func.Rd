@@ -6,17 +6,24 @@
 vbgf_func(L1, L2, k, ages, a3)
 }
 \arguments{
-  \item{L1}{description}
+  \item{L1}{mean length at youngest age which is well
+  sampled in the data (a3)}
 
-  \item{L2}{description}
+  \item{L2}{mean length at oldest age which is well sampled
+  in the data (A)}
 
-  \item{k}{description}
+  \item{k}{von bertalanffy growth rate parameter}
 
-  \item{ages}{description}
+  \item{ages}{vector of ages in the data for which you want
+  to predict mean length-at-age}
 
-  \item{a3}{description}
+  \item{a3}{youngest age which is well sampled in the data}
+}
+\value{
+a vector of lengths predicted which correspond to the input
+ages vector.
 }
 \description{
-External estimation procedure for von Bertalanffy growth
+External estimation procedure for von Bertalanffy growth.
 }
 

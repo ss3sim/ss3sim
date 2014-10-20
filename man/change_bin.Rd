@@ -17,14 +17,10 @@ change_bin(file_in, file_out, bin_vector = NULL, type = "len",
   provide the desired bin structure for each data
   \code{type}. If \code{type = "len"} or \code{type =
   "age"} \code{bin_vector} should be a vector of new bins.
-  Whereas if \code{type = "cal"}, \code{bin_vector} should
-  be a vector of lower length bins for Lbin_lo. Lbin_hi
-  will be calculated from the Lbin_lo of the subsequent
-  bin, with the edge of the final bin matching the highest
-  population length bin. List should be named to map the
-  appropriate vector to each \code{type}. If names are
-  forgotten, list elements will be named according to the
-  order of entries in \code{type}.}
+  For other types in \code{bin_vector} the bins are
+  determined from the current or specified length and age
+  bins. If names are forgotten, list elements will be named
+  according to the order of entries in \code{type}.}
 
   \item{type}{A vector that can take the one or all of the
   following entries: \code{"len"}, \code{"age"},
