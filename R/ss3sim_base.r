@@ -167,7 +167,7 @@
 #' }
 
 ss3sim_base <- function(iterations, scenarios, f_params,
-  index_params, lcomp_params, agecomp_params, calcomp_params=NULL,
+  index_params, lcomp_params, agecomp_params, calcomp_params=NULL, wtatage_params=NULL,
   estim_params, tv_params, om_dir, em_dir,
   retro_params = NULL, tc_params = NULL, bin_params = NULL, lc_params = NULL,
   user_recdevs = NULL, bias_adjust = FALSE,
@@ -274,10 +274,12 @@ deviations can lead to biased model results.")
         setwd(wd)
       }
 
-      # Run the operating model
+      # Run the operating model and copy the dat file over
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
+      extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
+                            data_out = pastef(sc, i, "em", "ss3.dat"))
 
-      # Survey biomass index
+                                        # Survey biomass index
       SS.dat = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
       index_params <- add_nulls(index_params, c("fleets", "years", "sds_obs"))
@@ -359,8 +361,8 @@ deviations can lead to biased model results.")
           ## so exit early if this is the case.
           if(!is.null(wtatage_params$fleets)){
               ## Make sure W@A option is turned on in the EM
-              change_maturity(file_in=pastef(sc, i, "em", "ss3.ctl"),
-                              file_out=pastef(sc, i, "em", "ss3.ctl"),
+              change_maturity(file_in=pastef(sc, i, "em", "em.ctl"),
+                              file_out=pastef(sc, i, "em", "em.ctl"),
                               maturity_option=5)
               with(wtatage_params,
                    sample_wtatage(infile           = pastef(sc, i, "om", "wtatage.ss_new"),

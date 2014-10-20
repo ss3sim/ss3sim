@@ -38,8 +38,6 @@ sample_wtatage <- function(infile, outfile, fleets = 1, Nsamp,
     wtatage <- wtatage[wtatage$fleet %in% fleets,]
     ## Check inputs for errors
     if(NROW(wtatage)==0) stop("Specified fleets not found in file")
-    if(substr_r(outfile,4) != ".dat" & write_file)
-        stop(paste0("outfile ", outfile, " needs to end in .dat"))
     Nfleets <- length(fleets)
     if(class(Nsamp) != "list" | length(Nsamp) != Nfleets)
         stop("Nsamp needs to be a list of same length as fleets")
