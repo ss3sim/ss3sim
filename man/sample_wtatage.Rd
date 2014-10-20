@@ -73,3 +73,4 @@ Cole Monnahan
 \seealso{
 \code{\link{sample_lcomp}, \link{sample_agecomp}}
 }
+

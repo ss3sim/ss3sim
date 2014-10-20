@@ -27,3 +27,4 @@ Uses \code{\link[bbmle]{mle2}} to minimize the negative log
 likelihood and uses \code{\link{vbgf_func}} to predict
 data.
 }
+

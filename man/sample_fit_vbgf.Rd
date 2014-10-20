@@ -31,3 +31,4 @@ sample_fit_vbgf(length.data, start.L1, start.L2, start.k, start.cv.young, a3, A)
 Function to sample the log likelihood of a fit to length
 and age data
 }
+
