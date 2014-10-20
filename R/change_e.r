@@ -136,9 +136,9 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
       return(temp)
       })
     limitages <- list(a3 = grep("Growth_Age_for_L1", ss3.ctl, value = TRUE),
-                      A = grep("Growth_Age_for_L2", ss3.ctl, value = TRUE))
-    #A = as.numeric(gsub("N_a", "", rev(colnames(data.all$MeanSize_at_Age_obs))[1])
-    limitages <- lapply(limitages, function(x) {
+                      #A = grep("Growth_Age_for_L2", ss3.ctl, value = TRUE))
+                       A = as.numeric(gsub("N_a", "", rev(colnames(data.all$MeanSize_at_Age_obs))[1])))
+    limitages[1] <- lapply(limitages[1], function(x) {
       temp <- unlist(strsplit(x, split = " "))
       as.numeric(temp[which(nchar(temp) > 0)][1])
       })
