@@ -20,9 +20,10 @@ vbgf_func <- function(L1, L2, k, ages, a3){
 }
 
 
-#' @description Function to estimate the log likelihood of a fit to length and age data
-#' Uses mle2 to minimize the negative log likelihood and uses vbgf_func to predict
-#' data.
+#' Function to estimate the log likelihood of a fit to length and age data
+#'
+#' @description Uses \code{\link[bbmle]{mle2}} to minimize the negative log
+#'   likelihood and uses \code{\link{vbgf_func}} to predict data.
 #' @param logL1 numeric,  log(L1) parameter.
 #' @param logL2 numeric, log(L2) parameter.
 #' @param logk numeric, log(k) parameter.
@@ -42,9 +43,8 @@ get_vbgf_loglik <- function(logL1, logL2, logk, logsigma){
 }
 
 
-#' @description Function to estimate the log likelihood of a fit to length and age data
-#' Uses mle2 to minimize the negative log likelihood and uses vbgf_func to predict
-#' data.
+#' Function to sample the log likelihood of a fit to length and age data
+#'
 #' @param length.data data.frame which contains the lengths and ages
 #'  to fit the vbgf model..
 #' @param start.L1 numeric, starting guess for mle2 for L1 parameter.
