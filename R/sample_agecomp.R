@@ -113,9 +113,10 @@ sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
 
     ## Check to see if conditional age-at-length data should be kept
     if(keep_conditional){
-        conditional_data <- subset(agecomp, Lbin_lo >= 0)
+        conditional_data <- agecomp[agecomp$Lbin_lo >= 0, ]
+        if(nrow(conditional_data) == 0) keep_conditional <- FALSE
     }
-      agecomp <- subset(agecomp, Lbin_lo < 0)
+      agecomp <- agecomp[agecomp$Lbin_lo < 0, ]
 
 
     ## Resample from the age data
@@ -178,7 +179,6 @@ sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
     if(Nfleets>0) newfile$N_agecomp <- nrow(newcomp.final)
     if(Nfleets==0 & keep_conditional == FALSE) newfile$N_agecomp <- 0
     if(Nfleets==0 & keep_conditional == TRUE) newfile$N_agecomp <- nrow(newcomp.final)
-
     ## Write the modified file
     if(write_file)
         SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
