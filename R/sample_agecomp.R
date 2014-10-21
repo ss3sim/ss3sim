@@ -190,13 +190,7 @@ sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
             newfile$N_agecomp <- 0
         }
     }
-<<<<<<< HEAD
 
-=======
-    if(Nfleets>0) newfile$N_agecomp <- nrow(newcomp.final)
-    if(Nfleets==0 & keep_conditional == FALSE) newfile$N_agecomp <- 0
-    if(Nfleets==0 & keep_conditional == TRUE) newfile$N_agecomp <- nrow(newcomp.final)
->>>>>>> 8354e5bbf54c15076e671add79e6996a0e3d8a47
     ## Write the modified file
     if(write_file)
         SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
