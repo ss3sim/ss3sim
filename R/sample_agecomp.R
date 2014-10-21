@@ -111,12 +111,9 @@ sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
     }
     ## End input checks
 
-    ## Check to see if conditional age-at-length data should be kept
-    if(keep_conditional){
-        conditional_data <- subset(agecomp, Lbin_lo >= 0)
-    }
-      agecomp <- subset(agecomp, Lbin_lo < 0)
-
+    ## Split the conditional data from the age data
+    conditional_data <- subset(agecomp, Lbin_lo >= 0)
+    agecomp <- subset(agecomp, Lbin_lo < 0)
 
     ## Resample from the age data
     ## The general approach here is to loop through each row to keep
@@ -163,21 +160,36 @@ sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
             }
         }
     }
-    ## Combine new rows together into one data.frame
-    if(Nfleets>0) newcomp.final <- do.call(rbind, newcomp.list)
-    if(Nfleets==0) newcomp.final = data.frame("#")
 
-    ## Build the new dat file
+    ## Combine back together into final data frame with the different data
+    ## types
     newfile <- infile
-    if(keep_conditional) {
-        newcomp.final <- rbind(newcomp.final, conditional_data)
-        newfile$agecomp <- newcomp.final
+    if(Nfleets>0){
+        newcomp.final <- do.call(rbind, newcomp.list)
+        ## Case with both types
+        if(nrow(conditional_data>0)){
+            newcomp.final <- rbind(newcomp.final, conditional_data)
+            newfile$agecomp <- newcomp.final
+            newfile$N_agecomp <- nrow(newcomp.final)
+
+        } else { ## case with only age data
+            newfile$agecomp <- newcomp.final
+            newfile$N_agecomp <- nrow(newcomp.final)
+             }
     } else {
-        newfile$agecomp <- newcomp.final
+        ## Case with only conditional data
+        if(nrow(conditional_data>0)){
+            newcomp.final <- conditional_data
+            newfile$agecomp <- newcomp.final
+            newfile$N_agecomp <- nrow(newcomp.final)
+
+        } else {
+            ## case with no data of either type
+            newcomp.final <- data.frame("#")
+            newfile$agecomp <- newcomp.final
+            newfile$N_agecomp <- 0
+        }
     }
-    if(Nfleets>0) newfile$N_agecomp <- nrow(newcomp.final)
-    if(Nfleets==0 & keep_conditional == FALSE) newfile$N_agecomp <- 0
-    if(Nfleets==0 & keep_conditional == TRUE) newfile$N_agecomp <- nrow(newcomp.final)
 
     ## Write the modified file
     if(write_file)

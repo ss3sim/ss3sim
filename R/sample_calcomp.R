@@ -95,21 +95,39 @@ sample_calcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
         }
     }
 
-    ## Combine new rows together into one data.frame
+    ## Combine back together into final data frame with the different data
+    ## types
+    newfile <- infile
     if(Nfleets>0){
         newcomp.final <- do.call(rbind, newcomp.list)
-        ## Recombine the age data, since we don't want to lose that
-        newcomp.final <- rbind(agecomp.age, newcomp.final)
-    } else {  ## else was NULL so strip out the length-at-age data
-        newcomp.final = agecomp.age
+        ## Case with both types
+        if(nrow(agecomp.age)>0){
+            newcomp.final <- rbind(newcomp.final, agecomp.age)
+            newfile$agecomp <- newcomp.final
+            newfile$N_agecomp <- nrow(newcomp.final)
+
+        } else { ## case with only conditional data
+            newfile$agecomp <- newcomp.final
+            newfile$N_agecomp <- nrow(newcomp.final)
+             }
+    } else {
+        ## Case with only age data
+        if(nrow(agecomp.age)>0){
+            newcomp.final <- agecomp.age
+            newfile$agecomp <- newcomp.final
+            newfile$N_agecomp <- nrow(newcomp.final)
+
+        } else {
+            ## case with no data of either type
+            newcomp.final <- data.frame("#")
+            newfile$agecomp <- newcomp.final
+            newfile$N_agecomp <- 0
+        }
     }
-    ## Make changes to the dat file
-    infile$N_agecomp <- nrow(newcomp.final)
-    infile$agecomp <- newcomp.final
 
     ## Write the modified file
     if(write_file)
-        r4ss::SS_writedat(datlist = infile, outfile = outfile,
+        r4ss::SS_writedat(datlist = newfile, outfile = outfile,
                           overwrite = TRUE, verbose=FALSE)
     return(invisible(newcomp.final))
 }
