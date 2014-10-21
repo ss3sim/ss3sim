@@ -174,8 +174,9 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
     par_int[changeinits] <- as.numeric(unlist(change_e_vbgf[
       match(parsmatch$change_e_vbgf[sapply(ss3names, grep, parsmatch$true)],
             names(change_e_vbgf))]))
+
       par_int <- sapply(par_int, function(x) {
-        if(as.numeric(x)) {as.numeric(x)
+        if(!is.na(x)) {as.numeric(x)
         }else{x}
         })
   }
