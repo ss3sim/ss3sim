@@ -74,11 +74,14 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         scenarios <- id_scenarios(directory=directory)
     } else {
         temp_scenarios <- id_scenarios(directory=directory)
+        scenarios <- user_scenarios[which(user_scenarios %in% temp_scenarios)]
         if(all(user_scenarios %in% temp_scenarios)){
-            scenarios <- user_scenarios
-        } else{
-            stop(paste(user_scenarios[which(user_scenarios %in% temp_scenarios==FALSE)], 
-                "not in directory"))}
+            message("All user_scenarios exist in directory")
+        }
+        if(any(user_scenarios %in% temp_scenarios==FALSE)){
+            message(paste(user_scenarios[which(user_scenarios %in% 
+                temp_scenarios == FALSE)], "not in directory\n"))
+        }
     }
 
     if(length(scenarios)==0)
