@@ -75,9 +75,6 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
     } else {
         temp_scenarios <- id_scenarios(directory=directory)
         scenarios <- user_scenarios[which(user_scenarios %in% temp_scenarios)]
-        if(all(user_scenarios %in% temp_scenarios)){
-            message("All user_scenarios exist in directory")
-        }
         if(any(user_scenarios %in% temp_scenarios==FALSE)){
             message(paste(user_scenarios[which(user_scenarios %in% 
                 temp_scenarios == FALSE)], "not in directory\n"))
@@ -207,17 +204,15 @@ get_results_scenario <- function(scenario, directory=getwd(),
       report.em <- r4ss::SS_output(paste0(rep,"/em/"), covar=FALSE,
         verbose=FALSE,compfile="none", forecast=TRUE, warn=TRUE, readwt=FALSE,
         printstats=FALSE, NoCompOK=TRUE)
-      # if(file.exists(paste0(rep,"/om/Report.sso"))==FALSE)
-      #     stop(paste("Error: SS Report File doesn't exist for scenario", scenario))
-      report.om <- tryCatch({
-        r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE, 
+      report.om <- tryCatch(r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE, 
         verbose=FALSE, compfile="none", forecast=FALSE, warn=TRUE, readwt=FALSE,
-        printstats=FALSE, NoCompOK=TRUE)
-        },
-        error=function(e){
-            message(paste("Error reading SS files within", scenario))
-            message(e)
-        })
+        printstats=FALSE, NoCompOK=TRUE), error=function(e) NA)
+      if(is.list(report.om)==TRUE){
+        report.om <- report.om
+      } else{
+          message(paste("Necessary SS files missing from", scenario, "replicate", rep))
+          next
+      }
         ## Grab the residuals for the indices
         resids <- log(report.em$cpue$Obs) - log(report.em$cpue$Exp)
         resids.long <- data.frame(report.em$cpue[,c("FleetName", "Yr")], resids)
