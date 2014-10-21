@@ -53,3 +53,12 @@ run_ss3sim(iterations = 1:1,
 unlink("D0-E0-F0-R0-M0-T0-cod", recursive = TRUE) # clean up
 unlink("D0-E0-F0-R1-M0-T0-cod", recursive = TRUE) # clean up
 
+## Test get_results_all
+#run 2 iterations of 2 scenarios
+run_ss3sim(iterations = 1:2, scenarios = c("D0-E0-F0-R0-M0-cod", "D1-E0-F0-R0-M0-cod"),
+  case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "safe")
+get_results_all() 
+get_results_all(user_scenarios=c("D0-E0-F0-R0-M0-cod", "D1-E0-F0-R0-M0-cod",
+  "D0-E0-F0-R0-M0-T0-cod"), over=TRUE)
+unlink("D1-E0-F0-R0-M0-cod\\1\\om\\Report.sso")
+get_results_all(over=TRUE)
