@@ -76,7 +76,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         temp_scenarios <- id_scenarios(directory=directory)
         scenarios <- user_scenarios[which(user_scenarios %in% temp_scenarios)]
         if(any(user_scenarios %in% temp_scenarios==FALSE)){
-            message(paste(user_scenarios[which(user_scenarios %in% 
+            warning(paste(user_scenarios[which(user_scenarios %in%
                 temp_scenarios == FALSE)], "not in directory\n"))
         }
     }
@@ -208,7 +208,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
         verbose=FALSE, compfile="none", forecast=FALSE, warn=TRUE, readwt=FALSE,
         printstats=FALSE, NoCompOK=TRUE), error=function(e) NA)
       if(is.list(report.om)==FALSE){
-          message(paste("Necessary SS files missing from", scenario, "replicate", rep))
+          warning(paste("Necessary SS files missing from", scenario, "replicate", rep))
           next
       }
         ## Grab the residuals for the indices
