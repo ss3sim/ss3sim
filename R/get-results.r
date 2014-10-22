@@ -106,9 +106,11 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
             get_results_scenario(scenario=scen, directory=directory,
                                  overwrite_files=overwrite_files)
         }
-        scalar.list[[i]] <- read.csv(scalar.file)
-        ts.list[[i]] <- read.csv(ts.file)
+        scalar.list[[i]] <- tryCatch(read.csv(scalar.file), error=function(e) NA)
+        ts.list[[i]] <- tryCatch(read.csv(ts.file), error=function(e) NA)
     }
+    scalar.list <- scalar.list[-is.na(scalar.list)]
+    ts.list <- ts.list[-is.na(ts.list)]
     ## Combine all scenarios together and save into big final files
     scalar.all <- do.call(plyr::rbind.fill, scalar.list)
     scalar.all$ID <- paste(scalar.all$scenario, scalar.all$replicate, sep = "-")
@@ -199,6 +201,8 @@ get_results_scenario <- function(scenario, directory=getwd(),
         stop(paste("Error:No replicates for scenario", scenario))
     ## Loop through replicates and extract results using r4ss::SS_output
     resids.list <- list()
+    ## count replicates that didn't run SS successfully
+    no.rep <- 0
     for(rep in reps.dirs){
         ## message(paste0("Starting", scen, "-", rep))
       report.em <- r4ss::SS_output(paste0(rep,"/em/"), covar=FALSE,
@@ -209,6 +213,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
         printstats=FALSE, NoCompOK=TRUE), error=function(e) NA)
       if(is.list(report.om)==FALSE){
           warning(paste("Necessary SS files missing from", scenario, "replicate", rep))
+          no.rep <- no.rep + 1
           next
       }
         ## Grab the residuals for the indices
@@ -273,8 +278,9 @@ get_results_scenario <- function(scenario, directory=getwd(),
     resids <- do.call(rbind, resids.list)
     write.table(x=resids, file=resids.file, sep=",", row.names=FALSE)
     ## End of loops for extracting results
+    ## outputs number of successful replicates
     message(paste0("Result files created for ",scenario, " with ",
-                 length(reps.dirs), " replicates"))
+                 length(reps.dirs) - no.rep, " replicates")) 
 }
 
 #' Extract time series from a model run.
