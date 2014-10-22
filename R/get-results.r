@@ -68,7 +68,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
   user_scenarios=NULL){
 
     on.exit(setwd(directory))
-     
+
     ## Choose whether to do all scenarios or the vector passed by user
     if(is.null(user_scenarios)) {
         scenarios <- id_scenarios(directory=directory)
@@ -204,7 +204,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
       report.em <- r4ss::SS_output(paste0(rep,"/em/"), covar=FALSE,
         verbose=FALSE,compfile="none", forecast=TRUE, warn=TRUE, readwt=FALSE,
         printstats=FALSE, NoCompOK=TRUE)
-      report.om <- tryCatch(r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE, 
+      report.om <- tryCatch(r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE,
         verbose=FALSE, compfile="none", forecast=FALSE, warn=TRUE, readwt=FALSE,
         printstats=FALSE, NoCompOK=TRUE), error=function(e) NA)
       if(is.list(report.om)==FALSE){
