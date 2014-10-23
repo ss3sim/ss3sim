@@ -55,11 +55,14 @@ expect_warning(
 )
 unlink("D0-E0-F0-R0-M0-cod/1/om/Report.sso")
 expect_warning(get_results_all(over = TRUE))
+
+#parallel:
+get_results_all(parallel=TRUE)
+unlink("D0-E0-F0-R0-M0-cod/1/om/Report.sso")
+get_results_all(over=TRUE, parallel=TRUE)
 unlink(c("D0-E0-F0-R0-M0-cod", "D1-E0-F0-R0-M0-cod", 
 	"D0-E1-F0-R0-M0-cod"), recursive = TRUE)
 unlink(c("ss3sim_scalar.csv", "ss3sim_ts.csv"))
-
-#parallel:
 
 
 ## Test the addition of tail compression:
