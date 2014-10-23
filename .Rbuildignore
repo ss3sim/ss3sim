@@ -18,3 +18,4 @@ NEWS\.md
 ^vignettes/ss3sim-vignette\.blg
 ^tests$
 ^\.travis\.yml$
+^benchmarks$
