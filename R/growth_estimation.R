@@ -14,8 +14,8 @@
 # TODO:
 # document these functions
 
-vbgf_func <- function(L1, L2, k, ages, a3){
-  predLength <- L2 + (L1 - L2) * exp(-k * (ages - a3))
+vbgf_func <- function(L1, L.inf, k, ages, a3){
+  predLength <- L.inf + (L1 - L.inf) * exp(-k * (ages - a3))
   predLength
 }
 
@@ -31,14 +31,15 @@ vbgf_func <- function(L1, L2, k, ages, a3){
 #' sigma is the slope of the CV line where the CV of an age = sigma*age.
 #' @param data_ data.frame, column 1 is ages and column 2 is lengths
 #' @param a3 numeric, the youngest age well sampled in the data.
-get_vbgf_loglik <- function(logL1, logL2, logk, logsigma,logcv.young){
+get_vbgf_loglik <- function(logL1, logL2, logk, logsigma, logcv.young){
   L1 <- exp(logL1)
   L2 <- exp(logL2)
   k <- exp(logk)
-  sigma <- exp(logcv.young) + exp(logsigma)*(data_$age-a3)
-  predLength <- vbgf_func(L1, L2, k, data_[, 1], a3)
+  sigma <-   exp(logcv.young)+ exp(logsigma)*(data_$age-a3)
+  L.inf<-L1+(L2-L1)/(1-exp(-k*(A-a3)))
+  predLength <- vbgf_func(L1, L.inf, k, data_[, 1], a3)
   logLik <- sum(-log(sigma) - ((log(predLength) -
-      log(data_[, 2]))^2)/(2*sigma^2))
+                                  log(data_[, 2]))^2)/(2*sigma^2))
   -logLik
 }
 
@@ -60,7 +61,8 @@ get_vbgf_loglik <- function(logL1, logL2, logk, logsigma, logcv.young){
   L2 <- exp(logL2)
   k <- exp(logk)
   sigma <-   exp(logcv.young)+ exp(logsigma)*(data_$age-a3)
-  predLength <- vbgf_func(L1, L2, k, data_[, 1], a3)
+  L.inf<-L1+(L2-L1)/(1-exp(-k*(A-a3)))
+  predLength <- vbgf_func(L1, L.inf, k, data_[, 1], a3)
   logLik <- sum(-log(sigma) - ((log(predLength) -
       log(data_[, 2]))^2)/(2*sigma^2))
   -logLik
@@ -83,7 +85,8 @@ get_vbgf_loglik <- function(logL1, logL2, logk, logsigma, logcv.young){
     expCoef <- exp(mod@coef)
     cv.young <- expCoef[5]
     cv.old <- expCoef[4]*A
-    out <- list("L1" = expCoef[1], "L2" = expCoef[2],
+    L.inf<-expCoef[1]+(expCoef[2]-expCoef[1])/(1-exp(-expCoef[3]*(A-a3)))
+    out <- list("L1" = expCoef[1], "L2" = L.inf,
       "K" = expCoef[3], "cv.young" = cv.young, "cv.old" = cv.old)
   }
   out
