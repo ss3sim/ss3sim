@@ -66,8 +66,7 @@ get_vbgf_loglik <- function(logL1, logL2, logk, logcv.old, logcv.young){
   sigma <- cv * (data_$mean)
   L.inf<-L1+(L2-L1)/(1-exp(-k*(A-a3)))
   predLength <- vbgf_func(L1, L.inf, k, data_[, 1], a3)
-  logLik <- sum(-log(sigma) - ((log(predLength) -
-      log(data_[, 2]))^2)/(2*sigma^2))
+  logLik <- sum(-log(sigma) - ((predLength - data_[, 2])^2)/(2*sigma^2))
   -logLik
 }
   #function takes data, number of samples, start values, start age
@@ -76,7 +75,7 @@ get_vbgf_loglik <- function(logL1, logL2, logk, logcv.old, logcv.young){
   #Remove fish younger than a3 and older than A
   length.df <- length.data[length.data$age > a3, ]
   length.df <- length.df[length.df$age < A, ]
-  data_ <- length.df[, colnames(length.df) %in% c("length", "age")]
+  data_ <- length.df[, colnames(length.df) %in% c("length", "age", "mean")]
   #Fit using MLE
   mod <- mle2(get_vbgf_loglik,
     start = list(logL1 = log(start.L1), logL2 = log(start.L2), logk = log(start.k), logcv.old = log(start.cv.old), logcv.young=log(start.cv.young)))
