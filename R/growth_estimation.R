@@ -55,12 +55,15 @@ get_vbgf_loglik <- function(logL1, logL2, logk, logsigma, logcv.young){
 #' @param a3 integer, the youngest age well sampled in the data.
 #' @param A integer, the oldest age well sampled in the data.
 sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
-  start.cv.young, a3, A){
-get_vbgf_loglik <- function(logL1, logL2, logk, logsigma, logcv.young){
+  start.cv.young, start.cv.old, a3, A){
+get_vbgf_loglik <- function(logL1, logL2, logk, logcv.old, logcv.young){
   L1 <- exp(logL1)
   L2 <- exp(logL2)
   k <- exp(logk)
-  sigma <-   exp(logcv.young)+ exp(logsigma)*(data_$age-a3)
+  slope <- (exp(logcv.old) - exp(logcv.young)) / (A - a3)
+  cv <- exp(logcv.young) + slope * (data_$age-a3)  # intercept = cv_young
+  cv <- ifelse(cv < 0, 0, cv)
+  sigma <- cv * (data_$mean)
   L.inf<-L1+(L2-L1)/(1-exp(-k*(A-a3)))
   predLength <- vbgf_func(L1, L.inf, k, data_[, 1], a3)
   logLik <- sum(-log(sigma) - ((log(predLength) -
@@ -74,17 +77,16 @@ get_vbgf_loglik <- function(logL1, logL2, logk, logsigma, logcv.young){
   length.df <- length.data[length.data$age > a3, ]
   length.df <- length.df[length.df$age < A, ]
   data_ <- length.df[, colnames(length.df) %in% c("length", "age")]
-  start.sigma<-log(start.cv.young)
   #Fit using MLE
   mod <- mle2(get_vbgf_loglik,
-    start = list(logL1 = log(start.L1), logL2 = log(start.L2), logk = log(start.k), logsigma = start.sigma,logcv.young=log(start.cv.young)))
+    start = list(logL1 = log(start.L1), logL2 = log(start.L2), logk = log(start.k), logcv.old = log(start.cv.old), logcv.young=log(start.cv.young)))
   if(mod@details$convergence == 1){
     out <- list("L1" = 999, "L2" = 999, "K" = 999, "cv.young" = 999, "cv.old" = 999)
   } else {
     #Put estimated coefficients in EM terms
     expCoef <- exp(mod@coef)
     cv.young <- expCoef[5]
-    cv.old <- expCoef[4]*A
+    cv.old <- expCoef[4]
     L.inf<-expCoef[1]+(expCoef[2]-expCoef[1])/(1-exp(-expCoef[3]*(A-a3)))
     out <- list("L1" = expCoef[1], "L2" = L.inf,
       "K" = expCoef[3], "cv.young" = cv.young, "cv.old" = cv.old)

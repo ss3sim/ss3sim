@@ -129,7 +129,8 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
         sd <- mean * true.cv
         temp <- rnorm(as.numeric(ns[age]), mean, sd)
         my.age <- as.numeric(gsub("a", "", colnames(data.old)[3 + age]))
-        my.list[[age]] <- data.frame("age" = my.age, "length" = exp(temp))
+        my.list[[age]] <- data.frame("age" = my.age, "length" = exp(temp),
+                                     "mean" = mean(temp))
       }
       data.new[[r]] <- do.call("rbind", my.list)
     }
@@ -165,7 +166,7 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
     change_e_vbgf <-
       sample_fit_vbgf(length.data = data, start.L1 = start.pars$L1,
         start.L2 = start.pars$L2, start.k = start.pars$K,
-        start.cv.young = start.pars$cv.young, a3 = limitages$a3, A = limitages$A)
+        start.cv.young = start.pars$cv.young, start.cv.old = start.pars$cv.old,  a3 = limitages$a3, A = limitages$A)
     #TODO: do something if the estimation routine fails
     #Get par estimates and append them to par_name par_int and par_phase
     changeinits <- which(par_int == "change_e_vbgf")
