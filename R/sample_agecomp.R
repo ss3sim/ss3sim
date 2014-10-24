@@ -164,10 +164,10 @@ sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
     ## Combine back together into final data frame with the different data
     ## types
     newfile <- infile
-    if(Nfleets>0){
+    if(Nfleets > 0){
         newcomp.final <- do.call(rbind, newcomp.list)
         ## Case with both types
-        if(nrow(conditional_data>0)){
+        if(nrow(conditional_data) > 0){
             newcomp.final <- rbind(newcomp.final, conditional_data)
             newfile$agecomp <- newcomp.final
             newfile$N_agecomp <- nrow(newcomp.final)
@@ -178,7 +178,7 @@ sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
              }
     } else {
         ## Case with only conditional data
-        if(nrow(conditional_data>0)){
+        if(nrow(conditional_data) > 0){
             newcomp.final <- conditional_data
             newfile$agecomp <- newcomp.final
             newfile$N_agecomp <- nrow(newcomp.final)
