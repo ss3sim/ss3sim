@@ -121,16 +121,19 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
     true.cv <- 0.1
     for(r in seq(nrow(data.old))) {
       use <- data.old[r, -(1:3)]
-      means <- log(use[1:(length(use) / 2)])
+      means <- use[1:(length(use) / 2)]
       ns <- use[-c(1:(length(use) / 2))]
       my.list <- list()
       for(age in seq_along(means)) {
         mean <- as.numeric(means[age])
         sd <- mean * true.cv
-        temp <- rnorm(as.numeric(ns[age]), mean, sd)
+          means.log <- log(mean^2/sqrt(sd^2+mean^2))
+          sds.log <- sqrt(log(1 + sd^2/mean^2))
+        temp <- rnorm(as.numeric(ns[age]), means.log, sds.log)
+        temp <- ifelse(temp < 0, abs(temp), temp)
         my.age <- as.numeric(gsub("a", "", colnames(data.old)[3 + age]))
         my.list[[age]] <- data.frame("age" = my.age, "length" = exp(temp),
-                                     "mean" = mean(temp))
+                                     "mean" = mean(exp(temp)))
       }
       data.new[[r]] <- do.call("rbind", my.list)
     }
