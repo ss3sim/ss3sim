@@ -134,8 +134,7 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
       }
       data.new[[r]] <- do.call("rbind", my.list)
     }
-    data.new[[1]]
-
+    
     #Remove unnecessary data columns so reshape2::melt can transform from wide to long
     data <- do.call("rbind", data.new)
 
