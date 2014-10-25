@@ -114,6 +114,10 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
       -c(match(c("Gender", "Part", "AgeErr", "Ignore"),
          colnames(data.all$MeanSize_at_Age_obs)))
       ]
+
+      ####TODO: remove next two lines once sample function is written
+      data.old <- data.old[data.old[, 1] == 1938, ]
+      data.old <- data.old[data.old[, 3] == 1, ]
       if(dim(data.old)[1] < 1) {
         stop("Error in change_e: no length-at-age data in the MeanSize_at_Age_obs")
       }
@@ -124,12 +128,16 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
       use <- data.old[r, -(1:3)]
       means <- use[1:(length(use) / 2)]
       ns <- use[-c(1:(length(use) / 2))]
+
+      ####TODO: remove next line once sample function is written
+      ns <- rep(50, length(ns))
       my.list <- list()
       for(age in seq_along(means)) {
         mean <- as.numeric(means[age])
         sd <- mean * true.cv
           means.log <- log(mean^2/sqrt(sd^2+mean^2))
           sds.log <- sqrt(log(1 + sd^2/mean^2))
+
         temp <- rnorm(as.numeric(ns[age]), means.log, sds.log)
         temp <- ifelse(temp < 0, abs(temp), temp)
         my.age <- as.numeric(gsub("a", "", colnames(data.old)[3 + age]))
@@ -138,9 +146,10 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
       }
       data.new[[r]] <- do.call("rbind", my.list)
     }
-    
+
     #Remove unnecessary data columns so reshape2::melt can transform from wide to long
     data <- do.call("rbind", data.new)
+
 
       # data <- reshape2::melt(data,
       #   id.vars = c("Yr", "Seas", "Fleet"), value.name = "length")
@@ -183,6 +192,11 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
         if(!is.na(x)) {as.numeric(x)
         }else{x}
         })
+
+    ####TODO: remove next three lines once sample function is written
+    data.all$MeanSize_at_Age_obs <- NULL
+    data.all$N_MeanSize_at_Age_obs <- 0
+    r4ss::SS_writedat(data.all, dat_file_in, verbose = FALSE, overwrite = TRUE)
   }
   # Determine how many genders the model has
   gen <- grep("NatM", ss3.ctl, value = TRUE)
