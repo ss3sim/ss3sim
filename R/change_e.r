@@ -118,7 +118,8 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
         stop("Error in change_e: no length-at-age data in the MeanSize_at_Age_obs")
       }
     data.new <- list()
-    true.cv <- 0.1
+    true.cv <- unlist(strsplit(grep("CV_young", ss3.ctl, value = TRUE), " "))
+    true.cv <- as.numeric(true.cv[-(which(true.cv == ""))][3])
     for(r in seq(nrow(data.old))) {
       use <- data.old[r, -(1:3)]
       means <- use[1:(length(use) / 2)]
