@@ -12,10 +12,9 @@
 #'   the fishing mortality level
 #' @importFrom r4ss SS_readdat SS_writedat
 #' @export
-#' @example
-#' 
+#' @examples
 #' d <- system.file("extdata", package = "ss3sim")
-#' omfolder <- file.path(d, "models/cod-om")
+#' omfolder <- paste0(d, "/models/cod-om")
 #'
 #' fmsy.val <- fmsy_profile(om_in = omfolder, 
 #'                          results_out = "c:/ss/fmsy",
