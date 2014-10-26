@@ -34,7 +34,6 @@ profile_fmsy <- function(om_in, results_out, simlength = 100,
   on.exit(expr = setwd(origWD), add = FALSE)
   fVector <- seq(start, end, by_val)
   fEqCatch <- NULL  
-  d <- system.file("extdata", package = "ss3sim")
   omModel <- om_in
   if(!file.exists(omModel)) {
     stop("OM folder does not exist")
