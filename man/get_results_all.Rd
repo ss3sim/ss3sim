@@ -16,7 +16,11 @@ get_results_all(directory = getwd(), overwrite_files = FALSE,
 
   \item{user_scenarios}{A character vector of scenarios
   that should be read in. Default is NULL, which indicates
-  find all scenario folders in \code{directory}}
+  find all scenario folders in \code{directory}.}
+
+  \item{parallel}{Should the function be run on multiple
+  cores? You will need to set up parallel processing as
+  shown in \code{\link{run_ss3sim}}.}
 }
 \value{
 Creates two .csv files in the current working directory:

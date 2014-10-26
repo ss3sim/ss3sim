@@ -29,8 +29,8 @@ Fmsy table as a data frame.
 }
 \description{
 Runs an operating model over a range of fishing mortality
-levels to to determine the profile of F values from which
-Fmsy can be determined.
+levels to determine the profile of F values from which Fmsy
+can be determined.
 }
 \examples{
 \dontrun{

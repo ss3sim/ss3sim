@@ -1,5 +1,7 @@
 # ss3sim 0.8.2.99
 
+* Add Kelli's `profile_fmsy()` function (#173)
+
 * Added benchmark tests for parallel processing options
 
 * Merrill added parallel processing option to get results functions (#171)
