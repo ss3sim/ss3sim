@@ -39,10 +39,7 @@ profile_fmsy <- function(om_in, results_out, simlength = 100,
   newWD <- results_out
   dir.create(newWD, showWarnings = FALSE)
   setwd(newWD)
-  sapply(dir(omModel, full.names = TRUE), function(x)  {
-      file.copy(x, newWD, recursive = TRUE)
-    }
-  )
+  file.copy(dir(omModel, full.names = TRUE), list.files(omModel))
   # remove recdevs from par
   parFile <- readLines("ss3.par")
   recDevLine <- grep("# recdev1", parFile) + 1
