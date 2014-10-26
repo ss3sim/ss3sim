@@ -57,7 +57,9 @@ id_scenarios <- function(directory){
 #'   overwritten, useful for testing purposes or if new replicates are run.
 #' @param user_scenarios A character vector of scenarios that should be read
 #'   in. Default is NULL, which indicates find all scenario folders in
-#'   \code{directory}
+#'   \code{directory}.
+#' @param parallel Should the function be run on multiple cores? You will
+#'   need to set up parallel processing as shown in \code{\link{run_ss3sim}}.
 #' @export
 #' @return
 #' Creates two .csv files in the current working directory:
@@ -323,7 +325,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
     ## End of loops for extracting results
     ## outputs number of successful replicates
     message(paste0("Result files created for ",scenario, " with ",
-                 length(reps.dirs) - no.rep, " replicates")) 
+                 length(reps.dirs) - no.rep, " replicates"))
 }
 
 #' Extract time series from a model run.
