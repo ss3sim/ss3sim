@@ -13,12 +13,15 @@
 #' @importFrom r4ss SS_readdat SS_writedat
 #' @export
 #' @examples
+#' \dontrun{
 #' d <- system.file("extdata", package = "ss3sim")
 #' omfolder <- paste0(d, "/models/cod-om")
 #'
-#' fmsy.val <- fmsy_profile(om_in = omfolder, 
-#'                          results_out = "c:/ss/fmsy",
-#'                          start = 0.1, end = 0.2, by_val = 0.001)
+#'
+#' fmsy.val <- profile_fmsy(om_in = omfolder,
+#'                          results_out = "fmsy",
+#'                          start = 0.1, end = 0.2, by_val = 0.05)
+#' }
 
 profile_fmsy <- function(om_in, results_out, simlength = 100,
                          start = 0.00, end = 1.5, by_val = 0.01) {
