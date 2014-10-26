@@ -1,6 +1,6 @@
 #' Determine Fmsy for a given operating model
 #'
-#' Runs an operating model over a range of fishing mortality levels to to
+#' Runs an operating model over a range of fishing mortality levels to
 #' determine the profile of F values from which Fmsy can be determined.
 #'
 #' @param om_in A directory for an \pkg{ss3sim} operating model.

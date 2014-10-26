@@ -22,6 +22,11 @@ profile_fmsy(om_in, results_out, simlength = 100, start = 0, end = 1.5,
   \item{by_val}{Interval in which you wish to increment the
   fishing mortality level}
 }
+\value{
+Creates a plot and a table with catches and F values (see
+the \code{results_out} folder). Also invisibly returns the
+Fmsy table as a data frame.
+}
 \description{
 Runs an operating model over a range of fishing mortality
 levels to to determine the profile of F values from which
@@ -35,7 +40,7 @@ omfolder <- paste0(d, "/models/cod-om")
 
 fmsy.val <- profile_fmsy(om_in = omfolder,
                          results_out = "fmsy",
-                         start = 0.1, end = 0.2, by_val = 0.001)
+                         start = 0.1, end = 0.2, by_val = 0.05)
 }
 }
 
