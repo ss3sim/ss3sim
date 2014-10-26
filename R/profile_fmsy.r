@@ -1,16 +1,19 @@
 #' Determine Fmsy for a given operating model
 #'
-#' Runs an operating model over a range of fishing mortality levels to
-#' to determine the profile of F values from which Fmsy can be determined.
+#' Runs an operating model over a range of fishing mortality levels to to
+#' determine the profile of F values from which Fmsy can be determined.
 #'
-#' @param om_in A directory for an \code{ss3sim} operating model.
+#' @param om_in A directory for an \pkg{ss3sim} operating model.
 #' @param results_out A directory to place the results
 #' @param simlength Number of total years the \code{om_in} is set to run.
 #' @param start Lower fishing mortality level
 #' @param end Upper fishing mortality level
-#' @param by_val Interval in which you wish to increment 
-#'   the fishing mortality level
+#' @param by_val Interval in which you wish to increment the fishing mortality
+#'   level
 #' @importFrom r4ss SS_readdat SS_writedat
+#' @return Creates a plot and a table with catches and F values (see the
+#'   \code{results_out} folder). Also invisibly returns the Fmsy table as a data
+#'   frame.
 #' @export
 #' @examples
 #' \dontrun{
@@ -29,11 +32,11 @@ profile_fmsy <- function(om_in, results_out, simlength = 100,
             # you want to add or subtract from the trueM
             # or the case file you want to get the value
             # that you add to M in the last year, i.e. "M1"
-            # used for + trueM 
+            # used for + trueM
   origWD <- getwd()
   on.exit(expr = setwd(origWD), add = FALSE)
   fVector <- seq(start, end, by_val)
-  fEqCatch <- NULL  
+  fEqCatch <- NULL
   omModel <- om_in
   if(!file.exists(omModel)) {
     stop("OM folder does not exist")
@@ -49,17 +52,17 @@ profile_fmsy <- function(om_in, results_out, simlength = 100,
   parFile[recDevLine] <- paste(rep(0, simlength), collapse = ", ")
   parFile[sigmaRLine] <- 0.001
   writeLines(parFile, "ss3.par")
-  for(i in seq(fVector)) { 
-    change_f(years = 1:simlength, years_alter = 26:simlength, 
-             fvals = rep(fVector[i], 75), 
-             file_in = "ss3.par", file_out = "ss3.par" ) 
+  for(i in seq(fVector)) {
+    change_f(years = 1:simlength, years_alter = 26:simlength,
+             fvals = rep(fVector[i], 75),
+             file_in = "ss3.par", file_out = "ss3.par" )
     system("ss3 -nohess", show.output.on.console = FALSE)
-	fEqCatch[i] <- SS_readdat("data.ss_new", verbose = FALSE, 
+	fEqCatch[i] <- SS_readdat("data.ss_new", verbose = FALSE,
                             section = 2)$catch$Fishery[simlength]
   }
   pdf("Fmsy.pdf")
       par(mar = c(4, 6, 4, 4))
-      plot(fVector, fEqCatch, las = 1, 
+      plot(fVector, fEqCatch, las = 1,
            xlab = "Fishing mortality rate", ylab = "")
 	  mtext(side = 2, text = "Yield at equilibrium", line = 4)
       maxFVal <- which.max(fEqCatch)
@@ -67,7 +70,7 @@ profile_fmsy <- function(om_in, results_out, simlength = 100,
       abline(v = Fmsy)
       mtext(text = paste(om_in, "\n",
 	                     "Fmsy \n", Fmsy, "\n",
-                         "Catch at Fmsy \n", max(fEqCatch)),
+                       "Catch at Fmsy \n", max(fEqCatch)),
                side = 1, line = -2, las = 1)
   dev.off()
   FmsyTable <- data.frame(fValues = fVector,
@@ -75,4 +78,3 @@ profile_fmsy <- function(om_in, results_out, simlength = 100,
   write.table(FmsyTable, "Fmsy.txt")
   invisible(FmsyTable)
 }
-
