@@ -22,10 +22,12 @@
 #'   \code{\link{sample_calcomp}}, for conditional age-at-length data.
 #' @param wtatage_params A named list containing arguments for
 #'   \code{\link{sample_wtatage}}, for empirical weight-at-age data.
+#' @param mlacomp_params A named list containing arguments for
+#'   \code{\link{sample_mlacomp}}, for mean length-at-age data.
 #' @param retro_params A named list containing arguments for
 #'   \code{\link{change_retro}}.
-#' @param estim_params A named list containing arguments for \code{\link{change_e}}
-#'  .
+#' @param estim_params A named list containing arguments for \code{\link{change_e}}.
+#'
 #' @param tc_params A named list containing arguments for
 #' \code{\link{change_tail_compression}}.
 #' @param lc_params A named list containing arguments for
@@ -167,7 +169,8 @@
 #' }
 
 ss3sim_base <- function(iterations, scenarios, f_params,
-  index_params, lcomp_params, agecomp_params, calcomp_params=NULL, wtatage_params=NULL,
+  index_params, lcomp_params, agecomp_params, calcomp_params=NULL,
+  wtatage_params=NULL, mlacomp_params=NULL,
   estim_params, tv_params, om_dir, em_dir,
   retro_params = NULL, tc_params = NULL, bin_params = NULL, lc_params = NULL,
   user_recdevs = NULL, bias_adjust = FALSE,
@@ -279,7 +282,7 @@ deviations can lead to biased model results.")
       extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
                             data_out = pastef(sc, i, "em", "ss3.dat"))
 
-                                        # Survey biomass index
+      ## Survey biomass index
       SS.dat = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
       index_params <- add_nulls(index_params, c("fleets", "years", "sds_obs"))
@@ -310,50 +313,11 @@ deviations can lead to biased model results.")
                     file_in        = pastef(sc, i, "em", "ss3.dat"),
                     file_out       = pastef(sc, i, "em", "ss3.dat")))
       }
-
-      # Add error in the length comp data
-      if(!is.null(lcomp_params)){
-          SS.dat = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
-          verbose = FALSE)
-          lcomp_params <- add_nulls(lcomp_params,
-                     c("fleets", "Nsamp", "years", "cpar"))
-          with(lcomp_params,
-               sample_lcomp(infile           = SS.dat,
-                            outfile          = pastef(sc, i, "em", "ss3.dat"),
-                            fleets           = fleets,
-                            Nsamp            = Nsamp,
-                            years            = years,
-                            cpar             = cpar))
-      }
-      # Add error in the age comp data
-      if(!is.null(agecomp_params)){
-          SS.dat2 = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
-          verbose = FALSE)
-          agecomp_params <- add_nulls(agecomp_params,
-                       c("fleets", "Nsamp", "years", "cpar"))
-          with(agecomp_params,
-               sample_agecomp(infile         = SS.dat2,
-                              outfile        = pastef(sc, i, "em", "ss3.dat"),
-                              fleets         = fleets,
-                              Nsamp          = Nsamp,
-                              years          = years,
-                              cpar           = cpar))
-      }
-      # Add error in the conditional age at length comp data
-      if(!is.null(calcomp_params)){
-          SS.dat3 = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
-          verbose = FALSE)
-          calcomp_params <- add_nulls(calcomp_params,
-                    c("fleets", "Nsamp", "years", "cv"))
-        with(calcomp_params,
-             sample_calcomp(infile           = SS.dat3,
-                            outfile          = pastef(sc, i, "em", "ss3.dat"),
-                            fleets           = fleets,
-                            Nsamp            = Nsamp,
-                            years            = years,
-                            cv               = cv))
-      }
-      # Add error in the empirical weight-at-age comp data
+      # Add error in the empirical weight-at-age comp data. Note that if
+      # arguments are passed to this fucntion it's functionality is turned
+      # on by setting the maturity option to 5. If it's off SS will just
+      # ignore the wtatage.dat file so no need to turn it "off" like the
+      # other data.
       if(!is.null(wtatage_params)){
           wtatage_params <-
               add_nulls(wtatage_params, c("fleets", "Nsamp", "years", "cv"))
@@ -374,6 +338,67 @@ deviations can lead to biased model results.")
                                   write_file       = TRUE))
           }
       }
+
+      # Add error in the length comp data
+      if(!is.null(lcomp_params)){
+          SS.dat = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
+          verbose = FALSE)
+          lcomp_params <- add_nulls(lcomp_params,
+                     c("fleets", "Nsamp", "years", "cpar"))
+          with(lcomp_params,
+               sample_lcomp(infile           = SS.dat,
+                            outfile          = pastef(sc, i, "em", "ss3.dat"),
+                            fleets           = fleets,
+                            Nsamp            = Nsamp,
+                            years            = years,
+                            cpar             = cpar))
+      }
+
+      ## Add error in the mean length-at-age comp data. This sampling
+      ## function needs full age data so needs to be done before that
+      ## sampling function is called. Also, if this function isn't called
+      ## we need to delete that data, so I'm doing that based on whether it
+      ## is NULL, so it always needs to be called.
+      if(is.null(mlacomp_params)) mlacomp_params <- list()
+      mlacomp_params <- add_nulls(mlacomp_params, c("fleets", "years"))
+      with(mlacomp_params,
+           sample_mlacomp(datfile        = pastef(sc, i, "em", "ss3.dat"),
+                          outfile        = pastef(sc, i, "em", "ss3.dat"),
+                          ctlfile        = pastef(sc, i, "om", "control.ss_new"),
+                          fleets         = fleets,
+                          years          = years))
+
+
+      # Add error in the conditional age at length comp data
+      if(!is.null(calcomp_params)){
+          SS.dat3 = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
+          verbose = FALSE)
+          calcomp_params <- add_nulls(calcomp_params,
+                    c("fleets", "Nsamp", "years", "cv"))
+        with(calcomp_params,
+             sample_calcomp(infile           = SS.dat3,
+                            outfile          = pastef(sc, i, "em", "ss3.dat"),
+                            fleets           = fleets,
+                            Nsamp            = Nsamp,
+                            years            = years,
+                            cv               = cv))
+      }
+      ## Add error in the age comp data. Need to do this last since other
+      ## sampling functions rely on the age data. Also, if user doesn't
+      ## call this function we need to delete the data
+      if(is.null(agecomp_params)) agecomp_params <- list()
+      SS.dat2 <- SS_readdat(pastef(sc, i, "em", "ss3.dat"),
+                            verbose = FALSE)
+      agecomp_params <- add_nulls(agecomp_params,
+                                  c("fleets", "Nsamp", "years", "cpar"))
+      with(agecomp_params,
+           sample_agecomp(infile         = SS.dat2,
+                          outfile        = pastef(sc, i, "em", "ss3.dat"),
+                          fleets         = fleets,
+                          Nsamp          = Nsamp,
+                          years          = years,
+                          cpar           = cpar))
+
       ## Manipulate EM starter file for a possible retrospective analysis
       if(!is.null(retro_params)) {
       retro_params <- add_nulls(retro_params, "retro_yr")
