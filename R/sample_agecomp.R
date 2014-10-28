@@ -12,6 +12,7 @@
 #' @param agebin_vector Depreciated argument. Does nothing and will be
 #'   removed in a future major version update. Instead, see
 #'   \code{change_bin}.
+#' @template bin-vector
 #' @param keep_conditional A logical if conditional age-at-length data
 #'   should be kept or removed entirely from the \code{.dat} file.
 #'   \code{sample_agecomp} only works on the age composition data
@@ -79,7 +80,7 @@
 #' @export
 sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
                            years, cpar=1, agebin_vector=NULL, write_file=TRUE,
-                           keep_conditional = TRUE){
+                           keep_conditional = TRUE, bin_vector = NULL){
     ## The new agecomp is mostly based on the old one so start with
     ## that
     agecomp <- infile$agecomp

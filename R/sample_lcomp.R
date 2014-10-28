@@ -12,6 +12,7 @@
 #' @param lengthbin_vector Depreciated argument. Does nothing and will be
 #'   removed in a future major version update. Instead, see
 #'   \code{change_bin}.
+#' @template bin-vector
 #' @template casefile-footnote
 #' @template sampling-return
 #' @importFrom r4ss SS_writedat
@@ -65,7 +66,8 @@
 #' @seealso \code{\link{sample_agecomp}}
 
 sample_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
-  years, cpar = 1, write_file = TRUE, lengthbin_vector = NULL){
+  years, cpar = 1, write_file = TRUE, lengthbin_vector = NULL,
+  bin_vector = NULL){
   ## The new lcomp is mostly based on the old one so start with that
   lcomp <- infile$lencomp
   ## Check inputs for errors
