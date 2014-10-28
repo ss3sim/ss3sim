@@ -52,6 +52,12 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1,
     Nfleets <- length(fleets)
     if(class(years) != "list" | length(years) != Nfleets)
         stop("years needs to be a list of same length as fleets")
+    if(is.null(mlacomp)){
+            stop("mean length-at-age compositions do not exist")
+        } else {
+            if(nrow(mlacomp[mlacomp$AgeErr > 0, ]))
+                stop("mean length-at-age compositions do not exist")
+        }
     ## End input checks
 
     ## Resample from the length-at-age data. The general approach here is
