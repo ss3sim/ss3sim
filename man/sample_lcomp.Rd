@@ -4,7 +4,7 @@
 \title{Sample length compositions from expected values}
 \usage{
 sample_lcomp(infile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
-  write_file = TRUE, lengthbin_vector = NULL)
+  write_file = TRUE, lengthbin_vector = NULL, bin_vector = NULL)
 }
 \arguments{
   \item{infile}{An SS data object as read in from
@@ -47,6 +47,14 @@ sample_lcomp(infile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
   \item{lengthbin_vector}{Depreciated argument. Does
   nothing and will be removed in a future major version
   update. Instead, see \code{change_bin}.}
+
+  \item{bin_vector}{A numeric vector giving the desired bin
+  structure. This argument does not affect this sampling
+  function itself. Instead, it is here so it can be passed
+  on to \code{\link{change_bin}} from within
+  \code{\link{ss3sim_base}}. If left as \code{NULL} then
+  the bins will not be altered from what is in the SS3
+  operating model \code{.dat} file.}
 }
 \value{
 A modified \code{.dat} file if \code{write_file=TRUE}. A

@@ -96,8 +96,7 @@ out <- change_bin(f_in, file_out = NULL,
     "mwa" = list(years = list(1:3, 1:3), fleets = 1:2)),
   bin_vector = list(
     "len" = seq(2, 8, 2),
-    "age" = seq(2, 8, 2),
-    "cal" = 10:20),
+    "age" = seq(2, 8, 2)),
   write_file = FALSE)
 print(out$agebin_vector)
 print(tail(out$agecomp))
