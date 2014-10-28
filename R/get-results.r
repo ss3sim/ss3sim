@@ -94,11 +94,11 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
 
     if(parallel){
         parallel_scenario <- NULL
-        ts.list <- scalar.list <- list()
-        foreach(parallel_scenario = scenarios, .verbose = FALSE,
+        # ts.list <- scalar.list <- list()
+        results_all <- foreach(parallel_scenario = scenarios, .verbose = FALSE,
             .export = c("pastef", "get_results_scenario",
             "get_results_scalar", "get_nll_components",
-            "get_results_timeseries", "calculate_runtime")) %dopar% {
+            "get_results_timeseries", "calculate_runtime"), .combine = rbind) %dopar% {
             ## If the files already exist just read them in, otherwise get results
                 scalar.file <- paste0(parallel_scenario,"/results_scalar_",parallel_scenario,".csv")
                 ts.file <- paste0(parallel_scenario,"/results_ts_",parallel_scenario,".csv")
@@ -115,15 +115,22 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
                     get_results_scenario(scenario=parallel_scenario, directory=directory,
                                          overwrite_files=overwrite_files)
                 }
-                scalar.list[[parallel_scenario]] <- as.list(tryCatch(read.csv(scalar.file), error=function(e) NA))
-                ts.list[[parallel_scenario]] <- as.list(tryCatch(read.csv(ts.file), error=function(e) NA))
         }
-        scalar.list <- scalar.list[-is.na(scalar.list)]
-        ts.list <- ts.list[-is.na(ts.list)]
+        ts.list <- scalar.list <- list()
+        flag.na <- rep(0, length(scenarios))
+        for(i in 1:length(scenarios)){
+            scalar.file <- paste0(scenarios[i],"/results_scalar_",scenarios[i],".csv")
+            ts.file <- paste0(scenarios[i],"/results_ts_",scenarios[i],".csv")
+            scalar.list[[i]] <- tryCatch(read.csv(scalar.file), error=function(e) NA)
+            ts.list[[i]] <- tryCatch(read.csv(ts.file), error=function(e) NA)
+            if(all(is.na(scalar.list[[i]]))){flag.na[i] <- 1}
+        }
+        scalar.list.out <- scalar.list[-which(flag.na==1)]
+        ts.list.out <- ts.list[-which(flag.na==1)]
         ## Combine all scenarios together and save into big final files
-        scalar.all <- do.call(plyr::rbind.fill, scalar.list)
+        scalar.all <- do.call(plyr::rbind.fill, scalar.list.out)
         scalar.all$ID <- paste(scalar.all$scenario, scalar.all$replicate, sep = "-")
-        ts.all <- do.call(plyr::rbind.fill, ts.list)
+        ts.all <- do.call(plyr::rbind.fill, ts.list.out)
         ts.all$ID <- paste(ts.all$scenario, ts.all$replicate, sep="-")
         write.csv(scalar.all, file="ss3sim_scalar.csv")
         write.csv(ts.all, file="ss3sim_ts.csv")
