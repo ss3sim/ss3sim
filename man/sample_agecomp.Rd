@@ -55,7 +55,7 @@ sample_agecomp(infile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
   works on the age composition data and not on the
   conditional age-at-length data. To sample the conditional
   data set \code{keep_conditional} to \code{TRUE} and use
-  \code{\link{sample_ccomp}}.}
+  \code{\link{sample_calcomp}}.}
 
   \item{bin_vector}{A numeric vector giving the desired bin
   structure. This argument does not affect this sampling
