@@ -243,20 +243,6 @@ deviations can lead to biased model results.")
                  file_in             = pastef(sc, i, "om", "ss3.par"),
                  file_out            = pastef(sc, i, "om", "ss3.par")))
 
-      # Change the comp data structure in the OM to produce the expected
-      # values we want.
-      if(!is.null(bin_params)){
-         bin_params <- add_nulls(bin_params, c("bin_vector", "type", "pop_bin"))
-         with(bin_params,
-           change_bin(
-                 file_in    = pastef(sc, i, "om", "ss3.dat"),
-                 file_out   = pastef(sc, i, "om", "ss3.dat"),
-                 bin_vector = bin_vector,
-                 type       = type,
-                 pop_bin    = pop_bin,
-                 write_file = TRUE))
-      }
-
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
 
@@ -275,6 +261,26 @@ deviations can lead to biased model results.")
                     ctl_file_out        = "om.ctl"))
 
         setwd(wd)
+      }
+
+      # Change the data structure in the OM to produce the expected
+      # values we want. This sets up the 'dummy' bins before we run
+      # the OM one last time. Then we'll sample from the expected values
+      # with error.
+      sample_args <- list(lcomp_params, agecomp_params, calcomp_params,
+        mlacomp_params, mwa_params)
+      types <- c("len", "age", "cal", "mla", "mwa")
+      sample_args <- setNames(sample_args, types)
+      sample_args_logical <- vapply(sample_args, is.null, logical(1L))
+      if (any(sample_args_logical)) {
+        change_bin(
+          file_in    = pastef(sc, i, "om", "ss3.dat"),
+          file_out   = pastef(sc, i, "om", "ss3.dat"),
+          bin_vector = setNames(lapply(sample_args, "[[", "bin_vector"), types),
+          type       = types[sample_args_logical],
+          fleet_dat  = sample_args,
+          pop_bin    = pop_bin,
+          write_file = TRUE)
       }
 
       # Run the operating model and copy the dat file over
