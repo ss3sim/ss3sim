@@ -379,7 +379,7 @@ deviations can lead to biased model results.")
              sample_calcomp(datfile          = pastef(sc, i, "em", "ss3.dat"),
                             outfile          = pastef(sc, i, "em", "ss3.dat"),
                             fleets           = fleets,
-                            years            = years
+                            years            = years,
                             write_file       = TRUE))
       }
       ## Add error in the age comp data. Need to do this last since other
