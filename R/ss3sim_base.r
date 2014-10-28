@@ -369,19 +369,18 @@ deviations can lead to biased model results.")
                           years          = years))
 
 
-      # Add error in the conditional age at length comp data
+      ## Add error in the conditional age at length comp data. Delete data
+      ## if not called, since could be written there.
+      if(is.null(calcomp_params)) calcomp_params <- list()
       if(!is.null(calcomp_params)){
-          SS.dat3 = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
-          verbose = FALSE)
           calcomp_params <- add_nulls(calcomp_params,
-                    c("fleets", "Nsamp", "years", "cv"))
+                                      c("fleets", "years"))
         with(calcomp_params,
-             sample_calcomp(infile           = SS.dat3,
+             sample_calcomp(datfile          = pastef(sc, i, "em", "ss3.dat"),
                             outfile          = pastef(sc, i, "em", "ss3.dat"),
                             fleets           = fleets,
-                            Nsamp            = Nsamp,
-                            years            = years,
-                            cv               = cv))
+                            years            = years
+                            write_file       = TRUE))
       }
       ## Add error in the age comp data. Need to do this last since other
       ## sampling functions rely on the age data. Also, if user doesn't

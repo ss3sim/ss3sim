@@ -1,133 +1,142 @@
-#' Sample conditional age-at-length compositions from expected values
+#' Sample conditional age-at-length (CAL) data and write to file for use by
+#' the EM.
 #'
-#' Take a \code{data.SS_new} file containing expected values and sample to
-#' create observed length-at-age compositions which are then written to
-#' file for use by the estimation model.
-#'
+#' @details Take a \code{data.SS_new} file containing expected values and
+#' sample from true lengths, using length comp sample sizes, to get
+#' realistic sample sizes for age bins given a length. If no fish are
+#' sampled then that row is discarded. A value of NULL for fleets indicates
+#' to delete the data so the EM
 #' @author Cole Monnahan
 #'
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
-#' @param agebin_vector Depreciated argument. Does nothing and will be
-#'   removed in a future major version update. Instead, see
-#'   \code{change_bin}.
-#' @param cv A vector of coefficient of variation to use for each fleet.
-#'
+#' @param datfile A path to the data file, outputed from an OM, containing
+#' the expected conditional age-at-length, age comps and length comps. This
+#' file is read in and then used to determine how many fish of each age bin
+#' are to be sampled.
 #' @template sampling-return
 #' @template casefile-footnote
 #' @seealso \code{\link{sample_lcomp}, \link{sample_agecomp}}
 #' @export
 
-
-sample_calcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
-                           years, cv, write_file=TRUE){
-    ## Check inputs for errors
-
+sample_calcomp <- function(datfile, outfile, fleets = c(1,2),
+                           write_file=TRUE){
     ## The samples are taken from the expected values, where the
     ## age-at-length data is in the age matrix but has a -1 for Lbin_lo and
     ## Lbin_hi, so subset those out, but don't delete the age values since
     ## those are already sampled from, or might be sampled later so need to
     ## leave them there.
-    agecomp <- infile$agecomp
-    agecomp.age <- agecomp[agecomp$Lbin_lo== -1,]
-    agecomp.cal <- agecomp[agecomp$Lbin_lo != -1,]
+    datfile <- r4ss::SS_readdat(datfile, verbose=FALSE)
+    agecomp.age <- datfile$agecomp[datfile$agecomp$Lbin_lo== -1,]
+    agecomp.cal <- datfile$agecomp[datfile$agecomp$Lbin_lo != -1,]
+    lencomp <- datfile$lencomp
+    lbin_vector <- datfile$lbin_vector
+    newfile <- datfile
+    ## A value of NULL for fleets indicates not to sample and strip out the
+    ## data from the file.
+    if(is.null(fleets)){
+        newfile$agecomp <- agecomp.age
+        newfile$N_agecomp <- nrow(agecomp.age)
+        r4ss::SS_writedat(datlist = newfile, outfile = outfile,
+                          overwrite = TRUE, verbose=FALSE)
+        return(NULL)
+    }
+    ## If not, do argument checks
+    if(nrow(agecomp.cal)==0) stop("No conditional age-at-length data found")
     if(substr_r(outfile,4) != ".dat" & write_file)
         stop(paste0("outfile ", outfile, " needs to end in .dat"))
-    Nfleets <- ifelse(is.null(fleets), 0, length(fleets))
-    if(Nfleets >0 & FALSE %in% (fleets %in% unique(agecomp.cal$FltSvy)))
-        stop(paste0("The specified fleet number does not match input file"))
-    if(Nfleets!= 0 & (class(Nsamp) != "list" | length(Nsamp) != Nfleets))
-        stop("Nsamp needs to be a list of same length as fleets")
-    if(Nfleets!= 0 & (class(years) != "list" | length(years) != Nfleets))
+    Nfleets <- length(fleets)
+    if(any(!fleets %in% unique(agecomp.cal$FltSvy)))
+        stop(paste0("The specified fleet number: ",fleets, " does not match input file"))
+    if(class(years) != "list" | length(years) != Nfleets)
         stop("years needs to be a list of same length as fleets")
-    ## If no fleets are specified then skip these
-    if (Nfleets>0){
-        for(i in 1:Nfleets){
-            if(length(Nsamp[[i]])>1 & length(Nsamp[[i]]) != length(years[[i]]))
-                stop(paste0("Length of Nsamp does not match length of years for",
-                            "fleet ",fleets[i]))
-        }
-    }
     ## End input checks
 
-    ## Resample from the length-at-age data
-    ## The general approach here is to loop through each row to keep
-    ## (depends on years input) and resample depending on Nsamp and
-    ## cvar. All these rows are then combined back together to form
-    ## the final ccomp.
+    ## The general approach here is to loop through each fl/yr combination
+    ## (for which there will be a row for each length bin) and then
+    ## recombine them later.
     newcomp.list <- list() # temp storage for the new rows
     k <- 1                 # each k is a new row of data, to be rbind'ed later
-    ## Loop through each fleet, if fleets=NULL then skip sampling and
-    ## return nothing (subtract out this type from the data file)
-    if (Nfleets>0){
+    ## Loop through each fleet
         for(i in 1:length(fleets)){
             fl <- fleets[i]
-            agecomp.fl <- agecomp.cal[agecomp.cal$FltSvy == fl &
+            agecomp.age.fl <- agecomp.age[agecomp.age$FltSvy == fl &
+                                      agecomp.age$Yr %in% years[[i]], ]
+            agecomp.cal.fl <- agecomp.cal[agecomp.cal$FltSvy == fl &
                                       agecomp.cal$Yr %in% years[[i]], ]
-            if(length(years[[i]]) != length(unique((agecomp.fl$Yr))))
+            if(length(years[[i]]) != length(unique((agecomp.age.fl$Yr))))
                 stop(paste("A year specified in years was not found in the",
                            "input file for fleet", fl))
-            agecomp.fl$Nsamp <- Nsamp[[i]]
             ## Only loop through the subset of years for this fleet
             for(yr in years[[i]]) {
-                newcomp <- agecomp.fl[agecomp.fl$Yr==yr, ]
-                ## Now loop through each row and sample for each age bin
-                ## (column)
-                for(j in 1:NROW(newcomp)){
-                    newcomp.lbin <- newcomp[j,]
-                    ## Replace expected values with sampled values
-                    ## First 1-9 cols aren't data so skip them
-                    means <- as.numeric(newcomp.lbin[-(1:9)])
-                    sds <- means*cv[i]
-                    ## These are the moments on the natural scale, so
-                    ## convert to log scale and generate data
-                    means.log <- log(means^2/sqrt(sds^2+means^2))
-                    sds.log <- sqrt(log(1 + sds^2/means^2))
-                    samples.list <- lapply(1:length(means), function(kk)
-                        exp(rnorm(n=newcomp.lbin$Nsamp, mean=means.log[kk], sd=sds.log[kk])))
-                    ## Take means and combine into vector to put back
-                    ## into the data frame
-                    newcomp.lbin[-(1:9)] <- do.call(c, lapply(samples.list, mean))
-                    newcomp.list[[k]] <- newcomp.lbin
-                    k <- k+1
+                newcomp <- agecomp.cal.fl[agecomp.cal.fl$Yr==yr, ]
+                if(nrow(newcomp) != length(lbin_vector))
+                    stop(paste("number of length bins does not match calcomp data: fleet", fl, ", year", yr))
+                ## Get the sample sizes of the length and age comps.
+                Nsamp.len <- lencomp$Nsamp[lencomp$Yr==yr & lencomp$FltSvy==fl]
+                Nsamp.age <- agecomp.age$Nsamp[agecomp.age$Yr==yr & agecomp.age$FltSvy==fl]
+                ## Probability distribution for length comps
+                prob.len <- as.numeric(lencomp[lencomp$Yr==yr & lencomp$FltSvy==fl, -(1:6)])
+                ## Sample to get # fish in each length bin
+                N1 <- rmultinom(n=1, size=Nsamp.len, prob=prob.len)
+                ## Convert that to proportions
+                p1 <- N1/sum(N1)
+                N2 <- rmultinom(n=1, size=Nsamp.age, prob=p1)
+                ## This is where the actual sampling takes place
+                ## Loop through each length bin and sample # fish in
+                ## each age bin, given expected conditional age-at-length
+                newcomp$Nsamp <- N2
+                for(ll in 1:nrow(newcomp)){
+                    N.temp <- newcomp$Nsamp[ll]
+                    if(N.temp>0){
+                        cal.temp <- rmultinom(n=1, size=N2[ll], prob=as.numeric(newcomp[ll,-(1:9)]))
+                    } else {
+                        cal.temp <- -1
+                    }
+                    ## Write the samples back, leaving the other columns
+                    newcomp[ll,-(1:9)] <- cal.temp
                 }
+                ## Drpo the -1 value which were temp placeholders
+                newcomp <- newcomp[newcomp$Nsamp>0,]
+                newcomp.list[[k]] <- newcomp
             }
         }
-    }
+    ## End of loops doing the sampling.
 
     ## Combine back together into final data frame with the different data
     ## types
-    newfile <- infile
-    if(Nfleets>0){
-        newcomp.final <- do.call(rbind, newcomp.list)
-        ## Case with both types
-        if(nrow(agecomp.age)>0){
-            newcomp.final <- rbind(newcomp.final, agecomp.age)
+    newcomp.final <- do.call(rbind, newcomp.list)
+    ## Cases for which data types are available. Need to be very careful
+    ## here, as need to keep what's there.
+### TODO: check this logic and simplify it. Probably don't need to check
+### for agecomp.cal existing
+    if(nrow(agecomp.age)>0){
+        if(nrow(agecomp.cal)>0){
+            ## age and cal
+            newcomp.final <- rbind(agecomp.age, newcomp.final)
             newfile$agecomp <- newcomp.final
             newfile$N_agecomp <- nrow(newcomp.final)
-
-        } else { ## case with only conditional data
-            newfile$agecomp <- newcomp.final
-            newfile$N_agecomp <- nrow(newcomp.final)
-             }
-    } else {
-        ## Case with only age data
-        if(nrow(agecomp.age)>0){
-            newcomp.final <- agecomp.age
-            newfile$agecomp <- newcomp.final
-            newfile$N_agecomp <- nrow(newcomp.final)
-
         } else {
-            ## case with no data of either type
-            newcomp.final <- data.frame("#")
+            ## age but not cal
             newfile$agecomp <- newcomp.final
+            newfile$N_agecomp <- nrow(newcomp.final)
+        }
+    } else {
+        ## only cal
+        if(nrow(agecomp.cal)>0){
+            newfile$agecomp <- newcomp.final
+            newfile$N_agecomp <- nrow(newcomp.final)
+        } else {
+            ## no age nor cal data
+            newfile$agecomp <- NULL
             newfile$N_agecomp <- 0
         }
     }
-
-    ## Write the modified file
+        ## Write the modified file
     if(write_file)
         r4ss::SS_writedat(datlist = newfile, outfile = outfile,
                           overwrite = TRUE, verbose=FALSE)
     return(invisible(newcomp.final))
 }
+
+
