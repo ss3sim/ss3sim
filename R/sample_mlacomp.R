@@ -62,7 +62,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1,
 
     ## Resample from the length-at-age data. The general approach here is
     ## to loop through each row and sample based on the true age
-    ## distirbution. Note, true age distribution is known, as is but there
+    ## distribution. Note, true age distribution is known, as is but there
     ## is uncertainty in the age->length relationship. This uncertainty
     ## defines the distribution from which we sample. It is also based on
     ## the # of age samples taken, to mimic reality better.
@@ -106,7 +106,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1,
             ## replace with filler values
 ### TODO: Fix the placeholder values for missing age bins
             mlacomp.new.means[is.nan(mlacomp.new.means)] <- -1
-            ## mla data needs the sample sizes, so concate those on
+            ## mla data needs the sample sizes, so concatenate those on
             mlacomp.new[-(1:7)] <- c(mlacomp.new.means, age.samples)
             mlacomp.new.list[[k]] <- mlacomp.new
             k <- k+1
