@@ -72,8 +72,7 @@
 #'     "mwa" = list(years = list(1:3, 1:3), fleets = 1:2)),
 #'   bin_vector = list(
 #'     "len" = seq(2, 8, 2),
-#'     "age" = seq(2, 8, 2),
-#'     "cal" = 10:20),
+#'     "age" = seq(2, 8, 2)),
 #'   write_file = FALSE)
 #' print(out$agebin_vector)
 #' print(tail(out$agecomp))
@@ -219,18 +218,6 @@ change_bin <- function(file_in, file_out,
 
   invisible(datfile)
 }
-
-# how the parameter lists will exist within ss3sim_base()
-# lcomp_params <- list(fleets = c(1, 2), Nsamp = list(100, 50),
-#   years = list(1:5, 1:3), cpar = 1)
-# acomp_params <- NULL
-# ccomp_params <- NULL
-# mla_params <- list(fleets = 1, years = list(1:6))
-# mwa_params <- NULL
-# waa_params <- NULL
-  #dat <- list("lcomp" = lcomp_params, "acomp" = acomp_params,
-    #"ccomp" = ccomp_params, "mla" = mla_params, "mwa" = mwa_params,
-    #"waa" = waa_params)
 
 make_fleet_dat <- function(fleet_dat) {
   # remove any that were passed as NULL:
