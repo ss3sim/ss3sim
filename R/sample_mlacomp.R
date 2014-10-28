@@ -21,6 +21,7 @@
 #' @template casefile-footnote
 #' @seealso \code{\link{sample_lcomp}, \link{sample_agecomp}}
 #' @export
+#' @importFrom r4ss SS_readdat SS_writedat SS_parlines
 
 sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1,
                            years, write_file=TRUE){
@@ -30,12 +31,12 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1,
     ##
 
     ## Read in datfile, need this for true age distributions and Nsamp
-    datfile <- r4ss::SS_readdat(file=datfile, verbose=FALSE)
+    datfile <- SS_readdat(file=datfile, verbose=FALSE)
     ## If fleets==NULL, quit here and delete the data so the EM doesn't use it.
     if(is.null(fleets)){
         datfile$MeanSize_at_Age_obs <- NULL
         datfile$N_MeanSize_at_Age_obs <- 0
-        r4ss::SS_writedat(datlist=datfile, outfile=outfile, over=TRUE,
+        SS_writedat(datlist=datfile, outfile=outfile, over=TRUE,
                           verbose=FALSE)
         return(NULL)
     }
@@ -44,7 +45,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1,
     agebin_vector <- datfile$agebin_vector
 
     ## Read in the control file
-    ctl <- r4ss::SS_parlines(ctlfile)
+    ctl <- SS_parlines(ctlfile)
     ## Check inputs for errors
     if(substr_r(outfile,4) != ".dat" & write_file)
         stop(paste0("outfile ", outfile, " needs to end in .dat"))
@@ -111,7 +112,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1,
     datfile$MeanSize_at_Age_obs <- mlacomp.new
     datfile$N_MeanSize_at_Age_obs <- nrow(mlacomp.new)
     ## Write the modified file
-    if(write_file) r4ss::SS_writedat(datlist=datfile, outfile=outfile,
+    if(write_file) SS_writedat(datlist=datfile, outfile=outfile,
                                      over=TRUE, verbose=TRUE)
     return(invisible(mlacomp.new))
 }
