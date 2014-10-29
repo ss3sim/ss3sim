@@ -69,7 +69,7 @@ years; potentially adding many rows of data. Currently,
 \code{.dat} files with multiple genders cannot be
 manipulated with \code{change_bin}. Use
 \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}},
-and \code{\link{sample_ccomp}} to reduce the data.
+and \code{\link{sample_calcomp}} to reduce the data.
 }
 \details{
 Within the \code{.dat} file, the conditional age-at-length
