@@ -272,7 +272,7 @@ deviations can lead to biased model results.")
       types <- c("len", "age", "cal", "mla", "mwa")
       sample_args <- setNames(sample_args, types)
       sample_args_null <- vapply(sample_args, is.null, logical(1L))
-      if (any(sample_args_null)) {
+      if (any(!sample_args_null)) {
         change_bin(
           file_in    = pastef(sc, i, "om", "ss3.dat"),
           file_out   = pastef(sc, i, "om", "ss3.dat"),
