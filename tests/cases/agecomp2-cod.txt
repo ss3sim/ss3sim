@@ -1,0 +1,5 @@
+Nsamp; list(100, 100)
+fleets; c(1, 2)
+years; list(1938:2012, 1980:2012) 
+bin_vector; seq_len(15)
+cpar; c(1, 1)
