@@ -85,10 +85,6 @@ change_bin <- function(file_in, file_out,
   fleet_dat = NULL,
   write_file = TRUE) {
 
-  # remove NULL bin_vector and type; these may get passed from ss3sim_base()
-  type <- type[!vapply(bin_vector, is.null, logical(1L))]
-  bin_vector <- bin_vector[!vapply(bin_vector, is.null, logical(1L))]
-
   type <- match.arg(type, choices = c("len", "age", "cal", "mla", "mwa"),
     several.ok = TRUE)
   datfile <- SS_readdat(file = file_in, verbose = FALSE)

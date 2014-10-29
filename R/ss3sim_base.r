@@ -273,11 +273,13 @@ deviations can lead to biased model results.")
       sample_args <- setNames(sample_args, types)
       sample_args_null <- vapply(sample_args,
         function(x) is.null(x$bin_vector), logical(1L))
+      bin_vectors <- setNames(lapply(sample_args, "[[", "bin_vector"), types)
+      bin_vectors <- bin_vectors[!vapply(bin_vectors, is.null, logical(1L))]
       if (any(!sample_args_null)) {
         change_bin(
           file_in    = pastef(sc, i, "om", "ss3.dat"),
           file_out   = pastef(sc, i, "om", "ss3.dat"),
-          bin_vector = setNames(lapply(sample_args, "[[", "bin_vector"), types),
+          bin_vector = bin_vectors,
           type       = types[!sample_args_null],
           fleet_dat  = sample_args,
           pop_bin    = NULL,
