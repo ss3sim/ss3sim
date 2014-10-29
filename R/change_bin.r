@@ -11,7 +11,7 @@
 #' potentially adding many rows of data. Currently, \code{.dat} files with
 #' multiple genders cannot be manipulated with \code{change_bin}. Use
 #' \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}, and
-#' \code{\link{sample_ccomp}} to reduce the data.
+#' \code{\link{sample_calcomp}} to reduce the data.
 #'
 #' @param file_in A character value giving the location of an SS \code{.dat}
 #'   file to input.
@@ -85,6 +85,10 @@ change_bin <- function(file_in, file_out,
   fleet_dat = NULL,
   write_file = TRUE) {
 
+  # remove NULL bin_vector and type; these may get passed from ss3sim_base()
+  type <- type[!vapply(bin_vector, is.null, logical(1L))]
+  bin_vector <- bin_vector[!vapply(bin_vector, is.null, logical(1L))]
+
   type <- match.arg(type, choices = c("len", "age", "cal", "mla", "mwa"),
     several.ok = TRUE)
   datfile <- SS_readdat(file = file_in, verbose = FALSE)
@@ -135,6 +139,8 @@ change_bin <- function(file_in, file_out,
       stop("bin_vector for ages in change_bin extends beyond population ages")
     }
   }
+
+  # if bin_vector is NULL for length or age then need to use .dat version
   if (!any(sapply(bin_vector, is.numeric))) stop("bin_vector must be numeric")
 
   # First generate dummy fleet data for all routines:
@@ -222,7 +228,7 @@ change_bin <- function(file_in, file_out,
 make_fleet_dat <- function(fleet_dat) {
   # remove any that were passed as NULL:
   # (ss3sim_base() will pass them like this)
-  dat <- fleet_dat[!vapply(fleet_dat, is.null, FUN.VALUE = logical(1L))]
+  dat <- fleet_dat[!vapply(fleet_dat, is.null, logical(1L))]
   # expand dummy data across all types:
   dummy_dat_list <- lapply(seq_along(dat), function(type) {
     do.call("rbind",
