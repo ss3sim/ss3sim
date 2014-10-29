@@ -19,7 +19,7 @@
 #' @seealso \code{\link{sample_lcomp}, \link{sample_agecomp}}
 #' @export
 
-sample_calcomp <- function(datfile, outfile, fleets = c(1,2),
+sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
                            write_file=TRUE){
     ## The samples are taken from the expected values, where the
     ## age-at-length data is in the age matrix but has a -1 for Lbin_lo and

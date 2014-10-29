@@ -4,7 +4,7 @@
 \title{Sample conditional age-at-length (CAL) data and write to file for use by
 the EM.}
 \usage{
-sample_calcomp(datfile, outfile, fleets = c(1, 2), write_file = TRUE)
+sample_calcomp(datfile, outfile, fleets = c(1, 2), years, write_file = TRUE)
 }
 \arguments{
   \item{datfile}{A path to the data file, outputed from an
@@ -23,6 +23,10 @@ sample_calcomp(datfile, outfile, fleets = c(1, 2), write_file = TRUE)
   of the fleet collected samples, keep the value to
   \code{fleets=NULL}.}
 
+  \item{years}{*A list the same length as \code{fleets}
+  giving the years as numeric vectors. If no fleet
+  collected samples, keep the value to \code{years=NULL}.}
+
   \item{write_file}{A switch for whether to write
   \code{outfile} to disk. Can be turned off to speed up
   testing or exploration of the function. The new data are
@@ -31,10 +35,6 @@ sample_calcomp(datfile, outfile, fleets = c(1, 2), write_file = TRUE)
   \item{infile}{An SS data object as read in from
   \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package.
   Make sure you select option \code{section=2}.}
-
-  \item{years}{*A list the same length as \code{fleets}
-  giving the years as numeric vectors. If no fleet
-  collected samples, keep the value to \code{years=NULL}.}
 
   \item{Nsamp}{*A numeric list of the same length as
   \code{fleets}. Either single values or vectors of the
