@@ -271,15 +271,15 @@ deviations can lead to biased model results.")
         mlacomp_params, mwa_params)
       types <- c("len", "age", "cal", "mla", "mwa")
       sample_args <- setNames(sample_args, types)
-      sample_args_logical <- vapply(sample_args, is.null, logical(1L))
-      if (any(sample_args_logical)) {
+      sample_args_null <- vapply(sample_args, is.null, logical(1L))
+      if (any(sample_args_null)) {
         change_bin(
           file_in    = pastef(sc, i, "om", "ss3.dat"),
           file_out   = pastef(sc, i, "om", "ss3.dat"),
           bin_vector = setNames(lapply(sample_args, "[[", "bin_vector"), types),
-          type       = types[sample_args_logical],
+          type       = types[!sample_args_null],
           fleet_dat  = sample_args,
-          pop_bin    = pop_bin,
+          pop_bin    = NULL,
           write_file = TRUE)
       }
 
