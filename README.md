@@ -42,17 +42,25 @@ You can then load ss3sim with:
 library(ss3sim)
 ```
 
-You can read the help files and access the vignette with:
+You can read the help files with:
 
 ```S
 ?ss3sim
+```
+
+and access the vignette for reproducible examples of ss3sim simulations with:
+
+```S
 vignette("ss3sim-vignette")
 ```
 
-For reproducible examples of ss3sim simulations as well as details on installing
-the correct version of SS3, and adding SS3 to your operating system's path so
-ss3sim can find the software, see the [vignette][vignette] (PDF). Also, see the
-[paper][paper], which describes the package.
+or download a [PDF copy](https://dl.dropboxusercontent.com/u/254940/ss3sim-vignette.pdf).
+
+ss3sim requires a specific version of the SS3 binary/executable. With the permission of Rick Methot, we have hosted those files here: <https://www.dropbox.com/sh/zg0sec6j20sfyyz/AACQiuk787qW882U2euVKoPna>
+
+These files need to be placed in your operating system's path so ss3sim can find the software. See the [vignette][vignette].
+
+In addition to the vignette, we published a [paper][paper] in PLOS ONE, which describes the package.
 
 ## The ss3sim simulation setup
 
