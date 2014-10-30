@@ -54,9 +54,9 @@ size, which are then converted to weight and averaged to
 get mean weight-at-age values. Missing ages and years are
 filled according to a specified function. These matrices
 are then written to file for the EM. By calling this
-function, \code{ss3sim} will turn on the empirical
+function, \pkg{ss3sim} will turn on the empirical
 weight-at-age function (set maturity option to 5)
-automatically. See \link{\code{ss3sim_base}} for more
+automatically. See \code{\link{ss3sim_base}} for more
 details on how that is implemented.
 }
 \section{Which arguments to specifiy in case files}{
