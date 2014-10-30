@@ -23,7 +23,7 @@
 #' @export
 #' @importFrom r4ss SS_readdat SS_writedat SS_parlines
 
-sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1,
+sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
                            years, write_file=TRUE){
     ## A value of NULL for fleets signifies to turn this data off in the
     ## EM. So quit early and in ss3sim_base do NOT turn wtatage on using
@@ -92,7 +92,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1,
             agecomp.temp <- agecomp[agecomp$Yr==yr.temp & agecomp$FltSvy==fl.temp,]
             ## Get the true age distributions
             age.means <- as.numeric(agecomp.temp[-(1:9)])
-            age.Nsamp <- as.numeric(agecomp.temp$Nsamp)
+            age.Nsamp <- as.numeric(Nsamp[[fl]][j])
             ## Draw samples to get # of fish in each age bin
             age.samples <- rmultinom(n=1, size=age.Nsamp, prob=age.means)
             ## apply sampling across the columns (ages) to get
