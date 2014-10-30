@@ -346,20 +346,6 @@ deviations can lead to biased model results.")
                                   write_file       = TRUE))
           }
       }
-      # Add error in the length comp data
-      if(!is.null(lcomp_params)){
-          SS.dat = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
-          verbose = FALSE)
-          lcomp_params <- add_nulls(lcomp_params,
-                     c("fleets", "Nsamp", "years", "cpar"))
-          with(lcomp_params,
-               sample_lcomp(infile           = SS.dat,
-                            outfile          = pastef(sc, i, "em", "ss3.dat"),
-                            fleets           = fleets,
-                            Nsamp            = Nsamp,
-                            years            = years,
-                            cpar             = cpar))
-      }
 
       ## Add error in the mean length-at-age comp data. This sampling
       ## function needs full age data so needs to be done before that
@@ -390,6 +376,22 @@ deviations can lead to biased model results.")
                             years            = years,
                             write_file       = TRUE))
       }
+      # Add error in the length comp data
+      if(!is.null(lcomp_params)){
+          SS.dat = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
+          verbose = FALSE)
+          lcomp_params <- add_nulls(lcomp_params,
+                     c("fleets", "Nsamp", "years", "cpar"))
+          with(lcomp_params,
+               sample_lcomp(infile           = SS.dat,
+                            outfile          = pastef(sc, i, "em", "ss3.dat"),
+                            fleets           = fleets,
+                            Nsamp            = Nsamp,
+                            years            = years,
+                            cpar             = cpar))
+      }
+
+
       ## Add error in the age comp data. Need to do this last since other
       ## sampling functions rely on the age data. Also, if user doesn't
       ## call this function we need to delete the data
