@@ -99,6 +99,7 @@ sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
                 ## Drpo the -1 value which were temp placeholders
                 newcomp <- newcomp[newcomp$Nsamp>0,]
                 newcomp.list[[k]] <- newcomp
+                k <- k+1
             }
         }
     ## End of loops doing the sampling.
