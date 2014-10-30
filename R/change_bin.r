@@ -156,6 +156,7 @@ change_bin <- function(file_in, file_out,
         fleet_dat$len$Nsamp <- lapply(mapply(rep, 1, lapply(fleet_dat$len$years, length)), length)
         fleet_dat$age$Nsamp <- lapply(mapply(rep, 1, lapply(fleet_dat$age$years, length)), length)
       }
+      bin_info <- get_bin_info(dat = fleet_dat)
       if("mla" %in% bin_info$type){
         fleet_dat$age$fleets <- with(bin_info, unique(c(fleet[type == "mla" | type == "age"])))
         fleet_dat$age$years <- lapply(fleet_dat$age$fleets, function(x) {
@@ -163,6 +164,7 @@ change_bin <- function(file_in, file_out,
         })
         fleet_dat$age$Nsamp <- lapply(mapply(rep, 1, lapply(fleet_dat$age$years, length)), length)
       }
+      bin_info <- get_bin_info(dat = fleet_dat)      
       if("mwa" %in% bin_info$type){ 
         fleet_dat$age$fleets <- with(bin_info, unique(c(fleet[type == "mwa" | type == "age"])))
         fleet_dat$age$years <- lapply(fleet_dat$age$fleets, function(x) {
