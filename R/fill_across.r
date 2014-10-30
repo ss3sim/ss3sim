@@ -1,27 +1,25 @@
+#' Fill in matrix across rows of weight-at-age data by interpolation
+#'
 #' Function that fills in matrix across rows of wtatage data by interpolation
 #' Missing Rows are then backfilled
-
-#' @details 
 #'
-#' @author Peter Kuriyama
-#' @author Allan Hicks
-#'
-#' @param mat 
+#' @param mat
 #' @param minYear
 #' @param maxYear
-
-#' @seealso \code{\link{sample_lcomp}, \link{sample_agecomp}}, \code{\link{fill_across}}
+#'
+#' @author Peter Kuriyama and Allan Hicks
+#'
+#' @seealso \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}},
+#'   \code{\link{fill_across}}
 #' @export
 
-
-fill_across <- function(mat, minYear, maxYear)
-{
+fill_across <- function(mat, minYear, maxYear) {
   ##Initial Checks
   mat$yr <- abs(mat$yr)
-  
+
   #input matrix must have value for year 1
   if(length(unique(mat$fleet)) != 1) stop('Too Many Fleets')
-  
+
   #Interpolate Values across Rows
   for(ii in 1:nrow(mat))
   {
@@ -36,7 +34,7 @@ fill_across <- function(mat, minYear, maxYear)
         start <- temp[start.index]
 
         find.end <- jj
-        
+
         #Find the end of the NA string
         while(is.na(temp[find.end]))
         {
@@ -61,7 +59,7 @@ fill_across <- function(mat, minYear, maxYear)
           temp[fill] <- val
           # print(fill)
         }
-      } 
+      }
     }
     mat[ii, ] <- temp
   }
@@ -83,12 +81,12 @@ fill_across <- function(mat, minYear, maxYear)
     curr <- fill.index[ii]
 
     if(curr == 1) next
-    
+
     prev <- fill.index[ii - 1]
 
     if(ii == 2)
     {
-      temp.df[prev:(curr - 1), -1] <- temp.df[curr, -1]  
+      temp.df[prev:(curr - 1), -1] <- temp.df[curr, -1]
     } else {
       temp.df[(prev + 1):(curr -1), -1] <- temp.df[curr, -1]
     }
