@@ -381,14 +381,14 @@ deviations can lead to biased model results.")
       ## sampling function is called. Also, if this function isn't called
       ## we need to delete that data, so I'm doing that based on whether it
       ## is NULL, so it always needs to be called.
-
       if(is.null(mlacomp_params)) mlacomp_params <- list()
-      mlacomp_params <- add_nulls(mlacomp_params, c("fleets", "years"))
+      mlacomp_params <- add_nulls(mlacomp_params, c("fleets", "Nsamp", "years"))
       with(mlacomp_params,
            sample_mlacomp(datfile        = pastef(sc, i, "em", "ss3.dat"),
                           outfile        = pastef(sc, i, "em", "ss3.dat"),
                           ctlfile        = pastef(sc, i, "om", "control.ss_new"),
                           fleets         = fleets,
+                          Nsamp          = Nsamp,
                           years          = years))
 
 
