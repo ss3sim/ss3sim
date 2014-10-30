@@ -271,7 +271,8 @@ deviations can lead to biased model results.")
         mlacomp_params, mwa_params = NULL)
       types <- c("len", "age", "cal", "mla", "mwa")
       sample_args <- setNames(sample_args, types)
-      sample_args_null <- vapply(sample_args, function(x) is.null(x), logical(1L))
+      sample_args_null <- vapply(sample_args, function(x) {
+        is.null(x$years) & is.null(x$fleets)}, logical(1L))
       bin_vectors <- setNames(lapply(sample_args, "[[", "bin_vector"), types)
       bin_vectors <- bin_vectors[!vapply(bin_vectors, is.null, logical(1L))]
       if (any(!sample_args_null)) {
