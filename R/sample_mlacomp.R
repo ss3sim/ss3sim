@@ -57,7 +57,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1,
     if(is.null(mlacomp)){
             stop("mean length-at-age compositions do not exist")
         } else {
-            if(nrow(mlacomp[mlacomp$AgeErr > 0, ]))
+            if(nrow(mlacomp[mlacomp$AgeErr > 0, ]) < 1)
                 stop("mean length-at-age compositions do not exist")
         }
     ## End input checks
