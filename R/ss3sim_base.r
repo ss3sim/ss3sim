@@ -274,12 +274,15 @@ deviations can lead to biased model results.")
       sample_args_null <- vapply(sample_args,
         function(x) is.null(x$bin_vector), logical(1L))
       bin_info <- get_bin_info(dat = sample_args)
-      if("cal" %in% bin_info$type) 
+      if("cal" %in% bin_info$type) {
         sample_args_null[c("len", "age","cal")] <- logical(1L)
-      if("mla" %in% bin_info$type)
+      }
+      if("mla" %in% bin_info$type){
         sample_args_null[c("age", "mla")] <- logical(1L)
-      if("mwa" %in% bin_info$type)
+      }
+      if("mwa" %in% bin_info$type){
         sample_args_null[c("age", "mwa")] <- logical(1L) 
+      }
       bin_vectors <- setNames(lapply(sample_args, "[[", "bin_vector"), types)
       bin_vectors <- bin_vectors[!vapply(bin_vectors, is.null, logical(1L))]
       if (any(!sample_args_null)) {
