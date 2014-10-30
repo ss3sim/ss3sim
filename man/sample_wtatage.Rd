@@ -3,7 +3,7 @@
 \alias{sample_wtatage}
 \title{Sample empirial weight-at-age data and write to file for use by the EM.}
 \usage{
-sample_wtatage(infile, outfile, datfile, ctlfile, fleets = 1, years,
+sample_wtatage(infile, outfile, datfile, ctlfile, years, fill_fnc,
   write_file = TRUE)
 }
 \arguments{
@@ -17,13 +17,28 @@ sample_wtatage(infile, outfile, datfile, ctlfile, fleets = 1, years,
   \item{datfile}{A path to the data file, outputed from an
   OM, containing the true age distributions (population
   bins). This file is read in and then used to determine
-  how many fish of each age bin are to be sampled.}
+  how many fish of each age bin are to be sampled. Commonly
+  \code{data.ss_new}}
 
   \item{ctlfile}{A path to the control file, outputed from
   an OM, containing the OM parameters for growth and
   weight/length relationship. These values are used to
   determine the uncertainty about weight for fish sampled
-  in each age bin.}
+  in each age bin. Commonly \code{control.ss_new}}
+
+  \item{years}{*A list the same length as \code{fleets}
+  giving the years as numeric vectors. If no fleet
+  collected samples, keep the value to \code{years=NULL}.}
+
+  \item{fill_fnc}{A function to fill in missing values
+  (ages and years).  The resulting weight-at-age file will
+  have values for all years and ages.  One function is
+  \code{fill_across}.}
+
+  \item{write_file}{A switch for whether to write
+  \code{outfile} to disk. Can be turned off to speed up
+  testing or exploration of the function. The new data are
+  returned invisibly, as in the examples below.}
 
   \item{fleets}{*A numeric vector giving the fleets to be
   used. This order also pertains to other arguments. A
@@ -31,15 +46,6 @@ sample_wtatage(infile, outfile, datfile, ctlfile, fleets = 1, years,
   (i.e. it turns it off so no samples are written). If none
   of the fleet collected samples, keep the value to
   \code{fleets=NULL}.}
-
-  \item{years}{*A list the same length as \code{fleets}
-  giving the years as numeric vectors. If no fleet
-  collected samples, keep the value to \code{years=NULL}.}
-
-  \item{write_file}{A switch for whether to write
-  \code{outfile} to disk. Can be turned off to speed up
-  testing or exploration of the function. The new data are
-  returned invisibly, as in the examples below.}
 
   \item{Nsamp}{*A numeric list of the same length as
   \code{fleets}. Either single values or vectors of the
@@ -54,6 +60,22 @@ sample_wtatage(infile, outfile, datfile, ctlfile, fleets = 1, years,
   the given \code{Nsamp}, \code{2} indicates twice, etc.
   Values greater than one indicate overdispersion, and less
   underdispersion.}
+
+  \item{infile}{The file to read weight-at-age from.
+  Specifically to get the age-0 weight-at-age. This is
+  typically \code{wtatage.ss_new}.}
+
+  \item{outfile}{The file to write the created
+  weight-at-age matrices to be read in by the estimation
+  model. Commonly \code{wtatage.ss}.}
+
+  \item{years}{A list of vectors for each fleet indicating
+  the years that are sampled for weight-at-age. There must
+  be a corresponding age composition for that year in
+  \code{datfile}.}
+
+  \item{write_file}{Logical to determine if \code{outfile}
+  will be written.}
 }
 \value{
 A modified \code{.dat} file if \code{write_file=TRUE}. A
@@ -70,12 +92,13 @@ and sample from true ages to get realistic proportions for
 the number of fish in each age bin, then use the mean
 size-at-age and CV for growth to generate random samples of
 size, which are then converted to weight and averaged to
-get mean weight-at-age values. These values are then
-written to file for the EM. By calling this function,
-\code{ss3sim} will turn on the empirical weight-at-age
-function (set maturity option to 5) automatically. See
-\code{\link{ss3sim_base}} for more details on how that is
-implemented.
+get mean weight-at-age values. Missing ages and years are
+filled according to a specified function. These matrices
+are then written to file for the EM. By calling this
+function, \code{ss3sim} will turn on the empirical
+weight-at-age function (set maturity option to 5)
+automatically. See \link{\code{ss3sim_base}} for more
+details on how that is implemented.
 }
 \section{Which arguments to specifiy in case files}{
   All function argument descriptions that start with an
@@ -87,8 +110,13 @@ implemented.
 }
 \author{
 Cole Monnahan
+
+Allan Hicks
+
+Peter Kuriyama
 }
 \seealso{
-\code{\link{sample_lcomp}, \link{sample_agecomp}}
+\code{\link{sample_lcomp}, \link{sample_agecomp}},
+\code{\link{fill_across}}
 }
 
