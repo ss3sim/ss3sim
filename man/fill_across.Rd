@@ -6,11 +6,11 @@
 fill_across(mat, minYear, maxYear)
 }
 \arguments{
-  \item{mat}{}
+  \item{mat}{A matrix}
 
-  \item{minYear}{}
+  \item{minYear}{Minimum year}
 
-  \item{maxYear}{}
+  \item{maxYear}{Maximum year}
 }
 \description{
 Function that fills in matrix across rows of wtatage data
