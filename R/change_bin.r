@@ -105,23 +105,25 @@ change_bin <- function(file_in, file_out,
   }
 
   # Check for a vector for every type
-  if (any(c("mla", "mwa") %in% type)) {
-    for(i in grep("m", type)){
-      test <- try(bin_vector[[which(type == "age")]], silent = TRUE)
-      if ("age" %in% type & class(test) != "try-error") {
-          bin_vector[[type[i]]] <- bin_vector[[which(type == "age")]]
-        } else {
-        bin_vector[["age"]] <- bin_vector[[type[i]]] <- datfile$agebin_vector
-      }
+  if("len" %in% type) {
+    test <- try(bin_vector[["len"]], silent = TRUE)
+    if(class(test) == "try-error" | is.null(bin_vector[["len"]])) {
+      bin_vector[["len"]] <- datfile$lbin_vector
     }
   }
-  if ("cal" %in% type) {
-    test <- try(bin_vector[[which(type == "len")]], silent = TRUE)
-    if ("len" %in% type & class(test) != "try-error") {
-        bin_vector[["cal"]] <- bin_vector[[which(type == "len")]]
-      } else {
-      bin_vector[["len"]] <- bin_vector[["cal"]] <- datfile$lbin_vector
+  if("age" %in% type) {
+    test <- try(bin_vector[["age"]], silent = TRUE)
+    if(class(test) == "try-error" | is.null(bin_vector[["age"]])) {
+      bin_vector[["age"]] <- datfile$agebin_vector
     }
+  }  
+  if (any(c("mla", "mwa") %in% type)) {
+    for(i in grep("m", type)){
+      bin_vector[[type[i]]] <- datfile$agebin_vector
+      }
+  }
+  if ("cal" %in% type) {
+        bin_vector[["cal"]] <- datfile$lbin_vector
   }
 
   # bin_vector names in same order as type, if it's not named
@@ -140,6 +142,36 @@ change_bin <- function(file_in, file_out,
 
   # if bin_vector is NULL for length or age then need to use .dat version
   if (!any(sapply(bin_vector, is.numeric))) stop("bin_vector must be numeric")
+  # Augment age and length fleets and years from conditional matrices
+      bin_info <- get_bin_info(dat = fleet_dat)
+      if("cal" %in% bin_info$type) {
+        fleet_dat$age$fleets <- with(bin_info, unique(c(fleet[type %in% c("age", "cal")])))
+        fleet_dat$len$fleets <- with(bin_info, unique(c(fleet[type %in% c("len", "cal")])))
+        fleet_dat$age$years <- lapply(fleet_dat$age$fleets, function(x) {
+          with(bin_info, unique(c(year[fleet == x & type %in% c("age", "cal")])))
+        })
+        fleet_dat$len$years <- lapply(fleet_dat$age$fleets, function(x) {
+          with(bin_info, unique(c(year[fleet == x & type %in% c("len", "cal")])))
+        })
+        fleet_dat$len$Nsamp <- lapply(mapply(rep, 1, lapply(fleet_dat$len$years, length)), length)
+        fleet_dat$age$Nsamp <- lapply(mapply(rep, 1, lapply(fleet_dat$age$years, length)), length)
+      }
+      if("mla" %in% bin_info$type){
+        fleet_dat$age$fleets <- with(bin_info, unique(c(fleet[type == "mla" | type == "age"])))
+        fleet_dat$age$years <- lapply(fleet_dat$age$fleets, function(x) {
+          with(bin_info, unique(c(year[fleet == x & type %in% c("mla", "age")])))
+        })
+        fleet_dat$age$Nsamp <- lapply(mapply(rep, 1, lapply(fleet_dat$age$years, length)), length)
+      }
+      if("mwa" %in% bin_info$type){ 
+        fleet_dat$age$fleets <- with(bin_info, unique(c(fleet[type == "mwa" | type == "age"])))
+        fleet_dat$age$years <- lapply(fleet_dat$age$fleets, function(x) {
+          with(bin_info, unique(c(year[fleet == x & type %in% c("mwa", "age")])))
+        })
+        fleet_dat$age$Nsamp <- lapply(mapply(rep, 1, lapply(fleet_dat$age$years, length)), length)
+      }
+ 
+  ##
 
   # First generate dummy fleet data for all routines:
   dummy <- make_fleet_dat(fleet_dat)
