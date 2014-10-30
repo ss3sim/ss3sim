@@ -10,6 +10,11 @@
 #' @param end Upper fishing mortality level
 #' @param by_val Interval in which you wish to increment the fishing mortality
 #'   level
+#' @param ss_mode SS3 binary option. One of \code{"safe"} for the safe version
+#'   of SS3 or \code{"optimized"} for the optimized version of SS3. The relevant
+#'   binary needs to be in your system's path. See the vignette
+#'   \code{vignette("ss3sim-vignette", package = "ss3sim")} for details and
+#'   links to the binary files. Defaults to safe mode.
 #' @importFrom r4ss SS_readdat SS_writedat
 #' @return Creates a plot and a table with catches and F values (see the
 #'   \code{results_out} folder). Also invisibly returns the Fmsy table as a data
@@ -21,13 +26,12 @@
 #' omfolder <- paste0(d, "/models/cod-om")
 #'
 #'
-#' fmsy.val <- profile_fmsy(om_in = omfolder,
-#'                          results_out = "fmsy",
-#'                          start = 0.1, end = 0.2, by_val = 0.05)
+#' fmsy.val <- profile_fmsy(om_in = omfolder, results_out = "fmsy",
+#'   start = 0.1, end = 0.2, by_val = 0.05)
 #' }
 
 profile_fmsy <- function(om_in, results_out, simlength = 100,
-                         start = 0.00, end = 1.5, by_val = 0.01) {
+  start = 0.00, end = 1.5, by_val = 0.01, ss_mode = c("safe", "optimized")) {
             # overM needs to be the value
             # you want to add or subtract from the trueM
             # or the case file you want to get the value
@@ -35,6 +39,10 @@ profile_fmsy <- function(om_in, results_out, simlength = 100,
             # used for + trueM
   origWD <- getwd()
   on.exit(expr = setwd(origWD), add = FALSE)
+
+  if(ss_mode[1] == "optimized") ss_mode <- "opt"
+  ss_bin <- paste0("ss3_24o_", ss_mode[1])
+
   fVector <- seq(start, end, by_val)
   fEqCatch <- NULL
   omModel <- om_in
@@ -56,7 +64,7 @@ profile_fmsy <- function(om_in, results_out, simlength = 100,
     change_f(years = 1:simlength, years_alter = 26:simlength,
              fvals = rep(fVector[i], 75),
              file_in = "ss3.par", file_out = "ss3.par" )
-    system("ss3 -nohess", show.output.on.console = FALSE)
+    system(paste(ss_bin, "-nohess"), show.output.on.console = FALSE)
 	fEqCatch[i] <- SS_readdat("data.ss_new", verbose = FALSE,
                             section = 2)$catch$Fishery[simlength]
   }

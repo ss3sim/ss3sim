@@ -4,7 +4,7 @@
 \title{Determine Fmsy for a given operating model}
 \usage{
 profile_fmsy(om_in, results_out, simlength = 100, start = 0, end = 1.5,
-  by_val = 0.01)
+  by_val = 0.01, ss_mode = c("safe", "optimized"))
 }
 \arguments{
   \item{om_in}{A directory for an \pkg{ss3sim} operating
@@ -21,6 +21,14 @@ profile_fmsy(om_in, results_out, simlength = 100, start = 0, end = 1.5,
 
   \item{by_val}{Interval in which you wish to increment the
   fishing mortality level}
+
+  \item{ss_mode}{SS3 binary option. One of \code{"safe"}
+  for the safe version of SS3 or \code{"optimized"} for the
+  optimized version of SS3. The relevant binary needs to be
+  in your system's path. See the vignette
+  \code{vignette("ss3sim-vignette", package = "ss3sim")}
+  for details and links to the binary files. Defaults to
+  safe mode.}
 }
 \value{
 Creates a plot and a table with catches and F values (see
@@ -38,9 +46,8 @@ d <- system.file("extdata", package = "ss3sim")
 omfolder <- paste0(d, "/models/cod-om")
 
 
-fmsy.val <- profile_fmsy(om_in = omfolder,
-                         results_out = "fmsy",
-                         start = 0.1, end = 0.2, by_val = 0.05)
+fmsy.val <- profile_fmsy(om_in = omfolder, results_out = "fmsy",
+  start = 0.1, end = 0.2, by_val = 0.05)
 }
 }
 
