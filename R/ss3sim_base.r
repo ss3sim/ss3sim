@@ -273,6 +273,13 @@ deviations can lead to biased model results.")
       sample_args <- setNames(sample_args, types)
       sample_args_null <- vapply(sample_args,
         function(x) is.null(x$bin_vector), logical(1L))
+      bin_info <- get_bin_info(dat = sample_args)
+      if("cal" %in% bin_info$type) 
+        sample_args_null[c("len", "age","cal")] <- logical(1L)
+      if("mla" %in% bin_info$type)
+        sample_args_null[c("age", "mla")] <- logical(1L)
+      if("mwa" %in% bin_info$type)
+        sample_args_null[c("age", "mwa")] <- logical(1L) 
       bin_vectors <- setNames(lapply(sample_args, "[[", "bin_vector"), types)
       bin_vectors <- bin_vectors[!vapply(bin_vectors, is.null, logical(1L))]
       if (any(!sample_args_null)) {
@@ -367,6 +374,7 @@ deviations can lead to biased model results.")
       ## sampling function is called. Also, if this function isn't called
       ## we need to delete that data, so I'm doing that based on whether it
       ## is NULL, so it always needs to be called.
+
       if(is.null(mlacomp_params)) mlacomp_params <- list()
       mlacomp_params <- add_nulls(mlacomp_params, c("fleets", "years"))
       with(mlacomp_params,
