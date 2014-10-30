@@ -279,6 +279,10 @@ deviations can lead to biased model results.")
       }
       if("mla" %in% bin_info$type){
         sample_args_null[c("age", "mla")] <- logical(1L)
+        sample_args$age$fleets <- with(bin_info, unique(c(fleet[type == "mla" | type == "age"])))
+        sample_args$age$years <- lapply(sample_args$age$fleets, function(x) {
+          with(bin_info, unique(c(year[fleet == x & type %in% c("mla", "age")])))
+        })
       }
       if("mwa" %in% bin_info$type){
         sample_args_null[c("age", "mwa")] <- logical(1L) 
