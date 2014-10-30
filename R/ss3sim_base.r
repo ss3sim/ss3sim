@@ -268,7 +268,7 @@ deviations can lead to biased model results.")
       # the OM one last time. Then we'll sample from the expected values
       # with error.
       sample_args <- list(lcomp_params, agecomp_params, calcomp_params,
-        mlacomp_params, mwa_params)
+        mlacomp_params, mwa_params = NULL)
       types <- c("len", "age", "cal", "mla", "mwa")
       sample_args <- setNames(sample_args, types)
       sample_args_null <- vapply(sample_args,
@@ -347,7 +347,6 @@ deviations can lead to biased model results.")
                                   write_file       = TRUE))
           }
       }
-
       # Add error in the length comp data
       if(!is.null(lcomp_params)){
           SS.dat = SS_readdat(pastef(sc, i, "em", "ss3.dat"),

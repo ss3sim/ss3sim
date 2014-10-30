@@ -21,6 +21,7 @@
 #' @template casefile-footnote
 #' @seealso \code{\link{sample_lcomp}, \link{sample_agecomp}}
 #' @export
+#' @importFrom r4ss SS_readdat SS_writedat SS_parlines
 
 sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1,
                            years, write_file=TRUE){
@@ -30,12 +31,12 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1,
     ##
 
     ## Read in datfile, need this for true age distributions and Nsamp
-    datfile <- r4ss::SS_readdat(file=datfile, verbose=FALSE)
+    datfile <- SS_readdat(file=datfile, verbose=FALSE)
     ## If fleets==NULL, quit here and delete the data so the EM doesn't use it.
     if(is.null(fleets)){
         datfile$MeanSize_at_Age_obs <- NULL
         datfile$N_MeanSize_at_Age_obs <- 0
-        r4ss::SS_writedat(datlist=datfile, outfile=outfile, over=TRUE,
+        SS_writedat(datlist=datfile, outfile=outfile, over=TRUE,
                           verbose=FALSE)
         return(NULL)
     }
@@ -44,18 +45,26 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1,
     agebin_vector <- datfile$agebin_vector
 
     ## Read in the control file
-    ctl <- r4ss::SS_parlines(ctlfile)
+    ctl <- SS_parlines(ctlfile)
     ## Check inputs for errors
     if(substr_r(outfile,4) != ".dat" & write_file)
         stop(paste0("outfile ", outfile, " needs to end in .dat"))
     Nfleets <- length(fleets)
-    if(class(years) != "list" | length(years) != Nfleets)
+    if(length(years) != Nfleets)
         stop("years needs to be a list of same length as fleets")
+    if(class(years) != "list" & length(years) > 1 & Nfleets == 1)
+        stop("years needs to be a list unless it only includes one fleet and one year")
+    if(is.null(mlacomp)){
+            stop("mean length-at-age compositions do not exist")
+        } else {
+            if(nrow(mlacomp[mlacomp$AgeErr > 0, ]))
+                stop("mean length-at-age compositions do not exist")
+        }
     ## End input checks
 
     ## Resample from the length-at-age data. The general approach here is
     ## to loop through each row and sample based on the true age
-    ## distirbution. Note, true age distribution is known, as is but there
+    ## distribution. Note, true age distribution is known, as is but there
     ## is uncertainty in the age->length relationship. This uncertainty
     ## defines the distribution from which we sample. It is also based on
     ## the # of age samples taken, to mimic reality better.
@@ -99,7 +108,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1,
             ## replace with filler values
 ### TODO: Fix the placeholder values for missing age bins
             mlacomp.new.means[is.nan(mlacomp.new.means)] <- -1
-            ## mla data needs the sample sizes, so concate those on
+            ## mla data needs the sample sizes, so concatenate those on
             mlacomp.new[-(1:7)] <- c(mlacomp.new.means, age.samples)
             mlacomp.new.list[[k]] <- mlacomp.new
             k <- k+1
@@ -111,7 +120,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1,
     datfile$MeanSize_at_Age_obs <- mlacomp.new
     datfile$N_MeanSize_at_Age_obs <- nrow(mlacomp.new)
     ## Write the modified file
-    if(write_file) r4ss::SS_writedat(datlist=datfile, outfile=outfile,
+    if(write_file) SS_writedat(datlist=datfile, outfile=outfile,
                                      over=TRUE, verbose=TRUE)
     return(invisible(mlacomp.new))
 }
