@@ -231,8 +231,8 @@ make_fleet_dat <- function(fleet_dat) {
       lapply(seq_along(dat[[type]]$fleets), function(fleet) {
         data.frame(
           "Year"   = dat[[type]]$years[[fleet]],
-          "Fleet"  = dat[[type]]$fleets[fleet],
           "Season" = 1,
+          "Fleet"  = dat[[type]]$fleets[fleet],
           "Gender" = 0,
           "Part"   = 0,
           "AgeErr" = 1,
