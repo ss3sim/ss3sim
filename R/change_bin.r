@@ -107,18 +107,20 @@ change_bin <- function(file_in, file_out,
   # Check for a vector for every type
   if (any(c("mla", "mwa") %in% type)) {
     for(i in grep("m", type)){
-      if ("age" %in% type) {
-        bin_vector[[type[i]]] <- bin_vector[[which(type == "age")]]
-      } else {
-        bin_vector[[type[i]]] <- datfile$agebin_vector
+      test <- try(bin_vector[[which(type == "age")]], silent = TRUE)
+      if ("age" %in% type & class(test) != "try-error") {
+          bin_vector[[type[i]]] <- bin_vector[[which(type == "age")]]
+        } else {
+        bin_vector[["age"]] <- bin_vector[[type[i]]] <- datfile$agebin_vector
       }
     }
   }
   if ("cal" %in% type) {
-    if ("len" %in% type) {
-      bin_vector[["cal"]] <- bin_vector[[which(type == "len")]]
-    } else {
-      bin_vector[["cal"]] <- datfile$lbin_vector
+    test <- try(bin_vector[[which(type == "len")]], silent = TRUE)
+    if ("len" %in% type & class(test) != "try-error") {
+        bin_vector[["cal"]] <- bin_vector[[which(type == "len")]]
+      } else {
+      bin_vector[["len"]] <- bin_vector[["cal"]] <- datfile$lbin_vector
     }
   }
 
