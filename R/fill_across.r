@@ -3,9 +3,9 @@
 #' Function that fills in matrix across rows of wtatage data by interpolation
 #' Missing Rows are then backfilled
 #'
-#' @param mat
-#' @param minYear
-#' @param maxYear
+#' @param mat A matrix
+#' @param minYear Minimum year
+#' @param maxYear Maximum year
 #'
 #' @author Peter Kuriyama and Allan Hicks
 #'
