@@ -50,8 +50,10 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1,
     if(substr_r(outfile,4) != ".dat" & write_file)
         stop(paste0("outfile ", outfile, " needs to end in .dat"))
     Nfleets <- length(fleets)
-    if(class(years) != "list" | length(years) != Nfleets)
+    if(length(years) != Nfleets)
         stop("years needs to be a list of same length as fleets")
+    if(class(years) != "list" & length(years) > 1 & Nfleets == 1)
+        stop("years needs to be a list unless it only includes one fleet and one year")
     if(is.null(mlacomp)){
             stop("mean length-at-age compositions do not exist")
         } else {
