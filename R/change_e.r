@@ -106,56 +106,14 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
   ss3.ctl <- readLines(ctl_file_in)
   #Run external estimator for growth if needed
   if(any(grepl("change_e_vbgf", par_int))) {
+    data <- read.csv("vbgf_info.csv", header = TRUE)[, -1]
     data.all <- r4ss::SS_readdat(dat_file_in, verbose = FALSE)
     if(!"MeanSize_at_Age_obs" %in% names(data.all)) {
       stop("Error in change_e while computing external growth estimates: dat file does not contain mean size-at-age data.")
     }
-    data.old <- data.all$MeanSize_at_Age_obs[data.all$MeanSize_at_Age_obs$AgeErr >= 0,
-      -c(match(c("Gender", "Part", "AgeErr", "Ignore"),
-         colnames(data.all$MeanSize_at_Age_obs)))
-      ]
-
-      ####TODO: remove next two lines once sample function is written
-      data.old <- data.old[data.old[, 1] == 1938, ]
-      data.old <- data.old[data.old[, 3] == 1, ]
-      if(dim(data.old)[1] < 1) {
-        stop("Error in change_e: no length-at-age data in the MeanSize_at_Age_obs")
-      }
-    data.new <- list()
     true.cv <- unlist(strsplit(grep("CV_young", ss3.ctl, value = TRUE), " "))
     true.cv <- as.numeric(true.cv[-(which(true.cv == ""))][3])
-    for(r in seq(nrow(data.old))) {
-      use <- data.old[r, -(1:3)]
-      means <- use[1:(length(use) / 2)]
-      ns <- use[-c(1:(length(use) / 2))]
-
-      ####TODO: remove next line once sample function is written
-      ns <- rep(50, length(ns))
-      my.list <- list()
-      for(age in seq_along(means)) {
-        mean <- as.numeric(means[age])
-        sd <- mean * true.cv
-          means.log <- log(mean^2/sqrt(sd^2+mean^2))
-          sds.log <- sqrt(log(1 + sd^2/mean^2))
-
-        temp <- rnorm(as.numeric(ns[age]), means.log, sds.log)
-        temp <- ifelse(temp < 0, abs(temp), temp)
-        my.age <- as.numeric(gsub("a", "", colnames(data.old)[3 + age]))
-        my.list[[age]] <- data.frame("age" = my.age, "length" = exp(temp),
-                                     "mean" = mean(exp(temp)))
-      }
-      data.new[[r]] <- do.call("rbind", my.list)
-    }
-
-    #Remove unnecessary data columns so reshape2::melt can transform from wide to long
-    data <- do.call("rbind", data.new)
-
-
-      # data <- reshape2::melt(data,
-      #   id.vars = c("Yr", "Seas", "Fleet"), value.name = "length")
-      # data$variable <- as.numeric(gsub("a", "", data$variable))
-      # colnames(data)[match("variable", colnames(data))] <- "age"
-    #Get start values
+  #Get start values
     parsmatch <- data.frame("true" = c("L_at_Amin_Fem_GP_1", "L_at_Amax_Fem_GP_1",
                                        "VonBert_K_Fem_GP_1", "CV_young_Fem_GP_1",
                                        "CV_old_Fem_GP_1"),

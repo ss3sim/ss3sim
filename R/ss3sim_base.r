@@ -360,7 +360,8 @@ deviations can lead to biased model results.")
                           ctlfile        = pastef(sc, i, "om", "control.ss_new"),
                           fleets         = fleets,
                           Nsamp          = Nsamp,
-                          years          = years))
+                          years          = years,
+                          mean_outfile   = pastef(sc, i, "em", "vbgf_info.csv")))
 
 
       ## Add error in the conditional age at length comp data. Delete data

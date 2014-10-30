@@ -17,6 +17,10 @@
 #' the OM parameters for growth and weight/length relationship. These
 #' values are used to determine the uncertainty about weight for fish
 #' sampled in each age bin.
+#' @param mean_outfile A path to write length and age data for external
+#' estimation of parametric growth. If NULL no file will be written. 
+#' This file is used by \code{change_e} to externally estimate growth
+#' parameters.
 #' @template sampling-return
 #' @template casefile-footnote
 #' @seealso \code{\link{sample_lcomp}, \link{sample_agecomp}}
@@ -24,7 +28,7 @@
 #' @importFrom r4ss SS_readdat SS_writedat SS_parlines
 
 sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
-                           years, write_file=TRUE){
+                           years, write_file=TRUE, mean_outfile = NULL){
     ## A value of NULL for fleets signifies to turn this data off in the
     ## EM. So quit early and in ss3sim_base do NOT turn wtatage on using
     ## the maturity function.
@@ -68,6 +72,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     ## defines the distribution from which we sample. It is also based on
     ## the # of age samples taken, to mimic reality better.
     mlacomp.new.list <- list() # temp storage for the new rows
+    forexport <- list()
     k <- 1                 # each k is a new row of data, to be rbind'ed later
     ## Loop through each fleet, if fleets=NULL then skip sampling and
     ## return nothing (subtract out this type from the data file)
@@ -100,6 +105,13 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
             lengths.list <-
                 lapply(1:length(means.log), function(kk)
                        exp(rnorm(n=age.samples[kk], mean=means.log[kk], sd=sds.log[kk])))
+
+            names(lengths.list) <- as.numeric(gsub("a", "", colnames(agecomp.temp)[-(1:9)]))
+            temp <- lapply(seq_along(lengths.list), function(x) {
+               cbind(names(lengths.list)[x], lengths.list[[x]], exp(means.log[x]))
+              })
+            forexport[[k]] <- do.call("rbind", temp[lapply(temp, length) > 2])
+            colnames(forexport[[k]]) <- c("age", "length", "mean")
             ## Take means and combine into vector to put back
             ## into the data frame.
             mlacomp.new.means <- do.call(c, lapply(lengths.list, mean))
@@ -114,7 +126,9 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
             k <- k+1
         }
     } # end sampling
-
+    if(!is.null(mean_outfile)) {
+        write.csv(do.call("rbind", forexport), mean_outfile)
+    }
     ## Combine new rows together into one data.frame
     mlacomp.new <- do.call(rbind, mlacomp.new.list)
     datfile$MeanSize_at_Age_obs <- mlacomp.new
