@@ -43,7 +43,6 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     agecomp <- datfile$agecomp
     mlacomp <- datfile$MeanSize_at_Age_obs
     agebin_vector <- datfile$agebin_vector
-
     ## Read in the control file
     ctl <- SS_parlines(ctlfile)
     ## Check inputs for errors
@@ -95,7 +94,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
             age.means <- as.numeric(agecomp.temp[-(1:9)])
             age.Nsamp <- as.numeric(Nsamp[[fl]][j])
             ## Draw samples to get # of fish in each age bin
-            age.samples <- rmultinom(n=1, size=age.Nsamp, prob=age.means)
+            age.samples <- rmultinom(n=1, size=as.integer(age.Nsamp), prob=age.means)
             ## apply sampling across the columns (ages) to get
             ## sample of lengths
             lengths.list <-
