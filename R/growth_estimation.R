@@ -5,15 +5,12 @@
 #' @param L1 mean length at youngest age which is well sampled in the data (a3)
 #' @param L2 mean length at oldest age which is well sampled in the data (A)
 #' @param k von bertalanffy growth rate parameter
-#' @param ages vector of ages in the data for which you want to predict mean length-at-age
+#' @param ages vector of ages in the data for which you want to predict mean
+#'   length-at-age
 #' @param a3 youngest age which is well sampled in the data
-#' @return a vector of lengths predicted which correspond to the input ages vector.
-#'
+#' @return a vector of lengths predicted which correspond to the input ages
+#'   vector.
 #' @importFrom bbmle mle2
-
-# TODO:
-# document these functions
-
 vbgf_func <- function(L1, L.inf, k, ages, a3){
   predLength <- L.inf + (L1 - L.inf) * exp(-k * (ages - a3))
   predLength
@@ -31,19 +28,21 @@ vbgf_func <- function(L1, L.inf, k, ages, a3){
 #' @param A integer, the oldest age well sampled in the data.
 sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
   start.cv.young, start.cv.old, a3, A){
-get_vbgf_loglik <- function(logL1, logL2, logk, logcv.old, logcv.young){
-  L1 <- exp(logL1)
-  L2 <- exp(logL2)
-  k <- exp(logk)
-  slope <- (exp(logcv.old) - exp(logcv.young)) / (A - a3)
-  cv <- exp(logcv.young) + slope * (data_$age-a3)  # intercept = cv_young
-  cv <- ifelse(cv < 0, 0, cv)
-  sigma <- cv * (data_$mean)
-  L.inf<-L1+(L2-L1)/(1-exp(-k*(A-a3)))
-  predLength <- vbgf_func(L1, L.inf, k, data_[, 1], a3)
-  logLik <- sum(-log(sigma) - ((predLength - data_[, 2])^2)/(2*sigma^2))
-  -logLik
-}
+
+  get_vbgf_loglik <- function(logL1, logL2, logk, logcv.old, logcv.young){
+    L1 <- exp(logL1)
+    L2 <- exp(logL2)
+    k <- exp(logk)
+    slope <- (exp(logcv.old) - exp(logcv.young)) / (A - a3)
+    cv <- exp(logcv.young) + slope * (data_$age-a3)  # intercept = cv_young
+    cv <- ifelse(cv < 0, 0, cv)
+    sigma <- cv * (data_$mean)
+    L.inf<-L1+(L2-L1)/(1-exp(-k*(A-a3)))
+    predLength <- vbgf_func(L1, L.inf, k, data_[, 1], a3)
+    logLik <- sum(-log(sigma) - ((predLength - data_[, 2])^2)/(2*sigma^2))
+    -logLik
+  }
+
   #function takes data, number of samples, start values, start age
   #Data must have colums ordered: Year, Length, Weight, Sex, age
   #Then fits VBGF to subsampled data
@@ -53,7 +52,9 @@ get_vbgf_loglik <- function(logL1, logL2, logk, logcv.old, logcv.young){
   data_ <- length.df[, colnames(length.df) %in% c("length", "age", "mean")]
   #Fit using MLE
   mod <- mle2(get_vbgf_loglik,
-    start = list(logL1 = log(start.L1), logL2 = log(start.L2), logk = log(start.k), logcv.old = log(start.cv.old), logcv.young=log(start.cv.young)))
+    start = list(logL1 = log(start.L1), logL2 = log(start.L2),
+      logk = log(start.k), logcv.old = log(start.cv.old),
+      logcv.young=log(start.cv.young)))
   if(mod@details$convergence == 1){
     out <- list("L1" = 999, "L2" = 999, "K" = 999, "cv.young" = 999, "cv.old" = 999)
   } else {
