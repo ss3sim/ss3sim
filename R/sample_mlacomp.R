@@ -18,7 +18,7 @@
 #' values are used to determine the uncertainty about weight for fish
 #' sampled in each age bin.
 #' @param mean_outfile A path to write length and age data for external
-#' estimation of parametric growth. If NULL no file will be written. 
+#' estimation of parametric growth. If NULL no file will be written.
 #' This file is used by \code{change_e} to externally estimate growth
 #' parameters.
 #' @template sampling-return
@@ -40,7 +40,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     if(is.null(fleets)){
         datfile$MeanSize_at_Age_obs <- NULL
         datfile$N_MeanSize_at_Age_obs <- 0
-        SS_writedat(datlist=datfile, outfile=outfile, over=TRUE,
+        SS_writedat(datlist=datfile, outfile=outfile, overwrite=TRUE,
                           verbose=FALSE)
         return(NULL)
     }
@@ -135,6 +135,6 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     datfile$N_MeanSize_at_Age_obs <- nrow(mlacomp.new)
     ## Write the modified file
     if(write_file) SS_writedat(datlist=datfile, outfile=outfile,
-                                     over=TRUE, verbose=TRUE)
+                                     overwrite=TRUE, verbose=TRUE)
     return(invisible(mlacomp.new))
 }

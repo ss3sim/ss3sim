@@ -66,7 +66,7 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
     infile <- readLines(infile)
 
     ## Remove double spaces, which SS3 writes in the 7th column
-    infile <- gsub("  ", replace=" ", x=infile)
+    infile <- gsub("  ", replacement=" ", x=infile)
     xx <- grep(x=infile, "#yr seas gender growpattern birthseas fleet")
     if(length(xx)!=1) stop("Failed to read in wtatage file")
     header <- unlist(strsplit(infile[xx], " "))
@@ -77,7 +77,7 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
     wtatage <- infile[(xx+1):length(infile)]
     wtatage <-  as.data.frame(matrix(as.numeric(unlist(strsplit(wtatage, split=" "))),
                                      nrow=length(wtatage), byrow=TRUE))
-    names(wtatage) <- gsub("#", replace="", x=header)
+    names(wtatage) <- gsub("#", replacement="", x=header)
     wtatage$yr <- abs(wtatage$yr)
     age0 <- wtatage[!duplicated(wtatage$fleet),c("fleet","age0")]
 
