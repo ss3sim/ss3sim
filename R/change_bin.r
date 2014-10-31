@@ -116,14 +116,14 @@ change_bin <- function(file_in, file_out,
     if(class(test) == "try-error" | is.null(bin_vector[["age"]])) {
       bin_vector[["age"]] <- datfile$agebin_vector
     }
-  }  
+  }
   if (any(c("mla", "mwa") %in% type)) {
     for(i in grep("m", type)){
       bin_vector[[type[i]]] <- datfile$agebin_vector
-      }
+    }
   }
   if ("cal" %in% type) {
-        bin_vector[["cal"]] <- datfile$lbin_vector
+    bin_vector[["cal"]] <- datfile$lbin_vector
   }
 
   # bin_vector names in same order as type, if it's not named
@@ -144,36 +144,38 @@ change_bin <- function(file_in, file_out,
   if (!any(vapply(bin_vector, is.numeric, logical(1L))))
     stop("bin_vector must be numeric")
   # Augment age and length fleets and years from conditional matrices
-      bin_info <- get_bin_info(dat = fleet_dat)
-      if("cal" %in% bin_info$type) {
-        fleet_dat$age$fleets <- with(bin_info, unique(c(fleet[type %in% c("age", "cal")])))
-        fleet_dat$len$fleets <- with(bin_info, unique(c(fleet[type %in% c("len", "cal")])))
-        fleet_dat$age$years <- lapply(fleet_dat$age$fleets, function(x) {
-          with(bin_info, unique(c(year[fleet == x & type %in% c("age", "cal")])))
-        })
-        fleet_dat$len$years <- lapply(fleet_dat$age$fleets, function(x) {
-          with(bin_info, unique(c(year[fleet == x & type %in% c("len", "cal")])))
-        })
-        fleet_dat$len$Nsamp <- mapply(rep, 1, lapply(fleet_dat$len$years, length))
-        fleet_dat$age$Nsamp <- mapply(rep, 1, lapply(fleet_dat$age$years, length))
-      }
-      bin_info <- get_bin_info(dat = fleet_dat)
-      if("mla" %in% bin_info$type){
-        fleet_dat$age$fleets <- with(bin_info, unique(c(fleet[type == "mla" | type == "age"])))
-        fleet_dat$age$years <- lapply(fleet_dat$age$fleets, function(x) {
-          with(bin_info, unique(c(year[fleet == x & type %in% c("mla", "age")])))
-        })
-        fleet_dat$age$Nsamp <- mapply(rep, 1, lapply(fleet_dat$age$years, length))
-      }
-      bin_info <- get_bin_info(dat = fleet_dat)      
-      if("mwa" %in% bin_info$type){ 
-        fleet_dat$age$fleets <- with(bin_info, unique(c(fleet[type == "mwa" | type == "age"])))
-        fleet_dat$age$years <- lapply(fleet_dat$age$fleets, function(x) {
-          with(bin_info, unique(c(year[fleet == x & type %in% c("mwa", "age")])))
-        })
-        fleet_dat$age$Nsamp <- mapply(rep, 1, lapply(fleet_dat$age$years, length))
-      }
- 
+  bin_info <- get_bin_info(dat = fleet_dat)
+  if("cal" %in% bin_info$type) {
+    fleet_dat$age$fleets <- with(bin_info, unique(c(fleet[type %in% c("age", "cal")])))
+    fleet_dat$len$fleets <- with(bin_info, unique(c(fleet[type %in% c("len", "cal")])))
+    fleet_dat$age$years <- lapply(fleet_dat$age$fleets, function(x) {
+      with(bin_info, unique(c(year[fleet == x & type %in% c("age", "cal")])))
+    })
+    fleet_dat$len$years <- lapply(fleet_dat$age$fleets, function(x) {
+      with(bin_info, unique(c(year[fleet == x & type %in% c("len", "cal")])))
+    })
+    fleet_dat$len$Nsamp <- mapply(rep, 1, lapply(fleet_dat$len$years, length))
+    fleet_dat$age$Nsamp <- mapply(rep, 1, lapply(fleet_dat$age$years, length))
+  }
+  bin_info <- get_bin_info(dat = fleet_dat)
+  if("mla" %in% bin_info$type){
+    fleet_dat$age$fleets <- with(bin_info,
+      unique(c(fleet[type == "mla" | type == "age"])))
+    fleet_dat$age$years <- lapply(fleet_dat$age$fleets, function(x) {
+      with(bin_info, unique(c(year[fleet == x & type %in% c("mla", "age")])))
+    })
+    fleet_dat$age$Nsamp <- mapply(rep, 1, lapply(fleet_dat$age$years, length))
+  }
+  bin_info <- get_bin_info(dat = fleet_dat)
+  if("mwa" %in% bin_info$type){
+    fleet_dat$age$fleets <- with(bin_info,
+      unique(c(fleet[type == "mwa" | type == "age"])))
+    fleet_dat$age$years <- lapply(fleet_dat$age$fleets, function(x) {
+      with(bin_info, unique(c(year[fleet == x & type %in% c("mwa", "age")])))
+    })
+    fleet_dat$age$Nsamp <- mapply(rep, 1, lapply(fleet_dat$age$years, length))
+  }
+
   ##
 
   # First generate dummy fleet data for all routines:
@@ -188,11 +190,11 @@ change_bin <- function(file_in, file_out,
     newname <- goodnames[match(partname, goodnames$types), "create"]
     newdata <- data.frame(matrix(1, nrow = nrow(dummy[[partname]]), ncol = length(x)))
     names(newdata) <- paste0(newname, x)
-      if (grepl("m", partname)) {
-        newdata <- cbind(newdata, setNames(newdata, gsub("f", "N_f", names(newdata))))
-      }
+    if (grepl("m", partname)) {
+      newdata <- cbind(newdata, setNames(newdata, gsub("f", "N_f", names(newdata))))
+    }
     newdata
-    })
+  })
 
   # TODO: look at making pop_bin of length two with the first argument
   # pertaining to the number of length population bins and the second argument
