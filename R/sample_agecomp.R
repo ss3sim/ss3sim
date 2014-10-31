@@ -113,8 +113,8 @@ sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
     ## End input checks
 
     ## Split the conditional data from the age data
-    conditional_data <- subset(agecomp, Lbin_lo >= 0)
-    agecomp <- subset(agecomp, Lbin_lo < 0)
+    conditional_data <- agecomp[agecomp$Lbin_lo >= 0, ]
+    agecomp <- agecomp[agecomp$Lbin_lo < 0, ]
 
     ## Resample from the age data
     ## The general approach here is to loop through each row to keep
