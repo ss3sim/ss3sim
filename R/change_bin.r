@@ -141,7 +141,8 @@ change_bin <- function(file_in, file_out,
   }
 
   # if bin_vector is NULL for length or age then need to use .dat version
-  if (!any(sapply(bin_vector, is.numeric))) stop("bin_vector must be numeric")
+  if (!any(vapply(bin_vector, is.numeric, logical(1L))))
+    stop("bin_vector must be numeric")
   # Augment age and length fleets and years from conditional matrices
       bin_info <- get_bin_info(dat = fleet_dat)
       if("cal" %in% bin_info$type) {
