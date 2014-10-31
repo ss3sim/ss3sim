@@ -19,31 +19,6 @@ vbgf_func <- function(L1, L.inf, k, ages, a3){
   predLength
 }
 
-
-#' Function to estimate the log likelihood of a fit to length and age data
-#'
-#' @description Uses \code{\link[bbmle]{mle2}} to minimize the negative log
-#'   likelihood and uses \code{\link{vbgf_func}} to predict data.
-#' @param logL1 numeric,  log(L1) parameter.
-#' @param logL2 numeric, log(L2) parameter.
-#' @param logk numeric, log(k) parameter.
-#' @param logsigma numeric, log(sigma) parameter, where
-#' sigma is the slope of the CV line where the CV of an age = sigma*age.
-#' @param data_ data.frame, column 1 is ages and column 2 is lengths
-#' @param a3 numeric, the youngest age well sampled in the data.
-get_vbgf_loglik <- function(logL1, logL2, logk, logsigma, logcv.young){
-  L1 <- exp(logL1)
-  L2 <- exp(logL2)
-  k <- exp(logk)
-  sigma <-   exp(logcv.young)+ exp(logsigma)*(data_$age-a3)
-  L.inf<-L1+(L2-L1)/(1-exp(-k*(A-a3)))
-  predLength <- vbgf_func(L1, L.inf, k, data_[, 1], a3)
-  logLik <- sum(-log(sigma) - ((log(predLength) -
-                                  log(data_[, 2]))^2)/(2*sigma^2))
-  -logLik
-}
-
-
 #' Function to sample the log likelihood of a fit to length and age data
 #'
 #' @param length.data data.frame which contains the lengths and ages
