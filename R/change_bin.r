@@ -11,7 +11,10 @@
 #' potentially adding many rows of data. Currently, \code{.dat} files with
 #' multiple genders cannot be manipulated with \code{change_bin}. Use
 #' \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}, and
-#' \code{\link{sample_calcomp}} to reduce the data.
+#' \code{\link{sample_calcomp}} to reduce the data. It is not intended for an
+#' \pkg{ss3sim} user to use \code{change_bin} directly. Instead
+#' \code{change_bin} is called internally by \code{\link{ss3sim_base}} based
+#' on arguments to the sampling functions.
 #'
 #' @param file_in A character value giving the location of an SS \code{.dat}
 #'   file to input.
