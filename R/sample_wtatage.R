@@ -98,8 +98,11 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
     #if(Nfleets != length(datfile$fleetnames)) stop("You must specify all fleets when smapling wtatage data\n")
     #Not sure why years has to be same length as nfleets
     #ACH: We should determine if we want the option of a single input year vector
-    if(class(years) != "list" | length(years) != Nfleets)
-        stop("years needs to be a list of same length as fleets")
+    ## ---------------------------------------------------------------------
+    ## TODO NOTE! SA 20141031: I commented the following out
+    ## because Nfleets does not exist as far as I or R CMD check can tell
+#     if(class(years) != "list" | length(years) != Nfleets)
+#         stop("years needs to be a list of same length as fleets")
     ## End input checks
 
     ## Resample from the length-at-age data The general approach here is to
