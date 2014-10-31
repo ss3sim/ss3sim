@@ -289,8 +289,11 @@ changeMe <- function(grepChar, intVal, phaseVal, ctlIn = ss3.ctl) {
   grepChar_value <- unlist(strsplit(ss3.ctl[grepChar_line], split = " "))
   # remove white space
   grepChar_value <- grepChar_value[which(nchar(grepChar_value) > 0)]
-  if(!is.na(intVal)) grepChar_value[3] <- intVal
-   		    if(as.numeric(grepChar_value[3]) > as.numeric(grepChar_value[2])) grepChar_value[2] <- intVal*1.5
+  if(!is.na(intVal)) {
+    if(class(intVal) == "character") intVal <- as.numeric(intVal)
+    grepChar_value[3] <- intVal
+  }
+  	    if(as.numeric(grepChar_value[3]) > as.numeric(grepChar_value[2])) grepChar_value[2] <- intVal*1.5
  		    if(as.numeric(grepChar_value[3]) < as.numeric(grepChar_value[1])) grepChar_value[1] <- intVal*.5
   if(!is.na(phaseVal)) grepChar_value[7] <- phaseVal
   ss3.ctl[grepChar_line] <- paste(grepChar_value, collapse = " ")
