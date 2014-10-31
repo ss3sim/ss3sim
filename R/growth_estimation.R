@@ -3,7 +3,7 @@
 #' @description External estimation procedure for von Bertalanffy growth.
 #'
 #' @param L1 mean length at youngest age which is well sampled in the data (a3)
-#' @param L2 mean length at oldest age which is well sampled in the data (A)
+#' @param L.inf Length at infinity
 #' @param k von bertalanffy growth rate parameter
 #' @param ages vector of ages in the data for which you want to predict mean
 #'   length-at-age
@@ -23,7 +23,8 @@ vbgf_func <- function(L1, L.inf, k, ages, a3){
 #' @param start.L1 numeric, starting guess for mle2 for L1 parameter.
 #' @param start.L2 numeric, starting guess for mle2 for L2 parameter.
 #' @param start.k numeric, starting guess for mle2 for k parameter.
-#' @param start.cv.young, starting guess for mle2 for cv.young parameter.
+#' @param start.cv.young starting guess for mle2 for cv.young parameter.
+#' @param start.cv.old starting guess for mle2 for cv.old parameter.
 #' @param a3 integer, the youngest age well sampled in the data.
 #' @param A integer, the oldest age well sampled in the data.
 sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,

@@ -19,8 +19,11 @@ sample_fit_vbgf(length.data, start.L1, start.L2, start.k, start.cv.young,
   \item{start.k}{numeric, starting guess for mle2 for k
   parameter.}
 
-  \item{start.cv.young,}{starting guess for mle2 for
+  \item{start.cv.young}{starting guess for mle2 for
   cv.young parameter.}
+
+  \item{start.cv.old}{starting guess for mle2 for cv.old
+  parameter.}
 
   \item{a3}{integer, the youngest age well sampled in the
   data.}

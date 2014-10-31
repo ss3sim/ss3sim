@@ -9,15 +9,14 @@ vbgf_func(L1, L.inf, k, ages, a3)
   \item{L1}{mean length at youngest age which is well
   sampled in the data (a3)}
 
+  \item{L.inf}{Length at infinity}
+
   \item{k}{von bertalanffy growth rate parameter}
 
   \item{ages}{vector of ages in the data for which you want
   to predict mean length-at-age}
 
   \item{a3}{youngest age which is well sampled in the data}
-
-  \item{L2}{mean length at oldest age which is well sampled
-  in the data (A)}
 }
 \value{
 a vector of lengths predicted which correspond to the input
