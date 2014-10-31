@@ -3,8 +3,8 @@
 \alias{sample_mlacomp}
 \title{Sample mean length (size-)-at-age data and write to file for use by the EM.}
 \usage{
-sample_mlacomp(datfile, outfile, ctlfile, fleets = 1, years,
-  write_file = TRUE)
+sample_mlacomp(datfile, outfile, ctlfile, fleets = 1, Nsamp, years,
+  write_file = TRUE, mean_outfile = NULL)
 }
 \arguments{
   \item{datfile}{A path to the data file, outputed from an
@@ -28,6 +28,12 @@ sample_mlacomp(datfile, outfile, ctlfile, fleets = 1, years,
   of the fleet collected samples, keep the value to
   \code{fleets=NULL}.}
 
+  \item{Nsamp}{*A numeric list of the same length as
+  \code{fleets}. Either single values or vectors of the
+  same length as the number of years can be passed through.
+  Single values are repeated for all years. If no fleet
+  collected samples, keep the value to \code{Nsamp=NULL}.}
+
   \item{years}{*A list the same length as \code{fleets}
   giving the years as numeric vectors. If no fleet
   collected samples, keep the value to \code{years=NULL}.}
@@ -37,15 +43,15 @@ sample_mlacomp(datfile, outfile, ctlfile, fleets = 1, years,
   testing or exploration of the function. The new data are
   returned invisibly, as in the examples below.}
 
+  \item{mean_outfile}{A path to write length and age data
+  for external estimation of parametric growth. If NULL no
+  file will be written. This file is used by
+  \code{change_e} to externally estimate growth
+  parameters.}
+
   \item{infile}{An SS data object as read in from
   \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package.
   Make sure you select option \code{section=2}.}
-
-  \item{Nsamp}{*A numeric list of the same length as
-  \code{fleets}. Either single values or vectors of the
-  same length as the number of years can be passed through.
-  Single values are repeated for all years. If no fleet
-  collected samples, keep the value to \code{Nsamp=NULL}.}
 
   \item{cpar}{*A numeric value or vector the same length as
   \code{fleets} controlling the variance of the Dirichlet
