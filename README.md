@@ -99,12 +99,6 @@ ss3sim functions are divided into three types:
 
 3. `get` functions for synthesizing the output.
 
-The main simulation function, `run_ss3sim()` runs the following steps:
-
-![An illustration of the ss3sim simulation structure and relevant R functions](https://raw.github.com/seananderson/ss3sim/master/inst/ms/sim-steps.png)
-
-An illustration of the ss3sim simulation structure and relevant R functions
-
 ## Example output from an ss3sim simulation
 
 ![An example of ss3sim output](https://raw.github.com/seananderson/ss3sim/master/inst/ms/fig2-20131109.png)
