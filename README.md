@@ -19,38 +19,38 @@ ss3sim is an R package that facilitates flexible, rapid, and reproducible fisher
 
 Install the [CRAN version](http://cran.r-project.org/web/packages/ss3sim/index.html) of ss3sim with:
 
-```S
+```R
 install.packages("ss3sim")
 ```
 
 Or, install the development version from GitHub:
 
-```S
+```R
 # install.packages("devtools")
 devtools::install_github("ss3sim/ss3sim")
 ```
 
 If you would like to run simulations in parallel, then also run:
 
-```S
+```R
 install.packages(c("doParallel", "foreach"))
 ```
 
 You can then load ss3sim with:
 
-```S
+```R
 library(ss3sim)
 ```
 
 You can read the help files with:
 
-```S
+```R
 ?ss3sim
 ```
 
 and access the vignette for reproducible examples of ss3sim simulations with:
 
-```S
+```R
 vignette("ss3sim-vignette")
 ```
 
