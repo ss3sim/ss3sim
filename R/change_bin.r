@@ -253,6 +253,9 @@ change_bin <- function(file_in, file_out,
     if (all(c("mla", "mwa") %in% type)) {
       mdummy <- rbind(mdummy, mwdummy)
     }
+    if ("mwa" %in% type & !"mla" %in% type) {
+      mdummy <- mwdummy
+    }
     datfile$MeanSize_at_Age_obs <- mdummy
     datfile$N_MeanSize_at_Age_obs <- nrow(datfile$MeanSize_at_Age_obs)
   }
