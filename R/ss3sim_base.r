@@ -170,7 +170,7 @@
 
 ss3sim_base <- function(iterations, scenarios, f_params,
   index_params, lcomp_params, agecomp_params, calcomp_params=NULL,
-  wtatage_params=NULL, mlacomp_params=NULL,
+  wtatage_params=NULL, mlacomp_params=NULL, mwacomp_params=NULL,
   estim_params, tv_params, om_dir, em_dir,
   retro_params = NULL, tc_params = NULL, bin_params = NULL, lc_params = NULL,
   user_recdevs = NULL, bias_adjust = FALSE,
@@ -268,7 +268,7 @@ deviations can lead to biased model results.")
       # the OM one last time. Then we'll sample from the expected values
       # with error.
       sample_args <- list(lcomp_params, agecomp_params, calcomp_params,
-        mlacomp_params, mwa_params = NULL)
+        mlacomp_params, mwacomp_params)
       types <- c("len", "age", "cal", "mla", "mwa")
       sample_args <- setNames(sample_args, types)
       sample_args_null <- vapply(sample_args, function(x) {
@@ -364,6 +364,20 @@ deviations can lead to biased model results.")
                           years          = years,
                           mean_outfile   = pastef(sc, i, "em", "vbgf_info.csv")))
 
+      ## Add error in the mean weight-at-age comp data. This sampling
+      ## function needs full age data so needs to be done before that
+      ## sampling function is called. Also, if this function isn't called
+      ## we need to delete that data, so I'm doing that based on whether it
+      ## is NULL, so it always needs to be called.
+      if(is.null(mwacomp_params)) mwacomp_params <- list()
+      mwacomp_params <- add_nulls(mwacomp_params, c("fleets", "Nsamp", "years"))
+      with(mwacomp_params,
+           sample_mwacomp(datfile        = pastef(sc, i, "em", "ss3.dat"),
+                          outfile        = pastef(sc, i, "em", "ss3.dat"),
+                          ctlfile        = pastef(sc, i, "om", "control.ss_new"),
+                          fleets         = fleets,
+                          Nsamp          = Nsamp,
+                          years          = years))
 
       ## Add error in the conditional age at length comp data. Delete data
       ## if not called, since could be written there.

@@ -240,16 +240,18 @@ change_bin <- function(file_in, file_out,
   if (any(c("mla", "mwa") %in% type)) {
     # TODO: SA to KJ: what to do with dummy data here?
     # note that I've just arbitrarily chosen "mla" type here for dummy
-    mdummy <- data.frame(dummy[["mla"]], "Ignore" = 1000)
-    mdummy$AgeErr <- ifelse("mla" %in% type, 1, -1)
     if ("mla" %in% type){
+      mdummy <- data.frame(dummy[["mla"]], "Ignore" = 1000)
+      mdummy$AgeErr <- 1
       mdummy <- cbind(mdummy, dummy.data$mla)
-    } else {
-      mdummy <- cbind(mdummy, dummy.data$mwa)
+    }
+    if ("mwa" %in% type){
+      mwdummy <- data.frame(dummy[["mwa"]], "Ignore" = 1000)
+      mwdummy$AgeErr <- -1
+      mwdummy <- cbind(mwdummy, dummy.data$mwa)
     }
     if (all(c("mla", "mwa") %in% type)) {
-      mdummy <- do.call("rbind", replicate(2, mdummy, simplify = FALSE))
-      mdummy$AgeErr[(nrow(dummy[["mla"]]) + 1):nrow(mdummy)] <- -1
+      mdummy <- rbind(mdummy, mwdummy)
     }
     datfile$MeanSize_at_Age_obs <- mdummy
     datfile$N_MeanSize_at_Age_obs <- nrow(datfile$MeanSize_at_Age_obs)
