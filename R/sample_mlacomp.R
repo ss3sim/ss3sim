@@ -46,6 +46,8 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     }
     agecomp <- datfile$agecomp
     mlacomp <- datfile$MeanSize_at_Age_obs
+    mwacomp <- mlacomp[mlacomp$AgeErr < 0, ]
+    mlacomp <- mlacomp[mlacomp$AgeErr > 0, ]
     agebin_vector <- datfile$agebin_vector
     ## Read in the control file
     ctl <- SS_parlines(ctlfile)
@@ -131,6 +133,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     }
     ## Combine new rows together into one data.frame
     mlacomp.new <- do.call(rbind, mlacomp.new.list)
+    if(nrow(mwacomp) > 0) mlacomp.new <- rbind(mlacomp.new, mwacomp)
     datfile$MeanSize_at_Age_obs <- mlacomp.new
     datfile$N_MeanSize_at_Age_obs <- nrow(mlacomp.new)
     ## Write the modified file
