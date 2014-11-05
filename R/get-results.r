@@ -57,7 +57,9 @@ id_scenarios <- function(directory){
 #'   overwritten, useful for testing purposes or if new replicates are run.
 #' @param user_scenarios A character vector of scenarios that should be read
 #'   in. Default is NULL, which indicates find all scenario folders in
-#'   \code{directory}
+#'   \code{directory}.
+#' @param parallel Should the function be run on multiple cores? You will
+#'   need to set up parallel processing as shown in \code{\link{run_ss3sim}}.
 #' @export
 #' @return
 #' Creates two .csv files in the current working directory:
@@ -65,26 +67,75 @@ id_scenarios <- function(directory){
 #' @author Cole Monnahan
 #' @family get-results
 get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
-  user_scenarios=NULL){
+  user_scenarios=NULL, parallel=FALSE){
 
     on.exit(setwd(directory))
+
+    if(parallel) {
+      cores <- setup_parallel()
+      if(cores == 1) parallel <- FALSE
+    }
 
     ## Choose whether to do all scenarios or the vector passed by user
     if(is.null(user_scenarios)) {
         scenarios <- id_scenarios(directory=directory)
     } else {
         temp_scenarios <- id_scenarios(directory=directory)
-        if(all(user_scenarios %in% temp_scenarios)){
-            scenarios <- user_scenarios
-        } else{
-            stop(paste(user_scenarios[which(user_scenarios %in% temp_scenarios==FALSE)],
-                "not in directory"))}
+        scenarios <- user_scenarios[which(user_scenarios %in% temp_scenarios)]
+        if(any(user_scenarios %in% temp_scenarios==FALSE)){
+            warning(paste(user_scenarios[which(user_scenarios %in%
+                temp_scenarios == FALSE)], "not in directory\n"))
+        }
     }
 
     if(length(scenarios)==0)
         stop(paste("Error: No scenarios found in:",directory))
     message(paste("Extracting results from", length(scenarios), "scenarios"))
 
+    if(parallel){
+        parallel_scenario <- NULL
+        # ts.list <- scalar.list <- list()
+        results_all <- foreach(parallel_scenario = scenarios, .verbose = FALSE,
+            .export = c("pastef", "get_results_scenario",
+            "get_results_scalar", "get_nll_components",
+            "get_results_timeseries", "calculate_runtime"), .combine = rbind) %dopar% {
+            ## If the files already exist just read them in, otherwise get results
+                scalar.file <- paste0(parallel_scenario,"/results_scalar_",parallel_scenario,".csv")
+                ts.file <- paste0(parallel_scenario,"/results_ts_",parallel_scenario,".csv")
+                ## Delete them if this is flagged on
+                if( overwrite_files){
+                    if(file.exists(scalar.file)) file.remove(scalar.file)
+                    if(file.exists(ts.file)) file.remove(ts.file)
+                    get_results_scenario(scenario=parallel_scenario, directory=directory,
+                                         overwrite_files=overwrite_files)
+                }
+                ## Check if still there and skip if already so, otherwise read in
+                ## and save to file
+                if(!file.exists(scalar.file) |  !file.exists(ts.file)){
+                    get_results_scenario(scenario=parallel_scenario, directory=directory,
+                                         overwrite_files=overwrite_files)
+                }
+        }
+        ts.list <- scalar.list <- list()
+        flag.na <- rep(0, length(scenarios))
+        for(i in 1:length(scenarios)){
+            scalar.file <- paste0(scenarios[i],"/results_scalar_",scenarios[i],".csv")
+            ts.file <- paste0(scenarios[i],"/results_ts_",scenarios[i],".csv")
+            scalar.list[[i]] <- tryCatch(read.csv(scalar.file), error=function(e) NA)
+            ts.list[[i]] <- tryCatch(read.csv(ts.file), error=function(e) NA)
+            if(all(is.na(scalar.list[[i]]))){flag.na[i] <- 1}
+        }
+        scalar.list.out <- scalar.list[-which(flag.na==1)]
+        ts.list.out <- ts.list[-which(flag.na==1)]
+        ## Combine all scenarios together and save into big final files
+        scalar.all <- do.call(plyr::rbind.fill, scalar.list.out)
+        scalar.all$ID <- paste(scalar.all$scenario, scalar.all$replicate, sep = "-")
+        ts.all <- do.call(plyr::rbind.fill, ts.list.out)
+        ts.all$ID <- paste(ts.all$scenario, ts.all$replicate, sep="-")
+        write.csv(scalar.all, file="ss3sim_scalar.csv")
+        write.csv(ts.all, file="ss3sim_ts.csv")
+        message(paste("Final result files written to", directory))
+    } else{
     ## Loop through each scenario in folder
     ts.list <- scalar.list <- list()
     for(i in 1:length(scenarios)){
@@ -106,9 +157,11 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
             get_results_scenario(scenario=scen, directory=directory,
                                  overwrite_files=overwrite_files)
         }
-        scalar.list[[i]] <- read.csv(scalar.file)
-        ts.list[[i]] <- read.csv(ts.file)
+        scalar.list[[i]] <- tryCatch(read.csv(scalar.file), error=function(e) NA)
+        ts.list[[i]] <- tryCatch(read.csv(ts.file), error=function(e) NA)
     }
+    scalar.list <- scalar.list[-is.na(scalar.list)]
+    ts.list <- ts.list[-is.na(ts.list)]
     ## Combine all scenarios together and save into big final files
     scalar.all <- do.call(plyr::rbind.fill, scalar.list)
     scalar.all$ID <- paste(scalar.all$scenario, scalar.all$replicate, sep = "-")
@@ -117,6 +170,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
     write.csv(scalar.all, file="ss3sim_scalar.csv")
     write.csv(ts.all, file="ss3sim_ts.csv")
     message(paste("Final result files written to", directory))
+  }
 }
 
 #' Extract SS3 simulation results for one scenario.
@@ -200,22 +254,21 @@ get_results_scenario <- function(scenario, directory=getwd(),
         stop(paste("Error:No replicates for scenario", scenario))
     ## Loop through replicates and extract results using r4ss::SS_output
     resids.list <- list()
+    ## count replicates that didn't run SS successfully
+    no.rep <- 0
     for(rep in reps.dirs){
         ## message(paste0("Starting", scen, "-", rep))
       report.em <- SS_output(paste0(rep,"/em/"), covar=FALSE,
         verbose=FALSE,compfile="none", forecast=TRUE, warn=TRUE, readwt=FALSE,
         printstats=FALSE, NoCompOK=TRUE)
-      # if(file.exists(paste0(rep,"/om/Report.sso"))==FALSE)
-      #     stop(paste("Error: SS Report File doesn't exist for scenario", scenario))
-      report.om <- tryCatch({
-        SS_output(paste0(rep,"/om/"), covar=FALSE,
+      report.om <- tryCatch(r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE,
         verbose=FALSE, compfile="none", forecast=FALSE, warn=TRUE, readwt=FALSE,
-        printstats=FALSE, NoCompOK=TRUE)
-        },
-        error=function(e){
-            message(paste("Error reading SS files within", scenario))
-            message(e)
-        })
+        printstats=FALSE, NoCompOK=TRUE), error=function(e) NA)
+      if(is.list(report.om)==FALSE){
+          warning(paste("Necessary SS files missing from", scenario, "replicate", rep))
+          no.rep <- no.rep + 1
+          next
+      }
         ## Grab the residuals for the indices
         resids <- log(report.em$cpue$Obs) - log(report.em$cpue$Exp)
         resids.long <- data.frame(report.em$cpue[,c("FleetName", "Yr")], resids)
@@ -278,8 +331,9 @@ get_results_scenario <- function(scenario, directory=getwd(),
     resids <- do.call(rbind, resids.list)
     write.table(x=resids, file=resids.file, sep=",", row.names=FALSE)
     ## End of loops for extracting results
+    ## outputs number of successful replicates
     message(paste0("Result files created for ",scenario, " with ",
-                 length(reps.dirs), " replicates"))
+                 length(reps.dirs) - no.rep, " replicates"))
 }
 
 #' Extract time series from a model run.

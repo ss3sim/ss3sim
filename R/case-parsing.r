@@ -186,7 +186,6 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
   # remove time varying elements from argvalues_out:
   argvalues_out <- argvalues_out[which(args_null)]
 
-
   # test that all specified arguments match function arguments:
   for (i in seq_along(argvalues_out)) {
     change_case_function <- paste0("change_", tolower(names(argvalues_out)[i]))
