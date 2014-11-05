@@ -64,22 +64,23 @@ unlink("D1-E0-F0-R0-M0-cod", recursive = TRUE)
 run_ss3sim(iterations = 1, scenarios = c("D0-E0-F0-R0-M0-cod", "D1-E0-F0-R0-M0-cod",
 	"D0-E1-F0-R0-M0-cod"), case_folder = case_folder, om_dir = om, em_dir = em,
     ss_mode = "optimized", parallel = TRUE)
-get_results_all(parallel = FALSE)
+get_results_all(parallel = FALSE, over = TRUE)
 expect_warning(
   get_results_all(user_scenarios = c("D0-E0-F0-R0-M0-cod", "D1-E0-F0-R0-M0-cod",
   "D0-E0-F0-R0-M0-T0-cod"), over = TRUE)
 )
-unlink("D0-E0-F0-R0-M0-cod/1/om/Report.sso")
-expect_warning(get_results_all(over = TRUE))
 
 #parallel:
-get_results_all(parallel = TRUE)
+get_results_all(parallel = TRUE, over = TRUE)
 unlink("D0-E0-F0-R0-M0-cod/1/om/Report.sso")
 get_results_all(over = TRUE, parallel = TRUE)
 unlink(c("D0-E0-F0-R0-M0-cod", "D1-E0-F0-R0-M0-cod",
 	"D0-E1-F0-R0-M0-cod"), recursive = TRUE)
 unlink(c("ss3sim_scalar.csv", "ss3sim_ts.csv"))
 
+# missing report file:
+unlink("D0-E0-F0-R0-M0-cod/1/om/Report.sso")
+expect_warning(get_results_all(over = TRUE))
 
 ## Test the addition of tail compression:
 # case_files <- list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"),
