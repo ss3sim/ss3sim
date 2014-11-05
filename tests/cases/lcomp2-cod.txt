@@ -1,0 +1,5 @@
+Nsamp; list(100)
+fleets; c(1)
+years; list(1938:2012)
+bin_vector; NULL
+cpar; c(2)

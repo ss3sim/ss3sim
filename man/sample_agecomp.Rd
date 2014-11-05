@@ -4,7 +4,8 @@
 \title{Sample age compositions from expected values}
 \usage{
 sample_agecomp(infile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
-  agebin_vector = NULL, write_file = TRUE)
+  agebin_vector = NULL, write_file = TRUE, keep_conditional = TRUE,
+  bin_vector = NULL)
 }
 \arguments{
   \item{infile}{An SS data object as read in from
@@ -47,6 +48,22 @@ sample_agecomp(infile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
   \code{outfile} to disk. Can be turned off to speed up
   testing or exploration of the function. The new data are
   returned invisibly, as in the examples below.}
+
+  \item{keep_conditional}{A logical if conditional
+  age-at-length data should be kept or removed entirely
+  from the \code{.dat} file.  \code{sample_agecomp} only
+  works on the age composition data and not on the
+  conditional age-at-length data. To sample the conditional
+  data set \code{keep_conditional} to \code{TRUE} and use
+  \code{\link{sample_calcomp}}.}
+
+  \item{bin_vector}{A numeric vector giving the desired bin
+  structure. This argument does not affect this sampling
+  function itself. Instead, it is here so it can be passed
+  on to \code{\link{change_bin}} from within
+  \code{\link{ss3sim_base}}. If left as \code{NULL} then
+  the bins will not be altered from what is in the SS3
+  operating model \code{.dat} file.}
 }
 \value{
 A modified \code{.dat} file if \code{write_file=TRUE}. A
@@ -87,6 +104,7 @@ ex2 <- sample_agecomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
                       years=list(seq(1994, 2012, by=2),
                           2003:2012), write_file=FALSE)
 
+\donttest{
 ## Run three  cases showing Multinomial, Dirichlet(1) and over-dispersed
 ## Dirichlet for different levels of sample sizes
 op <- par(mfrow = c(1,3))
@@ -116,6 +134,7 @@ for(samplesize in c(30, 100, 1000)){
     lines((0:15), true, col=4, lwd=2)
 }
 par(op)
+}
 }
 \author{
 Cole Monnahan and Kotaro Ono; modified from a version by

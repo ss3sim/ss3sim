@@ -16,7 +16,7 @@ calculate_runtime <- function(start_time, end_time) {
     split = " ", fixed = T))[, -(1:2)])
   start <- as.data.frame(t(start))
   end <- as.data.frame(t(end))
-  names(start) <- names(end) <- c("month", "day", "time", "year")
+  names(start) <- names(end) <- c("month", "", "day", "time", "year")
   start.date <- lubridate::ymd_hms(with(start, paste(year,
     month, day, time, sep = "-")))
   end.date <- lubridate::ymd_hms(with(end, paste(year,
@@ -125,8 +125,8 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
             ts.list[[i]] <- tryCatch(read.csv(ts.file), error=function(e) NA)
             if(all(is.na(scalar.list[[i]]))){flag.na[i] <- 1}
         }
-        scalar.list.out <- scalar.list[-which(flag.na==1)]
-        ts.list.out <- ts.list[-which(flag.na==1)]
+        scalar.list.out <- scalar.list[which(flag.na!=1)]
+        ts.list.out <- ts.list[which(flag.na!=1)]
         ## Combine all scenarios together and save into big final files
         scalar.all <- do.call(plyr::rbind.fill, scalar.list.out)
         scalar.all$ID <- paste(scalar.all$scenario, scalar.all$replicate, sep = "-")
@@ -160,8 +160,8 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         scalar.list[[i]] <- tryCatch(read.csv(scalar.file), error=function(e) NA)
         ts.list[[i]] <- tryCatch(read.csv(ts.file), error=function(e) NA)
     }
-    scalar.list <- scalar.list[-is.na(scalar.list)]
-    ts.list <- ts.list[-is.na(ts.list)]
+    scalar.list <- scalar.list[which(!is.na(scalar.list))]
+    ts.list <- ts.list[which(!is.na(ts.list))]
     ## Combine all scenarios together and save into big final files
     scalar.all <- do.call(plyr::rbind.fill, scalar.list)
     scalar.all$ID <- paste(scalar.all$scenario, scalar.all$replicate, sep = "-")
@@ -192,6 +192,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
 #'   used if replicates were added since the last time it was called, or any
 #'   changes were made to this function.
 #' @author Cole Monnahan
+#' @importFrom r4ss SS_output
 #' @family get-results
 #' @export
 #' @examples \dontrun{
@@ -257,7 +258,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
     no.rep <- 0
     for(rep in reps.dirs){
         ## message(paste0("Starting", scen, "-", rep))
-      report.em <- r4ss::SS_output(paste0(rep,"/em/"), covar=FALSE,
+      report.em <- SS_output(paste0(rep,"/em/"), covar=FALSE,
         verbose=FALSE,compfile="none", forecast=TRUE, warn=TRUE, readwt=FALSE,
         printstats=FALSE, NoCompOK=TRUE)
       report.om <- tryCatch(r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE,

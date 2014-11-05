@@ -17,6 +17,7 @@
 #'
 #' @template sampling-return
 #' @template casefile-footnote
+#' @importFrom r4ss SS_writedat
 #'
 #' @export
 #' @author Cole Monnahan, Kotaro Ono
@@ -128,7 +129,8 @@ stop(paste("A year specified in years was not found in the input file for fleet"
     if(Nfleets>0) newfile$N_cpue <- nrow(cpue.new)
     if(Nfleets==0) newfile$N_cpue <- 0
     if(write_file)
-        r4ss::SS_writedat(datlist = newfile, outfile = outfile, overwrite = T)
+        SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
+                    verbose = FALSE)
     return(invisible(cpue.new))
 }
 

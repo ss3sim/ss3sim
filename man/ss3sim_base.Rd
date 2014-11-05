@@ -4,11 +4,12 @@
 \title{Base wrapper function to run an ss3sim simulation}
 \usage{
 ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
-  agecomp_params, estim_params, tv_params, om_dir, em_dir,
-  retro_params = NULL, tc_params = NULL, lc_params = NULL,
-  user_recdevs = NULL, bias_adjust = FALSE, bias_nsim = 5,
-  bias_already_run = FALSE, hess_always = FALSE, print_logfile = TRUE,
-  sleep = 0, conv_crit = 0.2, seed = 21, ...)
+  agecomp_params, calcomp_params = NULL, wtatage_params = NULL,
+  mlacomp_params = NULL, estim_params, tv_params, om_dir, em_dir,
+  retro_params = NULL, tc_params = NULL, bin_params = NULL,
+  lc_params = NULL, user_recdevs = NULL, bias_adjust = FALSE,
+  bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
+  print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -16,23 +17,35 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
 
   \item{scenarios}{Which scenarios to run.}
 
-  \item{f_params}{A named list containing all the
-  \code{\link{change_f}} options.}
+  \item{f_params}{A named list containing arguments for
+  \code{\link{change_f}} .}
 
-  \item{index_params}{A named list containing all the
-  \code{\link{sample_index}} options.}
+  \item{index_params}{A named list containing arguments for
+  \code{\link{sample_index}}.}
 
-  \item{lcomp_params}{A named list containing all the
-  \code{\link{sample_lcomp}} options.}
+  \item{lcomp_params}{A named list containing arguments for
+  \code{\link{sample_lcomp}}.}
 
-  \item{agecomp_params}{A named list containing all the
-  \code{\link{sample_agecomp}} options.}
+  \item{agecomp_params}{A named list containing arguments
+  for \code{\link{sample_agecomp}}.}
 
-  \item{estim_params}{A named list containing all the
-  \code{\link{change_e}} options.}
+  \item{calcomp_params}{A named list containing arguments
+  for \code{\link{sample_calcomp}}, for conditional
+  age-at-length data.}
 
-  \item{tv_params}{A named list containing all the
-  \code{\link{change_tv}} (time-varying) options.}
+  \item{wtatage_params}{A named list containing arguments
+  for \code{\link{sample_wtatage}}, for empirical
+  weight-at-age data.}
+
+  \item{mlacomp_params}{A named list containing arguments
+  for \code{\link{sample_mlacomp}}, for mean length-at-age
+  data.}
+
+  \item{estim_params}{A named list containing arguments for
+  \code{\link{change_e}}.}
+
+  \item{tv_params}{A named list containing arguments for
+  \code{\link{change_tv}} (time-varying).}
 
   \item{om_dir}{The directory with the operating model you
   want to copy and use for the specified simulations.}
@@ -40,14 +53,17 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   \item{em_dir}{The directory with the estimation model you
   want to copy and use for the specified simulations.}
 
-  \item{retro_params}{A named list containing all the
-  \code{\link{change_retro}} options.}
+  \item{retro_params}{A named list containing arguments for
+  \code{\link{change_retro}}.}
 
-  \item{tc_params}{A named list containing all the
-  \code{\link{change_tail_compression}} options.}
+  \item{tc_params}{A named list containing arguments for
+  \code{\link{change_tail_compression}}.}
 
-  \item{lc_params}{A named list containing all of the
-  \code{\link{change_lcomp_constant}} options.}
+  \item{bin_params}{A named list containing arguments for
+  \code{\link{change_bin}}.}
+
+  \item{lc_params}{A named list containing arguments for
+  \code{\link{change_lcomp_constant}}.}
 
   \item{user_recdevs}{An optional matrix of recruitment
   deviations to replace the recruitment deviations built

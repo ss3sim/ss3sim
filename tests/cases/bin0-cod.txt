@@ -1,0 +1,2 @@
+bin_vector; list("len" = seq(10,180,2), "age" = 2:15, "cal" = 15:30)
+type; c("len", "age", "cal", "mla")

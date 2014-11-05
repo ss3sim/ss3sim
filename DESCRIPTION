@@ -10,11 +10,14 @@ Authors@R: c(person("Sean", "Anderson", email =
     person("Kotaro", "Ono", role = "aut"),
     person("Juan", "Valero", role = "aut"),
     person("Curry", "Cunningham", role = "aut"),
+    person("Allan", "Hicks", role = "ctb"),
     person("Felipe", "Hurtado-Ferro", role = "aut"),
+    person("Peter", "Kuriyama", role = "ctb"),
     person("Roberto", "Licandeo", role = "aut"),
     person("Carey", "McGilliard", role = "aut"),
     person("Melissa", "Muradian", role = "ctb"),
     person("Merrill", "Rudd", role = "ctb"),
+    person("Christine", "Stawitz", role = "ctb"),
     person("Cody", "Szuwalski", role = "aut"),
     person("Katyana", "Vert-pre", role = "aut"),
     person("Athol", "Whitten", role = "aut"))
@@ -36,4 +39,5 @@ Imports:
     gtools (>= 2.7.1),
     lubridate (>= 1.3.0),
     reshape2 (>= 1.2.2),
-    ggplot2
+    ggplot2 (>= 1.0.0),
+    bbmle (>= 1.0.17)

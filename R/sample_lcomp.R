@@ -12,8 +12,10 @@
 #' @param lengthbin_vector Depreciated argument. Does nothing and will be
 #'   removed in a future major version update. Instead, see
 #'   \code{change_bin}.
+#' @template bin-vector
 #' @template casefile-footnote
 #' @template sampling-return
+#' @importFrom r4ss SS_writedat
 #'
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
@@ -31,6 +33,7 @@
 #'                     years=list(seq(1994, 2012, by=2),
 #'                         2003:2012), write_file = FALSE)
 #'
+#' \donttest{
 #' ## Plot distributions for a particular year to compare multinomial
 #' ## vs. overdispersed Dirichlet
 #' temp.list <- temp.list2 <- list()
@@ -57,12 +60,14 @@
 #' temp <- as.numeric(subset(infile$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
 #' points(temp/sum(temp), pch="-", col="red")
 #' par(op)
+#' }
 #'
 #' @export
 #' @seealso \code{\link{sample_agecomp}}
 
 sample_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
-  years, cpar = 1, write_file = TRUE, lengthbin_vector = NULL){
+  years, cpar = 1, write_file = TRUE, lengthbin_vector = NULL,
+  bin_vector = NULL){
   ## The new lcomp is mostly based on the old one so start with that
   lcomp <- infile$lencomp
   ## Check inputs for errors
@@ -146,7 +151,8 @@ sample_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
 
   ## Write the modified file
   if(write_file)
-    r4ss::SS_writedat(datlist = newfile, outfile = outfile, overwrite = T)
+    SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
+                verbose = FALSE)
   return(invisible(newcomp.final))
 }
 

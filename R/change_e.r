@@ -104,6 +104,59 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
   }
   #Read in the ctl file for the estimation model
   ss3.ctl <- readLines(ctl_file_in)
+  #Run external estimator for growth if needed
+  if(any(grepl("change_e_vbgf", par_int))) {
+    data <- read.csv("vbgf_info.csv", header = TRUE)[, -1]
+    data.all <- r4ss::SS_readdat(dat_file_in, verbose = FALSE)
+    if(!"MeanSize_at_Age_obs" %in% names(data.all)) {
+      stop("Error in change_e while computing external growth estimates: dat file does not contain mean size-at-age data.")
+    }
+    true.cv <- unlist(strsplit(grep("CV_young", ss3.ctl, value = TRUE), " "))
+    true.cv <- as.numeric(true.cv[-(which(true.cv == ""))][3])
+  #Get start values
+    parsmatch <- data.frame("true" = c("L_at_Amin_Fem_GP_1", "L_at_Amax_Fem_GP_1",
+                                       "VonBert_K_Fem_GP_1", "CV_young_Fem_GP_1",
+                                       "CV_old_Fem_GP_1"),
+                            "change_e_vbgf" = c("L1", "L2", "K", "cv.young", "cv.old"))
+    pars <- r4ss::SS_parlines(ctl_file_in, verbose = FALSE)
+    start.pars <- sapply(parsmatch$true, function(x) {
+      # On 20141031 SA changed the following from subset() to avoid R CMD check warnings:
+      # temp <- subset(pars, Label == x, select = INIT)
+      temp <- pars[pars$Label == x, ]["INIT"]
+      names(temp) <- parsmatch$change_e_vbgf[substitute(x)[[3]]]
+      return(temp)
+      })
+    limitages <- list(a3 = grep("Growth_Age_for_L1", ss3.ctl, value = TRUE),
+                      #A = grep("Growth_Age_for_L2", ss3.ctl, value = TRUE))
+                       A = as.numeric(gsub("N_a", "", rev(colnames(data.all$MeanSize_at_Age_obs))[1])))
+    limitages[1] <- lapply(limitages[1], function(x) {
+      temp <- unlist(strsplit(x, split = " "))
+      as.numeric(temp[which(nchar(temp) > 0)][1])
+      })
+
+    change_e_vbgf <-
+      sample_fit_vbgf(length.data = data, start.L1 = start.pars$L1,
+        start.L2 = start.pars$L2, start.k = start.pars$K,
+        start.cv.young = start.pars$cv.young, start.cv.old = start.pars$cv.old,  a3 = limitages$a3, A = limitages$A)
+    #TODO: do something if the estimation routine fails
+    #Get par estimates and append them to par_name par_int and par_phase
+    changeinits <- which(par_int == "change_e_vbgf")
+    ss3names <- par_name[changeinits]
+    #This is if the output is parameter names
+    par_int[changeinits] <- as.numeric(unlist(change_e_vbgf[
+      match(parsmatch$change_e_vbgf[sapply(ss3names, grep, parsmatch$true)],
+            names(change_e_vbgf))]))
+
+      par_int <- sapply(par_int, function(x) {
+        if(!is.na(x)) {as.numeric(x)
+        }else{x}
+        })
+
+    ####TODO: remove next three lines once sample function is written
+    data.all$MeanSize_at_Age_obs <- NULL
+    data.all$N_MeanSize_at_Age_obs <- 0
+    r4ss::SS_writedat(data.all, dat_file_in, verbose = FALSE, overwrite = TRUE)
+  }
   # Determine how many genders the model has
   gen <- grep("NatM", ss3.ctl, value = TRUE)
   male <- TRUE %in% grepl("Mal", gen)
@@ -237,8 +290,11 @@ changeMe <- function(grepChar, intVal, phaseVal, ctlIn = ss3.ctl) {
   grepChar_value <- unlist(strsplit(ss3.ctl[grepChar_line], split = " "))
   # remove white space
   grepChar_value <- grepChar_value[which(nchar(grepChar_value) > 0)]
-  if(!is.na(intVal)) grepChar_value[3] <- intVal
-   		    if(as.numeric(grepChar_value[3]) > as.numeric(grepChar_value[2])) grepChar_value[2] <- intVal*1.5
+  if(!is.na(intVal)) {
+    if(class(intVal) == "character") intVal <- as.numeric(intVal)
+    grepChar_value[3] <- intVal
+  }
+  	    if(as.numeric(grepChar_value[3]) > as.numeric(grepChar_value[2])) grepChar_value[2] <- intVal*1.5
  		    if(as.numeric(grepChar_value[3]) < as.numeric(grepChar_value[1])) grepChar_value[1] <- intVal*.5
   if(!is.na(phaseVal)) grepChar_value[7] <- phaseVal
   ss3.ctl[grepChar_line] <- paste(grepChar_value, collapse = " ")

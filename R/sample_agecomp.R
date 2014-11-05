@@ -12,9 +12,17 @@
 #' @param agebin_vector Depreciated argument. Does nothing and will be
 #'   removed in a future major version update. Instead, see
 #'   \code{change_bin}.
+#' @template bin-vector
+#' @param keep_conditional A logical if conditional age-at-length data
+#'   should be kept or removed entirely from the \code{.dat} file.
+#'   \code{sample_agecomp} only works on the age composition data
+#'   and not on the conditional age-at-length data. To sample the
+#'   conditional data set \code{keep_conditional} to \code{TRUE}
+#'   and use \code{\link{sample_calcomp}}.
 #'
 #' @template sampling-return
 #' @template casefile-footnote
+#' @importFrom r4ss SS_writedat
 #'
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
@@ -37,6 +45,7 @@
 #'                       years=list(seq(1994, 2012, by=2),
 #'                           2003:2012), write_file=FALSE)
 #'
+#' \donttest{
 #' ## Run three  cases showing Multinomial, Dirichlet(1) and over-dispersed
 #' ## Dirichlet for different levels of sample sizes
 #' op <- par(mfrow = c(1,3))
@@ -66,10 +75,12 @@
 #'     lines((0:15), true, col=4, lwd=2)
 #' }
 #' par(op)
+#' }
 #' @seealso \code{\link{sample_lcomp}}
 #' @export
 sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
-                           years, cpar=1, agebin_vector=NULL, write_file=TRUE){
+                           years, cpar=1, agebin_vector=NULL, write_file=TRUE,
+                           keep_conditional = TRUE, bin_vector = NULL){
     ## The new agecomp is mostly based on the old one so start with
     ## that
     agecomp <- infile$agecomp
@@ -100,6 +111,10 @@ sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
         }
     }
     ## End input checks
+
+    ## Split the conditional data from the age data
+    conditional_data <- agecomp[agecomp$Lbin_lo >= 0, ]
+    agecomp <- agecomp[agecomp$Lbin_lo < 0, ]
 
     ## Resample from the age data
     ## The general approach here is to loop through each row to keep
@@ -146,19 +161,41 @@ sample_agecomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
             }
         }
     }
-    ## Combine new rows together into one data.frame
-    if(Nfleets>0) newcomp.final <- do.call(rbind, newcomp.list)
-    if(Nfleets==0) newcomp.final = data.frame("#")
 
-    ## Build the new dat file
+    ## Combine back together into final data frame with the different data
+    ## types
     newfile <- infile
-    newfile$agecomp <- newcomp.final
-    if(Nfleets>0) newfile$N_agecomp <- nrow(newcomp.final)
-    if(Nfleets==0) newfile$N_agecomp <- 0
+    if(Nfleets > 0){
+        newcomp.final <- do.call(rbind, newcomp.list)
+        ## Case with both types
+        if(nrow(conditional_data) > 0){
+            newcomp.final <- rbind(newcomp.final, conditional_data)
+            newfile$agecomp <- newcomp.final
+            newfile$N_agecomp <- nrow(newcomp.final)
+
+        } else { ## case with only age data
+            newfile$agecomp <- newcomp.final
+            newfile$N_agecomp <- nrow(newcomp.final)
+             }
+    } else {
+        ## Case with only conditional data
+        if(nrow(conditional_data) > 0){
+            newcomp.final <- conditional_data
+            newfile$agecomp <- newcomp.final
+            newfile$N_agecomp <- nrow(newcomp.final)
+
+        } else {
+            ## case with no data of either type
+            newcomp.final <- data.frame("#")
+            newfile$agecomp <- newcomp.final
+            newfile$N_agecomp <- 0
+        }
+    }
 
     ## Write the modified file
     if(write_file)
-        r4ss::SS_writedat(datlist = newfile, outfile = outfile, overwrite = T)
+        SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
+                    verbose = FALSE)
     return(invisible(newcomp.final))
 }
 

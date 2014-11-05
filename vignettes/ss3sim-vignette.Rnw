@@ -20,6 +20,7 @@
 %\usepackage{appendix}
 \usepackage[round]{natbib}
 \bibpunct{(}{)}{;}{a}{}{;}
+\usepackage{booktabs}
 
 \textheight 20.5cm
 
@@ -314,6 +315,35 @@ years; 1913:2012
 years_alter; 1913:2012
 fvals; c(rep(0, 25), rep(0.114, 75))
 \end{verbatim}
+
+\subsection{Case file names}
+
+\begin{table}[ht]
+\centering
+\caption{Function names and associated case files. Case file names are
+given as the prefix. For example a case file for \texttt{sample\_index}
+might be \texttt{index0-cod.txt}.}
+\smallskip
+\begin{tabular}{lll}
+  \toprule
+  \pkg{ss3sim} function & Case file name & Mandatory? \\
+  \midrule
+  \texttt{change\_f()} & \texttt{F} & Yes \\
+  \texttt{change\_e()} & \texttt{R} & Yes \\
+  \texttt{sample\_index()} & \texttt{index} & Yes \\
+  \texttt{sample\_lcomp()} & \texttt{lcomp} & Yes \\
+  \texttt{sample\_agecomp()} & \texttt{agecomp} & Yes \\
+  \texttt{change\_tv()} & anything, see below & No \\
+  \texttt{change\_tail\_compression()} & \texttt{tail\_compression} & No \\
+  \texttt{change\_lcomp\_constant()} & \texttt{lcomp\_constant} & No \\
+  \texttt{sample\_calcomp()} & \texttt{calcomp} & No \\
+  \texttt{sample\_wtatage()} & \texttt{wtatage} & No \\
+   \bottomrule
+\end{tabular}
+\end{table}
+
+\texttt{change\_tv()} can take any other case file name, as long as the
+first line is \texttt{function\_type; change\_tv}.
 
 \subsection{Bias adjustment}
 
@@ -1434,7 +1464,7 @@ And then run our simulation on four cores simultaneously
 by setting \texttt{parallel = TRUE}:
 
 <<parallel-three, eval=FALSE>>=
-run_ss3sim(iterations = 1:100, scenarios =
+run_ss3sim(iterations = 1, scenarios =
   c("D1-E0-F0-R0-M0-cod",
     "D2-E0-F0-R0-M0-cod",
     "D1-E1-F0-R0-M0-cod",
@@ -1451,6 +1481,27 @@ from \pkg{ss3sim} as the simulations run.
 On a 2.27 GHz Intel Xeon quad-core server running Ubuntu 10.04,
 this example ran 1.9 times faster on two cores than on a single core,
 and 3.2 times faster on four cores.
+
+Alternatively, you can run iterations in parallel. This is useful, for
+example, if you want to run a single scenario as quickly as possible.
+To do this, just set \texttt{parallel\_iterations = TRUE} as well
+as setting \texttt{parallel = TRUE}. For example:
+
+<<parallel-iterations1, eval=FALSE>>=
+run_ss3sim(iterations = 1:2, scenarios = "D0-E0-F0-R0-M0-cod",
+  case_folder = case_folder, om_dir = om, em_dir = em,
+  parallel = TRUE, parallel_iterations = TRUE)
+@
+
+If you are running bias adjustment iterations, these will be run first in
+serial. The rest of the iterations will be run in parallel:
+
+<<parallel-iterations2, eval=FALSE>>=
+run_ss3sim(iterations = 1:2, scenarios = "D0-E0-F0-R0-M0-cod",
+  case_folder = case_folder, om_dir = om, em_dir = em,
+  parallel = TRUE, parallel_iterations = TRUE, bias_nsim = 2,
+  bias_adjust = TRUE)
+@
 
 %\bibliographystyle{apalike}
 %\bibliography{refs}
