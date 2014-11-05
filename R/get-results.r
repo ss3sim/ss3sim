@@ -16,7 +16,7 @@ calculate_runtime <- function(start_time, end_time) {
     split = " ", fixed = T))[, -(1:2)])
   start <- as.data.frame(t(start))
   end <- as.data.frame(t(end))
-  names(start) <- names(end) <- c("month", "day", "time", "year")
+  names(start) <- names(end) <- c("month", "", "day", "time", "year")
   start.date <- lubridate::ymd_hms(with(start, paste(year,
     month, day, time, sep = "-")))
   end.date <- lubridate::ymd_hms(with(end, paste(year,
