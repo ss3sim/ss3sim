@@ -86,6 +86,24 @@ values. These values are then written to file for the EM.
   will be passed, which may or may not be an appropriate
   value. Other arguments will be ignored if specified.
 }
+\examples{
+temp_path <- file.path(tempdir(), "ss3sim-test")
+dir.create(temp_path, showWarnings = FALSE)
+wd <- getwd()
+setwd(temp_path)
+fdat <- system.file("extdata/models/cod-om/codOM.dat", package = "ss3sim")
+fctl <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
+change_bin(fdat, file_out = "codOM-temp.dat",
+  type = c("mla"),
+  fleet_dat = list("mla" = list(years = list(2000:2012), fleets = 1)),
+  write_file = TRUE)
+out <- sample_mlacomp("codOM-temp.dat", outfile = "ignore.dat", ctlfile = fctl,
+  Nsamp = list(rep(50, 13)), years = list(2000:2012), write_file = FALSE,
+  mean_outfile = NULL)
+out
+unlink("codOM-temp.dat")
+setwd(wd)
+}
 \author{
 Cole Monnahan
 }
