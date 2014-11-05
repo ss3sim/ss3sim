@@ -125,8 +125,8 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
             ts.list[[i]] <- tryCatch(read.csv(ts.file), error=function(e) NA)
             if(all(is.na(scalar.list[[i]]))){flag.na[i] <- 1}
         }
-        scalar.list.out <- scalar.list[-which(flag.na==1)]
-        ts.list.out <- ts.list[-which(flag.na==1)]
+        scalar.list.out <- scalar.list[which(flag.na!=1)]
+        ts.list.out <- ts.list[which(flag.na!=1)]
         ## Combine all scenarios together and save into big final files
         scalar.all <- do.call(plyr::rbind.fill, scalar.list.out)
         scalar.all$ID <- paste(scalar.all$scenario, scalar.all$replicate, sep = "-")
@@ -160,8 +160,8 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         scalar.list[[i]] <- tryCatch(read.csv(scalar.file), error=function(e) NA)
         ts.list[[i]] <- tryCatch(read.csv(ts.file), error=function(e) NA)
     }
-    scalar.list <- scalar.list[-which(is.na(scalar.list))]
-    ts.list <- ts.list[-which(is.na(ts.list))]
+    scalar.list <- scalar.list[which(!is.na(scalar.list))]
+    ts.list <- ts.list[which(!is.na(ts.list))]
     ## Combine all scenarios together and save into big final files
     scalar.all <- do.call(plyr::rbind.fill, scalar.list)
     scalar.all$ID <- paste(scalar.all$scenario, scalar.all$replicate, sep = "-")
