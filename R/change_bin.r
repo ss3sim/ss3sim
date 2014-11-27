@@ -283,3 +283,30 @@ make_fleet_dat <- function(fleet_dat) {
   })
   setNames(dummy_dat_list, names(dat))
 }
+
+## Given sampling arguments, calculate super set of fleets, years, and data
+## types. No documentation for now since not sure it'll be used.
+calculate_data_units <- function(lcomp_params=NULL, agecomp_params=NULL,
+                                 calcomp_params=NULL, mlacomp_params=NULL){
+    sample_args <- list("len"=lcomp_params, "age"=agecomp_params, "cal"=calcomp_params,
+                        "mla"=mlacomp_params)
+    sample_args_null <- vapply(sample_args, is.null, logical(1L))
+    ## Exit if nothing specified to prevent error.
+    if(!any(!sample_args_null)) stop("No data passed: all arguments NULL")
+    ## Get the superset of fleets
+    fleets.all <-
+        as.vector(unlist(lapply(sample_args, function(x) x$fleets)))
+    ## Get the superset of years
+    years.all <-
+        as.vector(unlist(lapply(sample_args, function(x) x$years)))
+    ## Sort them, although might not need to do this?
+    fleets.all <- sort(unique(fleets.all))
+    years.all <- sort(unique(years.all))
+    ## Now figure out which data types need to be in the OM for sampling (but
+    ## not necessarily the EM). For now these are special cases but could be
+    ## different based on different algorithms.
+    types.all <- names(sample_args)[!sample_args_null]
+    if("cal" %in% types.all) types.all <- c(types.all, "len", "age")
+    if("mla" %in% types.all) types.all <- c(types.all, "age")
+    return(list(fleets=fleets.all, years=years.all, types=types.all))
+}
