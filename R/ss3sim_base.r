@@ -34,6 +34,9 @@
 #' \code{\link{change_lcomp_constant}}.
 #' @param bin_params A named list containing arguments for
 #' \code{\link{change_bin}}.
+#' @param call_change_data A boolean of whether to call change_data and
+#' modify the OM at each iteration. Default of TRUE. See the vignette for
+#' further information on why this would be turned off.
 #' @param om_dir The directory with the operating model you want to copy
 #'   and use for the specified simulations.
 #' @param em_dir The directory with the estimation model you want to copy
@@ -173,6 +176,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   wtatage_params=NULL, mlacomp_params=NULL,
   estim_params, tv_params, om_dir, em_dir,
   retro_params = NULL, tc_params = NULL, bin_params = NULL, lc_params = NULL,
+  call_change_data = TRUE,
   user_recdevs = NULL, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
   print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21, ...)
@@ -268,22 +272,19 @@ deviations can lead to biased model results.")
       # the OM one last time. Then we'll sample from the expected values
       # with error.
       sample_args <- list(lcomp_params, agecomp_params, calcomp_params,
-        mlacomp_params, mwa_params = NULL)
-      types <- c("len", "age", "cal", "mla", "mwa")
-      sample_args <- setNames(sample_args, types)
-      sample_args_null <- vapply(sample_args, function(x) {
-        is.null(x$years) & is.null(x$fleets)}, logical(1L))
-      bin_vectors <- setNames(lapply(sample_args, "[[", "bin_vector"), types)
-      bin_vectors <- bin_vectors[!vapply(bin_vectors, is.null, logical(1L))]
-      if (any(!sample_args_null)) {
-        change_bin(
-          file_in    = pastef(sc, i, "om", "ss3.dat"),
-          file_out   = pastef(sc, i, "om", "ss3.dat"),
-          bin_vector = bin_vectors,
-          type       = types[!sample_args_null],
-          fleet_dat  = sample_args,
-          pop_bin    = NULL,
-          write_file = TRUE)
+        mlacomp_params)
+      ## This returns a superset of all years/fleets/data types needed to
+      ## do sampling.
+      data_args <- calculate_data_units(lcomp_params=lcomp_params,
+                           agecomp_params=agecomp_params,
+                           calcomp_params=calcomp_params,
+                           mlacomp_params=mlacomp_params)
+      if (call_change_data) {
+          change_data(file_in = pastef(sc, i, "om", "ss3.dat"),
+                      file_out = pastef(sc, i, "om", "ss3.dat"),
+                      fleets = data_args$fleets, years = data_args$years,
+                      types = data_args$types, age_bins = data_args$age_bins,
+                      len_bins = data_args$len_bins, write_file = TRUE))
       }
 
       # Run the operating model and copy the dat file over
