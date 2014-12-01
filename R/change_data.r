@@ -28,6 +28,10 @@
 #'   at length, \code{"mla"} augmenting the mean length at age data, and
 #'   \code{"mwa"} augmenting the mean weight at age data. Default is
 #'   \code{"len"}.
+#' @param age_bins A numeric vector of age bins to use. If left as
+#'   \code{NULL} then the age bin structure will be taken from the OM.
+#' @param len_bins A numeric vector of length bins to use. If left as
+#'   \code{NULL} then the length bin structure will be taken from the OM.
 #' @param write_file Should the \code{.dat} file be written? The new \code{.dat}
 #'   file will always be returned invisibly by the function. Setting
 #'   \code{write_file = FALSE} can be useful for testing. Note that you must
