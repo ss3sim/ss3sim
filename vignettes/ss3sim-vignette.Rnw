@@ -1170,8 +1170,8 @@ to any sampling function are not \texttt{NULL}:
 \begin{itemize}
 \item If \texttt{sample\_agecomp}, generate age-composition data
 \item If \texttt{sample\_lencomp}, generate length-composition data
-\item If \texttt{sample\_mlacomp}, generate age-composition data
-\item If \texttt{sample\_calcomp}, generate length- and age-composition data
+\item If \texttt{sample\_mlacomp}, generate age-composition data and mean length-at-age data
+\item If \texttt{sample\_calcomp}, generate length- and age-composition data and conditional length-at-age data
 \end{itemize}
 
 Internally, \pkg{ss3sim} uses the function \texttt{calculate\_data\_units}
@@ -1179,7 +1179,7 @@ to generate a superset of all necessary fleet and year combinations.
 The binning structure for any age and length data is taken from the
 values passed to the arguments
 \texttt{len\_bin} and \texttt{age\_bin} in \texttt{ss3sim\_base}.
-If either of these is left set to \texttt{NULL} than the respective bin stucture
+If either of these is left set to \texttt{NULL} than the respective bin structure
 will be taken from the original OM.
 
 \section{Incorporating observation error}
