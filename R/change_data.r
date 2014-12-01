@@ -158,7 +158,7 @@ make_dummy_dat_agecomp<- function(fleets, years, age_bins) {
     dummy_dat <- as.data.frame(do.call('rbind', dummy_dat_list))
     ## Add the dummy data for each data cell
     dummy_df <- data.frame(matrix(1, nrow=nrow(dummy_dat), ncol=length(age_bins)))
-    names(dummy_df) <- paste0("l", age_bins)
+    names(dummy_df) <- paste0("a", age_bins)
     return(invisible(cbind(dummy_dat, dummy_df)))
 }
 
