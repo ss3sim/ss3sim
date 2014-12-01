@@ -284,7 +284,7 @@ deviations can lead to biased model results.")
                       file_out = pastef(sc, i, "om", "ss3.dat"),
                       fleets = data_args$fleets, years = data_args$years,
                       types = data_args$types, age_bins = data_args$age_bins,
-                      len_bins = data_args$len_bins, write_file = TRUE))
+                      len_bins = data_args$len_bins, write_file = TRUE)
       }
 
       # Run the operating model and copy the dat file over
