@@ -79,6 +79,7 @@
 #' print(names(out$lencomp))
 change_data <- function(file_in, file_out, fleets = NULL, years = NULL,
                         types = NULL, age_bins = NULL, len_bins = NULL,
+                        write_file = TRUE) {
 
   types <- match.arg(types, choices = c("len", "age", "cal", "mla", "mwa"),
     several.ok = TRUE)
