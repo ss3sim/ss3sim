@@ -5,13 +5,13 @@ dir.create(temp_path, showWarnings = FALSE)
 wd <- getwd()
 setwd(temp_path)
 
+# TODO fix this test to work now that change_bin is gone:
+
 test_that("sample_mlacomp() works", {
   fdat <- system.file("extdata/models/cod-om/codOM.dat", package = "ss3sim")
   fctl <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
-  change_bin(fdat, file_out = "codOM-temp.dat",
-    type = c("mla"),
-    fleet_dat = list("mla" = list(years = list(2000:2012), fleets = 1)),
-    write_file = TRUE)
+  change_data(fdat, file_out = "codOM-temp.dat",
+    types = c("age", "mla"), fleets = 1, years = list(2000:2012), write_file = TRUE)
   set.seed(123)
   out <- sample_mlacomp("codOM-temp.dat", outfile = "ignore.dat", ctlfile = fctl,
     Nsamp = list(rep(50, 13)), years = list(2000:2012), write_file = FALSE,
