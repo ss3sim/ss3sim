@@ -2,19 +2,19 @@
 #'
 #' \code{change_data} alters the bin structure for the age or length composition
 #' data in an SS operating model. Original data is removed and dummy data is
-#' added at the appropriate bin sizes to the SS \code{.dat} file, causing SS to
-#' record age or length composition data in the appropriate bins when the
-#' operating model is run. Additionally the code will introduce dummy
+#' added at the appropriate bin sizes to the SS \code{.dat} file. This causes SS
+#' to record age or length composition data in the appropriate bins when the
+#' operating model is run. Additionally, \code{change_data} will introduce dummy
 #' conditional length-at-age or size- (weight or length) at-age data to the
-#' \code{.dat} file. For each data type altered, \code{change_data} will add data
-#' in a full factorial manner, working with existing fleets for all years;
+#' \code{.dat} file. For each data type altered, \code{change_data} will add
+#' data in a full factorial manner, working with existing fleets for all years;
 #' potentially adding many rows of data. Currently, \code{.dat} files with
 #' multiple genders cannot be manipulated with \code{change_data}. Use
 #' \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}, and
 #' \code{\link{sample_calcomp}} to reduce the data. It is not intended for an
 #' \pkg{ss3sim} user to use \code{change_data} directly. Instead
-#' \code{change_data} is called internally by \code{\link{ss3sim_base}} based
-#' on arguments to the sampling functions.
+#' \code{change_data} is called internally by \code{\link{ss3sim_base}} based on
+#' arguments to the sampling functions.
 #'
 #' @param file_in A character value giving the location of an SS \code{.dat}
 #'   file to input.
