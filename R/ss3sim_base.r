@@ -32,8 +32,6 @@
 #'   \code{\link{change_tail_compression}}.
 #' @param lc_params A named list containing arguments for
 #'   \code{\link{change_lcomp_constant}}.
-#' @param bin_params A named list containing arguments for
-#'   \code{\link{change_bin}}.
 #' @param len_bins A vector of bins to record length data at from the OM. If
 #'   \code{NULL} then the bins in the original OM will be used.
 #' @param age_bins A vector of bins to record age data at from the OM. If
@@ -179,7 +177,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   index_params, lcomp_params, agecomp_params, calcomp_params=NULL,
   wtatage_params=NULL, mlacomp_params=NULL,
   estim_params, tv_params, om_dir, em_dir,
-  retro_params = NULL, tc_params = NULL, bin_params = NULL, lc_params = NULL,
+  retro_params = NULL, tc_params = NULL, lc_params = NULL,
   len_bins = NULL, age_bins = NULL, call_change_data = TRUE,
   user_recdevs = NULL, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
