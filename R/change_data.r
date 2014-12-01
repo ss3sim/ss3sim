@@ -28,17 +28,6 @@
 #'   at length, \code{"mla"} augmenting the mean length at age data, and
 #'   \code{"mwa"} augmenting the mean weight at age data. Default is
 #'   \code{"len"}.
-#' @param len_bins A named list of vectors. Named elements provide the desired
-#'   bin structure for each data \code{types}. If \code{types = "len"} or
-#'   \code{types = "age"} \code{len_bins} should be a vector of new bins. For
-#'   other types in \code{len_bins} the bins are determined from the current
-#'   or specified length and age bins. If names are forgotten, list elements
-#'   will be named according to the order of entries in \code{types}.
-#' @param fleet_dat A named list of vectors giving the desired fleets and years
-#'   for each data type. The names of the list elements should correspond to the
-#'   \code{types} and each present element should have \code{$years} and
-#'   \code{$fleets} giving the vector of desired years and fleets. Named
-#'   elements only need to be specified for those required by \code{types}.
 #' @param write_file Should the \code{.dat} file be written? The new \code{.dat}
 #'   file will always be returned invisibly by the function. Setting
 #'   \code{write_file = FALSE} can be useful for testing. Note that you must
@@ -46,14 +35,15 @@
 #'   set to any arbitrary value (such as \code{NULL}) if \code{write_file =
 #'   FALSE}.
 #'
-#' @details Within the \code{.dat} file, the conditional age-at-length data is
-#'   stored in the same matrix as the age composition data. Thus, it is
-#'   necessary that the conditional age-at-length data use the same binning
-#'   structure as the age composition data. If \code{types = "caa"} and not
-#'   \code{types = c("age", "caa")} the function will add conditional
-#'   age-at-length using the binning structure of the current \code{.dat} file.
-#'   Also note that if \code{types = c("mla", "mwa")} no entries are currently
-#'   necessary in the \code{len_bins}.
+# # TODO: do we need any of this? - SA
+# @details Within the \code{.dat} file, the conditional age-at-length data is
+#   stored in the same matrix as the age composition data. Thus, it is
+#   necessary that the conditional age-at-length data use the same binning
+#   structure as the age composition data. If \code{types = "caa"} and not
+#   \code{types = c("age", "caa")} the function will add conditional
+#   age-at-length using the binning structure of the current \code{.dat} file.
+#   Also note that if \code{types = c("mla", "mwa")} no entries are currently
+#   necessary in the \code{len_bins}.
 #'
 #' @importFrom r4ss SS_readdat SS_writedat
 #' @export
