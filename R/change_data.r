@@ -59,7 +59,7 @@
 #' fleets <- 1:2
 #' years <- c(5,10,15)
 #' types <- c("len", "age")
-#' file_in <- paste0(d, "models/cod-om/codOM.dat")
+#' file_in <- paste0(d, "/models/cod-om/codOM.dat")
 #' ## Basic test with just length data, default bins
 #' out <- change_data(file_in,"test2.dat", types="len", years=years,
 #'                    fleets=fleets, write_file=FALSE)
