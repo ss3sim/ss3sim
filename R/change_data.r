@@ -136,7 +136,7 @@ make_dummy_dat_lencomp <- function(fleets, years, len_bins) {
     ## expand dummy data across all types:
     dummy_dat_list <- lapply(fleets, function(fleet) {
         data.frame("Yr"   = years, "Seas" = 1, "Flt"  = fleets[fleet],
-                   "Gender" = 0, "Part"   = 0, "Nsamp" = 0,
+                   "Gender" = 0, "Part"   = 0, "Nsamp" = 10,
                    stringsAsFactors = FALSE)})
     dummy_dat <- as.data.frame(do.call('rbind', dummy_dat_list))
     ## Add the dummy data for each data cell
@@ -149,8 +149,8 @@ make_dummy_dat_agecomp<- function(fleets, years, age_bins) {
     ## expand dummy data across all types:
     dummy_dat_list <- lapply(fleets, function(fleet)
         data.frame("Yr"   = years, "Seas" = 1, "Flt"  = fleets[fleet], "Gender" = 0,
-                   "Part"   = 0, "AgeErr"=0, "Lbin_lo"=-1, "Lbin_hi"=-1,
-                   "Nsamp" = 0, stringsAsFactors = FALSE))
+                   "Part"   = 0, "AgeErr"=1, "Lbin_lo"=-1, "Lbin_hi"=-1,
+                   "Nsamp" = 10, stringsAsFactors = FALSE))
     dummy_dat <- as.data.frame(do.call('rbind', dummy_dat_list))
     ## Add the dummy data for each data cell
     dummy_df <- data.frame(matrix(1, nrow=nrow(dummy_dat), ncol=length(age_bins)))
