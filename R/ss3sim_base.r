@@ -28,7 +28,6 @@
 #'   \code{\link{change_retro}}.
 #' @param estim_params A named list containing arguments for
 #'   \code{\link{change_e}}.
-#'
 #' @param tc_params A named list containing arguments for
 #'   \code{\link{change_tail_compression}}.
 #' @param lc_params A named list containing arguments for
