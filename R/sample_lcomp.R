@@ -1,8 +1,8 @@
 #' Sample length compositions from expected values
 #'
 #' Take a \code{data.SS_new} file containing expected values and sample to
-#' create observed length compositions which are then written to file for use
-#' by the estimation model.
+#' create observed length compositions which are then written to file for use by
+#' the estimation model.
 #'
 #' @author Cole Monnahan and Kotaro Ono; modified from a version by Roberto
 #'   Licandeo and Felipe Hurtado-Ferro
@@ -10,9 +10,9 @@
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
 #' @param lengthbin_vector Depreciated argument. Does nothing and will be
-#'   removed in a future major version update. Instead, see
-#'   \code{change_bin}.
-#' @template bin-vector
+#'   removed in a future major version update. Instead, see the \code{len_bins}
+#'   argument in \code{\link{ss3sim_base}}, which uses \code{\link{change_data}}
+#'   internally.
 #' @template casefile-footnote
 #' @template sampling-return
 #' @importFrom r4ss SS_writedat

@@ -4,8 +4,7 @@
 \title{Sample age compositions from expected values}
 \usage{
 sample_agecomp(infile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
-  agebin_vector = NULL, write_file = TRUE, keep_conditional = TRUE,
-  bin_vector = NULL)
+  agebin_vector = NULL, write_file = TRUE, keep_conditional = TRUE)
 }
 \arguments{
   \item{infile}{An SS data object as read in from
@@ -42,7 +41,9 @@ sample_agecomp(infile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
 
   \item{agebin_vector}{Depreciated argument. Does nothing
   and will be removed in a future major version update.
-  Instead, see \code{change_bin}.}
+  Instead, see the \code{age_bins} argument in
+  \code{\link{ss3sim_base}}, which uses
+  \code{\link{change_data}} internally.}
 
   \item{write_file}{A switch for whether to write
   \code{outfile} to disk. Can be turned off to speed up
@@ -56,14 +57,6 @@ sample_agecomp(infile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
   conditional age-at-length data. To sample the conditional
   data set \code{keep_conditional} to \code{TRUE} and use
   \code{\link{sample_calcomp}}.}
-
-  \item{bin_vector}{A numeric vector giving the desired bin
-  structure. This argument does not affect this sampling
-  function itself. Instead, it is here so it can be passed
-  on to \code{\link{change_bin}} from within
-  \code{\link{ss3sim_base}}. If left as \code{NULL} then
-  the bins will not be altered from what is in the SS3
-  operating model \code{.dat} file.}
 }
 \value{
 A modified \code{.dat} file if \code{write_file=TRUE}. A
