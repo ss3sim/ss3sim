@@ -13,16 +13,18 @@ change_data(file_in, file_out, fleets = NULL, years = NULL, types = NULL,
   \item{file_out}{A character value giving the location of
   an SS \code{.dat} file to output.}
 
+  \item{fleets}{A numeric vector of fleets}
+
+  \item{years}{A numeric vector of years}
+
   \item{types}{A vector that can take the one or all of the
   following entries: \code{"len"}, \code{"age"},
-  \code{"cal"}, \code{"mla"}, \code{"mwa"}. \code{types}
-  controls what data structures the function acts on, with
-  \code{"len"} augmenting the length composition data,
-  \code{"age"} augmenting the age composition, \code{"cal"}
-  augmenting the conditional age at length, \code{"mla"}
-  augmenting the mean length at age data, and \code{"mwa"}
-  augmenting the mean weight at age data. Default is
-  \code{"len"}.}
+  \code{"cal"}, \code{"mla"}. \code{types} controls what
+  data structures the function acts on, with \code{"len"}
+  augmenting the length composition data, \code{"age"}
+  augmenting the age composition, \code{"cal"} augmenting
+  the conditional age at length, and \code{"mla"}
+  augmenting the mean length at age data.}
 
   \item{age_bins}{A numeric vector of age bins to use. If
   left as \code{NULL} then the age bin structure will be
