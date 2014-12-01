@@ -39,9 +39,6 @@
 #'   \code{types} and each present element should have \code{$years} and
 #'   \code{$fleets} giving the vector of desired years and fleets. Named
 #'   elements only need to be specified for those required by \code{types}.
-#' @param pop_bin A positive real number for the population bin width. This
-#'   option only works if \code{"lbin_method"} is set to \code{"2"} in SS3.
-#'   Default is \code{pop_bin = NULL} which leaves the original value.
 #' @param write_file Should the \code{.dat} file be written? The new \code{.dat}
 #'   file will always be returned invisibly by the function. Setting
 #'   \code{write_file = FALSE} can be useful for testing. Note that you must
@@ -88,7 +85,6 @@
 #' print(names(out$lencomp))
 change_data <- function(file_in, file_out, fleets = NULL, years = NULL,
                         types = NULL, age_bins = NULL, len_bins = NULL,
-                        pop_bin = NULL, write_file = TRUE) {
 
   types <- match.arg(types, choices = c("len", "age", "cal", "mla", "mwa"),
     several.ok = TRUE)
