@@ -1144,6 +1144,44 @@ paste0(d, "/models")
   managers for inclusion in future versions.
 \end{itemize}
 
+\section{Adjusting the available OM data dynamically}
+\label{sec:data}
+\pkg{ss3sim} can dynamically adjust the type of data available
+from the OM for sampling.
+For example, you might wish to sample conditional length-at-age
+in a certain bin structure for certain years and fleets.
+To do that, the OM will need to generate length and age data
+for appropriate years and fleets at a sufficiently fine bin size.
+However, the idea behind \pkg{ss3sim} is to avoid having to hand code
+many different versions of an SS3 OM that have only minor differences.
+One way around this would be to write an OM that included
+all possible data types for all possible years
+at an extremely fine bin structure.
+But, this can substantially slow down how quickly the OM runs in SS3.
+Therefore, we made \pkg{ss3sim} capable
+of dynamically modifying the OM to include
+just the data types and quantities that are needed
+based on arguments that are
+passed to the sampling functions (e.g. \texttt{sample\_agecomp}).
+
+We apply the following rules if the arguments
+to any sampling function are not \texttt{NULL}:
+
+\begin{itemize}
+\item If \texttt{sample\_agecomp}, generate age-composition data
+\item If \texttt{sample\_lencomp}, generate length-composition data
+\item If \texttt{sample\_mlacomp}, generate age-composition data
+\item If \texttt{sample\_calcomp}, generate length- and age-composition data
+\end{itemize}
+
+Internally, \pkg{ss3sim} uses the function \texttt{calculate\_data\_units}
+to generate a superset of all necessary fleet and year combinations.
+The binning structure for any age and length data is taken from the
+values passed to the arguments
+\texttt{len\_bin} and \texttt{age\_bin} in \texttt{ss3sim\_base}.
+If either of these is left set to \texttt{NULL} than the respective bin stucture
+will be taken from the original OM.
+
 \section{Incorporating observation error}
 \label{sec:obs-error}
 Observation error (i.e.\ uncertainty arising from sampling the
