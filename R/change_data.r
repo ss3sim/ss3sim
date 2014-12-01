@@ -123,7 +123,6 @@ change_data <- function(file_in, file_out, fleets = NULL, years = NULL,
     SS_writedat(datlist = datfile, outfile = file_out, overwrite = TRUE,
       verbose = FALSE)
   }
-
   invisible(datfile)
 }
 
@@ -144,7 +143,7 @@ make_dummy_dat_agecomp<- function(fleets, years, age_bins) {
     ## expand dummy data across all types:
     dummy_dat_list <- lapply(fleets, function(fleet)
         data.frame("Yr"   = years, "Seas" = 1, "Flt"  = fleets[fleet], "Gender" = 0,
-                   "Part"   = 0, "Ageerr"=0, "Lbin_lo"=-1, "Lbin_hi"=-1,
+                   "Part"   = 0, "AgeErr"=0, "Lbin_lo"=-1, "Lbin_hi"=-1,
                    "Nsamp" = 0, stringsAsFactors = FALSE))
     dummy_dat <- as.data.frame(do.call('rbind', dummy_dat_list))
     ## Add the dummy data for each data cell
