@@ -20,14 +20,15 @@
 #'   file to input.
 #' @param file_out A character value giving the location of an SS \code{.dat}
 #'   file to output.
+#' @param fleets A numeric vector of fleets
+#' @param years A numeric vector of years
+# TODO: as coded, types only does anything if len or age:
 #' @param types A vector that can take the one or all of the following entries:
-#'   \code{"len"}, \code{"age"}, \code{"cal"}, \code{"mla"}, \code{"mwa"}.
+#'   \code{"len"}, \code{"age"}, \code{"cal"}, \code{"mla"}.
 #'   \code{types} controls what data structures the function acts on, with
 #'   \code{"len"} augmenting the length composition data, \code{"age"}
 #'   augmenting the age composition, \code{"cal"} augmenting the conditional age
-#'   at length, \code{"mla"} augmenting the mean length at age data, and
-#'   \code{"mwa"} augmenting the mean weight at age data. Default is
-#'   \code{"len"}.
+#'   at length, and \code{"mla"} augmenting the mean length at age data.
 #' @param age_bins A numeric vector of age bins to use. If left as
 #'   \code{NULL} then the age bin structure will be taken from the OM.
 #' @param len_bins A numeric vector of length bins to use. If left as
