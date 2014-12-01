@@ -41,6 +41,10 @@
 #'   and use for the specified simulations.
 #' @param em_dir The directory with the estimation model you want to copy
 #'   and use for the specified simulations.
+#' @param len_bins A vector of bins to record length data at from the OM. If
+#'   \code{NULL} then the bins in the original OM will be used.
+#' @param age_bins A vector of bins to record age data at from the OM. If
+#'   \code{NULL} then the bins in the original OM will be used.
 #' @template user_recdevs
 #' @param bias_adjust Run bias adjustment first? See \code{\link{run_bias_ss3}}.
 #' @param bias_nsim If bias adjustment is run, how many simulations should the
@@ -176,7 +180,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   wtatage_params=NULL, mlacomp_params=NULL,
   estim_params, tv_params, om_dir, em_dir,
   retro_params = NULL, tc_params = NULL, bin_params = NULL, lc_params = NULL,
-  call_change_data = TRUE,
+  len_bins = NULL, age_bins = NULL, call_change_data = TRUE,
   user_recdevs = NULL, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
   print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21, ...)
@@ -283,8 +287,8 @@ deviations can lead to biased model results.")
           change_data(file_in = pastef(sc, i, "om", "ss3.dat"),
                       file_out = pastef(sc, i, "om", "ss3.dat"),
                       fleets = data_args$fleets, years = data_args$years,
-                      types = data_args$types, age_bins = data_args$age_bins,
-                      len_bins = data_args$len_bins, write_file = TRUE)
+                      types = data_args$types, age_bins = age_bins,
+                      len_bins = len_bins, write_file = TRUE)
       }
 
       # Run the operating model and copy the dat file over
