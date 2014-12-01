@@ -118,6 +118,12 @@ change_data <- function(file_in, file_out, fleets = NULL, years = NULL,
       datfile$agebin_vector <- age_bins
       datfile$N_agecomp <- nrow(datfile$agecomp)
   }
+  if ("mla" %in% types) {
+      datfile$MeanSize_at_Age_obs <- make_dummy_dat_agecomp(fleets = fleets,
+        years = years, age_bins = age_bins)
+      datfile$MeanSize_at_Age_obs$AgeErr <- -1
+      datfile$N_MeanSize_at_Age_obs <- nrow(datfile$MeanSize_at_Age_obs)
+  }
 
   if (write_file) {
     SS_writedat(datlist = datfile, outfile = file_out, overwrite = TRUE,
