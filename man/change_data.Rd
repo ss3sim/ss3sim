@@ -4,7 +4,7 @@
 \title{Change the data that is available as output from an SS operating model.}
 \usage{
 change_data(file_in, file_out, fleets = NULL, years = NULL, types = NULL,
-  age_bins = NULL, len_bins = NULL, pop_bin = NULL, write_file = TRUE)
+  age_bins = NULL, len_bins = NULL, write_file = TRUE)
 }
 \arguments{
   \item{file_in}{A character value giving the location of
@@ -24,19 +24,13 @@ change_data(file_in, file_out, fleets = NULL, years = NULL, types = NULL,
   augmenting the mean weight at age data. Default is
   \code{"len"}.}
 
-  \item{len_bins}{A named list of vectors. Named elements
-  provide the desired bin structure for each data
-  \code{types}. If \code{types = "len"} or \code{types =
-  "age"} \code{len_bins} should be a vector of new bins.
-  For other types in \code{len_bins} the bins are
-  determined from the current or specified length and age
-  bins. If names are forgotten, list elements will be named
-  according to the order of entries in \code{types}.}
+  \item{age_bins}{A numeric vector of age bins to use. If
+  left as \code{NULL} then the age bin structure will be
+  taken from the OM.}
 
-  \item{pop_bin}{A positive real number for the population
-  bin width. This option only works if \code{"lbin_method"}
-  is set to \code{"2"} in SS3. Default is \code{pop_bin =
-  NULL} which leaves the original value.}
+  \item{len_bins}{A numeric vector of length bins to use.
+  If left as \code{NULL} then the length bin structure will
+  be taken from the OM.}
 
   \item{write_file}{Should the \code{.dat} file be written?
   The new \code{.dat} file will always be returned
@@ -45,14 +39,6 @@ change_data(file_in, file_out, fleets = NULL, years = NULL, types = NULL,
   supply a value to the argument \code{file_out}, but this
   argument can be set to any arbitrary value (such as
   \code{NULL}) if \code{write_file = FALSE}.}
-
-  \item{fleet_dat}{A named list of vectors giving the
-  desired fleets and years for each data type. The names of
-  the list elements should correspond to the \code{types}
-  and each present element should have \code{$years} and
-  \code{$fleets} giving the vector of desired years and
-  fleets. Named elements only need to be specified for
-  those required by \code{types}.}
 }
 \description{
 \code{change_data} alters the bin structure for the age or
@@ -76,25 +62,13 @@ not intended for an \pkg{ss3sim} user to use
 called internally by \code{\link{ss3sim_base}} based on
 arguments to the sampling functions.
 }
-\details{
-Within the \code{.dat} file, the conditional age-at-length
-data is stored in the same matrix as the age composition
-data. Thus, it is necessary that the conditional
-age-at-length data use the same binning structure as the
-age composition data. If \code{types = "caa"} and not
-\code{types = c("age", "caa")} the function will add
-conditional age-at-length using the binning structure of
-the current \code{.dat} file.  Also note that if
-\code{types = c("mla", "mwa")} no entries are currently
-necessary in the \code{len_bins}.
-}
 \examples{
 ## These examples are in development still and untested
 d <- system.file("extdata", package = "ss3sim")
 fleets <- 1:2
 years <- c(5,10,15)
 types <- c("len", "age")
-file_in <- paste0(d, "models/cod-om/codOM.dat")
+file_in <- paste0(d, "/models/cod-om/codOM.dat")
 ## Basic test with just length data, default bins
 out <- change_data(file_in,"test2.dat", types="len", years=years,
                    fleets=fleets, write_file=FALSE)
