@@ -188,8 +188,11 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
   # therefore we need to add subst_r to the .export list
   # for foreach to work on Windows:
 
-  x <- NULL # to satisfy R CMD check in the foreach() call below
-  it_ <- NULL # to satisfy R CMD check in the foreach() call below
+  # to satisfy R CMD check in the foreach() call below
+  x <- NULL
+  it_ <- NULL
+  foreach <- NULL
+  `%dopar%` <- NULL
 
   if (parallel) {
     if (parallel_iterations) {
