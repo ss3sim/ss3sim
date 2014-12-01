@@ -8,10 +8,10 @@
 #'
 #' @param iterations Which iterations to run. A numeric vector.
 #' @param scenarios Which scenarios to run.
-#' @param tv_params A named list containing arguments for \code{\link{change_tv}}
-#'   (time-varying).
+#' @param tv_params A named list containing arguments for
+#'   \code{\link{change_tv}} (time-varying).
 #' @param f_params A named list containing arguments for \code{\link{change_f}}
-#'  .
+#'   .
 #' @param index_params A named list containing arguments for
 #'   \code{\link{sample_index}}.
 #' @param lcomp_params A named list containing arguments for
@@ -26,25 +26,26 @@
 #'   \code{\link{sample_mlacomp}}, for mean length-at-age data.
 #' @param retro_params A named list containing arguments for
 #'   \code{\link{change_retro}}.
-#' @param estim_params A named list containing arguments for \code{\link{change_e}}.
+#' @param estim_params A named list containing arguments for
+#'   \code{\link{change_e}}.
 #'
 #' @param tc_params A named list containing arguments for
-#' \code{\link{change_tail_compression}}.
+#'   \code{\link{change_tail_compression}}.
 #' @param lc_params A named list containing arguments for
-#' \code{\link{change_lcomp_constant}}.
+#'   \code{\link{change_lcomp_constant}}.
 #' @param bin_params A named list containing arguments for
-#' \code{\link{change_bin}}.
-#' @param call_change_data A boolean of whether to call change_data and
-#' modify the OM at each iteration. Default of TRUE. See the vignette for
-#' further information on why this would be turned off.
-#' @param om_dir The directory with the operating model you want to copy
-#'   and use for the specified simulations.
-#' @param em_dir The directory with the estimation model you want to copy
-#'   and use for the specified simulations.
+#'   \code{\link{change_bin}}.
 #' @param len_bins A vector of bins to record length data at from the OM. If
 #'   \code{NULL} then the bins in the original OM will be used.
 #' @param age_bins A vector of bins to record age data at from the OM. If
 #'   \code{NULL} then the bins in the original OM will be used.
+#' @param call_change_data A boolean of whether to call change_data and modify
+#'   the OM at each iteration. Default of TRUE. See the vignette for further
+#'   information on why this would be turned off.
+#' @param om_dir The directory with the operating model you want to copy and use
+#'   for the specified simulations.
+#' @param em_dir The directory with the estimation model you want to copy and
+#'   use for the specified simulations.
 #' @template user_recdevs
 #' @param bias_adjust Run bias adjustment first? See \code{\link{run_bias_ss3}}.
 #' @param bias_nsim If bias adjustment is run, how many simulations should the
@@ -67,8 +68,8 @@
 #' @param seed The seed value to pass to \code{\link{get_recdevs}} when
 #'   generating recruitment deviations. The generated recruitment deviations
 #'   depend on the iteration value, but also on the value of \code{seed}. A
-#'   given combination of iteration, number of years, and \code{seed} value
-#'   will result in the same recruitment deviations.
+#'   given combination of iteration, number of years, and \code{seed} value will
+#'   result in the same recruitment deviations.
 #' @param ... Anything extra to pass to \code{\link{run_ss3model}}. For example,
 #'   you may want to pass additional options to \code{SS3} through the argument
 #'   \code{admb_options}. Anything that doesn't match a named argument in
@@ -76,8 +77,8 @@
 #'   that runs \code{SS3}. If you are on a Windows computer then you might want
 #'   to pass \code{show.output.on.console = FALSE} to make the simulations runs
 #'   faster by not printing output to the console. Also, see the argument
-#'   \code{ss_mode} to choose between safe or optimized SS3 executables
-#'   (default is safe mode).
+#'   \code{ss_mode} to choose between safe or optimized SS3 executables (default
+#'   is safe mode).
 #' @author Sean Anderson with contributions from many others as listed in
 #'   the DESCRIPTION file.
 #' @importFrom r4ss SS_readdat
