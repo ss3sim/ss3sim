@@ -32,10 +32,10 @@
 #'   \code{\link{change_tail_compression}}.
 #' @param lc_params A named list containing arguments for
 #'   \code{\link{change_lcomp_constant}}.
-#' @param len_bins A vector of bins to record length data at from the OM. If
-#'   \code{NULL} then the bins in the original OM will be used.
-#' @param age_bins A vector of bins to record age data at from the OM. If
-#'   \code{NULL} then the bins in the original OM will be used.
+#' @param len_bins A numeric vector of bins to record length data at from the
+#'   OM. If \code{NULL} then the bins in the original OM will be used.
+#' @param age_bins A numeric vector of bins to record age data at from the OM.
+#'   If \code{NULL} then the bins in the original OM will be used.
 #' @param call_change_data A boolean of whether to call change_data and modify
 #'   the OM at each iteration. Default of TRUE. See the vignette for further
 #'   information on why this would be turned off.
