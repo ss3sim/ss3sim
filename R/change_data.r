@@ -119,9 +119,8 @@ change_data <- function(file_in, file_out, fleets = NULL, years = NULL,
       datfile$N_agecomp <- nrow(datfile$agecomp)
   }
   if ("mla" %in% types) {
-      datfile$MeanSize_at_Age_obs <- make_dummy_dat_agecomp(fleets = fleets,
+      datfile$MeanSize_at_Age_obs <- make_dummy_dat_mlacomp(fleets = fleets,
         years = years, age_bins = age_bins)
-      datfile$MeanSize_at_Age_obs$AgeErr <- -1
       datfile$N_MeanSize_at_Age_obs <- nrow(datfile$MeanSize_at_Age_obs)
   }
 
@@ -155,6 +154,18 @@ make_dummy_dat_agecomp<- function(fleets, years, age_bins) {
     ## Add the dummy data for each data cell
     dummy_df <- data.frame(matrix(1, nrow=nrow(dummy_dat), ncol=length(age_bins)))
     names(dummy_df) <- paste0("a", age_bins)
+    cbind(dummy_dat, dummy_df)
+}
+
+make_dummy_dat_mlacomp<- function(fleets, years, age_bins) {
+    ## expand dummy data across all types:
+    dummy_dat_list <- lapply(fleets, function(fleet)
+        data.frame("Yr"   = years, "Seas" = 1, "Flt"  = fleets[fleet], "Gender" = 0,
+                   "Part"   = 0, "AgeErr"=1, "Nsamp" = 10, stringsAsFactors = FALSE))
+    dummy_dat <- as.data.frame(do.call('rbind', dummy_dat_list))
+    ## Add the dummy data for each data cell
+    dummy_df <- data.frame(matrix(1, nrow=nrow(dummy_dat), ncol=length(age_bins)*2))
+    names(dummy_df) <- c(paste0("a", c(age_bins)), paste0("N", c(age_bins)))
     cbind(dummy_dat, dummy_df)
 }
 
@@ -193,6 +204,8 @@ calculate_data_units <- function(lcomp_params=NULL, agecomp_params=NULL,
     types <- names(sample_args)[!sample_args_null]
     if("cal" %in% types) types <- c(types, "len", "age")
     if("mla" %in% types) types <- c(types, "age")
+	## Need this line to remove duplicates 
+	types <- unique(types)
     return(list(fleets=fleets, years=years, types=types))
 }
 
