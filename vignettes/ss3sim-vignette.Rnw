@@ -815,7 +815,6 @@ Figures~\ref{fig:plot-sto-ts}, \ref{fig:ssb-ts-plots},
 and \ref{fig:relative-error-boxplots-sto}.
 
 <<plot-sto-ts, fig.height=5, fig.width=7, fig.cap="Time series of relative error in spawning stock biomass.">>=
-library(ggplot2)
 p <- ggplot(ts_dat_sto, aes(x = year)) + xlab("Year") +
     theme_bw() + geom_line(aes(y = SpawnBio, group = replicate,
     colour = max_grad), alpha = 0.3, width = 0.15) + facet_grid(D~E) +
@@ -851,15 +850,18 @@ setting up the case files
 and use \texttt{ss3sim\_base} directly
 by passing lists of arguments.
 The lists correspond to the arguments
-to each of the \texttt{change} functions
+to each of the \texttt{change} or \texttt{sample} functions
 without any references to the files that need to be modified.
 (Although if you passed the file names they would just be ignored.)
+The documentation for each function includes an asterisk
+beside the arguments that you can specify.
+Note that if you do not include an argument then \texttt{ss3sim\_base}
+will assume the value of that argument is \texttt{NULL}.
 
-In this case,
+When we call \texttt{ss3sim\_base} directly,
 the scenario ID only serves the function
 of identifying the output folder name
 and could technically be any character string.
-
 For example,
 we could have run the scenario \texttt{D1-E0-F0-R0-M0-cod}
 that we ran before:
@@ -899,7 +901,7 @@ ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-R0-M0-cod",
 
 \section{An example of customizing the case specifications}
 
-You don't need to stick with the scenario ID scheme laid out
+You do not need to stick with the scenario ID scheme laid out
 by default in \pkg{ss3sim}.
 You are free to choose your own scheme by adjusting the list
 of values passed to the \texttt{case\_files} argument
@@ -909,8 +911,8 @@ Below is an example where we'll specify the arguments to the
 sampling functions via their own case files. We'll arbitrarily call these
 cases X, Y, and Z.
 
-We'll start by copying over some case arguments built into the package.
-We'll copy what was called
+We will start by copying over some case arguments built into the package.
+We will copy what was called
 \texttt{index0-cod.txt}, \texttt{lcomp0-cod.txt}, and \texttt{agecomp0-cod.txt}
 into \texttt{X-cod.txt}, \texttt{Y-cod.txt}, and \texttt{Z-cod.txt}.
 Then we'll set up our custom \texttt{case\_files} list and call
@@ -1146,7 +1148,8 @@ paste0(d, "/models")
 \end{itemize}
 
 \section{Adjusting the available OM data dynamically}
-\label{sec:change_data}
+\label{sec:change-data}
+
 \pkg{ss3sim} can dynamically adjust the type of data available
 from the OM for sampling.
 For example, you might wish to sample conditional length-at-age
@@ -1171,13 +1174,13 @@ of data.
 
 The dynamic creation of available data is the default behavior of the
 package. In practice this means the user does not need to manage which data
-types, fleets or years are produced by the OM. However, in some cases the
+types, fleets, or years are produced by the OM. However, in some cases the
 user may wish to disable this behavior and there is a top-level argument
 available in \texttt{ss3sim\_base} called \texttt{call\_change\_data}
-(default of \texttt{TRUE}). In other cases it may be more beneficial to
-call \texttt{change\_data} before the simulation to manually prepare the OM
-data file, which will then be available for all subsequent EMs. Dynamic
-creation would then be unecessary.
+(default of \texttt{TRUE}). For example, in some cases it may be more
+beneficial to call \texttt{change\_data} before the simulation to manually
+prepare the OM data file, which will then be available for all subsequent EMs.
+Dynamic OM data creation would then be unnecessary.
 
 In the default case of dynamic data creation, we apply the following rules
 if the arguments to any sampling function are not \texttt{NULL}:
@@ -1187,8 +1190,8 @@ if the arguments to any sampling function are not \texttt{NULL}:
 \item If \texttt{sample\_lencomp}, generate length-composition data
 \item If \texttt{sample\_mlacomp}, generate age-composition data and mean length-at-age data
 \item If \texttt{sample\_calcomp}, generate length- and age-composition data and conditional length-at-age data
-\item If \texttt{sample\_wtatage}, generate empirical weight-at-age, age
-  compositional, and mean length-at-age data
+\item If \texttt{sample\_wtatage}, generate empirical weight-at-age,
+  age-composition, and mean length-at-age data
 \end{itemize}
 
 For instance, if empirical weight-at-age data are to be sampled
@@ -1196,17 +1199,18 @@ For instance, if empirical weight-at-age data are to be sampled
 adds age composition and mean length-at-age data to the model.
 
 Another feature of \texttt{change\_data} is that it can also modify the
-bining structure of the data (not the population-level bins). The ages and
+binning structure of the data (not the population-level bins). The ages and
 lengths in the data are specified in the arguments \texttt{len\_bin} and
 \texttt{age\_bin} in \texttt{ss3sim\_base}. These bins need to be
 consistent across the entire data file for SS3 to
-operate.\footnote{Empirical weight-at-age data are a special case because
-  they are generated in a separate file and use the population bins} Also,
-when either of these are set to \texttt{NULL} (the default value) then the
-respective bins are taken from the original OM (i.e.\ be left unchanged).
+operate.\footnote{Empirical weight-at-age data are a special case because they
+  are generated in a separate file and use the population bins}
+Also, when either of these are set to \texttt{NULL} (the default value) then
+the respective bins are taken from the original OM (i.e.\ be left unchanged).
 
 \section{Generating observation error}
 \label{sec:obs-error}
+
 Simulated data arising from sampling the ``truth'' (i.e.\ observations),
 can be added within the \pkg{ss3sim} framework automatically and
 dynamically. Currently \pkg{ss3sim} supports five types of data: indices of
