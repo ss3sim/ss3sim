@@ -1182,12 +1182,14 @@ values passed to the arguments
 If either of these is left set to \texttt{NULL} than the respective bin structure
 will be taken from the original OM.
 
-\section{Incorporating observation error}
+\section{Generating observation error}
 \label{sec:obs-error}
-Observation error (i.e.\ uncertainty arising from sampling the
-``truth'') can be added within the \pkg{ss3sim} framework in three
-places: indices of abundance, length compositions, and age compositions.
-There are
+Observations, or data arising from sampling the ``truth'', can be added within
+the \pkg{ss3sim} framework automatically and dynamically. Currently \pkg{ss3sim}
+supports five types of data: indices of abundance, length and age compositions,
+mean length (size) at age, empirical weight at age, and conditional age at
+length.
+These data are generated with
 functions which take the expected values produced in the OM
 \texttt{.dat} files and samples from them to create the input
 \texttt{.dat} files for the EM. Since this sampling process is done
@@ -1195,49 +1197,10 @@ dynamically with functions there is a lot of flexibility that can be
 added by the user.
 
 This section briefly details the background and functionality of these
-functions.
-
-\begin{description}
-\item[\texttt{sample\_index}] This function samples from the biomass
-  trends for the different fleets to simulate the collection of CPUE
-  and survey index data. Since $q=1$ for both the OM and EM, the CPUE
-  indices are actually absolute indices of biomass. The result of the
-  random sampling is a log-normal observed CPUE that is centered at
-  the expected value. The user can specify which fleets are sampled in
-  which years and with what amount of noise. Note that the
-  years/fleets specified to be sampled must be present in the OM file,
-  so the user must setup the OM accordingly.
-\item[\texttt{sample\_lcomp}] This function samples from the length
-  composition using a multinomial or Dirichlet distribution. The Dirichlet
-  distribution can be thought of as a generalization of the
-  multinomial distribution that has an additional parameter
-  controlling the variance of the random deviates (see Section
-  \ref{sec:comps}). The user can specify which fleets are sampled in
-  which years and with what amount of noise. Further, the bin
-  structure can be inputted as an argument and thus changed
-  dynamically within a simulation (see \ref{sec:dybin} below for more
-  information).
-\item[\texttt{sample\_agecomp}] Same as length compositions except
-  that it acts on age compositions.
-\end{description}
-
-\subsection{Sampling age and length compositions}
-\label{sec:comps}
-When simulating stock assessment models we need a way to mimic the way that
-the age/length compositions (comps) are sampled in reality.  Under
-perfect mixing of fish and truly random sampling the distribution of
-samples would be multinomial.  However, in practice neither of
-these are true because the fish tend to aggregate by size and age, and
-it is difficult to take random samples \citep[e.g.][]{pennington2002}.
-This causes the data to have
-more variance than expected, i.e.\ be overdispersed, and the effective sample
-size is smaller \citep{hulson2012, maunder2011}.  If a
-multinomial likelihood is assumed and the true sample size is used
-then in effect the model puts too much weight on the composition data,
-at the cost of fitting other sources of data less well \citep{maunder2011}.
-Analysts thus need to ``tune'' their model to find a more appropriate
-sample size that more accurately reflects the information in the composition
-data.
+``sampling'' functions. Note that the years/fleets to be sampled must be present
+in the OM output data file. \pkg{ss3sim} does this data creation dynamically but
+in some cases it may need to be done manually (see section
+\ref{sec:change-data})
 
 In simulation work, the true underlying proportions
 in the population are known and therefore
@@ -1250,7 +1213,75 @@ In this package we use the Dirichlet distribution
 to generate such data for a specified level of overdispersion, and then set the
 correct effective sample size.
 
-\subsubsection{Multinomial vs.\ Dirichlet distributions}
+When simulating these data  we are trying to mimic the way that
+the age/length compositions (comps) are sampled in reality.  Under
+perfect mixing of fish and truly random sampling the distribution of
+samples would be multinomial.  However, in practice neither of
+these are true because the fish tend to aggregate by size and age, and
+it is difficult to take random samples \citep[e.g.][]{pennington2002}.
+This causes the data to have
+more variance than expected, i.e.\ be overdispersed, and the effective sample
+size is smaller \citep{hulson2012, maunder2011}.  If a
+multinomial likelihood is assumed for overdispersed data,
+and the true sample size is used
+then in effect the model puts too much weight on the composition data,
+at the cost of fitting other sources of data less well \citep{maunder2011}.
+Analysts thus often ``tune'' their model to find a more appropriate
+sample size that more accurately reflects the information in the composition
+data.
+
+\subsection{Indices of abundance}
+The function [\texttt{sample\_index}] facilitates generating (relative) indices
+of abundance.  It samples from the biomass trends for the different fleets to
+simulate the collection of CPUE and survey index data. The user can specify
+which fleets are sampled in which years and with what amount of noise. Different
+fleets will ``see'' different biomass trends due to differences in selectivity,
+so each index is typically associated with the same fleet between the OM and
+EM. Since $q=1$ for the OM, the CPUE indices are actually absolute indices of
+(spawning) biomass. Other assumptions about the distribution (overdispersion,
+biased, etc.) about the truth are possible, but not currently supported.
+
+In practice, sampling from the abundance indices is relatively
+straightforward. The OM \texttt{.dat} file contains the annual biomass values
+for each fleet, and the \texttt{sample\_index} function uses these true values
+as the expected value. The function uses a bias-corrected log-normal distribution
+with expected values given by the OM biomass and a user-provided standard
+deviation term that controls the level of variance.
+
+More specifically, let
+\begin{align*}
+  B_y&=\text{the true (OM) biomass in year $y$}\\
+  \sigma_R&=\text{the standard deviation provided by the user}\\
+  X\sim N(0, \sigma_R^2)&=\text{a normal random variable}
+\end{align*}
+Then the sampled value, $B_y^\text{obs}$ is
+\begin{equation*}
+  B_y^\text{obs}=B_y e^{X-\sigma_R^2/2}
+\end{equation*}
+which has expected value $\Eof{B_y^\text{obs}}=B_y$ due to the bias adjustment
+term $\sigma_R^2/2$ (\texttt{SR_sigmaR} in SS3). This process generates
+log-normal values centered at the true value. It is possible for the user to
+specify the amount of uncertainty (e.g.\ to mimic the amount of survey effort),
+but it is not possible to induce bias in this process (as currently
+implemented).
+
+\subsubsection{Effective sample size}
+For index data, which are assumed log-normal by SS3, the weight of the data is
+determined by the CV of each point. As the CV increases the data have less
+weight in the joint likelihood. This is equivalent to decreasing the effective
+sample size in other distributions. (TODO: \pkg{ss3sim} sets these values
+automatically at the truth internally. Future versions may allow for more
+complex options.)  The user-supplied $\sigma_R$ term is written to the
+\texttt{.dat} file along with the sampled values, meaning that the EM has the
+correct level of uncertainty. Thus, the EM has unbiased estimates of $B_y$ and
+the true $\sigma_y$ for all fleets.
+
+\subsection{Age and length compositions}
+The functions \texttt{sample\_agecomp} and [\texttt{sample\_lcomp}] sample from
+the true age and length compositions using a multinomial or Dirichlet
+distribution. The user can further specify which fleets are sampled in which
+years and with what amount of noise (sample size).
+
 The following calculations are shown for age compositions
 but apply equally to length compositions.
 The multinomial distribution $\mathbf{m} \sim
@@ -1270,9 +1301,26 @@ is $\Vof{M_a/n}=p_aq_a/n$.
 Note that $m_a/n$ can only take on values in the set $\{0, 1/n, 2/n, \ldots, 1\}$.
 With sufficiently large sample size this set approximates the real interval $[0,1]$,
 but the point being that only some values of $m_a/n$ are possible.
+in the generated samples: as it increases the variance decreases.
+Thus, it is simple to calculate what $\lambda$ should be
+in order to have a specific level of variance in the samples.
+We know that the variance of the Dirichlet samples
+should never be smaller than that of a multinomial (i.e.\ under-dispersed)
+so it makes sense to use the multinomial variance
+(with a particular sample size $n$)
+as a baseline.
+
+\subsubsection{Sampling with overdispersion}
+The composition sampling functions provided in the package allow you
+to specify the level of overdispersion.  Note that the package does
+not allow for tuning of the effective sample size, and the argument
+\texttt{cpar} controls the level of overdispersion in the sampling
+functions.  See the function documentation for
+\texttt{sample\_agecomp} and \texttt{sample\_lcomp} for more detail.
 
 The Dirichlet distribution $\mathbf{d} \sim
-\text{Dirichlet}\left (\boldsymbol{\alpha}, A\right )$ is
+\text{Dirichlet}\left (\boldsymbol{\alpha}, A\right )$ is used in place of the
+multinomial to generate overdispersed samples. It is characterized by:
 \begin{align*}
   \mathbf{d} &= d_1, \ldots, d_A\\
   &=\text{the proportion of fish observed in bin $a$}\\
@@ -1290,17 +1338,6 @@ $\Vof{d_a}=\frac{p_aq_a}{\lambda+1}$.
 The marginal distributions for the Dirichlet are beta distributed.
 In contrast to the multinomial above,
 the Dirichlet generates points on the real interval $[0,1]$.
-
-\subsubsection{Sampling with overdispersion}
-It is clear that $\lambda$ controls the amount of overdispersion
-in the generated samples: as it increases the variance decreases.
-Thus, it is simple to calculate what $\lambda$ should be
-in order to have a specific level of variance in the samples.
-We know that the variance of the Dirichlet samples
-should never be smaller than that of a multinomial (i.e.\ under-dispersed)
-so it makes sense to use the multinomial variance
-(with a particular sample size $n$)
-as a baseline.
 
 The following steps are used to generate overdispersed samples:
 \begin{enumerate}
@@ -1320,12 +1357,6 @@ The following steps are used to generate overdispersed samples:
   with twice the standard deviation of the multinomial by setting $c=2$.
 \end{enumerate}
 
-The composition sampling functions provided in the package allow you
-to specify the level of overdispersion.  Note that the package does
-not allow for tuning of the effective sample size, and the argument
-\texttt{cpar} controls the level of overdispersion in the sampling
-functions.  See the function documentation for
-\texttt{sample\_agecomp} and \texttt{sample\_lcomp} for more detail.
 
 \subsubsection{Effective sample size}
 For both multinomial and Dirichlet generated composition data the effective
@@ -1345,6 +1376,10 @@ the multinomial will be restricted to few potential values (i.e.\ $0/n, 1/n,
 \ldots, n/n$), whereas the Dirichlet has values in $[0,1]$. Thus without the
 Dirichlet it would be impossible to generate realistic values that would come
 about from highly overdispersed data with a large $n$.
+
+\subsection{Mean length at age}
+\subsection{Conditional age at length}
+\subsection{Empricial weight at age}
 
 \subsubsection{Dynamic composition binning} \label{sec:dybin}
 
@@ -1369,38 +1404,7 @@ these functions for examples of how to explore and test the
 functions. An alternative way of testing bin structure would be to
 setup different models that have the bin structures desired.
 
-\subsection{Sampling indices}\label{sec:indices}
-Compared to sampling from the age and length compositions,
-sampling from the abundance indices
-is relatively straightforward. The OM \texttt{.dat} file contains the
-annual biomass values, and the \texttt{sample\_index} function uses
-these true values as the expected value for all fleets (CPUE from fisheries
-as well as scientific surveys). The function uses a bias-adjusted
-log-normal distribution with expected values given by the OM biomass
-and a user-provided standard deviation term that controls the level of
-variance.
-
-More specifically, let
-\begin{align*}
-  B_y&=\text{the true (OM) biomass in year $y$}\\
-  \sigma_y&=\text{the standard deviation provided by the user}\\
-  X\sim N(0, \sigma_y)&=\text{a random normal variable}
-\end{align*}
-Then the sampled value, $B_y^\text{obs}$ is
-\begin{equation*}
-  B_y^\text{obs}=B_y e^{X-\sigma_y^2/2}
-\end{equation*}
-which has expected value of $B_y$ due to the bias adjustment term
-$\sigma_y^2/2$. This process generates log-normal values centered at
-the true value. It is possible for the user to specify the amount of
-uncertainty (e.g.\ to mimic the amount of survey effort), but it is not
-possible to induce bias in this process. The user-supplied $\sigma$
-terms are written to the \texttt{.dat} file along with the sampled
-values, meaning that the EM has the correct level of uncertainty. Thus,
-the EM has unbiased estimates of $B_y$ and the true
-$\sigma_y$ for all fleets.
-
-\section{Incorporating process error}
+\section{Generating process error}
 \label{sec:pro-error}
 
 Process error is incorporated into the OM in the form of deviates in
