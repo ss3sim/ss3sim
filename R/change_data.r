@@ -16,8 +16,7 @@
 #' \code{change_data} is called internally by \code{\link{ss3sim_base}} based on
 #' arguments to the sampling functions.
 #'
-#' @param file_in A character value giving the location of an SS \code{.dat}
-#'   file to input.
+#' @param datfile A list as read in by \code{r4ss::read_dat}.
 #' @param file_out A character value giving the location of an SS \code{.dat}
 #'   file to output.
 #' @param fleets A numeric vector of fleets
@@ -78,7 +77,7 @@
 #' print(out$lbin_vector)
 #' print(names(out$agecomp))
 #' print(names(out$lencomp))
-change_data <- function(file_in, file_out, fleets = NULL, years = NULL,
+change_data <- function(datfile, file_out, fleets = NULL, years = NULL,
                         types = NULL, age_bins = NULL, len_bins = NULL,
                         write_file = TRUE) {
 
@@ -87,11 +86,11 @@ change_data <- function(file_in, file_out, fleets = NULL, years = NULL,
 
   ## Input checks:
 
-  ## Check .dat file and read it in
-  if (!file.exists(file_in)) {
-    stop(paste(file_in, "was not found while running change_data"))
-  }
-  datfile <- SS_readdat(file = file_in, verbose = FALSE)
+  ## ## Check .dat file and read it in
+  ## if (!file.exists(file_in)) {
+  ##   stop(paste(file_in, "was not found while running change_data"))
+  ## }
+  ## datfile <- SS_readdat(file = file_in, verbose = FALSE)
 
   ## Test for compatibility with ss3sim
   if (datfile$Ngenders > 1) {
@@ -204,7 +203,7 @@ calculate_data_units <- function(lcomp_params=NULL, agecomp_params=NULL,
     types <- names(sample_args)[!sample_args_null]
     if("cal" %in% types) types <- c(types, "len", "age")
     if("mla" %in% types) types <- c(types, "age")
-	## Need this line to remove duplicates 
+	## Need this line to remove duplicates
 	types <- unique(types)
     return(list(fleets=fleets, years=years, types=types))
 }
