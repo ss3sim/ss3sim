@@ -77,72 +77,71 @@
 #' print(out$lbin_vector)
 #' print(names(out$agecomp))
 #' print(names(out$lencomp))
-change_data <- function(datfile, file_out, fleets = NULL, years = NULL,
-                        types = NULL, age_bins = NULL, len_bins = NULL,
-                        write_file = TRUE) {
+change_data <- function(datfile, file_out, fleets, years, types, age_bins =
+                        NULL, len_bins = NULL, write_file = TRUE) {
 
-  types <- match.arg(types, choices = c("len", "age", "cal", "mla", "mwa"),
-    several.ok = TRUE)
+    ## Input checks:
+    types <- match.arg(types, choices = c("len", "age", "cal", "mla", "mwa"),
+                       several.ok = TRUE)
+    stopifnot(is.list(datfile))
+    if(datfile$type != "Stock_Synthesis_data_file")
+        stop("Invalid datfile, was it read in by SS_readdat?")
+    ## Test for compatibility with ss3sim
+    if (datfile$Ngenders > 1) {
+        stop(paste("_Ngenders is greater than 1 in the operating model.",
+                   "change_data only works with single-gender models."))
+    }
 
-  ## Input checks:
+    ## Change the data vectors if specified
+    if(is.null(len_bins))
+        len_bins <- datfile$lbin_vector
+    else stop("dynamic binning of length bins not yet implemented")
+    ## Need to do things like change age matrices, see change_pop_bin below
+    if(is.null(age_bins)) age_bins <- datfile$agebin_vector
+    else stop("dynamic binning of length bins not yet implemented")
+    ## Need to do things like change age matrices, see change_pop_bin below
 
-  ## ## Check .dat file and read it in
-  ## if (!file.exists(file_in)) {
-  ##   stop(paste(file_in, "was not found while running change_data"))
-  ## }
-  ## datfile <- SS_readdat(file = file_in, verbose = FALSE)
+    ## Now modify each data type in turn
+    if ("len" %in% types) {
+        datfile$lencomp <-
+            make_dummy_dat_lencomp(fleets=fleets, years=years,
+                                   len_bins=len_bins)
+        datfile$lbin_vector <- len_bins
+        datfile$N_lencomp <- nrow(datfile$lencomp)
+    }
+    ## Need to split calcomp and agecomp data as separate cases
+    if ("age" %in% types) {
+        conditional_data <- datfile$agecomp[datfile$agecomp$Lbin_lo >= 0, ]
+        new.agecomp <-
+            make_dummy_dat_agecomp(fleets=fleets, years=years,
+                                   age_bins=age_bins)
+        datfile$agecomp <- rbind(new.agecomp, conditional_data)
+        datfile$agebin_vector <- age_bins
+        datfile$N_agecomp <- nrow(datfile$agecomp)
+    }
+    if ("cal" %in% types) {
+        agecomp <- datfile$agecomp[datfile$agecomp$Lbin_lo < 0, ]
+        new.calcomp <-
+            make_dummy_dat_calcomp(fleets=fleets, years=years,
+                                   age_bins=age_bins,
+                                   Lbin_lo=len_bins[-length(len_bins)],
+                                   Lbin_hi=len_bins[-1])
+        datfile$agecomp <- rbind(agecomp, new.calcomp)
+        datfile$agebin_vector <- age_bins
+        datfile$N_agecomp <- nrow(datfile$agecomp)
+    }
 
-  ## Test for compatibility with ss3sim
-  if (datfile$Ngenders > 1) {
-    stop(paste("_Ngenders is greater than 1 in the operating model.",
-      "change_data only works with single-gender models."))
-  }
+    if ("mla" %in% types) {
+        datfile$MeanSize_at_Age_obs <-
+            make_dummy_dat_mlacomp(fleets = fleets, years = years, age_bins = age_bins)
+        datfile$N_MeanSize_at_Age_obs <- nrow(datfile$MeanSize_at_Age_obs)
+    }
 
-  ## Change the data vectors if specified
-  if(is.null(len_bins)) len_bins <- datfile$lbin_vector
-  if(is.null(age_bins)) age_bins <- datfile$agebin_vector
-
-  ## Now modify each data type in turn
-  if ("len" %in% types) {
-      datfile$lencomp <-
-           make_dummy_dat_lencomp(fleets=fleets, years=years,
-                                  len_bins=len_bins)
-      datfile$lbin_vector <- len_bins
-      datfile$N_lencomp <- nrow(datfile$lencomp)
-  }
-  ## Need to split calcomp and agecomp data as separate cases
-  if ("age" %in% types) {
-      conditional_data <- datfile$agecomp[datfile$agecomp$Lbin_lo >= 0, ]
-      new.agecomp <-
-          make_dummy_dat_agecomp(fleets=fleets, years=years,
-                                 age_bins=age_bins)
-      datfile$agecomp <- rbind(new.agecomp, conditional_data)
-      datfile$agebin_vector <- age_bins
-      datfile$N_agecomp <- nrow(datfile$agecomp)
-  }
-  if ("cal" %in% types) {
-      agecomp <- datfile$agecomp[datfile$agecomp$Lbin_lo < 0, ]
-      new.calcomp <-
-          make_dummy_dat_calcomp(fleets=fleets, years=years,
-                                 age_bins=age_bins,
-                                 Lbin_lo=len_bins[-length(len_bins)],
-                                 Lbin_hi=len_bins[-1])
-      datfile$agecomp <- rbind(agecomp, new.calcomp)
-      datfile$agebin_vector <- age_bins
-      datfile$N_agecomp <- nrow(datfile$agecomp)
-  }
-
-  if ("mla" %in% types) {
-      datfile$MeanSize_at_Age_obs <- make_dummy_dat_mlacomp(fleets = fleets,
-        years = years, age_bins = age_bins)
-      datfile$N_MeanSize_at_Age_obs <- nrow(datfile$MeanSize_at_Age_obs)
-  }
-
-  if (write_file) {
-    SS_writedat(datlist = datfile, outfile = file_out, overwrite = TRUE,
-      verbose = FALSE)
-  }
-  invisible(datfile)
+    if (write_file) {
+        SS_writedat(datlist = datfile, outfile = file_out, overwrite = TRUE,
+                    verbose = FALSE)
+    }
+    return(invisible(datfile))
 }
 
 ## Given sampling arguments, calculate super set of fleets, years, and data
