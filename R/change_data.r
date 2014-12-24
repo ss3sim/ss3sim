@@ -110,13 +110,28 @@ change_data <- function(datfile, file_out, fleets = NULL, years = NULL,
       datfile$lbin_vector <- len_bins
       datfile$N_lencomp <- nrow(datfile$lencomp)
   }
+  ## Need to split calcomp and agecomp data as separate cases
   if ("age" %in% types) {
-      datfile$agecomp <-
-           make_dummy_dat_agecomp(fleets=fleets, years=years,
-                                  age_bins=age_bins)
+      conditional_data <- datfile$agecomp[datfile$agecomp$Lbin_lo >= 0, ]
+      new.agecomp <-
+          make_dummy_dat_agecomp(fleets=fleets, years=years,
+                                 age_bins=age_bins)
+      datfile$agecomp <- rbind(new.agecomp, conditional_data)
       datfile$agebin_vector <- age_bins
       datfile$N_agecomp <- nrow(datfile$agecomp)
   }
+  if ("cal" %in% types) {
+      agecomp <- datfile$agecomp[datfile$agecomp$Lbin_lo < 0, ]
+      new.calcomp <-
+          make_dummy_dat_calcomp(fleets=fleets, years=years,
+                                 age_bins=age_bins,
+                                 Lbin_lo=len_bins[-length(len_bins)],
+                                 Lbin_hi=len_bins[-1])
+      datfile$agecomp <- rbind(agecomp, new.calcomp)
+      datfile$agebin_vector <- age_bins
+      datfile$N_agecomp <- nrow(datfile$agecomp)
+  }
+
   if ("mla" %in% types) {
       datfile$MeanSize_at_Age_obs <- make_dummy_dat_mlacomp(fleets = fleets,
         years = years, age_bins = age_bins)
@@ -143,7 +158,7 @@ make_dummy_dat_lencomp <- function(fleets, years, len_bins) {
     cbind(dummy_dat, dummy_df)
 }
 
-make_dummy_dat_agecomp<- function(fleets, years, age_bins) {
+make_dummy_dat_agecomp <- function(fleets, years, age_bins) {
     ## expand dummy data across all types:
     dummy_dat_list <- lapply(fleets, function(fleet)
         data.frame("Yr"   = years, "Seas" = 1, "Flt"  = fleets[fleet], "Gender" = 0,
@@ -156,7 +171,29 @@ make_dummy_dat_agecomp<- function(fleets, years, age_bins) {
     cbind(dummy_dat, dummy_df)
 }
 
-make_dummy_dat_mlacomp<- function(fleets, years, age_bins) {
+## fleets <- c(1,2)
+## years <- c(7,9)
+## age_bins <- c(1,5,10)
+## Lbin_lo <- (1:5)[-5]
+## Lbin_hi <- (1:5)[-1]
+make_dummy_dat_calcomp <- function(fleets, years, age_bins,
+                                  Lbin_lo, Lbin_hi) {
+    if(length(Lbin_lo)!=length(Lbin_hi))
+        stop("Lo and Hi length bins do not match in length")
+    dummy_dat_list <- lapply(fleets, function(fleet)
+                             lapply(years, function(yr)
+        data.frame("Yr"   = yr, "Seas" = 1, "Flt"  = fleet, "Gender" = 0,
+                   "Part"   = 0, "AgeErr"=1, "Lbin_lo"=Lbin_lo, "Lbin_hi"=Lbin_hi,
+                   "Nsamp" = 10, stringsAsFactors = FALSE)))
+    dummy_dat_list <- unlist(dummy_dat_list, recursive=FALSE)
+    dummy_dat <- as.data.frame(do.call('rbind', dummy_dat_list))
+    ## Add the dummy data for each data cell
+    dummy_df <- data.frame(matrix(1, nrow=nrow(dummy_dat), ncol=length(age_bins)))
+    names(dummy_df) <- paste0("a", age_bins)
+    cbind(dummy_dat, dummy_df)
+}
+
+make_dummy_dat_mlacomp <- function(fleets, years, age_bins) {
     ## expand dummy data across all types:
     dummy_dat_list <- lapply(fleets, function(fleet)
         data.frame("Yr"   = years, "Seas" = 1, "Flt"  = fleets[fleet], "Gender" = 0,
