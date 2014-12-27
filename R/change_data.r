@@ -1,27 +1,28 @@
 #' Change the data that is available as output from an SS operating model.
 #'
-#' \code{change_data} alters the bin structure for the age or length composition
-#' data in an SS operating model. Original data is removed and dummy data is
-#' added at the appropriate bin sizes to the SS \code{.dat} file. This causes SS
-#' to record age or length composition data in the appropriate bins when the
-#' operating model is run. Additionally, \code{change_data} will introduce dummy
-#' conditional length-at-age or size- (weight or length) at-age data to the
-#' \code{.dat} file. For each data type altered, \code{change_data} will add
-#' data in a full factorial manner, working with existing fleets for all years;
-#' potentially adding many rows of data. Currently, \code{.dat} files with
-#' multiple genders cannot be manipulated with \code{change_data}. Use
-#' \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}, and
-#' \code{\link{sample_calcomp}} to reduce the data. It is not intended for an
-#' \pkg{ss3sim} user to use \code{change_data} directly. Instead
-#' \code{change_data} is called internally by \code{\link{ss3sim_base}} based on
-#' arguments to the sampling functions.
+#' \code{change_data} alters the data structure for a data list as read in
+#' by \code{r4ss::SS_readdat}, for use in preparing the data file for an SS
+#' operating model. Original data is removed and dummy data is added, as
+#' specified, to the SS \code{.dat} file. This causes SS to produce
+#' expected values (OM "truth") when the operating model is run, from which
+#' data can be sampled.  For each data type altered, \code{change_data}
+#' will add data for the fleets and years given; potentially adding many
+#' rows of redundant data. Currently, \code{.dat} files with multiple
+#' genders cannot be manipulated with
+#' \code{change_data}. \code{calculate_data_units} is used internally in
+#' \code{\link{ss3sim_base}} to create a superset of fleets and years from
+#' sample arguments, and \code{\link{clean_data}} to strip out unused data
+#' after \code{change_data} is called (see examples below).
+#' \code{change_data} is called internally automatically, but can also be
+#' used by an \pkg{ss3sim} user to manipulate data as a case, or to prepare
+#' a new OM for use in a simulation. See the vignette for more details.
 #'
-#' @param datfile A list as read in by \code{r4ss::read_dat}.
-#' @param file_out A character value giving the location of an SS \code{.dat}
-#'   file to output.
+#' @param datfile A list as read in by \code{r4ss::SS_readdat}.
+#' @param outfile A character value giving the location of an SS \code{.dat}
+#'   file to output, if \code{write_file=TRUE}.
 #' @param fleets A numeric vector of fleets
 #' @param years A numeric vector of years
-#' @param types A vector that can take the one or all of the following
+#' @param types A vector that can take combinations of the following
 #' entries: \code{"index"}, \code{"len"}, \code{"age"}, \code{"cal"},
 #' \code{"mla"}.  \code{types} controls what data structures the function
 #' acts on, with \code{"index"} changing indices/CPUE, \code{"len"}
@@ -35,7 +36,7 @@
 #' @param write_file Should the \code{.dat} file be written? The new \code{.dat}
 #'   file will always be returned invisibly by the function. Setting
 #'   \code{write_file = FALSE} can be useful for testing. Note that you must
-#'   supply a value to the argument \code{file_out}, but this argument can be
+#'   supply a value to the argument \code{outfile}, but this argument can be
 #'   set to any arbitrary value (such as \code{NULL}) if \code{write_file =
 #'   FALSE}.
 #'
@@ -77,7 +78,35 @@
 #' print(out$lbin_vector)
 #' print(names(out$agecomp))
 #' print(names(out$lencomp))
-change_data <- function(datfile, file_out, fleets, years, types, age_bins =
+#' ## TODO new examples, not fully incorporated;
+#' index_params=list(fleets=c(1,2), years=list(c(1,2), c(10,11)), sds_obs=c(.1,.2))
+#' ## lcomp_params= list(Nsamp=list(12345), fleets=1, years=list(c(1,5)))
+#' ## agecomp_params= list(Nsamp=list(12345), fleets=c(1,2), years=list(2,c(15,16)))
+#' ## calcomp_params= list(Nsamp=list(1), fleets=c(1), years=98)
+#' ## mlacomp_params= list(fleets=c(2), Nsamp=54, years=list(c(1,15)))
+#' ## d <- system.file("extdata", package = "ss3sim")
+#' ## #' ## d <- "../ss3sim/inst/extdata/"
+#' ## f_in <- paste0(d, "/example-om/data.ss_new")
+#' ## datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+#' ## data_units <- calculate_data_units(
+#' ##     index_params=index_params,
+#' ##     lcomp_params=lcomp_params,
+#' ##     agecomp_params=agecomp_params,
+#' ##     calcomp_params=calcomp_params,
+#' ##     mlacomp_params=mlacomp_params)
+#' ## dat2 <- with(data_units, change_data(datfile=datfile, fleets=fleets, years=years,
+#' ##                              types=types, write_file=FALSE))
+#' ## dat2 <- change_data(datfile, fleets=c(1,2), years=c(4,5),
+#' ##                     types=c("age","len", "mla", "cal"), write_file=FALSE)
+#' ## datfile <- dat2
+#' ## dat3 <- clean_data(datfile=dat2, lcomp_params=lcomp_params,
+#' ##                        index_params=index_params,
+#' ##                      agecomp_params=agecomp_params,
+#' ##                      calcomp_params=calcomp_params,
+#' ##                      mlacomp_params=mlacomp_params,
+#' ##                       verbose=TRUE)
+
+change_data <- function(datfile, outfile, fleets, years, types, age_bins =
                         NULL, len_bins = NULL, write_file = TRUE) {
 
     ## Input checks:
@@ -122,19 +151,19 @@ change_data <- function(datfile, file_out, fleets, years, types, age_bins =
         datfile$N_agecomp <- nrow(datfile$agecomp)
     }
     ## If we don't use this structure to get expected value we don't need
-    ## to print them, so don't need it. Left for now. TODO check this is
-    ## right.
-    ## if ("cal" %in% types) {
-    ##     agecomp <- datfile$agecomp[datfile$agecomp$Lbin_lo < 0, ]
-    ##     new.calcomp <-
-    ##         make_dummy_dat_calcomp(fleets=fleets, years=years,
-    ##                                age_bins=age_bins,
-    ##                                Lbin_lo=len_bins[-length(len_bins)],
-    ##                                Lbin_hi=len_bins[-1])
-    ##     datfile$agecomp <- rbind(agecomp, new.calcomp)
-    ##     datfile$agebin_vector <- age_bins
-    ##     datfile$N_agecomp <- nrow(datfile$agecomp)
-    ## }
+    ## to print them, so don't need it. TODO check this is right. It can
+    ## seriously slow down the OM to write uncessary calcomp data.
+    if ("cal" %in% types) {
+        agecomp <- datfile$agecomp[datfile$agecomp$Lbin_lo < 0, ]
+        new.calcomp <-
+            make_dummy_dat_calcomp(fleets=fleets, years=years,
+                                   age_bins=age_bins,
+                                   Lbin_lo=len_bins[-length(len_bins)],
+                                   Lbin_hi=len_bins[-1])
+        datfile$agecomp <- rbind(agecomp, new.calcomp)
+        datfile$agebin_vector <- age_bins
+        datfile$N_agecomp <- nrow(datfile$agecomp)
+    }
 
     if ("mla" %in% types) {
         datfile$MeanSize_at_Age_obs <-
@@ -143,24 +172,29 @@ change_data <- function(datfile, file_out, fleets, years, types, age_bins =
     }
 
     if (write_file) {
-        SS_writedat(datlist = datfile, outfile = file_out, overwrite = TRUE,
+        SS_writedat(datlist = datfile, outfile = outfile, overwrite = TRUE,
                     verbose = FALSE)
     }
     return(invisible(datfile))
 }
 
-## Given sampling arguments, calculate super set of fleets, years, and data
-## types. No documentation for now since not sure it'll be used.
-## ### Examples
-## ## Should throw error since nothing passed
-## calculate_data_units()
-## ## Only one fleet
-## calculate_data_units(lcomp_params=list(fleets=1, years=c(3,4,6)))
-## ## Add new fleet
-## calculate_data_units(lcomp_params=list(fleets=1, years=c(3,4,6)),
-##                      agecomp_params=list(fleets=2, years=5))
-## ## If CAL data called, need other types even if not specified
-## calculate_data_units(calcomp_params=list(fleets=1, years=c(3,4,6)))
+#' Given sampling arguments, calculate super set of fleets, years, and data
+#' types.
+#'
+#' @author Cole Monnahan
+#' @param index_params, lcomp_params, agecomp_params, calcomp_params,
+#' mlacomp_params Named lists containing the arguments for the different
+#' sampling functions. #'
+#' @examples
+#' ## Should throw error since nothing passed
+#' calculate_data_units()
+#' ## Only one fleet
+#' calculate_data_units(lcomp_params=list(fleets=1, years=c(3,4,6)))
+#' ## Add new fleet
+#' calculate_data_units(lcomp_params=list(fleets=1, years=c(3,4,6)),
+#'                      agecomp_params=list(fleets=2, years=5))
+#' ## If CAL data called, need other types even if not specified
+#' calculate_data_units(calcomp_params=list(fleets=1, years=c(3,4,6)))
 calculate_data_units <- function(index_params=NULL, lcomp_params=NULL,
                                  agecomp_params=NULL, calcomp_params=NULL,
                                  mlacomp_params=NULL){
