@@ -34,14 +34,31 @@
 ##                      mlacomp_params=mlacomp_params,
 ##                       verbose=TRUE)
 
-clean_data <- function(datfile, lcomp_params=NULL, agecomp_params=NULL,
-                          calcomp_params=NULL, mlacomp_params=NULL,
-                          verbose=FALSE ){
+clean_data <- function(datfile, index_params=NULL, lcomp_params=NULL,
+                       agecomp_params=NULL, calcomp_params=NULL,
+                       mlacomp_params=NULL, verbose=FALSE ){
     ## Should somehow have a check that datfile is valid. None for now.
 
     ## Keep track of how many rows were removed to see if needed
-    agecomp.N.removed <- lcomp.N.removed <- mlacomp.N.removed <-
-        calcomp.N.removed <- 0
+    index.N.removed <- agecomp.N.removed <- lcomp.N.removed <-
+        mlacomp.N.removed <- calcomp.N.removed <- 0
+    ## CPUE
+    ## Length composition data
+    if(is.null(index_params)){
+        stop("Indices are currently mandatory: index_params is NULL")
+    } else {
+        a <- datfile$CPUE
+        datfile$CPUE <- do.call(rbind,
+         lapply(1:length(index_params$fleets), function(i)
+                a[a$index == index_params$fleets[i] &
+                  a$year %in% index_params$years[[i]],]))
+        datfile$N_cpue <- nrow(datfile$CPUE)
+        index.N.removed <- nrow(a)-nrow(datfile$CPUE)
+        if(index.N.removed>0 & verbose)
+            message(paste(index.N.removed,
+                      "lines of CPUE data were removed"))
+    }
+
     ## Length composition data
     if(is.null(lcomp_params)){
         datfile$lencomp <- data.frame("#")
@@ -53,28 +70,27 @@ clean_data <- function(datfile, lcomp_params=NULL, agecomp_params=NULL,
                 a[a$Flt == lcomp_params$fleets[i] &
                   a$Yr %in% lcomp_params$years[[i]],]))
         datfile$N_lencomp <- nrow(datfile$lencomp)
-        lencomp.N.removed <- nrow(a)-nrow(datfile$lencomp)
-        if(lencomp.N.removed>0 & verbose)
-            message(paste(lencomp.N.removed,
+        lcomp.N.removed <- nrow(a)-nrow(datfile$lencomp)
+        if(lcomp.N.removed>0 & verbose)
+            message(paste(lcomp.N.removed,
                       "lines of length comp data were removed"))
     }
 
     ## Mean length at age data
-    if(is.null(lcomp_params)){
-        datfile$lencomp <- data.frame("#")
-        datfile$N_lencomp <- 0
+    if(is.null(mlacomp_params)){
+        datfile$MeanSize_at_Age_obs <- data.frame("#")
+        datfile$N_MeanSize_at_Age_obs <- 0
     } else {
         a <- datfile$MeanSize_at_Age_obs
-        datfile$MeanSize_at_Age_obs <- do.call(rbind,
+        datfile$MeanSize_at_Age_obs <-
+            do.call(rbind,
          lapply(1:length(mlacomp_params$fleets), function(i)
                 a[a$Flt == mlacomp_params$fleets[i] &
                   a$Yr %in% mlacomp_params$years[[i]],]))
         datfile$N_MeanSize_at_Age_obs <- nrow(datfile$MeanSize_at_Age_obs)
-
-        datfile$N_lencomp <- nrow(datfile$lencomp)
-        lencomp.N.removed <- nrow(a)-nrow(datfile$lencomp)
-        if(lencomp.N.removed>0 & verbose)
-            message(paste(lencomp.N.removed,
+        mlacomp.N.removed <- nrow(a)-datfile$N_MeanSize_at_Age_obs
+        if(mlacomp.N.removed>0 & verbose)
+            message(paste(mlacomp.N.removed,
                       "lines of mean length data were removed"))
     }
 

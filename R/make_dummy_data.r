@@ -1,3 +1,15 @@
+make_dummy_dat_index <- function(fleets, years) {
+    ## expand dummy data across all types:
+    dummy_dat_list <- lapply(fleets, function(fleet) {
+        data.frame("year"   = years, "Seas" = 1, "index"  = fleet,
+                   "obs" = 1, "se_log" = .1,
+                   stringsAsFactors = FALSE)})
+    dummy_dat <- as.data.frame(do.call('rbind', dummy_dat_list))
+    ## Add the dummy data for each data cell
+    dummy_dat
+}
+
+
 make_dummy_dat_lencomp <- function(fleets, years, len_bins) {
     ## expand dummy data across all types:
     dummy_dat_list <- lapply(fleets, function(fleet) {

@@ -21,13 +21,13 @@
 #'   file to output.
 #' @param fleets A numeric vector of fleets
 #' @param years A numeric vector of years
-# TODO: as coded, types only does anything if len or age:
-#' @param types A vector that can take the one or all of the following entries:
-#'   \code{"len"}, \code{"age"}, \code{"cal"}, \code{"mla"}.
-#'   \code{types} controls what data structures the function acts on, with
-#'   \code{"len"} augmenting the length composition data, \code{"age"}
-#'   augmenting the age composition, \code{"cal"} augmenting the conditional age
-#'   at length, and \code{"mla"} augmenting the mean length at age data.
+#' @param types A vector that can take the one or all of the following
+#' entries: \code{"index"}, \code{"len"}, \code{"age"}, \code{"cal"},
+#' \code{"mla"}.  \code{types} controls what data structures the function
+#' acts on, with \code{"index"} changing indices/CPUE, \code{"len"}
+#' augmenting the length composition data, \code{"age"} augmenting the age
+#' composition, \code{"cal"} augmenting the conditional age at length, and
+#' \code{"mla"} augmenting the mean length at age data.
 #' @param age_bins A numeric vector of age bins to use. If left as
 #'   \code{NULL} then the age bin structure will be taken from the OM.
 #' @param len_bins A numeric vector of length bins to use. If left as
@@ -81,9 +81,8 @@ change_data <- function(datfile, file_out, fleets, years, types, age_bins =
                         NULL, len_bins = NULL, write_file = TRUE) {
 
     ## Input checks:
-    types <- match.arg(types, choices = c("len", "age", "cal", "mla", "mwa"),
+    types <- match.arg(types, choices = c("index","len", "age", "cal", "mla", "mwa"),
                        several.ok = TRUE)
-    stopifnot(is.list(datfile))
     if(datfile$type != "Stock_Synthesis_data_file")
         stop("Invalid datfile, was it read in by SS_readdat?")
     ## Test for compatibility with ss3sim
@@ -92,16 +91,19 @@ change_data <- function(datfile, file_out, fleets, years, types, age_bins =
                    "change_data only works with single-gender models."))
     }
 
-    ## Change the data vectors if specified
-    if(is.null(len_bins))
-        len_bins <- datfile$lbin_vector
+### TODO: Need to do things like change age matrices, see change_pop_bin below
+    ## Change the data vectors if specified.
+    if(is.null(len_bins)) len_bins <- datfile$lbin_vector
     else stop("dynamic binning of length bins not yet implemented")
-    ## Need to do things like change age matrices, see change_pop_bin below
     if(is.null(age_bins)) age_bins <- datfile$agebin_vector
     else stop("dynamic binning of length bins not yet implemented")
-    ## Need to do things like change age matrices, see change_pop_bin below
 
     ## Now modify each data type in turn
+    if ("index" %in% types) {
+        datfile$CPUE <-
+            make_dummy_dat_index(fleets=fleets, years=years)
+        datfile$N_cpue <- nrow(datfile$CPUE)
+    }
     if ("len" %in% types) {
         datfile$lencomp <-
             make_dummy_dat_lencomp(fleets=fleets, years=years,
@@ -119,17 +121,20 @@ change_data <- function(datfile, file_out, fleets, years, types, age_bins =
         datfile$agebin_vector <- age_bins
         datfile$N_agecomp <- nrow(datfile$agecomp)
     }
-    if ("cal" %in% types) {
-        agecomp <- datfile$agecomp[datfile$agecomp$Lbin_lo < 0, ]
-        new.calcomp <-
-            make_dummy_dat_calcomp(fleets=fleets, years=years,
-                                   age_bins=age_bins,
-                                   Lbin_lo=len_bins[-length(len_bins)],
-                                   Lbin_hi=len_bins[-1])
-        datfile$agecomp <- rbind(agecomp, new.calcomp)
-        datfile$agebin_vector <- age_bins
-        datfile$N_agecomp <- nrow(datfile$agecomp)
-    }
+    ## If we don't use this structure to get expected value we don't need
+    ## to print them, so don't need it. Left for now. TODO check this is
+    ## right.
+    ## if ("cal" %in% types) {
+    ##     agecomp <- datfile$agecomp[datfile$agecomp$Lbin_lo < 0, ]
+    ##     new.calcomp <-
+    ##         make_dummy_dat_calcomp(fleets=fleets, years=years,
+    ##                                age_bins=age_bins,
+    ##                                Lbin_lo=len_bins[-length(len_bins)],
+    ##                                Lbin_hi=len_bins[-1])
+    ##     datfile$agecomp <- rbind(agecomp, new.calcomp)
+    ##     datfile$agebin_vector <- age_bins
+    ##     datfile$N_agecomp <- nrow(datfile$agecomp)
+    ## }
 
     if ("mla" %in% types) {
         datfile$MeanSize_at_Age_obs <-
@@ -156,9 +161,11 @@ change_data <- function(datfile, file_out, fleets, years, types, age_bins =
 ##                      agecomp_params=list(fleets=2, years=5))
 ## ## If CAL data called, need other types even if not specified
 ## calculate_data_units(calcomp_params=list(fleets=1, years=c(3,4,6)))
-calculate_data_units <- function(lcomp_params=NULL, agecomp_params=NULL,
-                                calcomp_params=NULL, mlacomp_params=NULL){
-    sample_args <- list("len"=lcomp_params, "age"=agecomp_params, "cal"=calcomp_params,
+calculate_data_units <- function(index_params=NULL, lcomp_params=NULL,
+                                 agecomp_params=NULL, calcomp_params=NULL,
+                                 mlacomp_params=NULL){
+    sample_args <- list("index"=index_params, "len"=lcomp_params,
+                        "age"=agecomp_params, "cal"=calcomp_params,
                         "mla"=mlacomp_params)
     sample_args_null <- vapply(sample_args, is.null, logical(1L))
     ## Exit if nothing specified to prevent error.
