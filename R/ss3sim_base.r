@@ -299,7 +299,7 @@ deviations can lead to biased model results.")
         verbose = FALSE)
       index_params <- add_nulls(index_params, c("fleets", "years", "sds_obs"))
       with(index_params,
-        sample_index(infile          = SS.dat,
+        sample_index(datfile          = SS.dat,
                      outfile         = pastef(sc, i, "em", "ss3.dat"),
                      fleets          = fleets,
                      years           = years,
@@ -341,7 +341,7 @@ deviations can lead to biased model results.")
                               file_out=pastef(sc, i, "em", "em.ctl"),
                               maturity_option=5)
               with(wtatage_params,
-                   sample_wtatage(infile           = pastef(sc, i, "om", "wtatage.ss_new"),
+                   sample_wtatage(datfile           = pastef(sc, i, "om", "wtatage.ss_new"),
                                   outfile          = pastef(sc, i, "em", "wtatage.dat"),
                                   datfile          = pastef(sc, i, "om", "data.ss_new"),
                                   ctlfile          = pastef(sc, i, "om", "control.ss_new"),
@@ -388,7 +388,7 @@ deviations can lead to biased model results.")
           lcomp_params <- add_nulls(lcomp_params,
                      c("fleets", "Nsamp", "years", "cpar"))
           with(lcomp_params,
-               sample_lcomp(infile           = SS.dat,
+               sample_lcomp(datfile           = SS.dat,
                             outfile          = pastef(sc, i, "em", "ss3.dat"),
                             fleets           = fleets,
                             Nsamp            = Nsamp,
@@ -406,7 +406,7 @@ deviations can lead to biased model results.")
       agecomp_params <- add_nulls(agecomp_params,
                                   c("fleets", "Nsamp", "years", "cpar"))
       with(agecomp_params,
-           sample_agecomp(infile         = SS.dat2,
+           sample_agecomp(datfile         = SS.dat2,
                           outfile        = pastef(sc, i, "em", "ss3.dat"),
                           fleets         = fleets,
                           Nsamp          = Nsamp,
