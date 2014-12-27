@@ -20,15 +20,15 @@
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
-#' infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+#' datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
 #'
 #' ## Generate with constant sample size across years
-#' ex1 <- sample_lcomp(infile=infile, outfile="test1.dat", fleets=c(1,2),
+#' ex1 <- sample_lcomp(datfile=datfile, outfile="test1.dat", fleets=c(1,2),
 #'                     Nsamp=list(100,50), years=list(seq(1994, 2012, by=2),
 #'                                             2003:2012), write_file = FALSE)
 #'
 #' ## Generate with varying Nsamp by year for first fleet
-#' ex2 <- sample_lcomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
+#' ex2 <- sample_lcomp(datfile=datfile, outfile="test2.dat", fleets=c(1,2),
 #'                     Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
 #'                     years=list(seq(1994, 2012, by=2),
 #'                         2003:2012), write_file = FALSE)
@@ -39,11 +39,11 @@
 #' temp.list <- temp.list2 <- list()
 #' for(i in 1:40){
 #'     temp.list[[i]] <-
-#'       sample_lcomp(infile=infile, outfile="test1.dat", fleets=c(2), cpar=c(3),
+#'       sample_lcomp(datfile=datfile, outfile="test1.dat", fleets=c(2), cpar=c(3),
 #'                      Nsamp=list(100), years=list(1995),
 #'                      write_file=FALSE)
 #'     temp.list2[[i]] <-
-#'         sample_lcomp(infile=infile, outfile="test1.dat", fleets=c(2),
+#'         sample_lcomp(datfile=datfile, outfile="test1.dat", fleets=c(2),
 #'                      cpar=c(NA), Nsamp=list(100), years=list(1995),
 #'                      write_file=FALSE)
 #' }
@@ -53,11 +53,11 @@
 #' op <- par(mfrow=c(2,1))
 #' with(x1, boxplot(value~variable, las=2, ylim=c(0,.6), ylab="Proportion",
 #'                  main="Overdispersed (cpar=3)",  xlab="length bin"))
-#' temp <- as.numeric(subset(infile$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
+#' temp <- as.numeric(subset(datfile$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
 #' points(temp/sum(temp), pch="-", col="red")
 #' with(x2, boxplot(value~variable, las=2, ylim=c(0,.6), ylab="Proportion",
 #'                  main="Multinomial", xlab="length bin"))
-#' temp <- as.numeric(subset(infile$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
+#' temp <- as.numeric(subset(datfile$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
 #' points(temp/sum(temp), pch="-", col="red")
 #' par(op)
 #' }
@@ -65,11 +65,11 @@
 #' @export
 #' @seealso \code{\link{sample_agecomp}}
 
-sample_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
+sample_lcomp <- function(datfile, outfile, fleets = c(1,2), Nsamp,
   years, cpar = 1, write_file = TRUE, lengthbin_vector = NULL,
   bin_vector = NULL){
   ## The new lcomp is mostly based on the old one so start with that
-  lcomp <- infile$lencomp
+  lcomp <- datfile$lencomp
   ## Check inputs for errors
   if(substr_r(outfile,4) != ".dat" & write_file)
     stop(paste0("outfile ", outfile, " needs to end in .dat"))
@@ -144,7 +144,7 @@ sample_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
   if(Nfleets==0) newcomp.final = data.frame("#")
 
   ## Build the new dat file
-  newfile <- infile
+  newfile <- datfile
   newfile$lencomp <- newcomp.final
   if(Nfleets>0) newfile$N_lencomp <- nrow(newcomp.final)
   if(Nfleets==0) newfile$N_lencomp <- 0
