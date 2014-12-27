@@ -282,8 +282,8 @@ deviations can lead to biased model results.")
                            calcomp_params=calcomp_params,
                            mlacomp_params=mlacomp_params)
       if (call_change_data) {
-          change_data(file_in = pastef(sc, i, "om", "ss3.dat"),
-                      file_out = pastef(sc, i, "om", "ss3.dat"),
+          change_data(datfile=datfile.orig,
+                      outfile = pastef(sc, i, "om", "ss3.dat"),
                       fleets = data_args$fleets, years = data_args$years,
                       types = data_args$types, age_bins = age_bins,
                       len_bins = len_bins, write_file = TRUE)
