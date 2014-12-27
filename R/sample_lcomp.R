@@ -71,8 +71,6 @@ sample_lcomp <- function(datfile, outfile, fleets = c(1,2), Nsamp,
   ## The new lcomp is mostly based on the old one so start with that
   lcomp <- datfile$lencomp
   ## Check inputs for errors
-  if(substr_r(outfile,4) != ".dat" & write_file)
-    stop(paste0("outfile ", outfile, " needs to end in .dat"))
   Nfleets <- ifelse(is.null(fleets), 0, length(fleets))
   if(FALSE %in% (fleets %in% unique(lcomp$FltSvy)))
     stop(paste0("The specified fleet number does not match input file"))
@@ -153,7 +151,7 @@ sample_lcomp <- function(datfile, outfile, fleets = c(1,2), Nsamp,
   if(write_file)
     SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
                 verbose = FALSE)
-  return(invisible(newcomp.final))
+  return(invisible(newfile))
 }
 
 #' (Depreciated) Sample length compositions from expected values

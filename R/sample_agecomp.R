@@ -85,8 +85,6 @@ sample_agecomp <- function(datfile, outfile, fleets = c(1,2), Nsamp,
     ## that
     agecomp <- datfile$agecomp
     ## Check inputs for errors
-    if(substr_r(outfile,4) != ".dat" & write_file)
-        stop(paste0("outfile ", outfile, " needs to end in .dat"))
     Nfleets <- ifelse(is.null(fleets), 0, length(fleets))
     if(Nfleets >0 & FALSE %in% (fleets %in% unique(agecomp$FltSvy)))
         stop(paste0("The specified fleet number does not match input file"))
@@ -196,7 +194,7 @@ sample_agecomp <- function(datfile, outfile, fleets = c(1,2), Nsamp,
     if(write_file)
         SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
                     verbose = FALSE)
-    return(invisible(newcomp.final))
+    return(invisible(newfile))
 }
 
 

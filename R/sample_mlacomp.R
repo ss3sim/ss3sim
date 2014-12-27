@@ -49,15 +49,14 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     ## the maturity function.
     ##
 
-    ## Read in datfile, need this for true age distributions and Nsamp
-    datfile <- SS_readdat(file=datfile, verbose=FALSE)
     ## If fleets==NULL, quit here and delete the data so the EM doesn't use it.
     if(is.null(fleets)){
-        datfile$MeanSize_at_Age_obs <- NULL
+        datfile$MeanSize_at_Age_obs <- data.frame("#")
         datfile$N_MeanSize_at_Age_obs <- 0
-        SS_writedat(datlist=datfile, outfile=outfile, overwrite=TRUE,
-                          verbose=FALSE)
-        return(NULL)
+        if(write_file)
+            SS_writedat(datlist=datfile, outfile=outfile, overwrite=TRUE,
+                        verbose=FALSE)
+        return(invisible(datfile))
     }
     agecomp <- datfile$agecomp
     mlacomp <- datfile$MeanSize_at_Age_obs
@@ -151,5 +150,5 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     ## Write the modified file
     if(write_file) SS_writedat(datlist=datfile, outfile=outfile,
                                      overwrite=TRUE, verbose=TRUE)
-    return(invisible(mlacomp.new))
+    return(invisible(datfile))
 }

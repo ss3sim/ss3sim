@@ -281,6 +281,8 @@ deviations can lead to biased model results.")
                            agecomp_params=agecomp_params,
                            calcomp_params=calcomp_params,
                            mlacomp_params=mlacomp_params)
+      datfile.orig <- SS_readdat(pastef(sc, i, "om", "ss3.dat"),
+                                 verbose=FALSE)
       if (call_change_data) {
           change_data(datfile=datfile.orig,
                       outfile = pastef(sc, i, "om", "ss3.dat"),
@@ -295,15 +297,16 @@ deviations can lead to biased model results.")
                             data_out = pastef(sc, i, "em", "ss3.dat"))
 
       ## Survey biomass index
-      SS.dat = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
+      datfile <- SS_readdat(pastef(sc, i, "em", "ss3.dat"),
         verbose = FALSE)
       index_params <- add_nulls(index_params, c("fleets", "years", "sds_obs"))
       with(index_params,
-        sample_index(datfile          = SS.dat,
-                     outfile         = pastef(sc, i, "em", "ss3.dat"),
+        datfile <- sample_index(datfile         = datfile,
+                     outfile         = NULL,
                      fleets          = fleets,
                      years           = years,
-                     sds_obs         = sds_obs))
+                     sds_obs         = sds_obs,
+                     write_file      = FALSE))
 
       # Add tail compression option. If NULL is passed (the base case),
       # ignore it.
@@ -359,14 +362,14 @@ deviations can lead to biased model results.")
       if(is.null(mlacomp_params)) mlacomp_params <- list()
       mlacomp_params <- add_nulls(mlacomp_params, c("fleets", "Nsamp", "years"))
       with(mlacomp_params,
-           sample_mlacomp(datfile        = pastef(sc, i, "em", "ss3.dat"),
-                          outfile        = pastef(sc, i, "em", "ss3.dat"),
+           datfile <- sample_mlacomp(datfile        = datfile,
+                          outfile        = NULL,
                           ctlfile        = pastef(sc, i, "om", "control.ss_new"),
                           fleets         = fleets,
                           Nsamp          = Nsamp,
                           years          = years,
-                          mean_outfile   = pastef(sc, i, "em", "vbgf_info.csv")))
-
+                          mean_outfile   = pastef(sc, i, "em", "vbgf_info.csv"),
+                          write_file     = FALSE))
 
       ## Add error in the conditional age at length comp data. Delete data
       ## if not called, since could be written there.
@@ -374,44 +377,42 @@ deviations can lead to biased model results.")
       if(!is.null(calcomp_params)){
           calcomp_params <- add_nulls(calcomp_params,
                                       c("fleets", "years"))
-        with(calcomp_params,
-             sample_calcomp(datfile          = pastef(sc, i, "em", "ss3.dat"),
-                            outfile          = pastef(sc, i, "em", "ss3.dat"),
+        datfile <- with(calcomp_params,
+             sample_calcomp(datfile          = datfile,
+                            outfile          = NULL,
                             fleets           = fleets,
                             years            = years,
-                            write_file       = TRUE))
+                            write_file       = FALSE))
       }
+
       # Add error in the length comp data
       if(!is.null(lcomp_params)){
-          SS.dat = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
-          verbose = FALSE)
           lcomp_params <- add_nulls(lcomp_params,
                      c("fleets", "Nsamp", "years", "cpar"))
-          with(lcomp_params,
-               sample_lcomp(datfile           = SS.dat,
-                            outfile          = pastef(sc, i, "em", "ss3.dat"),
+          datfile <- with(lcomp_params,
+               sample_lcomp(datfile           = datfile,
+                            outfile          = NULL,
                             fleets           = fleets,
                             Nsamp            = Nsamp,
                             years            = years,
-                            cpar             = cpar))
+                            cpar             = cpar,
+                            write_file       = FALSE))
       }
-
 
       ## Add error in the age comp data. Need to do this last since other
       ## sampling functions rely on the age data. Also, if user doesn't
       ## call this function we need to delete the data
       if(is.null(agecomp_params)) agecomp_params <- list()
-      SS.dat2 <- SS_readdat(pastef(sc, i, "em", "ss3.dat"),
-                            verbose = FALSE)
       agecomp_params <- add_nulls(agecomp_params,
                                   c("fleets", "Nsamp", "years", "cpar"))
-      with(agecomp_params,
-           sample_agecomp(datfile         = SS.dat2,
-                          outfile        = pastef(sc, i, "em", "ss3.dat"),
+      datfile <- with(agecomp_params,
+           sample_agecomp(datfile         = datfile,
+                          outfile        = NULL,
                           fleets         = fleets,
                           Nsamp          = Nsamp,
                           years          = years,
-                          cpar           = cpar))
+                          cpar           = cpar,
+                          write_file     = FALSE))
 
       ## Manipulate EM starter file for a possible retrospective analysis
       if(!is.null(retro_params)) {
@@ -422,6 +423,16 @@ deviations can lead to biased model results.")
                      retro_yr        = retro_yr))
       }
 
+      ## End of manipulating the data file, so clean it and write it
+      datfile <- clean_data(datfile=datfile,
+                            index_params=index_params,
+                            lcomp_params=lcomp_params,
+                            agecomp_params=agecomp_params,
+                            calcomp_params=calcomp_params,
+                            mlacomp_params=mlacomp_params,
+                            verbose=TRUE)
+      SS_writedat(datlist=datfile, outfile=pastef(sc,i,"em", "ss3.dat"),
+                  overwrite=TRUE, verbose=FALSE)
       # Manipulate EM control file to adjust what gets estimated
       # We'll only a portion of the function, the ctl part if
       # it's a bias run or if bias adjustment isn't getting run.
@@ -500,8 +511,6 @@ deviations can lead to biased model results.")
         print(lcomp_params)
         cat("\n\n# tail compression arguments\n")
         print(tc_params)
-        cat("\n\n# change_bin arguments\n")
-        print(bin_params)
         cat("\n\n# length comp constant arguments\n")
         print(lc_params)
         cat("\n\n# agecomp arguments\n")

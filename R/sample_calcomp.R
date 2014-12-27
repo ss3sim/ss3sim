@@ -26,7 +26,6 @@ sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
     ## Lbin_hi, so subset those out, but don't delete the age values since
     ## those are already sampled from, or might be sampled later so need to
     ## leave them there.
-    datfile <- r4ss::SS_readdat(datfile, verbose=FALSE)
     agecomp.age <- datfile$agecomp[datfile$agecomp$Lbin_lo== -1,]
     agecomp.cal <- datfile$agecomp[datfile$agecomp$Lbin_lo != -1,]
     lencomp <- datfile$lencomp
@@ -37,9 +36,10 @@ sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
     if(is.null(fleets)){
         newfile$agecomp <- agecomp.age
         newfile$N_agecomp <- nrow(agecomp.age)
-        r4ss::SS_writedat(datlist = newfile, outfile = outfile,
+        if(write_file)
+            SS_writedat(datlist = newfile, outfile = outfile,
                           overwrite = TRUE, verbose=FALSE)
-        return(NULL)
+        return(invisible(newfile))
     }
     ## If not, do argument checks
     if(nrow(agecomp.cal)==0) stop("No conditional age-at-length data found")
@@ -137,7 +137,7 @@ sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
     if(write_file)
         r4ss::SS_writedat(datlist = newfile, outfile = outfile,
                           overwrite = TRUE, verbose=FALSE)
-    return(invisible(newcomp.final))
+    return(invisible(newfile))
 }
 
 

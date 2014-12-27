@@ -77,7 +77,7 @@ clean_data <- function(datfile, index_params=NULL, lcomp_params=NULL,
     }
 
     ## Mean length at age data
-    if(is.null(mlacomp_params)){
+    if(is.null(mlacomp_params$fleets)){
         datfile$MeanSize_at_Age_obs <- data.frame("#")
         datfile$N_MeanSize_at_Age_obs <- 0
     } else {
@@ -88,8 +88,9 @@ clean_data <- function(datfile, index_params=NULL, lcomp_params=NULL,
                 a[a$Flt == mlacomp_params$fleets[i] &
                   a$Yr %in% mlacomp_params$years[[i]],]))
         datfile$N_MeanSize_at_Age_obs <- nrow(datfile$MeanSize_at_Age_obs)
-        mlacomp.N.removed <- nrow(a)-datfile$N_MeanSize_at_Age_obs
-        if(mlacomp.N.removed>0 & verbose)
+        mlacomp.N.removed <-
+            if(is.null(a))  0 else  nrow(a)-datfile$N_MeanSize_at_Age_obs
+        if(mlacomp.N.removed!=0 & verbose)
             message(paste(mlacomp.N.removed,
                       "lines of mean length data were removed"))
     }
