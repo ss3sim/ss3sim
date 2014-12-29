@@ -29,9 +29,9 @@
 #'
 #' @examples
 #' temp_path <- file.path(tempdir(), "ss3sim-test")
-#' dir.create(temp_path, showWarnings = FALSE)
-# #' wd <- getwd()
-# #' setwd(temp_path)
+# #' dir.create(temp_path, showWarnings = FALSE)
+# #'  wd <- getwd()
+# #'  setwd(temp_path)
 # #' fdat <- system.file("extdata/models/cod-om/codOM.dat", package = "ss3sim")
 # #' fctl <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
 # #' change_data(fdat, outfile = "codOM-temp.dat", fleets = 1,
@@ -40,8 +40,8 @@
 # #'   Nsamp = list(rep(50, 13)), years = list(2000:2012), write_file = FALSE,
 # #'   mean_outfile = NULL)
 # #' out
-#' unlink("codOM-temp.dat")
-#' setwd(wd)
+# #' unlink("codOM-temp.dat")
+# #' setwd(wd)
 
 sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
                            years, write_file=TRUE, mean_outfile = NULL){
