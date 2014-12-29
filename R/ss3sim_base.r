@@ -344,13 +344,13 @@ deviations can lead to biased model results.")
                               file_out=pastef(sc, i, "em", "em.ctl"),
                               maturity_option=5)
               with(wtatage_params,
-                                  outfile          = pastef(sc, i, "em", "wtatage.dat"),
-                                  datfile          = pastef(sc, i, "om", "data.ss_new"),
-                                  ctlfile          = pastef(sc, i, "om", "control.ss_new"),
-                                  fleets           = fleets,
-                                  years            = years,
-                                  write_file       = TRUE))
                    sample_wtatage(infile      = pastef(sc, i, "om", "wtatage.ss_new"),
+                                  outfile     = pastef(sc, i, "em", "wtatage.dat"),
+                                  datfile     = pastef(sc, i, "om", "data.ss_new"),
+                                  ctlfile     = pastef(sc, i, "om", "control.ss_new"),
+                                  fleets      = fleets,
+                                  years       = years,
+                                  write_file  = TRUE))
           }
       }
 
