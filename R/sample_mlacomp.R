@@ -93,7 +93,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     ## return nothing (subtract out this type from the data file)
     for(fl in 1:length(fleets)){
         fl.temp <- fleets[fl]
-        mlacomp.fl <- mlacomp[mlacomp$Fleet == fleets[fl] & mlacomp$Yr %in% years[[fl]],]
+        mlacomp.fl <- mlacomp[mlacomp$Flt == fleets[fl] & mlacomp$Yr %in% years[[fl]],]
         for(j in 1:NROW(mlacomp.fl)){
             yr.temp <- mlacomp.fl$Yr[j]
             mlacomp.new <- mlacomp.fl[j,]
