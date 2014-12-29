@@ -19,7 +19,7 @@ case_folder <- paste0(d, "/eg-cases")
 ## Basic run
 # serial:
 run_ss3sim(iterations = 1, scenarios = "D0-E0-F0-R0-M0-cod",
-  case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "safe")
+  case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "optimized")
 unlink("D0-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
 
 # Set parallel cores:
@@ -34,13 +34,13 @@ getDoParWorkers() # check
 
 # parallel iterations:
 run_ss3sim(iterations = 1:2, scenarios = "D0-E0-F0-R0-M0-cod",
-  case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "safe",
+  case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "optimized",
   parallel = TRUE, parallel_iterations = TRUE)
 unlink("D0-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
 
 # parallel iterations with bias adjustment:
 run_ss3sim(iterations = 1:2, scenarios = "D0-E0-F0-R0-M0-cod",
-  case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "safe",
+  case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "optimized",
   parallel = TRUE, parallel_iterations = TRUE, bias_nsim = 2, bias_adjust = TRUE)
 unlink("D0-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
 
