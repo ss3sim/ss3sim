@@ -10,7 +10,6 @@ setwd(temp_path)
 test_that("sample_mlacomp() works", {
   fdat <- system.file("extdata/models/cod-om/codOM.dat", package = "ss3sim")
   fctl <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
-  change_data(fdat, file_out = "codOM-temp.dat",
     types = c("age", "mla"), fleets = 1, years = list(2000:2012), write_file = TRUE)
   set.seed(123)
   out <- sample_mlacomp("codOM-temp.dat", outfile = "ignore.dat", ctlfile = fctl,
@@ -29,5 +28,6 @@ test_that("sample_mlacomp() works", {
     c(2, 4, 4, 3, 5, 3, 6, 3, 5, 4, 5, 1, 2))
   unlink("codOM-temp.dat")
 })
+#   change_data(fdat, outfile = "codOM-temp.dat",
 
 setwd(wd)
