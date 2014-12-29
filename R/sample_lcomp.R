@@ -1,8 +1,8 @@
 #' Sample length compositions from expected values
 #'
 #' Take a \code{data.SS_new} file containing expected values and sample to
-#' create observed length compositions which are then written to file for use
-#' by the estimation model.
+#' create observed length compositions which are then written to file for use by
+#' the estimation model.
 #'
 #' @author Cole Monnahan and Kotaro Ono; modified from a version by Roberto
 #'   Licandeo and Felipe Hurtado-Ferro
@@ -10,9 +10,9 @@
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
 #' @param lengthbin_vector Depreciated argument. Does nothing and will be
-#'   removed in a future major version update. Instead, see
-#'   \code{change_bin}.
-#' @template bin-vector
+#'   removed in a future major version update. Instead, see the \code{len_bins}
+#'   argument in \code{\link{ss3sim_base}}, which uses \code{\link{change_data}}
+#'   internally.
 #' @template casefile-footnote
 #' @template sampling-return
 #' @importFrom r4ss SS_writedat
@@ -20,15 +20,15 @@
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
-#' infile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+#' datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
 #'
 #' ## Generate with constant sample size across years
-#' ex1 <- sample_lcomp(infile=infile, outfile="test1.dat", fleets=c(1,2),
+#' ex1 <- sample_lcomp(datfile=datfile, outfile="test1.dat", fleets=c(1,2),
 #'                     Nsamp=list(100,50), years=list(seq(1994, 2012, by=2),
 #'                                             2003:2012), write_file = FALSE)
 #'
 #' ## Generate with varying Nsamp by year for first fleet
-#' ex2 <- sample_lcomp(infile=infile, outfile="test2.dat", fleets=c(1,2),
+#' ex2 <- sample_lcomp(datfile=datfile, outfile="test2.dat", fleets=c(1,2),
 #'                     Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
 #'                     years=list(seq(1994, 2012, by=2),
 #'                         2003:2012), write_file = FALSE)
@@ -39,11 +39,11 @@
 #' temp.list <- temp.list2 <- list()
 #' for(i in 1:40){
 #'     temp.list[[i]] <-
-#'       sample_lcomp(infile=infile, outfile="test1.dat", fleets=c(2), cpar=c(3),
+#'       sample_lcomp(datfile=datfile, outfile="test1.dat", fleets=c(2), cpar=c(3),
 #'                      Nsamp=list(100), years=list(1995),
 #'                      write_file=FALSE)
 #'     temp.list2[[i]] <-
-#'         sample_lcomp(infile=infile, outfile="test1.dat", fleets=c(2),
+#'         sample_lcomp(datfile=datfile, outfile="test1.dat", fleets=c(2),
 #'                      cpar=c(NA), Nsamp=list(100), years=list(1995),
 #'                      write_file=FALSE)
 #' }
@@ -53,11 +53,11 @@
 #' op <- par(mfrow=c(2,1))
 #' with(x1, boxplot(value~variable, las=2, ylim=c(0,.6), ylab="Proportion",
 #'                  main="Overdispersed (cpar=3)",  xlab="length bin"))
-#' temp <- as.numeric(subset(infile$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
+#' temp <- as.numeric(subset(datfile$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
 #' points(temp/sum(temp), pch="-", col="red")
 #' with(x2, boxplot(value~variable, las=2, ylim=c(0,.6), ylab="Proportion",
 #'                  main="Multinomial", xlab="length bin"))
-#' temp <- as.numeric(subset(infile$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
+#' temp <- as.numeric(subset(datfile$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
 #' points(temp/sum(temp), pch="-", col="red")
 #' par(op)
 #' }
@@ -65,14 +65,12 @@
 #' @export
 #' @seealso \code{\link{sample_agecomp}}
 
-sample_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
+sample_lcomp <- function(datfile, outfile, fleets = c(1,2), Nsamp,
   years, cpar = 1, write_file = TRUE, lengthbin_vector = NULL,
   bin_vector = NULL){
   ## The new lcomp is mostly based on the old one so start with that
-  lcomp <- infile$lencomp
+  lcomp <- datfile$lencomp
   ## Check inputs for errors
-  if(substr_r(outfile,4) != ".dat" & write_file)
-    stop(paste0("outfile ", outfile, " needs to end in .dat"))
   Nfleets <- ifelse(is.null(fleets), 0, length(fleets))
   if(FALSE %in% (fleets %in% unique(lcomp$FltSvy)))
     stop(paste0("The specified fleet number does not match input file"))
@@ -144,7 +142,7 @@ sample_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
   if(Nfleets==0) newcomp.final = data.frame("#")
 
   ## Build the new dat file
-  newfile <- infile
+  newfile <- datfile
   newfile$lencomp <- newcomp.final
   if(Nfleets>0) newfile$N_lencomp <- nrow(newcomp.final)
   if(Nfleets==0) newfile$N_lencomp <- 0
@@ -153,7 +151,7 @@ sample_lcomp <- function(infile, outfile, fleets = c(1,2), Nsamp,
   if(write_file)
     SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
                 verbose = FALSE)
-  return(invisible(newcomp.final))
+  return(invisible(newfile))
 }
 
 #' (Depreciated) Sample length compositions from expected values

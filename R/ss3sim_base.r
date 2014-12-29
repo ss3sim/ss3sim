@@ -8,10 +8,10 @@
 #'
 #' @param iterations Which iterations to run. A numeric vector.
 #' @param scenarios Which scenarios to run.
-#' @param tv_params A named list containing arguments for \code{\link{change_tv}}
-#'   (time-varying).
+#' @param tv_params A named list containing arguments for
+#'   \code{\link{change_tv}} (time-varying).
 #' @param f_params A named list containing arguments for \code{\link{change_f}}
-#'  .
+#'   .
 #' @param index_params A named list containing arguments for
 #'   \code{\link{sample_index}}.
 #' @param lcomp_params A named list containing arguments for
@@ -26,18 +26,23 @@
 #'   \code{\link{sample_mlacomp}}, for mean length-at-age data.
 #' @param retro_params A named list containing arguments for
 #'   \code{\link{change_retro}}.
-#' @param estim_params A named list containing arguments for \code{\link{change_e}}.
-#'
+#' @param estim_params A named list containing arguments for
+#'   \code{\link{change_e}}.
 #' @param tc_params A named list containing arguments for
-#' \code{\link{change_tail_compression}}.
+#'   \code{\link{change_tail_compression}}.
 #' @param lc_params A named list containing arguments for
-#' \code{\link{change_lcomp_constant}}.
-#' @param bin_params A named list containing arguments for
-#' \code{\link{change_bin}}.
-#' @param om_dir The directory with the operating model you want to copy
-#'   and use for the specified simulations.
-#' @param em_dir The directory with the estimation model you want to copy
-#'   and use for the specified simulations.
+#'   \code{\link{change_lcomp_constant}}.
+#' @param len_bins A numeric vector of bins to record length data at from the
+#'   OM. If \code{NULL} then the bins in the original OM will be used.
+#' @param age_bins A numeric vector of bins to record age data at from the OM.
+#'   If \code{NULL} then the bins in the original OM will be used.
+#' @param call_change_data A boolean of whether to call change_data and modify
+#'   the OM at each iteration. Default of TRUE. See the vignette for further
+#'   information on why this would be turned off.
+#' @param om_dir The directory with the operating model you want to copy and use
+#'   for the specified simulations.
+#' @param em_dir The directory with the estimation model you want to copy and
+#'   use for the specified simulations.
 #' @template user_recdevs
 #' @param bias_adjust Run bias adjustment first? See \code{\link{run_bias_ss3}}.
 #' @param bias_nsim If bias adjustment is run, how many simulations should the
@@ -60,8 +65,8 @@
 #' @param seed The seed value to pass to \code{\link{get_recdevs}} when
 #'   generating recruitment deviations. The generated recruitment deviations
 #'   depend on the iteration value, but also on the value of \code{seed}. A
-#'   given combination of iteration, number of years, and \code{seed} value
-#'   will result in the same recruitment deviations.
+#'   given combination of iteration, number of years, and \code{seed} value will
+#'   result in the same recruitment deviations.
 #' @param ... Anything extra to pass to \code{\link{run_ss3model}}. For example,
 #'   you may want to pass additional options to \code{SS3} through the argument
 #'   \code{admb_options}. Anything that doesn't match a named argument in
@@ -69,8 +74,8 @@
 #'   that runs \code{SS3}. If you are on a Windows computer then you might want
 #'   to pass \code{show.output.on.console = FALSE} to make the simulations runs
 #'   faster by not printing output to the console. Also, see the argument
-#'   \code{ss_mode} to choose between safe or optimized SS3 executables
-#'   (default is safe mode).
+#'   \code{ss_mode} to choose between safe or optimized SS3 executables (default
+#'   is safe mode).
 #' @author Sean Anderson with contributions from many others as listed in
 #'   the DESCRIPTION file.
 #' @importFrom r4ss SS_readdat
@@ -172,7 +177,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   index_params, lcomp_params, agecomp_params, calcomp_params=NULL,
   wtatage_params=NULL, mlacomp_params=NULL,
   estim_params, tv_params, om_dir, em_dir,
-  retro_params = NULL, tc_params = NULL, bin_params = NULL, lc_params = NULL,
+  retro_params = NULL, tc_params = NULL, lc_params = NULL,
+  len_bins = NULL, age_bins = NULL, call_change_data = TRUE,
   user_recdevs = NULL, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
   print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21, ...)
@@ -268,22 +274,21 @@ deviations can lead to biased model results.")
       # the OM one last time. Then we'll sample from the expected values
       # with error.
       sample_args <- list(lcomp_params, agecomp_params, calcomp_params,
-        mlacomp_params, mwa_params = NULL)
-      types <- c("len", "age", "cal", "mla", "mwa")
-      sample_args <- setNames(sample_args, types)
-      sample_args_null <- vapply(sample_args, function(x) {
-        is.null(x$years) & is.null(x$fleets)}, logical(1L))
-      bin_vectors <- setNames(lapply(sample_args, "[[", "bin_vector"), types)
-      bin_vectors <- bin_vectors[!vapply(bin_vectors, is.null, logical(1L))]
-      if (any(!sample_args_null)) {
-        change_bin(
-          file_in    = pastef(sc, i, "om", "ss3.dat"),
-          file_out   = pastef(sc, i, "om", "ss3.dat"),
-          bin_vector = bin_vectors,
-          type       = types[!sample_args_null],
-          fleet_dat  = sample_args,
-          pop_bin    = NULL,
-          write_file = TRUE)
+        mlacomp_params)
+      ## This returns a superset of all years/fleets/data types needed to
+      ## do sampling.
+      data_args <- calculate_data_units(lcomp_params=lcomp_params,
+                           agecomp_params=agecomp_params,
+                           calcomp_params=calcomp_params,
+                           mlacomp_params=mlacomp_params)
+      datfile.orig <- SS_readdat(pastef(sc, i, "om", "ss3.dat"),
+                                 verbose=FALSE)
+      if (call_change_data) {
+          change_data(datfile=datfile.orig,
+                      outfile = pastef(sc, i, "om", "ss3.dat"),
+                      fleets = data_args$fleets, years = data_args$years,
+                      types = data_args$types, age_bins = age_bins,
+                      len_bins = len_bins, write_file = TRUE)
       }
 
       # Run the operating model and copy the dat file over
@@ -292,15 +297,16 @@ deviations can lead to biased model results.")
                             data_out = pastef(sc, i, "em", "ss3.dat"))
 
       ## Survey biomass index
-      SS.dat = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
-        verbose = FALSE)
+      datfile <- SS_readdat(pastef(sc, i, "em", "ss3.dat"),
+                            verbose = FALSE)
       index_params <- add_nulls(index_params, c("fleets", "years", "sds_obs"))
       with(index_params,
-        sample_index(infile          = SS.dat,
-                     outfile         = pastef(sc, i, "em", "ss3.dat"),
+        datfile <- sample_index(datfile         = datfile,
+                     outfile         = NULL,
                      fleets          = fleets,
                      years           = years,
-                     sds_obs         = sds_obs))
+                     sds_obs         = sds_obs,
+                     write_file      = FALSE))
 
       # Add tail compression option. If NULL is passed (the base case),
       # ignore it.
@@ -338,7 +344,7 @@ deviations can lead to biased model results.")
                               file_out=pastef(sc, i, "em", "em.ctl"),
                               maturity_option=5)
               with(wtatage_params,
-                   sample_wtatage(infile           = pastef(sc, i, "om", "wtatage.ss_new"),
+                   sample_wtatage(datfile           = pastef(sc, i, "om", "wtatage.ss_new"),
                                   outfile          = pastef(sc, i, "em", "wtatage.dat"),
                                   datfile          = pastef(sc, i, "om", "data.ss_new"),
                                   ctlfile          = pastef(sc, i, "om", "control.ss_new"),
@@ -356,59 +362,56 @@ deviations can lead to biased model results.")
       if(is.null(mlacomp_params)) mlacomp_params <- list()
       mlacomp_params <- add_nulls(mlacomp_params, c("fleets", "Nsamp", "years"))
       with(mlacomp_params,
-           sample_mlacomp(datfile        = pastef(sc, i, "em", "ss3.dat"),
-                          outfile        = pastef(sc, i, "em", "ss3.dat"),
+           datfile <- sample_mlacomp(datfile        = datfile,
+                          outfile        = NULL,
                           ctlfile        = pastef(sc, i, "om", "control.ss_new"),
                           fleets         = fleets,
                           Nsamp          = Nsamp,
                           years          = years,
-                          mean_outfile   = pastef(sc, i, "em", "vbgf_info.csv")))
-
+                          mean_outfile   = pastef(sc, i, "em", "vbgf_info.csv"),
+                          write_file     = FALSE))
 
       ## Add error in the conditional age at length comp data. Delete data
       ## if not called, since could be written there.
-      if(is.null(calcomp_params)) calcomp_params <- list()
-      if(!is.null(calcomp_params)){
+      if(!is.null(calcomp_params$fleets)){
           calcomp_params <- add_nulls(calcomp_params,
                                       c("fleets", "years"))
-        with(calcomp_params,
-             sample_calcomp(datfile          = pastef(sc, i, "em", "ss3.dat"),
-                            outfile          = pastef(sc, i, "em", "ss3.dat"),
+        datfile <- with(calcomp_params,
+             sample_calcomp(datfile          = datfile,
+                            outfile          = NULL,
                             fleets           = fleets,
                             years            = years,
-                            write_file       = TRUE))
+                            write_file       = FALSE))
       }
+
       # Add error in the length comp data
       if(!is.null(lcomp_params)){
-          SS.dat = SS_readdat(pastef(sc, i, "em", "ss3.dat"),
-          verbose = FALSE)
           lcomp_params <- add_nulls(lcomp_params,
                      c("fleets", "Nsamp", "years", "cpar"))
-          with(lcomp_params,
-               sample_lcomp(infile           = SS.dat,
-                            outfile          = pastef(sc, i, "em", "ss3.dat"),
+          datfile <- with(lcomp_params,
+               sample_lcomp(datfile           = datfile,
+                            outfile          = NULL,
                             fleets           = fleets,
                             Nsamp            = Nsamp,
                             years            = years,
-                            cpar             = cpar))
+                            cpar             = cpar,
+                            write_file       = FALSE))
       }
-
 
       ## Add error in the age comp data. Need to do this last since other
       ## sampling functions rely on the age data. Also, if user doesn't
       ## call this function we need to delete the data
       if(is.null(agecomp_params)) agecomp_params <- list()
-      SS.dat2 <- SS_readdat(pastef(sc, i, "em", "ss3.dat"),
-                            verbose = FALSE)
       agecomp_params <- add_nulls(agecomp_params,
                                   c("fleets", "Nsamp", "years", "cpar"))
-      with(agecomp_params,
-           sample_agecomp(infile         = SS.dat2,
-                          outfile        = pastef(sc, i, "em", "ss3.dat"),
+      datfile <- with(agecomp_params,
+           sample_agecomp(datfile         = datfile,
+                          outfile        = NULL,
                           fleets         = fleets,
                           Nsamp          = Nsamp,
                           years          = years,
-                          cpar           = cpar))
+                          cpar           = cpar,
+                          write_file     = FALSE))
 
       ## Manipulate EM starter file for a possible retrospective analysis
       if(!is.null(retro_params)) {
@@ -419,13 +422,23 @@ deviations can lead to biased model results.")
                      retro_yr        = retro_yr))
       }
 
+      ## End of manipulating the data file, so clean it and write it
+      datfile <- clean_data(datfile=datfile,
+                            index_params=index_params,
+                            lcomp_params=lcomp_params,
+                            agecomp_params=agecomp_params,
+                            calcomp_params=calcomp_params,
+                            mlacomp_params=mlacomp_params,
+                            verbose=TRUE)
+      SS_writedat(datlist=datfile, outfile=pastef(sc,i,"em", "ss3.dat"),
+                  overwrite=TRUE, verbose=FALSE)
+
       # Manipulate EM control file to adjust what gets estimated
       # We'll only a portion of the function, the ctl part if
       # it's a bias run or if bias adjustment isn't getting run.
       # This is because the bias adjustment runs
       # already manipulates the .ctl file appropriately.
       # Must always run the other portion for the forecast
-
       run_change_e_full <- FALSE # default
       if(grepl("bias", i))  # it's a bias run
         run_change_e_full <- TRUE
@@ -497,8 +510,6 @@ deviations can lead to biased model results.")
         print(lcomp_params)
         cat("\n\n# tail compression arguments\n")
         print(tc_params)
-        cat("\n\n# change_bin arguments\n")
-        print(bin_params)
         cat("\n\n# length comp constant arguments\n")
         print(lc_params)
         cat("\n\n# agecomp arguments\n")

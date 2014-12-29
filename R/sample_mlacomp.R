@@ -33,10 +33,8 @@
 #' setwd(temp_path)
 #' fdat <- system.file("extdata/models/cod-om/codOM.dat", package = "ss3sim")
 #' fctl <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
-#' change_bin(fdat, file_out = "codOM-temp.dat",
-#'   type = c("mla"),
-#'   fleet_dat = list("mla" = list(years = list(2000:2012), fleets = 1)),
-#'   write_file = TRUE)
+#' change_data(file_in = fdat, file_out = "codOM-temp.dat", fleets = 1,
+#'   years = 2000:2012, types = c("age", "mla"), age_bins = seq_len(15))
 #' out <- sample_mlacomp("codOM-temp.dat", outfile = "ignore.dat", ctlfile = fctl,
 #'   Nsamp = list(rep(50, 13)), years = list(2000:2012), write_file = FALSE,
 #'   mean_outfile = NULL)
@@ -51,15 +49,14 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     ## the maturity function.
     ##
 
-    ## Read in datfile, need this for true age distributions and Nsamp
-    datfile <- SS_readdat(file=datfile, verbose=FALSE)
     ## If fleets==NULL, quit here and delete the data so the EM doesn't use it.
     if(is.null(fleets)){
-        datfile$MeanSize_at_Age_obs <- NULL
+        datfile$MeanSize_at_Age_obs <- data.frame("#")
         datfile$N_MeanSize_at_Age_obs <- 0
-        SS_writedat(datlist=datfile, outfile=outfile, overwrite=TRUE,
-                          verbose=FALSE)
-        return(NULL)
+        if(write_file)
+            SS_writedat(datlist=datfile, outfile=outfile, overwrite=TRUE,
+                        verbose=FALSE)
+        return(invisible(datfile))
     }
     agecomp <- datfile$agecomp
     mlacomp <- datfile$MeanSize_at_Age_obs
@@ -153,5 +150,5 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     ## Write the modified file
     if(write_file) SS_writedat(datlist=datfile, outfile=outfile,
                                      overwrite=TRUE, verbose=TRUE)
-    return(invisible(mlacomp.new))
+    return(invisible(datfile))
 }
