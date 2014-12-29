@@ -39,7 +39,7 @@
 #'
 #' This prepares a .dat file to be used by an EM, whereas before it may
 #' have had leftover data from sampling purposes. See examples in
-#' \link{\code{change_data}}.
+#' \code{\link{change_data}}.
 #'
 #' @author Cole Monnahan
 #' @param index_params, lcomp_params, agecomp_params, calcomp_params,

@@ -192,7 +192,7 @@ change_data <- function(datfile, outfile, fleets, years, types, age_bins =
 #' returned list will created some unnecessary combinations. This was done
 #' intentionally for simplicity but may be changed later. See the vignette
 #' for further information.
-#' @note See further examples in \link{\code{change_data}}.
+#' @note See further examples in \code{\link{change_data}}.
 #' @return An invisible list of fleets, years, and types.
 #' @examples
 #' ## Should throw error since nothing passed
