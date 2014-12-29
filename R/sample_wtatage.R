@@ -37,6 +37,8 @@
 #'   \code{\link{fill_across}}
 #' @export
 
+# TODO: datfile should take r4ss::SS_readdat() output as the rest of the package does
+# TODO: also change datfile in ss3sim_base.R
 sample_wtatage <- function(infile, outfile, datfile, ctlfile,
                            years, fill_fnc, write_file=TRUE){
     ##fill_type: specify type of fill, fill zeroes with first row? annual interpolation?
