@@ -112,6 +112,8 @@
 change_data <- function(datfile, outfile, fleets, years, types, age_bins =
                         NULL, len_bins = NULL, write_file = TRUE) {
 
+    is_ssdat_file(datfile)
+
     ## Input checks:
     types <- match.arg(types, choices = c("index","len", "age", "cal", "mla", "mwa"),
                        several.ok = TRUE)
@@ -244,4 +246,13 @@ change_pop_bin <- function(){
   ##   stop("pop bin should be a real number")
   ## }
   ## if (!is.null(pop_bin)) datfile$binwidth <- pop_bin
+}
+
+# quick checks that datfile looks correct:
+is_ssdat_file <- function(x) {
+  if(!is.list(x))
+    stop("datfile isn't a list. dat should be output from r4ss::SS_readdat()")
+  if(!"type" %in% names(x))
+    stop(paste("the column *type* wasn't found in datfile.",
+      "datfile should be output from r4ss::SS_readdat()"))
 }

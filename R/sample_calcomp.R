@@ -26,6 +26,7 @@ sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
     ## Lbin_hi, so subset those out, but don't delete the age values since
     ## those are already sampled from, or might be sampled later so need to
     ## leave them there.
+    is_ssdat_file(datfile)
     agecomp.age <- datfile$agecomp[datfile$agecomp$Lbin_lo== -1,]
     agecomp.cal <- datfile$agecomp[datfile$agecomp$Lbin_lo != -1,]
     lencomp <- datfile$lencomp

@@ -83,6 +83,7 @@ sample_agecomp <- function(datfile, outfile, fleets = c(1,2), Nsamp,
                            keep_conditional = TRUE){
     ## The new agecomp is mostly based on the old one so start with
     ## that
+    is_ssdat_file(datfile)
     agecomp <- datfile$agecomp
     ## Check inputs for errors
     Nfleets <- ifelse(is.null(fleets), 0, length(fleets))
