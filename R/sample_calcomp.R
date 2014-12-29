@@ -43,8 +43,6 @@ sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
     }
     ## If not, do argument checks
     if(nrow(agecomp.cal)==0) stop("No conditional age-at-length data found")
-    if(substr_r(outfile,4) != ".dat" & write_file)
-        stop(paste0("outfile ", outfile, " needs to end in .dat"))
     Nfleets <- length(fleets)
     if(any(!fleets %in% unique(agecomp.cal$FltSvy)))
         stop(paste0("The specified fleet number: ",fleets, " does not match input file"))

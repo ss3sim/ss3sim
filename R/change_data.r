@@ -40,6 +40,9 @@
 #'   set to any arbitrary value (such as \code{NULL}) if \code{write_file =
 #'   FALSE}.
 #'
+#' @return An invisible data list, and a file is written depending on
+#' \code{write_file}.
+#'
 # # TODO: do we need any of this? - SA
 # @details Within the \code{.dat} file, the conditional age-at-length data is
 #   stored in the same matrix as the age composition data. Thus, it is
@@ -157,9 +160,7 @@ change_data <- function(datfile, outfile, fleets, years, types, age_bins =
         agecomp <- datfile$agecomp[datfile$agecomp$Lbin_lo < 0, ]
         new.calcomp <-
             make_dummy_dat_calcomp(fleets=fleets, years=years,
-                                   age_bins=age_bins,
-                                   Lbin_lo=len_bins[-length(len_bins)],
-                                   Lbin_hi=len_bins[-1])
+                               age_bins=age_bins, len_bins=len_bins)
         datfile$agecomp <- rbind(agecomp, new.calcomp)
         datfile$agebin_vector <- age_bins
         datfile$N_agecomp <- nrow(datfile$agecomp)
@@ -184,7 +185,15 @@ change_data <- function(datfile, outfile, fleets, years, types, age_bins =
 #' @author Cole Monnahan
 #' @param index_params, lcomp_params, agecomp_params, calcomp_params,
 #' mlacomp_params Named lists containing the arguments for the different
-#' sampling functions. #'
+#' sampling functions.
+#' @seealso clean_data, change_data
+#' @note A superset by nature is larger than the individual sets used to
+#' create it (unless all sampling arguments are identical), so that the
+#' returned list will created some unnecessary combinations. This was done
+#' intentionally for simplicity but may be changed later. See the vignette
+#' for further information.
+#' @note See further examples in \link{\code{change_data}}.
+#' @return An invisible list of fleets, years, and types.
 #' @examples
 #' ## Should throw error since nothing passed
 #' calculate_data_units()

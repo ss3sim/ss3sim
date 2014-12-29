@@ -298,7 +298,7 @@ deviations can lead to biased model results.")
 
       ## Survey biomass index
       datfile <- SS_readdat(pastef(sc, i, "em", "ss3.dat"),
-        verbose = FALSE)
+                            verbose = FALSE)
       index_params <- add_nulls(index_params, c("fleets", "years", "sds_obs"))
       with(index_params,
         datfile <- sample_index(datfile         = datfile,
@@ -373,8 +373,7 @@ deviations can lead to biased model results.")
 
       ## Add error in the conditional age at length comp data. Delete data
       ## if not called, since could be written there.
-      if(is.null(calcomp_params)) calcomp_params <- list()
-      if(!is.null(calcomp_params)){
+      if(!is.null(calcomp_params$fleets)){
           calcomp_params <- add_nulls(calcomp_params,
                                       c("fleets", "years"))
         datfile <- with(calcomp_params,
@@ -433,13 +432,13 @@ deviations can lead to biased model results.")
                             verbose=TRUE)
       SS_writedat(datlist=datfile, outfile=pastef(sc,i,"em", "ss3.dat"),
                   overwrite=TRUE, verbose=FALSE)
+
       # Manipulate EM control file to adjust what gets estimated
       # We'll only a portion of the function, the ctl part if
       # it's a bias run or if bias adjustment isn't getting run.
       # This is because the bias adjustment runs
       # already manipulates the .ctl file appropriately.
       # Must always run the other portion for the forecast
-
       run_change_e_full <- FALSE # default
       if(grepl("bias", i))  # it's a bias run
         run_change_e_full <- TRUE
