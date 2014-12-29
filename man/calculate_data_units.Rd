@@ -27,11 +27,11 @@ unnecessary combinations. This was done intentionally for
 simplicity but may be changed later. See the vignette for
 further information.
 
-See further examples in \link{\code{change_data}}.
+See further examples in \code{\link{change_data}}.
 }
 \examples{
 ## Should throw error since nothing passed
-calculate_data_units()
+# calculate_data_units()
 ## Only one fleet
 calculate_data_units(lcomp_params=list(fleets=1, years=c(3,4,6)))
 ## Add new fleet

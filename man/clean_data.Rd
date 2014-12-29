@@ -22,7 +22,7 @@ An invisible cleaned data list as an object.
 \description{
 This prepares a .dat file to be used by an EM, whereas
 before it may have had leftover data from sampling
-purposes. See examples in \link{\code{change_data}}.
+purposes. See examples in \code{\link{change_data}}.
 }
 \note{
 This function does not write the result to file.
