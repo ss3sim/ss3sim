@@ -8,20 +8,29 @@
 #' @author Cole Monnahan
 
 calculate_runtime <- function(start_time, end_time) {
-    ## The start_time and end_time strings are complex and need to be cleaned up
-    ## before processing into date objects.
+  ## The start_time and end_time strings are complex and need to be cleaned up
+  ## before processing into date objects.
   start <- data.frame(do.call(rbind, strsplit(x = as.character(start_time),
     split = " ", fixed = T))[, -(1:2)])
   end <- data.frame(do.call(rbind, strsplit(x = as.character(end_time),
     split = " ", fixed = T))[, -(1:2)])
   start <- as.data.frame(t(start))
   end <- as.data.frame(t(end))
-  names(start) <- names(end) <- c("month", "", "day", "time", "year")
-  start.date <- lubridate::ymd_hms(with(start, paste(year,
-    month, day, time, sep = "-")))
-  end.date <- lubridate::ymd_hms(with(end, paste(year,
-    month, day, time, sep = "-")))
-  run.mins <- as.vector(end.date - start.date)/60
+  if(ncol(start) == 4) {
+    names(start) <- names(end) <- c("month", "day", "time", "year")
+  }
+  if(ncol(start) == 5) {
+    names(start) <- names(end) <- c("month", "", "day", "time", "year")
+  }
+  if(ncol(start) %in% c(4, 5)) {
+    start.date <- lubridate::ymd_hms(with(start, paste(year,
+      month, day, time, sep = "-")))
+    end.date <- lubridate::ymd_hms(with(end, paste(year,
+      month, day, time, sep = "-")))
+    run.mins <- as.vector(end.date - start.date)/60
+  } else {
+    run.mins <- NA
+  }
   return(run.mins)
 }
 
