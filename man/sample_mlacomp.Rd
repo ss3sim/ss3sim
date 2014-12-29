@@ -89,16 +89,16 @@ values. These values are then written to file for the EM.
 \examples{
 temp_path <- file.path(tempdir(), "ss3sim-test")
 dir.create(temp_path, showWarnings = FALSE)
-wd <- getwd()
-setwd(temp_path)
-fdat <- system.file("extdata/models/cod-om/codOM.dat", package = "ss3sim")
-fctl <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
-change_data(file_in = fdat, file_out = "codOM-temp.dat", fleets = 1,
-  years = 2000:2012, types = c("age", "mla"), age_bins = seq_len(15))
-out <- sample_mlacomp("codOM-temp.dat", outfile = "ignore.dat", ctlfile = fctl,
-  Nsamp = list(rep(50, 13)), years = list(2000:2012), write_file = FALSE,
-  mean_outfile = NULL)
-out
+#wd <- getwd()
+#setwd(temp_path)
+#fdat <- system.file("extdata/models/cod-om/codOM.dat", package = "ss3sim")
+#fctl <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
+#change_data(fdat, outfile = "codOM-temp.dat", fleets = 1,
+#  years = 2000:2012, types = c("age", "mla"), age_bins = seq_len(15))
+#out <- sample_mlacomp("codOM-temp.dat", outfile = "ignore.dat", ctlfile = fctl,
+#  Nsamp = list(rep(50, 13)), years = list(2000:2012), write_file = FALSE,
+#  mean_outfile = NULL)
+#out
 unlink("codOM-temp.dat")
 setwd(wd)
 }
