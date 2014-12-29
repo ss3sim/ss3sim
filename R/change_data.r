@@ -196,7 +196,7 @@ change_data <- function(datfile, outfile, fleets, years, types, age_bins =
 #' @return An invisible list of fleets, years, and types.
 #' @examples
 #' ## Should throw error since nothing passed
-#' calculate_data_units()
+#' # calculate_data_units()
 #' ## Only one fleet
 #' calculate_data_units(lcomp_params=list(fleets=1, years=c(3,4,6)))
 #' ## Add new fleet
