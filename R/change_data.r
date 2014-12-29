@@ -204,6 +204,7 @@ change_data <- function(datfile, outfile, fleets, years, types, age_bins =
 #'                      agecomp_params=list(fleets=2, years=5))
 #' ## If CAL data called, need other types even if not specified
 #' calculate_data_units(calcomp_params=list(fleets=1, years=c(3,4,6)))
+#' @export
 calculate_data_units <- function(index_params=NULL, lcomp_params=NULL,
                                  agecomp_params=NULL, calcomp_params=NULL,
                                  mlacomp_params=NULL){
