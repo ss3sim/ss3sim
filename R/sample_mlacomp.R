@@ -65,8 +65,11 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     ## Read in the control file
     ctl <- SS_parlines(ctlfile)
     ## Check inputs for errors
-    if(substr_r(outfile,4) != ".dat" & write_file)
-        stop(paste0("outfile ", outfile, " needs to end in .dat"))
+    if(!is.null(outfile) & write_file){
+        if(substr_r(outfile,4) != ".dat")
+            stop(paste0("outfile ", outfile, " needs to end in .dat"))
+    }
+
     Nfleets <- length(fleets)
     if(length(years) != Nfleets)
         stop("years needs to be a list of same length as fleets")
