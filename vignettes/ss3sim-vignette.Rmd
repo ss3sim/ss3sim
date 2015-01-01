@@ -175,9 +175,9 @@ The order of the cases does not matter,
 as long as they are used consistently.
 
 ss3sim relies on a set of plain text files to control the simulation (Figure~\ref{fig:files}).
-These plain text files are read by \texttt{get\_caseval}
-and turned into argument lists that are passed to \texttt{run\_ss3sim}.
-The function \texttt{create\_argfiles} creates template input files.
+These plain text files are read by `get_caseval`
+and turned into argument lists that are passed to `run_ss3sim`.
+The function `create_argfiles` creates template input files.
 It reads the various functions and parses the arguments and default values
 into plain text files.
 The default settings create these files:
@@ -237,29 +237,22 @@ below is what an example `F1-cod.txt` file might look like:
 
 ## Case file names
 
-\begin{table}[ht]
-\centering
-\caption{Function names and associated case files. Case file names are
-given as the prefix. For example a case file for \texttt{sample\_index}
-might be \texttt{index0-cod.txt}.}
-\smallskip
-\begin{tabular}{lll}
-  \toprule
-  ss3sim function & Case file name & Mandatory? \\
-  \midrule
-  \texttt{change\_f()} & \texttt{F} & Yes \\
-  \texttt{change\_e()} & \texttt{R} & Yes \\
-  \texttt{sample\_index()} & \texttt{index} & Yes \\
-  \texttt{sample\_lcomp()} & \texttt{lcomp} & Yes \\
-  \texttt{sample\_agecomp()} & \texttt{agecomp} & Yes \\
-  \texttt{change\_tv()} & anything, see below & No \\
-  \texttt{change\_tail\_compression()} & \texttt{tail\_compression} & No \\
-  \texttt{change\_lcomp\_constant()} & \texttt{lcomp\_constant} & No \\
-  \texttt{sample\_calcomp()} & \texttt{calcomp} & No \\
-  \texttt{sample\_wtatage()} & \texttt{wtatage} & No \\
-   \bottomrule
-\end{tabular}
-\end{table}
+Function names and associated case files. Case file names are
+given as the prefix. For example a case file for `sample_index`
+might be `index0-cod.txt`.
+
+ss3sim function              Case file name      Mandatory?
+---------------              --------------      ----------
+`change_f()`                 `F`                 Yes
+`change_e()`                 `R`                 Yes
+`sample_index()`             `index`             Yes
+`sample_lcomp()`             `lcomp`             Yes
+`sample_agecomp()`           `agecomp`           Yes
+`change_tv()`                anything, see below No
+`change_tail_compression()`  `tail_compression`  No
+`change_lcomp_constant()`    `lcomp_constant`    No
+`sample_calcomp()`           `calcomp`           No
+`sample_wtatage()`           `wtatage`           No
 
 `change_tv()` can take any other case file name, as long as the
 first line is `function_type; change_tv`.
@@ -282,7 +275,7 @@ The default number of bias-adjustment replicates is five.
 If a bias-adjustment replicate fails to converge
 (checked by identifying whether the Hessian was invertible),
 the parameter estimates from that replicate are ignored.
-A minimum threshold of 80\% converged bias-adjustment replicates
+A minimum threshold of 80% converged bias-adjustment replicates
 (adjustable via the `conv_crit` argument)
 is used to ensure reliable parameter estimates.
 The mean bias adjustment runs are then used in the EM
