@@ -100,7 +100,7 @@ clean_data <- function(datfile, index_params=NULL, lcomp_params=NULL,
         datfile$MeanSize_at_Age_obs <-
             do.call(rbind,
          lapply(1:length(mlacomp_params$fleets), function(i)
-                a[a$Flt == mlacomp_params$fleets[i] &
+                a[a$Fl == mlacomp_params$fleets[i] &
                   a$Yr %in% mlacomp_params$years[[i]],]))
         datfile$N_MeanSize_at_Age_obs <- NROW(datfile$MeanSize_at_Age_obs)
     }

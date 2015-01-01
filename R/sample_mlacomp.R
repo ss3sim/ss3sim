@@ -65,8 +65,11 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     ## Read in the control file
     ctl <- SS_parlines(ctlfile)
     ## Check inputs for errors
-    if(substr_r(outfile,4) != ".dat" & write_file)
-        stop(paste0("outfile ", outfile, " needs to end in .dat"))
+    if(!is.null(outfile) & write_file){
+        if(substr_r(outfile,4) != ".dat")
+            stop(paste0("outfile ", outfile, " needs to end in .dat"))
+    }
+
     Nfleets <- length(fleets)
     if(length(years) != Nfleets)
         stop("years needs to be a list of same length as fleets")
@@ -93,7 +96,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     ## return nothing (subtract out this type from the data file)
     for(fl in 1:length(fleets)){
         fl.temp <- fleets[fl]
-        mlacomp.fl <- mlacomp[mlacomp$Flt == fleets[fl] & mlacomp$Yr %in% years[[fl]],]
+        mlacomp.fl <- mlacomp[mlacomp$Fl == fleets[fl] & mlacomp$Yr %in% years[[fl]],]
         for(j in 1:NROW(mlacomp.fl)){
             yr.temp <- mlacomp.fl$Yr[j]
             mlacomp.new <- mlacomp.fl[j,]
@@ -108,7 +111,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
             means.log <- log(mla.means^2/sqrt(sds^2+mla.means^2))
             sds.log <- sqrt(log(1 + sds^2/mla.means^2))
             ## Get the true age distributions
-            agecomp.temp <- agecomp[agecomp$Yr==yr.temp & agecomp$Flt==fl.temp &
+            agecomp.temp <- agecomp[agecomp$Yr==yr.temp & agecomp$Fl == fl.temp &
               agecomp$Lbin_lo < 0,]
             ## Get the true age distributions
             age.means <- as.numeric(agecomp.temp[-(1:9)])

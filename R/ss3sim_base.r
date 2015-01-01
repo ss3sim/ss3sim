@@ -300,8 +300,8 @@ deviations can lead to biased model results.")
       datfile <- SS_readdat(pastef(sc, i, "em", "ss3.dat"),
                             verbose = FALSE)
       index_params <- add_nulls(index_params, c("fleets", "years", "sds_obs"))
-      with(index_params,
-        datfile <- sample_index(datfile         = datfile,
+      datfile <- with(index_params,
+        sample_index(datfile         = datfile,
                      outfile         = NULL,
                      fleets          = fleets,
                      years           = years,
@@ -361,8 +361,8 @@ deviations can lead to biased model results.")
       ## is NULL, so it always needs to be called.
       if(is.null(mlacomp_params)) mlacomp_params <- list()
       mlacomp_params <- add_nulls(mlacomp_params, c("fleets", "Nsamp", "years"))
-      with(mlacomp_params,
-           datfile <- sample_mlacomp(datfile        = datfile,
+      datfile <- with(mlacomp_params,
+           sample_mlacomp(datfile        = datfile,
                           outfile        = NULL,
                           ctlfile        = pastef(sc, i, "om", "control.ss_new"),
                           fleets         = fleets,
