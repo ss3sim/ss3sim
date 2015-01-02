@@ -52,14 +52,12 @@ install.packages(c("doParallel", "foreach"))
 install.packages("ggplot2")
 ```
 
-\noindent
 You can then load the package with:
 
 ```{r, load-package, eval=FALSE}
 library(ss3sim)
 ```
 
-\noindent
 You can read the help files and access this vignette again with:
 
 ```{r, help, eval=FALSE}
@@ -487,7 +485,6 @@ run_ss3sim(iterations = 1, scenarios =
   em_dir = em)
 ```
 
-\noindent
 And then check the SS3 files that are created.
 
 ## Self testing: deterministic simulations to check the models for bias
@@ -639,7 +636,6 @@ data("ts_dat", package = "ss3sim")
 data("scalar_dat", package = "ss3sim")
 ```
 
-\noindent
 First, we will calculate some useful values in new columns and separate the
 deterministic from the stochastic simulation runs:
 
@@ -855,7 +851,6 @@ creating a time varying parameter ($par'$) for each year ($y$),
 \begin{equation}
 par'_y = par + link * env_y.
 \end{equation}
-\noindent
 The $link$ is pre-specified to a value of one and
 $par$ is the base value for the given parameter,
 as defined in the `.par` file.
@@ -1385,7 +1380,6 @@ require(doParallel)
 registerDoParallel(cores = 4)
 ```
 
-\noindent
 We can check to make sure we are set up to run in parallel:
 
 ```{r, parallel-two, eval=FALSE}
