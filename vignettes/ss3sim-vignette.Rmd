@@ -8,7 +8,7 @@ output:
     fig_caption: true
 bibliography: refs.bib
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{An introduction to ss3sim}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
