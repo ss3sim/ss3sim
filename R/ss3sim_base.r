@@ -328,11 +328,41 @@ deviations can lead to biased model results.")
                     file_in        = pastef(sc, i, "em", "ss3.dat"),
                     file_out       = pastef(sc, i, "em", "ss3.dat")))
       }
-      # Add error in the empirical weight-at-age comp data. Note that if
-      # arguments are passed to this fucntion it's functionality is turned
-      # on by setting the maturity option to 5. If it's off SS will just
-      # ignore the wtatage.dat file so no need to turn it "off" like the
-      # other data.
+
+      ## Add error in the length comp data
+      if(!is.null(lcomp_params)){
+          lcomp_params <- add_nulls(lcomp_params,
+                     c("fleets", "Nsamp", "years", "cpar"))
+          datfile <- with(lcomp_params,
+               sample_lcomp(datfile           = datfile,
+                            outfile          = NULL,
+                            fleets           = fleets,
+                            Nsamp            = Nsamp,
+                            years            = years,
+                            cpar             = cpar,
+                            write_file       = FALSE))
+      }
+
+      ## Add error in the age comp data. Need to do this last since other
+      ## sampling functions rely on the age data. Also, if user doesn't
+      ## call this function we need to delete the data
+      if(is.null(agecomp_params)) agecomp_params <- list()
+      agecomp_params <- add_nulls(agecomp_params,
+                                  c("fleets", "Nsamp", "years", "cpar"))
+      datfile <- with(agecomp_params,
+           sample_agecomp(datfile         = datfile,
+                          outfile        = NULL,
+                          fleets         = fleets,
+                          Nsamp          = Nsamp,
+                          years          = years,
+                          cpar           = cpar,
+                          write_file     = FALSE))
+
+			## Add error in the empirical weight-at-age comp data. Note that if
+      ## arguments are passed to this fucntion it's functionality is turned
+      ## on by setting the maturity option to 5. If it's off SS will just
+      ## ignore the wtatage.dat file so no need to turn it "off" like the
+      ## other data.
       if(!is.null(wtatage_params)){
           wtatage_params <-
               add_nulls(wtatage_params, c("fleets", "Nsamp", "years", "cv"))
@@ -383,35 +413,6 @@ deviations can lead to biased model results.")
                             years            = years,
                             write_file       = FALSE))
       }
-
-      # Add error in the length comp data
-      if(!is.null(lcomp_params)){
-          lcomp_params <- add_nulls(lcomp_params,
-                     c("fleets", "Nsamp", "years", "cpar"))
-          datfile <- with(lcomp_params,
-               sample_lcomp(datfile           = datfile,
-                            outfile          = NULL,
-                            fleets           = fleets,
-                            Nsamp            = Nsamp,
-                            years            = years,
-                            cpar             = cpar,
-                            write_file       = FALSE))
-      }
-
-      ## Add error in the age comp data. Need to do this last since other
-      ## sampling functions rely on the age data. Also, if user doesn't
-      ## call this function we need to delete the data
-      if(is.null(agecomp_params)) agecomp_params <- list()
-      agecomp_params <- add_nulls(agecomp_params,
-                                  c("fleets", "Nsamp", "years", "cpar"))
-      datfile <- with(agecomp_params,
-           sample_agecomp(datfile         = datfile,
-                          outfile        = NULL,
-                          fleets         = fleets,
-                          Nsamp          = Nsamp,
-                          years          = years,
-                          cpar           = cpar,
-                          write_file     = FALSE))
 
       ## Manipulate EM starter file for a possible retrospective analysis
       if(!is.null(retro_params)) {
