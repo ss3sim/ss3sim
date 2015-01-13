@@ -51,7 +51,8 @@ copy_ss3models <- function(model_dir, scenarios,
       to <- pastef(sc, it)
       dir.create(to, showWarnings = FALSE, recursive = TRUE)
       if(file.exists(pastef(to, type))){
-        stop(paste0(to, "/", type, " already exists. Have you already run this model?"))
+        stop(paste0(to, "/", type, " already exists. Have you already run this model? ",
+          "Delete the folder ", to, " if you want to re-run this model."))
       } else {
         file.copy(from, to, recursive = TRUE)
         orig_model_folder <- rev(strsplit(from, "/")[[1]])[1]
