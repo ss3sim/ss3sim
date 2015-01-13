@@ -4,11 +4,12 @@
 #' Next, the function adjusts the LO and HI values in the estimation model control file to be a 
 #' fixed percentage of the initial value for every parameter.
 #' @param percent.df is a data.frame with nine rows and three columns. The first column is the parameter
-#' @param OM.ctl.file is a string with the path and name of the operating model control file
+#' @param OM.ctl.file is a string with the path and name of the operating model control file. If it is not given 
+#' the first part of the function is ignored.
 #' @param EM.ctl.file is a string with the path and name of the estimation model control file
 #' name. The second column is what % of the initial parameter value LO should be set to. The third column
 #' is what % of the initial parameter value HI should be set to. 
-standardize_bounds<-function(percent.df, OM.ctl.file="", EM.ctl.file){
+standardize_bounds<-function(percent.df, EM.ctl.file, OM.ctl.file=""){
   #Read in EM values
   em.pars<-SS_parlines(ctlfile=EM.ctl.file)
   #First, ensure the initial value in the EM control file is set to the OM true value
@@ -16,9 +17,17 @@ standardize_bounds<-function(percent.df, OM.ctl.file="", EM.ctl.file){
   if(nchar(OM.ctl.file)>0){
     #Read in OM true value
     om.pars<-SS_parlines(ctlfile=OM.ctl.file)
+
+    #Get the indices of the user input parameters in the OM/EM
+    om.indices<-which(om.pars[,"Label"] %in% percent.df[,"label"])
+    em.indices<-which(em.pars[,"Label"] %in% percent.df[,"label"])
+
     #If they are not equal, set the EM initial value to the OM true value
-    if(om.pars[1:16,"INIT"]!=em.pars[1:16,"INIT"]){
-      em.pars[1:16,"INIT"]<-om.pars[1:16,"INIT"]
+    if(any(om.pars[om.indices,"INIT"]!=em.pars[em.indices,"INIT"])){
+      inits.to.change<-em.pars[which(em.pars[em.indices,"INIT"]!=om.pars[om.indices,"INIT"]),"Label"]
+      SS_changepars(dir=substr(EM.ctl.file,1,nchar(EM.ctl.file)-9),ctlfile=substr(EM.ctl.file,nchar(EM.ctl.file)-8,nchar(EM.ctl.file)),
+                     newctlfile=substr(EM.ctl.file,nchar(EM.ctl.file)-8,nchar(EM.ctl.file)),strings=inits.to.change,
+                     newvals=om.pars[which(om.pars[om.indices,"INIT"]!=em.pars[em.indices,"INIT"]),"INIT"])
     }
   }
 
@@ -42,7 +51,7 @@ standardize_bounds<-function(percent.df, OM.ctl.file="", EM.ctl.file){
     #Change lo and hi's
     newlos<-percent.df[indices.to.standardize[,1],"lo"]*em.pars[indices.to.standardize[,2],"INIT"]
     newhis<-percent.df[indices.to.standardize[,1],"hi"]*em.pars[indices.to.standardize[,2],"INIT"]
-    change_lo_hi(ctlfile=EM.ctl.file,newctlfile="C:\\Users\\Christine Stawitz\\Documents\\GitHub\\estgrowth\\models\\coa-em\\codEMTEST.ctl",
+    change_lo_hi(ctlfile=EM.ctl.file,newctlfile=EM.ctl.file,
                  strings=as.character(percent.df[indices.to.standardize[,1],1]),newlos=newlos,newhis=newhis)
   }
 }
@@ -60,7 +69,7 @@ change_lo_hi<-function (ctlfile = "C:/myfiles/mymodels/myrun/control.ss_new",
     ctltable <- SS_parlines(ctlfile = ctlfile)
     allnames <- ctltable$Label
     goodnames <- NULL
-    browser()
+
     if (!is.null(strings)) {
       for (i in 1:length(strings)) goodnames <- c(goodnames, 
                                                   allnames[grep(strings[i], allnames,fixed=TRUE)])
@@ -75,7 +84,6 @@ change_lo_hi<-function (ctlfile = "C:/myfiles/mymodels/myrun/control.ss_new",
     nvals <- length(goodnames)
     cat("These are the ctl file lines as they currently exist:\n")
     print(ctltable[ctltable$Label %in% goodnames, ])
-    browser()
     for (i in 1:nvals) linenums[i] <- ctltable$Linenum[ctltable$Label == 
                                                          goodnames[i]]
   }
