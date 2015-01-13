@@ -22,9 +22,9 @@
 #' \dontrun{
 #' #' require(r4ss)
 #' ## Set tp the path and filename of the OM and EM control files
-#' OM.ctl<-"C:/myfiles/mymodels/myrun/OM/control.ss_new"
-#' EM.ctl<-"C:/myfiles/mymodels/myrun/EM/control.ss_new"
-#' 
+#' OM.ctl<-"control.ss_new"
+#' EM.ctl<-"control.ss_new"
+#'
 #' ## Use SS_parlines to get the proper names for parameters for the data frame
 #' om.pars<-SS_parlines(ctlfile=OM.ctl)
 #' em.pars<-SS_parlines(ctlfile=EM.ctl)
@@ -116,10 +116,10 @@ standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
 #'   estimated. Default=FALSE.
 #' @param verbose More detailed output to command line. Default=TRUE.
 #' @seealso \code{\link{SS_changepars}}
-#' @export 
-change_lo_hi<-function (ctlfile = "C:/myfiles/mymodels/myrun/control.ss_new", 
-          newctlfile = "C:/myfiles/mymodels/myrun/control_modified.ss", linenums = NULL, strings = NULL, 
-          newlos = NULL, newhis=NULL, estimate = FALSE, verbose = TRUE) 
+#' @export
+change_lo_hi <- function (ctlfile = "control.ss_new",
+          newctlfile = "control_modified.ss", linenums = NULL, strings = NULL,
+          newlos = NULL, newhis = NULL, estimate = FALSE, verbose = TRUE)
 {
   ctl = readLines(ctlfile)
   if (is.null(linenums) & !is.null(strings) & class(strings) == 
