@@ -43,7 +43,10 @@ sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
         return(invisible(newfile))
     }
     ## If not, do argument checks
-    if(nrow(agecomp.cal)==0) stop("No conditional age-at-length data found")
+    if(nrow(agecomp.cal)==0)
+        stop("No conditional age-at-length data found")
+    if(nrow(agecomp.age)==0)
+        stop("No agecomp data found -- something is wrong with sampling inputs")
     Nfleets <- length(fleets)
     if(any(!fleets %in% unique(agecomp.cal$FltSvy)))
         stop(paste0("The specified fleet number: ",fleets, " does not match input file"))
@@ -76,6 +79,7 @@ sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
                 Nsamp.age <- agecomp.age$Nsamp[agecomp.age$Yr==yr & agecomp.age$FltSvy==fl]
                 ## Probability distribution for length comps
                 prob.len <- as.numeric(lencomp[lencomp$Yr==yr & lencomp$FltSvy==fl, -(1:6)])
+                if(any(is.na(prob.len))) stop("Invalid length probs in sample_calcomp -- likely due to missing length data")
                 ## Sample to get # fish in each length bin
                 N1 <- rmultinom(n=1, size=Nsamp.len, prob=prob.len)
                 ## Convert that to proportions
