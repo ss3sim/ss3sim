@@ -8,9 +8,9 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   mlacomp_params = NULL, estim_params, tv_params, om_dir, em_dir,
   retro_params = NULL, tc_params = NULL, lc_params = NULL,
   len_bins = NULL, age_bins = NULL, call_change_data = TRUE,
-  user_recdevs = NULL, bias_adjust = FALSE, bias_nsim = 5,
-  bias_already_run = FALSE, hess_always = FALSE, print_logfile = TRUE,
-  sleep = 0, conv_crit = 0.2, seed = 21, ...)
+  user_recdevs = NULL, user_recdevs_warn = TRUE, bias_adjust = FALSE,
+  bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
+  print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -91,6 +91,10 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   anything besides \code{NULL} the package will issue a
   warning about this. Biased recruitment deviations can
   lead to biased model results.}
+
+  \item{user_recdevs_warn}{A logical argument allowing
+  users to turn the warning regarding biased recruitment
+  deviations off when \code{user_recdevs} are specified.}
 
   \item{bias_adjust}{Run bias adjustment first? See
   \code{\link{run_bias_ss3}}.}
