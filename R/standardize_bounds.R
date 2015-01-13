@@ -1,19 +1,23 @@
 #' Standardize the bounds of the estimation model control file.
-#' 
-#' Function to standardize the bounds of the control file in the estimation model.
-#' This function first checks to ensure the initial values in the estimation model control file are set to
-#' the true values of the operating model control file and if not sets them for every parameter.
-#' Next, the function adjusts the LO and HI values in the estimation model control file to be a 
-#' fixed percentage of the initial value for every parameter.
-#' 
+#'
+#' Function to standardize the bounds of the control file in the estimation
+#' model. This function first checks to ensure the initial values in the
+#' estimation model control file are set to the true values of the operating
+#' model control file and if not sets them for every parameter. Next, the
+#' function adjusts the LO and HI values in the estimation model control file to
+#' be a fixed percentage of the initial value for every parameter.
+#'
 #' @author Christine Stawitz
-#' 
-#' @param percent_df is a data.frame with nine rows and three columns. The first column is the parameter
-#' @param OM_ctl_file is a string with the path and name of the operating model control file. If it is not given 
-#' the part of the function which matches the OM and EM init values is ignored. Default = ""
-#' @param EM_ctl_file is a string with the path and name of the estimation model control file
-#' name. The second column is what % of the initial parameter value LO should be set to. The third column
-#' is what % of the initial parameter value HI should be set to. 
+#'
+#' @param percent_df is a data.frame with nine rows and three columns. The first
+#'   column is the parameter
+#' @param OM_ctl_file is a string with the path and name of the operating model
+#'   control file. If it is not given the part of the function which matches the
+#'   OM and EM init values is ignored. Default = ""
+#' @param EM_ctl_file is a string with the path and name of the estimation model
+#'   control file name. The second column is what % of the initial parameter
+#'   value LO should be set to. The third column is what % of the initial
+#'   parameter value HI should be set to.
 #' @examples
 #' \dontrun{
 #' #' require(r4ss)
@@ -86,22 +90,30 @@ standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
 }
 
 #' Changes the lo and hi bounds of the estimation model control file
-#' 
-#' This is a modified version of r4SS::SS_changepars which modifies the lo and hi bounds in the 
-#' control file instead of the initial value. newhis and newlos must be equivalent lengths and both refer to
-#' the parameters in strings in the same order. Also put the directory into the filenames to match the structure of the above function.
-#' 
+#'
+#' This is a modified version of r4SS::SS_changepars which modifies the lo and
+#' hi bounds in the control file instead of the initial value. newhis and newlos
+#' must be equivalent lengths and both refer to the parameters in strings in the
+#' same order. Also put the directory into the filenames to match the structure
+#' of the above function.
+#'
 #' @author Ian Taylor, modified by Christine Stawitz
-#' 
-#' @param ctlfile Control file name with directory. Default="C:/myfiles/mymodels/myrun/control.ss_new".
-#' @param newctlfile Name of new control file to be written. Default="C:/myfiles/mymodels/myrun/control_modified.ss"
-#' @param linenums Line numbers of control file to be modified. Either this or the Strings input are needed. Default=NULL.
-#' @param strings Strings (with optional partial matching) indicating which parameters to be modified. 
-#' This is an alternative to linenums. Strings correspond to the commented parameter names included in 
-#' control.ss_new, or whatever is written as comment at the end of the 14 number parameter lines. 
+#'
+#' @param ctlfile Control file name with directory.
+#'   Default="C:/myfiles/mymodels/myrun/control.ss_new".
+#' @param newctlfile Name of new control file to be written.
+#'   Default="C:/myfiles/mymodels/myrun/control_modified.ss"
+#' @param linenums Line numbers of control file to be modified. Either this or
+#'   the Strings input are needed. Default=NULL.
+#' @param strings Strings (with optional partial matching) indicating which
+#'   parameters to be modified. This is an alternative to linenums. Strings
+#'   correspond to the commented parameter names included in control.ss_new, or
+#'   whatever is written as comment at the end of the 14 number parameter lines.
 #' @param newlos Vector of new lo bounds. Default=NULL.
-#' @param newhis Vector of new hi bounds. Must be the same length as newhis Default=NULL.
-#' @param estimate Vector of TRUE/FALSE for which changed parameters are to be estimated. Default=FALSE.
+#' @param newhis Vector of new hi bounds. Must be the same length as newhis
+#'   Default=NULL.
+#' @param estimate Vector of TRUE/FALSE for which changed parameters are to be
+#'   estimated. Default=FALSE.
 #' @param verbose More detailed output to command line. Default=TRUE.
 #' @seealso \code{\link{SS_changepars}}
 #' @export 
