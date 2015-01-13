@@ -1,33 +1,60 @@
-#' @description Function to standardize the bounds of the control file in the estimation model.
+#' Standardize the bounds of the estimation model control file.
+#' 
+#' Function to standardize the bounds of the control file in the estimation model.
 #' This function first checks to ensure the initial values in the estimation model control file are set to
 #' the true values of the operating model control file and if not sets them for every parameter.
 #' Next, the function adjusts the LO and HI values in the estimation model control file to be a 
 #' fixed percentage of the initial value for every parameter.
+#' 
+#' @author Christine Stawitz
+#' 
 #' @param percent.df is a data.frame with nine rows and three columns. The first column is the parameter
 #' @param OM.ctl.file is a string with the path and name of the operating model control file. If it is not given 
-#' the first part of the function is ignored.
+#' the first part of the function is ignored. Default = ""
 #' @param EM.ctl.file is a string with the path and name of the estimation model control file
 #' name. The second column is what % of the initial parameter value LO should be set to. The third column
 #' is what % of the initial parameter value HI should be set to. 
-standardize_bounds<-function(percent.df, EM.ctl.file, OM.ctl.file=""){
+#' @examples
+#' 
+#' ## Set tp the path and filename of the OM and EM control files
+#' OM.ctl<-"C:/myfiles/mymodels/myrun/OM/control.ss_new"
+#' EM.ctl<-"C:/myfiles/mymodels/myrun/EM/control.ss_new"
+#' 
+#' ## Use SS_parlines to get the proper names for parameters for the data frame
+#' om.pars<-SS_parlines(ctlfile=OM.ctl)
+#' em.pars<-SS_parlines(ctlfile=EM.ctl)
+#' 
+#' ## Set percentages to make lower and upper bounds
+#' lo.percent<-rep(.5,11)
+#' hi.percent<-c(500,1000,1000,rep(500,8))
+#' 
+#' ##Populate data frame using EM parameter names and percentages 
+#' percent.df<-data.frame(label=as.character(em.pars[c(1:6,17,27:30),"Label"]),lo=lo.percent,hi=hi.percent)
+#' 
+#' #Run function
+#' standardize_bounds(percent.df,EM.ctl.file=EM.ctl,OM.ctl.file=OM.ctl)
+#'  @export
+
+
+standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
   #Read in EM values
-  em.pars<-SS_parlines(ctlfile=EM.ctl.file)
+  em_pars<-SS_parlines(ctlfile=EM_ctl_file)
   #First, ensure the initial value in the EM control file is set to the OM true value
   #If an OM is passed
-  if(nchar(OM.ctl.file)>0){
+  if(nchar(OM_ctl_file)>0){
     #Read in OM true value
-    om.pars<-SS_parlines(ctlfile=OM.ctl.file)
+    om_pars<-SS_parlines(ctlfile=OM_ctl_file)
 
     #Get the indices of the user input parameters in the OM/EM
-    om.indices<-which(om.pars[,"Label"] %in% percent.df[,"label"])
-    em.indices<-which(em.pars[,"Label"] %in% percent.df[,"label"])
+    om_indices<-which(om_pars[,"Label"] %in% percent_df[,"label"])
+    em_indices<-which(em_pars[,"Label"] %in% percent_df[,"label"])
 
     #If they are not equal, set the EM initial value to the OM true value
-    if(any(om.pars[om.indices,"INIT"]!=em.pars[em.indices,"INIT"])){
-      inits.to.change<-em.pars[which(em.pars[em.indices,"INIT"]!=om.pars[om.indices,"INIT"]),"Label"]
-      SS_changepars(dir=substr(EM.ctl.file,1,nchar(EM.ctl.file)-9),ctlfile=substr(EM.ctl.file,nchar(EM.ctl.file)-8,nchar(EM.ctl.file)),
-                     newctlfile=substr(EM.ctl.file,nchar(EM.ctl.file)-8,nchar(EM.ctl.file)),strings=inits.to.change,
-                     newvals=om.pars[which(om.pars[om.indices,"INIT"]!=em.pars[em.indices,"INIT"]),"INIT"])
+    if(any(om_pars[om_indices,"INIT"]!=em_pars[em_indices,"INIT"])){
+      inits_to_change<-em_pars[which(em_pars[em_indices,"INIT"]!=om_pars[om_indices,"INIT"]),"Label"]
+      SS_changepars(dir=substr(EM_ctl_file,1,nchar(EM_ctl_file)-9),ctlfile=substr(EM_ctl_file,nchar(EM_ctl_file)-8,nchar(EM_ctl_file)),
+                     newctlfile=substr(EM_ctl_file,nchar(EM_ctl_file)-8,nchar(EM_ctl_file)),strings=inits_to_change,
+                     newvals=om_pars[which(om_pars[om_indices,"INIT"]!=em_pars[em_indices,"INIT"]),"INIT"])
     }
   }
 
@@ -36,29 +63,46 @@ standardize_bounds<-function(percent.df, EM.ctl.file, OM.ctl.file=""){
   #To a fixed % of the init value as provided in the user input
   
   #Read in parameters from EM ctl file
-  em.pars<-SS_parlines(ctlfile=EM.ctl.file)
+  em_pars<-SS_parlines(ctlfile=EM_ctl_file)
   
   #Check input parameter names are valid 
   #Do these match the data frame first column?
-  if(any(!percent.df[,"label"] %in% em.pars[,"Label"])){
-    print(paste("Element",which(!percent.df[,"label"] %in% em.pars[,"Label"]),"does not have a valid parameter label."))
+  if(any(!percent_df[,"label"] %in% em_pars[,"Label"])){
+    print(paste("Element",which(!percent_df[,"label"] %in% em_pars[,"Label"]),"does not have a valid parameter label."))
   }else{
     #Get indices of parameters to standardize; first column is in the data frame and second is in the EM read values
-    indices.to.standardize<-matrix(ncol=2,nrow=nrow(percent.df))
-    indices.to.standardize[,1]<-which(percent.df[,1] %in% em.pars[,"Label"])
-    indices.to.standardize[,2]<-which(em.pars[,"Label"] %in% percent.df[,1])
+    indices_to_standardize<-matrix(ncol=2,nrow=nrow(percent_df))
+    indices_to_standardize[,1]<-which(percent_df[,1] %in% em_pars[,"Label"])
+    indices_to_standardize[,2]<-which(em_pars[,"Label"] %in% percent_df[,1])
     
     #Change lo and hi's
-    newlos<-percent.df[indices.to.standardize[,1],"lo"]*em.pars[indices.to.standardize[,2],"INIT"]
-    newhis<-percent.df[indices.to.standardize[,1],"hi"]*em.pars[indices.to.standardize[,2],"INIT"]
-    change_lo_hi(ctlfile=EM.ctl.file,newctlfile=EM.ctl.file,
-                 strings=as.character(percent.df[indices.to.standardize[,1],1]),newlos=newlos,newhis=newhis)
+    newlos<-percent_df[indices_to_standardize[,1],"lo"]*em_pars[indices_to_standardize[,2],"INIT"]
+    newhis<-percent_df[indices_to_standardize[,1],"hi"]*em_pars[indices_to_standardize[,2],"INIT"]
+    change_lo_hi(ctlfile=EM_ctl_file,newctlfile=EM_ctl_file,
+                 strings=as.character(percent_df[indices_to_standardize[,1],1]),newlos=newlos,newhis=newhis)
   }
 }
 
-#' @description This is a modified version of r4SS::SS_changepars which modifies the lo and hi bounds in the 
+#' Changes the lo and hi bounds of the estimation model control file
+#' 
+#' This is a modified version of r4SS::SS_changepars which modifies the lo and hi bounds in the 
 #' control file instead of the initial value. newhis and newlos must be equivalent lengths and both refer to
 #' the parameters in strings in the same order. Also put the directory into the filenames to match the structure of the above function.
+#' 
+#' @author Ian Taylor, modified by Christine Stawitz
+#' 
+#' @param ctlfile Control file name with directory. Default="C:/myfiles/mymodels/myrun/control.ss_new".
+#' @param newctlfile Name of new control file to be written. Default="C:/myfiles/mymodels/myrun/control_modified.ss"
+#' @param linenums Line numbers of control file to be modified. Either this or the Strings input are needed. Default=NULL.
+#' @param strings Strings (with optional partial matching) indicating which parameters to be modified. 
+#' This is an alternative to linenums. Strings correspond to the commented parameter names included in 
+#' control.ss_new, or whatever is written as comment at the end of the 14 number parameter lines. 
+#' @param newlos Vector of new lo bounds. Default=NULL.
+#' @param newhis Vector of new hi bounds. Must be the same length as newhis Default=NULL.
+#' @param estimate Vector of TRUE/FALSE for which changed parameters are to be estimated. Default=FALSE.
+#' @param verbose More detailed output to command line. Default=TRUE.
+#' @seealso \code{\link{SS_changepars}}
+#' @export 
 change_lo_hi<-function (ctlfile = "C:/myfiles/mymodels/myrun/control.ss_new", 
           newctlfile = "C:/myfiles/mymodels/myrun/control_modified.ss", linenums = NULL, strings = NULL, 
           newlos = NULL, newhis=NULL, estimate = FALSE, verbose = TRUE) 
