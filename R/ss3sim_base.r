@@ -44,6 +44,9 @@
 #' @param em_dir The directory with the estimation model you want to copy and
 #'   use for the specified simulations.
 #' @template user_recdevs
+#' @param user_recdevs_warn A logical argument allowing users to turn the 
+#'   warning regarding biased recruitment deviations off when \code{user_recdevs} 
+#'   are specified. 
 #' @param bias_adjust Run bias adjustment first? See \code{\link{run_bias_ss3}}.
 #' @param bias_nsim If bias adjustment is run, how many simulations should the
 #'   bias adjustment factor be estimated from? It will take the mean of the
@@ -179,7 +182,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   estim_params, tv_params, om_dir, em_dir,
   retro_params = NULL, tc_params = NULL, lc_params = NULL,
   len_bins = NULL, age_bins = NULL, call_change_data = TRUE,
-  user_recdevs = NULL, bias_adjust = FALSE,
+  user_recdevs = NULL, user_recdevs_warn = TRUE, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
   print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21, ...)
 {
@@ -227,11 +230,12 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       recdevs <- get_recdevs(iteration = this_run_num, n = 2000, seed = seed)
       if(is.null(user_recdevs)) {
         sc_i_recdevs <- sigmar * recdevs - sigmar^2/2 # from the package data
-      } else {
-        warning(
+      } else {if(user_recdevs_warn){
+          warning(
 "No bias correction is done internally for user-supplied recruitment deviations
 and must be done manually. See the vignette for more details. Biased recruitment
 deviations can lead to biased model results.")
+        }
         sc_i_recdevs <- user_recdevs[, this_run_num] # user specified recdevs
       }
 
