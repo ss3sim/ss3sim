@@ -44,9 +44,9 @@
 #' @param em_dir The directory with the estimation model you want to copy and
 #'   use for the specified simulations.
 #' @template user_recdevs
-#' @param user_recdevs_warn A logical argument allowing users to turn the 
-#'   warning regarding biased recruitment deviations off when \code{user_recdevs} 
-#'   are specified. 
+#' @param user_recdevs_warn A logical argument allowing users to turn the
+#'   warning regarding biased recruitment deviations off when \code{user_recdevs}
+#'   are specified.
 #' @param bias_adjust Run bias adjustment first? See \code{\link{run_bias_ss3}}.
 #' @param bias_nsim If bias adjustment is run, how many simulations should the
 #'   bias adjustment factor be estimated from? It will take the mean of the
@@ -315,6 +315,35 @@ deviations can lead to biased model results.")
                      years           = years,
                      sds_obs         = sds_obs,
                      write_file      = FALSE))
+      ## Add error in the length comp data
+      if(!is.null(lcomp_params$fleets)){
+          lcomp_params <- add_nulls(lcomp_params,
+                     c("fleets", "Nsamp", "years", "cpar"))
+          datfile <- with(lcomp_params,
+               sample_lcomp(datfile           = datfile,
+                            outfile          = NULL,
+                            fleets           = fleets,
+                            Nsamp            = Nsamp,
+                            years            = years,
+                            cpar             = cpar,
+                            write_file       = FALSE))
+      }
+
+            ## Add error in the age comp data. Need to do this last since other
+      ## sampling functions rely on the age data. Also, if user doesn't
+      ## call this function we need to delete the data
+      if(is.null(agecomp_params$fleets)){
+          agecomp_params <- add_nulls(agecomp_params,
+                                      c("fleets", "Nsamp", "years", "cpar"))
+          datfile <- with(agecomp_params,
+                          sample_agecomp(datfile         = datfile,
+                                         outfile        = NULL,
+                                         fleets         = fleets,
+                                         Nsamp          = Nsamp,
+                                         years          = years,
+                                         cpar           = cpar,
+                                         write_file     = FALSE))
+      }
 
       # Add tail compression option. If NULL is passed (the base case),
       # ignore it.
@@ -337,35 +366,6 @@ deviations can lead to biased model results.")
                     file_out       = pastef(sc, i, "em", "ss3.dat")))
       }
 
-      ## Add error in the length comp data
-      if(!is.null(lcomp_params$fleets)){
-          lcomp_params <- add_nulls(lcomp_params,
-                     c("fleets", "Nsamp", "years", "cpar"))
-          datfile <- with(lcomp_params,
-               sample_lcomp(datfile           = datfile,
-                            outfile          = NULL,
-                            fleets           = fleets,
-                            Nsamp            = Nsamp,
-                            years            = years,
-                            cpar             = cpar,
-                            write_file       = FALSE))
-      }
-
-      ## Add error in the age comp data. Need to do this last since other
-      ## sampling functions rely on the age data. Also, if user doesn't
-      ## call this function we need to delete the data
-      if(is.null(agecomp_params$fleets)){
-          agecomp_params <- add_nulls(agecomp_params,
-                                      c("fleets", "Nsamp", "years", "cpar"))
-          datfile <- with(agecomp_params,
-                          sample_agecomp(datfile         = datfile,
-                                         outfile        = NULL,
-                                         fleets         = fleets,
-                                         Nsamp          = Nsamp,
-                                         years          = years,
-                                         cpar           = cpar,
-                                         write_file     = FALSE))
-      }
       ## Add error in the empirical weight-at-age comp data. Note that if
       ## arguments are passed to this fucntion it's functionality is turned
       ## on by setting the maturity option to 5. If it's off SS will just
@@ -409,6 +409,7 @@ deviations can lead to biased model results.")
                                          mean_outfile   = pastef(sc, i, "em", "vbgf_info.csv"),
                                          write_file     = FALSE))
       }
+
       ## Add error in the conditional age at length comp data. Delete data
       ## if not called, since could be written there.
       if(!is.null(calcomp_params$fleets)){
