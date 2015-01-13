@@ -62,7 +62,7 @@ clean_data <- function(datfile, index_params=NULL, lcomp_params=NULL,
 
     ## CPUE
     a <- datfile$CPUE
-    if(is.null(index_params)){
+    if(is.null(index_params$fleets)){
         stop("Indices are currently mandatory: index_params is NULL")
     } else {
         datfile$CPUE <- do.call(rbind,
@@ -77,7 +77,7 @@ clean_data <- function(datfile, index_params=NULL, lcomp_params=NULL,
 
     ## Length composition data
     a <- datfile$lencomp
-    if(is.null(lcomp_params)){
+    if(is.null(lcomp_params$fleets)){
         datfile$lencomp <- NULL
         datfile$N_lencomp <- 0
     } else {
@@ -112,23 +112,30 @@ clean_data <- function(datfile, index_params=NULL, lcomp_params=NULL,
     a <- datfile$agecomp
     agecomp <- a[a$Lbin_lo < 0,]
     calcomp <- a[a$Lbin_lo >= 0, ]
-    if(is.null(agecomp_params) & is.null(calcomp_params)){
-        datfile$agecomp <- NULL
-        datfile$N_agecomp <- 0
-    } else {
-        ## Clean the agecomp and calcomp data
-        new.agecomp <- do.call(rbind,
+    if(is.null(agecomp_params$fleets) & is.null(calcomp_params$fleets)){
+        new.agecomp <- new.calcomp <- NULL
+    } else if(!is.null(agecomp_params$fleets & is.null(calcomp_params$fleets)))
+          ## Case with just age comps and no calcomps
+      {
+          new.agecomp <- do.call(rbind,
          lapply(1:length(agecomp_params$fleets), function(i)
              agecomp[agecomp$Flt == agecomp_params$fleets[i] &
-             agecomp$Yr %in% agecomp_params$years[[i]],]))
-        new.calcomp <- do.call(rbind,
+                         agecomp$Yr %in% agecomp_params$years[[i]],]))
+          new.calcomp <- NULL
+      } else if(!is.null(agecomp_params$fleets & !is.null(calcomp_params$fleets))){
+          ## Case with both types
+          new.agecomp <- do.call(rbind,
+         lapply(1:length(agecomp_params$fleets), function(i)
+             agecomp[agecomp$Flt == agecomp_params$fleets[i] &
+                         agecomp$Yr %in% agecomp_params$years[[i]],]))
+          new.calcomp <- do.call(rbind,
          lapply(1:length(calcomp_params$fleets), function(i)
              calcomp[calcomp$Flt == calcomp_params$fleets[i] &
-             calcomp$Yr %in% calcomp_params$years[[i]],]))
-        datfile$agecomp <- rbind(new.agecomp, new.calcomp)
-        datfile$N_agecomp <- NROW(datfile$agecomp)
-        calcomp.N.removed <- NROW(calcomp)-NROW(new.calcomp)
-    }
+                         calcomp$Yr %in% calcomp_params$years[[i]],]))
+      }
+    ## Create clean dat file
+    datfile$agecomp <- rbind(new.agecomp, new.calcomp)
+    datfile$N_agecomp <- NROW(datfile$agecomp)
     agecomp.N.removed <-
         NROW(agecomp)-NROW(datfile$agecomp[datfile$agecomp$Lbin_lo < 0,])
     calcomp.N.removed <-
