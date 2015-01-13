@@ -8,14 +8,15 @@
 #' 
 #' @author Christine Stawitz
 #' 
-#' @param percent.df is a data.frame with nine rows and three columns. The first column is the parameter
-#' @param OM.ctl.file is a string with the path and name of the operating model control file. If it is not given 
-#' the first part of the function is ignored. Default = ""
-#' @param EM.ctl.file is a string with the path and name of the estimation model control file
+#' @param percent_df is a data.frame with nine rows and three columns. The first column is the parameter
+#' @param OM_ctl_file is a string with the path and name of the operating model control file. If it is not given 
+#' the part of the function which matches the OM and EM init values is ignored. Default = ""
+#' @param EM_ctl_file is a string with the path and name of the estimation model control file
 #' name. The second column is what % of the initial parameter value LO should be set to. The third column
 #' is what % of the initial parameter value HI should be set to. 
 #' @examples
-#' 
+#' \dontrun{
+#' #' require(r4ss)
 #' ## Set tp the path and filename of the OM and EM control files
 #' OM.ctl<-"C:/myfiles/mymodels/myrun/OM/control.ss_new"
 #' EM.ctl<-"C:/myfiles/mymodels/myrun/EM/control.ss_new"
@@ -32,7 +33,8 @@
 #' percent.df<-data.frame(label=as.character(em.pars[c(1:6,17,27:30),"Label"]),lo=lo.percent,hi=hi.percent)
 #' 
 #' #Run function
-#' standardize_bounds(percent.df,EM.ctl.file=EM.ctl,OM.ctl.file=OM.ctl)
+#' standardize_bounds(percent_df,EM_ctl_file=EM.ctl,OM_ctl_file=OM.ctl)
+#' }
 #'  @export
 
 
