@@ -4,13 +4,13 @@
 \alias{standardize_bounds}
 \title{Standardize the bounds of the estimation model control file.}
 \usage{
-standardize_bounds(percent_df, EM_ctl_file, OM_ctl_file = "")
+standardize_bounds(percent_df, em_ctl_file, OM_ctl_file = "")
 }
 \arguments{
   \item{percent_df}{is a data.frame with nine rows and
   three columns. The first column is the parameter}
 
-  \item{EM_ctl_file}{is a string with the path and name of
+  \item{em_ctl_file}{is a string with the path and name of
   the estimation model control file name. The second column
   is what % of the initial parameter value LO should be set
   to. The third column is what % of the initial parameter
@@ -33,7 +33,7 @@ value for every parameter.
 }
 \examples{
 \dontrun{
-#' require(r4ss)
+## require(r4ss)
 ## Set tp the path and filename of the OM and EM control files
 OM.ctl<-"control.ss_new"
 EM.ctl<-"control.ss_new"
@@ -51,7 +51,7 @@ percent.df<-data.frame(label=as.character(em.pars[c(1:6,17,27:30),"Label"]),
   lo=lo.percent,hi=hi.percent)
 
 #Run function
-standardize_bounds(percent_df,EM_ctl_file=EM.ctl,OM_ctl_file=OM.ctl)
+standardize_bounds(percent_df,em_ctl_file=EM.ctl,OM_ctl_file=OM.ctl)
 }
 }
 \author{
