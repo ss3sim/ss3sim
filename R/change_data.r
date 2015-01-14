@@ -228,6 +228,13 @@ calculate_data_units <- function(index_params=NULL, lcomp_params=NULL,
     ## Now figure out which data types need to be in the OM for sampling (but
     ## not necessarily the EM). For now these are special cases but could be
     ## different based on different algorithms.
+
+
+    #To-Do
+    ##Put line for wtatage
+    #if wtatage is in types what do I need to make sure is there
+
+
     types <- names(sample_args)[!sample_args_null]
     if("cal" %in% types) types <- c(types, "len", "age")
     if("mla" %in% types) types <- c(types, "age")
