@@ -181,7 +181,7 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
                 #fill in list by sampling from normal distribution
                 for(ii in 1:nrow(age.samples))
                 {
-                  lengths.list[[ii]] <- rnorm(n = age.samples[ii], mean = mla.means[ii], sd = sds[ii])
+                  lengths.list[[ii]] <- supressWarnings(rnorm(n = age.samples[ii], mean = mla.means[ii], sd = sds[ii]))
                   
                   #Step 4, convert lengths to weights with no error
                   weights.list[[ii]] <- Wtlen1 * lengths.list[[ii]] ^ Wtlen2 
