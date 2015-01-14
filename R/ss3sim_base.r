@@ -383,7 +383,7 @@ deviations can lead to biased model results.")
                               maturity_option=5)
               with(wtatage_params,
                    sample_wtatage(infile      = pastef(sc, i, "om", "wtatage.ss_new"),
-                                  outfile     = pastef(sc, i, "em", "wtatage.dat"),
+                                  outfile     = pastef(sc, i, "em", "wtatage.ss"),
                                   datfile     = pastef(sc, i, "om", "data.ss_new"),
                                   ctlfile     = pastef(sc, i, "om", "control.ss_new"),
                                   fleets      = fleets,
