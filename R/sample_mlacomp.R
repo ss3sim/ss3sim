@@ -81,8 +81,26 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
             if(nrow(mlacomp[mlacomp$AgeErr > 0, ]) < 1)
                 stop("mean length-at-age compositions do not exist")
         }
-    ## End input checks
+    # Check for a sample size for every year
+    if(length(Nsamp) != length(Nfleets)){
+        stop("Nsamp was not included for all fleets in fleet\n.
+              User must include a sample size for each fleet that can be\n
+              repeated for each year for that fleet or specified as a list of\n
+              vectors, with the same dimensions as years.")
+    }
+    if(any(sapply(Nsamp, length) == 1)) {
+        repNsamp <- which(sapply(Nsamp, length) == 1)
+        for(i in repNsamp){
 
+            Nsamp[[i]] <- rep_len(Nsamp[[i]], length(years[[i]]))
+        }
+    }
+    if(any(sapply(Nsamp, length) != sapply(years, length))){
+        stop(paste("Number of samples were not specified for every year.\n",
+                   "length of years and Nsamp did not match for fleet(s)",
+                   fleets[which(sapply(Nsamp, length) != sapply(years, length))]))
+    }
+    ## End input checks
     ## Resample from the length-at-age data. The general approach here is
     ## to loop through each row and sample based on the true age
     ## distribution. Note, true age distribution is known, as is but there
@@ -96,7 +114,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     ## return nothing (subtract out this type from the data file)
     for(fl in 1:length(fleets)){
         fl.temp <- fleets[fl]
-        mlacomp.fl <- mlacomp[mlacomp$Fl == fleets[fl] & mlacomp$Yr %in% years[[fl]],]
+        mlacomp.fl <- mlacomp[mlacomp$FltSvy == fleets[fl] & mlacomp$Yr %in% years[[fl]],]
         for(j in 1:NROW(mlacomp.fl)){
             yr.temp <- mlacomp.fl$Yr[j]
             mlacomp.new <- mlacomp.fl[j,]
@@ -111,7 +129,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
             means.log <- log(mla.means^2/sqrt(sds^2+mla.means^2))
             sds.log <- sqrt(log(1 + sds^2/mla.means^2))
             ## Get the true age distributions
-            agecomp.temp <- agecomp[agecomp$Yr==yr.temp & agecomp$Fl == fl.temp &
+            agecomp.temp <- agecomp[agecomp$Yr==yr.temp & agecomp$FltSvy == fl.temp &
               agecomp$Lbin_lo < 0,]
             ## Get the true age distributions
             age.means <- as.numeric(agecomp.temp[-(1:9)])

@@ -288,6 +288,7 @@ deviations can lead to biased model results.")
                            mlacomp_params=mlacomp_params)
       datfile.orig <- SS_readdat(pastef(sc, i, "om", "ss3.dat"),
                                  verbose=FALSE)
+      datfile.orig <- change_fltname(datfile.orig)
       if (call_change_data) {
           change_data(datfile=datfile.orig,
                       outfile = pastef(sc, i, "om", "ss3.dat"),
@@ -305,6 +306,7 @@ deviations can lead to biased model results.")
       ## write it back to file at the end, before running the EM.
       datfile <- SS_readdat(pastef(sc, i, "em", "ss3.dat"),
                             verbose = FALSE)
+      datfile <- change_fltname(datfile)
       ## Survey biomass index
       index_params <- add_nulls(index_params, c("fleets", "years", "sds_obs"))
 
@@ -373,7 +375,7 @@ deviations can lead to biased model results.")
       ## other data.
       if(!is.null(wtatage_params)){
           wtatage_params <-
-              add_nulls(wtatage_params, c("fleets", "Nsamp", "years", "cv"))
+              add_nulls(wtatage_params, c("fleets", "Nsamp", "years", "cv_wtatage"))
           ## A value of NULL for fleets signifies not to use this function,
           ## so exit early if this is the case.
           if(!is.null(wtatage_params$fleets)){
@@ -383,12 +385,13 @@ deviations can lead to biased model results.")
                               maturity_option=5)
               with(wtatage_params,
                    sample_wtatage(infile      = pastef(sc, i, "om", "wtatage.ss_new"),
-                                  outfile     = pastef(sc, i, "em", "wtatage.dat"),
+                                  outfile     = pastef(sc, i, "em", "wtatage.ss"),
                                   datfile     = pastef(sc, i, "om", "data.ss_new"),
                                   ctlfile     = pastef(sc, i, "om", "control.ss_new"),
                                   fleets      = fleets,
                                   years       = years,
-                                  write_file  = TRUE))
+                                  write_file  = TRUE,
+                                  cv_wtatage  = cv_wtatage))
           }
       }
 
