@@ -109,7 +109,7 @@ clean_data <- function(datfile, index_params=NULL, lcomp_params=NULL,
     if(mlacomp.N.removed !=0 & verbose)
         message(paste(mlacomp.N.removed, "lines of mean length data removed"))
 
-    ## Age comps and conditional age-at-legnth at the same time
+    ## Age comps and conditional age-at-length at the same time
     a <- datfile$agecomp
     agecomp <- a[a$Lbin_lo < 0,]
     calcomp <- a[a$Lbin_lo >= 0, ]
