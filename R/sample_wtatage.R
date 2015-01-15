@@ -38,10 +38,10 @@
 #'   \code{\link{fill_across}}
 #' @export
 # 
-# #For Debugging
+# # #For Debugging
 # setwd('/Users/peterkuriyama/School/Research/capam_growth/sample_wtatage_test/')
-# source('fill_across.r')
-# 
+# # source('fill_across.r')
+# # 
 # infile <- "om/wtatage.ss_new"
 # outfile <- "em/wtatage.ss"
 # datfile <- "em/ss3.dat"
@@ -49,22 +49,27 @@
 # years <- list(seq(2, 100, 1), seq(2, 100, 1))
 # fill_fnc <- fill_across
 # fleets <- list(1, 2)
-# cv.wtatage <- .01
+# cv_wtatage <- .5
 # write_file <- TRUE
 # 
 # test <- sample_wtatage(infile = infile, outfile = outfile, datfile = datfile, 
 #     ctlfile = ctlfile, years = years, fill_fnc = fill_across, 
-#     fleets = fleets, cv.wtatage = .01)
+#     fleets = fleets, cv_wtatage = cv_wtatage)
 # 
 
 sample_wtatage <- function(infile, outfile, datfile, ctlfile,
                            years, fill_fnc = fill_across, write_file=TRUE, fleets,
-                           cv.wtatage = NULL){
+                           cv_wtatage = NULL){
+    # browser()
     ##fill_type: specify type of fill, fill zeroes with first row? annual interpolation?
         ## Age Interpolation?
     ## A value of NULL for fleets signifies to turn this data off in the
     ## EM. So quit early and in ss3sim_base do NOT turn wtatage on using
     ## the maturity function
+    if(is.null(cv_wtatage)) stop('specify cv_wtatage in case file')
+        
+    cat('cv_wtatage is', cv_wtatage, '\n')
+    
     if(is.null(fleets)) return(NULL)
 
     ### ACH: Because you always have to have year 100, you may want to check for duplicates
@@ -111,7 +116,8 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
 
     #----------------------------------------------------------------------------
     #start sampling
-    #Pull wtatage for fleets -2, -1, and 0 for now. -2 is age-specific fecundity * maturity
+    #Pull wtatage for fleets -2, -1, and 0 from OM for now. 
+    #-2 is age-specific fecundity * maturity
     #-1 is population wt-at-age in middle of season
     #0 is population wt-at-age in beginning of season2
     unsampled.wtatage <- list(1, 2, 3)
@@ -165,7 +171,7 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
                                                 paste0("a", agebin_vector)])
 
                 # CV.growth <- ctl[ctl$Label=="CV_young_Fem_GP_1", "INIT"]
-                CV.growth <- cv.wtatage #User-Specified
+                CV.growth <- cv_wtatage #User-Specified
                 
                 #Define growth parameters
                 Wtlen1 <- ctl[ctl$Label=="Wtlen_1_Fem", "INIT"]
@@ -181,7 +187,7 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
                 #fill in list by sampling from normal distribution
                 for(ii in 1:nrow(age.samples))
                 {
-                  lengths.list[[ii]] <- supressWarnings(rnorm(n = age.samples[ii], mean = mla.means[ii], sd = sds[ii]))
+                  lengths.list[[ii]] <- suppressWarnings(rnorm(n = age.samples[ii], mean = mla.means[ii], sd = sds[ii]))
                   
                   #Step 4, convert lengths to weights with no error
                   weights.list[[ii]] <- Wtlen1 * lengths.list[[ii]] ^ Wtlen2 
@@ -288,6 +294,7 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
         if(write_file)    write.table(wtatage.final[[i+3]], file=outfile, append=TRUE, row.names=F, col.names=F)
     }
 
+    # browser()
     return(invisible(wtatage.final))
 }
 

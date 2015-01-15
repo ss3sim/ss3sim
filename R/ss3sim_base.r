@@ -373,7 +373,7 @@ deviations can lead to biased model results.")
       ## other data.
       if(!is.null(wtatage_params)){
           wtatage_params <-
-              add_nulls(wtatage_params, c("fleets", "Nsamp", "years", "cv"))
+              add_nulls(wtatage_params, c("fleets", "Nsamp", "years", "cv_wtatage"))
           ## A value of NULL for fleets signifies not to use this function,
           ## so exit early if this is the case.
           if(!is.null(wtatage_params$fleets)){
@@ -388,7 +388,8 @@ deviations can lead to biased model results.")
                                   ctlfile     = pastef(sc, i, "om", "control.ss_new"),
                                   fleets      = fleets,
                                   years       = years,
-                                  write_file  = TRUE))
+                                  write_file  = TRUE,
+                                  cv_wtatage  = cv_wtatage))
           }
       }
 
