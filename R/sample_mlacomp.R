@@ -147,7 +147,11 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
                cbind(names(lengths.list)[x], lengths.list[[x]], exp(means.log[x]))
               })
             forexport[[k]] <- do.call("rbind", temp[lapply(temp, length) > 2])
-            colnames(forexport[[k]]) <- c("age", "length", "mean")
+            forexportdims <- dim(forexport[[k]])
+            forexport[[k]] <- cbind(forexport[[k]], 
+                                    fleet = rep_len(fl.temp, length.out = forexportdims[1]),
+                                    year = rep_len(yr.temp, length.out = forexportdims[1]))
+            colnames(forexport[[k]]) <- c("age", "length", "mean", "fleet", "year")
             ## Take means and combine into vector to put back
             ## into the data frame.
             mlacomp.new.means <- do.call(c, lapply(lengths.list, mean))
