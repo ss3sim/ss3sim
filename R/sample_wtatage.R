@@ -167,7 +167,7 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
                 #----------------------------------------------------------------------------------------------------
                 #Step 3, use mean length-at-age to sample with normal/lognormal and user-specified cv
                 #first define mean length-at-age
-                mla.means <- as.numeric(mlacomp[mlacomp$Yr==yr & mlacomp$Fleet==fl,
+                mla.means <- as.numeric(mlacomp[mlacomp$Yr==yr & mlacomp$FltSvy==fl,
                                                 paste0("a", agebin_vector)])
 
                 # CV.growth <- ctl[ctl$Label=="CV_young_Fem_GP_1", "INIT"]

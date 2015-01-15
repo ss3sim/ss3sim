@@ -288,6 +288,7 @@ deviations can lead to biased model results.")
                            mlacomp_params=mlacomp_params)
       datfile.orig <- SS_readdat(pastef(sc, i, "om", "ss3.dat"),
                                  verbose=FALSE)
+      datfile.orig <- change_fltname(datfile.orig)
       if (call_change_data) {
           change_data(datfile=datfile.orig,
                       outfile = pastef(sc, i, "om", "ss3.dat"),
@@ -305,6 +306,7 @@ deviations can lead to biased model results.")
       ## write it back to file at the end, before running the EM.
       datfile <- SS_readdat(pastef(sc, i, "em", "ss3.dat"),
                             verbose = FALSE)
+      datfile <- change_fltname(datfile)
       ## Survey biomass index
       index_params <- add_nulls(index_params, c("fleets", "years", "sds_obs"))
 
