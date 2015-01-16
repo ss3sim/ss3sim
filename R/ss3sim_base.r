@@ -274,7 +274,6 @@ deviations can lead to biased model results.")
         setwd(wd)
       }
 
-      # browser()
       # Change the data structure in the OM to produce the expected
       # values we want. This sets up the 'dummy' bins before we run
       # the OM one last time. Then we'll sample from the expected values
@@ -414,19 +413,20 @@ deviations can lead to biased model results.")
                                          write_file     = FALSE))
       }
 
-      ## Add error in the conditional age at length comp data. Delete data
-      ## if not called, since could be written there.
+      ## Add error in the conditional age at length comp data. The
+      ## cal data are independent of the agecomp data for this
+      ## package. Thus the sampling of agecomps has no influence on the
+      ## calcomp data and vice versa.
       if(!is.null(calcomp_params$fleets)){
-          calcomp_params <- add_nulls(calcomp_params,
-                                      c("fleets", "years"))
+          calcomp_params <- add_nulls(calcomp_params, c("fleets", "years", "Nsamp"))
           datfile <- with(calcomp_params,
                           sample_calcomp(datfile          = datfile,
                                          outfile          = NULL,
                                          fleets           = fleets,
                                          years            = years,
+                                         Nsamp            = Nsamp,
                                          write_file       = FALSE))
       }
-
       ## Manipulate EM starter file for a possible retrospective analysis
       if(!is.null(retro_params)) {
       retro_params <- add_nulls(retro_params, "retro_yr")
