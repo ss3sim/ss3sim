@@ -285,7 +285,8 @@ deviations can lead to biased model results.")
       data_args <- calculate_data_units(lcomp_params=lcomp_params,
                            agecomp_params=agecomp_params,
                            calcomp_params=calcomp_params,
-                           mlacomp_params=mlacomp_params)
+                           mlacomp_params=mlacomp_params,
+                           wtatage_params=wtatage_params)
       datfile.orig <- SS_readdat(pastef(sc, i, "om", "ss3.dat"),
                                  verbose=FALSE)
       datfile.orig <- change_fltname(datfile.orig)
