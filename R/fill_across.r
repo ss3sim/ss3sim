@@ -75,7 +75,7 @@ fill_across <- function(mat, minYear, maxYear) {
     }
     mat[ii, ] <- temp
   }
-  
+
   mat$index <- NULL
 
   #Create Temporary Data frame
@@ -88,11 +88,11 @@ fill_across <- function(mat, minYear, maxYear) {
   fill.index <- c(minYear, which(is.na(temp.df$age0) == FALSE), maxYear)
   if(length(which(fill.index == 1)) != 1) stop('Did you really have wtatage data in the first year?')
   #Remove Duplicates, occurs when input matrix has values in mat[maxYear, ]
-  
+
   if(sum(duplicated(fill.index)) > 0){
-    fill.index <- fill.index[-which(duplicated(fill.index))]  
+    fill.index <- fill.index[-which(duplicated(fill.index))]
   }
-  
+
   diffs <- diff(fill.index)
 
   for(ii in 1:length(fill.index))
@@ -102,7 +102,7 @@ fill_across <- function(mat, minYear, maxYear) {
     if(curr == 1) next
 
     if(diffs[ii - 1] == 1 & ii != 99) next
-    
+
     prev <- fill.index[ii - 1]
 
     if(ii == 2)
@@ -120,9 +120,9 @@ fill_across <- function(mat, minYear, maxYear) {
   }
 
   #check to make sure that first year is filled
-  if(is.na(temp.df[1, 'age0'])) 
+  if(is.na(temp.df[1, 'age0']))
   {
-    temp.df[1, -1] <- temp.df[2, -1] 
+    temp.df[1, -1] <- temp.df[2, -1]
     temp.df[1, 'yr'] <- 1
   }
 
