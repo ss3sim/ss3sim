@@ -1,3 +1,4 @@
+
 % -*- mode: noweb; ess-noweb-default-code-mode: R-mode; -*-
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{An introduction to ss3sim for stock assessment simulation testing}
@@ -1714,8 +1715,28 @@ steps to take an existing SS3 model and modify it to work with the
 \pkg{ss3sim} package.  First, we cover setting up an operating model and then
 in Section \ref{sec:em-setup} we cover setting up an estimation model.
 
+The first step is to run the assessment model to make sure the model runs
+and estimates parameters as desired. The .par file generated will be used
+in the OM. We recommend opening a command window inside your folder to help
+test whether the model still runs at many points along the process. After
+turning parameter estimation off in the starter file (see below), the model
+can be checked by running \texttt{ss3_24o_safe -nohess} to make sure the
+input files are read in properly and the model writes the files. Use the
+.ss_new files produced as a starting point so that the comments match the
+instructions below. 
+
+You will see an error by ADMB that it cannot find the dat file because we
+have specified a different file in the starter file.  You can safely ignore
+this error.
+
 \subsection{Starter file modifications}
 \begin{enumerate}
+\item Delete the starter.ss file and rename starter.ss_new to
+  starter.ss. Modify this new file.
+\item
+  Turn off parameter estimation by changing\\
+  \texttt{\# Turn off estimation for parameters entering after this phase}\\
+  to \texttt{0}.
 \item
   Use the \texttt{.par} file to initialize model parameters. To do so change \\
   \texttt{\# 0=use init values in Starter file} to \texttt{1}.
@@ -1729,10 +1750,6 @@ in Section \ref{sec:em-setup} we cover setting up an estimation model.
   If \texttt{X=1} it only generates the original data
   If \texttt{X=2} it generates the original data and the expected value data (based on model specification)
   If \texttt{X>=3} it generates all the above and \texttt{X-2} bootstrapped data sets
-\item
-  Turn off parameter estimation by changing\\
-  \texttt{\# Turn off estimation for parameters entering after this phase}\\
-  to \texttt{0}.
 \item
   Turn off parameter jittering by setting\\
   \texttt{\# jitter initial parm value by this fraction} to \texttt{0}. Jitter
