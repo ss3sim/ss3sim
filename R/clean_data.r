@@ -113,9 +113,10 @@ clean_data <- function(datfile, index_params=NULL, lcomp_params=NULL,
     a <- datfile$agecomp
     agecomp <- a[a$Lbin_lo < 0,]
     calcomp <- a[a$Lbin_lo >= 0, ]
+    ## case with no age or cal data
     if(is.null(agecomp_params$fleets) & is.null(calcomp_params$fleets)){
         new.agecomp <- new.calcomp <- NULL
-    } else if(!is.null(agecomp_params$fleets & is.null(calcomp_params$fleets)))
+    } else if(!is.null(agecomp_params$fleets) & is.null(calcomp_params$fleets))
           ## Case with just age comps and no calcomps
       {
           new.agecomp <- do.call(rbind,
@@ -123,12 +124,19 @@ clean_data <- function(datfile, index_params=NULL, lcomp_params=NULL,
              agecomp[agecomp$FltSvy == agecomp_params$fleets[i] &
                          agecomp$Yr %in% agecomp_params$years[[i]],]))
           new.calcomp <- NULL
-      } else if(!is.null(agecomp_params$fleets & !is.null(calcomp_params$fleets))){
+      } else if(!is.null(agecomp_params$fleets) & !is.null(calcomp_params$fleets)){
           ## Case with both types
           new.agecomp <- do.call(rbind,
          lapply(1:length(agecomp_params$fleets), function(i)
              agecomp[agecomp$FltSvy == agecomp_params$fleets[i] &
                          agecomp$Yr %in% agecomp_params$years[[i]],]))
+          new.calcomp <- do.call(rbind,
+         lapply(1:length(calcomp_params$fleets), function(i)
+             calcomp[calcomp$FltSvy == calcomp_params$fleets[i] &
+                         calcomp$Yr %in% calcomp_params$years[[i]],]))
+      } else if(is.null(agecomp_params$fleets) & !is.null(calcomp_params$fleets)){
+          ## case with only cal comps
+          new.agecomp <- NULL
           new.calcomp <- do.call(rbind,
          lapply(1:length(calcomp_params$fleets), function(i)
              calcomp[calcomp$FltSvy == calcomp_params$fleets[i] &
