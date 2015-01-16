@@ -274,6 +274,7 @@ deviations can lead to biased model results.")
         setwd(wd)
       }
 
+      # browser()
       # Change the data structure in the OM to produce the expected
       # values we want. This sets up the 'dummy' bins before we run
       # the OM one last time. Then we'll sample from the expected values
@@ -334,7 +335,7 @@ deviations can lead to biased model results.")
             ## Add error in the age comp data. Need to do this last since other
       ## sampling functions rely on the age data. Also, if user doesn't
       ## call this function we need to delete the data
-      if(is.null(agecomp_params$fleets)){
+      if(!is.null(agecomp_params$fleets)){
           agecomp_params <- add_nulls(agecomp_params,
                                       c("fleets", "Nsamp", "years", "cpar"))
           datfile <- with(agecomp_params,
@@ -386,7 +387,7 @@ deviations can lead to biased model results.")
               with(wtatage_params,
                    sample_wtatage(infile      = pastef(sc, i, "om", "wtatage.ss_new"),
                                   outfile     = pastef(sc, i, "em", "wtatage.ss"),
-                                  datfile     = pastef(sc, i, "om", "data.ss_new"),
+                                  datfile     = datfile,
                                   ctlfile     = pastef(sc, i, "om", "control.ss_new"),
                                   fleets      = fleets,
                                   years       = years,

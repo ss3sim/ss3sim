@@ -59,27 +59,29 @@
 
 sample_wtatage <- function(infile, outfile, datfile, ctlfile,
                            years, fill_fnc = fill_across, write_file=TRUE, fleets,
-                           cv_wtatage = NULL){
-    # browser()
-    ##fill_type: specify type of fill, fill zeroes with first row? annual interpolation?
+                           cv_wtatage = NULL, nsamp_wtatage = NULL){
+  ##fill_type: specify type of fill, fill zeroes with first row? annual interpolation?
         ## Age Interpolation?
     ## A value of NULL for fleets signifies to turn this data off in the
     ## EM. So quit early and in ss3sim_base do NOT turn wtatage on using
     ## the maturity function
+    print(nsamp_wtatage)
     if(is.null(cv_wtatage)) stop('specify cv_wtatage in case file')
         
     cat('cv_wtatage is', cv_wtatage, '\n')
-    
+#     cat('datfile is', datfile)
     if(is.null(fleets)) return(NULL)
 
     ### ACH: Because you always have to have year 100, you may want to check for duplicates
     # years <- years[!duplicated(years)]
-
     #----------------------------------------------------------------------------
+    
     ## Read in datfile, need this for true age distributions and Nsamp
     #unchanged from previous versions
-    datfile <- r4ss::SS_readdat(file=datfile, verbose=FALSE)
+#     datfile <- r4ss::SS_readdat(file=datfile, verbose=FALSE)
     agecomp <- datfile$agecomp
+    
+    cat('sample size is ', unique(agecomp$Nsamp), '\n')
     agebin_vector <- datfile$agebin_vector
     # agebin_vector <- c(0, agebin_vector)
 
@@ -167,6 +169,10 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
                 #----------------------------------------------------------------------------------------------------
                 #Step 3, use mean length-at-age to sample with normal/lognormal and user-specified cv
                 #first define mean length-at-age
+                
+                #Change fleets name to FltSvy to keep everything consistent
+                names(mlacomp)[3] <- 'FltSvy'
+                # [which(names(mlacomp) == 'Fleet')]
                 mla.means <- as.numeric(mlacomp[mlacomp$Yr==yr & mlacomp$FltSvy==fl,
                                                 paste0("a", agebin_vector)])
 
@@ -294,7 +300,6 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
         if(write_file)    write.table(wtatage.final[[i+3]], file=outfile, append=TRUE, row.names=F, col.names=F)
     }
 
-    # browser()
     return(invisible(wtatage.final))
 }
 
