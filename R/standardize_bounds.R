@@ -42,27 +42,37 @@
 #' }
 #'  @export
 
-standardize_bounds<-function(percent_df, em_ctl_file, OM_ctl_file=""){
+standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
   #Read in EM values
-  em_pars<-SS_parlines(ctlfile=em_ctl_file)
+  em_pars<-SS_parlines(ctlfile=EM_ctl_file)
   #First, ensure the initial value in the EM control file is set to the OM true value
   #If an OM is passed
   if(nchar(OM_ctl_file)>0){
     #Read in OM true value
     om_pars<-SS_parlines(ctlfile=OM_ctl_file)
-
-    #Get the indices of the user input parameters in the OM/EM
-    om_indices<-which(om_pars[,"Label"] %in% percent_df[,"label"])
-    em_indices<-which(em_pars[,"Label"] %in% percent_df[,"label"])
+    browser()
+    #Restrict the parameters which have their initial values
+    #set equal to only those which occur in both the EM and OM
+    restr_percent_df<-percent_df[match(percent_df[,"Label"], unique(c(om_pars[,"Label"],em_pars[,"Label"]))),]
+    
+    if(!is.na(restr_percent_df)){
+    
+      #Get the indices of the user input parameters in the OM/EM
+      om_indices<-which(om_pars[,"Label"] %in% restr_percent_df[,"Label"])
+      em_indices<-which(em_pars[,"Label"] %in% restr_percent_df[,"Label"])
+    
 
     #If they are not equal, set the EM initial value to the OM true value
-    if(any(om_pars[om_indices,"INIT"]!= em_pars[em_indices,"INIT"])){
-      inits_to_change<-em_pars[which(em_pars[em_indices,"INIT"] != om_pars[om_indices,"INIT"]), "Label"]
-      SS_changepars(dir=substr(em_ctl_file, 1, nchar(em_ctl_file)-9),
+      if(any(om_pars[om_indices,"INIT"]!= em_pars[em_indices,"INIT"])){
+        inits_to_change<-em_pars[which(em_pars[em_indices,"INIT"] != om_pars[om_indices,"INIT"]), "Label"]
+        SS_changepars(dir=substr(em_ctl_file, 1, nchar(em_ctl_file)-9),
         ctlfile=substr(em_ctl_file, nchar(em_ctl_file)-8, nchar(em_ctl_file)),
                      newctlfile = substr(em_ctl_file, nchar(em_ctl_file)-8,
                        nchar(em_ctl_file)), strings = inits_to_change,
                      newvals = om_pars[which(om_pars[om_indices,"INIT"]!= em_pars[em_indices,"INIT"]),"INIT"])
+      }
+    }else{
+      print("None of the entered parameter labels are found in both the EM and OM.")
     }
   }
 
@@ -74,8 +84,8 @@ standardize_bounds<-function(percent_df, em_ctl_file, OM_ctl_file=""){
 
   #Check input parameter names are valid
   #Do these match the data frame first column?
-  if(any(!percent_df[,"label"] %in% em_pars[,"Label"])){
-    print(paste("Element",which(!percent_df[,"label"] %in% em_pars[,"Label"]),
+  if(any(!percent_df[,"Label"] %in% em_pars[,"Label"])){
+    print(paste("Element",which(!percent_df[,"Label"] %in% em_pars[,"Label"]),
       "does not have a valid parameter label."))
   }else{
     #Get indices of parameters to standardize; first column is in the data frame
