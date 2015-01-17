@@ -106,11 +106,11 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
   ss3.ctl <- readLines(ctl_file_in)
   #Run external estimator for growth if needed
   if(any(grepl("change_e_vbgf", par_int))) {
-    data <- read.csv("vbgf_info.csv", header = TRUE)[, -1]
     data.all <- r4ss::SS_readdat(dat_file_in, verbose = FALSE)
     if(!"MeanSize_at_Age_obs" %in% names(data.all)) {
       stop("Error in change_e while computing external growth estimates: dat file does not contain mean size-at-age data.")
     }
+    data <- read.csv(dir(pattern = "vbgf"), header = TRUE)[, -1]
     true.cv <- unlist(strsplit(grep("CV_young", ss3.ctl, value = TRUE), " "))
     true.cv <- as.numeric(true.cv[-(which(true.cv == ""))][3])
   #Get start values

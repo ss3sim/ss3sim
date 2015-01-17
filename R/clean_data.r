@@ -92,6 +92,10 @@ clean_data <- function(datfile, index_params=NULL, lcomp_params=NULL,
         message(paste(lcomp.N.removed, "lines of length comp data removed"))
 
     ## Mean length at age data
+    ## Check to see if mean_outfile specifies that mlacomps should be deleted
+    if (any(grepl("remove", mlacomp_params$mean_outfile))) {
+      mlacomp_params$years <- NULL
+    }
     a <- datfile$MeanSize_at_Age_obs
     if(a[1,1] == "#") a <- NULL
     if(is.null(mlacomp_params$fleets)){
