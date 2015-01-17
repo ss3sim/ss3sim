@@ -106,10 +106,7 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
   ss3.ctl <- readLines(ctl_file_in)
   #Run external estimator for growth if needed
   if(any(grepl("change_e_vbgf", par_int))) {
-    data.all <- r4ss::SS_readdat(dat_file_in, verbose = FALSE)
-    if(!"MeanSize_at_Age_obs" %in% names(data.all)) {
-      stop("Error in change_e while computing external growth estimates: dat file does not contain mean size-at-age data.")
-    }
+
     data <- read.csv(dir(pattern = "vbgf"), header = TRUE)[, -1]
     true.cv <- unlist(strsplit(grep("CV_young", ss3.ctl, value = TRUE), " "))
     true.cv <- as.numeric(true.cv[-(which(true.cv == ""))][3])
@@ -126,13 +123,7 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
       names(temp) <- parsmatch$change_e_vbgf[substitute(x)[[3]]]
       return(temp)
       })
-    limitages <- list(a3 = grep("Growth_Age_for_L1", ss3.ctl, value = TRUE),
-                      #A = grep("Growth_Age_for_L2", ss3.ctl, value = TRUE))
-                       A = as.numeric(gsub("N_a", "", rev(colnames(data.all$MeanSize_at_Age_obs))[1])))
-    limitages[1] <- lapply(limitages[1], function(x) {
-      temp <- unlist(strsplit(x, split = " "))
-      as.numeric(temp[which(nchar(temp) > 0)][1])
-      })
+    limitages <- list(a3 = min(data$age), A = max(data$age))
 
     change_e_vbgf <-
       sample_fit_vbgf(length.data = data, start.L1 = start.pars$L1,
@@ -151,11 +142,6 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
         if(!is.na(x)) {as.numeric(x)
         }else{x}
         })
-
-    ####TODO: remove next three lines once sample function is written
-    data.all$MeanSize_at_Age_obs <- NULL
-    data.all$N_MeanSize_at_Age_obs <- 0
-    r4ss::SS_writedat(data.all, dat_file_in, verbose = FALSE, overwrite = TRUE)
   }
   # Determine how many genders the model has
   gen <- grep("NatM", ss3.ctl, value = TRUE)
