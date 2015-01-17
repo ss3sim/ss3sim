@@ -46,8 +46,12 @@ sample_mlacomp(datfile, outfile, ctlfile, fleets = 1, Nsamp, years,
   \item{mean_outfile}{A path to write length and age data
   for external estimation of parametric growth. If NULL no
   file will be written. This file is used by
-  \code{change_e} to externally estimate growth
-  parameters.}
+  \code{change_e} to externally estimate growth parameters.
+  Filename must contain "vbgf" to be used by
+  \code{change_e}. Also, if "remove" is included in the
+  filename, the mean length at age data will be removed
+  from the \code{.dat} file and not be available to the
+  EM.}
 
   \item{cpar}{*A numeric value or vector the same length as
   \code{fleets} controlling the variance of the Dirichlet
