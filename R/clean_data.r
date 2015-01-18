@@ -153,6 +153,12 @@ clean_data <- function(datfile, index_params=NULL, lcomp_params=NULL,
             message(paste(agecomp.N.removed, "lines of age data removed"))
     if(calcomp.N.removed !=0  & verbose)
             message(paste(calcomp.N.removed, "lines of CAL data removed"))
+    # Set data type to NULL in datfile because if no rows exist
+    # "[1]" # will be written in datfile
+    data.names <- c("lencomp", "agecomp", "MeanSize_at_Age_obs") 
+    for(dname in data.names) {
+      if (NROW(datfile[[dname]]) == 0) datfile[dname] <- NULL
+    }
 
     return(invisible(datfile))
 }
