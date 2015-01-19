@@ -127,10 +127,11 @@ change_data <- function(datfile, outfile, fleets, years, types, age_bins =
 
 ### TODO: Need to do things like change age matrices, see change_pop_bin below
     ## Change the data vectors if specified.
+
     if(is.null(len_bins)) len_bins <- datfile$lbin_vector
     else stop("dynamic binning of length bins not yet implemented")
     if(is.null(age_bins)) age_bins <- datfile$agebin_vector
-    else stop("dynamic binning of length bins not yet implemented")
+    else stop("dynamic binning of age bins not yet implemented")
 
     ## Now modify each data type in turn
     if ("index" %in% types) {
