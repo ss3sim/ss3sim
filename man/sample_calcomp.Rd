@@ -5,7 +5,8 @@
 \title{Sample conditional age-at-length (CAL) data and write to file for use by
 the EM.}
 \usage{
-sample_calcomp(datfile, outfile, fleets = c(1, 2), years, write_file = TRUE)
+sample_calcomp(datfile, outfile, fleets = c(1, 2), years, write_file = TRUE,
+  Nsamp)
 }
 \arguments{
   \item{datfile}{An SS data object as read in from
@@ -77,7 +78,7 @@ the EM
   value. Other arguments will be ignored if specified.
 }
 \author{
-Cole Monnahan
+Cole Monnahan, Kotaro Ono
 }
 \seealso{
 \code{\link{sample_lcomp}, \link{sample_agecomp}}
