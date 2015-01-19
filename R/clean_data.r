@@ -93,7 +93,9 @@ clean_data <- function(datfile, index_params=NULL, lcomp_params=NULL,
 
     ## Mean length at age data
     a <- datfile$MeanSize_at_Age_obs
-    if(a[1,1] == "#") a <- NULL
+    if(!is.null(a)) {
+      if(a[1,1] == "#") a <- NULL
+    }
     if(is.null(mlacomp_params$fleets)){
         datfile$MeanSize_at_Age_obs <- NULL
         datfile$N_MeanSize_at_Age_obs <- 0
