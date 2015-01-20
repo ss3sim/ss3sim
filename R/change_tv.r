@@ -461,6 +461,22 @@ for(q in seq_along(change_tv_list)) {
     if(env.lab[q] == "sx") {
       num.sx <- grep("Sel_.._", ss3.report )
       pos.sx <- grep(env.name[q], ss3.report[num.sx])
+      # The above code is looking for a number, which might be in more
+      # than one line, but really we just want to check that the
+      # parameter number is in a line that contains the letters ENV
+      if (length(pos.sx) > 1) {
+        allnames <- grep(env.name[q], ss3.report[num.sx], value = TRUE)
+        allchars <- strsplit(allnames, " ")
+        allchars <- lapply(allchars, function(x) x[!x == ""])
+        getthisone <- grep(env.name[q], sapply(allchars, "[[", 1))
+        doublecheck <- grep("ENV", allnames)
+        if (getthisone != doublecheck) {
+          stop("The selectivity parameter cannot be indexed using\n
+               the current framework. Please contact the developers\n
+               and let them know, so that this can be fixed.")
+        }
+        pos.sx <- pos.sx[getthisone]
+      }
       search.phrase <- paste0("# selparm[", pos.sx - 1, "]:")
       line.a <- grep(search.phrase, ss3.par, fixed = TRUE)
       add.par <- c(paste0("# selparm[",pos.sx,"]:"),
