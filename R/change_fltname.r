@@ -20,7 +20,7 @@
 
 change_fltname <- function(datfile){
     use <- "FltSvy"
-    try <- c("fl", "fleet")
+    try <- c("fl", "fleet", "flt")
 
     truenames <- tolower(names(datfile$lencomp))
     if(any(try %in% truenames)) {
