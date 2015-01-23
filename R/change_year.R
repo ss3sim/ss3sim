@@ -324,6 +324,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
       }
       nfleets <- ss3.dat$Nfleet
     }
+    browser()
     forecast <- SS_readforecast(forecast_file_in, nfleets, nareas,
                                 verbose = verbose)
     forecastlines <- readLines(forecast_file_in)
@@ -338,10 +339,16 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
       forecast$Bmark_years <- rep(0, 6)
       forecast$Fcast_years <- rep(0, 4)
     }
-    forecast$FirstYear_for_caps_and_allocations <- year_end + 
-      (forecast$FirstYear_for_caps_and_allocations - max(realyears))
-    forecast$Ydecl <- year_end - (max(realyears) - forecast$Ydecl)
-    forecast$Yinit <- year_end + (forecast$Yinit - max(realyears))
+    if (forecast$FirstYear_for_caps_and_allocations != 0) {
+        forecast$FirstYear_for_caps_and_allocations <- year_end + 
+          (forecast$FirstYear_for_caps_and_allocations - max(realyears))
+        }
+    if (forecast$Ydecl != 0) {
+      forecast$Ydecl <- year_end - (max(realyears) - forecast$Ydecl)
+    }
+    if (forecast$Yinit != 0) {
+      forecast$Yinit <- year_end + (forecast$Yinit - max(realyears))
+    }
     if (forecast$fleet_relative_F != 1 | 
         forecast$Ncatch != 0) {
       stop("change_year is not set up do change the relative F\n
