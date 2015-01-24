@@ -1720,10 +1720,10 @@ and estimates parameters as desired. The .par file generated will be used
 in the OM. We recommend opening a command window inside your folder to help
 test whether the model still runs at many points along the process. After
 turning parameter estimation off in the starter file (see below), the model
-can be checked by running \texttt{ss3_24o_safe -nohess} to make sure the
+can be checked by running \texttt{ss3\_24o\_safe -nohess} to make sure the
 input files are read in properly and the model writes the files. Use the
-.ss_new files produced as a starting point so that the comments match the
-instructions below. 
+\texttt{.ss\_new} files produced as a starting point so that the comments
+match the instructions below.
 
 You will see an error by ADMB that it cannot find the dat file because we
 have specified a different file in the starter file.  You can safely ignore
@@ -1731,8 +1731,8 @@ this error.
 
 \subsection{Starter file modifications}
 \begin{enumerate}
-\item Delete the starter.ss file and rename starter.ss_new to
-  starter.ss. Modify this new file.
+\item Delete the starter.ss file and rename \texttt{starter.ss\_new} to
+  \texttt{starter.ss}. Modify this new file.
 \item
   Turn off parameter estimation by changing\\
   \texttt{\# Turn off estimation for parameters entering after this phase}\\
