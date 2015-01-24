@@ -314,20 +314,17 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
     SS_writedat(ss3.dat, dat_file_out, overwrite = TRUE, verbose = verbose)
   }
   if (!is.null(forecast_file_in)) {
-    nareas <- 1; nfleets <- 1
-    if ("ss3.dat" %in% ls()) {
-      if (ss3.dat$N_areas > 1) {
-        stop("change_year is only set up to work with forecast\n
-              files that pertain to a model with 1 area, \n
-              please change the forecast file yourself and \n
-              set forecast_file_in = NULL")
-      }
-      nfleets <- ss3.dat$Nfleet
-    }
-    browser()
+    forecastlines <- readLines(forecast_file_in)
+    numberofareas <- forecastlines[grep("max totalcatch by area", forecastlines) + 1]
+    numberofareas <- strsplit(numberofareas, " ")[[1]]
+    nareas <- length(numberofareas[numberofareas != ""])
+    numberoffleet <- forecastlines[grep("max totalcatch by fleet", forecastlines) + 1]
+    numberoffleet <- strsplit(numberoffleet, " ")[[1]]
+    nfleets <- length(numberoffleet[numberoffleet != ""])
+
     forecast <- SS_readforecast(forecast_file_in, nfleets, nareas,
                                 verbose = verbose)
-    forecastlines <- readLines(forecast_file_in)
+
       realyears <- grep("# after processing", forecastlines, value = TRUE)
       realyears <- strsplit(strsplit(realyears, "# ")[[1]][2], " ")[[1]]
       realyears <- as.numeric(realyears[!realyears == ""])
