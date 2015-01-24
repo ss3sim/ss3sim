@@ -24,6 +24,9 @@
 #' @param forecast_file_in Input SS3 forecast file
 #' @param forecast_file_out Output SS3 forecast file, if \code{NULL} the file
 #'   will be named the same as the \code{forecast_file_in}
+#' @param verbose Logical argument that is passed on to internal calls to r4ss
+#'   functions for reading and writing SS3 files. Setting \code{verbose} to
+#'   \code{TRUE} may be useful for troubleshooting.
 #' @author Kelli Johnson
 #' @return The function creates modified versions of the \code{.par},
 #'   \code{.dat} , \code{.ctl}, \code{.starter}, and \code{.forecast} files.

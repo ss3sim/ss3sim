@@ -49,6 +49,11 @@ change_year(year_begin = 1, year_end = 100, burnin = 0,
   \item{forecast_file_out}{Output SS3 forecast file, if
   \code{NULL} the file will be named the same as the
   \code{forecast_file_in}}
+
+  \item{verbose}{Logical argument that is passed on to
+  internal calls to r4ss functions for reading and writing
+  SS3 files. Setting \code{verbose} to \code{TRUE} may be
+  useful for troubleshooting.}
 }
 \value{
 The function creates modified versions of the \code{.par},
