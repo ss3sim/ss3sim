@@ -22,30 +22,32 @@ change_year(year_begin = 1, year_end = 100, burnin = 0,
 
   \item{ctl_file_in}{Input SS3 control file}
 
-  \item{ctl_file_out}{Output SS3 control file, if NULL the
-  file will be named the same as the \code{ctl_file_in}}
+  \item{ctl_file_out}{Output SS3 control file, if
+  \code{NULL} the file will be named the same as the
+  \code{ctl_file_in}}
 
   \item{dat_file_in}{Input SS3 data file}
 
-  \item{dat_file_out}{Output SS3 data file, if NULL the
-  file will be named the same as the \code{dat_file_in}}
+  \item{dat_file_out}{Output SS3 data file, if \code{NULL}
+  the file will be named the same as the
+  \code{dat_file_in}}
 
   \item{par_file_in}{Input SS3 parameter file}
 
-  \item{par_file_out}{Output SS3 parameter file, if NULL
-  the file will be named the same as the
+  \item{par_file_out}{Output SS3 parameter file, if
+  \code{NULL} the file will be named the same as the
   \code{par_file_in}}
 
   \item{starter_file_in}{Input SS3 starter file}
 
-  \item{starter_file_out}{Output SS3 starter file, if NULL
-  the file will be named the same as the
+  \item{starter_file_out}{Output SS3 starter file, if
+  \code{NULL} the file will be named the same as the
   \code{starter_file_in}}
 
   \item{forecast_file_in}{Input SS3 forecast file}
 
   \item{forecast_file_out}{Output SS3 forecast file, if
-  NULL the file will be named the same as the
+  \code{NULL} the file will be named the same as the
   \code{forecast_file_in}}
 }
 \value{
@@ -57,8 +59,8 @@ The function creates modified versions of the \code{.par},
 \code{change_years} takes SS3 \code{.ctl}, \code{.dat},
 \code{.par}, \code{starter.ss}, and \code{.forecast} files
 and changes the start and end year of the model.
-\code{change_years} is set up to work with \code{ss3sim}
-operating model or estimation model.
+\code{change_years} works with \pkg{ss3sim} operating or
+estimation models.
 }
 \details{
 Operating models and estimation models will not have all of
