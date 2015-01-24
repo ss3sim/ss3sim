@@ -7,6 +7,7 @@ output:
     number_sections: true
     fig_caption: true
 bibliography: refs.bib
+csl: cjfas.csl
 vignette: >
   %\VignetteIndexEntry{An introduction to ss3sim}
   %\VignetteEngine{knitr::rmarkdown}
@@ -39,34 +40,31 @@ The development version of ss3sim can be installed from GitHub
 with the following code:
 
 ```{r, install-and-load, eval=FALSE}
-# Install devtools first:
-install.packages("devtools")
-
-# Install ss3sim:
+# install.packages("devtools") # if needed
 devtools::install_github("ss3sim/ss3sim", dependencies = TRUE)
+
+# If you would like the vignettes available with the GitHub development version:
+devtools::install_github("ss3sim/ss3sim", dependencies = TRUE, build_vignettes = TRUE)
 
 # If you would like to run simulations in parallel, also install:
 install.packages(c("doParallel", "foreach"))
-
-# This vignette uses ggplot2 to make plots, you can install it with:
-install.packages("ggplot2")
 ```
 
 You can then load the package with:
 
 ```{r, load-package, eval=FALSE}
-library(ss3sim)
+library("ss3sim")
 ```
 
-You can read the help files and access this vignette again with:
+You can read the help files and access the various vignettes (including this one) with:
 
 ```{r, help, eval=FALSE}
 ?ss3sim
 help(package = "ss3sim")
-vignette("ss3sim-vignette")
+browseVignettes("ss3sim")
 ```
 
-See @anderson2014a for an overview of ss3sim.
+See @anderson2014a for a more formal (but brief) overview of ss3sim.
 
 We develop and test ss3sim around a specific version of SS3.
 Currently, ss3sim is tested to work with SS3 Version 3.24O.
@@ -116,10 +114,8 @@ and use them as part of your own flexible simulation.
 The ss3sim package is set up assuming there is
 an established base-case operating model (OM) and estimation model (EM) to
 work with. The ss3sim package comes with three generic built-in
-model setups that can be used as is, modified, or replaced.%
-\footnote{See Section \ref{sec:modify} for details on these models and how to
-modify them. See Section \ref{sec:om-setup} and \ref{sec:em-setup} for
-details on creating your own OM and EMs.}
+model setups that can be used as is, modified, or replaced.
+(For more details, see the [vignette on modifying these model setups](modifying-models.html) or the [vignette on creating your own OM and EMs](making-models.html)).
 Each OM and EM should be in its own folder.
 The OM folder should have the files:
 
@@ -166,7 +162,7 @@ retrospective (R),
 and any other letter describing a time varying case
 (e.g. M for natural mortality, S for selectivity, or G for growth).
 These case IDs are followed by an alphanumeric stock or species
-identifier (e.g. `cod`).
+identifier (e.g. `cod`).
 The different versions of each case are identified with numbers.
 For example, the base-case scenario for a cod stock might be:
 `D0-E0-F0-M0-R0-cod`.
@@ -606,8 +602,8 @@ The function `get_results_all` reads in a set of scenarios
 
 and combines the output into two `.csv` files:
 `ss3sim_scalar.csv` and `ss3sim_ts.csv`. The `scalar` file
-contains values for which there is a single estimated value (e.g. MSY) and the `ts`
-file refers to values for which there are time series of estimates available (e.g. biomass
+contains values for which there is a single estimated value (e.g. MSY) and the `ts`
+file refers to values for which there are time series of estimates available (e.g. biomass
 for each year). The column names refer to the output from SS3, so it
 can be useful to consult the SS3 manual for details.
 
@@ -870,7 +866,7 @@ It cannot alter the properties of parameters that already vary with time.
 Also, it will not work with custom environmental linkages.
 Environmental linkages for all parameters in the OM
 must be declared by a single line
-i.e. `0 #_custom_mg-env_setup (0/1)`
+i.e. `0 #_custom_mg-env_setup (0/1)`
 prior to using `change_tv`.
 Additionally, SS3 does not allow more than one stock recruit parameter
 to vary with time. Therefore, if the `.ctl` file already has a
@@ -883,7 +879,7 @@ purposes, it interacts differently with the case files than the other
 To pass arguments to `change_tv` through
 `run_ss3sim` you need to:
 (1) create a case file with an arbitrary letter
-not used elsewhere (i.e. anything but D, E, F, or R) and
+not used elsewhere (i.e. anything but D, E, F, or R) and
 (2) include the line:
 
     function_type; change_tv
@@ -1197,7 +1193,7 @@ Given that the effective sample size is known and passed to the EM, there
 is much similarity between the multinomial and Dirichlet methods for
 generating data. The main difference arises when sample sizes ($n$) are
 small; in this case the multinomial will be restricted to few potential
-values (i.e. $0/n, 1/n, \ldots, n/n$), whereas the Dirichlet has values in
+values (i.e. $0/n, 1/n, \ldots, n/n$), whereas the Dirichlet has values in
 $[0,1]$. Thus without the Dirichlet it would be impossible to generate
 realistic values that would come about from highly overdispersed data with
 a large $n$.

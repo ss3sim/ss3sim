@@ -1,12 +1,12 @@
 ---
-title: "Modifying the models included with ss3sim"
+title: "Modifying the model setups included with ss3sim"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     fig_caption: true
 bibliography: refs.bib
 vignette: >
-  %\VignetteIndexEntry{Modifying existing ss3sim models}
+  %\VignetteIndexEntry{Modifying existing ss3sim model setups}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
@@ -18,7 +18,7 @@ a cod-like (slow-growing and long-lived),
 flatfish-like (fast-growing and long-lived),
 and sardine-like (fast-growing and short-lived).
 These model setups are based on North Sea cod (*Gadus morhua*,
-R. Methot, pers. comm.), yellowtail flounder (*Limanda ferruginea*, R. Methot, pers. comm.),
+R. Methot, pers. comm.), yellowtail flounder (*Limanda ferruginea*, R. Methot, pers. comm.),
 and Pacific sardine [*Sardinops sagax caeruleus;* @hill2012].
 Further details on these models are available in @johnson2014 and @ono2014.
 These models were stripped down and simplified to make them more generic for simulation testing.

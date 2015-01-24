@@ -1,5 +1,5 @@
 ---
-title: "Creating new ss3sim operating and estimation models"
+title: "Creating new ss3sim operating and estimation model setups"
 date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
@@ -8,7 +8,7 @@ output:
     fig_caption: true
 bibliography: refs.bib
 vignette: >
-  %\VignetteIndexEntry{Creating new models}
+  %\VignetteIndexEntry{Creating new ss3sim model setups}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
