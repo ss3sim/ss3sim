@@ -127,10 +127,11 @@ change_data <- function(datfile, outfile, fleets, years, types, age_bins =
 
 ### TODO: Need to do things like change age matrices, see change_pop_bin below
     ## Change the data vectors if specified.
+
     if(is.null(len_bins)) len_bins <- datfile$lbin_vector
     else stop("dynamic binning of length bins not yet implemented")
     if(is.null(age_bins)) age_bins <- datfile$agebin_vector
-    else stop("dynamic binning of length bins not yet implemented")
+    else stop("dynamic binning of age bins not yet implemented")
 
     ## Now modify each data type in turn
     if ("index" %in% types) {
@@ -209,10 +210,10 @@ change_data <- function(datfile, outfile, fleets, years, types, age_bins =
 #' @export
 calculate_data_units <- function(index_params=NULL, lcomp_params=NULL,
                                  agecomp_params=NULL, calcomp_params=NULL,
-                                 mlacomp_params=NULL){
+                                 mlacomp_params=NULL, wtatage_params=NULL){
     sample_args <- list("index"=index_params, "len"=lcomp_params,
                         "age"=agecomp_params, "cal"=calcomp_params,
-                        "mla"=mlacomp_params)
+                        "mla"=mlacomp_params, "wtatage"=wtatage_params)
     sample_args_null <- vapply(sample_args, is.null, logical(1L))
     ## Exit if nothing specified to prevent error.
     if(!any(!sample_args_null)) stop("No data passed: all arguments NULL")
@@ -228,11 +229,17 @@ calculate_data_units <- function(index_params=NULL, lcomp_params=NULL,
     ## Now figure out which data types need to be in the OM for sampling (but
     ## not necessarily the EM). For now these are special cases but could be
     ## different based on different algorithms.
+
+
+    #To-Do
+    ##Put line for wtatage
+    #if wtatage is in types what do I need to make sure is there
     types <- names(sample_args)[!sample_args_null]
     if("cal" %in% types) types <- c(types, "len", "age")
+    if("wtatage" %in% types) types <- c(types, "age", "mla")
     if("mla" %in% types) types <- c(types, "age")
-	## Need this line to remove duplicates
-	types <- unique(types)
+    ## Need this line to remove duplicates
+    types <- unique(types)
     return(list(fleets=fleets, years=years, types=types))
 }
 

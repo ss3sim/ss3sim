@@ -123,7 +123,7 @@ sample_lcomp <- function(datfile, outfile, fleets = c(1,2), Nsamp,
           ## If cpar is NA this signifies to use the multinomial
           if(is.na(cpar[i])){
             newcomp[-(1:6)] <-
-              rmultinom(1, size=newcomp$Nsamp, prob=probs)/newcomp$Nsamp
+              rmultinom(1, size=newcomp$Nsamp, prob=probs)#/newcomp$Nsamp
           } else { # use Dirichlet
             lambda <- newcomp$Nsamp/cpar[i]^2 - 1
             if(lambda<0)

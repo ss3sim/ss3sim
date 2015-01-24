@@ -44,6 +44,9 @@
 #' @param em_dir The directory with the estimation model you want to copy and
 #'   use for the specified simulations.
 #' @template user_recdevs
+#' @param user_recdevs_warn A logical argument allowing users to turn the
+#'   warning regarding biased recruitment deviations off when \code{user_recdevs}
+#'   are specified.
 #' @param bias_adjust Run bias adjustment first? See \code{\link{run_bias_ss3}}.
 #' @param bias_nsim If bias adjustment is run, how many simulations should the
 #'   bias adjustment factor be estimated from? It will take the mean of the
@@ -179,7 +182,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   estim_params, tv_params, om_dir, em_dir,
   retro_params = NULL, tc_params = NULL, lc_params = NULL,
   len_bins = NULL, age_bins = NULL, call_change_data = TRUE,
-  user_recdevs = NULL, bias_adjust = FALSE,
+  user_recdevs = NULL, user_recdevs_warn = TRUE, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
   print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21, ...)
 {
@@ -227,11 +230,12 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       recdevs <- get_recdevs(iteration = this_run_num, n = 2000, seed = seed)
       if(is.null(user_recdevs)) {
         sc_i_recdevs <- sigmar * recdevs - sigmar^2/2 # from the package data
-      } else {
-        warning(
+      } else {if(user_recdevs_warn){
+          warning(
 "No bias correction is done internally for user-supplied recruitment deviations
 and must be done manually. See the vignette for more details. Biased recruitment
 deviations can lead to biased model results.")
+        }
         sc_i_recdevs <- user_recdevs[, this_run_num] # user specified recdevs
       }
 
@@ -253,6 +257,8 @@ deviations can lead to biased model results.")
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
 
       # Read in the data.ss_new file and write to ss3.dat in the om folder
+      if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
+          stop("The data.ss_new not created in first OM run -- something is wrong with initial model files?")
       extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
         data_out = pastef(sc, i, "om", "ss3.dat"))
 
@@ -265,7 +271,6 @@ deviations can lead to biased model results.")
           change_tv(change_tv_list      = tv_params,
                     ctl_file_in         = "om.ctl",
                     ctl_file_out        = "om.ctl"))
-
         setwd(wd)
       }
 
@@ -280,9 +285,11 @@ deviations can lead to biased model results.")
       data_args <- calculate_data_units(lcomp_params=lcomp_params,
                            agecomp_params=agecomp_params,
                            calcomp_params=calcomp_params,
-                           mlacomp_params=mlacomp_params)
+                           mlacomp_params=mlacomp_params,
+                           wtatage_params=wtatage_params)
       datfile.orig <- SS_readdat(pastef(sc, i, "om", "ss3.dat"),
                                  verbose=FALSE)
+      datfile.orig <- change_fltname(datfile.orig)
       if (call_change_data) {
           change_data(datfile=datfile.orig,
                       outfile = pastef(sc, i, "om", "ss3.dat"),
@@ -296,10 +303,14 @@ deviations can lead to biased model results.")
       extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
                             data_out = pastef(sc, i, "em", "ss3.dat"))
 
-      ## Survey biomass index
+      ## Read in the datfile once and manipulate as a list object, then
+      ## write it back to file at the end, before running the EM.
       datfile <- SS_readdat(pastef(sc, i, "em", "ss3.dat"),
                             verbose = FALSE)
+      datfile <- change_fltname(datfile)
+      ## Survey biomass index
       index_params <- add_nulls(index_params, c("fleets", "years", "sds_obs"))
+
       datfile <- with(index_params,
         sample_index(datfile         = datfile,
                      outfile         = NULL,
@@ -307,6 +318,35 @@ deviations can lead to biased model results.")
                      years           = years,
                      sds_obs         = sds_obs,
                      write_file      = FALSE))
+      ## Add error in the length comp data
+      if(!is.null(lcomp_params$fleets)){
+          lcomp_params <- add_nulls(lcomp_params,
+                     c("fleets", "Nsamp", "years", "cpar"))
+          datfile <- with(lcomp_params,
+               sample_lcomp(datfile           = datfile,
+                            outfile          = NULL,
+                            fleets           = fleets,
+                            Nsamp            = Nsamp,
+                            years            = years,
+                            cpar             = cpar,
+                            write_file       = FALSE))
+      }
+
+            ## Add error in the age comp data. Need to do this last since other
+      ## sampling functions rely on the age data. Also, if user doesn't
+      ## call this function we need to delete the data
+      if(!is.null(agecomp_params$fleets)){
+          agecomp_params <- add_nulls(agecomp_params,
+                                      c("fleets", "Nsamp", "years", "cpar"))
+          datfile <- with(agecomp_params,
+                          sample_agecomp(datfile         = datfile,
+                                         outfile        = NULL,
+                                         fleets         = fleets,
+                                         Nsamp          = Nsamp,
+                                         years          = years,
+                                         cpar           = cpar,
+                                         write_file     = FALSE))
+      }
 
       # Add tail compression option. If NULL is passed (the base case),
       # ignore it.
@@ -328,14 +368,15 @@ deviations can lead to biased model results.")
                     file_in        = pastef(sc, i, "em", "ss3.dat"),
                     file_out       = pastef(sc, i, "em", "ss3.dat")))
       }
-      # Add error in the empirical weight-at-age comp data. Note that if
-      # arguments are passed to this fucntion it's functionality is turned
-      # on by setting the maturity option to 5. If it's off SS will just
-      # ignore the wtatage.dat file so no need to turn it "off" like the
-      # other data.
+
+      ## Add error in the empirical weight-at-age comp data. Note that if
+      ## arguments are passed to this fucntion it's functionality is turned
+      ## on by setting the maturity option to 5. If it's off SS will just
+      ## ignore the wtatage.dat file so no need to turn it "off" like the
+      ## other data.
       if(!is.null(wtatage_params)){
           wtatage_params <-
-              add_nulls(wtatage_params, c("fleets", "Nsamp", "years", "cv"))
+              add_nulls(wtatage_params, c("fleets", "Nsamp", "years", "cv_wtatage"))
           ## A value of NULL for fleets signifies not to use this function,
           ## so exit early if this is the case.
           if(!is.null(wtatage_params$fleets)){
@@ -345,12 +386,13 @@ deviations can lead to biased model results.")
                               maturity_option=5)
               with(wtatage_params,
                    sample_wtatage(infile      = pastef(sc, i, "om", "wtatage.ss_new"),
-                                  outfile     = pastef(sc, i, "em", "wtatage.dat"),
-                                  datfile     = pastef(sc, i, "om", "data.ss_new"),
+                                  outfile     = pastef(sc, i, "em", "wtatage.ss"),
+                                  datfile     = datfile,
                                   ctlfile     = pastef(sc, i, "om", "control.ss_new"),
                                   fleets      = fleets,
                                   years       = years,
-                                  write_file  = TRUE))
+                                  write_file  = TRUE,
+                                  cv_wtatage  = cv_wtatage))
           }
       }
 
@@ -359,60 +401,33 @@ deviations can lead to biased model results.")
       ## sampling function is called. Also, if this function isn't called
       ## we need to delete that data, so I'm doing that based on whether it
       ## is NULL, so it always needs to be called.
-      if(is.null(mlacomp_params)) mlacomp_params <- list()
-      mlacomp_params <- add_nulls(mlacomp_params, c("fleets", "Nsamp", "years"))
-      datfile <- with(mlacomp_params,
-           sample_mlacomp(datfile        = datfile,
-                          outfile        = NULL,
-                          ctlfile        = pastef(sc, i, "om", "control.ss_new"),
-                          fleets         = fleets,
-                          Nsamp          = Nsamp,
-                          years          = years,
-                          mean_outfile   = pastef(sc, i, "em", "vbgf_info.csv"),
-                          write_file     = FALSE))
+      if(!is.null(mlacomp_params$fleets)){
+          mlacomp_params <- add_nulls(mlacomp_params, c("fleets", "Nsamp", "years"))
+          datfile <- with(mlacomp_params,
+                          sample_mlacomp(datfile        = datfile,
+                                         outfile        = NULL,
+                                         ctlfile        = pastef(sc, i, "om", "control.ss_new"),
+                                         fleets         = fleets,
+                                         Nsamp          = Nsamp,
+                                         years          = years,
+                                         mean_outfile   = pastef(sc, i, "em", "vbgf_info.csv"),
+                                         write_file     = FALSE))
+      }
 
-      ## Add error in the conditional age at length comp data. Delete data
-      ## if not called, since could be written there.
+      ## Add error in the conditional age at length comp data. The
+      ## cal data are independent of the agecomp data for this
+      ## package. Thus the sampling of agecomps has no influence on the
+      ## calcomp data and vice versa.
       if(!is.null(calcomp_params$fleets)){
-          calcomp_params <- add_nulls(calcomp_params,
-                                      c("fleets", "years"))
-        datfile <- with(calcomp_params,
-             sample_calcomp(datfile          = datfile,
-                            outfile          = NULL,
-                            fleets           = fleets,
-                            years            = years,
-                            write_file       = FALSE))
+          calcomp_params <- add_nulls(calcomp_params, c("fleets", "years", "Nsamp"))
+          datfile <- with(calcomp_params,
+                          sample_calcomp(datfile          = datfile,
+                                         outfile          = NULL,
+                                         fleets           = fleets,
+                                         years            = years,
+                                         Nsamp            = Nsamp,
+                                         write_file       = FALSE))
       }
-
-      # Add error in the length comp data
-      if(!is.null(lcomp_params)){
-          lcomp_params <- add_nulls(lcomp_params,
-                     c("fleets", "Nsamp", "years", "cpar"))
-          datfile <- with(lcomp_params,
-               sample_lcomp(datfile           = datfile,
-                            outfile          = NULL,
-                            fleets           = fleets,
-                            Nsamp            = Nsamp,
-                            years            = years,
-                            cpar             = cpar,
-                            write_file       = FALSE))
-      }
-
-      ## Add error in the age comp data. Need to do this last since other
-      ## sampling functions rely on the age data. Also, if user doesn't
-      ## call this function we need to delete the data
-      if(is.null(agecomp_params)) agecomp_params <- list()
-      agecomp_params <- add_nulls(agecomp_params,
-                                  c("fleets", "Nsamp", "years", "cpar"))
-      datfile <- with(agecomp_params,
-           sample_agecomp(datfile         = datfile,
-                          outfile        = NULL,
-                          fleets         = fleets,
-                          Nsamp          = Nsamp,
-                          years          = years,
-                          cpar           = cpar,
-                          write_file     = FALSE))
-
       ## Manipulate EM starter file for a possible retrospective analysis
       if(!is.null(retro_params)) {
       retro_params <- add_nulls(retro_params, "retro_yr")
