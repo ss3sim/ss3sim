@@ -399,7 +399,7 @@ the model), `2` in
 We will not describe the length or age composition sampling here in detail, but
 you can refer to the help files `?sample_lcomp` and
 `?sample_agecomp` along with the case files included in the package
-data. Also see Section \ref{sec:comps} where we describe the theory behind the
+data. Also see [vignette section](#comps) where we describe the theory behind the
 age- and length-composition sampling in ss3sim.
 
 To investigate the effect of fixing versus estimating *M*,
@@ -456,7 +456,8 @@ in which we describe *M* as stationary (`M0-cod.txt`):
 Simply by changing the deviations from a vector of zeros
 to any vector pattern of deviations,
 we could add time-varying *M*.
-In Section \ref{sec:time-varying} we describe how time-varying parameters are
+In a [later vignette section]((#time-varying)
+we describe how time-varying parameters are
 unique in ss3sim and how you can make any parameter
 described in SS3 time varying using this approach.
 
@@ -828,8 +829,7 @@ run_ss3sim(iterations = 1,
 ```
 
 
-# Time-varying parameters in the OM
-\label{sec:time-varying}
+# Time-varying parameters in the OM {#time-varying}
 
 The ss3sim package includes the capability for inducing time-varying
 changes in parameters in the OM. The package currently does not have built-in
@@ -1096,7 +1096,7 @@ written to the `.dat` file along with the sampled values, so that
 the EM has the correct level of uncertainty. Thus, the EM has unbiased
 estimates of both $B_y$ and the true $\sigma_y$ for all fleets.
 
-## Age and length compositions
+## Age and length compositions {#comps}
 
 The functions `sample_agecomp` and `sample_lcomp` sample
 from the true age and length compositions using a multinomial or Dirichlet
@@ -1239,8 +1239,8 @@ user-supplied recruitment deviations are used exactly as specified
 and **it is up to you to bias correct them manually** by
 subtracting $\sigma_r^2 / 2$ as is done above. This functionality
 allows for flexibility in how the recruitment deviations are
-specified, for example running deterministic runs (Section
-\ref{sec:deterministic}) or adding serial correlation.
+specified, for example [running deterministic runs](#deterministic) 
+or adding serial correlation.
 
 Note that for both built-in and user-specified recdevs ss3sim
 will reuse the same set of recruitment deviations for all iterations
@@ -1269,7 +1269,7 @@ or by changing the iteration numbers
 If you want the different scenarios to have different process
 error you will need to make separate calls to `run_ss3sim` for
 each scenario and pass a different matrix of `user_recdevs`
-(see Section \ref{sec:pro-error}) or pass different iteration numbers.
+(see [the section on process noise](#pro-error)) or pass different iteration numbers.
 For most applications this should not be necessary.
 
 The observation error seed
