@@ -11,11 +11,12 @@ test_that("sample_mlacomp() works", {
   newdat <- change_data(datfile, outfile = "codOM-temp.dat",
     types = c("age", "mla"), fleets = 1, years = 2000:2012, write_file = FALSE)
   set.seed(123)
-  out <- sample_mlacomp(newdat, outfile = "ignore.dat", fleets = 1, ctlfile = fctl,
+  newdat <- change_fltname(newdat)
+  out <- sample_mlacomp(newdat, outfile = "ignore.dat", ctlfile = fctl,
     Nsamp = list(rep(50, 13)), years = list(2000:2012), write_file = FALSE,
     mean_outfile = NULL)
   expect_equal(names(out$MeanSize_at_Age_obs),
-    c("Yr", "Seas", "Flt", "Gender", "Part", "AgeErr", "Nsamp", "a1",
+    c("Yr", "Seas", "FltSvy", "Gender", "Part", "AgeErr", "Nsamp", "a1",
       "a2", "a3", "a4", "a5", "a6", "a7", "a8", "a9", "a10", "a11",
       "a12", "a13", "a14", "a15", "N1", "N2", "N3", "N4", "N5", "N6",
       "N7", "N8", "N9", "N10", "N11", "N12", "N13", "N14", "N15"))

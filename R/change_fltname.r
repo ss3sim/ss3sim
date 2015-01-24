@@ -8,6 +8,8 @@
 #'
 #' @return An invisible data list.
 #'
+#' @export
+#'
 #' @author Kelli Johnson
 # #' @examples
 # #' ## These examples are in development still and untested
@@ -20,12 +22,12 @@
 
 change_fltname <- function(datfile){
     use <- "FltSvy"
-    try <- c("fl", "fleet")
+    try <- c("fl", "fleet", "flt")
 
     truenames <- tolower(names(datfile$lencomp))
     if(any(try %in% truenames)) {
         names(datfile$lencomp)[grepl("fl", truenames)] <- use
-    }    
+    }
 
     truenames <- tolower(names(datfile$agecomp))
     if(any(try %in% truenames)) {
