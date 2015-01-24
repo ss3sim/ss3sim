@@ -58,15 +58,31 @@ steps to take an existing SS3 model and modify it to work with the
 ss3sim package.  First, we cover setting up an operating model and then
 in Section \ref{sec:em-setup} we cover setting up an estimation model.
 
+The first step is to run the assessment model to make sure the model runs
+and estimates parameters as desired. The `.par` file generated will be used
+in the OM. We recommend opening a command window inside your folder to help
+test whether the model still runs at many points along the process. After
+turning parameter estimation off in the starter file (see below), the model
+can be checked by running `ss3_24o_safe -nohess` to make sure the
+input files are read in properly and the model writes the files. Use the
+`.ss_new` files produced as a starting point so that the comments match the
+instructions below. 
+
+You will see an error by ADMB that it cannot find the dat file because we
+have specified a different file in the starter file. You can safely ignore
+this error.
+
 ## Starter file modifications
+
+- Delete the starter.ss file and rename starter.ss_new to starter.ss. Modify this new file.
+
+- Turn off parameter estimation by changing `# Turn off estimation for parameters entering after this phase` to `0`.
 
 - Use the `.par` file to initialize model parameters. To do so change `# 0=use init values in Starter file` to `1`. Parameter values specified in the `.ctl` file will now be ignored.
 
 - Generate detailed report files (containing age-structure information) by setting `# detailed age-structured reports in REPORT.SSO` to `1`.
 
 - Generate data by setting `# Number of datafiles to produce` to `3`. If `X=1` it only generates the original data If `X=2` it generates the original data and the expected value data (based on model specification) If `X>=3` it generates all the above and `X-2` bootstrapped data sets
-
-- Turn off parameter estimation by changing `# Turn off estimation for parameters entering after this phase` to `0`.
 
 - Turn off parameter jittering by setting `# jitter initial parm value by this fraction` to `0`. Jitter is used, among other things, to test for convergence to the same solution when starting from alternative initial values; however, the OM is used here as the truth, so jittering is not needed.
 
