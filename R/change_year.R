@@ -156,14 +156,19 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
             F_value.end <- F_value.end - 1
         }
         F.lines <- seq(F_value.start, F_value.end, by = 1)
-        for(q in 1:length(F.lines)) {
-            f.value <- ss3.ctl[F.lines[q]]
+        for(w in 1:length(F.lines)) {
+            f.value <- ss3.ctl[F.lines[w]]
             f.value <- strsplit(f.value, " ")[[1]]
-            if (any(f.value == "")) {
-                f.value <- f.value[-which(f.value == "")]
+            # Double check that tabs were not used
+            if (any(grepl("\\t", f.value))) {
+              f.value <- unlist(strsplit(f.value, "\\t"))
             }
-            f.value[2] <- year_begin + q - 1
-            ss3.ctl[F.lines[q]] <- paste(f.value, collapse = " ")
+            if (any(f.value == "" | f.value == " ")) {
+                f.value <- f.value[f.value != ""]
+                f.value <- f.value[f.value != " "]
+            }
+            f.value[2] <- year_begin + w - 1
+            ss3.ctl[F.lines[w]] <- paste(f.value, collapse = " ")
         }
     }
 
