@@ -1,7 +1,7 @@
 ---
 title: "An introduction to ss3sim for stock assessment simulation testing"
 date: "`r Sys.Date()`"
-output: 
+output:
   rmarkdown::html_vignette:
     toc: true
     number_sections: true
@@ -77,7 +77,9 @@ binaries (with the permission of R. Methot) at
 
 ss3sim requires the SS3 binary to be in your path.
 This means that your operating system knows where the binary file is located.
-See Section \ref{sec:path} for details. See `?run_ss3model` for instructions on how to specify the safe vs. the optimized binary.
+See [the vignette section on paths](#path) for details.
+See `?run_ss3model` for instructions on how to specify
+the safe vs. the optimized binary.
 
 Please direct any questions, suggestions, or bug reports to the ss3sim
 issue tracker: <https://github.com/ss3sim/ss3sim/issues>, or to an
@@ -100,7 +102,7 @@ running SS3 models, and combining the output.
 ss3sim also contains some wrapper functions
 that tie all these low-level functions together
 into a complete simulation experiment.
-If you choose to use our wrapper function `run_ss3sim` 
+If you choose to use our wrapper function `run_ss3sim`
 then you will use a series of plain text control files
 to control the simulation.
 Much of this vignette focusses on
@@ -154,8 +156,7 @@ it will generate a number of files, including `.ss_new` files.
 Remove the `.ss_new` file extension from the files needed
 and add the appropriate file extension.
 
-## Cases and scenarios
-\label{case-parsing}
+## Cases and scenarios {#case-parsing}
 
 The high-level wrapper function `run_ss3sim`
 uses unique case identifiers (IDs) that combine to create unique scenarios.
@@ -172,7 +173,7 @@ For example, the base-case scenario for a cod stock might be:
 The order of the cases does not matter,
 as long as they are used consistently.
 
-ss3sim relies on a set of plain text files to control the simulation (Figure~\ref{fig:files}).
+ss3sim relies on a set of plain text files to control the simulation.
 These plain text files are read by `get_caseval`
 and turned into argument lists that are passed to `run_ss3sim`.
 The function `create_argfiles` creates template input files.
@@ -194,10 +195,10 @@ The default settings create these files:
 
 7.  `X0-spp.txt` (for a time-varying parameter X, where X could be any time-varying case letter)
 
-![Illustration of input and output folder and file structure for an ss3sim simulation. Folders are shown in blue, input files in orange, and output files in grey. All input and output files are in plain text format. Case files (orange files at bottom left) combine cases (e.g.\ M0 for a given natural mortality trajectory) with species or life-history OMs and EMs (e.g.\ cod-like or sardine-like). Alternatively, a user can skip setting up case files and specify the simulation cases directly in R code (see section \ref{sec:ss3simbase}](file-structure.pdf)
+![Illustration of input and output folder and file structure for an ss3sim simulation. Folders are shown in blue, input files in orange, and output files in grey. All input and output files are in plain text format. Case files (orange files at bottom left) combine cases (e.g. M0 for a given natural mortality trajectory) with species or life-history OMs and EMs (e.g. cod-like or sardine-like). Alternatively, a user can skip setting up case files and specify the simulation cases directly in R code (see [the vignette section on using ss3sim_base()](#ss3sim_base)](filestructure.png)
 
 After running `create_argfiles()`,
-look in your working directory for the template input files. 
+look in your working directory for the template input files.
 (You can use `getwd()` to see your current working directory or
 `setwd()` to set a different working directory.)
 Change the case ID number (defaults to `0`)
@@ -296,7 +297,7 @@ no bias adjustment replicates are executed and no bias adjustment is performed.
 ## Output file structure
 
 Internally, the function `copy_ss3models` creates a folder structure
-and copies the operating and estimation models (Figure~\ref{fig:files}).
+and copies the operating and estimation models.
 The folder structure looks like:
 
       D0-E0-F0-M0-R0-cod/1/om
@@ -324,7 +325,7 @@ folders.  In that case the folders will look like:
 Note that the OM and EM folders will be renamed
 `om` and `em` within each iteration,
 the OM and EM are checked
-to make sure they contain the minimal files (as listed above in Section~\ref{case-parsing}),
+to make sure they contain the minimal files ([as listed above](#case-parsing)),
 the filenames will be all lowercase,
 the data file is renamed `ss3.dat`,
 the control files are renamed `om.ctl` or `em.ctl`,
@@ -334,10 +335,10 @@ The functions in this package
 assume you have set your working directory in R
 to be the base folder where you will store the scenario folders.
 
-# An example simulation with ss3sim
+# An example simulation with ss3sim {#example}
 
 As an example, we will run a 2x2 simulation design in which we test
-(1) the effect of high and low precision on the index of abundance research survey and 
+(1) the effect of high and low precision on the index of abundance research survey and
 (2) the effect of fixing versus estimating natural mortality (*M*).
 All of the required files for this example are contained
 within the ss3sim package.
@@ -413,7 +414,7 @@ In case 0, we will set the phase in which *M* is estimated
 to `-1` (any negative phase number will tell SS3
 to not estimate a particular parameter)
 and use the argument `NA`
-to fix *M* at the true value (i.e. do not modify it from what is in the
+to fix *M* at the true value (i.e. do not modify it from what is in the
 EM `.ctl` file).
 In case 1, we will estimate *M* in
 phase `3` and initialize the estimation of *M* at `0.20`.
@@ -459,7 +460,8 @@ in which we describe *M* as stationary (`M0-cod.txt`):
 Simply by changing the deviations from a vector of zeros
 to any vector pattern of deviations,
 we could add time-varying *M*.
-In Section \ref{sec:time-varying} we describe how time-varying parameters are unique in ss3sim and how you can make any parameter
+In Section \ref{sec:time-varying} we describe how time-varying parameters are
+unique in ss3sim and how you can make any parameter
 described in SS3 time varying using this approach.
 
 ## Checking the case files
@@ -487,8 +489,7 @@ run_ss3sim(iterations = 1, scenarios =
 
 And then check the SS3 files that are created.
 
-## Self testing: deterministic simulations to check the models for bias
-\label{sec:deterministic}
+## Self testing: deterministic simulations to check the models for bias {#deterministic}
 
 Self testing is a crucial step of any simulation study.
 One way to accomplish this is to set up an EM that is similar to the OM
@@ -727,8 +728,7 @@ print(p)
 ```
 
 
-# Using ss3sim_base directly
-\label{sec:ss3simbase}
+# Using ss3sim_base directly {#ss3simbase}
 
 An alternative approach to using ss3sim is to skip
 setting up the case files
@@ -945,84 +945,6 @@ iteration and manually checking the produced files. If you write external
 functions for manipulating new aspects of SS3 models, please contact the
 ss3sim package developers for potential inclusion in future versions.
 
-# Modifying the OM and EM models included with ss3sim {#modify}
-
-ss3sim comes with three built-in SS3 operating and estimation model setups:
-a cod-like (slow-growing and long-lived),
-flatfish-like (fast-growing and long-lived),
-and sardine-like (fast-growing and short-lived).
-These model setups are based on North Sea cod (*Gadus morhua*,
-R. Methot, pers. comm.), yellowtail flounder (*Limanda ferruginea*, R. Methot, pers. comm.), 
-and Pacific sardine [*Sardinops sagax caeruleus;* @hill2012].
-Further details on these models are available in @johnson2014 and @ono2014.
-These models were stripped down and simplified to make them more generic for simulation testing.
-In doing this, we removed many of the subtle features of the model setups.
-While these model setups are generic and cover a wide range of life history types, 
-they may not be suitable for all users.
-Therefore, in this section, we outline strategies for modifying the existing SS3 models.
-
-Before proceeding it is worth considering the scope and place of ss3sim as a simulation package.
-The package was designed as a tool for examining structural differences in
-alternative model setups.
-These differences could be between an OM and EM [e.g. @johnson2014] or between multiple EMs [e.g. @ono2014].
-Therefore, the specific details (e.g. many fleets, tagging data, seasons, etc.)
-of the original model setups were not important and removed to produce a set of generic life-history-type models.
-ss3sim is not designed for testing arbitrary SS3 models, but rather properties of assessment models in general.
-Thus ss3sim is not ideal for quickly exploring properties of a
-particular assessment model and other software packages should be explored if
-that is your goal (see accompanying for alternatives).
-
-Here is a list of SS3 features that are not currently implemented in ss3sim:
-
-- Seasons, sexes, hermaphrodism, multiple areas, movement, growth morphs, 
-  and platoons
-- Data other than scientific surveys, commercial indices of 
-  abundance and age/length compositions: age-at-length, discards, 
-  mean weights, etc.
-
-Some of the features may work within the ss3sim framework, but are untested.
-
-It is possible to create new models that will work within the ss3sim
-framework, but this task will be complicated and likely require extensive
-knowledge of SS3 and R, as well as modification of the ss3sim
-functions. This process is described in more detail in Sections
-\ref{sec:om-setup} and \ref{sec:em-setup}.
-
-Instead of creating entirely new models, we recommend adapting the current
-built-in models to match the desired model setups for a new simulation study. Since
-these models have been thoroughly tested and used with ss3sim already
-[see @johnson2014; @ono2014],
-they make an ideal starting place. Before proceeding it would be wise to examine
-the built-in models to determine how closely they match your desired model
-setups and whether simple changes can get you reasonably close for simulation purposes.
-
-Say for example you want to modify the cod model to have different
-maturity, and then explore different sampling schemes using the
-`sample_index`, `sample_lcomp`, and `sample_agecomp`
-functions. The following steps provide a basic guideline for how to accomplish this:
-
-- Using the original cod model create the case argument files you desire for
-  your simulation and verify they run with the original cod model using the
-  function `run_ss3sim`. It is probably best to do a shorter
-  deterministic (Section \ref{sec:deterministic}) run. After running, read in the
-  data and do visual checks for proper functionality.
-- Find the original cod model. This can be found in the `inst/extdata/models` 
-  folder inside the package, located by `system.file("extdata/models", package = "ss3sim")`
-  Make a copy of the cod models (OM and EM) and rename them as desired.
-- Make a single change to either the `.dat` or `.ctl` files
-  for the new model and run them manually with SS3
-  if there is any question if they might break the model.
-- Rerun the model through `run_ss3sim` and verify it is still
-  working. If errors occur in the
-  R function you will need to examine the function to determine why the error is
-  occurring and fix by changing the R function and reloading it.
-- Repeat previous steps with all small changes until the models are
-  satisfactory.
-- Turn off deterministic runs and run the simulation stochastically.
-- If your new model works well with the package and is significantly
-  different than what is built-in, please contact the ss3sim package
-  managers for inclusion in future versions.
-
 # Adjusting the available OM data dynamically {#change-data}
 
 ss3sim can dynamically adjust the type of data available
@@ -1041,10 +963,10 @@ Therefore, we made ss3sim capable
 of dynamically modifying the OM to include
 just the data types and quantities that are needed
 based on arguments that are
-passed to the sampling functions (e.g. `sample_agecomp`).
+passed to the sampling functions (e.g. `sample_agecomp`).
 Internally, ss3sim uses the function `calculate_data_units`
 to generate a superset of all necessary fleet and year combinations.
-See section \ref{sec:obs-error} below for more information on these types
+[See [the section below](#obs-error) for more information on these types
 of data.
 
 The dynamic creation of available data is the default behavior of the
@@ -1060,11 +982,11 @@ Dynamic OM data creation would then be unnecessary.
 In the default case of dynamic data creation, we apply the following rules
 if the arguments to any sampling function are not `NULL`:
 
--   If `sample_agecomp`, generate age-composition data
--   If `sample_lencomp`, generate length-composition data
--   If `sample_mlacomp`, generate age-composition data and mean length-at-age data
--   If `sample_calcomp`, generate length- and age-composition data and conditional length-at-age data
--   If `sample_wtatage`, generate empirical weight-at-age, age-composition, and mean length-at-age data
+- If `sample_agecomp`, generate age-composition data
+- If `sample_lencomp`, generate length-composition data
+- If `sample_mlacomp`, generate age-composition data and mean length-at-age data
+- If `sample_calcomp`, generate length- and age-composition data and conditional length-at-age data
+- If `sample_wtatage`, generate empirical weight-at-age, age-composition, and mean length-at-age data
 
 For instance, if empirical weight-at-age data are to be sampled
 (`sample_wtatage` is called in a scenario), `change_data`
@@ -1078,12 +1000,11 @@ consistent across the entire data file for SS3 to
 operate. (Empirical weight-at-age data are a special case because they
 are generated in a separate file and use the population bins)
 Also, when either of these are set to `NULL` (the default value) then
-the respective bins are taken from the original OM (i.e. be left unchanged).
+the respective bins are taken from the original OM (i.e. be left unchanged).
 
-# Generating observation error
-\label{sec:obs-error}
+# Generating observation error {#obs-error}
 
-Simulated data arising from sampling the "truth" (i.e. observations),
+Simulated data arising from sampling the "truth" (i.e. observations),
 can be added within the ss3sim framework automatically and
 dynamically. Currently ss3sim supports five types of data: indices of
 abundance, length and age compositions, mean length (size) at age,
@@ -1106,14 +1027,14 @@ model with this kind of data, since it is unlikely to happen in practice
 [@pennington2002]. Thus, there is a need to be able to generate more
 realistic data.  In ss3sim we can accomplish this in several
 ways. One way is to use flexible distributions which allow the user to
-control the statistical properties (e.g.\ overdispersion) of the data.
+control the statistical properties (e.g. overdispersion) of the data.
 
 For example, consider simulating age composition data.  Under perfect
 mixing of fish and truly random sampling of the population, the samples
 would be multinomial.  However, in practice neither of these are true
 because the fish tend to aggregate by size and age, and it is difficult to
 take random samples [e.g. @pennington2002]. This causes the data
-to have more variance than expected, i.e. be overdispersed, and the
+to have more variance than expected, i.e. be overdispersed, and the
 effective sample size is smaller [@hulson2012; @maunder2011]. For
 example, if a multinomial likelihood is assumed for overdispersed data, the
 model puts too much weight on those data, at the cost of fitting other data
@@ -1134,7 +1055,7 @@ with.
 ## Indices of abundance
 
 The function `sample_index` facilitates generating relative
-indices of abundance (CPUE for fishery fleets).  It samples from the
+indices of abundance (CPUE for fishery fleets). It samples from the
 biomass trends for the different fleets to simulate the collection of CPUE
 and survey index data. The user can specify which fleets are sampled in
 which years and with what amount of noise. Different fleets will "see"
@@ -1188,7 +1109,7 @@ which years and with what amount of noise (via sample size).
 
 The following calculations demonstrate how ss3sim handles
 compositional data. They are shown for age compositions but apply equally
-to length compositions.  The multinomial distribution $\mathbf{m} \sim
+to length compositions. The multinomial distribution $\mathbf{m} \sim
 \text{MN}\left(\mathbf{p}, n, A\right )$ is defined as
 \begin{align*} \mathbf{m} &= m_1, \ldots, m_A\\
   &=\text{the number of fish observed in bin $a$}\\
@@ -1198,10 +1119,10 @@ to length compositions.  The multinomial distribution $\mathbf{m} \sim
   A&=\text{number of age bins}
 \end{align*}
 In the case of SS3, actual proportions are input as data so $\mathbf{m}/n$
-is the distribution used instead of $\mathbf{m}$.  Thus, the variance of
-the estimated proportion for age bin $a$ is $\Vof{M_a/n}=p_aq_a/n$.  Note
+is the distribution used instead of $\mathbf{m}$. Thus, the variance of
+the estimated proportion for age bin $a$ is $\Vof{M_a/n}=p_aq_a/n$. Note
 that $m_a/n$ can only take on values in the set $\{0, 1/n, 2/n, \ldots,
-1\}$.  With sufficiently large sample size this set approximates the real
+1\}$. With sufficiently large sample size this set approximates the real
 interval $[0,1]$, but the key point being that only a finite set of
 rational values of $m_a/n$ are possible.
 
@@ -1293,8 +1214,7 @@ TODO
 
 TODO
 
-# Generating process error
-\label{sec:pro-error}
+# Generating process error {#pro-error}
 
 Process error is incorporated into the OM in the form of deviates in
 recruitment ("recdevs") from the stock-recruit relationship. Unlike the
@@ -1319,7 +1239,7 @@ recruitment deviations, via the argument `user_recdevs` to the
 top-level function `ss3sim_base`. Ensure that you pass a matrix
 with at least enough columns (iterations) and rows (years). The
 user-supplied recruitment deviations are used exactly as specified
-(i.e. not multiplied by $\sigma_r$ as specified in the SS3 model),
+(i.e. not multiplied by $\sigma_r$ as specified in the SS3 model),
 and **it is up to you to bias correct them manually** by
 subtracting $\sigma_r^2 / 2$ as is done above. This functionality
 allows for flexibility in how the recruitment deviations are
@@ -1332,8 +1252,7 @@ across scenarios. For example if you have two scenarios and run 100
 iterations of each, the same set of recruitment deviations are used
 between those two scenarios.
 
-# Stochastic reproducibility
-\label{sec:reproduce}
+# Stochastic reproducibility {#reproduce}
 
 In many cases, you may want to make
 the observation and process error reproducible.
@@ -1346,9 +1265,10 @@ on another machine by another user (such as a reviewer).
 By default ss3sim sets a seed based on the iteration number.
 This will create the same recruitment deviations for a given iteration number.
 You can therefore avoid having the same recruitment deviations for a given iteration number
-by either specifying your own recruitment deviation matrix through the `user_recdevs` argument
+by either specifying your own recruitment deviation matrix
+through the `user_recdevs` argument
 or by changing the iteration numbers
-(e.g. using iterations 101 to 200 instead of 1 to 100).
+(e.g. using iterations 101 to 200 instead of 1 to 100).
 
 If you want the different scenarios to have different process
 error you will need to make separate calls to `run_ss3sim` for
@@ -1361,18 +1281,19 @@ The observation error seed
 is set during the OM generation.
 Therefore, a given iteration-case-file-argument combination will generate repeatable results.
 Given that different case arguments can generate different sampling routines
-(e.g. stochastically sampling or not sampling from the age compositions or sampling a different number of years)
+(e.g. stochastically sampling or not sampling from the age compositions
+or sampling a different number of years)
 the observation error is not necessarily comparable across different case arguments.
 
-# Parallel computing with ss3sim
-\label{sec:parallel}
+# Parallel computing with ss3sim {#parallel}
 
 ss3sim can easily run multiple scenarios in parallel
 to speed up simulations.
 To run a simulation in parallel,
 you need to register multiple cores or clusters and
 set `parallel = TRUE` in `run_ss3sim`.
-For example, we could have run the previous example in parallel with the following code.
+For example, we could have run the previous example in parallel
+with the following code.
 First, we register four cores:
 
 ```{r, parallel-one, eval=FALSE}
@@ -1406,7 +1327,7 @@ In addition to the check with `getDoParWorkers()` above,
 if the simulations are running in parallel,
 you will also see simultaneous output messages
 from ss3sim as the simulations run.
-On a 2.27 GHz Intel Xeon quad-core server running Ubuntu 10.04,
+On a 2.27 GHz Intel Xeon quad-core server running Ubuntu 12.04,
 this example ran 1.9 times faster on two cores than on a single core,
 and 3.2 times faster on four cores.
 
@@ -1431,8 +1352,7 @@ run_ss3sim(iterations = 1:2, scenarios = "D0-E0-F0-R0-M0-cod",
   bias_adjust = TRUE)
 ```
 
-# Putting SS3 in your path
-\label{sec:path}
+# Putting SS3 in your path {#path}
 
 Instead of copying the SS3 binary file (`ss3.exe` or `ss3`) to each folder
 within a simulation and running it, ss3sim relies on a single binary file
@@ -1499,7 +1419,7 @@ To add the SS3 binary file to your path, follow these steps:
 
 1. Find the correct version of the `ss3.exe` binary on your computer
 
-2. Record the folder location. E.g. `C:/SS3.24o/`
+2. Record the folder location. E.g. `C:/SS3.24o/`
 
 3. Click on the start menu and type `environment`
 
@@ -1509,9 +1429,9 @@ To add the SS3 binary file to your path, follow these steps:
 
 6. Choose `PATH` and click edit
 
-7. In the `Edit User Variable` window add to the **end** of the `Variable value` 
-   section a semicolon and the SS3 folder location you recorded earlier. 
-   E.g. `;C:/SS3.24o/`. 
+7. In the `Edit User Variable` window add to the **end** of the `Variable value`
+   section a semicolon and the SS3 folder location you recorded earlier.
+   E.g. `;C:/SS3.24o/`.
    **Do not overwrite what was previously in the PATH variable**.
 
 8. Restart your computer
