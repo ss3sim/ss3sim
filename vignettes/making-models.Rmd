@@ -6,6 +6,7 @@ output:
     toc: true
     number_sections: true
     fig_caption: true
+bibliography: refs.bib
 vignette: >
   %\VignetteIndexEntry{Creating new models}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,18 +15,18 @@ vignette: >
 
 # Setting up a new operating model
 
-In some cases you may wish to adapt their own SS3 model to work
+In some cases you may wish to adapt your own SS3 model to work
 with the ss3sim package. This is possible but may be difficult because
 the functions in ss3sim were developed to work with these three model setups and
 a model with a different structure may cause errors in these functions. This
 stems from the high flexibility of SS3, allowing for more complex model setups
 than those used while developing ss3sim. For
-instance, the `sample_index` function does not have the capability to
-handle more than one season (it could, but currently it is not developed to). Given
-the many options available in SS3 it is extremely difficult to write
+instance, the `sample_index` function does not currently have the capability to
+handle more than one season. Given
+the many options available in SS3, it is extremely difficult to write
 auxiliary functions that will interact reliably with all combinations of these
 options. For this reason, we recommend that users strongly consider trying to
-[modify an existing model rather than creating a new one](#modify). 
+[modify an existing model rather than creating a new one](modifying-models.html). 
 It is likely that the ss3sim functions
 will need to be modified in some way in the process, so the user should be
 familiar with both SS3 and R.

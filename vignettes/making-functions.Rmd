@@ -1,11 +1,12 @@
 ---
 title: "Creating new ss3sim change and sample functions"
 date: "`r Sys.Date()`"
-output: 
+output:
   rmarkdown::html_vignette:
     toc: true
     number_sections: true
     fig_caption: true
+bibliography: refs.bib
 vignette: >
   %\VignetteIndexEntry{Creating new ss3sim functions}
   %\VignetteEngine{knitr::rmarkdown}
