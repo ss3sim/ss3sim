@@ -11,7 +11,7 @@ test_that("sample_mlacomp() works", {
   newdat <- change_data(datfile, outfile = "codOM-temp.dat",
     types = c("age", "mla"), fleets = 1, years = 2000:2012, write_file = FALSE)
   set.seed(123)
-  out <- sample_mlacomp(newdat, outfile = "ignore.dat", ctlfile = fctl,
+  out <- sample_mlacomp(newdat, outfile = "ignore.dat", fleets = 1, ctlfile = fctl,
     Nsamp = list(rep(50, 13)), years = list(2000:2012), write_file = FALSE,
     mean_outfile = NULL)
   expect_equal(names(out$MeanSize_at_Age_obs),
@@ -25,3 +25,7 @@ test_that("sample_mlacomp() works", {
 })
 
 setwd(wd)
+
+
+sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
+  years, write_file=TRUE, mean_outfile = NULL){
