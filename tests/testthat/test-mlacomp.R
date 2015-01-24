@@ -26,7 +26,3 @@ test_that("sample_mlacomp() works", {
 })
 
 setwd(wd)
-
-
-sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
-  years, write_file=TRUE, mean_outfile = NULL){
