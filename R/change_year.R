@@ -322,14 +322,15 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
     forecastlines <- readLines(forecast_file_in)
     numberofareas <- forecastlines[grep("max totalcatch by area", forecastlines) + 1]
     numberofareas <- strsplit(numberofareas, " ")[[1]]
+    numberofareas <- gsub("#", "", numberofareas)
     nareas <- length(numberofareas[numberofareas != ""])
     numberoffleet <- forecastlines[grep("max totalcatch by fleet", forecastlines) + 1]
     numberoffleet <- strsplit(numberoffleet, " ")[[1]]
+    numberoffleet <- gsub("#", "", numberoffleet)
     nfleets <- length(numberoffleet[numberoffleet != ""])
 
     forecast <- SS_readforecast(forecast_file_in, nfleets, nareas,
                                 verbose = verbose)
-
       realyears <- grep("# after processing", forecastlines, value = TRUE)
       realyears <- strsplit(strsplit(realyears, "# ")[[1]][2], " ")[[1]]
       realyears <- as.numeric(realyears[!realyears == ""])
@@ -351,6 +352,16 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
     if (forecast$Yinit != 0) {
       forecast$Yinit <- year_end + (forecast$Yinit - max(realyears))
     }
+    if (all(forecast$max_totalcatch_by_fleet == 0)) {
+      forecast$max_totalcatch_by_fleet <- "#"
+    }
+    if (all(forecast$max_totalcatch_by_area == 0)) {
+      forecast$max_totalcatch_by_area <- "#"
+    }    
+    if (all(forecast$fleet_assignment_to_allocation_group == 0)) {
+      forecast$fleet_assignment_to_allocation_group <- "#"
+    }
+
     if (forecast$fleet_relative_F != 1 | 
         forecast$Ncatch != 0) {
       stop("change_year is not set up do change the relative F\n
