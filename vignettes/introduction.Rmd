@@ -191,7 +191,7 @@ The default settings create these files:
 
 7.  `X0-spp.txt` (for a time-varying parameter X, where X could be any time-varying case letter)
 
-![Illustration of input and output folder and file structure for an ss3sim simulation. Folders are shown in blue, input files in orange, and output files in grey. All input and output files are in plain text format. Case files (orange files at bottom left) combine cases (e.g. M0 for a given natural mortality trajectory) with species or life-history OMs and EMs (e.g. cod-like or sardine-like). Alternatively, a user can skip setting up case files and specify the simulation cases directly in R code (see [the vignette section on using ss3sim_base()](#ss3sim_base)](filestructure.png)
+![Illustration of input and output folder and file structure for an ss3sim simulation. Folders are shown in blue, input files in orange, and output files in grey. All input and output files are in plain text format. Case files (orange files at bottom left) combine cases (e.g. M0 for a given natural mortality trajectory) with species or life-history OMs and EMs (e.g. cod-like or sardine-like). Alternatively, a user can skip setting up case files and specify the simulation cases directly in R code (see [the vignette section on using ss3sim_base()](#ss3simbase)](filestructure.png)
 
 After running `create_argfiles()`,
 look in your working directory for the template input files.
@@ -962,7 +962,7 @@ based on arguments that are
 passed to the sampling functions (e.g. `sample_agecomp`).
 Internally, ss3sim uses the function `calculate_data_units`
 to generate a superset of all necessary fleet and year combinations.
-[See [the section below](#obs-error) for more information on these types
+See [the section below](#obs-error) for more information on these types
 of data.
 
 The dynamic creation of available data is the default behavior of the
