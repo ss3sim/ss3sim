@@ -145,7 +145,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
                              "#")[[1]]
     ballpark.val.1 <- as.numeric(sub(" ", "", ballpark.val[1]))
     if (ballpark.val.1 > 0) {
-      stop(paste0("Currently the function only works if F ballpark year",
+      stop(paste("Currently the function only works if F ballpark year",
                   "in the .ctl file is negative."))
     } else{
       ss3.ctl <- manipulate(ss3.ctl, "F ballpark year", year_end * -1)
@@ -314,7 +314,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
     }
     # size frequency
         if (any(grepl("# N sizefreq methods to read", ss3.dat))) {
-            stop(paste0("change_year does not accomodate dat files with",
+            stop(paste("change_year does not accomodate dat files with",
                   "sizefreq methods. Please remove the sizefreq",
                   "data and run change_year again."))
         }
@@ -337,7 +337,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
       realyears <- strsplit(strsplit(realyears, "# ")[[1]][2], " ")[[1]]
       realyears <- as.numeric(realyears[!realyears == ""])
     if (all(forecast$Bmark_years == realyears)) {
-      warning(paste0("Forecast biomass and fishing benchmark years",
+      warning(paste("Forecast biomass and fishing benchmark years",
               "must be set relative to the end year and not as",
               "absolute years. All benchmark years were set to",
               "the terminal year. Please manually change"))
@@ -366,7 +366,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
 
     if (forecast$fleet_relative_F != 1 |
         forecast$Ncatch != 0) {
-      stop(paste0("change_year is not set up do change the relative F",
+      stop(paste("change_year is not set up do change the relative F",
             "or the catch per year. This must be done manually,",
             "or change to use first-last-allocation year."))
     }
