@@ -43,7 +43,7 @@ change_tail_compression <- function(tail_compression, datfile, file_out){
 
   # The data sections are repeated in the data.ss_new files, so only use first one
   datfile$comp_tail_compression[1] <- tail_compression
-  SS_writedat(datfile, file_out)
+  SS_writedat(datfile, file_out, overwrite = TRUE, verbose = FALSE)
 
   return(invisible(datfile))
 }
