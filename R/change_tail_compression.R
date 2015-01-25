@@ -12,43 +12,39 @@
 #' percent. See the SS3 manual for further information. A NULL value
 #' indicates no action, a negative value indicates to SS3 to ignore it (not
 #' use that feature).
-#' @param file_in Input SS3 dat file.
-#' @param file_out Output SS3 dat file. Typically the same as \code{file_in}.
+#' @param datfile Input SS3 dat file \bold{as returned in list object from
+#'   from \code{\link[r4ss]{SS_readdat}}}.
+#' @param file_out Output SS3 dat file name.
 #' @return A modified SS3 \code{.dat} file, and that file returned
 #' invisibly (for testing) as a vector of character lines.
 #' @template casefile-footnote
 #' @author Cole Monnahan
 #' @export
-
+#' @importFrom r4ss SS_writedat
+#'
 #' @examples
 #' ## Create a temporary folder for the output:
 #' temp_path <- file.path(tempdir(), "ss3sim-tail-example")
 #' dir.create(temp_path, showWarnings = FALSE)
 #' ## Run the function with built-in data file.
 #' dat_file <- system.file("extdata", "example-om", "data.ss_new",
-#'   package = "ss3sim")
-#' test <- change_tail_compression(tail_compression = .1234, file_in = dat_file,
-#'   file_out = paste0(temp_path, "/test.dat"))
+#' package = "ss3sim")
+#' input_dat <- r4ss::SS_readdat(dat_file)
+#' test <- change_tail_compression(tail_compression = .1234, input_dat,
+#'  file_out = paste0(temp_path, "/test.dat"))
 #' ## Look at the changes
-#' test[grep("_tail_compression", test)[1]]
+#' test$comp_tail_compression
 #' ## Clean up the temp files
 #' unlink(temp_path)
-change_tail_compression <- function(tail_compression, file_in, file_out){
-    ## Check inputs
-    if(is.null(tail_compression)) return(invisible(NULL))
-    if(!file.exists(file_in))
-        stop(paste(file_in, "not found in change_tail_compression function"))
-    stopifnot(is.numeric(tail_compression))
-    dat <- readLines(file_in)
-    ## The data sections are repeated in the data.ss_new files, so only use
-    ## first one
-    tail.line <- grep("#_comp_tail_compression", x=dat)[1]
-    current <- as.numeric(strsplit(dat[tail.line], split=" ")[[1]][1])
-    dat[tail.line] <-
-        paste0(tail_compression,
-               " #_comp_tail_compression; changed from: ",
-               current)
-    ## Write it back to file
-    writeLines(dat, con=file_out)
-    return(invisible(dat))
+
+change_tail_compression <- function(tail_compression, datfile, file_out){
+
+  if(is.null(tail_compression)) return(invisible(NULL))
+  stopifnot(is.numeric(tail_compression))
+
+  # The data sections are repeated in the data.ss_new files, so only use first one
+  datfile$comp_tail_compression[1] <- tail_compression
+  SS_writedat(datfile, file_out)
+
+  return(invisible(datfile))
 }

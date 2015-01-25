@@ -4,7 +4,7 @@
 \alias{change_tail_compression}
 \title{Replace tail compression value for length composition data.}
 \usage{
-change_tail_compression(tail_compression, file_in, file_out)
+change_tail_compression(tail_compression, datfile, file_out)
 }
 \arguments{
   \item{tail_compression}{*The new tail_compression value
@@ -14,10 +14,10 @@ change_tail_compression(tail_compression, file_in, file_out)
   negative value indicates to SS3 to ignore it (not use
   that feature).}
 
-  \item{file_in}{Input SS3 dat file.}
+  \item{datfile}{Input SS3 dat file \bold{as returned in
+  list object from from \code{\link[r4ss]{SS_readdat}}}.}
 
-  \item{file_out}{Output SS3 dat file. Typically the same
-  as \code{file_in}.}
+  \item{file_out}{Output SS3 dat file name.}
 }
 \value{
 A modified SS3 \code{.dat} file, and that file returned
@@ -28,7 +28,10 @@ This function replaces the tail compression value for
 length composition data in a \code{dat} file
 (\code{file_in}) with those specified in
 \code{tail_compression}. It then writes a new file with
-name \code{file_out} into the working directory.
+name \code{file_out} into the working directory. If used
+with \code{\link{run_ss3sim}} the case file should be named
+\code{tail_compression}. A suggested case letter is
+\code{T}.
 }
 \section{Which arguments to specifiy in case files}{
   All function argument descriptions that start with an
@@ -44,11 +47,12 @@ temp_path <- file.path(tempdir(), "ss3sim-tail-example")
 dir.create(temp_path, showWarnings = FALSE)
 ## Run the function with built-in data file.
 dat_file <- system.file("extdata", "example-om", "data.ss_new",
-  package = "ss3sim")
-test <- change_tail_compression(tail_compression = .1234, file_in = dat_file,
-  file_out = paste0(temp_path, "/test.dat"))
+package = "ss3sim")
+input_dat <- r4ss::SS_readdat(dat_file)
+test <- change_tail_compression(tail_compression = .1234, input_dat,
+ file_out = paste0(temp_path, "/test.dat"))
 ## Look at the changes
-test[grep("_tail_compression", test)[1]]
+test$comp_tail_compression
 ## Clean up the temp files
 unlink(temp_path)
 }
