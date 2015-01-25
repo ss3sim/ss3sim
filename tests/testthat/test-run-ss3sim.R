@@ -65,3 +65,5 @@ test_that("get_results_all warns if a scenario folder isn't available", {
   # done with these scenarios now:
   unlink(c("D0-E0-F0-R0-M0-cod", "D0-E0-F0-R1-M0-cod"), recursive = TRUE)
 })
+
+setwd(wd)
