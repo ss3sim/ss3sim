@@ -15,7 +15,7 @@ change_tail_compression(tail_compression, datfile, file_out)
   that feature).}
 
   \item{datfile}{Input SS3 dat file \bold{as returned in
-  list object from from \code{\link[r4ss]{SS_readdat}}}.}
+  list object form from \code{\link[r4ss]{SS_readdat}}}.}
 
   \item{file_out}{Output SS3 dat file name.}
 }
@@ -52,7 +52,7 @@ input_dat <- r4ss::SS_readdat(dat_file)
 test <- change_tail_compression(tail_compression = .1234, input_dat,
  file_out = paste0(temp_path, "/test.dat"))
 ## Look at the changes
-test$comp_tail_compression
+print(test$comp_tail_compression)
 ## Clean up the temp files
 unlink(temp_path)
 }
