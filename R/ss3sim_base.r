@@ -362,10 +362,10 @@ deviations can lead to biased model results.")
       # (the base case), ignore it.
       if(!is.null(lc_params)){
           lc_params <- add_nulls(lc_params, "lcomp_constant")
-          with(lc_params,
+          datfile <- with(lc_params,
             change_lcomp_constant(
                     lcomp_constant = lcomp_constant,
-                    file_in        = pastef(sc, i, "em", "ss3.dat"),
+                    datfile        = datfile,
                     file_out       = pastef(sc, i, "em", "ss3.dat")))
       }
 
