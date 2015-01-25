@@ -4,7 +4,7 @@
 \alias{change_lcomp_constant}
 \title{Set the robustification constant for length composition data.}
 \usage{
-change_lcomp_constant(lcomp_constant, file_in, file_out)
+change_lcomp_constant(lcomp_constant, datfile, file_out)
 }
 \arguments{
   \item{lcomp_constant}{*The new value to be used. Must be
@@ -15,7 +15,8 @@ change_lcomp_constant(lcomp_constant, file_in, file_out)
   that leads to an error when zeroes exist in the data.
   Instead use a very small value like 1e-07.}
 
-  \item{file_in}{Input SS3 data file.}
+  \item{datfile}{Input SS3 dat file \bold{as returned in
+  list object form from \code{\link[r4ss]{SS_readdat}}}.}
 
   \item{file_out}{Output SS3 dat file. Typically the same
   as \code{file_in}.}
@@ -56,11 +57,11 @@ dir.create(temp_path, showWarnings = FALSE)
 ## Run the function with built-in data file.
 dat_file <- system.file("extdata", "example-om", "data.ss_new",
   package = "ss3sim")
-test <- change_lcomp_constant(lcomp_constant = .1234, file_in = dat_file,
+input_dat <- r4ss::SS_readdat(dat_file)
+test <- change_lcomp_constant(lcomp_constant = .1234, input_dat,
   file_out = paste0(temp_path, "/test.dat"))
 ## Look at the changes
-test[grep("#_add_to_comp", test)[1]]
-## Clean up the temp files
+print(test$add_to_comp)
 unlink(temp_path)
 }
 \author{
