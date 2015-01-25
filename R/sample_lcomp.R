@@ -3,6 +3,8 @@
 #' Take a \code{data.SS_new} file containing expected values and sample to
 #' create observed length compositions which are then written to file for use by
 #' the estimation model.
+#' If used with \code{\link{run_ss3sim}} the case file should be named
+#' \code{lcomp}. A suggested (default) case letter is \code{D} for data.
 #'
 #' @author Cole Monnahan and Kotaro Ono; modified from a version by Roberto
 #'   Licandeo and Felipe Hurtado-Ferro

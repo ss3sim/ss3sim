@@ -3,7 +3,9 @@
 #' This function replaces the tail compression value for length composition
 #' data in a \code{dat} file (\code{file_in}) with those specified in
 #' \code{tail_compression}. It then writes a new file with name
-#' \code{file_out} into the working directory.
+#' \code{file_out} into the working directory. If used with
+#' \code{\link{run_ss3sim}} the case file should be named
+#' \code{tail_compression}. A suggested case letter is \code{T}.
 #'
 #' @param tail_compression *The new tail_compression value to be used. Must
 #' be a numeric value, as a proportion. For example 0.1 means 10
