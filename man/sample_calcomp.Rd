@@ -67,7 +67,8 @@ and sample from true lengths, using length comp sample
 sizes, to get realistic sample sizes for age bins given a
 length. If no fish are sampled then that row is discarded.
 A value of NULL for fleets indicates to delete the data so
-the EM
+the EM If used with \code{\link{run_ss3sim}} the case file
+should be named \code{calcomp}.
 }
 \section{Which arguments to specifiy in case files}{
   All function argument descriptions that start with an

@@ -92,7 +92,9 @@ files and changes which parameters are estimated, how
 natural mortality is estimated, and if forecasts are
 performed. The function can be called by itself or within
 \link{run_ss3sim} to alter an estimation model \code{.ctl}
-file.
+file. If used with \code{\link{run_ss3sim}} the case file
+should be named \code{E}. A suggested (default) case letter
+is \code{E} for estimation.
 }
 \details{
 Turning parameters on and off is the main function of

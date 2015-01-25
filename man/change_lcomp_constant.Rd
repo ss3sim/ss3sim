@@ -29,7 +29,9 @@ This function replaces the robustification value for length
 composition data in a \code{dat} file (\code{file_in}) with
 those specified in \code{lcomp_constant}. It then writes a
 new file with name \code{file_out} into the working
-directory.
+directory. If used with \code{\link{run_ss3sim}} the case
+file should be named \code{lcomp_constant}. A suggested
+case letter is \code{C}.
 }
 \details{
 The robustification constant is added to both the observed
