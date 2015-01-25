@@ -1,6 +1,5 @@
 #' Sample empirial weight-at-age data and write to file for use by the EM
 #'
-
 #' Take a \code{data.SS_new} file containing expected values and sample from
 #' true ages to get realistic proportions for the number of fish in each age
 #' bin, then use the mean size-at-age and CV for growth to generate random
@@ -10,6 +9,8 @@
 #' calling this function, \pkg{ss3sim} will turn on the empirical weight-at-age
 #' function (set maturity option to 5) automatically. See
 #' \code{\link{ss3sim_base}} for more details on how that is implemented.
+#' If used with \code{\link{run_ss3sim}} the case file should be named
+#' \code{wtatage}.
 #'
 #' @author Cole Monnahan, Allan Hicks, Peter Kuriyama
 #'

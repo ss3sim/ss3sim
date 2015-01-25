@@ -23,7 +23,9 @@ A modified SS3 starter file.
 A retrospective analysis tests the effect of peeling back
 the number of operating model years observable to the
 estimation model. This function alters the SS3 starter file
-to run a retrospective analysis.
+to run a retrospective analysis. If used with
+\code{\link{run_ss3sim}} the case file should be named
+\code{R}. A suggested (default) case letter is \code{R}.
 }
 \details{
 Note that the starter file is set up to run a single

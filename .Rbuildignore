@@ -19,3 +19,4 @@ NEWS\.md
 ^tests$
 ^\.travis\.yml$
 ^benchmarks$
+tests-extra/

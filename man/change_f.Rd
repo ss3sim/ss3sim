@@ -40,7 +40,9 @@ A modified SS3 \code{.par} file.
 }
 \description{
 Takes an SS3 \code{.par} file and changes the F values for
-specified years.
+specified years. If used with \code{\link{run_ss3sim}} the
+case file should be named \code{F}. A suggested (default)
+case letter is \code{F}.
 }
 \section{Which arguments to specifiy in case files}{
   All function argument descriptions that start with an
