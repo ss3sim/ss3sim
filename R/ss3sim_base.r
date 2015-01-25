@@ -352,10 +352,10 @@ deviations can lead to biased model results.")
       # ignore it.
       if(!is.null(tc_params)){
           tc_params <- add_nulls(tc_params, "tail_compression")
-          with(tc_params,
+          datfile <- with(tc_params,
             change_tail_compression(
                   tail_compression = tail_compression,
-                  file_in          = pastef(sc, i, "em", "ss3.dat"),
+                  datfile          = datfile,
                   file_out         = pastef(sc, i, "em", "ss3.dat")))
       }
       # Add robustification constant to length comps. If NULL is passed
