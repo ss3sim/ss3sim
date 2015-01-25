@@ -10,7 +10,7 @@ om <- paste0(d, "/models/cod-om")
 em <- paste0(d, "/models/cod-em")
 case_folder <- paste0(d, "/eg-cases")
 
-test_that("A basic run_ss3sim scenario runs:", {
+test_that("A basic run_ss3sim scenario runs", {
 
   skip_on_cran()
 
@@ -19,7 +19,7 @@ test_that("A basic run_ss3sim scenario runs:", {
   unlink("D0-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
 })
 
-test_that("run_ss3sim works with parallel iterations:", {
+test_that("run_ss3sim works with parallel iterations", {
 
   skip_on_cran()
 
@@ -32,7 +32,7 @@ test_that("run_ss3sim works with parallel iterations:", {
   unlink("D0-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
 })
 
-test_that("run_ss3sim works with parallel scenarios:", {
+test_that("run_ss3sim works with parallel scenarios", {
 
   skip_on_cran()
 
