@@ -5,6 +5,8 @@
 #' estimated, and if forecasts are performed. The function can be called by
 #' itself or within \link{run_ss3sim} to alter an estimation model \code{.ctl}
 #' file.
+#' If used with \code{\link{run_ss3sim}} the case file should be named
+#' \code{E}. A suggested (default) case letter is \code{E} for estimation.
 #'
 #' @param ctl_file_in Input SS3 control file
 #' @param ctl_file_out Output SS3 control file

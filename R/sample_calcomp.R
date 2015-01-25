@@ -6,6 +6,9 @@
 #' realistic sample sizes for age bins given a length. If no fish are
 #' sampled then that row is discarded. A value of NULL for fleets indicates
 #' to delete the data so the EM
+#' If used with \code{\link{run_ss3sim}} the case file should be named
+#' \code{calcomp}.
+#'
 #' @author Cole Monnahan, Kotaro Ono
 #'
 #' @template lcomp-agecomp-index

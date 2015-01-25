@@ -59,7 +59,9 @@ are then written to file for the EM. By calling this
 function, \pkg{ss3sim} will turn on the empirical
 weight-at-age function (set maturity option to 5)
 automatically. See \code{\link{ss3sim_base}} for more
-details on how that is implemented.
+details on how that is implemented. If used with
+\code{\link{run_ss3sim}} the case file should be named
+\code{wtatage}.
 }
 \section{Which arguments to specifiy in case files}{
   All function argument descriptions that start with an

@@ -6,6 +6,8 @@
 #' B_y*exp(rnorm(1, 0, \code{sds_obs})-\code{sds_obs}^2/2). The second term
 #' adjusts the random samples so that their expected value is B_y (i.e. the
 #' log-normal bias correction).
+#' If used with \code{\link{run_ss3sim}} the case file should be named
+#' \code{index}. A suggested (default) case letter is \code{D} for data.
 #'
 #' @template lcomp-agecomp-index
 #' @param sds_obs *A list the same length as \code{fleets}. The list should
