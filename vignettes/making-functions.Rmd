@@ -1,0 +1,74 @@
+---
+title: "Creating new ss3sim change and sample functions"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: true
+    fig_caption: true
+bibliography: refs.bib
+vignette: >
+  %\VignetteIndexEntry{Creating new ss3sim functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+# Adding a new SS3 manipulation function
+
+You can create your own new function to manipulate SS3 configuration files during an ss3sim simulation. All this function needs to do is read in the appropriate SS3 files, manipulate them in some way, and write them back out. You then need to insert your new function into the main ss3sim simulation routine so it gets called at the appropriate time. The following instructions briefly outline all the steps to this process. Feel free to contact any of the ss3sim developers for help. If you create a new manipulation function it would be great to get it incorporated into the official package.
+
+The new manipulation function can be used by one or more cases.
+Cases can be mandatory (must be included in all scenarios, like `F` and `D`)
+or optional like `S` where if not specified then nothing occurs.
+
+1.  Write your change function in the `/R` folder.
+
+    - Aim for singular names (e.g. `change_bin`).
+
+    - Input and output file arguments should be written as `file_in` and `file_out` or if multiple types are needed then add a prefix. E.g. `dat_file_in`.
+
+    - In general try to match argument names as best as possible. A good approach is to start with a similar function and modify as needed.
+
+    - Unless otherwise necessary, arguments should take SS file names (as character values) and do the reading internally using r4ss functions (as opposed to taking lists that have already been read in by r4ss). Currently, there are a few places in ss3sim (e.g. the sampling functions) that take an already-read version as an argument value. This will be standardized eventually.
+
+    - Use `@param`, `@author`, etc. to document your function. Then run `devtools::document()` and `devtools::check(cran = TRUE)` on your new code. Test that the documentation is right with `devtools::dev_help(your_change_function)`.
+
+    - Also make sure you have an example and can run `devtools::dev_example(your_change_function)`. Note that your example *should not* run SS3 itself. See other functions for how to create a working example from packaged files.
+
+2.  Now go to `/R/case-parsing.r`.
+
+    - You need to pick a capital letter to represent your case. This should be different than any existing case letter. E.g., at the time of writing this, the letters D, E, F, G, M, R, and S are being used.
+
+    - Add your new letter to the `get_caseargs` default argument values if you want it to be a mandatory case. Otherwise your new case letter must be passed explicitly in the `run_ss3sim` call.
+
+3.  Go to `/R/ss3sim_base.r`.
+
+    - Add a new argument to the function `ss3sim_base` that corresponds to your new case. For example, `f_params`. Make sure to also document the new argument with roxygen2 `@param` syntax.
+
+    - Now that your case arguments are passed to this function, you can use them in the function call. So add a call to your function within the code of `ss3sim_base`. Where in the code depends on when your function needs to be run in the flow of a simulation. The `change_f` needs to occur before the OM runs, and the sampling of data occurs after the OM runs.
+
+    - Run `devtools::document()` to update the argument list for `ss3sim_base` and check it.
+
+4.  Go to `/R/run_ss3sim.r`.
+
+    - `run_ss3sim` calls `ss3sim_base` so `run_ss3sim` needs to be updated to include your new case argument from step 3.
+
+    - The variable `a` is a list of list of arguments, one element of which is your new set of arguments. For instance `a$F` will contain the vector of `F` values.
+
+    - Update the call to `ss3sim_base` to include your new argument. There are two places to do this. (1) The parallel section and (2) the sequential section. For instance `f_params=a$F`.
+
+    - If the case is optional and not passed, the element of the list will be NULL. That is, `a$X` will be NULL if the case `X` isn’t used. You can test for this in `ss3sim_base` and skip your function, effectively turning it off if there is no case argument available. This will also prevent previous code from breaking.
+
+5.  Test your new function and make sure that all existing examples continue to work.
+
+    - First test that `get_caseargs` reads in and parses your case files properly. If your case isn’t mandatory you need to explicitly pass the cases to the `case_files` argument. E.g. if your case is `X`then `case_files=list(M=M, F=F, D=c(index, lcomp, agecomp), R=R, E=E, X=X)`. This function will return a list of lists of the case arguments read from file.
+
+    - You will have to do more work if your case is mandatory, since it will break any previous scenarios. You will have to: add new case files for the example models, the example code in the functions, and the vignette code.
+
+    - Remember to run `devtools::document()` after editing the examples.
+
+    - In general, the user should be able to easily bypass your function and have it do nothing.
+
+    - You can check all the examples with `devtools::run_examples()`.
+
+    - Of course, do another `devtools::check(cran = TRUE)`. This will also test the vignette building.
