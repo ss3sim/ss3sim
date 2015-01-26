@@ -1,11 +1,11 @@
 #' Sample mean length (size-)-at-age data and write to file for use by the EM.
 #'
 #' @details Take a \code{data.SS_new} file containing expected values and
-#' sample from true ages to get realistic proportions for the number of
-#' fish in each age bin, then use the mean size-at-age and CV for growth to
-#' generate random samples of size, which are then averaged to get mean
-#' weight-at-age values. These values are then written to file for the
-#' EM.
+#'   sample from true ages to get realistic proportions for the number of
+#'   fish in each age bin, then use the mean size-at-age and CV for growth to
+#'   generate random samples of size, which are then averaged to get mean
+#'   weight-at-age values. These values are then written to file for the
+#'   EM.
 #' @author Cole Monnahan
 #'
 #' @template lcomp-agecomp-index
@@ -14,15 +14,15 @@
 #'   This list will be used to determine how many fish of each age bin are to
 #'   be sampled.
 #' @param ctlfile A path to the control file, outputed from an OM, containing
-#' the OM parameters for growth and weight/length relationship. These
-#' values are used to determine the uncertainty about weight for fish
-#' sampled in each age bin.
+#'   the OM parameters for growth and weight/length relationship. These
+#'   values are used to determine the uncertainty about weight for fish
+#'   sampled in each age bin.
 #' @param mean_outfile A path to write length and age data for external
-#' estimation of parametric growth. If NULL no file will be written.
-#' This file is used by \code{change_e} to externally estimate growth
-#' parameters. Filename must contain "vbgf" to be used by \code{change_e}.
-#' Also, if "remove" is included in the filename, the mean length at age data
-#' will be removed from the \code{.dat} file and not be available to the EM.
+#'   estimation of parametric growth. If NULL no file will be written.
+#'   This file is used by \code{change_e} to externally estimate growth
+#'   parameters. Filename must contain "vbgf" to be used by \code{change_e}.
+#'   Also, if "remove" is included in the filename, the mean length at age data
+#'   will be removed from the \code{.dat} file and not be available to the EM.
 #' @param verbose A logical value whether or not information should be printed
 #'   to the screen, useful for debugging.
 #' @template sampling-return
