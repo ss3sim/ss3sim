@@ -1,7 +1,7 @@
 ---
 title: "Creating new ss3sim operating and estimation model setups"
 date: "`r Sys.Date()`"
-output: 
+output:
   rmarkdown::html_vignette:
     toc: true
     number_sections: true
@@ -17,16 +17,18 @@ vignette: >
 
 In some cases you may wish to adapt your own SS3 model to work
 with the ss3sim package. This is possible but may be difficult because
-the functions in ss3sim were developed to work with these three model setups and
+the functions in ss3sim were developed to work with the existing model setups and
 a model with a different structure may cause errors in these functions. This
 stems from the high flexibility of SS3, allowing for more complex model setups
-than those used while developing ss3sim. For
-instance, the `sample_index` function does not currently have the capability to
+than those used while developing ss3sim.
+
+For instance, the `sample_index` function
+does not currently have the capability to
 handle more than one season. Given
 the many options available in SS3, it is extremely difficult to write
 auxiliary functions that will interact reliably with all combinations of these
 options. For this reason, we recommend that users strongly consider trying to
-[modify an existing model rather than creating a new one](modifying-models.html). 
+[modify an existing model rather than creating a new one](modifying-models.html).
 It is likely that the ss3sim functions
 will need to be modified in some way in the process, so the user should be
 familiar with both SS3 and R.
@@ -67,15 +69,15 @@ turning parameter estimation off in the starter file (see below), the model
 can be checked by running `ss3_24o_safe -nohess` to make sure the
 input files are read in properly and the model writes the files. Use the
 `.ss_new` files produced as a starting point so that the comments match the
-instructions below. 
+instructions below.
 
-You will see an error by ADMB that it cannot find the dat file because we
+You will see an error by ADMB that it cannot find the data file because we
 have specified a different file in the starter file. You can safely ignore
 this error.
 
 ## Starter file modifications
 
-- Delete the starter.ss file and rename starter.ss_new to starter.ss. Modify this new file.
+- Delete the `starter.ss` file and rename `starter.ss_new` to `starter.ss`. Modify this new file.
 
 - Turn off parameter estimation by changing `# Turn off estimation for parameters entering after this phase` to `0`.
 
@@ -179,14 +181,15 @@ needs to be sampled with observation error from these expected values in order
 to mimic the random sampling process done with real fisheries data. The
 ss3sim package provides three functions which carry out the random
 sampling process and generate `.dat` files to be used in the EM. See
-Section \ref{sec:obs-error} for more details.
+the [Introduction vignette section](introduction.html#obs-error) for more details.
 
 ## Testing the new estimation model
 
 After completing the above steps run the model manually and verify that it
 loads the data properly and the objective function value (negative
 log-likelihood) is sensible. If it works correctly, try running
-deterministic cases on the model (Section \ref{sec:deterministic}) and further
+deterministic cases on the model 
+(see the [Introduction vignette](introduction.html#deterministic)) and further
 verify that ss3sim functions that modify the EM (e.g.,
 `change_e`) act correctly on the model setup. It is possible that some of the
 functions will not work perfectly with the new model setups. In this case, it may be
