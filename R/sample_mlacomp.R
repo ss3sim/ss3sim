@@ -10,9 +10,9 @@
 #'
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
-#' @param datfile A path to the data file, outputed from an OM, containing
-#' the true age distributions (population bins). This file is read in and
-#' then used to determine how many fish of each age bin are to be sampled.
+#' @param datfile A \code{.dat} file as read in by \code{SS_readdat}.
+#'   This list will be used to determine how many fish of each age bin are to
+#'   be sampled.
 #' @param ctlfile A path to the control file, outputed from an OM, containing
 #' the OM parameters for growth and weight/length relationship. These
 #' values are used to determine the uncertainty about weight for fish
@@ -26,7 +26,7 @@
 #' @template sampling-return
 #' @template casefile-footnote
 #' @seealso \code{\link{sample_lcomp}, \link{sample_agecomp}}
-#' @importFrom r4ss SS_readdat SS_writedat SS_parlines
+#' @importFrom r4ss SS_writedat SS_parlines
 #' @export
 #'
 #' @examples
@@ -150,7 +150,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
               })
             forexport[[k]] <- do.call("rbind", temp[lapply(temp, length) > 2])
             forexportdims <- dim(forexport[[k]])
-            forexport[[k]] <- cbind(forexport[[k]], 
+            forexport[[k]] <- cbind(forexport[[k]],
                                     fleet = rep_len(fl.temp, length.out = forexportdims[1]),
                                     year = rep_len(yr.temp, length.out = forexportdims[1]))
             colnames(forexport[[k]]) <- c("age", "length", "mean", "fleet", "year")
