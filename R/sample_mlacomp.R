@@ -18,7 +18,7 @@
 #'   values are used to determine the uncertainty about weight for fish
 #'   sampled in each age bin.
 #' @param mean_outfile A path to write length and age data for external
-#'   estimation of parametric growth. If NULL no file will be written.
+#'   estimation of parametric growth. If \code{NULL} no file will be written.
 #'   This file is used by \code{change_e} to externally estimate growth
 #'   parameters. Filename must contain "vbgf" to be used by \code{change_e}.
 #'   Also, if "remove" is included in the filename, the mean length at age data
