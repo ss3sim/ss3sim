@@ -14,13 +14,6 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-
-<!--
-% TODO, need to work around this LaTeX:
-\newcommand{\Vof}[1]{\mathrm{Var}\left[#1 \right]}
-\newcommand{\Eof}[1]{\mathrm{E}\left[ #1 \right]}
--->
-
 ```{r, echo = FALSE, message = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
@@ -672,7 +665,7 @@ scalar_dat_long <- plyr::rename(scalar_dat_long,
   c("value" = "relative_error"))
 ```
 
-Now we can create boxplots of the deterministic model runs. The following code produces Figure~\ref{fig:relative-error-boxplots-det}.
+Now we can create boxplots of the deterministic model runs.
 
 ```{r, relative-error-boxplots-det, fig.height=7, fig.width=5, fig.cap="Relative error box plots for deterministic runs. In case E100, *M* is fixed at the true value; in E101 we estimate *M*. In case D100, the standard deviation on the survey index observation error is 0.001."}
 library("ggplot2")
@@ -920,6 +913,7 @@ case argument files beginning with "S"
 case_files = list(E = "E", D = c("index", "lcomp", "agecomp"),
   F = "F", M = "M", R = "R", S = "S")
 ```
+
 Note that `S` is simply added to the end of the default list of case IDs.
 
 Note that the data case ID is a special case because its case argument files do not
@@ -1068,16 +1062,17 @@ biomass and a user-provided standard deviation term that controls the level
 of variance.
 
 More specifically, let
-\begin{align*}
+
+$$\begin{aligned}
   B_y&=\text{the true (OM) biomass in year $y$}\\
   \sigma_y&=\text{the standard deviation provided by the user}\\
-  X\sim N(0, \sigma_y^2)&=\text{a normal random variable}
-\end{align*}
+  X\sim N(0, \sigma_y^2)&=\text{a normal random variable}\end{aligned}$$
+
 Then the sampled value, $B_y^\text{obs}$ is
-\begin{equation*}
-  B_y^\text{obs}=B_y e^{X-\sigma_y^2/2}
-\end{equation*}
-which has expected value $\Eof{B_y^\text{obs}}=B_y$ due to the bias adjustment
+
+$$B_y^\text{obs}=B_y e^{X-\sigma_y^2/2}$$ 
+
+which has expected value $\mathrm{E}\left[B_y^\text{obs}\right]=B_y$ due to the bias adjustment
 term $\sigma_y^2/2$ (`SR_sigmaR` in SS3). This process generates
 log-normal values centered at the true value. It is possible for the user to
 specify the amount of uncertainty (e.g.\ to mimic the amount of survey effort),
@@ -1107,16 +1102,18 @@ The following calculations demonstrate how ss3sim handles
 compositional data. They are shown for age compositions but apply equally
 to length compositions. The multinomial distribution $\mathbf{m} \sim
 \text{MN}\left(\mathbf{p}, n, A\right )$ is defined as
-\begin{align*} \mathbf{m} &= m_1, \ldots, m_A\\
+
+$$\begin{aligned}
+ \mathbf{m} &= m_1, \ldots, m_A\\
   &=\text{the number of fish observed in bin $a$}\\
   \mathbf{p}&= p_1, \ldots, p_A\\
   &=\text{the true proportion of fish in bin $a$}\\
   n&=\text{sample size} \\
-  A&=\text{number of age bins}
-\end{align*}
+  A&=\text{number of age bins}\end{aligned}$$
+
 In the case of SS3, actual proportions are input as data so $\mathbf{m}/n$
 is the distribution used instead of $\mathbf{m}$. Thus, the variance of
-the estimated proportion for age bin $a$ is $\Vof{M_a/n}=p_aq_a/n$. Note
+the estimated proportion for age bin $a$ is $\mathrm{Var}\left[M_a/n\right]=p_aq_a/n$. Note
 that $m_a/n$ can only take on values in the set $\{0, 1/n, 2/n, \ldots,
 1\}$. With sufficiently large sample size this set approximates the real
 interval $[0,1]$, but the key point being that only a finite set of
@@ -1141,20 +1138,20 @@ exclusively by the cell probabilities in the multinomial) and as such is
 more flexible. Let $\mathbf{d} \sim \text{Dirichlet}\left
   (\boldsymbol{\alpha}, A\right )$ be a Dirichlet random vector. It is
 characterized by:
-\begin{align*}
+
+$$\begin{aligned}
   \mathbf{d} &= d_1, \ldots, d_A\\
   &=\text{the proportion of fish observed in bin $a$}\\
   \boldsymbol{\alpha}&= \alpha_1, \ldots, \alpha_A\\
   &=\text{concentration parameters for the proportion of fish in bin $a$}\\
-  A&=\text{number of age bins}
-\end{align*}
+  A&=\text{number of age bins}\end{aligned}$$
 
 Since we are using the Dirichlet distribution to generate random samples,
 it is convenient to parameterize the vector of concentration parameters
 $\boldsymbol{\alpha}$ as $\lambda \mathbf{p}$
 so that $\alpha_a=\lambda p_a$.
-The mean of $d_a$ is then $\Eof{d_a}=p_a$ and the variance is
-$\Vof{d_a}=\frac{p_aq_a}{\lambda+1}$.
+The mean of $d_a$ is then $\mathrm{E}\left[d_a\right]=p_a$ and the variance is
+$\mathrm{Var}\left[d_a\right]=\frac{p_aq_a}{\lambda+1}$.
 The marginal distributions for the Dirichlet are beta distributed.
 In contrast to the multinomial above,
 the Dirichlet generates points on the real interval $[0,1]$.
