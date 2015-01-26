@@ -23,6 +23,8 @@
 #' parameters. Filename must contain "vbgf" to be used by \code{change_e}.
 #' Also, if "remove" is included in the filename, the mean length at age data
 #' will be removed from the \code{.dat} file and not be available to the EM.
+#' @param verbose A logical value whether or not information should be printed
+#'   to the screen, useful for debugging.
 #' @template sampling-return
 #' @template casefile-footnote
 #' @seealso \code{\link{sample_lcomp}, \link{sample_agecomp}}
@@ -46,7 +48,8 @@
 # #' setwd(wd)
 
 sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
-                           years, write_file=TRUE, mean_outfile = NULL){
+                           years, write_file=TRUE, mean_outfile = NULL,
+                           verbose = TRUE){
     ## A value of NULL for fleets signifies to turn this data off in the
     ## EM. So quit early and in ss3sim_base do NOT turn wtatage on using
     ## the maturity function.
@@ -58,7 +61,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
         datfile$N_MeanSize_at_Age_obs <- 0
         if(write_file)
             SS_writedat(datlist=datfile, outfile=outfile, overwrite=TRUE,
-                        verbose=FALSE)
+                        verbose = verbose)
         return(invisible(datfile))
     }
     agecomp <- datfile$agecomp
@@ -177,6 +180,6 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     datfile$N_MeanSize_at_Age_obs <- nrow(mlacomp.new)
     ## Write the modified file
     if(write_file) SS_writedat(datlist=datfile, outfile=outfile,
-                                     overwrite=TRUE, verbose=TRUE)
+                                     overwrite = TRUE, verbose = verbose)
     return(invisible(datfile))
 }
