@@ -33,19 +33,25 @@
 #'
 #' @examples
 #' temp_path <- file.path(tempdir(), "ss3sim-test")
-# #' dir.create(temp_path, showWarnings = FALSE)
-# #'  wd <- getwd()
-# #'  setwd(temp_path)
-# #' fdat <- system.file("extdata/models/cod-om/codOM.dat", package = "ss3sim")
-# #' fctl <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
-# #' change_data(fdat, outfile = "codOM-temp.dat", fleets = 1,
-# #'   years = 2000:2012, types = c("age", "mla"), age_bins = seq_len(15))
-# #' out <- sample_mlacomp("codOM-temp.dat", outfile = "ignore.dat", ctlfile = fctl,
-# #'   Nsamp = list(rep(50, 13)), years = list(2000:2012), write_file = FALSE,
-# #'   mean_outfile = NULL)
-# #' out
-# #' unlink("codOM-temp.dat")
-# #' setwd(wd)
+#'   dir.create(temp_path, showWarnings = FALSE)
+#'   wd <- getwd()
+#'   setwd(temp_path)
+#' d <- system.file("extdata/models/cod-om", package = "ss3sim")
+#'   dat_in <- file.path(d, "codOM.dat")
+#'   datfile <- r4ss::SS_readdat(dat_in, section = 2, verbose = FALSE)
+#'   datfile <- change_fltname(datfile)
+#'   datfile <- change_data(datfile, outfile = NULL, write_file = FALSE,
+#'     fleets = 1, years = 1990:2010, types = c("age", "mla"))
+#'   datfile <- change_fltname(datfile)
+#'
+#' out <- sample_mlacomp(datfile, outfile = NULL, ctlfile = ctlfile,
+#'                       fleets = 1, Nsamp = 30, years = list(1992),
+#'                       verbose = FALSE, mean_outfile = "test.csv", write_file = FALSE)
+#'
+#' setwd("..")
+#' unlink("ss3sim-test", recursive = TRUE)
+#' setwd(wd)
+#'
 
 sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
                            years, write_file=TRUE, mean_outfile = NULL,
