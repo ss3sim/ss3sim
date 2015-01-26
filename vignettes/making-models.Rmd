@@ -13,8 +13,6 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-# Setting up a new operating model
-
 In some cases you may wish to adapt your own SS3 model to work
 with the ss3sim package. This is possible but may be difficult because
 the functions in ss3sim were developed to work with the existing model setups and
@@ -22,7 +20,7 @@ a model with a different structure may cause errors in these functions. This
 stems from the high flexibility of SS3, allowing for more complex model setups
 than those used while developing ss3sim.
 
-For instance, the `sample_index` function
+For instance, `sample_index()`
 does not currently have the capability to
 handle more than one season. Given
 the many options available in SS3, it is extremely difficult to write
@@ -33,23 +31,27 @@ It is likely that the ss3sim functions
 will need to be modified in some way in the process, so the user should be
 familiar with both SS3 and R.
 
-The main purpose of the OM is to generate data files that can be read into the
-EM. Thus the user needs to setup the `.dat` files in the OM such that
+The main purpose of the OM (operating model) is to 
+generate data files that can be read into the
+EM (estimation model). 
+Thus the user needs to setup the `.dat` files in the OM such that
 they conform to the structure needed by the EM. Two key examples are with survey
 and age/length composition data.
 For the indices of abundance (CPUE and scientific survey) the OM
 `.dat` file will determine which years are available to the sampling
-function `sample_index`, so if the year $y$ is desired in the EM it needs
+function `sample_index()`, so if a year is desired in the EM it needs
 to be in the OM. In practice it may be easiest to just include all years in the
-OM if surveys will be dynamic (i.e.\ changing years between scenarios), or if it
+OM if surveys will be dynamic (i.e. changing years between scenarios), or if it
 will be fixed for all scenarios to set it to match the EM exactly.
 
-Similarly with age/length compositions the OM `.dat` file will determine
+Similarly, with age/length compositions, the OM `.dat` file will determine
 which years and bins are available to the sampling functions
-`sample_agecomp` and `sample_lcomp`. If dynamic binning is to be
+`sample_agecomp()` and `sample_lcomp()`. If dynamic binning is to be
 used, the user should setup the `.dat` file so that all desired
-combinations of bins are possible (see Section \ref{sec:dybin} for more
-details). Specifically, the user must specify small enough OM `.ctl` bins (no smaller than
+combinations of bins are possible 
+(see the [section in the Introduction vignette 
+on dynamic binning](Introduction.html#change-data) for more details). 
+Specifically, the user must specify small enough OM `.ctl` bins (no smaller than
 the population bin specified in the appropriate section in the OM `.dat` file)
 so that they can easily be re-binned. Alternatively,
 if composition data is not to be explored in the simulation then the user can
@@ -59,7 +61,9 @@ just set the OM `.dat` file to match the desired input for the EM
 For those users who choose to create a new ss3sim model setup, we outline the
 steps to take an existing SS3 model and modify it to work with the
 ss3sim package.  First, we cover setting up an operating model and then
-in Section \ref{sec:em-setup} we cover setting up an estimation model.
+we cover [setting up an estimation model](#em-setup).
+
+# Setting up a new operating model {#om-setup}
 
 The first step is to run the assessment model to make sure the model runs
 and estimates parameters as desired. The `.par` file generated will be used
@@ -91,7 +95,7 @@ this error.
 
 - Turn off retrospective analyses by setting `# retrospective year relative to end year` to `0`. To analyze the data for retrospective patterns, use the R case file.
 
-- Specify how catch is reported by setting `# F_report_units` to 1 if catch is reported in biomass or `2` if catch is reported in numbers. Additionally, comment out the next line, `#_min and max age over which average F will be calculated`, by removing all characters prior to the hash symbol.
+- Specify how catch is reported by setting `# F_report_units` to `1` if catch is reported in biomass or `2` if catch is reported in numbers. Additionally, comment out the next line, `#_min and max age over which average F will be calculated`, by removing all characters prior to the hash symbol.
 
 - Implement catches using instantaneous fishing mortality by changing `# F_report_basis` to `0`.
 
@@ -146,8 +150,7 @@ estimates of parameters; it is intended to only be run for one
 iteration to generate the population dynamics using values
 specified in the input files.
 
-# Setting up a new estimation model
-\label{sec:em-setup}
+# Setting up a new estimation model {#em-setup}
 
 Unlike the OM, the EM needs to be a valid SS3 model setup and run to achieve MLE
 estimates (and possibly standard errors). Thus the OM needs to be adapted to
