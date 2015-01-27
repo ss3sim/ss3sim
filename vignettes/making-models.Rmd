@@ -121,13 +121,13 @@ this error.
 
 ## Data file modifications
 
-1.  Specify the start and end year for the simulation by modifying `#_styr` and `#_endyr`. Years can be specified as a number line (i.e. `1`, `2`, `3`, ...) or as actual years (i.e. `1999`, `2000`, `2001`, …).
+1.  Specify the start and end year for the simulation by modifying `#_styr` and `#_endyr`. Years can be specified as a number line (i.e. `1`, `2`, `3`, ...) or as actual years (i.e. `1999`, `2000`, `2001`, ...).
 
 2.  Specify the names for each fleet in an uncommented line after the line `#_N_areas`. Names must be separated by a `%` with no spaces. It is these names which you will use in the plain text case files to specify and change characteristics of each fleet throughout the simulation. E.g. `Fishery%Survey1%Survey2`
 
 3.  Specify the number of mean body weight observations across all selected sizes and ages to be specific to measured fish by setting `#N observations` to `0`. Subsequently, specify `1` degree of freedom for the Student’s T distribution used to evaluated the mean body weight deviations in the following line. The degrees of freedom must be specified even if there are zero mean body weight observations.
 
-4.  Set the length bin method to 1 or 2 in the line labelled `# length bin method`. Using a value of `1`, the bins refer to the data bins (specified later). Using a value of `2` instructs SS to generate the binwidths from a user specified minimum and maximum value. In the following three lines, specify the binwidth for population size composition data; the minimum size, or the lower edge of the first bin and size at age zero; and the maximum size, or lower edge of the last bin. The length data bins MUST be wider than the population bin, but the boundaries do not have to align.
+4.  Set the length bin method to 1 or 2 in the line labelled `# length bin method`. Using a value of `1`, the bins refer to the data bins (specified later). Using a value of `2` instructs SS to generate the bin widths from a user specified minimum and maximum value. In the following three lines, specify the bin width for population size composition data; the minimum size, or the lower edge of the first bin and size at age zero; and the maximum size, or lower edge of the last bin. The length data bins MUST be wider than the population bin, but the boundaries do not have to align.
 
 5.  Specify `#_comp_tail_compression` to any negative value to turn off tail compression.
 
@@ -152,9 +152,9 @@ specified in the input files.
 
 # Setting up a new estimation model {#em-setup}
 
-Unlike the OM, the EM needs to be a valid SS3 model setup and run to achieve MLE
-estimates (and possibly standard errors). Thus the OM needs to be adapted to
-create a new EM.
+Unlike the OM, the EM needs to be a valid SS3 model setup and run to achieve
+maximum likelihood estimates (and possibly standard errors). 
+Thus the OM needs to be adapted to create a new EM.
 
 ## Starter file modifications
 
@@ -166,11 +166,11 @@ create a new EM.
 
 ## Control file modifications
 
-1.  Set the phases of the parameters to positive or negative value to inform SS to estimate or fix the parameters, respectively.
+1.  Set the phases of the parameters to positive or negative value to inform SS to estimate or fix the parameters, respectively. *(TODO can we give a few words of guidance about which parameters may want to be estimated by default? -SA)*
 
 2.  Set the `#_recdev phase` to a positive value to estimate yearly recruitment deviations.
 
-3.  If using bias adjustment set `#_recdev_early_phase` to a positive value. Estimates for the years and maximum bias adjustment can initially be inputted with approximations or use the bias adjustment function within ss3sim to find appropriate values for the base case EM and input them in the appropriate lines.
+3.  If using bias adjustment set `#_recdev_early_phase` to a positive value. Estimates for the years and maximum bias adjustment can initially be inputted with approximations or use the bias adjustment function within ss3sim to find appropriate values for the base case EM and input them in the appropriate lines. *(TODO can we provide guidance on how this phase should relate to `recdev phase`?)*
 
 4.  Specify `# F_Method` to `3`, which allows the model to use catches to estimate appropriate fishing mortality levels. The max harvest rate in the subsequent line will depend upon the fishing mortality levels in your simulation. An additional line must be inserted after the maximum harvest rate to specify the number of iterations used in the hybrid method from `3` to `7`.
 
@@ -178,6 +178,7 @@ create a new EM.
 
 ## Data file modifications
 
+You can delete the `.dat` file from the EM model setup.
 The `data.ss_new` files produced when executing the OM contain the
 expected values of the OM population dynamics. The data the EM model is fit to
 needs to be sampled with observation error from these expected values in order
