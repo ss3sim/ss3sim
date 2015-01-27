@@ -18,13 +18,11 @@
 #'   values are used to determine the uncertainty about weight for fish
 #'   sampled in each age bin.
 #' @param mean_outfile A path to write length and age data for external
-#'   estimation of parametric growth. If \code{NULL} no file will be written.
-#'   This file is used by \code{change_e} to externally estimate growth
-#'   parameters. Filename must contain "vbgf" to be used by \code{change_e}.
-#'   Also, if "remove" is included in the filename, the mean length at age data
-#'   will be removed from the \code{.dat} file and not be available to the EM.
-#' @param verbose A logical value whether or not information should be printed
-#'   to the screen, useful for debugging.
+#' estimation of parametric growth. If NULL no file will be written.
+#' This file is used by \code{change_e} to externally estimate growth
+#' parameters. Filename must contain "vbgf" to be used by \code{change_e}.
+#' Also, if "remove" is included in the filename, the mean length at age data
+#' will be removed from the \code{.dat} file and not be available to the EM.
 #' @template sampling-return
 #' @template casefile-footnote
 #' @seealso \code{\link{sample_lcomp}, \link{sample_agecomp}}
@@ -185,7 +183,6 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
                      mean = exp(means.log[x]), fleet = fl.temp, year = yr.temp)
               })
             forexport[[k]] <- do.call("rbind", temp[lapply(temp, length) > 4])
-
             # Take mean length of each age bin mean and place in mla comp data frame
             mlacomp.new.means <- do.call(c, lapply(lengths.list, mean))
             # Sometimes you draw 0 fish from an age class, resulting in NaN
