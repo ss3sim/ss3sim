@@ -180,14 +180,11 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
             # prepare mla data for export to the von B growth function
             names(lengths.list) <- as.numeric(gsub("a", "", colnames(agecomp.temp)[-(1:9)]))
             temp <- lapply(seq_along(lengths.list), function(x) {
-               cbind(names(lengths.list)[x], lengths.list[[x]], exp(means.log[x]))
+               cbind(age = names(lengths.list)[x], length = lengths.list[[x]],
+                     mean = exp(means.log[x]), fleet = fl.temp, year = yr.temp)
               })
-            forexport[[k]] <- do.call("rbind", temp[lapply(temp, length) > 2])
-            forexportdims <- dim(forexport[[k]])
-            forexport[[k]] <- cbind(forexport[[k]],
-                                    fleet = rep_len(fl.temp, length.out = forexportdims[1]),
-                                    year = rep_len(yr.temp, length.out = forexportdims[1]))
-            colnames(forexport[[k]]) <- c("age", "length", "mean", "fleet", "year")
+            forexport[[k]] <- do.call("rbind", temp[lapply(temp, length) > 4])
+
             # Take mean length of each age bin mean and place in mla comp data frame
             mlacomp.new.means <- do.call(c, lapply(lengths.list, mean))
             # Sometimes you draw 0 fish from an age class, resulting in NaN
