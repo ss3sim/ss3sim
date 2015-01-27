@@ -123,10 +123,24 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     for(fl in 1:length(fleets)){
         fl.temp <- fleets[fl]
         mlacomp.fl <- mlacomp[mlacomp$FltSvy == fleets[fl] & mlacomp$Yr %in% years[[fl]],]
+        if (length(years[[fl]]) != length(unique(mlacomp.fl$Yr))) {
+          stop(paste("A year specified in years for fleet", fl.temp, "was not",
+                     "found in the input datfile for fleet", fl.temp))
+        }
         for(j in 1:NROW(mlacomp.fl)){
             yr.temp <- mlacomp.fl$Yr[j]
             # Loop through mla data for this fleet / year combo
             mlacomp.new <- mlacomp.fl[j,]
+            if (NROW(mlacomp.new) == 0) {
+              stop(paste("No mla comp data found for fleet", fl.temp,
+                         "in year", yr.temp))
+            }
+            # Get the columns that pertain to the actual mla data and not metadata
+            # The following subset routine will only work for a single sex model
+            if (any(grepl("f", names(mlacomp.new$MeanSize_at_Age_obs)))) {
+              stop(paste("mlacomp data contains two sexes, which is not currently",
+                         "supported by ss3sim, please reconfigure your model."))
+            }
             mla.means <- as.numeric(mlacomp.new[paste0("a",agebin_vector)])
             ## For each age, given year and fleet, get the expected length
             ## and CV around that length, then sample from it using
@@ -148,8 +162,16 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
             age.means <- as.numeric(agecomp.temp[-(1:9)])
             # Get user input sample size, theoretically this cannot be bigger than age n
             age.Nsamp <- as.numeric(Nsamp[[fl]][j])
+            if (age.Nsamp > sum(agecomp$Nsamp)) {
+              stop(paste("Cannot sample more fish for mean length-at-age than what",
+                         "exists in the observed ages. ", agecomp$Nsamp, "were",
+                         "observed but user specified a sample size of ", age.Nsamp))
+            }
             ## Draw samples to get # of fish in each age bin
             age.samples <- rmultinom(n=1, size=as.integer(age.Nsamp), prob=age.means)
+            if (any(is.na(age.samples))) {
+              stop("Invalid age comp probabilities in sample_mlacomp.")
+            }
             # apply sampling across columns (ages) to get sample of lengths
             lengths.list <-
                 lapply(1:length(means.log), function(kk)
