@@ -56,10 +56,6 @@
 sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
                            years, write_file=TRUE, mean_outfile = NULL,
                            verbose = TRUE){
-    ## A value of NULL for fleets signifies to turn this data off in the
-    ## EM. So quit early and in ss3sim_base do NOT turn wtatage on using
-    ## the maturity function.
-    ##
 
     ## If fleets==NULL, quit here and delete the data so the EM doesn't use it.
     if(is.null(fleets)){
@@ -112,22 +108,17 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
                    fleets[which(sapply(Nsamp, length) != sapply(years, length))]))
     }
     ## End input checks
-    ## Resample from the length-at-age data. The general approach here is
-    ## to loop through each row and sample based on the true age
-    ## distribution. Note, true age distribution is known, as is but there
-    ## is uncertainty in the age->length relationship. This uncertainty
-    ## defines the distribution from which we sample. It is also based on
-    ## the # of age samples taken, to mimic reality better.
+
     mlacomp.new.list <- list() # temp storage for the new rows
     forexport <- list()
     k <- 1                 # each k is a new row of data, to be rbind'ed later
-    ## Loop through each fleet, if fleets=NULL then skip sampling and
-    ## return nothing (subtract out this type from the data file)
+    # Loop through mla data for this fleet, given the years specified
     for(fl in 1:length(fleets)){
         fl.temp <- fleets[fl]
         mlacomp.fl <- mlacomp[mlacomp$FltSvy == fleets[fl] & mlacomp$Yr %in% years[[fl]],]
         for(j in 1:NROW(mlacomp.fl)){
             yr.temp <- mlacomp.fl$Yr[j]
+            # Loop through mla data for this fleet / year combo
             mlacomp.new <- mlacomp.fl[j,]
             mla.means <- as.numeric(mlacomp.new[paste0("a",agebin_vector)])
             ## For each age, given year and fleet, get the expected length
@@ -135,24 +126,29 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
             ## lognormal (below)
             CV.growth <- ctl[ctl$Label=="CV_young_Fem_GP_1", "INIT"]
             sds <- mla.means*CV.growth
-            ## These are the moments on the natural scale, so
-            ## convert to log scale and generate data
+            # moments on natural scale, -> convert to log scale & generate data
+            # ToDo(CM): I am not sure where the math for means.log came
+            # from but if you could explain it that would be great -KFJ
             means.log <- log(mla.means^2/sqrt(sds^2+mla.means^2))
+            # sigma^2 = ln(1 + var[X] / (E[X])^2)
+            # where the variance is defined on the real scale b/c the distribution
+            # is symmetric, where $\mu$ is defined on the log scale.
             sds.log <- sqrt(log(1 + sds^2/mla.means^2))
-            ## Get the true age distributions
+            # Get the true age distributions, probability of being a fish of age x
             agecomp.temp <- agecomp[agecomp$Yr==yr.temp & agecomp$FltSvy == fl.temp &
               agecomp$Lbin_lo < 0,]
-            ## Get the true age distributions
+            # remove the 9 columns of metadata
             age.means <- as.numeric(agecomp.temp[-(1:9)])
+            # Get user input sample size, theoretically this cannot be bigger than age n
             age.Nsamp <- as.numeric(Nsamp[[fl]][j])
             ## Draw samples to get # of fish in each age bin
             age.samples <- rmultinom(n=1, size=as.integer(age.Nsamp), prob=age.means)
-            ## apply sampling across the columns (ages) to get
-            ## sample of lengths
+            # apply sampling across columns (ages) to get sample of lengths
             lengths.list <-
                 lapply(1:length(means.log), function(kk)
                        exp(rnorm(n=age.samples[kk], mean=means.log[kk], sd=sds.log[kk])))
 
+            # prepare mla data for export to the von B growth function
             names(lengths.list) <- as.numeric(gsub("a", "", colnames(agecomp.temp)[-(1:9)]))
             temp <- lapply(seq_along(lengths.list), function(x) {
                cbind(names(lengths.list)[x], lengths.list[[x]], exp(means.log[x]))
@@ -163,13 +159,11 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
                                     fleet = rep_len(fl.temp, length.out = forexportdims[1]),
                                     year = rep_len(yr.temp, length.out = forexportdims[1]))
             colnames(forexport[[k]]) <- c("age", "length", "mean", "fleet", "year")
-            ## Take means and combine into vector to put back
-            ## into the data frame.
+            # Take mean length of each age bin mean and place in mla comp data frame
             mlacomp.new.means <- do.call(c, lapply(lengths.list, mean))
-            ## Sometimes you draw 0 fish from an age class,
-            ## resulting in NaN for the mean mlacomp. For now,
-            ## replace with filler values
-### TODO: Fix the placeholder values for missing age bins
+            # Sometimes you draw 0 fish from an age class, resulting in NaN
+            # For now, replace with filler values
+            # TODO: Fix the placeholder values for missing age bins
             mlacomp.new.means[is.nan(mlacomp.new.means)] <- -1
             ## mla data needs the sample sizes, so concatenate those on
             mlacomp.new[-(1:7)] <- c(mlacomp.new.means, age.samples)
