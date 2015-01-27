@@ -66,7 +66,14 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
                         verbose = verbose)
         return(invisible(datfile))
     }
-    agecomp <- datfile$agecomp
+
+    is_ssdat_file(datfile)
+    agecomp <- datfile$agecomp[datfile$agecomp$Lbin_lo == -1, ]
+    # Users can specify either Lbin_lo or Lbin_hi as a negative value to
+    # delineate between cal and age comp data
+    if (NROW(agecomp) == 0) {
+      agecomp <- datfile$agecomp[datfile$agecomp$Lbin_hi == -1, ]
+    }
     mlacomp <- datfile$MeanSize_at_Age_obs
     agebin_vector <- datfile$agebin_vector
     ## Read in the control file
@@ -135,8 +142,8 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
             # is symmetric, where $\mu$ is defined on the log scale.
             sds.log <- sqrt(log(1 + sds^2/mla.means^2))
             # Get the true age distributions, probability of being a fish of age x
-            agecomp.temp <- agecomp[agecomp$Yr==yr.temp & agecomp$FltSvy == fl.temp &
-              agecomp$Lbin_lo < 0,]
+            agecomp.temp <- agecomp[agecomp$Yr == yr.temp &
+                                    agecomp$FltSvy == fl.temp, ]
             # remove the 9 columns of metadata
             age.means <- as.numeric(agecomp.temp[-(1:9)])
             # Get user input sample size, theoretically this cannot be bigger than age n
