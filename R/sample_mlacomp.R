@@ -43,6 +43,7 @@
 #'   datfile <- change_data(datfile, outfile = NULL, write_file = FALSE,
 #'     fleets = 1, years = 1990:2010, types = c("age", "mla"))
 #'   datfile <- change_fltname(datfile)
+#'   ctlfile <- file.path(d, "codOM.ctl")
 #'
 #' out <- sample_mlacomp(datfile, outfile = NULL, ctlfile = ctlfile,
 #'                       fleets = 1, Nsamp = 30, years = list(1992),
