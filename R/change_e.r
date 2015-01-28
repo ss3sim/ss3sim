@@ -127,13 +127,17 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
       names(temp) <- parsmatch$change_e_vbgf[substitute(x)[[3]]]
       return(temp)
       })
-    limitages <- list(a3 = min(data$age), A = max(data$age))
-
-    change_e_vbgf <-
+    change_e_vbgf <- try(
       sample_fit_vbgf(length.data = data, start.L1 = start.pars$L1,
         start.L2 = start.pars$L2, start.k = start.pars$K,
-        start.cv.young = start.pars$cv.young, start.cv.old = start.pars$cv.old,  a3 = limitages$a3, A = limitages$A)
-    #TODO: do something if the estimation routine fails
+        start.cv.young = start.pars$cv.young, start.cv.old = start.pars$cv.old,
+        a3 = min(data$age), A = max(data$age)), silent = TRUE)
+    # If the estimation routine fails place fix par values at 999
+    if (grepl("Error", change_e_vbgf[1], ignore.case = TRUE)) {
+      change_e_vbgf <- list(L1 = 999, L2 = 999, K = 999, cv.young = 999,
+                            cv.old = 999)
+    }
+
     #Get par estimates and append them to par_name par_int and par_phase
     changeinits <- which(par_int == "change_e_vbgf")
     ss3names <- par_name[changeinits]
