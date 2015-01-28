@@ -6,8 +6,8 @@
 \usage{
 ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   agecomp_params, calcomp_params = NULL, wtatage_params = NULL,
-  mlacomp_params = NULL, estim_params, tv_params, om_dir, em_dir,
-  retro_params = NULL, tc_params = NULL, lc_params = NULL,
+  mlacomp_params = NULL, em_binning_params = NULL, estim_params, tv_params,
+  om_dir, em_dir, retro_params = NULL, tc_params = NULL, lc_params = NULL,
   len_bins = NULL, age_bins = NULL, call_change_data = TRUE,
   user_recdevs = NULL, user_recdevs_warn = TRUE, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
@@ -149,6 +149,9 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   output to the console. Also, see the argument
   \code{ss_mode} to choose between safe or optimized SS3
   executables (default is safe mode).}
+
+  \item{em_lbin_params}{A names list containing arguments
+  for \code{\link{change_EM_binning}}.}
 }
 \value{
 The output will appear in whatever your current \R working

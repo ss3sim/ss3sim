@@ -1,6 +1,6 @@
 #' Change population and observed length composition bins in an SS estimation model 
 #'
-#' \code{change_EM_binning} alters the bin structure for the population and 
+#' \code{change_em_binning} alters the bin structure for the population and 
 #' length composition data in an SS estimation model. It is done
 #' by taking the original length composition info from the EM ss3.dat 
 #' then changing according to the user's specification
@@ -13,7 +13,7 @@
 #' @param bin_vector A numeric vector of bins to substitute into the \code{ss3.dat}
 #'   file.
 #' @param lbin_method A numeric value of either \code{"NULL","1","2","3"} to change the lbin_method
-#' 	 for the population bin. Only supports either \code{"NULL","1","2"} at the moment. NUll 
+#' 	 for the population bin. Only supports either \code{"NULL","1","2"} at the moment. NULL 
 #'   means to keep it unchanged
 #' @param write_file Should the \code{.dat} file be written? The new \code{.dat}
 #'   file will always be returned invisibly by the function. Setting
@@ -28,19 +28,19 @@
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
-#' l <- change_EM_binning(f_in, file_out = NULL, lbin_method=1,
+#' l <- change_em_binning(f_in, file_out = NULL, lbin_method=1,
 #'   bin_vector = seq(8,30,by=1), write_file = FALSE)
 #' print(l$lbin_vector)
 #' print(head(l$lencomp))
 #'
-#' l <- change_EM_binning(f_in, file_out = NULL, lbin_method=1,
+#' l <- change_em_binning(f_in, file_out = NULL, lbin_method=1,
 #'   bin_vector = seq(10,27,by=2), write_file = FALSE)
 #' print(l$lbin_vector)
 #' print(head(l$lencomp))
 #'
 #'
 
-change_EM_binning <- function(file_in, file_out, lbin_method=NULL, bin_vector,
+change_em_binning <- function(file_in, file_out, lbin_method=NULL, bin_vector,
   write_file = TRUE) {
 
 # error checking
@@ -63,7 +63,7 @@ change_EM_binning <- function(file_in, file_out, lbin_method=NULL, bin_vector,
   }
   if(datfile$Ngenders > 1) {
     stop(paste("_Ngenders is greater than 1 in the model.",
-        "change_EM_binning only works with single-gender models."))
+        "change_em_binning only works with single-gender models."))
   }
   if(max(bin_vector)>max(datfile$lbin_vector)) {
     stop(paste("the maximum value in the bin_vector is above the original one",
