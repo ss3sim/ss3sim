@@ -28,21 +28,19 @@
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
-#' l <- change_lbin(f_in, file_out = NULL, lbin_method=1,
+#' l <- change_EM_binning(f_in, file_out = NULL, lbin_method=1,
 #'   bin_vector = seq(8,30,by=1), write_file = FALSE)
 #' print(l$lbin_vector)
 #' print(head(l$lencomp))
 #'
-#' l <- change_lbin(f_in, file_out = NULL, lbin_method=1,
+#' l <- change_EM_binning(f_in, file_out = NULL, lbin_method=1,
 #'   bin_vector = seq(10,27,by=2), write_file = FALSE)
 #' print(l$lbin_vector)
 #' print(head(l$lencomp))
 #'
 #'
-#' l <- change_lbin(file_in="F:\\ss3sim_projects\\binning\\A1-C0-E0-W0-F0-I1-L1-M0-fla\\1\\em\\ss3.dat", file_out = "F:\\ss3sim_projects\\binning\\A1-C0-E0-W0-F0-I1-L1-M0-fla\\1\\em\\ss3.dat", lbin_method=1, bin_vector = seq(4,86,by=5), write_file = TRUE)
 
-
-change_lbin <- function(file_in, file_out, lbin_method=NULL, bin_vector,
+change_EM_binning <- function(file_in, file_out, lbin_method=NULL, bin_vector,
   write_file = TRUE) {
 
 # error checking
@@ -65,7 +63,7 @@ change_lbin <- function(file_in, file_out, lbin_method=NULL, bin_vector,
   }
   if(datfile$Ngenders > 1) {
     stop(paste("_Ngenders is greater than 1 in the model.",
-        "change_lbin only works with single-gender models."))
+        "change_EM_binning only works with single-gender models."))
   }
   if(max(bin_vector)>max(datfile$lbin_vector)) {
     stop(paste("the maximum value in the bin_vector is above the original one",
