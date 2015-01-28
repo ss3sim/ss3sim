@@ -189,7 +189,9 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
       ## Draw samples to get # of fish in each age bin
       age.samples <- rmultinom(n = 1, size = as.integer(age.Nsamp),
                                prob = age.means)
-      if (any(is.na(age.samples))) {
+
+      # Draw samples to get # of fish in each age bin
+      if (any(is.na(age.means))) {
         stop("Invalid age comp probabilities in sample_mlacomp.")
       }
       # apply sampling across columns (ages) to get sample of lengths
