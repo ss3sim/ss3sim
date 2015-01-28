@@ -71,16 +71,27 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
   }
 
   is_ssdat_file(datfile)
-  agecomp <- datfile$agecomp[datfile$agecomp$Lbin_lo == -1, ]
   # Users can specify either Lbin_lo or Lbin_hi as a negative value to
   # delineate between cal and age comp data
+  agecomp <- datfile$agecomp[datfile$agecomp$Lbin_lo == -1 |
+                             datfile$agecomp$Lbin_hi == -1, ]
   if (NROW(agecomp) == 0) {
-    agecomp <- datfile$agecomp[datfile$agecomp$Lbin_hi == -1, ]
+    stop(paste0("No age data exist in the datfile."))
   }
   mlacomp <- datfile$MeanSize_at_Age_obs
   agebin_vector <- datfile$agebin_vector
+
   ## Read in the control file
   ctl <- SS_parlines(ctlfile)
+    CV.growth <- ctl[ctl$Label == "CV_young_Fem_GP_1", "INIT"]
+    CV.growth.old <- ctl[ctl$Label == "CV_old_Fem_GP_1", "INIT"]
+    if (CV.growth != CV.growth.old) {
+      stop(paste0("sample_mlacomp does not support different values for the",
+                  "CV's of young and old fish. Please the check ", ctlfile,
+                  "and make sure CV_young_Fem_GP_1 (", CV.growth, ") is",
+                  " equal to CV_old_Fem_GP_1 (", CV.growth.old, ")."))
+    }
+
   ## Check inputs for errors
   if (!is.null(outfile) & write_file){
     if (substr_r(outfile,4) != ".dat") {
@@ -152,7 +163,6 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
       ## For each age, given year and fleet, get the expected length
       ## and CV around that length, then sample from it using
       ## lognormal (below)
-      CV.growth <- ctl[ctl$Label == "CV_young_Fem_GP_1", "INIT"]
       sds <- mla.means * CV.growth
       # moments on natural scale, -> convert to log scale & generate data
       # ToDo(CM): I am not sure where the math for means.log came
