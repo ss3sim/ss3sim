@@ -69,9 +69,11 @@
 #' files.
 #'
 #' @author Kelli Johnson
+#' @importFrom r4ss SS_parlines
 #' @export
 #' @examples
 #' \dontrun{
+#' library(r4ss)
 #' # Create a temporary folder for the output and set the working directory:
 #' temp_path <- file.path(tempdir(), "ss3sim-tv-example")
 #' dir.create(temp_path, showWarnings = FALSE)
@@ -117,7 +119,7 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
                                        "VonBert_K_Fem_GP_1", "CV_young_Fem_GP_1",
                                        "CV_old_Fem_GP_1"),
                             "change_e_vbgf" = c("L1", "L2", "K", "cv.young", "cv.old"))
-    pars <- r4ss::SS_parlines(ctl_file_in, verbose = FALSE)
+    pars <- SS_parlines(ctl_file_in, verbose = FALSE)
     start.pars <- sapply(parsmatch$true, function(x) {
       # On 20141031 SA changed the following from subset() to avoid R CMD check warnings:
       # temp <- subset(pars, Label == x, select = INIT)
