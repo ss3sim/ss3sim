@@ -1,9 +1,9 @@
 #' Change population and observed length composition bins in an SS estimation model 
 #'
-#' \code{change_bin} alters the bin structure for the population and 
+#' \code{change_EM_binning} alters the bin structure for the population and 
 #' length composition data in an SS estimation model. It is done
 #' by taking the original length composition info from the EM ss3.dat 
-#' then changing according to the user's demand
+#' then changing according to the user's specification
 #' 
 #'
 #' @param file_in A character value giving the location of an SS \code{ss3.dat}
@@ -12,7 +12,7 @@
 #'   file to output.
 #' @param bin_vector A numeric vector of bins to substitute into the \code{ss3.dat}
 #'   file.
-#' @lbin_method A numeric value of either \code{"NULL","1","2","3"} to change the lbin_method
+#' @param lbin_method A numeric value of either \code{"NULL","1","2","3"} to change the lbin_method
 #' 	 for the population bin. Only supports either \code{"NULL","1","2"} at the moment. NUll 
 #'   means to keep it unchanged
 #' @param write_file Should the \code{.dat} file be written? The new \code{.dat}
