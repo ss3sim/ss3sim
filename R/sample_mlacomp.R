@@ -164,9 +164,11 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
       ## and CV around that length, then sample from it using
       ## lognormal (below)
       sds <- mla.means * CV.growth
-      # moments on natural scale, -> convert to log scale & generate data
-      # ToDo(CM): I am not sure where the math for means.log came
-      # from but if you could explain it that would be great -KFJ
+      # given an age the length distribution is lognormal with expected value
+      # equal to the expected mean length at age and a CV equal to the CV
+      # from the control file
+      # \mu = log(\frac{M}{sqrt{1 + \frac{V}{m^2})}})
+      # log(\frac{m}{(1 + \frac{v}{m^2})^(1/2)}) = log(\frac{m^2}{(m^2 + v)^(1/2)})
       means.log <- log(mla.means^2 / sqrt(sds^2 + mla.means^2))
       # sigma^2 = ln(1 + var[X] / (E[X])^2)
       # where the variance is defined on the real scale b/c the distribution
