@@ -20,7 +20,7 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   \item{scenarios}{Which scenarios to run.}
 
   \item{f_params}{A named list containing arguments for
-  \code{\link{change_f}} .}
+  \code{\link{change_f}}.}
 
   \item{index_params}{A named list containing arguments for
   \code{\link{sample_index}}.}

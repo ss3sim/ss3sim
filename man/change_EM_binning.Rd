@@ -2,7 +2,8 @@
 % Please edit documentation in R/change_em_binning.r
 \name{change_em_binning}
 \alias{change_em_binning}
-\title{Change population and observed length composition bins in an SS estimation model}
+\title{Change population and observed length composition bins in an SS estimation
+model}
 \usage{
 change_em_binning(file_in, file_out, lbin_method = NULL, bin_vector,
   write_file = TRUE)
@@ -35,8 +36,8 @@ change_em_binning(file_in, file_out, lbin_method = NULL, bin_vector,
 \code{change_em_binning} alters the bin structure for the
 population and length composition data in an SS estimation
 model. It is done by taking the original length composition
-info from the EM ss3.dat then changing according to the
-user's specification
+info from the EM \code{ss3.dat} then changing according to
+the user's specification.
 }
 \examples{
 d <- system.file("extdata", package = "ss3sim")

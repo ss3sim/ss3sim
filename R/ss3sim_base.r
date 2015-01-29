@@ -10,8 +10,7 @@
 #' @param scenarios Which scenarios to run.
 #' @param tv_params A named list containing arguments for
 #'   \code{\link{change_tv}} (time-varying).
-#' @param f_params A named list containing arguments for \code{\link{change_f}}
-#'   .
+#' @param f_params A named list containing arguments for \code{\link{change_f}}.
 #' @param index_params A named list containing arguments for
 #'   \code{\link{sample_index}}.
 #' @param lcomp_params A named list containing arguments for
@@ -32,7 +31,7 @@
 #'   \code{\link{change_tail_compression}}.
 #' @param lc_params A named list containing arguments for
 #'   \code{\link{change_lcomp_constant}}.
-#' @param em_lbin_params A names list containing arguments for 
+#' @param em_lbin_params A names list containing arguments for
 #'   \code{\link{change_EM_binning}}.
 #' @param len_bins A numeric vector of bins to record length data at from the
 #'   OM. If \code{NULL} then the bins in the original OM will be used.
@@ -460,8 +459,8 @@ deviations can lead to biased model results.")
 				  bin_vector 	   = bin_vector,
                   lbin_method      = lbin_method,
                   write_file       = TRUE))
-      }				  
-				  
+      }
+
       # Manipulate EM control file to adjust what gets estimated
       # We'll only a portion of the function, the ctl part if
       # it's a bias run or if bias adjustment isn't getting run.
