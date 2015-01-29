@@ -71,8 +71,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
   }
 
   is_ssdat_file(datfile)
-  # Users can specify either Lbin_lo or Lbin_hi as a negative value to
-  # delineate between cal and age comp data
+  # Users can specify either Lbin_lo or Lbin_hi < 1 for agecomp data
   agecomp <- datfile$agecomp[datfile$agecomp$Lbin_lo == -1 |
                              datfile$agecomp$Lbin_hi == -1, ]
   if (NROW(agecomp) == 0) {
@@ -110,6 +109,11 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
   if (is.null(mlacomp)) {
     stop("mean length-at-age compositions do not exist")
   }
+  # The following subset routine will only work for a single sex model
+  if (any(grepl("f", names(mlacomp)))) {
+    stop(paste("mlacomp data contains two sexes, which is not currently",
+               "supported by ss3sim, please reconfigure your model."))
+  }
   # Check for a sample size for every year
   if (length(Nsamp) != length(Nfleets)){
     stop(paste("Nsamp was not included for all fleets in fleet.",
@@ -125,7 +129,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
   }
   if (any(sapply(Nsamp, length) != sapply(years, length))) {
     stop(paste("Number of samples were not specified for every year.\n",
-               "length of years and Nsamp did not match for fleet(s)",
+               "Length of years and Nsamp did not match for fleet(s)",
                fleets[which(sapply(Nsamp, length) != sapply(years, length))]))
   }
   ## End input checks
@@ -151,25 +155,18 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
                    "in year", yr.temp))
       }
       # Get the columns that pertain to the actual mla data and not metadata
-      # The following subset routine will only work for a single sex model
-      if (any(grepl("f", names(mlacomp.new)))) {
-        stop(paste("mlacomp data contains two sexes, which is not currently",
-                   "supported by ss3sim, please reconfigure your model."))
-      }
       mla.means <- as.numeric(mlacomp.new[paste0("a", agebin_vector)])
-      ## For each age, given year and fleet, get the expected length
-      ## and CV around that length, then sample from it using
-      ## lognormal (below)
+      # For each age, given year and fleet, get the expected length and CV
+      # around length, then sample from it using lognormal (below)
+      # length for a given age is lognormal with expected value = E[mla]
+      # and CV equal to CV from ctl file
       sds <- mla.means * CV.growth
-      # given an age the length distribution is lognormal with expected value
-      # equal to the expected mean length at age and a CV equal to the CV
-      # from the control file
       # \mu = log(\frac{M}{sqrt{1 + \frac{V}{m^2})}})
-      # log(\frac{m}{(1 + \frac{v}{m^2})^(1/2)}) = log(\frac{m^2}{(m^2 + v)^(1/2)})
+      # log(\frac{m}{(1 + \frac{v}{m^2})^(1/2)}) =
+      # log(\frac{m^2}{(m^2 + v)^(1/2)})
       means.log <- log(mla.means^2 / sqrt(sds^2 + mla.means^2))
       # sigma^2 = ln(1 + var[X] / (E[X])^2)
-      # where the variance is defined on the real scale b/c the distribution
-      # is symmetric, where $\mu$ is defined on the log scale.
+      # symmetric distribution: Var on real scale, $\mu$ on log scale
       sds.log <- sqrt(log(1 + sds^2 / mla.means^2))
       # Get the true age distributions, probability of being a fish of age x
       agecomp.temp <- agecomp[agecomp$Yr == yr.temp &
