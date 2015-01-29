@@ -243,16 +243,17 @@ calculate_data_units <- function(index_params=NULL, lcomp_params=NULL,
     return(list(fleets=fleets, years=years, types=types))
 }
 
-change_pop_bin <- function(){
-    stop("This function is not yet developed")
-  ## # TODO: look at making pop_bin of length two with the first argument
-  ## # pertaining to the number of length population bins and the second argument
-  ## # pertaining to the age population bins. The ageing error matrices must also
-  ## # be changed because they have one column per population length bin
-  ## if (length(pop_bin) != 1 & !is.null(pop_bin)) {
-  ##   stop("pop bin should be a real number")
-  ## }
+change_pop_bin <- function(datfile, binwidth, minimum_size, maximum_size){
+
+  if (!is.null(pop_bin)) datfile$binwidth <- binwidth[1]
+  if (!is.null(minimum_size)) datfile$minimum_size <- minimum_size[1]
+  if (!is.null(maximum_size)) datfile$maximum_size <- maximum_size[1]
+
+  ## FIXME: Cole left this note:
+  ## The ageing error matrices must also
+  ## be changed because they have one column per population length bin
   ## if (!is.null(pop_bin)) datfile$binwidth <- pop_bin
+  invisible(datfile)
 }
 
 # quick checks that datfile looks correct:
