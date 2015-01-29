@@ -222,7 +222,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     }
   } # end sampling
   if (!is.null(mean_outfile)) {
-    write.csv(do.call("rbind", forexport), mean_outfile)
+    write.csv(do.call("rbind", forexport), mean_outfile, row.names = FALSE)
   }
   ## Combine new rows together into one data.frame
   mlacomp.new <- do.call(rbind, mlacomp.new.list)
