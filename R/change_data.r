@@ -243,9 +243,10 @@ calculate_data_units <- function(index_params=NULL, lcomp_params=NULL,
     return(list(fleets=fleets, years=years, types=types))
 }
 
-change_pop_bin <- function(datfile, binwidth, minimum_size, maximum_size){
+change_pop_bin <- function(datfile, binwidth = NULL, minimum_size = NULL,
+  maximum_size = NULL){
 
-  if (!is.null(pop_bin)) datfile$binwidth <- binwidth[1]
+  if (!is.null(binwidth)) datfile$binwidth <- binwidth[1]
   if (!is.null(minimum_size)) datfile$minimum_size <- minimum_size[1]
   if (!is.null(maximum_size)) datfile$maximum_size <- maximum_size[1]
 
