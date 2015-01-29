@@ -180,14 +180,30 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
                    "exists in the observed ages. ", agecomp$Nsamp, "were",
                    "observed but user specified a sample size of ", age.Nsamp))
       }
-      ## Draw samples to get # of fish in each age bin
-      age.samples <- rmultinom(n = 1, size = as.integer(age.Nsamp),
-                               prob = age.means)
-
       # Draw samples to get # of fish in each age bin
       if (any(is.na(age.means))) {
         stop("Invalid age comp probabilities in sample_mlacomp.")
       }
+      # If TRUE, assume a multinomial was used for agecomp sampling, thus
+      # resample agecomp N empirically to avoid too many samples in a given bin
+      if (any(age.means > 1)) {
+        # Create a vector of empirical samples of ages, such that each age bin
+        # is repeated equal to the number of observed fish in that bin.
+        prob.age.ints <- unlist(sapply(1:length(age.means), function(x) {
+          rep(x, age.means[x])
+          }))
+        # Resample to guarantee the sample size does not exceed the observed
+        temp <- sample(x = prob.age.ints, size = age.Nsamp, replace = FALSE)
+        age.samples <- sapply(1:length(age.means), function(x) sum(temp == x))
+      } else {
+        # in the case of overdispersed age comp data
+        age.samples <- rmultinom(n = 1, size = as.integer(age.Nsamp),
+                                 prob = age.means)
+      }
+      if (any(is.na(age.samples))) {
+        stop("Invalid length at age sample size in mlacomp")
+      }
+
       # apply sampling across columns (ages) to get sample of lengths
       lengths.list <-
         lapply(1:length(means.log), function(kk) {
