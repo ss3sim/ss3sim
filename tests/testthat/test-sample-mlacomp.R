@@ -25,4 +25,23 @@ test_that("sample_mlacomp() works", {
       0.87, 1.12))
 })
 
+test_that("mean of sample_mlacomp() is unbiased", {
+  datfile <- r4ss::SS_readdat(system.file("extdata/models/cod-om/codOM.dat",
+    package = "ss3sim"), verbose = FALSE)
+  fctl <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
+  newdat <- change_data(datfile, outfile = NULL, types = c("age", "mla"),
+    fleets = 1, years = 2000, write_file = FALSE)
+  newdat <- change_fltname(newdat)
+  newdat$agecomp$Nsamp <- 800000
+  ctlfile <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
+  out <- sample_mlacomp(newdat, outfile = NULL, ctlfile = ctlfile,
+    Nsamp = list(rep(800000, 1)), years = list(2000), write_file = FALSE,
+    mean_outfile = NULL)
+  result <- out$MeanSize_at_Age_obs[, -(1:9)]
+  samplesize <- result[grepl("N", names(result))]
+  proportion <- result[grepl("a", names(result))]
+  expect_equal(mean(as.numeric(proportion[proportion > -1]), 3), 1,
+               tolerance = .Machine$double.eps ^ 0.2)
+})
+
 setwd(wd)
