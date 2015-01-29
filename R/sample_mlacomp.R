@@ -155,7 +155,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
       }
       # Get the columns that pertain to the actual mla data and not metadata
       # The following subset routine will only work for a single sex model
-      if (any(grepl("f", names(mlacomp.new$MeanSize_at_Age_obs)))) {
+      if (any(grepl("f", names(mlacomp.new)))) {
         stop(paste("mlacomp data contains two sexes, which is not currently",
                    "supported by ss3sim, please reconfigure your model."))
       }
