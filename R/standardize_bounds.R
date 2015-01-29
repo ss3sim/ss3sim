@@ -56,8 +56,8 @@ standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
     
     #Restrict the parameters which have their initial values
     #set equal to only those which occur in both the EM and OM
-    restr_percent_df<-percent_df[match(percent_df[,"Label"], unique(c(om_pars[,"Label"],em_pars[,"Label"]))),]
-    
+    restr_percent_df<-percent_df[which(percent_df[,"Label"] %in% unique(c(om_pars[,"Label"],em_pars[,"Label"]))),]
+
     if(!is.na(restr_percent_df)){
     
       #Get the indices of the user input parameters in the OM/EM
@@ -100,6 +100,12 @@ standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
     #Change lo and hi's
     newlos<-percent_df[indices_to_standardize[,1],"lo"]*em_pars[indices_to_standardize[,2],"INIT"]
     newhis<-percent_df[indices_to_standardize[,1],"hi"]*em_pars[indices_to_standardize[,2],"INIT"]
+    
+    #If the parameter label contains "LnQ", use the value given in the 
+    #table rather than a percentage times the initial value.
+    newlos[grep("LnQ",percent.df$Label,ignore.case=TRUE)]<-percent.df[grep("LnQ",percent.df$Label,ignore.case=TRUE),2]
+    newhis[grep("LnQ",percent.df$Label,ignore.case=TRUE)]<-percent.df[grep("LnQ",percent.df$Label,ignore.case=TRUE),3]
+    
     change_lo_hi(ctlfile=EM_ctl_file,newctlfile=EM_ctl_file,
                  strings=as.character(percent_df[indices_to_standardize[,1],1]),
       newlos=newlos,newhis=newhis)

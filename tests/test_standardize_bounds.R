@@ -11,11 +11,12 @@ om.pars<-SS_parlines(ctlfile=OM.ctl)
 em.pars<-SS_parlines(ctlfile=EM.ctl)
 
 #From the Johnson et al paper
-lo.percent<-rep(.5,11)
-hi.percent<-c(500,1000,1000,rep(500,8))
+lo.percent<-c(rep(.5,7),rep(-20,3))
+hi.percent<-c(500,1000,1000,rep(500,4),rep(20,3))
 
 #Populate data frame using EM parameter names and percentages from the Johnson et al paper
-percent.df<-data.frame(Label=as.character(em.pars[c(1:6,17,27:30),"Label"]),lo=lo.percent,hi=hi.percent)
+#Indices are the parameters you want to modify
+percent.df<-data.frame(Label=as.character(em.pars[c(1:6,17,24:26),"Label"]),lo=lo.percent,hi=hi.percent)
 
 #Run function
 standardize_bounds(percent_df=percent.df,EM_ctl_file=EM.ctl,OM_ctl_file=OM.ctl)
