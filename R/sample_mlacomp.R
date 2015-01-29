@@ -78,7 +78,8 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
   if (NROW(agecomp) == 0) {
     stop(paste0("No age data exist in the datfile."))
   }
-  mlacomp <- datfile$MeanSize_at_Age_obs
+  mwacomp <- datfile$MeanSize_at_Age_obs[datfile$MeanSize_at_Age_obs$AgeErr < 0, ]
+  mlacomp <- datfile$MeanSize_at_Age_obs[datfile$MeanSize_at_Age_obs$AgeErr > 0, ]
   agebin_vector <- datfile$agebin_vector
 
   ## Read in the control file
@@ -108,11 +109,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
   }
   if (is.null(mlacomp)) {
     stop("mean length-at-age compositions do not exist")
-  } else {
-      if (NROW(mlacomp[mlacomp$AgeErr > 0, ]) < 1){
-        stop("mean length-at-age compositions do not exist")
-      }
-    }
+  }
   # Check for a sample size for every year
   if (length(Nsamp) != length(Nfleets)){
     stop(paste("Nsamp was not included for all fleets in fleet.",
@@ -226,7 +223,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
   }
   ## Combine new rows together into one data.frame
   mlacomp.new <- do.call(rbind, mlacomp.new.list)
-  datfile$MeanSize_at_Age_obs <- mlacomp.new
+  datfile$MeanSize_at_Age_obs <- rbind(mlacomp.new, mwacomp)
   datfile$N_MeanSize_at_Age_obs <- NROW(mlacomp.new)
   ## Write the modified file
   if(write_file) SS_writedat(datlist = datfile, outfile = outfile,
