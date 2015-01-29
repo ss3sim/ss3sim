@@ -22,9 +22,9 @@ change_e(ctl_file_in = pastef("em.ctl"), ctl_file_out = pastef("em.ctl"),
   \item{natM_type}{*A character string corresponding to
   option 0:4 in SS3 (i.e. "1Parm", "n_breakpoints",
   "Lorenzen", "agespecific",
-  "agespec_withseasinterpolate").  A value of NA will leave
-  the configuration of natural mortality as specified in
-  \code{ctl_file_in}.}
+  "agespec_withseasinterpolate"). A value of \code{NA} will
+  leave the configuration of natural mortality as specified
+  in \code{ctl_file_in}.}
 
   \item{natM_n_breakpoints}{*A vector of ages at which you
   want breakpoints. Only used if you specify
@@ -32,8 +32,8 @@ change_e(ctl_file_in = pastef("em.ctl"), ctl_file_out = pastef("em.ctl"),
 
   \item{natM_lorenzen}{*The reference age for the Lorenzen
   function.  Only used if you specify \code{natM_type =
-  "Lorenzen"}.  Length should be one even if the
-  \code{.ctl} has two genders.}
+  "Lorenzen"}. Length should be one even if the \code{.ctl}
+  has two genders.}
 
   \item{natM_val}{*A vector of numeric values.
   Interpretation of the values are dependent upon
@@ -45,12 +45,12 @@ change_e(ctl_file_in = pastef("em.ctl"), ctl_file_out = pastef("em.ctl"),
   area, etc. Ensure that there is one entry per integer age
   x area x gender. If \code{natM_type = "1Param"},
   \code{natM_type = "n_breakpoints"}, or \code{natM_type =
-  "Lorenzen"} the vector specifies the intitial and phase
+  "Lorenzen"} the vector specifies the initial and phase
   values for each natM parameter (i.e. \code{c(int, phase,
   int, phase, etc.)}, where the first two values could
   correspond to ages 0-2 natural mortality and the third
   and fourth value could correspond to ages 3-8 natural
-  mortality).  For any specified intial value, the
+  mortality).  For any specified initial value, the
   parameter bounds will be altered to 50 percent above and
   below the specified initial value, if the initial value
   lies above or below the original bounds.}
@@ -64,14 +64,15 @@ change_e(ctl_file_in = pastef("em.ctl"), ctl_file_out = pastef("em.ctl"),
   parameter names as they are specified in
   \code{ctl_file_in}.}
 
-  \item{par_int}{*A vector of intial values, one for each
-  parameter in \code{par_name}.  Values can be NA if you do
-  not wish to change the initial value for a given
+  \item{par_int}{*A vector of initial values, one for each
+  parameter in \code{par_name}.  Values can be \code{NA} if
+  you do not wish to change the initial value for a given
   parameter.}
 
   \item{par_phase}{*A vector of phase values, one for each
-  parameter in \code{par_name}.  Values can be NA if you do
-  not wish to change the phase for a given parameter.}
+  parameter in \code{par_name}.  Values can be \code{NA} if
+  you do not wish to change the phase for a given
+  parameter.}
 
   \item{forecast_num}{*Number of years to perform
   forecasts. For those years, the data will be removed from
@@ -91,10 +92,10 @@ Takes SS3 \code{.ctl}, \code{.dat}, and \code{forecast.ss}
 files and changes which parameters are estimated, how
 natural mortality is estimated, and if forecasts are
 performed. The function can be called by itself or within
-\link{run_ss3sim} to alter an estimation model \code{.ctl}
-file. If used with \code{\link{run_ss3sim}} the case file
-should be named \code{E}. A suggested (default) case letter
-is \code{E} for estimation.
+\code{\link{run_ss3sim}} to alter an estimation model
+\code{.ctl} file.  If used with \code{\link{run_ss3sim}}
+the case file should be named \code{E}. A suggested
+(default) case letter is \code{E} for estimation.
 }
 \details{
 Turning parameters on and off is the main function of
@@ -119,6 +120,7 @@ and \code{natM_type} is anything other than \code{NULL} or
 }
 \examples{
 \dontrun{
+library(r4ss)
 # Create a temporary folder for the output and set the working directory:
 temp_path <- file.path(tempdir(), "ss3sim-tv-example")
 dir.create(temp_path, showWarnings = FALSE)

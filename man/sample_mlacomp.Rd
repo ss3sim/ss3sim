@@ -16,10 +16,9 @@ sample_mlacomp(datfile, outfile, ctlfile, fleets = 1, Nsamp, years,
   file name to be created. Must end in \code{.dat}.}
 
   \item{ctlfile}{A path to the control file, outputed from
-  an OM, containing the OM parameters for growth and
-  weight/length relationship. These values are used to
-  determine the uncertainty about weight for fish sampled
-  in each age bin.}
+  an OM, containing the OM parameters for growth. These
+  values are used to determine the uncertainty about size
+  for fish sampled in each age bin.}
 
   \item{fleets}{*A numeric vector giving the fleets to be
   used. This order also pertains to other arguments. A
@@ -44,25 +43,18 @@ sample_mlacomp(datfile, outfile, ctlfile, fleets = 1, Nsamp, years,
   returned invisibly, as in the examples below.}
 
   \item{mean_outfile}{A path to write length and age data
-<<<<<<< HEAD
-  for external estimation of parametric growth. If
-  \code{NULL} no file will be written. This file is used by
-=======
   for external estimation of parametric growth. If NULL no
   file will be written. This file is used by
->>>>>>> cd7e32520cad9ff74dac5269d10f18b716717a5c
   \code{change_e} to externally estimate growth parameters.
   Filename must contain "vbgf" to be used by
   \code{change_e}. Also, if "remove" is included in the
   filename, the mean length at age data will be removed
   from the \code{.dat} file and not be available to the
   EM.}
-<<<<<<< HEAD
 
-  \item{verbose}{A logical value whether or not information
-  should be printed to the screen, useful for debugging.}
-=======
->>>>>>> cd7e32520cad9ff74dac5269d10f18b716717a5c
+  \item{verbose}{Logical value whether or not diagnostic
+  information from \pkg{r4ss} functions should be printed
+  to the screen. Default is FALSE.}
 
   \item{cpar}{*A numeric value or vector the same length as
   \code{fleets} controlling the variance of the Dirichlet
@@ -72,9 +64,11 @@ sample_mlacomp(datfile, outfile, ctlfile, fleets = 1, Nsamp, years,
   Values greater than one indicate overdispersion, and less
   underdispersion.}
 
-  \item{datfile}{A \code{.dat} file as read in by
-  \code{SS_readdat}. This list will be used to determine
-  how many fish of each age bin are to be sampled.}
+  \item{datfile}{A \code{.dat} file read in by \pkg{r4ss}
+  function \code{\link[r4ss]{SS_readdat}}. This list will
+  be used to determine how many fish of each age bin are to
+  be sampled and the mean length for the distribution to
+  sample from.}
 }
 \value{
 A modified \code{.dat} file if \code{write_file=TRUE}. A
@@ -86,12 +80,14 @@ Sample mean length (size-)-at-age data and write to file
 for use by the EM.
 }
 \details{
-Take a \code{data.SS_new} file containing expected values
-and sample from true ages to get realistic proportions for
-the number of fish in each age bin, then use the mean
-size-at-age and CV for growth to generate random samples of
-size, which are then averaged to get mean weight-at-age
-values. These values are then written to file for the EM.
+Take a \code{data.SS_new} file, read in by \pkg{r4ss}
+function \code{\link[r4ss]{SS_readdat}} containing observed
+values, and sample from the observed ages to get realistic
+proportions for the number of fish in each age bin, then
+use the mean size-at-age and CV for growth to generate
+random samples of size, which are then averaged to get mean
+length-at-age values. These values are then written to file
+for the EM.
 }
 \section{Which arguments to specifiy in case files}{
   All function argument descriptions that start with an
@@ -124,9 +120,10 @@ unlink("ss3sim-test", recursive = TRUE)
 setwd(wd)
 }
 \author{
-Cole Monnahan
+Cole Monnahan, Kelli Johnson
 }
 \seealso{
-\code{\link{sample_lcomp}, \link{sample_agecomp}}
+\code{\link{sample_lcomp}, \link{sample_agecomp},
+link{sample_calcomp}}
 }
 
