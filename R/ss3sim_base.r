@@ -410,7 +410,7 @@ deviations can lead to biased model results.")
                                          fleets         = fleets,
                                          Nsamp          = Nsamp,
                                          years          = years,
-                                         mean_outfile   = pastef(sc, i, "em", 
+                                         mean_outfile   = pastef(sc, i, "em",
                                                                  paste0(mean_outfile, ".csv")),
                                          write_file     = FALSE))
       }
