@@ -121,10 +121,10 @@ standardize_bounds<-function(percent_df, em_ctl_file, om_ctl_file = "", ...) {
 
     #If the parameter label contains "LnQ", use the value given in the
     #table rather than a percentage times the initial value.
-    newlos[grep("LnQ", percent.df$Label, ignore.case = TRUE)] <-
-      percent.df[grep("LnQ", percent.df$Label, ignore.case = TRUE), 2]
-    newhis[grep("LnQ", percent.df$Label, ignore.case = TRUE)] <-
-    percent.df[grep("LnQ", percent.df$Label, ignore.case = TRUE), 3]
+    newlos[grep("LnQ", percent_df$Label, ignore.case = TRUE)] <-
+      percent_df[grep("LnQ", percent_df$Label, ignore.case = TRUE), 2]
+    newhis[grep("LnQ", percent_df$Label, ignore.case = TRUE)] <-
+    percent_df[grep("LnQ", percent_df$Label, ignore.case = TRUE), 3]
 
     change_lo_hi(ctlfile=em_ctl_file,newctlfile=em_ctl_file,
                  strings=as.character(percent_df[indices_to_standardize[,1],1]),
