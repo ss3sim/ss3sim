@@ -72,10 +72,9 @@ standardize_bounds<-function(percent_df, em_ctl_file, om_ctl_file="") {
       if(any(om_pars[om_indices,"INIT"]!= em_pars[em_indices,"INIT"])){
         inits_to_change <- em_pars[which(em_pars[em_indices,"INIT"] !=
                                          om_pars[om_indices,"INIT"]), "Label"]
-        SS_changepars(dir=substr(em_ctl_file, 1, nchar(em_ctl_file)-9),
-          ctlfile=substr(em_ctl_file, nchar(em_ctl_file)-8, nchar(em_ctl_file)),
-          newctlfile = substr(em_ctl_file, nchar(em_ctl_file)-8,
-                              nchar(em_ctl_file)),
+        SS_changepars(dir=".",
+          ctlfile = em_ctl_file,
+          newctlfile = em_ctl_file,
           strings = inits_to_change,
           newvals = om_pars[which(om_pars[om_indices,"INIT"] !=
                                   em_pars[em_indices,"INIT"]),"INIT"])
