@@ -4,19 +4,19 @@
 \alias{standardize_bounds}
 \title{Standardize the bounds of the estimation model control file.}
 \usage{
-standardize_bounds(percent_df, EM_ctl_file, OM_ctl_file = "")
+standardize_bounds(percent_df, em_ctl_file, om_ctl_file = "")
 }
 \arguments{
   \item{percent_df}{A \code{data.frame} with nine rows and
   three columns. The first column is the parameter. The
-  second column the % of the initial parameter value LO is
-  set to. The third column the % of the initial parameter
-  value HI is set to.}
+  second column is the % of the initial parameter value LO
+  is set to. The third column is the % of the initial
+  parameter value HI is set to.}
 
-  \item{EM_ctl_file}{A string with the path and name of the
+  \item{em_ctl_file}{A string with the path and name of the
   estimation model control file.}
 
-  \item{OM_ctl_file}{A string with the path and name of the
+  \item{om_ctl_file}{A string with the path and name of the
   operating model control file. If it is not given the part
   of the function which matches the OM and EM INIT values
   is ignored. Default is \code{""}.}
@@ -25,9 +25,9 @@ standardize_bounds(percent_df, EM_ctl_file, OM_ctl_file = "")
 Function to standardize the bounds of the control file in
 the estimation model. This function first checks to ensure
 the initial values in the estimation model control file are
-set to the true values of the \code{OM_ctl_file} and if not
+set to the true values of the \code{om_ctl_file} and if not
 sets them for every parameter. Next, the function adjusts
-the LO and HI values in the \code{EM_ctl_file} to be a
+the LO and HI values in the \code{em_ctl_file} to be a
 fixed percentage of the initial value for every parameter.
 }
 \examples{
@@ -50,8 +50,8 @@ percent.df<-data.frame(Label=as.character(em.pars[c(1:6,17,27:30),"Label"]),
   lo=lo.percent,hi=hi.percent)
 
 #Run function
-standardize_bounds(percent_df = percent.df, EM_ctl_file = EM.ctl,
-                   OM_ctl_file = OM.ctl)
+standardize_bounds(percent_df = percent.df, em_ctl_file = EM.ctl,
+                   om_ctl_file = OM.ctl)
 }
 }
 \author{

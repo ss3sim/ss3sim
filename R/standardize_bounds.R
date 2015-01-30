@@ -3,20 +3,20 @@
 #' Function to standardize the bounds of the control file in the estimation
 #' model. This function first checks to ensure the initial values in the
 #' estimation model control file are set to the true values of the
-#' \code{OM_ctl_file} and if not sets them for every parameter. Next, the
-#' function adjusts the LO and HI values in the \code{EM_ctl_file} to
+#' \code{om_ctl_file} and if not sets them for every parameter. Next, the
+#' function adjusts the LO and HI values in the \code{em_ctl_file} to
 #' be a fixed percentage of the initial value for every parameter.
 #'
 #' @author Christine Stawitz
 #'
 #' @param percent_df A \code{data.frame} with nine rows and three columns.
 #'   The first column is the parameter.
-#'   The second column the % of the initial parameter value LO is set to.
-#'   The third column the % of the initial parameter value HI is set to.
-#' @param OM_ctl_file A string with the path and name of the operating model
+#'   The second column is the % of the initial parameter value LO is set to.
+#'   The third column is the % of the initial parameter value HI is set to.
+#' @param om_ctl_file A string with the path and name of the operating model
 #'   control file. If it is not given the part of the function which matches the
 #'   OM and EM INIT values is ignored. Default is \code{""}.
-#' @param EM_ctl_file A string with the path and name of the estimation model
+#' @param em_ctl_file A string with the path and name of the estimation model
 #'   control file.
 #' @importFrom r4ss SS_parlines SS_changepars
 #' @export
@@ -40,21 +40,21 @@
 #'   lo=lo.percent,hi=hi.percent)
 #'
 #' #Run function
-#' standardize_bounds(percent_df = percent.df, EM_ctl_file = EM.ctl,
-#'                    OM_ctl_file = OM.ctl)
+#' standardize_bounds(percent_df = percent.df, em_ctl_file = EM.ctl,
+#'                    om_ctl_file = OM.ctl)
 #' }
 
-standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
+standardize_bounds<-function(percent_df, em_ctl_file, om_ctl_file="") {
 
   #Read in EM values
-  em_pars<-SS_parlines(ctlfile=EM_ctl_file)
+  em_pars<-SS_parlines(ctlfile=em_ctl_file)
 
   #1. ensure the INIT value in the EM ctl file is set to the OM true value
   #If an OM is passed
-  if(nchar(OM_ctl_file)>0){
+  if(nchar(om_ctl_file)>0){
 
     #Read in OM true value
-    om_pars<-SS_parlines(ctlfile=OM_ctl_file)
+    om_pars<-SS_parlines(ctlfile=om_ctl_file)
 
     #Restrict the parameters which have their initial values
     #set equal to only those which occur in both the EM and OM
@@ -72,10 +72,10 @@ standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
       if(any(om_pars[om_indices,"INIT"]!= em_pars[em_indices,"INIT"])){
         inits_to_change <- em_pars[which(em_pars[em_indices,"INIT"] !=
                                          om_pars[om_indices,"INIT"]), "Label"]
-        SS_changepars(dir=substr(EM_ctl_file, 1, nchar(EM_ctl_file)-9),
-          ctlfile=substr(EM_ctl_file, nchar(EM_ctl_file)-8, nchar(EM_ctl_file)),
-          newctlfile = substr(EM_ctl_file, nchar(EM_ctl_file)-8,
-                              nchar(EM_ctl_file)),
+        SS_changepars(dir=substr(em_ctl_file, 1, nchar(em_ctl_file)-9),
+          ctlfile=substr(em_ctl_file, nchar(em_ctl_file)-8, nchar(em_ctl_file)),
+          newctlfile = substr(em_ctl_file, nchar(em_ctl_file)-8,
+                              nchar(em_ctl_file)),
           strings = inits_to_change,
           newvals = om_pars[which(om_pars[om_indices,"INIT"] !=
                                   em_pars[em_indices,"INIT"]),"INIT"])
@@ -90,7 +90,7 @@ standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
   #To a fixed % of the init value as provided in the user input
 
   #Read in parameters from EM ctl file
-  em_pars<-SS_parlines(ctlfile=EM_ctl_file)
+  em_pars<-SS_parlines(ctlfile=em_ctl_file)
 
   #Check input parameter names are valid
   #Do these match the data frame first column?
@@ -118,7 +118,7 @@ standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
     newhis[grep("LnQ", percent.df$Label, ignore.case = TRUE)] <-
     percent.df[grep("LnQ", percent.df$Label, ignore.case = TRUE), 3]
 
-    change_lo_hi(ctlfile=EM_ctl_file,newctlfile=EM_ctl_file,
+    change_lo_hi(ctlfile=em_ctl_file,newctlfile=em_ctl_file,
                  strings=as.character(percent_df[indices_to_standardize[,1],1]),
       newlos=newlos,newhis=newhis)
   }
@@ -153,8 +153,7 @@ standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
 #' @export
 change_lo_hi <- function (ctlfile = "control.ss_new",
           newctlfile = "control_modified.ss", linenums = NULL, strings = NULL,
-          newlos = NULL, newhis = NULL, estimate = FALSE, verbose = TRUE)
-{
+          newlos = NULL, newhis = NULL, estimate = FALSE, verbose = TRUE) {
   ctl = readLines(ctlfile)
   if (is.null(linenums) & !is.null(strings) & class(strings) ==
         "character") {
