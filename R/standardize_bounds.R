@@ -36,11 +36,12 @@
 #' hi.percent<-c(500,1000,1000,rep(500,8))
 #'
 #' ##Populate data frame using EM parameter names and percentages
-#' percent.df<-data.frame(label=as.character(em.pars[c(1:6,17,27:30),"Label"]),
+#' percent.df<-data.frame(Label=as.character(em.pars[c(1:6,17,27:30),"Label"]),
 #'   lo=lo.percent,hi=hi.percent)
 #'
 #' #Run function
-#' standardize_bounds(percent_df,EM_ctl_file=EM.ctl,OM_ctl_file=OM.ctl)
+#' standardize_bounds(percent_df = percent.df, EM_ctl_file = EM.ctl,
+#'                    OM_ctl_file = OM.ctl)
 #' }
 
 standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
