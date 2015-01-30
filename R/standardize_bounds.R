@@ -2,22 +2,24 @@
 #'
 #' Function to standardize the bounds of the control file in the estimation
 #' model. This function first checks to ensure the initial values in the
-#' estimation model control file are set to the true values of the operating
-#' model control file and if not sets them for every parameter. Next, the
-#' function adjusts the LO and HI values in the estimation model control file to
+#' estimation model control file are set to the true values of the
+#' \code{OM_ctl_file} and if not sets them for every parameter. Next, the
+#' function adjusts the LO and HI values in the \code{EM_ctl_file} to
 #' be a fixed percentage of the initial value for every parameter.
 #'
 #' @author Christine Stawitz
 #'
-#' @param percent_df is a data.frame with nine rows and three columns. The first
-#'   column is the parameter
-#' @param OM_ctl_file is a string with the path and name of the operating model
+#' @param percent_df A \code{data.frame} with nine rows and three columns.
+#'   The first column is the parameter.
+#'   The second column the % of the initial parameter value LO is set to.
+#'   The third column the % of the initial parameter value HI is set to.
+#' @param OM_ctl_file A string with the path and name of the operating model
 #'   control file. If it is not given the part of the function which matches the
-#'   OM and EM init values is ignored. Default = ""
-#' @param EM_ctl_file is a string with the path and name of the estimation model
-#'   control file name. The second column is what % of the initial parameter
-#'   value LO should be set to. The third column is what % of the initial
-#'   parameter value HI should be set to.
+#'   OM and EM INIT values is ignored. Default is \code{""}.
+#' @param EM_ctl_file A string with the path and name of the estimation model
+#'   control file.
+#' @importFrom r4ss SS_parlines SS_changepars
+#' @export
 #' @examples
 #' \dontrun{
 #' ## require(r4ss)
@@ -40,30 +42,29 @@
 #' #Run function
 #' standardize_bounds(percent_df,EM_ctl_file=EM.ctl,OM_ctl_file=OM.ctl)
 #' }
-#'  @export
 
 standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
-  
+
   #Read in EM values
   em_pars<-SS_parlines(ctlfile=EM_ctl_file)
-  
+
   #First, ensure the initial value in the EM control file is set to the OM true value
   #If an OM is passed
   if(nchar(OM_ctl_file)>0){
-    
+
     #Read in OM true value
     om_pars<-SS_parlines(ctlfile=OM_ctl_file)
-    
+
     #Restrict the parameters which have their initial values
     #set equal to only those which occur in both the EM and OM
     restr_percent_df<-percent_df[which(percent_df[,"Label"] %in% unique(c(om_pars[,"Label"],em_pars[,"Label"]))),]
 
     if(!is.na(restr_percent_df)){
-    
+
       #Get the indices of the user input parameters in the OM/EM
       om_indices<-which(om_pars[,"Label"] %in% restr_percent_df[,"Label"])
       em_indices<-which(em_pars[,"Label"] %in% restr_percent_df[,"Label"])
-    
+
 
     #If they are not equal, set the EM initial value to the OM true value
       if(any(om_pars[om_indices,"INIT"]!= em_pars[em_indices,"INIT"])){
@@ -100,45 +101,44 @@ standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
     #Change lo and hi's
     newlos<-percent_df[indices_to_standardize[,1],"lo"]*em_pars[indices_to_standardize[,2],"INIT"]
     newhis<-percent_df[indices_to_standardize[,1],"hi"]*em_pars[indices_to_standardize[,2],"INIT"]
-    
-    #If the parameter label contains "LnQ", use the value given in the 
+
+    #If the parameter label contains "LnQ", use the value given in the
     #table rather than a percentage times the initial value.
     newlos[grep("LnQ",percent.df$Label,ignore.case=TRUE)]<-percent.df[grep("LnQ",percent.df$Label,ignore.case=TRUE),2]
     newhis[grep("LnQ",percent.df$Label,ignore.case=TRUE)]<-percent.df[grep("LnQ",percent.df$Label,ignore.case=TRUE),3]
-    
+
     change_lo_hi(ctlfile=EM_ctl_file,newctlfile=EM_ctl_file,
                  strings=as.character(percent_df[indices_to_standardize[,1],1]),
       newlos=newlos,newhis=newhis)
   }
 }
 
-#' Changes the lo and hi bounds of the estimation model control file
+#' Changes the LO and HI bounds of the estimation model control file
 #'
-#' This is a modified version of r4SS::SS_changepars which modifies the lo and
-#' hi bounds in the control file instead of the initial value. newhis and newlos
-#' must be equivalent lengths and both refer to the parameters in strings in the
-#' same order. Also put the directory into the filenames to match the structure
-#' of the above function.
+#' This is a modified version of \code{\link[r4SS]{SS_changepars}} which
+#' modifies the LO and HI bounds in the \code{ctlfile} based on the INIT value.
+#' \code{newhis} and \code{newlos} must be equivalent lengths
+#' and both refer to the parameters in strings in the same order.
 #'
 #' @author Ian Taylor, modified by Christine Stawitz
 #'
 #' @param ctlfile Control file name with directory.
-#'   Default="C:/myfiles/mymodels/myrun/control.ss_new".
 #' @param newctlfile Name of new control file to be written.
-#'   Default="C:/myfiles/mymodels/myrun/control_modified.ss"
 #' @param linenums Line numbers of control file to be modified. Either this or
-#'   the Strings input are needed. Default=NULL.
+#'   the Strings input are needed. Default is \code{NULL}.
 #' @param strings Strings (with optional partial matching) indicating which
-#'   parameters to be modified. This is an alternative to linenums. Strings
-#'   correspond to the commented parameter names included in control.ss_new, or
-#'   whatever is written as comment at the end of the 14 number parameter lines.
-#' @param newlos Vector of new lo bounds. Default=NULL.
-#' @param newhis Vector of new hi bounds. Must be the same length as newhis
-#'   Default=NULL.
-#' @param estimate Vector of TRUE/FALSE for which changed parameters are to be
-#'   estimated. Default=FALSE.
-#' @param verbose More detailed output to command line. Default=TRUE.
+#'   parameters to be modified. This is an alternative to \code{linenums}.
+#'   Strings correspond to commented parameter names included in a
+#'   \code{control.ss_new}, or whatever is written as comment at the end of
+#'   the 14 number parameter lines.
+#' @param newlos Vector of new lo bounds. Default is \code{NULL}.
+#' @param newhis Vector of new hi bounds. Must be the same length as
+#'   \code{newhis}. Default is \code{NULL}.
+#' @param estimate Vector of \code{TRUE}/\code{FALSE} for which changed
+#'   parameters are to be estimated. Default is \code{FALSE}.
+#' @param verbose More detailed output to command line. Default is \code{TRUE}.
 #' @seealso \code{\link{SS_changepars}}
+#' @importFrom r4ss SS_parlines
 #' @export
 change_lo_hi <- function (ctlfile = "control.ss_new",
           newctlfile = "control_modified.ss", linenums = NULL, strings = NULL,

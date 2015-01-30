@@ -2,48 +2,49 @@
 % Please edit documentation in R/standardize_bounds.R
 \name{change_lo_hi}
 \alias{change_lo_hi}
-\title{Changes the lo and hi bounds of the estimation model control file}
+\title{Changes the LO and HI bounds of the estimation model control file}
 \usage{
 change_lo_hi(ctlfile = "control.ss_new", newctlfile = "control_modified.ss",
   linenums = NULL, strings = NULL, newlos = NULL, newhis = NULL,
   estimate = FALSE, verbose = TRUE)
 }
 \arguments{
-  \item{ctlfile}{Control file name with directory.
-  Default="C:/myfiles/mymodels/myrun/control.ss_new".}
+  \item{ctlfile}{Control file name with directory.}
 
-  \item{newctlfile}{Name of new control file to be written.
-  Default="C:/myfiles/mymodels/myrun/control_modified.ss"}
+  \item{newctlfile}{Name of new control file to be
+  written.}
 
   \item{linenums}{Line numbers of control file to be
   modified. Either this or the Strings input are needed.
-  Default=NULL.}
+  Default is \code{NULL}.}
 
   \item{strings}{Strings (with optional partial matching)
   indicating which parameters to be modified. This is an
-  alternative to linenums. Strings correspond to the
-  commented parameter names included in control.ss_new, or
-  whatever is written as comment at the end of the 14
-  number parameter lines.}
+  alternative to \code{linenums}. Strings correspond to
+  commented parameter names included in a
+  \code{control.ss_new}, or whatever is written as comment
+  at the end of the 14 number parameter lines.}
 
-  \item{newlos}{Vector of new lo bounds. Default=NULL.}
+  \item{newlos}{Vector of new lo bounds. Default is
+  \code{NULL}.}
 
   \item{newhis}{Vector of new hi bounds. Must be the same
-  length as newhis Default=NULL.}
+  length as \code{newhis}. Default is \code{NULL}.}
 
-  \item{estimate}{Vector of TRUE/FALSE for which changed
-  parameters are to be estimated. Default=FALSE.}
+  \item{estimate}{Vector of \code{TRUE}/\code{FALSE} for
+  which changed parameters are to be estimated. Default is
+  \code{FALSE}.}
 
   \item{verbose}{More detailed output to command line.
-  Default=TRUE.}
+  Default is \code{TRUE}.}
 }
 \description{
-This is a modified version of r4SS::SS_changepars which
-modifies the lo and hi bounds in the control file instead
-of the initial value. newhis and newlos must be equivalent
-lengths and both refer to the parameters in strings in the
-same order. Also put the directory into the filenames to
-match the structure of the above function.
+This is a modified version of
+\code{\link[r4SS]{SS_changepars}} which modifies the LO and
+HI bounds in the \code{ctlfile} based on the INIT value.
+\code{newhis} and \code{newlos} must be equivalent lengths
+and both refer to the parameters in strings in the same
+order.
 }
 \author{
 Ian Taylor, modified by Christine Stawitz

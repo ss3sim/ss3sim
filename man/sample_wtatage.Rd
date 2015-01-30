@@ -5,7 +5,8 @@
 \title{Sample empirial weight-at-age data and write to file for use by the EM}
 \usage{
 sample_wtatage(infile, outfile, datfile, ctlfile, years,
-  fill_fnc = fill_across, write_file = TRUE, fleets, cv_wtatage = NULL)
+  fill_fnc = fill_across, write_file = TRUE, fleets, cv_wtatage = NULL,
+  nsamp_wtatage = NULL)
 }
 \arguments{
   \item{infile}{The file to read weight-at-age from.
