@@ -61,7 +61,7 @@ standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
     restr_percent_df <- percent_df[which(percent_df[,"Label"] %in%
       unique(c(om_pars[,"Label"], em_pars[, "Label"]))), ]
 
-    if(!is.na(restr_percent_df)){
+    if(any(!is.na(restr_percent_df))){
 
       #Get the indices of the user input parameters in the OM/EM
       om_indices<-which(om_pars[,"Label"] %in% restr_percent_df[,"Label"])
@@ -81,7 +81,8 @@ standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
                                   em_pars[em_indices,"INIT"]),"INIT"])
       }
     }else{
-      print("None of the entered parameter labels are found in both the EM and OM.")
+      warning(paste("None of the entered parameter labels,",
+              percent_df[, 1], "are found in both the EM and OM."))
     }
   }
 
@@ -94,8 +95,9 @@ standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
   #Check input parameter names are valid
   #Do these match the data frame first column?
   if(any(!percent_df[,"Label"] %in% em_pars[,"Label"])){
-    print(paste("Element",which(!percent_df[,"Label"] %in% em_pars[,"Label"]),
-      "does not have a valid parameter label."))
+    warning(paste("Element",
+                  which(!percent_df[, "Label"] %in% em_pars[, "Label"]),
+                  "does not have a valid parameter label."))
   }else{
     #Get indices of parameters to standardize; first column is in the data frame
     # and second is in the EM read values
@@ -164,26 +166,19 @@ change_lo_hi <- function (ctlfile = "control.ss_new",
       for (i in 1:length(strings)) goodnames <- c(goodnames,
         allnames[grep(strings[i], allnames,fixed=TRUE)])
       goodnames <- unique(goodnames)
-      cat("parameter names in control file matching input vector 'strings' (n=",
-          length(goodnames), "):\n", sep = "")
-      print(goodnames)
       if (length(goodnames) == 0) {
         stop("No parameters names match input vector 'strings'")
       }
     }
     nvals <- length(goodnames)
-    cat("These are the ctl file lines as they currently exist:\n")
-    print(ctltable[ctltable$Label %in% goodnames, ])
-    for (i in 1:nvals) linenums[i] <- ctltable$Linenum[ctltable$Label ==
-                                                         goodnames[i]]
+    for (i in 1:nvals) {
+      linenums[i] <- ctltable$Linenum[ctltable$Label == goodnames[i]]
+    }
   } else {
     if (is.null(linenums))
       stop("valid input needed for either 'linenums' or 'strings'")
   }
   ctlsubset <- ctl[linenums]
-  cat("line numbers in control file (n=", length(linenums),
-      "):\n", sep = "")
-  print(linenums)
   newctlsubset <- NULL
   cmntvec <- NULL
   nvals <- length(linenums)
@@ -230,11 +225,11 @@ change_lo_hi <- function (ctlfile = "control.ss_new",
       vec[7] <- -abs(oldphase[i])
     }
     if (vec[1] > vec[3])
-      cat("!warning: new lower bound ", vec[1], "is above initial value ",
-          vec[3], "for", cmnt, "\n")
+      warning(paste("new lower bound", vec[1], "is above initial value",
+                    vec[3], "for", cmnt))
     if (vec[1] > vec[2])
-      cat("!warning: new lower bound ", vec[1], "is above upper bound ",
-          vec[2], "for", cmnt, "\n")
+      warning(paste("new lower bound", vec[1], "is above upper bound",
+                    vec[2], "for", cmnt))
     newphase[i] <- vec[7]
     newline <- paste("", paste(vec, collapse = " "), cmnt)
     newctlsubset <- rbind(newctlsubset, newline)
@@ -242,15 +237,14 @@ change_lo_hi <- function (ctlfile = "control.ss_new",
   newctl <- ctl
   newctl[linenums] <- newctlsubset
   writeLines(newctl, newctlfile)
-  if (verbose)
-    cat("\nwrote new file to", newctlfile, "with the following changes:\n")
   results <- data.frame(oldlos, newlos, oldhis, newhis, oldphase, newphase,
                         comment = cmntvec)
   if (is.null(newlos))
     newlos <- NA
   if (is.null(newhis))
     newhis <-NA
-  if (verbose)
-    print(results)
+  if (verbose) {
+    message(paste("wrote new file to", newctlfile))
+  }
   return(invisible(results))
 }
