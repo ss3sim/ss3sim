@@ -23,7 +23,7 @@
 #' @examples
 #' \dontrun{
 #' ## require(r4ss)
-#' ## Set tp the path and filename of the OM and EM control files
+#' ## Set to the path and filename of the OM and EM control files
 #' OM.ctl<-"control.ss_new"
 #' EM.ctl<-"control.ss_new"
 #'
@@ -48,7 +48,7 @@ standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
   #Read in EM values
   em_pars<-SS_parlines(ctlfile=EM_ctl_file)
 
-  #First, ensure the initial value in the EM control file is set to the OM true value
+  #1. ensure the INIT value in the EM ctl file is set to the OM true value
   #If an OM is passed
   if(nchar(OM_ctl_file)>0){
 
@@ -57,7 +57,8 @@ standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
 
     #Restrict the parameters which have their initial values
     #set equal to only those which occur in both the EM and OM
-    restr_percent_df<-percent_df[which(percent_df[,"Label"] %in% unique(c(om_pars[,"Label"],em_pars[,"Label"]))),]
+    restr_percent_df <- percent_df[which(percent_df[,"Label"] %in%
+      unique(c(om_pars[,"Label"], em_pars[, "Label"]))), ]
 
     if(!is.na(restr_percent_df)){
 
@@ -68,12 +69,15 @@ standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
 
     #If they are not equal, set the EM initial value to the OM true value
       if(any(om_pars[om_indices,"INIT"]!= em_pars[em_indices,"INIT"])){
-        inits_to_change<-em_pars[which(em_pars[em_indices,"INIT"] != om_pars[om_indices,"INIT"]), "Label"]
+        inits_to_change <- em_pars[which(em_pars[em_indices,"INIT"] !=
+                                         om_pars[om_indices,"INIT"]), "Label"]
         SS_changepars(dir=substr(EM_ctl_file, 1, nchar(EM_ctl_file)-9),
-        ctlfile=substr(EM_ctl_file, nchar(EM_ctl_file)-8, nchar(EM_ctl_file)),
-                     newctlfile = substr(EM_ctl_file, nchar(EM_ctl_file)-8,
-                       nchar(EM_ctl_file)), strings = inits_to_change,
-                     newvals = om_pars[which(om_pars[om_indices,"INIT"]!= em_pars[em_indices,"INIT"]),"INIT"])
+          ctlfile=substr(EM_ctl_file, nchar(EM_ctl_file)-8, nchar(EM_ctl_file)),
+          newctlfile = substr(EM_ctl_file, nchar(EM_ctl_file)-8,
+                              nchar(EM_ctl_file)),
+          strings = inits_to_change,
+          newvals = om_pars[which(om_pars[om_indices,"INIT"] !=
+                                  em_pars[em_indices,"INIT"]),"INIT"])
       }
     }else{
       print("None of the entered parameter labels are found in both the EM and OM.")
@@ -99,13 +103,17 @@ standardize_bounds<-function(percent_df, EM_ctl_file, OM_ctl_file=""){
     indices_to_standardize[,2]<-which(em_pars[,"Label"] %in% percent_df[,1])
 
     #Change lo and hi's
-    newlos<-percent_df[indices_to_standardize[,1],"lo"]*em_pars[indices_to_standardize[,2],"INIT"]
-    newhis<-percent_df[indices_to_standardize[,1],"hi"]*em_pars[indices_to_standardize[,2],"INIT"]
+    newlos <- percent_df[indices_to_standardize[, 1], "lo"] *
+              em_pars[indices_to_standardize[, 2], "INIT"]
+    newhis <- percent_df[indices_to_standardize[, 1], "hi"] *
+              em_pars[indices_to_standardize[, 2], "INIT"]
 
     #If the parameter label contains "LnQ", use the value given in the
     #table rather than a percentage times the initial value.
-    newlos[grep("LnQ",percent.df$Label,ignore.case=TRUE)]<-percent.df[grep("LnQ",percent.df$Label,ignore.case=TRUE),2]
-    newhis[grep("LnQ",percent.df$Label,ignore.case=TRUE)]<-percent.df[grep("LnQ",percent.df$Label,ignore.case=TRUE),3]
+    newlos[grep("LnQ", percent.df$Label, ignore.case = TRUE)] <-
+      percent.df[grep("LnQ", percent.df$Label, ignore.case = TRUE), 2]
+    newhis[grep("LnQ", percent.df$Label, ignore.case = TRUE)] <-
+    percent.df[grep("LnQ", percent.df$Label, ignore.case = TRUE), 3]
 
     change_lo_hi(ctlfile=EM_ctl_file,newctlfile=EM_ctl_file,
                  strings=as.character(percent_df[indices_to_standardize[,1],1]),
@@ -167,8 +175,7 @@ change_lo_hi <- function (ctlfile = "control.ss_new",
     print(ctltable[ctltable$Label %in% goodnames, ])
     for (i in 1:nvals) linenums[i] <- ctltable$Linenum[ctltable$Label ==
                                                          goodnames[i]]
-  }
-  else {
+  } else {
     if (is.null(linenums))
       stop("valid input needed for either 'linenums' or 'strings'")
   }
@@ -181,10 +188,12 @@ change_lo_hi <- function (ctlfile = "control.ss_new",
   nvals <- length(linenums)
   oldlos <- oldhis <- oldphase <- newphase <- rep(NA, nvals)
   if (!is.null(newlos) & length(newlos) != nvals) {
-    stop("'newlos' and either 'linenums' or 'strings' should have the same number of elements")
+    stop(paste("'newlos' and either 'linenums' or 'strings' should have the",
+               "same number of elements"))
   }
   if (!is.null(newhis) & length(newhis) != nvals) {
-      stop("'newhis' and either 'linenums' or 'strings' should have the same number of elements")
+      stop(paste("'newhis' and either 'linenums' or 'strings' should have",
+                 "the same number of elements."))
   }
   if (!(length(estimate) %in% c(1, nvals)))
     stop("'estimate' should have 1 element or same number as 'newvals'")
@@ -206,8 +215,8 @@ change_lo_hi <- function (ctlfile = "control.ss_new",
     vecstrings <- strsplit(splitline[1], split = "[[:blank:]]+")[[1]]
     vec <- as.numeric(vecstrings[vecstrings != ""])
     if (max(is.na(vec)) == 1)
-      stop("There's a problem with a non-numeric value in line",
-           linenums[i])
+      stop(paste("There's a problem with a non-numeric value in line",
+                 linenums[i]))
     oldlos[i] <- vec[1]
     oldhis[i] <- vec[2]
     if ((!is.null(oldlos))&(!is.null(oldhis)))
@@ -216,8 +225,7 @@ change_lo_hi <- function (ctlfile = "control.ss_new",
     oldphase[i] <- as.numeric(vec[7])
     if (estimate[i]) {
       vec[7] <- abs(oldphase[i])
-    }
-    else {
+    } else {
       vec[7] <- -abs(oldphase[i])
     }
     if (vec[1] > vec[3])

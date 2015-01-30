@@ -33,7 +33,7 @@ fixed percentage of the initial value for every parameter.
 \examples{
 \dontrun{
 ## require(r4ss)
-## Set tp the path and filename of the OM and EM control files
+## Set to the path and filename of the OM and EM control files
 OM.ctl<-"control.ss_new"
 EM.ctl<-"control.ss_new"
 
