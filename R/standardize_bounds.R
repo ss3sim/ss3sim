@@ -18,33 +18,42 @@
 #'   OM and EM INIT values is ignored. Default is \code{""}.
 #' @param em_ctl_file A string with the path and name of the estimation model
 #'   control file.
+#' @param ... Any other arguments to pass to \code{\link{change_lo_hi}}.
 #' @importFrom r4ss SS_parlines SS_changepars
 #' @export
 #' @examples
-#' \dontrun{
-#' ## require(r4ss)
+#' temp_path <- file.path(tempdir(), "standardize-bounds-example")
+#' dir.create(temp_path, showWarnings = FALSE)
+#' wd <- getwd()
+#' setwd(temp_path)
+#'
 #' ## Set to the path and filename of the OM and EM control files
-#' OM.ctl<-"control.ss_new"
-#' EM.ctl<-"control.ss_new"
+#' OM.ctl <- system.file("extdata", "models", "cod-om", "codOM.ctl",
+#'   package = "ss3sim")
+#' EM.ctl <- system.file("extdata", "models", "cod-em", "codEM.ctl",
+#'   package = "ss3sim")
+#' file.copy(OM.ctl, "om.ctl")
+#' file.copy(EM.ctl, "em.ctl")
 #'
 #' ## Use SS_parlines to get the proper names for parameters for the data frame
-#' om.pars<-SS_parlines(ctlfile=OM.ctl)
-#' em.pars<-SS_parlines(ctlfile=EM.ctl)
+#' om.pars <- r4ss::SS_parlines(ctlfile="om.ctl")
+#' em.pars <- r4ss::SS_parlines(ctlfile="em.ctl")
 #'
 #' ## Set percentages to make lower and upper bounds
 #' lo.percent<-rep(.5,11)
 #' hi.percent<-c(500,1000,1000,rep(500,8))
 #'
 #' ##Populate data frame using EM parameter names and percentages
-#' percent.df<-data.frame(Label=as.character(em.pars[c(1:6,17,27:30),"Label"]),
+#' percent_df<-data.frame(Label=as.character(em.pars[c(1:6,17,27:30),"Label"]),
 #'   lo=lo.percent,hi=hi.percent)
 #'
-#' #Run function
-#' standardize_bounds(percent_df = percent.df, em_ctl_file = EM.ctl,
-#'                    om_ctl_file = OM.ctl)
-#' }
+#' ##Run function
+#' standardize_bounds(percent_df = percent_df, em_ctl_file = "em.ctl",
+#'                    om_ctl_file = "om.ctl")
+#'
+#' setwd(wd)
 
-standardize_bounds<-function(percent_df, em_ctl_file, om_ctl_file="") {
+standardize_bounds<-function(percent_df, em_ctl_file, om_ctl_file = "", ...) {
 
   #Read in EM values
   em_pars<-SS_parlines(ctlfile=em_ctl_file)
@@ -119,7 +128,7 @@ standardize_bounds<-function(percent_df, em_ctl_file, om_ctl_file="") {
 
     change_lo_hi(ctlfile=em_ctl_file,newctlfile=em_ctl_file,
                  strings=as.character(percent_df[indices_to_standardize[,1],1]),
-      newlos=newlos,newhis=newhis)
+      newlos=newlos,newhis=newhis, ...)
   }
 }
 
@@ -152,7 +161,8 @@ standardize_bounds<-function(percent_df, em_ctl_file, om_ctl_file="") {
 #' @export
 change_lo_hi <- function (ctlfile = "control.ss_new",
           newctlfile = "control_modified.ss", linenums = NULL, strings = NULL,
-          newlos = NULL, newhis = NULL, estimate = FALSE, verbose = TRUE) {
+          newlos = NULL, newhis = NULL, estimate = FALSE, verbose = TRUE,
+          write_file = TRUE) {
   ctl = readLines(ctlfile)
   if (is.null(linenums) & !is.null(strings) & class(strings) ==
         "character") {
@@ -241,7 +251,7 @@ change_lo_hi <- function (ctlfile = "control.ss_new",
     newlos <- NA
   if (is.null(newhis))
     newhis <-NA
-  if (verbose) {
+  if (verbose & write_file) {
     message(paste("wrote new file to", newctlfile))
   }
   return(invisible(results))

@@ -6,7 +6,7 @@
 \usage{
 change_lo_hi(ctlfile = "control.ss_new", newctlfile = "control_modified.ss",
   linenums = NULL, strings = NULL, newlos = NULL, newhis = NULL,
-  estimate = FALSE, verbose = TRUE)
+  estimate = FALSE, verbose = TRUE, write_file = TRUE)
 }
 \arguments{
   \item{ctlfile}{Control file name with directory.}
