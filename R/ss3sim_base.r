@@ -31,8 +31,8 @@
 #'   \code{\link{change_tail_compression}}.
 #' @param lc_params A named list containing arguments for
 #'   \code{\link{change_lcomp_constant}}.
-#' @param em_lbin_params A names list containing arguments for
-#'   \code{\link{change_EM_binning}}.
+#' @param em_binning_params A names list containing arguments for
+#'   \code{\link{change_em_binning}}.
 #' @param len_bins A numeric vector of bins to record length data at from the
 #'   OM. If \code{NULL} then the bins in the original OM will be used.
 #' @param age_bins A numeric vector of bins to record age data at from the OM.
@@ -457,7 +457,7 @@ deviations can lead to biased model results.")
             change_em_binning(
                   file_in          = pastef(sc, i, "em", "ss3.dat"),
                   file_out         = pastef(sc, i, "em", "ss3.dat"),
-				  bin_vector 	   = bin_vector,
+				          bin_vector  	   = bin_vector,
                   lbin_method      = lbin_method,
                   write_file       = TRUE))
       }
