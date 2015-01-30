@@ -10,8 +10,7 @@
 #' @param scenarios Which scenarios to run.
 #' @param tv_params A named list containing arguments for
 #'   \code{\link{change_tv}} (time-varying).
-#' @param f_params A named list containing arguments for \code{\link{change_f}}
-#'   .
+#' @param f_params A named list containing arguments for \code{\link{change_f}}.
 #' @param index_params A named list containing arguments for
 #'   \code{\link{sample_index}}.
 #' @param lcomp_params A named list containing arguments for
@@ -32,6 +31,8 @@
 #'   \code{\link{change_tail_compression}}.
 #' @param lc_params A named list containing arguments for
 #'   \code{\link{change_lcomp_constant}}.
+#' @param em_lbin_params A names list containing arguments for
+#'   \code{\link{change_EM_binning}}.
 #' @param len_bins A numeric vector of bins to record length data at from the
 #'   OM. If \code{NULL} then the bins in the original OM will be used.
 #' @param age_bins A numeric vector of bins to record age data at from the OM.
@@ -178,7 +179,7 @@
 
 ss3sim_base <- function(iterations, scenarios, f_params,
   index_params, lcomp_params, agecomp_params, calcomp_params=NULL,
-  wtatage_params=NULL, mlacomp_params=NULL,
+  wtatage_params=NULL, mlacomp_params=NULL, em_binning_params=NULL,
   estim_params, tv_params, om_dir, em_dir,
   retro_params = NULL, tc_params = NULL, lc_params = NULL,
   len_bins = NULL, age_bins = NULL, call_change_data = TRUE,
@@ -352,20 +353,20 @@ deviations can lead to biased model results.")
       # ignore it.
       if(!is.null(tc_params)){
           tc_params <- add_nulls(tc_params, "tail_compression")
-          with(tc_params,
+          datfile <- with(tc_params,
             change_tail_compression(
                   tail_compression = tail_compression,
-                  file_in          = pastef(sc, i, "em", "ss3.dat"),
+                  datfile          = datfile,
                   file_out         = pastef(sc, i, "em", "ss3.dat")))
       }
       # Add robustification constant to length comps. If NULL is passed
       # (the base case), ignore it.
       if(!is.null(lc_params)){
           lc_params <- add_nulls(lc_params, "lcomp_constant")
-          with(lc_params,
+          datfile <- with(lc_params,
             change_lcomp_constant(
                     lcomp_constant = lcomp_constant,
-                    file_in        = pastef(sc, i, "em", "ss3.dat"),
+                    datfile        = datfile,
                     file_out       = pastef(sc, i, "em", "ss3.dat")))
       }
 
@@ -402,7 +403,7 @@ deviations can lead to biased model results.")
       ## we need to delete that data, so I'm doing that based on whether it
       ## is NULL, so it always needs to be called.
       if(!is.null(mlacomp_params$fleets)){
-          mlacomp_params <- add_nulls(mlacomp_params, c("fleets", "Nsamp", "years"))
+          mlacomp_params <- add_nulls(mlacomp_params, c("fleets", "Nsamp", "years", "mean_outfile"))
           datfile <- with(mlacomp_params,
                           sample_mlacomp(datfile        = datfile,
                                          outfile        = NULL,
@@ -410,7 +411,8 @@ deviations can lead to biased model results.")
                                          fleets         = fleets,
                                          Nsamp          = Nsamp,
                                          years          = years,
-                                         mean_outfile   = pastef(sc, i, "em", "vbgf_info.csv"),
+                                         mean_outfile   = pastef(sc, i, "em",
+                                                                 paste0(mean_outfile, ".csv")),
                                          write_file     = FALSE))
       }
 
@@ -447,6 +449,18 @@ deviations can lead to biased model results.")
                             verbose=TRUE)
       SS_writedat(datlist=datfile, outfile=pastef(sc,i,"em", "ss3.dat"),
                   overwrite=TRUE, verbose=FALSE)
+
+	  ## Now change the binning structure in the EM ss3.dat file as needed
+      if(!is.null(em_binning_params)){
+          em_binning_params <- add_nulls(em_binning_params, c("lbin_method", "bin_vector"))
+          datfile <- with(em_binning_params,
+            change_em_binning(
+                  file_in          = pastef(sc, i, "em", "ss3.dat"),
+                  file_out         = pastef(sc, i, "em", "ss3.dat"),
+				  bin_vector 	   = bin_vector,
+                  lbin_method      = lbin_method,
+                  write_file       = TRUE))
+      }
 
       # Manipulate EM control file to adjust what gets estimated
       # We'll only a portion of the function, the ctl part if

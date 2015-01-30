@@ -67,7 +67,10 @@ returned invisibly.
 \description{
 Take a \code{data.SS_new} file containing expected values
 and sample to create observed age compositions which are
-then written to file for use by the estimation model.
+then written to file for use by the estimation model. If
+used with \code{\link{run_ss3sim}} the case file should be
+named \code{agecomp}. A suggested (default) case letter is
+\code{D} for data.
 }
 \section{Which arguments to specifiy in case files}{
   All function argument descriptions that start with an

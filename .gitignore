@@ -26,12 +26,10 @@ vignettes/ss3sim-vignette-concordance.tex
 vignettes/ss3sim-vignette.synctex.gz
 tags
 Session.vim
-
 *.pdfsync
-
 *.pdf
-
 inst/ms/file-structure.eps
-
 vignettes/knit
+inst/doc
+vignettes/introduction_cache/
 inst/doc/

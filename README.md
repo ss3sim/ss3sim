@@ -27,7 +27,8 @@ Or, install the development version from GitHub:
 
 ```R
 # install.packages("devtools")
-devtools::install_github("ss3sim/ss3sim")
+devtools::install_github("ss3sim/ss3sim") # without vignettes (faster)
+devtools::install_github("ss3sim/ss3sim", build_vignettes = TRUE) # with vignettes
 ```
 
 If you would like to run simulations in parallel, then also run:
@@ -39,7 +40,7 @@ install.packages(c("doParallel", "foreach"))
 You can then load ss3sim with:
 
 ```R
-library(ss3sim)
+library("ss3sim")
 ```
 
 You can read the help files with:
@@ -48,17 +49,15 @@ You can read the help files with:
 ?ss3sim
 ```
 
-and access the vignette for reproducible examples of ss3sim simulations with:
+and access the vignettes for reproducible examples of ss3sim simulations with:
 
 ```R
-vignette("ss3sim-vignette")
+browseVignettes("ss3sim")
 ```
 
-or download a [PDF copy](https://dl.dropboxusercontent.com/u/254940/ss3sim-vignette.pdf).
+ss3sim requires a specific version of the SS3 binary/executable. With the permission of Rick Methot, we have hosted those files here: <https://www.dropbox.com/sh/zg0sec6j20sfyyz/AACQiuk787qW882U2euVKoPna>. (These versions are compatible with the GitHub development version of ss3sim; see [this link](https://github.com/ss3sim/ss3sim/tree/ss3-binaries/inst/ss3) for the executables compatible with the stable CRAN version.)
 
-ss3sim requires a specific version of the SS3 binary/executable. With the permission of Rick Methot, we have hosted those files here: <https://www.dropbox.com/sh/zg0sec6j20sfyyz/AACQiuk787qW882U2euVKoPna>
-
-These files need to be placed in your operating system's path so ss3sim can find the software. See the [vignette][vignette].
+These files need to be placed in your operating system's path so ss3sim can find the software. See the Introduction vignette with `vignette("introduction", "ss3sim")`.
 
 In addition to the vignette, we published a [paper][paper] in PLOS ONE, which describes the package.
 

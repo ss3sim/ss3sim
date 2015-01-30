@@ -1,6 +1,8 @@
 #' Alter the fishing mortality (F) values in an \code{ss3.par} file
 #'
 #' Takes an SS3 \code{.par} file and changes the F values for specified years.
+#' If used with \code{\link{run_ss3sim}} the case file should be named
+#' \code{F}. A suggested (default) case letter is \code{F}.
 #'
 #' @author Curry James Cunningham
 #'

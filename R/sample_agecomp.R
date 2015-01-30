@@ -3,6 +3,8 @@
 #' Take a \code{data.SS_new} file containing expected values and sample to
 #' create observed age compositions which are then written to file for use by
 #' the estimation model.
+#' If used with \code{\link{run_ss3sim}} the case file should be named
+#' \code{agecomp}. A suggested (default) case letter is \code{D} for data.
 #'
 #' @author Cole Monnahan and Kotaro Ono; modified from a version by Roberto
 #' Licandeo and Felipe Hurtado-Ferro
@@ -143,7 +145,7 @@ sample_agecomp <- function(datfile, outfile, fleets = c(1,2), Nsamp,
                     if(is.na(cpar[i])){
                         newcomp[-(1:9)] <-
                             rmultinom(1, size=newcomp$Nsamp,
-                              prob=probs)/newcomp$Nsamp
+                              prob=probs)#/newcomp$Nsamp
                     } else { # use Dirichlet
                         lambda <- newcomp$Nsamp/cpar[i]^2 - 1
                         if(lambda < 0)
