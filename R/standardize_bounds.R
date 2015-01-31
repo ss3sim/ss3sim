@@ -172,6 +172,8 @@ standardize_bounds <- function(percent_df, em_ctl_file, om_ctl_file = "",
 #'   is provided the argument will be repeated for each parameter.
 #'   Default is \code{NULL}.
 #' @param verbose More detailed output to command line. Default is \code{TRUE}.
+#' @param write_file A logical argument, specifying if the \code{newctlfile}
+#'   should be written to the disk or not.
 #' @seealso \code{\link{SS_changepars}}
 #' @importFrom r4ss SS_parlines
 #' @export
