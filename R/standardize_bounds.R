@@ -18,6 +18,7 @@
 #'   OM and EM INIT values is ignored. Default is \code{""}.
 #' @param em_ctl_file A string with the path and name of the estimation model
 #'   control file.
+#' @param verbose Detailed output to command line. Default is \code{FALSE}.
 #' @param ... Any other arguments to pass to \code{\link{change_lo_hi}}.
 #' @importFrom r4ss SS_parlines SS_changepars
 #' @export
@@ -53,7 +54,8 @@
 #'
 #' setwd(wd)
 
-standardize_bounds<-function(percent_df, em_ctl_file, om_ctl_file = "", ...) {
+standardize_bounds <- function(percent_df, em_ctl_file, om_ctl_file = "",
+                               verbose = FALSE, ...) {
 
   #Read in EM values
   em_pars<-SS_parlines(ctlfile=em_ctl_file)
@@ -67,30 +69,37 @@ standardize_bounds<-function(percent_df, em_ctl_file, om_ctl_file = "", ...) {
 
     #Restrict the parameters which have their initial values
     #set equal to only those which occur in both the EM and OM
-    restr_percent_df <- percent_df[which(percent_df[,"Label"] %in%
-      unique(c(om_pars[,"Label"], em_pars[, "Label"]))), ]
+    # If par is not found change from "integer(0)" to NA
+    indices <- sapply(percent_df$Label, function(x) {
+      rmpuncx <- gsub("[[:punct:]]", "", x)
+      rmpuncom <- gsub("[[:punct:]]", "", om_pars$Label)
+      rmpuncem <- gsub("[[:punct:]]", "", em_pars$Label)
+      findinom <- grep(rmpuncx, rmpuncom, ignore.case = TRUE)
+      findinem <- grep(rmpuncx, rmpuncem, ignore.case = TRUE)
+      c(ifelse(is.null(findinom), NA, findinom),
+        ifelse(is.null(findinem), NA, findinem))
+    })
+    tochange <- !is.na(indices[1, ]) | !is.na(indices[2, ])
+    restr_percent_df <- percent_df[tochange, ]
+    if (NROW(restr_percent_df) == 0) {
+      stop(paste("None of the entered parameter labels (,",
+                 paste(percent_df[, 1], collapse = ", "),
+                 ") are found in both the EM and OM.", sep = ""))
+    }
 
-    if(any(!is.na(restr_percent_df))){
-
-      #Get the indices of the user input parameters in the OM/EM
-      om_indices<-which(om_pars[,"Label"] %in% restr_percent_df[,"Label"])
-      em_indices<-which(em_pars[,"Label"] %in% restr_percent_df[,"Label"])
-
-
-    #If they are not equal, set the EM initial value to the OM true value
-      if(any(om_pars[om_indices,"INIT"]!= em_pars[em_indices,"INIT"])){
-        inits_to_change <- em_pars[which(em_pars[em_indices,"INIT"] !=
-                                         om_pars[om_indices,"INIT"]), "Label"]
-        SS_changepars(dir=".",
-          ctlfile = em_ctl_file,
-          newctlfile = em_ctl_file,
-          strings = inits_to_change,
-          newvals = om_pars[which(om_pars[om_indices,"INIT"] !=
-                                  em_pars[em_indices,"INIT"]),"INIT"])
-      }
-    }else{
-      warning(paste("None of the entered parameter labels,",
-              percent_df[, 1], "are found in both the EM and OM."))
+    changeem <- cbind(em_pars$Label[indices[2, ]],
+                      om_pars$INIT[indices[1, ]], em_pars$INIT[indices[2, ]])
+    changeem <- changeem[tochange, ]
+    changeinits <- changeem[which(changeem[, 2] != changeem[, 3]), ,
+                            drop = FALSE]
+    if (NROW(changeinits) > 0) {
+      # TODO: eventually remove capture.output when r4ss uses verbose to capture
+      # the output from SS_changepars
+      print.verbose <- capture.output(
+        SS_changepars(dir = ".", ctlfile = em_ctl_file,
+          newctlfile = em_ctl_file, strings = changeinits[, 1],
+          newvals = changeinits[, 2], verbose = FALSE, repeat.vals = FALSE))
+      if (verbose) message(paste(print.verbose, collapse = "\n"))
     }
   }
 
@@ -99,19 +108,24 @@ standardize_bounds<-function(percent_df, em_ctl_file, om_ctl_file = "", ...) {
 
   #Read in parameters from EM ctl file
   em_pars<-SS_parlines(ctlfile=em_ctl_file)
-
   #Check input parameter names are valid
   #Do these match the data frame first column?
-  if(any(!percent_df[,"Label"] %in% em_pars[,"Label"])){
-    warning(paste("Element",
-                  which(!percent_df[, "Label"] %in% em_pars[, "Label"]),
-                  "does not have a valid parameter label."))
-  }else{
-    #Get indices of parameters to standardize; first column is in the data frame
+  indexem <- sapply(percent_df$Label, function(x) {
+      rmpuncx <- gsub("[[:punct:]]", "", x)
+      rmpuncem <- gsub("[[:punct:]]", "", em_pars$Label)
+      findinem <- grep(rmpuncx, rmpuncem, ignore.case = TRUE)
+      ifelse(is.null(findinem), NA, findinem)
+    })
+  if (any(is.na(indexem))) {
+    stop(paste("Element(s):",
+               paste(percent_df$Label[which(is.na(indexem))], collapse = ", "),
+               "do not have valid parameter labels."))
+  }
+    #Get indices of pars to standardize; first column is in the data frame
     # and second is in the EM read values
     indices_to_standardize<-matrix(ncol=2,nrow=nrow(percent_df))
-    indices_to_standardize[,1]<-which(percent_df[,1] %in% em_pars[,"Label"])
-    indices_to_standardize[,2]<-which(em_pars[,"Label"] %in% percent_df[,1])
+    indices_to_standardize[, 1] <- 1:NROW(percent_df)
+    indices_to_standardize[, 2] <- indexem
 
     #Change lo and hi's
     newlos <- percent_df[indices_to_standardize[, 1], "lo"] *
@@ -128,8 +142,7 @@ standardize_bounds<-function(percent_df, em_ctl_file, om_ctl_file = "", ...) {
 
     change_lo_hi(ctlfile=em_ctl_file,newctlfile=em_ctl_file,
                  strings=as.character(percent_df[indices_to_standardize[,1],1]),
-      newlos=newlos,newhis=newhis, ...)
-  }
+      newlos=newlos,newhis=newhis, verbose = verbose, ...)
 }
 
 #' Changes the LO and HI bounds of the estimation model control file
@@ -171,11 +184,15 @@ change_lo_hi <- function (ctlfile = "control.ss_new",
         "character") {
     ctltable <- SS_parlines(ctlfile = ctlfile)
     allnames <- ctltable$Label
+    allnamesfx <- sapply(allnames, function(x) gsub("[[:punct:]]", "", x))
     goodnames <- NULL
 
     if (!is.null(strings)) {
-      for (i in 1:length(strings)) goodnames <- c(goodnames,
-        allnames[grep(strings[i], allnames,fixed=TRUE)])
+      for (i in 1:length(strings)) {
+        rmpunc <- gsub("[[:punct:]]", "", strings[i])
+        goodnames <- c(goodnames,
+          allnames[grep(rmpunc, allnamesfx, ignore.case = TRUE)])
+      }
       goodnames <- unique(goodnames)
       if (length(goodnames) == 0) {
         stop("No parameters names match input vector 'strings'")
