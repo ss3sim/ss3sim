@@ -154,14 +154,17 @@ standardize_bounds<-function(percent_df, em_ctl_file, om_ctl_file = "", ...) {
 #' @param newhis Vector of new hi bounds. Must be the same length as
 #'   \code{newhis}. Default is \code{NULL}.
 #' @param estimate Vector of \code{TRUE}/\code{FALSE} for which changed
-#'   parameters are to be estimated. Default is \code{FALSE}.
+#'   parameters are to be estimated. If \code{NULL}, the phase for each
+#'   parameter will remain unchanged. If a single \code{TRUE} or \code{FALSE}
+#'   is provided the argument will be repeated for each parameter.
+#'   Default is \code{NULL}.
 #' @param verbose More detailed output to command line. Default is \code{TRUE}.
 #' @seealso \code{\link{SS_changepars}}
 #' @importFrom r4ss SS_parlines
 #' @export
 change_lo_hi <- function (ctlfile = "control.ss_new",
           newctlfile = "control_modified.ss", linenums = NULL, strings = NULL,
-          newlos = NULL, newhis = NULL, estimate = FALSE, verbose = TRUE,
+          newlos = NULL, newhis = NULL, estimate = NULL, verbose = TRUE,
           write_file = TRUE) {
   ctl = readLines(ctlfile)
   if (is.null(linenums) & !is.null(strings) & class(strings) ==
@@ -199,9 +202,10 @@ change_lo_hi <- function (ctlfile = "control.ss_new",
       stop(paste("'newhis' and either 'linenums' or 'strings' should have",
                  "the same number of elements."))
   }
-  if (!(length(estimate) %in% c(1, nvals)))
-    stop("'estimate' should have 1 element or same number as 'newvals'")
-  if (length(estimate) == 1)
+  if (!any(is.null(estimate)) & !(length(estimate) %in% c(1, nvals)))
+    stop(paste("If 'estimate' is not NULL, it should have 1 element",
+               "or be the same length as 'newvals'"))
+  if (!any(is.null(estimate)) & length(estimate) == 1)
     estimate <- rep(estimate, nvals)
   if (is.data.frame(newlos))
     newlos <- as.numeric(newlos)
@@ -227,10 +231,10 @@ change_lo_hi <- function (ctlfile = "control.ss_new",
       vec[1] <- newlos[i]
       vec[2] <- newhis[i]
     oldphase[i] <- as.numeric(vec[7])
-    if (estimate[i]) {
-      vec[7] <- abs(oldphase[i])
+    if (any(is.null(estimate))) {
+      vec[7] <- oldphase[i]
     } else {
-      vec[7] <- -abs(oldphase[i])
+      vec[7] <- ifelse(estimate[i], abs(oldphase[i]), -abs(oldphase[i]))
     }
     if (vec[1] > vec[3])
       warning(paste("new lower bound", vec[1], "is above initial value",
