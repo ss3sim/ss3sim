@@ -6,7 +6,7 @@
 \usage{
 change_lo_hi(ctlfile = "control.ss_new", newctlfile = "control_modified.ss",
   linenums = NULL, strings = NULL, newlos = NULL, newhis = NULL,
-  estimate = FALSE, verbose = TRUE, write_file = TRUE)
+  estimate = NULL, verbose = TRUE, write_file = TRUE)
 }
 \arguments{
   \item{ctlfile}{Control file name with directory.}
@@ -32,11 +32,17 @@ change_lo_hi(ctlfile = "control.ss_new", newctlfile = "control_modified.ss",
   length as \code{newhis}. Default is \code{NULL}.}
 
   \item{estimate}{Vector of \code{TRUE}/\code{FALSE} for
-  which changed parameters are to be estimated. Default is
-  \code{FALSE}.}
+  which changed parameters are to be estimated. If
+  \code{NULL}, the phase for each parameter will remain
+  unchanged. If a single \code{TRUE} or \code{FALSE} is
+  provided the argument will be repeated for each
+  parameter. Default is \code{NULL}.}
 
   \item{verbose}{More detailed output to command line.
   Default is \code{TRUE}.}
+
+  \item{write_file}{A logical argument, specifying if the
+  \code{newctlfile} should be written to the disk or not.}
 }
 \description{
 This is a modified version of

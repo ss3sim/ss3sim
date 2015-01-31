@@ -4,7 +4,8 @@
 \alias{standardize_bounds}
 \title{Standardize the bounds of the estimation model control file.}
 \usage{
-standardize_bounds(percent_df, em_ctl_file, om_ctl_file = "", ...)
+standardize_bounds(percent_df, em_ctl_file, om_ctl_file = "",
+  verbose = FALSE, ...)
 }
 \arguments{
   \item{percent_df}{A \code{data.frame} with nine rows and
@@ -20,6 +21,9 @@ standardize_bounds(percent_df, em_ctl_file, om_ctl_file = "", ...)
   operating model control file. If it is not given the part
   of the function which matches the OM and EM INIT values
   is ignored. Default is \code{""}.}
+
+  \item{verbose}{Detailed output to command line. Default
+  is \code{FALSE}.}
 
   \item{...}{Any other arguments to pass to
   \code{\link{change_lo_hi}}.}
