@@ -94,7 +94,7 @@ standardize_bounds<-function(percent_df, em_ctl_file, om_ctl_file = "", ...) {
     }
   }
 
-  #Second, use the input data frame to set the LO and HI values of the EM control file
+  #2: Use input data frame to set the LO and HI values of the EM ctl file
   #To a fixed % of the init value as provided in the user input
 
   #Read in parameters from EM ctl file
@@ -224,7 +224,7 @@ change_lo_hi <- function (ctlfile = "control.ss_new",
     vec <- as.numeric(vecstrings[vecstrings != ""])
     if (max(is.na(vec)) == 1)
       stop(paste("There's a problem with a non-numeric value in line",
-                 linenums[i]))
+                 linenums[i], "pertaining to", cmnt))
     oldlos[i] <- vec[1]
     oldhis[i] <- vec[2]
     if ((!is.null(oldlos))&(!is.null(oldhis)))
