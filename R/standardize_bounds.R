@@ -23,6 +23,7 @@
 #' @importFrom r4ss SS_parlines SS_changepars
 #' @export
 #' @examples
+#' \dontrun{
 #' temp_path <- file.path(tempdir(), "standardize-bounds-example")
 #' dir.create(temp_path, showWarnings = FALSE)
 #' wd <- getwd()
@@ -53,6 +54,7 @@
 #'                    om_ctl_file = "om.ctl")
 #'
 #' setwd(wd)
+#' }
 
 standardize_bounds <- function(percent_df, em_ctl_file, om_ctl_file = "",
                                verbose = FALSE, ...) {

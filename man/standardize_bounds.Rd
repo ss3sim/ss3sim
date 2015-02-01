@@ -38,6 +38,7 @@ the LO and HI values in the \code{em_ctl_file} to be a
 fixed percentage of the initial value for every parameter.
 }
 \examples{
+\dontrun{
 temp_path <- file.path(tempdir(), "standardize-bounds-example")
 dir.create(temp_path, showWarnings = FALSE)
 wd <- getwd()
@@ -68,6 +69,7 @@ standardize_bounds(percent_df = percent_df, em_ctl_file = "em.ctl",
                    om_ctl_file = "om.ctl")
 
 setwd(wd)
+}
 }
 \author{
 Christine Stawitz
