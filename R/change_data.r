@@ -115,10 +115,10 @@ change_data <- function(datfile, outfile, fleets, years, types, age_bins =
     is_ssdat_file(datfile)
 
     ## Input checks:
-    types <- match.arg(types, choices = c("index","len", "age", "cal", "mla", "mwa"),
+    types <- match.arg(types,
+                       choices = c("index","len", "age", "cal", "mla", "mwa"),
                        several.ok = TRUE)
-    if(datfile$type != "Stock_Synthesis_data_file")
-        stop("Invalid datfile, was it read in by SS_readdat?")
+
     ## Test for compatibility with ss3sim
     if (datfile$Ngenders > 1) {
         stop(paste("_Ngenders is greater than 1 in the operating model.",
