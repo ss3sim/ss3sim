@@ -45,21 +45,6 @@ with \code{\link{run_ss3sim}} the case file should be named
   will be passed, which may or may not be an appropriate
   value. Other arguments will be ignored if specified.
 }
-\examples{
-## Create a temporary folder for the output:
-temp_path <- file.path(tempdir(), "ss3sim-tail-example")
-dir.create(temp_path, showWarnings = FALSE)
-## Run the function with built-in data file.
-dat_file <- system.file("extdata", "example-om", "data.ss_new",
-package = "ss3sim")
-input_dat <- r4ss::SS_readdat(dat_file)
-test <- change_tail_compression(tail_compression = .1234, input_dat,
- file_out = paste0(temp_path, "/test.dat"))
-## Look at the changes
-print(test$comp_tail_compression)
-## Clean up the temp files
-unlink(temp_path)
-}
 \author{
 Cole Monnahan
 }

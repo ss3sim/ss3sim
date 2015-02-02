@@ -28,7 +28,7 @@
 #' @param estim_params A named list containing arguments for
 #'   \code{\link{change_e}}.
 #' @param em_binning_params A named list containing arguments for
-#'   \code{\link{change_EM_binning}}.
+#'   \code{\link{change_em_binning}}.
 #' @param data_params A named list containing arguments for
 #'   \code{\link{change_data}}.
 #' @param call_change_data A boolean of whether to call

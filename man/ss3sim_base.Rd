@@ -44,7 +44,7 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   data.}
 
   \item{em_binning_params}{A named list containing
-  arguments for \code{\link{change_EM_binning}}.}
+  arguments for \code{\link{change_em_binning}}.}
 
   \item{estim_params}{A named list containing arguments for
   \code{\link{change_e}}.}

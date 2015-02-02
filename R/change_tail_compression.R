@@ -20,21 +20,6 @@
 #' @template casefile-footnote
 #' @author Cole Monnahan
 #' @importFrom r4ss SS_writedat
-#'
-#' @examples
-#' ## Create a temporary folder for the output:
-#' temp_path <- file.path(tempdir(), "ss3sim-tail-example")
-#' dir.create(temp_path, showWarnings = FALSE)
-#' ## Run the function with built-in data file.
-#' dat_file <- system.file("extdata", "example-om", "data.ss_new",
-#' package = "ss3sim")
-#' input_dat <- r4ss::SS_readdat(dat_file)
-#' test <- change_tail_compression(tail_compression = .1234, input_dat,
-#'  file_out = paste0(temp_path, "/test.dat"))
-#' ## Look at the changes
-#' print(test$comp_tail_compression)
-#' ## Clean up the temp files
-#' unlink(temp_path)
 
 change_tail_compression <- function(tail_compression, datfile, file_out,
   write_file = TRUE){

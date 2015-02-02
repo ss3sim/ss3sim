@@ -53,20 +53,6 @@ data.
   will be passed, which may or may not be an appropriate
   value. Other arguments will be ignored if specified.
 }
-\examples{
-## Create a temporary folder for the output:
-temp_path <- file.path(tempdir(), "ss3sim-lcomp-constant-example")
-dir.create(temp_path, showWarnings = FALSE)
-## Run the function with built-in data file.
-dat_file <- system.file("extdata", "example-om", "data.ss_new",
-  package = "ss3sim")
-input_dat <- r4ss::SS_readdat(dat_file)
-test <- change_lcomp_constant(lcomp_constant = .1234, input_dat,
-  file_out = paste0(temp_path, "/test.dat"))
-## Look at the changes
-print(test$add_to_comp)
-unlink(temp_path)
-}
 \author{
 Cole Monnahan
 }
