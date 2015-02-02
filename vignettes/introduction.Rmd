@@ -139,7 +139,7 @@ Many of the functions in this package depend on that formatting.
 
 To obtain `.ss_new` files,
 open a command window in the OM and EM folders
-and type `ss3` to run the models.
+and type `ss3_24o_safe` to run the models.
 Once the model is finished running,
 it will generate a number of files, including `.ss_new` files.
 Remove the `.ss_new` file extension from the files needed
@@ -229,18 +229,19 @@ Function names and associated case files. Case file names are
 given as the prefix. For example a case file for `sample_index`
 might be `index0-cod.txt`.
 
-ss3sim function              Case file name      Mandatory?
----------------              --------------      ----------
-`change_f()`                 `F`                 Yes
-`change_e()`                 `R`                 Yes
-`sample_index()`             `index`             Yes
-`sample_lcomp()`             `lcomp`             Yes
-`sample_agecomp()`           `agecomp`           Yes
-`change_tv()`                anything, see below No
-`change_tail_compression()`  `tail_compression`  No
-`change_lcomp_constant()`    `lcomp_constant`    No
-`sample_calcomp()`           `calcomp`           No
-`sample_wtatage()`           `wtatage`           No
+ss3sim function              Case file name        Description
+---------------              --------------        -----------
+`change_f()`                 `F`                   Fishing mortality
+`change_r()`                 `R`                   Retrospective years
+`change_e()`                 `E`                   Estimation                 
+`sample_index()`             `index`               Index data             
+`sample_lcomp()`             `lcomp`               Length composition data             
+`sample_agecomp()`           `agecomp`             Age composition data
+`change_tv()`                anything, see below   Time-varying variables
+`change_data()`              `data`                Available OM data, bins, etc.
+`sample_calcomp()`           `calcomp`             Catch at length data
+`sample_wtatage()`           `wtatage`             Weight at age data
+`sample_mlacomp()`           `mlacomp`             Mean length at age data
 
 `change_tv()` can take any other case file name, as long as the
 first line is `function_type; change_tv`.
