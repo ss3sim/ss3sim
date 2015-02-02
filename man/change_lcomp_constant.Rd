@@ -4,7 +4,7 @@
 \alias{change_lcomp_constant}
 \title{Set the robustification constant for length composition data.}
 \usage{
-change_lcomp_constant(lcomp_constant, datfile, file_out)
+change_lcomp_constant(lcomp_constant, datfile, file_out, write_file = TRUE)
 }
 \arguments{
   \item{lcomp_constant}{*The new value to be used. Must be
@@ -20,6 +20,9 @@ change_lcomp_constant(lcomp_constant, datfile, file_out)
 
   \item{file_out}{Output SS3 dat file. Typically the same
   as \code{file_in}.}
+
+  \item{write_file}{Should the data file be written to
+  disk?}
 }
 \value{
 A modified SS3 \code{.dat} file, and that file returned

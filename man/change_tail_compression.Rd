@@ -4,7 +4,8 @@
 \alias{change_tail_compression}
 \title{Replace tail compression value for length composition data.}
 \usage{
-change_tail_compression(tail_compression, datfile, file_out)
+change_tail_compression(tail_compression, datfile, file_out,
+  write_file = TRUE)
 }
 \arguments{
   \item{tail_compression}{*The new tail_compression value
@@ -18,6 +19,9 @@ change_tail_compression(tail_compression, datfile, file_out)
   list object form from \code{\link[r4ss]{SS_readdat}}}.}
 
   \item{file_out}{Output SS3 dat file name.}
+
+  \item{write_file}{Should the altered data file be written
+  to disk?}
 }
 \value{
 A modified SS3 \code{.dat} file, and that file returned

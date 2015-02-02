@@ -6,7 +6,8 @@
 \usage{
 change_data(datfile, outfile, fleets, years, types, age_bins = NULL,
   len_bins = NULL, pop_binwidth = NULL, pop_minimum_size = NULL,
-  pop_maximum_size = NULL, write_file = TRUE)
+  pop_maximum_size = NULL, lcomp_constant = NULL, tail_compression = NULL,
+  write_file = TRUE)
 }
 \arguments{
   \item{datfile}{A list as read in by
@@ -49,6 +50,22 @@ change_data(datfile, outfile, fleets, years, types, age_bins = NULL,
   \item{pop_maximum_size}{*Population maximum length bin
   value.}
 
+  \item{lcomp_constant}{*A new robustification constant for
+  length composition data to be used. Must be a numeric
+  value, as a proportion. For example 0.1 means 10 percent.
+  See the SS3 manual for further information. A \code{NULL}
+  value indicates no action resulting in using the current
+  value, and a value of 0 will throw an error since that
+  leads to an error when zeroes exist in the data. Instead
+  use a very small value like \code{1e-07}.}
+
+  \item{tail_compression}{*A new tail compression value to
+  be used in SS3. Must be a numeric value, as a proportion.
+  For example 0.1 means 10 percent. See the SS3 manual for
+  further information. A \code{NULL} value indicates no
+  action, a negative value indicates to SS3 to ignore it
+  (not use that feature).}
+
   \item{write_file}{Should the \code{.dat} file be written?
   The new \code{.dat} file will always be returned
   invisibly by the function. Setting \code{write_file =
@@ -82,6 +99,14 @@ and years from sample arguments, and
 can also be used by an \pkg{ss3sim} user to manipulate data
 as a case, or to prepare a new OM for use in a simulation.
 See the vignette for more details.
+}
+\details{
+The robustification constant is added to both the observed
+and expected proportions of length composition data, before
+being normalized internally. It is designed to help
+stabilize the model, but is unclear how and when to use it
+for optimal effect. The same value is used for all length
+data.
 }
 \section{Which arguments to specifiy in case files}{
   All function argument descriptions that start with an
