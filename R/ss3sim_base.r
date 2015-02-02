@@ -31,7 +31,7 @@
 #'   \code{\link{change_tail_compression}}.
 #' @param lc_params A named list containing arguments for
 #'   \code{\link{change_lcomp_constant}}.
-#' @param em_lbin_params A names list containing arguments for
+#' @param em_lbin_params A named list containing arguments for
 #'   \code{\link{change_EM_binning}}.
 #' @param len_bins A numeric vector of bins to record length data at from the
 #'   OM. If \code{NULL} then the bins in the original OM will be used.
@@ -259,7 +259,8 @@ deviations can lead to biased model results.")
 
       # Read in the data.ss_new file and write to ss3.dat in the om folder
       if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
-          stop("The data.ss_new not created in first OM run -- something is wrong with initial model files?")
+          stop(paste("The data.ss_new not created in first OM run --",
+                     "is something wrong with initial model files?"))
       extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
         data_out = pastef(sc, i, "om", "ss3.dat"))
 
@@ -289,7 +290,7 @@ deviations can lead to biased model results.")
                            mlacomp_params=mlacomp_params,
                            wtatage_params=wtatage_params)
       datfile.orig <- SS_readdat(pastef(sc, i, "om", "ss3.dat"),
-                                 verbose=FALSE)
+                                 verbose = FALSE)
       datfile.orig <- change_fltname(datfile.orig)
       if (call_change_data) {
           change_data(datfile=datfile.orig,
@@ -324,7 +325,7 @@ deviations can lead to biased model results.")
           lcomp_params <- add_nulls(lcomp_params,
                      c("fleets", "Nsamp", "years", "cpar"))
           datfile <- with(lcomp_params,
-               sample_lcomp(datfile           = datfile,
+               sample_lcomp(datfile          = datfile,
                             outfile          = NULL,
                             fleets           = fleets,
                             Nsamp            = Nsamp,
@@ -340,7 +341,7 @@ deviations can lead to biased model results.")
           agecomp_params <- add_nulls(agecomp_params,
                                       c("fleets", "Nsamp", "years", "cpar"))
           datfile <- with(agecomp_params,
-                          sample_agecomp(datfile         = datfile,
+                          sample_agecomp(datfile        = datfile,
                                          outfile        = NULL,
                                          fleets         = fleets,
                                          Nsamp          = Nsamp,
