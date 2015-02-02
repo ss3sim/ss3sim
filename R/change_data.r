@@ -168,6 +168,7 @@ change_data <- function(datfile, outfile, fleets, years, types,
                                    len_bins=len_bins)
         datfile$lbin_vector <- len_bins
         datfile$N_lencomp <- nrow(datfile$lencomp)
+        datfile$N_lbins <- length(len_bins)
     }
     ## Need to split calcomp and agecomp data as separate cases
     if ("age" %in% types) {
@@ -178,6 +179,7 @@ change_data <- function(datfile, outfile, fleets, years, types,
         datfile$agecomp <- rbind(new.agecomp, conditional_data)
         datfile$agebin_vector <- age_bins
         datfile$N_agecomp <- nrow(datfile$agecomp)
+        datfile$N_agebins <- length(age_bins)
     }
     ## If we don't use this structure to get expected value we don't need
     ## to print them, so don't need it. TODO check this is right. It can
