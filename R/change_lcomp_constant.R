@@ -21,6 +21,7 @@
 #' @param datfile Input SS3 dat file \bold{as returned in list object form from
 #'   \code{\link[r4ss]{SS_readdat}}}.
 #' @param file_out Output SS3 dat file. Typically the same as \code{file_in}.
+#' @param write_file Should the data file be written to disk?
 #' @return A modified SS3 \code{.dat} file, and that file returned invisibly
 #'   (for testing) as a vector of character lines.
 #' @template casefile-footnote
@@ -40,7 +41,8 @@
 #' ## Look at the changes
 #' print(test$add_to_comp)
 #' unlink(temp_path)
-change_lcomp_constant <- function(lcomp_constant, datfile, file_out){
+change_lcomp_constant <- function(lcomp_constant, datfile, file_out,
+  write_file = TRUE){
 
   if(is.null(lcomp_constant)) return(invisible(NULL))
   stopifnot(is.numeric(lcomp_constant))
@@ -48,7 +50,8 @@ change_lcomp_constant <- function(lcomp_constant, datfile, file_out){
 
   # The data sections are repeated in the data.ss_new files, so only use first one
   datfile$add_to_comp[1] <- lcomp_constant
-  SS_writedat(datfile, file_out, overwrite = TRUE, verbose = FALSE)
 
-  return(invisible(datfile))
+  if(write_file) SS_writedat(datfile, file_out, overwrite = TRUE, verbose = FALSE)
+
+  invisible(datfile)
 }

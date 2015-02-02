@@ -14,6 +14,7 @@
 #' @param datfile Input SS3 dat file \bold{as returned in list object form from
 #'   \code{\link[r4ss]{SS_readdat}}}.
 #' @param file_out Output SS3 dat file name.
+#' @param write_file Should the altered data file be written to disk?
 #' @return A modified SS3 \code{.dat} file, and that file returned invisibly
 #'   (for testing) as a vector of character lines.
 #' @template casefile-footnote
@@ -35,14 +36,15 @@
 #' ## Clean up the temp files
 #' unlink(temp_path)
 
-change_tail_compression <- function(tail_compression, datfile, file_out){
+change_tail_compression <- function(tail_compression, datfile, file_out,
+  write_file = TRUE){
 
   if(is.null(tail_compression)) return(invisible(NULL))
   stopifnot(is.numeric(tail_compression))
 
   # The data sections are repeated in the data.ss_new files, so only use first one
   datfile$comp_tail_compression[1] <- tail_compression
-  SS_writedat(datfile, file_out, overwrite = TRUE, verbose = FALSE)
+  if(write_file) SS_writedat(datfile, file_out, overwrite = TRUE, verbose = FALSE)
 
-  return(invisible(datfile))
+  invisible(datfile)
 }
