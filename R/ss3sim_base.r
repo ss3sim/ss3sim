@@ -27,7 +27,7 @@
 #'   \code{\link{change_retro}}.
 #' @param estim_params A named list containing arguments for
 #'   \code{\link{change_e}}.
-#' @param em_lbin_params A named list containing arguments for
+#' @param em_binning_params A named list containing arguments for
 #'   \code{\link{change_EM_binning}}.
 #' @param data_params A named list containing arguments for
 #'   \code{\link{change_data}}.
@@ -535,7 +535,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         cat("\n\n# tail compression arguments\n")
         print(data_params)
         cat("\n\n# change_em_lbin_params arguments\n")
-        print(em_lbin_params)
+        print(em_binning_params)
         cat("\n\n# change_data arguments\n")
         print(agecomp_params)
         cat("\n\n# chante_retro arguments\n")

@@ -43,6 +43,9 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   for \code{\link{sample_mlacomp}}, for mean length-at-age
   data.}
 
+  \item{em_binning_params}{A named list containing
+  arguments for \code{\link{change_EM_binning}}.}
+
   \item{estim_params}{A named list containing arguments for
   \code{\link{change_e}}.}
 
@@ -139,9 +142,6 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   output to the console. Also, see the argument
   \code{ss_mode} to choose between safe or optimized SS3
   executables (default is safe mode).}
-
-  \item{em_lbin_params}{A named list containing arguments
-  for \code{\link{change_EM_binning}}.}
 }
 \value{
 The output will appear in whatever your current \R working
