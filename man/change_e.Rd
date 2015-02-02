@@ -118,7 +118,6 @@ and \code{natM_type} is anything other than \code{NULL} or
   value. Other arguments will be ignored if specified.
 }
 \examples{
-\dontrun{
 # Create a temporary folder for the output and set the working directory:
 temp_path <- file.path(tempdir(), "ss3sim-tv-example")
 dir.create(temp_path, showWarnings = FALSE)
@@ -137,7 +136,6 @@ change_e(ctl_file_in = ctl_file, ctl_file_out = "change_e.ctl",
 # clean up
 file.remove("change_e.ctl")
 setwd(wd)
-}
 }
 \author{
 Kelli Johnson
