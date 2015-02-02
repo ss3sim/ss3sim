@@ -288,6 +288,11 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       datfile.orig <- change_fltname(datfile.orig)
 
       if (call_change_data) {
+        # Start by clearing out the old data. Important so that extra data
+        # doesn't trip up change_data:
+        datfile <- clean_data(datfile = datfile, index_params = index_params,
+          verbose = FALSE)
+
         data_params <- add_nulls(data_params, c("age_bins", "len_bins",
           "pop_binwidth", "pop_minimum_size", "pop_maximum_size",
           "tail_compression", "lcomp_constant"))
@@ -342,7 +347,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                             write_file       = FALSE))
       }
 
-            ## Add error in the age comp data. Need to do this last since other
+      ## Add error in the age comp data. Need to do this last since other
       ## sampling functions rely on the age data. Also, if user doesn't
       ## call this function we need to delete the data
       if(!is.null(agecomp_params$fleets)){
