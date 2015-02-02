@@ -226,10 +226,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(is.null(user_recdevs)) {
         sc_i_recdevs <- sigmar * recdevs - sigmar^2/2 # from the package data
       } else {if(user_recdevs_warn){
-          warning(
-"No bias correction is done internally for user-supplied recruitment deviations
-and must be done manually. See the vignette for more details. Biased recruitment
-deviations can lead to biased model results.")
+          warning(paste("No bias correction is done internally for user-supplied",
+              "recruitment deviations and must be done manually. See the",
+              "vignette, for more details. Biased recruitment deviations can",
+              "lead to biased model results."))
         }
         sc_i_recdevs <- user_recdevs[, this_run_num] # user specified recdevs
       }
@@ -278,11 +278,11 @@ deviations can lead to biased model results.")
         mlacomp_params)
       ## This returns a superset of all years/fleets/data types needed to
       ## do sampling.
-      data_args <- calculate_data_units(lcomp_params=lcomp_params,
-                           agecomp_params=agecomp_params,
-                           calcomp_params=calcomp_params,
-                           mlacomp_params=mlacomp_params,
-                           wtatage_params=wtatage_params)
+      data_args <- calculate_data_units(lcomp_params    = lcomp_params,
+                                        agecomp_params  = agecomp_params,
+                                        calcomp_params  = calcomp_params,
+                                        mlacomp_params  = mlacomp_params,
+                                        wtatage_params  = wtatage_params)
       datfile.orig <- SS_readdat(pastef(sc, i, "om", "ss3.dat"),
                                  verbose = FALSE)
       datfile.orig <- change_fltname(datfile.orig)
