@@ -303,8 +303,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                     pop_binwidth     = data_params$pop_binwidth,
                     pop_minimum_size = data_params$pop_minimum_size,
                     pop_maximum_size = data_params$pop_maximum_size,
-                    tail_compression = data_param$tail_compression,
-                    lcomp_constant   = data_param$lcomp_constant,
+                    tail_compression = data_params$tail_compression,
+                    lcomp_constant   = data_params$lcomp_constant,
                     write_file       = TRUE)
       }
 
