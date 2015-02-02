@@ -33,13 +33,12 @@
 #'   \code{\link{change_lcomp_constant}}.
 #' @param em_lbin_params A named list containing arguments for
 #'   \code{\link{change_EM_binning}}.
-#' @param len_bins A numeric vector of bins to record length data at from the
-#'   OM. If \code{NULL} then the bins in the original OM will be used.
-#' @param age_bins A numeric vector of bins to record age data at from the OM.
-#'   If \code{NULL} then the bins in the original OM will be used.
-#' @param call_change_data A boolean of whether to call change_data and modify
-#'   the OM at each iteration. Default of TRUE. See the vignette for further
-#'   information on why this would be turned off.
+#' @param data_params A named list containing arguments for
+#'   \code{\link{change_data}}.
+#' @param call_change_data A boolean of whether to call
+#'   \code{\link{change_data}} and modify the OM at each iteration. Defaults to
+#'   \code{TRUE}. See the vignette for further information on why you might
+#'   choose to turn this off.
 #' @param om_dir The directory with the operating model you want to copy and use
 #'   for the specified simulations.
 #' @param em_dir The directory with the estimation model you want to copy and
@@ -182,7 +181,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   wtatage_params=NULL, mlacomp_params=NULL, em_binning_params=NULL,
   estim_params, tv_params, om_dir, em_dir,
   retro_params = NULL, tc_params = NULL, lc_params = NULL,
-  len_bins = NULL, age_bins = NULL, call_change_data = TRUE,
+  data_params = NULL, call_change_data = TRUE,
   user_recdevs = NULL, user_recdevs_warn = TRUE, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
   print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21, ...)
@@ -292,12 +291,22 @@ deviations can lead to biased model results.")
       datfile.orig <- SS_readdat(pastef(sc, i, "om", "ss3.dat"),
                                  verbose = FALSE)
       datfile.orig <- change_fltname(datfile.orig)
+
       if (call_change_data) {
-          change_data(datfile=datfile.orig,
-                      outfile = pastef(sc, i, "om", "ss3.dat"),
-                      fleets = data_args$fleets, years = data_args$years,
-                      types = data_args$types, age_bins = age_bins,
-                      len_bins = len_bins, write_file = TRUE)
+        data_params <- add_nulls(data_params, c("age_bins", "len_bins",
+          "pop_binwidth", "pop_minimum_size", "pop_maximum_size"))
+          # Note some are data_args and some are data_params:
+        change_data(datfile          = datfile.orig,
+                    outfile          = pastef(sc, i, "om", "ss3.dat"),
+                    fleets           = data_args$fleets,
+                    years            = data_args$years,
+                    types            = data_args$types,
+                    age_bins         = data_params$age_bins,
+                    len_bins         = data_params$len_bins,
+                    pop_binwidth     = data_params$pop_binwidth,
+                    pop_minimum_size = data_params$pop_minimum_size,
+                    pop_maximum_size = data_params$pop_maximum_size,
+                    write_file       = TRUE)
       }
 
       # Run the operating model and copy the dat file over
