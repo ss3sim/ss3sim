@@ -29,9 +29,9 @@
 #' augmenting the length composition data, \code{"age"} augmenting the age
 #' composition, \code{"cal"} augmenting the conditional age at length, and
 #' \code{"mla"} augmenting the mean length at age data.
-#' @param age_bins A numeric vector of age bins to use. If left as
+#' @param age_bins *A numeric vector of age bins to use. If left as
 #'   \code{NULL} then the age bin structure will be taken from the OM.
-#' @param len_bins A numeric vector of length bins to use. If left as
+#' @param len_bins *A numeric vector of length bins to use. If left as
 #'   \code{NULL} then the length bin structure will be taken from the OM.
 #' @param pop_binwidth *Population length bin width. Note that this value must
 #'   be smaller than the bin width specified in length composition data
@@ -62,57 +62,56 @@
 #' @export
 #' @seealso \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
 #' @author Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson
-# #' @examples
-# #' ## These examples are in development still and untested
-# #' d <- system.file("extdata", package = "ss3sim")
-# #' fleets <- 1:2
-# #' years <- c(5,10,15)
-# #' types <- c("len", "age")
-# #' file_in <- paste0(d, "/models/cod-om/codOM.dat")
-# #' ## Basic test with just length data, default bins
-# #' out <- change_data(file_in,"test2.dat", types="len", years=years,
-# #'                    fleets=fleets, write_file=FALSE)
-# #' print(out$lbin_vector)
-# #' print(tail(out$lencomp[, 1:8]))
-# #' ## Change the length bins
-# #' out <- change_data(file_in,"test.dat", types="len", years=years,
-# #'                    fleets=fleets, len_bins=3:6, write_file=FALSE)
-# #' print(out$lbin_vector)
-# #' print(tail(out$lencomp[, 1:8]))
-# #' ## Change data types
-# #' out <- change_data(file_in,"test.dat", types=c("len", "age"), years=years,
-# #'                    fleets=fleets, len_bins=3:6, age_bins=5:7, write_file=FALSE)
-# #' print(out$agebin_vector)
-# #' print(out$lbin_vector)
-# #' print(names(out$agecomp))
-# #' print(names(out$lencomp))
-# #' ## TODO new examples, not fully incorporated;
-# #' index_params=list(fleets=c(1,2), years=list(c(1,2), c(10,11)), sds_obs=c(.1,.2))
-# #' ## lcomp_params= list(Nsamp=list(12345), fleets=1, years=list(c(1,5)))
-# #' ## agecomp_params= list(Nsamp=list(12345), fleets=c(1,2), years=list(2,c(15,16)))
-# #' ## calcomp_params= list(Nsamp=list(1), fleets=c(1), years=98)
-# #' ## mlacomp_params= list(fleets=c(2), Nsamp=54, years=list(c(1,15)))
-# #' ## d <- system.file("extdata", package = "ss3sim")
-# #' ## #' ## d <- "../ss3sim/inst/extdata/"
-# #' ## f_in <- paste0(d, "/example-om/data.ss_new")
-# #' ## datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
-# #' ## data_units <- calculate_data_units(
-# #' ##     index_params=index_params,
-# #' ##     lcomp_params=lcomp_params,
-# #' ##     agecomp_params=agecomp_params,
-# #' ##     calcomp_params=calcomp_params,
-# #' ##     mlacomp_params=mlacomp_params)
-# #' ## dat2 <- with(data_units, change_data(datfile=datfile, fleets=fleets, years=years,
-# #' ##                              types=types, write_file=FALSE))
-# #' ## dat2 <- change_data(datfile, fleets=c(1,2), years=c(4,5),
-# #' ##                     types=c("age","len", "mla", "cal"), write_file=FALSE)
-# #' ## datfile <- dat2
-# #' ## dat3 <- clean_data(datfile=dat2, lcomp_params=lcomp_params,
-# #' ##                        index_params=index_params,
-# #' ##                      agecomp_params=agecomp_params,
-# #' ##                      calcomp_params=calcomp_params,
-# #' ##                      mlacomp_params=mlacomp_params,
-# #' ##                       verbose=TRUE)
+#' @examples
+#' d <- system.file("extdata", package = "ss3sim")
+#' fleets <- 1:2
+#' years <- c(5, 10, 15)
+#' types <- c("len", "age")
+#' file_in <- r4ss::SS_readdat(paste0(d, "/models/cod-om/codOM.dat"))
+#'
+#' # Basic test with just length data, default bins:
+#' out <- change_data(file_in, outfile = "ignore.dat", types = "len",
+#'   years = years, fleets = fleets, write_file = FALSE)
+#' print(out$lbin_vector)
+#' print(out$lencomp)
+#'
+#' # Change the length bins:
+#' out <- change_data(file_in, "ignore.dat", types = "len",
+#'   years = years, fleets = fleets, len_bins = 3:6, write_file = FALSE)
+#' out$lbin_vector
+#' out$lencomp
+#'
+#' # Change the population length bins:
+#' out <- change_data(file_in, "ignore.dat", types = "len",
+#'   years = years, fleets = fleets, pop_binwidth = 1, pop_minimum_size = 5,
+#'   pop_maximum_size = 210, write_file = FALSE)
+#' out$binwidth
+#' out$maximum_size
+#' out$minimum_size
+#'
+#' # Sample from index, length composition, age composition, catch at length,
+#' # mean length at age data: (normally this is all done from within run_ss3sim).
+#'
+#' index_params = list(fleets = c(1, 2), years = list(c(1, 2),
+#'   c(10, 11)), sds_obs = c(0.1, 0.2))
+#' lcomp_params = list(Nsamp = list(12345), fleets = 1, years = list(c(1, 5)))
+#' agecomp_params = list(Nsamp = list(12345), fleets = c(1, 2),
+#'   years = list(2, c(15, 16)))
+#' calcomp_params = list(Nsamp = list(1), fleets = c(1), years = 98)
+#' mlacomp_params = list(fleets = c(2), Nsamp = 54, years = list(c(1, 15)))
+#' d <- system.file("extdata", package = "ss3sim")
+#' f_in <- paste0(d, "/example-om/data.ss_new")
+#' datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+#' data_units <- calculate_data_units(index_params = index_params,
+#'   lcomp_params = lcomp_params, agecomp_params = agecomp_params,
+#'   calcomp_params = calcomp_params, mlacomp_params = mlacomp_params)
+#' data_units
+#' dat2 <- with(data_units, change_data(datfile = datfile, fleets = fleets,
+#'   years = years, types = types, write_file = FALSE))
+#' dat3 <- clean_data(datfile = dat2, lcomp_params = lcomp_params,
+#'   index_params = index_params, agecomp_params = agecomp_params,
+#'   calcomp_params = calcomp_params, mlacomp_params = mlacomp_params,
+#'   verbose = TRUE)
 
 change_data <- function(datfile, outfile, fleets, years, types,
                         age_bins = NULL, len_bins = NULL, pop_binwidth = NULL,
