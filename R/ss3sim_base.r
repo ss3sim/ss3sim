@@ -27,10 +27,6 @@
 #'   \code{\link{change_retro}}.
 #' @param estim_params A named list containing arguments for
 #'   \code{\link{change_e}}.
-#' @param tc_params A named list containing arguments for
-#'   \code{\link{change_tail_compression}}.
-#' @param lc_params A named list containing arguments for
-#'   \code{\link{change_lcomp_constant}}.
 #' @param em_lbin_params A named list containing arguments for
 #'   \code{\link{change_EM_binning}}.
 #' @param data_params A named list containing arguments for
@@ -180,8 +176,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   index_params, lcomp_params, agecomp_params, calcomp_params=NULL,
   wtatage_params=NULL, mlacomp_params=NULL, em_binning_params=NULL,
   estim_params, tv_params, om_dir, em_dir,
-  retro_params = NULL, tc_params = NULL, lc_params = NULL,
-  data_params = NULL, call_change_data = TRUE,
+  retro_params = NULL, data_params = NULL, call_change_data = TRUE,
   user_recdevs = NULL, user_recdevs_warn = TRUE, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
   print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21, ...)
@@ -306,6 +301,8 @@ deviations can lead to biased model results.")
                     pop_binwidth     = data_params$pop_binwidth,
                     pop_minimum_size = data_params$pop_minimum_size,
                     pop_maximum_size = data_params$pop_maximum_size,
+                    tail_compression = data_param$tail_compression,
+                    lcomp_constant   = data_param$lcomp_constant,
                     write_file       = TRUE)
       }
 
@@ -357,27 +354,6 @@ deviations can lead to biased model results.")
                                          years          = years,
                                          cpar           = cpar,
                                          write_file     = FALSE))
-      }
-
-      # Add tail compression option. If NULL is passed (the base case),
-      # ignore it.
-      if(!is.null(tc_params)){
-          tc_params <- add_nulls(tc_params, "tail_compression")
-          datfile <- with(tc_params,
-            change_tail_compression(
-                  tail_compression = tail_compression,
-                  datfile          = datfile,
-                  file_out         = pastef(sc, i, "em", "ss3.dat")))
-      }
-      # Add robustification constant to length comps. If NULL is passed
-      # (the base case), ignore it.
-      if(!is.null(lc_params)){
-          lc_params <- add_nulls(lc_params, "lcomp_constant")
-          datfile <- with(lc_params,
-            change_lcomp_constant(
-                    lcomp_constant = lcomp_constant,
-                    datfile        = datfile,
-                    file_out       = pastef(sc, i, "em", "ss3.dat")))
       }
 
       ## Add error in the empirical weight-at-age comp data. Note that if

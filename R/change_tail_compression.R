@@ -18,7 +18,6 @@
 #'   (for testing) as a vector of character lines.
 #' @template casefile-footnote
 #' @author Cole Monnahan
-#' @export
 #' @importFrom r4ss SS_writedat
 #'
 #' @examples

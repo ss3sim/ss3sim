@@ -37,26 +37,33 @@
 #'   \code{len_bins} or SS3 will fail (see notes in the SS3 manual).
 #' @param pop_minimum_size *Population minimum length bin value.
 #' @param pop_maximum_size *Population maximum length bin value.
+#' @param lcomp_constant *A new robustification constant for length composition
+#'   data to be used. Must be a numeric value, as a proportion. For example 0.1
+#'   means 10 percent. See the SS3 manual for further information. A \code{NULL}
+#'   value indicates no action resulting in using the current value, and a value
+#'   of 0 will throw an error since that leads to an error when zeroes exist in
+#'   the data. Instead use a very small value like \code{1e-07}.
+#' @param tail_compression *A new tail compression value to be used in SS3. Must
+#'   be a numeric value, as a proportion. For example 0.1 means 10 percent. See
+#'   the SS3 manual for further information. A \code{NULL} value indicates no
+#'   action, a negative value indicates to SS3 to ignore it (not use that
+#'   feature).
 #' @param write_file Should the \code{.dat} file be written? The new \code{.dat}
 #'   file will always be returned invisibly by the function. Setting
 #'   \code{write_file = FALSE} can be useful for testing. Note that you must
 #'   supply a value to the argument \code{outfile}, but this argument can be set
 #'   to any arbitrary value (such as \code{NULL}) if \code{write_file = FALSE}.
 #'
+#' @details The robustification constant is added to both the observed and
+#'   expected proportions of length composition data, before being normalized
+#'   internally. It is designed to help stabilize the model, but is unclear how
+#'   and when to use it for optimal effect. The same value is used for all
+#'   length data.
+#'
 #' @return An invisible data list, and a file is written if \code{write_file =
 #'   TRUE}.
 #'
 #' @template casefile-footnote
-#'
-# # TODO: do we need any of this? - SA
-# @details Within the \code{.dat} file, the conditional age-at-length data is
-#   stored in the same matrix as the age composition data. Thus, it is
-#   necessary that the conditional age-at-length data use the same binning
-#   structure as the age composition data. If \code{types = "caa"} and not
-#   \code{types = c("age", "caa")} the function will add conditional
-#   age-at-length using the binning structure of the current \code{.dat} file.
-#   Also note that if \code{types = c("mla", "mwa")} no entries are currently
-#   necessary in the \code{len_bins}.
 #'
 #' @importFrom r4ss SS_readdat SS_writedat
 #' @export
@@ -116,6 +123,7 @@
 change_data <- function(datfile, outfile, fleets, years, types,
                         age_bins = NULL, len_bins = NULL, pop_binwidth = NULL,
                         pop_minimum_size = NULL, pop_maximum_size = NULL,
+                        lcomp_constant = NULL, tail_compression = NULL,
                         write_file = TRUE) {
 
   # TODO: pop length bins must not be wider than the length data bins, but the
@@ -189,11 +197,20 @@ change_data <- function(datfile, outfile, fleets, years, types,
         datfile$N_MeanSize_at_Age_obs <- nrow(datfile$MeanSize_at_Age_obs)
     }
 
+    if(!is.null(lcomp_constant)) {
+      datfile <- change_lcomp_constant(lcomp_constant = lcomp_constant,
+        datfile = datfile, file_out = "ignore.dat", write_file = FALSE)
+    }
+    if(!is.null(tail_compression)) {
+      datfile <- change_tail_compression(tail_compression = tail_compression,
+        datfile = datfile, file_out = "ignore.dat", write_file = FALSE)
+    }
+
     if (write_file) {
         SS_writedat(datlist = datfile, outfile = outfile, overwrite = TRUE,
                     verbose = FALSE)
     }
-    return(invisible(datfile))
+    invisible(datfile)
 }
 
 #' Given sampling arguments, calculate super set of fleets, years, and data
