@@ -8,10 +8,10 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   agecomp_params, calcomp_params = NULL, wtatage_params = NULL,
   mlacomp_params = NULL, em_binning_params = NULL, estim_params, tv_params,
   om_dir, em_dir, retro_params = NULL, tc_params = NULL, lc_params = NULL,
-  len_bins = NULL, age_bins = NULL, call_change_data = TRUE,
-  user_recdevs = NULL, user_recdevs_warn = TRUE, bias_adjust = FALSE,
-  bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
-  print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21, ...)
+  data_params = NULL, call_change_data = TRUE, user_recdevs = NULL,
+  user_recdevs_warn = TRUE, bias_adjust = FALSE, bias_nsim = 5,
+  bias_already_run = FALSE, hess_always = FALSE, print_logfile = TRUE,
+  sleep = 0, conv_crit = 0.2, seed = 21, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -64,18 +64,14 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   \item{lc_params}{A named list containing arguments for
   \code{\link{change_lcomp_constant}}.}
 
-  \item{len_bins}{A numeric vector of bins to record length
-  data at from the OM. If \code{NULL} then the bins in the
-  original OM will be used.}
-
-  \item{age_bins}{A numeric vector of bins to record age
-  data at from the OM. If \code{NULL} then the bins in the
-  original OM will be used.}
+  \item{data_params}{A named list containing arguments for
+  \code{\link{change_data}}.}
 
   \item{call_change_data}{A boolean of whether to call
-  change_data and modify the OM at each iteration. Default
-  of TRUE. See the vignette for further information on why
-  this would be turned off.}
+  \code{\link{change_data}} and modify the OM at each
+  iteration. Defaults to \code{TRUE}. See the vignette for
+  further information on why you might choose to turn this
+  off.}
 
   \item{user_recdevs}{An optional matrix of recruitment
   deviations to replace the recruitment deviations built
@@ -150,7 +146,7 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   \code{ss_mode} to choose between safe or optimized SS3
   executables (default is safe mode).}
 
-  \item{em_lbin_params}{A names list containing arguments
+  \item{em_lbin_params}{A named list containing arguments
   for \code{\link{change_EM_binning}}.}
 }
 \value{
