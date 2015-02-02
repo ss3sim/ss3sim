@@ -289,8 +289,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       if (call_change_data) {
         data_params <- add_nulls(data_params, c("age_bins", "len_bins",
-          "pop_binwidth", "pop_minimum_size", "pop_maximum_size"))
-          # Note some are data_args and some are data_params:
+          "pop_binwidth", "pop_minimum_size", "pop_maximum_size",
+          "tail_compression", "lcomp_constant"))
+
+        # Note some are data_args and some are data_params:
         change_data(datfile          = datfile.orig,
                     outfile          = pastef(sc, i, "om", "ss3.dat"),
                     fleets           = data_args$fleets,
