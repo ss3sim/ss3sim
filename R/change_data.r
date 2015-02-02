@@ -62,6 +62,7 @@
 #'
 #' @return An invisible data list, and a file is written if \code{write_file =
 #'   TRUE}.
+#' @family change functions
 #'
 #' @template casefile-footnote
 #'

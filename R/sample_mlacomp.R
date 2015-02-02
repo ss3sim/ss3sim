@@ -23,7 +23,7 @@
 #' parameters.
 #' @template sampling-return
 #' @template casefile-footnote
-#' @seealso \code{\link{sample_lcomp}, \link{sample_agecomp}}
+#' @family sampling functions
 #' @importFrom r4ss SS_readdat SS_writedat SS_parlines
 #' @export
 #'

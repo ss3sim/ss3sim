@@ -18,6 +18,7 @@
 #' @author Sean C. Anderson
 #' @return A modified SS3 starter file.
 #' @template casefile-footnote
+#' @family change functions
 #' @examples
 #' # Create a temporary folder for the output:
 #' temp_path <- file.path(tempdir(), "ss3sim-retro-example")

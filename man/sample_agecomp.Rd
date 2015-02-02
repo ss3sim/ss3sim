@@ -5,7 +5,7 @@
 \title{Sample age compositions from expected values}
 \usage{
 sample_agecomp(datfile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
-  agebin_vector = NULL, write_file = TRUE, keep_conditional = TRUE)
+  write_file = TRUE, keep_conditional = TRUE)
 }
 \arguments{
   \item{datfile}{An SS data object as read in from
@@ -39,12 +39,6 @@ sample_agecomp(datfile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
   the given \code{Nsamp}, \code{2} indicates twice, etc.
   Values greater than one indicate overdispersion, and less
   underdispersion.}
-
-  \item{agebin_vector}{Depreciated argument. Does nothing
-  and will be removed in a future major version update.
-  Instead, see the \code{age_bins} argument in
-  \code{\link{ss3sim_base}}, which uses
-  \code{\link{change_data}} internally.}
 
   \item{write_file}{A switch for whether to write
   \code{outfile} to disk. Can be turned off to speed up
@@ -101,7 +95,7 @@ ex2 <- sample_agecomp(datfile=datfile, outfile="test2.dat", fleets=c(1,2),
                       years=list(seq(1994, 2012, by=2),
                           2003:2012), write_file=FALSE)
 
-\donttest{
+\dontrun{
 ## Run three  cases showing Multinomial, Dirichlet(1) and over-dispersed
 ## Dirichlet for different levels of sample sizes
 op <- par(mfrow = c(1,3))
@@ -138,6 +132,8 @@ Cole Monnahan and Kotaro Ono; modified from a version by
 Roberto Licandeo and Felipe Hurtado-Ferro
 }
 \seealso{
-\code{\link{sample_lcomp}}
+Other sampling functions: \code{\link{sample_calcomp}};
+\code{\link{sample_index}}; \code{\link{sample_lcomp}};
+\code{\link{sample_mlacomp}}; \code{\link{sample_wtatage}}
 }
 

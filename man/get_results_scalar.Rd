@@ -20,7 +20,7 @@ Cole Monnahan; updated by Merrill Rudd to include
 additional likelihoods
 }
 \seealso{
-Other get.results: \code{\link{get_results_all}};
+Other get-results: \code{\link{get_results_all}};
 \code{\link{get_results_scenario}};
 \code{\link{get_results_timeseries}}
 }

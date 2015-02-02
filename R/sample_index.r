@@ -49,7 +49,7 @@
 #' ggplot(ex3, aes(x=year, y=obs, group=index, ymin=0,
 #'                 colour=as.factor(index)))+geom_point()
 #' }
-#'
+#' @family sampling functions
 
 sample_index <- function(datfile, outfile, fleets, years, sds_obs,
                          make_plot = FALSE, write_file=TRUE){

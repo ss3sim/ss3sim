@@ -65,6 +65,7 @@
 #' @template casefile-footnote
 #' @return Altered versions of SS3 \code{.ctl}, \code{.dat}, and,
 #' \code{forecast.ss} files.
+#' @family change functions
 #'
 #' @author Kelli Johnson
 #' @export
