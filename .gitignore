@@ -22,8 +22,6 @@ vignettes/auto
 inst/ms/manuscript.tex
 *.bbl
 *.blg
-vignettes/ss3sim-vignette-concordance.tex
-vignettes/ss3sim-vignette.synctex.gz
 tags
 Session.vim
 *.pdfsync
@@ -32,4 +30,5 @@ inst/ms/file-structure.eps
 vignettes/knit
 inst/doc
 vignettes/introduction_cache/
+vignettes/introduction_files/
 inst/doc/
