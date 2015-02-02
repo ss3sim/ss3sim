@@ -1,36 +1,35 @@
 #' Change the data that is available as output from an SS operating model.
 #'
-#' \code{change_data} alters the data structure for a data list as read in
-#' by \code{r4ss::SS_readdat}, for use in preparing the data file for an SS
+#' \code{change_data} alters the data structure for a data list as read in by
+#' \code{\link[r4ss]{SS_readdat}}, for use in preparing the data file for an SS
 #' operating model. Original data is removed and dummy data is added, as
-#' specified, to the SS \code{.dat} file. This causes SS to produce
-#' expected values (OM "truth") when the operating model is run, from which
-#' data can be sampled.  For each data type altered, \code{change_data}
-#' will add data for the fleets and years given; potentially adding many
-#' rows of redundant data. Currently, \code{.dat} files with multiple
-#' genders cannot be manipulated with
-#' \code{change_data}. \code{calculate_data_units} is used internally in
+#' specified, to the SS \code{.dat} file. This causes SS to produce expected
+#' values (OM "truth") when the operating model is run, from which data can be
+#' sampled.  For each data type altered, \code{change_data} will add data for
+#' the fleets and years given; potentially adding many rows of redundant data.
+#' Currently, \code{.dat} files with multiple genders cannot be manipulated with
+#' \code{change_data}. \code{\link{calculate_data_units}} is used internally in
 #' \code{\link{ss3sim_base}} to create a superset of fleets and years from
-#' sample arguments, and \code{\link{clean_data}} to strip out unused data
-#' after \code{change_data} is called (see examples below).
-#' \code{change_data} is called internally automatically, but can also be
-#' used by an \pkg{ss3sim} user to manipulate data as a case, or to prepare
-#' a new OM for use in a simulation. See the vignette for more details.
+#' sample arguments, and \code{\link{clean_data}} to strip out unused data after
+#' \code{change_data} is called (see examples below). \code{change_data} is
+#' called internally automatically, but can also be used by an \pkg{ss3sim} user
+#' to manipulate data as a case, or to prepare a new OM for use in a simulation.
+#' See the vignette for more details.
 #'
-#' @param datfile A list as read in by \code{r4ss::SS_readdat}.
+#' @param datfile A list as read in by \code{\link[r4ss]{SS_readdat}}.
 #' @param outfile A character value giving the location of an SS \code{.dat}
 #'   file to output, if \code{write_file=TRUE}.
 #' @param fleets A numeric vector of fleets
 #' @param years A numeric vector of years
-#' @param types A vector that can take combinations of the following
-#' entries: \code{"index"}, \code{"len"}, \code{"age"}, \code{"cal"},
-#' \code{"mla"}.  \code{types} controls what data structures the function
-#' acts on, with \code{"index"} changing indices/CPUE, \code{"len"}
-#' augmenting the length composition data, \code{"age"} augmenting the age
-#' composition, \code{"cal"} augmenting the conditional age at length, and
-#' \code{"mla"} augmenting the mean length at age data.
-#' @param age_bins *A numeric vector of age bins to use. If left as
-#'   \code{NULL} then the age bin structure will be taken from the OM.
+#' @param types A vector that can take combinations of the following entries:
+#'   \code{"index"}, \code{"len"}, \code{"age"}, \code{"cal"}, \code{"mla"}.
+#'   \code{types} controls what data structures the function acts on, with
+#'   \code{"index"} changing indices/CPUE, \code{"len"} augmenting the length
+#'   composition data, \code{"age"} augmenting the age composition, \code{"cal"}
+#'   augmenting the conditional age at length, and \code{"mla"} augmenting the
+#'   mean length at age data.
+#' @param age_bins *A numeric vector of age bins to use. If left as \code{NULL}
+#'   then the age bin structure will be taken from the OM.
 #' @param len_bins *A numeric vector of length bins to use. If left as
 #'   \code{NULL} then the length bin structure will be taken from the OM.
 #' @param pop_binwidth *Population length bin width. Note that this value must
@@ -41,12 +40,13 @@
 #' @param write_file Should the \code{.dat} file be written? The new \code{.dat}
 #'   file will always be returned invisibly by the function. Setting
 #'   \code{write_file = FALSE} can be useful for testing. Note that you must
-#'   supply a value to the argument \code{outfile}, but this argument can be
-#'   set to any arbitrary value (such as \code{NULL}) if \code{write_file =
-#'   FALSE}.
+#'   supply a value to the argument \code{outfile}, but this argument can be set
+#'   to any arbitrary value (such as \code{NULL}) if \code{write_file = FALSE}.
 #'
-#' @return An invisible data list, and a file is written depending on
-#' \code{write_file}.
+#' @return An invisible data list, and a file is written if \code{write_file =
+#'   TRUE}.
+#'
+#' @template casefile-footnote
 #'
 # # TODO: do we need any of this? - SA
 # @details Within the \code{.dat} file, the conditional age-at-length data is

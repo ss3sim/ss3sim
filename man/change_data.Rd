@@ -10,7 +10,7 @@ change_data(datfile, outfile, fleets, years, types, age_bins = NULL,
 }
 \arguments{
   \item{datfile}{A list as read in by
-  \code{r4ss::SS_readdat}.}
+  \code{\link[r4ss]{SS_readdat}}.}
 
   \item{outfile}{A character value giving the location of
   an SS \code{.dat} file to output, if
@@ -22,7 +22,7 @@ change_data(datfile, outfile, fleets, years, types, age_bins = NULL,
 
   \item{types}{A vector that can take combinations of the
   following entries: \code{"index"}, \code{"len"},
-  \code{"age"}, \code{"cal"}, \code{"mla"}.  \code{types}
+  \code{"age"}, \code{"cal"}, \code{"mla"}. \code{types}
   controls what data structures the function acts on, with
   \code{"index"} changing indices/CPUE, \code{"len"}
   augmenting the length composition data, \code{"age"}
@@ -58,22 +58,22 @@ change_data(datfile, outfile, fleets, years, types, age_bins = NULL,
   \code{NULL}) if \code{write_file = FALSE}.}
 }
 \value{
-An invisible data list, and a file is written depending on
-\code{write_file}.
+An invisible data list, and a file is written if
+\code{write_file = TRUE}.
 }
 \description{
 \code{change_data} alters the data structure for a data
-list as read in by \code{r4ss::SS_readdat}, for use in
-preparing the data file for an SS operating model. Original
-data is removed and dummy data is added, as specified, to
-the SS \code{.dat} file. This causes SS to produce expected
-values (OM "truth") when the operating model is run, from
-which data can be sampled.  For each data type altered,
-\code{change_data} will add data for the fleets and years
-given; potentially adding many rows of redundant data.
-Currently, \code{.dat} files with multiple genders cannot
-be manipulated with \code{change_data}.
-\code{calculate_data_units} is used internally in
+list as read in by \code{\link[r4ss]{SS_readdat}}, for use
+in preparing the data file for an SS operating model.
+Original data is removed and dummy data is added, as
+specified, to the SS \code{.dat} file. This causes SS to
+produce expected values (OM "truth") when the operating
+model is run, from which data can be sampled.  For each
+data type altered, \code{change_data} will add data for the
+fleets and years given; potentially adding many rows of
+redundant data. Currently, \code{.dat} files with multiple
+genders cannot be manipulated with \code{change_data}.
+\code{\link{calculate_data_units}} is used internally in
 \code{\link{ss3sim_base}} to create a superset of fleets
 and years from sample arguments, and
 \code{\link{clean_data}} to strip out unused data after
@@ -82,6 +82,14 @@ and years from sample arguments, and
 can also be used by an \pkg{ss3sim} user to manipulate data
 as a case, or to prepare a new OM for use in a simulation.
 See the vignette for more details.
+}
+\section{Which arguments to specifiy in case files}{
+  All function argument descriptions that start with an
+  asterisk (*) will be passed through the case files to
+  \code{\link{run_ss3sim}}. If one of these arguments is
+  not specified in a case file, then a value of \code{NULL}
+  will be passed, which may or may not be an appropriate
+  value. Other arguments will be ignored if specified.
 }
 \examples{
 d <- system.file("extdata", package = "ss3sim")
