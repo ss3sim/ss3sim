@@ -33,6 +33,11 @@
 #'   \code{NULL} then the age bin structure will be taken from the OM.
 #' @param len_bins A numeric vector of length bins to use. If left as
 #'   \code{NULL} then the length bin structure will be taken from the OM.
+#' @param pop_binwidth *Population length bin width. Note that this value must
+#'   be smaller than the bin width specified in length composition data
+#'   \code{len_bins} or SS3 will fail (see notes in the SS3 manual).
+#' @param pop_minimum_size *Population minimum length bin value.
+#' @param pop_maximum_size *Population maximum length bin value.
 #' @param write_file Should the \code{.dat} file be written? The new \code{.dat}
 #'   file will always be returned invisibly by the function. Setting
 #'   \code{write_file = FALSE} can be useful for testing. Note that you must
@@ -109,8 +114,14 @@
 # #' ##                      mlacomp_params=mlacomp_params,
 # #' ##                       verbose=TRUE)
 
-change_data <- function(datfile, outfile, fleets, years, types, age_bins =
-                        NULL, len_bins = NULL, write_file = TRUE) {
+change_data <- function(datfile, outfile, fleets, years, types,
+                        age_bins = NULL, len_bins = NULL, pop_binwidth = NULL,
+                        pop_minimum_size = NULL, pop_maximum_size = NULL,
+                        write_file = TRUE) {
+
+  # TODO: pop length bins must not be wider than the length data bins, but the
+  # boundaries of the bins do not need to align (from SS3 manual)
+  # this is also checked within SS3 and will create a fatal error
 
     is_ssdat_file(datfile)
 
@@ -125,18 +136,22 @@ change_data <- function(datfile, outfile, fleets, years, types, age_bins =
                    "change_data only works with single-gender models."))
     }
 
-### TODO: Need to do things like change age matrices, see change_pop_bin below
-    ## Change the data vectors if specified.
+    ## TODO: Need to do things like change age matrices?
+    ## TODO: Change the data vectors if specified?
+
+    # population bins:
+    # change_pop_bin() deals with NULLs internally by not changing values:
+    datfile <- change_pop_bin(datfile,
+                              binwidth = pop_binwidth,
+                              minimum_size = pop_minimum_size,
+                              maximum_size = pop_maximum_size)
 
     if(is.null(len_bins)) len_bins <- datfile$lbin_vector
-    else stop("dynamic binning of length bins not yet implemented")
     if(is.null(age_bins)) age_bins <- datfile$agebin_vector
-    else stop("dynamic binning of age bins not yet implemented")
 
     ## Now modify each data type in turn
     if ("index" %in% types) {
-        datfile$CPUE <-
-            make_dummy_dat_index(fleets=fleets, years=years)
+        datfile$CPUE <- make_dummy_dat_index(fleets=fleets, years=years)
         datfile$N_cpue <- nrow(datfile$CPUE)
     }
     if ("len" %in% types) {
@@ -253,7 +268,6 @@ change_pop_bin <- function(datfile, binwidth = NULL, minimum_size = NULL,
   ## FIXME: Cole left this note:
   ## The ageing error matrices must also
   ## be changed because they have one column per population length bin
-  ## if (!is.null(pop_bin)) datfile$binwidth <- pop_bin
   invisible(datfile)
 }
 
