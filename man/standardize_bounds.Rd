@@ -28,7 +28,7 @@ standardize_bounds(percent_df, dir, em_ctl_file, om_ctl_file = "",
   is \code{FALSE}.}
 
   \item{...}{Any other arguments to pass to
-  \code{\link{SS_changepars}}.}
+  \code{\link[r4ss]{SS_changepars}}.}
 }
 \description{
 Function to standardize the bounds of the control file in

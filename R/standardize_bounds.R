@@ -20,7 +20,7 @@
 #' @param em_ctl_file A string with the path and name of the estimation model
 #'   control file.
 #' @param verbose Detailed output to command line. Default is \code{FALSE}.
-#' @param ... Any other arguments to pass to \code{\link{SS_changepars}}.
+#' @param ... Any other arguments to pass to \code{\link[r4ss]{SS_changepars}}.
 #' @importFrom r4ss SS_parlines SS_changepars
 #' @export
 #' @examples
@@ -56,6 +56,7 @@
 #'
 #' setwd(wd)
 #' }
+
 standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
                                verbose = FALSE, ...) {
 
@@ -115,21 +116,23 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
 
     #If they are not equal, set the EM initial value to the OM true value
       if(any(om_pars[om_indices,"INIT"]!= em_pars[em_indices,"INIT"])){
-        inits_to_change<-em_pars[which(em_pars[em_indices,"INIT"] != om_pars[om_indices,"INIT"]), "Label"]
+        inits_to_change<-em_pars[which(em_pars[em_indices,"INIT"] !=
+            om_pars[om_indices,"INIT"]), "Label"]
 
         SS_changepars(dir=dir, ctlfile=em_ctl_file,newctlfile = em_ctl_file,
-                    strings = inits_to_change, newvals = om_pars[which(om_pars[om_indices,"INIT"]!= em_pars[em_indices,"INIT"]),"INIT"],
+                    strings = inits_to_change,
+          newvals = om_pars[which(om_pars[om_indices,"INIT"]!=
+              em_pars[em_indices,"INIT"]),"INIT"],
                     verbose=FALSE)
       }
     }else{
-      print("None of the entered parameter labels are found in both the EM and OM.")
+      message("None of the entered parameter labels are found in both the EM and OM.")
     }
   }
   }
 
   #2: Use input data frame to set the LO and HI values of the EM ctl file
   #To a fixed % of the init value as provided in the user input
-
 
  #Check input parameter names are valid
   #Do these match the data frame first column?
