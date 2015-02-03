@@ -78,7 +78,7 @@ sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
     for(i in 1:length(fleets)){
         fl <- fleets[i]
         if (length(Nsamp[[i]]) == 1) {
-            Nsamp[[i]] <- rep(Nsamp[[fl]], length(years[[i]]))
+            Nsamp[[i]] <- rep(Nsamp[[i]], length(years[[i]]))
         }
         ## agecomp.age.fl <- agecomp.age[agecomp.age$FltSvy == fl &
         ##                               agecomp.age$Yr %in% years[[i]], ]
