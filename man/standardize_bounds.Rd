@@ -4,7 +4,7 @@
 \alias{standardize_bounds}
 \title{Standardize the bounds of the estimation model control file.}
 \usage{
-standardize_bounds(percent_df, em_ctl_file, om_ctl_file = "",
+standardize_bounds(percent_df, dir, em_ctl_file, om_ctl_file = "",
   verbose = FALSE, ...)
 }
 \arguments{
@@ -13,6 +13,8 @@ standardize_bounds(percent_df, em_ctl_file, om_ctl_file = "",
   second column is the % of the initial parameter value LO
   is set to. The third column is the % of the initial
   parameter value HI is set to.}
+
+  \item{dir}{the directory containing the model files}
 
   \item{em_ctl_file}{A string with the path and name of the
   estimation model control file.}
@@ -26,7 +28,7 @@ standardize_bounds(percent_df, em_ctl_file, om_ctl_file = "",
   is \code{FALSE}.}
 
   \item{...}{Any other arguments to pass to
-  \code{\link{change_lo_hi}}.}
+  \code{\link{SS_changepars}}.}
 }
 \description{
 Function to standardize the bounds of the control file in
@@ -65,7 +67,7 @@ percent_df<-data.frame(Label=as.character(em.pars[c(1:6,17,27:30),"Label"]),
   lo=lo.percent,hi=hi.percent)
 
 ##Run function
-standardize_bounds(percent_df = percent_df, em_ctl_file = "em.ctl",
+standardize_bounds(percent_df = percent_df, dir = temp_path, em_ctl_file = "em.ctl",
                    om_ctl_file = "om.ctl")
 
 setwd(wd)

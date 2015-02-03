@@ -20,7 +20,7 @@
 #' @param em_ctl_file A string with the path and name of the estimation model
 #'   control file.
 #' @param verbose Detailed output to command line. Default is \code{FALSE}.
-#' @param ... Any other arguments to pass to \code{\link{change_lo_hi}}.
+#' @param ... Any other arguments to pass to \code{\link{SS_changepars}}.
 #' @importFrom r4ss SS_parlines SS_changepars
 #' @export
 #' @examples
@@ -108,11 +108,11 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
     restr_percent_df<-percent_df[which(percent_df[,"Label"] %in% unique(c(om_pars[,"Label"],em_pars[,"Label"]))),]
 
     if(!is.na(restr_percent_df)){
-    
+
       #Get the indices of the user input parameters in the OM/EM
       om_indices<-which(om_pars[,"Label"] %in% restr_percent_df[,"Label"])
       em_indices<-which(em_pars[,"Label"] %in% restr_percent_df[,"Label"])
-    
+
     #If they are not equal, set the EM initial value to the OM true value
       if(any(om_pars[om_indices,"INIT"]!= em_pars[em_indices,"INIT"])){
         inits_to_change<-em_pars[which(em_pars[em_indices,"INIT"] != om_pars[om_indices,"INIT"]), "Label"]
