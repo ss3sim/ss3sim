@@ -13,12 +13,13 @@
 #'   The first column is the parameter.
 #'   The second column is the % of the initial parameter value LO is set to.
 #'   The third column is the % of the initial parameter value HI is set to.
-#' @param dir the directory containing the model files
-#' @param om_ctl_file A string with the path and name of the operating model
+#' @param dir A path to the directory containing the model files.
+#' @param om_ctl_file A string with the name of the operating model
 #'   control file. If it is not given the part of the function which matches the
 #'   OM and EM INIT values is ignored. Default is \code{""}.
-#' @param em_ctl_file A string with the path and name of the estimation model
-#'   control file.
+#'   \code{om_ctl_file} must be located in \code{dir}.
+#' @param em_ctl_file A string with the name of the estimation model
+#'   control file. \code{em_ctl_file} must be located in \code{dir}.
 #' @param verbose Detailed output to command line. Default is \code{FALSE}.
 #' @param ... Any other arguments to pass to \code{\link[r4ss]{SS_changepars}}.
 #' @importFrom r4ss SS_parlines SS_changepars
@@ -59,15 +60,19 @@
 
 standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
                                verbose = FALSE, ...) {
-
+  # Check that EM file exists
+  if (!file.exists(file.path(dir, em_ctl_file))) {
+    stop(paste("The em_ctl_file,", em_ctl_file, "does not exist",
+               "in the directory", dir))
+  }
   #Read in EM values
-  em_pars<-SS_parlines(ctlfile=paste0(dir,em_ctl_file))
+  em_pars <- SS_parlines(ctlfile = file.path(dir, em_ctl_file))
 
  #If an OM is passed
   if(nchar(om_ctl_file)>0){
 
     #Read in OM true value
-    om_pars<-SS_parlines(ctlfile=paste0(dir,om_ctl_file))
+    om_pars <- SS_parlines(ctlfile = file.path(dir, om_ctl_file))
 
     #Restrict the parameters which have their initial values
     #set equal to only those which occur in both the EM and OM
@@ -102,7 +107,7 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
           newvals = changeinits[, 2], verbose = FALSE, repeat.vals = FALSE)
       if (verbose) message(paste(print.verbose, collapse = "\n"))
 
-    om_pars<-SS_parlines(ctlfile=paste0(dir,om_ctl_file))
+    om_pars<-SS_parlines(ctlfile = file.path(dir,om_ctl_file))
 
    #Restrict the parameters which have their initial values
     #set equal to only those which occur in both the EM and OM

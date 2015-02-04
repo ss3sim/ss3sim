@@ -14,15 +14,18 @@ standardize_bounds(percent_df, dir, em_ctl_file, om_ctl_file = "",
   is set to. The third column is the % of the initial
   parameter value HI is set to.}
 
-  \item{dir}{the directory containing the model files}
+  \item{dir}{A path to the directory containing the model
+  files.}
 
-  \item{em_ctl_file}{A string with the path and name of the
-  estimation model control file.}
+  \item{em_ctl_file}{A string with the name of the
+  estimation model control file. \code{em_ctl_file} must be
+  located in \code{dir}.}
 
-  \item{om_ctl_file}{A string with the path and name of the
+  \item{om_ctl_file}{A string with the name of the
   operating model control file. If it is not given the part
   of the function which matches the OM and EM INIT values
-  is ignored. Default is \code{""}.}
+  is ignored. Default is \code{""}. \code{om_ctl_file} must
+  be located in \code{dir}.}
 
   \item{verbose}{Detailed output to command line. Default
   is \code{FALSE}.}
