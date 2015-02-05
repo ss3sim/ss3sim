@@ -113,7 +113,7 @@ sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
                 ## case of multinomial. This code creates a vector of
                 ## empirical samples of length, such that each length bin
                 ## is repeated equal to the number of observed fish in that bin
-                prob.len.ints <- unlist(sapply(1:length(prob.len)), function(i) rep(i, prob.len[i]))
+                prob.len.ints <- unlist(sapply(1:length(prob.len), function(i) rep(i, prob.len[i])))
                 ## Now resample from it, garaunteeing that the sample size
                 ## doesn't exceed
                 temp <- sample(x=prob.len.ints, size=Nsamp[[i]][yr.ind], replace=FALSE)
