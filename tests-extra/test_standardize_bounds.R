@@ -20,7 +20,7 @@ ctlom <- system.file("extdata", "models", "cod-om", "codOM.ctl",
   package = "ss3sim")
 
 
-test_that{"Bounds in EM are changed",
+test_that("Bounds in EM are changed", {
 file.copy(ctlom, "cod-em/om.ctl", overwrite = TRUE)
   # Use SS_parlines to get the proper names for parameters for the data frame
   om.pars <- SS_parlines(ctlfile = "cod-em/om.ctl")
@@ -41,6 +41,6 @@ file.copy(ctlom, "cod-em/om.ctl", overwrite = TRUE)
   expect_equal(newpars$LO[1:7],
                em.pars[parlines[1:7], "INIT"] * lo.percent[1:7],
                tolerance = 0.001)
-}
+})
 
 unlink(temp_path, recursive = TRUE)
