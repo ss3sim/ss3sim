@@ -47,7 +47,7 @@ id_scenarios <- function(directory){
         x <- unlist(strsplit(all.dirs[i], split="/"))
         return(x[length(x)])
     })
-    scenarios <- temp.dirs[grepl("^([A-Z]{1}[0-9]{1}-)+[a-z]+$", temp.dirs)]
+    scenarios <- temp.dirs[grepl("^([A-Z]{1}[0-9]+-)+[a-z]+$", temp.dirs)]
 
     return(scenarios)
 }
