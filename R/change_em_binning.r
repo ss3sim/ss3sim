@@ -42,6 +42,9 @@
 change_em_binning <- function(file_in, file_out, lbin_method=NULL, bin_vector,
   write_file = TRUE) {
 
+    ## If lbin_method is NULL then don't do anything
+    if(is.null(lbin_method)) return(NULL)
+
 # error checking
   if(!is.numeric(bin_vector)) {
     stop("bin_vector must be numeric")
@@ -117,7 +120,8 @@ change_em_binning <- function(file_in, file_out, lbin_method=NULL, bin_vector,
   }
 
   if(write_file) {
-    SS_writedat(datlist = datfile, outfile = file_out, overwrite=TRUE)
+    SS_writedat(datlist = datfile, outfile = file_out, overwrite=TRUE,
+                verbose=FALSE)
   }
 
   invisible(datfile)
