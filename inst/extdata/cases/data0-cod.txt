@@ -1,0 +1,7 @@
+age_bins; NULL
+len_bins; seq(20, 155, 3)
+pop_binwidth; 2
+pop_minimum_size; 8
+pop_maximum_size; 202
+lcomp_constant; 0.02
+tail_compression; 0.05

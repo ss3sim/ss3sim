@@ -97,4 +97,9 @@ ggplot(ex3, aes(x=year, y=obs, group=index, ymin=0,
 \author{
 Cole Monnahan, Kotaro Ono
 }
+\seealso{
+Other sampling functions: \code{\link{sample_agecomp}};
+\code{\link{sample_calcomp}}; \code{\link{sample_lcomp}};
+\code{\link{sample_mlacomp}}; \code{\link{sample_wtatage}}
+}
 

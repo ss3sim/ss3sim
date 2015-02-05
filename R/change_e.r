@@ -64,6 +64,7 @@
 #'   specified as \code{"1Param"} and \code{natM_type} is anything other than
 #'   \code{NULL} or \code{"1Param"}.
 #' @template casefile-footnote
+#' @family change functions
 #' @return
 #' Altered versions of SS3 \code{.ctl}, \code{.dat}, and, \code{forecast.ss}
 #' files.

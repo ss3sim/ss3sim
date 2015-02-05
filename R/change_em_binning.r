@@ -24,6 +24,7 @@
 #' @importFrom r4ss SS_readdat SS_writedat
 #' @export
 #' @seealso \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
+#' @family change functions
 #' @author Kotaro Ono
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")

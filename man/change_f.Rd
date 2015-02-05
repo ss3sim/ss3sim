@@ -67,4 +67,10 @@ par_file, file_out = paste0(temp_path, "/test.par"))
 \author{
 Curry James Cunningham
 }
+\seealso{
+Other change functions: \code{\link{change_data}};
+\code{\link{change_em_binning}}; \code{\link{change_e}};
+\code{\link{change_maturity}}; \code{\link{change_retro}};
+\code{\link{change_tv}}
+}
 

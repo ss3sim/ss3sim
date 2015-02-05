@@ -56,4 +56,10 @@ setwd(wd)
 \author{
 Sean C. Anderson
 }
+\seealso{
+Other change functions: \code{\link{change_data}};
+\code{\link{change_em_binning}}; \code{\link{change_e}};
+\code{\link{change_f}}; \code{\link{change_retro}};
+\code{\link{change_tv}}
+}
 

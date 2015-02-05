@@ -55,7 +55,7 @@ or optional like `S` where if not specified then nothing occurs.
 
     - The variable `a` is a list of list of arguments, one element of which is your new set of arguments. For instance `a$F` will contain the vector of `F` values.
 
-    - Update the call to `ss3sim_base` to include your new argument. There are two places to do this. (1) The parallel section and (2) the sequential section. For instance `f_params=a$F`.
+    - Update the section that starts with `arg_list <- lapply(scenarios...` to include your new argument. The list element name should correspond to the function name after `change` or `sample`. For example, `a$lcomp` corresponds to `change_lcomp`. This is important for the case parsing to work properly. (Yes, there are some legacy arguments that don't match and are hardcoded into the case parsing.)
 
     - If the case is optional and not passed, the element of the list will be NULL. That is, `a$X` will be NULL if the case `X` isn’t used. You can test for this in `ss3sim_base` and skip your function, effectively turning it off if there is no case argument available. This will also prevent previous code from breaking.
 

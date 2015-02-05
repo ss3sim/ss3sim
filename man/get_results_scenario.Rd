@@ -48,7 +48,7 @@ get_results_scenario(c("D0-E0-F0-G0-R0-S0-M0-cod"))
 Cole Monnahan
 }
 \seealso{
-Other get.results: \code{\link{get_results_all}};
+Other get-results: \code{\link{get_results_all}};
 \code{\link{get_results_scalar}};
 \code{\link{get_results_timeseries}}
 }

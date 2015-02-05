@@ -19,7 +19,7 @@
 #' are to be sampled.
 #' @template sampling-return
 #' @template casefile-footnote
-#' @seealso \code{\link{sample_lcomp}, \link{sample_agecomp}}
+#' @family sampling functions
 #' @export
 
 sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
