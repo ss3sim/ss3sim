@@ -173,6 +173,7 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
     percent_df[grep("LnQ", percent_df$Label, ignore.case = TRUE), 3]
 
     SS_changepars(dir=dir,ctlfile=em_ctl_file,newctlfile=em_ctl_file,
+      linenums = em_pars[indexem, "Linenum"],
       newlos=newlos,newhis=newhis, verbose = verbose, ...)
     }
 
