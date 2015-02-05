@@ -67,13 +67,14 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
                "in the directory", dir))
   }
   #Read in EM values
-  em_pars <- SS_parlines(ctlfile = file.path(dir, em_ctl_file))
-
+  em_pars <- SS_parlines(ctlfile = file.path(dir, em_ctl_file),
+                         verbose = verbose)
  #If an OM is passed
   if(nchar(om_ctl_file)>0){
 
     #Read in OM true value
-    om_pars <- SS_parlines(ctlfile = file.path(dir, om_ctl_file))
+    om_pars <- SS_parlines(ctlfile = file.path(dir, om_ctl_file),
+                           verbose = verbose)
 
     #Restrict the parameters which have their initial values
     #set equal to only those which occur in both the EM and OM
@@ -105,10 +106,10 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
       # the output from SS_changepars
       print.verbose <- SS_changepars(dir = dir, ctlfile = em_ctl_file,
           newctlfile = em_ctl_file, strings = changeinits[, 1],
-          newvals = changeinits[, 2], verbose = FALSE, repeat.vals = FALSE)
+          newvals = changeinits[, 2], verbose = verbose, repeat.vals = FALSE)
       if (verbose) message(paste(print.verbose, collapse = "\n"))
 
-    om_pars<-SS_parlines(ctlfile = file.path(dir,om_ctl_file))
+    om_pars<-SS_parlines(ctlfile = file.path(dir,om_ctl_file), verbose = verbose)
 
    #Restrict the parameters which have their initial values
     #set equal to only those which occur in both the EM and OM
