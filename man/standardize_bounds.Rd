@@ -72,6 +72,7 @@ percent_df<-data.frame(Label=as.character(em.pars[c(1:6,17,27:30),"Label"]),
 ##Run function
 standardize_bounds(percent_df = percent_df, dir = temp_path, em_ctl_file = "em.ctl",
                    om_ctl_file = "om.ctl")
+unlink(temp_path, recursive = TRUE)
 
 setwd(wd)
 }
