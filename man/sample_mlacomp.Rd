@@ -5,7 +5,7 @@
 \title{Sample mean length (size-)-at-age data and write to file for use by the EM.}
 \usage{
 sample_mlacomp(datfile, outfile, ctlfile, fleets = 1, Nsamp, years,
-  write_file = TRUE, mean_outfile = NULL)
+  write_file = TRUE, mean_outfile = NULL, verbose = TRUE)
 }
 \arguments{
   \item{datfile}{An SS data object as read in from
@@ -16,10 +16,9 @@ sample_mlacomp(datfile, outfile, ctlfile, fleets = 1, Nsamp, years,
   file name to be created. Must end in \code{.dat}.}
 
   \item{ctlfile}{A path to the control file, outputed from
-  an OM, containing the OM parameters for growth and
-  weight/length relationship. These values are used to
-  determine the uncertainty about weight for fish sampled
-  in each age bin.}
+  an OM, containing the OM parameters for growth. These
+  values are used to determine the uncertainty about size
+  for fish sampled in each age bin.}
 
   \item{fleets}{*A numeric vector giving the fleets to be
   used. This order also pertains to other arguments. A
@@ -46,8 +45,16 @@ sample_mlacomp(datfile, outfile, ctlfile, fleets = 1, Nsamp, years,
   \item{mean_outfile}{A path to write length and age data
   for external estimation of parametric growth. If NULL no
   file will be written. This file is used by
-  \code{change_e} to externally estimate growth
-  parameters.}
+  \code{change_e} to externally estimate growth parameters.
+  Filename must contain "vbgf" to be used by
+  \code{change_e}. Also, if "remove" is included in the
+  filename, the mean length at age data will be removed
+  from the \code{.dat} file and not be available to the
+  EM.}
+
+  \item{verbose}{Logical value whether or not diagnostic
+  information from \pkg{r4ss} functions should be printed
+  to the screen. Default is FALSE.}
 
   \item{cpar}{*A numeric value or vector the same length as
   \code{fleets} controlling the variance of the Dirichlet
@@ -57,10 +64,11 @@ sample_mlacomp(datfile, outfile, ctlfile, fleets = 1, Nsamp, years,
   Values greater than one indicate overdispersion, and less
   underdispersion.}
 
-  \item{datfile}{A path to the data file, outputed from an
-  OM, containing the true age distributions (population
-  bins). This file is read in and then used to determine
-  how many fish of each age bin are to be sampled.}
+  \item{datfile}{A \code{.dat} file read in by \pkg{r4ss}
+  function \code{\link[r4ss]{SS_readdat}}. This list will
+  be used to determine how many fish of each age bin are to
+  be sampled and the mean length for the distribution to
+  sample from.}
 }
 \value{
 A modified \code{.dat} file if \code{write_file=TRUE}. A
@@ -72,12 +80,14 @@ Sample mean length (size-)-at-age data and write to file
 for use by the EM.
 }
 \details{
-Take a \code{data.SS_new} file containing expected values
-and sample from true ages to get realistic proportions for
-the number of fish in each age bin, then use the mean
-size-at-age and CV for growth to generate random samples of
-size, which are then averaged to get mean weight-at-age
-values. These values are then written to file for the EM.
+Take a \code{data.SS_new} file, read in by \pkg{r4ss}
+function \code{\link[r4ss]{SS_readdat}} containing observed
+values, and sample from the observed ages to get realistic
+proportions for the number of fish in each age bin, then
+use the mean size-at-age and CV for growth to generate
+random samples of size, which are then averaged to get mean
+length-at-age values. These values are then written to file
+for the EM.
 }
 \section{Which arguments to specifiy in case files}{
   All function argument descriptions that start with an
@@ -89,22 +99,28 @@ values. These values are then written to file for the EM.
 }
 \examples{
 temp_path <- file.path(tempdir(), "ss3sim-test")
-#dir.create(temp_path, showWarnings = FALSE)
-# wd <- getwd()
-# setwd(temp_path)
-#fdat <- system.file("extdata/models/cod-om/codOM.dat", package = "ss3sim")
-#fctl <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
-#change_data(fdat, outfile = "codOM-temp.dat", fleets = 1,
-#  years = 2000:2012, types = c("age", "mla"), age_bins = seq_len(15))
-#out <- sample_mlacomp("codOM-temp.dat", outfile = "ignore.dat", ctlfile = fctl,
-#  Nsamp = list(rep(50, 13)), years = list(2000:2012), write_file = FALSE,
-#  mean_outfile = NULL)
-#out
-#unlink("codOM-temp.dat")
-#setwd(wd)
+  dir.create(temp_path, showWarnings = FALSE)
+  wd <- getwd()
+  setwd(temp_path)
+d <- system.file("extdata/models/cod-om", package = "ss3sim")
+  dat_in <- file.path(d, "codOM.dat")
+  datfile <- r4ss::SS_readdat(dat_in, section = 2, verbose = FALSE)
+  datfile <- change_fltname(datfile)
+  datfile <- change_data(datfile, outfile = NULL, write_file = FALSE,
+    fleets = 1, years = 1990:2010, types = c("age", "mla"))
+  datfile <- change_fltname(datfile)
+  ctlfile <- file.path(d, "codOM.ctl")
+
+out <- sample_mlacomp(datfile, outfile = NULL, ctlfile = ctlfile,
+                      fleets = 1, Nsamp = 30, years = list(1992),
+                      verbose = FALSE, mean_outfile = "test.csv", write_file = FALSE)
+
+setwd("..")
+unlink("ss3sim-test", recursive = TRUE)
+setwd(wd)
 }
 \author{
-Cole Monnahan
+Cole Monnahan, Kelli Johnson
 }
 \seealso{
 Other sampling functions: \code{\link{sample_agecomp}};

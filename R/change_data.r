@@ -248,7 +248,7 @@ calculate_data_units <- function(index_params=NULL, lcomp_params=NULL,
     sample_args <- list("index"=index_params, "len"=lcomp_params,
                         "age"=agecomp_params, "cal"=calcomp_params,
                         "mla"=mlacomp_params, "wtatage"=wtatage_params)
-    sample_args_null <- vapply(sample_args, is.null, logical(1L))
+    sample_args_null <- vapply(sample_args, function(i) is.null(i$fleets), logical(1L))
     ## Exit if nothing specified to prevent error.
     if(!any(!sample_args_null)) stop("No data passed: all arguments NULL")
     ## Get the superset of fleets

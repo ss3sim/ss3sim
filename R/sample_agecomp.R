@@ -141,7 +141,7 @@ sample_agecomp <- function(datfile, outfile, fleets = c(1,2), Nsamp,
                     if(is.na(cpar[i])){
                         newcomp[-(1:9)] <-
                             rmultinom(1, size=newcomp$Nsamp,
-                              prob=probs)/newcomp$Nsamp
+                              prob=probs)#/newcomp$Nsamp
                     } else { # use Dirichlet
                         lambda <- newcomp$Nsamp/cpar[i]^2 - 1
                         if(lambda < 0)

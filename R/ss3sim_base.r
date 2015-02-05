@@ -396,7 +396,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ## we need to delete that data, so I'm doing that based on whether it
       ## is NULL, so it always needs to be called.
       if(!is.null(mlacomp_params$fleets)){
-          mlacomp_params <- add_nulls(mlacomp_params, c("fleets", "Nsamp", "years"))
+          mlacomp_params <- add_nulls(mlacomp_params, c("fleets", "Nsamp", "years", "mean_outfile"))
           datfile <- with(mlacomp_params,
                           sample_mlacomp(datfile        = datfile,
                                          outfile        = NULL,
@@ -404,7 +404,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                          fleets         = fleets,
                                          Nsamp          = Nsamp,
                                          years          = years,
-                                         mean_outfile   = pastef(sc, i, "em", "vbgf_info.csv"),
+                                         mean_outfile   = pastef(sc, i, "em",
+                                                                 paste0(mean_outfile, ".csv")),
                                          write_file     = FALSE))
       }
 

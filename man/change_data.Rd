@@ -174,8 +174,7 @@ Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson
 \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
 
 Other change functions: \code{\link{change_em_binning}};
-\code{\link{change_e}}; \code{\link{change_f}};
-\code{\link{change_maturity}}; \code{\link{change_retro}};
-\code{\link{change_tv}}
+\code{\link{change_f}}; \code{\link{change_maturity}};
+\code{\link{change_retro}}; \code{\link{change_tv}}
 }
 

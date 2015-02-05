@@ -29,7 +29,6 @@ sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
     ## Lbin_hi, so subset those out, but don't delete the age values since
     ## those are already sampled from, or might be sampled later so need to
     ## leave them there.
-
     ## Input checks
     Nfleets <- NROW(fleets)
     if (Nfleets>0){
@@ -77,6 +76,9 @@ sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
     ## Loop through each fleet
     for(i in 1:length(fleets)){
         fl <- fleets[i]
+        if (length(Nsamp[[i]]) == 1) {
+            Nsamp[[i]] <- rep(Nsamp[[i]], length(years[[i]]))
+        }
         ## agecomp.age.fl <- agecomp.age[agecomp.age$FltSvy == fl &
         ##                               agecomp.age$Yr %in% years[[i]], ]
         agecomp.cal.fl <- agecomp.cal[agecomp.cal$FltSvy == fl &
@@ -102,7 +104,7 @@ sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
             ## p1 <- N1/sum(N1)
             ## From observed length distribution, sample which fish to age.
             yr.ind <- which(years[[i]]==yr)
-            if(Nsamp[[fl]][yr.ind] > Nsamp.len)
+            if(Nsamp[[i]][yr.ind] > Nsamp.len)
                 stop("More age samples specified than fish collected for calcomps")
             ## We might sample more ages than there are fish in a length
             ## bin, by random chance, if drawn by multinomial. Instead we
@@ -111,14 +113,14 @@ sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
                 ## case of multinomial. This code creates a vector of
                 ## empirical samples of length, such that each length bin
                 ## is repeated equal to the number of observed fish in that bin
-                prob.len.ints <- unlist(sapply(1:length(prob.len)), function(i) rep(i, prob.len[i]))
+                prob.len.ints <- unlist(sapply(1:length(prob.len), function(i) rep(i, prob.len[i])))
                 ## Now resample from it, garaunteeing that the sample size
                 ## doesn't exceed
-                temp <- sample(x=prob.len.ints, size=Nsamp[[fl]][yr.ind], replace=FALSE)
+                temp <- sample(x=prob.len.ints, size=Nsamp[[i]][yr.ind], replace=FALSE)
                 Nsamp.ages.per.lbin <- sapply(1:length(prob.len), function(i) sum(temp==i))
         } else {
             ## case of overdispersed:
-            Nsamp.ages.per.lbin <- rmultinom(n=1, size=Nsamp[[fl]][yr.ind] , prob=prob.len)
+            Nsamp.ages.per.lbin <- rmultinom(n=1, size=Nsamp[[i]][yr.ind] , prob=prob.len)
         }
         if(any(is.na(Nsamp.ages.per.lbin)))
             stop("Invalid age sample size for a length bin in calcomp")
