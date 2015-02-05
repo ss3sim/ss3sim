@@ -122,15 +122,14 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
       em_indices<-which(em_pars[,"Label"] %in% restr_percent_df[,"Label"])
 
     #If they are not equal, set the EM initial value to the OM true value
-      if(any(om_pars[om_indices,"INIT"]!= em_pars[em_indices,"INIT"])){
-        inits_to_change<-em_pars[which(em_pars[em_indices,"INIT"] !=
-            om_pars[om_indices,"INIT"]), "Label"]
+    whichunequal <- om_pars[om_indices,"INIT"]!= em_pars[em_indices,"INIT"]
+      if(any(whichunequal)){
+        inits_to_change <- em_pars[which(whichunequal), "Label"]
 
         SS_changepars(dir=dir, ctlfile=em_ctl_file,newctlfile = em_ctl_file,
                     strings = inits_to_change,
-          newvals = om_pars[which(om_pars[om_indices,"INIT"]!=
-              em_pars[em_indices,"INIT"]),"INIT"],
-                    verbose=FALSE)
+          newvals = om_pars[which(whichunequal),"INIT"],
+                    verbose = verbose)
       }
     }else{
       message("None of the entered parameter labels are found in both the EM and OM.")
