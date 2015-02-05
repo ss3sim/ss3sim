@@ -439,7 +439,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                             agecomp_params=agecomp_params,
                             calcomp_params=calcomp_params,
                             mlacomp_params=mlacomp_params,
-                            verbose=TRUE)
+                            verbose=FALSE)
       SS_writedat(datlist=datfile, outfile=pastef(sc,i,"em", "ss3.dat"),
                   overwrite=TRUE, verbose=FALSE)
 
