@@ -54,6 +54,7 @@
 #' ##Run function
 #' standardize_bounds(percent_df = percent_df, dir = temp_path, em_ctl_file = "em.ctl",
 #'                    om_ctl_file = "om.ctl")
+#' unlink(temp_path, recursive = TRUE)
 #'
 #' setwd(wd)
 #' }
