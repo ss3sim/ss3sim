@@ -111,9 +111,11 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
 
    #Restrict the parameters which have their initial values
     #set equal to only those which occur in both the EM and OM
-    restr_percent_df<-percent_df[which(percent_df[,"Label"] %in% unique(c(om_pars[,"Label"],em_pars[,"Label"]))),]
+    parsinboth <- which(percent_df$Label %in% om_pars$Label &
+                        percent_df$Label %in% em_pars$Label)
+    restr_percent_df <- percent_df[parsinboth, ]
 
-    if(!is.na(restr_percent_df)){
+    if(NROW(restr_percent_df) != 0){
 
       #Get the indices of the user input parameters in the OM/EM
       om_indices<-which(om_pars[,"Label"] %in% restr_percent_df[,"Label"])
