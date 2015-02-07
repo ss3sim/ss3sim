@@ -66,6 +66,10 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
     stop(paste("The em_ctl_file,", em_ctl_file, "does not exist",
                "in the directory", dir))
   }
+  if (!"Label" %in% colnames(percent_df)) {
+    stop(paste("In percent_df, the first column is currently named",
+      colnames(percent_df)[1], "rename as 'Label'"))
+  }
   #Read in EM values
   em_pars <- SS_parlines(ctlfile = file.path(dir, em_ctl_file),
                          verbose = verbose)
