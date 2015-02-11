@@ -158,7 +158,7 @@ These case IDs are followed by an alphanumeric stock or species
 identifier (e.g. `cod`).
 The different versions of each case are identified with numbers.
 For example, the base-case scenario for a cod stock might be:
-`D0-E0-F0-M0-R0-cod`.
+`D0-E0-F0-M0-cod`.
 The order of the cases does not matter,
 as long as they are used consistently.
 
@@ -174,15 +174,13 @@ The default settings create these files:
 
 2.  `F0-spp.txt` (for fishing mortality cases)
 
-3.  `R0-spp.txt` (for retrospective cases)
+3.  `index0-spp.txt` (controlled by the `D` (data) case)
 
-4.  `index0-spp.txt` (controlled by the `D` (data) case)
+4.  `agecomp0-spp.txt` (controlled by the `D` (data) case)
 
-5.  `agecomp0-spp.txt` (controlled by the `D` (data) case)
+5.  `lcomp0-spp.txt` (controlled by the `D` (data) case)
 
-6.  `lcomp0-spp.txt` (controlled by the `D` (data) case)
-
-7.  `X0-spp.txt` (for a time-varying parameter X, where X could be any time-varying case letter)
+6.  `X0-spp.txt` (for a time-varying parameter X, where X could be any time-varying case letter)
 
 ![Illustration of input and output folder and file structure for an ss3sim simulation. Folders are shown in blue, input files in orange, and output files in grey. All input and output files are in plain text format. Case files (orange files at bottom left) combine cases (e.g. M0 for a given natural mortality trajectory) with species or life-history OMs and EMs (e.g. cod-like or sardine-like). Alternatively, a user can skip setting up case files and specify the simulation cases directly in R code (see [the vignette section on using ss3sim_base()](#ss3simbase)](filestructure.png)
 
@@ -229,19 +227,19 @@ Function names and associated case files. Case file names are
 given as the prefix. For example a case file for `sample_index`
 might be `index0-cod.txt`.
 
-ss3sim function              Case file name        Description
----------------              --------------        -----------
-`change_f()`                 `F`                   Fishing mortality
-`change_r()`                 `R`                   Retrospective years
-`change_e()`                 `E`                   Estimation                 
-`sample_index()`             `index`               Index data             
-`sample_lcomp()`             `lcomp`               Length composition data             
-`sample_agecomp()`           `agecomp`             Age composition data
-`change_tv()`                anything, see below   Time-varying variables
-`change_data()`              `data`                Available OM data, bins, etc.
-`sample_calcomp()`           `calcomp`             Catch at length data
-`sample_wtatage()`           `wtatage`             Weight at age data
-`sample_mlacomp()`           `mlacomp`             Mean length at age data
+ss3sim function              Case file name            Description
+---------------              --------------            -----------
+`change_f()`                 `F`                       Fishing mortality (mandatory)
+`sample_index()`             `index`                   Index data (mandatory)             
+`sample_lcomp()`             `lcomp`                   Length composition data (mandatory)             
+`sample_agecomp()`           `agecomp`                 Age composition data (mandatory)
+`change_r()`                 `retro`                   Retrospective years
+`change_e()`                 `E`                       Estimation                 
+`change_tv()`                anything else, see below  Time-varying variables
+`change_data()`              `data`                    Available OM data, bins, etc.
+`sample_calcomp()`           `calcomp`                 Catch at length data
+`sample_wtatage()`           `wtatage`                 Weight at age data
+`sample_mlacomp()`           `mlacomp`                 Mean length at age data
 
 `change_tv()` can take any other case file name, as long as the
 first line is `function_type; change_tv`.
@@ -290,10 +288,10 @@ Internally, the function `copy_ss3models` creates a folder structure
 and copies the operating and estimation models.
 The folder structure looks like:
 
-      D0-E0-F0-M0-R0-cod/1/om
-      D0-E0-F0-M0-R0-cod/1/em
-      D0-E0-F0-M0-R0-cod/2/om
-      D0-E0-F0-M0-R0-cod/2/em
+      D0-E0-F0-M0-cod/1/om
+      D0-E0-F0-M0-cod/1/em
+      D0-E0-F0-M0-cod/2/om
+      D0-E0-F0-M0-cod/2/em
       ...
 
 The integer values after the scenario ID represent different iterations; the total
@@ -301,15 +299,15 @@ number of iterations run are specified by the user. If you are using bias
 adjustment (`bias_adjust = TRUE`) then there will be some additional
 folders.  In that case the folders will look like:
 
-      D0-E0-F0-M0-R0-cod/bias/1/om
-      D0-E0-F0-M0-R0-cod/bias/1/em
-      D0-E0-F0-M0-R0-cod/bias/2/om
-      D0-E0-F0-M0-R0-cod/bias/2/em
+      D0-E0-F0-M0-cod/bias/1/om
+      D0-E0-F0-M0-cod/bias/1/em
+      D0-E0-F0-M0-cod/bias/2/om
+      D0-E0-F0-M0-cod/bias/2/em
       ...
-      D0-E0-F0-M0-R0-cod/1/om
-      D0-E0-F0-M0-R0-cod/1/em
-      D0-E0-F0-M0-R0-cod/2/om
-      D0-E0-F0-M0-R0-cod/2/em
+      D0-E0-F0-M0-cod/1/om
+      D0-E0-F0-M0-cod/1/em
+      D0-E0-F0-M0-cod/2/om
+      D0-E0-F0-M0-cod/2/em
       ...
 
 Note that the OM and EM folders will be renamed
@@ -424,11 +422,6 @@ For example, the complete case file `E0-cod.txt` is:
     par_phase;          -1
     forecast_num;       0
 
-Since we will not be running a retrospective analysis
-in this example, this will be our `R0-cod.txt` file:
-
-     retro_yr; 0
-
 We will set the fishing mortality $F$ to a constant level
 at $F_\mathrm{MSY}$ ($F$ at maximum sustainable yield)
 from when the fishery starts (in year 25)
@@ -470,10 +463,12 @@ For example, we could run:
 
 ```{r, case-file-checks, eval=FALSE}
 run_ss3sim(iterations = 1, scenarios =
-  c("D0-E0-F0-R0-M0-cod",
-    "D1-E0-F0-R0-M0-cod",
-    "D0-E1-F0-R0-M0-cod",
-    "D1-E1-F0-R0-M0-cod"),
+  c("D0-E0-F0-M0-cod",
+    "D1-E0-F0-M0-cod",
+    "D0-E1-F0-M0-cod",
+    "D1-E1-F0-M0-cod"),
+  case_files = list(F = "F", D = c("index", "lcomp", "agecomp"), 
+    E = "E", M = "M"),
   case_folder = case_folder, om_dir = om,
   em_dir = em)
 ```
@@ -538,7 +533,9 @@ Note that by default 5 bias adjustment runs are performed since we specify that
 
 ```{r, deterministic-runs, eval=FALSE}
 run_ss3sim(iterations = 1:20,
-  scenarios = c("D100-E100-F0-R0-M0-cod", "D100-E101-F0-R0-M0-cod"),
+  scenarios = c("D100-E100-F0-M0-cod", "D100-E101-F0-M0-cod"),
+  case_files = list(F = "F", D = c("index", "lcomp", "agecomp"), 
+    E = "E", M = "M"),
   case_folder = case_folder, om_dir = om, em_dir = em,
   bias_adjust = TRUE, user_recdevs = recdevs_det)
 ```
@@ -549,11 +546,13 @@ a convenience function `expand_scenarios`.
 With this function we could instead write:
 
 ```{r, deterministic-runs-expand, eval=FALSE}
-x <- expand_scenarios(list(D = 100, E = 100:101, F = 0, M = 0,
-    R = 0), species = "cod")
+x <- expand_scenarios(list(D = 100, E = 100:101, F = 0, M = 0), 
+  species = "cod")
 run_ss3sim(iterations = 1:20, scenarios = x,
   case_folder = case_folder, om_dir = om, em_dir = em,
-  bias_adjust = TRUE, user_recdevs = recdevs_det)
+  bias_adjust = TRUE, user_recdevs = recdevs_det,
+  case_files = list(F = "F", D = c("index", "lcomp", "agecomp"), 
+    E = "E", M = "M"))
 ```
 
 Note that due to the way that SS3 is being used as an operating model,
@@ -583,10 +582,12 @@ how many iterations are required before the key results stabilize.
 
 ```{r, stochastic-runs, eval=FALSE}
 run_ss3sim(iterations = 1:100, scenarios =
-  c("D0-E0-F0-R0-M0-cod",
-    "D1-E0-F0-R0-M0-cod",
-    "D0-E1-F0-R0-M0-cod",
-    "D1-E1-F0-R0-M0-cod"),
+  c("D0-E0-F0-M0-cod",
+    "D1-E0-F0-M0-cod",
+    "D0-E1-F0-M0-cod",
+    "D1-E1-F0-M0-cod"),
+  case_files = list(F = "F", D = c("index", "lcomp", "agecomp"), 
+    E = "E", M = "M"),
   case_folder = case_folder, om_dir = om,
   em_dir = em, bias_adjust = TRUE)
 ```
@@ -604,12 +605,12 @@ can be useful to consult the SS3 manual for details.
 
 ```{r, get-results, eval=FALSE}
 get_results_all(user_scenarios =
-  c("D100-E100-F0-R0-M0-cod",
-    "D100-E101-F0-R0-M0-cod",
-    "D0-E0-F0-R0-M0-cod",
-    "D1-E0-F0-R0-M0-cod",
-    "D0-E1-F0-R0-M0-cod",
-    "D1-E1-F0-R0-M0-cod"))
+  c("D100-E100-F0-M0-cod",
+    "D100-E101-F0-M0-cod",
+    "D0-E0-F0-M0-cod",
+    "D1-E0-F0-M0-cod",
+    "D0-E1-F0-M0-cod",
+    "D1-E1-F0-M0-cod"))
 ```
 
 We will read in the `.csv` files:
@@ -638,8 +639,7 @@ scalar_dat <- transform(scalar_dat,
   depletion = (depletion_om - depletion_em)/depletion_om,
   SSB_MSY = (SSB_MSY_em - SSB_MSY_om)/SSB_MSY_om,
   SR_sigmaR = (SR_sigmaR_em - SR_sigmaR_om)/SR_sigmaR_om,
-  NatM =
-    (NatM_p_1_Fem_GP_1_em - NatM_p_1_Fem_GP_1_om)/
+  NatM = (NatM_p_1_Fem_GP_1_em - NatM_p_1_Fem_GP_1_om)/
      NatM_p_1_Fem_GP_1_om)
 
 ts_dat <- transform(ts_dat,
@@ -739,7 +739,7 @@ the scenario ID only serves the function
 of identifying the output folder name
 and could technically be any character string.
 For example,
-we could have run the scenario `D1-E0-F0-R0-M0-cod`
+we could have run the scenario `D1-E0-F0-M0-cod`
 that we ran before:
 
 ```{r, ss3sim-base-eg, eval=FALSE}
@@ -767,12 +767,10 @@ E0 <- list(natM_type = "1Parm", natM_n_breakpoints = NULL,
 
 M0 <- list(NatM_p_1_Fem_GP_1 = rep(0, 100))
 
-R0 <- list(retro_yr = 0)
-
-ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-R0-M0-cod",
+ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-M0-cod",
   f_params = F0, index_params = index1, lcomp_params = lcomp1,
   agecomp_params = agecomp1, estim_params = E0, tv_params = M0,
-  retro_params = R0, om_dir = om, em_dir = em)
+  om_dir = om, em_dir = em)
 ```
 
 # An example of customizing the case specifications
@@ -811,12 +809,11 @@ file.copy("agecomp0-cod.txt", "Z0-cod.txt")
 setwd("..")
 
 # our custom specification:
-case_files <- list(M = "M", F = "F", R = "R", E = "E",
-  X = "index", Y = "lcomp", Z = "agecomp")
+case_files <- list(F = "F", X = "index", Y = "lcomp", Z = "agecomp")
 
 # and use run_ss3sim() with our new case_file list:
 run_ss3sim(iterations = 1,
-  scenarios = "X0-Y0-Z0-E0-F0-R0-M0-cod",
+  scenarios = "X0-Y0-Z0-F0-cod",
   case_folder = temp_case_folder,
   om_dir = om, em_dir = em,
   case_files = case_files)
@@ -907,12 +904,11 @@ created, you need to tell ss3sim to use them, since they are outside of
 the mandatory set. This is done through the `case_files` argument in the
 `get_caseargs` function, which is passed through by the
 `run_ss3sim`. In this case, we need to tell it to look for
-case argument files beginning with "S"
+case argument files beginning with `S`
 (see the help file for `get_caseargs` for more information):
 
 ```{r, custom-case-eg, eval=FALSE}
-case_files = list(E = "E", D = c("index", "lcomp", "agecomp"),
-  F = "F", M = "M", R = "R", S = "S")
+case_files = list(D = c("index", "lcomp", "agecomp"), F = "F", S = "S")
 ```
 
 Note that `S` is simply added to the end of the default list of case IDs.
@@ -1309,10 +1305,12 @@ by setting `parallel = TRUE`:
 
 ```{r, parallel-three, eval=FALSE}
 run_ss3sim(iterations = 1, scenarios =
-  c("D1-E0-F0-R0-M0-cod",
-    "D2-E0-F0-R0-M0-cod",
-    "D1-E1-F0-R0-M0-cod",
-    "D2-E1-F0-R0-M0-cod"),
+  c("D1-E0-F0-cod",
+    "D2-E0-F0-cod",
+    "D1-E1-F0-cod",
+    "D2-E1-F0-cod"),
+  case_files = 
+    list(F = "F", D = c("index", "lcomp", "agecomp"), E = "E"),
   case_folder = case_folder, om_dir = om, em_dir = em,
   bias_adjust = TRUE, parallel = TRUE)
 ```
@@ -1331,7 +1329,7 @@ To do this, just set `parallel_iterations = TRUE` as well
 as setting `parallel = TRUE`. For example:
 
 ```{r, parallel-iterations1, eval=FALSE}
-run_ss3sim(iterations = 1:2, scenarios = "D0-E0-F0-R0-M0-cod",
+run_ss3sim(iterations = 1:2, scenarios = "D0-F0-cod",
   case_folder = case_folder, om_dir = om, em_dir = em,
   parallel = TRUE, parallel_iterations = TRUE)
 ```
@@ -1340,7 +1338,7 @@ If you are running bias adjustment iterations, these will be run first in
 serial. The rest of the iterations will be run in parallel:
 
 ```{r, parallel-iterations2, eval=FALSE}
-run_ss3sim(iterations = 1:2, scenarios = "D0-E0-F0-R0-M0-cod",
+run_ss3sim(iterations = 1:2, scenarios = "D0-F0-cod",
   case_folder = case_folder, om_dir = om, em_dir = em,
   parallel = TRUE, parallel_iterations = TRUE, bias_nsim = 2,
   bias_adjust = TRUE)

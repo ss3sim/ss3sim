@@ -15,9 +15,9 @@ case_folder <- paste0(d, "/eg-cases")
 
 test_that("A basic run_ss3sim scenario runs", {
   skip_on_cran()
-  run_ss3sim(iterations = 1, scenarios = "D0-E0-F0-R0-M0-cod",
+  run_ss3sim(iterations = 1, scenarios = "D0-F0-cod",
     case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "optimized")
-  unlink("D0-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
+  unlink("D0-F0-cod", recursive = TRUE) # clean up
 })
 
 test_that("run_ss3sim works with parallel iterations", {
@@ -25,16 +25,16 @@ test_that("run_ss3sim works with parallel iterations", {
   library("doParallel")
   library("foreach")
   registerDoParallel(cores = 2)
-  run_ss3sim(iterations = 1:2, scenarios = "D0-E0-F0-R0-M0-cod",
+  run_ss3sim(iterations = 1:2, scenarios = "D0-F0-cod",
     case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "optimized",
     parallel = TRUE, parallel_iterations = TRUE)
-  unlink("D0-E0-F0-R0-M0-cod", recursive = TRUE)
+  unlink("D0-F0-cod", recursive = TRUE)
 })
 
 test_that("run_ss3sim works with parallel scenarios", {
   skip_on_cran()
   run_ss3sim(iterations = 1,
-    scenarios = c("D0-E0-F0-R0-M0-cod", "D0-E0-F0-R1-M0-cod"),
+    scenarios = c("D0-F0-cod", "D1-F0-cod"),
     case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "optimized",
     parallel = TRUE)
 })
@@ -59,11 +59,11 @@ test_that("get_results_all warns if a scenario folder isn't available", {
   skip_on_cran()
   expect_warning(
     get_results_all(user_scenarios =
-        c("D0-E0-F0-R0-M0-cod", "D1-E0-F0-R1-M0-cod", "D0-E0-F0-R0-M0-X0-cod")))
+        c("D0-F0-cod", "D1-F0-cod", "D0-F0-X0-cod")))
   unlink(c("ss3sim_scalar.csv", "ss3sim_ts.csv"))
 
   # done with these scenarios now:
-  unlink(c("D0-E0-F0-R0-M0-cod", "D0-E0-F0-R1-M0-cod"), recursive = TRUE)
+  unlink(c("D0-F0-cod", "D1-F0-cod"), recursive = TRUE)
 })
 
 case_folder <- paste0(d, "/cases")
@@ -72,14 +72,10 @@ case_folder <- paste0(d, "/cases")
 test_that("change_data is working within run_ss3sim", {
   skip_on_cran()
 
-#   get_caseargs(folder = case_folder, scenario = "D0-E0-F0-B0-cod",
-#     case_files = list(F = "F", D = c("index", "lcomp", "agecomp"), E = "E",
-#       B = "data"))
-
-  run_ss3sim(iterations = 1, scenarios = "D0-E0-F0-B0-cod",
+  run_ss3sim(iterations = 1, scenarios = "D0-F0-B0-cod",
     case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "optimized",
-    case_files = list(F = "F", D = c("index", "lcomp", "agecomp"), E = "E", B = "data"))
-  unlink("D0-E0-F0-B0-cod", recursive = TRUE) # clean up
+    case_files = list(F = "F", D = c("index", "lcomp", "agecomp"), B = "data"))
+  unlink("D0-F0-B0-cod", recursive = TRUE) # clean up
 })
 
 setwd(wd)

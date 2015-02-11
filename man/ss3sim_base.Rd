@@ -6,12 +6,12 @@
 \usage{
 ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   agecomp_params, calcomp_params = NULL, wtatage_params = NULL,
-  mlacomp_params = NULL, em_binning_params = NULL, estim_params, tv_params,
-  om_dir, em_dir, retro_params = NULL, data_params = NULL,
-  call_change_data = TRUE, user_recdevs = NULL, user_recdevs_warn = TRUE,
-  bias_adjust = FALSE, bias_nsim = 5, bias_already_run = FALSE,
-  hess_always = FALSE, print_logfile = TRUE, sleep = 0, conv_crit = 0.2,
-  seed = 21, ...)
+  mlacomp_params = NULL, em_binning_params = NULL, estim_params = NULL,
+  tv_params = NULL, om_dir, em_dir, retro_params = NULL,
+  data_params = NULL, call_change_data = TRUE, user_recdevs = NULL,
+  user_recdevs_warn = TRUE, bias_adjust = FALSE, bias_nsim = 5,
+  bias_already_run = FALSE, hess_always = FALSE, print_logfile = TRUE,
+  sleep = 0, conv_crit = 0.2, seed = 21, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
@@ -20,16 +20,16 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   \item{scenarios}{Which scenarios to run.}
 
   \item{f_params}{A named list containing arguments for
-  \code{\link{change_f}}.}
+  \code{\link{change_f}}. A mandatory case.}
 
   \item{index_params}{A named list containing arguments for
-  \code{\link{sample_index}}.}
+  \code{\link{sample_index}}. A mandatory case.}
 
   \item{lcomp_params}{A named list containing arguments for
-  \code{\link{sample_lcomp}}.}
+  \code{\link{sample_lcomp}}. A mandatory case.}
 
   \item{agecomp_params}{A named list containing arguments
-  for \code{\link{sample_agecomp}}.}
+  for \code{\link{sample_agecomp}}. A mandatory case.}
 
   \item{calcomp_params}{A named list containing arguments
   for \code{\link{sample_calcomp}}, for conditional
@@ -147,12 +147,10 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
 The output will appear in whatever your current \R working
 directory is. There will be folders named after your
 scenarios. They will look like this: \itemize{ \item
-\code{D0-E0-F0-M0-R0-cod/bias/1/om} \item
-\code{D0-E0-F0-M0-R0-cod/bias/1/em} \item
-\code{D0-E0-F0-M0-R0-cod/bias/2/om} \item ... \item
-\code{D0-E0-F0-M0-R0-cod/1/om} \item
-\code{D0-E0-F0-M0-R0-cod/1/em} \item
-\code{D0-E0-F0-M0-R0-cod/2/om} \item ... }
+\code{D0-F0-cod/bias/1/om} \item \code{D0-F0-cod/bias/1/em}
+\item \code{D0-F0-cod/bias/2/om} \item ... \item
+\code{D0-F0-cod/1/om} \item \code{D0-F0-cod/1/em} \item
+\code{D0-F0-cod/2/om} \item ... }
 }
 \description{
 This function is a wrapper function that can call
@@ -190,14 +188,13 @@ d <- system.file("extdata", package = "ss3sim")
 om_dir <- paste0(d, "/models/cod-om")
 em_dir <- paste0(d, "/models/cod-em")
 a <- get_caseargs(folder = paste0(d, "/eg-cases"), scenario =
-"M0-F0-D0-R0-E0-cod")
+"F0-D0-M0-E0-cod")
 
-ss3sim_base(iterations = 1, scenarios = "M0-F0-D0-R0-E0-cod",
-f_params = a$F, index_params = a$index, lcomp_params = a$lcomp,
-agecomp_params = a$agecomp, tv_params = a$tv_params, retro_params =
-a$R, estim_params = a$E, om_dir = om_dir, em_dir
-= em_dir)
-unlink("M0-F0-D0-R0-E0-cod", recursive = TRUE) # clean up
+ss3sim_base(iterations = 1, scenarios = "M0-F0-D0-E0-cod",
+  f_params = a$F, index_params = a$index, lcomp_params = a$lcomp,
+  agecomp_params = a$agecomp, tv_params = a$tv_params, estim_params = a$E,
+  om_dir = om_dir, em_dir = em_dir)
+unlink("M0-F0-D0-E0-cod", recursive = TRUE) # clean up
 
 # Or, create the argument lists directly in R and skip the case file setup:
 
@@ -221,14 +218,12 @@ E0 <- list(natM_type = "1Parm", natM_n_breakpoints = NULL, natM_lorenzen =
 
 M0 <- list(NatM_p_1_Fem_GP_1 = rep(0, 100))
 
-R0 <- list(retro_yr = 0)
-
-ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-R0-M0-cod",
+ss3sim_base(iterations = 1, scenarios = "D1-E0-F0-M0-cod",
   f_params = F0, index_params = index1, lcomp_params = lcomp1,
   agecomp_params = agecomp1, estim_params = E0, tv_params = M0,
-  retro_params = R0, om_dir = om, em_dir = em)
+  om_dir = om, em_dir = em)
 
-unlink("D1-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
+unlink("D1-E0-F0-M0-cod", recursive = TRUE) # clean up
 
 setwd(wd)
 }

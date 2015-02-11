@@ -116,12 +116,11 @@ get_caseval <- function(scenario, case) {
 #' # read from ("S*-cod.txt"):
 #' get_caseargs(case_folder, scenario = "D0-E0-F0-M0-R0-S0-cod",
 #'   case_files = list(E = "E", D = c("index", "lcomp", "agecomp"), F =
-#'     "F", M = "M", R = "R", S = "S"))
+#'     "F", M = "M", R = "retro", S = "S"))
 #' @export
 
 get_caseargs <- function(folder, scenario, ext = ".txt",
-  case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"),
-    R = "R", E = "E")) {
+  case_files = list(F = "F", D = c("index", "lcomp", "agecomp"))) {
   case_vals <- names(case_files)
 
   # take the text before the last hyphen:

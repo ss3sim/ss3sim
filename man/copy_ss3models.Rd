@@ -42,19 +42,19 @@ om_folder <- system.file("extdata", "models", "cod-om", package =
 
 # Copy the operating model:
 copy_ss3models(model_dir = om_folder, type = "om", iterations =
-  1:3, scenarios = "D0-E0-F0-M0-R0-testing")
+  1:3, scenarios = "D0-F0-testing")
 # Now look at your working directory in your file system
 
 # Copy the estimation model with two scenario IDs:
 copy_ss3models(model_dir = om_folder, type = "em", iterations = 1:2,
-  scenarios = c("D1-E0-F0-M0-R0-testing", "D1-E1-F0-M0-R0-testing"))
+  scenarios = c("D1-F0-testing", "D2-F0-testing"))
 # (Note that all the scenario argument does here is affect the
 # folder names.)
 
 # Clean up:
-unlink("D0-E0-F0-M0-R0-testing", recursive = TRUE)
-unlink("D1-E0-F0-M0-R0-testing", recursive = TRUE)
-unlink("D1-E1-F0-M0-R0-testing", recursive = TRUE)
+unlink("D0-F0-testing", recursive = TRUE)
+unlink("D1-F0-testing", recursive = TRUE)
+unlink("D2-F0-testing", recursive = TRUE)
 }
 \author{
 Sean Anderson, Kelli Johnson

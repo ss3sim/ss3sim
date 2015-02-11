@@ -45,10 +45,10 @@ om <- paste0(d, "/models/cod-om")
 em <- paste0(d, "/models/cod-em")
 case_folder <- paste0(d, "/eg-cases")
 
-run_ss3sim(iterations = 1, scenarios = "D0-E0-F0-R0-M0-cod",
+run_ss3sim(iterations = 1, scenarios = "D0-F0-cod",
   case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "optimized")
 
-get_results_all(user_scenarios = "D0-E0-F0-R0-M0-cod")
+get_results_all(user_scenarios = "D0-F0-cod")
 ss3sim_ts <- read.csv("ss3sim_ts.csv")
 ss3sim_scalar <- read.csv("ss3sim_scalar.csv")
 
@@ -56,7 +56,7 @@ head(calculate_re(ss3sim_ts))
 head(calculate_re(ss3sim_scalar, add = FALSE))
 
 # clean up:
-unlink("D0-E0-F0-R0-M0-cod", recursive = TRUE)
+unlink("D0-F0-cod", recursive = TRUE)
 unlink("ss3sim_ts.csv", recursive = TRUE)
 unlink("ss3sim_scalar.csv", recursive = TRUE)
 }
