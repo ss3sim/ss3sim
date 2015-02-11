@@ -276,7 +276,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
       ss3.dat$meanbodywt <- ss3.dat$meanbodywt[1, ]
       ss3.dat$meanbodywt$Year <- years.use[1]
       # TODO missing generation of data.meanbdwt.new
-      ss3.dat$N_meanbodywt <- dim(data.meanbdwt.new)[1]
+      ss3.dat$N_meanbodywt <- dim(ss3.dat$meanbodywt)[1]
     }
 
     # Change length comps
