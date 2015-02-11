@@ -92,7 +92,7 @@ case_folder <- system.file("extdata", "eg-cases", package =
   "ss3sim")
 
 # An example using the cases defined by default:
-get_caseargs(case_folder, scenario = "D0-E0-F0-M0-R0-cod")
+get_caseargs(case_folder, scenario = "D0-F0-cod")
 
 # With a custom time-varying case for selectivity, which we'll call
 # the S case. Here, we'll need to define which file the case S should
