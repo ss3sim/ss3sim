@@ -246,9 +246,8 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
     for(s in seq_along(data.cpue.seasons)) {
       for(i in seq_along(data.cpue.index)) {
         for(y in seq_along(years.use)) {
-          se.value <- subset(data.cpue, index == data.cpue.index[i] &
-                             seas == data.cpue.seasons[s],
-                             select = "se_log")[1, 1]
+          se.value <- data.cpue[data.cpue$index == data.cpue.index[i] &
+              data.cpue$seas == data.cpue.seasons[s], "se_log"][1]
           data.cpue.new[counter, ] <- c(years.use[y], data.cpue.seasons[s],
                                         data.cpue.index[i], 1, se.value)
           counter <- counter + 1
@@ -276,6 +275,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
     if (n.meanbdwt > 0) {
       ss3.dat$meanbodywt <- ss3.dat$meanbodywt[1, ]
       ss3.dat$meanbodywt$Year <- years.use[1]
+      # TODO missing generation of data.meanbdwt.new
       ss3.dat$N_meanbodywt <- dim(data.meanbdwt.new)[1]
     }
 

@@ -269,10 +269,10 @@ get_results_scenario <- function(scenario, directory=getwd(),
         ## message(paste0("Starting", scen, "-", rep))
       report.em <- SS_output(paste0(rep,"/em/"), covar=FALSE,
         verbose=FALSE,compfile="none", forecast=TRUE, warn=TRUE, readwt=FALSE,
-        printstats=FALSE, NoCompOK=TRUE, ncol=300)
+        printstats=FALSE, NoCompOK=TRUE, ncols=300)
       report.om <- tryCatch(r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE,
         verbose=FALSE, compfile="none", forecast=FALSE, warn=TRUE, readwt=FALSE,
-        printstats=FALSE, NoCompOK=TRUE, ncol=300), error=function(e) NA)
+        printstats=FALSE, NoCompOK=TRUE, ncols=300), error=function(e) NA)
       if(is.list(report.om)==FALSE){
           warning(paste("Necessary SS files missing from", scenario, "replicate", rep))
           no.rep <- no.rep + 1

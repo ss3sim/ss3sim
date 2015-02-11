@@ -95,18 +95,16 @@ standardize_bounds<-function(percent_df, em_ctl_file, OM_ctl_file=""){
 
 #' Changes the lo and hi bounds of the estimation model control file
 #'
-#' This is a modified version of r4SS::SS_changepars which modifies the lo and
-#' hi bounds in the control file instead of the initial value. newhis and newlos
-#' must be equivalent lengths and both refer to the parameters in strings in the
-#' same order. Also put the directory into the filenames to match the structure
-#' of the above function.
+#' This is a modified version of \code{\link[r4ss]{SS_changepars}} which
+#' modifies the lo and hi bounds in the control file instead of the initial
+#' value. \code{newhis} and \code{newlos} must be equivalent lengths and both
+#' refer to the parameters in strings in the same order. Also put the directory
+#' into the filenames to match the structure of the above function.
 #'
 #' @author Ian Taylor, modified by Christine Stawitz
 #'
 #' @param ctlfile Control file name with directory.
-#'   Default="C:/myfiles/mymodels/myrun/control.ss_new".
 #' @param newctlfile Name of new control file to be written.
-#'   Default="C:/myfiles/mymodels/myrun/control_modified.ss"
 #' @param linenums Line numbers of control file to be modified. Either this or
 #'   the Strings input are needed. Default=NULL.
 #' @param strings Strings (with optional partial matching) indicating which
@@ -119,7 +117,7 @@ standardize_bounds<-function(percent_df, em_ctl_file, OM_ctl_file=""){
 #' @param estimate Vector of TRUE/FALSE for which changed parameters are to be
 #'   estimated. Default=FALSE.
 #' @param verbose More detailed output to command line. Default=TRUE.
-#' @seealso \code{\link{SS_changepars}}
+#' @importFrom r4ss SS_changepars
 #' @export
 change_lo_hi <- function (ctlfile = "control.ss_new",
           newctlfile = "control_modified.ss", linenums = NULL, strings = NULL,

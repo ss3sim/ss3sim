@@ -9,11 +9,10 @@ change_lo_hi(ctlfile = "control.ss_new", newctlfile = "control_modified.ss",
   estimate = FALSE, verbose = TRUE)
 }
 \arguments{
-  \item{ctlfile}{Control file name with directory.
-  Default="C:/myfiles/mymodels/myrun/control.ss_new".}
+  \item{ctlfile}{Control file name with directory.}
 
-  \item{newctlfile}{Name of new control file to be written.
-  Default="C:/myfiles/mymodels/myrun/control_modified.ss"}
+  \item{newctlfile}{Name of new control file to be
+  written.}
 
   \item{linenums}{Line numbers of control file to be
   modified. Either this or the Strings input are needed.
@@ -38,17 +37,15 @@ change_lo_hi(ctlfile = "control.ss_new", newctlfile = "control_modified.ss",
   Default=TRUE.}
 }
 \description{
-This is a modified version of r4SS::SS_changepars which
-modifies the lo and hi bounds in the control file instead
-of the initial value. newhis and newlos must be equivalent
-lengths and both refer to the parameters in strings in the
-same order. Also put the directory into the filenames to
-match the structure of the above function.
+This is a modified version of
+\code{\link[r4ss]{SS_changepars}} which modifies the lo and
+hi bounds in the control file instead of the initial value.
+\code{newhis} and \code{newlos} must be equivalent lengths
+and both refer to the parameters in strings in the same
+order. Also put the directory into the filenames to match
+the structure of the above function.
 }
 \author{
 Ian Taylor, modified by Christine Stawitz
-}
-\seealso{
-\code{\link{SS_changepars}}
 }
 
