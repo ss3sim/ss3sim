@@ -132,8 +132,9 @@ Cole Monnahan and Kotaro Ono; modified from a version by
 Roberto Licandeo and Felipe Hurtado-Ferro
 }
 \seealso{
-Other sampling functions: \code{\link{sample_calcomp}};
-\code{\link{sample_index}}; \code{\link{sample_lcomp}};
-\code{\link{sample_mlacomp}}; \code{\link{sample_wtatage}}
+Other sampling functions: \code{\link{clean_data}};
+\code{\link{sample_calcomp}}; \code{\link{sample_index}};
+\code{\link{sample_lcomp}}; \code{\link{sample_mlacomp}};
+\code{\link{sample_wtatage}}
 }
 

@@ -34,20 +34,28 @@
 ##                      mlacomp_params=mlacomp_params,
 ##                       verbose=TRUE)
 
-#' Given sampling arguments, removed ("clean") all data in a .dat file that
-#' is not specified in the arguments.
+#' Given sampling arguments remove ("clean") all data in a .dat file that
+#' is not specified
 #'
-#' This prepares a .dat file to be used by an EM, whereas before it may
+#' This prepares a \code{.dat} file to be used by an EM, whereas before it may
 #' have had leftover data from sampling purposes. See examples in
 #' \code{\link{change_data}}.
 #'
 #' @author Cole Monnahan
-#' @param index_params, lcomp_params, agecomp_params, calcomp_params,
-#' mlacomp_params Named lists containing the arguments for the different
-#' sampling functions.
+#' @param index_params Named list containing the arguments for the corresponding
+#'   sampling function.
+#' @param lcomp_params Named list containing the arguments for the corresponding
+#'   sampling function.
+#' @param agecomp_params Named list containing the arguments for the corresponding
+#'   sampling function.
+#' @param calcomp_params Named list containing the arguments for the corresponding
+#'   sampling function.
+#' @param mlacomp_params Named list containing the arguments for the corresponding
+#'   sampling function.
 #' @param verbose When \code{TRUE} it will print a message when rows are
-#' deleted.
+#'   deleted.
 #' @seealso calculate_data_units, change_data
+#' @family sampling functions
 #' @return An invisible cleaned data list as an object.
 #' @note This function does not write the result to file.
 #' @export

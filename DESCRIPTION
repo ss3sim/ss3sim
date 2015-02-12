@@ -41,4 +41,6 @@ Imports:
     lubridate (>= 1.3.0),
     reshape2 (>= 1.2.2),
     ggplot2 (>= 1.0.0),
-    bbmle (>= 1.0.17)
+    bbmle (>= 1.0.17),
+    dplyr (>= 0.3.0),
+    magrittr (>= 1.0.1)
