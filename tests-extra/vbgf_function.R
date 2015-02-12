@@ -16,7 +16,7 @@ library(bbmle)
 setwd("C:/Users/Christine/Documents/GitHub/ss3sim/inst/extdata/models/cod-om")
 file.copy("codOM.dat", "codOM_original.dat")
 system("ss3 -maxfn 1 -nohess")
-replist <- SS_output(dir=getwd(), covar=FALSE)
+replist <- SS_output(dir=getwd(), covar=FALSE, ncols = 300)
 TSCplot(replist)
 
 
