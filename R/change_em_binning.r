@@ -15,9 +15,9 @@
 #' @param lbin_method A numeric value of either \code{NULL, 1, 2, 3} to change
 #'   the lbin_method for the population bin. Only supports either \code{NULL, 1,
 #'   2} at the moment. \code{NULL} means to keep it unchanged.
-#' @param rebin_cal Logical: should catch-at-length data also be re-binned? The
-#'   SS3 data file must contain catch-at-length data if this is set to
-#'   \code{TRUE}.
+#' @param rebin_cal Logical: should conditional age-at-length data also be
+#'   re-binned? The SS3 data file must contain conditional age-at-length data if
+#'   this is set to \code{TRUE}.
 #' @param write_file Should the \code{.dat} file be written? The new \code{.dat}
 #'   file will always be returned invisibly by the function. Setting
 #'   \code{write_file = FALSE} can be useful for testing. Note that you must
@@ -31,7 +31,7 @@
 #' @family sample functions
 #' @family change functions
 #' @author Kotaro Ono (length-composition rebinning), Sean Anderson
-#'   (catch-at-length rebinning)
+#'   (conditional age-at-length rebinning)
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
@@ -46,7 +46,7 @@
 #' print(l$lbin_vector)
 #' print(head(l$lencomp))
 #'
-#' # An small example with catch-at-length re-binning:
+#' # An small example with conditional age-at-length re-binning:
 #' f <- system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim")
 #' d <- r4ss::SS_readdat(f)
 #' # Add catch at length data (and simplify the bin structure for this example)
@@ -58,7 +58,7 @@
 #'   lbin_method = 1, rebin_cal = TRUE, write_file = FALSE)
 #' newdat$agecomp
 #'
-#' # A larger catch-at-length re-rebinning example:
+#' # A larger conditional age-at-length re-rebinning example:
 #' olddat <- change_data(d, outfile = NULL, write_file = FALSE,
 #'  types = c("len", "age", "cal"), fleets = 1, years = seq(2000, 2005),
 #'  age_bins = seq(1, 5), len_bins = round(seq(20, 30, length.out = 13), 1))
@@ -164,19 +164,20 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method=NULL,
     }
   }
 
-  # Re-bin catch-at-length comps:
+  # Re-bin conditional age-at-length comps:
   if (rebin_cal) {
     if (is.null(datfile$agecomp))
       stop(paste("No age composition data were found in the data file within",
-        "change_em_binning(). These are needed to modify the catch-at-length",
-        "data binning structure."))
+        "change_em_binning(). These are needed to modify the conditional",
+        "age-at-length data binning structure."))
     # if all Lbin_lo == -1 then there aren't any CAL data:
     if (length(unique(datfile$agecomp$Lbin_lo)) == 1)
-      stop(paste("It looks like there aren't any catch-at-length composition",
-        "data in the age composition data matrix in your data file."))
+      stop(paste("It looks like there aren't any conditional age-at-length",
+        "composition data in the age composition data matrix in your",
+        "data file."))
     if (length(unique(datfile$agecomp$AgeErr)) != 1)
-      stop(paste("change_em_binning only works for catch-at-length composition",
-        "data with a single value for all AgeErr columns."))
+      stop(paste("change_em_binning only works for conditional age-at-length",
+        "composition data with a single value for all AgeErr columns."))
 
     # grab the data we'll work with:
     old_age <- datfile$agecomp[datfile$agecomp$Lbin_lo == -1, ]
