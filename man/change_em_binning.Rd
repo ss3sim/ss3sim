@@ -56,24 +56,36 @@ l <- change_em_binning(datfile, file_out = NULL, lbin_method = 1,
 print(l$lbin_vector)
 print(head(l$lencomp))
 
-# An example with catch-at-length re-binning:
+# An small example with catch-at-length re-binning:
 f <- system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim")
 d <- r4ss::SS_readdat(f)
 # Add catch at length data (and simplify the bin structure for this example)
-datfile <- ss3sim::change_data(d, outfile = NULL, write_file = FALSE,
+olddat <- change_data(d, outfile = NULL, write_file = FALSE,
   types = c("len", "age", "cal"), fleets = 1, years = seq(2000, 2002),
   age_bins = 1:3, len_bins = 4:8)
-datfile$agecomp
-newdat <- change_em_binning(datfile, file_out = NULL, bin_vector = c(4, 6, 8),
+olddat$agecomp
+newdat <- change_em_binning(olddat, file_out = NULL, bin_vector = c(4, 6, 8),
   lbin_method = 1, rebin_cal = TRUE, write_file = FALSE)
+newdat$agecomp
+
+# A larger catch-at-length re-rebinning example:
+olddat <- change_data(d, outfile = NULL, write_file = FALSE,
+ types = c("len", "age", "cal"), fleets = 1, years = seq(2000, 2005),
+ age_bins = seq(1, 5), len_bins = round(seq(20, 30, length.out = 13), 1))
+olddat$lbin_vector
+head(olddat$lencomp)
+head(olddat$agecomp)
+newdat <- change_em_binning(olddat, file_out = NULL, bin_vector = seq(20, 30, 2),
+ lbin_method = 1, rebin_cal = TRUE, write_file = FALSE)
+newdat$lbin_vector
+head(newdat$lencomp)
 newdat$agecomp
 }
 \author{
-Kotaro Ono
+Kotaro Ono (length-composition rebinning), Sean Anderson
+(catch-at-length rebinning)
 }
 \seealso{
-\code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
-
 Other change functions: \code{\link{change_data}};
 \code{\link{change_e}}; \code{\link{change_f}};
 \code{\link{change_maturity}}; \code{\link{change_retro}};
