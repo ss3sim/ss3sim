@@ -222,7 +222,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       recdevs <- get_recdevs(iteration = this_run_num, n = 2000, seed = seed)
       if(is.null(user_recdevs)) {
         sc_i_recdevs <- sigmar * recdevs - sigmar^2/2 # from the package data
-      } else {if(user_recdevs_warn){
+      } else {if(user_recdevs_warn & i == 1){
           warning(paste("No bias correction is done internally for user-supplied",
               "recruitment deviations and must be done manually. See the",
               "vignette, for more details. Biased recruitment deviations can",
