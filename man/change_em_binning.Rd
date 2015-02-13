@@ -60,6 +60,8 @@ print(head(l$lencomp))
 # An small example with conditional age-at-length re-binning:
 f <- system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim")
 d <- r4ss::SS_readdat(f)
+d$Lbin_method <- 2 # necessary for CAL rebinning
+
 # Add catch at length data (and simplify the bin structure for this example)
 olddat <- change_data(d, outfile = NULL, write_file = FALSE,
   types = c("len", "age", "cal"), fleets = 1, years = seq(2000, 2002),
@@ -73,6 +75,7 @@ newdat$agecomp
 olddat <- change_data(d, outfile = NULL, write_file = FALSE,
  types = c("len", "age", "cal"), fleets = 1, years = seq(2000, 2005),
  age_bins = seq(1, 5), len_bins = round(seq(20, 30, length.out = 13), 1))
+
 olddat$lbin_vector
 head(olddat$lencomp)
 head(olddat$agecomp)

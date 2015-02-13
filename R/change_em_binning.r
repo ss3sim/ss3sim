@@ -49,6 +49,8 @@
 #' # An small example with conditional age-at-length re-binning:
 #' f <- system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim")
 #' d <- r4ss::SS_readdat(f)
+#' d$Lbin_method <- 2 # necessary for CAL rebinning
+#'
 #' # Add catch at length data (and simplify the bin structure for this example)
 #' olddat <- change_data(d, outfile = NULL, write_file = FALSE,
 #'   types = c("len", "age", "cal"), fleets = 1, years = seq(2000, 2002),
@@ -62,6 +64,7 @@
 #' olddat <- change_data(d, outfile = NULL, write_file = FALSE,
 #'  types = c("len", "age", "cal"), fleets = 1, years = seq(2000, 2005),
 #'  age_bins = seq(1, 5), len_bins = round(seq(20, 30, length.out = 13), 1))
+#'
 #' olddat$lbin_vector
 #' head(olddat$lencomp)
 #' head(olddat$agecomp)
@@ -174,6 +177,11 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
 
   # Re-bin conditional age-at-length comps:
   if (rebin_cal) {
+    if (datfile$Lbin_method != 2) {
+      stop(paste("Lbin_method was not set to 2 in the SS3 data file.",
+        "change_em_binning() requires the data file to specify conditional",
+        "age-at-length data with Lbin_method == 2. See the SS3 manual."))
+    }
     if (is.null(datfile$agecomp))
       stop(paste("No age composition data were found in the data file within",
         "change_em_binning(). These are needed to modify the conditional",
