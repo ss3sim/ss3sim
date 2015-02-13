@@ -71,7 +71,7 @@
 #' head(newdat$lencomp)
 #' newdat$agecomp
 
-change_em_binning <- function(datfile, file_out, bin_vector, lbin_method=NULL,
+change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
   rebin_cal = FALSE, write_file = TRUE) {
 
   ## If lbin_method is NULL then don't do anything
@@ -80,6 +80,10 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method=NULL,
   # error checking
   if (!is.numeric(bin_vector)) {
     stop("bin_vector must be numeric")
+  }
+  if (length(bin_vector) > length(datfile$lbin_vector)) {
+    stop(paste("The specified bin_vector is longer than the original",
+      "lbin_vector in the SS3 data file and therefore can't be re-binned."))
   }
   if (length(bin_vector) == 1) {
     warning(paste("length(bin_vector) == 1; are you sure you",
@@ -103,6 +107,10 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method=NULL,
   if (min(bin_vector) < min(datfile$lbin_vector)) {
     stop(paste("the minimum value in the bin_vector is below the original one",
       "this column would be filled with zero observation so it is meaningless"))
+  }
+  if (any(!is_divisible(bin_vector, by_ = datfile$binwidth)) ) {
+    stop(paste("One or more of the values in bin_vector are not divisible by",
+      "the population binwidth specified in the SS3 data file."))
   }
 
   # Find ID columns and data columns to replace:
@@ -216,4 +224,8 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method=NULL,
       verbose = FALSE)
   }
   invisible(datfile)
+}
+
+is_divisible <- function(x, by_ = 2L) {
+  x %% by_ == 0
 }
