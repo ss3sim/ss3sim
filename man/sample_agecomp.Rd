@@ -78,6 +78,7 @@ named \code{agecomp}. A suggested (default) case letter is
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/example-om/data.ss_new")
 datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+datfile <- change_fltname(datfile)
 
 ## Turn off age comps by specifying fleets=NULL
 sample_agecomp(datfile=datfile, outfile="test1.dat",

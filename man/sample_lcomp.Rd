@@ -70,6 +70,7 @@ named \code{lcomp}. A suggested (default) case letter is
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/example-om/data.ss_new")
 datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+datfile <- change_fltname(datfile)
 
 ## Generate with constant sample size across years
 ex1 <- sample_lcomp(datfile=datfile, outfile="test1.dat", fleets=c(1,2),

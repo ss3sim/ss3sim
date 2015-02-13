@@ -447,7 +447,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
             change_em_binning(
                   file_in          = pastef(sc, i, "em", "ss3.dat"),
                   file_out         = pastef(sc, i, "em", "ss3.dat"),
-				  bin_vector 	   = bin_vector,
+				          bin_vector  	   = bin_vector,
                   lbin_method      = lbin_method,
                   write_file       = TRUE))
       }
