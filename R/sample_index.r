@@ -28,6 +28,7 @@
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+#' datfile <- change_fltname(datfile)
 #' outfile <- "test.dat"
 #' ex1 <- sample_index(datfile, outfile, fleets=c(2,3),
 #'                     years=list(1938:2012, 1938:2012) ,

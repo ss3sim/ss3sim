@@ -60,6 +60,7 @@ change_em_binning <- function(file_in, file_out, lbin_method=NULL, bin_vector,
 
 # load the datfile and other check
   datfile <- SS_readdat(file = file_in, verbose = FALSE)
+  datfile <- change_fltname(datfile)
   if(is.null(datfile$lencomp)) {
     stop("no lcomp data. Verify your case argument files")
   }
