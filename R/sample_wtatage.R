@@ -35,8 +35,8 @@
 #' @param write_file Logical to determine if \code{outfile} will be written.
 #' @template sampling-return
 #' @template casefile-footnote
-#' @seealso \code{\link{sample_lcomp}, \link{sample_agecomp}},
-#'   \code{\link{fill_across}}
+#' @seealso \code{\link{fill_across}}
+#' @family sampling functions
 #' @export
 #
 # # #For Debugging

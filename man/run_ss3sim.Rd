@@ -5,19 +5,17 @@
 \title{Master function to run SS3 simulations}
 \usage{
 run_ss3sim(iterations, scenarios, case_folder, om_dir, em_dir,
-  case_files = list(M = "M", F = "F", D = c("index", "lcomp", "agecomp"), R =
-  "R", E = "E"), user_recdevs = NULL, parallel = FALSE,
-  parallel_iterations = FALSE, ...)
+  case_files = list(F = "F", D = c("index", "lcomp", "agecomp")),
+  user_recdevs = NULL, parallel = FALSE, parallel_iterations = FALSE, ...)
 }
 \arguments{
   \item{iterations}{Which iterations to run. A numeric
   vector. For example \code{1:100}.}
 
   \item{scenarios}{Which scenarios to run. A vector of
-  character objects. For example
-  \code{c("D0-E0-F0-R0-M0-cod", "D1-E0-F0-R0-M0-cod")}.
-  Also, see \code{\link{expand_scenarios}} for a shortcut
-  to specifying the scenarios. See
+  character objects. For example \code{c("D0-F0-cod",
+  "D1-F1-cod")}. Also, see \code{\link{expand_scenarios}}
+  for a shortcut to specifying the scenarios. See
   \code{\link{get_caseargs}} and the vignette for details
   on specifying the scenarios.}
 
@@ -31,12 +29,13 @@ run_ss3sim(iterations, scenarios, case_folder, om_dir, em_dir,
   model configuration files.}
 
   \item{case_files}{A named list that relates the case IDs
-  to the files to return. If you are passing time-varying
-  parameters beyond (or instead of) natural mortality (M),
-  then you will need to adjust these values to reflect your
-  scenarios. This argument is passed to
+  to the files to return. \bold{The default list specifies
+  only the required fishing mortality and data scenarios.
+  To specify other cases you will need to extend this named
+  list}. This argument is passed to
   \code{\link{get_caseargs}}. See that function for details
-  and examples of how to specify this.}
+  and examples of how to specify this. The introduction
+  vignette also explains how to specify the case files.}
 
   \item{user_recdevs}{An optional matrix of recruitment
   deviations to replace the recruitment deviations built
@@ -78,12 +77,10 @@ run_ss3sim(iterations, scenarios, case_folder, om_dir, em_dir,
 The output will appear in whatever your current \R working
 directory is. There will be folders named after your
 scenarios. They will look like this: \itemize{ \item
-\code{D0-E0-F0-M0-R0-cod/bias/1/om} \item
-\code{D0-E0-F0-M0-R0-cod/bias/1/em} \item
-\code{D0-E0-F0-M0-R0-cod/bias/2/om} \item ... \item
-\code{D0-E0-F0-M0-R0-cod/1/om} \item
-\code{D0-E0-F0-M0-R0-cod/1/em} \item
-\code{D0-E0-F0-M0-R0-cod/2/om} \item ... }
+\code{D0-F0-cod/bias/1/om} \item \code{D0-F0-cod/bias/1/em}
+\item \code{D0-F0-cod/bias/2/om} \item ... \item
+\code{D0-F0-cod/1/om} \item \code{D0-F0-cod/1/em} \item
+\code{D0-F0-cod/2/om} \item ... }
 }
 \description{
 This is the main high-level wrapper function for running
@@ -127,48 +124,48 @@ em <- paste0(d, "/models/cod-em")
 case_folder <- paste0(d, "/eg-cases")
 
 # Without bias adjustment:
-run_ss3sim(iterations = 1:1, scenarios = "D0-E0-F0-R0-M0-cod",
+run_ss3sim(iterations = 1:1, scenarios = "D0-F0-cod",
   case_folder = case_folder, om_dir = om, em_dir = em)
-unlink("D0-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
+unlink("D0-F0-cod", recursive = TRUE) # clean up
 
 # An example specifying the case files:
-run_ss3sim(iterations = 1:1, scenarios = "D0-E0-F0-R0-cod",
+run_ss3sim(iterations = 1:1, scenarios = "D0-F0-E0-cod",
   case_folder = case_folder, om_dir = om, em_dir = em,
   case_files = list(F = "F", D = c("index", "lcomp",
-      "agecomp"), R = "R", E = "E"))
-unlink("D0-E0-F0-R0-cod", recursive = TRUE) # clean up
+      "agecomp"), E = "E"))
+unlink("D0-F0-cod", recursive = TRUE) # clean up
 
 # With bias adjustment:
 # (Note that bias_nsim should be bigger, say 5 or 10, but it is set
 # to 2 here so the example runs faster.)
-run_ss3sim(iterations = 1:1, scenarios = "D1-E0-F0-R0-M0-cod",
+run_ss3sim(iterations = 1:1, scenarios = "D1-F0-cod",
   case_folder = case_folder, om_dir = om, em_dir = em,
   bias_adjust = TRUE, bias_nsim = 2)
 
 # Restarting the previous run using the existing bias-adjustment
 # output
-run_ss3sim(iterations = 2:3, scenarios = "D1-E0-F0-R0-M0-cod",
+run_ss3sim(iterations = 2:3, scenarios = "D1-F0-cod",
   case_folder = case_folder, om_dir = om, em_dir = em,
   bias_adjust = FALSE, bias_already_run = TRUE)
-unlink("D1-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
+unlink("D1-F0-cod", recursive = TRUE) # clean up
 
 # A run with deterministic process error for model checking:
 recdevs_det <- matrix(0, nrow = 100, ncol = 20)
-run_ss3sim(iterations = 1:20, scenarios = "D0-E100-F0-R0-M0-cod",
+run_ss3sim(iterations = 1:20, scenarios = "D0-E100-F0-cod",
   case_folder = case_folder, om_dir = om, em_dir = em,
   bias_adjust = TRUE, bias_nsim = 2, user_recdevs = recdevs_det)
-unlink("D0-E100-F0-R0-M0-cod", recursive = TRUE) # clean up
+unlink("D0-E100-F0-cod", recursive = TRUE) # clean up
 
 # An example of a run using parallel processing across 2 cores:
 require(doParallel)
 registerDoParallel(cores = 2)
 require(foreach)
 getDoParWorkers() # check how many cores are registered
-run_ss3sim(iterations = 1, scenarios = c("D0-E0-F0-R0-M0-cod",
-    "D1-E0-F0-R0-M0-cod"), case_folder = case_folder,
+run_ss3sim(iterations = 1, scenarios = c("D0-F0-cod",
+    "D1-F0-cod"), case_folder = case_folder,
   om_dir = om, em_dir = em, parallel = TRUE)
-unlink("D0-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
-unlink("D1-E0-F0-R0-M0-cod", recursive = TRUE) # clean up
+unlink("D0-F0-cod", recursive = TRUE) # clean up
+unlink("D1-F0-cod", recursive = TRUE) # clean up
 
 # Return to original working directory:
 setwd(wd)

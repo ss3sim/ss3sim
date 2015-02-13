@@ -15,6 +15,7 @@
 #' @author Sean C. Anderson
 #' @return A modified SS3 control file.
 #' @export
+#' @family change functions
 #' @examples
 #' # Create a temporary folder for the output:
 #' temp_path <- file.path(tempdir(), "ss3sim-maturity-example")

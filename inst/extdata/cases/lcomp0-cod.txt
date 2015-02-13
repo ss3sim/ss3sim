@@ -1,4 +1,4 @@
 Nsamp; list(100)
-fleets; c(1)
+fleets; 1
 years; list(1938:2012)
-cpar; c(2)
+cpar; 2

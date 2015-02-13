@@ -11,10 +11,6 @@
 #'
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
-#' @param lengthbin_vector Depreciated argument. Does nothing and will be
-#'   removed in a future major version update. Instead, see the \code{len_bins}
-#'   argument in \code{\link{ss3sim_base}}, which uses \code{\link{change_data}}
-#'   internally.
 #' @template casefile-footnote
 #' @template sampling-return
 #' @importFrom r4ss SS_writedat
@@ -23,6 +19,7 @@
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+#' datfile <- change_fltname(datfile)
 #'
 #' ## Generate with constant sample size across years
 #' ex1 <- sample_lcomp(datfile=datfile, outfile="test1.dat", fleets=c(1,2),
@@ -35,7 +32,7 @@
 #'                     years=list(seq(1994, 2012, by=2),
 #'                         2003:2012), write_file = FALSE)
 #'
-#' \donttest{
+#' \dontrun{
 #' ## Plot distributions for a particular year to compare multinomial
 #' ## vs. overdispersed Dirichlet
 #' temp.list <- temp.list2 <- list()
@@ -65,11 +62,10 @@
 #' }
 #'
 #' @export
-#' @seealso \code{\link{sample_agecomp}}
+#' @family sampling functions
 
 sample_lcomp <- function(datfile, outfile, fleets = c(1,2), Nsamp,
-  years, cpar = 1, write_file = TRUE, lengthbin_vector = NULL,
-  bin_vector = NULL){
+  years, cpar = 1, write_file = TRUE){
 
   is_ssdat_file(datfile)
   ## The new lcomp is mostly based on the old one so start with that
@@ -155,7 +151,7 @@ sample_lcomp <- function(datfile, outfile, fleets = c(1,2), Nsamp,
   if(write_file)
     SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
                 verbose = FALSE)
-  return(invisible(newfile))
+  invisible(newfile)
 }
 
 #' (Depreciated) Sample length compositions from expected values

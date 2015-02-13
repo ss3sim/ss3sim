@@ -47,9 +47,8 @@ id_scenarios <- function(directory){
         x <- unlist(strsplit(all.dirs[i], split="/"))
         return(x[length(x)])
     })
-    scenarios <- temp.dirs[grepl("^([A-Z]{1}[0-9]{1}-)+[a-z]+$", temp.dirs)]
-
-    return(scenarios)
+    scens <- temp.dirs[grepl("^([A-Z]{1}[0-9]+-)+[a-z]+$", temp.dirs)]
+    return(scens)
 }
 
 #' Extract SS3 simulation output
@@ -211,10 +210,10 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
 #' om <- paste0(d, "/models/cod-om")
 #' em <- paste0(d, "/models/cod-em")
 #' run_ss3sim(iterations = 1:2, scenarios =
-#'   c("D0-E0-F0-G0-R0-S0-M0-cod"),
+#'   c("D0-F0-G0-S0-cod"),
 #'   case_folder = case_folder, om_dir = om, em_dir = em,
 #'   bias_adjust = FALSE)
-#' get_results_scenario(c("D0-E0-F0-G0-R0-S0-M0-cod"))
+#' get_results_scenario(c("D0-F0-G0-S0-cod"))
 #' }
 get_results_scenario <- function(scenario, directory=getwd(),
   overwrite_files=FALSE){
@@ -270,10 +269,10 @@ get_results_scenario <- function(scenario, directory=getwd(),
         ## message(paste0("Starting", scen, "-", rep))
       report.em <- SS_output(paste0(rep,"/em/"), covar=FALSE,
         verbose=FALSE,compfile="none", forecast=TRUE, warn=TRUE, readwt=FALSE,
-        printstats=FALSE, NoCompOK=TRUE)
+        printstats=FALSE, NoCompOK=TRUE, ncols=300)
       report.om <- tryCatch(r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE,
         verbose=FALSE, compfile="none", forecast=FALSE, warn=TRUE, readwt=FALSE,
-        printstats=FALSE, NoCompOK=TRUE), error=function(e) NA)
+        printstats=FALSE, NoCompOK=TRUE, ncols=300), error=function(e) NA)
       if(is.list(report.om)==FALSE){
           warning(paste("Necessary SS files missing from", scenario, "replicate", rep))
           no.rep <- no.rep + 1

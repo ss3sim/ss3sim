@@ -8,17 +8,15 @@ run_bias_ss3(dir, outdir, nsim, conv_crit = 0.2)
 }
 \arguments{
   \item{dir}{Folder for all of the bias adjustment runs
-  (e.g. \code{"M1-F1-D1-R1-cod/bias"} which must contain
-  numbered folders for the \code{nsim} runs, e.g.
-  \code{"M1-F1-D1-R1-cod/bias/1/"},
-  \code{"M1-F1-D1-R1-cod/bias/2/"}, ...,
-  \code{"M1-F1-D1-R1-cod/bias/10/"} if there are \code{nsim
+  (e.g. \code{"F1-D1-cod/bias"} which must contain numbered
+  folders for the \code{nsim} runs, e.g.
+  \code{"F1-D1-cod/bias/1/"}, \code{"F1-D1-cod/bias/2/"},
+  ..., \code{"F1-D1-cod/bias/10/"} if there are \code{nsim
   = 10} bias adjustment runs)}
 
   \item{outdir}{Folder containing the run folders for a
-  given scenario (e.g. \code{"M1-F1-D1-R1-cod"} that
-  contains \code{"M1-F1-D1-R1-cod/1/"}
-  \code{"M1-F1-D1-R1-cod/2/"}, etc.)}
+  given scenario (e.g. \code{"F1-D1-cod"} that contains
+  \code{"F1-D1-cod/1/"} \code{"F1-D1-cod/2/"}, etc.)}
 
   \item{nsim}{number of bias adjustment runs conducted for
   a particular scenario (e.g. \code{10})}
@@ -63,7 +61,7 @@ wd <- getwd()
 setwd(temp_path)
 # (Note that bias_nsim should be bigger, say 10, but it is set to 2
 # here so the example runs faster.)
-run_ss3sim(iterations = 1:1, scenarios = "D1-E0-F0-R0-M0-cod",
+run_ss3sim(iterations = 1:1, scenarios = "D1-F0-cod",
   case_folder = case_folder, om_dir = om, em_dir = em,
   bias_adjust = TRUE, bias_nsim = 2)
 setwd(wd)

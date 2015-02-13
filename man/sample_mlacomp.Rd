@@ -123,7 +123,8 @@ setwd(wd)
 Cole Monnahan, Kelli Johnson
 }
 \seealso{
-\code{\link{sample_lcomp}, \link{sample_agecomp},
-link{sample_calcomp}}
+Other sampling functions: \code{\link{sample_agecomp}};
+\code{\link{sample_calcomp}}; \code{\link{sample_index}};
+\code{\link{sample_lcomp}}; \code{\link{sample_wtatage}}
 }
 

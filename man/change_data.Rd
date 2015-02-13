@@ -5,11 +5,13 @@
 \title{Change the data that is available as output from an SS operating model.}
 \usage{
 change_data(datfile, outfile, fleets, years, types, age_bins = NULL,
-  len_bins = NULL, write_file = TRUE)
+  len_bins = NULL, pop_binwidth = NULL, pop_minimum_size = NULL,
+  pop_maximum_size = NULL, lcomp_constant = NULL, tail_compression = NULL,
+  write_file = TRUE)
 }
 \arguments{
   \item{datfile}{A list as read in by
-  \code{r4ss::SS_readdat}.}
+  \code{\link[r4ss]{SS_readdat}}.}
 
   \item{outfile}{A character value giving the location of
   an SS \code{.dat} file to output, if
@@ -21,7 +23,7 @@ change_data(datfile, outfile, fleets, years, types, age_bins = NULL,
 
   \item{types}{A vector that can take combinations of the
   following entries: \code{"index"}, \code{"len"},
-  \code{"age"}, \code{"cal"}, \code{"mla"}.  \code{types}
+  \code{"age"}, \code{"cal"}, \code{"mla"}. \code{types}
   controls what data structures the function acts on, with
   \code{"index"} changing indices/CPUE, \code{"len"}
   augmenting the length composition data, \code{"age"}
@@ -29,13 +31,40 @@ change_data(datfile, outfile, fleets, years, types, age_bins = NULL,
   the conditional age at length, and \code{"mla"}
   augmenting the mean length at age data.}
 
-  \item{age_bins}{A numeric vector of age bins to use. If
+  \item{age_bins}{*A numeric vector of age bins to use. If
   left as \code{NULL} then the age bin structure will be
   taken from the OM.}
 
-  \item{len_bins}{A numeric vector of length bins to use.
+  \item{len_bins}{*A numeric vector of length bins to use.
   If left as \code{NULL} then the length bin structure will
   be taken from the OM.}
+
+  \item{pop_binwidth}{*Population length bin width. Note
+  that this value must be smaller than the bin width
+  specified in length composition data \code{len_bins} or
+  SS3 will fail (see notes in the SS3 manual).}
+
+  \item{pop_minimum_size}{*Population minimum length bin
+  value.}
+
+  \item{pop_maximum_size}{*Population maximum length bin
+  value.}
+
+  \item{lcomp_constant}{*A new robustification constant for
+  length composition data to be used. Must be a numeric
+  value, as a proportion. For example 0.1 means 10 percent.
+  See the SS3 manual for further information. A \code{NULL}
+  value indicates no action resulting in using the current
+  value, and a value of 0 will throw an error since that
+  leads to an error when zeroes exist in the data. Instead
+  use a very small value like \code{1e-07}.}
+
+  \item{tail_compression}{*A new tail compression value to
+  be used in SS3. Must be a numeric value, as a proportion.
+  For example 0.1 means 10 percent. See the SS3 manual for
+  further information. A \code{NULL} value indicates no
+  action, a negative value indicates to SS3 to ignore it
+  (not use that feature).}
 
   \item{write_file}{Should the \code{.dat} file be written?
   The new \code{.dat} file will always be returned
@@ -46,22 +75,22 @@ change_data(datfile, outfile, fleets, years, types, age_bins = NULL,
   \code{NULL}) if \code{write_file = FALSE}.}
 }
 \value{
-An invisible data list, and a file is written depending on
-\code{write_file}.
+An invisible data list, and a file is written if
+\code{write_file = TRUE}.
 }
 \description{
 \code{change_data} alters the data structure for a data
-list as read in by \code{r4ss::SS_readdat}, for use in
-preparing the data file for an SS operating model. Original
-data is removed and dummy data is added, as specified, to
-the SS \code{.dat} file. This causes SS to produce expected
-values (OM "truth") when the operating model is run, from
-which data can be sampled.  For each data type altered,
-\code{change_data} will add data for the fleets and years
-given; potentially adding many rows of redundant data.
-Currently, \code{.dat} files with multiple genders cannot
-be manipulated with \code{change_data}.
-\code{calculate_data_units} is used internally in
+list as read in by \code{\link[r4ss]{SS_readdat}}, for use
+in preparing the data file for an SS operating model.
+Original data is removed and dummy data is added, as
+specified, to the SS \code{.dat} file. This causes SS to
+produce expected values (OM "truth") when the operating
+model is run, from which data can be sampled.  For each
+data type altered, \code{change_data} will add data for the
+fleets and years given; potentially adding many rows of
+redundant data. Currently, \code{.dat} files with multiple
+genders cannot be manipulated with \code{change_data}.
+\code{\link{calculate_data_units}} is used internally in
 \code{\link{ss3sim_base}} to create a superset of fleets
 and years from sample arguments, and
 \code{\link{clean_data}} to strip out unused data after
@@ -71,62 +100,84 @@ can also be used by an \pkg{ss3sim} user to manipulate data
 as a case, or to prepare a new OM for use in a simulation.
 See the vignette for more details.
 }
+\details{
+The robustification constant is added to both the observed
+and expected proportions of length composition data, before
+being normalized internally. It is designed to help
+stabilize the model, but is unclear how and when to use it
+for optimal effect. The same value is used for all length
+data.
+}
+\section{Which arguments to specifiy in case files}{
+  All function argument descriptions that start with an
+  asterisk (*) will be passed through the case files to
+  \code{\link{run_ss3sim}}. If one of these arguments is
+  not specified in a case file, then a value of \code{NULL}
+  will be passed, which may or may not be an appropriate
+  value. Other arguments will be ignored if specified.
+}
 \examples{
-### These examples are in development still and untested
-#d <- system.file("extdata", package = "ss3sim")
-#fleets <- 1:2
-#years <- c(5,10,15)
-#types <- c("len", "age")
-#file_in <- paste0(d, "/models/cod-om/codOM.dat")
-### Basic test with just length data, default bins
-#out <- change_data(file_in,"test2.dat", types="len", years=years,
-#                   fleets=fleets, write_file=FALSE)
-#print(out$lbin_vector)
-#print(tail(out$lencomp[, 1:8]))
-### Change the length bins
-#out <- change_data(file_in,"test.dat", types="len", years=years,
-#                   fleets=fleets, len_bins=3:6, write_file=FALSE)
-#print(out$lbin_vector)
-#print(tail(out$lencomp[, 1:8]))
-### Change data types
-#out <- change_data(file_in,"test.dat", types=c("len", "age"), years=years,
-#                   fleets=fleets, len_bins=3:6, age_bins=5:7, write_file=FALSE)
-#print(out$agebin_vector)
-#print(out$lbin_vector)
-#print(names(out$agecomp))
-#print(names(out$lencomp))
-### TODO new examples, not fully incorporated;
-#index_params=list(fleets=c(1,2), years=list(c(1,2), c(10,11)), sds_obs=c(.1,.2))
-### lcomp_params= list(Nsamp=list(12345), fleets=1, years=list(c(1,5)))
-### agecomp_params= list(Nsamp=list(12345), fleets=c(1,2), years=list(2,c(15,16)))
-### calcomp_params= list(Nsamp=list(1), fleets=c(1), years=98)
-### mlacomp_params= list(fleets=c(2), Nsamp=54, years=list(c(1,15)))
-### d <- system.file("extdata", package = "ss3sim")
-### #' ## d <- "../ss3sim/inst/extdata/"
-### f_in <- paste0(d, "/example-om/data.ss_new")
-### datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
-### data_units <- calculate_data_units(
-###     index_params=index_params,
-###     lcomp_params=lcomp_params,
-###     agecomp_params=agecomp_params,
-###     calcomp_params=calcomp_params,
-###     mlacomp_params=mlacomp_params)
-### dat2 <- with(data_units, change_data(datfile=datfile, fleets=fleets, years=years,
-###                              types=types, write_file=FALSE))
-### dat2 <- change_data(datfile, fleets=c(1,2), years=c(4,5),
-###                     types=c("age","len", "mla", "cal"), write_file=FALSE)
-### datfile <- dat2
-### dat3 <- clean_data(datfile=dat2, lcomp_params=lcomp_params,
-###                        index_params=index_params,
-###                      agecomp_params=agecomp_params,
-###                      calcomp_params=calcomp_params,
-###                      mlacomp_params=mlacomp_params,
-###                       verbose=TRUE)
+d <- system.file("extdata", package = "ss3sim")
+fleets <- 1:2
+years <- c(5, 10, 15)
+types <- c("len", "age")
+file_in <- r4ss::SS_readdat(paste0(d, "/models/cod-om/codOM.dat"))
+file_in <- change_fltname(file_in)
+
+# Basic test with just length data, default bins:
+out <- change_data(file_in, outfile = "ignore.dat", types = "len",
+  years = years, fleets = fleets, write_file = FALSE)
+print(out$lbin_vector)
+print(out$lencomp)
+
+# Change the length bins:
+out <- change_data(file_in, "ignore.dat", types = "len",
+  years = years, fleets = fleets, len_bins = 3:6, write_file = FALSE)
+out$lbin_vector
+out$lencomp
+
+# Change the population length bins:
+out <- change_data(file_in, "ignore.dat", types = "len",
+  years = years, fleets = fleets, pop_binwidth = 1, pop_minimum_size = 5,
+  pop_maximum_size = 210, write_file = FALSE)
+out$binwidth
+out$maximum_size
+out$minimum_size
+
+# Sample from index, length composition, age composition, catch at length,
+# mean length at age data: (normally this is all done from within run_ss3sim).
+
+index_params = list(fleets = c(1, 2), years = list(c(1, 2),
+  c(10, 11)), sds_obs = c(0.1, 0.2))
+lcomp_params = list(Nsamp = list(12345), fleets = 1, years = list(c(1, 5)))
+agecomp_params = list(Nsamp = list(12345), fleets = c(1, 2),
+  years = list(2, c(15, 16)))
+calcomp_params = list(Nsamp = list(1), fleets = c(1), years = 98)
+mlacomp_params = list(fleets = c(2), Nsamp = 54, years = list(c(1, 15)))
+d <- system.file("extdata", package = "ss3sim")
+f_in <- paste0(d, "/example-om/data.ss_new")
+datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+datfile <- change_fltname(datfile)
+data_units <- calculate_data_units(index_params = index_params,
+  lcomp_params = lcomp_params, agecomp_params = agecomp_params,
+  calcomp_params = calcomp_params, mlacomp_params = mlacomp_params)
+data_units
+dat2 <- with(data_units, change_data(datfile = datfile, fleets = fleets,
+  years = years, types = types, write_file = FALSE))
+dat3 <- clean_data(datfile = dat2, lcomp_params = lcomp_params,
+  index_params = index_params, agecomp_params = agecomp_params,
+  calcomp_params = calcomp_params, mlacomp_params = mlacomp_params,
+  verbose = TRUE)
 }
 \author{
-Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson #
+Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson
 }
 \seealso{
 \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
+
+Other change functions: \code{\link{change_em_binning}};
+\code{\link{change_e}}; \code{\link{change_f}};
+\code{\link{change_maturity}}; \code{\link{change_retro}};
+\code{\link{change_tv}}
 }
 

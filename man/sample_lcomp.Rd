@@ -5,7 +5,7 @@
 \title{Sample length compositions from expected values}
 \usage{
 sample_lcomp(datfile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
-  write_file = TRUE, lengthbin_vector = NULL, bin_vector = NULL)
+  write_file = TRUE)
 }
 \arguments{
   \item{datfile}{An SS data object as read in from
@@ -44,12 +44,6 @@ sample_lcomp(datfile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
   \code{outfile} to disk. Can be turned off to speed up
   testing or exploration of the function. The new data are
   returned invisibly, as in the examples below.}
-
-  \item{lengthbin_vector}{Depreciated argument. Does
-  nothing and will be removed in a future major version
-  update. Instead, see the \code{len_bins} argument in
-  \code{\link{ss3sim_base}}, which uses
-  \code{\link{change_data}} internally.}
 }
 \value{
 A modified \code{.dat} file if \code{write_file=TRUE}. A
@@ -76,6 +70,7 @@ named \code{lcomp}. A suggested (default) case letter is
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/example-om/data.ss_new")
 datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+datfile <- change_fltname(datfile)
 
 ## Generate with constant sample size across years
 ex1 <- sample_lcomp(datfile=datfile, outfile="test1.dat", fleets=c(1,2),
@@ -88,7 +83,7 @@ ex2 <- sample_lcomp(datfile=datfile, outfile="test2.dat", fleets=c(1,2),
                     years=list(seq(1994, 2012, by=2),
                         2003:2012), write_file = FALSE)
 
-\donttest{
+\dontrun{
 ## Plot distributions for a particular year to compare multinomial
 ## vs. overdispersed Dirichlet
 temp.list <- temp.list2 <- list()
@@ -122,6 +117,8 @@ Cole Monnahan and Kotaro Ono; modified from a version by
 Roberto Licandeo and Felipe Hurtado-Ferro
 }
 \seealso{
-\code{\link{sample_agecomp}}
+Other sampling functions: \code{\link{sample_agecomp}};
+\code{\link{sample_calcomp}}; \code{\link{sample_index}};
+\code{\link{sample_mlacomp}}; \code{\link{sample_wtatage}}
 }
 

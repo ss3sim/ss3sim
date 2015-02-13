@@ -61,12 +61,21 @@ profile_fmsy <- function(om_in, results_out, simlength = 100,
   parFile[sigmaRLine] <- 0.001
   writeLines(parFile, "ss3.par")
   for(i in seq(fVector)) {
-    change_f(years = 1:simlength, years_alter = 26:simlength,
-             fvals = rep(fVector[i], 75),
+    change_f(years = 1:simlength, years_alter = 1:simlength,
+             fvals = rep(fVector[i], 100),
              file_in = "ss3.par", file_out = "ss3.par" )
-    system(paste(ss_bin, "-nohess"), show.output.on.console = FALSE)
-	fEqCatch[i] <- SS_readdat("data.ss_new", verbose = FALSE,
+    system(paste(ss_bin, "-nohess"), show.output.on.console = FALSE,
+           ignore.stdout=TRUE)
+
+	temp_feq <- SS_readdat("data.ss_new", verbose = FALSE,
                             section = 2)$catch$Fishery[simlength]
+	if(is.null(temp_feq))
+	{
+		fEqCatch[i] <- SS_readdat("data.ss_new", verbose = FALSE,
+                            section = 2)$catch$fishery1[simlength]
+	} else {
+		fEqCatch[i] <- temp_feq
+	}
   }
   pdf("Fmsy.pdf")
       par(mar = c(4, 6, 4, 4))

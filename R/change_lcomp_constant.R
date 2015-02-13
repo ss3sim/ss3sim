@@ -21,27 +21,15 @@
 #' @param datfile Input SS3 dat file \bold{as returned in list object form from
 #'   \code{\link[r4ss]{SS_readdat}}}.
 #' @param file_out Output SS3 dat file. Typically the same as \code{file_in}.
+#' @param write_file Should the data file be written to disk?
 #' @return A modified SS3 \code{.dat} file, and that file returned invisibly
 #'   (for testing) as a vector of character lines.
 #' @template casefile-footnote
 #' @author Cole Monnahan
-#' @export
 #' @importFrom r4ss SS_writedat
 
-#' @examples
-#' ## Create a temporary folder for the output:
-#' temp_path <- file.path(tempdir(), "ss3sim-lcomp-constant-example")
-#' dir.create(temp_path, showWarnings = FALSE)
-#' ## Run the function with built-in data file.
-#' dat_file <- system.file("extdata", "example-om", "data.ss_new",
-#'   package = "ss3sim")
-#' input_dat <- r4ss::SS_readdat(dat_file)
-#' test <- change_lcomp_constant(lcomp_constant = .1234, input_dat,
-#'   file_out = paste0(temp_path, "/test.dat"))
-#' ## Look at the changes
-#' print(test$add_to_comp)
-#' unlink(temp_path)
-change_lcomp_constant <- function(lcomp_constant, datfile, file_out){
+change_lcomp_constant <- function(lcomp_constant, datfile, file_out,
+  write_file = TRUE){
 
   if(is.null(lcomp_constant)) return(invisible(NULL))
   stopifnot(is.numeric(lcomp_constant))
@@ -49,7 +37,8 @@ change_lcomp_constant <- function(lcomp_constant, datfile, file_out){
 
   # The data sections are repeated in the data.ss_new files, so only use first one
   datfile$add_to_comp[1] <- lcomp_constant
-  SS_writedat(datfile, file_out, overwrite = TRUE, verbose = FALSE)
 
-  return(invisible(datfile))
+  if(write_file) SS_writedat(datfile, file_out, overwrite = TRUE, verbose = FALSE)
+
+  invisible(datfile)
 }

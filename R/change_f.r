@@ -24,6 +24,7 @@
 #' @param file_in Input SS3 par file.
 #' @param file_out Output SS3 par file.
 #' @return A modified SS3 \code{.par} file.
+#' @family change functions
 #' @template casefile-footnote
 #' @examples
 #' # Create a temporary folder for the output:

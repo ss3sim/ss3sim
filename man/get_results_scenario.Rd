@@ -38,17 +38,17 @@ case_folder <- paste0(d, "/eg-cases")
 om <- paste0(d, "/models/cod-om")
 em <- paste0(d, "/models/cod-em")
 run_ss3sim(iterations = 1:2, scenarios =
-  c("D0-E0-F0-G0-R0-S0-M0-cod"),
+  c("D0-F0-G0-S0-cod"),
   case_folder = case_folder, om_dir = om, em_dir = em,
   bias_adjust = FALSE)
-get_results_scenario(c("D0-E0-F0-G0-R0-S0-M0-cod"))
+get_results_scenario(c("D0-F0-G0-S0-cod"))
 }
 }
 \author{
 Cole Monnahan
 }
 \seealso{
-Other get.results: \code{\link{get_results_all}};
+Other get-results: \code{\link{get_results_all}};
 \code{\link{get_results_scalar}};
 \code{\link{get_results_timeseries}}
 }

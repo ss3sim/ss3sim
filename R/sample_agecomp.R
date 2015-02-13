@@ -11,10 +11,6 @@
 #'
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
-#' @param agebin_vector Depreciated argument. Does nothing and will be
-#'   removed in a future major version update. Instead, see
-#'   the \code{age_bins} argument in \code{\link{ss3sim_base}}, which
-#'   uses \code{\link{change_data}} internally.
 #' @param keep_conditional A logical if conditional age-at-length data
 #'   should be kept or removed entirely from the \code{.dat} file.
 #'   \code{sample_agecomp} only works on the age composition data
@@ -30,6 +26,7 @@
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+#' datfile <- change_fltname(datfile)
 #'
 #' ## Turn off age comps by specifying fleets=NULL
 #' sample_agecomp(datfile=datfile, outfile="test1.dat",
@@ -47,7 +44,7 @@
 #'                       years=list(seq(1994, 2012, by=2),
 #'                           2003:2012), write_file=FALSE)
 #'
-#' \donttest{
+#' \dontrun{
 #' ## Run three  cases showing Multinomial, Dirichlet(1) and over-dispersed
 #' ## Dirichlet for different levels of sample sizes
 #' op <- par(mfrow = c(1,3))
@@ -78,10 +75,10 @@
 #' }
 #' par(op)
 #' }
-#' @seealso \code{\link{sample_lcomp}}
+#' @family sampling functions
 #' @export
 sample_agecomp <- function(datfile, outfile, fleets = c(1,2), Nsamp,
-                           years, cpar=1, agebin_vector=NULL, write_file=TRUE,
+                           years, cpar=1, write_file=TRUE,
                            keep_conditional = TRUE){
     ## The new agecomp is mostly based on the old one so start with
     ## that
@@ -197,7 +194,7 @@ sample_agecomp <- function(datfile, outfile, fleets = c(1,2), Nsamp,
     if(write_file)
         SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
                     verbose = FALSE)
-    return(invisible(newfile))
+    invisible(newfile)
 }
 
 

@@ -14,36 +14,22 @@
 #' @param datfile Input SS3 dat file \bold{as returned in list object form from
 #'   \code{\link[r4ss]{SS_readdat}}}.
 #' @param file_out Output SS3 dat file name.
+#' @param write_file Should the altered data file be written to disk?
 #' @return A modified SS3 \code{.dat} file, and that file returned invisibly
 #'   (for testing) as a vector of character lines.
 #' @template casefile-footnote
 #' @author Cole Monnahan
-#' @export
 #' @importFrom r4ss SS_writedat
-#'
-#' @examples
-#' ## Create a temporary folder for the output:
-#' temp_path <- file.path(tempdir(), "ss3sim-tail-example")
-#' dir.create(temp_path, showWarnings = FALSE)
-#' ## Run the function with built-in data file.
-#' dat_file <- system.file("extdata", "example-om", "data.ss_new",
-#' package = "ss3sim")
-#' input_dat <- r4ss::SS_readdat(dat_file)
-#' test <- change_tail_compression(tail_compression = .1234, input_dat,
-#'  file_out = paste0(temp_path, "/test.dat"))
-#' ## Look at the changes
-#' print(test$comp_tail_compression)
-#' ## Clean up the temp files
-#' unlink(temp_path)
 
-change_tail_compression <- function(tail_compression, datfile, file_out){
+change_tail_compression <- function(tail_compression, datfile, file_out,
+  write_file = TRUE){
 
   if(is.null(tail_compression)) return(invisible(NULL))
   stopifnot(is.numeric(tail_compression))
 
   # The data sections are repeated in the data.ss_new files, so only use first one
   datfile$comp_tail_compression[1] <- tail_compression
-  SS_writedat(datfile, file_out, overwrite = TRUE, verbose = FALSE)
+  if(write_file) SS_writedat(datfile, file_out, overwrite = TRUE, verbose = FALSE)
 
-  return(invisible(datfile))
+  invisible(datfile)
 }

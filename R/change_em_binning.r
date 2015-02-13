@@ -24,6 +24,7 @@
 #' @importFrom r4ss SS_readdat SS_writedat
 #' @export
 #' @seealso \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
+#' @family change functions
 #' @author Kotaro Ono
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
@@ -41,6 +42,9 @@
 change_em_binning <- function(file_in, file_out, lbin_method=NULL, bin_vector,
   write_file = TRUE) {
 
+    ## If lbin_method is NULL then don't do anything
+    if(is.null(lbin_method)) return(NULL)
+
 # error checking
   if(!is.numeric(bin_vector)) {
     stop("bin_vector must be numeric")
@@ -56,6 +60,7 @@ change_em_binning <- function(file_in, file_out, lbin_method=NULL, bin_vector,
 
 # load the datfile and other check
   datfile <- SS_readdat(file = file_in, verbose = FALSE)
+  datfile <- change_fltname(datfile)
   if(is.null(datfile$lencomp)) {
     stop("no lcomp data. Verify your case argument files")
   }
@@ -116,7 +121,8 @@ change_em_binning <- function(file_in, file_out, lbin_method=NULL, bin_vector,
   }
 
   if(write_file) {
-    SS_writedat(datlist = datfile, outfile = file_out, overwrite=TRUE)
+    SS_writedat(datlist = datfile, outfile = file_out, overwrite=TRUE,
+                verbose=FALSE)
   }
 
   invisible(datfile)

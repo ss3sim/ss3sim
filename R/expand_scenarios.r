@@ -22,8 +22,8 @@ expand_scenarios <- function(cases = list(D = 0, E = 0, F = 0,
     M = 0, R = 0), species = c("cod", "fla", "sar")) {
 
   cases <- cases[order(names(cases))]
-  sapply(species, function(x) if(nchar(x) != 3) 
-    stop("species ID must be 3 characters"))
+  ## sapply(species, function(x) if(nchar(x) != 3)
+  ##   stop("species ID must be 3 characters"))
 
   cases_all <- c(cases, list(species))
   case_names <- names(cases_all)
