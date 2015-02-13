@@ -171,12 +171,12 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
     newhis <- percent_df[indices_to_standardize[, 1], "hi"] *
               em_pars[indices_to_standardize[, 2], "INIT"]
 
-    #If the parameter label contains "LnQ", use the value given in the
+    #If the parameter label contains "Ln", use the value given in the
     #table rather than a percentage times the initial value.
-    newlos[grep("LnQ", percent_df$Label, ignore.case = TRUE)] <-
-      percent_df[grep("LnQ", percent_df$Label, ignore.case = TRUE), 2]
-    newhis[grep("LnQ", percent_df$Label, ignore.case = TRUE)] <-
-    percent_df[grep("LnQ", percent_df$Label, ignore.case = TRUE), 3]
+    newlos[grep("Ln", percent_df$Label, ignore.case = TRUE)] <-
+      percent_df[grep("Ln", percent_df$Label, ignore.case = TRUE), 2]
+    newhis[grep("Ln", percent_df$Label, ignore.case = TRUE)] <-
+    percent_df[grep("Ln", percent_df$Label, ignore.case = TRUE), 3]
 
     SS_changepars(dir=dir,ctlfile=em_ctl_file,newctlfile=em_ctl_file,
       linenums = em_pars[indexem, "Linenum"],
