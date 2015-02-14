@@ -53,9 +53,8 @@ change_em_binning <- function(file_in, file_out, lbin_method=NULL, bin_vector,
     warning(paste("length(bin_vector) == 1; are you sure you",
        "input a full numeric vector of bins and not a bin size?"))
   }
-  if(!is.null(lbin_method))
-  {
-	if (lbin_method >2) stop("lbin_method method should be either NULL, 1 or 2")
+  if(!is.null(lbin_method)) {
+	  if (lbin_method >2) stop("lbin_method method should be either NULL, 1 or 2")
   }
 
 # load the datfile and other check
