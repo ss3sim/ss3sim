@@ -43,9 +43,16 @@
 #' \code{\link{change_data}}.
 #'
 #' @author Cole Monnahan
-#' @param index_params, lcomp_params, agecomp_params, calcomp_params,
-#' mlacomp_params Named lists containing the arguments for the different
-#' sampling functions.
+#' @param index_params Named lists containing the arguments for
+#'   \code{sample_index}.
+#' @param lcomp_params Named lists containing the arguments for
+#'   \code{\link{sample_lcomp}}.
+#' @param agecomp_params Named lists containing the arguments for
+#'   \code{\link{sample_agecomp}}.
+#' @param calcomp_params Named lists containing the arguments for
+#'   \code{\link{sample_calcomp}}.
+#' @param mlacomp_params Named lists containing the arguments for
+#'   \code{\link{sample_mlacomp}}.
 #' @param verbose When \code{TRUE} it will print a message when rows are
 #' deleted.
 #' @seealso calculate_data_units, change_data
