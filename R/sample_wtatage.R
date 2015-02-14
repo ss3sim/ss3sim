@@ -34,6 +34,7 @@
 #' @template lcomp-agecomp-index
 #' @template datfile
 #' @template casefile-footnote
+#' @importFrom r4ss SS_parlines
 #' @seealso \code{\link{fill_across}}
 #' @family sampling functions
 #' @export
@@ -87,7 +88,7 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
     mlacomp <- datfile$MeanSize_at_Age_obs
     if(is.null(mlacomp)) stop("No mean length-at-age data found in datfile")
     ## Read in the control file
-    ctl <- r4ss::SS_parlines(ctlfile)
+    ctl <-SS_parlines(ctlfile)
     ## Read in the file and grab the expected values
     infile <- readLines(infile)
 
