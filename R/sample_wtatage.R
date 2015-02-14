@@ -28,6 +28,7 @@
 #' @param fill_fnc *A function to fill in missing values (ages and years). The
 #'   resulting weight-at-age file will have values for all years and ages.One
 #'   function is \code{fill_across}.
+#' @param cv_wtatage A user specified CV for growth. Default is \code{NULL}.
 #' @param write_file Logical to determine if \code{outfile} will be written.
 #' @return A modified \code{.wtatage.ss} file if \code{write_file = TRUE}. A list
 #'   object containing the modified \code{.wtatage.ss} file is returned invisibly.
