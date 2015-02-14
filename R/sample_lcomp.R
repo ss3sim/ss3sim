@@ -12,6 +12,7 @@
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
 #' @template datfile
+#' @template Nsamp
 #' @template casefile-footnote
 #' @template sampling-return
 #' @importFrom r4ss SS_writedat

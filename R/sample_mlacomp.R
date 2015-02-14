@@ -10,7 +10,7 @@
 #' @author Cole Monnahan, Kelli Johnson
 #'
 #' @template lcomp-agecomp-index
-#' @template lcomp-agecomp
+#' @template Nsamp
 #' @template datfile
 #' @param ctlfile A path to the control file, outputed from an OM, containing
 #'   the OM parameters for growth. These values are used to determine the

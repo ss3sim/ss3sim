@@ -12,8 +12,8 @@
 #' @author Cole Monnahan, Kotaro Ono
 #'
 #' @template lcomp-agecomp-index
-#' @template lcomp-agecomp
 #' @template datfile
+#' @template Nsamp
 #' @template sampling-return
 #' @template casefile-footnote
 #' @family sampling functions
