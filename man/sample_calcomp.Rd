@@ -13,8 +13,9 @@ sample_calcomp(datfile, outfile, fleets = c(1, 2), years, write_file = TRUE,
   \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package.
   Make sure you select option \code{section=2}.}
 
-  \item{outfile}{A character string of the new \code{.dat}
-  file name to be created. Must end in \code{.dat}.}
+  \item{outfile}{A character string of the new file name to
+  be created. Must end in \code{.dat} or equal
+  \code{wtatage.ss}.}
 
   \item{fleets}{*A numeric vector giving the fleets to be
   used. This order also pertains to other arguments. A
@@ -37,20 +38,6 @@ sample_calcomp(datfile, outfile, fleets = c(1, 2), years, write_file = TRUE,
   same length as the number of years can be passed through.
   Single values are repeated for all years. If no fleet
   collected samples, keep the value to \code{Nsamp=NULL}.}
-
-  \item{cpar}{*A numeric value or vector the same length as
-  \code{fleets} controlling the variance of the Dirichlet
-  distribution used for sampling. A value of \code{1}
-  indicates the same standard deviation as a multinomial of
-  the given \code{Nsamp}, \code{2} indicates twice, etc.
-  Values greater than one indicate overdispersion, and less
-  underdispersion.}
-
-  \item{datfile}{A path to the data file, outputed from an
-  OM, containing the expected conditional age-at-length,
-  age comps and length comps. This file is read in and then
-  used to determine how many fish of each age bin are to be
-  sampled.}
 }
 \value{
 A modified \code{.dat} file if \code{write_file=TRUE}. A

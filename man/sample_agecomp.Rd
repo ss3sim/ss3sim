@@ -12,8 +12,9 @@ sample_agecomp(datfile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
   \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package.
   Make sure you select option \code{section=2}.}
 
-  \item{outfile}{A character string of the new \code{.dat}
-  file name to be created. Must end in \code{.dat}.}
+  \item{outfile}{A character string of the new file name to
+  be created. Must end in \code{.dat} or equal
+  \code{wtatage.ss}.}
 
   \item{fleets}{*A numeric vector giving the fleets to be
   used. This order also pertains to other arguments. A

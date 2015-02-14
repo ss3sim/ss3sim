@@ -12,8 +12,9 @@ sample_mlacomp(datfile, outfile, ctlfile, fleets = 1, Nsamp, years,
   \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package.
   Make sure you select option \code{section=2}.}
 
-  \item{outfile}{A character string of the new \code{.dat}
-  file name to be created. Must end in \code{.dat}.}
+  \item{outfile}{A character string of the new file name to
+  be created. Must end in \code{.dat} or equal
+  \code{wtatage.ss}.}
 
   \item{ctlfile}{A path to the control file, outputed from
   an OM, containing the OM parameters for growth. These
@@ -43,8 +44,8 @@ sample_mlacomp(datfile, outfile, ctlfile, fleets = 1, Nsamp, years,
   returned invisibly, as in the examples below.}
 
   \item{mean_outfile}{A path to write length and age data
-  for external estimation of parametric growth. If NULL no
-  file will be written. This file is used by
+  for external estimation of parametric growth. If
+  \code{NULL} no file will be written. This file is used by
   \code{change_e} to externally estimate growth parameters.
   Filename must contain "vbgf" to be used by
   \code{change_e}. Also, if "remove" is included in the
@@ -55,20 +56,6 @@ sample_mlacomp(datfile, outfile, ctlfile, fleets = 1, Nsamp, years,
   \item{verbose}{Logical value whether or not diagnostic
   information from \pkg{r4ss} functions should be printed
   to the screen. Default is FALSE.}
-
-  \item{cpar}{*A numeric value or vector the same length as
-  \code{fleets} controlling the variance of the Dirichlet
-  distribution used for sampling. A value of \code{1}
-  indicates the same standard deviation as a multinomial of
-  the given \code{Nsamp}, \code{2} indicates twice, etc.
-  Values greater than one indicate overdispersion, and less
-  underdispersion.}
-
-  \item{datfile}{A \code{.dat} file read in by \pkg{r4ss}
-  function \code{\link[r4ss]{SS_readdat}}. This list will
-  be used to determine how many fish of each age bin are to
-  be sampled and the mean length for the distribution to
-  sample from.}
 }
 \value{
 A modified \code{.dat} file if \code{write_file=TRUE}. A

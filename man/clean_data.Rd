@@ -10,9 +10,24 @@ clean_data(datfile, index_params = NULL, lcomp_params = NULL,
   verbose = FALSE)
 }
 \arguments{
-  \item{index_params,}{lcomp_params, agecomp_params,
-  calcomp_params, mlacomp_params Named lists containing the
-  arguments for the different sampling functions.}
+  \item{datfile}{An SS data object as read in from
+  \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package.
+  Make sure you select option \code{section=2}.}
+
+  \item{index_params}{Named lists containing the arguments
+  for \code{sample_index}.}
+
+  \item{lcomp_params}{Named lists containing the arguments
+  for \code{\link{sample_lcomp}}.}
+
+  \item{agecomp_params}{Named lists containing the
+  arguments for \code{\link{sample_agecomp}}.}
+
+  \item{calcomp_params}{Named lists containing the
+  arguments for \code{\link{sample_calcomp}}.}
+
+  \item{mlacomp_params}{Named lists containing the
+  arguments for \code{\link{sample_mlacomp}}.}
 
   \item{verbose}{When \code{TRUE} it will print a message
   when rows are deleted.}

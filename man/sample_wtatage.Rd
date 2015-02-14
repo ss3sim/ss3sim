@@ -13,15 +13,13 @@ sample_wtatage(infile, outfile, datfile, ctlfile, years,
   Specifically to get the age-0 weight-at-age. This is
   typically \code{wtatage.ss_new}.}
 
-  \item{outfile}{The file to write the created
-  weight-at-age matrices to be read in by the estimation
-  model. Commonly \code{wtatage.ss}.}
+  \item{outfile}{A character string of the new file name to
+  be created. Must end in \code{.dat} or equal
+  \code{wtatage.ss}.}
 
-  \item{datfile}{A path to the data file, outputed from an
-  OM, containing the true age distributions (population
-  bins). This file is read in and then used to determine
-  how many fish of each age bin are to be sampled. Commonly
-  \code{data.ss_new}}
+  \item{datfile}{An SS data object as read in from
+  \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package.
+  Make sure you select option \code{section=2}.}
 
   \item{ctlfile}{A path to the control file, outputed from
   an OM, containing the OM parameters for growth and
@@ -29,23 +27,36 @@ sample_wtatage(infile, outfile, datfile, ctlfile, years,
   determine the uncertainty about weight for fish sampled
   in each age bin. Commonly \code{control.ss_new}}
 
-  \item{years}{*A list of vectors for each fleet indicating
-  the years that are sampled for weight-at-age. There must
-  be a corresponding age composition for that year in
-  \code{datfile}.}
+  \item{years}{*A list the same length as \code{fleets}
+  giving the years as numeric vectors. If no fleet
+  collected samples, keep the value to \code{years=NULL}.}
 
   \item{fill_fnc}{*A function to fill in missing values
   (ages and years). The resulting weight-at-age file will
   have values for all years and ages.One function is
   \code{fill_across}.}
 
-  \item{write_file}{Logical to determine if \code{outfile}
-  will be written.}
+  \item{write_file}{A switch for whether to write
+  \code{outfile} to disk. Can be turned off to speed up
+  testing or exploration of the function. The new data are
+  returned invisibly, as in the examples below.}
+
+  \item{fleets}{*A numeric vector giving the fleets to be
+  used. This order also pertains to other arguments. A
+  missing value excludes that fleet from \code{outfile}
+  (i.e. it turns it off so no samples are written). If none
+  of the fleet collected samples, keep the value to
+  \code{fleets=NULL}.}
+
+  \item{cv_wtatage}{A user specified CV for growth. Default
+  is \code{NULL}.}
+
+  \item{nsamp_wtatage}{Default is \code{NULL}.}
 }
 \value{
-A modified \code{.dat} file if \code{write_file=TRUE}. A
-list object containing the modified \code{.dat} file is
-returned invisibly.
+A modified \code{.wtatage.ss} file if \code{write_file =
+TRUE}. A list object containing the modified
+\code{.wtatage.ss} file is returned invisibly.
 }
 \description{
 Take a \code{data.SS_new} file containing expected values
