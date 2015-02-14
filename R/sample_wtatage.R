@@ -103,7 +103,7 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
     names(wtatage) <- gsub("#", replacement="", x=header)
     wtatage$yr <- abs(wtatage$yr)
     if(2 %in% unique(wtatage$fleet) == FALSE){
-        ones <- subset(wtatage, fleet == 1)
+        ones <- wtatage[wtatage$fleet == 1, ]
         twos <- ones
         twos$fleet <- 2
         wtatage <- rbind(wtatage, twos)
