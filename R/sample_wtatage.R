@@ -29,7 +29,9 @@
 #'   resulting weight-at-age file will have values for all years and ages.One
 #'   function is \code{fill_across}.
 #' @param write_file Logical to determine if \code{outfile} will be written.
-#' @template sampling-return
+#' @return A modified \code{.wtatage.ss} file if \code{write_file = TRUE}. A list
+#'   object containing the modified \code{.wtatage.ss} file is returned invisibly.
+#' @template lcomp-agecomp-index
 #' @template datfile
 #' @template casefile-footnote
 #' @seealso \code{\link{fill_across}}
