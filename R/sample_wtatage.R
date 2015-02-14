@@ -16,20 +16,14 @@
 #'
 #' @param infile The file to read weight-at-age from. Specifically to get the
 #'   age-0 weight-at-age. This is typically \code{wtatage.ss_new}.
-#' @param outfile The file to write the created weight-at-age matrices to be
-#'   read in by the estimation model. Commonly \code{wtatage.ss}.
 #' @param ctlfile A path to the control file, outputed from an OM, containing
 #'   the OM parameters for growth and weight/length relationship. These values
 #'   are used to determine the uncertainty about weight for fish sampled in each
 #'   age bin. Commonly \code{control.ss_new}
-#' @param years *A list of vectors for each fleet indicating the years that are
-#'   sampled for weight-at-age. There must be a corresponding age composition
-#'   for that year in \code{datfile}.
 #' @param fill_fnc *A function to fill in missing values (ages and years). The
 #'   resulting weight-at-age file will have values for all years and ages.One
 #'   function is \code{fill_across}.
 #' @param cv_wtatage A user specified CV for growth. Default is \code{NULL}.
-#' @param write_file Logical to determine if \code{outfile} will be written.
 #' @return A modified \code{.wtatage.ss} file if \code{write_file = TRUE}. A list
 #'   object containing the modified \code{.wtatage.ss} file is returned invisibly.
 #' @template lcomp-agecomp-index
