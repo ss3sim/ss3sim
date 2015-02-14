@@ -301,7 +301,11 @@ change_pop_bin <- function(datfile, binwidth = NULL, minimum_size = NULL,
   invisible(datfile)
 }
 
-# quick checks that datfile looks correct:
+#' Check that the SS3 data file looks correct
+#'
+#' @param x An SS3 data list object as read in by \code{\link[r4ss]{SS_readdat}}.
+#' @export
+
 check_data <- function(x) {
   if (!is.list(x))
     stop("data file isn't a list; should be output from r4ss::SS_readdat()")
