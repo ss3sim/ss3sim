@@ -18,10 +18,6 @@
 #'   age-0 weight-at-age. This is typically \code{wtatage.ss_new}.
 #' @param outfile The file to write the created weight-at-age matrices to be
 #'   read in by the estimation model. Commonly \code{wtatage.ss}.
-#' @param datfile A path to the data file, outputed from an OM, containing the
-#'   true age distributions (population bins). This file is read in and then
-#'   used to determine how many fish of each age bin are to be sampled. Commonly
-#'   \code{data.ss_new}
 #' @param ctlfile A path to the control file, outputed from an OM, containing
 #'   the OM parameters for growth and weight/length relationship. These values
 #'   are used to determine the uncertainty about weight for fish sampled in each
@@ -34,6 +30,7 @@
 #'   function is \code{fill_across}.
 #' @param write_file Logical to determine if \code{outfile} will be written.
 #' @template sampling-return
+#' @template datfile
 #' @template casefile-footnote
 #' @seealso \code{\link{fill_across}}
 #' @family sampling functions

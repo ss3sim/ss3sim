@@ -13,10 +13,7 @@
 #'
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
-#' @param datfile A path to the data file, outputed from an OM, containing
-#' the expected conditional age-at-length, age comps and length comps. This
-#' file is read in and then used to determine how many fish of each age bin
-#' are to be sampled.
+#' @template datfile
 #' @template sampling-return
 #' @template casefile-footnote
 #' @family sampling functions

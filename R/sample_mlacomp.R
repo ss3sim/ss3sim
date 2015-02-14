@@ -11,10 +11,7 @@
 #'
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
-#' @param datfile A \code{.dat} file read in by \pkg{r4ss} function
-#'   \code{\link[r4ss]{SS_readdat}}. This list will be used to determine
-#'   how many fish of each age bin are to be sampled and the mean length
-#'   for the distribution to sample from.
+#' @template datfile
 #' @param ctlfile A path to the control file, outputed from an OM, containing
 #'   the OM parameters for growth. These values are used to determine the
 #'   uncertainty about size for fish sampled in each age bin.

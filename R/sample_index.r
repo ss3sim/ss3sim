@@ -10,6 +10,7 @@
 #' \code{index}. A suggested (default) case letter is \code{D} for data.
 #'
 #' @template lcomp-agecomp-index
+#' @template datfile
 #' @param sds_obs *A list the same length as \code{fleets}. The list should
 #'   contain either single values or numeric vectors of the same length as the
 #'   number of years which represent the standard deviation of the observation

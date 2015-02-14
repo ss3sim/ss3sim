@@ -55,6 +55,7 @@
 #'   \code{\link{sample_mlacomp}}.
 #' @param verbose When \code{TRUE} it will print a message when rows are
 #' deleted.
+#' @template datfile
 #' @seealso calculate_data_units, change_data
 #' @return An invisible cleaned data list as an object.
 #' @note This function does not write the result to file.
