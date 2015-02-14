@@ -368,5 +368,12 @@ check_data <- function(x) {
     stop(paste("The SS3 data file must contain (dummy) index data for all years",
       "for both fleet 1 (the fishery) and fleet 3 (CPUE)"))
   }
+}
 
+is_ssdat_file <- function(x) {
+  if(!is.list(x))
+    stop("datfile isn't a list. dat should be output from r4ss::SS_readdat()")
+  if(!"type" %in% names(x))
+    stop(paste("the column *type* wasn't found in datfile.",
+      "datfile should be output from r4ss::SS_readdat()"))
 }
