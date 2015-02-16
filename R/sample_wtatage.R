@@ -24,7 +24,6 @@
 #'   resulting weight-at-age file will have values for all years and ages.One
 #'   function is \code{fill_across}.
 #' @param cv_wtatage A user specified CV for growth. Default is \code{NULL}.
-#' @param nsamp_wtatage Default is \code{NULL}.
 #' @return A modified \code{.wtatage.ss} file if \code{write_file = TRUE}. A list
 #'   object containing the modified \code{.wtatage.ss} file is returned invisibly.
 #' @template lcomp-agecomp-index
@@ -56,7 +55,7 @@
 
 sample_wtatage <- function(infile, outfile, datfile, ctlfile,
                            years, fill_fnc = fill_across, write_file=TRUE, fleets,
-                           cv_wtatage = NULL, nsamp_wtatage = NULL){
+                           cv_wtatage = NULL){
   ##fill_type: specify type of fill, fill zeroes with first row? annual interpolation?
         ## Age Interpolation?
     ## A value of NULL for fleets signifies to turn this data off in the
