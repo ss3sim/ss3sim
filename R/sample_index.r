@@ -55,7 +55,7 @@
 
 sample_index <- function(datfile, outfile, fleets, years, sds_obs,
                          make_plot = FALSE, write_file=TRUE){
-    is_ssdat_file(datfile)
+    check_data(datfile)
     cpue <- datfile$CPUE
     ## Check inputs for errors
     Nfleets <- length(fleets)

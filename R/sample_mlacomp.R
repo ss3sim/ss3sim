@@ -66,7 +66,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     return(invisible(datfile))
   }
 
-  is_ssdat_file(datfile)
+  check_data(datfile)
   # Users can specify either Lbin_lo or Lbin_hi < 1 for agecomp data
   agecomp <- datfile$agecomp[datfile$agecomp$Lbin_lo == -1 |
                              datfile$agecomp$Lbin_hi == -1, ]

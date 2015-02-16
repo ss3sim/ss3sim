@@ -69,7 +69,7 @@
 sample_lcomp <- function(datfile, outfile, fleets = c(1,2), Nsamp,
   years, cpar = 1, write_file = TRUE){
 
-  is_ssdat_file(datfile)
+  check_data(datfile)
   ## The new lcomp is mostly based on the old one so start with that
   lcomp <- datfile$lencomp
   ## Check inputs for errors

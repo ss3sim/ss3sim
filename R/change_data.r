@@ -133,7 +133,7 @@ change_data <- function(datfile, outfile, fleets, years, types,
   # boundaries of the bins do not need to align (from SS3 manual)
   # this is also checked within SS3 and will create a fatal error
 
-  is_ssdat_file(datfile)
+  check_data(datfile)
 
   ## Input checks:
   types <- match.arg(types,
@@ -367,12 +367,9 @@ check_data <- function(x) {
     stop(paste("Ageing error definition values must all be set to 0.001 in the",
       "SS3 data file"))
 
-}
-
-is_ssdat_file <- function(x) {
-  if(!is.list(x))
-    stop("datfile isn't a list. dat should be output from r4ss::SS_readdat()")
-  if(!"type" %in% names(x))
-    stop(paste("the column *type* wasn't found in datfile.",
-      "datfile should be output from r4ss::SS_readdat()"))
+#   expected_index_years <- as.numeric(rep(seq(x$styr, x$endyr), 2))
+#   if (!identical(x$CPUE$year, expected_index_years)) {
+#     stop(paste("The SS3 data file must contain (dummy) index data for all years",
+#       "for both fleet 1 (the fishery) and fleet 3 (CPUE)"))
+#   }
 }

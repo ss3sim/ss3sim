@@ -36,7 +36,7 @@ sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
         }
     }
 
-    is_ssdat_file(datfile)
+    check_data(datfile)
     agecomp.age <- datfile$agecomp[datfile$agecomp$Lbin_lo== -1,]
     agecomp.cal <- datfile$agecomp[datfile$agecomp$Lbin_lo != -1,]
     lencomp <- datfile$lencomp
