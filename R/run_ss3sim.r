@@ -212,21 +212,22 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
     if (parallel_iterations) {
       ignore <- lapply(arg_list, function(x) {
         # First run bias-adjustment runs if requested:
-        dots <- alist(...)
+        dots <- list(...)
+
         if ("bias_adjust" %in% names(dots)) {
           if (dots$bias_adjust) {
             message("Running bias adjustment iterations sequentially first...")
             do.call("ss3sim_base",
-              c(x, list(iterations = NULL, eval(substitute(dots)))))
+              c(x, list(iterations = NULL, ...)))
             dots$bias_adjust <- FALSE
           }
         }
-        message("Now running regular iterations in parallel.")
-        dots$bias_already_run <- NULL # in case it was set by the user
+
+        message("Running iterations in parallel.")
         foreach(it_ = iterations, .packages = "ss3sim",
           .verbose = TRUE, .export = "substr_r") %dopar% {
             do.call("ss3sim_base",  c(x, list(iterations = it_,
-              bias_already_run = TRUE, eval(substitute(dots)))))}
+              bias_already_run = FALSE), dots))}
       })
     } else {
       message("Running scenarios in parallel.")
