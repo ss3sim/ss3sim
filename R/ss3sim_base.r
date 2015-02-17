@@ -441,12 +441,13 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 	  ## Now change the binning structure in the EM ss3.dat file as needed
       if(!is.null(em_binning_params)){
           em_binning_params <- add_nulls(em_binning_params,
-            c("lbin_method", "bin_vector"))
+            c("lbin_method", "bin_vector", "rebin_cal"))
           datfile <- change_em_binning(
                   datfile          = datfile,
                   file_out         = NULL,
-				           bin_vector 	   = em_binning_params$bin_vector,
+				          bin_vector 	     = em_binning_params$bin_vector,
                   lbin_method      = em_binning_params$lbin_method,
+                  rebin_cal        = rebin_cal,
                   write_file       = FALSE)
       }
 
