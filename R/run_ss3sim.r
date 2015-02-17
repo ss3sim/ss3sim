@@ -198,19 +198,21 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
     if (parallel_iterations) {
       ignore <- lapply(arg_list, function(x) {
         # First run bias-adjustment runs if requested:
-        dotdotdot <- list(...) # needed so we can nullify bias arguments
-        if ("bias_adjust" %in% names(dotdotdot)) {
-          if (dotdotdot$bias_adjust) {
-            message("Running bias adjustment sequentially first.")
-            do.call("ss3sim_base", c(x, list(iterations = NULL, ...)))
+        dots <- alist(...)
+        if ("bias_adjust" %in% names(dots)) {
+          if (dots$bias_adjust) {
+            message("Running bias adjustment iterations sequentially first...")
+            do.call("ss3sim_base",
+              c(x, list(iterations = NULL, eval(substitute(dots)))))
+            dots$bias_adjust <- FALSE
           }
         }
-        # Now run regular iterations:
-        message("Running iterations in parallel.")
+        message("Now running regular iterations in parallel.")
+        dots$bias_already_run <- NULL # in case it was set by the user
         foreach(it_ = iterations, .packages = "ss3sim",
           .verbose = TRUE, .export = "substr_r") %dopar% {
             do.call("ss3sim_base",  c(x, list(iterations = it_,
-              bias_adjust = FALSE, bias_already_run = TRUE, ...)))}
+              bias_already_run = TRUE, eval(substitute(dots)))))}
       })
     } else {
       message("Running scenarios in parallel.")
