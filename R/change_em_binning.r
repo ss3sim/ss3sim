@@ -41,14 +41,9 @@
 #' print(l$lbin_vector)
 #' print(head(l$lencomp))
 #'
-#' l <- change_em_binning(datfile, file_out = NULL, lbin_method = 1,
-#'   bin_vector = seq(10, 27, by = 2), write_file = FALSE)
-#' print(l$lbin_vector)
-#' print(head(l$lencomp))
-#'
 #' # An small example with conditional age-at-length re-binning:
 #' f <- system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim")
-#' d <- r4ss::SS_readdat(f)
+#' d <- r4ss::SS_readdat(f, verbose = FALSE)
 #' d$Lbin_method <- 3 # necessary for CAL rebinning
 #'
 #' # Add catch at length data (and simplify the bin structure for this example)
@@ -103,13 +98,13 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
     stop(paste("_Ngenders is greater than 1 in the model.",
       "change_em_binning only works with single-gender models."))
   }
-  if (max(bin_vector) > max(datfile$lbin_vector)) {
-    stop(paste("the maximum value in the bin_vector is above the original one",
-      "this column would be filled with zero observation so it is meaningless"))
+  if(!identical(as.integer(max(bin_vector)), as.integer(max(datfile$lbin_vector)))) {
+    stop(paste("The maximum value in the bin_vector is not equal to the",
+      "original maximum length bin value."))
   }
-  if (min(bin_vector) < min(datfile$lbin_vector)) {
-    stop(paste("the minimum value in the bin_vector is below the original one",
-      "this column would be filled with zero observation so it is meaningless"))
+  if(!identical(as.integer(min(bin_vector)), as.integer(min(datfile$lbin_vector)))) {
+    stop(paste("The minimum value in the bin_vector is not equal to the",
+      "original maximum length bin value."))
   }
   if (any(!is_divisible(bin_vector, by_ = datfile$binwidth)) ) {
     stop(paste("One or more of the values in bin_vector are not divisible by",
@@ -118,6 +113,7 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
 
   # Find ID columns and data columns to replace:
   old_len_columns <- grep("^l[0-9.]+$", names(datfile$lencomp))
+  old_lcomp_total <- sum(datfile$lencomp[, old_len_columns]) # check later
   id_columns <- seq_along(names(datfile$lencomp))[-old_len_columns]
   newdummy <- datfile$lencomp[, old_len_columns]
   old_binvector <- datfile$lbin_vector
@@ -160,6 +156,12 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
     }
   }
 
+  new_lcomp_total <- sum(lcomp_new)
+  if (!identical(old_lcomp_total, new_lcomp_total)) {
+    stop(paste("Number of samples in the new lcomp data matrix does not match",
+      "the number of samples in the original dataset."))
+  }
+
   # Substitute new bins:
   datfile$lencomp <- data.frame(datfile$lencomp[, id_columns], lcomp_new)
   datfile$lbin_vector <- bin_vector
@@ -196,6 +198,10 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
       stop(paste("change_em_binning only works for conditional age-at-length",
         "composition data with a single value for all AgeErr columns."))
 
+    # to check later:
+    old_age_dat <- datfile$agecomp[, grepl("^a[0-9.]+$", names(datfile$agecomp))]
+    old_agecomp_total <- sum(old_age_dat)
+
     # grab the data we'll work with:
     old_age <- datfile$agecomp[datfile$agecomp$Lbin_lo == -1, ]
     old_cal <- datfile$agecomp[datfile$agecomp$Lbin_lo != -1, ]
@@ -221,7 +227,15 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
     # and slot the new data into the .dat file:
     datfile$agecomp <- rbind(old_age, new_cal)
     datfile$N_agecomp <- nrow(datfile$agecomp)
+
+    new_age_dat <- datfile$agecomp[, grepl("^a[0-9.]+$", names(datfile$agecomp))]
+    new_agecomp_total <- sum(new_age_dat)
+    if (!identical(old_agecomp_total, new_agecomp_total)) {
+      stop(paste("Number of samples in the new agecomp data matrix does not match",
+        "the number of samples in the original dataset."))
+    }
   }
+
 
   if (write_file) {
     SS_writedat(datlist = datfile, outfile = file_out, overwrite = TRUE,

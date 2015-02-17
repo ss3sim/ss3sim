@@ -52,14 +52,9 @@ l <- change_em_binning(datfile, file_out = NULL, lbin_method = 1,
 print(l$lbin_vector)
 print(head(l$lencomp))
 
-l <- change_em_binning(datfile, file_out = NULL, lbin_method = 1,
-  bin_vector = seq(10, 27, by = 2), write_file = FALSE)
-print(l$lbin_vector)
-print(head(l$lencomp))
-
 # An small example with conditional age-at-length re-binning:
 f <- system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim")
-d <- r4ss::SS_readdat(f)
+d <- r4ss::SS_readdat(f, verbose = FALSE)
 d$Lbin_method <- 3 # necessary for CAL rebinning
 
 # Add catch at length data (and simplify the bin structure for this example)
