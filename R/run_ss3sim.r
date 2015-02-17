@@ -143,12 +143,12 @@
 #' # parallel iterations:
 #' run_ss3sim(iterations = 1:2, scenarios = c("D0-F0-cod"),
 #'   case_folder = case_folder, om_dir = om, em_dir = em,
-#'   parallel_iterations = TRUE)
+#'   parallel = TRUE, parallel_iterations = TRUE)
 #' unlink("D0-F0-cod", recursive = TRUE)
 #'
 #' # parallel iterations with bias adjustment:
 #' run_ss3sim(iterations = 1:2, scenarios = c("D0-F0-cod"),
-#'   case_folder = case_folder, om_dir = om, em_dir = em,
+#'   case_folder = case_folder, om_dir = om, em_dir = em, parallel = TRUE,
 #'   parallel_iterations = TRUE, bias_adjust = TRUE, bias_nsim = 2)
 #' unlink("D0-F0-cod", recursive = TRUE)
 #'
