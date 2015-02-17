@@ -49,7 +49,7 @@
 #' # An small example with conditional age-at-length re-binning:
 #' f <- system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim")
 #' d <- r4ss::SS_readdat(f)
-#' d$Lbin_method <- 2 # necessary for CAL rebinning
+#' d$Lbin_method <- 3 # necessary for CAL rebinning
 #'
 #' # Add catch at length data (and simplify the bin structure for this example)
 #' olddat <- change_data(d, outfile = NULL, write_file = FALSE,
@@ -177,21 +177,22 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
 
   # Re-bin conditional age-at-length comps:
   if (rebin_cal) {
-    if (datfile$Lbin_method != 2) {
-      stop(paste("Lbin_method was not set to 2 in the SS3 data file.",
+    if (!identical(datfile$Lbin_method, 3)) {
+      stop(paste("Lbin_method was not set to 3 in the SS3 data file.",
         "change_em_binning() requires the data file to specify conditional",
-        "age-at-length data with Lbin_method == 2. See the SS3 manual."))
+        "age-at-length data with Lbin_method == 3. See the SS3 manual. Note",
+        "the capital L in Lbin_method."))
     }
     if (is.null(datfile$agecomp))
       stop(paste("No age composition data were found in the data file within",
         "change_em_binning(). These are needed to modify the conditional",
         "age-at-length data binning structure."))
     # if all Lbin_lo == -1 then there aren't any CAL data:
-    if (length(unique(datfile$agecomp$Lbin_lo)) == 1)
+    if (identical(length(unique(datfile$agecomp$Lbin_lo)), 1L))
       stop(paste("It looks like there aren't any conditional age-at-length",
         "composition data in the age composition data matrix in your",
         "data file."))
-    if (length(unique(datfile$agecomp$AgeErr)) != 1)
+    if (!identical(length(unique(datfile$agecomp$AgeErr)), 1L))
       stop(paste("change_em_binning only works for conditional age-at-length",
         "composition data with a single value for all AgeErr columns."))
 
@@ -201,26 +202,21 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
 
     # make a lookup table of old and new bins:
     lookup <- data.frame(
-      Lbin_hi = seq_along(old_binvector),
-      lbin_orig = old_binvector,
-      lbin_new = old_binvector[findInterval(old_binvector, bin_vector)])
+      Lbin_lo = old_binvector,
+      lbin_new = bin_vector[findInterval(old_binvector, bin_vector)])
 
     # the magic re-binning happens here:
     # this uses dplyr and pipes but avoids non-standard evaluation
     # http://cran.r-project.org/web/packages/dplyr/vignettes/nse.html
-    new_cal <- inner_join(old_cal, lookup, by = "Lbin_hi") %>%
+    new_cal <- inner_join(old_cal, lookup, by = "Lbin_lo") %>%
       group_by_(~Yr, ~Seas, ~Flt, ~Gender, ~Part, ~AgeErr, ~Nsamp, ~lbin_new) %>%
       summarise_each_(funs_(~sum), ~matches("^a[0-9.]+$")) %>%
       rename_(Lbin_lo = ~lbin_new) %>%
-      mutate_(Lbin_hi = ~Lbin_lo) %>%
+      mutate_(Lbin_hi = ~c(Lbin_lo[-1], -1)) %>%
       as.data.frame
 
     # re-order the columns:
     new_cal <- new_cal[, match(names(old_cal), names(new_cal))]
-
-    # add back the 'id' numbering of CAL data:
-    new_cal$Lbin_lo <- as.numeric(as.factor(new_cal$Lbin_lo))
-    new_cal$Lbin_hi <- as.numeric(as.factor(new_cal$Lbin_hi))
 
     # and slot the new data into the .dat file:
     datfile$agecomp <- rbind(old_age, new_cal)
