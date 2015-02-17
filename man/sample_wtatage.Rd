@@ -85,8 +85,9 @@ Cole Monnahan, Allan Hicks, Peter Kuriyama
 \seealso{
 \code{\link{fill_across}}
 
-Other sampling functions: \code{\link{sample_agecomp}};
-\code{\link{sample_calcomp}}; \code{\link{sample_index}};
-\code{\link{sample_lcomp}}; \code{\link{sample_mlacomp}}
+Other sampling functions: \code{\link{clean_data}};
+\code{\link{sample_agecomp}}; \code{\link{sample_calcomp}};
+\code{\link{sample_index}}; \code{\link{sample_lcomp}};
+\code{\link{sample_mlacomp}}
 }
 

@@ -2,8 +2,8 @@
 % Please edit documentation in R/clean_data.r
 \name{clean_data}
 \alias{clean_data}
-\title{Given sampling arguments, removed ("clean") all data in a .dat file that
-is not specified in the arguments.}
+\title{Given sampling arguments remove ("clean") all data in a .dat file that
+is not specified}
 \usage{
 clean_data(datfile, index_params = NULL, lcomp_params = NULL,
   agecomp_params = NULL, calcomp_params = NULL, mlacomp_params = NULL,
@@ -36,8 +36,8 @@ clean_data(datfile, index_params = NULL, lcomp_params = NULL,
 An invisible cleaned data list as an object.
 }
 \description{
-This prepares a .dat file to be used by an EM, whereas
-before it may have had leftover data from sampling
+This prepares a \code{.dat} file to be used by an EM,
+whereas before it may have had leftover data from sampling
 purposes. See examples in \code{\link{change_data}}.
 }
 \note{
@@ -48,5 +48,10 @@ Cole Monnahan
 }
 \seealso{
 calculate_data_units, change_data
+
+Other sampling functions: \code{\link{sample_agecomp}};
+\code{\link{sample_calcomp}}; \code{\link{sample_index}};
+\code{\link{sample_lcomp}}; \code{\link{sample_mlacomp}};
+\code{\link{sample_wtatage}}
 }
 

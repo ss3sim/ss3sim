@@ -69,8 +69,9 @@ should be named \code{calcomp}.
 Cole Monnahan, Kotaro Ono
 }
 \seealso{
-Other sampling functions: \code{\link{sample_agecomp}};
-\code{\link{sample_index}}; \code{\link{sample_lcomp}};
-\code{\link{sample_mlacomp}}; \code{\link{sample_wtatage}}
+Other sampling functions: \code{\link{clean_data}};
+\code{\link{sample_agecomp}}; \code{\link{sample_index}};
+\code{\link{sample_lcomp}}; \code{\link{sample_mlacomp}};
+\code{\link{sample_wtatage}}
 }
 

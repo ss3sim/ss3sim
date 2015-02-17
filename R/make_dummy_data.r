@@ -43,7 +43,8 @@ make_dummy_dat_agecomp <- function(fleets, years, age_bins) {
 ## Lbin_hi <- (1:5)[-1]
 make_dummy_dat_calcomp <- function(fleets, years, age_bins,
                                   len_bins) {
-    Lbin_lo <- Lbin_hi <- 1:length(len_bins)
+    Lbin_lo <- len_bins
+    Lbin_hi <- c(len_bins[-1], -1)
     dummy_dat_list <- lapply(fleets, function(fleet)
                              lapply(years, function(yr)
         data.frame("Yr"   = yr, "Seas" = 1, "Flt"  = fleet, "Gender" = 0,

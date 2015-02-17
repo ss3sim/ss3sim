@@ -35,10 +35,10 @@
 ##                      mlacomp_params=mlacomp_params,
 ##                       verbose=TRUE)
 
-#' Given sampling arguments, removed ("clean") all data in a .dat file that
-#' is not specified in the arguments.
+#' Given sampling arguments remove ("clean") all data in a .dat file that
+#' is not specified
 #'
-#' This prepares a .dat file to be used by an EM, whereas before it may
+#' This prepares a \code{.dat} file to be used by an EM, whereas before it may
 #' have had leftover data from sampling purposes. See examples in
 #' \code{\link{change_data}}.
 #'
@@ -57,6 +57,7 @@
 #' deleted.
 #' @template datfile
 #' @seealso calculate_data_units, change_data
+#' @family sampling functions
 #' @return An invisible cleaned data list as an object.
 #' @note This function does not write the result to file.
 #' @export
