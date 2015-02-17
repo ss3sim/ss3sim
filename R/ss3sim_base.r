@@ -447,7 +447,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                   file_out         = NULL,
 				          bin_vector 	     = em_binning_params$bin_vector,
                   lbin_method      = em_binning_params$lbin_method,
-                  rebin_cal        = rebin_cal,
+                  rebin_cal        = em_binning_params$rebin_cal,
                   write_file       = FALSE)
       }
 
