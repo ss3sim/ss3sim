@@ -10,16 +10,13 @@
 #' @author Cole Monnahan, Kelli Johnson
 #'
 #' @template lcomp-agecomp-index
-#' @template lcomp-agecomp
-#' @param datfile A \code{.dat} file read in by \pkg{r4ss} function
-#'   \code{\link[r4ss]{SS_readdat}}. This list will be used to determine
-#'   how many fish of each age bin are to be sampled and the mean length
-#'   for the distribution to sample from.
+#' @template Nsamp
+#' @template datfile
 #' @param ctlfile A path to the control file, outputed from an OM, containing
 #'   the OM parameters for growth. These values are used to determine the
 #'   uncertainty about size for fish sampled in each age bin.
 #' @param mean_outfile A path to write length and age data for external
-#' estimation of parametric growth. If NULL no file will be written.
+#' estimation of parametric growth. If \code{NULL} no file will be written.
 #' This file is used by \code{change_e} to externally estimate growth
 #' parameters. Filename must contain "vbgf" to be used by \code{change_e}.
 #' Also, if "remove" is included in the filename, the mean length at age data
@@ -69,7 +66,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
     return(invisible(datfile))
   }
 
-  is_ssdat_file(datfile)
+  check_data(datfile)
   # Users can specify either Lbin_lo or Lbin_hi < 1 for agecomp data
   agecomp <- datfile$agecomp[datfile$agecomp$Lbin_lo == -1 |
                              datfile$agecomp$Lbin_hi == -1, ]

@@ -12,8 +12,9 @@ sample_agecomp(datfile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
   \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package.
   Make sure you select option \code{section=2}.}
 
-  \item{outfile}{A character string of the new \code{.dat}
-  file name to be created. Must end in \code{.dat}.}
+  \item{outfile}{A character string of the new file name to
+  be created. Must end in \code{.dat} or equal
+  \code{wtatage.ss}.}
 
   \item{fleets}{*A numeric vector giving the fleets to be
   used. This order also pertains to other arguments. A
@@ -78,6 +79,7 @@ named \code{agecomp}. A suggested (default) case letter is
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/example-om/data.ss_new")
 datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+datfile <- change_fltname(datfile)
 
 ## Turn off age comps by specifying fleets=NULL
 sample_agecomp(datfile=datfile, outfile="test1.dat",

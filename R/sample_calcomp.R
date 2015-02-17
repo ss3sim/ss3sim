@@ -12,11 +12,8 @@
 #' @author Cole Monnahan, Kotaro Ono
 #'
 #' @template lcomp-agecomp-index
-#' @template lcomp-agecomp
-#' @param datfile A path to the data file, outputed from an OM, containing
-#' the expected conditional age-at-length, age comps and length comps. This
-#' file is read in and then used to determine how many fish of each age bin
-#' are to be sampled.
+#' @template datfile
+#' @template Nsamp
 #' @template sampling-return
 #' @template casefile-footnote
 #' @family sampling functions
@@ -39,7 +36,7 @@ sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
         }
     }
 
-    is_ssdat_file(datfile)
+    check_data(datfile)
     agecomp.age <- datfile$agecomp[datfile$agecomp$Lbin_lo== -1,]
     agecomp.cal <- datfile$agecomp[datfile$agecomp$Lbin_lo != -1,]
     lencomp <- datfile$lencomp

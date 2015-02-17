@@ -95,12 +95,12 @@
 #' case_folder <- paste0(d, "/eg-cases")
 #'
 #' # Without bias adjustment:
-#' run_ss3sim(iterations = 1:1, scenarios = "D0-F0-cod",
+#' run_ss3sim(iterations = 1, scenarios = "D0-F0-cod",
 #'   case_folder = case_folder, om_dir = om, em_dir = em)
 #' unlink("D0-F0-cod", recursive = TRUE) # clean up
 #'
 #' # An example specifying the case files:
-#' run_ss3sim(iterations = 1:1, scenarios = "D0-F0-E0-cod",
+#' run_ss3sim(iterations = 1, scenarios = "D0-F0-E0-cod",
 #'   case_folder = case_folder, om_dir = om, em_dir = em,
 #'   case_files = list(F = "F", D = c("index", "lcomp",
 #'       "agecomp"), E = "E"))
@@ -109,7 +109,7 @@
 #' # With bias adjustment:
 #' # (Note that bias_nsim should be bigger, say 5 or 10, but it is set
 #' # to 2 here so the example runs faster.)
-#' run_ss3sim(iterations = 1:1, scenarios = "D1-F0-cod",
+#' run_ss3sim(iterations = 1, scenarios = "D1-F0-cod",
 #'   case_folder = case_folder, om_dir = om, em_dir = em,
 #'   bias_adjust = TRUE, bias_nsim = 2)
 #'
@@ -118,25 +118,39 @@
 #' run_ss3sim(iterations = 2:3, scenarios = "D1-F0-cod",
 #'   case_folder = case_folder, om_dir = om, em_dir = em,
 #'   bias_adjust = FALSE, bias_already_run = TRUE)
-#' unlink("D1-F0-cod", recursive = TRUE) # clean up
+#' unlink("D1-F0-cod", recursive = TRUE)
 #'
 #' # A run with deterministic process error for model checking:
 #' recdevs_det <- matrix(0, nrow = 100, ncol = 20)
 #' run_ss3sim(iterations = 1:20, scenarios = "D0-E100-F0-cod",
 #'   case_folder = case_folder, om_dir = om, em_dir = em,
 #'   bias_adjust = TRUE, bias_nsim = 2, user_recdevs = recdevs_det)
-#' unlink("D0-E100-F0-cod", recursive = TRUE) # clean up
+#' unlink("D0-E100-F0-cod", recursive = TRUE)
 #'
 #' # An example of a run using parallel processing across 2 cores:
 #' require(doParallel)
 #' registerDoParallel(cores = 2)
 #' require(foreach)
 #' getDoParWorkers() # check how many cores are registered
+#'
+#' # parallel scenarios:
 #' run_ss3sim(iterations = 1, scenarios = c("D0-F0-cod",
 #'     "D1-F0-cod"), case_folder = case_folder,
 #'   om_dir = om, em_dir = em, parallel = TRUE)
-#' unlink("D0-F0-cod", recursive = TRUE) # clean up
-#' unlink("D1-F0-cod", recursive = TRUE) # clean up
+#' unlink("D0-F0-cod", recursive = TRUE)
+#' unlink("D1-F0-cod", recursive = TRUE)
+#'
+#' # parallel iterations:
+#' run_ss3sim(iterations = 1:2, scenarios = c("D0-F0-cod"),
+#'   case_folder = case_folder, om_dir = om, em_dir = em,
+#'   parallel = TRUE, parallel_iterations = TRUE)
+#' unlink("D0-F0-cod", recursive = TRUE)
+#'
+#' # parallel iterations with bias adjustment:
+#' run_ss3sim(iterations = 1:2, scenarios = c("D0-F0-cod"),
+#'   case_folder = case_folder, om_dir = om, em_dir = em, parallel = TRUE,
+#'   parallel_iterations = TRUE, bias_adjust = TRUE, bias_nsim = 2)
+#' unlink("D0-F0-cod", recursive = TRUE)
 #'
 #' # Return to original working directory:
 #' setwd(wd)
@@ -198,19 +212,22 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
     if (parallel_iterations) {
       ignore <- lapply(arg_list, function(x) {
         # First run bias-adjustment runs if requested:
-        dotdotdot <- list(...) # needed so we can nullify bias arguments
-        if ("bias_adjust" %in% names(dotdotdot)) {
-          if (dotdotdot$bias_adjust) {
-            message("Running bias adjustment sequentially first.")
-            do.call("ss3sim_base", c(x, list(iterations = NULL, ...)))
+        dots <- list(...)
+
+        if ("bias_adjust" %in% names(dots)) {
+          if (dots$bias_adjust) {
+            message("Running bias adjustment iterations sequentially first...")
+            do.call("ss3sim_base",
+              c(x, list(iterations = NULL, ...)))
+            dots$bias_adjust <- FALSE
           }
         }
-        # Now run regular iterations:
+
         message("Running iterations in parallel.")
         foreach(it_ = iterations, .packages = "ss3sim",
           .verbose = TRUE, .export = "substr_r") %dopar% {
             do.call("ss3sim_base",  c(x, list(iterations = it_,
-              bias_adjust = FALSE, bias_already_run = TRUE, ...)))}
+              bias_already_run = FALSE), dots))}
       })
     } else {
       message("Running scenarios in parallel.")

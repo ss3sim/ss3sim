@@ -4,54 +4,77 @@
 \alias{standardize_bounds}
 \title{Standardize the bounds of the estimation model control file.}
 \usage{
-standardize_bounds(percent_df, em_ctl_file, OM_ctl_file = "")
+standardize_bounds(percent_df, dir, em_ctl_file, om_ctl_file = "",
+  verbose = FALSE, ...)
 }
 \arguments{
-  \item{percent_df}{is a data.frame with nine rows and
-  three columns. The first column is the parameter}
+  \item{percent_df}{A \code{data.frame} with nine rows and
+  three columns. The first column is the parameter. The
+  second column is the % of the initial parameter value LO
+  is set to. The third column is the % of the initial
+  parameter value HI is set to.}
 
-  \item{em_ctl_file}{is a string with the path and name of
-  the estimation model control file name. The second column
-  is what % of the initial parameter value LO should be set
-  to. The third column is what % of the initial parameter
-  value HI should be set to.}
+  \item{dir}{A path to the directory containing the model
+  files.}
 
-  \item{OM_ctl_file}{is a string with the path and name of
-  the operating model control file. If it is not given the
-  part of the function which matches the OM and EM init
-  values is ignored. Default = ""}
+  \item{em_ctl_file}{A string with the name of the
+  estimation model control file. \code{em_ctl_file} must be
+  located in \code{dir}.}
+
+  \item{om_ctl_file}{A string with the name of the
+  operating model control file. If it is not given the part
+  of the function which matches the OM and EM INIT values
+  is ignored. Default is \code{""}. \code{om_ctl_file} must
+  be located in \code{dir}.}
+
+  \item{verbose}{Detailed output to command line. Default
+  is \code{FALSE}.}
+
+  \item{...}{Any other arguments to pass to
+  \code{\link[r4ss]{SS_changepars}}.}
 }
 \description{
 Function to standardize the bounds of the control file in
 the estimation model. This function first checks to ensure
 the initial values in the estimation model control file are
-set to the true values of the operating model control file
-and if not sets them for every parameter. Next, the
-function adjusts the LO and HI values in the estimation
-model control file to be a fixed percentage of the initial
-value for every parameter.
+set to the true values of the \code{om_ctl_file} and if not
+sets them for every parameter. Next, the function adjusts
+the LO and HI values in the \code{em_ctl_file} to be a
+fixed percentage of the initial value for every parameter.
 }
 \examples{
 \dontrun{
-## require(r4ss)
-## Set tp the path and filename of the OM and EM control files
-OM.ctl<-"control.ss_new"
-EM.ctl<-"control.ss_new"
+temp_path <- file.path(tempdir(), "standardize-bounds-example")
+dir.create(temp_path, showWarnings = FALSE)
+wd <- getwd()
+setwd(temp_path)
+
+## Set to the path and filename of the OM and EM control files
+OM.ctl <- system.file("extdata", "models", "cod-om", "codOM.ctl",
+  package = "ss3sim")
+EM.ctl <- system.file("extdata", "models", "cod-em", "codEM.ctl",
+  package = "ss3sim")
+file.copy(OM.ctl, "om.ctl")
+file.copy(EM.ctl, "em.ctl")
 
 ## Use SS_parlines to get the proper names for parameters for the data frame
-om.pars<-SS_parlines(ctlfile=OM.ctl)
-em.pars<-SS_parlines(ctlfile=EM.ctl)
+om.pars <- r4ss::SS_parlines(ctlfile="om.ctl")
+em.pars <- r4ss::SS_parlines(ctlfile="em.ctl")
 
 ## Set percentages to make lower and upper bounds
 lo.percent<-rep(.5,11)
 hi.percent<-c(500,1000,1000,rep(500,8))
 
 ##Populate data frame using EM parameter names and percentages
-percent.df<-data.frame(label=as.character(em.pars[c(1:6,17,27:30),"Label"]),
+percent_df<-data.frame(Label=as.character(em.pars[c(1:6,17,27:30),"Label"]),
   lo=lo.percent,hi=hi.percent)
 
-#Run function
-standardize_bounds(percent_df,em_ctl_file=EM.ctl,OM_ctl_file=OM.ctl)
+##Run function
+standardize_bounds(percent_df = percent_df, dir = temp_path, em_ctl_file = "em.ctl",
+                   om_ctl_file = "om.ctl")
+unlink(temp_path, recursive = TRUE)
+
+setwd(wd)
 }
 }
 \author{

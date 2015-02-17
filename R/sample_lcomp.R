@@ -11,6 +11,8 @@
 #'
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
+#' @template datfile
+#' @template Nsamp
 #' @template casefile-footnote
 #' @template sampling-return
 #' @importFrom r4ss SS_writedat
@@ -19,6 +21,7 @@
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+#' datfile <- change_fltname(datfile)
 #'
 #' ## Generate with constant sample size across years
 #' ex1 <- sample_lcomp(datfile=datfile, outfile="test1.dat", fleets=c(1,2),
@@ -66,7 +69,7 @@
 sample_lcomp <- function(datfile, outfile, fleets = c(1,2), Nsamp,
   years, cpar = 1, write_file = TRUE){
 
-  is_ssdat_file(datfile)
+  check_data(datfile)
   ## The new lcomp is mostly based on the old one so start with that
   lcomp <- datfile$lencomp
   ## Check inputs for errors

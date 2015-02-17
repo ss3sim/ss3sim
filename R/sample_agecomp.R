@@ -11,6 +11,8 @@
 #'
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
+#' @template datfile
+#' @template Nsamp
 #' @param keep_conditional A logical if conditional age-at-length data
 #'   should be kept or removed entirely from the \code{.dat} file.
 #'   \code{sample_agecomp} only works on the age composition data
@@ -26,6 +28,7 @@
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+#' datfile <- change_fltname(datfile)
 #'
 #' ## Turn off age comps by specifying fleets=NULL
 #' sample_agecomp(datfile=datfile, outfile="test1.dat",
@@ -81,7 +84,7 @@ sample_agecomp <- function(datfile, outfile, fleets = c(1,2), Nsamp,
                            keep_conditional = TRUE){
     ## The new agecomp is mostly based on the old one so start with
     ## that
-    is_ssdat_file(datfile)
+    check_data(datfile)
     agecomp <- datfile$agecomp
     ## Check inputs for errors
     Nfleets <- ifelse(is.null(fleets), 0, length(fleets))

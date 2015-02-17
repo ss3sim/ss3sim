@@ -1,8 +1,5 @@
-#' @param datfile An SS data object as read in from
-#' \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
-#' you select option \code{section=2}.
-#' @param outfile A character string of the new \code{.dat} file name to be
-#' created. Must end in \code{.dat}.
+#' @param outfile A character string of the new file name to be created.
+#' Must end in \code{.dat} or equal \code{wtatage.ss}.
 #' @param fleets *A numeric vector giving the fleets to be used. This order also
 #' pertains to other arguments. A missing value excludes that fleet from
 #' \code{outfile} (i.e. it turns it off so no samples are written). If none of

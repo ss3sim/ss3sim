@@ -19,6 +19,7 @@
 ## d <- system.file("extdata", package = "ss3sim")
 ## f_in <- paste0(d, "/example-om/data.ss_new")
 ## datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+## datfile <- change_fltname(datfile)
 ## data_units <- calculate_data_units(lcomp_params=lcomp_params,
 ##                      agecomp_params=agecomp_params,
 ##                      calcomp_params=calcomp_params,
@@ -42,18 +43,19 @@
 #' \code{\link{change_data}}.
 #'
 #' @author Cole Monnahan
-#' @param index_params Named list containing the arguments for the corresponding
-#'   sampling function.
-#' @param lcomp_params Named list containing the arguments for the corresponding
-#'   sampling function.
-#' @param agecomp_params Named list containing the arguments for the corresponding
-#'   sampling function.
-#' @param calcomp_params Named list containing the arguments for the corresponding
-#'   sampling function.
-#' @param mlacomp_params Named list containing the arguments for the corresponding
-#'   sampling function.
+#' @param index_params Named lists containing the arguments for
+#'   \code{sample_index}.
+#' @param lcomp_params Named lists containing the arguments for
+#'   \code{\link{sample_lcomp}}.
+#' @param agecomp_params Named lists containing the arguments for
+#'   \code{\link{sample_agecomp}}.
+#' @param calcomp_params Named lists containing the arguments for
+#'   \code{\link{sample_calcomp}}.
+#' @param mlacomp_params Named lists containing the arguments for
+#'   \code{\link{sample_mlacomp}}.
 #' @param verbose When \code{TRUE} it will print a message when rows are
-#'   deleted.
+#' deleted.
+#' @template datfile
 #' @seealso calculate_data_units, change_data
 #' @family sampling functions
 #' @return An invisible cleaned data list as an object.

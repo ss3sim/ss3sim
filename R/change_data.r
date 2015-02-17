@@ -76,6 +76,7 @@
 #' years <- c(5, 10, 15)
 #' types <- c("len", "age")
 #' file_in <- r4ss::SS_readdat(paste0(d, "/models/cod-om/codOM.dat"))
+#' file_in <- change_fltname(file_in)
 #'
 #' # Basic test with just length data, default bins:
 #' out <- change_data(file_in, outfile = "ignore.dat", types = "len",
@@ -110,6 +111,7 @@
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+#' datfile <- change_fltname(datfile)
 #' data_units <- calculate_data_units(index_params = index_params,
 #'   lcomp_params = lcomp_params, agecomp_params = agecomp_params,
 #'   calcomp_params = calcomp_params, mlacomp_params = mlacomp_params)
@@ -122,107 +124,116 @@
 #'   verbose = TRUE)
 
 change_data <- function(datfile, outfile, fleets, years, types,
-                        age_bins = NULL, len_bins = NULL, pop_binwidth = NULL,
-                        pop_minimum_size = NULL, pop_maximum_size = NULL,
-                        lcomp_constant = NULL, tail_compression = NULL,
-                        write_file = TRUE) {
+  age_bins = NULL, len_bins = NULL, pop_binwidth = NULL,
+  pop_minimum_size = NULL, pop_maximum_size = NULL,
+  lcomp_constant = NULL, tail_compression = NULL,
+  write_file = TRUE) {
 
   # TODO: pop length bins must not be wider than the length data bins, but the
   # boundaries of the bins do not need to align (from SS3 manual)
   # this is also checked within SS3 and will create a fatal error
 
-    is_ssdat_file(datfile)
+  check_data(datfile)
 
-    ## Input checks:
-    types <- match.arg(types,
-                       choices = c("index","len", "age", "cal", "mla", "mwa"),
-                       several.ok = TRUE)
+  ## Input checks:
+  types <- match.arg(types,
+    choices = c("index","len", "age", "cal", "mla", "mwa"),
+    several.ok = TRUE)
 
-    ## Test for compatibility with ss3sim
-    if (datfile$Ngenders > 1) {
-        stop(paste("_Ngenders is greater than 1 in the operating model.",
-                   "change_data only works with single-gender models."))
-    }
+  ## Test for compatibility with ss3sim
+  if (datfile$Ngenders > 1) {
+    stop(paste("_Ngenders is greater than 1 in the operating model.",
+      "change_data only works with single-gender models."))
+  }
 
-    ## TODO: Need to do things like change age matrices?
-    ## TODO: Change the data vectors if specified?
+  ## TODO: Need to do things like change age matrices?
+  ## TODO: Change the data vectors if specified?
 
-    # population bins:
-    # change_pop_bin() deals with NULLs internally by not changing values:
-    datfile <- change_pop_bin(datfile,
-                              binwidth = pop_binwidth,
-                              minimum_size = pop_minimum_size,
-                              maximum_size = pop_maximum_size)
+  # population bins:
+  # change_pop_bin() deals with NULLs internally by not changing values:
+  datfile <- change_pop_bin(datfile,
+    binwidth = pop_binwidth,
+    minimum_size = pop_minimum_size,
+    maximum_size = pop_maximum_size)
 
-    if(is.null(len_bins)) len_bins <- datfile$lbin_vector
-    if(is.null(age_bins)) age_bins <- datfile$agebin_vector
+  if(is.null(len_bins)) len_bins <- datfile$lbin_vector
+  if(is.null(age_bins)) age_bins <- datfile$agebin_vector
 
-    ## Now modify each data type in turn
-    if ("index" %in% types) {
-        datfile$CPUE <- make_dummy_dat_index(fleets=fleets, years=years)
-        datfile$N_cpue <- nrow(datfile$CPUE)
-    }
-    if ("len" %in% types) {
-        datfile$lencomp <-
-            make_dummy_dat_lencomp(fleets=fleets, years=years,
-                                   len_bins=len_bins)
-        datfile$lbin_vector <- len_bins
-        datfile$N_lencomp <- nrow(datfile$lencomp)
-        datfile$N_lbins <- length(len_bins)
-    }
-    ## Need to split calcomp and agecomp data as separate cases
-    if ("age" %in% types) {
-        conditional_data <- datfile$agecomp[datfile$agecomp$Lbin_lo >= 0, ]
-        new.agecomp <-
-            make_dummy_dat_agecomp(fleets=fleets, years=years,
-                                   age_bins=age_bins)
-        datfile$agecomp <- rbind(new.agecomp, conditional_data)
-        datfile$agebin_vector <- age_bins
-        datfile$N_agecomp <- nrow(datfile$agecomp)
-        datfile$N_agebins <- length(age_bins)
-    }
-    ## If we don't use this structure to get expected value we don't need
-    ## to print them, so don't need it. TODO check this is right. It can
-    ## seriously slow down the OM to write uncessary calcomp data.
-    if ("cal" %in% types) {
-        agecomp <- datfile$agecomp[datfile$agecomp$Lbin_lo < 0, ]
-        new.calcomp <-
-            make_dummy_dat_calcomp(fleets=fleets, years=years,
-                               age_bins=age_bins, len_bins=len_bins)
-        datfile$agecomp <- rbind(agecomp, new.calcomp)
-        datfile$agebin_vector <- age_bins
-        datfile$N_agecomp <- nrow(datfile$agecomp)
-    }
+  ## Now modify each data type in turn
+  if ("index" %in% types) {
+    datfile$CPUE <- make_dummy_dat_index(fleets=fleets, years=years)
+    datfile$N_cpue <- nrow(datfile$CPUE)
+  }
+  if ("len" %in% types) {
+    datfile$lencomp <-
+      make_dummy_dat_lencomp(fleets=fleets, years=years,
+        len_bins=len_bins)
+    datfile$lbin_vector <- len_bins
+    datfile$N_lencomp <- nrow(datfile$lencomp)
+    datfile$N_lbins <- length(len_bins)
+  }
+  ## Need to split calcomp and agecomp data as separate cases
+  if ("age" %in% types) {
+    conditional_data <- datfile$agecomp[datfile$agecomp$Lbin_lo >= 0, ]
+    new.agecomp <-
+      make_dummy_dat_agecomp(fleets=fleets, years=years,
+        age_bins=age_bins)
+    datfile$agecomp <- rbind(new.agecomp, conditional_data)
+    datfile$agebin_vector <- age_bins
+    datfile$N_agecomp <- nrow(datfile$agecomp)
+    datfile$N_agebins <- length(age_bins)
+  }
+  ## If we don't use this structure to get expected value we don't need
+  ## to print them, so don't need it. TODO check this is right. It can
+  ## seriously slow down the OM to write uncessary calcomp data.
+  if ("cal" %in% types) {
+    agecomp <- datfile$agecomp[datfile$agecomp$Lbin_lo < 0, ]
+    new.calcomp <-
+      make_dummy_dat_calcomp(fleets=fleets, years=years,
+        age_bins=age_bins, len_bins=len_bins)
+    datfile$agecomp <- rbind(agecomp, new.calcomp)
+    datfile$agebin_vector <- age_bins
+    datfile$N_agecomp <- nrow(datfile$agecomp)
+  }
 
-    if ("mla" %in% types) {
-        datfile$MeanSize_at_Age_obs <-
-            make_dummy_dat_mlacomp(fleets = fleets, years = years, age_bins = age_bins)
-        datfile$N_MeanSize_at_Age_obs <- nrow(datfile$MeanSize_at_Age_obs)
-    }
+  if ("mla" %in% types) {
+    datfile$MeanSize_at_Age_obs <-
+      make_dummy_dat_mlacomp(fleets = fleets, years = years, age_bins = age_bins)
+    datfile$N_MeanSize_at_Age_obs <- nrow(datfile$MeanSize_at_Age_obs)
+  }
 
-    if(!is.null(lcomp_constant)) {
-      datfile <- change_lcomp_constant(lcomp_constant = lcomp_constant,
-        datfile = datfile, file_out = "ignore.dat", write_file = FALSE)
-    }
-    if(!is.null(tail_compression)) {
-      datfile <- change_tail_compression(tail_compression = tail_compression,
-        datfile = datfile, file_out = "ignore.dat", write_file = FALSE)
-    }
+  if(!is.null(lcomp_constant)) {
+    datfile <- change_lcomp_constant(lcomp_constant = lcomp_constant,
+      datfile = datfile, file_out = "ignore.dat", write_file = FALSE)
+  }
+  if(!is.null(tail_compression)) {
+    datfile <- change_tail_compression(tail_compression = tail_compression,
+      datfile = datfile, file_out = "ignore.dat", write_file = FALSE)
+  }
 
-    if (write_file) {
-        SS_writedat(datlist = datfile, outfile = outfile, overwrite = TRUE,
-                    verbose = FALSE)
-    }
-    invisible(datfile)
+  if (write_file) {
+    SS_writedat(datlist = datfile, outfile = outfile, overwrite = TRUE,
+      verbose = FALSE)
+  }
+  invisible(datfile)
 }
 
 #' Given sampling arguments, calculate super set of fleets, years, and data
 #' types.
 #'
 #' @author Cole Monnahan
-#' @param index_params, lcomp_params, agecomp_params, calcomp_params,
-#' mlacomp_params Named lists containing the arguments for the different
-#' sampling functions.
+#' @param index_params Named lists containing the arguments for
+#'   \code{sample_index}.
+#' @param lcomp_params Named lists containing the arguments for
+#'   \code{\link{sample_lcomp}}.
+#' @param agecomp_params Named lists containing the arguments for
+#'   \code{\link{sample_agecomp}}.
+#' @param calcomp_params Named lists containing the arguments for
+#'   \code{\link{sample_calcomp}}.
+#' @param mlacomp_params Named lists containing the arguments for
+#'   \code{\link{sample_mlacomp}}.
+#' @param wtatage_params Named lists containing the arguments for
+#'   \code{\link{sample_wtatage}}.
 #' @seealso clean_data, change_data
 #' @note A superset by nature is larger than the individual sets used to
 #' create it (unless all sampling arguments are identical), so that the
@@ -243,38 +254,38 @@ change_data <- function(datfile, outfile, fleets, years, types,
 #' calculate_data_units(calcomp_params=list(fleets=1, years=c(3,4,6)))
 #' @export
 calculate_data_units <- function(index_params=NULL, lcomp_params=NULL,
-                                 agecomp_params=NULL, calcomp_params=NULL,
-                                 mlacomp_params=NULL, wtatage_params=NULL){
-    sample_args <- list("index"=index_params, "len"=lcomp_params,
-                        "age"=agecomp_params, "cal"=calcomp_params,
-                        "mla"=mlacomp_params, "wtatage"=wtatage_params)
-    sample_args_null <- vapply(sample_args, function(i) is.null(i$fleets), logical(1L))
-    ## Exit if nothing specified to prevent error.
-    if(!any(!sample_args_null)) stop("No data passed: all arguments NULL")
-    ## Get the superset of fleets
-    fleets <-
-        as.vector(unlist(lapply(sample_args, function(x) x$fleets)))
-    ## Get the superset of years
-    years <-
-        as.vector(unlist(lapply(sample_args, function(x) x$years)))
-    ## Sort the unique values
-    fleets <- sort(unique(fleets))
-    years <- sort(unique(years))
-    ## Now figure out which data types need to be in the OM for sampling (but
-    ## not necessarily the EM). For now these are special cases but could be
-    ## different based on different algorithms.
+  agecomp_params=NULL, calcomp_params=NULL,
+  mlacomp_params=NULL, wtatage_params=NULL){
+  sample_args <- list("index"=index_params, "len"=lcomp_params,
+    "age"=agecomp_params, "cal"=calcomp_params,
+    "mla"=mlacomp_params, "wtatage"=wtatage_params)
+  sample_args_null <- vapply(sample_args, function(i) is.null(i$fleets), logical(1L))
+  ## Exit if nothing specified to prevent error.
+  if(!any(!sample_args_null)) stop("No data passed: all arguments NULL")
+  ## Get the superset of fleets
+  fleets <-
+    as.vector(unlist(lapply(sample_args, function(x) x$fleets)))
+  ## Get the superset of years
+  years <-
+    as.vector(unlist(lapply(sample_args, function(x) x$years)))
+  ## Sort the unique values
+  fleets <- sort(unique(fleets))
+  years <- sort(unique(years))
+  ## Now figure out which data types need to be in the OM for sampling (but
+  ## not necessarily the EM). For now these are special cases but could be
+  ## different based on different algorithms.
 
 
-    #To-Do
-    ##Put line for wtatage
-    #if wtatage is in types what do I need to make sure is there
-    types <- names(sample_args)[!sample_args_null]
-    if("cal" %in% types) types <- c(types, "len", "age")
-    if("wtatage" %in% types) types <- c(types, "age", "mla")
-    if("mla" %in% types) types <- c(types, "age")
-    ## Need this line to remove duplicates
-    types <- unique(types)
-    return(list(fleets=fleets, years=years, types=types))
+  #To-Do
+  ##Put line for wtatage
+  #if wtatage is in types what do I need to make sure is there
+  types <- names(sample_args)[!sample_args_null]
+  if("cal" %in% types) types <- c(types, "len", "age")
+  if("wtatage" %in% types) types <- c(types, "age", "mla")
+  if("mla" %in% types) types <- c(types, "age")
+  ## Need this line to remove duplicates
+  types <- unique(types)
+  return(list(fleets=fleets, years=years, types=types))
 }
 
 change_pop_bin <- function(datfile, binwidth = NULL, minimum_size = NULL,
@@ -290,11 +301,75 @@ change_pop_bin <- function(datfile, binwidth = NULL, minimum_size = NULL,
   invisible(datfile)
 }
 
-# quick checks that datfile looks correct:
-is_ssdat_file <- function(x) {
-  if(!is.list(x))
-    stop("datfile isn't a list. dat should be output from r4ss::SS_readdat()")
-  if(!"type" %in% names(x))
-    stop(paste("the column *type* wasn't found in datfile.",
-      "datfile should be output from r4ss::SS_readdat()"))
+#' Check that the SS3 data file looks correct
+#'
+#' @param x An SS3 data list object as read in by \code{\link[r4ss]{SS_readdat}}.
+#' @export
+
+check_data <- function(x) {
+  if (!is.list(x))
+    stop("data file isn't a list; should be output from r4ss::SS_readdat()")
+
+  if (!"type" %in% names(x))
+    stop(paste("the column *type* wasn't found in the SS3 data file;",
+      "the data file should be output from r4ss::SS_readdat()"))
+
+  if (x$Ngenders > 1)
+    stop(paste("_Ngenders is greater than 1 in the operating model.",
+      "ss3sim currently only works with single-gender models."))
+
+  if (!is.null(x$lbin_method)) {
+    if (x$lbin_method > 2)
+      stop("lbin_method in the SS3 data file should be either 1 or 2")
+  }
+
+#   if (!identical(x$Lbin_method, 2)) {
+#     stop(paste("Lbin_method (note the capital L as it is represented in r4ss)",
+#       "must be set to 2. This specifies how the conditional age-at-length data",
+#       "are represented in the SS3 data file. See the SS3 manual."))
+#   }
+
+  if (!identical(x$Nfleet, 1))
+    stop("Nfleet in the SS3 data file must be set to 1.")
+
+  if (!identical(x$Nsurveys, 2))
+    stop("Nfleet in the SS3 data file must be set to 2.")
+
+  if (!identical(x$N_areas, 1))
+    stop("N_areas in the SS3 data file must be set to 1.")
+
+#   if (!identical(x$fleetnames, c("Fishery", "Survey", "CPUE")))
+#     stop("Fleet names in the SS3 data file must be Fishery%Survey%CPUE")
+
+  if (!identical(x$surveytiming, c(0.5, 0.5, 0.5)))
+    stop("_surveytiming_in_season must be set to 0.5 for all fleets.")
+
+  if (!identical(x$areas, c(1, 1, 1)))
+    stop(paste("_area_assignments_for_each_fishery_and_survey must be set to 1",
+      "for all fleets in the SS3 data file."))
+
+#   if (!identical(x$N_catch, 100))
+#     stop("_N_lines_of_catch_to_read must be 100 in the SS3 data file.")
+
+  if (!identical(x$N_discard_fleets, 0))
+    stop("_N_fleets_with_discard must set to 0 in the SS3 data file.")
+
+  if (!identical(x$N_discard, 0))
+    stop("N discard obs must set to 0 in the SS3 data file.")
+
+  if (!identical(x$N_meanbodywt, 0))
+    stop("_N_meanbodywt_obs must be set to 0 in the SS3 data file.")
+
+#   if (any(x$ageerror[1, ] != -1))
+#     stop("Ageing error definition ages must all be set to -1 in the SS3 data file")
+
+  if (any(x$ageerror[2, ] != 0.001))
+    stop(paste("Ageing error definition values must all be set to 0.001 in the",
+      "SS3 data file"))
+
+#   expected_index_years <- as.numeric(rep(seq(x$styr, x$endyr), 2))
+#   if (!identical(x$CPUE$year, expected_index_years)) {
+#     stop(paste("The SS3 data file must contain (dummy) index data for all years",
+#       "for both fleet 1 (the fishery) and fleet 3 (CPUE)"))
+#   }
 }

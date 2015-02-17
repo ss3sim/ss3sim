@@ -10,6 +10,7 @@
 #' \code{index}. A suggested (default) case letter is \code{D} for data.
 #'
 #' @template lcomp-agecomp-index
+#' @template datfile
 #' @param sds_obs *A list the same length as \code{fleets}. The list should
 #'   contain either single values or numeric vectors of the same length as the
 #'   number of years which represent the standard deviation of the observation
@@ -28,6 +29,7 @@
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+#' datfile <- change_fltname(datfile)
 #' outfile <- "test.dat"
 #' ex1 <- sample_index(datfile, outfile, fleets=c(2,3),
 #'                     years=list(1938:2012, 1938:2012) ,
@@ -53,7 +55,7 @@
 
 sample_index <- function(datfile, outfile, fleets, years, sds_obs,
                          make_plot = FALSE, write_file=TRUE){
-    is_ssdat_file(datfile)
+    check_data(datfile)
     cpue <- datfile$CPUE
     ## Check inputs for errors
     Nfleets <- length(fleets)

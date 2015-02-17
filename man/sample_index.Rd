@@ -12,8 +12,9 @@ sample_index(datfile, outfile, fleets, years, sds_obs, make_plot = FALSE,
   \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package.
   Make sure you select option \code{section=2}.}
 
-  \item{outfile}{A character string of the new \code{.dat}
-  file name to be created. Must end in \code{.dat}.}
+  \item{outfile}{A character string of the new file name to
+  be created. Must end in \code{.dat} or equal
+  \code{wtatage.ss}.}
 
   \item{fleets}{*A numeric vector giving the fleets to be
   used. This order also pertains to other arguments. A
@@ -72,6 +73,7 @@ case letter is \code{D} for data.
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/example-om/data.ss_new")
 datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+datfile <- change_fltname(datfile)
 outfile <- "test.dat"
 ex1 <- sample_index(datfile, outfile, fleets=c(2,3),
                     years=list(1938:2012, 1938:2012) ,

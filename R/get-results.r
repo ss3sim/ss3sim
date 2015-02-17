@@ -104,6 +104,11 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
     if(parallel){
         parallel_scenario <- NULL
         # ts.list <- scalar.list <- list()
+
+        # to satisfy R CMD check in the foreach() call below
+        foreach <- NULL
+        `%dopar%` <- NULL
+
         results_all <- foreach(parallel_scenario = scenarios, .verbose = FALSE,
             .export = c("pastef", "get_results_scenario",
             "get_results_scalar", "get_nll_components",

@@ -16,25 +16,20 @@
 #'
 #' @param infile The file to read weight-at-age from. Specifically to get the
 #'   age-0 weight-at-age. This is typically \code{wtatage.ss_new}.
-#' @param outfile The file to write the created weight-at-age matrices to be
-#'   read in by the estimation model. Commonly \code{wtatage.ss}.
-#' @param datfile A path to the data file, outputed from an OM, containing the
-#'   true age distributions (population bins). This file is read in and then
-#'   used to determine how many fish of each age bin are to be sampled. Commonly
-#'   \code{data.ss_new}
 #' @param ctlfile A path to the control file, outputed from an OM, containing
 #'   the OM parameters for growth and weight/length relationship. These values
 #'   are used to determine the uncertainty about weight for fish sampled in each
 #'   age bin. Commonly \code{control.ss_new}
-#' @param years *A list of vectors for each fleet indicating the years that are
-#'   sampled for weight-at-age. There must be a corresponding age composition
-#'   for that year in \code{datfile}.
 #' @param fill_fnc *A function to fill in missing values (ages and years). The
 #'   resulting weight-at-age file will have values for all years and ages.One
 #'   function is \code{fill_across}.
-#' @param write_file Logical to determine if \code{outfile} will be written.
-#' @template sampling-return
+#' @param cv_wtatage A user specified CV for growth. Default is \code{NULL}.
+#' @return A modified \code{.wtatage.ss} file if \code{write_file = TRUE}. A list
+#'   object containing the modified \code{.wtatage.ss} file is returned invisibly.
+#' @template lcomp-agecomp-index
+#' @template datfile
 #' @template casefile-footnote
+#' @importFrom r4ss SS_parlines
 #' @seealso \code{\link{fill_across}}
 #' @family sampling functions
 #' @export
@@ -60,7 +55,7 @@
 
 sample_wtatage <- function(infile, outfile, datfile, ctlfile,
                            years, fill_fnc = fill_across, write_file=TRUE, fleets,
-                           cv_wtatage = NULL, nsamp_wtatage = NULL){
+                           cv_wtatage = NULL){
   ##fill_type: specify type of fill, fill zeroes with first row? annual interpolation?
         ## Age Interpolation?
     ## A value of NULL for fleets signifies to turn this data off in the
@@ -88,7 +83,7 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
     mlacomp <- datfile$MeanSize_at_Age_obs
     if(is.null(mlacomp)) stop("No mean length-at-age data found in datfile")
     ## Read in the control file
-    ctl <- r4ss::SS_parlines(ctlfile)
+    ctl <-SS_parlines(ctlfile)
     ## Read in the file and grab the expected values
     infile <- readLines(infile)
 
@@ -107,7 +102,7 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
     names(wtatage) <- gsub("#", replacement="", x=header)
     wtatage$yr <- abs(wtatage$yr)
     if(2 %in% unique(wtatage$fleet) == FALSE){
-        ones <- subset(wtatage, fleet == 1)
+        ones <- wtatage[wtatage$fleet == 1, ]
         twos <- ones
         twos$fleet <- 2
         wtatage <- rbind(wtatage, twos)

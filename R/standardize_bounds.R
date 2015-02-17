@@ -2,225 +2,186 @@
 #'
 #' Function to standardize the bounds of the control file in the estimation
 #' model. This function first checks to ensure the initial values in the
-#' estimation model control file are set to the true values of the operating
-#' model control file and if not sets them for every parameter. Next, the
-#' function adjusts the LO and HI values in the estimation model control file to
+#' estimation model control file are set to the true values of the
+#' \code{om_ctl_file} and if not sets them for every parameter. Next, the
+#' function adjusts the LO and HI values in the \code{em_ctl_file} to
 #' be a fixed percentage of the initial value for every parameter.
 #'
 #' @author Christine Stawitz
 #'
-#' @param percent_df is a data.frame with nine rows and three columns. The first
-#'   column is the parameter
-#' @param OM_ctl_file is a string with the path and name of the operating model
+#' @param percent_df A \code{data.frame} with nine rows and three columns.
+#'   The first column is the parameter.
+#'   The second column is the % of the initial parameter value LO is set to.
+#'   The third column is the % of the initial parameter value HI is set to.
+#' @param dir A path to the directory containing the model files.
+#' @param om_ctl_file A string with the name of the operating model
 #'   control file. If it is not given the part of the function which matches the
-#'   OM and EM init values is ignored. Default = ""
-#' @param em_ctl_file is a string with the path and name of the estimation model
-#'   control file name. The second column is what % of the initial parameter
-#'   value LO should be set to. The third column is what % of the initial
-#'   parameter value HI should be set to.
+#'   OM and EM INIT values is ignored. Default is \code{""}.
+#'   \code{om_ctl_file} must be located in \code{dir}.
+#' @param em_ctl_file A string with the name of the estimation model
+#'   control file. \code{em_ctl_file} must be located in \code{dir}.
+#' @param verbose Detailed output to command line. Default is \code{FALSE}.
+#' @param ... Any other arguments to pass to \code{\link[r4ss]{SS_changepars}}.
+#' @importFrom r4ss SS_parlines SS_changepars
+#' @export
 #' @examples
 #' \dontrun{
-#' ## require(r4ss)
-#' ## Set tp the path and filename of the OM and EM control files
-#' OM.ctl<-"control.ss_new"
-#' EM.ctl<-"control.ss_new"
+#' temp_path <- file.path(tempdir(), "standardize-bounds-example")
+#' dir.create(temp_path, showWarnings = FALSE)
+#' wd <- getwd()
+#' setwd(temp_path)
+#'
+#' ## Set to the path and filename of the OM and EM control files
+#' OM.ctl <- system.file("extdata", "models", "cod-om", "codOM.ctl",
+#'   package = "ss3sim")
+#' EM.ctl <- system.file("extdata", "models", "cod-em", "codEM.ctl",
+#'   package = "ss3sim")
+#' file.copy(OM.ctl, "om.ctl")
+#' file.copy(EM.ctl, "em.ctl")
 #'
 #' ## Use SS_parlines to get the proper names for parameters for the data frame
-#' om.pars<-SS_parlines(ctlfile=OM.ctl)
-#' em.pars<-SS_parlines(ctlfile=EM.ctl)
+#' om.pars <- r4ss::SS_parlines(ctlfile="om.ctl")
+#' em.pars <- r4ss::SS_parlines(ctlfile="em.ctl")
 #'
 #' ## Set percentages to make lower and upper bounds
 #' lo.percent<-rep(.5,11)
 #' hi.percent<-c(500,1000,1000,rep(500,8))
 #'
 #' ##Populate data frame using EM parameter names and percentages
-#' percent.df<-data.frame(label=as.character(em.pars[c(1:6,17,27:30),"Label"]),
+#' percent_df<-data.frame(Label=as.character(em.pars[c(1:6,17,27:30),"Label"]),
 #'   lo=lo.percent,hi=hi.percent)
 #'
-#' #Run function
-#' standardize_bounds(percent_df,em_ctl_file=EM.ctl,OM_ctl_file=OM.ctl)
+#' ##Run function
+#' standardize_bounds(percent_df = percent_df, dir = temp_path, em_ctl_file = "em.ctl",
+#'                    om_ctl_file = "om.ctl")
+#' unlink(temp_path, recursive = TRUE)
+#'
+#' setwd(wd)
 #' }
-#'  @export
 
-standardize_bounds<-function(percent_df, em_ctl_file, OM_ctl_file=""){
+standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
+                               verbose = FALSE, ...) {
+  # Check that EM file exists
+  if (!file.exists(file.path(dir, em_ctl_file))) {
+    stop(paste("The em_ctl_file,", em_ctl_file, "does not exist",
+               "in the directory", dir))
+  }
+  if (!"Label" %in% colnames(percent_df)) {
+    stop(paste("In percent_df, the first column is currently named",
+      colnames(percent_df)[1], "rename as 'Label'"))
+  }
   #Read in EM values
-  em_pars<-SS_parlines(ctlfile=em_ctl_file)
-  #First, ensure the initial value in the EM control file is set to the OM true value
-  #If an OM is passed
-  if(nchar(OM_ctl_file)>0){
-    #Read in OM true value
-    om_pars<-SS_parlines(ctlfile=OM_ctl_file)
+  em_pars <- SS_parlines(ctlfile = file.path(dir, em_ctl_file),
+                         verbose = verbose)
+ #If an OM is passed
+  if(nchar(om_ctl_file)>0){
 
-    #Get the indices of the user input parameters in the OM/EM
-    om_indices<-which(om_pars[,"Label"] %in% percent_df[,"label"])
-    em_indices<-which(em_pars[,"Label"] %in% percent_df[,"label"])
+    #Read in OM true value
+    om_pars <- SS_parlines(ctlfile = file.path(dir, om_ctl_file),
+                           verbose = verbose)
+
+    #Restrict the parameters which have their initial values
+    #set equal to only those which occur in both the EM and OM
+    # If par is not found change from "integer(0)" to NA
+    indices <- sapply(percent_df$Label, function(x) {
+      rmpuncx <- gsub("[[:punct:]]", "", x)
+      rmpuncom <- gsub("[[:punct:]]", "", om_pars$Label)
+      rmpuncem <- gsub("[[:punct:]]", "", em_pars$Label)
+      findinom <- grep(rmpuncx, rmpuncom, ignore.case = TRUE)
+      findinem <- grep(rmpuncx, rmpuncem, ignore.case = TRUE)
+      c(ifelse(is.null(findinom), NA, findinom),
+        ifelse(is.null(findinem), NA, findinem))
+    })
+    tochange <- !is.na(indices[1, ]) | !is.na(indices[2, ])
+    restr_percent_df <- percent_df[tochange, ]
+    if (NROW(restr_percent_df) == 0) {
+      stop(paste("None of the entered parameter labels (,",
+                 paste(percent_df[, 1], collapse = ", "),
+                 ") are found in both the EM and OM.", sep = ""))
+    }
+
+    changeem <- cbind(em_pars$Label[indices[2, ]],
+                      om_pars$INIT[indices[1, ]], em_pars$INIT[indices[2, ]])
+    changeem <- changeem[tochange, ]
+    changeinits <- changeem[which(changeem[, 2] != changeem[, 3]), ,
+                            drop = FALSE]
+    if (NROW(changeinits) > 0) {
+      # TODO: eventually remove capture.output when r4ss uses verbose to capture
+      # the output from SS_changepars
+      print.verbose <- SS_changepars(dir = dir, ctlfile = em_ctl_file,
+          newctlfile = em_ctl_file, strings = changeinits[, 1],
+          newvals = changeinits[, 2], verbose = verbose, repeat.vals = FALSE)
+      if (verbose) message(paste(print.verbose, collapse = "\n"))
+
+    om_pars<-SS_parlines(ctlfile = file.path(dir,om_ctl_file), verbose = verbose)
+
+   #Restrict the parameters which have their initial values
+    #set equal to only those which occur in both the EM and OM
+    parsinboth <- which(percent_df$Label %in% om_pars$Label &
+                        percent_df$Label %in% em_pars$Label)
+    restr_percent_df <- percent_df[parsinboth, ]
+
+    if(NROW(restr_percent_df) != 0){
+
+      #Get the indices of the user input parameters in the OM/EM
+      om_indices<-which(om_pars[,"Label"] %in% restr_percent_df[,"Label"])
+      em_indices<-which(em_pars[,"Label"] %in% restr_percent_df[,"Label"])
 
     #If they are not equal, set the EM initial value to the OM true value
-    if(any(om_pars[om_indices,"INIT"]!= em_pars[em_indices,"INIT"])){
-      inits_to_change<-em_pars[which(em_pars[em_indices,"INIT"] != om_pars[om_indices,"INIT"]), "Label"]
-      SS_changepars(dir=substr(em_ctl_file, 1, nchar(em_ctl_file)-9),
-        ctlfile=substr(em_ctl_file, nchar(em_ctl_file)-8, nchar(em_ctl_file)),
-                     newctlfile = substr(em_ctl_file, nchar(em_ctl_file)-8,
-                       nchar(em_ctl_file)), strings = inits_to_change,
-                     newvals = om_pars[which(om_pars[om_indices,"INIT"]!= em_pars[em_indices,"INIT"]),"INIT"])
+    whichunequal <- om_pars[om_indices,"INIT"]!= em_pars[em_indices,"INIT"]
+      if(any(whichunequal)){
+        inits_to_change <- em_pars[which(whichunequal), "Label"]
+
+        SS_changepars(dir=dir, ctlfile=em_ctl_file,newctlfile = em_ctl_file,
+                    strings = inits_to_change,
+          newvals = om_pars[which(whichunequal),"INIT"],
+                    verbose = verbose)
+      }
+    }else{
+      message("None of the entered parameter labels are found in both the EM and OM.")
     }
   }
+  }
 
-  #Second, use the input data frame to set the LO and HI values of the EM control file
+  #2: Use input data frame to set the LO and HI values of the EM ctl file
   #To a fixed % of the init value as provided in the user input
 
-  #Read in parameters from EM ctl file
-  em_pars<-SS_parlines(ctlfile=em_ctl_file)
-
-  #Check input parameter names are valid
+ #Check input parameter names are valid
   #Do these match the data frame first column?
-  if(any(!percent_df[,"label"] %in% em_pars[,"Label"])){
-    print(paste("Element",which(!percent_df[,"label"] %in% em_pars[,"Label"]),
-      "does not have a valid parameter label."))
+  indexem <- sapply(percent_df$Label, function(x) {
+      rmpuncx <- gsub("[[:punct:]]", "", x)
+      rmpuncem <- gsub("[[:punct:]]", "", em_pars$Label)
+      findinem <- grep(rmpuncx, rmpuncem, ignore.case = TRUE)
+      ifelse(is.null(findinem), NA, findinem)
+    })
+  if (any(is.na(indexem))) {
+    stop(paste("Element(s):",
+               paste(percent_df$Label[which(is.na(indexem))], collapse = ", "),
+               "do not have valid parameter labels."))
   }else{
     #Get indices of parameters to standardize; first column is in the data frame
-    # and second is in the EM read values
+  # and second is in the EM read values
     indices_to_standardize<-matrix(ncol=2,nrow=nrow(percent_df))
-    indices_to_standardize[,1]<-which(percent_df[,1] %in% em_pars[,"Label"])
-    indices_to_standardize[,2]<-which(em_pars[,"Label"] %in% percent_df[,1])
+    indices_to_standardize[, 1] <- 1:NROW(percent_df)
+    indices_to_standardize[, 2] <- indexem
 
     #Change lo and hi's
-    newlos<-percent_df[indices_to_standardize[,1],"lo"]*em_pars[indices_to_standardize[,2],"INIT"]
-    newhis<-percent_df[indices_to_standardize[,1],"hi"]*em_pars[indices_to_standardize[,2],"INIT"]
-    change_lo_hi(ctlfile=em_ctl_file,newctlfile=em_ctl_file,
-                 strings=as.character(percent_df[indices_to_standardize[,1],1]),
-      newlos=newlos,newhis=newhis)
-  }
-}
+    newlos <- percent_df[indices_to_standardize[, 1], "lo"] *
+              em_pars[indices_to_standardize[, 2], "INIT"]
+    newhis <- percent_df[indices_to_standardize[, 1], "hi"] *
+              em_pars[indices_to_standardize[, 2], "INIT"]
 
-#' Changes the lo and hi bounds of the estimation model control file
-#'
-#' This is a modified version of \code{\link[r4ss]{SS_changepars}} which
-#' modifies the lo and hi bounds in the control file instead of the initial
-#' value. \code{newhis} and \code{newlos} must be equivalent lengths and both
-#' refer to the parameters in strings in the same order. Also put the directory
-#' into the filenames to match the structure of the above function.
-#'
-#' @author Ian Taylor, modified by Christine Stawitz
-#'
-#' @param ctlfile Control file name with directory.
-#' @param newctlfile Name of new control file to be written.
-#' @param linenums Line numbers of control file to be modified. Either this or
-#'   the Strings input are needed. Default=NULL.
-#' @param strings Strings (with optional partial matching) indicating which
-#'   parameters to be modified. This is an alternative to linenums. Strings
-#'   correspond to the commented parameter names included in control.ss_new, or
-#'   whatever is written as comment at the end of the 14 number parameter lines.
-#' @param newlos Vector of new lo bounds. Default=NULL.
-#' @param newhis Vector of new hi bounds. Must be the same length as newhis
-#'   Default=NULL.
-#' @param estimate Vector of TRUE/FALSE for which changed parameters are to be
-#'   estimated. Default=FALSE.
-#' @param verbose More detailed output to command line. Default=TRUE.
-#' @importFrom r4ss SS_changepars
-#' @export
-change_lo_hi <- function (ctlfile = "control.ss_new",
-          newctlfile = "control_modified.ss", linenums = NULL, strings = NULL,
-          newlos = NULL, newhis = NULL, estimate = FALSE, verbose = TRUE)
-{
-  ctl = readLines(ctlfile)
-  if (is.null(linenums) & !is.null(strings) & class(strings) ==
-        "character") {
-    ctltable <- SS_parlines(ctlfile = ctlfile)
-    allnames <- ctltable$Label
-    goodnames <- NULL
+    #If the parameter label contains "Ln", use the value given in the
+    #table rather than a percentage times the initial value.
+    newlos[grep("Ln", percent_df$Label, ignore.case = TRUE)] <-
+      percent_df[grep("Ln", percent_df$Label, ignore.case = TRUE), 2]
+    newhis[grep("Ln", percent_df$Label, ignore.case = TRUE)] <-
+    percent_df[grep("Ln", percent_df$Label, ignore.case = TRUE), 3]
 
-    if (!is.null(strings)) {
-      for (i in 1:length(strings)) goodnames <- c(goodnames,
-        allnames[grep(strings[i], allnames,fixed=TRUE)])
-      goodnames <- unique(goodnames)
-      cat("parameter names in control file matching input vector 'strings' (n=",
-          length(goodnames), "):\n", sep = "")
-      print(goodnames)
-      if (length(goodnames) == 0) {
-        stop("No parameters names match input vector 'strings'")
-      }
+    SS_changepars(dir=dir,ctlfile=em_ctl_file,newctlfile=em_ctl_file,
+      linenums = em_pars[indexem, "Linenum"],
+      newlos=newlos,newhis=newhis, verbose = verbose, ...)
+
     }
-    nvals <- length(goodnames)
-    cat("These are the ctl file lines as they currently exist:\n")
-    print(ctltable[ctltable$Label %in% goodnames, ])
-    for (i in 1:nvals) linenums[i] <- ctltable$Linenum[ctltable$Label ==
-                                                         goodnames[i]]
-  }
-  else {
-    if (is.null(linenums))
-      stop("valid input needed for either 'linenums' or 'strings'")
-  }
-  ctlsubset <- ctl[linenums]
-  cat("line numbers in control file (n=", length(linenums),
-      "):\n", sep = "")
-  print(linenums)
-  newctlsubset <- NULL
-  cmntvec <- NULL
-  nvals <- length(linenums)
-  oldlos <- oldhis <- oldphase <- newphase <- rep(NA, nvals)
-  if (!is.null(newlos) & length(newlos) != nvals) {
-    stop("'newlos' and either 'linenums' or 'strings' should have the same number of elements")
-  }
-  if (!is.null(newhis) & length(newhis) != nvals) {
-      stop("'newhis' and either 'linenums' or 'strings' should have the same number of elements")
-  }
-  if (!(length(estimate) %in% c(1, nvals)))
-    stop("'estimate' should have 1 element or same number as 'newvals'")
-  if (length(estimate) == 1)
-    estimate <- rep(estimate, nvals)
-  if (is.data.frame(newlos))
-    newlos <- as.numeric(newlos)
-  if (is.data.frame(newhis))
-    newhis <- as.numeric(newhis)
-  if (is.null(newlos))
-    stop("Nothing input for 'newlos'")
-  if (is.null(newhis))
-    stop("Nothing input for 'newhis'")
-  for (i in 1:nvals) {
-    splitline <- strsplit(ctlsubset[i], "#")[[1]]
-    cmnt <- paste("#", paste(splitline[-1], collapse = "#"),
-                  sep = "")
-    cmntvec <- c(cmntvec, cmnt)
-    vecstrings <- strsplit(splitline[1], split = "[[:blank:]]+")[[1]]
-    vec <- as.numeric(vecstrings[vecstrings != ""])
-    if (max(is.na(vec)) == 1)
-      stop("There's a problem with a non-numeric value in line",
-           linenums[i])
-    oldlos[i] <- vec[1]
-    oldhis[i] <- vec[2]
-    if ((!is.null(oldlos))&(!is.null(oldhis)))
-      vec[1] <- newlos[i]
-      vec[2] <- newhis[i]
-    oldphase[i] <- as.numeric(vec[7])
-    if (estimate[i]) {
-      vec[7] <- abs(oldphase[i])
-    }
-    else {
-      vec[7] <- -abs(oldphase[i])
-    }
-    if (vec[1] > vec[3])
-      cat("!warning: new lower bound ", vec[1], "is above initial value ",
-          vec[3], "for", cmnt, "\n")
-    if (vec[1] > vec[2])
-      cat("!warning: new lower bound ", vec[1], "is above upper bound ",
-          vec[2], "for", cmnt, "\n")
-    newphase[i] <- vec[7]
-    newline <- paste("", paste(vec, collapse = " "), cmnt)
-    newctlsubset <- rbind(newctlsubset, newline)
-  }
-  newctl <- ctl
-  newctl[linenums] <- newctlsubset
-  writeLines(newctl, newctlfile)
-  if (verbose)
-    cat("\nwrote new file to", newctlfile, "with the following changes:\n")
-  results <- data.frame(oldlos, newlos, oldhis, newhis, oldphase, newphase,
-                        comment = cmntvec)
-  if (is.null(newlos))
-    newlos <- NA
-  if (is.null(newhis))
-    newhis <-NA
-  if (verbose)
-    print(results)
-  return(invisible(results))
+
 }
