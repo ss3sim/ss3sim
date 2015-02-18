@@ -4,7 +4,8 @@
 #' \code{change_em_binning} alters the bin structure for the population and
 #' length composition data in an SS estimation model. It is done by taking the
 #' original length composition info from the EM \code{ss3.dat} then changing
-#' according to the user's specification.
+#' according to the user's specification. If the data file also contails
+#' conditional age-at-length data then these data will be re-binned as well.
 #'
 #' @param datfile An SS3 data list object as read in by
 #'   \code{\link[r4ss]{SS_readdat}}.
@@ -15,9 +16,6 @@
 #' @param lbin_method A numeric value of either \code{NULL, 1, 2, 3} to change
 #'   the lbin_method for the population bin. Only supports either \code{NULL, 1,
 #'   2} at the moment. \code{NULL} means to keep it unchanged.
-#' @param rebin_cal Logical: should conditional age-at-length data also be
-#'   re-binned? The SS3 data file must contain conditional age-at-length data if
-#'   this is set to \code{TRUE}.
 #' @param write_file Should the \code{.dat} file be written? The new \code{.dat}
 #'   file will always be returned invisibly by the function. Setting
 #'   \code{write_file = FALSE} can be useful for testing. Note that you must
@@ -52,7 +50,7 @@
 #'   age_bins = 1:3, len_bins = 4:8)
 #' olddat$agecomp
 #' newdat <- change_em_binning(olddat, file_out = NULL, bin_vector = c(4, 6, 8),
-#'   lbin_method = 1, rebin_cal = TRUE, write_file = FALSE)
+#'   lbin_method = 1, write_file = FALSE)
 #' newdat$agecomp
 #'
 #' # A larger conditional age-at-length re-rebinning example:
@@ -64,13 +62,13 @@
 #' head(olddat$lencomp)
 #' head(olddat$agecomp)
 #' newdat <- change_em_binning(olddat, file_out = NULL, bin_vector = seq(20, 30, 2),
-#'  lbin_method = 1, rebin_cal = TRUE, write_file = FALSE)
+#'  lbin_method = 1, write_file = FALSE)
 #' newdat$lbin_vector
 #' head(newdat$lencomp)
 #' newdat$agecomp
 
 change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
-  rebin_cal = FALSE, write_file = TRUE) {
+  write_file = TRUE) {
 
   ## If lbin_method is NULL then don't do anything
   if (is.null(lbin_method)) return(NULL)
@@ -178,22 +176,14 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
   }
 
   # Re-bin conditional age-at-length comps:
-  if (rebin_cal) {
+  # if all Lbin_lo == -1 then there aren't any CAL data:
+  if (length(unique(datfile$agecomp$Lbin_lo)) > 1) {
     if (!identical(datfile$Lbin_method, 3)) {
       stop(paste("Lbin_method was not set to 3 in the SS3 data file.",
         "change_em_binning() requires the data file to specify conditional",
         "age-at-length data with Lbin_method == 3. See the SS3 manual. Note",
         "the capital L in Lbin_method."))
     }
-    if (is.null(datfile$agecomp))
-      stop(paste("No age composition data were found in the data file within",
-        "change_em_binning(). These are needed to modify the conditional",
-        "age-at-length data binning structure."))
-    # if all Lbin_lo == -1 then there aren't any CAL data:
-    if (identical(length(unique(datfile$agecomp$Lbin_lo)), 1L))
-      stop(paste("It looks like there aren't any conditional age-at-length",
-        "composition data in the age composition data matrix in your",
-        "data file."))
     if (!identical(length(unique(datfile$agecomp$AgeErr)), 1L))
       stop(paste("change_em_binning only works for conditional age-at-length",
         "composition data with a single value for all AgeErr columns."))
@@ -211,7 +201,7 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
       Lbin_lo = old_binvector,
       lbin_new = bin_vector[findInterval(old_binvector, bin_vector)])
 
-    # the magic re-binning happens here:
+    # the re-binning happens here:
     # this uses dplyr and pipes but avoids non-standard evaluation
     # http://cran.r-project.org/web/packages/dplyr/vignettes/nse.html
     new_cal <- inner_join(old_cal, lookup, by = "Lbin_lo") %>%
@@ -235,7 +225,6 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
         "the number of samples in the original dataset."))
     }
   }
-
 
   if (write_file) {
     SS_writedat(datlist = datfile, outfile = file_out, overwrite = TRUE,
