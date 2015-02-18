@@ -6,7 +6,7 @@
 model}
 \usage{
 change_em_binning(datfile, file_out, bin_vector, lbin_method = NULL,
-  rebin_cal = FALSE, write_file = TRUE)
+  write_file = TRUE)
 }
 \arguments{
   \item{datfile}{An SS3 data list object as read in by
@@ -23,11 +23,6 @@ change_em_binning(datfile, file_out, bin_vector, lbin_method = NULL,
   bin. Only supports either \code{NULL, 1, 2} at the
   moment. \code{NULL} means to keep it unchanged.}
 
-  \item{rebin_cal}{Logical: should conditional
-  age-at-length data also be re-binned? The SS3 data file
-  must contain conditional age-at-length data if this is
-  set to \code{TRUE}.}
-
   \item{write_file}{Should the \code{.dat} file be written?
   The new \code{.dat} file will always be returned
   invisibly by the function. Setting \code{write_file =
@@ -41,7 +36,9 @@ change_em_binning(datfile, file_out, bin_vector, lbin_method = NULL,
 population and length composition data in an SS estimation
 model. It is done by taking the original length composition
 info from the EM \code{ss3.dat} then changing according to
-the user's specification.
+the user's specification. If the data file also contails
+conditional age-at-length data then these data will be
+re-binned as well.
 }
 \examples{
 d <- system.file("extdata", package = "ss3sim")
@@ -63,7 +60,7 @@ olddat <- change_data(d, outfile = NULL, write_file = FALSE,
   age_bins = 1:3, len_bins = 4:8)
 olddat$agecomp
 newdat <- change_em_binning(olddat, file_out = NULL, bin_vector = c(4, 6, 8),
-  lbin_method = 1, rebin_cal = TRUE, write_file = FALSE)
+  lbin_method = 1, write_file = FALSE)
 newdat$agecomp
 
 # A larger conditional age-at-length re-rebinning example:
@@ -75,7 +72,7 @@ olddat$lbin_vector
 head(olddat$lencomp)
 head(olddat$agecomp)
 newdat <- change_em_binning(olddat, file_out = NULL, bin_vector = seq(20, 30, 2),
- lbin_method = 1, rebin_cal = TRUE, write_file = FALSE)
+ lbin_method = 1, write_file = FALSE)
 newdat$lbin_vector
 head(newdat$lencomp)
 newdat$agecomp
