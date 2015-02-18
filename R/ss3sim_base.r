@@ -226,7 +226,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           warning(paste("No bias correction is done internally for user-supplied",
               "recruitment deviations and must be done manually. See the",
               "vignette, for more details. Biased recruitment deviations can",
-              "lead to biased model results."))
+              "lead to biased model results."), .call = FALSE)
         }
         sc_i_recdevs <- user_recdevs[, this_run_num] # user specified recdevs
       }
