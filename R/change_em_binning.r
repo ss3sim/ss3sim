@@ -184,9 +184,9 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
         "age-at-length data with Lbin_method == 3. See the SS3 manual. Note",
         "the capital L in Lbin_method."))
     }
-    if (!identical(length(unique(datfile$agecomp$AgeErr)), 1L))
+    if (!identical(length(unique(datfile$agecomp$Ageerr)), 1L))
       stop(paste("change_em_binning only works for conditional age-at-length",
-        "composition data with a single value for all AgeErr columns."))
+        "composition data with a single value for all Ageerr columns."))
 
     # to check later:
     old_age_dat <- datfile$agecomp[, grepl("^a[0-9.]+$", names(datfile$agecomp))]
@@ -205,7 +205,7 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
     # this uses dplyr and pipes but avoids non-standard evaluation
     # http://cran.r-project.org/web/packages/dplyr/vignettes/nse.html
     new_cal <- inner_join(old_cal, lookup, by = "Lbin_lo") %>%
-      group_by_(~Yr, ~Seas, ~Flt, ~Gender, ~Part, ~AgeErr, ~Nsamp, ~lbin_new) %>%
+      group_by_(~Yr, ~Seas, ~FltSvy, ~Gender, ~Part, ~Ageerr, ~Nsamp, ~lbin_new) %>%
       summarise_each_(funs_(~sum), ~matches("^a[0-9.]+$")) %>%
       rename_(Lbin_lo = ~lbin_new) %>%
       mutate_(Lbin_hi = ~c(Lbin_lo[-1], -1)) %>%
