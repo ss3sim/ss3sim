@@ -315,14 +315,15 @@ if(!is.null(par_name)) {
    ss3.dat[data_end_line] <- paste(data_end_value, collapse = "")
    writeLines(ss3.dat, "ss3.dat")
  ss3.for <- readLines(for_file_in)
-   for_forecast_line <- grep("Forecast: 0=none;", ss3.for)
-   for_forecast_value <- unlist(strsplit(ss3.for[for_forecast_line], split = ""))
-   for_forecast_value[1] <- 2
-   ss3.for[for_forecast_line] <- paste(for_forecast_value, collapse = "")
-   for_number_line <- grep("N forecast years", ss3.for)
-   for_number_value <- unlist(strsplit(ss3.for[for_number_line], split = ""))
-   for_number_value[1] <- forecast_num
-   ss3.for[for_number_line] <- paste(for_number_value, collapse = "")
+   if (any(grepl("SS_writeforecast", ss3.for[1:5]))) {
+     line1 <- grep("_Forecast$", ss3.for)
+     line2 <- grep("_Nforecastyrs", ss3.for)
+   } else {
+     line1 <- grep("Forecast: 0=none;", ss3.for)
+     line2 <- grep("N forecast years", ss3.for)
+   }
+   ss3.for[line1] <- gsub("[0-9]+", 2, ss3.for[line1])
+   ss3.for[line2] <- gsub("[0-9]+", forecast_num, ss3.for[line2])
    writeLines(ss3.for, "forecast.ss")
  }
 
