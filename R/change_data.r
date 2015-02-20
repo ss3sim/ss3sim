@@ -109,8 +109,8 @@
 #' calcomp_params = list(Nsamp = list(1), fleets = c(1), years = 98)
 #' mlacomp_params = list(fleets = c(2), Nsamp = 54, years = list(c(1, 15)))
 #' d <- system.file("extdata", package = "ss3sim")
-#' f_in <- paste0(d, "/example-om/data.ss_new")
-#' datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+#' f_in <- paste0(d, "/models/cod-om/codOM.dat")
+#' datfile <- r4ss::SS_readdat(f_in, verbose = FALSE)
 #' datfile <- change_fltname(datfile)
 #' data_units <- calculate_data_units(index_params = index_params,
 #'   lcomp_params = lcomp_params, agecomp_params = agecomp_params,
