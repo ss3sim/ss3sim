@@ -177,6 +177,12 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
       percent_df[grep("Ln", percent_df$Label, ignore.case = TRUE), 2]
     newhis[grep("Ln", percent_df$Label, ignore.case = TRUE)] <-
     percent_df[grep("Ln", percent_df$Label, ignore.case = TRUE), 3]
+    
+    #Same for CV
+    newlos[grep("CV", percent_df$Label, ignore.case = TRUE)] <-
+      percent_df[grep("CV", percent_df$Label, ignore.case = TRUE), 2]
+    newhis[grep("CV", percent_df$Label, ignore.case = TRUE)] <-
+      percent_df[grep("CV", percent_df$Label, ignore.case = TRUE), 3]
 
     SS_changepars(dir=dir,ctlfile=em_ctl_file,newctlfile=em_ctl_file,
       linenums = em_pars[indexem, "Linenum"],
