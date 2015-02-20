@@ -323,11 +323,11 @@ check_data <- function(x) {
       stop("lbin_method in the SS3 data file should be either 1 or 2")
   }
 
-#   if (!identical(x$Lbin_method, 2)) {
-#     stop(paste("Lbin_method (note the capital L as it is represented in r4ss)",
-#       "must be set to 2. This specifies how the conditional age-at-length data",
-#       "are represented in the SS3 data file. See the SS3 manual."))
-#   }
+  if (!identical(x$Lbin_method, 3)) {
+    stop(paste("Lbin_method (note the capital L as it is represented in r4ss)",
+      "must be set to 3. This specifies how the conditional age-at-length data",
+      "are represented in the SS3 data file. See the SS3 manual."))
+  }
 
   if (!identical(x$Nfleet, 1))
     stop("Nfleet in the SS3 data file must be set to 1.")
@@ -338,8 +338,8 @@ check_data <- function(x) {
   if (!identical(x$N_areas, 1))
     stop("N_areas in the SS3 data file must be set to 1.")
 
-#   if (!identical(x$fleetnames, c("Fishery", "Survey", "CPUE")))
-#     stop("Fleet names in the SS3 data file must be Fishery%Survey%CPUE")
+  if (!identical(x$fleetnames, c("Fishery", "Survey", "CPUE")))
+    stop("Fleet names in the SS3 data file must be Fishery%Survey%CPUE")
 
   if (!identical(x$surveytiming, c(0.5, 0.5, 0.5)))
     stop("_surveytiming_in_season must be set to 0.5 for all fleets.")
@@ -347,9 +347,6 @@ check_data <- function(x) {
   if (!identical(x$areas, c(1, 1, 1)))
     stop(paste("_area_assignments_for_each_fishery_and_survey must be set to 1",
       "for all fleets in the SS3 data file."))
-
-#   if (!identical(x$N_catch, 100))
-#     stop("_N_lines_of_catch_to_read must be 100 in the SS3 data file.")
 
   if (!identical(x$N_discard_fleets, 0))
     stop("_N_fleets_with_discard must set to 0 in the SS3 data file.")
@@ -360,16 +357,13 @@ check_data <- function(x) {
   if (!identical(x$N_meanbodywt, 0))
     stop("_N_meanbodywt_obs must be set to 0 in the SS3 data file.")
 
-#   if (any(x$ageerror[1, ] != -1))
-#     stop("Ageing error definition ages must all be set to -1 in the SS3 data file")
-
   if (any(x$ageerror[2, ] != 0.001))
     stop(paste("Ageing error definition values must all be set to 0.001 in the",
       "SS3 data file"))
 
-#   expected_index_years <- as.numeric(rep(seq(x$styr, x$endyr), 2))
-#   if (!identical(x$CPUE$year, expected_index_years)) {
-#     stop(paste("The SS3 data file must contain (dummy) index data for all years",
-#       "for both fleet 1 (the fishery) and fleet 3 (CPUE)"))
-#   }
+  expected_index_years <- as.numeric(rep(seq(x$styr, x$endyr), 2))
+  if (!identical(x$CPUE$year, expected_index_years)) {
+    stop(paste("The SS3 data file must contain (dummy) index data for all years",
+      "for both fleet 1 (the fishery) and fleet 3 (CPUE)"))
+  }
 }
