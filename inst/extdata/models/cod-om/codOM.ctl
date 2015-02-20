@@ -1,5 +1,5 @@
 #V3.24O
-#_data_and_control_files: codOM.dat // codOM.ctl
+#_data_and_control_files: ss3.dat // ss3.ctl
 #_SS-V3.24O-safe-win64;_04/10/2013;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.1
 1  #_N_Growth_Patterns
 1 #_N_Morphs_Within_GrowthPattern 
@@ -78,18 +78,18 @@
 0 #_SR_env_link
 0 #_SR_env_target_0=none;1=devs;_2=R0;_3=steepness
 1 #do_recdev:  0=none; 1=devvector; 2=simple deviations
-1913 # first year of main recr_devs; early devs can preceed this era
-2012 # last year of main recr_devs; forecast devs start in following year
+1 # first year of main recr_devs; early devs can preceed this era
+100 # last year of main recr_devs; forecast devs start in following year
 -2 #_recdev phase 
 1 # (0/1) to read 13 advanced options
  0 #_recdev_early_start (0=none; neg value makes relative to recdev_start)
  -4 #_recdev_early_phase
  0 #_forecast_recruitment phase (incl. late recr) (0 value resets to maxphase+1)
  1 #_lambda for Fcast_recr_like occurring before endyr+1
- 1913 #_last_early_yr_nobias_adj_in_MPD
- 1901 #_first_yr_fullbias_adj_in_MPD
- 2012 #_last_yr_fullbias_adj_in_MPD
- 2013 #_first_recent_yr_nobias_adj_in_MPD
+ 1 #_last_early_yr_nobias_adj_in_MPD
+ 1 #_first_yr_fullbias_adj_in_MPD
+ 100 #_last_yr_fullbias_adj_in_MPD
+ 100 #_first_recent_yr_nobias_adj_in_MPD
  0 #_max_bias_adj_in_MPD (-1 to override ramp and set biasadj=1.0 for all estimated recdevs)
  0 #_period of cycles in recruitment (N parms read below)
  -5 #min rec_dev
@@ -102,106 +102,106 @@
 #_Yr Input_value
 #
 # all recruitment deviations
-#DisplayOnly 0 # Main_RecrDev_1913
-#DisplayOnly 0 # Main_RecrDev_1914
-#DisplayOnly 0 # Main_RecrDev_1915
-#DisplayOnly 0 # Main_RecrDev_1916
-#DisplayOnly 0 # Main_RecrDev_1917
-#DisplayOnly 0 # Main_RecrDev_1918
-#DisplayOnly 0 # Main_RecrDev_1919
-#DisplayOnly 0 # Main_RecrDev_1920
-#DisplayOnly 0 # Main_RecrDev_1921
-#DisplayOnly 0 # Main_RecrDev_1922
-#DisplayOnly 0 # Main_RecrDev_1923
-#DisplayOnly 0 # Main_RecrDev_1924
-#DisplayOnly 0 # Main_RecrDev_1925
-#DisplayOnly 0 # Main_RecrDev_1926
-#DisplayOnly 0 # Main_RecrDev_1927
-#DisplayOnly 0 # Main_RecrDev_1928
-#DisplayOnly 0 # Main_RecrDev_1929
-#DisplayOnly 0 # Main_RecrDev_1930
-#DisplayOnly 0 # Main_RecrDev_1931
-#DisplayOnly 0 # Main_RecrDev_1932
-#DisplayOnly 0 # Main_RecrDev_1933
-#DisplayOnly 0 # Main_RecrDev_1934
-#DisplayOnly 0 # Main_RecrDev_1935
-#DisplayOnly 0 # Main_RecrDev_1936
-#DisplayOnly 0 # Main_RecrDev_1937
-#DisplayOnly 0 # Main_RecrDev_1938
-#DisplayOnly 0 # Main_RecrDev_1939
-#DisplayOnly 0 # Main_RecrDev_1940
-#DisplayOnly 0 # Main_RecrDev_1941
-#DisplayOnly 0 # Main_RecrDev_1942
-#DisplayOnly 0 # Main_RecrDev_1943
-#DisplayOnly 0 # Main_RecrDev_1944
-#DisplayOnly 0 # Main_RecrDev_1945
-#DisplayOnly 0 # Main_RecrDev_1946
-#DisplayOnly 0 # Main_RecrDev_1947
-#DisplayOnly 0 # Main_RecrDev_1948
-#DisplayOnly 0 # Main_RecrDev_1949
-#DisplayOnly 0 # Main_RecrDev_1950
-#DisplayOnly 0 # Main_RecrDev_1951
-#DisplayOnly 0 # Main_RecrDev_1952
-#DisplayOnly 0 # Main_RecrDev_1953
-#DisplayOnly 0 # Main_RecrDev_1954
-#DisplayOnly 0 # Main_RecrDev_1955
-#DisplayOnly 0 # Main_RecrDev_1956
-#DisplayOnly 0 # Main_RecrDev_1957
-#DisplayOnly 0 # Main_RecrDev_1958
-#DisplayOnly 0 # Main_RecrDev_1959
-#DisplayOnly 0 # Main_RecrDev_1960
-#DisplayOnly 0 # Main_RecrDev_1961
-#DisplayOnly 0 # Main_RecrDev_1962
-#DisplayOnly 0 # Main_RecrDev_1963
-#DisplayOnly 0 # Main_RecrDev_1964
-#DisplayOnly 0 # Main_RecrDev_1965
-#DisplayOnly 0 # Main_RecrDev_1966
-#DisplayOnly 0 # Main_RecrDev_1967
-#DisplayOnly 0 # Main_RecrDev_1968
-#DisplayOnly 0 # Main_RecrDev_1969
-#DisplayOnly 0 # Main_RecrDev_1970
-#DisplayOnly 0 # Main_RecrDev_1971
-#DisplayOnly 0 # Main_RecrDev_1972
-#DisplayOnly 0 # Main_RecrDev_1973
-#DisplayOnly 0 # Main_RecrDev_1974
-#DisplayOnly 0 # Main_RecrDev_1975
-#DisplayOnly 0 # Main_RecrDev_1976
-#DisplayOnly 0 # Main_RecrDev_1977
-#DisplayOnly 0 # Main_RecrDev_1978
-#DisplayOnly 0 # Main_RecrDev_1979
-#DisplayOnly 0 # Main_RecrDev_1980
-#DisplayOnly 0 # Main_RecrDev_1981
-#DisplayOnly 0 # Main_RecrDev_1982
-#DisplayOnly 0 # Main_RecrDev_1983
-#DisplayOnly 0 # Main_RecrDev_1984
-#DisplayOnly 0 # Main_RecrDev_1985
-#DisplayOnly 0 # Main_RecrDev_1986
-#DisplayOnly 0 # Main_RecrDev_1987
-#DisplayOnly 0 # Main_RecrDev_1988
-#DisplayOnly 0 # Main_RecrDev_1989
-#DisplayOnly 0 # Main_RecrDev_1990
-#DisplayOnly 0 # Main_RecrDev_1991
-#DisplayOnly 0 # Main_RecrDev_1992
-#DisplayOnly 0 # Main_RecrDev_1993
-#DisplayOnly 0 # Main_RecrDev_1994
-#DisplayOnly 0 # Main_RecrDev_1995
-#DisplayOnly 0 # Main_RecrDev_1996
-#DisplayOnly 0 # Main_RecrDev_1997
-#DisplayOnly 0 # Main_RecrDev_1998
-#DisplayOnly 0 # Main_RecrDev_1999
-#DisplayOnly 0 # Main_RecrDev_2000
-#DisplayOnly 0 # Main_RecrDev_2001
-#DisplayOnly 0 # Main_RecrDev_2002
-#DisplayOnly 0 # Main_RecrDev_2003
-#DisplayOnly 0 # Main_RecrDev_2004
-#DisplayOnly 0 # Main_RecrDev_2005
-#DisplayOnly 0 # Main_RecrDev_2006
-#DisplayOnly 0 # Main_RecrDev_2007
-#DisplayOnly 0 # Main_RecrDev_2008
-#DisplayOnly 0 # Main_RecrDev_2009
-#DisplayOnly 0 # Main_RecrDev_2010
-#DisplayOnly 0 # Main_RecrDev_2011
-#DisplayOnly 0 # Main_RecrDev_2012
+#DisplayOnly 0 # Main_RecrDev_1
+#DisplayOnly 0 # Main_RecrDev_2
+#DisplayOnly 0 # Main_RecrDev_3
+#DisplayOnly 0 # Main_RecrDev_4
+#DisplayOnly 0 # Main_RecrDev_5
+#DisplayOnly 0 # Main_RecrDev_6
+#DisplayOnly 0 # Main_RecrDev_7
+#DisplayOnly 0 # Main_RecrDev_8
+#DisplayOnly 0 # Main_RecrDev_9
+#DisplayOnly 0 # Main_RecrDev_10
+#DisplayOnly 0 # Main_RecrDev_11
+#DisplayOnly 0 # Main_RecrDev_12
+#DisplayOnly 0 # Main_RecrDev_13
+#DisplayOnly 0 # Main_RecrDev_14
+#DisplayOnly 0 # Main_RecrDev_15
+#DisplayOnly 0 # Main_RecrDev_16
+#DisplayOnly 0 # Main_RecrDev_17
+#DisplayOnly 0 # Main_RecrDev_18
+#DisplayOnly 0 # Main_RecrDev_19
+#DisplayOnly 0 # Main_RecrDev_20
+#DisplayOnly 0 # Main_RecrDev_21
+#DisplayOnly 0 # Main_RecrDev_22
+#DisplayOnly 0 # Main_RecrDev_23
+#DisplayOnly 0 # Main_RecrDev_24
+#DisplayOnly 0 # Main_RecrDev_25
+#DisplayOnly 0 # Main_RecrDev_26
+#DisplayOnly 0 # Main_RecrDev_27
+#DisplayOnly 0 # Main_RecrDev_28
+#DisplayOnly 0 # Main_RecrDev_29
+#DisplayOnly 0 # Main_RecrDev_30
+#DisplayOnly 0 # Main_RecrDev_31
+#DisplayOnly 0 # Main_RecrDev_32
+#DisplayOnly 0 # Main_RecrDev_33
+#DisplayOnly 0 # Main_RecrDev_34
+#DisplayOnly 0 # Main_RecrDev_35
+#DisplayOnly 0 # Main_RecrDev_36
+#DisplayOnly 0 # Main_RecrDev_37
+#DisplayOnly 0 # Main_RecrDev_38
+#DisplayOnly 0 # Main_RecrDev_39
+#DisplayOnly 0 # Main_RecrDev_40
+#DisplayOnly 0 # Main_RecrDev_41
+#DisplayOnly 0 # Main_RecrDev_42
+#DisplayOnly 0 # Main_RecrDev_43
+#DisplayOnly 0 # Main_RecrDev_44
+#DisplayOnly 0 # Main_RecrDev_45
+#DisplayOnly 0 # Main_RecrDev_46
+#DisplayOnly 0 # Main_RecrDev_47
+#DisplayOnly 0 # Main_RecrDev_48
+#DisplayOnly 0 # Main_RecrDev_49
+#DisplayOnly 0 # Main_RecrDev_50
+#DisplayOnly 0 # Main_RecrDev_51
+#DisplayOnly 0 # Main_RecrDev_52
+#DisplayOnly 0 # Main_RecrDev_53
+#DisplayOnly 0 # Main_RecrDev_54
+#DisplayOnly 0 # Main_RecrDev_55
+#DisplayOnly 0 # Main_RecrDev_56
+#DisplayOnly 0 # Main_RecrDev_57
+#DisplayOnly 0 # Main_RecrDev_58
+#DisplayOnly 0 # Main_RecrDev_59
+#DisplayOnly 0 # Main_RecrDev_60
+#DisplayOnly 0 # Main_RecrDev_61
+#DisplayOnly 0 # Main_RecrDev_62
+#DisplayOnly 0 # Main_RecrDev_63
+#DisplayOnly 0 # Main_RecrDev_64
+#DisplayOnly 0 # Main_RecrDev_65
+#DisplayOnly 0 # Main_RecrDev_66
+#DisplayOnly 0 # Main_RecrDev_67
+#DisplayOnly 0 # Main_RecrDev_68
+#DisplayOnly 0 # Main_RecrDev_69
+#DisplayOnly 0 # Main_RecrDev_70
+#DisplayOnly 0 # Main_RecrDev_71
+#DisplayOnly 0 # Main_RecrDev_72
+#DisplayOnly 0 # Main_RecrDev_73
+#DisplayOnly 0 # Main_RecrDev_74
+#DisplayOnly 0 # Main_RecrDev_75
+#DisplayOnly 0 # Main_RecrDev_76
+#DisplayOnly 0 # Main_RecrDev_77
+#DisplayOnly 0 # Main_RecrDev_78
+#DisplayOnly 0 # Main_RecrDev_79
+#DisplayOnly 0 # Main_RecrDev_80
+#DisplayOnly 0 # Main_RecrDev_81
+#DisplayOnly 0 # Main_RecrDev_82
+#DisplayOnly 0 # Main_RecrDev_83
+#DisplayOnly 0 # Main_RecrDev_84
+#DisplayOnly 0 # Main_RecrDev_85
+#DisplayOnly 0 # Main_RecrDev_86
+#DisplayOnly 0 # Main_RecrDev_87
+#DisplayOnly 0 # Main_RecrDev_88
+#DisplayOnly 0 # Main_RecrDev_89
+#DisplayOnly 0 # Main_RecrDev_90
+#DisplayOnly 0 # Main_RecrDev_91
+#DisplayOnly 0 # Main_RecrDev_92
+#DisplayOnly 0 # Main_RecrDev_93
+#DisplayOnly 0 # Main_RecrDev_94
+#DisplayOnly 0 # Main_RecrDev_95
+#DisplayOnly 0 # Main_RecrDev_96
+#DisplayOnly 0 # Main_RecrDev_97
+#DisplayOnly 0 # Main_RecrDev_98
+#DisplayOnly 0 # Main_RecrDev_99
+#DisplayOnly 0 # Main_RecrDev_100
 #
 #Fishing Mortality info 
 0.3 # F ballpark for annual F (=Z-M) for specified year
@@ -213,113 +213,113 @@
 # if Fmethod=3; read N iterations for tuning for Fmethod 3
  0.2 1 1 # overall start F value; overall phase; N detailed inputs to read
 #Fleet Year Seas F_value se phase (for detailed setup of F_Method=2)
- 1 1913 1 0.004 0.005 -1
+ 1 1 1 0.004 0.005 -1
 #
 #_initial_F_parms
 #_LO HI INIT PRIOR PR_type SD PHASE
- 0 2 0 0.01 0 99 -1 # InitF_1Fishery
+ 0 2 0 0.01 -1 99 -1 # InitF_1Fishery
 
 # F rates for Fmethod=2
-# 0.004 F_fleet_1_YR_1913_s_1
-# 0.008 F_fleet_1_YR_1914_s_1
-# 0.012 F_fleet_1_YR_1915_s_1
-# 0.016 F_fleet_1_YR_1916_s_1
-# 0.02 F_fleet_1_YR_1917_s_1
-# 0.024 F_fleet_1_YR_1918_s_1
-# 0.028 F_fleet_1_YR_1919_s_1
-# 0.032 F_fleet_1_YR_1920_s_1
-# 0.036 F_fleet_1_YR_1921_s_1
-# 0.04 F_fleet_1_YR_1922_s_1
-# 0.044 F_fleet_1_YR_1923_s_1
-# 0.048 F_fleet_1_YR_1924_s_1
-# 0.052 F_fleet_1_YR_1925_s_1
-# 0.056 F_fleet_1_YR_1926_s_1
-# 0.06 F_fleet_1_YR_1927_s_1
-# 0.064 F_fleet_1_YR_1928_s_1
-# 0.068 F_fleet_1_YR_1929_s_1
-# 0.072 F_fleet_1_YR_1930_s_1
-# 0.076 F_fleet_1_YR_1931_s_1
-# 0.08 F_fleet_1_YR_1932_s_1
-# 0.084 F_fleet_1_YR_1933_s_1
-# 0.088 F_fleet_1_YR_1934_s_1
-# 0.092 F_fleet_1_YR_1935_s_1
-# 0.096 F_fleet_1_YR_1936_s_1
-# 0.1 F_fleet_1_YR_1937_s_1
-# 0.104 F_fleet_1_YR_1938_s_1
-# 0.108 F_fleet_1_YR_1939_s_1
-# 0.112 F_fleet_1_YR_1940_s_1
-# 0.116 F_fleet_1_YR_1941_s_1
-# 0.12 F_fleet_1_YR_1942_s_1
-# 0.124 F_fleet_1_YR_1943_s_1
-# 0.128 F_fleet_1_YR_1944_s_1
-# 0.132 F_fleet_1_YR_1945_s_1
-# 0.136 F_fleet_1_YR_1946_s_1
-# 0.14 F_fleet_1_YR_1947_s_1
-# 0.144 F_fleet_1_YR_1948_s_1
-# 0.148 F_fleet_1_YR_1949_s_1
-# 0.152 F_fleet_1_YR_1950_s_1
-# 0.156 F_fleet_1_YR_1951_s_1
-# 0.16 F_fleet_1_YR_1952_s_1
-# 0.164 F_fleet_1_YR_1953_s_1
-# 0.168 F_fleet_1_YR_1954_s_1
-# 0.172 F_fleet_1_YR_1955_s_1
-# 0.176 F_fleet_1_YR_1956_s_1
-# 0.18 F_fleet_1_YR_1957_s_1
-# 0.184 F_fleet_1_YR_1958_s_1
-# 0.188 F_fleet_1_YR_1959_s_1
-# 0.192 F_fleet_1_YR_1960_s_1
-# 0.196 F_fleet_1_YR_1961_s_1
-# 0.2 F_fleet_1_YR_1962_s_1
-# 0.198 F_fleet_1_YR_1963_s_1
-# 0.196 F_fleet_1_YR_1964_s_1
-# 0.194 F_fleet_1_YR_1965_s_1
-# 0.192 F_fleet_1_YR_1966_s_1
-# 0.19 F_fleet_1_YR_1967_s_1
-# 0.188 F_fleet_1_YR_1968_s_1
-# 0.186 F_fleet_1_YR_1969_s_1
-# 0.184 F_fleet_1_YR_1970_s_1
-# 0.182 F_fleet_1_YR_1971_s_1
-# 0.18 F_fleet_1_YR_1972_s_1
-# 0.178 F_fleet_1_YR_1973_s_1
-# 0.176 F_fleet_1_YR_1974_s_1
-# 0.174 F_fleet_1_YR_1975_s_1
-# 0.172 F_fleet_1_YR_1976_s_1
-# 0.17 F_fleet_1_YR_1977_s_1
-# 0.168 F_fleet_1_YR_1978_s_1
-# 0.166 F_fleet_1_YR_1979_s_1
-# 0.164 F_fleet_1_YR_1980_s_1
-# 0.162 F_fleet_1_YR_1981_s_1
-# 0.16 F_fleet_1_YR_1982_s_1
-# 0.158 F_fleet_1_YR_1983_s_1
-# 0.156 F_fleet_1_YR_1984_s_1
-# 0.154 F_fleet_1_YR_1985_s_1
-# 0.152 F_fleet_1_YR_1986_s_1
-# 0.15 F_fleet_1_YR_1987_s_1
-# 0.148 F_fleet_1_YR_1988_s_1
-# 0.146 F_fleet_1_YR_1989_s_1
-# 0.144 F_fleet_1_YR_1990_s_1
-# 0.142 F_fleet_1_YR_1991_s_1
-# 0.14 F_fleet_1_YR_1992_s_1
-# 0.138 F_fleet_1_YR_1993_s_1
-# 0.136 F_fleet_1_YR_1994_s_1
-# 0.134 F_fleet_1_YR_1995_s_1
-# 0.132 F_fleet_1_YR_1996_s_1
-# 0.13 F_fleet_1_YR_1997_s_1
-# 0.128 F_fleet_1_YR_1998_s_1
-# 0.126 F_fleet_1_YR_1999_s_1
-# 0.124 F_fleet_1_YR_2000_s_1
-# 0.122 F_fleet_1_YR_2001_s_1
-# 0.12 F_fleet_1_YR_2002_s_1
-# 0.118 F_fleet_1_YR_2003_s_1
-# 0.116 F_fleet_1_YR_2004_s_1
-# 0.114 F_fleet_1_YR_2005_s_1
-# 0.112 F_fleet_1_YR_2006_s_1
-# 0.11 F_fleet_1_YR_2007_s_1
-# 0.108 F_fleet_1_YR_2008_s_1
-# 0.106 F_fleet_1_YR_2009_s_1
-# 0.104 F_fleet_1_YR_2010_s_1
-# 0.102 F_fleet_1_YR_2011_s_1
-# 0.1 F_fleet_1_YR_2012_s_1
+# 0.004 F_fleet_1_YR_1_s_1
+# 0.2 F_fleet_1_YR_2_s_1
+# 0.2 F_fleet_1_YR_3_s_1
+# 0.2 F_fleet_1_YR_4_s_1
+# 0.2 F_fleet_1_YR_5_s_1
+# 0.2 F_fleet_1_YR_6_s_1
+# 0.2 F_fleet_1_YR_7_s_1
+# 0.2 F_fleet_1_YR_8_s_1
+# 0.2 F_fleet_1_YR_9_s_1
+# 0.2 F_fleet_1_YR_10_s_1
+# 0.2 F_fleet_1_YR_11_s_1
+# 0.2 F_fleet_1_YR_12_s_1
+# 0.2 F_fleet_1_YR_13_s_1
+# 0.2 F_fleet_1_YR_14_s_1
+# 0.2 F_fleet_1_YR_15_s_1
+# 0.2 F_fleet_1_YR_16_s_1
+# 0.2 F_fleet_1_YR_17_s_1
+# 0.2 F_fleet_1_YR_18_s_1
+# 0.2 F_fleet_1_YR_19_s_1
+# 0.2 F_fleet_1_YR_20_s_1
+# 0.2 F_fleet_1_YR_21_s_1
+# 0.2 F_fleet_1_YR_22_s_1
+# 0.2 F_fleet_1_YR_23_s_1
+# 0.2 F_fleet_1_YR_24_s_1
+# 0.2 F_fleet_1_YR_25_s_1
+# 0.2 F_fleet_1_YR_26_s_1
+# 0.2 F_fleet_1_YR_27_s_1
+# 0.2 F_fleet_1_YR_28_s_1
+# 0.2 F_fleet_1_YR_29_s_1
+# 0.2 F_fleet_1_YR_30_s_1
+# 0.2 F_fleet_1_YR_31_s_1
+# 0.2 F_fleet_1_YR_32_s_1
+# 0.2 F_fleet_1_YR_33_s_1
+# 0.2 F_fleet_1_YR_34_s_1
+# 0.2 F_fleet_1_YR_35_s_1
+# 0.2 F_fleet_1_YR_36_s_1
+# 0.2 F_fleet_1_YR_37_s_1
+# 0.2 F_fleet_1_YR_38_s_1
+# 0.2 F_fleet_1_YR_39_s_1
+# 0.2 F_fleet_1_YR_40_s_1
+# 0.2 F_fleet_1_YR_41_s_1
+# 0.2 F_fleet_1_YR_42_s_1
+# 0.2 F_fleet_1_YR_43_s_1
+# 0.2 F_fleet_1_YR_44_s_1
+# 0.2 F_fleet_1_YR_45_s_1
+# 0.2 F_fleet_1_YR_46_s_1
+# 0.2 F_fleet_1_YR_47_s_1
+# 0.2 F_fleet_1_YR_48_s_1
+# 0.2 F_fleet_1_YR_49_s_1
+# 0.2 F_fleet_1_YR_50_s_1
+# 0.2 F_fleet_1_YR_51_s_1
+# 0.2 F_fleet_1_YR_52_s_1
+# 0.2 F_fleet_1_YR_53_s_1
+# 0.2 F_fleet_1_YR_54_s_1
+# 0.2 F_fleet_1_YR_55_s_1
+# 0.2 F_fleet_1_YR_56_s_1
+# 0.2 F_fleet_1_YR_57_s_1
+# 0.2 F_fleet_1_YR_58_s_1
+# 0.2 F_fleet_1_YR_59_s_1
+# 0.2 F_fleet_1_YR_60_s_1
+# 0.2 F_fleet_1_YR_61_s_1
+# 0.2 F_fleet_1_YR_62_s_1
+# 0.2 F_fleet_1_YR_63_s_1
+# 0.2 F_fleet_1_YR_64_s_1
+# 0.2 F_fleet_1_YR_65_s_1
+# 0.2 F_fleet_1_YR_66_s_1
+# 0.2 F_fleet_1_YR_67_s_1
+# 0.2 F_fleet_1_YR_68_s_1
+# 0.2 F_fleet_1_YR_69_s_1
+# 0.2 F_fleet_1_YR_70_s_1
+# 0.2 F_fleet_1_YR_71_s_1
+# 0.2 F_fleet_1_YR_72_s_1
+# 0.2 F_fleet_1_YR_73_s_1
+# 0.2 F_fleet_1_YR_74_s_1
+# 0.2 F_fleet_1_YR_75_s_1
+# 0.2 F_fleet_1_YR_76_s_1
+# 0.2 F_fleet_1_YR_77_s_1
+# 0.2 F_fleet_1_YR_78_s_1
+# 0.2 F_fleet_1_YR_79_s_1
+# 0.2 F_fleet_1_YR_80_s_1
+# 0.2 F_fleet_1_YR_81_s_1
+# 0.2 F_fleet_1_YR_82_s_1
+# 0.2 F_fleet_1_YR_83_s_1
+# 0.2 F_fleet_1_YR_84_s_1
+# 0.2 F_fleet_1_YR_85_s_1
+# 0.2 F_fleet_1_YR_86_s_1
+# 0.2 F_fleet_1_YR_87_s_1
+# 0.2 F_fleet_1_YR_88_s_1
+# 0.2 F_fleet_1_YR_89_s_1
+# 0.2 F_fleet_1_YR_90_s_1
+# 0.2 F_fleet_1_YR_91_s_1
+# 0.2 F_fleet_1_YR_92_s_1
+# 0.2 F_fleet_1_YR_93_s_1
+# 0.2 F_fleet_1_YR_94_s_1
+# 0.2 F_fleet_1_YR_95_s_1
+# 0.2 F_fleet_1_YR_96_s_1
+# 0.2 F_fleet_1_YR_97_s_1
+# 0.2 F_fleet_1_YR_98_s_1
+# 0.2 F_fleet_1_YR_99_s_1
+# 0.2 F_fleet_1_YR_100_s_1
 #
 #_Q_setup
  # Q_type options:  <0=mirror, 0=float_nobiasadj, 1=float_biasadj, 2=parm_nobiasadj, 3=parm_w_random_dev, 4=parm_w_randwalk, 5=mean_unbiased_float_assign_to_parm
@@ -339,8 +339,8 @@
 #_size_selex_types
 #discard_options:_0=none;_1=define_retention;_2=retention&mortality;_3=all_discarded_dead
 #_Pattern Discard Male Special
- 1 0 0 0 # 1 Fishery
- 1 0 0 0 # 2 Survey
+ 24 0 0 0 # 1 Fishery
+ 24 0 0 0 # 2 Survey
  15 0 0 1 # 3 CPUE
 #
 #_age_selex_types
@@ -349,10 +349,18 @@
  10 0 0 0 # 2 Survey
  10 0 0 0 # 3 CPUE
 #_LO HI INIT PRIOR PR_type SD PHASE env-var use_dev dev_minyr dev_maxyr dev_stddev Block Block_Fxn
- 20 150 38.18 0 -1 99 -1 0 0 0 0 0 0 0 # SizeSel_1P_1_Fishery
- 0 300 10.63 0 -1 99 -1 0 0 0 0 0 0 0 # SizeSel_1P_2_Fishery
- 20 150 30.54 0 -1 99 -1 0 0 0 0 0 0 0 # SizeSel_2P_1_Survey
- 0 300 10.63 0 -1 99 -1 0 0 0 0 0 0 0 # SizeSel_2P_2_Survey
+ 20 199 50.8 50.8 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_1P_1_Fishery
+ -5 3 -3 -3 -1 0.05 -99 0 0 0 0 0.5 0 0 # SizeSel_1P_2_Fishery
+ -4 12 5.1 5.1 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_1P_3_Fishery
+ -2 16 15 15 -1 0.05 -99 0 0 0 0 0.5 0 0 # SizeSel_1P_4_Fishery
+ -15 5 -999 -999 -1 0.05 -99 0 0 0 0 0.5 0 0 # SizeSel_1P_5_Fishery
+ -5 5 -999 -999 -1 0.05 -99 0 0 0 0 0.5 0 0 # SizeSel_1P_6_Fishery
+ 20 199 41.8 41.8 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_2P_1_Survey
+ -5 3 -4 -4 -1 0.05 -99 0 0 0 0 0.5 0 0 # SizeSel_2P_2_Survey
+ -4 12 5.2 5.2 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_2P_3_Survey
+ -2 15 14 14 -1 0.05 -99 0 0 0 0 0.5 0 0 # SizeSel_2P_4_Survey
+ -100 100 -99 -99 -1 0.05 -99 0 0 0 0 0.5 0 0 # SizeSel_2P_5_Survey
+ -100 100 99 99 -1 0.05 -99 0 0 0 0 0.5 0 0 # SizeSel_2P_6_Survey
 #_Cond 0 #_custom_sel-env_setup (0/1) 
 #_Cond -2 2 0 0 -1 99 -2 #_placeholder when no enviro fxns
 #_Cond 0 #_custom_sel-blk_setup (0/1) 

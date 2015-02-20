@@ -37,10 +37,10 @@
 #_growth_parms
 #_LO HI INIT PRIOR PR_type SD PHASE env-var use_dev dev_minyr dev_maxyr dev_stddev Block Block_Fxn
  0.01 1.8 0.2 0.1 -1 0.8 -3 0 0 0 0 0 0 0 # NatM_p_1_Fem_GP_1
- 10 80 20 30.8 -1 0.2 2 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1
- 25 250 132 120.1 -1 0.2 5 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1
- 0.01 2 0.2 0.25 -1 0.8 2 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1
- -0.01 0.5 0.1 0.1 -1 0.8 3 0 0 0 0 0 0 0 # CV_young_Fem_GP_1
+ 10 80 20 30.8 -1 0.2 4 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1
+ 25 250 132 120.1 -1 0.2 4 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1
+ 0.01 2 0.2 0.25 -1 0.8 4 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1
+ 0.01 0.5 0.1 0.1 -1 0.8 5 0 0 0 0 0 0 0 # CV_young_Fem_GP_1
  0.01 0.5 0.1 0.1 -1 0.8 5 0 0 0 0 0 0 0 # CV_old_Fem_GP_1
  0 3 6.8e-006 6.8e-006 -1 0 -1 0 0 0 0 0 0 0 # Wtlen_1_Fem
  2.5 3.5 3.101 3.101 -1 0.2 -3 0 0 0 0 0 0 0 # Wtlen_2_Fem
@@ -78,18 +78,18 @@
 0 #_SR_env_link
 0 #_SR_env_target_0=none;1=devs;_2=R0;_3=steepness
 1 #do_recdev:  0=none; 1=devvector; 2=simple deviations
-1913 # first year of main recr_devs; early devs can preceed this era
-2012 # last year of main recr_devs; forecast devs start in following year
+1 # first year of main recr_devs; early devs can preceed this era
+100 # last year of main recr_devs; forecast devs start in following year
 3 #_recdev phase 
 1 # (0/1) to read 13 advanced options
  0 #_recdev_early_start (0=none; neg value makes relative to recdev_start)
- 4 #_recdev_early_phase
+ -4 #_recdev_early_phase
  0 #_forecast_recruitment phase (incl. late recr) (0 value resets to maxphase+1)
  1 #_lambda for Fcast_recr_like occurring before endyr+1
- 1913 #_last_early_yr_nobias_adj_in_MPD
- 1938 #_first_yr_fullbias_adj_in_MPD
- 2011 #_last_yr_fullbias_adj_in_MPD
- 2012 #_first_recent_yr_nobias_adj_in_MPD
+1 #_last_early_yr_nobias_adj_in_MPD
+26 #_first_yr_fullbias_adj_in_MPD
+99 #_last_yr_fullbias_adj_in_MPD
+100 #_first_recent_yr_nobias_adj_in_MPD
  0.9 #_max_bias_adj_in_MPD (-1 to override ramp and set biasadj=1.0 for all estimated recdevs)
  0 #_period of cycles in recruitment (N parms read below)
  -5 #min rec_dev
@@ -100,108 +100,6 @@
 #_placeholder for full parameter lines for recruitment cycles
 # read specified recr devs
 #_Yr Input_value
-#
-# all recruitment deviations
-#DisplayOnly -0.000193251 # Main_RecrDev_1913
-#DisplayOnly -0.000219907 # Main_RecrDev_1914
-#DisplayOnly -0.00024943 # Main_RecrDev_1915
-#DisplayOnly -0.000281727 # Main_RecrDev_1916
-#DisplayOnly -0.000316737 # Main_RecrDev_1917
-#DisplayOnly -0.000354533 # Main_RecrDev_1918
-#DisplayOnly -0.000394802 # Main_RecrDev_1919
-#DisplayOnly -0.000434336 # Main_RecrDev_1920
-#DisplayOnly -0.000462075 # Main_RecrDev_1921
-#DisplayOnly -0.000457844 # Main_RecrDev_1922
-#DisplayOnly -0.000408261 # Main_RecrDev_1923
-#DisplayOnly -0.000147325 # Main_RecrDev_1924
-#DisplayOnly 1.82957e-005 # Main_RecrDev_1925
-#DisplayOnly 0.000142849 # Main_RecrDev_1926
-#DisplayOnly 0.000245431 # Main_RecrDev_1927
-#DisplayOnly 0.000333995 # Main_RecrDev_1928
-#DisplayOnly 0.000396369 # Main_RecrDev_1929
-#DisplayOnly 0.000429375 # Main_RecrDev_1930
-#DisplayOnly 0.000425643 # Main_RecrDev_1931
-#DisplayOnly 0.000388317 # Main_RecrDev_1932
-#DisplayOnly 0.000328332 # Main_RecrDev_1933
-#DisplayOnly 0.000267584 # Main_RecrDev_1934
-#DisplayOnly 0.000209587 # Main_RecrDev_1935
-#DisplayOnly 0.000182419 # Main_RecrDev_1936
-#DisplayOnly 0.000175448 # Main_RecrDev_1937
-#DisplayOnly 0.000158555 # Main_RecrDev_1938
-#DisplayOnly 0.000140047 # Main_RecrDev_1939
-#DisplayOnly 0.000125133 # Main_RecrDev_1940
-#DisplayOnly 0.000110227 # Main_RecrDev_1941
-#DisplayOnly 9.65057e-005 # Main_RecrDev_1942
-#DisplayOnly 8.36647e-005 # Main_RecrDev_1943
-#DisplayOnly 7.21212e-005 # Main_RecrDev_1944
-#DisplayOnly 6.11713e-005 # Main_RecrDev_1945
-#DisplayOnly 5.12205e-005 # Main_RecrDev_1946
-#DisplayOnly 4.19802e-005 # Main_RecrDev_1947
-#DisplayOnly 3.13273e-005 # Main_RecrDev_1948
-#DisplayOnly 2.23293e-005 # Main_RecrDev_1949
-#DisplayOnly 1.40657e-005 # Main_RecrDev_1950
-#DisplayOnly 4.63982e-006 # Main_RecrDev_1951
-#DisplayOnly -5.06588e-006 # Main_RecrDev_1952
-#DisplayOnly -1.32462e-005 # Main_RecrDev_1953
-#DisplayOnly -2.16869e-005 # Main_RecrDev_1954
-#DisplayOnly -3.16145e-005 # Main_RecrDev_1955
-#DisplayOnly -3.86877e-005 # Main_RecrDev_1956
-#DisplayOnly -4.69164e-005 # Main_RecrDev_1957
-#DisplayOnly -5.45077e-005 # Main_RecrDev_1958
-#DisplayOnly -6.04177e-005 # Main_RecrDev_1959
-#DisplayOnly -6.64068e-005 # Main_RecrDev_1960
-#DisplayOnly -6.95459e-005 # Main_RecrDev_1961
-#DisplayOnly -7.15742e-005 # Main_RecrDev_1962
-#DisplayOnly -7.41346e-005 # Main_RecrDev_1963
-#DisplayOnly -7.38758e-005 # Main_RecrDev_1964
-#DisplayOnly -7.55571e-005 # Main_RecrDev_1965
-#DisplayOnly -7.56829e-005 # Main_RecrDev_1966
-#DisplayOnly -7.50577e-005 # Main_RecrDev_1967
-#DisplayOnly -7.33485e-005 # Main_RecrDev_1968
-#DisplayOnly -7.16912e-005 # Main_RecrDev_1969
-#DisplayOnly -7.01707e-005 # Main_RecrDev_1970
-#DisplayOnly -6.77518e-005 # Main_RecrDev_1971
-#DisplayOnly -6.61729e-005 # Main_RecrDev_1972
-#DisplayOnly -6.24769e-005 # Main_RecrDev_1973
-#DisplayOnly -6.03945e-005 # Main_RecrDev_1974
-#DisplayOnly -5.58472e-005 # Main_RecrDev_1975
-#DisplayOnly -5.13201e-005 # Main_RecrDev_1976
-#DisplayOnly -4.86882e-005 # Main_RecrDev_1977
-#DisplayOnly -4.53195e-005 # Main_RecrDev_1978
-#DisplayOnly -4.28839e-005 # Main_RecrDev_1979
-#DisplayOnly -3.84671e-005 # Main_RecrDev_1980
-#DisplayOnly -3.40397e-005 # Main_RecrDev_1981
-#DisplayOnly -3.09285e-005 # Main_RecrDev_1982
-#DisplayOnly -2.64965e-005 # Main_RecrDev_1983
-#DisplayOnly -2.13275e-005 # Main_RecrDev_1984
-#DisplayOnly -1.72708e-005 # Main_RecrDev_1985
-#DisplayOnly -1.27423e-005 # Main_RecrDev_1986
-#DisplayOnly -9.05488e-006 # Main_RecrDev_1987
-#DisplayOnly -4.70768e-006 # Main_RecrDev_1988
-#DisplayOnly 9.7127e-007 # Main_RecrDev_1989
-#DisplayOnly 3.81424e-006 # Main_RecrDev_1990
-#DisplayOnly 9.37881e-006 # Main_RecrDev_1991
-#DisplayOnly 1.41082e-005 # Main_RecrDev_1992
-#DisplayOnly 1.82347e-005 # Main_RecrDev_1993
-#DisplayOnly 2.31298e-005 # Main_RecrDev_1994
-#DisplayOnly 2.78356e-005 # Main_RecrDev_1995
-#DisplayOnly 3.29796e-005 # Main_RecrDev_1996
-#DisplayOnly 3.81208e-005 # Main_RecrDev_1997
-#DisplayOnly 4.27315e-005 # Main_RecrDev_1998
-#DisplayOnly 4.36794e-005 # Main_RecrDev_1999
-#DisplayOnly 4.53593e-005 # Main_RecrDev_2000
-#DisplayOnly 4.80552e-005 # Main_RecrDev_2001
-#DisplayOnly 5.28929e-005 # Main_RecrDev_2002
-#DisplayOnly 5.79879e-005 # Main_RecrDev_2003
-#DisplayOnly 6.40295e-005 # Main_RecrDev_2004
-#DisplayOnly 6.88033e-005 # Main_RecrDev_2005
-#DisplayOnly 7.29695e-005 # Main_RecrDev_2006
-#DisplayOnly 7.85227e-005 # Main_RecrDev_2007
-#DisplayOnly 8.62028e-005 # Main_RecrDev_2008
-#DisplayOnly 0.000102571 # Main_RecrDev_2009
-#DisplayOnly 0.000136988 # Main_RecrDev_2010
-#DisplayOnly 7.63317e-005 # Main_RecrDev_2011
-#DisplayOnly -1.70226e-005 # Main_RecrDev_2012
 #
 #Fishing Mortality info 
 0.3 # F ballpark for annual F (=Z-M) for specified year
@@ -215,7 +113,7 @@
 #
 #_initial_F_parms
 #_LO HI INIT PRIOR PR_type SD PHASE
- 0 2 0 0.01 0 99 -1 # InitF_1Fishery
+ 0 2 0 0.01 -1 99 -1 # InitF_1Fishery
 #
 #_Q_setup
  # Q_type options:  <0=mirror, 0=float_nobiasadj, 1=float_biasadj, 2=parm_nobiasadj, 3=parm_w_random_dev, 4=parm_w_randwalk, 5=mean_unbiased_float_assign_to_parm
@@ -230,13 +128,13 @@
 # LO HI INIT PRIOR PR_type SD PHASE
  -3 3 0 0 -1 99 -5 # LnQ_base_1_Fishery
  -3 3 0 0 -1 99 5 # LnQ_base_2_SURVEY
- -3 3 0 0 -1 99 5 # LnQ_base_3_CPUE
+ -3 3 0 0 -1 99 -5 # LnQ_base_3_CPUE
 #
 #_size_selex_types
 #discard_options:_0=none;_1=define_retention;_2=retention&mortality;_3=all_discarded_dead
 #_Pattern Discard Male Special
- 1 0 0 0 # 1 Fishery
- 1 0 0 0 # 2 SURVEY
+ 24 0 0 0 # 1 Fishery
+ 24 0 0 0 # 2 Survey
  15 0 0 1 # 3 CPUE
 #
 #_age_selex_types
@@ -245,10 +143,18 @@
  10 0 0 0 # 2 SURVEY
  10 0 0 0 # 3 CPUE
 #_LO HI INIT PRIOR PR_type SD PHASE env-var use_dev dev_minyr dev_maxyr dev_stddev Block Block_Fxn
- 20 150 38.18 0 -1 99 2 0 0 0 0 0 0 0 # SizeSel_1P_1_Fishery
- 0 300 10.63 0 -1 99 3 0 0 0 0 0 0 0 # SizeSel_1P_2_Fishery
- 20 150 30.54 0 -1 99 2 0 0 0 0 0 0 0 # SizeSel_2P_1_SURVEY
- 0 300 10.63 0 -1 99 2 0 0 0 0 0 0 0 # SizeSel_2P_2_SURVEY
+ 20 250 50.8 50.8 -1 0.05 2 0 0 0 0 0 0 0 # SizeSel_1P_1_Fishery
+ -5 3 -3 -3 -1 0.05 -99 0 0 0 0 0 0 0 # SizeSel_1P_2_Fishery
+ -4 25 5.1 5.1 -1 0.05 3 0 0 0 0 0 0 0 # SizeSel_1P_3_Fishery
+ -2 16 15 15 -1 0.05 -99 0 0 0 0 0 0 0 # SizeSel_1P_4_Fishery
+ -15 5 -999 -999 -1 0.05 -99 0 0 0 0 0 0 0 # SizeSel_1P_5_Fishery
+ -5 5 -999 -999 -1 0.05 -99 0 0 0 0 0 0 0 # SizeSel_1P_6_Fishery
+ 20 199 41.8 41.8 -1 0.05 2 0 0 0 0 0 0 0 # SizeSel_2P_1_Survey
+ -5 3 -4 -4 -1 0.05 -99 0 0 0 0 0 0 0 # SizeSel_2P_2_Survey
+ -4 25 5.2 5.2 -1 0.05 3 0 0 0 0 0 0 0 # SizeSel_2P_3_Survey
+ -2 15 14 14 -1 0.05 -99 0 0 0 0 0 0 0 # SizeSel_2P_4_Survey
+ -100 100 -99 -99 -1 0.05 -99 0 0 0 0 0 0 0 # SizeSel_2P_5_Survey
+ -100 100 99 99 -1 0.05 -99 0 0 0 0 0 0 0 # SizeSel_2P_6_Survey
 #_Cond 0 #_custom_sel-env_setup (0/1) 
 #_Cond -2 2 0 0 -1 99 -2 #_placeholder when no enviro fxns
 #_Cond 0 #_custom_sel-blk_setup (0/1) 
