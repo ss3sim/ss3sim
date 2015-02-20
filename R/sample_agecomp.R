@@ -26,8 +26,8 @@
 #'
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
-#' f_in <- paste0(d, "/example-om/data.ss_new")
-#' datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+#' f_in <- paste0(d, "/models/cod-om/codOM.dat")
+#' datfile <- r4ss::SS_readdat(f_in, verbose = FALSE)
 #' datfile <- change_fltname(datfile)
 #'
 #' ## Turn off age comps by specifying fleets=NULL
@@ -37,14 +37,14 @@
 #'
 #' ## Generate with a smaller number of fleet taking samples
 #' ex1 <- sample_agecomp(datfile=datfile, outfile="test1.dat", fleets=c(2),
-#'                       Nsamp=list(c(10,50)), years=list(c(1999,2000)),
+#'                       Nsamp=list(c(10,50)), years=list(c(26,27)),
 #'                       write_file=FALSE)
 #'
 #' ## Generate with varying Nsamp by year for first fleet
 #' ex2 <- sample_agecomp(datfile=datfile, outfile="test2.dat", fleets=c(1,2),
 #'                       Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
-#'                       years=list(seq(1994, 2012, by=2),
-#'                           2003:2012), write_file=FALSE)
+#'                       years=list(seq(26, 44, 2),
+#'                           c(26:100)), write_file=FALSE)
 #'
 #' \dontrun{
 #' ## Run three  cases showing Multinomial, Dirichlet(1) and over-dispersed

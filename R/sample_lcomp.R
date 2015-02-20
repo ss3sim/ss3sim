@@ -19,20 +19,20 @@
 #'
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
-#' f_in <- paste0(d, "/example-om/data.ss_new")
-#' datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+#' f_in <- paste0(d, "/models/cod-om/codOM.dat")
+#' datfile <- r4ss::SS_readdat(f_in, verbose = FALSE)
 #' datfile <- change_fltname(datfile)
 #'
 #' ## Generate with constant sample size across years
 #' ex1 <- sample_lcomp(datfile=datfile, outfile="test1.dat", fleets=c(1,2),
-#'                     Nsamp=list(100,50), years=list(seq(1994, 2012, by=2),
-#'                                             2003:2012), write_file = FALSE)
+#'                     Nsamp=list(100,50), years=list(seq(26, 100, by=2),
+#'                                             80:100), write_file = FALSE)
 #'
 #' ## Generate with varying Nsamp by year for first fleet
 #' ex2 <- sample_lcomp(datfile=datfile, outfile="test2.dat", fleets=c(1,2),
 #'                     Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
-#'                     years=list(seq(1994, 2012, by=2),
-#'                         2003:2012), write_file = FALSE)
+#'                     years=list(seq(26, 44, by=2),
+#'                         80:100), write_file = FALSE)
 #'
 #' \dontrun{
 #' ## Plot distributions for a particular year to compare multinomial

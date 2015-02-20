@@ -86,17 +86,17 @@ for the EM.
 }
 \examples{
 temp_path <- file.path(tempdir(), "ss3sim-test")
-  dir.create(temp_path, showWarnings = FALSE)
-  wd <- getwd()
-  setwd(temp_path)
+dir.create(temp_path, showWarnings = FALSE)
+wd <- getwd()
+setwd(temp_path)
 d <- system.file("extdata/models/cod-om", package = "ss3sim")
-  dat_in <- file.path(d, "codOM.dat")
-  datfile <- r4ss::SS_readdat(dat_in, section = 2, verbose = FALSE)
-  datfile <- change_fltname(datfile)
-  datfile <- change_data(datfile, outfile = NULL, write_file = FALSE,
-    fleets = 1, years = 1990:2010, types = c("age", "mla"))
-  datfile <- change_fltname(datfile)
-  ctlfile <- file.path(d, "codOM.ctl")
+dat_in <- file.path(d, "codOM.dat")
+datfile <- r4ss::SS_readdat(dat_in, verbose = FALSE)
+datfile <- change_fltname(datfile)
+datfile <- change_data(datfile, outfile = NULL, write_file = FALSE,
+  fleets = 1, years = 1990:2010, types = c("age", "mla"))
+datfile <- change_fltname(datfile)
+ctlfile <- file.path(d, "codOM.ctl")
 
 out <- sample_mlacomp(datfile, outfile = NULL, ctlfile = ctlfile,
                       fleets = 1, Nsamp = 30, years = list(1992),
