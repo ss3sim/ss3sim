@@ -365,5 +365,5 @@ check_data <- function(x) {
   ## if (!identical(x$CPUE$year, expected_index_years)) {
   ##   stop(paste("The SS3 data file must contain (dummy) index data for all years",
   ##     "for both fleet 1 (the fishery) and fleet 3 (CPUE)"))
-  }
+  ## }
 }
