@@ -361,9 +361,9 @@ check_data <- function(x) {
     stop(paste("Ageing error definition values must all be set to 0.001 in the",
       "SS3 data file"))
 
-  expected_index_years <- as.numeric(rep(seq(x$styr, x$endyr), 2))
-  if (!identical(x$CPUE$year, expected_index_years)) {
-    stop(paste("The SS3 data file must contain (dummy) index data for all years",
-      "for both fleet 1 (the fishery) and fleet 3 (CPUE)"))
+  ## expected_index_years <- as.numeric(rep(seq(x$styr, x$endyr), 2))
+  ## if (!identical(x$CPUE$year, expected_index_years)) {
+  ##   stop(paste("The SS3 data file must contain (dummy) index data for all years",
+  ##     "for both fleet 1 (the fishery) and fleet 3 (CPUE)"))
   }
 }
