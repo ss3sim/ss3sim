@@ -1,4 +1,4 @@
-fleets; c(1, 2)
-Nsamp; list(100, 100)
-years; list(1938:2012, seq(1974,2012,by=2))
-cpar; c(NA, NA)
+fleets; NULL
+Nsamp; NULL
+years; NULL
+cpar; NULL
