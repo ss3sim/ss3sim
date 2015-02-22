@@ -227,7 +227,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
         foreach(it_ = iterations, .packages = "ss3sim",
           .verbose = TRUE, .export = "substr_r") %dopar% {
             do.call("ss3sim_base",  c(x, list(iterations = it_,
-              bias_already_run = FALSE), dots))}
+              bias_already_run = TRUE), dots))}
       })
     } else {
       message("Running scenarios in parallel.")
