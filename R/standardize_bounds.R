@@ -21,6 +21,10 @@
 #' @param em_ctl_file A string with the name of the estimation model
 #'   control file. \code{em_ctl_file} must be located in \code{dir}.
 #' @param verbose Detailed output to command line. Default is \code{FALSE}.
+#' @param estimate A logical for which changed parameters are to be estimated.
+#'   Used by \link{\code{r4ss::SS_changepars}}, where in \pkg{r4ss} the default
+#'   is \code{FALSE}, which turns all parameter estimation off. Here the default
+#'   is \code{NULL}, which will leave parameter phases unchanged.
 #' @param ... Any other arguments to pass to \code{\link[r4ss]{SS_changepars}}.
 #' @importFrom r4ss SS_parlines SS_changepars
 #' @export
@@ -60,7 +64,7 @@
 #' }
 
 standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
-                               verbose = FALSE, ...) {
+                               verbose = FALSE, estimate = NULL, ...) {
   # Check that EM file exists
   if (!file.exists(file.path(dir, em_ctl_file))) {
     stop(paste("The em_ctl_file,", em_ctl_file, "does not exist",
@@ -177,7 +181,7 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
       percent_df[grep("Ln", percent_df$Label, ignore.case = TRUE), 2]
     newhis[grep("Ln", percent_df$Label, ignore.case = TRUE)] <-
     percent_df[grep("Ln", percent_df$Label, ignore.case = TRUE), 3]
-    
+
     #Same for CV
     newlos[grep("CV", percent_df$Label, ignore.case = TRUE)] <-
       percent_df[grep("CV", percent_df$Label, ignore.case = TRUE), 2]
@@ -186,7 +190,7 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
 
     SS_changepars(dir=dir,ctlfile=em_ctl_file,newctlfile=em_ctl_file,
       linenums = em_pars[indexem, "Linenum"],
-      newlos=newlos,newhis=newhis, verbose = verbose, estimate=NULL, ...)
+      newlos=newlos,newhis=newhis, verbose = verbose, estimate = estimate, ...)
 
     }
 

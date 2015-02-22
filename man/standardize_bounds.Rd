@@ -5,7 +5,7 @@
 \title{Standardize the bounds of the estimation model control file.}
 \usage{
 standardize_bounds(percent_df, dir, em_ctl_file, om_ctl_file = "",
-  verbose = FALSE, ...)
+  verbose = FALSE, estimate = NULL, ...)
 }
 \arguments{
   \item{percent_df}{A \code{data.frame} with nine rows and
@@ -29,6 +29,13 @@ standardize_bounds(percent_df, dir, em_ctl_file, om_ctl_file = "",
 
   \item{verbose}{Detailed output to command line. Default
   is \code{FALSE}.}
+
+  \item{estimate}{A logical for which changed parameters
+  are to be estimated. Used by
+  \link{\code{r4ss::SS_changepars}}, where in \pkg{r4ss}
+  the default is \code{FALSE}, which turns all parameter
+  estimation off. Here the default is \code{NULL}, which
+  will leave parameter phases unchanged.}
 
   \item{...}{Any other arguments to pass to
   \code{\link[r4ss]{SS_changepars}}.}
