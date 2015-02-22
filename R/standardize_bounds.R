@@ -22,7 +22,7 @@
 #'   control file. \code{em_ctl_file} must be located in \code{dir}.
 #' @param verbose Detailed output to command line. Default is \code{FALSE}.
 #' @param estimate A logical for which changed parameters are to be estimated.
-#'   Used by \link{\code{r4ss::SS_changepars}}, where in \pkg{r4ss} the default
+#'   Used by \code{\link[r4ss]{SS_changepars}}, where in \pkg{r4ss} the default
 #'   is \code{FALSE}, which turns all parameter estimation off. Here the default
 #'   is \code{NULL}, which will leave parameter phases unchanged.
 #' @param ... Any other arguments to pass to \code{\link[r4ss]{SS_changepars}}.
