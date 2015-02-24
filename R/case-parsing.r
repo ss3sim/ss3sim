@@ -124,12 +124,8 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
   case_vals <- names(case_files)
 
   # take the text before the last hyphen:
-  spp <- substr(scenario, max(grep("-", strsplit(scenario,
-    NULL)[[1]]))+1, nchar(scenario))
-
-  if(grepl("^[A-Z][0-9]+$", spp)) {
-    message(paste("Using", spp, "as the stock ID.\n"))
-  }
+  spp <- substr(scenario, max(grep("[0-9]",
+    strsplit(scenario, NULL)[[1]])) + 2, nchar(scenario))
 
   # remove the stock ID from the scenario:
   scenario <- substr(scenario, 1, nchar(scenario) - nchar(spp) - 1)
