@@ -307,12 +307,12 @@ get_results_scenario <- function(scenario, directory=getwd(),
         ## parse the scenarios into columns for plotting later
         scenario.scalar <-
             data.frame(do.call(rbind, strsplit(as.character(scalar$scenario),
-                                               "-")), stringsAsFactors=FALSE)
+            "[0-9]+-")), stringsAsFactors=FALSE)
         names(scenario.scalar) <-
             c(substr(as.vector(as.character(
                 scenario.scalar[1,-ncol(scenario.scalar)])), 1,1) ,"species")
         scenario.ts <-
-            data.frame(do.call(rbind, strsplit(as.character(ts$scenario), "-")),
+            data.frame(do.call(rbind, strsplit(as.character(ts$scenario), "[0-9]+-")),
                        row.names=row.names(ts), stringsAsFactors=FALSE)
         names(scenario.ts) <-
             c(substr(as.vector(as.character(
