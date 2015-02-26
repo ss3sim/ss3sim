@@ -11,7 +11,7 @@
 #'                    color="max_grad", rel=TRUE )
 plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL,
              vert=NULL, vert2=NULL, color=NULL,
-             relative.error=FALSE, axes.free=TRUE){
+             relative.error=FALSE, axes.free=TRUE, print=TRUE){
     ## Verify the inputs are correct, throws informative error if not
     verify_plot_arguments(data=data, x=x, y=y, horiz=horiz, horiz2=horiz2,
                           vert=vert, vert2=vert2, color=color,
@@ -35,10 +35,10 @@ plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL,
     if(!is.null(form))
         g <- g+facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))
     ## Print and return the plot object
-    print(g)
+    if(print) print(g)
     return(invisible(g))
 }
-#' Plot scalar values as boxplots.
+#' Print scalar values as boxplots.
 #'
 #' @template plot-functions
 #' @export
@@ -49,7 +49,7 @@ plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #' plot_scalar_boxplot(scalar_dat, x='E', y="depletion", horiz='D',rel=TRUE )
 plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
                                 vert=NULL, vert2=NULL,
-                                relative.error=FALSE, axes.free=TRUE){
+                                relative.error=FALSE, axes.free=TRUE, print=TRUE){
     ## Verify the inputs are correct, throws informative error if not
     verify_plot_arguments(data=data, x=x, y=y, horiz=horiz, horiz2=horiz2,
                           vert=vert, vert2=vert2, color=NULL,
@@ -66,7 +66,7 @@ plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
                         outlier.colour=rgb(0,0,0,.5))
     if(!is.null(form))
         g <- g + facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))
-    print(g)
+        if(print) print(g)
     return(invisible(g))
 }
 #' Plot timeseries values as boxplots.
@@ -83,7 +83,7 @@ plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #' }
 plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                             vert2=NULL, relative.error=FALSE,
-                            axes.free=TRUE){
+                            axes.free=TRUE, print=TRUE){
     ## Verify the inputs are correct, throws informative error if not
     verify_plot_arguments(data=data, x=NULL, y=y, horiz=horiz, horiz2=horiz2,
                           vert=vert, vert2=vert2, color=NULL,
@@ -101,7 +101,7 @@ plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                         outlier.size=.8, fatten=3)
     if(!is.null(form))
         g <- g+ facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))
-    print(g)
+        if(print) print(g)
     return(invisible(g))
 }
 #' Plot timeseries values as points.
@@ -118,7 +118,7 @@ plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #'                color='max_grad')
 plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                            vert2=NULL, relative.error=FALSE, color=NULL,
-                           axes.free=TRUE){
+                           axes.free=TRUE, print=TRUE){
     ## Verify the inputs are correct, throws informative error if not
     verify_plot_arguments(data=data, x=NULL, y=y, horiz=horiz, horiz2=horiz2,
                           vert=vert, vert2=vert2, color=color,
@@ -142,7 +142,7 @@ plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))+
                    scale_color_gradient(low="black", high="red")
     }
-    print(g)
+        if(print) print(g)
     return(invisible(g))
 }
 #' Plot timeseries values as lines.
@@ -158,7 +158,7 @@ plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' plot_ts_lines(ts_dat, y="SpawnBio", horiz='D', vert='E', rel=TRUE, color='max_grad')
 plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                            vert2=NULL, relative.error=FALSE, color=NULL,
-                           axes.free=TRUE){
+                           axes.free=TRUE, print=TRUE){
     ## Verify the inputs are correct, throws informative error if not
     verify_plot_arguments(data=data, x=NULL, y=y, horiz=horiz, horiz2=horiz2,
                           vert=vert, vert2=vert2, color=color,
@@ -180,7 +180,7 @@ plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
                   facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))+
                    scale_color_gradient(low="black", high="red")
     }
-    print(g)
+    if(print) print(g)
     return(invisible(g))
 }
 
