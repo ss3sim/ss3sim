@@ -96,10 +96,10 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
     stop(paste("_Ngenders is greater than 1 in the model.",
       "change_em_binning only works with single-gender models."))
   }
-  if (!identical(as.integer(max(bin_vector)), as.integer(max(datfile$lbin_vector)))) {
-    stop(paste("The maximum value in the bin_vector is not equal to the",
-      "original maximum length bin value."))
-  }
+  ## if (!identical(as.integer(max(bin_vector)), as.integer(max(datfile$lbin_vector)))) {
+  ##   stop(paste("The maximum value in the bin_vector is not equal to the",
+  ##     "original maximum length bin value."))
+  ## }
   if(!identical(as.integer(min(bin_vector)), as.integer(min(datfile$lbin_vector)))) {
     stop(paste("The minimum value in the bin_vector is not equal to the",
       "original maximum length bin value."))
