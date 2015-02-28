@@ -126,10 +126,7 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
     keep <- sapply(par_name[changeinits], grep, names(change_e_vbgf),
       ignore.case = TRUE)
     par_int[changeinits] <- unlist(change_e_vbgf)[keep]
-      par_int <- sapply(par_int, function(x) {
-        if(!is.na(x)) {as.numeric(x)
-        }else{x}
-        })
+    par_int[!is.na(par_int)] <- as.numeric(par_int[!is.na(par_int)])
   }
   # Determine how many genders the model has
   gen <- grep("NatM", ss3.ctl, value = TRUE)
