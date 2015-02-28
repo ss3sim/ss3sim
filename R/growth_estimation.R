@@ -56,7 +56,8 @@ sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
     start = list(logL1 = log(start.L1), logL2 = log(start.L2),
       logk = log(start.k), logcv.old = log(start.cv.old),
       logcv.young=log(start.cv.young)))
-  if(mod@details$convergence == 1){
+  if(mod@details$convergence == 1 |
+     grepl("Error", mod@coef[1], ignore.case = TRUE)){
     out <- list("L1" = 999, "L2" = 999, "K" = 999, "cv.young" = 999, "cv.old" = 999)
   } else {
     #Put estimated coefficients in EM terms

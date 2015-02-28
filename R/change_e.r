@@ -125,12 +125,6 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
         start.cv.young = with(pars, INIT[Label == "CV_young_Fem_GP_1"]),
         start.cv.old = with(pars, INIT[Label == "CV_old_Fem_GP_1"]),
         a3 = min(data$age), A = max(data$age)), silent = TRUE)
-    # If the estimation routine fails place fix par values at 999
-    if (grepl("Error", change_e_vbgf[1], ignore.case = TRUE)) {
-      change_e_vbgf <- list(L1 = 999, L2 = 999, K = 999, cv.young = 999,
-                            cv.old = 999)
-    }
-
     #Get par estimates and append them to par_name par_int and par_phase
     changeinits <- which(par_int == "change_e_vbgf")
     ss3names <- par_name[changeinits]
