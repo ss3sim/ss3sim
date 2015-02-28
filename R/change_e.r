@@ -117,15 +117,13 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
                                        "CV_old_Fem_GP_1"),
                             "change_e_vbgf" = c("L1", "L2", "K", "cv.young", "cv.old"))
     pars <- SS_parlines(ctl_file_in, verbose = FALSE)
-    start.pars <- sapply(parsmatch$true, function(x) {
-      temp <- pars[pars$Label == x, ]["INIT"]
-      names(temp) <- parsmatch$change_e_vbgf[substitute(x)[[3]]]
-      return(temp)
-      })
     change_e_vbgf <- try(
-      sample_fit_vbgf(length.data = data, start.L1 = start.pars$L1,
-        start.L2 = start.pars$L2, start.k = start.pars$K,
-        start.cv.young = start.pars$cv.young, start.cv.old = start.pars$cv.old,
+      sample_fit_vbgf(length.data = data,
+        start.L1 = with(pars, INIT[Label == "L_at_Amin_Fem_GP_1"]),
+        start.L2 = with(pars, INIT[Label == "L_at_Amax_Fem_GP_1"]),
+        start.k  = with(pars, INIT[Label == "VonBert_K_Fem_GP_1"]),
+        start.cv.young = with(pars, INIT[Label == "CV_young_Fem_GP_1"]),
+        start.cv.old = with(pars, INIT[Label == "CV_old_Fem_GP_1"]),
         a3 = min(data$age), A = max(data$age)), silent = TRUE)
     # If the estimation routine fails place fix par values at 999
     if (grepl("Error", change_e_vbgf[1], ignore.case = TRUE)) {
