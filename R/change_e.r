@@ -111,8 +111,6 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
   #Run external estimator for growth if needed
   if(any(grepl("change_e_vbgf", par_int))) {
     data <- read.csv(dir(pattern = "vbgf"), header = TRUE)
-    true.cv <- unlist(strsplit(grep("CV_young", ss3.ctl, value = TRUE), " "))
-    true.cv <- as.numeric(true.cv[-(which(true.cv == ""))][3])
   #Get start values
     parsmatch <- data.frame("true" = c("L_at_Amin_Fem_GP_1", "L_at_Amax_Fem_GP_1",
                                        "VonBert_K_Fem_GP_1", "CV_young_Fem_GP_1",
