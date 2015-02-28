@@ -112,10 +112,6 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
   if(any(grepl("change_e_vbgf", par_int))) {
     data <- read.csv(dir(pattern = "vbgf"), header = TRUE)
   #Get start values
-    parsmatch <- data.frame("true" = c("L_at_Amin_Fem_GP_1", "L_at_Amax_Fem_GP_1",
-                                       "VonBert_K_Fem_GP_1", "CV_young_Fem_GP_1",
-                                       "CV_old_Fem_GP_1"),
-                            "change_e_vbgf" = c("L1", "L2", "K", "cv.young", "cv.old"))
     pars <- SS_parlines(ctl_file_in, verbose = FALSE)
     change_e_vbgf <- try(
       sample_fit_vbgf(length.data = data,
@@ -127,12 +123,9 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
         a3 = min(data$age), A = max(data$age)), silent = TRUE)
     #Get par estimates and append them to par_name par_int and par_phase
     changeinits <- which(par_int == "change_e_vbgf")
-    ss3names <- par_name[changeinits]
-    #This is if the output is parameter names
-    par_int[changeinits] <- as.numeric(unlist(change_e_vbgf[
-      match(parsmatch$change_e_vbgf[sapply(ss3names, grep, parsmatch$true)],
-            names(change_e_vbgf))]))
-
+    keep <- sapply(par_name[changeinits], grep, names(change_e_vbgf),
+      ignore.case = TRUE)
+    par_int[changeinits] <- unlist(change_e_vbgf)[keep]
       par_int <- sapply(par_int, function(x) {
         if(!is.na(x)) {as.numeric(x)
         }else{x}
