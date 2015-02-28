@@ -244,7 +244,6 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
               }
    		}
   }
-  if(is.null(par_name)) writeLines(ss3.ctl, ctl_file_out)
 }
 
 changeMe <- function(grepChar, intVal, phaseVal, ctlIn = ss3.ctl) {
