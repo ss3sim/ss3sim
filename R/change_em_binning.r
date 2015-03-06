@@ -16,6 +16,14 @@
 #' @param lbin_method A numeric value of either \code{NULL, 1, 2, 3} to change
 #'   the lbin_method for the population bin. Only supports either \code{NULL, 1,
 #'   2} at the moment. \code{NULL} means to keep it unchanged.
+#' @param pop_binwidth *Population length bin width. Only necessary for
+#' \code{lbin_method=2}. Note that this value must be smaller than the bin
+#' width specified in length composition data \code{len_bins} or SS3 will
+#' fail (see notes in the SS3 manual).
+#' @param pop_minimum_size *Population minimum length bin value. 'Only
+#' necessary for \code{lbin_method=2}
+#' @param pop_maximum_size *Population maximum length bin value. Only
+#' necessary for \code{lbin_method=2}
 #' @param write_file Should the \code{.dat} file be written? The new \code{.dat}
 #'   file will always be returned invisibly by the function. Setting
 #'   \code{write_file = FALSE} can be useful for testing. Note that you must
@@ -68,7 +76,8 @@
 #' newdat$agecomp
 
 change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
-  write_file = TRUE) {
+                              pop_binwidth=NULL, pop_minimum_size=NULL,
+                              pop_maximum_size=NULL, write_file = TRUE) {
 
   ## If lbin_method is NULL then don't do anything
   if (is.null(lbin_method)) return(NULL)
@@ -85,9 +94,15 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
     warning(paste("length(bin_vector) == 1; are you sure you",
       "input a full numeric vector of bins and not a bin size?"))
   }
+  ## verify correct pop bin specification
   if (!is.null(lbin_method)) {
-    if (lbin_method > 2)
-      stop("lbin_method method should be either NULL, 1 or 2")
+      ## If you implement method 3 need to alter code below
+      if(lbin_method==1 & !all(is.null(pop_binwidth) & is.null(pop_minimum_size) & is.null(pop_maximum_size)))
+          warning("lbin_method=1 so pop bin parameters ignored and data bins used")
+      if(lbin_method==2 & any(is.null(pop_binwidth), is.null(pop_minimum_size), is.null(pop_maximum_size)))
+          stop("you must specify all pop bin parameters if using lbin_method=2")
+      if (lbin_method > 2)
+          stop("lbin_method method should be either NULL, 1 or 2; 3 is not currently implemented")
   }
   if (is.null(datfile$lencomp)) {
     stop("no lcomp data. Verify your case argument files")
@@ -165,14 +180,19 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
   datfile$lbin_vector <- bin_vector
   datfile$N_lbins <- length(datfile$lbin_vector)
 
-  # change the lbin_method
+  # change the lbin_method, if it's NULL leave it as is
   if (!is.null(lbin_method)) {
+      ## otherwise if 1 it will use the data bins and requires no more
+      ## input
     if (lbin_method == 1) {
       datfile$lbin_method <- lbin_method
       datfile$binwidth <- NULL
       datfile$minimum_size <- NULL
       datfile$maximum_size <- NULL
-    }
+  } else {
+      ## it is 2 so we  need to specify width, min and max
+      datfile <- change_pop_bin(datfile, binwidth = pop_binwidth, minimum_size = pop_minimum_size, maximum_size = pop_maximum_size)
+  }
   }
 
   # Re-bin conditional age-at-length comps:
