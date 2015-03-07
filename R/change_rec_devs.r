@@ -31,7 +31,7 @@ change_rec_devs <- function(recdevs_new, file_in="ss3.par",
   pattern <- "# recdev1"
 
   if(!file.exists(file_in)) stop(paste("File", file_in,"not found"))
-  par <- readLines(file_in)
+  par <- readLines(file_in, warn = FALSE)
   which.line <- grep(pattern=pattern, x=par)+1
 
   ## grab the old ones, note there is a leading space that needs to be
