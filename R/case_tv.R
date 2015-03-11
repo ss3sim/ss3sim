@@ -42,7 +42,7 @@ case_tv <- function(species, parameter, perc_change, outfile,
     stop(paste("The outfile must end in a numeric character."))
   }
 
-  #Modify Linf by percentage
+  #Modify by percentage
   ctl <- file.path(dir_models, species, "om", "ss3.ctl")
   pars <- lapply(ctl, SS_parlines)
   val <- lapply(pars, function(x) x[grep(parameter, x$Label), "INIT"])
