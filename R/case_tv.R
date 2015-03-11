@@ -14,6 +14,8 @@
 #' @param dir_models The path where the models are stored, such that
 #'   \code{file.path(dir_models, species, "om", "ss3.ctl")} leads to valid
 #'   \code{ss3.ctl} operating model files.
+#' @param nyears The length time-series included in the model. The length of
+#'   \code{perc_change} must equal \code{nyears}.
 #' @param verbose Useful for debugging to print output to screen. Default is
 #'   \code{FALSE}.
 #'
@@ -21,14 +23,13 @@
 #' @author Peter Kuriyama
 #'
 #' @examples
-#' write_tv(species = c("cod", "yellow"), parameter = "NatM_p_1_Fem_GP_1",
-#'   perc_change = rep(0.5, 100), outfile = "G1",
-#'   dir_out = ".", verbose = TRUE)
+#' case_tv(species = c("cod", "yellow"), parameter = "NatM_p_1_Fem_GP_1",
+#'   perc_change = rep(0.5, 100), outfile = "G1", nyears = 100,
+#'   dir_out = getwd(), verbose = TRUE)
 
 case_tv <- function(species, parameter, perc_change, outfile,
-  dir_out = "cases",
-  dir_models = system.file("models", package = "ss3models"),
-  verbose = FALSE) {
+  dir_out = "cases", dir_models = system.file("models", package = "ss3models"),
+  nyears = 100, verbose = FALSE) {
 
   if (! file.exists(dir_out)) {
     stop(paste("The directory", dir_out, "does not exist."))
@@ -45,6 +46,10 @@ case_tv <- function(species, parameter, perc_change, outfile,
   ctl <- file.path(dir_models, species, "om", "ss3.ctl")
   pars <- lapply(ctl, SS_parlines)
   val <- lapply(pars, function(x) x[grep(parameter, x$Label), "INIT"])
+
+  if (length(perc_change) != nyears) {
+    stop(paste("perc_change must have length of", nyears))
+  }
 
   if (verbose) {
   message(paste("OM parameter value(s) are:",
