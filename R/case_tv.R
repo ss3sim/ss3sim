@@ -57,7 +57,7 @@ case_tv <- function(species, parameter, perc_change, outfile,
   }
 
   #Create vector of deviates
-  dev <- lapply(val, function(x) x + x * perc_change  - x)
+  dev <- lapply(val, function(x) x * perc_change)
 
   #Prep output for file
   dev <- lapply(dev, paste0, collapse = ", ")
