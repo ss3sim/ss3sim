@@ -28,12 +28,14 @@ case_comp(fleets = 1, Nsamp = NULL, years = NULL, cpar = 2, type, case,
   \code{"M"}.}
 
   \item{spp}{A vector of character values argument
-  specifying the species'. case_comp(fleets = 1:2, case =
-  30, spp = "cod", Nsamp = list(rep(high,
-  length(all.fish)), rep(high, length(all.surv))), years =
-  list(all.fish, all.surv), cpar = 2:1, type = "agecomp"))}
+  specifying the species'.}
 }
 \description{
 Write a case file for length- or age-composition data
+}
+\examples{
+case_comp(fleets = 1:2, case = 30, spp = "cod",
+  Nsamp = list(rep(10, 40), rep(10, 25)),
+  years = list(61:100, 76:100), cpar = 2:1, type = "agecomp")
 }
 
