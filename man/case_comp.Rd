@@ -37,6 +37,6 @@ Write a case file for length- or age-composition data
 case_comp(fleets = 1:2, case = 30, spp = "cod",
   Nsamp = list(rep(10, 40), rep(10, 25)),
   years = list(61:100, 76:100), cpar = 2:1, type = "agecomp")
-file.remove("agecomp30-cod.txt")
+done <- file.remove("agecomp30-cod.txt")
 }
 

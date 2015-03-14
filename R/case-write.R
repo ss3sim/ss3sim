@@ -15,7 +15,7 @@
 #' case_comp(fleets = 1:2, case = 30, spp = "cod",
 #'   Nsamp = list(rep(10, 40), rep(10, 25)),
 #'   years = list(61:100, 76:100), cpar = 2:1, type = "agecomp")
-#' file.remove("agecomp30-cod.txt")
+#' done <- file.remove("agecomp30-cod.txt")
 case_comp <- function(fleets = 1, Nsamp = NULL, years = NULL, cpar = 2,
   type, case, spp) {
 
@@ -56,6 +56,23 @@ case_comp <- function(fleets = 1, Nsamp = NULL, years = NULL, cpar = 2,
 #' @importFrom r4ss SS_parlines
 #' @author Peter Kuriyama
 #' @export
+#' @examples
+#' temp_path <- file.path(tempdir(), "cod")
+#' dir.create(temp_path, showWarnings = FALSE)
+#'
+#' d <- system.file("extdata", package = "ss3sim")
+#'
+#' om <- file.path(d, "models", "cod-om")
+#' ig <- file.copy(om, temp_path, recursive = TRUE)
+#' ig <- file.rename(file.path(temp_path, "cod-om"), file.path(temp_path, "om"))
+#' verify_input(file.path(temp_path, "om"), type = "om")
+#' ig <- file.rename(file.path(temp_path, "om", "om.ctl"),
+#'   file.path(temp_path, "om", "ss3.ctl"))
+#' case_tv(species = "cod", parameter = "NatM_p_1_Fem_GP_1",
+#' perc_change = rep(0.5, 100), outfile = "G1",
+#' dir_out = temp_path, dir_models = gsub("/cod", "", temp_path),
+#' nyears = 100, verbose = TRUE)
+#' unlink(temp_path, recursive = TRUE)
 case_tv <- function(species, parameter, perc_change, outfile,
   dir_out = "cases", dir_models = system.file("models", package = "ss3models"),
   nyears = 100, verbose = FALSE) {
