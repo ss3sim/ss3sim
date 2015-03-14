@@ -55,11 +55,6 @@ case_comp <- function(fleets = 1, Nsamp = NULL, years = NULL, cpar = 2,
 #' @importFrom r4ss SS_parlines
 #' @author Peter Kuriyama
 #' @export
-#'
-#' @examples
-#' case_tv(species = "cod", parameter = "NatM_p_1_Fem_GP_1",
-#'   perc_change = rep(0.5, 100), outfile = "G1", nyears = 100,
-#'   dir_out = getwd(), verbose = TRUE)
 case_tv <- function(species, parameter, perc_change, outfile,
   dir_out = "cases", dir_models = system.file("models", package = "ss3models"),
   nyears = 100, verbose = FALSE) {
