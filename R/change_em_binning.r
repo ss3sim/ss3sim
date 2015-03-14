@@ -115,10 +115,10 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
   ##   stop(paste("The maximum value in the bin_vector is not equal to the",
   ##     "original maximum length bin value."))
   ## }
-  if(!identical(as.integer(min(bin_vector)), as.integer(min(datfile$lbin_vector)))) {
-    stop(paste("The minimum value in the bin_vector is not equal to the",
-      "original maximum length bin value."))
-  }
+  ## if(!identical(as.integer(min(bin_vector)), as.integer(min(datfile$lbin_vector)))) {
+  ##   stop(paste("The minimum value in the bin_vector is not equal to the",
+  ##     "original maximum length bin value."))
+  ## }
   if (any(!is_divisible(bin_vector, by_ = datfile$binwidth)) ) {
     stop(paste("One or more of the values in bin_vector are not divisible by",
       "the population binwidth specified in the SS3 data file."))
