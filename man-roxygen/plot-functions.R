@@ -34,4 +34,5 @@
 #' red line at y=0 is added.
 #' @param axes.free Boolean for whether the y-axis scales should be free
 #' in \code{facet_grid}.
+#' @param print A logical for whether the plot is printed or not.
 #' @author Cole Monnahan

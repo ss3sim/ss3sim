@@ -38,6 +38,9 @@ plot_scalar_boxplot(data, x, y, horiz = NULL, horiz2 = NULL, vert = NULL,
 
   \item{axes.free}{Boolean for whether the y-axis scales
   should be free in \code{facet_grid}.}
+
+  \item{print}{A logical for whether the plot is printed or
+  not.}
 }
 \description{
 Print scalar values as boxplots.
@@ -68,7 +71,7 @@ replicate.
 }
 \examples{
 scalar_dat$depletion <- with(scalar_dat, (depletion_om-depletion_em)/depletion_om)
-plot_scalar_boxplot(scalar_dat, x='E', y="depletion", horiz='D',rel=TRUE )
+plot_scalar_boxplot(scalar_dat, x='E', y="depletion", horiz='D',rel=TRUE,print=FALSE )
 }
 \author{
 Cole Monnahan

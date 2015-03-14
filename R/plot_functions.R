@@ -15,7 +15,7 @@ plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL,
     ## Verify the inputs are correct, throws informative error if not
     verify_plot_arguments(data=data, x=x, y=y, horiz=horiz, horiz2=horiz2,
                           vert=vert, vert2=vert2, color=color,
-                          relative.error=relative.error, axes.free=axes.free)
+                          relative.error=relative.error, axes.free=axes.free, print = print)
     ## Build up the ggplot object
     g <- ggplot(data=data)
     if(relative.error){
@@ -46,14 +46,14 @@ plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #' @template plot-functions-x
 #' @examples
 #' scalar_dat$depletion <- with(scalar_dat, (depletion_om-depletion_em)/depletion_om)
-#' plot_scalar_boxplot(scalar_dat, x='E', y="depletion", horiz='D',rel=TRUE )
+#' plot_scalar_boxplot(scalar_dat, x='E', y="depletion", horiz='D',rel=TRUE,print=FALSE )
 plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
                                 vert=NULL, vert2=NULL,
                                 relative.error=FALSE, axes.free=TRUE, print=TRUE){
     ## Verify the inputs are correct, throws informative error if not
     verify_plot_arguments(data=data, x=x, y=y, horiz=horiz, horiz2=horiz2,
                           vert=vert, vert2=vert2, color=NULL,
-                          relative.error=relative.error, axes.free=axes.free)
+                          relative.error=relative.error, axes.free=axes.free, print = print)
     ## Build up the ggplot object
     g <- ggplot(data=data)
     if(relative.error){
@@ -87,7 +87,7 @@ plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
     ## Verify the inputs are correct, throws informative error if not
     verify_plot_arguments(data=data, x=NULL, y=y, horiz=horiz, horiz2=horiz2,
                           vert=vert, vert2=vert2, color=NULL,
-                          relative.error=relative.error, axes.free=axes.free)
+                          relative.error=relative.error, axes.free=axes.free, print = print)
     ## Build up the ggplot object
     g <- ggplot(data=data, aes_string(x="year"))+ xlab("Year")
     if(relative.error){
@@ -122,7 +122,7 @@ plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
     ## Verify the inputs are correct, throws informative error if not
     verify_plot_arguments(data=data, x=NULL, y=y, horiz=horiz, horiz2=horiz2,
                           vert=vert, vert2=vert2, color=color,
-                          relative.error=relative.error, axes.free=axes.free)
+                          relative.error=relative.error, axes.free=axes.free, print = print)
     ## Build up the ggplot object
     g <- ggplot(data=data, aes_string(x="year"))+ xlab("Year")
     if(relative.error){
@@ -162,7 +162,7 @@ plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
     ## Verify the inputs are correct, throws informative error if not
     verify_plot_arguments(data=data, x=NULL, y=y, horiz=horiz, horiz2=horiz2,
                           vert=vert, vert2=vert2, color=color,
-                          relative.error=relative.error, axes.free=axes.free)
+                          relative.error=relative.error, axes.free=axes.free, print = print)
     ## Build up the ggplot object
     g <- ggplot(data=data, aes_string(x="year"))+ xlab("Year")
     if(relative.error){
@@ -246,7 +246,7 @@ facet_form <- function(horiz=NULL, horiz2=NULL, vert=NULL, vert2=NULL){
 #' @return Nothing is returned; an informative error is throw if an
 #' argument is invalid.
 verify_plot_arguments <- function(data, x, y, horiz, horiz2, vert, vert2,
-                                  color, relative.error, axes.free){
+  color, relative.error, axes.free, print){
     if(!is.data.frame(data))
         stop("data must be data.frame")
     else if(nrow(data)<2)
@@ -281,5 +281,6 @@ verify_plot_arguments <- function(data, x, y, horiz, horiz2, vert, vert2,
     }
     stopifnot(is.logical(relative.error))
     stopifnot(is.logical(axes.free))
+    stopifnot(is.logical(print))
     ## No need to return anything, throws an error if something wrong
 }

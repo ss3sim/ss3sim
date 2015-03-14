@@ -34,6 +34,9 @@ plot_ts_boxplot(data, y, horiz = NULL, horiz2 = NULL, vert = NULL,
 
   \item{axes.free}{Boolean for whether the y-axis scales
   should be free in \code{facet_grid}.}
+
+  \item{print}{A logical for whether the plot is printed or
+  not.}
 }
 \description{
 Plot timeseries values as boxplots.
