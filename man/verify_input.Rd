@@ -46,6 +46,7 @@ file.copy(em, temp_path, recursive = TRUE)
 # Verify the correct files exist and change file names:
 verify_input(model_dir = paste0(temp_path, "/cod-om"), type = "om")
 verify_input(model_dir = paste0(temp_path, "/cod-em"), type = "em")
+unlink(temp_path, recursive = TRUE)
 }
 \author{
 Curry James Cunningham; modified by Sean Anderson
