@@ -1,3 +1,36 @@
+#' Write a case file for length- or age-composition data
+#'
+#' @param fleets Vector of fleet numbers, where the order of
+#'   \code{fleets} will dictate the order of all remaining arguments.
+#' @param Nsamp A list containing vectors of sample sizes for each
+#'   year for each fleet.
+#' @param years A list containing vectors of years for each year for each fleet.
+#' @param cpar A vector of cpar for each fleet.
+#' @param type A character value of \code{"agecomp"} or \code{"lcomp"},
+#'   to write age- or length-composition specifications, respectively.
+#' @param case The case you want to write to. E.g. \code{"M"}.
+#' @param spp A vector of character values argument specifying the species'.
+# @examples
+#'case_comp(fleets = 1:2, case = 30, spp = "cod",
+#'  Nsamp = list(rep(high, length(all.fish)), rep(high, length(all.surv))),
+#'  years = list(all.fish, all.surv), cpar = 2:1, type = "agecomp"))
+
+case_comp <- function(fleets = 1, Nsamp = NULL, years = NULL, cpar = 2,
+  type, case, spp) {
+
+  old <- options()$"deparse.cutoff"
+  options(deparse.cutoff = 500L)
+  on.exit(options(deparse.cutoff = old))
+
+  for (ind in seq_along(spp)){
+    filename <- paste0(type, case, "-", spp[ind], ".txt")
+    write(c("fleets;", case_deparse(fleets)), ncolumns = 2, filename)
+    write(c("Nsamp;", case_deparse(Nsamp)), ncolumns = 2, filename, append = TRUE)
+    write(c("years;", case_deparse(years)), ncolumns = 2, filename, append = TRUE)
+    write(c("cpar;", case_deparse(cpar)), ncolumns = 2, filename, append = TRUE)
+  }
+}
+
 #' Write time varying casefiles to the disk
 #'
 #' @param species A vector of species, for which a unique case file will be
@@ -69,3 +102,24 @@ case_tv <- function(species, parameter, perc_change, outfile,
     con = file.path(dir_out, paste0(outfile, "-", species[ind], ".txt")))
   }
 }
+
+#' Turn an argument describing an object into a character.
+#' @details Includes checks to make sure multiple lines will not be created.
+#' @param x The argument you would like to \code{deparse}.
+#'   \code{"M1-F1-D1-R1"}
+#' @return A single character value.
+case_deparse <- function(x) {
+  temp <- deparse(x)
+  if (length(temp) > 1) {
+    temp <- paste(temp, collapse = "")
+    temp <- gsub(" ", "", temp)
+    temp <- gsub("\"", "", deparse(temp))
+    if (length(temp) > 1) {
+      stop(paste("Number of characters of", x, "was greater than",
+        "500, which is not allowed in the case writing functions",
+        "for ss3sim."))
+    } else return(temp)
+  }
+  return(temp)
+}
+
