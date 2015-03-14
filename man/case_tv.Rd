@@ -43,7 +43,7 @@ case_tv(species, parameter, perc_change, outfile, dir_out = "cases",
 Write time varying casefiles to the disk
 }
 \examples{
-case_tv(species = c("cod", "yellow"), parameter = "NatM_p_1_Fem_GP_1",
+case_tv(species = "cod", parameter = "NatM_p_1_Fem_GP_1",
   perc_change = rep(0.5, 100), outfile = "G1", nyears = 100,
   dir_out = getwd(), verbose = TRUE)
 }
