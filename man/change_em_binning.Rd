@@ -6,6 +6,7 @@
 model}
 \usage{
 change_em_binning(datfile, file_out, bin_vector, lbin_method = NULL,
+  pop_binwidth = NULL, pop_minimum_size = NULL, pop_maximum_size = NULL,
   write_file = TRUE)
 }
 \arguments{
@@ -22,6 +23,18 @@ change_em_binning(datfile, file_out, bin_vector, lbin_method = NULL,
   1, 2, 3} to change the lbin_method for the population
   bin. Only supports either \code{NULL, 1, 2} at the
   moment. \code{NULL} means to keep it unchanged.}
+
+  \item{pop_binwidth}{*Population length bin width. Only
+  necessary for \code{lbin_method=2}. Note that this value
+  must be smaller than the bin width specified in length
+  composition data \code{len_bins} or SS3 will fail (see
+  notes in the SS3 manual).}
+
+  \item{pop_minimum_size}{*Population minimum length bin
+  value. 'Only necessary for \code{lbin_method=2}}
+
+  \item{pop_maximum_size}{*Population maximum length bin
+  value. Only necessary for \code{lbin_method=2}}
 
   \item{write_file}{Should the \code{.dat} file be written?
   The new \code{.dat} file will always be returned

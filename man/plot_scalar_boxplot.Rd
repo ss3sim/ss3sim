@@ -2,10 +2,10 @@
 % Please edit documentation in R/plot_functions.R
 \name{plot_scalar_boxplot}
 \alias{plot_scalar_boxplot}
-\title{Plot scalar values as boxplots.}
+\title{Print scalar values as boxplots.}
 \usage{
 plot_scalar_boxplot(data, x, y, horiz = NULL, horiz2 = NULL, vert = NULL,
-  vert2 = NULL, relative.error = FALSE, axes.free = TRUE)
+  vert2 = NULL, relative.error = FALSE, axes.free = TRUE, print = TRUE)
 }
 \arguments{
   \item{data}{A valid data frame containing scalar or
@@ -40,7 +40,7 @@ plot_scalar_boxplot(data, x, y, horiz = NULL, horiz2 = NULL, vert = NULL,
   should be free in \code{facet_grid}.}
 }
 \description{
-Plot scalar values as boxplots.
+Print scalar values as boxplots.
 }
 \details{
 The \pkg{ss3sim} plotting functions are simply wrappers for

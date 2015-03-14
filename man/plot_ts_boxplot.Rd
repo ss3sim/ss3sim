@@ -5,7 +5,7 @@
 \title{Plot timeseries values as boxplots.}
 \usage{
 plot_ts_boxplot(data, y, horiz = NULL, horiz2 = NULL, vert = NULL,
-  vert2 = NULL, relative.error = FALSE, axes.free = TRUE)
+  vert2 = NULL, relative.error = FALSE, axes.free = TRUE, print = TRUE)
 }
 \arguments{
   \item{data}{A valid data frame containing scalar or

@@ -5,7 +5,8 @@
 \title{Plot timeseries values as points.}
 \usage{
 plot_ts_points(data, y, horiz = NULL, horiz2 = NULL, vert = NULL,
-  vert2 = NULL, relative.error = FALSE, color = NULL, axes.free = TRUE)
+  vert2 = NULL, relative.error = FALSE, color = NULL, axes.free = TRUE,
+  print = TRUE)
 }
 \arguments{
   \item{data}{A valid data frame containing scalar or
