@@ -77,9 +77,10 @@ replicate.
   return it invisibly for saving or printing again later.
 }
 \examples{
-scalar_dat$depletion <- with(scalar_dat, (depletion_om-depletion_em)/depletion_om)
-plot_scalar_points(scalar_dat, x='E', y="depletion", horiz='D',
-                   color="max_grad", rel=TRUE )
+scalar_dat$depletion <- with(scalar_dat,
+  (depletion_om - depletion_em) / depletion_om)
+plot_scalar_points(scalar_dat, x = "E", y = "depletion", horiz = 'D',
+  color = "max_grad", relative.error = TRUE)
 }
 \author{
 Cole Monnahan

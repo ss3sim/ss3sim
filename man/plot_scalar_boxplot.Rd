@@ -70,8 +70,10 @@ replicate.
   return it invisibly for saving or printing again later.
 }
 \examples{
-scalar_dat$depletion <- with(scalar_dat, (depletion_om-depletion_em)/depletion_om)
-plot_scalar_boxplot(scalar_dat, x='E', y="depletion", horiz='D',rel=TRUE,print=FALSE )
+scalar_dat$depletion <- with(scalar_dat,
+  (depletion_om - depletion_em) / depletion_om)
+plot_scalar_boxplot(scalar_dat, x = "E", y = "depletion", horiz = "D",
+  relative.error = TRUE)
 }
 \author{
 Cole Monnahan

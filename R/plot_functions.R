@@ -6,16 +6,16 @@
 #' @template plot-functions-x
 #' @template plot-functions-color
 #' @examples
-#' scalar_dat$depletion <- with(scalar_dat, (depletion_om-depletion_em)/depletion_om)
-#' plot_scalar_points(scalar_dat, x='E', y="depletion", horiz='D',
-#'                    color="max_grad", rel=TRUE )
-plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL,
-             vert=NULL, vert2=NULL, color=NULL,
-             relative.error=FALSE, axes.free=TRUE, print=TRUE){
+#' scalar_dat$depletion <- with(scalar_dat,
+#'   (depletion_om - depletion_em) / depletion_om)
+#' plot_scalar_points(scalar_dat, x = "E", y = "depletion", horiz = 'D',
+#'   color = "max_grad", relative.error = TRUE)
+plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL, vert=NULL,
+  vert2=NULL, color=NULL, relative.error=FALSE, axes.free=TRUE, print=TRUE) {
     ## Verify the inputs are correct, throws informative error if not
-    verify_plot_arguments(data=data, x=x, y=y, horiz=horiz, horiz2=horiz2,
-                          vert=vert, vert2=vert2, color=color,
-                          relative.error=relative.error, axes.free=axes.free, print = print)
+    verify_plot_arguments(data = data, x = x, y = y, horiz = horiz,
+      horiz2 = horiz2, vert = vert, vert2 = vert2, color = color,
+      relative.error = relative.error, axes.free = axes.free, print = print)
     ## Build up the ggplot object
     g <- ggplot(data=data)
     if(relative.error){
@@ -45,15 +45,16 @@ plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #' @import ggplot2
 #' @template plot-functions-x
 #' @examples
-#' scalar_dat$depletion <- with(scalar_dat, (depletion_om-depletion_em)/depletion_om)
-#' plot_scalar_boxplot(scalar_dat, x='E', y="depletion", horiz='D',rel=TRUE,print=FALSE )
+#' scalar_dat$depletion <- with(scalar_dat,
+#'   (depletion_om - depletion_em) / depletion_om)
+#' plot_scalar_boxplot(scalar_dat, x = "E", y = "depletion", horiz = "D",
+#'   relative.error = TRUE)
 plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
-                                vert=NULL, vert2=NULL,
-                                relative.error=FALSE, axes.free=TRUE, print=TRUE){
+  vert=NULL, vert2=NULL, relative.error=FALSE, axes.free=TRUE, print=TRUE) {
     ## Verify the inputs are correct, throws informative error if not
-    verify_plot_arguments(data=data, x=x, y=y, horiz=horiz, horiz2=horiz2,
-                          vert=vert, vert2=vert2, color=NULL,
-                          relative.error=relative.error, axes.free=axes.free, print = print)
+    verify_plot_arguments(data = data, x = x, y = y, horiz = horiz,
+      horiz2 = horiz2, vert = vert, vert2 = vert2, color = NULL,
+      relative.error = relative.error, axes.free = axes.free, print = print)
     ## Build up the ggplot object
     g <- ggplot(data=data)
     if(relative.error){
@@ -79,15 +80,15 @@ plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #' ts_dat$SpawnBio <- with(ts_dat, (SpawnBio_om-SpawnBio_em)/SpawnBio_om)
 #' # Merge in max_grad, a performance metric, to use for color
 #' ts_dat <- merge(scalar_dat[, c("ID", "max_grad")], ts_dat)
-#' plot_ts_boxplot(ts_dat, y="SpawnBio", horiz='D',vert='E', rel=TRUE )
+#' plot_ts_boxplot(ts_dat, y = "SpawnBio", horiz = "D", vert = "E",
+#'   relative.error = TRUE)
 #' }
 plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
-                            vert2=NULL, relative.error=FALSE,
-                            axes.free=TRUE, print=TRUE){
+  vert2=NULL, relative.error=FALSE, axes.free=TRUE, print=TRUE) {
     ## Verify the inputs are correct, throws informative error if not
-    verify_plot_arguments(data=data, x=NULL, y=y, horiz=horiz, horiz2=horiz2,
-                          vert=vert, vert2=vert2, color=NULL,
-                          relative.error=relative.error, axes.free=axes.free, print = print)
+    verify_plot_arguments(data = data, x = NULL, y = y, horiz = horiz,
+      horiz2 = horiz2, vert = vert, vert2 = vert2, color = NULL,
+      relative.error = relative.error, axes.free = axes.free, print = print)
     ## Build up the ggplot object
     g <- ggplot(data=data, aes_string(x="year"))+ xlab("Year")
     if(relative.error){
@@ -114,15 +115,14 @@ plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' ts_dat$SpawnBio <- with(ts_dat, (SpawnBio_om-SpawnBio_em)/SpawnBio_om)
 #' # Merge in max_grad, a performance metric, to use for color
 #' ts_dat <- merge(scalar_dat[, c("ID", "max_grad")], ts_dat)
-#' plot_ts_points(ts_dat, y="SpawnBio", horiz='D', vert='E', rel=TRUE,
-#'                color='max_grad')
+#' plot_ts_points(ts_dat, y = "SpawnBio", horiz = "D", vert = "E",
+#'   relative.error = TRUE, color = "max_grad")
 plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
-                           vert2=NULL, relative.error=FALSE, color=NULL,
-                           axes.free=TRUE, print=TRUE){
+  vert2=NULL, relative.error=FALSE, color=NULL, axes.free=TRUE, print=TRUE) {
     ## Verify the inputs are correct, throws informative error if not
-    verify_plot_arguments(data=data, x=NULL, y=y, horiz=horiz, horiz2=horiz2,
-                          vert=vert, vert2=vert2, color=color,
-                          relative.error=relative.error, axes.free=axes.free, print = print)
+    verify_plot_arguments(data = data, x = NULL, y = y, horiz = horiz,
+      horiz2 = horiz2, vert = vert, vert2 = vert2, color = color,
+      relative.error = relative.error, axes.free = axes.free, print = print)
     ## Build up the ggplot object
     g <- ggplot(data=data, aes_string(x="year"))+ xlab("Year")
     if(relative.error){
@@ -155,14 +155,14 @@ plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' ts_dat$SpawnBio <- with(ts_dat, (SpawnBio_om-SpawnBio_em)/SpawnBio_om)
 #' # Merge in max_grad, a performance metric, to use for color
 #' ts_dat <- merge(scalar_dat[, c("ID", "max_grad")], ts_dat)
-#' plot_ts_lines(ts_dat, y="SpawnBio", horiz='D', vert='E', rel=TRUE, color='max_grad')
+#' plot_ts_lines(ts_dat, y = "SpawnBio", horiz = "D", vert = "E",
+#'   relative.error = TRUE, color = "max_grad")
 plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
-                           vert2=NULL, relative.error=FALSE, color=NULL,
-                           axes.free=TRUE, print=TRUE){
+  vert2=NULL, relative.error=FALSE, color=NULL, axes.free=TRUE, print=TRUE) {
     ## Verify the inputs are correct, throws informative error if not
-    verify_plot_arguments(data=data, x=NULL, y=y, horiz=horiz, horiz2=horiz2,
-                          vert=vert, vert2=vert2, color=color,
-                          relative.error=relative.error, axes.free=axes.free, print = print)
+    verify_plot_arguments(data = data, x = NULL, y = y, horiz = horiz,
+      horiz2 = horiz2, vert = vert, vert2 = vert2, color = color,
+      relative.error = relative.error, axes.free = axes.free, print = print)
     ## Build up the ggplot object
     g <- ggplot(data=data, aes_string(x="year"))+ xlab("Year")
     if(relative.error){
@@ -199,7 +199,7 @@ plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' @return A formula which can be used in \code{facet_grid}, or NULL if all
 #' arguments are NULL
 
-facet_form <- function(horiz=NULL, horiz2=NULL, vert=NULL, vert2=NULL){
+facet_form <- function(horiz=NULL, horiz2=NULL, vert=NULL, vert2=NULL) {
     h <- !is.null(horiz)
     h2 <- !is.null(horiz2)
     v <- !is.null(vert)
@@ -246,7 +246,7 @@ facet_form <- function(horiz=NULL, horiz2=NULL, vert=NULL, vert2=NULL){
 #' @return Nothing is returned; an informative error is throw if an
 #' argument is invalid.
 verify_plot_arguments <- function(data, x, y, horiz, horiz2, vert, vert2,
-  color, relative.error, axes.free, print){
+  color, relative.error, axes.free, print) {
     if(!is.data.frame(data))
         stop("data must be data.frame")
     else if(nrow(data)<2)
