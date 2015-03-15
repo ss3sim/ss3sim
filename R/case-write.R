@@ -80,7 +80,7 @@ case_tv <- function(species, parameter, perc_change, outfile,
   if (! file.exists(dir_out)) {
     stop(paste("The directory", dir_out, "does not exist."))
   }
-  if (!any(species %in% dir(system.file("models", package = "ss3models")))) {
+  if (!any(species %in% dir(dir_models))) {
     stop(paste("One of the species does not exist as specified in the folder",
       system.file("models", package = "ss3models")))
   }
