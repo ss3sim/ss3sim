@@ -5,7 +5,7 @@
 \title{A helper function to check the correct input for the plotting functions.}
 \usage{
 verify_plot_arguments(data, x, y, horiz, horiz2, vert, vert2, color,
-  relative.error, axes.free)
+  relative.error, axes.free, print)
 }
 \arguments{
   \item{data}{A valid data frame containing scalar or
@@ -44,6 +44,9 @@ verify_plot_arguments(data, x, y, horiz, horiz2, vert, vert2, color,
 
   \item{axes.free}{Boolean for whether the y-axis scales
   should be free in \code{facet_grid}.}
+
+  \item{print}{A logical for whether the plot is printed or
+  not.}
 }
 \value{
 Nothing is returned; an informative error is throw if an

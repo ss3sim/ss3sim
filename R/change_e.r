@@ -111,42 +111,22 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
   #Run external estimator for growth if needed
   if(any(grepl("change_e_vbgf", par_int))) {
     data <- read.csv(dir(pattern = "vbgf"), header = TRUE)
-    true.cv <- unlist(strsplit(grep("CV_young", ss3.ctl, value = TRUE), " "))
-    true.cv <- as.numeric(true.cv[-(which(true.cv == ""))][3])
   #Get start values
-    parsmatch <- data.frame("true" = c("L_at_Amin_Fem_GP_1", "L_at_Amax_Fem_GP_1",
-                                       "VonBert_K_Fem_GP_1", "CV_young_Fem_GP_1",
-                                       "CV_old_Fem_GP_1"),
-                            "change_e_vbgf" = c("L1", "L2", "K", "cv.young", "cv.old"))
     pars <- SS_parlines(ctl_file_in, verbose = FALSE)
-    start.pars <- sapply(parsmatch$true, function(x) {
-      temp <- pars[pars$Label == x, ]["INIT"]
-      names(temp) <- parsmatch$change_e_vbgf[substitute(x)[[3]]]
-      return(temp)
-      })
     change_e_vbgf <- try(
-      sample_fit_vbgf(length.data = data, start.L1 = start.pars$L1,
-        start.L2 = start.pars$L2, start.k = start.pars$K,
-        start.cv.young = start.pars$cv.young, start.cv.old = start.pars$cv.old,
+      sample_fit_vbgf(length.data = data,
+        start.L1 = with(pars, INIT[Label == "L_at_Amin_Fem_GP_1"]),
+        start.L2 = with(pars, INIT[Label == "L_at_Amax_Fem_GP_1"]),
+        start.k  = with(pars, INIT[Label == "VonBert_K_Fem_GP_1"]),
+        start.cv.young = with(pars, INIT[Label == "CV_young_Fem_GP_1"]),
+        start.cv.old = with(pars, INIT[Label == "CV_old_Fem_GP_1"]),
         a3 = min(data$age), A = max(data$age)), silent = TRUE)
-    # If the estimation routine fails place fix par values at 999
-    if (grepl("Error", change_e_vbgf[1], ignore.case = TRUE)) {
-      change_e_vbgf <- list(L1 = 999, L2 = 999, K = 999, cv.young = 999,
-                            cv.old = 999)
-    }
-
     #Get par estimates and append them to par_name par_int and par_phase
     changeinits <- which(par_int == "change_e_vbgf")
-    ss3names <- par_name[changeinits]
-    #This is if the output is parameter names
-    par_int[changeinits] <- as.numeric(unlist(change_e_vbgf[
-      match(parsmatch$change_e_vbgf[sapply(ss3names, grep, parsmatch$true)],
-            names(change_e_vbgf))]))
-
-      par_int <- sapply(par_int, function(x) {
-        if(!is.na(x)) {as.numeric(x)
-        }else{x}
-        })
+    keep <- sapply(par_name[changeinits], grep, names(change_e_vbgf),
+      ignore.case = TRUE)
+    par_int[changeinits] <- unlist(change_e_vbgf)[keep]
+    par_int[!is.na(par_int)] <- as.numeric(par_int[!is.na(par_int)])
   }
   # Determine how many genders the model has
   gen <- grep("NatM", ss3.ctl, value = TRUE)
@@ -264,7 +244,6 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
               }
    		}
   }
-  if(is.null(par_name)) writeLines(ss3.ctl, ctl_file_out)
 }
 
 changeMe <- function(grepChar, intVal, phaseVal, ctlIn = ss3.ctl) {

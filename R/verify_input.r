@@ -33,6 +33,7 @@
 #' # Verify the correct files exist and change file names:
 #' verify_input(model_dir = paste0(temp_path, "/cod-om"), type = "om")
 #' verify_input(model_dir = paste0(temp_path, "/cod-em"), type = "em")
+#' unlink(temp_path, recursive = TRUE)
 
 verify_input <- function(model_dir, type = c("om", "em")) {
 

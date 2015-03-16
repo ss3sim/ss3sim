@@ -56,16 +56,20 @@ sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
     start = list(logL1 = log(start.L1), logL2 = log(start.L2),
       logk = log(start.k), logcv.old = log(start.cv.old),
       logcv.young=log(start.cv.young)))
-  if(mod@details$convergence == 1){
-    out <- list("L1" = 999, "L2" = 999, "K" = 999, "cv.young" = 999, "cv.old" = 999)
+  if(mod@details$convergence == 1 |
+     grepl("Error", mod@coef[1], ignore.case = TRUE)){
+    out <- list("L_at_Amin_Fem_GP_1" = 999, "L_at_Amax_Fem_GP_1" = 999,
+      "VonBert_K_Fem_GP_1" = 999, "CV_young_Fem_GP_1" = 999,
+      "CV_old_Fem_GP_1" = 999)
   } else {
     #Put estimated coefficients in EM terms
     expCoef <- exp(mod@coef)
     cv.young <- expCoef[5]
     cv.old <- expCoef[4]
     L.inf<-expCoef[1]+(expCoef[2]-expCoef[1])/(1-exp(-expCoef[3]*(A-a3)))
-    out <- list("L1" = expCoef[1], "L2" = L.inf,
-      "K" = expCoef[3], "cv.young" = cv.young, "cv.old" = cv.old)
+    out <- list("L_at_Amin_Fem_GP_1" = expCoef[1], "L_at_Amax_Fem_GP_1" = L.inf,
+      "VonBert_K_Fem_GP_1" = expCoef[3], "CV_young_Fem_GP_1" = cv.young,
+      "CV_old_Fem_GP_1" = cv.old)
   }
   out
 }

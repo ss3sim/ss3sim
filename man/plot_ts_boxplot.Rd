@@ -34,6 +34,9 @@ plot_ts_boxplot(data, y, horiz = NULL, horiz2 = NULL, vert = NULL,
 
   \item{axes.free}{Boolean for whether the y-axis scales
   should be free in \code{facet_grid}.}
+
+  \item{print}{A logical for whether the plot is printed or
+  not.}
 }
 \description{
 Plot timeseries values as boxplots.
@@ -67,7 +70,8 @@ replicate.
 ts_dat$SpawnBio <- with(ts_dat, (SpawnBio_om-SpawnBio_em)/SpawnBio_om)
 # Merge in max_grad, a performance metric, to use for color
 ts_dat <- merge(scalar_dat[, c("ID", "max_grad")], ts_dat)
-plot_ts_boxplot(ts_dat, y="SpawnBio", horiz='D',vert='E', rel=TRUE )
+plot_ts_boxplot(ts_dat, y = "SpawnBio", horiz = "D", vert = "E",
+  relative.error = TRUE)
 }
 }
 \author{
