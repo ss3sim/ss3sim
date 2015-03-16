@@ -272,13 +272,15 @@ get_results_scenario <- function(scenario, directory=getwd(),
     no.rep <- 0
     for(rep in reps.dirs){
         ## message(paste0("Starting", scen, "-", rep))
-      report.em <- SS_output(paste0(rep,"/em/"), covar=FALSE,
+        if(!file.exists(paste0(rep,"/em/Report.sso")))
+            message(paste0(scenario, "-", rep, " did not have a report file"))
+      report.em <- tryCatch(r4ss::SS_output(paste0(rep,"/em/"), covar=FALSE,
         verbose=FALSE,compfile="none", forecast=TRUE, warn=TRUE, readwt=FALSE,
-        printstats=FALSE, NoCompOK=TRUE, ncols=300)
+        printstats=FALSE, NoCompOK=TRUE, ncols=300), error=function(e) NA)
       report.om <- tryCatch(r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE,
         verbose=FALSE, compfile="none", forecast=FALSE, warn=TRUE, readwt=FALSE,
         printstats=FALSE, NoCompOK=TRUE, ncols=300), error=function(e) NA)
-      if(is.list(report.om)==FALSE){
+      if(is.list(report.em)==FALSE){
           warning(paste("Necessary SS files missing from", scenario, "replicate", rep))
           no.rep <- no.rep + 1
           next
