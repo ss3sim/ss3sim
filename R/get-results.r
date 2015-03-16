@@ -306,14 +306,15 @@ get_results_scenario <- function(scenario, directory=getwd(),
         scalar$replicate <- ts$replicate <- rep
         ## parse the scenarios into columns for plotting later
         scenario.scalar <-
-            data.frame(do.call(rbind, strsplit(as.character(scalar$scenario),
-            "[0-9]+-")), stringsAsFactors=FALSE)
+            data.frame(do.call(rbind, strsplit(gsub("([0-9]+-)", "\\1 ",
+            as.character(scalar$scenario)), "- ")), stringsAsFactors = FALSE)
         names(scenario.scalar) <-
             c(substr(as.vector(as.character(
                 scenario.scalar[1,-ncol(scenario.scalar)])), 1,1) ,"species")
         scenario.ts <-
-            data.frame(do.call(rbind, strsplit(as.character(ts$scenario), "[0-9]+-")),
-                       row.names=row.names(ts), stringsAsFactors=FALSE)
+            data.frame(do.call(rbind, strsplit(gsub("([0-9]+-)", "\\1 ",
+            as.character(ts$scenario)), "- ")),
+            row.names = row.names(ts), stringsAsFactors = FALSE)
         names(scenario.ts) <-
             c(substr(as.vector(as.character(
                 scenario.ts[1,-ncol(scenario.ts)])), 1,1) ,"species")
