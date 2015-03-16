@@ -278,7 +278,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
       report.om <- tryCatch(r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE,
         verbose=FALSE, compfile="none", forecast=FALSE, warn=TRUE, readwt=FALSE,
         printstats=FALSE, NoCompOK=TRUE, ncols=300), error=function(e) NA)
-      if(is.list(report.om)==FALSE){
+      if(is.list(report.om)==FALSE | is.list(report.em)==FALSE){
           warning(paste("Necessary SS files missing from", scenario, "replicate", rep))
           no.rep <- no.rep + 1
           next
