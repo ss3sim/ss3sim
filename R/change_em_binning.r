@@ -205,13 +205,13 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
         "the capital L in Lbin_method."))
     }
 
-    if (datfile$lbin_method != 1) {
+    if (datfile$lbin_method == 2) {
       population_bins <- seq(datfile$minimum_size, datfile$maximum_size,
         by = datfile$binwidth)
       if (!all(bin_vector %in% population_bins)) {
         stop(paste("One or more of bin_vector is not contained in the",
-                   "population bins. This is required in SS for conditional",
-                   "age-at-length composition data."))
+                   "population bins (and lbin_method = 2). This is required in",
+                   "SS for conditional age-at-length composition data."))
       }
     }
 
