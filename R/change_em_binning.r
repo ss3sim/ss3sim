@@ -206,9 +206,12 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
     }
 
     if (datfile$lbin_method != 1) {
-      if (any(!is_divisible(bin_vector, by_ = datfile$binwidth)) ) {
-        stop(paste("One or more of the values in bin_vector are not divisible by",
-          "the population binwidth specified in the SS3 data file."))
+      population_bins <- seq(datfile$minimum_size, datfile$maximum_size,
+        by = datfile$binwidth)
+      if (!all(bin_vector %in% population_bins)) {
+        stop(paste("One or more of bin_vector is not contained in the",
+                   "population bins. This is required in SS for conditional",
+                   "age-at-length composition data."))
       }
     }
 
