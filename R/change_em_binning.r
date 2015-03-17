@@ -206,6 +206,13 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
         "the capital L in Lbin_method."))
     }
 
+    if (datfile$lbin_method != 1) {
+      if (any(!is_divisible(bin_vector, by_ = datfile$binwidth)) ) {
+        stop(paste("One or more of the values in bin_vector are not divisible by",
+          "the population binwidth specified in the SS3 data file."))
+      }
+    }
+
     # to check later:
     a_ids <- grep("^a[0-9.]+$", names(datfile$agecomp))
     old_age_dat <- datfile$agecomp[, a_ids]
