@@ -190,13 +190,14 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
 #' Extract SS3 simulation results for one scenario.
 #'
 #' Function that extracts results from all replicates inside a supplied
-#' scenario folder. The function writes 3 .csv files to the scenario folder:
-#' (1) scalar metrics with one value per replicate (e.g. $R_0$, $h$), (2) a
-#' timeseries data ('ts') which contains multiple values per replicate (e.g.
-#' $SSB_y$ for a range of years $y$), and (3) residuals on the log scale from
-#' the surveys across all replicates (this feature is not fully tested!). The
-#' function \code{get_results_all} loops through these .csv files and combines
-#' them together into a single "final" dataframe.
+#' scenario folder. The function writes 3 .csv files to the scenario
+#' folder: (1) scalar metrics with one value per replicate (e.g. $R_0$,
+#' $h$), (2) a timeseries data ('ts') which contains multiple values per
+#' replicate (e.g.  $SSB_y$ for a range of years $y$), and (3) [currently
+#' disabled and not tested] residuals on the log scale from the surveys
+#' across all replicates. The function \code{get_results_all} loops through
+#' these .csv files and combines them together into a single "final"
+#' dataframe.
 #'
 #' @param scenario A single character giving the scenario from which to
 #'   extract results.
@@ -274,84 +275,84 @@ get_results_scenario <- function(scenario, directory=getwd(),
         ## report that ID
         ID <- paste0(scenario, "-", rep)
         if(!file.exists(paste0(rep,"/em/Report.sso"))){
-           message(paste("Missing Report.sso file for: ", ID, "skipping.."))
-           next()                        # skip this iteration
-       }
-        ## Otherwise read in and write to file
-        report.em <-
-            SS_output(paste0(rep,"/em/"), covar=FALSE, verbose=FALSE,
-                      compfile="none", forecast=TRUE, warn=TRUE,
-                      readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
-                      ncols=300)
-        report.om <-
-            SS_output(paste0(rep,"/om/"), covar=FALSE, verbose=FALSE,
-                      compfile="none", forecast=FALSE, warn=TRUE,
-                      readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
-                      ncols=300)
-        ## Grab the residuals for the indices
-        resids <- log(report.em$cpue$Obs) - log(report.em$cpue$Exp)
-        resids.long <- data.frame(report.em$cpue[,c("FleetName", "Yr")], resids)
-        resids.list[[rep]] <-
-            cbind(scenario, rep, reshape2::dcast(resids.long, FleetName~Yr,
-                                                 value.var="resids"))
-        ## Get scalars from the two models
-        scalar.om <- get_results_scalar(report.om)
-        names(scalar.om) <- paste0(names(scalar.om),"_om")
-        scalar.em <- get_results_scalar(report.em)
-        names(scalar.em) <- paste0(names(scalar.em),"_em")
-        ## Get timeseires from the two
-        timeseries.om <- get_results_timeseries(report.om)
-        names(timeseries.om) <- paste0(names(timeseries.om),"_om")
-        timeseries.em <- get_results_timeseries(report.em)
-        names(timeseries.em) <- paste0(names(timeseries.em),"_em")
+            message(paste("Missing Report.sso file for:", ID, "; skipping..."))
+        } else {
+            ## Otherwise read in and write to file
+            report.em <-
+                SS_output(paste0(rep,"/em/"), covar=FALSE, verbose=FALSE,
+                          compfile="none", forecast=TRUE, warn=TRUE,
+                          readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
+                          ncols=300)
+            report.om <-
+                SS_output(paste0(rep,"/om/"), covar=FALSE, verbose=FALSE,
+                          compfile="none", forecast=FALSE, warn=TRUE,
+                          readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
+                          ncols=300)
+            ## ## Grab the residuals for the indices
+            ## resids <- log(report.em$cpue$Obs) - log(report.em$cpue$Exp)
+            ## resids.long <- data.frame(report.em$cpue[,c("FleetName", "Yr")], resids)
+            ## resids.list[[rep]] <-
+            ##     cbind(scenario, rep, reshape2::dcast(resids.long, FleetName~Yr,
+            ##                                          value.var="resids"))
+            ## Get scalars from the two models
+            scalar.om <- get_results_scalar(report.om)
+            names(scalar.om) <- paste0(names(scalar.om),"_om")
+            scalar.em <- get_results_scalar(report.em)
+            names(scalar.em) <- paste0(names(scalar.em),"_em")
+            ## Get timeseires from the two
+            timeseries.om <- get_results_timeseries(report.om)
+            names(timeseries.om) <- paste0(names(timeseries.om),"_om")
+            timeseries.em <- get_results_timeseries(report.em)
+            names(timeseries.em) <- paste0(names(timeseries.em),"_em")
 
-        ## Combine them together and massage a bit
-        scalar <- cbind(scalar.om, scalar.em, t(bias))
-        ts <- cbind(timeseries.om, timeseries.em)
-        scalar$scenario <- ts$scenario <- scenario
-        scalar$replicate <- ts$replicate <- rep
-        ## parse the scenarios into columns for plotting later
-        scenario.scalar <- data.frame(do.call(rbind,
-          strsplit(gsub("([0-9]+-)", "\\1 ",
-                        as.character(scalar$scenario)), "- ")),
-                                      stringsAsFactors = FALSE)
-        names(scenario.scalar) <-
-            c(substr(as.vector(as.character(
-                scenario.scalar[1,-ncol(scenario.scalar)])), 1,1) ,"species")
-        scenario.ts <-
-            data.frame(do.call(rbind, strsplit(gsub("([0-9]+-)", "\\1 ",
-                                                    as.character(ts$scenario)), "- ")),
-                       row.names = row.names(ts), stringsAsFactors = FALSE)
-        names(scenario.ts) <-
-            c(substr(as.vector(as.character(
-                scenario.ts[1,-ncol(scenario.ts)])), 1,1) ,"species")
+            ## Combine them together and massage a bit
+            scalar <- cbind(scalar.om, scalar.em, t(bias))
+            ts <- cbind(timeseries.om, timeseries.em)
+            scalar$scenario <- ts$scenario <- scenario
+            scalar$replicate <- ts$replicate <- rep
+            ## parse the scenarios into columns for plotting later
+            scenario.scalar <- data.frame(do.call(rbind,
+                                                  strsplit(gsub("([0-9]+-)", "\\1 ",
+                                                                as.character(scalar$scenario)), "- ")),
+                                          stringsAsFactors = FALSE)
+            names(scenario.scalar) <-
+                c(substr(as.vector(as.character(
+                    scenario.scalar[1,-ncol(scenario.scalar)])), 1,1) ,"species")
+            scenario.ts <-
+                data.frame(do.call(rbind, strsplit(gsub("([0-9]+-)", "\\1 ",
+                                                        as.character(ts$scenario)), "- ")),
+                           row.names = row.names(ts), stringsAsFactors = FALSE)
+            names(scenario.ts) <-
+                c(substr(as.vector(as.character(
+                    scenario.ts[1,-ncol(scenario.ts)])), 1,1) ,"species")
 
-        scalar <- cbind(scalar, scenario.scalar)
-        ts <- cbind(ts, scenario.ts)
-        ## Other calcs
-        ts$year <- ts$Yr_om
-        ts$Yr_om <- NULL
-        ts$Yr_em <- NULL
-        scalar$max_grad <- scalar$max_grad_em
-        ignore.cols <- which(names(scalar) %in% c("max_grad_om", "max_grad_em"))
-        scalar <- scalar[ , -ignore.cols]
+            scalar <- cbind(scalar, scenario.scalar)
+            ts <- cbind(ts, scenario.ts)
+            ## Other calcs
+            ts$year <- ts$Yr_om
+            ts$Yr_om <- NULL
+            ts$Yr_em <- NULL
+            scalar$max_grad <- scalar$max_grad_em
+            ignore.cols <- which(names(scalar) %in% c("max_grad_om", "max_grad_em"))
+            scalar <- scalar[ , -ignore.cols]
 
-        ## Also get the version and runtime, as checks
-        temp <- readLines(con=paste0(rep,"/em/Report.sso"), n=10)
-        scalar$version <- temp[1]
-        scalar$RunTime <- calculate_runtime(temp[4],temp[5])
-        scalar$hessian <- file.exists(paste0(rep,"/em/admodel.cov"))
-        ## Write them to file in the scenario folder
-        scalar.exists <- file.exists(scalar.file)
-        write.table(x=scalar, file=scalar.file, append=scalar.exists,
-                    col.names=!scalar.exists, row.names=FALSE, sep=",")
-        ts.exists <- file.exists(ts.file)
-        write.table(x=ts, file=ts.file, append=ts.exists,
-                    col.names=!ts.exists, row.names=FALSE, sep=",")
+            ## Also get the version and runtime, as checks
+            temp <- readLines(con=paste0(rep,"/em/Report.sso"), n=10)
+            scalar$version <- temp[1]
+            scalar$RunTime <- calculate_runtime(temp[4],temp[5])
+            scalar$hessian <- file.exists(paste0(rep,"/em/admodel.cov"))
+            ## Write them to file in the scenario folder
+            scalar.exists <- file.exists(scalar.file)
+            write.table(x=scalar, file=scalar.file, append=scalar.exists,
+                        col.names=!scalar.exists, row.names=FALSE, sep=",")
+            ts.exists <- file.exists(ts.file)
+            write.table(x=ts, file=ts.file, append=ts.exists,
+                        col.names=!ts.exists, row.names=FALSE, sep=",")
+        }
     }
-    ## Create df for the residuals
-    resids <- do.call(rbind, resids.list)
-    write.table(x=resids, file=resids.file, sep=",", row.names=FALSE)
+    ## ## Create df for the residuals
+    ## resids <- do.call(rbind, resids.list)
+    ## write.table(x=resids, file=resids.file, sep=",", row.names=FALSE)
     ## End of loops for extracting results
 }
 
