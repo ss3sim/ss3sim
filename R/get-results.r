@@ -73,7 +73,7 @@ id_scenarios <- function(directory){
 #' @return
 #' Creates two .csv files in the current working directory:
 #' \code{ss3sim_ts.csv} and \code{ss3sim_scalar.csv}.
-#' @author Cole Monnahan
+#' @author Cole Monnahan, Merrill Rudd
 #' @family get-results
 get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
   user_scenarios=NULL, parallel=FALSE){
@@ -150,7 +150,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         write.csv(ts.all, file="ss3sim_ts.csv")
         message(paste("Final result files written to", directory))
     } else{
-    ## Loop through each scenario in folder
+    ## Loop through each scenario in folder in serial
     ts.list <- scalar.list <- list()
     for(i in 1:length(scenarios)){
         setwd(directory)
@@ -221,15 +221,15 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
 #' get_results_scenario(c("D0-F0-G0-S0-cod"))
 #' }
 get_results_scenario <- function(scenario, directory=getwd(),
-  overwrite_files=FALSE){
+                                 overwrite_files=FALSE){
     ## This function moves the wd around so make sure to reset on exit,
     ## especially in case of an error
     old_wd <- getwd()
     on.exit(setwd(old_wd))
     if (file.exists(pastef(directory, scenario))) {
-      setwd(pastef(directory, scenario))
+        setwd(pastef(directory, scenario))
     } else {
-      stop(paste("Scenario", scenario, "does not exist in", directory))
+        stop(paste("Scenario", scenario, "does not exist in", directory))
     }
     ## Stop if the files already exist or maybe delete them
     scalar.file <- paste0("results_scalar_",scenario,".csv")
@@ -268,28 +268,32 @@ get_results_scenario <- function(scenario, directory=getwd(),
         stop(paste("Error:No replicates for scenario", scenario))
     ## Loop through replicates and extract results using r4ss::SS_output
     resids.list <- list()
-    ## count replicates that didn't run SS successfully
-    no.rep <- 0
+    message(paste0("Starting ", scenario, " with ", length(reps.dirs), " iterations"))
     for(rep in reps.dirs){
-        ## message(paste0("Starting", scen, "-", rep))
-        if(!file.exists(paste0(rep,"/em/Report.sso")))
-            message(paste0(scenario, "-", rep, " did not have a report file"))
-      report.em <- tryCatch(r4ss::SS_output(paste0(rep,"/em/"), covar=FALSE,
-        verbose=FALSE,compfile="none", forecast=TRUE, warn=TRUE, readwt=FALSE,
-        printstats=FALSE, NoCompOK=TRUE, ncols=300), error=function(e) NA)
-      report.om <- tryCatch(r4ss::SS_output(paste0(rep,"/om/"), covar=FALSE,
-        verbose=FALSE, compfile="none", forecast=FALSE, warn=TRUE, readwt=FALSE,
-        printstats=FALSE, NoCompOK=TRUE, ncols=300), error=function(e) NA)
-      if(is.list(report.om)==FALSE | is.list(report.em)==FALSE){
-          warning(paste("Necessary SS files missing from", scenario, "replicate", rep))
-          no.rep <- no.rep + 1
-          next
-      }
+        ## Check that the model finished running and if not skip it but
+        ## report that ID
+        ID <- paste0(scenario, "-", rep)
+        if(!file.exists(paste0(rep,"/em/Report.sso"))){
+           message(paste("Missing Report.sso file for: ", ID, "skipping.."))
+           next()                        # skip this iteration
+       }
+        ## Otherwise read in and write to file
+        report.em <-
+            SS_output(paste0(rep,"/em/"), covar=FALSE, verbose=FALSE,
+                      compfile="none", forecast=TRUE, warn=TRUE,
+                      readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
+                      ncols=300)
+        report.om <-
+            SS_output(paste0(rep,"/om/"), covar=FALSE, verbose=FALSE,
+                      compfile="none", forecast=FALSE, warn=TRUE,
+                      readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
+                      ncols=300)
         ## Grab the residuals for the indices
         resids <- log(report.em$cpue$Obs) - log(report.em$cpue$Exp)
         resids.long <- data.frame(report.em$cpue[,c("FleetName", "Yr")], resids)
-        resids.list[[rep]] <-  cbind(scenario, rep,
-          reshape2::dcast(resids.long, FleetName~Yr, value.var="resids"))
+        resids.list[[rep]] <-
+            cbind(scenario, rep, reshape2::dcast(resids.long, FleetName~Yr,
+                                                 value.var="resids"))
         ## Get scalars from the two models
         scalar.om <- get_results_scalar(report.om)
         names(scalar.om) <- paste0(names(scalar.om),"_om")
@@ -307,16 +311,17 @@ get_results_scenario <- function(scenario, directory=getwd(),
         scalar$scenario <- ts$scenario <- scenario
         scalar$replicate <- ts$replicate <- rep
         ## parse the scenarios into columns for plotting later
-        scenario.scalar <-
-            data.frame(do.call(rbind, strsplit(gsub("([0-9]+-)", "\\1 ",
-            as.character(scalar$scenario)), "- ")), stringsAsFactors = FALSE)
+        scenario.scalar <- data.frame(do.call(rbind,
+          strsplit(gsub("([0-9]+-)", "\\1 ",
+                        as.character(scalar$scenario)), "- ")),
+                                      stringsAsFactors = FALSE)
         names(scenario.scalar) <-
             c(substr(as.vector(as.character(
                 scenario.scalar[1,-ncol(scenario.scalar)])), 1,1) ,"species")
         scenario.ts <-
             data.frame(do.call(rbind, strsplit(gsub("([0-9]+-)", "\\1 ",
-            as.character(ts$scenario)), "- ")),
-            row.names = row.names(ts), stringsAsFactors = FALSE)
+                                                    as.character(ts$scenario)), "- ")),
+                       row.names = row.names(ts), stringsAsFactors = FALSE)
         names(scenario.ts) <-
             c(substr(as.vector(as.character(
                 scenario.ts[1,-ncol(scenario.ts)])), 1,1) ,"species")
@@ -348,9 +353,6 @@ get_results_scenario <- function(scenario, directory=getwd(),
     resids <- do.call(rbind, resids.list)
     write.table(x=resids, file=resids.file, sep=",", row.names=FALSE)
     ## End of loops for extracting results
-    ## outputs number of successful replicates
-    message(paste0("Result files created for ",scenario, " with ",
-                 length(reps.dirs) - no.rep, " replicates"))
 }
 
 #' Extract time series from a model run.
