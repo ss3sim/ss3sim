@@ -182,17 +182,18 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
 
   # change the lbin_method, if it's NULL leave it as is
   if (!is.null(lbin_method)) {
-      ## otherwise if 1 it will use the data bins and requires no more
-      ## input
+    ## otherwise if 1 it will use the data bins and requires no more
+    ## input
     if (lbin_method == 1) {
       datfile$lbin_method <- lbin_method
       datfile$binwidth <- NULL
       datfile$minimum_size <- NULL
       datfile$maximum_size <- NULL
-  } else {
+    } else {
       ## it is 2 so we  need to specify width, min and max
-      datfile <- change_pop_bin(datfile, binwidth = pop_binwidth, minimum_size = pop_minimum_size, maximum_size = pop_maximum_size)
-  }
+      datfile <- change_pop_bin(datfile, binwidth = pop_binwidth,
+        minimum_size = pop_minimum_size, maximum_size = pop_maximum_size)
+    }
   }
 
   # Re-bin conditional age-at-length comps:
