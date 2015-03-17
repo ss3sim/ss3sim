@@ -223,7 +223,7 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
       Lbin_lo = old_binvector,
       lbin_new_low = bin_vector[findInterval(old_binvector, bin_vector)],
       lbin_new_high =
-        c(bin_vector, max(bin_vector))[findInterval(old_binvector,
+        c(bin_vector, -1)[findInterval(old_binvector,
           bin_vector)+1])
 
     # the re-binning happens here:
