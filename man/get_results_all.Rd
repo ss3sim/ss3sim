@@ -38,7 +38,7 @@ second that contains output for each year of the same model
 joined later.
 }
 \author{
-Cole Monnahan
+Cole Monnahan, Merrill Rudd
 }
 \seealso{
 Other get-results: \code{\link{get_results_scalar}};
