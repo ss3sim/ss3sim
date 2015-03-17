@@ -50,7 +50,6 @@
 #' # An small example with conditional age-at-length re-binning:
 #' f <- system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim")
 #' d <- r4ss::SS_readdat(f, verbose = FALSE)
-#' d$Lbin_method <- 3 # necessary for CAL rebinning
 #'
 #' # Add catch at length data (and simplify the bin structure for this example)
 #' olddat <- change_data(d, outfile = NULL, write_file = FALSE,
