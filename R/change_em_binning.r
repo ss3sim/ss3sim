@@ -221,21 +221,24 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
     # make a lookup table of old and new bins:
     lookup <- data.frame(
       Lbin_lo = old_binvector,
-      lbin_new = bin_vector[findInterval(old_binvector, bin_vector)])
+      lbin_new_low = bin_vector[findInterval(old_binvector, bin_vector)],
+      lbin_new_high =
+        c(bin_vector, max(bin_vector))[findInterval(old_binvector,
+          bin_vector)+1])
 
     # the re-binning happens here:
     # this uses dplyr and pipes but avoids non-standard evaluation
     # http://cran.r-project.org/web/packages/dplyr/vignettes/nse.html
     new_cal <- inner_join(old_cal, lookup, by = "Lbin_lo") %>%
-      group_by_(~Yr, ~lbin_new) %>%
+      group_by_(~Yr, ~lbin_new_low, ~lbin_new_high) %>%
       summarise_each_(funs_(~sum), ~matches("^a[0-9.]+$")) %>%
-      rename_(Lbin_lo = ~lbin_new) %>%
-      mutate_(Lbin_hi = ~c(Lbin_lo[-1], -1)) %>%
+      rename_(Lbin_lo = ~lbin_new_low, Lbin_hi = ~lbin_new_high) %>%
       as.data.frame
 
     new_cal$Nsamp <- rowSums(new_cal[, grepl("^a[0-9.]+$", names(new_cal))])
 
-    new_cal_meta_dat <- old_cal_all[1:nrow(new_cal), -which(names(old_cal_all) %in%
+    new_cal_meta_dat <- old_cal_all[1:nrow(new_cal),
+      -which(names(old_cal_all) %in%
         c("Yr", "Lbin_lo", a_ids_character, "Lbin_hi", "Nsamp"))]
     new_cal <- cbind(new_cal_meta_dat, new_cal)
 
