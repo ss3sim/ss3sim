@@ -27,7 +27,8 @@ calculate_runtime <- function(start_time, end_time) {
       month, day, time, sep = "-")))
     end.date <- lubridate::ymd_hms(with(end, paste(year,
       month, day, time, sep = "-")))
-    run.mins <- as.vector(end.date - start.date)/60
+    ## run.mins <- as.vector(end.date - start.date)
+    run.mins <- as.vector(difftime(end.date, start.date, units='secs'))/60
   } else {
     run.mins <- NA
   }
