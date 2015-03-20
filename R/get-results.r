@@ -312,10 +312,9 @@ get_results_scenario <- function(scenario, directory=getwd(),
             scalar$scenario <- ts$scenario <- scenario
             scalar$replicate <- ts$replicate <- rep
             ## parse the scenarios into columns for plotting later
-            scenario.scalar <- data.frame(do.call(rbind,
-                                                  strsplit(gsub("([0-9]+-)", "\\1 ",
-                                                                as.character(scalar$scenario)), "- ")),
-                                          stringsAsFactors = FALSE)
+            scenario.scalar <-
+                data.frame(do.call(rbind, strsplit(gsub("([0-9]+-)", "\\1 ",
+               as.character(scalar$scenario)), "- ")), stringsAsFactors = FALSE)
             names(scenario.scalar) <-
                 c(substr(as.vector(as.character(
                     scenario.scalar[1,-ncol(scenario.scalar)])), 1,1) ,"species")
@@ -334,7 +333,10 @@ get_results_scenario <- function(scenario, directory=getwd(),
             ts$Yr_om <- NULL
             ts$Yr_em <- NULL
             scalar$max_grad <- scalar$max_grad_em
-            ignore.cols <- which(names(scalar) %in% c("max_grad_om", "max_grad_em"))
+            ignore.cols <- which(names(scalar) %in%
+                           c("max_grad_om",
+                             "max_grad_em","params_stuck_low_om",
+                             "params_stuck_high_om" ))
             scalar <- scalar[ , -ignore.cols]
 
             ## Also get the version and runtime, as checks
@@ -399,6 +401,12 @@ get_results_scalar <- function(report.file){
           names(report.file$timeseries))])[1]
     pars <- data.frame(t(report.file$parameters$Value))
     names(pars) <- report.file$parameters$Label
+    ## Get the parameters stuck on bounds
+    status <- report.file$parameters$Status
+    params_stuck_low <- paste(names(pars)[which(status=="LO")], collapse=";")
+    params_stuck_high <- paste(names(pars)[which(status=="HI")], collapse=";")
+    if(params_stuck_low=="") params_stuck_low <- NA
+    if(params_stuck_high=="") params_stuck_high <- NA
     ## Remove the recruitment devs and efforts as these are in the ts file
     recdev.index <- grep("MAIN_", toupper(names(pars)), fixed=TRUE)
     if(length(recdev.index)>0) pars <- pars[,-recdev.index]
@@ -417,8 +425,9 @@ get_results_scalar <- function(report.file){
         ifelse(length(warn.line)==1,
           as.numeric(strsplit(warn[warn.line], split=":")[[1]][2]), NA)
     ## Combine into final df and return it
-    df <- cbind(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion,
-                params_on_bound, pars, Catch_endyear, t(NLL_vec))
+    df <- data.frame(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion,
+                params_on_bound, params_stuck_low, params_stuck_high,
+                Catch_endyear, t(NLL_vec), stringsAsFactors=FALSE)
     return(invisible(df))
 }
 
