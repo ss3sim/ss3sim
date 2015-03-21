@@ -266,7 +266,7 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
     # fecund$fleet <- -2
 
     # Nlines <- nrow(fecund)+nrow(fltNeg1)+nrow(fltZero)
-    Nlines <- length(unsampled.wtatage)
+    Nlines <- sum(unlist(lapply(unsampled.wtatage, nrow)))
     Nlines <- Nlines + sum(unlist(lapply(wtatage.complete, nrow)))
 
     # Nlines <- Nlines + sum(unlist(lapply(wtatage.complete,nrow)))
