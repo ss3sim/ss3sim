@@ -426,7 +426,7 @@ get_results_scalar <- function(report.file){
           as.numeric(strsplit(warn[warn.line], split=":")[[1]][2]), NA)
     ## Combine into final df and return it
     df <- data.frame(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion,
-                params_on_bound, params_stuck_low, params_stuck_high,
+                params_on_bound, params_stuck_low, params_stuck_high, pars,
                 Catch_endyear, t(NLL_vec), stringsAsFactors=FALSE)
     return(invisible(df))
 }
