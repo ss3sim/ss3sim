@@ -334,7 +334,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
             ts$Yr_em <- NULL
             scalar$max_grad <- scalar$max_grad_em
             ignore.cols <- which(names(scalar) %in%
-                           c("max_grad_om",
+                           c("max_grad_om", "params_on_bound_om",
                              "max_grad_em","params_stuck_low_om",
                              "params_stuck_high_om" ))
             scalar <- scalar[ , -ignore.cols]
