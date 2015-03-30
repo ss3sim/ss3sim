@@ -247,7 +247,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
-browser()
       # Read in the data.ss_new file and write to ss3.dat in the om folder
       if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
           stop(paste("The data.ss_new not created in *first* OM run --",
