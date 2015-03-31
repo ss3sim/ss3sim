@@ -4,9 +4,13 @@
 #' runtime (in minutes) from a \code{Report.sso} file.
 #'
 #' @param start_time Vector of characters as read in from the r4ss report file
-#' @param end_time Vector of characters as read in from the r4ss report file
+#' @param end_time Vector of characters as read in from the r4ss report
+#' file
+#' @return A numeric value representing the number of minutes of total
+#' runtime as reported by SS.
+#' @details This runtime includes the overhead for reading and writing the
+#' file up to the Report.sso time stamp.
 #' @author Cole Monnahan
-
 calculate_runtime <- function(start_time, end_time) {
   ## The start_time and end_time strings are complex and need to be cleaned up
   ## before processing into date objects.
@@ -39,7 +43,9 @@ calculate_runtime <- function(start_time, end_time) {
 #'
 #' @param directory The directory which contains scenario folders with
 #'    results.
+#' @return A character vector of folders
 #' @author Merrill Rudd
+#' @export
 id_scenarios <- function(directory){
     ## Get unique scenarios that exist in the folder. Might be other random
     ## stuff in the folder so be careful to extract only scenario folders.
@@ -49,7 +55,9 @@ id_scenarios <- function(directory){
         return(x[length(x)])
     })
     scens <- temp.dirs[grepl("^([A-Z]{1}[0-9]+-)+[a-z-]+$", temp.dirs)]
-    return(scens)
+    if(length(scens)==0) warning(paste("No scenario folders found in",
+             directory))
+    else return(scens)
 }
 
 #' Extract SS3 simulation output
@@ -136,8 +144,8 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         for(i in 1:length(scenarios)){
             scalar.file <- paste0(scenarios[i],"/results_scalar_",scenarios[i],".csv")
             ts.file <- paste0(scenarios[i],"/results_ts_",scenarios[i],".csv")
-            scalar.list[[i]] <- tryCatch(read.csv(scalar.file), error=function(e) NA)
-            ts.list[[i]] <- tryCatch(read.csv(ts.file), error=function(e) NA)
+            scalar.list[[i]] <- tryCatch(read.csv(scalar.file, stringsAsFactors=FALSE), error=function(e) NA)
+            ts.list[[i]] <- tryCatch(read.csv(ts.file, stringsAsFactors=FALSE), error=function(e) NA)
             if(all(is.na(scalar.list[[i]]))){flag.na[i] <- 1}
         }
         scalar.list.out <- scalar.list[which(flag.na!=1)]
@@ -172,8 +180,8 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
             get_results_scenario(scenario=scen, directory=directory,
                                  overwrite_files=overwrite_files)
         }
-        scalar.list[[i]] <- tryCatch(read.csv(scalar.file), error=function(e) NA)
-        ts.list[[i]] <- tryCatch(read.csv(ts.file), error=function(e) NA)
+        scalar.list[[i]] <- tryCatch(read.csv(scalar.file, stringsAsFactors=FALSE), error=function(e) NA)
+        ts.list[[i]] <- tryCatch(read.csv(ts.file, stringsAsFactors=FALSE), error=function(e) NA)
     }
     scalar.list <- scalar.list[which(!is.na(scalar.list))]
     ts.list <- ts.list[which(!is.na(ts.list))]
