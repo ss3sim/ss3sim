@@ -249,8 +249,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
       # Read in the data.ss_new file and write to ss3.dat in the om folder
       if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
-          stop(paste("The data.ss_new not created in *first* OM run --",
-                     "is something wrong with initial model files?"))
+          stop(paste0("The data.ss_new not created in *first* OM run for ",
+                     sc, "-",i, ": is something wrong with initial model files?"))
       extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
         data_out = pastef(sc, i, "om", "ss3.dat"))
       # Remove the ss_new file in case the next run doesn't work we can tell
@@ -313,8 +313,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # Run the operating model and copy the dat file over
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
       if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
-          stop(paste("The data.ss_new not created in *second* OM run",
-                     "-- probably an issue with the ss3.dat file"))
+          stop(paste0("The data.ss_new not created in *second* OM run for ",
+                     sc, "-",i, ": is something wrong with initial model files?"))
       extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
                             data_out = pastef(sc, i, "em", "ss3.dat"))
 
