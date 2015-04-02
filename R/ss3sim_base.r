@@ -317,7 +317,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                      sc, "-",i, ": is something wrong with initial model files?"))
       extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
                             data_out = pastef(sc, i, "em", "ss3.dat"))
-
       ## Read in the datfile once and manipulate as a list object, then
       ## write it back to file at the end, before running the EM.
       datfile <- SS_readdat(pastef(sc, i, "em", "ss3.dat"),
@@ -573,7 +572,9 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       }
 
       file.remove(pastef(sc, i, fake_dat))
-
+      ## Clean up some big files that aren't necessary
+      file.remove(pastef(sc, i, "om", "CompReport.sso"))
+      file.remove(pastef(sc, i, "em", "CompReport.sso"))
       # Pause to reduce average CPUE use?
       Sys.sleep(sleep)
 
