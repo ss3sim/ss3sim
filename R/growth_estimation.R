@@ -30,15 +30,14 @@ vbgf_func <- function(L1, L.inf, k, ages, a3){
 sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
   start.cv.young, start.cv.old, a3, A){
 
-  get_vbgf_loglik <- function(logL1, logL2, logk, logcv.old, logcv.young){
+  get_vbgf_loglik <- function(logL1, logLinf, logk, logcv.old, logcv.young){
     L1 <- exp(logL1)
-    L2 <- exp(logL2)
+    L.inf <- exp(logLinf)
     k <- exp(logk)
     slope <- (exp(logcv.old) - exp(logcv.young)) / (A - a3)
     cv <- exp(logcv.young) + slope * (data_$age-a3)  # intercept = cv_young
     cv <- ifelse(cv < 0, 0, cv)
     sigma <- cv * (data_$mean)
-    L.inf<-L1+(L2-L1)/(1-exp(-k*(A-a3)))
     predLength <- vbgf_func(L1, L.inf, k, data_[, 1], a3)
     logLik <- sum(-log(sigma) - ((predLength - data_[, 2])^2)/(2*sigma^2))
     -logLik
@@ -51,9 +50,10 @@ sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
   length.df <- length.data[length.data$age > a3, ]
   length.df <- length.df[length.df$age < A, ]
   data_ <- length.df[, colnames(length.df) %in% c("length", "age", "mean")]
+  start.Linf<-start.L1+(start.L2-start.L1)/(1-exp(-start.k*(A-a3)))
   #Fit using MLE
   mod <- mle2(get_vbgf_loglik,
-    start = list(logL1 = log(start.L1), logL2 = log(start.L2),
+    start = list(logL1 = log(start.L1), logLinf = log(start.Linf),
       logk = log(start.k), logcv.old = log(start.cv.old),
       logcv.young=log(start.cv.young)))
   if(mod@details$convergence == 1 |
