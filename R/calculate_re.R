@@ -56,8 +56,10 @@ calculate_re <- function(dat, add = TRUE) {
   om_cols <- names(dat)[grep("_om", names(dat))]
   em_gsub <- gsub("_em", "", em_cols)
   om_gsub <- gsub("_om", "", om_cols)
-  em_names <- em_cols[em_gsub %in% om_gsub]
-  om_names <- om_cols[om_gsub %in% em_gsub]
+  em_cols <- em_cols[em_gsub %in% om_gsub]
+  om_cols <- om_cols[om_gsub %in% em_gsub]
+  em_names <- em_cols[order(em_cols)]
+  om_names <- om_cols[order(om_cols)]
 
   re <- (dat[, em_names] - dat[, om_names]) /
     dat[, om_names]
