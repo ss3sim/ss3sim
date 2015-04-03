@@ -31,13 +31,12 @@ sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
   start.cv.young, start.cv.old, lo.L1, lo.L2, lo.k, lo.cv.young, lo.cv.old,
   hi.L1, hi.L2, hi.k, hi.cv.young, hi.cv.old, a3, A){
 
-  browser()
   get_vbgf_loglik <- function(logL1, logLinf, logk, logcv.old, logcv.young){
-    L1 <- inv_logistic(logL1, lo.L1, hi.L1)
-    L.inf <- inv_logistic(logLinf, lo.Linf, hi.Linf)
-    k <- inv_logistic(logk, lo.k, hi.k)
-    cv.young <- inv_logistic(logcv.young, lo.cv.young, hi.cv.young)
-    cv.old <- inv_logistic(logcv.old, lo.cv.old, hi.cv.old)
+    L1 <- get_logistic_transform(logL1, lo.L1, hi.L1)
+    L.inf <- get_logistic_transform(logLinf, lo.Linf, hi.Linf)
+    k <- get_logistic_transform(logk, lo.k, hi.k)
+    cv.young <- get_logistic_transform(logcv.young, lo.cv.young, hi.cv.young)
+    cv.old <- get_logistic_transform(logcv.old, lo.cv.old, hi.cv.old)
     slope <- (cv.old - cv.young) / (A - a3)
     cv <- cv.young + slope * (data_$age-a3)  # intercept = cv_young
     cv <- ifelse(cv < 0, 0, cv)
@@ -53,7 +52,7 @@ sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
   }
   
   inv_logistic <- function(par, lo, hi){
-    par <- 1-log(hi-lo)+log(par-lo)
+    par <- -log(hi-par)+log(par-lo)
     return(par)
   }
 
@@ -67,18 +66,18 @@ sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
   start.Linf <- start.L1+(start.L2-start.L1)/(1-exp(-start.k*(A-a3)))
   lo.Linf <- lo.L1+(lo.L2 - lo.L1)/(1-exp(-lo.k*(A-a3)))
   hi.Linf <- hi.L1+(hi.L2 - hi.L1)/(1-exp(-hi.k*(A-a3)))
-  pars.mat <- matrix(cbind(c(start.L1,lo.L1,hi.L1),c(start.Linf,lo.Linf,hi.Linf),c(start.k,lo.k,hi.k),
+  pars.mat <- matrix(nrow=5,ncol=3,rbind(c(start.L1,lo.L1,hi.L1),c(start.Linf,lo.Linf,hi.Linf),c(start.k,lo.k,hi.k),
                   c(start.cv.young,lo.cv.young, hi.cv.young), c(start.cv.old, lo.cv.old, hi.cv.old)))
   transformed <- rep(0,5)
-  for(i in 1:nrows(pars.mat)){
-    transformed[i] <- get_logistic_transform(pars.mat[i,])
+  for(i in 1:nrow(pars.mat)){
+    transformed[i] <- inv_logistic(pars.mat[i,1], pars.mat[i,2], pars.mat[i,3])
   }
-  
+browser()
   #Fit using MLE
   mod <- mle2(get_vbgf_loglik,
     start = list(logL1 = transformed[1], logLinf = transformed[2],
       logk = transformed[3], logcv.old = transformed[4],
-      logcv.young=transformed[5]), )
+      logcv.young=transformed[5]))
   if(mod@details$convergence == 1 |
      grepl("Error", mod@coef[1], ignore.case = TRUE)){
     out <- list("L_at_Amin_Fem_GP_1" = 999, "L_at_Amax_Fem_GP_1" = 999,
@@ -87,11 +86,11 @@ sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
   } else {
     #Put estimated coefficients in EM terms
     logCoef <- mod@coef
-    L1 <- inv_logistic(logCoef[1], lo.L1, hi.L1)
-    L.inf <- inv_logistic(logCoef[2], lo.Linf, hi.Linf)
-    k <- inv_logistic(logCoef[3], lo.k, hi.k)
-    cv.young <- inv_logistic(logCoef[4], lo.cv.young, hi.cv.young)
-    cv.old <- inv_logistic(logCoef[5], lo.cv.old, hi.cv.old)
+    L1 <- get_logistic_transform(logCoef[1], lo.L1, hi.L1)
+    L.inf <- get_logistic_transform(logCoef[2], lo.Linf, hi.Linf)
+    k <- get_logistic_transform(logCoef[3], lo.k, hi.k)
+    cv.young <- get_logistic_transform(logCoef[4], lo.cv.young, hi.cv.young)
+    cv.old <- get_logistic_transform(logCoef[5], lo.cv.old, hi.cv.old)
     out <- list("L_at_Amin_Fem_GP_1" = L1, "L_at_Amax_Fem_GP_1" = L.inf,
       "VonBert_K_Fem_GP_1" = k, "CV_young_Fem_GP_1" = cv.young,
       "CV_old_Fem_GP_1" = cv.old)
