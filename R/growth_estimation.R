@@ -72,7 +72,7 @@ sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
   for(i in 1:nrow(pars.mat)){
     transformed[i] <- inv_logistic(pars.mat[i,1], pars.mat[i,2], pars.mat[i,3])
   }
-browser()
+
   #Fit using MLE
   mod <- mle2(get_vbgf_loglik,
     start = list(logL1 = transformed[1], logLinf = transformed[2],
