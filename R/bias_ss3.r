@@ -35,9 +35,9 @@ bias_ss3 <- function(iter, dir) {
   {
     myoutput = suppressWarnings(
       SS_output(dir = paste0(dir, "/", iter, "/em"), repfile =
-      "Report.sso", compfile = "CompReport.sso", covarfile =
+      "Report.sso", compfile = "none", covarfile =
       "covar.sso", forecast = FALSE, verbose = FALSE, ncols = 300,
-      printstats = FALSE))
+      printstats = FALSE, NoCompOK = TRUE))
     pdf(paste0(dir, "/biasramp-", iter, ".pdf"))
     biasvars = try(SS_fitbiasramp(replist = myoutput), TRUE)
     dev.off()
