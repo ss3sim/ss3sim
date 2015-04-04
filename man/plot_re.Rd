@@ -20,6 +20,7 @@ d <- d \%>\% select(D, E, SSB_MSY_re, depletion_re, SSB_Unfished_re) \%>\%
   filter(!D \%in\% "D100", !E \%in\% c("E100", "E101"))
 d <- d \%>\% reshape2::melt(value.name = "re")
 plot_re(data = d, re = "re", x = "variable", row_dat = "D", column_dat = "E",
-  xlab = "Management quantity", beans = TRUE, dots = TRUE, adj.ylab = 0.6)
+  xlab = "Management quantity", beans = TRUE, dots = TRUE, adj.ylab = 0.6,
+  labels.xaxis = c("SSB_MSY", "Depletion", "SSB_Unfished"))
 }
 

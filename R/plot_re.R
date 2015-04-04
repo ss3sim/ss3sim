@@ -21,7 +21,8 @@ plot_re_panel <- function(x, re, ylim = c(-0.5, 0.5), mare_pos = max(ylim),
   ypos = c(-0.3, 0, 0.3, 0.6), xaxis = TRUE, yaxis = TRUE, col.axis = "grey50",
   cex.axis = 0.7, cex.mare = 0.7, lty.zero = 1, lwd.zero = 0.8,
   col.zero = "grey80", beans = FALSE, dots = FALSE, mare_col_scale = 7,
-  bean_maxwidth = 0.6, col.pts = "#00000030", cex.pts = 0.4, jitter.pts = 0.1) {
+  bean_maxwidth = 0.6, col.pts = "#00000030", cex.pts = 0.4, jitter.pts = 0.1,
+  labels.xaxis = unique(x)) {
 
   d_ <- plyr::ddply(data.frame(x, y = re), "x", plyr::summarize,
     median_ = median(y, na.rm = TRUE),
@@ -63,7 +64,7 @@ plot_re_panel <- function(x, re, ylim = c(-0.5, 0.5), mare_pos = max(ylim),
         col.axis, col = col.axis, lwd = 0.8)
 
   if (xaxis)
-    axis(1, at = d_$xpos, labels = unique(x), las = 1, cex.axis = cex.axis,
+    axis(1, at = d_$xpos, labels = labels.xaxis, las = 1, cex.axis = cex.axis,
       col.axis = col.axis, col = col.axis, lwd = 0.8)
 
 }
@@ -78,7 +79,8 @@ plot_re_panel <- function(x, re, ylim = c(-0.5, 0.5), mare_pos = max(ylim),
 #'   filter(!D %in% "D100", !E %in% c("E100", "E101"))
 #' d <- d %>% reshape2::melt(value.name = "re")
 #' plot_re(data = d, re = "re", x = "variable", row_dat = "D", column_dat = "E",
-#'   xlab = "Management quantity", beans = TRUE, dots = TRUE, adj.ylab = 0.6)
+#'   xlab = "Management quantity", beans = TRUE, dots = TRUE, adj.ylab = 0.6,
+#'   labels.xaxis = c("SSB_MSY", "Depletion", "SSB_Unfished"))
 #' @export
 plot_re <- function(data, re, x, row_dat, column_dat,
   mar = c(2.5,0.5,0.5,0.15), oma = c(3.5, 4.5, 3.5, 1), cex = 0.6,

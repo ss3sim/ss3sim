@@ -9,7 +9,7 @@ plot_re_panel(x, re, ylim = c(-0.5, 0.5), mare_pos = max(ylim),
   col.axis = "grey50", cex.axis = 0.7, cex.mare = 0.7, lty.zero = 1,
   lwd.zero = 0.8, col.zero = "grey80", beans = FALSE, dots = FALSE,
   mare_col_scale = 7, bean_maxwidth = 0.6, col.pts = "#00000030",
-  cex.pts = 0.4, jitter.pts = 0.1)
+  cex.pts = 0.4, jitter.pts = 0.1, labels.xaxis = unique(x))
 }
 \arguments{
   \item{x}{Cases to plot along the x axis}
