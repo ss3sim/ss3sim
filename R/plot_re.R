@@ -26,6 +26,7 @@
 #' @param labels.xaxis Values to label the x axis ticks with
 #' @param col.beanplot Colour of the beans, if shown
 #' @importFrom plyr summarize ddply
+#' @importFrom beanplot beanplot
 #' @export
 #'
 #' @examples
@@ -41,7 +42,8 @@ plot_re_panel <- function(x, re, ylim = c(-0.5, 0.5), mare_pos = max(ylim),
   labels.xaxis = unique(x),
   col.beanplot = "grey65") {
 
-  d_ <- ddply(data.frame(x, y = re), "x", summarize,
+  y <- re
+  d_ <- ddply(data.frame(x, y), "x", summarize,
     median_ = median(y, na.rm = TRUE),
     l2      = quantile(y, 0.25, na.rm = TRUE),
     u2      = quantile(y, 0.75, na.rm = TRUE),
@@ -61,7 +63,7 @@ plot_re_panel <- function(x, re, ylim = c(-0.5, 0.5), mare_pos = max(ylim),
     points(d_$xpos, d_$median, pch = 21, bg = "grey30", col = "grey30", cex = 0.65)
   } else {
     bean_dat <- data.frame(x, re)
-    beanplot::beanplot(re ~ x, data = bean_dat,
+    beanplot(re ~ x, data = bean_dat,
       add = TRUE, border = NA, axes = FALSE, col = col.beanplot,
       what = c(0, 1, 0, 0), maxwidth = bean_maxwidth)
   }
@@ -78,7 +80,7 @@ plot_re_panel <- function(x, re, ylim = c(-0.5, 0.5), mare_pos = max(ylim),
     par(xpd = FALSE)
   }
   if (yaxis)
-    axis(2, las = 1, at = ypos, label = ypos * 100, cex.axis = cex.axis,
+    axis(2, las = 1, at = ypos, labels = ypos * 100, cex.axis = cex.axis,
       col.axis = col.axis, col = col.axis, lwd = 0.8)
 
   if (xaxis)
@@ -106,7 +108,7 @@ plot_re_panel <- function(x, re, ylim = c(-0.5, 0.5), mare_pos = max(ylim),
 #' @param xlab X label
 #' @param ylab Y label
 #' @param xlab_line Line on which to print the x label (passed to \code{mtext})
-#' @param ylab Line on which to print the y label (passed to \code{mtext})
+#' @param ylab_line on which to print the y label (passed to \code{mtext})
 #' @param col_labs Colour for the y and x labels
 #' @param adj.ylab Value to adjust the vertical position of the y label (passed
 #'   to \code{mtext}, \code{0.5} is the center of the whole figure)

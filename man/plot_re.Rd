@@ -37,6 +37,9 @@ plot_re(data, re, x, row_dat, column_dat, mar = c(2.5, 0.5, 0.5, 0.15),
   \item{xlab_line}{Line on which to print the x label
   (passed to \code{mtext})}
 
+  \item{ylab_line}{on which to print the y label (passed to
+  \code{mtext})}
+
   \item{col_labs}{Colour for the y and x labels}
 
   \item{adj.ylab}{Value to adjust the vertical position of
@@ -45,9 +48,6 @@ plot_re(data, re, x, row_dat, column_dat, mar = c(2.5, 0.5, 0.5, 0.15),
 
   \item{...}{Anything else to pass to
   \code{\link{plot_re_panel}}}
-
-  \item{ylab}{Line on which to print the y label (passed to
-  \code{mtext})}
 }
 \description{
 This function plots multiple relative error panels for a
