@@ -5,7 +5,9 @@
 \title{Plot relative error}
 \usage{
 plot_re(data, re, x, row_dat, column_dat, mar = c(2.5, 0.5, 0.5, 0.15),
-  oma = c(3.5, 4.5, 3.5, 1), cex = 0.6, ...)
+  oma = c(3.5, 4.5, 3.5, 1), cex = 0.6, xlab = "",
+  ylab = "Relative error", xlab_line = 1.5, ylab_line = 2,
+  col_labs = "grey40", adj.ylab = 0.5, ...)
 }
 \description{
 Plot relative error
@@ -17,6 +19,7 @@ d <- calculate_re(d)
 d <- d \%>\% select(D, E, SSB_MSY_re, depletion_re, SSB_Unfished_re) \%>\%
   filter(!D \%in\% "D100", !E \%in\% c("E100", "E101"))
 d <- d \%>\% reshape2::melt(value.name = "re")
-plot_re(data = d, re = "re", x = "variable", row_dat = "D", column_dat = "E")
+plot_re(data = d, re = "re", x = "variable", row_dat = "D", column_dat = "E",
+  xlab = "Management quantity", beans = TRUE, dots = TRUE, adj.ylab = 0.6)
 }
 

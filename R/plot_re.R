@@ -20,7 +20,8 @@
 plot_re_panel <- function(x, re, ylim = c(-0.5, 0.5), mare_pos = max(ylim),
   ypos = c(-0.3, 0, 0.3, 0.6), xaxis = TRUE, yaxis = TRUE, col.axis = "grey50",
   cex.axis = 0.7, cex.mare = 0.7, lty.zero = 1, lwd.zero = 0.8,
-  col.zero = "grey80", beans = FALSE, dots = FALSE, mare_col_scale = 7) {
+  col.zero = "grey80", beans = FALSE, dots = FALSE, mare_col_scale = 7,
+  bean_maxwidth = 0.6, col.pts = "#00000030", cex.pts = 0.4, jitter.pts = 0.1) {
 
   d_ <- plyr::ddply(data.frame(x, y = re), "x", plyr::summarize,
     median_ = median(y, na.rm = TRUE),
@@ -35,18 +36,19 @@ plot_re_panel <- function(x, re, ylim = c(-0.5, 0.5), mare_pos = max(ylim),
   plot.default(d_$xpos, d_$median, ylim = ylim, ann = FALSE, axes = FALSE,
     xlim = xlim, type = "n")
 
+  abline(h = 0, lty = lty.zero, col = col.zero, lwd = lwd.zero)
+
   if (!beans) {
-    abline(h = 0, lty = lty.zero, col = col.zero, lwd = lwd.zero)
     segments(d_$xpos, d_$l2, d_$xpos, d_$u2, lwd = 1, col = "grey55")
     points(d_$xpos, d_$median, pch = 21, bg = "grey30", col = "grey30", cex = 0.65)
   } else {
-    bean_dat <- data.frame(cases, re)
-    beanplot::beanplot(re ~ cases, data = bean_dat,
-      add = FALSE, border = NA, axes = FALSE, col = rep("#00000050", 4),
-      what = c(0, 1, 0, 0))
+    bean_dat <- data.frame(x, re)
+    beanplot::beanplot(re ~ x, data = bean_dat,
+      add = TRUE, border = NA, axes = FALSE, col = rep("#00000050", 4),
+      what = c(0, 1, 0, 0), maxwidth = bean_maxwidth)
   }
   if (dots) {
-    points(cases, re)
+    points(jitter(as.numeric(x), jitter.pts), re, pch = 20, cex = cex.pts, col = col.pts)
   }
 
   if (!is.null(mare_pos)) {
@@ -75,10 +77,13 @@ plot_re_panel <- function(x, re, ylim = c(-0.5, 0.5), mare_pos = max(ylim),
 #' d <- d %>% select(D, E, SSB_MSY_re, depletion_re, SSB_Unfished_re) %>%
 #'   filter(!D %in% "D100", !E %in% c("E100", "E101"))
 #' d <- d %>% reshape2::melt(value.name = "re")
-#' plot_re(data = d, re = "re", x = "variable", row_dat = "D", column_dat = "E")
+#' plot_re(data = d, re = "re", x = "variable", row_dat = "D", column_dat = "E",
+#'   xlab = "Management quantity", beans = TRUE, dots = TRUE, adj.ylab = 0.6)
 #' @export
 plot_re <- function(data, re, x, row_dat, column_dat,
-  mar = c(2.5,0.5,0.5,0.15), oma = c(3.5, 4.5, 3.5, 1), cex = 0.6, ...) {
+  mar = c(2.5,0.5,0.5,0.15), oma = c(3.5, 4.5, 3.5, 1), cex = 0.6,
+  xlab = "", ylab = "Relative error", xlab_line = 1.5, ylab_line = 2,
+  col_labs = "grey40", adj.ylab = 0.5, ...) {
 
   par(cex = cex, mar = mar, oma = oma)
   row_levels <- unique(data[, row_dat])
@@ -96,4 +101,7 @@ plot_re <- function(data, re, x, row_dat, column_dat,
         ...)
     }
   }
+  mtext(xlab, side = 1, line = xlab_line, outer = TRUE, col = col_labs)
+  mtext(ylab, side = 2, line = ylab_line, outer = TRUE, col = col_labs,
+    adj = adj.ylab)
 }
