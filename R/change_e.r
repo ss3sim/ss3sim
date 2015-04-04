@@ -122,6 +122,16 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
         start.k  = with(pars, INIT[Label == "VonBert_K_Fem_GP_1"]),
         start.cv.young = with(pars, INIT[Label == "CV_young_Fem_GP_1"]),
         start.cv.old = with(pars, INIT[Label == "CV_old_Fem_GP_1"]),
+        lo.L1 = with(pars, LO[Label == "L_at_Amin_Fem_GP_1"]),
+        lo.L2 = with(pars, LO[Label == "L_at_Amax_Fem_GP_1"]),
+        lo.k  = with(pars, LO[Label == "VonBert_K_Fem_GP_1"]),
+        lo.cv.young = with(pars, LO[Label == "CV_young_Fem_GP_1"]),
+        lo.cv.old = with(pars, LO[Label == "CV_old_Fem_GP_1"]),
+        hi.L1 = with(pars, HI[Label == "L_at_Amin_Fem_GP_1"]),
+        hi.L2 = with(pars, HI[Label == "L_at_Amax_Fem_GP_1"]),
+        hi.k  = with(pars, HI[Label == "VonBert_K_Fem_GP_1"]),
+        hi.cv.young = with(pars, HI[Label == "CV_young_Fem_GP_1"]),
+        hi.cv.old = with(pars, HI[Label == "CV_old_Fem_GP_1"]),
         a3 = min(data$age), A = max(data$age)), silent = TRUE)
     #Get par estimates and append them to par_name par_int and par_phase
     changeinits <- which(par_int == "change_e_vbgf")
