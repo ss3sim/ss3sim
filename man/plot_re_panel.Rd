@@ -9,7 +9,8 @@ plot_re_panel(x, re, ylim = c(-0.5, 0.5), mare_pos = max(ylim),
   col.axis = "grey50", cex.axis = 0.7, cex.mare = 0.7, lty.zero = 1,
   lwd.zero = 0.8, col.zero = "grey80", beans = FALSE, dots = FALSE,
   mare_col_scale = 7, bean_maxwidth = 0.6, col.pts = "#00000030",
-  cex.pts = 0.4, jitter.pts = 0.1, labels.xaxis = unique(x))
+  cex.pts = 0.4, jitter.pts = 0.1, labels.xaxis = unique(x),
+  col.beanplot = "grey65")
 }
 \arguments{
   \item{x}{Cases to plot along the x axis}
@@ -27,6 +28,42 @@ plot_re_panel(x, re, ylim = c(-0.5, 0.5), mare_pos = max(ylim),
   \item{xaxis}{Add an x axis?}
 
   \item{yaxis}{Add a y axis?}
+
+  \item{col.axis}{Axis colour}
+
+  \item{cex.axis}{Axis cex value}
+
+  \item{cex.mare}{Size of MARE numbers}
+
+  \item{lty.zero}{Line type for the zero line}
+
+  \item{lwd.zero}{Line width for the zero line}
+
+  \item{col.zero}{Colour of the zero line}
+
+  \item{beans}{Should beanplots be used instead of dots and
+  lines?}
+
+  \item{dots}{Should dots for each iteration value be
+  shown?}
+
+  \item{mare_col_scale}{A value that scales the darkness of
+  the MARE values Bigger values will make for darker
+  numbers.}
+
+  \item{bean_maxwidth}{Maximum width of beans}
+
+  \item{col.pts}{Colour of the points, if shown}
+
+  \item{cex.pts}{Size of points, if shown}
+
+  \item{jitter.pts}{A value to jitter the points by, if
+  shown}
+
+  \item{labels.xaxis}{Values to label the x axis ticks
+  with}
+
+  \item{col.beanplot}{Colour of the beans, if shown}
 }
 \description{
 Plot relative error and indicate median absolute relative
@@ -36,6 +73,6 @@ error
 set.seed(1)
 x <- data.frame(case = c(rep(c(1, 2), each = 10)),
   re = c(rnorm(10, sd = 0.3), rnorm(10, 0.02, sd = 0.2)))
-plot_re_panel(x$case, x$re, beans = TRUE, ylim = c(-1, 1), dots = TRUE, box = TRUE)
+plot_re_panel(x$case, x$re, beans = TRUE, ylim = c(-1, 1), dots = TRUE)
 }
 

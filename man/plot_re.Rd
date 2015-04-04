@@ -9,8 +9,49 @@ plot_re(data, re, x, row_dat, column_dat, mar = c(2.5, 0.5, 0.5, 0.15),
   ylab = "Relative error", xlab_line = 1.5, ylab_line = 2,
   col_labs = "grey40", adj.ylab = 0.5, ...)
 }
+\arguments{
+  \item{data}{A data frame}
+
+  \item{re}{A character value giving the column name from
+  \code{data} of the relative error values}
+
+  \item{x}{A character value giving the column name from
+  \code{data} of the x values}
+
+  \item{row_dat}{A character value giving the column name
+  from \code{data} of the row identifiers}
+
+  \item{column_dat}{A character value giving the column
+  name from \code{data} of the column identifiers}
+
+  \item{mar}{Margin values to pass to \code{par}}
+
+  \item{oma}{Outer margin values to pass to \code{par}}
+
+  \item{cex}{cex value to pass to \code{par}}
+
+  \item{xlab}{X label}
+
+  \item{ylab}{Y label}
+
+  \item{xlab_line}{Line on which to print the x label
+  (passed to \code{mtext})}
+
+  \item{col_labs}{Colour for the y and x labels}
+
+  \item{adj.ylab}{Value to adjust the vertical position of
+  the y label (passed to \code{mtext}, \code{0.5} is the
+  center of the whole figure)}
+
+  \item{...}{Anything else to pass to
+  \code{\link{plot_re_panel}}}
+
+  \item{ylab}{Line on which to print the y label (passed to
+  \code{mtext})}
+}
 \description{
-Plot relative error
+This function plots multiple relative error panels for a
+complete figure
 }
 \examples{
 library("dplyr")

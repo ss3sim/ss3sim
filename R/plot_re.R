@@ -9,14 +9,30 @@
 #' @param ypos Y axis ticks
 #' @param xaxis Add an x axis?
 #' @param yaxis Add a y axis?
+#' @param col.axis Axis colour
+#' @param cex.axis Axis cex value
+#' @param cex.mare Size of MARE numbers
+#' @param lty.zero Line type for the zero line
+#' @param lwd.zero Line width for the zero line
+#' @param col.zero Colour of the zero line
+#' @param beans Should beanplots be used instead of dots and lines?
+#' @param dots Should dots for each iteration value be shown?
+#' @param mare_col_scale A value that scales the darkness of the MARE values
+#'   Bigger values will make for darker numbers.
+#' @param bean_maxwidth Maximum width of beans
+#' @param col.pts Colour of the points, if shown
+#' @param cex.pts Size of points, if shown
+#' @param jitter.pts A value to jitter the points by, if shown
+#' @param labels.xaxis Values to label the x axis ticks with
+#' @param col.beanplot Colour of the beans, if shown
+#' @importFrom plyr summarize ddply
 #' @export
 #'
 #' @examples
 #' set.seed(1)
 #' x <- data.frame(case = c(rep(c(1, 2), each = 10)),
 #'   re = c(rnorm(10, sd = 0.3), rnorm(10, 0.02, sd = 0.2)))
-# plot_re_panel(x$case, x$re)
-#' plot_re_panel(x$case, x$re, beans = TRUE, ylim = c(-1, 1), dots = TRUE, box = TRUE)
+#' plot_re_panel(x$case, x$re, beans = TRUE, ylim = c(-1, 1), dots = TRUE)
 plot_re_panel <- function(x, re, ylim = c(-0.5, 0.5), mare_pos = max(ylim),
   ypos = c(-0.3, 0, 0.3, 0.6), xaxis = TRUE, yaxis = TRUE, col.axis = "grey50",
   cex.axis = 0.7, cex.mare = 0.7, lty.zero = 1, lwd.zero = 0.8,
@@ -25,7 +41,7 @@ plot_re_panel <- function(x, re, ylim = c(-0.5, 0.5), mare_pos = max(ylim),
   labels.xaxis = unique(x),
   col.beanplot = "grey65") {
 
-  d_ <- plyr::ddply(data.frame(x, y = re), "x", plyr::summarize,
+  d_ <- ddply(data.frame(x, y = re), "x", summarize,
     median_ = median(y, na.rm = TRUE),
     l2      = quantile(y, 0.25, na.rm = TRUE),
     u2      = quantile(y, 0.75, na.rm = TRUE),
@@ -50,7 +66,8 @@ plot_re_panel <- function(x, re, ylim = c(-0.5, 0.5), mare_pos = max(ylim),
       what = c(0, 1, 0, 0), maxwidth = bean_maxwidth)
   }
   if (dots) {
-    points(jitter(as.numeric(x), jitter.pts), re, pch = 20, cex = cex.pts, col = col.pts)
+    points(jitter(as.numeric(x), jitter.pts), re, pch = 20, cex = cex.pts,
+      col = col.pts)
   }
 
   if (!is.null(mare_pos)) {
@@ -61,8 +78,8 @@ plot_re_panel <- function(x, re, ylim = c(-0.5, 0.5), mare_pos = max(ylim),
     par(xpd = FALSE)
   }
   if (yaxis)
-    axis(2, las = 1, at = ypos, label = ypos * 100, cex.axis = cex.axis, col.axis =
-        col.axis, col = col.axis, lwd = 0.8)
+    axis(2, las = 1, at = ypos, label = ypos * 100, cex.axis = cex.axis,
+      col.axis = col.axis, col = col.axis, lwd = 0.8)
 
   if (xaxis)
     axis(1, at = d_$xpos, labels = labels.xaxis, las = 1, cex.axis = cex.axis,
@@ -71,6 +88,29 @@ plot_re_panel <- function(x, re, ylim = c(-0.5, 0.5), mare_pos = max(ylim),
 }
 
 #' Plot relative error
+#'
+#' This function plots multiple relative error panels for a complete figure
+#'
+#' @param data A data frame
+#' @param re A character value giving the column name from \code{data} of the
+#'   relative error values
+#' @param x A character value giving the column name from \code{data} of the x
+#'   values
+#' @param row_dat A character value giving the column name from \code{data} of
+#'   the row identifiers
+#' @param column_dat A character value giving the column name from \code{data}
+#'   of the column identifiers
+#' @param mar Margin values to pass to \code{par}
+#' @param oma Outer margin values to pass to \code{par}
+#' @param cex cex value to pass to \code{par}
+#' @param xlab X label
+#' @param ylab Y label
+#' @param xlab_line Line on which to print the x label (passed to \code{mtext})
+#' @param ylab Line on which to print the y label (passed to \code{mtext})
+#' @param col_labs Colour for the y and x labels
+#' @param adj.ylab Value to adjust the vertical position of the y label (passed
+#'   to \code{mtext}, \code{0.5} is the center of the whole figure)
+#' @param ... Anything else to pass to \code{\link{plot_re_panel}}
 #'
 #' @examples
 #' library("dplyr")
