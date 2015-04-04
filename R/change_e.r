@@ -112,6 +112,11 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
   ss3.ctl <- readLines(ctl_file_in)
   #Run external estimator for growth if needed
   if(any(grepl("change_e_vbgf", par_int))) {
+    if (length(dir(pattern = "vbgf")) != 1) {
+      stop(paste("The necessary file containing \"vbgf\" does not exist in",
+        getwd(), "Please make sure the correct data is available for the",
+        "external estimator."))
+    }
     data <- read.csv(dir(pattern = "vbgf"), header = TRUE)
   #Get start values
     pars <- SS_parlines(ctl_file_in, verbose = FALSE)
