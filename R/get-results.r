@@ -347,11 +347,27 @@ get_results_scenario <- function(scenario, directory=getwd(),
                              "params_stuck_high_om" ))
             scalar <- scalar[ , -ignore.cols]
 
-            ## Also get the version and runtime, as checks
+            ## Also get some meta data and other convergence info like the
+            ## version, runtime, etc. as checks
             temp <- readLines(con=paste0(rep,"/em/Report.sso"), n=10)
             scalar$version <- temp[1]
             scalar$RunTime <- calculate_runtime(temp[4],temp[5])
             scalar$hessian <- file.exists(paste0(rep,"/em/admodel.cov"))
+            ## The number of iterations for the run is only in this file for
+            ## some reason.
+            if(!file.exists(paste0(rep,"/em/CumReport.sso"))) {
+                Niterations <- NA
+            } else {
+                cumrep <- readLines(paste0(rep,"/em/CumReport.sso"), n=5)
+                tmp <- grep("N_iter", cumrep)
+                if(length(tmp)==0){
+                    scalar$Niterations <- NA
+                } else {
+                    scalar$Niterations <-
+                        as.numeric(strsplit(cumrep[tmp[1]],split=" ")[[1]][3])
+                }
+            }
+
             ## Write them to file in the scenario folder
             scalar.exists <- file.exists(scalar.file)
             write.table(x=scalar, file=scalar.file, append=scalar.exists,
