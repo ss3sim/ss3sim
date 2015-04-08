@@ -277,7 +277,7 @@ changeMe <- function(grepChar, intVal, phaseVal, ctlIn = ss3.ctl) {
   grepChar_value <- unlist(strsplit(ss3.ctl[grepChar_line], split = " "))
   # remove white space
   grepChar_value <- grepChar_value[which(nchar(grepChar_value) > 0)]
-  if(!is.na(intVal) | intVal != "NA") {
+  if(!intVal %in% c(NA, "NA", "NAN", "Nan")) {
     if(class(intVal) == "character") intVal <- as.numeric(intVal)
     grepChar_value[3] <- intVal
   }
