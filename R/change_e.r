@@ -287,7 +287,7 @@ changeMe <- function(grepChar, intVal, phaseVal, ctlIn = ss3.ctl) {
  	if(as.numeric(grepChar_value[3]) < as.numeric(grepChar_value[1])) {
      grepChar_value[1] <- intVal * .5
   }
-  if(!is.na(phaseVal)) grepChar_value[7] <- phaseVal
+  if(!phaseVal %in% c(NA, "NA", "NAN", "Nan")) grepChar_value[7] <- phaseVal
   ss3.ctl[grepChar_line] <- paste(grepChar_value, collapse = " ")
   return(ss3.ctl)
 }
