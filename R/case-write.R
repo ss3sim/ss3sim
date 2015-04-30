@@ -122,7 +122,7 @@ case_tv <- function(species, parameter, perc_change, outfile,
 #'   \code{"M1-F1-D1-R1"}
 #' @return A single character value.
 case_deparse <- function(x) {
-  temp <- deparse(x)
+  temp <- deparse(x, control = c("keepInteger", "keepNA"))
   if (length(temp) > 1) {
     temp <- paste(temp, collapse = "")
     temp <- gsub(" ", "", temp)
