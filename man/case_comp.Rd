@@ -22,7 +22,9 @@ case_comp(fleets = 1, Nsamp = NULL, years = NULL, cpar = 2, type, case,
 
   \item{type}{A character value of \code{"agecomp"} or
   \code{"lcomp"}, to write age- or length-composition
-  specifications, respectively.}
+  specifications, respectively. Argument can be a vector
+  (e.g., \code{c("agecomp", "lcomp")}) if you want the case
+  files to be the same for length and age compositions.}
 
   \item{case}{The case you want to write to. E.g.
   \code{"M"}.}

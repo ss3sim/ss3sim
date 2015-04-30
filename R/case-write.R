@@ -8,6 +8,8 @@
 #' @param cpar A vector of cpar for each fleet.
 #' @param type A character value of \code{"agecomp"} or \code{"lcomp"},
 #'   to write age- or length-composition specifications, respectively.
+#'   Argument can be a vector (e.g., \code{c("agecomp", "lcomp")}) if you want
+#'   the case files to be the same for length and age compositions.
 #' @param case The case you want to write to. E.g. \code{"M"}.
 #' @param spp A vector of character values argument specifying the species.
 #' @export
@@ -25,10 +27,14 @@ case_comp <- function(fleets = 1, Nsamp = NULL, years = NULL, cpar = 2,
 
   for (ind in seq_along(spp)){
     filename <- paste0(type, case, "-", spp[ind], ".txt")
-    write(c("fleets;", case_deparse(fleets)), ncolumns = 2, filename)
-    write(c("Nsamp;", case_deparse(Nsamp)), ncolumns = 2, filename, append = TRUE)
-    write(c("years;", case_deparse(years)), ncolumns = 2, filename, append = TRUE)
-    write(c("cpar;", case_deparse(cpar)), ncolumns = 2, filename, append = TRUE)
+    mapply(write, file = filename, MoreArgs = list(ncolumns = 2,
+      x = c("fleets;", case_deparse(fleets))))
+    mapply(write, file = filename, MoreArgs = list(ncolumns = 2, append = TRUE,
+      x = c("Nsamp;", case_deparse(Nsamp))))
+    mapply(write, file = filename, MoreArgs = list(ncolumns = 2, append = TRUE,
+      x = c("years;", case_deparse(years))))
+    mapply(write, file = filename, MoreArgs = list(ncolumns = 2, append = TRUE,
+      x = c("cpar;", case_deparse(cpar))))
   }
 }
 
