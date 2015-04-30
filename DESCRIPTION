@@ -30,7 +30,8 @@ LazyData: true
 Suggests:
     knitr,
     doParallel,
-    foreach
+    foreach,
+    reshape2 (>= 1.2.2)
 VignetteBuilder: knitr
 Depends:
     R (>= 3.1.0)
@@ -39,7 +40,6 @@ Imports:
     r4ss (>= 1.21.1),
     gtools (>= 2.7.1),
     lubridate (>= 1.3.0),
-    reshape2 (>= 1.2.2),
     ggplot2 (>= 1.0.0),
     bbmle (>= 1.0.17),
     dplyr (>= 0.3.0),
