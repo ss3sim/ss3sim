@@ -28,7 +28,7 @@ case_comp(fleets = 1, Nsamp = NULL, years = NULL, cpar = 2, type, case,
   \code{"M"}.}
 
   \item{spp}{A vector of character values argument
-  specifying the species'.}
+  specifying the species.}
 }
 \description{
 Write a case file for length- or age-composition data

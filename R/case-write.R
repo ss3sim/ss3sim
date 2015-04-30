@@ -9,7 +9,7 @@
 #' @param type A character value of \code{"agecomp"} or \code{"lcomp"},
 #'   to write age- or length-composition specifications, respectively.
 #' @param case The case you want to write to. E.g. \code{"M"}.
-#' @param spp A vector of character values argument specifying the species'.
+#' @param spp A vector of character values argument specifying the species.
 #' @export
 #' @examples
 #' case_comp(fleets = 1:2, case = 30, spp = "cod",
