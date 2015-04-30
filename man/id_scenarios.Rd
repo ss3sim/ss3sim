@@ -10,6 +10,9 @@ id_scenarios(directory)
   \item{directory}{The directory which contains scenario
   folders with results.}
 }
+\value{
+A character vector of folders
+}
 \description{
 Identify ss3sim scenarios within a directory
 }

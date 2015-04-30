@@ -13,10 +13,18 @@ calculate_runtime(start_time, end_time)
   \item{end_time}{Vector of characters as read in from the
   r4ss report file}
 }
+\value{
+A numeric value representing the number of minutes of total
+runtime as reported by SS.
+}
 \description{
 Internal function used by \code{get_results_scenario} to
 calculate the runtime (in minutes) from a \code{Report.sso}
 file.
+}
+\details{
+This runtime includes the overhead for reading and writing
+the file up to the Report.sso time stamp.
 }
 \author{
 Cole Monnahan

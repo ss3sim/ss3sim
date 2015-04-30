@@ -5,7 +5,8 @@
 \title{Function to sample the log likelihood of a fit to length and age data}
 \usage{
 sample_fit_vbgf(length.data, start.L1, start.L2, start.k, start.cv.young,
-  start.cv.old, a3, A)
+  start.cv.old, lo.L1, lo.L2, lo.k, lo.cv.young, lo.cv.old, hi.L1, hi.L2, hi.k,
+  hi.cv.young, hi.cv.old, a3, A)
 }
 \arguments{
   \item{length.data}{data.frame which contains the lengths
