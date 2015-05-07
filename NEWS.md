@@ -1,6 +1,7 @@
 # ss3sim 0.8.2.99
 
-* Add functions to estimate von Bertalanffy growth.
+* Add functions to estimate von Bertalanffy growth. These are used internally
+  by `change_e()`.
 
 * Add `change_maturity()` to alter the SS3 maturity option
 
