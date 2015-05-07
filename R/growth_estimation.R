@@ -16,17 +16,17 @@ vbgf_func <- function(L1, L.inf, k, ages, a3){
   predLength
 }
 
-#' Function to sample the log likelihood of a fit to length and age data
-#'
-#' @param length.data data.frame which contains the lengths and ages
-#'  to fit the vbgf model..
-#' @param start.L1 numeric, starting guess for mle2 for L1 parameter.
-#' @param start.L2 numeric, starting guess for mle2 for L2 parameter.
-#' @param start.k numeric, starting guess for mle2 for k parameter.
-#' @param start.cv.young starting guess for mle2 for cv.young parameter.
-#' @param start.cv.old starting guess for mle2 for cv.old parameter.
-#' @param a3 integer, the youngest age well sampled in the data.
-#' @param A integer, the oldest age well sampled in the data.
+# Function to sample the log likelihood of a fit to length and age data
+#
+# @param length.data data.frame which contains the lengths and ages
+#  to fit the vbgf model..
+# @param start.L1 numeric, starting guess for mle2 for L1 parameter.
+# @param start.L2 numeric, starting guess for mle2 for L2 parameter.
+# @param start.k numeric, starting guess for mle2 for k parameter.
+# @param start.cv.young starting guess for mle2 for cv.young parameter.
+# @param start.cv.old starting guess for mle2 for cv.old parameter.
+# @param a3 integer, the youngest age well sampled in the data.
+# @param A integer, the oldest age well sampled in the data.
 sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
   start.cv.young, start.cv.old, lo.L1, lo.L2, lo.k, lo.cv.young, lo.cv.old,
   hi.L1, hi.L2, hi.k, hi.cv.young, hi.cv.old, a3, A){
@@ -45,12 +45,12 @@ sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
     logLik <- sum(-log(sigma) - ((predLength - data_[, 2])^2)/(2*sigma^2))
     -logLik
   }
-  
+
   get_logistic_transform <- function(par, lo, hi){
     par <- lo + (hi - lo)/(1+exp(-par))
     return(par)
   }
-  
+
   inv_logistic <- function(par, lo, hi){
     par <- -log(hi-par)+log(par-lo)
     return(par)
@@ -66,8 +66,10 @@ sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
   start.Linf <- start.L1+(start.L2-start.L1)/(1-exp(-start.k*(A-a3)))
   lo.Linf <- lo.L1+(lo.L2 - lo.L1)/(1-exp(-lo.k*(A-a3)))
   hi.Linf <- hi.L1+(hi.L2 - hi.L1)/(1-exp(-hi.k*(A-a3)))
-  pars.mat <- matrix(nrow=5,ncol=3,rbind(c(start.L1,lo.L1,hi.L1),c(start.Linf,lo.Linf,hi.Linf),c(start.k,lo.k,hi.k),
-                  c(start.cv.young,lo.cv.young, hi.cv.young), c(start.cv.old, lo.cv.old, hi.cv.old)))
+  pars.mat <- matrix(nrow=5, ncol=3, rbind(c(start.L1,lo.L1,hi.L1),
+    c(start.Linf,lo.Linf,hi.Linf),c(start.k,lo.k,hi.k),
+    c(start.cv.young,lo.cv.young, hi.cv.young),
+    c(start.cv.old, lo.cv.old, hi.cv.old)))
   transformed <- rep(0,5)
   for(i in 1:nrow(pars.mat)){
     transformed[i] <- inv_logistic(pars.mat[i,1], pars.mat[i,2], pars.mat[i,3])
