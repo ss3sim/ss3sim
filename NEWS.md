@@ -1,24 +1,45 @@
 # ss3sim 0.8.2.99
 
+* Add functions to estimate von Bertalanffy growth.
+
+* Add `change_maturity()` to alter the SS3 maturity option
+
+* Check that fleet name in the data frame matches the newest SS3 version
+  (see `change_fltname()`)
+
+* Add `change_data()`, which can manipulate population bin widths, the SS3
+  robustification constant, and the SS3 tail compression value. It takes care
+  of calling the new `change_tail_compression()` and `change_lcomp_constant()`
+  functions.
+
+* Add `calculate_re()` to calculate relative errors on the result data frames.
+
+* Add internal checking of the validity of SS3 .dat files (#203)
+
+* Get results functions now returns run time and a list of parameters that were
+  on bounds.
+
+* Add ability to work with mean-weight-at-age data (#178)
+
+* Switch vignette to R Markdown and HTML ouput (#194)
+
+* Add re-binning within the estimatin model of conditional age-at-length
+  data (#201, #205)
+
 * Add Kelli's `profile_fmsy()` function (#173)
 
-* Added benchmark tests for parallel processing options
-
-* Merrill added parallel processing option to get results functions (#171)
+* Merrill added parallel processing option to the get results functions (#171)
 
 * Added parallel iterations processing option (#168)
 
 * Function argument descriptions now indicate which ones need to be specified
-  in case files (#161).
+  in case files with an asterisk (#161).
 
 * Merrill updated the get-results functions to work without bias runs, to
   check for folders that look like ss3sim runs, and to issue a warning if
   there are problems reading the files (#155).
 
 * Copy wtatage.ss_new from OM to EM (#163).
-
-* Add new change functions: `change_tail_compression()`, `change_bin()`, and
-  `change_lcomp_constant()`.
 
 * Add Travis CI testing of the package https://travis-ci.org/ss3sim/ss3sim
 
@@ -46,11 +67,6 @@
 
 * Bump required version of r4ss to 1.22.1 since 1.22.0 did not export functions
   that ss3sim needs.
-
-* Vignette no longer uses LaTeX `appendix.sty`, which causes build errors on 
-  CRAN Mavericks build.
-
-* CITATION file now points to complete PLOS ONE citation.
 
 * ss3sim now requires R 3.1.0 since we cannot easily test on earlier versions.
 
