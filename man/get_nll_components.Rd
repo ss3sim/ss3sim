@@ -7,7 +7,8 @@
 get_nll_components(report.file)
 }
 \arguments{
-  \item{report.file}{An SS_output list for a model}
+  \item{report.file}{An \code{\link[r4ss]{SS_output}} list
+  for a model (operating model or estimation model).}
 }
 \description{
 Get negative log likelihood (NLL) values from a report file

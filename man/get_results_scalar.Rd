@@ -7,8 +7,8 @@
 get_results_scalar(report.file)
 }
 \arguments{
-  \item{report.file}{An SS_output list for a model
-  (operating model or estimation model).}
+  \item{report.file}{An \code{\link[r4ss]{SS_output}} list
+  for a model (operating model or estimation model).}
 }
 \description{
 Extract scalar quantities from an

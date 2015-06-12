@@ -388,7 +388,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
 #' Extract time series from an \code{\link[r4ss]{SS_output}} list from a model run.
 #' Returns a data.frame of the results for SSB, recruitment and effort by year.
 #'
-#' @param report.file An \code{SS_output} list for a model (operating model or estimation model).
+#' @template report.file
 #' @export
 #' @family get-results
 #' @author Cole Monnahan
@@ -410,7 +410,7 @@ get_results_timeseries <- function(report.file){
 #'
 #' Extract scalar quantities from an \code{\link[r4ss]{SS_output}} list from a model run.
 #' Returns a data.frame of the results (a single row) which can be rbinded later.
-#' @param report.file An SS_output list for a model (operating model or estimation model).
+#' @template report.file
 #' @family get-results
 #' @export
 #' @author Cole Monnahan; Merrill Rudd
@@ -456,7 +456,7 @@ get_results_scalar <- function(report.file){
 
 #' Get negative log likelihood (NLL) values from a report file list
 #'
-#' @param report.file An SS_output list for a model
+#' @template report.file
 #' @author Merrill Rudd
 get_nll_components <- function(report.file){
     ## Possible likelihood components from SS3.tpl
