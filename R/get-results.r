@@ -401,8 +401,15 @@ get_results_timeseries <- function(report.file){
                  select=c("Yr","SpawnBio", "Recruit_0", "F:_1"))
     xx <- xx[xx$Yr %in% years,]
     names(xx) <- gsub(":_1","", names(xx))
+    # Get SPR from derived_quants
+    spr <- with(report.file$derived_quants,
+      report.file$derived_quants[grep("SPRratio_", LABEL), ])
+    spr$Yr <- sapply(strsplit(spr$LABEL, "_"), "[", 2)
+    colnames(spr)[which(colnames(spr) == "Value")] <- "SPRratio"
     ## create final data.frame
-    df <- data.frame(xx, row.names=NULL )
+    df <- merge(xx, spr[, c("SPRratio", "Yr")], by = "Yr", all.x = TRUE)
+    df$SPRratio[is.na(df$SPRratio)] <- 0
+    rownames(df) <- NULL
     return(invisible(df))
 }
 
@@ -419,6 +426,8 @@ get_results_scalar <- function(report.file){
     SSB_MSY <-  der[which(der$LABEL=="SSB_MSY"),]$Value
     TotYield_MSY <-  der[which(der$LABEL=="TotYield_MSY"),]$Value
     SSB_Unfished <-  der[which(der$LABEL=="SSB_Unfished"),]$Value
+    F_MSY <- der[der$LABEL == "Fstd_MSY", "Value"]
+    F_SPR <- der[der$LABEL == "Fstd_SPRtgt", "Value"]
     Catch_endyear <-
         rev(report.file$timeseries[,grep("dead\\(B\\)",
           names(report.file$timeseries))])[1]
@@ -440,6 +449,8 @@ get_results_scalar <- function(report.file){
     max_grad <- report.file$maximum_gradient_component
     depletion <- report.file$current_depletion
     NLL_vec <- get_nll_components(report.file)
+    ## Obtain bias adjustment parameters
+    bias <- report.file$breakpoints_for_bias_adjustment_ramp
     ## get the number of params on bounds from the warning.sso file, useful for
     ## checking convergence issues
     warn <- report.file$warnings
@@ -448,7 +459,8 @@ get_results_scalar <- function(report.file){
         ifelse(length(warn.line)==1,
           as.numeric(strsplit(warn[warn.line], split=":")[[1]][2]), NA)
     ## Combine into final df and return it
-    df <- data.frame(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion,
+    df <- data.frame(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion
+                , F_MSY, F_SPR, bias,
                 params_on_bound, params_stuck_low, params_stuck_high, pars,
                 Catch_endyear, t(NLL_vec), stringsAsFactors=FALSE)
     return(invisible(df))
