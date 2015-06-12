@@ -258,15 +258,12 @@ get_results_scenario <- function(scenario, directory=getwd(),
     }
     ## Check for bias correction for this scenario, grab it if exists otherwise
     ## report NAs
-    bias <- rep(NA,7)
-    names(bias) <- c("bias1","bias2","bias3","bias4","bias5",
-                     "bias.converged","bias.tried")
+    bias <- c("bias.converged" = NA, "bias.tried" = NA)
     if(length(grep("bias", dir()))==1){
-        bias[1:5] <- unlist(read.table(file="bias/AvgBias.DAT", header=TRUE))
         bias.file <- read.table(file="bias/AdjustBias.DAT", header=FALSE)
         ## The ones with NAs mean it didn't converge
-        bias[6] <- nrow(na.omit(bias.file))
-        bias[7] <- nrow(bias.file)
+        bias[1] <- NROW(na.omit(bias.file))
+        bias[2] <- NROW(bias.file)
     }
 
     ## Loop through each replicate, not including the bias folders, and get
