@@ -11,9 +11,9 @@ get_results_timeseries(report.file)
   (operating model or estimation model).}
 }
 \description{
-Extract time series from an \code{SS_output} list from a
-model run. Returns a data.frame of the results for SSB,
-recruitment and effort by year.
+Extract time series from an \code{\link[r4ss]{SS_output}}
+list from a model run. Returns a data.frame of the results
+for SSB, recruitment and effort by year.
 }
 \author{
 Cole Monnahan

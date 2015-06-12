@@ -13,21 +13,21 @@ get_results_scenario(scenario, directory = getwd(), overwrite_files = FALSE)
   \item{directory}{The directory which contains the
   scenario folder.}
 
-  \item{overwrite_files}{A boolean (default is FALSE) for
-  whether to delete any files previously created with this
-  function. This is intended to be used if replicates were
-  added since the last time it was called, or any changes
-  were made to this function.}
+  \item{overwrite_files}{A boolean (default is
+  \code{FALSE}) for whether to delete any files previously
+  created with this function. This is intended to be used
+  if replicates were added since the last time it was
+  called, or any changes were made to this function.}
 }
 \description{
 Function that extracts results from all replicates inside a
 supplied scenario folder. The function writes 3 .csv files
 to the scenario folder: (1) scalar metrics with one value
-per replicate (e.g. $R_0$, $h$), (2) a timeseries data
-('ts') which contains multiple values per replicate (e.g.
-$SSB_y$ for a range of years $y$), and (3) [currently
-disabled and not tested] residuals on the log scale from
-the surveys across all replicates. The function
+per replicate (e.g. \eqn{R_0}, \eqn{h}), (2) a timeseries
+data ('ts') which contains multiple values per replicate
+(e.g.  \eqn{SSB_y} for a range of years \eqn{y}), and (3)
+[currently disabled and not tested] residuals on the log
+scale from the surveys across all replicates. The function
 \code{get_results_all} loops through these .csv files and
 combines them together into a single "final" dataframe.
 }

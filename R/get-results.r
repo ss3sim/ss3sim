@@ -74,7 +74,7 @@ id_scenarios <- function(directory){
 #' @param overwrite_files A switch to determine if existing files should be
 #'   overwritten, useful for testing purposes or if new replicates are run.
 #' @param user_scenarios A character vector of scenarios that should be read
-#'   in. Default is NULL, which indicates find all scenario folders in
+#'   in. Default is \code{NULL}, which indicates find all scenario folders in
 #'   \code{directory}.
 #' @param parallel Should the function be run on multiple cores? You will
 #'   need to set up parallel processing as shown in \code{\link{run_ss3sim}}.
@@ -200,9 +200,9 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
 #'
 #' Function that extracts results from all replicates inside a supplied
 #' scenario folder. The function writes 3 .csv files to the scenario
-#' folder: (1) scalar metrics with one value per replicate (e.g. $R_0$,
-#' $h$), (2) a timeseries data ('ts') which contains multiple values per
-#' replicate (e.g.  $SSB_y$ for a range of years $y$), and (3) [currently
+#' folder: (1) scalar metrics with one value per replicate (e.g. \eqn{R_0},
+#' \eqn{h}), (2) a timeseries data ('ts') which contains multiple values per
+#' replicate (e.g.  \eqn{SSB_y} for a range of years \eqn{y}), and (3) [currently
 #' disabled and not tested] residuals on the log scale from the surveys
 #' across all replicates. The function \code{get_results_all} loops through
 #' these .csv files and combines them together into a single "final"
@@ -211,7 +211,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
 #' @param scenario A single character giving the scenario from which to
 #'   extract results.
 #' @param directory The directory which contains the scenario folder.
-#' @param overwrite_files A boolean (default is FALSE) for whether to delete
+#' @param overwrite_files A boolean (default is \code{FALSE}) for whether to delete
 #'   any files previously created with this function. This is intended to be
 #'   used if replicates were added since the last time it was called, or any
 #'   changes were made to this function.
@@ -385,7 +385,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
 
 #' Extract time series from a model run.
 #'
-#' Extract time series from an \code{SS_output} list from a model run.
+#' Extract time series from an \code{\link[r4ss]{SS_output}} list from a model run.
 #' Returns a data.frame of the results for SSB, recruitment and effort by year.
 #'
 #' @param report.file An \code{SS_output} list for a model (operating model or estimation model).
@@ -408,13 +408,12 @@ get_results_timeseries <- function(report.file){
 
 #' Extract scalar quantities from a model run.
 #'
-#' Extract scalar quantities from an \code{SS_output} list from a model run.
+#' Extract scalar quantities from an \code{\link[r4ss]{SS_output}} list from a model run.
 #' Returns a data.frame of the results (a single row) which can be rbinded later.
 #' @param report.file An SS_output list for a model (operating model or estimation model).
 #' @family get-results
 #' @export
-#' @author Cole Monnahan; updated by Merrill Rudd to include additional
-#'   likelihoods
+#' @author Cole Monnahan; Merrill Rudd
 get_results_scalar <- function(report.file){
     der <- report.file$derived_quants
     SSB_MSY <-  der[which(der$LABEL=="SSB_MSY"),]$Value

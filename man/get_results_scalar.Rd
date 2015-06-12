@@ -11,13 +11,13 @@ get_results_scalar(report.file)
   (operating model or estimation model).}
 }
 \description{
-Extract scalar quantities from an \code{SS_output} list
-from a model run. Returns a data.frame of the results (a
-single row) which can be rbinded later.
+Extract scalar quantities from an
+\code{\link[r4ss]{SS_output}} list from a model run.
+Returns a data.frame of the results (a single row) which
+can be rbinded later.
 }
 \author{
-Cole Monnahan; updated by Merrill Rudd to include
-additional likelihoods
+Cole Monnahan; Merrill Rudd
 }
 \seealso{
 Other get-results: \code{\link{get_results_all}};

@@ -16,8 +16,8 @@ get_results_all(directory = getwd(), overwrite_files = FALSE,
   or if new replicates are run.}
 
   \item{user_scenarios}{A character vector of scenarios
-  that should be read in. Default is NULL, which indicates
-  find all scenario folders in \code{directory}.}
+  that should be read in. Default is \code{NULL}, which
+  indicates find all scenario folders in \code{directory}.}
 
   \item{parallel}{Should the function be run on multiple
   cores? You will need to set up parallel processing as
