@@ -276,6 +276,11 @@ get_results_scenario <- function(scenario, directory=getwd(),
     ## Loop through replicates and extract results using r4ss::SS_output
     resids.list <- list()
     message(paste0("Starting ", scenario, " with ", length(reps.dirs), " iterations"))
+    ## Get the number of columns for this scenario
+    numcol <- read.table(file.path(reps.dirs[1], "om", "Report.sso"),
+      col.names = 1:300, fill = TRUE, quote = "",
+      colClasses = "character", nrows = -1, comment.char = "")
+    numcol <- max(which(apply(numcol, 2, function(x) all(x == "")) == FALSE)) + 1
     for(rep in reps.dirs){
         ## Check that the model finished running and if not skip it but
         ## report that ID
@@ -288,12 +293,12 @@ get_results_scenario <- function(scenario, directory=getwd(),
                 SS_output(paste0(rep,"/em/"), covar=FALSE, verbose=FALSE,
                           compfile="none", forecast=TRUE, warn=TRUE,
                           readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
-                          ncols=300)
+                          ncols=numcol)
             report.om <-
                 SS_output(paste0(rep,"/om/"), covar=FALSE, verbose=FALSE,
                           compfile="none", forecast=FALSE, warn=TRUE,
                           readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
-                          ncols=300)
+                          ncols=numcol)
             ## ## Grab the residuals for the indices
             ## resids <- log(report.em$cpue$Obs) - log(report.em$cpue$Exp)
             ## resids.long <- data.frame(report.em$cpue[,c("FleetName", "Yr")], resids)
