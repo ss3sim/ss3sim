@@ -216,6 +216,8 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
                                 echoall = FALSE, section = NULL)
     ss3.dat <- change_fltname(ss3.dat)
     ss3.dat$styr <- year_begin
+    # Save old terminal year for the forecast file
+    oldendyear <- ss3.dat$endyr
     ss3.dat$endyr <- year_end
     # Change catch
     n.catch <- ss3.dat$N_catch
@@ -333,26 +335,15 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
 
     forecast <- SS_readforecast(forecast_file_in, nfleets, nareas,
                                 verbose = verbose)
-      realyears <- grep("# after processing", forecastlines, value = TRUE)
-      realyears <- strsplit(strsplit(realyears, "# ")[[1]][2], " ")[[1]]
-      realyears <- as.numeric(realyears[!realyears == ""])
-    if (all(forecast$Bmark_years == realyears)) {
-      warning(paste("Forecast biomass and fishing benchmark years",
-              "must be set relative to the end year and not as",
-              "absolute years. All benchmark years were set to",
-              "the terminal year. Please manually change"))
-      forecast$Bmark_years <- rep(0, 6)
-      forecast$Fcast_years <- rep(0, 4)
-    }
     if (forecast$FirstYear_for_caps_and_allocations != 0) {
         forecast$FirstYear_for_caps_and_allocations <- year_end +
-          (forecast$FirstYear_for_caps_and_allocations - max(realyears))
+          (forecast$FirstYear_for_caps_and_allocations - oldendyear)
         }
     if (forecast$Ydecl != 0) {
-      forecast$Ydecl <- year_end - (max(realyears) - forecast$Ydecl)
+      forecast$Ydecl <- year_end - (oldendyear - forecast$Ydecl)
     }
     if (forecast$Yinit != 0) {
-      forecast$Yinit <- year_end + (forecast$Yinit - max(realyears))
+      forecast$Yinit <- year_end + (forecast$Yinit - oldendyear)
     }
     if (all(forecast$max_totalcatch_by_fleet == 0)) {
       forecast$max_totalcatch_by_fleet <- "#"

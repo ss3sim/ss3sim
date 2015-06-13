@@ -35,11 +35,11 @@ file.copy(om, ".", recursive = TRUE)
 verbose <- FALSE
 
 test_that("Forecast file is readable.", {
-  om.for <- r4ss::SS_readforecast(file.path(om, "forecast.ss"), 0, 0, verbose = verbose)
+  om.for <- r4ss::SS_readforecast(file.path(om, "forecast.ss"), 1, 1, verbose = verbose)
   change_year(forecast_file_in = file.path(om, "forecast.ss"),
               forecast_file_out = "new.ss")
-  om.for.new <- r4ss::SS_readforecast("new.ss", 0, 0)
-  out <- evaluate_promise(r4ss::SS_readforecast("new.ss", 0, 0), print = TRUE)$output
+  om.for.new <- r4ss::SS_readforecast("new.ss", 1, 1, verbose = verbose)
+  out <- evaluate_promise(r4ss::SS_readforecast("new.ss", 1, 1), print = TRUE)$output
   expect_equal(grepl("Error", out), FALSE)
 })
 
