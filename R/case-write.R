@@ -38,6 +38,36 @@ case_comp <- function(fleets = 1, Nsamp = NULL, years = NULL, cpar = 2,
   }
 }
 
+#' Write a case file for index data to the disk.
+#'
+#' @param fleets Vector of fleet numbers, where the order of
+#'   \code{fleets} will dictate the order of all remaining arguments.
+#' @param years A list containing vectors of years for each year for each fleet.
+#' @param sd A vector of standard deviations for each fleet.
+#' @param case The case you want to write to. E.g. \code{'I'}.
+#' @param spp A vector of character values argument specifying the species.
+#' @export
+#' @examples
+#' case_index(fleets = 2, case = 1, spp = "cod", years = list(7:10), sd = 0.1)
+#' done <- file.remove("index1-cod.txt")
+
+case_index <- function(fleets = 1, years = NULL, sd = 2, case, spp) {
+
+  old <- options()$"deparse.cutoff"
+  options(deparse.cutoff = 500L)
+  on.exit(options(deparse.cutoff = old))
+
+  for (ind in seq_along(spp)){
+    filename <- paste0("index", case, "-", spp[ind], ".txt")
+    mapply(write, file = filename, MoreArgs = list(ncolumns = 2,
+      x = c("fleets;", case_deparse(fleets))))
+    mapply(write, file = filename, MoreArgs = list(ncolumns = 2, append = TRUE,
+      x = c("years;", case_deparse(years))))
+    mapply(write, file = filename, MoreArgs = list(ncolumns = 2, append = TRUE,
+      x = c("sds_obs;", case_deparse(sd))))
+  }
+}
+
 #' Write time varying casefiles to the disk
 #'
 #' @param species A vector of species, for which a unique case file will be
