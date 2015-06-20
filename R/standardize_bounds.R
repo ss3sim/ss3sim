@@ -11,8 +11,8 @@
 #'
 #' @param percent_df A \code{data.frame} with nine rows and three columns.
 #'   The first column is the parameter.
-#'   The second column is the % of the initial parameter value LO is set to.
-#'   The third column is the % of the initial parameter value HI is set to.
+#'   The second column is the percent of the initial parameter value LO is set to.
+#'   The third column is the percent of the initial parameter value HI is set to.
 #' @param dir A path to the directory containing the model files.
 #' @param om_ctl_file A string with the name of the operating model
 #'   control file. If it is not given the part of the function which matches the
