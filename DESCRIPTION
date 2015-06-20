@@ -25,7 +25,6 @@ Authors@R: c(person("Sean", "Anderson", email =
 Description: The ss3sim package develops a framework for fisheries stock
     assessment simulation testing with Stock Synthesis 3 (SS3).
 License: MIT + file LICENSE
-Roxygen: list(wrap = TRUE)
 LazyData: true
 Suggests:
     knitr,
