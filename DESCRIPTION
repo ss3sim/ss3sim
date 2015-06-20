@@ -1,8 +1,8 @@
 Package: ss3sim
 Type: Package
 Title: Fisheries stock assessment simulation testing with Stock Synthesis
-Version: 0.8.2.99
-Date: 2014-09-28
+Version: 0.8.9.9000
+Date: 2015-06-20
 Authors@R: c(person("Sean", "Anderson", email =
     "sean@seananderson.ca", role = c("aut", "cre")),
     person("Cole", "Monnahan", role = "aut"),
