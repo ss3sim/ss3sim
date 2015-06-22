@@ -1,10 +1,10 @@
 #' Standardize column name for FltSvy in event r4ss is not the newest version.
 #'
 #' \code{change_fltname} alters the name for the fleet/survey column
-#' which is typically named FltSvy by \code{r4ss::SS_readdat}, but was
+#' which is typically named FltSvy by \code{\link[r4ss]{SS_readdat}}, but was
 #' inconsistent in older versions (.e.g. Fleet was used for mean size-at-age).
 #'
-#' @param datfile A list as read in by \code{r4ss::SS_readdat}.
+#' @param datfile A list as read in by \code{\link[r4ss]{SS_readdat}}.
 #'
 #' @return An invisible data list.
 #'
