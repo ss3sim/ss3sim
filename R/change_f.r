@@ -1,12 +1,12 @@
-#' Alter the fishing mortality (F) values in an \code{ss3.par} file
+#' Alter the fishing mortality (\emph{F}) values in an SS3 \code{.par} file.
 #'
-#' Takes an SS3 \code{.par} file and changes the F values for specified years.
+#' Takes an SS3 \code{.par} file and changes the \emph{F} values for specified years.
 #' If used with \code{\link{run_ss3sim}} the case file should be named
 #' \code{F}. A suggested (default) case letter is \code{F}.
 #'
 #' @author Curry James Cunningham
 #'
-#' @param years *Vector of years for which F values are specified,
+#' @param years *Vector of years for which \emph{F} values are specified,
 #' if there is more than one fleet or season the catches must be ordered by
 #' season:year:fishey (e.g., season1year1fishery1, season2year1fishery1,
 #' season1year2fishery1). The actual vector does not have to correspond to
@@ -15,14 +15,15 @@
 #' an index to old values. \code{years_alter} will use values in this vector.
 #' For example, with two seasons and one fishery that operates for 4 years
 #' you could use the following: \code{1:8}.
-#' @param years_alter *Vector of years for the which F values will be altered.
+#' @param years_alter *Vector of years for the which \emph{F} values will be altered.
 #' If there is more than one fishery or season, use the mapping system
 #' created in \code{years} because actual year values cannot be recycled.
 #' For example, to change the second season of the second year in the
 #' example above, use: \code{4}.
-#' @param fvals *Vector of F values to be entered into \code{ss3.par} file
-#' @param file_in Input SS3 par file.
-#' @param file_out Output SS3 par file.
+#' @param fvals *Vector of \emph{F} values to be entered into \code{ss3.par} file,
+#' where \code{length(fvals) == length(years_alter)} must be true.
+#' @param file_in Input SS3 \code{.par} file.
+#' @param file_out Output SS3 \code{.par} file.
 #' @return A modified SS3 \code{.par} file.
 #' @family change functions
 #' @template casefile-footnote
