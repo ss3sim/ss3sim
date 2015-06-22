@@ -1,4 +1,4 @@
-#' Standardize column name for FltSvy in event r4ss is not the newest version.
+#' Standardize column name for FltSvy in event \pkg{r4ss} is not the newest version.
 #'
 #' \code{change_fltname} alters the name for the fleet/survey column
 #' which is typically named FltSvy by \code{\link[r4ss]{SS_readdat}}, but was
