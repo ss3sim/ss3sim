@@ -2,32 +2,34 @@
 % Please edit documentation in R/change_fltname.r
 \name{change_fltname}
 \alias{change_fltname}
-\title{Standardize column name for FltSvy in event r4ss is not the newest version.}
+\title{Standardize column name for FltSvy in event \pkg{r4ss} is not the newest version.}
 \usage{
 change_fltname(datfile)
 }
 \arguments{
-\item{datfile}{A list as read in by \code{r4ss::SS_readdat}.}
+\item{datfile}{An SS data object as read in from
+\code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
+you select option \code{section=2}.}
 }
 \value{
 An invisible data list.
 }
 \description{
 \code{change_fltname} alters the name for the fleet/survey column
-which is typically named FltSvy by \code{r4ss::SS_readdat}, but was
+which is typically named FltSvy by \code{\link[r4ss]{SS_readdat}}, but was
 inconsistent in older versions (.e.g. Fleet was used for mean size-at-age).
 }
 \examples{
-### These examples are in development still and untested
-#d <- system.file("extdata", package = "ss3sim")
-#file_in <- paste0(d, "/Simple/simple.dat")
-#dat_in <- r4ss::SS_readdat(file_in, verbose = FALSE)
-#dat_fixed <- change_fltname(dat_in)
-### Check mean size-at-age
-#names(dat_fixed$MeanSize_at_Age_obs)[3] == "FltSvy"
+d <- system.file("extdata", package = "ss3sim")
+file_in <- file.path(d, "Simple", "simple.dat")
+# Here one should include the argument \\code{section = 2}
+but this \\code{.dat} file does not have multiple sections.
+dat_in <- r4ss::SS_readdat(file_in, verbose = FALSE)
+dat_fixed <- change_fltname(dat_in)
+# Check mean size-at-age
+names(dat_fixed$MeanSize_at_Age_obs)[3] == "FltSvy"
 }
 \author{
 Kelli Johnson
-#
 }
 
