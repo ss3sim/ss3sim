@@ -15,7 +15,7 @@
 #' d <- system.file("extdata", package = "ss3sim")
 #' file_in <- file.path(d, "Simple", "simple.dat")
 #' # Here one should include the argument \code{section = 2}
-#' but this \code{.dat} file does not have multiple sections.
+#' # but this \code{.dat} file does not have multiple sections.
 #' dat_in <- r4ss::SS_readdat(file_in, verbose = FALSE)
 #' dat_fixed <- change_fltname(dat_in)
 #' # Check mean size-at-age
