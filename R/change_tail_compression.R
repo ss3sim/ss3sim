@@ -11,7 +11,7 @@
 #'   numeric value, as a proportion. For example 0.1 means 10 percent. See the
 #'   SS3 manual for further information. A NULL value indicates no action, a
 #'   negative value indicates to SS3 to ignore it (not use that feature).
-#' @param datfile Input SS3 dat file \bold{as returned in list object form from
+#' @param dat_list Input SS3 dat file \bold{as returned in list object form from
 #'   \code{\link[r4ss]{SS_readdat}}}.
 #' @param file_out Output SS3 dat file name.
 #' @param write_file Should the altered data file be written to disk?
@@ -21,15 +21,15 @@
 #' @author Cole Monnahan
 #' @importFrom r4ss SS_writedat
 
-change_tail_compression <- function(tail_compression, datfile, file_out,
+change_tail_compression <- function(tail_compression, dat_list, file_out,
   write_file = TRUE){
 
   if(is.null(tail_compression)) return(invisible(NULL))
   stopifnot(is.numeric(tail_compression))
 
   # The data sections are repeated in the data.ss_new files, so only use first one
-  datfile$comp_tail_compression[1] <- tail_compression
-  if(write_file) SS_writedat(datfile, file_out, overwrite = TRUE, verbose = FALSE)
+  dat_list$comp_tail_compression[1] <- tail_compression
+  if(write_file) SS_writedat(dat_list, file_out, overwrite = TRUE, verbose = FALSE)
 
-  invisible(datfile)
+  invisible(dat_list)
 }

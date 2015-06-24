@@ -28,14 +28,14 @@
 #' # Find the example data location:
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
-#' datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
-#' datfile <- change_fltname(datfile)
+#' dat_list <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+#' dat_list <- change_fltname(dat_list)
 #' outfile <- "test.dat"
-#' ex1 <- sample_index(datfile, outfile, fleets=c(2,3),
+#' ex1 <- sample_index(dat_list, outfile, fleets=c(2,3),
 #'                     years=list(1938:2012, 1938:2012) ,
 #'                     sds_obs=list(1e-6, 1e-6), write_file=FALSE,
 #'                     make_plot = TRUE)
-#' ex2 <- sample_index(datfile, outfile, fleets=c(2,3),
+#' ex2 <- sample_index(dat_list, outfile, fleets=c(2,3),
 #'                     years=list(1938:2012, 1938:2012) ,
 #'                     sds_obs=list(.05, .05), write_file=FALSE,
 #'                     make_plot = TRUE)
@@ -44,7 +44,7 @@
 #'                 colour=as.factor(index)))+geom_line() + geom_point(data=ex2,
 #'                 aes(x=year, y=obs, colour=as.factor(index), group=index))
 #' ## Exclude a fleet and have varying sds_obs by year
-#' ex3 <- sample_index(datfile, outfile, fleets=c(2,NA),
+#' ex3 <- sample_index(dat_list, outfile, fleets=c(2,NA),
 #'                     years=list(1938:2012, 1950),
 #'                     sds_obs=list(seq(.001, .1, len=75), .1),
 #'                     write_file=FALSE)
@@ -53,10 +53,10 @@
 #' }
 #' @family sampling functions
 
-sample_index <- function(datfile, outfile, fleets, years, sds_obs,
+sample_index <- function(dat_list, outfile, fleets, years, sds_obs,
                          make_plot = FALSE, write_file=TRUE){
-    check_data(datfile)
-    cpue <- datfile$CPUE
+    check_data(dat_list)
+    cpue <- dat_list$CPUE
     ## Check inputs for errors
     Nfleets <- length(fleets)
     # if(length(unique(cpue$index)) != Nfleets)
@@ -127,7 +127,7 @@ stop(paste("A year specified in years was not found in the input file for fleet"
 
     ## Open the .dat file for the assessment model and find the right lines to
     ## overwrite
-    newfile <- datfile
+    newfile <- dat_list
     newfile$CPUE <- cpue.new
     if(Nfleets>0) newfile$N_cpue <- nrow(cpue.new)
     if(Nfleets==0) newfile$N_cpue <- 0

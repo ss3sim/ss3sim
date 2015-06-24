@@ -4,11 +4,11 @@
 \alias{sample_agecomp}
 \title{Sample age compositions from expected values}
 \usage{
-sample_agecomp(datfile, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
+sample_agecomp(dat_list, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
   write_file = TRUE, keep_conditional = TRUE)
 }
 \arguments{
-\item{datfile}{An SS data object as read in from
+\item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
@@ -37,7 +37,7 @@ same standard deviation as a multinomial of the given \code{Nsamp},
 \code{2} indicates twice, etc. Values greater than one indicate
 overdispersion, and less underdispersion.}
 
-\item{write_file}{A switch for whether to write \code{outfile} to
+\item{write_file}{A logical switch for whether to write \code{outfile} to
 disk. Can be turned off to speed up testing or exploration of the
 function. The new data are returned invisibly, as in the examples
 below.}
@@ -71,21 +71,21 @@ if specified.
 \examples{
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/models/cod-om/codOM.dat")
-datfile <- r4ss::SS_readdat(f_in, verbose = FALSE)
-datfile <- change_fltname(datfile)
+dat_list <- r4ss::SS_readdat(f_in, verbose = FALSE)
+dat_list <- change_fltname(dat_list)
 
 ## Turn off age comps by specifying fleets=NULL
-sample_agecomp(datfile=datfile, outfile="test1.dat",
+sample_agecomp(dat_list=dat_list, outfile="test1.dat",
                fleets=NULL, cpar=c(5,NA), Nsamp=list(100,100),
                years=list(1995, 1995), write_file=FALSE)
 
 ## Generate with a smaller number of fleet taking samples
-ex1 <- sample_agecomp(datfile=datfile, outfile="test1.dat", fleets=c(2),
+ex1 <- sample_agecomp(dat_list=dat_list, outfile="test1.dat", fleets=c(2),
                       Nsamp=list(c(10,50)), years=list(c(26,27)),
                       write_file=FALSE)
 
 ## Generate with varying Nsamp by year for first fleet
-ex2 <- sample_agecomp(datfile=datfile, outfile="test2.dat", fleets=c(1,2),
+ex2 <- sample_agecomp(dat_list=dat_list, outfile="test2.dat", fleets=c(1,2),
                       Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
                       years=list(seq(26, 44, 2),
                           c(26:100)), write_file=FALSE)
@@ -95,19 +95,19 @@ ex2 <- sample_agecomp(datfile=datfile, outfile="test2.dat", fleets=c(1,2),
 ## Dirichlet for different levels of sample sizes
 op <- par(mfrow = c(1,3))
 for(samplesize in c(30, 100, 1000)){
-    ex4 <- sample_agecomp(datfile=datfile, outfile="test4.dat", fleets=c(1,2),
+    ex4 <- sample_agecomp(dat_list=dat_list, outfile="test4.dat", fleets=c(1,2),
                           Nsamp=list(samplesize, samplesize),
                           write_file = FALSE,
                           years=list(2000,2000), cpar=c(NA, 1))
-    ex5 <- sample_agecomp(datfile=datfile, outfile="test5.dat", fleets=c(1,2),
+    ex5 <- sample_agecomp(dat_list=dat_list, outfile="test5.dat", fleets=c(1,2),
                           Nsamp=list(samplesize, samplesize),
                           write_file = FALSE,
                           years=list(2000,2000), cpar=c(1, 1))
-    ex6 <- sample_agecomp(datfile=datfile, outfile="test6.dat", fleets=c(1,2),
+    ex6 <- sample_agecomp(dat_list=dat_list, outfile="test6.dat", fleets=c(1,2),
                           Nsamp=list(samplesize, samplesize),
                           write_file = FALSE,
                           years=list(2000,2000), cpar=c(5, 1))
-    true <- subset(datfile$agecomp, FltSvy==1 & Yr == 2000)[-(1:9)]
+    true <- subset(dat_list$agecomp, FltSvy==1 & Yr == 2000)[-(1:9)]
     true <- true/sum(true)
     plot(0:15, subset(ex4, FltSvy==1)[1,-(1:9)], type="b", ylim=c(0,1),
          col=1, xlab="Age", ylab="Proportion", main=paste("Sample size=",

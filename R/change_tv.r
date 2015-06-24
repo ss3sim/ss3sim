@@ -15,9 +15,9 @@
 #' @param dat_file_out Output SS3 data file
 #' @param par_file_in Input SS3 parameter file
 #' @param par_file_out Output SS3 parameter file
-#' @param starter_file_in Input SS3 starter file
-#' @param starter_file_out Output SS3 starter file
-#' @param report_file Input SS3 report file
+#' @param str_file_in Input SS3 starter file
+#' @param str_file_out Output SS3 starter file
+#' @param rpt_file_in Input SS3 report file
 #' @author Kotaro Ono, Carey McGilliard, and Kelli Johnson
 #' @family change functions
 #' @return The function creates modified versions of the \code{.par},
@@ -105,16 +105,16 @@ change_tv <- function(change_tv_list,
   ctl_file_in = "control.ss_new", ctl_file_out = "om.ctl",
   dat_file_in = "ss3.dat", dat_file_out = "ss3.dat",
   par_file_in = "ss3.par", par_file_out = "ss3.par",
-  starter_file_in = "starter.ss", starter_file_out = "starter.ss",
-  report_file = "Report.sso") {
+  str_file_in = "starter.ss", str_file_out = "starter.ss",
+  rpt_file_in = "Report.sso") {
 
   # Always use safe mode here:
   ss_bin <- "ss3_24o_safe"
 
   ss3.ctl    <- readLines(con = ctl_file_in)
   ss3.dat    <- readLines(con = dat_file_in)
-  ss3.starter<- readLines(con = starter_file_in)
-  ss3.report <- readLines(con = report_file)
+  ss3.starter<- readLines(con = str_file_in)
+  ss3.report <- readLines(con = rpt_file_in)
 
   year.beg <- grep("#_styr",  ss3.dat, value = TRUE )
   year.end <- grep("#_endyr", ss3.dat, value = TRUE )
@@ -411,7 +411,7 @@ for(i in seq_along(temp.data)) {
     ss3.starter[usepar.ch] <- "0 # 0=use init values in control file; 1=use ss3.par"
     ss3.starter[usepar.ch-2] <- dat_file_out
     ss3.starter[usepar.ch-1] <- ctl_file_out
-    writeLines(ss3.starter, con = starter_file_out)
+    writeLines(ss3.starter, con = str_file_out)
 
     # Is SS3 in the path?
     bin <- Sys.which(ss_bin)[[1]]
@@ -431,9 +431,9 @@ for(i in seq_along(temp.data)) {
 
     #Change starter file option back to using .par!
     ss3.starter[usepar.ch] = "1 # 0=use init values in control file; 1=use ss3.par"
-    writeLines(ss3.starter, con = starter_file_out)
+    writeLines(ss3.starter, con = str_file_out)
 
-  ss3.report <- readLines(con = report_file)
+  ss3.report <- readLines(con = rpt_file_in)
   ss3.par    <- readLines(con = par_file_in)
 
   env.name <- sapply(names(change_tv_list), function(x) {

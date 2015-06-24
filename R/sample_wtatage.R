@@ -14,9 +14,9 @@
 #'
 #' @author Cole Monnahan, Allan Hicks, Peter Kuriyama
 #'
-#' @param infile The file to read weight-at-age from. Specifically to get the
+#' @param wta_file_in The file to read weight-at-age from. Specifically to get the
 #'   age-0 weight-at-age. This is typically \code{wtatage.ss_new}.
-#' @param ctlfile A path to the control file, outputed from an OM, containing
+#' @param ctl_file_in A path to the control file, outputed from an OM, containing
 #'   the OM parameters for growth and weight/length relationship. These values
 #'   are used to determine the uncertainty about weight for fish sampled in each
 #'   age bin. Commonly \code{control.ss_new}
@@ -38,22 +38,23 @@
 # setwd('/Users/peterkuriyama/School/Research/capam_growth/sample_wtatage_test/')
 # # source('fill_across.r')
 # #
-# infile <- "om/wtatage.ss_new"
+# wta_file_in <- "om/wtatage.ss_new"
 # outfile <- "em/wtatage.ss"
 # datfile <- "em/ss3.dat"
-# ctlfile <- "om/control.ss_new"
+# ctl_file_in <- "om/control.ss_new"
 # years <- list(seq(2, 100, 1), seq(2, 100, 1))
 # fill_fnc <- fill_across
 # fleets <- list(1, 2)
 # cv_wtatage <- .5
 # write_file <- TRUE
 #
-# test <- sample_wtatage(infile = infile, outfile = outfile, datfile = datfile,
-#     ctlfile = ctlfile, years = years, fill_fnc = fill_across,
+# dat_list <- r4ss::SS_readdat(file=datfile, verbose=FALSE)
+# test <- sample_wtatage(wta_file_in = wta_file_in, outfile = outfile, dat_list = dat_list,
+#     ctl_file_in = ctl_file_in, years = years, fill_fnc = fill_across,
 #     fleets = fleets, cv_wtatage = cv_wtatage)
 #
 
-sample_wtatage <- function(infile, outfile, datfile, ctlfile,
+sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
                            years, fill_fnc = fill_across, write_file=TRUE, fleets,
                            cv_wtatage = NULL){
   ##fill_type: specify type of fill, fill zeroes with first row? annual interpolation?
@@ -64,39 +65,34 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
     if(is.null(cv_wtatage)) stop('specify cv_wtatage in case file')
 
     cat('cv_wtatage is', cv_wtatage, '\n')
-#     cat('datfile is', datfile)
     if(is.null(fleets)) return(NULL)
 
     ### ACH: Because you always have to have year 100, you may want to check for duplicates
     # years <- years[!duplicated(years)]
     #----------------------------------------------------------------------------
 
-    ## Read in datfile, need this for true age distributions and Nsamp
-    #unchanged from previous versions
-#     datfile <- r4ss::SS_readdat(file=datfile, verbose=FALSE)
-    agecomp <- datfile$agecomp[datfile$agecomp$Lbin_lo== -1,]
+    agecomp <- dat_list$agecomp[dat_list$agecomp$Lbin_lo== -1,]
 
     cat('sample size is ', unique(agecomp$Nsamp), '\n')
-    agebin_vector <- datfile$agebin_vector
-    # agebin_vector <- c(0, agebin_vector)
+    agebin_vector <- dat_list$agebin_vector
 
-    mlacomp <- datfile$MeanSize_at_Age_obs
-    if(is.null(mlacomp)) stop("No mean length-at-age data found in datfile")
+    mlacomp <- dat_list$MeanSize_at_Age_obs
+    if(is.null(mlacomp)) stop("No mean length-at-age data found in dat_list")
     ## Read in the control file
-    ctl <-SS_parlines(ctlfile)
+    ctl <-SS_parlines(ctl_file_in)
     ## Read in the file and grab the expected values
-    infile <- readLines(infile)
+    wta_file_in <- readLines(wta_file_in)
 
     ## Remove double spaces, which SS3 writes in the 7th column
-    infile <- gsub("  ", replacement=" ", x=infile)
-    xx <- grep(x=infile, "#yr seas gender growpattern birthseas fleet")
+    wta_file_in <- gsub("  ", replacement=" ", x=wta_file_in)
+    xx <- grep(x=wta_file_in, "#yr seas gender growpattern birthseas fleet")
     if(length(xx)!=1) stop("Failed to read in wtatage file")
-    header <- unlist(strsplit(infile[xx], " "))
+    header <- unlist(strsplit(wta_file_in[xx], " "))
     header[-(1:6)] <- paste("age",header[-(1:6)],sep="")
     ## It appears the first three lines need to be there for some
     ## reason. ****TODO Peter****: fix this if need be??
 
-    wtatage <- infile[(xx+1):length(infile)]
+    wtatage <- wta_file_in[(xx+1):length(wta_file_in)]
     wtatage <-  as.data.frame(matrix(as.numeric(unlist(strsplit(wtatage, split=" "))),
                                      nrow=length(wtatage), byrow=TRUE))
     names(wtatage) <- gsub("#", replacement="", x=header)
@@ -220,23 +216,23 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
     ##     wtatage.new.list[[2]]$fleet <- 2
     ## }
 
-    wtatage.complete <- lapply(wtatage.new.list,fill_fnc,minYear=datfile$styr,maxYear=datfile$endyr)
+    wtatage.complete <- lapply(wtatage.new.list,fill_fnc,minYear=dat_list$styr,maxYear=dat_list$endyr)
 
     # wtatage.new.list[[1]]
     # temp.wtatage <- wtatage.new.list[[1]]
 
-    # filled.wtatage <- fill_fnc(mat = temp.wtatage, minYear = datfile$styr, maxYear = datfile$endyr)
+    # filled.wtatage <- fill_fnc(mat = temp.wtatage, minYear = dat_list$styr, maxYear = dat_list$endyr)
 
     #Manually check
     # write.csv(temp.wtatage, file = 'wtatage1_gaps.csv')
     # write.csv(filled.wtatage, file = 'wtatage1_filled.csv')
     # save(wtatage.complete, file = '/Users/peterkuriyama/School/Research/capam_growth/Empirical/runs/wtatage.complete.Rdata')
 
-    # wtatage.complete[[datfile$Nfleet+1]] <- wtatage.complete[[datfile$Nfleet]]
-    # print(datfile$Nfleet+1)
+    # wtatage.complete[[dat_list$Nfleet+1]] <- wtatage.complete[[dat_list$Nfleet]]
+    # print(dat_list$Nfleet+1)
 
-    # fltNeg1 <- fltZero <- wtatage.complete[[datfile$Nfleet+1]]  #first survey
-    # fltNeg1 <- fltZero <- wtatage.complete[[datfile$Nfleet+1]]  #first survey
+    # fltNeg1 <- fltZero <- wtatage.complete[[dat_list$Nfleet+1]]  #first survey
+    # fltNeg1 <- fltZero <- wtatage.complete[[dat_list$Nfleet+1]]  #first survey
     # fltNeg1$fleet <- -1
     # fltZero$fleet <- 0
 
@@ -258,11 +254,11 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
     # matAtAge <- mat.fn(c(ctl[ctl$Label=="Mat_slope_Fem","INIT"],ctl[ctl$Label=="Mat50%_Fem","INIT"]),agebin_vector)
     # matAtAge <- c(0, matAtAge)
 
-    # # fecund <- matAtAge * wtatage.complete[[datfile$Nfleet+1]][,-(1:6)]
+    # # fecund <- matAtAge * wtatage.complete[[dat_list$Nfleet+1]][,-(1:6)]
     # #Adjusted Matrix Multiplication
-    # fecund <- t(apply(wtatage.complete[[datfile$Nfleet+1]][,-(1:6)], 1, FUN = function(x) matAtAge * x))
+    # fecund <- t(apply(wtatage.complete[[dat_list$Nfleet+1]][,-(1:6)], 1, FUN = function(x) matAtAge * x))
 
-    # fecund <- cbind(wtatage.complete[[datfile$Nfleet+1]][,1:6],fecund)
+    # fecund <- cbind(wtatage.complete[[dat_list$Nfleet+1]][,1:6],fecund)
     # fecund$fleet <- -2
 
     # Nlines <- nrow(fecund)+nrow(fltNeg1)+nrow(fltZero)
@@ -273,7 +269,7 @@ sample_wtatage <- function(infile, outfile, datfile, ctlfile,
 
     ##write wtatage.ss file
     if(write_file)    cat(Nlines,"# Number of lines of weight-at-age input to be read\n",file=outfile)
-    if(write_file)    cat(datfile$Nages,"# Maximum Age\n",file=outfile,append=TRUE)
+    if(write_file)    cat(dat_list$Nages,"# Maximum Age\n",file=outfile,append=TRUE)
 
     #loop through the various matrices and build up wtatage.final while doing it
     wtatage.final <- list()

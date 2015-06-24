@@ -4,7 +4,7 @@
 \alias{change_lcomp_constant}
 \title{Set the robustification constant for length composition data.}
 \usage{
-change_lcomp_constant(lcomp_constant, datfile, file_out, write_file = TRUE)
+change_lcomp_constant(lcomp_constant, dat_list, file_out, write_file = TRUE)
 }
 \arguments{
 \item{lcomp_constant}{*The new value to be used. Must be a numeric value, as
@@ -14,7 +14,7 @@ the current value, and a value of 0 will throw an error since that leads to
 an error when zeroes exist in the data. Instead use a very small value like
 1e-07.}
 
-\item{datfile}{Input SS3 dat file \bold{as returned in list object form from
+\item{dat_list}{Input SS3 dat file \bold{as returned in list object form from
 \code{\link[r4ss]{SS_readdat}}}.}
 
 \item{file_out}{Output SS3 dat file. Typically the same as \code{file_in}.}

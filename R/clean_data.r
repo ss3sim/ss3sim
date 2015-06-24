@@ -18,18 +18,18 @@
 ## mlacomp_params= NULL
 ## d <- system.file("extdata", package = "ss3sim")
 ## f_in <- paste0(d, "/example-om/data.ss_new")
-## datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
-## datfile <- change_fltname(datfile)
+## dat_list <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+## dat_list <- change_fltname(dat_list)
 ## data_units <- calculate_data_units(lcomp_params=lcomp_params,
 ##                      agecomp_params=agecomp_params,
 ##                      calcomp_params=calcomp_params,
 ##                      mlacomp_params=mlacomp_params)
-## dat2 <- with(data_units, change_data(datfile=datfile, fleets=fleets, years=years,
+## dat2 <- with(data_units, change_data(dat_list=dat_list, fleets=fleets, years=years,
 ##                              types=types, write_file=FALSE))
-## dat2 <- change_data(datfile, fleets=c(1,2), years=c(4,5),
+## dat2 <- change_data(dat_list, fleets=c(1,2), years=c(4,5),
 ##                     types=c("age","len", "mla", "cal"), write_file=FALSE)
-## datfile <- dat2
-## dat3 <- clean_datfile(datfile=dat2, lcomp_params=lcomp_params,
+## dat_list <- dat2
+## dat3 <- clean_datfile(dat_list=dat2, lcomp_params=lcomp_params,
 ##                      agecomp_params=agecomp_params,
 ##                      calcomp_params=calcomp_params,
 ##                      mlacomp_params=mlacomp_params,
@@ -61,43 +61,43 @@
 #' @return An invisible cleaned data list as an object.
 #' @note This function does not write the result to file.
 #' @export
-clean_data <- function(datfile, index_params=NULL, lcomp_params=NULL,
+clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
                        agecomp_params=NULL, calcomp_params=NULL,
                        mlacomp_params=NULL, verbose=FALSE ){
-    ## Should somehow have a check that datfile is valid. None for now.
+    ## Should somehow have a check that dat_list is valid. None for now.
     ## Note that verbose=TRUE will print how many rows are removed. The
     ## sampling functions should themselves remove data for most cases, but
     ## but not for all cases, such as when extra types are generated for
     ## sampling purposes.
 
     ## CPUE
-    a <- datfile$CPUE
+    a <- dat_list$CPUE
     if(is.null(index_params$fleets)){
         stop("Indices are currently mandatory: index_params is NULL")
     } else {
-        datfile$CPUE <- do.call(rbind,
+        dat_list$CPUE <- do.call(rbind,
          lapply(1:length(index_params$fleets), function(i)
                 a[a$index == index_params$fleets[i] &
                   a$year %in% index_params$years[[i]],]))
-        datfile$N_cpue <- NROW(datfile$CPUE)
+        dat_list$N_cpue <- NROW(dat_list$CPUE)
     }
-    index.N.removed <- NROW(a)-NROW(datfile$CPUE)
+    index.N.removed <- NROW(a)-NROW(dat_list$CPUE)
     if(index.N.removed !=0  & verbose)
         message(paste(index.N.removed, "lines of CPUE data removed"))
 
     ## Length composition data
-    a <- datfile$lencomp
+    a <- dat_list$lencomp
     if(is.null(lcomp_params$fleets)){
-        datfile$lencomp <- NULL
-        datfile$N_lencomp <- 0
+        dat_list$lencomp <- NULL
+        dat_list$N_lencomp <- 0
     } else {
-        datfile$lencomp <- do.call(rbind,
+        dat_list$lencomp <- do.call(rbind,
          lapply(1:length(lcomp_params$fleets), function(i)
                 a[a$FltSvy == lcomp_params$fleets[i] &
                   a$Yr %in% lcomp_params$years[[i]],]))
-        datfile$N_lencomp <- NROW(datfile$lencomp)
+        dat_list$N_lencomp <- NROW(dat_list$lencomp)
     }
-    lcomp.N.removed <- NROW(a)-NROW(datfile$lencomp)
+    lcomp.N.removed <- NROW(a)-NROW(dat_list$lencomp)
     if(lcomp.N.removed !=0  & verbose)
         message(paste(lcomp.N.removed, "lines of length comp data removed"))
 
@@ -106,27 +106,27 @@ clean_data <- function(datfile, index_params=NULL, lcomp_params=NULL,
     if (any(grepl("remove", mlacomp_params$mean_outfile))) {
       mlacomp_params$years <- NULL
     }
-    a <- datfile$MeanSize_at_Age_obs
+    a <- dat_list$MeanSize_at_Age_obs
     if(!is.null(a)) {
       if(a[1,1] == "#") a <- NULL
     }
     if(is.null(mlacomp_params$fleets)){
-        datfile$MeanSize_at_Age_obs <- NULL
-        datfile$N_MeanSize_at_Age_obs <- 0
+        dat_list$MeanSize_at_Age_obs <- NULL
+        dat_list$N_MeanSize_at_Age_obs <- 0
     } else {
-        datfile$MeanSize_at_Age_obs <-
+        dat_list$MeanSize_at_Age_obs <-
             do.call(rbind,
          lapply(1:length(mlacomp_params$fleets), function(i)
                 a[a$FltSvy == mlacomp_params$fleets[i] &
                   a$Yr %in% mlacomp_params$years[[i]],]))
-        datfile$N_MeanSize_at_Age_obs <- NROW(datfile$MeanSize_at_Age_obs)
+        dat_list$N_MeanSize_at_Age_obs <- NROW(dat_list$MeanSize_at_Age_obs)
     }
-    mlacomp.N.removed <- NROW(a) - NROW(datfile$MeanSize_at_Age_obs)
+    mlacomp.N.removed <- NROW(a) - NROW(dat_list$MeanSize_at_Age_obs)
     if(mlacomp.N.removed !=0 & verbose)
         message(paste(mlacomp.N.removed, "lines of mean length data removed"))
 
     ## Age comps and conditional age-at-length at the same time
-    a <- datfile$agecomp
+    a <- dat_list$agecomp
     agecomp <- a[a$Lbin_lo < 0,]
     calcomp <- a[a$Lbin_lo >= 0, ]
     ## case with no age or cal data
@@ -159,22 +159,22 @@ clean_data <- function(datfile, index_params=NULL, lcomp_params=NULL,
                          calcomp$Yr %in% calcomp_params$years[[i]],]))
       }
     ## Create clean dat file
-    datfile$agecomp <- rbind(new.agecomp, new.calcomp)
-    datfile$N_agecomp <- NROW(datfile$agecomp)
+    dat_list$agecomp <- rbind(new.agecomp, new.calcomp)
+    dat_list$N_agecomp <- NROW(dat_list$agecomp)
     agecomp.N.removed <-
-        NROW(agecomp)-NROW(datfile$agecomp[datfile$agecomp$Lbin_lo < 0,])
+        NROW(agecomp)-NROW(dat_list$agecomp[dat_list$agecomp$Lbin_lo < 0,])
     calcomp.N.removed <-
-        NROW(calcomp)-NROW(datfile$calcomp[datfile$agecomp$Lbin_lo >= 0,])
+        NROW(calcomp)-NROW(dat_list$calcomp[dat_list$agecomp$Lbin_lo >= 0,])
     if(agecomp.N.removed !=0  & verbose)
             message(paste(agecomp.N.removed, "lines of age data removed"))
     if(calcomp.N.removed !=0  & verbose)
             message(paste(calcomp.N.removed, "lines of CAL data removed"))
-    # Set data type to NULL in datfile because if no rows exist
-    # "[1]" # will be written in datfile
+    # Set data type to NULL in dat_list because if no rows exist
+    # "[1]" # will be written in dat_list
     data.names <- c("lencomp", "agecomp", "MeanSize_at_Age_obs")
     for(dname in data.names) {
-      if (NROW(datfile[[dname]]) == 0) datfile[dname] <- NULL
+      if (NROW(dat_list[[dname]]) == 0) dat_list[dname] <- NULL
     }
 
-    return(invisible(datfile))
+    return(invisible(dat_list))
 }

@@ -4,10 +4,10 @@
 \alias{change_fltname}
 \title{Standardize column name for FltSvy in event \pkg{r4ss} is not the newest version.}
 \usage{
-change_fltname(datfile)
+change_fltname(dat_list)
 }
 \arguments{
-\item{datfile}{An SS data object as read in from
+\item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 }

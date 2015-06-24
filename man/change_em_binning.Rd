@@ -5,12 +5,12 @@
 \title{Change population and observed length composition bins in an SS estimation
 model}
 \usage{
-change_em_binning(datfile, file_out, bin_vector, lbin_method = NULL,
+change_em_binning(dat_list, file_out, bin_vector, lbin_method = NULL,
   pop_binwidth = NULL, pop_minimum_size = NULL, pop_maximum_size = NULL,
   write_file = TRUE)
 }
 \arguments{
-\item{datfile}{An SS3 data list object as read in by
+\item{dat_list}{An SS3 data list object as read in by
 \code{\link[r4ss]{SS_readdat}}.}
 
 \item{file_out}{A character value giving the location of an SS \code{ss3.dat}
@@ -51,8 +51,8 @@ conditional age-at-length data then these data will be re-binned as well.
 \examples{
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/example-om/data.ss_new")
-datfile <- r4ss::SS_readdat(file = f_in, verbose = FALSE)
-l <- change_em_binning(datfile, file_out = NULL, lbin_method = 1,
+dat_list <- r4ss::SS_readdat(file = f_in, verbose = FALSE)
+l <- change_em_binning(dat_list, file_out = NULL, lbin_method = 1,
   bin_vector = seq(8, 30, by = 1), write_file = FALSE)
 print(l$lbin_vector)
 print(head(l$lencomp))
