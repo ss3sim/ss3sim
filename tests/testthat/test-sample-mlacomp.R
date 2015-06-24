@@ -6,13 +6,13 @@ wd <- getwd()
 setwd(temp_path)
 
 test_that("sample_mlacomp() works", {
-  datfile <- r4ss::SS_readdat(system.file("extdata/models/cod-om/codOM.dat", package = "ss3sim"), verbose = FALSE)
+  dat_list <- r4ss::SS_readdat(system.file("extdata/models/cod-om/codOM.dat", package = "ss3sim"), verbose = FALSE)
   fctl <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
-  newdat <- change_data(datfile, outfile = "codOM-temp.dat",
+  newdat <- change_data(dat_list, outfile = "codOM-temp.dat",
     types = c("age", "mla"), fleets = 1, years = 2000:2012, write_file = FALSE)
   set.seed(123)
   newdat <- change_fltname(newdat)
-  out <- sample_mlacomp(newdat, outfile = "ignore.dat", ctlfile = fctl,
+  out <- sample_mlacomp(newdat, outfile = "ignore.dat", ctl_file_in = fctl,
     Nsamp = list(rep(50, 13)), years = list(2000:2012), write_file = FALSE,
     mean_outfile = NULL)
   expect_equal(names(out$MeanSize_at_Age_obs),
@@ -26,15 +26,15 @@ test_that("sample_mlacomp() works", {
 })
 
 test_that("mean of sample_mlacomp() is unbiased", {
-  datfile <- r4ss::SS_readdat(system.file("extdata/models/cod-om/codOM.dat",
+  dat_list <- r4ss::SS_readdat(system.file("extdata/models/cod-om/codOM.dat",
     package = "ss3sim"), verbose = FALSE)
   fctl <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
-  newdat <- change_data(datfile, outfile = NULL, types = c("age", "mla"),
+  newdat <- change_data(dat_list, outfile = NULL, types = c("age", "mla"),
     fleets = 1, years = 2000, write_file = FALSE)
   newdat <- change_fltname(newdat)
   newdat$agecomp$Nsamp <- 800000
   ctlfile <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
-  out <- sample_mlacomp(newdat, outfile = NULL, ctlfile = ctlfile,
+  out <- sample_mlacomp(newdat, outfile = NULL, ctl_file_in = ctlfile,
     Nsamp = list(rep(800000, 1)), years = list(2000), write_file = FALSE,
     mean_outfile = NULL)
   result <- out$MeanSize_at_Age_obs[, -(1:9)]

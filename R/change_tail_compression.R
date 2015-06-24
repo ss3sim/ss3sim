@@ -20,6 +20,7 @@
 #' @template casefile-footnote
 #' @author Cole Monnahan
 #' @importFrom r4ss SS_writedat
+#' @export
 
 change_tail_compression <- function(tail_compression, dat_list, file_out,
   write_file = TRUE){

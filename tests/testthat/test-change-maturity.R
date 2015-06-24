@@ -21,6 +21,7 @@ test_that("change_maturity() changes the option from 1 to 5 for the cod model", 
  })
 
 test_that("change_maturity() changes the option from 1 to 5 for the flatfish model", {
+  skip_on_cran()
   f <- system.file("models/flatfish/em/ss3.ctl", package = "ss3models")
   change_maturity(f, "test.ctl", maturity_option = 5L)
   fl <- readLines("test.ctl")
@@ -29,6 +30,7 @@ test_that("change_maturity() changes the option from 1 to 5 for the flatfish mod
  })
 
 test_that("change_maturity() changes the option from 1 to 2 for the flatfish model", {
+  skip_on_cran()
   f <- system.file("models/flatfish/em/ss3.ctl", package = "ss3models")
   change_maturity(f, "test.ctl", maturity_option = 2L)
   fl <- readLines("test.ctl")
