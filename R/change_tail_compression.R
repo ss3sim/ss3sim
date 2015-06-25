@@ -14,7 +14,7 @@
 #'   negative value indicates to SS3 to ignore it (not use that feature).
 #' @template dat_list
 #' @template dat_file_out
-#' @param write_file Should the altered data file be written to disk?
+#' @template write_file
 #' @return A modified SS3 \code{.dat} file, and that file returned invisibly
 #'   (for testing) as a vector of character lines.
 #' @template casefile-footnote

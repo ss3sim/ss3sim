@@ -9,14 +9,14 @@
 #' in the operating model that currently do not use environmental deviations and
 #' the vectors correspond to deviations. See the section "Specifying the
 #' \code{change_tv_list}" below for help on specifying this argument.
-#' @param ctl_file_in Input SS3 control file
-#' @param ctl_file_out Output SS3 control file
-#' @param dat_file_in Input SS3 data file
-#' @param dat_file_out Output SS3 data file
-#' @param par_file_in Input SS3 parameter file
-#' @param par_file_out Output SS3 parameter file
-#' @param str_file_in Input SS3 starter file
-#' @param str_file_out Output SS3 starter file
+#' @template ctl_file_in
+#' @template ctl_file_out
+#' @template dat_file_in
+#' @template dat_file_out
+#' @template par_file_in
+#' @template par_file_out
+#' @template str_file_in
+#' @template str_file_out
 #' @param rpt_file_in Input SS3 report file
 #' @author Kotaro Ono, Carey McGilliard, and Kelli Johnson
 #' @family change functions

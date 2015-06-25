@@ -9,16 +9,16 @@
 #' @param year_end Desired end year
 #' @param burnin Length of burnin period. Default is zero for an OM. Use burnin
 #'   for EM models, to establish a period with no fishing.
-#' @param ctl_file_in Input SS3 control file
+#' @template ctl_file_in
 #' @param ctl_file_out Output SS3 control file, if \code{NULL} the file will be
 #'   named the same as the \code{ctl_file_in}
-#' @param dat_file_in Input SS3 data file
+#' @template dat_file_in
 #' @param dat_file_out Output SS3 data file, if \code{NULL} the file will be
 #'   named the same as the \code{dat_file_in}
-#' @param par_file_in Input SS3 parameter file
+#' @template par_file_in
 #' @param par_file_out Output SS3 parameter file, if \code{NULL} the file will
 #'   be named the same as the \code{par_file_in}
-#' @param str_file_in Input SS3 starter file
+#' @template str_file_in
 #' @param str_file_out Output SS3 starter file, if \code{NULL} the file will
 #'   be named the same as the \code{str_file_in}
 #' @param for_file_in Input SS3 forecast file
