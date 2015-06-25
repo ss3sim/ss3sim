@@ -237,7 +237,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       }
 
       # Add new rec devs overwriting om/ss3.par
-      change_rec_devs(recdevs_new = sc_i_recdevs, file_in =
+      change_rec_devs(recdevs_new = sc_i_recdevs, par_file_in =
         pastef(sc, i, "om", "ss3.par"), file_out = pastef(sc, i,
           "om", "ss3.par"))
 
@@ -247,7 +247,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         change_f(years               = years,
                  years_alter         = years_alter,
                  fvals               = fvals,
-                 file_in             = pastef(sc, i, "om", "ss3.par"),
+                 par_file_in         = pastef(sc, i, "om", "ss3.par"),
                  file_out            = pastef(sc, i, "om", "ss3.par")))
 
       # Run the operating model
@@ -379,7 +379,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           ## so exit early if this is the case.
           if(!is.null(wtatage_params$fleets)){
               ## Make sure W@A option is turned on in the EM
-              change_maturity(file_in=pastef(sc, i, "em", "em.ctl"),
+              change_maturity(ctl_file_in=pastef(sc, i, "em", "em.ctl"),
                               file_out=pastef(sc, i, "em", "em.ctl"),
                               maturity_option=5)
               with(wtatage_params,
@@ -431,7 +431,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(!is.null(retro_params)) {
       retro_params <- add_nulls(retro_params, "retro_yr")
       with(retro_params,
-        change_retro(startfile_in    = pastef(sc, i, "em", "starter.ss"),
+        change_retro(str_file_in    = pastef(sc, i, "em", "starter.ss"),
                      startfile_out   = pastef(sc, i, "em", "starter.ss"),
                      retro_yr        = retro_yr))
       }

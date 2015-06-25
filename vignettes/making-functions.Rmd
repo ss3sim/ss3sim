@@ -25,7 +25,7 @@ or optional like `S` where if not specified then nothing occurs.
 
     - Aim for singular names (e.g. `change_bin`).
 
-    - Input and output file arguments should be written as `file_in` and `file_out` or if multiple types are needed then add a prefix. E.g. `dat_file_in`.
+    - Input and output file arguments should be written as `_file_in` and `_file_out` with a three character prefix before the first underscore indicating which file type (e.g., `dat_file_in`).
 
     - In general try to match argument names as best as possible. A good approach is to start with a similar function and modify as needed.
 

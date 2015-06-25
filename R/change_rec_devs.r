@@ -6,7 +6,7 @@
 #' name \code{file_out} into the working directory.
 #'
 #' @param recdevs_new A vector of new recruitment deviations.
-#' @param file_in Input SS3 par file.
+#' @template par_file_in
 #' @param file_out Output SS3 par file.
 #' @return A modified SS3 \code{.par} file.
 #' @author Cole Monnahan
@@ -22,16 +22,16 @@
 #'
 #' par_file <- system.file("extdata", "models", "cod-om", "ss3.par",
 #'   package = "ss3sim")
-#' change_rec_devs(recdevs_new = rlnorm(100), file_in = par_file,
+#' change_rec_devs(recdevs_new = rlnorm(100), par_file_in = par_file,
 #'   file_out = paste0(temp_path, "/test.par"))
 
-change_rec_devs <- function(recdevs_new, file_in="ss3.par",
+change_rec_devs <- function(recdevs_new, par_file_in = "ss3.par",
   file_out="ss3.par"){
   ## This is the pattern on the line before the vector of current recdevs
   pattern <- "# recdev1"
 
-  if(!file.exists(file_in)) stop(paste("File", file_in,"not found"))
-  par <- readLines(file_in, warn = FALSE)
+  if(!file.exists(par_file_in)) stop(paste("File", par_file_in,"not found"))
+  par <- readLines(par_file_in, warn = FALSE)
   which.line <- grep(pattern=pattern, x=par)+1
 
   ## grab the old ones, note there is a leading space that needs to be

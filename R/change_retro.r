@@ -11,7 +11,7 @@
 #'   0, 1, 2, 3, 4, and 5 years, you will need to use this function to adjust
 #'   the starter file 6 separate times.
 #'
-#' @param startfile_in Input \code{starter.ss} file
+#' @template str_file_in
 #' @param startfile_out Output \code{starter.ss} file
 #' @param retro_yr *Which retrospective year to enter into the starter file.
 #'   Should be 0 (no retrospective analysis) or a negative value.
@@ -37,7 +37,7 @@
 #' retro_yr = -5)
 #' @export
 
-change_retro <- function(startfile_in = "starter.ss", startfile_out =
+change_retro <- function(str_file_in = "starter.ss", startfile_out =
   "starter.ss", retro_yr = 0) {
 
   # Sanity checks:
@@ -46,7 +46,7 @@ change_retro <- function(startfile_in = "starter.ss", startfile_out =
   if(abs(retro_yr - round(retro_yr)) > .Machine$double.eps^0.5)
     stop("retro_yr should be a whole number or integer")
 
-  starter <- readLines(startfile_in)
+  starter <- readLines(str_file_in)
 
   starter_line <- grep("retrospective", starter)
   retro_dat <- strsplit(starter[starter_line], " ")[[1]]

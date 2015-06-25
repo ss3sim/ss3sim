@@ -1,7 +1,8 @@
 #' Replace tail compression value for length composition data.
 #'
 #' This function replaces the tail compression value for length composition data
-#' in a \code{dat} file (\code{file_in}) with those specified in
+#' in a \code{.dat} file that was read in using \code{\link[r4ss]{SS_readdat}}
+#' with those specified in
 #' \code{tail_compression}. It then writes a new file with name \code{file_out}
 #' into the working directory. If used with \code{\link{run_ss3sim}} the case
 #' file should be named \code{tail_compression}. A suggested case letter is

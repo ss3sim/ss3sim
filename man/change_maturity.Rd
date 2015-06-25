@@ -4,11 +4,11 @@
 \alias{change_maturity}
 \title{Alter a control file to specify the SS3 maturity option}
 \usage{
-change_maturity(file_in = "em.ctl", file_out = "em.ctl",
+change_maturity(ctl_file_in = "em.ctl", file_out = "em.ctl",
   maturity_option = 1L)
 }
 \arguments{
-\item{file_in}{Input control file}
+\item{ctl_file_in}{A string providing the path to the input SS3 \code{.ctl} file.}
 
 \item{file_out}{Output control file}
 

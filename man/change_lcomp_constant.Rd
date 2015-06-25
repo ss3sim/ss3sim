@@ -18,7 +18,7 @@ an error when zeroes exist in the data. Instead use a very small value like
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
-\item{file_out}{Output SS3 dat file. Typically the same as \code{file_in}.}
+\item{file_out}{Output SS3 dat file.}
 
 \item{write_file}{Should the data file be written to disk?}
 }
@@ -28,7 +28,8 @@ A modified SS3 \code{.dat} file, and that file returned invisibly
 }
 \description{
 This function replaces the robustification value for length composition data
-in a \code{dat} file (\code{file_in}) with those specified in
+in a \code{.dat} file that was read in using \code{\link[r4ss]{SS_readdat}}
+with those specified in
 \code{lcomp_constant}. It then writes a new file with name \code{file_out}
 into the working directory. If used with \code{\link{run_ss3sim}} the case
 file should be named \code{lcomp_constant}. A suggested case letter is

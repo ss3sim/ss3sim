@@ -4,12 +4,12 @@
 \alias{change_rec_devs}
 \title{Replace recruitment deviations}
 \usage{
-change_rec_devs(recdevs_new, file_in = "ss3.par", file_out = "ss3.par")
+change_rec_devs(recdevs_new, par_file_in = "ss3.par", file_out = "ss3.par")
 }
 \arguments{
 \item{recdevs_new}{A vector of new recruitment deviations.}
 
-\item{file_in}{Input SS3 par file.}
+\item{par_file_in}{A string providing the path to the input SS3 \code{.par} file.}
 
 \item{file_out}{Output SS3 par file.}
 }
@@ -34,7 +34,7 @@ dir.create(temp_path, showWarnings = FALSE)
 
 par_file <- system.file("extdata", "models", "cod-om", "ss3.par",
   package = "ss3sim")
-change_rec_devs(recdevs_new = rlnorm(100), file_in = par_file,
+change_rec_devs(recdevs_new = rlnorm(100), par_file_in = par_file,
   file_out = paste0(temp_path, "/test.par"))
 }
 \author{
