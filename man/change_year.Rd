@@ -18,22 +18,22 @@ change_year(year_begin = 1, year_end = 100, burnin = 0,
 \item{burnin}{Length of burnin period. Default is zero for an OM. Use burnin
 for EM models, to establish a period with no fishing.}
 
-\item{ctl_file_in}{Input SS3 control file}
+\item{ctl_file_in}{A string providing the path to the input SS3 \code{.ctl} file.}
 
 \item{ctl_file_out}{Output SS3 control file, if \code{NULL} the file will be
 named the same as the \code{ctl_file_in}}
 
-\item{dat_file_in}{Input SS3 data file}
+\item{dat_file_in}{A string providing the path to the input SS3 \code{.dat} file.}
 
 \item{dat_file_out}{Output SS3 data file, if \code{NULL} the file will be
 named the same as the \code{dat_file_in}}
 
-\item{par_file_in}{Input SS3 parameter file}
+\item{par_file_in}{A string providing the path to the input SS3 \code{.par} file.}
 
 \item{par_file_out}{Output SS3 parameter file, if \code{NULL} the file will
 be named the same as the \code{par_file_in}}
 
-\item{str_file_in}{Input SS3 starter file}
+\item{str_file_in}{A string providing the path to the input SS3 \code{starter.ss} file.}
 
 \item{str_file_out}{Output SS3 starter file, if \code{NULL} the file will
 be named the same as the \code{str_file_in}}

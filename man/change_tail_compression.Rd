@@ -19,7 +19,8 @@ you select option \code{section=2}.}
 
 \item{dat_file_out}{A string providing the path to the output SS3 \code{.dat} file.}
 
-\item{write_file}{Should the altered data file be written to disk?}
+\item{write_file}{A logical value indicating if the altered file should be
+written to the disk. The default value is \code{TRUE}.}
 }
 \value{
 A modified SS3 \code{.dat} file, and that file returned invisibly
