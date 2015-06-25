@@ -12,7 +12,7 @@
 #'   the starter file 6 separate times.
 #'
 #' @template str_file_in
-#' @param startfile_out Output \code{starter.ss} file
+#' @template str_file_out
 #' @param retro_yr *Which retrospective year to enter into the starter file.
 #'   Should be 0 (no retrospective analysis) or a negative value.
 #' @author Sean C. Anderson
@@ -37,7 +37,7 @@
 #' retro_yr = -5)
 #' @export
 
-change_retro <- function(str_file_in = "starter.ss", startfile_out =
+change_retro <- function(str_file_in = "starter.ss", str_file_out =
   "starter.ss", retro_yr = 0) {
 
   # Sanity checks:
@@ -53,5 +53,5 @@ change_retro <- function(str_file_in = "starter.ss", startfile_out =
   retro_dat[1] <- retro_yr
   starter[starter_line] <- paste(retro_dat, collapse = " ")
 
-  writeLines(starter, startfile_out)
+  writeLines(starter, str_file_out)
 }

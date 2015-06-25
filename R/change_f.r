@@ -23,7 +23,7 @@
 #' @param fvals *Vector of \emph{F} values to be entered into \code{ss3.par} file,
 #' where \code{length(fvals) == length(years_alter)} must be true.
 #' @template par_file_in
-#' @param file_out Output SS3 \code{.par} file.
+#' @template par_file_out
 #' @return A modified SS3 \code{.par} file.
 #' @family change functions
 #' @template casefile-footnote
@@ -37,11 +37,11 @@
 #' par_file <- paste0(d, "/change_f/ss3.par")
 #'
 #' change_f(years = 1:49, years_alter = 2, fvals = 9999, par_file_in =
-#' par_file, file_out = paste0(temp_path, "/test.par"))
+#' par_file, par_file_out = paste0(temp_path, "/test.par"))
 #' @export
 
 change_f <- function(years, years_alter, fvals, par_file_in = "ss3.par",
-  file_out = "ss3.par") {
+  par_file_out = "ss3.par") {
 
   n.years_alter <- length(years_alter)
 
@@ -62,7 +62,7 @@ change_f <- function(years, years_alter, fvals, par_file_in = "ss3.par",
   }
 
   # Write new .par file
-  writeLines(ss3.par.new, con=file_out)
-  close(file(file_out))
+  writeLines(ss3.par.new, con = par_file_out)
+  close(file(par_file_out))
   invisible(ss3.par.new)
 }

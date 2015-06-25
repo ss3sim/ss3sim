@@ -4,7 +4,8 @@
 \alias{change_lcomp_constant}
 \title{Set the robustification constant for length composition data.}
 \usage{
-change_lcomp_constant(lcomp_constant, dat_list, file_out, write_file = TRUE)
+change_lcomp_constant(lcomp_constant, dat_list, dat_file_out,
+  write_file = TRUE)
 }
 \arguments{
 \item{lcomp_constant}{*The new value to be used. Must be a numeric value, as
@@ -18,7 +19,7 @@ an error when zeroes exist in the data. Instead use a very small value like
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
-\item{file_out}{Output SS3 dat file.}
+\item{dat_file_out}{A string providing the path to the output SS3 \code{.dat} file.}
 
 \item{write_file}{Should the data file be written to disk?}
 }
@@ -30,7 +31,7 @@ A modified SS3 \code{.dat} file, and that file returned invisibly
 This function replaces the robustification value for length composition data
 in a \code{.dat} file that was read in using \code{\link[r4ss]{SS_readdat}}
 with those specified in
-\code{lcomp_constant}. It then writes a new file with name \code{file_out}
+\code{lcomp_constant}. It then writes a new file with name \code{dat_file_out}
 into the working directory. If used with \code{\link{run_ss3sim}} the case
 file should be named \code{lcomp_constant}. A suggested case letter is
 \code{C}.

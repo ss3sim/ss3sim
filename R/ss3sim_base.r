@@ -238,7 +238,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       # Add new rec devs overwriting om/ss3.par
       change_rec_devs(recdevs_new = sc_i_recdevs, par_file_in =
-        pastef(sc, i, "om", "ss3.par"), file_out = pastef(sc, i,
+        pastef(sc, i, "om", "ss3.par"), par_file_out = pastef(sc, i,
           "om", "ss3.par"))
 
       # Change F
@@ -248,7 +248,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                  years_alter         = years_alter,
                  fvals               = fvals,
                  par_file_in         = pastef(sc, i, "om", "ss3.par"),
-                 file_out            = pastef(sc, i, "om", "ss3.par")))
+                 par_file_out            = pastef(sc, i, "om", "ss3.par")))
 
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
@@ -380,7 +380,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           if(!is.null(wtatage_params$fleets)){
               ## Make sure W@A option is turned on in the EM
               change_maturity(ctl_file_in=pastef(sc, i, "em", "em.ctl"),
-                              file_out=pastef(sc, i, "em", "em.ctl"),
+                              ctl_file_out=pastef(sc, i, "em", "em.ctl"),
                               maturity_option=5)
               with(wtatage_params,
                    sample_wtatage(wta_file_in = pastef(sc, i, "om", "wtatage.ss_new"),
@@ -432,7 +432,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       retro_params <- add_nulls(retro_params, "retro_yr")
       with(retro_params,
         change_retro(str_file_in    = pastef(sc, i, "em", "starter.ss"),
-                     startfile_out   = pastef(sc, i, "em", "starter.ss"),
+                     str_file_out   = pastef(sc, i, "em", "starter.ss"),
                      retro_yr        = retro_yr))
       }
 
@@ -452,7 +452,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
               "pop_minimum_size", "pop_maximum_size"))
           dat_list <- change_em_binning(
               dat_list         = dat_list,
-              file_out         = NULL,
+              dat_file_out     = NULL,
               bin_vector       = em_binning_params$bin_vector,
               lbin_method      = em_binning_params$lbin_method,
               pop_binwidth     = em_binning_params$pop_binwidth,

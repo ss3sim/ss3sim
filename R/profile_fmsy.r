@@ -63,7 +63,7 @@ profile_fmsy <- function(om_in, results_out, simlength = 100,
   for(i in seq(fVector)) {
     change_f(years = 1:simlength, years_alter = 1:simlength,
              fvals = rep(fVector[i], 100),
-             par_file_in = "ss3.par", file_out = "ss3.par" )
+             par_file_in = "ss3.par", par_file_out = "ss3.par" )
     system(paste(ss_bin, "-nohess"), show.output.on.console = FALSE,
            ignore.stdout=TRUE)
 
