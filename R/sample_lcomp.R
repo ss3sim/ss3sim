@@ -11,7 +11,7 @@
 #'
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
-#' @template datfile
+#' @template dat_list
 #' @template Nsamp
 #' @template casefile-footnote
 #' @template sampling-return

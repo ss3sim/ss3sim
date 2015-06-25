@@ -27,7 +27,7 @@
 #' @return A modified \code{.wtatage.ss} file if \code{write_file = TRUE}. A list
 #'   object containing the modified \code{.wtatage.ss} file is returned invisibly.
 #' @template lcomp-agecomp-index
-#' @template datfile
+#' @template dat_list
 #' @template casefile-footnote
 #' @importFrom r4ss SS_parlines
 #' @seealso \code{\link{fill_across}}

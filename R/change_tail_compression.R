@@ -11,8 +11,7 @@
 #'   numeric value, as a proportion. For example 0.1 means 10 percent. See the
 #'   SS3 manual for further information. A NULL value indicates no action, a
 #'   negative value indicates to SS3 to ignore it (not use that feature).
-#' @param dat_list Input SS3 dat file \bold{as returned in list object form from
-#'   \code{\link[r4ss]{SS_readdat}}}.
+#' @template dat_list
 #' @param file_out Output SS3 dat file name.
 #' @param write_file Should the altered data file be written to disk?
 #' @return A modified SS3 \code{.dat} file, and that file returned invisibly

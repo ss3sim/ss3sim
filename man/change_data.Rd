@@ -10,7 +10,9 @@ change_data(dat_list, outfile, fleets, years, types, age_bins = NULL,
   write_file = TRUE)
 }
 \arguments{
-\item{dat_list}{A list as read in by \code{\link[r4ss]{SS_readdat}}.}
+\item{dat_list}{An SS data list object as read in from
+\code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
+you select option \code{section=2}.}
 
 \item{outfile}{A character value giving the location of an SS \code{.dat}
 file to output, if \code{write_file=TRUE}.}

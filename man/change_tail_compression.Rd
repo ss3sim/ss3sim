@@ -13,8 +13,9 @@ numeric value, as a proportion. For example 0.1 means 10 percent. See the
 SS3 manual for further information. A NULL value indicates no action, a
 negative value indicates to SS3 to ignore it (not use that feature).}
 
-\item{dat_list}{Input SS3 dat file \bold{as returned in list object form from
-\code{\link[r4ss]{SS_readdat}}}.}
+\item{dat_list}{An SS data list object as read in from
+\code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
+you select option \code{section=2}.}
 
 \item{file_out}{Output SS3 dat file name.}
 

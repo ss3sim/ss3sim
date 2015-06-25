@@ -11,7 +11,7 @@
 #'
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
-#' @template datfile
+#' @template dat_list
 #' @template Nsamp
 #' @param keep_conditional A logical if conditional age-at-length data
 #'   should be kept or removed entirely from the \code{.dat} file.

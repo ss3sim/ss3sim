@@ -4,7 +4,7 @@
 #' which is typically named FltSvy by \code{\link[r4ss]{SS_readdat}}, but was
 #' inconsistent in older versions (.e.g. Fleet was used for mean size-at-age).
 #'
-#' @template datfile
+#' @template dat_list
 #'
 #' @return An invisible data list.
 #'

@@ -18,8 +18,7 @@
 #'   the current value, and a value of 0 will throw an error since that leads to
 #'   an error when zeroes exist in the data. Instead use a very small value like
 #'   1e-07.
-#' @param dat_list Input SS3 dat file \bold{as returned in list object form from
-#'   \code{\link[r4ss]{SS_readdat}}}.
+#' @template dat_list
 #' @param file_out Output SS3 dat file. Typically the same as \code{file_in}.
 #' @param write_file Should the data file be written to disk?
 #' @return A modified SS3 \code{.dat} file, and that file returned invisibly

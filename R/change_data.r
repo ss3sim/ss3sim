@@ -16,7 +16,7 @@
 #' to manipulate data as a case, or to prepare a new OM for use in a simulation.
 #' See the vignette for more details.
 #'
-#' @param dat_list A list as read in by \code{\link[r4ss]{SS_readdat}}.
+#' @template dat_list
 #' @param outfile A character value giving the location of an SS \code{.dat}
 #'   file to output, if \code{write_file=TRUE}.
 #' @param fleets A numeric vector of fleets

@@ -10,8 +10,9 @@ change_em_binning(dat_list, file_out, bin_vector, lbin_method = NULL,
   write_file = TRUE)
 }
 \arguments{
-\item{dat_list}{An SS3 data list object as read in by
-\code{\link[r4ss]{SS_readdat}}.}
+\item{dat_list}{An SS data list object as read in from
+\code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
+you select option \code{section=2}.}
 
 \item{file_out}{A character value giving the location of an SS \code{ss3.dat}
 file to output.}

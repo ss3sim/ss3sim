@@ -12,7 +12,7 @@
 #' @author Cole Monnahan, Kotaro Ono
 #'
 #' @template lcomp-agecomp-index
-#' @template datfile
+#' @template dat_list
 #' @template Nsamp
 #' @template sampling-return
 #' @template casefile-footnote

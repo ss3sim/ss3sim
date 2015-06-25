@@ -7,8 +7,7 @@
 #' according to the user's specification. If the data file also contails
 #' conditional age-at-length data then these data will be re-binned as well.
 #'
-#' @param dat_list An SS3 data list object as read in by
-#'   \code{\link[r4ss]{SS_readdat}}.
+#' @template dat_list
 #' @param file_out A character value giving the location of an SS \code{ss3.dat}
 #'   file to output.
 #' @param bin_vector A numeric vector of new length bins to substitute into the
