@@ -11,13 +11,14 @@ change_e(ctl_file_in = pastef("em.ctl"), ctl_file_out = pastef("em.ctl"),
   par_phase = "NA", forecast_num = 0, run_change_e_full = TRUE)
 }
 \arguments{
-\item{ctl_file_in}{Input SS3 control file}
+\item{ctl_file_in}{A string providing the path to the input SS3 \code{.ctl} file.}
 
-\item{ctl_file_out}{Output SS3 control file}
+\item{ctl_file_out}{A string providing the path to the output SS3 \code{.ctl} file.}
 
-\item{dat_file_in}{Input SS3 data file}
+\item{dat_file_in}{A string providing the path to the input SS3 \code{.dat} file.}
 
-\item{for_file_in}{Input SS3 forecast file}
+\item{for_file_in}{A string providing the path to the input SS3
+\code{forecast.ss} file.}
 
 \item{natM_type}{*A character string corresponding to option 0:4 in SS3 (i.e.
 "1Parm", "n_breakpoints", "Lorenzen", "agespecific",
