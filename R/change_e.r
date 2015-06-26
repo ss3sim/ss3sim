@@ -8,10 +8,10 @@
 #'   If used with \code{\link{run_ss3sim}} the case file should be named
 #'   \code{E}. A suggested (default) case letter is \code{E} for estimation.
 #'
-#' @param ctl_file_in Input SS3 control file
-#' @param ctl_file_out Output SS3 control file
-#' @param dat_file_in Input SS3 data file
-#' @param for_file_in Input SS3 forecast file
+#' @template ctl_file_in
+#' @template ctl_file_out
+#' @template dat_file_in
+#' @template for_file_in
 #' @param natM_type *A character string corresponding to option 0:4 in SS3 (i.e.
 #'   "1Parm", "n_breakpoints", "Lorenzen", "agespecific",
 #'   "agespec_withseasinterpolate"). A value of \code{NA} will leave the
