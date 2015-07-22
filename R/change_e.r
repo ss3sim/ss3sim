@@ -293,7 +293,7 @@ changeMe <- function(grepChar, intVal, phaseVal, ctlIn = ss3.ctl) {
     if(class(intVal) == "character") intVal <- as.numeric(intVal)
     grepChar_value[3] <- intVal
   }
-  if(as.numeric(grepChar_value[3]) > as.numeric(grepChar_value[2]) & is.na(grepChar_value[2]) == FALSE) {
+  if(as.numeric(grepChar_value[3]) > as.numeric(grepChar_value[2])) {
     grepChar_value[2] <- intVal * 1.5
   }
  	if(as.numeric(grepChar_value[3]) < as.numeric(grepChar_value[1])) {
@@ -306,7 +306,7 @@ changeMe <- function(grepChar, intVal, phaseVal, ctlIn = ss3.ctl) {
 }
 if(!is.null(par_name)) {
    par_name <- unlist(strsplit(par_name, split = ","))
-# browser()
+   
    for(y in seq(par_name)) {
      ss3.ctl <- changeMe(grepChar = par_name[y], intVal = par_int[y],
                          phaseVal = par_phase[y])
