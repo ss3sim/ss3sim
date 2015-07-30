@@ -333,8 +333,6 @@ if(!is.null(par_name)) {
    ss3.for$Forecast <- 2 #Fish at F(MSY)
    ss3.for$Nforecastyrs <- forecast_num
    SS_writeforecast(ss3.for, file = "forecast.ss", overwrite = TRUE)
-
-   invisible(datfile)
  }
-
+if(!is.null(datfile)) invisible(datfile)
 }
