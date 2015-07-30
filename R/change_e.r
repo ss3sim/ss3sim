@@ -72,7 +72,7 @@
 #' to the disk and the altered \code{datfile} is returned invisibly.
 #'
 #' @author Kelli Johnson
-#' @importFrom r4ss SS_parlines
+#' @importFrom r4ss SS_parlines SS_readforecast SS_writeforecast
 #' @export
 #' @examples
 #' \dontrun{
@@ -327,17 +327,12 @@ if(!is.null(par_name)) {
    stop("Forecast file for the estimation model does not exist.")
  }
    datfile$endyr <- datfile$endyr - forecast_num
- ss3.for <- readLines(for_file_in)
-   if (any(grepl("SS_writeforecast", ss3.for[1:5]))) {
-     line1 <- grep("_Forecast$", ss3.for)
-     line2 <- grep("_Nforecastyrs", ss3.for)
-   } else {
-     line1 <- grep("Forecast: 0=none;", ss3.for)
-     line2 <- grep("N forecast years", ss3.for)
-   }
-   ss3.for[line1] <- gsub("[0-9]+", 2, ss3.for[line1])
-   ss3.for[line2] <- gsub("[0-9]+", forecast_num, ss3.for[line2])
-   writeLines(ss3.for, "forecast.ss")
+
+   ss3.for <- SS_readforecast(file = for_file_in, Nfleets = datfile$Nfleet,
+     Nareas = datfile$N_areas)
+   ss3.for$Forecast <- 2 #Fish at F(MSY)
+   ss3.for$Nforecastyrs <- forecast_num
+   SS_writeforecast(ss3.for, file = "forecast.ss", overwrite = TRUE)
 
    invisible(datfile)
  }
