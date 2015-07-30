@@ -318,18 +318,15 @@ if(!is.null(par_name)) {
 }
 }
  if(forecast_num > 0) {
- if(!file.exists(dat_file_in)) {
-   stop("Data file for the estimation model does not exist.")
- }
+   if(is.null(datfile)) {
+     stop(paste("A list object read in by r4ss::SS_readdat must be passed",
+       "to change_e using the datfile argument if the user wishes to",
+       "implement or change the number of forecasts."))
+   }
  if(!file.exists(for_file_in)) {
    stop("Forecast file for the estimation model does not exist.")
  }
- ss3.dat <- readLines(dat_file_in)
-   data_end_line <- grep("#_endyr", ss3.dat)
-   data_end_value <- unlist(strsplit(ss3.dat[data_end_line], split = " "))
-   data_end_value[1] <- as.numeric(data_end_value[1]) - forecast_num
-   ss3.dat[data_end_line] <- paste(data_end_value, collapse = "")
-   writeLines(ss3.dat, "ss3.dat")
+   datfile$endyr <- datfile$endyr - forecast_num
  ss3.for <- readLines(for_file_in)
    if (any(grepl("SS_writeforecast", ss3.for[1:5]))) {
      line1 <- grep("_Forecast$", ss3.for)
@@ -341,6 +338,8 @@ if(!is.null(par_name)) {
    ss3.for[line1] <- gsub("[0-9]+", 2, ss3.for[line1])
    ss3.for[line2] <- gsub("[0-9]+", forecast_num, ss3.for[line2])
    writeLines(ss3.for, "forecast.ss")
+
+   invisible(datfile)
  }
 
 }
