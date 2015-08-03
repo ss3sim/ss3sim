@@ -268,55 +268,18 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
               }
    		}
   }
-  if(is.null(par_name)) writeLines(ss3.ctl, ctl_file_out)
+  writeLines(ss3.ctl, ctl_file_out)
+} else {
+  file.copy(ctl_file_in, ctl_file_out)
 }
 
-
-changeMe <- function(grepChar, intVal, phaseVal, ctlIn = ss3.ctl) {
-  val <- grep(pattern = grepChar, x = ctlIn, fixed = TRUE)[1]
-    if(is.na(val)) {
-      stop(paste("Could not locate parameter", grepChar, "in the .ctl file.",
-                 "Check that the parameter is spelled correctly and in the",
-                 "correct case. Have you standardized your .ctl file",
-                 "by running it through SS and used the control.ss_new file?"))
-    }
-  grepChar_line <- grep(grepChar, ss3.ctl, fixed = TRUE)
-
-  grepChar_value <- unlist(strsplit(ss3.ctl[grepChar_line], split = " "))
-
-  #Remove Tabs
-  if(sum(grep("\t", grepChar_value)) > 0){
-    grepChar_value <- gsub("\t"," ", grepChar_value)
-  }
-
-  grepChar_value <- unlist(strsplit(grepChar_value, split = " "))
-
-  # remove white space
-  grepChar_value <- grepChar_value[which(nchar(grepChar_value) > 0)]
-
-  if(!intVal %in% c(NA, "NA", "NAN", "Nan")) {
-    if(class(intVal) == "character") intVal <- as.numeric(intVal)
-    grepChar_value[3] <- intVal
-  }
-  if(as.numeric(grepChar_value[3]) > as.numeric(grepChar_value[2])) {
-    grepChar_value[2] <- intVal * 1.5
-  }
- 	if(as.numeric(grepChar_value[3]) < as.numeric(grepChar_value[1])) {
-     grepChar_value[1] <- intVal * .5
-  }
-
-  if(!phaseVal %in% c(NA, "NA", "NAN", "Nan")) grepChar_value[7] <- phaseVal
-  ss3.ctl[grepChar_line] <- paste(grepChar_value, collapse = " ")
-  return(ss3.ctl)
-}
 if(!is.null(par_name)) {
    par_name <- unlist(strsplit(par_name, split = ","))
 
-   for(y in seq(par_name)) {
-     ss3.ctl <- changeMe(grepChar = par_name[y], intVal = par_int[y],
-                         phaseVal = par_phase[y])
-   }
-   writeLines(ss3.ctl, ctl_file_out)
+  SS_changepars(dir = NULL, ctlfile = ctl_file_in, newctlfile = ctl_file_out,
+    linenums = NULL, strings = par_name, newvals = par_int, repeat.vals = verbose,
+    newlos = NULL, newhis = NULL, estimate = FALSE, verbose = verbose,
+    newphs = par_phase)
 }
 }
  if(forecast_num > 0) {
