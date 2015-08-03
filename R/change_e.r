@@ -55,6 +55,7 @@
 #' @param run_change_e_full *If \code{FALSE} \code{change_e} will only
 #'   manipulate for forecasting, if \code{TRUE} (default) the full function
 #'   capability will be ran.
+#' @template verbose
 #'
 #' @details Turning parameters on and off is the main function of
 #'   \code{change_e}.  \code{change_e} was not created with the capability of
@@ -103,7 +104,8 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
     for_file_in = "forecasts.ss", natM_type = "1Parm",
     natM_n_breakpoints = NULL, natM_lorenzen = NULL, natM_val = c(NA, NA),
     par_name = NULL, par_int = "NA", par_phase = "NA",
-    forecast_num = 0, run_change_e_full = TRUE) {
+    forecast_num = 0, run_change_e_full = TRUE,
+    verbose = FALSE) {
 
   if (!run_change_e_full & any(grepl("change_e_vbgf", par_int))) {
     run_change_e_full <- TRUE
@@ -329,10 +331,11 @@ if(!is.null(par_name)) {
    datfile$endyr <- datfile$endyr - forecast_num
 
    ss3.for <- SS_readforecast(file = for_file_in, Nfleets = datfile$Nfleet,
-     Nareas = datfile$N_areas)
+     Nareas = datfile$N_areas, verbose = verbose)
    ss3.for$Forecast <- 2 #Fish at F(MSY)
    ss3.for$Nforecastyrs <- forecast_num
-   SS_writeforecast(ss3.for, file = "forecast.ss", overwrite = TRUE)
+   SS_writeforecast(ss3.for, file = "forecast.ss", overwrite = TRUE,
+     verbose = verbose)
  }
 if(!is.null(datfile)) invisible(datfile)
 }
