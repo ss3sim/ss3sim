@@ -69,13 +69,13 @@ test_that("get_results_all warns if a scenario folder isn't available", {
 case_folder <- paste0(d, "/cases")
 
 # more elaborate scenarios:
-test_that("change_data is working within run_ss3sim", {
-  skip_on_cran()
+# test_that("change_data is working within run_ss3sim", {
+#   skip_on_cran()
 
-  run_ss3sim(iterations = 1, scenarios = "D0-F0-B0-cod",
-    case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "optimized",
-    case_files = list(F = "F", D = c("index", "lcomp", "agecomp"), B = "data"))
-  unlink("D0-F0-B0-cod", recursive = TRUE) # clean up
-})
+#   run_ss3sim(iterations = 1, scenarios = "D0-F0-B0-cod",
+#     case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "optimized",
+#     case_files = list(F = "F", D = c("index", "lcomp", "agecomp"), B = "data"))
+#   unlink("D0-F0-B0-cod", recursive = TRUE) # clean up
+# })
 
 setwd(wd)
