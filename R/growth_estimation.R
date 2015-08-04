@@ -33,7 +33,7 @@ sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
 
   get_vbgf_loglik <- function(logL1, logLinf, logk, logcv.old, logcv.young){
     L1 <- get_logistic_transform(logL1, lo.L1, hi.L1)
-    L.inf <- get_logistic_transform(logLinf, lo.Linf, hi.Linf)
+    L.inf <- get_logistic_transform(logLinf, lo.L2, hi.L2)
     k <- get_logistic_transform(logk, lo.k, hi.k)
     cv.young <- get_logistic_transform(logcv.young, lo.cv.young, hi.cv.young)
     cv.old <- get_logistic_transform(logcv.old, lo.cv.old, hi.cv.old)
