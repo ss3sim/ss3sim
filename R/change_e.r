@@ -143,6 +143,7 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
     changeinits <- which(par_int == "change_e_vbgf")
     keep <- sapply(par_name[changeinits], grep, names(change_e_vbgf),
       ignore.case = TRUE)
+  browser()
     par_int[changeinits] <- unlist(change_e_vbgf)[keep]
     par_int[!par_int %in% c(NA, "NA", "Nan")] <-
       as.numeric(par_int[!par_int %in% c(NA, "NA", "Nan")])
