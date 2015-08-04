@@ -63,11 +63,11 @@ sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
   length.df <- length.data[length.data$age > a3, ]
   length.df <- length.df[length.df$age < A, ]
   data_ <- length.df[, colnames(length.df) %in% c("length", "age", "mean")]
-  start.Linf <- start.L1+(start.L2-start.L1)/(1-exp(-start.k*(A-a3)))
-  lo.Linf <- lo.L1+(lo.L2 - lo.L1)/(1-exp(-lo.k*(A-a3)))
-  hi.Linf <- hi.L1+(hi.L2 - hi.L1)/(1-exp(-hi.k*(A-a3)))
+#   start.Linf <- start.L1+(start.L2-start.L1)/(1-exp(-start.k*(A-a3)))
+#   lo.Linf <- lo.L1+(lo.L2 - lo.L1)/(1-exp(-lo.k*(A-a3)))
+#   hi.Linf <- hi.L1+(hi.L2 - hi.L1)/(1-exp(-hi.k*(A-a3)))
   pars.mat <- matrix(nrow=5, ncol=3, rbind(c(start.L1,lo.L1,hi.L1),
-    c(start.Linf,lo.Linf,hi.Linf),c(start.k,lo.k,hi.k),
+    c(start.L2,lo.L2,hi.L2),c(start.k,lo.k,hi.k),
     c(start.cv.young,lo.cv.young, hi.cv.young),
     c(start.cv.old, lo.cv.old, hi.cv.old)))
   transformed <- rep(0,5)
@@ -89,7 +89,7 @@ sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
     #Put estimated coefficients in EM terms
     logCoef <- mod@coef
     L1 <- get_logistic_transform(logCoef[1], lo.L1, hi.L1)
-    L.inf <- get_logistic_transform(logCoef[2], lo.Linf, hi.Linf)
+    L.inf <- get_logistic_transform(logCoef[2], lo.L2, hi.L2)
     k <- get_logistic_transform(logCoef[3], lo.k, hi.k)
     cv.young <- get_logistic_transform(logCoef[4], lo.cv.young, hi.cv.young)
     cv.old <- get_logistic_transform(logCoef[5], lo.cv.old, hi.cv.old)
