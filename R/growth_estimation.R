@@ -88,7 +88,6 @@ sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
   } else {
     #Put estimated coefficients in EM terms
     logCoef <- mod@coef
-    browser()
     L1 <- get_logistic_transform(logCoef[1], lo.L1, hi.L1)
     L.inf <- get_logistic_transform(logCoef[2], lo.L2, hi.L2)
     k <- get_logistic_transform(logCoef[3], lo.k, hi.k)
