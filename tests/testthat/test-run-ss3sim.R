@@ -66,6 +66,4 @@ test_that("get_results_all warns if a scenario folder isn't available", {
   unlink(c("D0-F0-cod", "D1-F0-cod"), recursive = TRUE)
 })
 
-case_folder <- paste0(d, "/cases")
-
 setwd(wd)
