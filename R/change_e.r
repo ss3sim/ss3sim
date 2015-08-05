@@ -101,6 +101,7 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
     natM_n_breakpoints = NULL, natM_lorenzen = NULL, natM_val = c(NA, NA),
     par_name = NULL, par_int = "NA", par_phase = "NA",
     forecast_num = 0, run_change_e_full = TRUE) {
+
   if (!run_change_e_full & any(grepl("change_e_vbgf", par_int))) {
     run_change_e_full <- TRUE
   }
@@ -265,6 +266,7 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
   if(is.null(par_name)) writeLines(ss3.ctl, ctl_file_out)
 }
 
+
 changeMe <- function(grepChar, intVal, phaseVal, ctlIn = ss3.ctl) {
   val <- grep(pattern = grepChar, x = ctlIn, fixed = TRUE)[1]
     if(is.na(val)) {
@@ -274,9 +276,19 @@ changeMe <- function(grepChar, intVal, phaseVal, ctlIn = ss3.ctl) {
                  "by running it through SS and used the control.ss_new file?"))
     }
   grepChar_line <- grep(grepChar, ss3.ctl, fixed = TRUE)
+  
   grepChar_value <- unlist(strsplit(ss3.ctl[grepChar_line], split = " "))
+  
+  #Remove Tabs 
+  if(sum(grep("\t", grepChar_value)) > 0){
+    grepChar_value <- gsub("\t"," ", grepChar_value)
+  }
+    
+  grepChar_value <- unlist(strsplit(grepChar_value, split = " "))
+  
   # remove white space
   grepChar_value <- grepChar_value[which(nchar(grepChar_value) > 0)]
+  
   if(!intVal %in% c(NA, "NA", "NAN", "Nan")) {
     if(class(intVal) == "character") intVal <- as.numeric(intVal)
     grepChar_value[3] <- intVal
@@ -287,12 +299,14 @@ changeMe <- function(grepChar, intVal, phaseVal, ctlIn = ss3.ctl) {
  	if(as.numeric(grepChar_value[3]) < as.numeric(grepChar_value[1])) {
      grepChar_value[1] <- intVal * .5
   }
+  
   if(!phaseVal %in% c(NA, "NA", "NAN", "Nan")) grepChar_value[7] <- phaseVal
   ss3.ctl[grepChar_line] <- paste(grepChar_value, collapse = " ")
   return(ss3.ctl)
 }
 if(!is.null(par_name)) {
    par_name <- unlist(strsplit(par_name, split = ","))
+   
    for(y in seq(par_name)) {
      ss3.ctl <- changeMe(grepChar = par_name[y], intVal = par_int[y],
                          phaseVal = par_phase[y])
