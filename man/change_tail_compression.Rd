@@ -4,7 +4,7 @@
 \alias{change_tail_compression}
 \title{Replace tail compression value for length composition data.}
 \usage{
-change_tail_compression(tail_compression, datfile, file_out,
+change_tail_compression(tail_compression, dat_list, dat_file_out,
   write_file = TRUE)
 }
 \arguments{
@@ -13,12 +13,14 @@ numeric value, as a proportion. For example 0.1 means 10 percent. See the
 SS3 manual for further information. A NULL value indicates no action, a
 negative value indicates to SS3 to ignore it (not use that feature).}
 
-\item{datfile}{Input SS3 dat file \bold{as returned in list object form from
-\code{\link[r4ss]{SS_readdat}}}.}
+\item{dat_list}{An SS data list object as read in from
+\code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
+you select option \code{section=2}.}
 
-\item{file_out}{Output SS3 dat file name.}
+\item{dat_file_out}{A string providing the path to the output SS3 \code{.dat} file.}
 
-\item{write_file}{Should the altered data file be written to disk?}
+\item{write_file}{A logical value indicating if the altered file should be
+written to the disk. The default value is \code{TRUE}.}
 }
 \value{
 A modified SS3 \code{.dat} file, and that file returned invisibly
@@ -26,8 +28,9 @@ A modified SS3 \code{.dat} file, and that file returned invisibly
 }
 \description{
 This function replaces the tail compression value for length composition data
-in a \code{dat} file (\code{file_in}) with those specified in
-\code{tail_compression}. It then writes a new file with name \code{file_out}
+in a \code{.dat} file that was read in using \code{\link[r4ss]{SS_readdat}}
+with those specified in
+\code{tail_compression}. It then writes a new file with name \code{dat_file_out}
 into the working directory. If used with \code{\link{run_ss3sim}} the case
 file should be named \code{tail_compression}. A suggested case letter is
 \code{T}.

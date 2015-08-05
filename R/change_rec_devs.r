@@ -3,11 +3,11 @@
 #' This function replaces the recruitment deviations in the
 #' \code{ss3.par} file with those specified in \code{recdevs_new}, as
 #' well as a comment (for debugging). It then writes a new file with
-#' name \code{file_out} into the working directory.
+#' name \code{par_file_out} into the working directory.
 #'
 #' @param recdevs_new A vector of new recruitment deviations.
-#' @param file_in Input SS3 par file.
-#' @param file_out Output SS3 par file.
+#' @template par_file_in
+#' @template par_file_out
 #' @return A modified SS3 \code{.par} file.
 #' @author Cole Monnahan
 #' @details This function does not need to be specified in a case file if you
@@ -22,16 +22,16 @@
 #'
 #' par_file <- system.file("extdata", "models", "cod-om", "ss3.par",
 #'   package = "ss3sim")
-#' change_rec_devs(recdevs_new = rlnorm(100), file_in = par_file,
-#'   file_out = paste0(temp_path, "/test.par"))
+#' change_rec_devs(recdevs_new = rlnorm(100), par_file_in = par_file,
+#'   par_file_out = paste0(temp_path, "/test.par"))
 
-change_rec_devs <- function(recdevs_new, file_in="ss3.par",
-  file_out="ss3.par"){
+change_rec_devs <- function(recdevs_new, par_file_in = "ss3.par",
+  par_file_out="ss3.par"){
   ## This is the pattern on the line before the vector of current recdevs
   pattern <- "# recdev1"
 
-  if(!file.exists(file_in)) stop(paste("File", file_in,"not found"))
-  par <- readLines(file_in, warn = FALSE)
+  if(!file.exists(par_file_in)) stop(paste("File", par_file_in,"not found"))
+  par <- readLines(par_file_in, warn = FALSE)
   which.line <- grep(pattern=pattern, x=par)+1
 
   ## grab the old ones, note there is a leading space that needs to be
@@ -54,6 +54,6 @@ change_rec_devs <- function(recdevs_new, file_in="ss3.par",
   ## replace w/ new recdevs, adding back in that leading space
   par[which.line] <- paste0(" ", recdevs_new, collapse="")
   ## Write it back to file
-  writeLines(par, con=file_out)
+  writeLines(par, con = par_file_out)
 }
 

@@ -7,9 +7,8 @@
 change_year(year_begin = 1, year_end = 100, burnin = 0,
   ctl_file_in = NULL, ctl_file_out = "new.ctl", dat_file_in = NULL,
   dat_file_out = "new.dat", par_file_in = NULL, par_file_out = "new.ss",
-  starter_file_in = NULL, starter_file_out = "starter.ss",
-  forecast_file_in = NULL, forecast_file_out = "forecast.ss",
-  verbose = FALSE)
+  str_file_in = NULL, str_file_out = "starter.ss", for_file_in = NULL,
+  for_file_out = "forecast.ss", verbose = FALSE)
 }
 \arguments{
 \item{year_begin}{Desired start year}
@@ -19,30 +18,30 @@ change_year(year_begin = 1, year_end = 100, burnin = 0,
 \item{burnin}{Length of burnin period. Default is zero for an OM. Use burnin
 for EM models, to establish a period with no fishing.}
 
-\item{ctl_file_in}{Input SS3 control file}
+\item{ctl_file_in}{A string providing the path to the input SS3 \code{.ctl} file.}
 
 \item{ctl_file_out}{Output SS3 control file, if \code{NULL} the file will be
 named the same as the \code{ctl_file_in}}
 
-\item{dat_file_in}{Input SS3 data file}
+\item{dat_file_in}{A string providing the path to the input SS3 \code{.dat} file.}
 
 \item{dat_file_out}{Output SS3 data file, if \code{NULL} the file will be
 named the same as the \code{dat_file_in}}
 
-\item{par_file_in}{Input SS3 parameter file}
+\item{par_file_in}{A string providing the path to the input SS3 \code{.par} file.}
 
 \item{par_file_out}{Output SS3 parameter file, if \code{NULL} the file will
 be named the same as the \code{par_file_in}}
 
-\item{starter_file_in}{Input SS3 starter file}
+\item{str_file_in}{A string providing the path to the input SS3 \code{starter.ss} file.}
 
-\item{starter_file_out}{Output SS3 starter file, if \code{NULL} the file will
-be named the same as the \code{starter_file_in}}
+\item{str_file_out}{Output SS3 starter file, if \code{NULL} the file will
+be named the same as the \code{str_file_in}}
 
-\item{forecast_file_in}{Input SS3 forecast file}
+\item{for_file_in}{Input SS3 forecast file}
 
-\item{forecast_file_out}{Output SS3 forecast file, if \code{NULL} the file
-will be named the same as the \code{forecast_file_in}}
+\item{for_file_out}{Output SS3 forecast file, if \code{NULL} the file
+will be named the same as the \code{for_file_in}}
 
 \item{verbose}{Logical argument that is passed on to internal calls to r4ss
 functions for reading and writing SS3 files. Setting \code{verbose} to
@@ -93,8 +92,8 @@ change_year(year_begin = 1, year_end = 100, burnin = 25,
  ctl_file_in = "control.ss_new", ctl_file_out = "change_year.ctl",
  dat_file_in = "simple.dat", dat_file_out = "change_year.dat",
  par_file_in = "ss3.par", par_file_out = "change_year.par",
- starter_file_in = "starter.ss", starter_file_out = "change_year_starter.ss",
- forecast_file_in = "forecast.ss", forecast_file_out = "change_year_forecast.ss")
+ str_file_in = "starter.ss", str_file_out = "change_year_starter.ss",
+ for_file_in = "forecast.ss", for_file_out = "change_year_forecast.ss")
 
 # Clean up:
 setwd("../")

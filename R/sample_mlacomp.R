@@ -11,8 +11,8 @@
 #'
 #' @template lcomp-agecomp-index
 #' @template Nsamp
-#' @template datfile
-#' @param ctlfile A path to the control file, outputed from an OM, containing
+#' @template dat_list
+#' @param ctl_file_in A path to the control file, outputed from an OM, containing
 #'   the OM parameters for growth. These values are used to determine the
 #'   uncertainty about size for fish sampled in each age bin.
 #' @param mean_outfile A path to write length and age data for external
@@ -36,14 +36,14 @@
 #' setwd(temp_path)
 #' d <- system.file("extdata/models/cod-om", package = "ss3sim")
 #' dat_in <- file.path(d, "codOM.dat")
-#' datfile <- r4ss::SS_readdat(dat_in, verbose = FALSE)
-#' datfile <- change_fltname(datfile)
-#' datfile <- change_data(datfile, outfile = NULL, write_file = FALSE,
+#' dat_list <- r4ss::SS_readdat(dat_in, verbose = FALSE)
+#' dat_list <- change_fltname(dat_list)
+#' dat_list <- change_data(dat_list, outfile = NULL, write_file = FALSE,
 #'   fleets = 1, years = 1990:2010, types = c("age", "mla"))
-#' datfile <- change_fltname(datfile)
-#' ctlfile <- file.path(d, "codOM.ctl")
+#' dat_list <- change_fltname(dat_list)
+#' ctl_file_in <- file.path(d, "codOM.ctl")
 #'
-#' out <- sample_mlacomp(datfile, outfile = NULL, ctlfile = ctlfile,
+#' out <- sample_mlacomp(dat_list, outfile = NULL, ctl_file_in = ctl_file_in,
 #'                       fleets = 1, Nsamp = 30, years = list(1992),
 #'                       verbose = FALSE, mean_outfile = "test.csv", write_file = FALSE)
 #'
@@ -52,38 +52,38 @@
 #' setwd(wd)
 
 
-sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
+sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
                            years, write_file=TRUE, mean_outfile = NULL,
                            verbose = TRUE){
 
   ## If fleets==NULL, quit here and delete the data so the EM doesn't use it.
   if (is.null(fleets)) {
-    datfile$MeanSize_at_Age_obs <- data.frame("#")
-    datfile$N_MeanSize_at_Age_obs <- 0
+    dat_list$MeanSize_at_Age_obs <- data.frame("#")
+    dat_list$N_MeanSize_at_Age_obs <- 0
     if (write_file)
-      SS_writedat(datlist = datfile, outfile = outfile, overwrite = TRUE,
+      SS_writedat(datlist = dat_list, outfile = outfile, overwrite = TRUE,
                   verbose = verbose)
-    return(invisible(datfile))
+    return(invisible(dat_list))
   }
 
-  check_data(datfile)
+  check_data(dat_list)
   # Users can specify either Lbin_lo or Lbin_hi < 1 for agecomp data
-  agecomp <- datfile$agecomp[datfile$agecomp$Lbin_lo == -1 |
-                             datfile$agecomp$Lbin_hi == -1, ]
+  agecomp <- dat_list$agecomp[dat_list$agecomp$Lbin_lo == -1 |
+                             dat_list$agecomp$Lbin_hi == -1, ]
   if (NROW(agecomp) == 0) {
-    stop(paste0("No age data exist in the datfile."))
+    stop(paste0("No age data exist in the dat_list."))
   }
-  mwacomp <- datfile$MeanSize_at_Age_obs[datfile$MeanSize_at_Age_obs$AgeErr < 0, ]
-  mlacomp <- datfile$MeanSize_at_Age_obs[datfile$MeanSize_at_Age_obs$AgeErr > 0, ]
-  agebin_vector <- datfile$agebin_vector
+  mwacomp <- dat_list$MeanSize_at_Age_obs[dat_list$MeanSize_at_Age_obs$AgeErr < 0, ]
+  mlacomp <- dat_list$MeanSize_at_Age_obs[dat_list$MeanSize_at_Age_obs$AgeErr > 0, ]
+  agebin_vector <- dat_list$agebin_vector
 
   ## Read in the control file
-  ctl <- SS_parlines(ctlfile)
+  ctl <- SS_parlines(ctl_file_in)
     CV.growth <- ctl[ctl$Label == "CV_young_Fem_GP_1", "INIT"]
     CV.growth.old <- ctl[ctl$Label == "CV_old_Fem_GP_1", "INIT"]
     if (CV.growth != CV.growth.old) {
       stop(paste0("sample_mlacomp does not support different values for the",
-                  "CV's of young and old fish. Please the check ", ctlfile,
+                  "CV's of young and old fish. Please the check ", ctl_file_in,
                   "and make sure CV_young_Fem_GP_1 (", CV.growth, ") is",
                   " equal to CV_old_Fem_GP_1 (", CV.growth.old, ")."))
     }
@@ -140,7 +140,7 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
                           mlacomp$Yr %in% years[[fl]], ]
     if (length(years[[fl]]) != length(unique(mlacomp.fl$Yr))) {
       stop(paste("A year specified in years for fleet", fl.temp, "was not",
-                 "found in the input datfile for fleet", fl.temp))
+                 "found in the input dat_list for fleet", fl.temp))
     }
     for (j in 1:NROW(mlacomp.fl)) {
       yr.temp <- mlacomp.fl$Yr[j]
@@ -232,10 +232,10 @@ sample_mlacomp <- function(datfile, outfile, ctlfile, fleets = 1, Nsamp,
   }
   ## Combine new rows together into one data.frame
   mlacomp.new <- do.call(rbind, mlacomp.new.list)
-  datfile$MeanSize_at_Age_obs <- rbind(mlacomp.new, mwacomp)
-  datfile$N_MeanSize_at_Age_obs <- NROW(mlacomp.new)
+  dat_list$MeanSize_at_Age_obs <- rbind(mlacomp.new, mwacomp)
+  dat_list$N_MeanSize_at_Age_obs <- NROW(mlacomp.new)
   ## Write the modified file
-  if(write_file) SS_writedat(datlist = datfile, outfile = outfile,
+  if(write_file) SS_writedat(datlist = dat_list, outfile = outfile,
                              overwrite = TRUE, verbose = verbose)
-  return(invisible(datfile))
+  return(invisible(dat_list))
 }

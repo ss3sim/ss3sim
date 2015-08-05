@@ -1,9 +1,9 @@
-context("change_data() is working")
+# context("change_data() is working")
 
-temp_path <- file.path(tempdir(), "ss3sim-test")
-dir.create(temp_path, showWarnings = FALSE)
-wd <- getwd()
-setwd(temp_path)
+# temp_path <- file.path(tempdir(), "ss3sim-test")
+# dir.create(temp_path, showWarnings = FALSE)
+# wd <- getwd()
+# setwd(temp_path)
 
 # test_that("change_bin() throws an error or warning if bins aren't appropriate ", {
 #    expect_error(change_bin(file_in = "", file_out = "", bin_vector = c("a", "b")))

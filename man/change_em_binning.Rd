@@ -5,16 +5,16 @@
 \title{Change population and observed length composition bins in an SS estimation
 model}
 \usage{
-change_em_binning(datfile, file_out, bin_vector, lbin_method = NULL,
+change_em_binning(dat_list, dat_file_out, bin_vector, lbin_method = NULL,
   pop_binwidth = NULL, pop_minimum_size = NULL, pop_maximum_size = NULL,
   write_file = TRUE)
 }
 \arguments{
-\item{datfile}{An SS3 data list object as read in by
-\code{\link[r4ss]{SS_readdat}}.}
+\item{dat_list}{An SS data list object as read in from
+\code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
+you select option \code{section=2}.}
 
-\item{file_out}{A character value giving the location of an SS \code{ss3.dat}
-file to output.}
+\item{dat_file_out}{A string providing the path to the output SS3 \code{.dat} file.}
 
 \item{bin_vector}{A numeric vector of new length bins to substitute into the
 \code{ss3.dat} file.}
@@ -37,7 +37,7 @@ necessary for \code{lbin_method=2}}
 \item{write_file}{Should the \code{.dat} file be written? The new \code{.dat}
 file will always be returned invisibly by the function. Setting
 \code{write_file = FALSE} can be useful for testing. Note that you must
-supply a value to the argument \code{file_out}, but this argument can be
+supply a value to the argument \code{dat_file_out}, but this argument can be
 set to any arbitrary value (such as \code{NULL}) if \code{write_file =
 FALSE}.}
 }
@@ -51,8 +51,8 @@ conditional age-at-length data then these data will be re-binned as well.
 \examples{
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/example-om/data.ss_new")
-datfile <- r4ss::SS_readdat(file = f_in, verbose = FALSE)
-l <- change_em_binning(datfile, file_out = NULL, lbin_method = 1,
+dat_list <- r4ss::SS_readdat(file = f_in, verbose = FALSE)
+l <- change_em_binning(dat_list, dat_file_out = NULL, lbin_method = 1,
   bin_vector = seq(8, 30, by = 1), write_file = FALSE)
 print(l$lbin_vector)
 print(head(l$lencomp))
@@ -66,7 +66,7 @@ olddat <- change_data(d, outfile = NULL, write_file = FALSE,
   types = c("len", "age", "cal"), fleets = 1, years = seq(2000, 2002),
   age_bins = 1:3, len_bins = 4:8)
 olddat$agecomp
-newdat <- change_em_binning(olddat, file_out = NULL, bin_vector = c(4, 6, 8),
+newdat <- change_em_binning(olddat, dat_file_out = NULL, bin_vector = c(4, 6, 8),
   lbin_method = 1, write_file = FALSE)
 newdat$agecomp
 
@@ -78,7 +78,7 @@ olddat <- change_data(d, outfile = NULL, write_file = FALSE,
 olddat$lbin_vector
 head(olddat$lencomp)
 head(olddat$agecomp)
-newdat <- change_em_binning(olddat, file_out = NULL, bin_vector = seq(20, 30, 2),
+newdat <- change_em_binning(olddat, dat_file_out = NULL, bin_vector = seq(20, 30, 2),
  lbin_method = 1, write_file = FALSE)
 newdat$lbin_vector
 head(newdat$lencomp)

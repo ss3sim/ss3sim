@@ -36,16 +36,16 @@ verbose <- FALSE
 
 test_that("Forecast file is readable.", {
   om.for <- r4ss::SS_readforecast(file.path(om, "forecast.ss"), 1, 1, verbose = verbose)
-  change_year(forecast_file_in = file.path(om, "forecast.ss"),
-              forecast_file_out = "new.ss")
+  change_year(for_file_in = file.path(om, "forecast.ss"),
+              for_file_out = "new.ss")
   om.for.new <- r4ss::SS_readforecast("new.ss", 1, 1, verbose = verbose)
   out <- evaluate_promise(r4ss::SS_readforecast("new.ss", 1, 1), print = TRUE)$output
   expect_equal(grepl("Error", out), FALSE)
 })
 
 test_that("Correct lines are changed in starter file.", {
-  change_year(starter_file_in = file.path(om, "starter.ss"),
-              starter_file_out = "new.ss")
+  change_year(str_file_in = file.path(om, "starter.ss"),
+              str_file_out = "new.ss")
   new <- readLines("new.ss")
   getnew <- new[grep("jitter", new) + 1:2]
   getnew <- gsub(" ", "", sapply(strsplit(getnew, "#"), "[[", 1))

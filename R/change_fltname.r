@@ -4,7 +4,7 @@
 #' which is typically named FltSvy by \code{\link[r4ss]{SS_readdat}}, but was
 #' inconsistent in older versions (.e.g. Fleet was used for mean size-at-age).
 #'
-#' @template datfile
+#' @template dat_list
 #'
 #' @return An invisible data list.
 #'
@@ -21,24 +21,24 @@
 #' # Check mean size-at-age
 #' names(dat_fixed$MeanSize_at_Age_obs)[3] == "FltSvy"
 
-change_fltname <- function(datfile){
+change_fltname <- function(dat_list){
     use <- "FltSvy"
     try <- c("fl", "fleet", "flt")
 
-    truenames <- tolower(names(datfile$lencomp))
+    truenames <- tolower(names(dat_list$lencomp))
     if(any(try %in% truenames)) {
-        names(datfile$lencomp)[grepl("fl", truenames)] <- use
+        names(dat_list$lencomp)[grepl("fl", truenames)] <- use
     }
 
-    truenames <- tolower(names(datfile$agecomp))
+    truenames <- tolower(names(dat_list$agecomp))
     if(any(try %in% truenames)) {
-        names(datfile$agecomp)[grepl("fl", truenames)] <- use
+        names(dat_list$agecomp)[grepl("fl", truenames)] <- use
     }
 
-    truenames <- tolower(names(datfile$MeanSize_at_Age_obs))
+    truenames <- tolower(names(dat_list$MeanSize_at_Age_obs))
     if(any(try %in% truenames)) {
-        names(datfile$MeanSize_at_Age_obs)[grepl("fl", truenames)] <- use
+        names(dat_list$MeanSize_at_Age_obs)[grepl("fl", truenames)] <- use
     }
 
-    invisible(return(datfile))
+    invisible(return(dat_list))
 }

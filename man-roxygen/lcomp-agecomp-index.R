@@ -7,7 +7,7 @@
 #' @param years *A list the same length as \code{fleets} giving the years as
 #' numeric vectors. If no fleet collected samples, keep the value to
 #' \code{years=NULL}.
-#' @param write_file A switch for whether to write \code{outfile} to
+#' @param write_file A logical switch for whether to write \code{outfile} to
 #' disk. Can be turned off to speed up testing or exploration of the
 #' function. The new data are returned invisibly, as in the examples
 #' below.
