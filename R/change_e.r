@@ -99,8 +99,8 @@
 #' setwd(wd)
 #' }
 
-change_e <- function(ctl_file_in = pastef("em.ctl"),
-    ctl_file_out = pastef("em.ctl"), datfile = NULL,
+change_e <- function(ctl_file_in = "em.ctl",
+    ctl_file_out = "em.ctl", datfile = NULL,
     for_file_in = "forecasts.ss", natM_type = "1Parm",
     natM_n_breakpoints = NULL, natM_lorenzen = NULL, natM_val = c(NA, NA),
     par_name = NULL, par_int = "NA", par_phase = "NA",
