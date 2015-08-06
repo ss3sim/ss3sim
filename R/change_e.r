@@ -276,7 +276,8 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
 if(!is.null(par_name)) {
    par_name <- unlist(strsplit(par_name, split = ","))
 
-  SS_changepars(dir = NULL, ctlfile = ctl_file_in, newctlfile = ctl_file_out,
+  SS_changepars(dir = "", ctlfile = ctl_file_in,
+    newctlfile = file.path(getwd(), ctl_file_out),
     linenums = NULL, strings = par_name, newvals = par_int, repeat.vals = verbose,
     newlos = NULL, newhis = NULL, estimate = FALSE, verbose = verbose,
     newphs = par_phase)
