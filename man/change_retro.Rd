@@ -4,13 +4,13 @@
 \alias{change_retro}
 \title{Alter a starter file for a retrospective analysis}
 \usage{
-change_retro(startfile_in = "starter.ss", startfile_out = "starter.ss",
+change_retro(str_file_in = "starter.ss", str_file_out = "starter.ss",
   retro_yr = 0)
 }
 \arguments{
-\item{startfile_in}{Input \code{starter.ss} file}
+\item{str_file_in}{A string providing the path to the input SS3 \code{starter.ss} file.}
 
-\item{startfile_out}{Output \code{starter.ss} file}
+\item{str_file_out}{A string providing the path to the output SS3 \code{starter.ss} file.}
 
 \item{retro_yr}{*Which retrospective year to enter into the starter file.
 Should be 0 (no retrospective analysis) or a negative value.}

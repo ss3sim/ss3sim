@@ -4,8 +4,8 @@
 \alias{change_e}
 \title{Methods to alter which parameters are estimated in a SS3 \code{.ctl} file.}
 \usage{
-change_e(ctl_file_in = pastef("em.ctl"), ctl_file_out = pastef("em.ctl"),
-  datfile = NULL, for_file_in = "forecasts.ss", natM_type = "1Parm",
+change_e(ctl_file_in = "em.ctl", ctl_file_out = "em.ctl", dat_list = NULL,
+  for_file_in = "forecasts.ss", natM_type = "1Parm",
   natM_n_breakpoints = NULL, natM_lorenzen = NULL, natM_val = c(NA, NA),
   par_name = NULL, par_int = "NA", par_phase = "NA", forecast_num = 0,
   run_change_e_full = TRUE, verbose = FALSE)
@@ -15,7 +15,7 @@ change_e(ctl_file_in = pastef("em.ctl"), ctl_file_out = pastef("em.ctl"),
 
 \item{ctl_file_out}{Output SS3 control file}
 
-\item{datfile}{An SS data object as read in from
+\item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
@@ -64,7 +64,7 @@ initial value for a given parameter.}
 the phase for a given parameter.}
 
 \item{forecast_num}{*Number of years to perform forecasts. For those years,
-the data will be removed from the \code{datfile}, enabling SS3 to
+the data will be removed from the \code{dat_list}, enabling SS3 to
 generate forecasts rather than use the data to fit the model.}
 
 \item{run_change_e_full}{*If \code{FALSE} \code{change_e} will only
@@ -77,7 +77,7 @@ is \code{FALSE}.}
 }
 \value{
 Altered versions of SS3 \code{.ctl} and \code{forecast.ss} files are written
-to the disk and the altered \code{datfile} is returned invisibly.
+to the disk and the altered \code{dat_list} is returned invisibly.
 }
 \description{
 Takes SS3 \code{.ctl} and \code{forecast.ss} files, along with
@@ -122,7 +122,7 @@ d <- system.file("extdata", package = "ss3sim")
 ctl_file <- paste0(d, "/models/cod-om/codOM.ctl")
 data.old <- r4ss::SS_readdat(file.path(d, "models", "cod-om", "codOM.dat"))
 change_e(ctl_file_in = ctl_file, ctl_file_out = "change_e.ctl",
-         datfile = data.old, for_file_in = "forecast.ss",
+         dat_list = data.old, for_file_in = "forecast.ss",
          natM_type = "n_breakpoints", natM_n_breakpoints = c(1, 4),
          natM_lorenzen = NULL, natM_val = c(.2, 3, 0.4, 5),
          par_name = c("_steep", "SizeSel_1P_1_Fishery"),

@@ -1,8 +1,9 @@
 #' Set the robustification constant for length composition data.
 #'
 #' This function replaces the robustification value for length composition data
-#' in a \code{dat} file (\code{file_in}) with those specified in
-#' \code{lcomp_constant}. It then writes a new file with name \code{file_out}
+#' in a \code{.dat} file that was read in using \code{\link[r4ss]{SS_readdat}}
+#' with those specified in
+#' \code{lcomp_constant}. It then writes a new file with name \code{dat_file_out}
 #' into the working directory. If used with \code{\link{run_ss3sim}} the case
 #' file should be named \code{lcomp_constant}. A suggested case letter is
 #' \code{C}.
@@ -18,9 +19,8 @@
 #'   the current value, and a value of 0 will throw an error since that leads to
 #'   an error when zeroes exist in the data. Instead use a very small value like
 #'   1e-07.
-#' @param datfile Input SS3 dat file \bold{as returned in list object form from
-#'   \code{\link[r4ss]{SS_readdat}}}.
-#' @param file_out Output SS3 dat file. Typically the same as \code{file_in}.
+#' @template dat_list
+#' @template dat_file_out
 #' @param write_file Should the data file be written to disk?
 #' @return A modified SS3 \code{.dat} file, and that file returned invisibly
 #'   (for testing) as a vector of character lines.
@@ -28,7 +28,7 @@
 #' @author Cole Monnahan
 #' @importFrom r4ss SS_writedat
 
-change_lcomp_constant <- function(lcomp_constant, datfile, file_out,
+change_lcomp_constant <- function(lcomp_constant, dat_list, dat_file_out,
   write_file = TRUE){
 
   if(is.null(lcomp_constant)) return(invisible(NULL))
@@ -36,9 +36,9 @@ change_lcomp_constant <- function(lcomp_constant, datfile, file_out,
   if(lcomp_constant <= 0) stop("lcomp_constant must be greater than 0")
 
   # The data sections are repeated in the data.ss_new files, so only use first one
-  datfile$add_to_comp[1] <- lcomp_constant
+  dat_list$add_to_comp[1] <- lcomp_constant
 
-  if(write_file) SS_writedat(datfile, file_out, overwrite = TRUE, verbose = FALSE)
+  if(write_file) SS_writedat(dat_list, dat_file_out, overwrite = TRUE, verbose = FALSE)
 
-  invisible(datfile)
+  invisible(dat_list)
 }

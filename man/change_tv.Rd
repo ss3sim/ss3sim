@@ -7,8 +7,8 @@
 change_tv(change_tv_list, ctl_file_in = "control.ss_new",
   ctl_file_out = "om.ctl", dat_file_in = "ss3.dat",
   dat_file_out = "ss3.dat", par_file_in = "ss3.par",
-  par_file_out = "ss3.par", starter_file_in = "starter.ss",
-  starter_file_out = "starter.ss", report_file = "Report.sso")
+  par_file_out = "ss3.par", str_file_in = "starter.ss",
+  str_file_out = "starter.ss", rpt_file_in = "Report.sso")
 }
 \arguments{
 \item{change_tv_list}{*A list of named vectors. Names correspond to parameters
@@ -16,23 +16,23 @@ in the operating model that currently do not use environmental deviations and
 the vectors correspond to deviations. See the section "Specifying the
 \code{change_tv_list}" below for help on specifying this argument.}
 
-\item{ctl_file_in}{Input SS3 control file}
+\item{ctl_file_in}{A string providing the path to the input SS3 \code{.ctl} file.}
 
-\item{ctl_file_out}{Output SS3 control file}
+\item{ctl_file_out}{A string providing the path to the output SS3 \code{.ctl} file.}
 
-\item{dat_file_in}{Input SS3 data file}
+\item{dat_file_in}{A string providing the path to the input SS3 \code{.dat} file.}
 
-\item{dat_file_out}{Output SS3 data file}
+\item{dat_file_out}{A string providing the path to the output SS3 \code{.dat} file.}
 
-\item{par_file_in}{Input SS3 parameter file}
+\item{par_file_in}{A string providing the path to the input SS3 \code{.par} file.}
 
-\item{par_file_out}{Output SS3 parameter file}
+\item{par_file_out}{A string providing the path to the output SS3 \code{.par} file.}
 
-\item{starter_file_in}{Input SS3 starter file}
+\item{str_file_in}{A string providing the path to the input SS3 \code{starter.ss} file.}
 
-\item{starter_file_out}{Output SS3 starter file}
+\item{str_file_out}{A string providing the path to the output SS3 \code{starter.ss} file.}
 
-\item{report_file}{Input SS3 report file}
+\item{rpt_file_in}{Input SS3 report file}
 }
 \value{
 The function creates modified versions of the \code{.par},

@@ -4,18 +4,18 @@
 \alias{sample_mlacomp}
 \title{Sample mean length (size-)-at-age data and write to file for use by the EM.}
 \usage{
-sample_mlacomp(datfile, outfile, ctlfile, fleets = 1, Nsamp, years,
+sample_mlacomp(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp, years,
   write_file = TRUE, mean_outfile = NULL, verbose = TRUE)
 }
 \arguments{
-\item{datfile}{An SS data object as read in from
+\item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
 \item{outfile}{A character string of the new file name to be created.
 Must end in \code{.dat} or equal \code{wtatage.ss}.}
 
-\item{ctlfile}{A path to the control file, outputed from an OM, containing
+\item{ctl_file_in}{A path to the control file, outputed from an OM, containing
 the OM parameters for growth. These values are used to determine the
 uncertainty about size for fish sampled in each age bin.}
 
@@ -34,7 +34,7 @@ years. If no fleet collected samples, keep the value to
 numeric vectors. If no fleet collected samples, keep the value to
 \code{years=NULL}.}
 
-\item{write_file}{A switch for whether to write \code{outfile} to
+\item{write_file}{A logical switch for whether to write \code{outfile} to
 disk. Can be turned off to speed up testing or exploration of the
 function. The new data are returned invisibly, as in the examples
 below.}
@@ -80,14 +80,14 @@ wd <- getwd()
 setwd(temp_path)
 d <- system.file("extdata/models/cod-om", package = "ss3sim")
 dat_in <- file.path(d, "codOM.dat")
-datfile <- r4ss::SS_readdat(dat_in, verbose = FALSE)
-datfile <- change_fltname(datfile)
-datfile <- change_data(datfile, outfile = NULL, write_file = FALSE,
+dat_list <- r4ss::SS_readdat(dat_in, verbose = FALSE)
+dat_list <- change_fltname(dat_list)
+dat_list <- change_data(dat_list, outfile = NULL, write_file = FALSE,
   fleets = 1, years = 1990:2010, types = c("age", "mla"))
-datfile <- change_fltname(datfile)
-ctlfile <- file.path(d, "codOM.ctl")
+dat_list <- change_fltname(dat_list)
+ctl_file_in <- file.path(d, "codOM.ctl")
 
-out <- sample_mlacomp(datfile, outfile = NULL, ctlfile = ctlfile,
+out <- sample_mlacomp(dat_list, outfile = NULL, ctl_file_in = ctl_file_in,
                       fleets = 1, Nsamp = 30, years = list(1992),
                       verbose = FALSE, mean_outfile = "test.csv", write_file = FALSE)
 

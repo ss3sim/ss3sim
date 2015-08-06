@@ -5,12 +5,12 @@
 \title{Given sampling arguments remove ("clean") all data in a .dat file that
 is not specified}
 \usage{
-clean_data(datfile, index_params = NULL, lcomp_params = NULL,
+clean_data(dat_list, index_params = NULL, lcomp_params = NULL,
   agecomp_params = NULL, calcomp_params = NULL, mlacomp_params = NULL,
   verbose = FALSE)
 }
 \arguments{
-\item{datfile}{An SS data object as read in from
+\item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 

@@ -4,21 +4,21 @@
 \alias{sample_wtatage}
 \title{Sample empirial weight-at-age data and write to file for use by the EM}
 \usage{
-sample_wtatage(infile, outfile, datfile, ctlfile, years,
+sample_wtatage(wta_file_in, outfile, dat_list, ctl_file_in, years,
   fill_fnc = fill_across, write_file = TRUE, fleets, cv_wtatage = NULL)
 }
 \arguments{
-\item{infile}{The file to read weight-at-age from. Specifically to get the
+\item{wta_file_in}{The file to read weight-at-age from. Specifically to get the
 age-0 weight-at-age. This is typically \code{wtatage.ss_new}.}
 
 \item{outfile}{A character string of the new file name to be created.
 Must end in \code{.dat} or equal \code{wtatage.ss}.}
 
-\item{datfile}{An SS data object as read in from
+\item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
-\item{ctlfile}{A path to the control file, outputed from an OM, containing
+\item{ctl_file_in}{A path to the control file, outputed from an OM, containing
 the OM parameters for growth and weight/length relationship. These values
 are used to determine the uncertainty about weight for fish sampled in each
 age bin. Commonly \code{control.ss_new}}
@@ -31,7 +31,7 @@ numeric vectors. If no fleet collected samples, keep the value to
 resulting weight-at-age file will have values for all years and ages.One
 function is \code{fill_across}.}
 
-\item{write_file}{A switch for whether to write \code{outfile} to
+\item{write_file}{A logical switch for whether to write \code{outfile} to
 disk. Can be turned off to speed up testing or exploration of the
 function. The new data are returned invisibly, as in the examples
 below.}

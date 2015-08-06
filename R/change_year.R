@@ -9,21 +9,21 @@
 #' @param year_end Desired end year
 #' @param burnin Length of burnin period. Default is zero for an OM. Use burnin
 #'   for EM models, to establish a period with no fishing.
-#' @param ctl_file_in Input SS3 control file
+#' @template ctl_file_in
 #' @param ctl_file_out Output SS3 control file, if \code{NULL} the file will be
 #'   named the same as the \code{ctl_file_in}
-#' @param dat_file_in Input SS3 data file
+#' @template dat_file_in
 #' @param dat_file_out Output SS3 data file, if \code{NULL} the file will be
 #'   named the same as the \code{dat_file_in}
-#' @param par_file_in Input SS3 parameter file
+#' @template par_file_in
 #' @param par_file_out Output SS3 parameter file, if \code{NULL} the file will
 #'   be named the same as the \code{par_file_in}
-#' @param starter_file_in Input SS3 starter file
-#' @param starter_file_out Output SS3 starter file, if \code{NULL} the file will
-#'   be named the same as the \code{starter_file_in}
-#' @param forecast_file_in Input SS3 forecast file
-#' @param forecast_file_out Output SS3 forecast file, if \code{NULL} the file
-#'   will be named the same as the \code{forecast_file_in}
+#' @template str_file_in
+#' @param str_file_out Output SS3 starter file, if \code{NULL} the file will
+#'   be named the same as the \code{str_file_in}
+#' @param for_file_in Input SS3 forecast file
+#' @param for_file_out Output SS3 forecast file, if \code{NULL} the file
+#'   will be named the same as the \code{for_file_in}
 #' @param verbose Logical argument that is passed on to internal calls to r4ss
 #'   functions for reading and writing SS3 files. Setting \code{verbose} to
 #'   \code{TRUE} may be useful for troubleshooting.
@@ -70,8 +70,8 @@
 #'  ctl_file_in = "control.ss_new", ctl_file_out = "change_year.ctl",
 #'  dat_file_in = "simple.dat", dat_file_out = "change_year.dat",
 #'  par_file_in = "ss3.par", par_file_out = "change_year.par",
-#'  starter_file_in = "starter.ss", starter_file_out = "change_year_starter.ss",
-#'  forecast_file_in = "forecast.ss", forecast_file_out = "change_year_forecast.ss")
+#'  str_file_in = "starter.ss", str_file_out = "change_year_starter.ss",
+#'  for_file_in = "forecast.ss", for_file_out = "change_year_forecast.ss")
 #'
 #' # Clean up:
 #' setwd("../")
@@ -83,8 +83,8 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
   ctl_file_in = NULL, ctl_file_out = "new.ctl",
   dat_file_in = NULL, dat_file_out = "new.dat",
   par_file_in = NULL, par_file_out = "new.ss",
-  starter_file_in = NULL, starter_file_out = "starter.ss",
-  forecast_file_in = NULL, forecast_file_out = "forecast.ss",
+  str_file_in = NULL, str_file_out = "starter.ss",
+  for_file_in = NULL, for_file_out = "forecast.ss",
   verbose = FALSE) {
 
   if (is.null(ctl_file_out)) {
@@ -96,11 +96,11 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
   if (is.null(par_file_out)) {
     par_file_out <- par_file_in
   }
-  if (is.null(starter_file_out)) {
-    starter_file_out <- starter_file_in
+  if (is.null(str_file_out)) {
+    str_file_out <- str_file_in
   }
-  if (is.null(forecast_file_out)) {
-    forecast_file_out <- forecast_file_in
+  if (is.null(for_file_out)) {
+    for_file_out <- for_file_in
   }
 
   year_span <- year_end - year_begin + 1
@@ -124,11 +124,11 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
   }
 
   # Work with starter file
-  if (!is.null(starter_file_in)) {
-    ss3.starter <- readLines(con = starter_file_in)
+  if (!is.null(str_file_in)) {
+    ss3.starter <- readLines(con = str_file_in)
     ss3.starter <- manipulate(ss3.starter, "min yr", -1)
     ss3.starter <- manipulate(ss3.starter, "max yr", -2)
-    writeLines(ss3.starter, con = starter_file_out)
+    writeLines(ss3.starter, con = str_file_out)
   }
 
   # Work with ctl file
@@ -322,8 +322,8 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
         }
     SS_writedat(ss3.dat, dat_file_out, overwrite = TRUE, verbose = verbose)
   }
-  if (!is.null(forecast_file_in)) {
-    forecastlines <- readLines(forecast_file_in)
+  if (!is.null(for_file_in)) {
+    forecastlines <- readLines(for_file_in)
     numberofareas <- forecastlines[grep("max totalcatch by area", forecastlines) + 1]
     numberofareas <- strsplit(numberofareas, " ")[[1]]
     numberofareas <- gsub("#", "", numberofareas)
@@ -333,7 +333,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
     numberoffleet <- gsub("#", "", numberoffleet)
     nfleets <- length(numberoffleet[numberoffleet != ""])
 
-    forecast <- SS_readforecast(forecast_file_in, nfleets, nareas,
+    forecast <- SS_readforecast(for_file_in, nfleets, nareas,
                                 verbose = verbose)
     if (forecast$FirstYear_for_caps_and_allocations != 0) {
         forecast$FirstYear_for_caps_and_allocations <- year_end +
@@ -361,7 +361,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
             "or the catch per year. This must be done manually,",
             "or change to use first-last-allocation year."))
     }
-    SS_writeforecast(forecast, file = forecast_file_out,
+    SS_writeforecast(forecast, file = for_file_out,
                      overwrite = TRUE, verbose = verbose)
   }
 }

@@ -4,11 +4,11 @@
 \alias{sample_index}
 \title{Sample the biomass with observation error}
 \usage{
-sample_index(datfile, outfile, fleets, years, sds_obs, make_plot = FALSE,
+sample_index(dat_list, outfile, fleets, years, sds_obs, make_plot = FALSE,
   write_file = TRUE)
 }
 \arguments{
-\item{datfile}{An SS data object as read in from
+\item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
@@ -32,7 +32,7 @@ error. Single values are repeated for all years.}
 \item{make_plot}{A logical switch for whether to make a crude plot showing
   the results. Useful for testing and exploring the function.}
 
-\item{write_file}{A switch for whether to write \code{outfile} to
+\item{write_file}{A logical switch for whether to write \code{outfile} to
 disk. Can be turned off to speed up testing or exploration of the
 function. The new data are returned invisibly, as in the examples
 below.}
@@ -64,14 +64,14 @@ if specified.
 # Find the example data location:
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/example-om/data.ss_new")
-datfile <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
-datfile <- change_fltname(datfile)
+dat_list <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+dat_list <- change_fltname(dat_list)
 outfile <- "test.dat"
-ex1 <- sample_index(datfile, outfile, fleets=c(2,3),
+ex1 <- sample_index(dat_list, outfile, fleets=c(2,3),
                     years=list(1938:2012, 1938:2012) ,
                     sds_obs=list(1e-6, 1e-6), write_file=FALSE,
                     make_plot = TRUE)
-ex2 <- sample_index(datfile, outfile, fleets=c(2,3),
+ex2 <- sample_index(dat_list, outfile, fleets=c(2,3),
                     years=list(1938:2012, 1938:2012) ,
                     sds_obs=list(.05, .05), write_file=FALSE,
                     make_plot = TRUE)
@@ -80,7 +80,7 @@ ggplot(ex1, aes(x=year, y=obs, group=index, ymin=0,
                 colour=as.factor(index)))+geom_line() + geom_point(data=ex2,
                 aes(x=year, y=obs, colour=as.factor(index), group=index))
 ## Exclude a fleet and have varying sds_obs by year
-ex3 <- sample_index(datfile, outfile, fleets=c(2,NA),
+ex3 <- sample_index(dat_list, outfile, fleets=c(2,NA),
                     years=list(1938:2012, 1950),
                     sds_obs=list(seq(.001, .1, len=75), .1),
                     write_file=FALSE)

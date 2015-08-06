@@ -7,10 +7,8 @@
 #' according to the user's specification. If the data file also contails
 #' conditional age-at-length data then these data will be re-binned as well.
 #'
-#' @param datfile An SS3 data list object as read in by
-#'   \code{\link[r4ss]{SS_readdat}}.
-#' @param file_out A character value giving the location of an SS \code{ss3.dat}
-#'   file to output.
+#' @template dat_list
+#' @template dat_file_out
 #' @param bin_vector A numeric vector of new length bins to substitute into the
 #'   \code{ss3.dat} file.
 #' @param lbin_method A numeric value of either \code{NULL, 1, 2, 3} to change
@@ -27,7 +25,7 @@
 #' @param write_file Should the \code{.dat} file be written? The new \code{.dat}
 #'   file will always be returned invisibly by the function. Setting
 #'   \code{write_file = FALSE} can be useful for testing. Note that you must
-#'   supply a value to the argument \code{file_out}, but this argument can be
+#'   supply a value to the argument \code{dat_file_out}, but this argument can be
 #'   set to any arbitrary value (such as \code{NULL}) if \code{write_file =
 #'   FALSE}.
 #' @importFrom r4ss SS_writedat
@@ -41,8 +39,8 @@
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
-#' datfile <- r4ss::SS_readdat(file = f_in, verbose = FALSE)
-#' l <- change_em_binning(datfile, file_out = NULL, lbin_method = 1,
+#' dat_list <- r4ss::SS_readdat(file = f_in, verbose = FALSE)
+#' l <- change_em_binning(dat_list, dat_file_out = NULL, lbin_method = 1,
 #'   bin_vector = seq(8, 30, by = 1), write_file = FALSE)
 #' print(l$lbin_vector)
 #' print(head(l$lencomp))
@@ -56,7 +54,7 @@
 #'   types = c("len", "age", "cal"), fleets = 1, years = seq(2000, 2002),
 #'   age_bins = 1:3, len_bins = 4:8)
 #' olddat$agecomp
-#' newdat <- change_em_binning(olddat, file_out = NULL, bin_vector = c(4, 6, 8),
+#' newdat <- change_em_binning(olddat, dat_file_out = NULL, bin_vector = c(4, 6, 8),
 #'   lbin_method = 1, write_file = FALSE)
 #' newdat$agecomp
 #'
@@ -68,13 +66,13 @@
 #' olddat$lbin_vector
 #' head(olddat$lencomp)
 #' head(olddat$agecomp)
-#' newdat <- change_em_binning(olddat, file_out = NULL, bin_vector = seq(20, 30, 2),
+#' newdat <- change_em_binning(olddat, dat_file_out = NULL, bin_vector = seq(20, 30, 2),
 #'  lbin_method = 1, write_file = FALSE)
 #' newdat$lbin_vector
 #' head(newdat$lencomp)
 #' newdat$agecomp
 
-change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
+change_em_binning <- function(dat_list, dat_file_out, bin_vector, lbin_method = NULL,
                               pop_binwidth=NULL, pop_minimum_size=NULL,
                               pop_maximum_size=NULL, write_file = TRUE) {
 
@@ -85,7 +83,7 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
   if (!is.numeric(bin_vector)) {
     stop("bin_vector must be numeric")
   }
-  if (length(bin_vector) > length(datfile$lbin_vector)) {
+  if (length(bin_vector) > length(dat_list$lbin_vector)) {
     stop(paste("The specified bin_vector is longer than the original",
       "lbin_vector in the SS3 data file and therefore can't be re-binned."))
   }
@@ -103,32 +101,32 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
       if (lbin_method > 2)
           stop("lbin_method method should be either NULL, 1 or 2; 3 is not currently implemented")
   }
-  if (is.null(datfile$lencomp)) {
+  if (is.null(dat_list$lencomp)) {
     stop("no lcomp data. Verify your case argument files")
   }
-  if (datfile$Ngenders > 1) {
+  if (dat_list$Ngenders > 1) {
     stop(paste("_Ngenders is greater than 1 in the model.",
       "change_em_binning only works with single-gender models."))
   }
-  if (!identical(as.integer(max(bin_vector)), as.integer(max(datfile$lbin_vector)))) {
+  if (!identical(as.integer(max(bin_vector)), as.integer(max(dat_list$lbin_vector)))) {
     stop(paste("The maximum value in the bin_vector is not equal to the",
       "original maximum length bin value."))
   }
-  if(!identical(as.integer(min(bin_vector)), as.integer(min(datfile$lbin_vector)))) {
+  if(!identical(as.integer(min(bin_vector)), as.integer(min(dat_list$lbin_vector)))) {
     stop(paste("The minimum value in the bin_vector is not equal to the",
       "original maximum length bin value."))
   }
-  if (any(!is_divisible(bin_vector, by_ = datfile$binwidth)) ) {
+  if (any(!is_divisible(bin_vector, by_ = dat_list$binwidth)) ) {
     stop(paste("One or more of the values in bin_vector are not divisible by",
       "the population binwidth specified in the SS3 data file."))
   }
 
   # Find ID columns and data columns to replace:
-  old_len_columns <- grep("^l[0-9.]+$", names(datfile$lencomp))
-  old_lcomp_total <- sum(datfile$lencomp[, old_len_columns]) # check later
-  id_columns <- seq_along(names(datfile$lencomp))[-old_len_columns]
-  newdummy <- datfile$lencomp[, old_len_columns]
-  old_binvector <- datfile$lbin_vector
+  old_len_columns <- grep("^l[0-9.]+$", names(dat_list$lencomp))
+  old_lcomp_total <- sum(dat_list$lencomp[, old_len_columns]) # check later
+  id_columns <- seq_along(names(dat_list$lencomp))[-old_len_columns]
+  newdummy <- dat_list$lencomp[, old_len_columns]
+  old_binvector <- dat_list$lbin_vector
 
   # change population length bin width
   lcomp_new <- as.data.frame(matrix(0, nrow = nrow(newdummy),
@@ -139,7 +137,7 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
   for (i in 1:length(bin_vector)) {
 
     if (i == 1) {
-      select_col <- which(datfile$lbin_vector < bin_vector[i + 1])
+      select_col <- which(dat_list$lbin_vector < bin_vector[i + 1])
       if (length(select_col) > 1) {
         lcomp_new[, i] <- apply(newdummy[, select_col], 1, sum, na.rm = TRUE)
       }
@@ -148,8 +146,8 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
     }
 
     if (i > 1 & i < length(bin_vector)) {
-      select_col <- which(datfile$lbin_vector >= bin_vector[i] &
-          datfile$lbin_vector < bin_vector[i + 1])
+      select_col <- which(dat_list$lbin_vector >= bin_vector[i] &
+          dat_list$lbin_vector < bin_vector[i + 1])
       if (length(select_col) > 1) {
         lcomp_new[, i] <- apply(newdummy[, select_col], 1, sum, na.rm = TRUE)
       }
@@ -158,7 +156,7 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
     }
 
     if (i == length(bin_vector)) {
-      select_col <- which(datfile$lbin_vector >= bin_vector[i])
+      select_col <- which(dat_list$lbin_vector >= bin_vector[i])
       if (length(select_col) > 1) {
         lcomp_new[, i] <- apply(newdummy[, select_col], 1, sum, na.rm = TRUE)
       }
@@ -175,39 +173,39 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
   }
 
   # Substitute new bins:
-  datfile$lencomp <- data.frame(datfile$lencomp[, id_columns], lcomp_new)
-  datfile$lbin_vector <- bin_vector
-  datfile$N_lbins <- length(datfile$lbin_vector)
+  dat_list$lencomp <- data.frame(dat_list$lencomp[, id_columns], lcomp_new)
+  dat_list$lbin_vector <- bin_vector
+  dat_list$N_lbins <- length(dat_list$lbin_vector)
 
   # change the lbin_method, if it's NULL leave it as is
   if (!is.null(lbin_method)) {
     ## otherwise if 1 it will use the data bins and requires no more
     ## input
     if (lbin_method == 1) {
-      datfile$lbin_method <- lbin_method
-      datfile$binwidth <- NULL
-      datfile$minimum_size <- NULL
-      datfile$maximum_size <- NULL
+      dat_list$lbin_method <- lbin_method
+      dat_list$binwidth <- NULL
+      dat_list$minimum_size <- NULL
+      dat_list$maximum_size <- NULL
     } else {
       ## it is 2 so we  need to specify width, min and max
-      datfile <- change_pop_bin(datfile, binwidth = pop_binwidth,
+      dat_list <- change_pop_bin(dat_list, binwidth = pop_binwidth,
         minimum_size = pop_minimum_size, maximum_size = pop_maximum_size)
     }
   }
 
   # Re-bin conditional age-at-length comps:
   # if all Lbin_lo == -1 then there aren't any CAL data:
-  if (length(unique(datfile$agecomp$Lbin_lo)) > 1) {
-    if (!identical(datfile$Lbin_method, 3)) {
+  if (length(unique(dat_list$agecomp$Lbin_lo)) > 1) {
+    if (!identical(dat_list$Lbin_method, 3)) {
       stop(paste("Lbin_method was not set to 3 in the SS3 data file.",
         "change_em_binning() requires the data file to specify conditional",
         "age-at-length data with Lbin_method == 3. See the SS3 manual. Note",
         "the capital L in Lbin_method."))
     }
 
-    if (datfile$lbin_method == 2) {
-      population_bins <- seq(datfile$minimum_size, datfile$maximum_size,
-        by = datfile$binwidth)
+    if (dat_list$lbin_method == 2) {
+      population_bins <- seq(dat_list$minimum_size, dat_list$maximum_size,
+        by = dat_list$binwidth)
       if (!all(bin_vector %in% population_bins)) {
         stop(paste("One or more of bin_vector is not contained in the",
                    "population bins (and lbin_method = 2). This is required in",
@@ -216,13 +214,13 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
     }
 
     # to check later:
-    a_ids <- grep("^a[0-9.]+$", names(datfile$agecomp))
-    old_age_dat <- datfile$agecomp[, a_ids]
+    a_ids <- grep("^a[0-9.]+$", names(dat_list$agecomp))
+    old_age_dat <- dat_list$agecomp[, a_ids]
     old_agecomp_total <- sum(old_age_dat)
 
     # grab the data we'll work with:
-    old_age <- datfile$agecomp[datfile$agecomp$Lbin_lo == -1, ]
-    old_cal_all <- datfile$agecomp[datfile$agecomp$Lbin_lo != -1, ]
+    old_age <- dat_list$agecomp[dat_list$agecomp$Lbin_lo == -1, ]
+    old_cal_all <- dat_list$agecomp[dat_list$agecomp$Lbin_lo != -1, ]
 
     # remove columns we'll merge back in after:
     a_ids_character <- names(old_cal_all)[a_ids]
@@ -256,10 +254,10 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
     new_cal <- new_cal[, match(names(old_cal_all), names(new_cal))]
 
     # and slot the new data into the .dat file:
-    datfile$agecomp <- rbind(old_age, new_cal)
-    datfile$N_agecomp <- nrow(datfile$agecomp)
+    dat_list$agecomp <- rbind(old_age, new_cal)
+    dat_list$N_agecomp <- nrow(dat_list$agecomp)
 
-    new_age_dat <- datfile$agecomp[, grepl("^a[0-9.]+$", names(datfile$agecomp))]
+    new_age_dat <- dat_list$agecomp[, grepl("^a[0-9.]+$", names(dat_list$agecomp))]
     new_agecomp_total <- sum(new_age_dat)
     if (!identical(old_agecomp_total, new_agecomp_total)) {
       stop(paste("Number of samples in the new agecomp data matrix does not match",
@@ -268,10 +266,10 @@ change_em_binning <- function(datfile, file_out, bin_vector, lbin_method = NULL,
   }
 
   if (write_file) {
-    SS_writedat(datlist = datfile, outfile = file_out, overwrite = TRUE,
+    SS_writedat(datlist = dat_list, outfile = dat_file_out, overwrite = TRUE,
       verbose = FALSE)
   }
-  invisible(datfile)
+  invisible(dat_list)
 }
 
 is_divisible <- function(x, by_ = 2L) {

@@ -14,7 +14,7 @@ test_that("change_tail_compression changes the tail compression value", {
   dat_file <- r4ss::SS_readdat(dat_file, verbose = FALSE)
   dat_file <- change_fltname(dat_file)
   test_tc <- change_tail_compression(tail_compression = .1234, dat_file,
-    file_out = "test.dat")
+    dat_file_out = "test.dat")
   expect_equal(test_tc$comp_tail_compression, 0.1234)
 })
 

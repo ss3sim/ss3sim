@@ -237,8 +237,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       }
 
       # Add new rec devs overwriting om/ss3.par
-      change_rec_devs(recdevs_new = sc_i_recdevs, file_in =
-        pastef(sc, i, "om", "ss3.par"), file_out = pastef(sc, i,
+      change_rec_devs(recdevs_new = sc_i_recdevs, par_file_in =
+        pastef(sc, i, "om", "ss3.par"), par_file_out = pastef(sc, i,
           "om", "ss3.par"))
 
       # Change F
@@ -247,8 +247,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         change_f(years               = years,
                  years_alter         = years_alter,
                  fvals               = fvals,
-                 file_in             = pastef(sc, i, "om", "ss3.par"),
-                 file_out            = pastef(sc, i, "om", "ss3.par")))
+                 par_file_in         = pastef(sc, i, "om", "ss3.par"),
+                 par_file_out            = pastef(sc, i, "om", "ss3.par")))
 
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
@@ -292,7 +292,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if (call_change_data) {
         # Start by clearing out the old data. Important so that extra data
         # doesn't trip up change_data:
-        datfile.orig <- clean_data(datfile = datfile.orig,
+        datfile.orig <- clean_data(dat_list = datfile.orig,
           index_params = index_params, verbose = FALSE)
 
         data_params <- add_nulls(data_params, c("age_bins", "len_bins",
@@ -300,7 +300,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           "tail_compression", "lcomp_constant"))
 
         # Note some are data_args and some are data_params:
-        change_data(datfile          = datfile.orig,
+        change_data(dat_list         = datfile.orig,
                     outfile          = pastef(sc, i, "om", "ss3.dat"),
                     fleets           = data_args$fleets,
                     years            = data_args$years,
@@ -324,14 +324,14 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                             data_out = pastef(sc, i, "em", "ss3.dat"))
       ## Read in the datfile once and manipulate as a list object, then
       ## write it back to file at the end, before running the EM.
-      datfile <- SS_readdat(pastef(sc, i, "em", "ss3.dat"),
+      dat_list <- SS_readdat(pastef(sc, i, "em", "ss3.dat"),
                             verbose = FALSE)
-      datfile <- change_fltname(datfile)
+      dat_list <- change_fltname(dat_list)
       ## Survey biomass index
       index_params <- add_nulls(index_params, c("fleets", "years", "sds_obs"))
 
-      datfile <- with(index_params,
-        sample_index(datfile         = datfile,
+      dat_list <- with(index_params,
+        sample_index(dat_list        = dat_list,
                      outfile         = NULL,
                      fleets          = fleets,
                      years           = years,
@@ -341,8 +341,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(!is.null(lcomp_params$fleets)){
           lcomp_params <- add_nulls(lcomp_params,
                      c("fleets", "Nsamp", "years", "cpar"))
-          datfile <- with(lcomp_params,
-               sample_lcomp(datfile          = datfile,
+          dat_list <- with(lcomp_params,
+               sample_lcomp(dat_list         = dat_list,
                             outfile          = NULL,
                             fleets           = fleets,
                             Nsamp            = Nsamp,
@@ -357,8 +357,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(!is.null(agecomp_params$fleets)){
           agecomp_params <- add_nulls(agecomp_params,
                                       c("fleets", "Nsamp", "years", "cpar"))
-          datfile <- with(agecomp_params,
-                          sample_agecomp(datfile        = datfile,
+          dat_list <- with(agecomp_params,
+                          sample_agecomp(dat_list       = dat_list,
                                          outfile        = NULL,
                                          fleets         = fleets,
                                          Nsamp          = Nsamp,
@@ -379,14 +379,14 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           ## so exit early if this is the case.
           if(!is.null(wtatage_params$fleets)){
               ## Make sure W@A option is turned on in the EM
-              change_maturity(file_in=pastef(sc, i, "em", "em.ctl"),
-                              file_out=pastef(sc, i, "em", "em.ctl"),
+              change_maturity(ctl_file_in=pastef(sc, i, "em", "em.ctl"),
+                              ctl_file_out=pastef(sc, i, "em", "em.ctl"),
                               maturity_option=5)
               with(wtatage_params,
-                   sample_wtatage(infile      = pastef(sc, i, "om", "wtatage.ss_new"),
+                   sample_wtatage(wta_file_in = pastef(sc, i, "om", "wtatage.ss_new"),
                                   outfile     = pastef(sc, i, "em", "wtatage.ss"),
-                                  datfile     = datfile,
-                                  ctlfile     = pastef(sc, i, "om", "control.ss_new"),
+                                  dat_list    = dat_list,
+                                  ctl_file_in = pastef(sc, i, "om", "control.ss_new"),
                                   fleets      = fleets,
                                   years       = years,
                                   write_file  = TRUE,
@@ -401,10 +401,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ## is NULL, so it always needs to be called.
       if(!is.null(mlacomp_params$fleets)){
           mlacomp_params <- add_nulls(mlacomp_params, c("fleets", "Nsamp", "years", "mean_outfile"))
-          datfile <- with(mlacomp_params,
-                          sample_mlacomp(datfile        = datfile,
+          dat_list <- with(mlacomp_params,
+                          sample_mlacomp(dat_list       = dat_list,
                                          outfile        = NULL,
-                                         ctlfile        = pastef(sc, i, "om", "control.ss_new"),
+                                         ctl_file_in    = pastef(sc, i, "om", "control.ss_new"),
                                          fleets         = fleets,
                                          Nsamp          = Nsamp,
                                          years          = years,
@@ -419,8 +419,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ## calcomp data and vice versa.
       if(!is.null(calcomp_params$fleets)){
           calcomp_params <- add_nulls(calcomp_params, c("fleets", "years", "Nsamp"))
-          datfile <- with(calcomp_params,
-                          sample_calcomp(datfile          = datfile,
+          dat_list <- with(calcomp_params,
+                          sample_calcomp(dat_list         = dat_list,
                                          outfile          = NULL,
                                          fleets           = fleets,
                                          years            = years,
@@ -431,34 +431,34 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(!is.null(retro_params)) {
       retro_params <- add_nulls(retro_params, "retro_yr")
       with(retro_params,
-        change_retro(startfile_in    = pastef(sc, i, "em", "starter.ss"),
-                     startfile_out   = pastef(sc, i, "em", "starter.ss"),
+        change_retro(str_file_in    = pastef(sc, i, "em", "starter.ss"),
+                     str_file_out   = pastef(sc, i, "em", "starter.ss"),
                      retro_yr        = retro_yr))
       }
 
       ## End of manipulating the data file, so clean it and write it
-      datfile <- clean_data(datfile=datfile,
-                            index_params=index_params,
-                            lcomp_params=lcomp_params,
-                            agecomp_params=agecomp_params,
-                            calcomp_params=calcomp_params,
-                            mlacomp_params=mlacomp_params,
-                            verbose=FALSE)
+      dat_list <- clean_data(dat_list      = dat_list,
+                            index_params   = index_params,
+                            lcomp_params   = lcomp_params,
+                            agecomp_params = agecomp_params,
+                            calcomp_params = calcomp_params,
+                            mlacomp_params = mlacomp_params,
+                            verbose        = FALSE)
 
 	  ## Now change the binning structure in the EM ss3.dat file as needed
       if (!is.null(em_binning_params$lbin_method)) {
           em_binning_params <- add_nulls(em_binning_params,
             c("lbin_method", "bin_vector", "pop_binwidth",
               "pop_minimum_size", "pop_maximum_size"))
-          datfile <- change_em_binning(
-              datfile          = datfile,
-              file_out         = NULL,
-              bin_vector     = em_binning_params$bin_vector,
+          dat_list <- change_em_binning(
+              dat_list         = dat_list,
+              dat_file_out     = NULL,
+              bin_vector       = em_binning_params$bin_vector,
               lbin_method      = em_binning_params$lbin_method,
-              pop_binwidth    =em_binning_params$pop_binwidth,
-              pop_minimum_size= em_binning_params$pop_minimum_size,
-              pop_maximum_size= em_binning_params$pop_maximum_size,
-                  write_file       = FALSE)
+              pop_binwidth     = em_binning_params$pop_binwidth,
+              pop_minimum_size = em_binning_params$pop_minimum_size,
+              pop_maximum_size = em_binning_params$pop_maximum_size,
+              write_file       = FALSE)
       }
 
       # Manipulate EM control file to adjust what gets estimated

@@ -4,13 +4,15 @@
 \alias{change_data}
 \title{Change the data that is available as output from an SS operating model.}
 \usage{
-change_data(datfile, outfile, fleets, years, types, age_bins = NULL,
+change_data(dat_list, outfile, fleets, years, types, age_bins = NULL,
   len_bins = NULL, pop_binwidth = NULL, pop_minimum_size = NULL,
   pop_maximum_size = NULL, lcomp_constant = NULL, tail_compression = NULL,
   write_file = TRUE)
 }
 \arguments{
-\item{datfile}{A list as read in by \code{\link[r4ss]{SS_readdat}}.}
+\item{dat_list}{An SS data list object as read in from
+\code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
+you select option \code{section=2}.}
 
 \item{outfile}{A character value giving the location of an SS \code{.dat}
 file to output, if \code{write_file=TRUE}.}
@@ -136,15 +138,15 @@ calcomp_params = list(Nsamp = list(1), fleets = c(1), years = 98)
 mlacomp_params = list(fleets = c(2), Nsamp = 54, years = list(c(1, 15)))
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/models/cod-om/codOM.dat")
-datfile <- r4ss::SS_readdat(f_in, verbose = FALSE)
-datfile <- change_fltname(datfile)
+dat_list <- r4ss::SS_readdat(f_in, verbose = FALSE)
+dat_list <- change_fltname(dat_list)
 data_units <- calculate_data_units(index_params = index_params,
   lcomp_params = lcomp_params, agecomp_params = agecomp_params,
   calcomp_params = calcomp_params, mlacomp_params = mlacomp_params)
 data_units
-dat2 <- with(data_units, change_data(datfile = datfile, fleets = fleets,
+dat2 <- with(data_units, change_data(dat_list = dat_list, fleets = fleets,
   years = years, types = types, write_file = FALSE))
-dat3 <- clean_data(datfile = dat2, lcomp_params = lcomp_params,
+dat3 <- clean_data(dat_list = dat2, lcomp_params = lcomp_params,
   index_params = index_params, agecomp_params = agecomp_params,
   calcomp_params = calcomp_params, mlacomp_params = mlacomp_params,
   verbose = TRUE)

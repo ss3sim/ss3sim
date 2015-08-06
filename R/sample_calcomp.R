@@ -12,14 +12,14 @@
 #' @author Cole Monnahan, Kotaro Ono
 #'
 #' @template lcomp-agecomp-index
-#' @template datfile
+#' @template dat_list
 #' @template Nsamp
 #' @template sampling-return
 #' @template casefile-footnote
 #' @family sampling functions
 #' @export
 
-sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
+sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
                            write_file=TRUE, Nsamp){
     ## The samples are taken from the expected values, where the
     ## age-at-length data is in the age matrix but has a -1 for Lbin_lo and
@@ -36,12 +36,12 @@ sample_calcomp <- function(datfile, outfile, fleets = c(1,2), years,
         }
     }
 
-    check_data(datfile)
-    agecomp.age <- datfile$agecomp[datfile$agecomp$Lbin_lo== -1,]
-    agecomp.cal <- datfile$agecomp[datfile$agecomp$Lbin_lo != -1,]
-    lencomp <- datfile$lencomp
-    lbin_vector <- datfile$lbin_vector
-    newfile <- datfile
+    check_data(dat_list)
+    agecomp.age <- dat_list$agecomp[dat_list$agecomp$Lbin_lo== -1,]
+    agecomp.cal <- dat_list$agecomp[dat_list$agecomp$Lbin_lo != -1,]
+    lencomp <- dat_list$lencomp
+    lbin_vector <- dat_list$lbin_vector
+    newfile <- dat_list
     ## A value of NULL for fleets indicates not to sample and strip out the
     ## data from the file.
     if(is.null(fleets)){
