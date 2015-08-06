@@ -17,7 +17,7 @@ test_that("Use change_e to change forecast year", {
   # Manipulate files
   datnew <- change_e(ctl_file_in = "simple.ctl",
     ctl_file_out = "change.ctl",
-    datfile = datalist, for_file_in = "forecast.ss",
+    dat_list = datalist, for_file_in = "forecast.ss",
     forecast_num = nfors, run_change_e_full = FALSE)
   test <- readLines("forecast.ss")
   t1 <- grep("#_Forecast", test)
