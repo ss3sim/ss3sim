@@ -478,10 +478,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         estim_params <- add_nulls(estim_params,
           c("natM_type", "natM_n_breakpoints", "natM_lorenzen", "natM_val",
             "par_name", "par_int", "par_phase", "forecast_num"))
-        datfile <- with(estim_params,
+        dat_list <- with(estim_params,
          change_e(ctl_file_in          = "em.ctl",
                   ctl_file_out         = "em.ctl",
-                  datfile              = datfile,
+                  dat_list             = dat_list,
                   for_file_in          = "forecast.ss",
                   natM_type            = natM_type,
                   natM_n_breakpoints   = natM_n_breakpoints,
@@ -495,7 +495,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         setwd(wd)
       }
 
-      SS_writedat(datlist = datfile, outfile = pastef(sc, i, "em", "ss3.dat"),
+      SS_writedat(datlist = dat_list, outfile = pastef(sc, i, "em", "ss3.dat"),
         overwrite = TRUE, verbose = FALSE)
 
       # Should we calculate the hessian?
