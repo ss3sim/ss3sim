@@ -1,6 +1,8 @@
 #' Methods to alter which parameters are estimated in a SS3 \code{.ctl} file.
 #'
-#' @description Takes SS3 \code{.ctl}, \code{.dat}, and \code{forecast.ss} files
+#' @description Takes SS3 \code{.ctl} and \code{forecast.ss} files, along with
+#'   a list structure which houses the data file as read in by
+#'   \code{\link[r4ss]{SS_readdat}}
 #'   and changes which parameters are estimated, how natural mortality is
 #'   estimated, and if forecasts are performed. The function can be called by
 #'   itself or within \code{\link{run_ss3sim}} to alter an estimation model
@@ -8,10 +10,10 @@
 #'   If used with \code{\link{run_ss3sim}} the case file should be named
 #'   \code{E}. A suggested (default) case letter is \code{E} for estimation.
 #'
-#' @template ctl_file_in
-#' @template ctl_file_out
-#' @template dat_file_in
-#' @template for_file_in
+#' @param ctl_file_in Input SS3 control file
+#' @param ctl_file_out Output SS3 control file
+#' @template dat_list
+#' @param for_file_in Input SS3 forecast file
 #' @param natM_type *A character string corresponding to option 0:4 in SS3 (i.e.
 #'   "1Parm", "n_breakpoints", "Lorenzen", "agespecific",
 #'   "agespec_withseasinterpolate"). A value of \code{NA} will leave the
@@ -48,11 +50,12 @@
 #'   \code{par_name}.  Values can be \code{NA} if you do not wish to change
 #'   the phase for a given parameter.
 #' @param forecast_num *Number of years to perform forecasts. For those years,
-#'   the data will be removed from the \code{dat_file_in}, enabling SS3 to
+#'   the data will be removed from the \code{dat_list}, enabling SS3 to
 #'   generate forecasts rather than use the data to fit the model.
 #' @param run_change_e_full *If \code{FALSE} \code{change_e} will only
 #'   manipulate for forecasting, if \code{TRUE} (default) the full function
 #'   capability will be ran.
+#' @template verbose
 #'
 #' @details Turning parameters on and off is the main function of
 #'   \code{change_e}.  \code{change_e} was not created with the capability of
@@ -66,11 +69,11 @@
 #' @template casefile-footnote
 #' @family change functions
 #' @return
-#' Altered versions of SS3 \code{.ctl}, \code{.dat}, and, \code{forecast.ss}
-#' files.
+#' Altered versions of SS3 \code{.ctl} and \code{forecast.ss} files are written
+#' to the disk and the altered \code{dat_list} is returned invisibly.
 #'
 #' @author Kelli Johnson
-#' @importFrom r4ss SS_parlines
+#' @importFrom r4ss SS_parlines SS_readforecast SS_writeforecast
 #' @export
 #' @examples
 #' \dontrun{
@@ -83,8 +86,9 @@
 #'
 #' d <- system.file("extdata", package = "ss3sim")
 #' ctl_file <- paste0(d, "/models/cod-om/codOM.ctl")
+#' data.old <- r4ss::SS_readdat(file.path(d, "models", "cod-om", "codOM.dat"))
 #' change_e(ctl_file_in = ctl_file, ctl_file_out = "change_e.ctl",
-#'          dat_file_in = "ss3.dat", for_file_in = "forecast.ss",
+#'          dat_list = data.old, for_file_in = "forecast.ss",
 #'          natM_type = "n_breakpoints", natM_n_breakpoints = c(1, 4),
 #'          natM_lorenzen = NULL, natM_val = c(.2, 3, 0.4, 5),
 #'          par_name = c("_steep", "SizeSel_1P_1_Fishery"),
@@ -95,12 +99,13 @@
 #' setwd(wd)
 #' }
 
-change_e <- function(ctl_file_in = pastef("em.ctl"),
-    ctl_file_out = pastef("em.ctl"), dat_file_in = pastef("ss3.dat"),
+change_e <- function(ctl_file_in = "em.ctl",
+    ctl_file_out = "em.ctl", dat_list = NULL,
     for_file_in = "forecasts.ss", natM_type = "1Parm",
     natM_n_breakpoints = NULL, natM_lorenzen = NULL, natM_val = c(NA, NA),
     par_name = NULL, par_int = "NA", par_phase = "NA",
-    forecast_num = 0, run_change_e_full = TRUE) {
+    forecast_num = 0, run_change_e_full = TRUE,
+    verbose = FALSE) {
 
   if (!run_change_e_full & any(grepl("change_e_vbgf", par_int))) {
     run_change_e_full <- TRUE
@@ -263,81 +268,38 @@ change_e <- function(ctl_file_in = pastef("em.ctl"),
               }
    		}
   }
-  if(is.null(par_name)) writeLines(ss3.ctl, ctl_file_out)
+  writeLines(ss3.ctl, ctl_file_out)
+} else {
+  file.copy(ctl_file_in, ctl_file_out)
 }
 
-
-changeMe <- function(grepChar, intVal, phaseVal, ctlIn = ss3.ctl) {
-  val <- grep(pattern = grepChar, x = ctlIn, fixed = TRUE)[1]
-    if(is.na(val)) {
-      stop(paste("Could not locate parameter", grepChar, "in the .ctl file.",
-                 "Check that the parameter is spelled correctly and in the",
-                 "correct case. Have you standardized your .ctl file",
-                 "by running it through SS and used the control.ss_new file?"))
-    }
-  grepChar_line <- grep(grepChar, ss3.ctl, fixed = TRUE)
-  
-  grepChar_value <- unlist(strsplit(ss3.ctl[grepChar_line], split = " "))
-  
-  #Remove Tabs 
-  if(sum(grep("\t", grepChar_value)) > 0){
-    grepChar_value <- gsub("\t"," ", grepChar_value)
-  }
-    
-  grepChar_value <- unlist(strsplit(grepChar_value, split = " "))
-  
-  # remove white space
-  grepChar_value <- grepChar_value[which(nchar(grepChar_value) > 0)]
-  
-  if(!intVal %in% c(NA, "NA", "NAN", "Nan")) {
-    if(class(intVal) == "character") intVal <- as.numeric(intVal)
-    grepChar_value[3] <- intVal
-  }
-  if(as.numeric(grepChar_value[3]) > as.numeric(grepChar_value[2])) {
-    grepChar_value[2] <- intVal * 1.5
-  }
- 	if(as.numeric(grepChar_value[3]) < as.numeric(grepChar_value[1])) {
-     grepChar_value[1] <- intVal * .5
-  }
-  
-  if(!phaseVal %in% c(NA, "NA", "NAN", "Nan")) grepChar_value[7] <- phaseVal
-  ss3.ctl[grepChar_line] <- paste(grepChar_value, collapse = " ")
-  return(ss3.ctl)
-}
 if(!is.null(par_name)) {
    par_name <- unlist(strsplit(par_name, split = ","))
-   
-   for(y in seq(par_name)) {
-     ss3.ctl <- changeMe(grepChar = par_name[y], intVal = par_int[y],
-                         phaseVal = par_phase[y])
-   }
-   writeLines(ss3.ctl, ctl_file_out)
+
+  SS_changepars(dir = "", ctlfile = ctl_file_in,
+    newctlfile = file.path(getwd(), ctl_file_out),
+    linenums = NULL, strings = par_name, newvals = par_int, repeat.vals = verbose,
+    newlos = NULL, newhis = NULL, estimate = FALSE, verbose = verbose,
+    newphs = par_phase)
 }
 }
  if(forecast_num > 0) {
- if(!file.exists(dat_file_in)) {
-   stop("Data file for the estimation model does not exist.")
- }
+   if(is.null(dat_list)) {
+     stop(paste("A list object read in by r4ss::SS_readdat must be passed",
+       "to change_e using the dat_list argument if the user wishes to",
+       "implement or change the number of forecasts."))
+   }
  if(!file.exists(for_file_in)) {
    stop("Forecast file for the estimation model does not exist.")
  }
- ss3.dat <- readLines(dat_file_in)
-   data_end_line <- grep("#_endyr", ss3.dat)
-   data_end_value <- unlist(strsplit(ss3.dat[data_end_line], split = " "))
-   data_end_value[1] <- as.numeric(data_end_value[1]) - forecast_num
-   ss3.dat[data_end_line] <- paste(data_end_value, collapse = "")
-   writeLines(ss3.dat, "ss3.dat")
- ss3.for <- readLines(for_file_in)
-   if (any(grepl("SS_writeforecast", ss3.for[1:5]))) {
-     line1 <- grep("_Forecast$", ss3.for)
-     line2 <- grep("_Nforecastyrs", ss3.for)
-   } else {
-     line1 <- grep("Forecast: 0=none;", ss3.for)
-     line2 <- grep("N forecast years", ss3.for)
-   }
-   ss3.for[line1] <- gsub("[0-9]+", 2, ss3.for[line1])
-   ss3.for[line2] <- gsub("[0-9]+", forecast_num, ss3.for[line2])
-   writeLines(ss3.for, "forecast.ss")
- }
+   dat_list$endyr <- dat_list$endyr - forecast_num
 
+   ss3.for <- SS_readforecast(file = for_file_in, Nfleets = dat_list$Nfleet,
+     Nareas = dat_list$N_areas, verbose = verbose)
+   ss3.for$Forecast <- 2 #Fish at F(MSY)
+   ss3.for$Nforecastyrs <- forecast_num
+   SS_writeforecast(ss3.for, file = "forecast.ss", overwrite = TRUE,
+     verbose = verbose)
+ }
+if(!is.null(dat_list)) invisible(dat_list)
 }

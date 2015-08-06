@@ -460,8 +460,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
               pop_maximum_size = em_binning_params$pop_maximum_size,
               write_file       = FALSE)
       }
-      SS_writedat(datlist = dat_list, outfile = pastef(sc, i, "em", "ss3.dat"),
-        overwrite = TRUE, verbose = FALSE)
 
       # Manipulate EM control file to adjust what gets estimated
       # We'll only a portion of the function, the ctl part if
@@ -480,10 +478,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         estim_params <- add_nulls(estim_params,
           c("natM_type", "natM_n_breakpoints", "natM_lorenzen", "natM_val",
             "par_name", "par_int", "par_phase", "forecast_num"))
-        with(estim_params,
+        datfile <- with(estim_params,
          change_e(ctl_file_in          = "em.ctl",
                   ctl_file_out         = "em.ctl",
-                  dat_file_in          = "ss3.dat",
+                  datfile              = datfile,
                   for_file_in          = "forecast.ss",
                   natM_type            = natM_type,
                   natM_n_breakpoints   = natM_n_breakpoints,
@@ -496,6 +494,9 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                   run_change_e_full    = run_change_e_full))
         setwd(wd)
       }
+
+      SS_writedat(datlist = datfile, outfile = pastef(sc, i, "em", "ss3.dat"),
+        overwrite = TRUE, verbose = FALSE)
 
       # Should we calculate the hessian?
         if(hess_always){
