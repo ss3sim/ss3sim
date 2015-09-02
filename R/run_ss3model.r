@@ -71,11 +71,15 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
   os <- .Platform$OS.type
   ss_bin <- paste0("ss3_24o_", ss_mode)
 
-  # Is SS3 in the path?
-  bin <- Sys.which(ss_bin)[[1]]
-  if(bin == "") stop(paste0("The expected SS3 executable, ", ss_bin,
-      ", was not found in your path. See the ss3sim vignette and ?run_ss3model",
-      " for instructions."))
+  bin <- get_bin(ss_bin) # try and use internal binaries from GitHub package
+
+  if (bin == "") { # resort to binaries in path
+    # Is SS3 in the path?
+    bin <- Sys.which(ss_bin)[[1]]
+    if(bin == "") stop(paste0("The expected SS3 executable, ", ss_bin,
+        ", was not found in your path. See the ss3sim vignette and ?run_ss3model",
+        " for instructions."))
+  }
 
   if(is.null(ss3path)) ss3path <- ""
 
