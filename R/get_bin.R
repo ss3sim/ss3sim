@@ -6,7 +6,7 @@
 #' @examples
 #' get_bin()
 
-get_bin <- function(filename = "ss3_24o_opt") {
+get_bin <- function(bin_name = "ss3_24o_opt") {
   # code inspiration from glmmADMB package:
   if (.Platform$OS.type == "windows") {
     platform <- "Windows64"
@@ -23,11 +23,6 @@ get_bin <- function(filename = "ss3_24o_opt") {
       }
     }
   }
-  bin_name <- if (platform == "Windows64") {
-    paste(filename, "exe", sep=".")
-    } else {
-      filename
-    }
   loc <- system.file("bin", package = "ss3sim")
   if (loc != "") {
     bin <- file.path(loc, platform, bin_name)
