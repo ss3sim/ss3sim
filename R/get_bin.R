@@ -6,7 +6,7 @@
 #' @examples
 #' get_bin()
 
-get_bin <- function(bin_name = "ss3_24o_opt") {
+get_bin <- function(filename = "ss3_24o_opt") {
   # code inspiration from glmmADMB package:
   if (.Platform$OS.type == "windows") {
     platform <- "Windows64"
@@ -23,10 +23,23 @@ get_bin <- function(bin_name = "ss3_24o_opt") {
       }
     }
   }
+  bin_name <- if (platform == "Windows64") {
+    paste(filename, "exe", sep=".")
+    } else {
+      filename
+    }
   loc <- system.file("bin", package = "ss3sim")
   if (loc != "") {
-    file.path(loc, platform, bin_name)
+    bin <- file.path(loc, platform, bin_name)
   } else {
-    ""
+    bin <- ""
   }
+
+  if (bin == "") { # resort to binaries in path
+    bin <- Sys.which(bin_name)[[1]]
+    if(bin == "") stop(paste0("The expected SS3 executable, ", ss_bin,
+      ", was not found in your path. See the ss3sim vignette and ?run_ss3model",
+      " for instructions."))
+  }
+  bin
 }

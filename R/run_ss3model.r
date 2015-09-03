@@ -26,12 +26,6 @@
 #' @param iterations Which iterations to run. Controls which folder contains
 #'   the model that SS3 should run on.
 #' @param type Are you running the operating or estimation models?
-#' @param ss3path The path to your SS3 binary the binary is not in your path.
-#'   For example, if \code{SS3} was in the folder \code{/usr/bin/} then
-#'   \code{ss3path = "/usr/bin/"}. Make sure to append a slash to the end of
-#'   this path. Defaults to \code{NULL}, which means the function will assume
-#'   the binary is already in your path. See the vignette for details.
-#'   \code{vignette("ss3sim-vignette")}
 #' @param hess Calculate the Hessian on estimation model runs?
 #' @param admb_options Any additional options to pass to the SS3 command.
 #' @param ignore.stdout Passed to \code{system}. If \code{TRUE} then ADMB
@@ -54,7 +48,7 @@
 #' @export
 
 run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
-  ss3path = NULL, admb_options = "", hess = FALSE, ignore.stdout =
+  admb_options = "", hess = FALSE, ignore.stdout =
   TRUE, admb_pause = 0.05, ss_mode = c("safe", "optimized"), ...) {
 
   # Input checking:
@@ -71,17 +65,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
   os <- .Platform$OS.type
   ss_bin <- paste0("ss3_24o_", ss_mode)
 
-  bin <- get_bin(ss_bin) # try and use internal binaries from GitHub package
-
-  if (bin == "") { # resort to binaries in path
-    # Is SS3 in the path?
-    bin <- Sys.which(ss_bin)[[1]]
-    if(bin == "") stop(paste0("The expected SS3 executable, ", ss_bin,
-        ", was not found in your path. See the ss3sim vignette and ?run_ss3model",
-        " for instructions."))
-  }
-
-  if(is.null(ss3path)) ss3path <- ""
+  bin <- get_bin(ss_bin)
 
   ss_em_options <- ifelse(hess, "", "-nohess")
 
@@ -90,14 +74,14 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
       message(paste0("Running ", toupper(type), " for scenario: ", sc,
         "; iteration: ", it))
       if(os == "unix") {
-        system(paste0("cd ", pastef(sc, it, type), ";", ss3path, paste0(ss_bin, " "),
+        system(paste0("cd ", pastef(sc, it, type), ";", paste0(bin, " "),
            ss_em_options, " ", admb_options), ignore.stdout = ignore.stdout, ...)
         rename_ss3_files(path = pastef(sc, it, type), ss_bin = ss_bin,
           extensions = c("par", "rep", "log", "bar"))
       } else {
         wd <- getwd()
         setwd(pastef(sc, it, type))
-        system(paste0(ss3path, paste0(ss_bin, " "), ss_em_options, admb_options),
+        system(paste0(paste0(bin, " "), ss_em_options, admb_options),
           invisible = TRUE, ignore.stdout = ignore.stdout, ...)
         rename_ss3_files(path = "", ss_bin = ss_bin,
           extensions = c("par", "rep", "log", "bar"))
