@@ -1,6 +1,11 @@
 #' Get SS3 binary/executable location in package
 #'
-#' @param filename Name of SS3 binary (without file extension)
+#' @param bin_name Name of SS3 binary
+#'
+#' @return The path to an SS3 binary. If using the GitHub version of the
+#'   package, this will be an internal binary. Otherewise, this function
+#'   will search for a version of the binary in your path. See the
+#'   ss3sim vignette.
 #'
 #' @export
 #' @examples
@@ -32,7 +37,7 @@ get_bin <- function(bin_name = "ss3_24o_opt") {
 
   if (bin == "") { # resort to binaries in path
     bin <- Sys.which(bin_name)[[1]]
-    if(bin == "") stop(paste0("The expected SS3 executable, ", ss_bin,
+    if(bin == "") stop(paste0("The expected SS3 executable, ", bin_name,
       ", was not found in your path. See the ss3sim vignette and ?run_ss3model",
       " for instructions."))
   }
