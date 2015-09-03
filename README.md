@@ -31,6 +31,8 @@ devtools::install_github("ss3sim/ss3sim") # without vignettes (faster)
 devtools::install_github("ss3sim/ss3sim", build_vignettes = TRUE) # with vignettes
 ```
 
+There has been substantial work on the GitHub version since the latest CRAN release, so we'd suggest using the GitHub version.
+
 If you would like to run simulations in parallel, then also run:
 
 ```R
@@ -55,9 +57,7 @@ and access the vignettes for reproducible examples of ss3sim simulations with:
 browseVignettes("ss3sim")
 ```
 
-ss3sim requires a specific version of the SS3 binary/executable. With the permission of Rick Methot, we have hosted those files here: <https://www.dropbox.com/sh/zg0sec6j20sfyyz/AACQiuk787qW882U2euVKoPna>. (These versions are compatible with the GitHub development version of ss3sim; see [this link](https://github.com/ss3sim/ss3sim/tree/ss3-binaries/inst/ss3) for the executables compatible with the stable CRAN version.)
-
-These files need to be placed in your operating system's path so ss3sim can find the software. See the Introduction vignette with `vignette("introduction", "ss3sim")`.
+If you're using the GitHub version of ss3sim then the SS3 executables/binaries are included in the package and your installation is complete. If you're using the CRAN version, you'll need to install these binaries and place them in your system path. ss3sim requires a specific version of the SS3 binary/executable. With the permission of Rick Methot, we have hosted those files [here](https://github.com/ss3sim/ss3sim/tree/ss3-binaries/inst/ss3). *These binaries will only work with the CRAN version of ss3sim.* These files need to be placed in your operating system's path so ss3sim can find the software. See the Introduction vignette with `vignette("introduction", "ss3sim")`.
 
 In addition to the vignette, we published a [paper][paper] in PLOS ONE, which describes the package.
 
@@ -143,7 +143,6 @@ Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, and Valero, JL (2014). ss3sim: 
   doi = {10.1371/journal.pone.0092725},
 }
 ```
-
 
 [DESCRIPTION]: https://github.com/seananderson/ss3sim/blob/master/DESCRIPTION
 [models]: https://github.com/seananderson/ss3sim/tree/master/inst/extdata/models
