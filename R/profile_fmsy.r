@@ -55,7 +55,7 @@ profile_fmsy <- function(om_in, results_out, simlength = 100,
   setwd(newWD)
   file.copy(dir(omModel, full.names = TRUE), list.files(omModel))
   # remove recdevs from par
-  parFile <- readLines("ss3.par")
+  parFile <- readLines("ss3.par", warn = FALSE)
   recDevLine <- grep("# recdev1", parFile) + 1
   sigmaRLine <- grep("# SR_parm[3]", parFile, fixed = TRUE) + 1
   parFile[recDevLine] <- paste(rep(0, simlength), collapse = ", ")

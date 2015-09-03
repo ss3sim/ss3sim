@@ -230,7 +230,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
     counter <- 1
     for(q in seq_along(years.use)) {
       for(s in seq_along(data.catch.seasons)) {
-        data.catch.new[counter, ] <- c(rep(0, dim.fleets), years.use[q],
+        data.catch.new[counter, ] <- c(rep(1, dim.fleets), years.use[q],
                                        data.catch.seasons[s])
         counter <- counter + 1
       }
