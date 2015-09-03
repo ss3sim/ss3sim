@@ -4,9 +4,9 @@
 \alias{run_ss3model}
 \title{Run an operating or estimation model for a specified set of scenario IDs}
 \usage{
-run_ss3model(scenarios, iterations, type = c("om", "em"), ss3path = NULL,
-  admb_options = "", hess = FALSE, ignore.stdout = TRUE,
-  admb_pause = 0.05, ss_mode = c("safe", "optimized"), ...)
+run_ss3model(scenarios, iterations, type = c("om", "em"), admb_options = "",
+  hess = FALSE, ignore.stdout = TRUE, admb_pause = 0.05,
+  ss_mode = c("safe", "optimized"), ...)
 }
 \arguments{
 \item{scenarios}{Which scenarios to run. Controls which folder contains the
@@ -16,13 +16,6 @@ model that SS3 should run on.}
 the model that SS3 should run on.}
 
 \item{type}{Are you running the operating or estimation models?}
-
-\item{ss3path}{The path to your SS3 binary the binary is not in your path.
-For example, if \code{SS3} was in the folder \code{/usr/bin/} then
-\code{ss3path = "/usr/bin/"}. Make sure to append a slash to the end of
-this path. Defaults to \code{NULL}, which means the function will assume
-the binary is already in your path. See the vignette for details.
-\code{vignette("ss3sim-vignette")}}
 
 \item{admb_options}{Any additional options to pass to the SS3 command.}
 

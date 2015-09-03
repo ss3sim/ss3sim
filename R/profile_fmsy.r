@@ -42,6 +42,7 @@ profile_fmsy <- function(om_in, results_out, simlength = 100,
 
   if(ss_mode[1] == "optimized") ss_mode <- "opt"
   ss_bin <- paste0("ss3_24o_", ss_mode[1])
+  ss_bin <- get_bin(ss_bin)
 
   fVector <- seq(start, end, by_val)
   fEqCatch <- NULL
