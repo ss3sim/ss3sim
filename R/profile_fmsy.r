@@ -5,7 +5,6 @@
 #'
 #' @param om_in A directory for an \pkg{ss3sim} operating model.
 #' @param results_out A directory to place the results
-#' @param simlength Number of total years the \code{om_in} is set to run.
 #' @param start Lower fishing mortality level
 #' @param end Upper fishing mortality level
 #' @param by_val Interval in which you wish to increment the fishing mortality
@@ -20,6 +19,11 @@
 #'   \code{results_out} folder). Also invisibly returns the Fmsy table as a data
 #'   frame.
 #' @export
+#' @details This function extracts the number of years from the model dat
+#' file and then runs at a constant level of fishing for each year,
+#' extracting the catch in the last year. This assumes the length of the
+#' model is long enough to reach an equilibrium catch. The user is
+#' responsible for ensuring this fact.
 #' @examples
 #' \dontrun{
 #' d <- system.file("extdata", package = "ss3sim")
@@ -30,7 +34,7 @@
 #'   start = 0.1, end = 0.2, by_val = 0.05)
 #' }
 
-profile_fmsy <- function(om_in, results_out, simlength = 100,
+profile_fmsy <- function(om_in, results_out,
   start = 0.00, end = 1.5, by_val = 0.01, ss_mode = c("safe", "optimized")) {
             # overM needs to be the value
             # you want to add or subtract from the trueM
@@ -54,7 +58,12 @@ profile_fmsy <- function(om_in, results_out, simlength = 100,
   dir.create(newWD, showWarnings = FALSE)
   setwd(newWD)
   file.copy(dir(omModel, full.names = TRUE), list.files(omModel))
-  # remove recdevs from par
+  ## read in dat file to get years of model
+  datFile <- SS_readdat(file='ss3.dat', verbose=FALSE)
+  simlength <- datFile$endyr-datFile$styr+1
+  if(!is.numeric(simlength) | simlength < 1)
+      stop(paste("Calculated length of model from dat file was", simlength))
+  ## remove recdevs from par
   parFile <- readLines("ss3.par", warn = FALSE)
   recDevLine <- grep("# recdev1", parFile) + 1
   sigmaRLine <- grep("# SR_parm[3]", parFile, fixed = TRUE) + 1
