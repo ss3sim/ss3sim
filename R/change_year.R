@@ -196,12 +196,12 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
       if (any(grepl("F_rate", F.words))) {
             F.line <- grep("F_rate", ss3.par)
             F.init.line <- grep("init_F", ss3.par)
-            F.template <- c(ss3.par[F.line[1]], 0.0)
             # Remove old F's
             ss3.par <- ss3.par[-seq(F.line[1],
                                     tail(F.line, 1) + 1, by = 1)]
             counter <- F.init.line + 1
             for (f in seq(year_span)) {
+              F.template <- c(paste0("# F_rate[", f, "]:"), 0)
               ss3.par <- append(ss3.par, F.template,
                                 after = counter)
               counter <- counter + 2
