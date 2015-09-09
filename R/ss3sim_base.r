@@ -206,8 +206,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # files for consistency
       copy_ss3models(model_dir = om_dir, scenarios = sc,
         iterations = i, type = "om")
-      copy_ss3models(model_dir = em_dir, scenarios = sc,
+      iteration_existed <- copy_ss3models(model_dir = em_dir, scenarios = sc,
         iterations = i, type = "em")
+      if(iteration_existed)
+          next
 
       # Make fake .dat files to silence SS3/ADMB:
       fake_dat <- c("om/ss3_24o_opt.dat", "om/ss3_24o_safe.dat",

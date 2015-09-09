@@ -66,4 +66,13 @@ test_that("get_results_all warns if a scenario folder isn't available", {
   unlink(c("D0-F0-cod", "D1-F0-cod"), recursive = TRUE)
 })
 
+test_that("Skip an iteration that already exists", {
+  skip_on_cran()
+  run_ss3sim(iterations = 1, scenarios = "D0-F0-cod",
+    case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "optimized")
+  expect_warning(run_ss3sim(iterations = 1:2, scenarios = "D0-F0-cod",
+    case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "optimized"))
+  unlink("D0-F0-cod", recursive = TRUE) # clean up
+})
+
 setwd(wd)
