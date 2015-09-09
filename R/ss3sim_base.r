@@ -188,6 +188,12 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   old_wd <- getwd()
   on.exit(setwd(old_wd))
 
+  if(bias_already_run & bias_adjust){
+      warning("bias_adjust set to FALSE because bias_already_run is TRUE")
+      bias_adjust <- FALSE
+  }
+
+
   # The first bias_nsim runs will be bias-adjustment runs
   if(bias_adjust) {
     iterations <- c(paste0("bias/", c(1:bias_nsim)), iterations)
