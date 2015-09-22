@@ -274,13 +274,34 @@ change_e <- function(ctl_file_in = "em.ctl",
 }
 
 if(!is.null(par_name)) {
-   par_name <- unlist(strsplit(par_name, split = ","))
-
-  SS_changepars(dir = NULL, ctlfile = ctl_file_in,
-    newctlfile = ctl_file_out,
-    linenums = NULL, strings = par_name, newvals = par_int, repeat.vals = verbose,
-    newlos = NULL, newhis = NULL, estimate = FALSE, verbose = verbose,
-    newphs = par_phase)
+  par_name <- unlist(strsplit(par_name, split = ","))
+  phasenochange <- is.na(par_phase)
+  if(any(phasenochange)) {
+    SS_changepars(dir = NULL, ctlfile = ctl_file_in,
+      newctlfile = ctl_file_out,
+      linenums = NULL, strings = par_name[phasenochange],
+      newvals = par_int[phasenochange], repeat.vals = verbose,
+      newlos = NULL, newhis = NULL, estimate = NULL, verbose = verbose,
+      newphs = par_phase[phasenochange])
+  }
+  phaseneg <- which(par_phase < 0)
+  if(length(phaseneg) > 0) {
+    SS_changepars(dir = NULL, ctlfile = ctl_file_in,
+      newctlfile = ctl_file_out,
+      linenums = NULL, strings = par_name[phaseneg],
+      newvals = par_int[phaseneg], repeat.vals = verbose,
+      newlos = NULL, newhis = NULL, estimate = FALSE, verbose = verbose,
+      newphs = par_phase[phaseneg])
+  }
+  pasepos <- which(par_phase >= 0)
+  if(length(pasepos) > 0) {
+    SS_changepars(dir = NULL, ctlfile = ctl_file_in,
+      newctlfile = ctl_file_out,
+      linenums = NULL, strings = par_name[pasepos],
+      newvals = par_int[pasepos], repeat.vals = verbose,
+      newlos = NULL, newhis = NULL, estimate = TRUE, verbose = verbose,
+      newphs = par_phase[pasepos])
+  }
 }
 }
  if(forecast_num > 0) {
