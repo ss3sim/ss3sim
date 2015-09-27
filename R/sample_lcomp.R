@@ -67,93 +67,115 @@
 #' @family sampling functions
 
 sample_lcomp <- function(dat_list, outfile, fleets = c(1,2), Nsamp,
-  years, cpar = 1, write_file = TRUE){
+                         years, cpar = 1, ESS=NULL, write_file = TRUE){
 
-  check_data(dat_list)
-  ## The new lcomp is mostly based on the old one so start with that
-  lcomp <- dat_list$lencomp
-  ## Check inputs for errors
-  Nfleets <- ifelse(is.null(fleets), 0, length(fleets))
-  if(FALSE %in% (fleets %in% unique(lcomp$FltSvy)))
-    stop(paste0("The specified fleet number does not match input file"))
-  if(Nfleets!= 0 & class(Nsamp) != "list" | length(Nsamp) != Nfleets)
-    stop("Nsamp needs to be a list of same length as fleets")
-  if(Nfleets!= 0 & class(years) != "list" | length(years) != Nfleets)
-    stop("years needs to be a list of same length as fleets")
-  if (Nfleets>0){
-    for(i in 1:Nfleets){
-      if(length(Nsamp[[i]])>1 & length(Nsamp[[i]]) != length(years[[i]]))
-        stop(paste0("Length of Nsamp does not match length of years for fleet ",
-          fleets[i]))
-    }
-    if(length(cpar) == 1){
-      ## If only 1 value provided, use it for all fleets
-      cpar <- rep(cpar, times=Nfleets)
-    } else if(length(cpar) != Nfleets){
-      stop(paste0("Length of cpar (", length(cpar),
-        ") needs to be length of fleets (", Nfleets,
-        ") or 1"))
-    }
-  }
-  ## End input checks
+    ## The new lcomp is mostly based on the old one so start with that
+    check_data(dat_list)
+    lcomp <- dat_list$lencomp
 
-  ## Resample from the length data
-  ## The general approach here is to loop through each row to keep
-  ## (depends on years input) and resample depending on Nsamp and
-  ## cvar. All these rows are then combined back together to form
-  ## the final lcomp.
-  newcomp.list <- list() # temp storlength for the new rows
-  k <- 1
-  ## Loop through each fleet
-  if (Nfleets>0){
-    for(i in 1:length(fleets)){
-      fl <- fleets[[i]]
-      if(!is.na(fl)){
-        lcomp.fl <- lcomp[lcomp$FltSvy == fl & lcomp$Yr %in% years[[i]], ]
-        if(length(years[[i]]) != nrow(lcomp.fl))
-          stop(paste("A year specified in years was not found in the input",
-                     "file for fleet", fl))
-        lcomp.fl$Nsamp <- Nsamp[[i]]
-        ## Now loop through each year and resample that row
-        for(yr in years[[i]]) {
-          newcomp <- lcomp.fl[lcomp.fl$Yr==yr, ]
-          ## Replace expected values with sampled values
-          ## First 1-9 cols aren't length bins so skip them
-          probs <- as.numeric(newcomp[-(1:6)]/sum(newcomp[-(1:6)]))
-          ## If cpar is NA this signifies to use the multinomial
-          if(is.na(cpar[i])){
-            newcomp[-(1:6)] <-
-              rmultinom(1, size=newcomp$Nsamp, prob=probs)#/newcomp$Nsamp
-          } else { # use Dirichlet
-            lambda <- newcomp$Nsamp/cpar[i]^2 - 1
-            if(lambda<0)
-              stop(paste("Invalid Dirichlet parameter: Lambda=", lambda))
-            newcomp[-(1:6)] <- gtools::rdirichlet(1,probs * lambda)
-            ## Use the effective sample size when using Dirichlet
-            effectiveN <- newcomp$Nsamp/cpar[i]^2
-            newcomp$Nsamp <- effectiveN
-          }
-          newcomp.list[[k]] <- newcomp
-          k <- k+1
+    ## Check inputs for errors
+    Nfleets <- ifelse(is.null(fleets), 0, length(fleets))
+    ## If not provided, use the sample size (true ESS except for Dirichlet case).
+    if(is.null(ESS)) {
+        ESS <- Nsamp
+        useESS <- FALSE
+    } else {
+        useESS <- TRUE
+    }
+    if(FALSE %in% (fleets %in% unique(lcomp$FltSvy)))
+        stop(paste0("The specified fleet number does not match input file"))
+    if(Nfleets!= 0 & class(Nsamp) != "list" | length(Nsamp) != Nfleets)
+        stop("Nsamp needs to be a list of same length as fleets")
+    if(Nfleets!= 0 & class(ESS) != "list" | length(ESS) != Nfleets)
+        stop("ESS needs to be a list of same length as fleets")
+    if(Nfleets!= 0 & class(years) != "list" | length(years) != Nfleets)
+        stop("years needs to be a list of same length as fleets")
+    if (Nfleets>0){
+        for(i in 1:Nfleets){
+            if(length(Nsamp[[i]])>1 & length(Nsamp[[i]]) != length(years[[i]]))
+                stop(paste0("Length of Nsamp does not match length of years for fleet ",
+                            fleets[i]))
+            if(length(ESS[[i]])>1 & length(ESS[[i]]) != length(years[[i]]))
+                stop(paste0("Length of ESS does not match length of years for fleet ",
+                            fleets[i]))
         }
-      }
+        if(length(cpar) == 1){
+            ## If only 1 value provided, use it for all fleets
+            cpar <- rep(cpar, times=Nfleets)
+        } else if(length(cpar) != Nfleets){
+            stop(paste0("Length of cpar (", length(cpar),
+                        ") needs to be length of fleets (", Nfleets,
+                        ") or 1"))
+        }
     }
-  }
-  ## Combine new rows together into one data.frame
-  if(Nfleets>0) newcomp.final <- do.call(rbind, newcomp.list)
-  if(Nfleets==0) newcomp.final = data.frame("#")
+    ## End input checks
 
-  ## Build the new dat file
-  newfile <- dat_list
-  newfile$lencomp <- newcomp.final
-  if(Nfleets>0) newfile$N_lencomp <- nrow(newcomp.final)
-  if(Nfleets==0) newfile$N_lencomp <- 0
+    ## Resample from the length data
+    ## The general approach here is to loop through each row to keep
+    ## (depends on years input) and resample depending on Nsamp and
+    ## cvar. All these rows are then combined back together to form
+    ## the final lcomp.
+    newcomp.list <- list() # temp storlength for the new rows
+    k <- 1
+    ## Loop through each fleet
+    if (Nfleets>0){
+        for(i in 1:length(fleets)){
+            fl <- fleets[[i]]
+            if(!is.na(fl)){
+                lcomp.fl <- lcomp[lcomp$FltSvy == fl & lcomp$Yr %in% years[[i]], ]
+                if(length(years[[i]]) != nrow(lcomp.fl))
+                    stop(paste("A year specified in years was not found in the input",
+                               "file for fleet", fl))
+                ## Hack way to get ESS to work without restructuring the
+                ## whole function. Need to be able to index it by year
+                ## below
+                if(length(ESS[[i]])==1)
+                    ESS[[i]] <- rep(ESS[[i]], times=length(years[[i]]))
+                lcomp.fl$Nsamp <- Nsamp[[i]]
+                ## Now loop through each year and resample that row
+                for(yr in years[[i]]) {
+                    newcomp <- lcomp.fl[lcomp.fl$Yr==yr, ]
+                    ## Replace expected values with sampled values
+                    ## First 1-9 cols aren't length bins so skip them
+                    probs <- as.numeric(newcomp[-(1:6)]/sum(newcomp[-(1:6)]))
+                    ## If cpar is NA this signifies to use the multinomial
+                    if(is.na(cpar[i])){
+                        newcomp[-(1:6)] <-
+                            rmultinom(1, size=newcomp$Nsamp, prob=probs)#/newcomp$Nsamp
+                    } else { # use Dirichlet
+                        lambda <- newcomp$Nsamp/cpar[i]^2 - 1
+                        if(lambda<0)
+                            stop(paste("Invalid Dirichlet parameter: Lambda=", lambda))
+                        newcomp[-(1:6)] <- gtools::rdirichlet(1,probs * lambda)
+                        ## Use the effective sample size when using Dirichlet
+                        effectiveN <- newcomp$Nsamp/cpar[i]^2
+                        newcomp$Nsamp <- effectiveN
+                    }
+                    ## newcomp will have the true ESS up until here. So
+                    ## replace with supplied ESS if used
+                    if(useESS)
+                        newcomp$Nsamp <- ESS[[i]][which(years[[i]]==yr)]
+                    newcomp.list[[k]] <- newcomp
+                    k <- k+1
+                }
+            }
+        }
+    }
+    ## Combine new rows together into one data.frame
+    if(Nfleets>0) newcomp.final <- do.call(rbind, newcomp.list)
+    if(Nfleets==0) newcomp.final = data.frame("#")
 
-  ## Write the modified file
-  if(write_file)
-    SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
-                verbose = FALSE)
-  invisible(newfile)
+    ## Build the new dat file
+    newfile <- dat_list
+    newfile$lencomp <- newcomp.final
+    if(Nfleets>0) newfile$N_lencomp <- nrow(newcomp.final)
+    if(Nfleets==0) newfile$N_lencomp <- 0
+
+    ## Write the modified file
+    if(write_file)
+        SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
+                    verbose = FALSE)
+    invisible(newfile)
 }
 
 #' (Depreciated) Sample length compositions from expected values
@@ -167,8 +189,8 @@ sample_lcomp <- function(dat_list, outfile, fleets = c(1,2), Nsamp,
 #' @export
 
 change_lcomp <- function(...) {
-  warning(paste("change_lcomp is a depreciated function.",
-    "Please use sample_lcomp instead. change_lcomp will",
-    "be removed in the next major version."))
-  sample_lcomp(...)
+    warning(paste("change_lcomp is a depreciated function.",
+                  "Please use sample_lcomp instead. change_lcomp will",
+                  "be removed in the next major version."))
+    sample_lcomp(...)
 }

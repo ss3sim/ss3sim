@@ -80,25 +80,38 @@
 #' @family sampling functions
 #' @export
 sample_agecomp <- function(dat_list, outfile, fleets = c(1,2), Nsamp,
-                           years, cpar=1, write_file=TRUE,
+                           years, cpar=1, ESS=NULL, write_file=TRUE,
                            keep_conditional = TRUE){
     ## The new agecomp is mostly based on the old one so start with
     ## that
     check_data(dat_list)
     agecomp <- dat_list$agecomp
+
     ## Check inputs for errors
     Nfleets <- ifelse(is.null(fleets), 0, length(fleets))
+    ## If not provided, use the sample size (true ESS except for Dirichlet case).
+    if(is.null(ESS)) {
+        ESS <- Nsamp
+        useESS <- FALSE
+    } else {
+        useESS <- TRUE
+    }
     if(Nfleets >0 & FALSE %in% (fleets %in% unique(agecomp$FltSvy)))
         stop(paste0("The specified fleet number does not match input file"))
     if(Nfleets!= 0 & (class(Nsamp) != "list" | length(Nsamp) != Nfleets))
         stop("Nsamp needs to be a list of same length as fleets")
+    if(Nfleets!= 0 & (class(ESS) != "list" | length(ESS) != Nfleets))
+        stop("ESS needs to be a list of same length as fleets")
     if(Nfleets!= 0 & (class(years) != "list" | length(years) != Nfleets))
         stop("years needs to be a list of same length as fleets")
-    ## If no fleets are specified then skip these
+    ## If no fleets are specified then skip these checks
     if (Nfleets>0){
         for(i in 1:Nfleets){
             if(length(Nsamp[[i]])>1 & length(Nsamp[[i]]) != length(years[[i]]))
-                stop(paste0("Length of Nsamp does not match length of years for",
+                stop(paste0("Length of Nsamp does not match length of years for ",
+                  "fleet ",fleets[i]))
+            if(length(ESS[[i]])>1 & length(ESS[[i]]) != length(years[[i]]))
+                stop(paste0("Length of ESS does not match length of years for ",
                   "fleet ",fleets[i]))
         }
         if(length(cpar) == 1){
@@ -132,7 +145,12 @@ sample_agecomp <- function(dat_list, outfile, fleets = c(1,2), Nsamp,
                     agecomp$Yr %in% years[[i]], ]
                 if(length(years[[i]]) != nrow(agecomp.fl))
                     stop(paste("A year specified in years was not found in the",
-                      "input file for fleet", fl))
+                               "input file for fleet", fl))
+                ## Hack way to get ESS to work without restructuring the
+                ## whole function. Need to be able to index it by year
+                ## below
+                if(length(ESS[[i]])==1)
+                    ESS[[i]] <- rep(ESS[[i]], times=length(years[[i]]))
                 agecomp.fl$Nsamp <- Nsamp[[i]]
                 ## Now loop through each year and resample that row
                 for(yr in years[[i]]) {
@@ -143,18 +161,20 @@ sample_agecomp <- function(dat_list, outfile, fleets = c(1,2), Nsamp,
                     ## If cpar is NA this signifies to use the multinomial
                     if(is.na(cpar[i])){
                         newcomp[-(1:9)] <-
-                            rmultinom(1, size=newcomp$Nsamp,
-                              prob=probs)#/newcomp$Nsamp
+                            rmultinom(1, size=newcomp$Nsamp, prob=probs)
                     } else { # use Dirichlet
                         lambda <- newcomp$Nsamp/cpar[i]^2 - 1
                         if(lambda < 0)
-                            stop(paste("Invalid Dirichlet parameter: Lambda=",
-                              lambda))
+                            stop(paste("Invalid Dirichlet parameter: Lambda=", lambda))
                         newcomp[-(1:9)] <- gtools::rdirichlet(1, probs * lambda)
                         ## use the effective sample size when using Dirichlet
                         effectiveN <- newcomp$Nsamp/cpar[i]^2
                         newcomp$Nsamp <- effectiveN
                     }
+                    ## newcomp will have the true ESS up until here. So
+                    ## replace with supplied ESS if used
+                    if(useESS)
+                        newcomp$Nsamp <- ESS[[i]][which(years[[i]]==yr)]
                     newcomp.list[[k]] <- newcomp
                     k <- k+1
                 }
