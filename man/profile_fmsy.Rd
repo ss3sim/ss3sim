@@ -4,15 +4,13 @@
 \alias{profile_fmsy}
 \title{Determine Fmsy for a given operating model}
 \usage{
-profile_fmsy(om_in, results_out, simlength = 100, start = 0, end = 1.5,
-  by_val = 0.01, ss_mode = c("safe", "optimized"))
+profile_fmsy(om_in, results_out, start = 0, end = 1.5, by_val = 0.01,
+  ss_mode = c("safe", "optimized"))
 }
 \arguments{
 \item{om_in}{A directory for an \pkg{ss3sim} operating model.}
 
 \item{results_out}{A directory to place the results}
-
-\item{simlength}{Number of total years the \code{om_in} is set to run.}
 
 \item{start}{Lower fishing mortality level}
 
@@ -35,6 +33,13 @@ Creates a plot and a table with catches and F values (see the
 \description{
 Runs an operating model over a range of fishing mortality levels to
 determine the profile of F values from which Fmsy can be determined.
+}
+\details{
+This function extracts the number of years from the model dat
+file and then runs at a constant level of fishing for each year,
+extracting the catch in the last year. This assumes the length of the
+model is long enough to reach an equilibrium catch. The user is
+responsible for ensuring this fact.
 }
 \examples{
 \dontrun{

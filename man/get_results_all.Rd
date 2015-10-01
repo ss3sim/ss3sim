@@ -37,7 +37,8 @@ biomass(year)). These can always be joined later.
 Cole Monnahan, Merrill Rudd
 }
 \seealso{
-Other get-results: \code{\link{get_results_scalar}};
+Other get-results: \code{\link{get_results_derived}};
+  \code{\link{get_results_scalar}};
   \code{\link{get_results_scenario}};
   \code{\link{get_results_timeseries}}
 }
