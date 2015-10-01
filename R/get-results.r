@@ -144,54 +144,67 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         for(i in 1:length(scenarios)){
             scalar.file <- paste0(scenarios[i],"/results_scalar_",scenarios[i],".csv")
             ts.file <- paste0(scenarios[i],"/results_ts_",scenarios[i],".csv")
+            dq.file <- paste0(scenarios[i],"/results_dq_",scenarios[i],".csv")
             scalar.list[[i]] <- tryCatch(read.csv(scalar.file, stringsAsFactors=FALSE), error=function(e) NA)
             ts.list[[i]] <- tryCatch(read.csv(ts.file, stringsAsFactors=FALSE), error=function(e) NA)
+            dq.list[[i]] <- tryCatch(read.csv(dq.file, stringsAsFactors=FALSE), error=function(e) NA)
             if(all(is.na(scalar.list[[i]]))){flag.na[i] <- 1}
         }
         scalar.list.out <- scalar.list[which(flag.na!=1)]
         ts.list.out <- ts.list[which(flag.na!=1)]
+        dq.list.out <- dq.list[which(flag.na!=1)]
         ## Combine all scenarios together and save into big final files
         scalar.all <- do.call(plyr::rbind.fill, scalar.list.out)
         scalar.all$ID <- paste(scalar.all$scenario, scalar.all$replicate, sep = "-")
         ts.all <- do.call(plyr::rbind.fill, ts.list.out)
         ts.all$ID <- paste(ts.all$scenario, ts.all$replicate, sep="-")
+        dq.all <- do.call(plyr::rbind.fill, dq.list.out)
+        dq.all$ID <- paste(dq.all$scenario, dq.all$replicate, sep="-")
         write.csv(scalar.all, file="ss3sim_scalar.csv")
         write.csv(ts.all, file="ss3sim_ts.csv")
+        write.csv(dq.all, file="ss3sim_dq.csv")
         message(paste("Final result files written to", directory))
     } else{
     ## Loop through each scenario in folder in serial
-    ts.list <- scalar.list <- list()
+    dq.list <- ts.list <- scalar.list <- list()
     for(i in 1:length(scenarios)){
         setwd(directory)
         scen <- scenarios[i]
         ## If the files already exist just read them in, otherwise get results
         scalar.file <- paste0(scen,"/results_scalar_",scen,".csv")
         ts.file <- paste0(scen,"/results_ts_",scen,".csv")
+        dq.file <- paste0(scen,"/results_dq_",scen,".csv")
         ## Delete them if this is flagged on
         if( overwrite_files){
             if(file.exists(scalar.file)) file.remove(scalar.file)
             if(file.exists(ts.file)) file.remove(ts.file)
+            if(file.exists(dq.file)) file.remove(dq.file)
             get_results_scenario(scenario=scen, directory=directory,
                                  overwrite_files=overwrite_files)
         }
         ## Check if still there and skip if already so, otherwise read in
         ## and save to file
-        if(!file.exists(scalar.file) |  !file.exists(ts.file)){
+        if(!file.exists(scalar.file) | !file.exists(ts.file) | !file.exists(dq.file)){
             get_results_scenario(scenario=scen, directory=directory,
                                  overwrite_files=overwrite_files)
         }
         scalar.list[[i]] <- tryCatch(read.csv(scalar.file, stringsAsFactors=FALSE), error=function(e) NA)
         ts.list[[i]] <- tryCatch(read.csv(ts.file, stringsAsFactors=FALSE), error=function(e) NA)
+        dq.list[[i]] <- tryCatch(read.csv(dq.file, stringsAsFactors=FALSE), error=function(e) NA)
     }
     scalar.list <- scalar.list[which(!is.na(scalar.list))]
     ts.list <- ts.list[which(!is.na(ts.list))]
+    dq.list <- dq.list[which(!is.na(dq.list))]
     ## Combine all scenarios together and save into big final files
     scalar.all <- do.call(plyr::rbind.fill, scalar.list)
     scalar.all$ID <- paste(scalar.all$scenario, scalar.all$replicate, sep = "-")
     ts.all <- do.call(plyr::rbind.fill, ts.list)
     ts.all$ID <- paste(ts.all$scenario, ts.all$replicate, sep="-")
+    dq.all <- do.call(plyr::rbind.fill, dq.list)
+    dq.all$ID <- paste(dq.all$scenario, dq.all$replicate, sep="-")
     write.csv(scalar.all, file="ss3sim_scalar.csv")
     write.csv(ts.all, file="ss3sim_ts.csv")
+    write.csv(dq.all, file="ss3sim_dq.csv")
     message(paste("Final result files written to", directory))
   }
 }
@@ -244,12 +257,13 @@ get_results_scenario <- function(scenario, directory=getwd(),
     ## Stop if the files already exist or maybe delete them
     scalar.file <- paste0("results_scalar_",scenario,".csv")
     ts.file <- paste0("results_ts_",scenario,".csv")
+    dq.file <- paste0("results_dq_",scenario,".csv")
     resids.file <- paste0("results_resids_",scenario,".csv")
-    if(file.exists(scalar.file) | file.exists(ts.file)){
+    if(file.exists(scalar.file) | file.exists(ts.file) | file.exists(dq.file)){
         if(overwrite_files) {
             ## Delete them and continue
             message(paste0("Files deleted for ", scenario))
-            file.remove(scalar.file, ts.file)
+            file.remove(scalar.file, ts.file, dq.file)
         } else {
             ## Stop the progress
             stop(paste0("Files already exist for ", scenario,"
@@ -315,12 +329,19 @@ get_results_scenario <- function(scenario, directory=getwd(),
             names(timeseries.om) <- paste0(names(timeseries.om),"_om")
             timeseries.em <- get_results_timeseries(report.em)
             names(timeseries.em) <- paste0(names(timeseries.em),"_em")
+            ## Get derived quantities information
+            derived.om <- get_results_derived(report.om)
+            names(derived.om) <- paste0(names(derived.om), "_om")
+            derived.em <- get_results_derived(report.em)
+            names(derived.em) <- paste0(names(derived.em), "_em")
 
             ## Combine them together and massage a bit
             scalar <- cbind(scalar.om, scalar.em, t(bias))
             ts <- cbind(timeseries.om, timeseries.em)
-            scalar$scenario <- ts$scenario <- scenario
-            scalar$replicate <- ts$replicate <- rep
+            dq <- cbind(derived.om, derived.em)
+            scalar$scenario <- ts$scenario <- dq$scenario <- scenario
+            scalar$replicate <- ts$replicate <- dq$replicate <- rep
+
             ## parse the scenarios into columns for plotting later
             scenario.scalar <-
                 data.frame(do.call(rbind, strsplit(gsub("([0-9]+-)", "\\1 ",
@@ -335,13 +356,25 @@ get_results_scenario <- function(scenario, directory=getwd(),
             names(scenario.ts) <-
                 c(substr(as.vector(as.character(
                     scenario.ts[1,-ncol(scenario.ts)])), 1,1) ,"species")
+            scenario.dq <-
+                data.frame(do.call(rbind, strsplit(gsub("([0-9]+-)", "\\1 ",
+                                                        as.character(dq$scenario)), "- ")),
+                           row.names = row.names(dq), stringsAsFactors = FALSE)
+            names(scenario.dq) <-
+                c(substr(as.vector(as.character(
+                    scenario.dq[1,-ncol(scenario.dq)])), 1,1) ,"species")
 
             scalar <- cbind(scalar, scenario.scalar)
             ts <- cbind(ts, scenario.ts)
+            dq <- cbind(dq, scenario.dq)
+
             ## Other calcs
             ts$year <- ts$Yr_om
             ts$Yr_om <- NULL
             ts$Yr_em <- NULL
+            dq$year <- dq$Yr_om
+            dq$Yr_om <- NULL
+            dq$Yr_em <- NULL
             scalar$max_grad <- scalar$max_grad_em
             ignore.cols <- which(names(scalar) %in%
                            c("max_grad_om", "params_on_bound_om",
@@ -377,6 +410,9 @@ get_results_scenario <- function(scenario, directory=getwd(),
             ts.exists <- file.exists(ts.file)
             write.table(x=ts, file=ts.file, append=ts.exists,
                         col.names=!ts.exists, row.names=FALSE, sep=",")
+            dq.exists <- file.exists(dq.file)
+            write.table(x=dq, file=dq.file, append=dq.exists,
+                        col.names=!dq.exists, row.names=FALSE, sep=",")
         }
     }
     ## ## Create df for the residuals
@@ -413,6 +449,26 @@ get_results_timeseries <- function(report.file){
     df$SPRratio[is.na(df$SPRratio)] <- 0
     rownames(df) <- NULL
     return(invisible(df))
+}
+
+#' Extract time series from a model run with the associated standard deviation.
+#'
+#' Extract time series from an \code{\link[r4ss]{SS_output}} list from a model run.
+#' Returns a data.frame of the results for SSB, recruitment,
+#' forecasts, and effort by year.
+#'
+#' @template report.file
+#' @export
+#' @family get-results
+#' @author Kelli Johnson
+get_results_derived <- function(report.file){
+    xx <- report.file$derived_quants
+    xx$Yr <- sapply(strsplit(xx$LABEL, "_"), "[", 2)
+    xx$name <- sapply(strsplit(xx$LABEL, "_"), "[", 1)
+    final <- reshape(xx[ -1], timevar = "name", idvar = "Yr", direction = "wide")
+    final <- final[-which(final$Yr == "Virgin"), ]
+    rownames(final) <- NULL
+    invisible(final)
 }
 
 #' Extract scalar quantities from a model run.
