@@ -137,13 +137,16 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
 
   # Work with ctl file
   if (!is.null(ctl_file_in)) {
-    ss3.ctl <- readLines(con = ctl_file_in)
+    ss3.ctl <- readLines(con = ctl_file_in, warn = verbose)
+    # Recruitment deviations: turn off bias adjustment
     ss3.ctl <- manipulate(ss3.ctl, "first year of main recr_devs", year_begin)
     ss3.ctl <- manipulate(ss3.ctl, "last year of main recr_devs", year_end)
+    ss3.ctl <- manipulate(ss3.ctl, "_recdev_early_start", 0)
     ss3.ctl <- manipulate(ss3.ctl, "_last_early_yr_nobias_adj_in_MPD", year_begin)
     ss3.ctl <- manipulate(ss3.ctl, "_first_yr_fullbias_adj_in_MPD", year_begin)
     ss3.ctl <- manipulate(ss3.ctl, "_last_yr_fullbias_adj_in_MPD", year_end)
     ss3.ctl <- manipulate(ss3.ctl, "_first_recent_yr_nobias_adj_in_MPD", year_end)
+    ss3.ctl <- manipulate(ss3.ctl, "_max_bias_adj_in_MPD", -1)
     # Check F ballpark year
     ballpark.val <- strsplit(grep("F ballpark year", ss3.ctl, value = TRUE),
                              "#")[[1]]
@@ -152,32 +155,27 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
       stop(paste("Currently the function only works if F ballpark year",
                   "in the .ctl file is negative."))
     } else{
-      ss3.ctl <- manipulate(ss3.ctl, "F ballpark year", year_end * -1)
+      ss3.ctl <- manipulate(ss3.ctl, "F ballpark year", year_begin * -1)
     }
     fmethod <- strsplit(grep("F_Method", ss3.ctl, value = TRUE), "")[[1]]
     fmethod <- fmethod[-which(fmethod == " ")][1]
     if (fmethod == 2) {
-        F_value.start <- grep("F_value", ss3.ctl) + 1
-        F_value.end <- grep("_initial_F_parms", ss3.ctl) - 1
-        while(ss3.ctl[F_value.end] == "") {
-            F_value.end <- F_value.end - 1
+      # Find number of input lines
+      startFline <- grep("# overall start F value; overall phase;", ss3.ctl)
+      startFvalue <- strsplit(ss3.ctl[startFline], " ")[[1]]
+      startFvalue <- startFvalue[startFvalue != ""]
+      nlines <- as.numeric(startFvalue[3])
+      # Remove these lines from the ctl
+      if (nlines > 0) {
+        startFvalue[3] <- 0
+        ss3.ctl[startFline] <- paste(startFvalue, collapse = " ")
+        F_value.start <- grep("#Fleet Year Seas", ss3.ctl) + 1
+        while(!grepl("#", ss3.ctl[F_value.start])) {
+          ss3.ctl <- ss3.ctl[-F_value.start]
         }
-        F.lines <- seq(F_value.start, F_value.end, by = 1)
-        for(w in 1:length(F.lines)) {
-            f.value <- ss3.ctl[F.lines[w]]
-            f.value <- strsplit(f.value, " ")[[1]]
-            # Double check that tabs were not used
-            if (any(grepl("\\t", f.value))) {
-              f.value <- unlist(strsplit(f.value, "\\t"))
-            }
-            if (any(f.value == "" | f.value == " ")) {
-                f.value <- f.value[f.value != ""]
-                f.value <- f.value[f.value != " "]
-            }
-            f.value[2] <- year_begin + w - 1
-            ss3.ctl[F.lines[w]] <- paste(f.value, collapse = " ")
-        }
+      }
     }
+    ss3.ctl <- ss3.ctl[-grep("#DisplayOnly", ss3.ctl)]
 
     writeLines(ss3.ctl, con = ctl_file_out)
   }
