@@ -15,23 +15,19 @@ test_that("Control file references correct years", {
   test <- readLines("change.ctl")
   t1 <- grep("first year of main recr_devs", test)
   t2 <- grep("last year of main recr_devs", test)
-  t3 <- grep("_last_early_yr", test)
-  t4 <- grep("_first_yr_fullbias_adj", test)
-  t5 <- grep("_last_yr_fullbias_adj", test)
-  t6 <- grep("_first_recent_yr_nobias_adj", test)
+  t3 <- grep("_first_yr_fullbias_adj", test)
+  t4 <- grep("_last_yr_fullbias_adj", test)
     # Check F ballpark year
   range <- 1:26
   expect_true(as.numeric(strsplit(test[t1], "#")[[1]][1]) %in% range)
   expect_true(as.numeric(strsplit(test[t2], "#")[[1]][1]) %in% range)
   expect_true(as.numeric(strsplit(test[t3], "#")[[1]][1]) %in% range)
   expect_true(as.numeric(strsplit(test[t4], "#")[[1]][1]) %in% range)
-  expect_true(as.numeric(strsplit(test[t5], "#")[[1]][1]) %in% range)
-  expect_true(as.numeric(strsplit(test[t6], "#")[[1]][1]) %in% range)
 })
 
 om <- paste0(d, "/models/cod-om")
 em <- paste0(d, "/models/cod-em")
-file.copy(om, ".", recursive = TRUE)
+ignore <- file.copy(om, ".", recursive = TRUE)
 verbose <- FALSE
 
 test_that("Forecast file is readable.", {
@@ -61,6 +57,32 @@ test_that("Recruitment devs are of correct length in par file.", {
   getnew <- new[grep("recdev1", new) + 1]
   getnew <- gsub(" ", "", getnew)
   expect_equal(nchar(getnew), end - start + 1)
+})
+
+d <- system.file(file.path("models", "yellow"), package = "ss3models")
+file.copy(file.path(d, "om"), ".", recursive = TRUE)
+setwd("om")
+
+test_that("Control file references correct years", {
+  # Manipulate files
+  change_year(year_begin = 1, year_end = 500, burnin = 100,
+    ctl_file_in = "ss3.ctl", ctl_file_out = "change.ctl",
+    dat_file_in = "ss3.dat", dat_file_out = "change.dat")
+  test <- readLines("change.ctl")
+  t1 <- grep("first year of main recr_devs", test)
+  t2 <- grep("last year of main recr_devs", test)
+  t3 <- grep("_last_early_yr", test)
+  t4 <- grep("_first_yr_fullbias_adj", test)
+  t5 <- grep("_last_yr_fullbias_adj", test)
+  t6 <- grep("_first_recent_yr_nobias_adj", test)
+    # Check F ballpark year
+  range <- 1:26
+  expect_true(as.numeric(strsplit(test[t1], "#")[[1]][1]) %in% range)
+  expect_true(as.numeric(strsplit(test[t2], "#")[[1]][1]) == 500)
+  expect_true(as.numeric(strsplit(test[t3], "#")[[1]][1]) <= 1)
+  expect_true(as.numeric(strsplit(test[t4], "#")[[1]][1]) == 1)
+  expect_true(as.numeric(strsplit(test[t5], "#")[[1]][1]) == 500)
+  expect_true(as.numeric(strsplit(test[t6], "#")[[1]][1]) >= 500)
 })
 
 setwd(wd.old)
