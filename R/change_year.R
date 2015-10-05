@@ -9,6 +9,8 @@
 #' @param year_end Desired end year
 #' @param burnin Length of burnin period. Default is zero for an OM. Use burnin
 #'   for EM models, to establish a period with no fishing.
+#'   Note that the value should correspond to the number of years, not a year
+#'   value.
 #' @template ctl_file_in
 #' @param ctl_file_out Output SS3 control file, if \code{NULL} the file will be
 #'   named the same as the \code{ctl_file_in}
@@ -176,7 +178,6 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
       }
     }
     ss3.ctl <- ss3.ctl[-grep("#DisplayOnly", ss3.ctl)]
-
     writeLines(ss3.ctl, con = ctl_file_out)
   }
 

@@ -16,7 +16,9 @@ change_year(year_begin = 1, year_end = 100, burnin = 0,
 \item{year_end}{Desired end year}
 
 \item{burnin}{Length of burnin period. Default is zero for an OM. Use burnin
-for EM models, to establish a period with no fishing.}
+for EM models, to establish a period with no fishing.
+Note that the value should correspond to the number of years, not a year
+value.}
 
 \item{ctl_file_in}{A string providing the path to the input SS3 \code{.ctl} file.}
 
