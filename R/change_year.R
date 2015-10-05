@@ -184,7 +184,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
 
   # Work with par file
   if (!is.null(par_file_in)) {
-    ss3.par <- readLines(con = par_file_in)
+    ss3.par <- readLines(con = par_file_in, warn = verbose)
     # Work with recdevs in par file
     recdev.line <- grep("recdev1", ss3.par) + 1
     ss3.par[recdev.line] <- paste(rep(0, year_span), collapse = " ")
@@ -201,8 +201,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
             F.line <- grep("F_rate", ss3.par)
             F.init.line <- grep("init_F", ss3.par)
             # Remove old F's
-            ss3.par <- ss3.par[-seq(F.line[1],
-                                    tail(F.line, 1) + 1, by = 1)]
+            ss3.par <- ss3.par[-(F.line[1]:(max(F.line) + 1))]
             counter <- F.init.line + 1
             for (f in seq(year_span)) {
               F.template <- c(paste0("# F_rate[", f, "]:"), 0)
