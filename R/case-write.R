@@ -43,7 +43,7 @@ case_comp <- function(fleets = 1, Nsamp = NULL, years = NULL, cpar = 2,
 #' @param fleets Vector of fleet numbers, where the order of
 #'   \code{fleets} will dictate the order of all remaining arguments.
 #' @param years A list containing vectors of years for each year for each fleet.
-#' @param sd A vector of standard deviations for each fleet.
+#' @param sd A list of standard deviations for each fleet.
 #' @param case The case you want to write to. E.g. \code{'I'}.
 #' @param spp A vector of character values argument specifying the species.
 #' @export

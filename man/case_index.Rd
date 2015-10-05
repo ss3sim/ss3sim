@@ -12,7 +12,7 @@ case_index(fleets = 1, years = NULL, sd = 2, case, spp)
 
 \item{years}{A list containing vectors of years for each year for each fleet.}
 
-\item{sd}{A vector of standard deviations for each fleet.}
+\item{sd}{A list of standard deviations for each fleet.}
 
 \item{case}{The case you want to write to. E.g. \code{'I'}.}
 
