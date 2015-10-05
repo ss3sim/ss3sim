@@ -293,7 +293,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
     n.acomp <- ss3.dat$N_agecomp
     if (n.acomp > 0) {
         ss3.dat$agecomp <- ss3.dat$agecomp[1, ]
-        ss3.dat$Yr[1] <- years.use[1]
+        ss3.dat$agecomp$Yr[1] <- years.use[1]
         ss3.dat$N_agecomp <- dim(ss3.dat$agecomp)[1]
     }
     # Change length at age
