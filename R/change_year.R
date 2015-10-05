@@ -44,7 +44,8 @@
 #' For models that use the \code{.forecast} file, all references to years
 #' must be made with relative values (i.e., 0 or negative integers).
 #'
-#' @importFrom r4ss SS_readforecast SS_readdat SS_writeforecast
+#' @importFrom r4ss SS_readdat SS_readforecast SS_readstarter SS_writeforecast
+#'   SS_writestarter
 #'
 #' @export
 #'
@@ -125,10 +126,13 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
 
   # Work with starter file
   if (!is.null(str_file_in)) {
-    ss3.starter <- readLines(con = str_file_in)
-    ss3.starter <- manipulate(ss3.starter, "min yr", -1)
-    ss3.starter <- manipulate(ss3.starter, "max yr", -2)
-    writeLines(ss3.starter, con = str_file_out)
+    ss3.starter <- SS_readstarter(file = str_file_in, verbose = verbose)
+    # -1 to make sdreport start year relative to model start year
+    ss3.starter$minyr_sdreport <- -1
+    # -2 to make sdreport end year relative to end year + N forecast years
+    ss3.starter$maxyr_sdreport <- -2
+    SS_writestarter(mylist = ss3.starter, file = str_file_out,
+      overwrite = TRUE, verbose = verbose, warn = verbose)
   }
 
   # Work with ctl file
