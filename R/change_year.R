@@ -44,8 +44,8 @@
 #' For models that use the \code{.forecast} file, all references to years
 #' must be made with relative values (i.e., 0 or negative integers).
 #'
-#' @importFrom r4ss SS_readdat SS_readforecast SS_readstarter SS_writeforecast
-#'   SS_writestarter
+#' @importFrom r4ss SS_readdat SS_readforecast SS_readstarter
+#'   SS_writedat SS_writeforecast SS_writestarter
 #'
 #' @export
 #'
