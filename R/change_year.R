@@ -326,8 +326,10 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
         }
     SS_writedat(ss3.dat, dat_file_out, overwrite = TRUE, verbose = verbose)
   }
+
+  # Work with forecast file
   if (!is.null(for_file_in)) {
-    forecastlines <- readLines(for_file_in)
+    forecastlines <- readLines(for_file_in, warn = verbose)
     numberofareas <- forecastlines[grep("max totalcatch by area", forecastlines) + 1]
     numberofareas <- strsplit(numberofareas, " ")[[1]]
     numberofareas <- gsub("#", "", numberofareas)
@@ -339,15 +341,23 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
 
     forecast <- SS_readforecast(for_file_in, nfleets, nareas,
                                 verbose = verbose)
-    if (forecast$FirstYear_for_caps_and_allocations != 0) {
-        forecast$FirstYear_for_caps_and_allocations <- year_end +
-          (forecast$FirstYear_for_caps_and_allocations - oldendyear)
-        }
-    if (forecast$Ydecl != 0) {
-      forecast$Ydecl <- year_end - (oldendyear - forecast$Ydecl)
+    # Mandatory changes
+    forecast$Bmark_years <- rep(0, 6) # Change relative to end year
+    forecast$Fcast_years <- rep(0, 4) # Change relative to end year
+    forecast$Ydecl <- years.use[1]
+    forecast$Yinit <- -1 # Change to endyear + 1
+    if (forecast$Ncatch != 0) {
+      if (verbose) message(paste("Removing all catches from forecast file."))
+      forecast$Ncatch <- 0
+      forecast$ForeCatch <- NULL
     }
-    if (forecast$Yinit != 0) {
-      forecast$Yinit <- year_end + (forecast$Yinit - oldendyear)
+    if (forecast$FirstYear_for_caps_and_allocations != 0) {
+      if (verbose) {
+        message(paste0("Changing first year of caps and allocations in ",
+        "forecast file from ", forecast$FirstYear_for_caps_and_allocations, " to ",
+        year_end + 1, "."))
+      }
+        forecast$FirstYear_for_caps_and_allocations <- year_end + 1
     }
     if (all(forecast$max_totalcatch_by_fleet == 0)) {
       forecast$max_totalcatch_by_fleet <- "#"
@@ -359,8 +369,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
       forecast$fleet_assignment_to_allocation_group <- "#"
     }
 
-    if (forecast$fleet_relative_F != 1 |
-        forecast$Ncatch != 0) {
+    if (forecast$fleet_relative_F != 1) {
       stop(paste("change_year is not set up do change the relative F",
             "or the catch per year. This must be done manually,",
             "or change to use first-last-allocation year."))
