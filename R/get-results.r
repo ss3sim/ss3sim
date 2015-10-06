@@ -139,7 +139,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
                                          overwrite_files=overwrite_files)
                 }
         }
-        ts.list <- scalar.list <- list()
+        ts.list <- scalar.list <- dq.list <- list()
         flag.na <- rep(0, length(scenarios))
         for(i in 1:length(scenarios)){
             scalar.file <- paste0(scenarios[i],"/results_scalar_",scenarios[i],".csv")
