@@ -348,7 +348,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ## Add error in the length comp data
       if(!is.null(lcomp_params$fleets)){
           lcomp_params <- add_nulls(lcomp_params,
-                     c("fleets", "Nsamp", "years", "cpar"))
+                     c("fleets", "Nsamp", "years", "cpar", "ESS"))
           dat_list <- with(lcomp_params,
                sample_lcomp(dat_list         = dat_list,
                             outfile          = NULL,
@@ -356,6 +356,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                             Nsamp            = Nsamp,
                             years            = years,
                             cpar             = cpar,
+                            ESS              = ESS,
                             write_file       = FALSE))
       }
 
@@ -364,7 +365,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ## call this function we need to delete the data
       if(!is.null(agecomp_params$fleets)){
           agecomp_params <- add_nulls(agecomp_params,
-                                      c("fleets", "Nsamp", "years", "cpar"))
+                       c("fleets", "Nsamp", "years", "cpar", "ESS"))
           dat_list <- with(agecomp_params,
                           sample_agecomp(dat_list       = dat_list,
                                          outfile        = NULL,
@@ -372,6 +373,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                          Nsamp          = Nsamp,
                                          years          = years,
                                          cpar           = cpar,
+                                         ESS            = ESS,
                                          write_file     = FALSE))
       }
 
