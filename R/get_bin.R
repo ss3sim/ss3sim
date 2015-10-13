@@ -41,5 +41,8 @@ get_bin <- function(bin_name = "ss3_24o_opt") {
       ", was not found in your path. See the ss3sim vignette and ?run_ss3model",
       " for instructions."))
   }
+  if (grepl("[[:space:]]", bin)) {
+    bin <- shQuote(bin)
+  }
   bin
 }
