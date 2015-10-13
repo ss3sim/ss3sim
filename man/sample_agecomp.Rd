@@ -5,7 +5,7 @@
 \title{Sample age compositions from expected values}
 \usage{
 sample_agecomp(dat_list, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
-  write_file = TRUE, keep_conditional = TRUE)
+  ESS = NULL, write_file = TRUE, keep_conditional = TRUE)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
@@ -36,6 +36,12 @@ distribution used for sampling. A value of \code{1} indicates the
 same standard deviation as a multinomial of the given \code{Nsamp},
 \code{2} indicates twice, etc. Values greater than one indicate
 overdispersion, and less underdispersion.}
+
+\item{ESS}{An effective sample size to write to file (but not use in
+sampling). The default of NULL means to use the true (internally
+calculated) ESS, which is \code{Nsamp} for the multinomial case or given
+by the formula under \code{cpar} for the Dirichlet case. Must match the
+structure of the \code{years} arguments.}
 
 \item{write_file}{A logical switch for whether to write \code{outfile} to
 disk. Can be turned off to speed up testing or exploration of the
