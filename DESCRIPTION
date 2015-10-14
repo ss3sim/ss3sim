@@ -2,7 +2,7 @@ Package: ss3sim
 Type: Package
 Title: Fisheries Stock Assessment Simulation Testing with Stock Synthesis
 Version: 0.8.9.9000
-Date: 2015-06-20
+Date: 2015-10-14
 Authors@R: c(person("Sean", "Anderson", email =
     "sean@seananderson.ca", role = c("aut", "cre")),
     person("Cole", "Monnahan", role = "aut"),
@@ -33,7 +33,7 @@ Suggests:
     reshape2 (>= 1.2.2)
 VignetteBuilder: knitr
 Depends:
-    R (>= 3.1.0)
+    R (>= 3.2.0)
 Imports:
     plyr (>= 1.8),
     r4ss (>= 1.21.1),
