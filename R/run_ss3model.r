@@ -42,6 +42,8 @@
 #'   \code{"safe"} or \code{"optimized"}? Safe mode is useful for model building
 #'   and testing. Optimized will be slightly faster for running simulations.
 #'   Default is safe mode.
+#' @param show.output.on.console Logical: passed on to
+#'   \code{\link[base]{system}}.
 #' @param ... Anything else to pass to \code{\link[base]{system}}.
 #' @seealso \code{\link{ss3sim_base}}, \code{\link{run_ss3sim}}
 #' @author Sean C. Anderson

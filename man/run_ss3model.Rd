@@ -38,6 +38,9 @@ value is set to \code{0.01} seconds, just to be safe.}
 and testing. Optimized will be slightly faster for running simulations.
 Default is safe mode.}
 
+\item{show.output.on.console}{Logical: passed on to
+\code{\link[base]{system}}.}
+
 \item{...}{Anything else to pass to \code{\link[base]{system}}.}
 }
 \description{
