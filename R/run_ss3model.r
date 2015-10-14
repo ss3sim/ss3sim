@@ -42,6 +42,8 @@
 #'   \code{"safe"} or \code{"optimized"}? Safe mode is useful for model building
 #'   and testing. Optimized will be slightly faster for running simulations.
 #'   Default is safe mode.
+#' @param show.output.on.console Logical: passed on to
+#'   \code{\link[base]{system}}.
 #' @param ... Anything else to pass to \code{\link[base]{system}}.
 #' @seealso \code{\link{ss3sim_base}}, \code{\link{run_ss3sim}}
 #' @author Sean C. Anderson
@@ -49,7 +51,8 @@
 
 run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
   admb_options = "", hess = FALSE, ignore.stdout =
-  TRUE, admb_pause = 0.05, ss_mode = c("safe", "optimized"), ...) {
+  TRUE, admb_pause = 0.05, ss_mode = c("safe", "optimized"),
+  show.output.on.console = FALSE, ...) {
 
   # Input checking:
   admb_options <- sanitize_admb_options(admb_options, "-nohess")
@@ -83,7 +86,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
         setwd(pastef(sc, it, type))
         system(paste0(paste0(bin, " "), ss_em_options, admb_options),
           invisible = TRUE, ignore.stdout = ignore.stdout,
-               show.output.on.console = FALSE, ...)
+               show.output.on.console = show.output.on.console, ...)
         rename_ss3_files(path = "", ss_bin = ss_bin,
           extensions = c("par", "rep", "log", "bar"))
         setwd(wd)

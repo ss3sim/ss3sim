@@ -6,7 +6,7 @@
 \usage{
 run_ss3model(scenarios, iterations, type = c("om", "em"), admb_options = "",
   hess = FALSE, ignore.stdout = TRUE, admb_pause = 0.05,
-  ss_mode = c("safe", "optimized"), ...)
+  ss_mode = c("safe", "optimized"), show.output.on.console = FALSE, ...)
 }
 \arguments{
 \item{scenarios}{Which scenarios to run. Controls which folder contains the
@@ -37,6 +37,9 @@ value is set to \code{0.01} seconds, just to be safe.}
 \code{"safe"} or \code{"optimized"}? Safe mode is useful for model building
 and testing. Optimized will be slightly faster for running simulations.
 Default is safe mode.}
+
+\item{show.output.on.console}{Logical: passed on to
+\code{\link[base]{system}}.}
 
 \item{...}{Anything else to pass to \code{\link[base]{system}}.}
 }
