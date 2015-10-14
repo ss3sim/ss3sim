@@ -59,6 +59,9 @@ test_that("Recruitment devs are of correct length in par file.", {
   expect_equal(nchar(getnew), end - start + 1)
 })
 
+if (!"ss3models" %in% installed.packages()) {
+  devtools::install_github("ss3sim/ss3models")
+}
 d <- system.file(file.path("models", "yellow"), package = "ss3models")
 file.copy(file.path(d, "om"), ".", recursive = TRUE)
 setwd("om")
