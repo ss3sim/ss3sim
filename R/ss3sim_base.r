@@ -71,15 +71,13 @@
 #'   kept or deleted? \code{CompReport.sso} is often rather large and so
 #'   deleting it can save space but the file is needed for some of the \pkg{r4ss}
 #'   plots among other purposes.
-#' @param ... Anything extra to pass to \code{\link{run_ss3model}}. For example,
-#'   you may want to pass additional options to \code{SS3} through the argument
-#'   \code{admb_options}. Anything that doesn't match a named argument in
-#'   \code{\link{run_ss3model}} will be passed to the \code{\link{system}} call
-#'   that runs \code{SS3}. If you are on a Windows computer then you might want
-#'   to pass \code{show.output.on.console = FALSE} to make the simulations runs
-#'   faster by not printing output to the console. Also, see the argument
-#'   \code{ss_mode} to choose between safe or optimized SS3 executables (default
-#'   is safe mode).
+#' @param ... Anything extra to pass to \code{\link{run_ss3model}}. For
+#' example, you may want to pass additional options to \code{SS3} through
+#' the argument \code{admb_options}. Anything that doesn't match a named
+#' argument in \code{\link{run_ss3model}} will be passed to the
+#' \code{\link{system}} call that runs \code{SS3}.  Also, see the argument
+#' \code{ss_mode} to choose between safe or optimized SS3 executables
+#' (default is safe mode).
 #' @author Sean Anderson with contributions from many others as listed in
 #'   the DESCRIPTION file.
 #' @importFrom r4ss SS_readdat

@@ -82,7 +82,8 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
         wd <- getwd()
         setwd(pastef(sc, it, type))
         system(paste0(paste0(bin, " "), ss_em_options, admb_options),
-          invisible = TRUE, ignore.stdout = ignore.stdout, ...)
+          invisible = TRUE, ignore.stdout = ignore.stdout,
+               show.output.on.console = FALSE, ...)
         rename_ss3_files(path = "", ss_bin = ss_bin,
           extensions = c("par", "rep", "log", "bar"))
         setwd(wd)
