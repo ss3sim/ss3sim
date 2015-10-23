@@ -463,6 +463,7 @@ get_results_timeseries <- function(report.file){
 #' @author Kelli Johnson
 get_results_derived <- function(report.file){
     xx <- report.file$derived_quants
+    xx <- xx[, c("LABEL", "Value", "StdDev")]
     xx$Yr <- sapply(strsplit(xx$LABEL, "_"), "[", 2)
     xx$name <- sapply(strsplit(xx$LABEL, "_"), "[", 1)
     final <- reshape(xx[ -1], timevar = "name", idvar = "Yr", direction = "wide")
