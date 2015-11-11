@@ -693,7 +693,7 @@ and \ref{fig:relative-error-boxplots-sto}.
 ```{r, plot-sto-ts, fig.height=5, fig.width=7, fig.cap="Time series of relative error in spawning stock biomass."}
 p <- ggplot(ts_dat_sto, aes(x = year)) + xlab("Year") +
     theme_bw() + geom_line(aes(y = SpawnBio, group = replicate,
-    colour = max_grad), alpha = 0.3, width = 0.15) + facet_grid(D~E) +
+    colour = max_grad), alpha = 0.3, size = 0.15) + facet_grid(D~E) +
     scale_color_gradient(low = "gray", high = "red")
 print(p)
 ```
