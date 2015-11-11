@@ -29,12 +29,12 @@ LazyData: true
 Suggests:
     knitr,
     doParallel,
-    foreach,
     reshape2 (>= 1.2.2)
 VignetteBuilder: knitr
 Depends:
     R (>= 3.2.0)
 Imports:
+    foreach (>= 1.4.2),
     plyr (>= 1.8),
     r4ss (>= 1.21.1),
     gtools (>= 2.7.1),

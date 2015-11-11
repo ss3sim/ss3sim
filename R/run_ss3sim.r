@@ -55,6 +55,8 @@
 #' existing \code{SS3} model to run with \pkg{ss3sim}. Alternatively, you might
 #' consider modifying one of the built-in model configurations.
 #'
+#' @importFrom foreach %dopar%
+#'
 #' @return
 #' The output will appear in whatever your current \R working directory
 #' is. There will be folders named after your scenarios. They will
@@ -223,15 +225,15 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
 
         message("Running iterations in parallel.")
         foreach::foreach(it_ = iterations, .packages = "ss3sim",
-          .verbose = TRUE, .export = "substr_r") foreach::`%dopar%` {
+          .verbose = TRUE, .export = "substr_r") %dopar%
             do.call("ss3sim_base",  c(x, list(iterations = it_,
-              bias_already_run = TRUE), dots))}
+              bias_already_run = TRUE), dots))
       })
     } else {
       message("Running scenarios in parallel.")
       foreach::foreach(x = arg_list, .packages = "ss3sim",
-        .verbose = FALSE, .export = "substr_r") foreach::`%dopar%` {
-          do.call("ss3sim_base", c(x, list(iterations = iterations, ...)))}
+        .verbose = FALSE, .export = "substr_r") %dopar%
+          do.call("ss3sim_base", c(x, list(iterations = iterations, ...)))
     }
   } else {
     message("Running scenarios and iterations sequentially.")
