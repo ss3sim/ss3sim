@@ -172,11 +172,11 @@ plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
     ## Use helper function to build formula for facet_grid
     form <- facet_form(horiz, horiz2, vert, vert2)
     if(is.null(color)){
-        g <- g+geom_line(aes_string(y=y,group="ID"), alpha=.5, lws=.5)+
+        g <- g+geom_line(aes_string(y=y,group="ID"), alpha=.5, lwd=.5)+
                   facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))
 
     } else {
-        g <- g+geom_line(aes_string(y=y,group="ID", color=color), alpha=.5, lws=.5)+
+        g <- g+geom_line(aes_string(y=y,group="ID", color=color), alpha=.5, lwd=.5)+
                   facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))+
                    scale_color_gradient(low="black", high="red")
     }
