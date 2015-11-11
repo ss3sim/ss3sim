@@ -205,8 +205,6 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
   # to satisfy R CMD check in the foreach() call below
   x <- NULL
   it_ <- NULL
-  foreach <- NULL
-  `%dopar%` <- NULL
 
   if (parallel) {
     if (parallel_iterations) {
@@ -224,15 +222,15 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
         }
 
         message("Running iterations in parallel.")
-        foreach(it_ = iterations, .packages = "ss3sim",
-          .verbose = TRUE, .export = "substr_r") %dopar% {
+        foreach::foreach(it_ = iterations, .packages = "ss3sim",
+          .verbose = TRUE, .export = "substr_r") foreach::`%dopar%` {
             do.call("ss3sim_base",  c(x, list(iterations = it_,
               bias_already_run = TRUE), dots))}
       })
     } else {
       message("Running scenarios in parallel.")
-      foreach(x = arg_list, .packages = "ss3sim",
-        .verbose = FALSE, .export = "substr_r") %dopar% {
+      foreach::foreach(x = arg_list, .packages = "ss3sim",
+        .verbose = FALSE, .export = "substr_r") foreach::`%dopar%` {
           do.call("ss3sim_base", c(x, list(iterations = iterations, ...)))}
     }
   } else {
