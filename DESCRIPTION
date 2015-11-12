@@ -42,4 +42,9 @@ Imports:
     ggplot2 (>= 1.0.0),
     bbmle (>= 1.0.17),
     dplyr (>= 0.3.0),
-    magrittr (>= 1.0.1)
+    magrittr (>= 1.0.1),
+    grDevices,
+    graphics,
+    stats,
+    utils
+RoxygenNote: 5.0.1

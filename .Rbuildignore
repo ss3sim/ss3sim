@@ -3,7 +3,8 @@
 ^doc/Makefile$
 ^man-roxygen$
 ^inst/examples$
-^\.git$
+^\.git/*
+^inst/bin/*
 ^\.DS_Store$
 ^\.Rapp\.history$
 \.gitattributes$
@@ -19,4 +20,4 @@ NEWS\.md
 ^tests$
 ^\.travis\.yml$
 ^benchmarks$
-tests-extra/
+^tests-extra/*
