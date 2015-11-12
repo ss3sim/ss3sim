@@ -19,6 +19,8 @@ The path to an SS3 binary. If using the GitHub version of the
 Get SS3 binary/executable location in package
 }
 \examples{
+\dontrun{
 get_bin()
+}
 }
 

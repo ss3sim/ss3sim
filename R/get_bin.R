@@ -9,7 +9,9 @@
 #'
 #' @export
 #' @examples
+#' \dontrun{
 #' get_bin()
+#' }
 
 get_bin <- function(bin_name = "ss3_24o_opt") {
   # code inspiration from glmmADMB package:
