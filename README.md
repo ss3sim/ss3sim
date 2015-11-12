@@ -17,7 +17,7 @@ ss3sim is an R package that facilitates flexible, rapid, and reproducible fisher
 
 ## Installing the ss3sim R package
 
-Install the [CRAN version](http://cran.r-project.org/web/packages/ss3sim/index.html) of ss3sim with:
+Install the [CRAN version](http://cran.r-project.org/package=ss3sim) of ss3sim with:
 
 ```R
 install.packages("ss3sim")
