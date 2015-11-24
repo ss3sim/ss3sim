@@ -444,9 +444,13 @@ get_results_timeseries <- function(report.file){
       report.file$derived_quants[grep("SPRratio_", LABEL), ])
     spr$Yr <- sapply(strsplit(spr$LABEL, "_"), "[", 2)
     colnames(spr)[which(colnames(spr) == "Value")] <- "SPRratio"
+    # Get recruitment deviations
+    dev <- report.file$recruit
+    dev <- subset(dev, year %in% years)[, c("year", "dev")]
     ## create final data.frame
     df <- merge(xx, spr[, c("SPRratio", "Yr")], by = "Yr", all.x = TRUE)
     df$SPRratio[is.na(df$SPRratio)] <- 0
+    df <- merge(df, dev, by.x = "Yr", by.y = "year", all.x = TRUE)
     rownames(df) <- NULL
     return(invisible(df))
 }
