@@ -4,8 +4,8 @@ year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
 vers <- paste("R package version", meta$Version)
 
 citEntry(entry = "Manual",
-  title        = paste("ss3sim: Fisheries stock assessment",
-                       "simulation with Stock Synthesis"),
+  title        = paste("ss3sim: Fisheries Stock Assessment",
+                       "Simulation Testing with Stock Synthesis"),
   author       = personList(as.person("Sean C. Anderson"),
                             as.person("Cole C. Monnahan"),
                             as.person("Kelli F. Johnson"),
@@ -13,19 +13,23 @@ citEntry(entry = "Manual",
                             as.person("Juan L. Valero"),
                             as.person("Curry J. Cunningham"),
                             as.person("Felipe Hurtado-Ferro"),
+                            as.person("Peter Kuriyama"),
                             as.person("Roberto Licandeo"),
                             as.person("Carey R. McGilliard"),
+                            as.person("Merrill Rudd"),
                             as.person("Cody S. Szuwalski"),
+                            as.person("Ian G. Taylor"),
                             as.person("Katyana A. Vert-pre"),
                             as.person("Athol R. Whitten")),
   year         = year,
   note         = vers,
   textVersion  =
   paste("Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, Valero, JL, ",
-        "Cunningham, CJ, Hurtado-Ferro, F, Licandeo, R, McGilliard, CR, ",
-        "Szuwalski, CS, Vert-pre, KA, and Whitten, AR (",
+        "Cunningham, CJ, Hurtado-Ferro, F, Kuriyama, P, Licandeo, R, ",
+        "McGilliard, CR, Rudd, M, Szuwalski, CS, Taylor, IG, Vert-pre, KA, ",
+        "and Whitten, AR (",
         year,
-        "). ss3sim: Fisheries stock assessment simulation testing ",
+        "). ss3sim: Fisheries Stock Assessment Simulation Testing ",
         "with Stock Synthesis. ", vers, ".", sep = "")
 )
 
@@ -48,5 +52,5 @@ citEntry(entry = "Article",
         "and Valero, JL (2014).",
         "ss3sim: An R package for fisheries stock assessment",
         "simulation with Stock Synthesis. PLOS ONE. 9(4): e92725.",
-        "DOI: 10.1371/journal.pone.0092725.")
+        "http://doi.org/10.1371/journal.pone.0092725.")
 )
