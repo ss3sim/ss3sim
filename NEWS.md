@@ -1,4 +1,4 @@
-# ss3sim 0.8.2.99
+# ss3sim 0.9.0
 
 * Add functions to estimate von Bertalanffy growth. These are used internally
   by `change_e()`.
