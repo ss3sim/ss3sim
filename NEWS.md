@@ -1,5 +1,12 @@
 # ss3sim 0.9.0
 
+* Add new data types: conditional age at length, mean length at age, and
+  empirical weight at age.
+
+* `sample_agecomp` and `sample_lcomp` now take new effective sample size
+  (ESS) argument as inputs, so the user can weight the composition data as
+  desired.
+
 * Add functions to estimate von Bertalanffy growth. These are used internally
   by `change_e()`.
 
@@ -8,24 +15,23 @@
 * Check that fleet name in the data frame matches the newest SS3 version
   (see `change_fltname()`)
 
-* Add `change_data()`, which can manipulate population bin widths, the SS3
-  robustification constant, and the SS3 tail compression value. It takes care
-  of calling the new `change_tail_compression()` and `change_lcomp_constant()`
-  functions.
+* Add `change_data()`, which prepares the OM .dat files to have the correct
+  data used for sampling that scenario. It also can manipulate length
+  bin widths, the SS3 robustification constant, and the SS3 tail
+  compression value. It takes care of calling the new
+  `change_tail_compression()` and `change_lcomp_constant()` functions.
 
 * Add `calculate_re()` to calculate relative errors on the result data frames.
 
 * Add internal checking of the validity of SS3 .dat files (#203)
 
-* Get results functions now returns run time and a list of parameters that were
+* The `get_results` function now returns run time and a list of parameters that were
   on bounds.
-
-* Add ability to work with mean-weight-at-age data (#178)
 
 * Switch vignette to R Markdown and HTML ouput (#194)
 
-* Add re-binning within the estimatin model of conditional age-at-length
-  data (#201, #205)
+* Add re-binning within the estimation model of length and conditional
+  age-at-length data (#201, #205)
 
 * Add Kelli's `profile_fmsy()` function (#173)
 
@@ -44,11 +50,11 @@
 
 * Add Travis CI testing of the package https://travis-ci.org/ss3sim/ss3sim
 
-* Added much more extensive testing of the package in the root `tests` folder. 
+* Added much more extensive testing of the package in the root `tests` folder.
   This is for internal testing only and not bundled with the package (#156).
 
 * Allow for missing arguments in case files. This allows us to add new
-  arguments to existing functions without breaking old code. A missing 
+  arguments to existing functions without breaking old code. A missing
   argument gets passed as `NULL` via the `add_nulls()` function. (within #148)
 
 * Re-write case file parsing to be more robust and allow for scientific
