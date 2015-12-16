@@ -2,7 +2,7 @@
 % Please edit documentation in R/sample_mlacomp.R
 \name{sample_mlacomp}
 \alias{sample_mlacomp}
-\title{Sample mean length (size-)-at-age data and write to file for use by the EM.}
+\title{[BETA VERSION] Sample mean length (size-)-at-age data and write to file for use by the EM.}
 \usage{
 sample_mlacomp(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp, years,
   write_file = TRUE, mean_outfile = NULL, verbose = TRUE)
@@ -54,9 +54,10 @@ A modified \code{.dat} file if \code{write_file=TRUE}. A list object
 containing the modified \code{.dat} file is returned invisibly.
 }
 \description{
-Sample mean length (size-)-at-age data and write to file for use by the EM.
+[BETA VERSION] Sample mean length (size-)-at-age data and write to file for use by the EM.
 }
 \details{
+**This function is in beta and untested. Use with caution.**
 Take a \code{data.SS_new} file, read in by \pkg{r4ss} function
   \code{\link[r4ss]{SS_readdat}} containing observed values, and
   sample from the observed ages to get realistic proportions for the number

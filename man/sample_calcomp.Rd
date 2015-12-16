@@ -47,11 +47,17 @@ the EM.
 \details{
 Take a \code{data.SS_new} file containing expected values and
 sample from true lengths, using length comp sample sizes, to get
-realistic sample sizes for age bins given a length. If no fish are
-sampled then that row is discarded. A value of NULL for fleets indicates
-to delete the data so the EM
-If used with \code{\link{run_ss3sim}} the case file should be named
-\code{calcomp}.
+realistic sample sizes for age bins given a length. Only the multinomial
+distribution is currently implemented. xIf no fish are sampled then that
+row is discarded. A value of NULL for fleets indicates to delete the
+data so the EM If used with \code{\link{run_ss3sim}} the case file
+should be named \code{calcomp}.
+}
+\note{
+This function is only reliable when using multinomial length
+compositions for the matching fleet. The real-valued length compositions
+resulting from the Dirichlet distribution cause difficulties in the
+sampling code. See the vignette for more.
 }
 \section{Which arguments to specifiy in case files}{
 
