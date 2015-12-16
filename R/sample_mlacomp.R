@@ -1,6 +1,7 @@
-#' Sample mean length (size-)-at-age data and write to file for use by the EM.
+#' [BETA VERSION] Sample mean length (size-)-at-age data and write to file for use by the EM.
 #'
-#' @details Take a \code{data.SS_new} file, read in by \pkg{r4ss} function
+#' @details **This function is in beta and untested. Use with caution.**
+#' Take a \code{data.SS_new} file, read in by \pkg{r4ss} function
 #'   \code{\link[r4ss]{SS_readdat}} containing observed values, and
 #'   sample from the observed ages to get realistic proportions for the number
 #'   of fish in each age bin, then use the mean size-at-age and CV for growth to

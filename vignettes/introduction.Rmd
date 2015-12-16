@@ -230,11 +230,11 @@ might be `index0-cod.txt`.
 ss3sim function              Case file name            Description
 ---------------              --------------            -----------
 `change_f()`                 `F`                       Fishing mortality (mandatory)
-`sample_index()`             `index`                   Index data (mandatory)             
-`sample_lcomp()`             `lcomp`                   Length composition data (mandatory)             
+`sample_index()`             `index`                   Index data (mandatory)
+`sample_lcomp()`             `lcomp`                   Length composition data (mandatory)
 `sample_agecomp()`           `agecomp`                 Age composition data (mandatory)
 `change_r()`                 `retro`                   Retrospective years
-`change_e()`                 `E`                       Estimation                 
+`change_e()`                 `E`                       Estimation
 `change_tv()`                anything else, see below  Time-varying variables
 `change_data()`              `data`                    Available OM data, bins, etc.
 `sample_calcomp()`           `calcomp`                 Catch at length data
@@ -467,7 +467,7 @@ run_ss3sim(iterations = 1, scenarios =
     "D1-E0-F0-M0-cod",
     "D0-E1-F0-M0-cod",
     "D1-E1-F0-M0-cod"),
-  case_files = list(F = "F", D = c("index", "lcomp", "agecomp"), 
+  case_files = list(F = "F", D = c("index", "lcomp", "agecomp"),
     E = "E", M = "M"),
   case_folder = case_folder, om_dir = om,
   em_dir = em)
@@ -534,7 +534,7 @@ Note that by default 5 bias adjustment runs are performed since we specify that
 ```{r, deterministic-runs, eval=FALSE}
 run_ss3sim(iterations = 1:20,
   scenarios = c("D100-E100-F0-M0-cod", "D100-E101-F0-M0-cod"),
-  case_files = list(F = "F", D = c("index", "lcomp", "agecomp"), 
+  case_files = list(F = "F", D = c("index", "lcomp", "agecomp"),
     E = "E", M = "M"),
   case_folder = case_folder, om_dir = om, em_dir = em,
   bias_adjust = TRUE, user_recdevs = recdevs_det)
@@ -546,12 +546,12 @@ a convenience function `expand_scenarios`.
 With this function we could instead write:
 
 ```{r, deterministic-runs-expand, eval=FALSE}
-x <- expand_scenarios(list(D = 100, E = 100:101, F = 0, M = 0), 
+x <- expand_scenarios(list(D = 100, E = 100:101, F = 0, M = 0),
   species = "cod")
 run_ss3sim(iterations = 1:20, scenarios = x,
   case_folder = case_folder, om_dir = om, em_dir = em,
   bias_adjust = TRUE, user_recdevs = recdevs_det,
-  case_files = list(F = "F", D = c("index", "lcomp", "agecomp"), 
+  case_files = list(F = "F", D = c("index", "lcomp", "agecomp"),
     E = "E", M = "M"))
 ```
 
@@ -586,7 +586,7 @@ run_ss3sim(iterations = 1:100, scenarios =
     "D1-E0-F0-M0-cod",
     "D0-E1-F0-M0-cod",
     "D1-E1-F0-M0-cod"),
-  case_files = list(F = "F", D = c("index", "lcomp", "agecomp"), 
+  case_files = list(F = "F", D = c("index", "lcomp", "agecomp"),
     E = "E", M = "M"),
   case_folder = case_folder, om_dir = om,
   em_dir = em, bias_adjust = TRUE)
@@ -991,20 +991,21 @@ the respective bins are taken from the original OM (i.e. be left unchanged).
 
 # Generating observation error {#obs-error}
 
-Simulated data arising from sampling the "truth" (i.e. observations),
+Simulated data arising from sampling the "truth" (i.e. observations)
 can be added within the ss3sim framework automatically and
 dynamically. Currently ss3sim supports five types of data: indices of
 abundance, length and age compositions, mean length (size) at age,
 empirical weight at age, and conditional age at length.  Functions generate
-these data using the truth from the OM `.dat` files, and create the
+these data using the expected values from the OM output files, and create the
 input `.dat` files for the EM. Since this sampling process is done
 dynamically with functions there is a lot of flexibility that can be added
 by the user.
 
 This section briefly details the background and functionality of these
 "sampling" functions. Note that the years/fleets to be sampled must be
-present in the OM output data file. [ss3sim does this data creation
-dynamically but in some cases it may need to be done manually](#change-data).
+present in the OM output data file. ss3sim does this data creation
+dynamically [using the](#change-data) function, but in some cases it may
+need to be done manually.
 
 In simulation work, the true underlying dynamics of the population are
 known and therefore a variety of sampling techniques are possible. For
@@ -1014,7 +1015,8 @@ model with this kind of data, since it is unlikely to happen in practice
 [@pennington2002]. Thus, there is a need to be able to generate more
 realistic data.  In ss3sim we can accomplish this in several
 ways. One way is to use flexible distributions which allow the user to
-control the statistical properties (e.g. overdispersion) of the data.
+control the statistical properties (e.g. overdispersion) of the data, while
+another is to use unmodeled process error (typically in selectivity).
 
 For example, consider simulating age composition data.  Under perfect
 mixing of fish and truly random sampling of the population, the samples
@@ -1028,7 +1030,7 @@ model puts too much weight on those data, at the cost of fitting other data
 less well [@maunder2011]. Analysts thus often "tune" their model to
 find a more appropriate sample size (called "effective sample size") that
 (hopefully) more accurately reflects the information in the composition
-data. In our case, we exactly control how the data are generated and
+data [@francis2011]. In our case, we exactly control how the data are generated and
 specified in the EM — providing a large amount of flexibility to the
 user. What is optimal will depend on the questions addressed by a
 simulation and how the results are meant to be interpreted. We caution
@@ -1037,7 +1039,8 @@ ss3sim simulation.
 
 Below we summarize the types of data currently incorporated into the
 package, how sampling is done, and how effective sample sizes are dealt
-with.
+with. Individual functions contain further details of implementation, and
+we refer the user to those.
 
 ## Indices of abundance
 
@@ -1061,23 +1064,22 @@ of variance.
 More specifically, let
 
 $$\begin{aligned}
-  B_y&=\text{the true (OM) biomass in year $y$}\\
-  \sigma_y&=\text{the standard deviation provided by the user}\\
+  B_y&=\text{the true (OM) biomass in year $y$}\newline
+  \sigma_y&=\text{the standard deviation provided by the user}\newline
   X\sim N(0, \sigma_y^2)&=\text{a normal random variable}\end{aligned}$$
 
 Then the sampled value, $B_y^\text{obs}$ is
 
-$$B_y^\text{obs}=B_y e^{X-\sigma_y^2/2}$$ 
+$$B_y^\text{obs}=B_y e^{X-\sigma_y^2/2}$$
 
 which has expected value $\mathrm{E}\left[B_y^\text{obs}\right]=B_y$ due to the bias adjustment
 term $\sigma_y^2/2$ (`SR_sigmaR` in SS3). This process generates
 log-normal values centered at the true value. It is possible for the user to
-specify the amount of uncertainty (e.g.\ to mimic the amount of survey effort),
+specify the amount of uncertainty (e.g. to mimic the amount of survey effort),
 but it is not possible to induce bias in this process (as currently
 implemented).
 
-## Effective sample size
-
+### Effective sample sizes
 For index data, which are assumed log-normal by SS3, the weight of the data
 is determined by the CV of each point. As the CV increases the data have
 less weight in the joint likelihood. This is equivalent to decreasing the
@@ -1086,12 +1088,13 @@ values automatically at the truth internally, although future versions may
 allow for more complex options. The user-supplied $\sigma_y$ term is
 written to the `.dat` file along with the sampled values, so that
 the EM has the correct level of uncertainty. Thus, the EM has unbiased
-estimates of both $B_y$ and the true $\sigma_y$ for all fleets.
+estimates of both $B_y$ and the true $\sigma_y$ for all fleets in all years
+sampled.
 
 ## Age and length compositions {#comps}
 
 The functions `sample_agecomp` and `sample_lcomp` sample
-from the true age and length compositions using a multinomial or Dirichlet
+from the true age and length compositions using either a multinomial or Dirichlet
 distribution. The user can further specify which fleets are sampled in
 which years and with what amount of noise (via sample size).
 
@@ -1117,22 +1120,27 @@ interval $[0,1]$, but the key point being that only a finite set of
 rational values of $m_a/n$ are possible.
 
 The multinomial, as described above, is based on assumptions of ideal
-sampling and is likely unrealistic. One strategy to add realism is to allow
-for overdispersion.
+sampling and is likely unrealistic, particularly with large sample sizes.
+One strategy to add realism is to allow for overdispersion.
 
 ### Sampling with overdispersion
 
 The composition sampling functions provided in the package allow the user
 to specify the level of overdispersion through the argument `cpar`.
-However, the package does not currently allow for specifying the effective
-sample size. See the function documentation for `sample_agecomp`
-and `sample_lcomp` for more detail.
+`cpar` is the ratio of the standard deviation between a multinomial and
+Dirichlet distribution with the same probabilities and sample size. Thus a
+value of 1 would be the same sd, while 2 would be twice the sd of a
+multinomial (overdispersed).
+The package also currently allows for specifying the effective
+sample sizes separately from the sample sizes (see below).
+See the function documentation for `sample_agecomp` and `sample_lcomp` for more detail.
 
 Here we describe the implementation of the Dirichlet distribution utilized
 in the package. This distribution has the same range and mean, but a
 different variance controlled by a parameter (the variance is determined
-exclusively by the cell probabilities in the multinomial) and as such is
-more flexible. Let $\mathbf{d} \sim \text{Dirichlet}\left
+exclusively by the cell probabilities and sample size n the multinomial)
+and as such is more flexible.
+Let $\mathbf{d} \sim \text{Dirichlet}\left
   (\boldsymbol{\alpha}, A\right )$ be a Dirichlet random vector. It is
 characterized by:
 
@@ -1168,22 +1176,30 @@ The following steps are used to generate overdispersed samples:
   Samples from the Dirichlet with this value of $\lambda$
   will then give the appropriate level of variance.
   For instance, we can generate samples
-  with twice the standard deviation of the multinomial by setting $c=2$.
+  with twice the standard deviation of the multinomial by setting $c=2$
+  (this is `cpar`).
 
 ### Effective sample sizes
 
-For both multinomial and Dirichlet generated composition data the effective
-sample size is set automatically by the `sample_lcomp` and
-`sample_agecomp` functions. In the case of the multinomial the
-effective sample size is just the total sample size (i.e.\ how many fish
-were sampled, the number of sampled tows, etc.). However, with the
-Dirichlet distribution the effective sample size depends on the parameters
-passed to these functions and is automatically calculated internally and
-passed on to the `.dat` file. The effective sample size is
-calculated as $N_{eff}=n/c^2$. Note that these values will not necessarily
-be integer-valued, and SS3 handles this without issue.
+The term 'effective sample size' for SS3 often refers to the tuned sample
+size, right-weighted depending on the information contained in the
+data. These values are estimated after an initial run and then replaced in
+the .dat file and run again [@francis2011]. Perhaps a better term would be
+'input sample size' to contrast it with what was originally sampled.
 
-Given that the effective sample size is known and passed to the EM, there
+In any case, the default behavior for both multinomial and Dirichlet
+generated composition data is to set effective sample size automatically in
+the `sample_lcomp` and `sample_agecomp` functions. In the case of the
+multinomial the effective sample size is just the original sample size
+(i.e. how many fish were sampled, the number of sampled tows,
+etc.). However, with the Dirichlet distribution the effective sample size
+depends on the parameters passed to these functions and is automatically
+calculated internally and passed on to the `.dat` file. The effective
+sample size is calculated as $N_{eff}=n/c^2$, where $c$ is `cpar`. Note
+that these values will not necessarily be integer-valued, and SS3 handles
+this without issue.
+
+If the effective sample size is known and passed to the EM, there
 is much similarity between the multinomial and Dirichlet methods for
 generating data. The main difference arises when sample sizes ($n$) are
 small; in this case the multinomial will be restricted to few potential
@@ -1192,17 +1208,98 @@ $[0,1]$. Thus without the Dirichlet it would be impossible to generate
 realistic values that would come about from highly overdispersed data with
 a large $n$.
 
+The first version of ss3sim did not allow the user to specify the effective
+sample size (ESS). However, this functionality was added to allow for users
+to explore data weighting issues. If you want to specify an input/effective
+sample size different that what is used in sampling this is available via
+the `ESS` arguments of these two functions.
+
 ## Mean length at age
 
-TODO
+This function exists in the package, but has not been thoroughly tested or
+used in a simulation before. We caution users using this function to be
+extra cautious, and treat it as a beta version. Contact the developers for
+more information.
 
 ## Conditional age at length
 
-TODO
+Conditional age-at-length (CAAL) data is an alternative to age compositions
+when there are paired age and length observations on the same fish. SS3 has
+this capability, and it has many appealing attributes. For instance, using
+CAAL data, instead of both age and length compositions of the same sampled
+fish, avoids including the same data twice. CAAL data are also expected to
+be more informative about growth than marginal age composition data
+although to date few studies have examined this data type
+[@he2015; @monnahan2015]. However, their implementation in ss3sim is
+significantly more complicated than simple age compositions (which are
+assumed independent of lengths).
 
-## Empricial weight at age
+A CAAL matrix, as implemented in SS3, is inputted the same way and in the
+same block in the .dat file as age compositions. Each row of this matrix
+corresponds to a length bin (for a year and fleet), while the columns
+remain ages and the cells are the number of fish. Thus, each row represents
+the observed age distribution for a length bin, conditioned on the fish
+lengths that were observed in the length compositions. Obviously for older
+or younger fish the age distribution will be truncated, and often many
+rows will be empty because no fish of that length bin were observed (they
+can be dropped from SS3 in this case).
 
-TODO
+Imagine sampling $N$ fish for a year and fleet, taking lengths, and binning
+them to create the length distributions (numbers of fish in each length
+bin). From there, several strategies are possible for sampling ages from
+those fish: (1) age all fish, (2) take random subset of fish independent of
+length bin, or (3) take a fixed number of fish from each length bin. ss3sim
+can currently only handle option (2) above, and by extension (1). Future
+versions could include (3) but this is not currently implemented.
+
+In any case, we need a hierarchy of sample sizes to implement this
+data. Consider a row of the CAAL matrix. The sample size for that row comes
+from the length compositions and represents the maximum number of fish that
+could be aged. If not all fish are aged, then a new sample size must be
+drawn that is strictly less than or equal to it. This will then be used to
+draw ages randomly from the expected values. If we consider all rows for a
+fleet and year (one for each length bin), then the sum of those will be the
+sample size for the CAAL data. If all fish are aged ((2) above), then no
+subsampling is done. However, if the CAAL sample size is less than the
+length, we need to be careful to not age more fish in a length bin than
+were in that length bin in the first place. We accomplish this in the code
+by doing sampling without replacement for vectors of length bins equal to
+the number of fish in them. This ensures realistic sampling. If the option
+(3) above were implemented, a different strategy would need to be
+implemented. For instance, if the user wants 10 fish from each length bin,
+but only 5 fish were observed, what to do?
+
+A further complication is that when Dirichlet sampling is used for length
+compositions the number of fish observed will be real-valued, not whole
+fish. One cannot simply multiply by the length composition sample size to
+get whole numbers since they are real, and rounding or truncating would be
+unsatisfactory. Currently the function simply draws a multinomial sample
+from the length compositions of specified size (`Nsamp'). However, this
+does not gaurantee that fewer fish are aged than lengthed. If you are
+specifying a small number of fish to age relative to length, then this
+might be OK. However, *we discourage the use of Dirichlet length samples
+when using CAAL data* as currently implemented, unless you really
+understand the consequences of this issue.
+
+We conclude by noting that the CAAL data are inherently tied to the length
+compositions (e.g., as if a trip measured lengths and ages for all fish),
+in contrast to the age compositions which were generated independently of
+the length data (e.g., as if one trip measured only ages and a second only
+lengths). This is an important distinction.
+
+## Empirical weight at age
+
+This data type is very different than all the others. With this setting in
+SS3 all length-based processes are bypassed by assigning a weight to each
+age in each year, from which spawning biomass/fecundity can be
+determined. These values are not data in the sense they have a likelihood,
+but are generated from samples.
+
+This sampling function was implemented for a specific study
+[@kuriyama2015], and may not be satisfactory for other studies. For this
+reason we will not explain the specifics of the function here and instead
+suggest contacting the developers if you wish to use empirical weight at
+age in your simulation.
 
 # Generating process error {#pro-error}
 
@@ -1233,7 +1330,7 @@ user-supplied recruitment deviations are used exactly as specified
 and **it is up to you to bias correct them manually** by
 subtracting $\sigma_r^2 / 2$ as is done above. This functionality
 allows for flexibility in how the recruitment deviations are
-specified, for example [running deterministic runs](#deterministic) 
+specified, for example [running deterministic runs](#deterministic)
 or adding serial correlation.
 
 Note that for both built-in and user-specified recdevs ss3sim
@@ -1309,7 +1406,7 @@ run_ss3sim(iterations = 1, scenarios =
     "D2-E0-F0-cod",
     "D1-E1-F0-cod",
     "D2-E1-F0-cod"),
-  case_files = 
+  case_files =
     list(F = "F", D = c("index", "lcomp", "agecomp"), E = "E"),
   case_folder = case_folder, om_dir = om, em_dir = em,
   bias_adjust = TRUE, parallel = TRUE)

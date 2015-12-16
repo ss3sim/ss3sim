@@ -3,11 +3,16 @@
 #'
 #' @details Take a \code{data.SS_new} file containing expected values and
 #' sample from true lengths, using length comp sample sizes, to get
-#' realistic sample sizes for age bins given a length. If no fish are
-#' sampled then that row is discarded. A value of NULL for fleets indicates
-#' to delete the data so the EM
-#' If used with \code{\link{run_ss3sim}} the case file should be named
-#' \code{calcomp}.
+#' realistic sample sizes for age bins given a length. Only the multinomial
+#' distribution is currently implemented. xIf no fish are sampled then that
+#' row is discarded. A value of NULL for fleets indicates to delete the
+#' data so the EM If used with \code{\link{run_ss3sim}} the case file
+#' should be named \code{calcomp}.
+#'
+#' @note This function is only reliable when using multinomial length
+#' compositions for the matching fleet. The real-valued length compositions
+#' resulting from the Dirichlet distribution cause difficulties in the
+#' sampling code. See the vignette for more.
 #'
 #' @author Cole Monnahan, Kotaro Ono
 #'
@@ -95,35 +100,37 @@ sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
             ## Probability distribution for length comps
             prob.len <- as.numeric(lencomp[lencomp$Yr==yr & lencomp$FltSvy==fl, -(1:6)])
             if(any(is.na(prob.len))) stop("Invalid length probs in sample_calcomp -- likely due to missing length data")
-            ## ## Sample to get # fish in each length bin
-            ## N1 <- rmultinom(n=1, size=Nsamp.len, prob=prob.len)
-            ## ## Convert that to proportions
-            ## p1 <- N1/sum(N1)
             ## From observed length distribution, sample which fish to age.
             yr.ind <- which(years[[i]]==yr)
             if(Nsamp[[i]][yr.ind] > Nsamp.len)
                 stop("More age samples specified than fish collected for calcomps")
-            ## We might sample more ages than there are fish in a length
-            ## bin, by random chance, if drawn by multinomial. Instead we
-            ## resample empirically. Test for it:
+            ## The Dirichlet case is annoying since the values of prob.len
+            ## will be <1 and not whole fish, and we can't multiply by
+            ## sample size to get them b/c they are real. Thus two cases:
+            ## (1) If using multinomial for length resample empirically.
             if(any(prob.len>1)){
-                ## case of multinomial. This code creates a vector of
-                ## empirical samples of length, such that each length bin
-                ## is repeated equal to the number of observed fish in that bin
+                ## This code creates a vector of empirical samples of
+                ## length, such that each length bin is repeated equal to
+                ## the number of observed fish in that bin
                 prob.len.ints <- unlist(sapply(1:length(prob.len), function(i) rep(i, prob.len[i])))
-                ## Now resample from it, garaunteeing that the sample size
+                ## Now resample from it, garuanteeing that the sample size
                 ## doesn't exceed
                 temp <- sample(x=prob.len.ints, size=Nsamp[[i]][yr.ind], replace=FALSE)
                 Nsamp.ages.per.lbin <- sapply(1:length(prob.len), function(i) sum(temp==i))
-        } else {
-            ## case of overdispersed:
-            Nsamp.ages.per.lbin <- rmultinom(n=1, size=Nsamp[[i]][yr.ind] , prob=prob.len)
-        }
+                ## Note: If you're ageing all fish this isn't needed, but holds.
+            } else {
+                ## (2) case of Dirichlet. No way to verify more fish are
+                ## not aged than were lengthed.
+                Nsamp.ages.per.lbin <- rmultinom(n=1, size=Nsamp[[i]][yr.ind] , prob=prob.len)
+            }
+            ## Nsamp.ages.per.lbin is the column of sample sizes in the
+            ## CAAL matrix, which gives the sample size to draw CAAL
+            ## samples below.
         if(any(is.na(Nsamp.ages.per.lbin)))
             stop("Invalid age sample size for a length bin in calcomp")
-        ## This is where the actual sampling takes place
-        ## Loop through each length bin and sample # fish in
-        ## each age bin, given expected conditional age-at-length
+        ## This is where the actual sampling takes place. Loop through each
+        ## length bin and sample # fish in each age bin, given expected
+        ## conditional age-at-length
         newcomp$Nsamp <- Nsamp.ages.per.lbin
         for(ll in 1:nrow(newcomp)){
             N.temp <- newcomp$Nsamp[ll]
