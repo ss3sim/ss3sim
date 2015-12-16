@@ -66,6 +66,14 @@ Since this is a more recent version than is provided at the normal download loca
 binaries (with the permission of R. Methot) at
 <https://www.dropbox.com/sh/zg0sec6j20sfyyz/AACQiuk787qW882U2euVKoPna>.
 
+There are two versions of the binary: safe and optimized ('opt'). The
+difference is in how the ADMB source code for SS3 is compiled. If it is in
+safe mode, then the program will check that vector, matrix, or array bounds
+are not exceeded. There is a slight overhead in this checking, but it may
+help identify issues. The optimized version skips this check, running a bit
+faster but without the safety net. By default ss3sim uses the safe binary
+but the user can opt for the optimized version. See the `ss_mode` argument
+for `run_ss3model`.
 ss3sim requires the SS3 binary to be in your path.
 This means that your operating system knows where the binary file is located.
 See [the vignette section on paths](#path) for details.
@@ -1443,7 +1451,8 @@ run_ss3sim(iterations = 1:2, scenarios = "D0-F0-cod",
 
 # Putting SS3 in your path {#path}
 
-Instead of copying the SS3 binary file (`ss3.exe` or `ss3`) to each folder
+Instead of copying the SS3 binary file (`ss3_24o_safe.exe` or
+`ss3_24o_safe`) to each folder
 within a simulation and running it, ss3sim relies on a single binary file
 being available to the operating system regardless of the folder.
 To accomplish this, SS3 must be in your system path, which is
@@ -1453,10 +1462,16 @@ This approach saves on storage space since the SS3 binary is about 2.2 MB and
 having it located in each folder can be prohibitive in a large-scale simulation
 testing study.
 
+Some development versions on (github.com/ss3sim/ss3sim)[github] install
+this automatically but it is disallowed for CRAN submissions. In any case,
+it may be useful to put the binary in your path so that you can manually
+run models during development and testing (i.e., open command window in
+folder of OM or EM run, and run binary to see SS3 output).
+
 ## For Unix (OS X and Linux)
 
 To check if SS3 is in your path:
-open a Terminal window and type `which SS3` and hit enter.
+open a Terminal window and type `which ss3_24o_safe` and hit enter.
 If you get nothing returned, then SS is not in your path.
 The easiest way to fix this is to move the SS3 binary
 to a folder that's already in your path.
@@ -1477,15 +1492,15 @@ You can do that by switching to the folder where you placed the binary
 (`cd /usr/bin/` if you followed the instructions above),
 and running the command:
 
-    sudo chmod +x SS3
+    sudo chmod +x ss3_24o_safe
 
 Check that SS3 is now executable and in your path:
 
-    which SS3
+    which ss3_24o_safe
 
 If you followed the instructions above, you will see the following line returned:
 
-    /usr/bin/SS3
+    /usr/bin/ss3_24o_safe
 
 If you have previously modified your path to add a non-standard location
 for the SS3 binary,
@@ -1501,14 +1516,14 @@ by including a line like this in your `.Rprofile` file.
 ## For Windows
 
 To check if SS is in your path for Windows 7 and 8:
-open a DOS prompt and type `ss3 -?` and hit enter.
-If you get a line like `ss3 is not recognized...`
+open a DOS prompt and type `ss3_24o_safe -?` and hit enter.
+If you get a line like `ss3_24o_safe is not recognized...`
 then SS3 is not in your path.
 To add the SS3 binary file to your path, follow these steps:
 
-1. Find the correct version of the `ss3.exe` binary on your computer
+1. Find the correct version of the `ss3_24o_safe.exe` binary on your computer
 
-2. Record the folder location. E.g. `C:/SS3.24o/`
+2. Record the folder location. E.g. `C:/SS3/`
 
 3. Click on the start menu and type `environment`
 
@@ -1520,12 +1535,12 @@ To add the SS3 binary file to your path, follow these steps:
 
 7. In the `Edit User Variable` window add to the **end** of the `Variable value`
    section a semicolon and the SS3 folder location you recorded earlier.
-   E.g. `;C:/SS3.24o/`.
+   E.g. `;C:/SS3`.
    **Do not overwrite what was previously in the PATH variable**.
 
 8. Restart your computer
 
-9. Go back to the DOS prompt and try typing `ss3 -?` and hitting return again.
+9. Go back to the DOS prompt and try typing `ss3_24o_safe -?` and hitting return again.
 
 
 # Additional sections to the vignette {#additional}
