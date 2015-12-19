@@ -25,8 +25,8 @@
 
 * Add internal checking of the validity of SS3 .dat files (#203)
 
-* The `get_results` function now returns run time and a list of parameters that were
-  on bounds.
+* The `get_results` function now returns run time, a list of parameters that were
+  on bounds, and recruitment deviations.
 
 * Switch vignette to R Markdown and HTML ouput (#194)
 
@@ -55,12 +55,13 @@
 
 * Allow for missing arguments in case files. This allows us to add new
   arguments to existing functions without breaking old code. A missing
-  argument gets passed as `NULL` via the `add_nulls()` function. (within #148)
+  argument gets passed as `NULL` via the `add_nulls()` function (within #148).
 
 * Re-write case file parsing to be more robust and allow for scientific
   notations (#157).
 
-* Add the option to use the optimized SS executables (#138 and #147).
+* Add the option to use the optimized SS executables (#138 and #147) and
+  ability to have spaces in the path name to the executable.
 
 * Add Cole Monnahan's ss3sim plotting functions (#134).
 
