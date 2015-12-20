@@ -1,5 +1,7 @@
 # ss3sim 0.9.0
 
+* Fix compatibility of vignette with ggplot2 2.0.0.
+
 * Add new data types: conditional age at length, mean length at age, and
   empirical weight at age.
 
