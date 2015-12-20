@@ -446,7 +446,7 @@ get_results_timeseries <- function(report.file){
     colnames(spr)[which(colnames(spr) == "Value")] <- "SPRratio"
     # Get recruitment deviations
     dev <- report.file$recruit
-    dev <- subset(dev, year %in% years)[, c("year", "dev")]
+    dev <- dev[dev$year %in% years, c("year", "dev")]
     ## create final data.frame
     df <- merge(xx, spr[, c("SPRratio", "Yr")], by = "Yr", all.x = TRUE)
     df$SPRratio[is.na(df$SPRratio)] <- 0
