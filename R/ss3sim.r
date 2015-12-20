@@ -16,7 +16,8 @@
 #' data also contains example plain-text control files in the folder
 #' \code{inst/extdata/cases} and \code{inst/extdata/eg-cases}.
 #'
-#' To carry out \pkg{ss3sim} simulations, you will need to have SS3 installed on
+#' To carry out \pkg{ss3sim} simulations
+#' with the version from CRAN, you will need to have SS3 installed on
 #' your computer and the binary needs to be in the path that \R sees. See the
 #' section "Installing the ss3sim R package" in the vignette
 #' \code{vignette("ss3sim-vignette")} for instructions on installing SS3. See
@@ -80,7 +81,8 @@
 #' of scenarios.
 #' }
 #'
-#' See the package vignette \code{vignette("ss3sim-vignette")} for
+#' See the introductory vignette \code{vignette("introduction",
+#' package = "ss3sim")} for
 #' more extensive explanation of how to use the \pkg{ss3sim} \R package.
 #'
 #' \pkg{ss3sim} was developed by graduate students and post doctoral researchers

@@ -1,12 +1,12 @@
 #' Write a case file for length- or age-composition data
 #'
-#' Use \code{R} code to write arguments to the disk, which
-#' will later be used in a \code{ss3sim} simulation.
-#' 
+#' Use \R code to write arguments to the disk, which
+#' will later be used in a \pkg{ss3sim} simulation.
+#'
 #' @param fleets Vector of fleet numbers, where the order of
 #'   \code{fleets} will dictate the order of all remaining arguments.
-#' @param Nsamp A list of length \code{length(fleets)}, 
-#'   where each element of the list contains a vector of 
+#' @param Nsamp A list of length \code{length(fleets)},
+#'   where each element of the list contains a vector of
 #'   sample sizes for each year for that given fleet.
 #' @param years A list of length \code{length(fleets)},
 #'   where each element of the list contains a vector of
@@ -16,8 +16,8 @@
 #'   to write age- or length-composition specifications, respectively.
 #'   Argument can be a vector (e.g., \code{c("agecomp", "lcomp")}) if you want
 #'   the case files to be the same for length and age compositions.
-#' @param case The casenumber you want to write to. 
-#'   If \code{case = 1} and \code{type = "agecomp"}, 
+#' @param case The casenumber you want to write to.
+#'   If \code{case = 1} and \code{type = "agecomp"},
 #'   then the result will be \code{'agecomp1'}.
 #' @param spp A vector of character values argument specifying the species.
 #' @export
@@ -48,8 +48,8 @@ case_comp <- function(fleets = 1, Nsamp = NULL, years = NULL, cpar = 2,
 
 #' Write a case file for index data to the disk.
 #'
-#' Use \code{R} code to write arguments to the disk, which
-#' will later be used in a \code{ss3sim} simulation.
+#' Use \R code to write arguments to the disk, which
+#' will later be used in a \pkg{ss3sim} simulation.
 #'
 #' @param fleets Vector of fleet numbers, where the order of
 #'   \code{fleets} will dictate the order of all remaining arguments.
@@ -57,7 +57,7 @@ case_comp <- function(fleets = 1, Nsamp = NULL, years = NULL, cpar = 2,
 #'   where each element of the list contains a vector of
 #'   years for the given fleet.
 #' @param sd A list of standard deviations for each fleet.
-#' @param case The case number you want to write to. 
+#' @param case The case number you want to write to.
 #'   If \code{case = 1}, then the result will be \code{'index1'}.
 #' @param spp A vector of character values argument specifying the species.
 #' @export
@@ -84,8 +84,8 @@ case_index <- function(fleets = 1, years = NULL, sd = 2, case, spp) {
 
 #' Write time varying casefiles to the disk
 #'
-#' Use \code{R} code to write arguments to the disk, which
-#' will later be used in a \code{ss3sim} simulation.
+#' Use \R code to write arguments to the disk, which
+#' will later be used in a \pkg{ss3sim} simulation.
 #'
 #' @param species A vector of species, for which a unique case file will be
 #'   generated.
@@ -171,8 +171,8 @@ case_tv <- function(species, parameter, perc_change, outfile,
 
 #' Write a case file for fishing data to the disk.
 #'
-#' Use \code{R} code to write arguments to the disk, which
-#' will later be used in a \code{ss3sim} simulation.
+#' Use \R code to write arguments to the disk, which
+#' will later be used in a \pkg{ss3sim} simulation.
 #'
 #' @param years Vector of years for which \emph{F} values are specified,
 #' if there is more than one fleet or season the catches must be ordered by
@@ -233,4 +233,3 @@ case_deparse <- function(x) {
   }
   return(temp)
 }
-
