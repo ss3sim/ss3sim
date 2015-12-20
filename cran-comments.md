@@ -1,12 +1,10 @@
-Description of changes...
-
-Fixes compatibility of vignette with ggplot2 2.0.0.
+Adds functionality and fixes compatibility of vignette with ggplot2 2.0.0.
 
 ---
 
 ## Test environments
-* local OS X install, R 3.2.2
-* ubuntu 12.04 (on travis-ci), R 3.2.2
+* local OS X install, R 3.2.3
+* Ubuntu 12.04 (on travis-ci), R 3.2.3
 * win-builder (devel and release)
 
 ## R CMD check results
@@ -17,8 +15,8 @@ There were no ERRORs, or WARNINGs. There was one NOTE:
 `unused arguments (newlos = NULL, newhis = NULL, `
 `newphs = par_phase[phasenochange])`
 
-These new arguments are contained in the new version of r4ss, which has been
-simultaneously submitted.
+These new arguments are contained in the new version of r4ss, which has 
+or will be simultaneously submitted.
 
 ## Downstream dependencies
 
