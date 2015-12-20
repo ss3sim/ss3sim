@@ -20,3 +20,4 @@ NEWS\.md
 ^\.travis\.yml$
 ^benchmarks$
 ^tests-extra/*
+^cran-comments\.md$
