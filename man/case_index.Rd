@@ -16,14 +16,14 @@ years for the given fleet.}
 
 \item{sd}{A list of standard deviations for each fleet.}
 
-\item{case}{The case number you want to write to. 
+\item{case}{The case number you want to write to.
 If \code{case = 1}, then the result will be \code{'index1'}.}
 
 \item{spp}{A vector of character values argument specifying the species.}
 }
 \description{
-Use \code{R} code to write arguments to the disk, which
-will later be used in a \code{ss3sim} simulation.
+Use \R code to write arguments to the disk, which
+will later be used in a \pkg{ss3sim} simulation.
 }
 \examples{
 case_index(fleets = 2, case = 1, spp = "cod", years = list(7:10), sd = 0.1)

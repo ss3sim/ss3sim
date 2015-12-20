@@ -32,8 +32,8 @@ If \code{case = 1}, then the result will be \code{'F1'}.}
 \item{spp}{A vector of character values argument specifying the species.}
 }
 \description{
-Use \code{R} code to write arguments to the disk, which
-will later be used in a \code{ss3sim} simulation.
+Use \R code to write arguments to the disk, which
+will later be used in a \pkg{ss3sim} simulation.
 }
 \examples{
 case_fishing(1:100, 1:100, seq(0, 0.4, length.out = 100), 2, "cod")

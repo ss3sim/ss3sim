@@ -36,8 +36,8 @@ to save the file.}
 \code{FALSE}.}
 }
 \description{
-Use \code{R} code to write arguments to the disk, which
-will later be used in a \code{ss3sim} simulation.
+Use \R code to write arguments to the disk, which
+will later be used in a \pkg{ss3sim} simulation.
 }
 \examples{
 temp_path <- file.path(tempdir(), "cod")
