@@ -51,20 +51,21 @@ functions for reading and writing SS3 files. Setting \code{verbose} to
 }
 \value{
 The function creates modified versions of the \code{.par},
-  \code{.dat} , \code{.ctl}, \code{.starter}, and \code{.forecast} files.
+  \code{.dat}, \code{.ctl}, \code{.starter}, and \code{.forecast} files.
 }
 \description{
-\code{change_years} takes SS3 \code{.ctl}, \code{.dat}, \code{.par},
+\code{change_year} takes SS3 \code{.ctl}, \code{.dat}, \code{.par},
 \code{starter.ss}, and \code{.forecast} files and changes the start and end
-year of the model. \code{change_years} works with \pkg{ss3sim} operating or
+year of the model. \code{change_year} works with \pkg{ss3sim} operating or
 estimation models.
 }
 \details{
 Operating models and estimation models will not have all of the same files,
 thus if the file does not exist change the \code{_file_in} to \code{NULL}.
 The code will add data for all years specified, minus the burnin period,
-if the data type is present in the \code{.dat} file.
-Manipulation done to the \code{.dat} file is not complete and users will need
+if the data type is present in the \code{dat_file_in} file.
+The manipulation performed on the \code{dat_file_in} file is not complete
+and users will need
 to specify data for years which are deleted. The function removes all composition
 data except for the first year.
 To remove data use \code{\link{sample_index}}, \code{\link{sample_lcomp}},
