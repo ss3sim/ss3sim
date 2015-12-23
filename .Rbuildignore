@@ -3,6 +3,7 @@
 ^doc/Makefile$
 ^man-roxygen$
 ^inst/examples$
+^inst/ss3-tests$
 ^\.git/*
 ^\.DS_Store$
 ^\.Rapp\.history$
