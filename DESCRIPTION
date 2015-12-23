@@ -1,8 +1,8 @@
 Package: ss3sim
 Type: Package
 Title: Fisheries Stock Assessment Simulation Testing with Stock Synthesis
-Version: 0.8.9.9003
-Date: 2015-12-11
+Version: 0.9.0
+Date: 2015-12-23
 Authors@R: c(person("Sean", "Anderson", email =
     "sean@seananderson.ca", role = c("aut", "cre")),
     person("Cole", "Monnahan", role = "aut"),
@@ -29,20 +29,20 @@ LazyData: true
 Suggests:
     knitr,
     doParallel,
-    reshape2 (>= 1.2.2)
+    reshape2
 VignetteBuilder: knitr
 Depends:
-    R (>= 3.2.0)
+    R (>= 3.2.2)
 Imports:
-    foreach (>= 1.4.2),
-    plyr (>= 1.8),
-    r4ss (>= 1.21.1),
-    gtools (>= 2.7.1),
-    lubridate (>= 1.3.0),
-    ggplot2 (>= 1.0.0),
-    bbmle (>= 1.0.17),
-    dplyr (>= 0.3.0),
-    magrittr (>= 1.0.1),
+    foreach,
+    plyr,
+    r4ss,
+    gtools,
+    lubridate,
+    ggplot2,
+    bbmle,
+    dplyr,
+    magrittr,
     grDevices,
     graphics,
     stats,
