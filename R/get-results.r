@@ -162,7 +162,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         dq.all$ID <- paste(dq.all$scenario, dq.all$replicate, sep="-")
         write.csv(scalar.all, file="ss3sim_scalar.csv")
         write.csv(ts.all, file="ss3sim_ts.csv")
-        ## write.csv(dq.all, file="ss3sim_dq.csv")
+        write.csv(dq.all, file="ss3sim_dq.csv")
         message(paste("Final result files written to", directory))
     } else{
     ## Loop through each scenario in folder in serial
@@ -204,7 +204,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
     dq.all$ID <- paste(dq.all$scenario, dq.all$replicate, sep="-")
     write.csv(scalar.all, file="ss3sim_scalar.csv")
     write.csv(ts.all, file="ss3sim_ts.csv")
-    ## write.csv(dq.all, file="ss3sim_dq.csv")
+    write.csv(dq.all, file="ss3sim_dq.csv")
     message(paste("Final result files written to", directory))
   }
 }
