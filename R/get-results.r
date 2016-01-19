@@ -470,7 +470,9 @@ get_results_derived <- function(report.file){
     xx <- xx[, c("LABEL", "Value", "StdDev")]
     xx$Yr <- sapply(strsplit(xx$LABEL, "_"), "[", 2)
     xx$name <- sapply(strsplit(xx$LABEL, "_"), "[", 1)
-    final <- reshape(xx[ -1], timevar = "name", idvar = "Yr", direction = "wide")
+    if (all(xx$StdDev == 0)) xx <- xx[, -which(colnames(xx) == "StdDev")]
+    final <- reshape(xx, timevar = "name", idvar = "Yr", direction = "wide",
+      drop = "LABEL")
     final <- final[-which(final$Yr == "Virgin"), ]
     rownames(final) <- NULL
     invisible(final)
