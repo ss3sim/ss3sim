@@ -333,7 +333,7 @@ check_data <- function(x) {
     stop("Nfleet in the SS3 data file must be set to 1.")
 
   if (!identical(x$Nsurveys, 2))
-    stop("Nfleet in the SS3 data file must be set to 2.")
+    stop("Nsurveys in the SS3 data file must be set to 2.")
 
   if (!identical(x$N_areas, 1))
     stop("N_areas in the SS3 data file must be set to 1.")
