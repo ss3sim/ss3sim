@@ -1449,6 +1449,11 @@ run_ss3sim(iterations = 1:2, scenarios = "D0-F0-cod",
   bias_adjust = TRUE)
 ```
 
+Note that if the simulation aborts for any reason while `run_ss3sim` is running
+in parallel, you may need to abort the left over parallel processes. On Windows,
+open the task manager (Ctrl-Shift-Esc) and close any R processes.
+On a Mac, open Activity Monitor and force quit any R processes.
+
 # Putting SS3 in your path {#path}
 
 Instead of copying the SS3 binary file (`ss3_24o_safe.exe` or
