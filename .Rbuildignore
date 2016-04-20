@@ -22,3 +22,4 @@ NEWS\.md
 ^benchmarks$
 ^tests-extra/*
 ^cran-comments\.md$
+tags
