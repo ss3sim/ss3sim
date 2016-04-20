@@ -57,7 +57,7 @@ and access the vignettes for reproducible examples of ss3sim simulations with:
 browseVignettes("ss3sim")
 ```
 
-If you're using the GitHub version of ss3sim then the SS3 executables/binaries are included in the package and your installation is complete. If you're using the CRAN version, you'll need to install these binaries and place them in your system path. ss3sim requires a specific version of the SS3 binary/executable. With the permission of Rick Methot, we have hosted those files [here](https://github.com/ss3sim/ss3sim/tree/ss3-binaries/inst/ss3). *These binaries will only work with the CRAN version of ss3sim.* These files need to be placed in your operating system's path so ss3sim can find the software. See the Introduction vignette with `vignette("introduction", "ss3sim")`.
+If you're using the GitHub version of ss3sim then the SS3 executables/binaries are included in the package and your installation is complete. If you're using the CRAN version, you'll need to install these binaries and place them in your system path. ss3sim requires a specific version of the SS3 binary/executable. With the permission of Rick Methot, we have hosted those files [here](https://github.com/ss3sim/ss3sim/tree/master/inst/bin). See the Introduction vignette with `vignette("introduction", "ss3sim")`.
 
 In addition to the vignette, we published a [paper][paper] in PLOS ONE, which describes the package.
 
@@ -106,30 +106,51 @@ Example output from an ss3sim simulation. This example shows a crossed simulatio
 
 ## Papers published using ss3sim
 
-Ono, K., R. Licandeo, M.L. Muradian, C.J. Cunningham, S.C. Anderson, F. Hurtado-Ferro, K.F. Johnson, C.R. McGilliard, C.C. Monnahan, C.S. Szuwalski, J.L. Valero, K.A. Vert-pre, A.R. Whitten, A.E. Punt. 2014. The importance of length and age composition data in statistical catch-at-age models for marine species. ICES Journal of Marine Science. In press. <http://doi.org/10.1093/icesjms/fsu007> ([PDF](http://seananderson.ca/papers/Ono_etal_2014_importance_of_length_and_age_composition_data.pdf)).
+Kuriyama, P. T., K. Ono, F. Hurtado-Ferro, A. C. Hicks, I. G. Taylor, R. R.
+Licandeo, K. F. Johnson, S. C. Anderson, C. C. Monnahan, M. B. Rudd, C. C.
+Stawitz, and J. L. Valero. (2016). An empirical weight-at-age approach reduces
+estimation bias compared to modeling parametric growth in integrated,
+statistical stock assessment models when growth is time varying. Fisheries
+Research. In press. <http://doi.org/10.1016/j.fishres.2015.11.002>.
+[code repository](https://github.com/ss3sim/Empirical).
 
-Anderson, S.C., C.C. Monnahan, K.F. Johnson, K. Ono, J.L. Valero. ss3sim: An R package for fisheries stock assessment simulation with Stock Synthesis. PLOS ONE. 9(4): e92725. <http://doi.org/10.1371/journal.pone.0092725> ([PDF](http://www.plosone.org/article/fetchObject.action?uri=info%3Adoi%2F10.1371%2Fjournal.pone.0092725&representation=PDF)).
+Monnahan, C. C., K. Ono, S. C. Anderson, M. B. Rudd, A. C. Hicks, F.
+Hurtado-Ferro, K. F. Johnson, P. T. Kuriyama, R. R. Licandeo, C. C. Stawitz, I.
+G. Taylor, and J. L. Valero. (2016). The effect of length bin width on growth
+estimation in integrated age-structured stock assessments. Fisheries Research.
+In press. <http://doi.org/10.1016%2Fj.fishres.2015.11.002>. 
+[code repository](https://github.com/ss3sim/binning).
 
 Johnson, K.F., C.C. Monnahan, C.R. McGilliard, K.A. Vert-pre, S.C. Anderson, C.J. Cunningham, F. Hurtado-Ferro, R.R. Licandeo, M.L. Muradian, K. Ono, C.S. Szuwalski, J.L. Valero, A.R. Whitten, A.E. Punt. 2015. Time-varying natural mortality in fisheries stock assessment models: identifying a default approach.  2015. ICES Journal of Marine Science 72 (1): 137-150 doi:10.1093/icesjms/fsu055.
 ([PDF](http://icesjms.oxfordjournals.org/content/early/2014/04/09/icesjms.fsu055.full.pdf?keytype=ref&ijkey=NEXmZIkz3289u3z); [code repository](https://github.com/ss3sim/natural-mortality "R code to recreate the simulation")).
 
 Hurtado-Ferro, F., C.S. Szuwalski, J.L. Valero, S.C. Anderson, C.J. Cunningham, K.F. Johnson, R.R. Licandeo, C.R. McGilliard, C.C. Monahan, M.L. Muradian, K. Ono, K.A. Vert-Pre, A.R. Whitten, A.E. Punt. 2015. Looking in the rear-view mirror: bias and retrospective patterns in integrated, age-structured stock assessment models. ICES Journal of Marine Science. 72 (1): 99-110 doi:10.1093/icesjms/fsu198.
 
+Ono, K., R. Licandeo, M.L. Muradian, C.J. Cunningham, S.C. Anderson, F. Hurtado-Ferro, K.F. Johnson, C.R. McGilliard, C.C. Monnahan, C.S. Szuwalski, J.L. Valero, K.A. Vert-pre, A.R. Whitten, A.E. Punt. 2015. The importance of length and age composition data in statistical catch-at-age models for marine species. ICES Journal of Marine Science. 72 (1): 31-43. <http://doi.org/10.1093/icesjms/fsu007> ([PDF](https://dl.dropboxusercontent.com/u/254940/papers/Ono_etal_2014_importance_of_length_and_age_composition_data.pdf)).
+
+Anderson, S.C., C.C. Monnahan, K.F. Johnson, K. Ono, J.L. Valero. ss3sim: An R package for fisheries stock assessment simulation with Stock Synthesis. 2014. PLOS ONE. 9(4): e92725. <http://doi.org/10.1371/journal.pone.0092725> ([PDF](http://www.plosone.org/article/fetchObject.action?uri=info%3Adoi%2F10.1371%2Fjournal.pone.0092725&representation=PDF)).
+
 ## Citing ss3sim
 
 If you use ss3sim in a publication, please cite ss3sim as shown by `citation("ss3sim")`:
 
-Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, Valero, JL, Cunningham, CJ, Hurtado-Ferro, F, Licandeo, R, McGilliard, CR, Szuwalski, CS, Vert-pre, KA, and Whitten, AR (2014). ss3sim: Fisheries stock assessment simulation testing with Stock Synthesis. R package version 0.8.2.
+Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, Valero, JL,
+  Cunningham, CJ, Hurtado-Ferro, F, Kuriyama, P, Licandeo, R,
+  McGilliard, CR, Rudd, M, Szuwalski, CS, Taylor, IG, Vert-pre, KA, and
+  Whitten, AR (2015). ss3sim: Fisheries Stock Assessment Simulation
+  Testing with Stock Synthesis. R package version 0.9.0.
 
 Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, and Valero, JL (2014). ss3sim: An R package for fisheries stock assessment simulation with Stock Synthesis. PLOS ONE. 9(4): e92725. DOI: 10.1371/journal.pone.0092725.
 
 
+<!-- toBibtex(citation("ss3sim")) -->
+
 ```tex
 @Manual{,
-  title = {ss3sim: Fisheries stock assessment simulation with {Stock Synthesis}},
-  author = {Sean C. Anderson and Cole C. Monnahan and Kelli F. Johnson and Kotaro Ono and Juan L. Valero and Curry J. Cunningham and Felipe Hurtado-Ferro and Roberto Licandeo and Carey R. McGilliard and Cody S. Szuwalski and Katyana A. Vert-pre and Athol R. Whitten},
-  year = {2014},
-  note = {R package version 0.8.2},
+  title = {ss3sim: Fisheries Stock Assessment Simulation Testing with Stock Synthesis},
+  author = {Sean C. Anderson and Cole C. Monnahan and Kelli F. Johnson and Kotaro Ono and Juan L. Valero and Curry J. Cunningham and Felipe Hurtado-Ferro and Peter Kuriyama and Roberto Licandeo and Carey R. McGilliard and Merrill Rudd and Cody S. Szuwalski and Ian G. Taylor and Katyana A. Vert-pre and Athol R. Whitten},
+  year = {2015},
+  note = {R package version 0.9.0},
 }
 
 @Article{,
@@ -137,9 +158,9 @@ Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, and Valero, JL (2014). ss3sim: 
   author = {Sean C. Anderson and Cole C. Monnahan and Kelli F. Johnson and Kotaro Ono and Juan L. Valero},
   year = {2014},
   journal = {PLOS ONE},
-  volume  = {9},
-  number  = {4},
-  pages   = {e92725},  
+  volume = {9},
+  number = {4},
+  pages = {e92725},
   doi = {10.1371/journal.pone.0092725},
 }
 ```
