@@ -238,8 +238,9 @@ change_em_binning <- function(dat_list, dat_file_out, bin_vector, lbin_method = 
     # this uses dplyr and pipes but avoids non-standard evaluation
     # http://cran.r-project.org/web/packages/dplyr/vignettes/nse.html
     new_cal <- inner_join(old_cal, lookup, by = "Lbin_lo") %>%
-      group_by_(~Yr, ~lbin_new_low, ~lbin_new_high) %>%
-      summarise_each_(funs_(~sum), ~matches("^a[0-9.]+$")) %>%
+      group_by_(~Yr, ~lbin_new_low, ~lbin_new_high)
+    dat_cols <- names(new_cal)[grep("^a[0-9.]+$", names(new_cal))]
+    new_cal <- summarise_each_(new_cal, funs_(~sum), vars = dat_cols) %>%
       rename_(Lbin_lo = ~lbin_new_low, Lbin_hi = ~lbin_new_high) %>%
       as.data.frame
 
