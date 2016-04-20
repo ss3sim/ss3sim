@@ -1,3 +1,7 @@
+# ss3sim 0.9.1
+
+* Fix compatibility with dplyr 0.4.3.
+
 # ss3sim 0.9.0
 
 * Fix compatibility of vignette with ggplot2 2.0.0.
