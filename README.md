@@ -149,8 +149,8 @@ Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, and Valero, JL (2014). ss3sim: 
 @Manual{,
   title = {ss3sim: Fisheries Stock Assessment Simulation Testing with Stock Synthesis},
   author = {Sean C. Anderson and Cole C. Monnahan and Kelli F. Johnson and Kotaro Ono and Juan L. Valero and Curry J. Cunningham and Felipe Hurtado-Ferro and Peter Kuriyama and Roberto Licandeo and Carey R. McGilliard and Merrill Rudd and Cody S. Szuwalski and Ian G. Taylor and Katyana A. Vert-pre and Athol R. Whitten},
-  year = {2015},
-  note = {R package version 0.9.0},
+  year = {2016},
+  note = {R package version 0.9.1},
 }
 
 @Article{,
