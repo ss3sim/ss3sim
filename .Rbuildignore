@@ -14,7 +14,6 @@
 ^vignettes/Makefile$
 ^R/tags$
 ^Session\.vim$
-NEWS\.md
 ^vignettes/ss3sim-vignette\.bbl
 ^vignettes/ss3sim-vignette\.blg
 ^tests$
