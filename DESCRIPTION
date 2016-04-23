@@ -1,8 +1,8 @@
 Package: ss3sim
 Type: Package
 Title: Fisheries Stock Assessment Simulation Testing with Stock Synthesis
-Version: 0.9.1
-Date: 2016-04-19
+Version: 0.9.2
+Date: 2016-04-23
 Authors@R: c(person("Sean", "Anderson", email =
     "sean@seananderson.ca", role = c("aut", "cre")),
     person("Cole", "Monnahan", role = "aut"),
@@ -22,8 +22,8 @@ Authors@R: c(person("Sean", "Anderson", email =
     person("Ian", "Taylor", role = "aut"),
     person("Katyana", "Vert-pre", role = "aut"),
     person("Athol", "Whitten", role = "aut"))
-Description: The ss3sim package develops a framework for fisheries stock
-    assessment simulation testing with Stock Synthesis 3 (SS3).
+Description: Develops a framework for fisheries stock assessment simulation
+    testing with Stock Synthesis 3 (SS3).
 License: MIT + file LICENSE
 LazyData: true
 Suggests:

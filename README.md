@@ -139,7 +139,7 @@ Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, Valero, JL,
   Cunningham, CJ, Hurtado-Ferro, F, Kuriyama, P, Licandeo, R,
   McGilliard, CR, Rudd, M, Szuwalski, CS, Taylor, IG, Vert-pre, KA, and
   Whitten, AR (2015). ss3sim: Fisheries Stock Assessment Simulation
-  Testing with Stock Synthesis. R package version 0.9.0.
+  Testing with Stock Synthesis. R package version 0.9.2.
 
 Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, and Valero, JL (2014). ss3sim: An R package for fisheries stock assessment simulation with Stock Synthesis. PLOS ONE. 9(4): e92725. DOI: 10.1371/journal.pone.0092725.
 
@@ -151,7 +151,7 @@ Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, and Valero, JL (2014). ss3sim: 
   title = {ss3sim: Fisheries Stock Assessment Simulation Testing with Stock Synthesis},
   author = {Sean C. Anderson and Cole C. Monnahan and Kelli F. Johnson and Kotaro Ono and Juan L. Valero and Curry J. Cunningham and Felipe Hurtado-Ferro and Peter Kuriyama and Roberto Licandeo and Carey R. McGilliard and Merrill Rudd and Cody S. Szuwalski and Ian G. Taylor and Katyana A. Vert-pre and Athol R. Whitten},
   year = {2016},
-  note = {R package version 0.9.1},
+  note = {R package version 0.9.2},
 }
 
 @Article{,

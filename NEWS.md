@@ -1,6 +1,10 @@
+# ss3sim 0.9.2
+
+* Revise package description 
+
 # ss3sim 0.9.1
 
-* Fix compatibility with dplyr 0.4.3.
+* Fix compatibility with dplyr 0.4.3.9001.
 
 # ss3sim 0.9.0
 
