@@ -112,7 +112,7 @@ Licandeo, K. F. Johnson, S. C. Anderson, C. C. Monnahan, M. B. Rudd, C. C.
 Stawitz, and J. L. Valero. (2016). An empirical weight-at-age approach reduces
 estimation bias compared to modeling parametric growth in integrated,
 statistical stock assessment models when growth is time varying. Fisheries
-Research. In press. <http://doi.org/10.1016/j.fishres.2015.11.002>.
+Research. In press. <http://doi.org/10.1016/j.fishres.2015.09.007>.
 ([code repository](https://github.com/ss3sim/Empirical)).
 
 Monnahan, C. C., K. Ono, S. C. Anderson, M. B. Rudd, A. C. Hicks, F.
