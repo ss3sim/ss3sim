@@ -18,13 +18,15 @@ get_bin <- function(bin_name = "ss3_24o_opt") {
   if (.Platform$OS.type == "windows") {
     platform <- "Windows64"
     bit <- gsub("\\/", "", Sys.getenv("R_ARCH"))
+    browser()
     if (grepl("3", bit)) {
-      platform <- "Windows32"
-      warning("SS3 binary is not available for 32-bit ",
-        .Platform$OS.type, " within the package.\n",
-        "You must have an appropriate SS3 binary in your path.\n",
-        "See the ss3sim vignette.")
-    }
+      if (!grepl("86", bit)) {
+        platform <- "Windows32"
+        warning("SS3 binary is not available for 32-bit ",
+          .Platform$OS.type, " within the package.\n",
+          "You must have an appropriate SS3 binary in your path.\n",
+          "See the ss3sim vignette.")
+          }}
   } else {
     if (substr(R.version$os, 1, 6) == "darwin") {
       platform <- "MacOS"
