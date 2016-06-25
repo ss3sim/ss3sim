@@ -18,7 +18,6 @@ get_bin <- function(bin_name = "ss3_24o_opt") {
   if (.Platform$OS.type == "windows") {
     platform <- "Windows64"
     bit <- gsub("\\/", "", Sys.getenv("R_ARCH"))
-    browser()
     if (grepl("3", bit)) {
       if (!grepl("86", bit)) {
         platform <- "Windows32"
