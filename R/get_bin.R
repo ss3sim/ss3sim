@@ -17,6 +17,7 @@ get_bin <- function(bin_name = "ss3_24o_opt") {
   # code inspiration from glmmADMB package:
   if (.Platform$OS.type == "windows") {
     platform <- "Windows64"
+    bin_name <- paste0(bin_name, ".exe")
     bit <- gsub("\\/", "", Sys.getenv("R_ARCH"))
     if (grepl("3", bit)) {
       if (!grepl("86", bit)) {
@@ -42,8 +43,7 @@ get_bin <- function(bin_name = "ss3_24o_opt") {
   loc <- system.file("bin", package = "ss3sim")
   if (loc != "") {
     bin <- file.path(loc, platform, bin_name)
-    bintest <- c(bin, paste0(bin, ".exe"))
-    if (all(!file.exists(bintest))) bin <- ""
+    if (!file.exists(bin)) bin <- ""
   } else {
     bin <- ""
   }
