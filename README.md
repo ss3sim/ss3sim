@@ -107,29 +107,56 @@ Example output from an ss3sim simulation. This example shows a crossed simulatio
 
 ## Papers published using ss3sim
 
+Johnson, K.F., E. Councill, J.T. Thorson, E. Brooks, R.D. Methot, and A.E.
+Punt. 2016. Can autocorrelated recruitment be estimated using integrated
+assessment models and how does it affect population forecasts? Fisheries
+Research 183:222–232. <http://doi.org/10.1016/j.fishres.2016.06.004>.
+([code repository](https://github.com/kellijohnson/AR-perf-testing)).
+
 Kuriyama, P. T., K. Ono, F. Hurtado-Ferro, A. C. Hicks, I. G. Taylor, R. R.
 Licandeo, K. F. Johnson, S. C. Anderson, C. C. Monnahan, M. B. Rudd, C. C.
-Stawitz, and J. L. Valero. (2016). An empirical weight-at-age approach reduces
+Stawitz, and J. L. Valero. 2016. An empirical weight-at-age approach reduces
 estimation bias compared to modeling parametric growth in integrated,
 statistical stock assessment models when growth is time varying. Fisheries
-Research. In press. <http://doi.org/10.1016/j.fishres.2015.09.007>.
+Research. 180:119–127. <http://doi.org/10.1016/j.fishres.2015.09.007>.
 ([code repository](https://github.com/ss3sim/Empirical)).
 
 Monnahan, C. C., K. Ono, S. C. Anderson, M. B. Rudd, A. C. Hicks, F.
 Hurtado-Ferro, K. F. Johnson, P. T. Kuriyama, R. R. Licandeo, C. C. Stawitz, I.
-G. Taylor, and J. L. Valero. (2016). The effect of length bin width on growth
+G. Taylor, and J. L. Valero. 2016. The effect of length bin width on growth
 estimation in integrated age-structured stock assessments. Fisheries Research.
-In press. <http://doi.org/10.1016%2Fj.fishres.2015.11.002>. 
+180:103–112 <http://doi.org/10.1016%2Fj.fishres.2015.11.002>. 
 ([code repository](https://github.com/ss3sim/binning)).
 
-Johnson, K.F., C.C. Monnahan, C.R. McGilliard, K.A. Vert-pre, S.C. Anderson, C.J. Cunningham, F. Hurtado-Ferro, R.R. Licandeo, M.L. Muradian, K. Ono, C.S. Szuwalski, J.L. Valero, A.R. Whitten, A.E. Punt. 2015. Time-varying natural mortality in fisheries stock assessment models: identifying a default approach.  2015. ICES Journal of Marine Science 72 (1): 137-150 <http://doi.org/10.1093/icesjms/fsu055>.
-([PDF](http://icesjms.oxfordjournals.org/content/early/2014/04/09/icesjms.fsu055.full.pdf?keytype=ref&ijkey=NEXmZIkz3289u3z); [code repository](https://github.com/ss3sim/natural-mortality "R code to recreate the simulation")).
+Johnson, K.F., C.C. Monnahan, C.R. McGilliard, K.A. Vert-pre, S.C. Anderson,
+C.J. Cunningham, F. Hurtado-Ferro, R.R. Licandeo, M.L. Muradian, K. Ono, C.S.
+Szuwalski, J.L. Valero, A.R. Whitten, A.E. Punt. 2015. Time-varying natural
+mortality in fisheries stock assessment models: identifying a default approach.
+2015. ICES Journal of Marine Science 72 (1): 137-150
+<http://doi.org/10.1093/icesjms/fsu055>.
+([PDF](http://icesjms.oxfordjournals.org/content/early/2014/04/09/icesjms.fsu055.full.pdf?keytype=ref&ijkey=NEXmZIkz3289u3z);
+[code repository](https://github.com/ss3sim/natural-mortality "R code to
+recreate the simulation")).
 
-Hurtado-Ferro, F., C.S. Szuwalski, J.L. Valero, S.C. Anderson, C.J. Cunningham, K.F. Johnson, R.R. Licandeo, C.R. McGilliard, C.C. Monahan, M.L. Muradian, K. Ono, K.A. Vert-Pre, A.R. Whitten, A.E. Punt. 2015. Looking in the rear-view mirror: bias and retrospective patterns in integrated, age-structured stock assessment models. ICES Journal of Marine Science. 72 (1): 99-110 <http://doi.org/10.1093/icesjms/fsu198>.
+Hurtado-Ferro, F., C.S. Szuwalski, J.L. Valero, S.C. Anderson, C.J. Cunningham,
+K.F. Johnson, R.R. Licandeo, C.R. McGilliard, C.C. Monahan, M.L. Muradian, K.
+Ono, K.A. Vert-Pre, A.R. Whitten, A.E. Punt. 2015. Looking in the rear-view
+mirror: bias and retrospective patterns in integrated, age-structured stock
+assessment models. ICES Journal of Marine Science. 72 (1): 99-110
+<http://doi.org/10.1093/icesjms/fsu198>.
 
-Ono, K., R. Licandeo, M.L. Muradian, C.J. Cunningham, S.C. Anderson, F. Hurtado-Ferro, K.F. Johnson, C.R. McGilliard, C.C. Monnahan, C.S. Szuwalski, J.L. Valero, K.A. Vert-pre, A.R. Whitten, A.E. Punt. 2015. The importance of length and age composition data in statistical catch-at-age models for marine species. ICES Journal of Marine Science. 72 (1): 31-43. <http://doi.org/10.1093/icesjms/fsu007> ([PDF](https://dl.dropboxusercontent.com/u/254940/papers/Ono_etal_2014_importance_of_length_and_age_composition_data.pdf)).
+Ono, K., R. Licandeo, M.L. Muradian, C.J. Cunningham, S.C. Anderson, F.
+Hurtado-Ferro, K.F. Johnson, C.R. McGilliard, C.C. Monnahan, C.S. Szuwalski,
+J.L. Valero, K.A. Vert-pre, A.R. Whitten, A.E. Punt. 2015. The importance of
+length and age composition data in statistical catch-at-age models for marine
+species. ICES Journal of Marine Science. 72 (1): 31-43.
+<http://doi.org/10.1093/icesjms/fsu007>
+([PDF](https://dl.dropboxusercontent.com/u/254940/papers/Ono_etal_2014_importance_of_length_and_age_composition_data.pdf)).
 
-Anderson, S.C., C.C. Monnahan, K.F. Johnson, K. Ono, J.L. Valero. ss3sim: An R package for fisheries stock assessment simulation with Stock Synthesis. 2014. PLOS ONE. 9(4): e92725. <http://doi.org/10.1371/journal.pone.0092725> ([PDF](http://www.plosone.org/article/fetchObject.action?uri=info%3Adoi%2F10.1371%2Fjournal.pone.0092725&representation=PDF)).
+Anderson, S.C., C.C. Monnahan, K.F. Johnson, K. Ono, J.L. Valero. ss3sim: An
+R package for fisheries stock assessment simulation with Stock Synthesis. 2014.
+PLOS ONE. 9(4): e92725. <http://doi.org/10.1371/journal.pone.0092725>
+([PDF](http://www.plosone.org/article/fetchObject.action?uri=info%3Adoi%2F10.1371%2Fjournal.pone.0092725&representation=PDF)).
 
 ## Citing ss3sim
 
