@@ -248,6 +248,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           "om", "ss3.par"))
 
       # Change F
+      #Make change F optional
+      if(length(f_params)>0){
       f_params <- add_nulls(f_params, c("years", "years_alter", "fvals"))
       with(f_params,
         change_f(years               = years,
@@ -255,6 +257,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                  fvals               = fvals,
                  par_file_in         = pastef(sc, i, "om", "ss3.par"),
                  par_file_out            = pastef(sc, i, "om", "ss3.par")))
+      }
 
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
