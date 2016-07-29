@@ -249,7 +249,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       # Change F
       #Make change F optional
-      if(!is.null(f_params){
+      if(!is.null(f_params)){
       f_params <- add_nulls(f_params, c("years", "years_alter", "fvals"))
       with(f_params,
         change_f(years               = years,
