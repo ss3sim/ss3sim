@@ -67,7 +67,7 @@ we cover [setting up an estimation model](#em-setup).
 
 The first step is to run the assessment model to make sure the model runs
 and estimates parameters as desired. The `.par` file generated will be used
-in the OM. We recommend opening a command window inside your folder to help
+in the OM. We recommend opening a command window inside your OM and EM folder to help
 test whether the model still runs at many points along the process. After
 turning parameter estimation off in the starter file (see below), the model
 can be checked by running `ss3_24o_safe -nohess` to make sure the
@@ -100,24 +100,29 @@ this error.
 - Implement catches using instantaneous fishing mortality by changing `# F_report_basis` to `0`.
 
 ## Control file modifications
+1. Delete the `<modelname>.ctl` file and rename `control.ss_new` to `om.ctl`. Modify this new file.
 
-1.  Specify all environmental deviates to be unconstrained by bounds by setting `#_env/block/dev_adjust_method` to `1`. If the method is set to `2`, parameters adjusted using environmental covariate inputs will be adjusted using a logistic transformation to ensure that the adjusted parameter will stay within the bounds of the base parameter.
+2.  Specify all environmental deviates on biological parameters to be unconstrained by bounds by setting `#_env/block/dev_adjust_method` to `1`. If the method is set to `2`, parameters adjusted using environmental covariate inputs will be adjusted using a logistic transformation to ensure that the adjusted parameter will stay within the bounds of the base parameter. Comment out second line entitled `#_env/block/dev_adjust_method` underneath the section which specifies selectivity parameters. 
 
-2.  Turn on recruitment deviations by specifying `#do_recdev` to `1`. Using the next two lines, specify the use of recruitment deviations to begin and end with the start and end years of the model.
+3.  Turn on recruitment deviations by specifying `#do_recdev` to `1`. Using the next two lines, specify the use of recruitment deviations to begin and end with the start and end years of the model.
 
-3.  Turn on additional advanced options for the recruitment deviations by specifying `# (0/1) to read 13 advanced options` to `1`.
+4.  Turn on additional advanced options for the recruitment deviations by specifying `# (0/1) to read 13 advanced options` to `1`.
 
-4.  Set `#_recdev_early_start` to `0` so that the model will use the `# first year of main recr_devs`.
+5.  Set `#_recdev_early_start` to `0` so that the model will use the `# first year of main recr_devs`.
 
-5.  Set `#_lambda for Fcast_rec_like occurring before endyr+1` to `1`. This lambda is for the log likelihood of the forecast recruitment deviations that occur before the first year of forecasting. Values larger than one accommodate noisy data at the end of the time series.
+6.  Set `#_lambda for Fcast_rec_like occurring before endyr+1` to `1`. This lambda is for the log likelihood of the forecast recruitment deviations that occur before the first year of forecasting. Values larger than one accommodate noisy data at the end of the time series.
 
-6.  Recruitment is log-normally distributed in SS. If inputting a normally distributed recruitment deviations specify `#_max_bias_adj_in_MPD` to `-1` so that SS performs the bias correction for you. If inputting bias corrected normal recruitment deviation, specify it at `0`. Either method will lead to the same end result.
+7.  Recruitment is log-normally distributed in SS. If inputting a normally distributed recruitment deviations specify `#_max_bias_adj_in_MPD` to `-1` so that SS performs the bias correction for you. If inputting bias corrected normal recruitment deviation, specify it at `0`. Either method will lead to the same end result.
 
-7.  Use any negative value in line `# F ballpark year`, to disable the use of a ballpark year to determine fishing mortality levels.
+8.  Use any negative value in line `# F ballpark year`, to disable the use of a ballpark year to determine fishing mortality levels.
 
-8.  Specify `# F_Method` to `2`, which facilitates the use of a vector of instantaneous fishing mortality levels. The max harvest rate in the subsequent line will depend upon the fishing mortality levels in your simulation. Following the max harvest rate, specify a line with three value separated by spaces. The first value is the overall start F value, followed by the phase. The last value is the number of inputs. Set the number of inputs to `1`, because the actual fishing mortality trajectory will be specified in the `.dat` file. Next, specify a single line with six values, separated by spaces, where the values correspond to fleet number, start year, season, fishing mortality level, the standard error of the fishing mortality level, and a negative phase value. E.g `1 2000 1 0 0.01 -1`
+9.  Specify `# F_Method` to `2`, which facilitates the use of a vector of instantaneous fishing mortality levels. The max harvest rate in the subsequent line will depend upon the fishing mortality levels in your simulation. Following the max harvest rate, specify a line with three value separated by spaces. The first value is the overall start F value, followed by the phase. The last value is the number of inputs. Set the number of inputs to `1`, because the actual fishing mortality trajectory will be specified in the `.dat` file. Next, specify a single line with six values, separated by spaces, where the values correspond to fleet number, start year, season, fishing mortality level, the standard error of the fishing mortality level, and a negative phase value. E.g `1 2000 1 0 0.01 -1`
 
-9.  If needed, change the specification of the `.ctl` using the functions available in the ss3sim package. E.g `change_growth`, `change_sel`.
+10. Set `#_Variance_adjustments_to_input_values` to `0`. Comment out any lines underneath referring to variance adjustments. 
+
+11. Set `# number of changes to make to default Lambdas` to `0`. Comment out any lines with default lambda changes below.
+
+12.  If needed, change the specification of the `.ctl` using the functions available in the ss3sim package. E.g `change_growth`, `change_sel`.
 
 ## Data file modifications
 
@@ -125,7 +130,7 @@ this error.
 
 2.  Specify the names for each fleet in an uncommented line after the line `#_N_areas`. Names must be separated by a `%` with no spaces. It is these names which you will use in the plain text case files to specify and change characteristics of each fleet throughout the simulation. E.g. `Fishery%Survey1%Survey2`
 
-3.  Specify the number of mean body weight observations across all selected sizes and ages to be specific to measured fish by setting `#N observations` to `0`. Subsequently, specify `1` degree of freedom for the Student’s T distribution used to evaluated the mean body weight deviations in the following line. The degrees of freedom must be specified even if there are zero mean body weight observations.
+3.  Specify the number of mean body weight observations across all selected sizes and ages to be specific to measured fish by setting `#_N_meanbodywt` to `0`. Subsequently, specify `1` under `#_DF_for_meanbodywt_T-distribution_like` - this is the degree of freedom for the Student’s T distribution used to evaluated the mean body weight deviations in the following line. The degrees of freedom must be specified even if there are zero mean body weight observations.
 
 4.  Set the length bin method to 1 or 2 in the line labelled `# length bin method`. Using a value of `1`, the bins refer to the data bins (specified later). Using a value of `2` instructs SS to generate the bin widths from a user specified minimum and maximum value. In the following three lines, specify the bin width for population size composition data; the minimum size, or the lower edge of the first bin and size at age zero; and the maximum size, or lower edge of the last bin. The length data bins MUST be wider than the population bin, but the boundaries do not have to align.
 
@@ -134,21 +139,6 @@ this error.
 6.  Specify `#_add_to_comp` to a very small number E.g `1e-005`. This specifies the value that will be added to each composition (age and length) data bins.
 
 7.  Set the length bin range method for the age composition data (used when the conditional age at length data exists) to 1, 2 or 3 in the line `#_Lbin_method` depending on the data you have or the purpose of the study.
-
-## Testing the new operating model
-
-After completing the above steps, check that the SS3 model setup is
-functional by running a single iteration of the model and verifying that the
-data are read in correctly and expected values of the population dynamics are
-written to the `.dat` files (and sensical). We also advise manually
-testing the ss3sim R functions that manipulate the OM (e.g.,
-`change_tv`) and check that the model setup still runs correctly after this
-manipulation. The help files for the functions demonstrate how to use the
-functions to test models. Note that the OM will not be a valid SS3
-model in the sense that ADMB cannot run and produce maximum likelihood
-estimates of parameters; it is intended to only be run for one
-iteration to generate the population dynamics using values
-specified in the input files.
 
 # Setting up a new estimation model {#em-setup}
 
@@ -189,13 +179,20 @@ the [Introduction vignette section](introduction.html#obs-error) for more detail
 
 ## Testing the new estimation model
 
-After completing the above steps run the model manually and verify that it
+After completing the above steps run the model manually for a single iteration. Verify that the
+data are read in correctly and expected values of the population dynamics are
+written to the `.dat` files (and sensical). Verify that the EM
 loads the data properly and the objective function value (negative
 log-likelihood) is sensible. If it works correctly, try running
 deterministic cases on the model 
 (see the [Introduction vignette](introduction.html#deterministic)) and further
 verify that ss3sim functions that modify the EM (e.g.,
-`change_e`) act correctly on the model setup. It is possible that some of the
+`change_e`) act correctly on the model setup. The help files for the functions demonstrate how to use the
+functions to test models. Note that the OM will not be a valid SS3
+model in the sense that ADMB cannot run and produce maximum likelihood
+estimates of parameters; it is intended to only be run for one
+iteration to generate the population dynamics using values
+specified in the input files. It is possible that some of the
 functions will not work perfectly with the new model setups. In this case, it may be
 necessary to modify the ss3sim functions to be compatible with the new
 OM and EM.
