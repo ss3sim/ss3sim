@@ -125,20 +125,21 @@ this error.
 12.  If needed, change the specification of the `.ctl` using the functions available in the ss3sim package. E.g `change_growth`, `change_sel`.
 
 ## Data file modifications
+1. Delete the `<modelname>.dat` file and rename `data.ss_new` to `om.dat`. Modify this new file.
 
-1.  Specify the start and end year for the simulation by modifying `#_styr` and `#_endyr`. Years can be specified as a number line (i.e. `1`, `2`, `3`, ...) or as actual years (i.e. `1999`, `2000`, `2001`, ...).
+2.  Specify the start and end year for the simulation by modifying `#_styr` and `#_endyr`. Years can be specified as a number line (i.e. `1`, `2`, `3`, ...) or as actual years (i.e. `1999`, `2000`, `2001`, ...).
 
-2.  Specify the names for each fleet in an uncommented line after the line `#_N_areas`. Names must be separated by a `%` with no spaces. It is these names which you will use in the plain text case files to specify and change characteristics of each fleet throughout the simulation. E.g. `Fishery%Survey1%Survey2`
+3.  Specify the names for each fleet in an uncommented line after the line `#_N_areas`. Names must be separated by a `%` with no spaces. It is these names which you will use in the plain text case files to specify and change characteristics of each fleet throughout the simulation. E.g. `Fishery%Survey1%Survey2`
 
-3.  Specify the number of mean body weight observations across all selected sizes and ages to be specific to measured fish by setting `#_N_meanbodywt` to `0`. Subsequently, specify `1` under `#_DF_for_meanbodywt_T-distribution_like` - this is the degree of freedom for the Student’s T distribution used to evaluated the mean body weight deviations in the following line. The degrees of freedom must be specified even if there are zero mean body weight observations.
+4.  Specify the number of mean body weight observations across all selected sizes and ages to be specific to measured fish by setting `#_N_meanbodywt` to `0`. Subsequently, specify `1` under `#_DF_for_meanbodywt_T-distribution_like` - this is the degree of freedom for the Student’s T distribution used to evaluated the mean body weight deviations in the following line. The degrees of freedom must be specified even if there are zero mean body weight observations.
 
-4.  Set the length bin method to 1 or 2 in the line labelled `# length bin method`. Using a value of `1`, the bins refer to the data bins (specified later). Using a value of `2` instructs SS to generate the bin widths from a user specified minimum and maximum value. In the following three lines, specify the bin width for population size composition data; the minimum size, or the lower edge of the first bin and size at age zero; and the maximum size, or lower edge of the last bin. The length data bins MUST be wider than the population bin, but the boundaries do not have to align.
+5.  Set the length bin method to 1 or 2 in the line labelled `# length bin method`. Using a value of `1`, the bins refer to the data bins (specified later). Using a value of `2` instructs SS to generate the bin widths from a user specified minimum and maximum value. In the following three lines, specify the bin width for population size composition data; the minimum size, or the lower edge of the first bin and size at age zero; and the maximum size, or lower edge of the last bin. The length data bins MUST be wider than the population bin, but the boundaries do not have to align.
 
-5.  Specify `#_comp_tail_compression` to any negative value to turn off tail compression.
+6.  Specify `#_comp_tail_compression` to any negative value to turn off tail compression.
 
-6.  Specify `#_add_to_comp` to a very small number E.g `1e-005`. This specifies the value that will be added to each composition (age and length) data bins.
+7.  Specify `#_add_to_comp` to a very small number E.g `1e-005`. This specifies the value that will be added to each composition (age and length) data bins.
 
-7.  Set the length bin range method for the age composition data (used when the conditional age at length data exists) to 1, 2 or 3 in the line `#_Lbin_method` depending on the data you have or the purpose of the study.
+8.  Set the length bin range method for the age composition data (used when the conditional age at length data exists) to 1, 2 or 3 in the line `#_Lbin_method` depending on the data you have or the purpose of the study.
 
 # Setting up a new estimation model {#em-setup}
 
