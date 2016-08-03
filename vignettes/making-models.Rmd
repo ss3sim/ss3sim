@@ -102,7 +102,7 @@ this error.
 ## Control file modifications
 1. Delete the `<modelname>.ctl` file and rename `control.ss_new` to `om.ctl`. Modify this new file.
 
-2.  Specify all environmental deviates on biological parameters to be unconstrained by bounds by setting `#_env/block/dev_adjust_method` to `1`. If the method is set to `2`, parameters adjusted using environmental covariate inputs will be adjusted using a logistic transformation to ensure that the adjusted parameter will stay within the bounds of the base parameter. Comment out second line entitled `#_env/block/dev_adjust_method` underneath the section which specifies selectivity parameters. 
+2.  Specify all environmental deviates on biological parameters to be unconstrained by bounds by setting `#_env/block/dev_adjust_method` to `1`. If the method is set to `2`, parameters adjusted using environmental covariate inputs will be adjusted using a logistic transformation to ensure that the adjusted parameter will stay within the bounds of the base parameter. If it exists and is not already commented out, comment out the second line entitled `#_env/block/dev_adjust_method` underneath the section which specifies selectivity parameters. If time-varying selectivity parameters are added using the `change_tv()` function, this line will be modified by the same function.
 
 3.  Turn on recruitment deviations by specifying `#do_recdev` to `1`. Using the next two lines, specify the use of recruitment deviations to begin and end with the start and end years of the model.
 
@@ -165,7 +165,9 @@ Thus the OM needs to be adapted to create a new EM.
 
 4.  Specify `# F_Method` to `3`, which allows the model to use catches to estimate appropriate fishing mortality levels. The max harvest rate in the subsequent line will depend upon the fishing mortality levels in your simulation. An additional line must be inserted after the maximum harvest rate to specify the number of iterations used in the hybrid method from `3` to `7`.
 
-5.  Use the functions in the ss3sim package to change the estimation specification in the EM. E.g. `change_e`
+5.  If it exists and is not already commented out, comment out the second line entitled `#_env/block/dev_adjust_method` underneath the section which specifies selectivity parameters. If time-varying selectivity parameters are added using the `change_tv()` function, this line will be modified by the same function.
+
+6.  Use the functions in the ss3sim package to change the estimation specification in the EM. E.g. `change_e`
 
 ## Data file modifications
 
