@@ -141,10 +141,10 @@ change_data <- function(dat_list, outfile, fleets, years, types,
     several.ok = TRUE)
 
   ## Test for compatibility with ss3sim
-  if (dat_list$Ngenders > 1) {
-    stop(paste("_Ngenders is greater than 1 in the operating model.",
-      "change_data only works with single-gender models."))
-  }
+#   if (dat_list$Ngenders > 1) {
+#     stop(paste("_Ngenders is greater than 1 in the operating model.",
+#       "change_data only works with single-gender models."))
+#   }
 
   ## TODO: Need to do things like change age matrices?
   ## TODO: Change the data vectors if specified?
@@ -158,15 +158,17 @@ change_data <- function(dat_list, outfile, fleets, years, types,
 
   if(is.null(len_bins)) len_bins <- dat_list$lbin_vector
   if(is.null(age_bins)) age_bins <- dat_list$agebin_vector
-
+  
   ## Now modify each data type in turn
   if ("index" %in% types) {
+
     dat_list$CPUE <- make_dummy_dat_index(fleets=fleets, years=years)
     dat_list$N_cpue <- nrow(dat_list$CPUE)
   }
   if ("len" %in% types) {
+
     dat_list$lencomp <-
-      make_dummy_dat_lencomp(fleets=fleets, years=years,
+      make_dummy_dat_lencomp(fleets=fleets, years=years, ngender=dat_list$Ngenders, 
         len_bins=len_bins)
     dat_list$lbin_vector <- len_bins
     dat_list$N_lencomp <- nrow(dat_list$lencomp)
@@ -176,7 +178,7 @@ change_data <- function(dat_list, outfile, fleets, years, types,
   if ("age" %in% types) {
     conditional_data <- dat_list$agecomp[dat_list$agecomp$Lbin_lo >= 0, ]
     new.agecomp <-
-      make_dummy_dat_agecomp(fleets=fleets, years=years,
+      make_dummy_dat_agecomp(fleets=fleets, years=years, ngender=dat_list$Ngenders, 
         age_bins=age_bins)
     dat_list$agecomp <- rbind(new.agecomp, conditional_data)
     dat_list$agebin_vector <- age_bins
@@ -189,7 +191,7 @@ change_data <- function(dat_list, outfile, fleets, years, types,
   if ("cal" %in% types) {
     agecomp <- dat_list$agecomp[dat_list$agecomp$Lbin_lo < 0, ]
     new.calcomp <-
-      make_dummy_dat_calcomp(fleets=fleets, years=years,
+      make_dummy_dat_calcomp(fleets=fleets, years=years, ngender=dat_list$Ngenders, 
         age_bins=age_bins, len_bins=len_bins)
     dat_list$agecomp <- rbind(agecomp, new.calcomp)
     dat_list$agebin_vector <- age_bins
@@ -198,7 +200,7 @@ change_data <- function(dat_list, outfile, fleets, years, types,
 
   if ("mla" %in% types) {
     dat_list$MeanSize_at_Age_obs <-
-      make_dummy_dat_mlacomp(fleets = fleets, years = years, age_bins = age_bins)
+      make_dummy_dat_mlacomp(fleets = fleets, years = years,  ngender=dat_list$Ngenders, age_bins = age_bins)
     dat_list$N_MeanSize_at_Age_obs <- nrow(dat_list$MeanSize_at_Age_obs)
   }
 
@@ -314,9 +316,9 @@ check_data <- function(x) {
     stop(paste("the column *type* wasn't found in the SS3 data file;",
       "the data file should be output from r4ss::SS_readdat()"))
 
-  if (x$Ngenders > 1)
-    stop(paste("_Ngenders is greater than 1 in the operating model.",
-      "ss3sim currently only works with single-gender models."))
+#   if (x$Ngenders > 1)
+#     stop(paste("_Ngenders is greater than 1 in the operating model.",
+#       "ss3sim currently only works with single-gender models."))
 
   if (!is.null(x$lbin_method)) {
     if (x$lbin_method > 2)
@@ -329,22 +331,22 @@ check_data <- function(x) {
       "are represented in the SS3 data file. See the SS3 manual."))
   }
 
-  if (!identical(x$Nfleet, 1))
-    stop("Nfleet in the SS3 data file must be set to 1.")
-
-  if (!identical(x$Nsurveys, 2))
-    stop("Nsurveys in the SS3 data file must be set to 2.")
+#   if (!identical(x$Nfleet, 1))
+#     stop("Nfleet in the SS3 data file must be set to 1.")
+# 
+#   if (!identical(x$Nsurveys, 2))
+#     stop("Nsurveys in the SS3 data file must be set to 2.")
 
   if (!identical(x$N_areas, 1))
     stop("N_areas in the SS3 data file must be set to 1.")
+# 
+#   if (!identical(x$fleetnames, c("Fishery", "Survey", "CPUE")))
+#     stop("Fleet names in the SS3 data file must be Fishery%Survey%CPUE")
 
-  if (!identical(x$fleetnames, c("Fishery", "Survey", "CPUE")))
-    stop("Fleet names in the SS3 data file must be Fishery%Survey%CPUE")
-
-  if (!identical(x$surveytiming, c(0.5, 0.5, 0.5)))
+  if (!identical(x$surveytiming, c(0.5, 0.5, 0.5, 0.5, 0.5)))
     stop("_surveytiming_in_season must be set to 0.5 for all fleets.")
 
-  if (!identical(x$areas, c(1, 1, 1)))
+  if (!identical(x$areas, c(1, 1, 1, 1, 1)))
     stop(paste("_area_assignments_for_each_fishery_and_survey must be set to 1",
       "for all fleets in the SS3 data file."))
 
