@@ -32,6 +32,7 @@ sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
     ## those are already sampled from, or might be sampled later so need to
     ## leave them there.
     ## Input checks
+
     Nfleets <- NROW(fleets)
     if (Nfleets>0){
         for(i in 1:Nfleets){
@@ -89,6 +90,7 @@ sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
             stop(paste("A year specified in years was not found in the",
                        "input file for fleet", fl))
         ## Only loop through the subset of years for this fleet
+
         for(yr in years[[i]]) {
             newcomp <- agecomp.cal.fl[agecomp.cal.fl$Yr==yr, ]
             if(nrow(newcomp) != length(lbin_vector))
@@ -132,6 +134,7 @@ sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
         ## length bin and sample # fish in each age bin, given expected
         ## conditional age-at-length
         newcomp$Nsamp <- Nsamp.ages.per.lbin
+  
         for(ll in 1:nrow(newcomp)){
             N.temp <- newcomp$Nsamp[ll]
             if(N.temp>0){

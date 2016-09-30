@@ -188,6 +188,7 @@ change_data <- function(dat_list, outfile, fleets, years, types,
   ## If we don't use this structure to get expected value we don't need
   ## to print them, so don't need it. TODO check this is right. It can
   ## seriously slow down the OM to write uncessary calcomp data.
+
   if ("cal" %in% types) {
     agecomp <- dat_list$agecomp[dat_list$agecomp$Lbin_lo < 0, ]
     new.calcomp <-

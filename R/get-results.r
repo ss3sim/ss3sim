@@ -141,6 +141,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         }
         ts.list <- scalar.list <- dq.list <- list()
         flag.na <- rep(0, length(scenarios))
+
         for(i in 1:length(scenarios)){
             scalar.file <- paste0(scenarios[i],"/results_scalar_",scenarios[i],".csv")
             ts.file <- paste0(scenarios[i],"/results_ts_",scenarios[i],".csv")
@@ -334,7 +335,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
             names(derived.om) <- paste0(names(derived.om), "_om")
             derived.em <- get_results_derived(report.em)
             names(derived.em) <- paste0(names(derived.em), "_em")
-
+            
             ## Combine them together and massage a bit
             scalar <- cbind(scalar.om, scalar.em, t(bias))
             ts <- cbind(timeseries.om, timeseries.em)
@@ -431,10 +432,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
 #' @family get-results
 #' @author Cole Monnahan
 get_results_timeseries <- function(report.file){
-    years <- report.file$startyr:(report.file$endyr +
-                                  ifelse(is.na(report.file$nforecastyears) ==
-                                      TRUE, 0,
-                                         report.file$nforecastyears))
+    years <- report.file$startyr:(report.file$endyr)
     xx <- subset(report.file$timeseries,
                  select=c("Yr","SpawnBio", "Recruit_0", "F:_1"))
     xx <- xx[xx$Yr %in% years,]

@@ -40,25 +40,53 @@
 #' par_file, par_file_out = paste0(temp_path, "/test.par"))
 #' @export
 
-change_f <- function(years, years_alter, fvals, par_file_in = "ss3.par",
+change_f <- function(years, years_alter, fvals, nFleets = 1, par_file_in = "ss3.par",
   par_file_out = "ss3.par") {
-
-  n.years_alter <- length(years_alter)
-
-  # Check that sufficient F values are supplied
-  if(n.years_alter != length(fvals)) {
-    stop(paste('#ERROR: Number of years to alter:', n.years_alter,
-        'Does NOT equal length of supplied Fvalues:', length(fvals)))
-  }
 
   # Read in ss3.par file
   ss3.par <- readLines(par_file_in) # Original
   ss3.par.new <- ss3.par # New file
+  
+  if(nFleets > 1){
+    #Allocate vector of fleets
+    n.years_alter = rep(0, nFleets)
+    for(i in 1:nFleets){
+      n.years_alter[i] <- length(years_alter[[i]])
+      
+      # Check that sufficient F values are supplied
+      if(n.years_alter[i] != length(fvals[[i]])) {
+        stop(paste('#ERROR: Number of years to alter:', n.years_alter[i],
+                   'for fleet: ', i,
+                   'Does NOT equal length of supplied Fvalues:', length(fvals[[i]])))
+      }
+      
+      for(y in 1:n.years_alter[i]) {
+        temp.year <- which(years[[i]] == years_alter[[i]][y])
+        temp.loc <- which(ss3.par == paste('# F_rate[', temp.year, ']:', sep=''))
+        #temp.loc will have length 1 if one fleet only fishes in that year, otherwise         #>1
+        if(length(temp.loc)>1){
+          ss3.par.new[temp.loc[i]+1] <- fvals[[i]][y]
+        } else{
+          ss3.par.new[temp.loc+1] <- fvals[[i]][y]
+        }
 
-  for(y in 1:n.years_alter) {
-  	temp.year <- which(years == years_alter[y])
-    temp.loc <- which(ss3.par == paste('# F_rate[', temp.year, ']:', sep=''))
-    ss3.par.new[temp.loc+1] <- fvals[y]
+      }
+      
+    }
+  } else{
+    n.years_alter <- length(years_alter)
+    
+    # Check that sufficient F values are supplied
+    if(n.years_alter != length(fvals)) {
+      stop(paste('#ERROR: Number of years to alter:', n.years_alter,
+                 'Does NOT equal length of supplied Fvalues:', length(fvals)))
+    }
+    
+    for(y in 1:n.years_alter) {
+      temp.year <- which(years == years_alter[y])
+      temp.loc <- which(ss3.par == paste('# F_rate[', temp.year, ']:', sep=''))
+      ss3.par.new[temp.loc+1] <- fvals[y]
+    }
   }
 
   # Write new .par file

@@ -199,7 +199,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
   for(sc in scenarios) {
     for(i in iterations) {
-
       # Create folders, copy models, check for necessary files, rename
       # files for consistency
       copy_ss3models(model_dir = om_dir, scenarios = sc,
@@ -249,12 +248,14 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       # Change F
       #Make change F optional
+
       if(!is.null(f_params)){
-      f_params <- add_nulls(f_params, c("years", "years_alter", "fvals"))
+      f_params <- add_nulls(f_params, c("years", "years_alter", "fvals", "nFleets"))
       with(f_params,
         change_f(years               = years,
                  years_alter         = years_alter,
                  fvals               = fvals,
+                 nFleets             = nFleets,
                  par_file_in         = pastef(sc, i, "om", "ss3.par"),
                  par_file_out            = pastef(sc, i, "om", "ss3.par")))
       }
@@ -265,6 +266,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
           stop(paste0("The data.ss_new not created in *first* OM run for ",
                      sc, "-",i, ": is something wrong with initial model files?"))
+ 
       extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
         data_out = pastef(sc, i, "om", "ss3.dat"))
       # Remove the ss_new file in case the next run doesn't work we can tell
@@ -303,7 +305,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         # doesn't trip up change_data:
         datfile.orig <- clean_data(dat_list = datfile.orig,
           index_params = index_params, verbose = FALSE)
-
         data_params <- add_nulls(data_params, c("age_bins", "len_bins",
           "pop_binwidth", "pop_minimum_size", "pop_maximum_size",
           "tail_compression", "lcomp_constant"))
