@@ -79,6 +79,10 @@ You will see an error by ADMB that it cannot find the data file because we
 have specified a different file in the starter file. You can safely ignore
 this error.
 
+## Forecast file modifications
+
+- If `# Do West Coast gfish rebuilder output (0/1)` is set to 1, set it to 0. Comment out lines below specifying the years of the rebuilder.
+
 ## Starter file modifications
 
 - Delete the `starter.ss` file and rename `starter.ss_new` to `starter.ss`. Modify this new file.
