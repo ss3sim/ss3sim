@@ -201,6 +201,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     for(i in iterations) {
       # Create folders, copy models, check for necessary files, rename
       # files for consistency
+      browser()
       copy_ss3models(model_dir = om_dir, scenarios = sc,
         iterations = i, type = "om")
       iteration_existed <- copy_ss3models(model_dir = em_dir, scenarios = sc,
@@ -248,7 +249,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       # Change F
       #Make change F optional
-
+browser()
       if(!is.null(f_params)){
       f_params <- add_nulls(f_params, c("years", "years_alter", "fvals", "nFleets"))
       with(f_params,

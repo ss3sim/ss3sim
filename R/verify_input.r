@@ -36,7 +36,7 @@
 #' unlink(temp_path, recursive = TRUE)
 
 verify_input <- function(model_dir, type = c("om", "em")) {
-
+browser()
   if (type != "om" & type != "em") {
     stop(paste("Misspecification of \"type\", read as:", type,
         "-should be either \"om\" or \"em\""))
