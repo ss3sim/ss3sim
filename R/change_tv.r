@@ -70,6 +70,8 @@
 #' \code{function_type; change_tv} in your case file. For example, you might
 #' want to use M for natural mortality, S for selectivity, or G for growth.
 #'
+#' @importFrom r4ss SS_readstarter SS_writestarter
+#'
 #' @export
 #'
 #' @examples
@@ -113,7 +115,7 @@ change_tv <- function(change_tv_list,
 
   ss3.ctl    <- readLines(con = ctl_file_in)
   ss3.dat    <- readLines(con = dat_file_in)
-  ss3.starter<- readLines(con = str_file_in)
+  ss3.starter<- SS_readstarter(file = str_file_in, verbose = FALSE)
   ss3.report <- readLines(con = rpt_file_in)
 
   year.beg <- grep("#_styr",  ss3.dat, value = TRUE )
@@ -405,13 +407,12 @@ for(i in seq_along(temp.data)) {
 
     #run SS with with no estimation and no hessian
     #first change starter file option to use .par to .ctl
-    usepar.ch <- grep("# 0=use init values in control file; 1=use ss3.par",
-                      ss3.starter, fixed=TRUE)
-
-    ss3.starter[usepar.ch] <- "0 # 0=use init values in control file; 1=use ss3.par"
-    ss3.starter[usepar.ch-2] <- dat_file_out
-    ss3.starter[usepar.ch-1] <- ctl_file_out
-    writeLines(ss3.starter, con = str_file_out)
+    ss3.starter$init_values_src <- 0
+    ss3.starter$datfile <- basename(dat_file_out)
+    ss3.starter$ctlfile <- basename(ctl_file_out)
+    SS_writestarter(mylist = ss3.starter,
+      dir = dirname(str_file_out), file = basename(str_file_out),
+      overwrite = TRUE, verbose = FALSE, warn = FALSE)
 
     bin <- get_bin(ss_bin)
 
@@ -424,8 +425,10 @@ for(i in seq_along(temp.data)) {
       }
 
     #Change starter file option back to using .par!
-    ss3.starter[usepar.ch] = "1 # 0=use init values in control file; 1=use ss3.par"
-    writeLines(ss3.starter, con = str_file_out)
+    ss3.starter$init_values_src <- 1
+    SS_writestarter(mylist = ss3.starter,
+      dir = dirname(str_file_out), file = basename(str_file_out),
+      overwrite = TRUE, verbose = FALSE, warn = FALSE)
 
   ss3.report <- readLines(con = rpt_file_in)
   ss3.par    <- readLines(con = par_file_in)

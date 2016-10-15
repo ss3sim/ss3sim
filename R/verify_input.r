@@ -17,6 +17,9 @@
 #'   \code{.ctl}, \code{.dat}, files etc.
 #' @param type One of "om" or "em" for operating or estimating model.
 #' @export
+#'
+#' @importFrom r4ss SS_readstarter SS_writestarter
+#'
 #' @examples
 #' # Create a temporary folder for the output:
 #' temp_path <- file.path(tempdir(), "ss3sim-verify-example")
@@ -97,15 +100,13 @@ verify_input <- function(model_dir, type = c("om", "em")) {
         paste0(model_dir, "/ss3.dat"))
     }
     # Alter the starter.ss file
-    starter.ss <- readLines(paste0(model_dir, "/starter.ss"))
-    line.dat <- grep(".dat", starter.ss, ignore.case = TRUE)[1]
-    starter.ss[line.dat] <- "ss3.dat"
-    line.ctl <- grep(".ctl", starter.ss, ignore.case = TRUE)[1]
-    starter.ss[line.ctl] <- ctl_name
+    starter.ss <- SS_readstarter(file = paste0(model_dir, "/starter.ss"),
+      verbose = FALSE)
+    starter.ss$datfile <- "ss3.dat"
+    starter.ss$ctlfile <- ctl_name
     # Write new starter.ss
-    file.ext <- file(paste0(model_dir, "/starter.ss"))
-    writeLines(starter.ss, file.ext)
-    close(file.ext)
+    SS_writestarter(mylist = starter.ss, dir = model_dir,
+      file = "starter.ss", overwrite = TRUE, verbose = FALSE, warn = FALSE)
     # Alter the .ctl file
     ctl <- readLines(paste0(model_dir, "/", ctl_name))
     ctl.line <- grep("data_and_control_files", ctl, ignore.case = TRUE)
