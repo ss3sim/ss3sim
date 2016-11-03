@@ -47,7 +47,7 @@ change_f <- function(years, years_alter, fvals, nFleets = 1, par_file_in = "ss3.
   ss3.par <- readLines(par_file_in) # Original
   ss3.par.new <- ss3.par # New file
   
-  if(nFleets > 1){
+  if(!is.na(nFleets)){
     #Allocate vector of fleets
     n.years_alter = rep(0, nFleets)
     for(i in 1:nFleets){

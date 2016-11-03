@@ -126,7 +126,6 @@ change_tv <- function(change_tv_list,
    # sr = Stock recruit parameters
    # qs = Catchability paramaters
    # sx = Selectivity parameters
-
   baseom.tv <- grep("_ENV", ss3.report, value = TRUE)
   baseom.tv <- sapply(baseom.tv, function(x) {
                         temp <- strsplit(x, "_ENV")[[1]][1]
@@ -258,6 +257,7 @@ the .ctl file and change it to 1 #_env/block/dev_adjust_method.")
   }
 
   temp.data <- change_tv_list[lab == "mg" | lab == "sx"]
+
 for(i in seq_along(temp.data)) {
   dat.varnum.counter <- dat.varnum.counter + 1
   par.ch <- grep(names(temp.data)[i], ss3.ctl, fixed = TRUE)[1]

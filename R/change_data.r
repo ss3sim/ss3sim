@@ -344,10 +344,10 @@ check_data <- function(x) {
 #   if (!identical(x$fleetnames, c("Fishery", "Survey", "CPUE")))
 #     stop("Fleet names in the SS3 data file must be Fishery%Survey%CPUE")
 
-  if (!identical(x$surveytiming, c(0.5, 0.5, 0.5, 0.5, 0.5)))
+  if (!all(x$surveytiming==0.5))
     stop("_surveytiming_in_season must be set to 0.5 for all fleets.")
 
-  if (!identical(x$areas, c(1, 1, 1, 1, 1)))
+  if (!all(x$areas==1))
     stop(paste("_area_assignments_for_each_fishery_and_survey must be set to 1",
       "for all fleets in the SS3 data file."))
 
