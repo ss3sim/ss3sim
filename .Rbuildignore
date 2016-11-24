@@ -22,3 +22,4 @@
 ^tests-extra/*
 ^cran-comments\.md$
 tags
+^README.Rmd$
