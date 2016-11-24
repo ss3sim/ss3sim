@@ -22,10 +22,7 @@ r_check_args: "--as-cran"
 r_binary_packages:
   - foreach
   - plyr
-  - r4ss
   - gtools
   - lubridate
   - ggplot2
-  - bbmle
   - dplyr
-  - magrittr
