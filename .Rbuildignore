@@ -23,3 +23,4 @@
 ^cran-comments\.md$
 tags
 ^README.Rmd$
+^appveyor\.yml$
