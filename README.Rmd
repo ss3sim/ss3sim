@@ -45,6 +45,7 @@ Or, install the development version from GitHub:
 
 ```R
 # install.packages("devtools")
+devtools::install_github("hadley/devtools", force = TRUE)
 devtools::install_github("ss3sim/ss3sim") # without vignettes (faster)
 devtools::install_github("ss3sim/ss3sim", build_vignettes = TRUE) # with vignettes
 ```
