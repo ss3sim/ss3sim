@@ -1,3 +1,10 @@
+# ss3sim 0.9.3
+
+* Fix LICENSE for CRAN
+* Update author list 
+* Incorporate @cstawitz's additions to the `making-models` vignette
+* Fixes to executable locating for Windows
+
 # ss3sim 0.9.2
 
 * Revise package description 
