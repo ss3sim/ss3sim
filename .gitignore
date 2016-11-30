@@ -32,3 +32,5 @@ inst/doc
 vignettes/introduction_cache/
 vignettes/introduction_files/
 inst/doc/
+.DS_Store
+
