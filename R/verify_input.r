@@ -94,7 +94,7 @@ verify_input <- function(model_dir, type = c("om", "em")) {
     file.rename(from = paste0(model_dir, "/", files[file.loc$f.ctl][1]), to =
       paste0(model_dir, "/", ctl_name))
     if(type == "om") {
-      file.rename(from = paste0(model_dir, "/", files[file.loc$f.dat]), to =
+      file.rename(from = paste0(model_dir, "/", files[file.loc$f.dat][1]), to =
         paste0(model_dir, "/ss3.dat"))
     }
     # Alter the starter.ss file

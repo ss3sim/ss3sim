@@ -249,13 +249,14 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       # Change F
       #Make change F optional
+
       if(!is.null(f_params)){
       f_params <- add_nulls(f_params, c("years", "years_alter", "fvals", "nFleets"))
       with(f_params,
         change_f(years               = years,
                  years_alter         = years_alter,
                  fvals               = fvals,
-                 #nFleets             = nFleets,
+                 nFleets             = nFleets,
                  par_file_in         = pastef(sc, i, "om", "ss3.par"),
                  par_file_out            = pastef(sc, i, "om", "ss3.par")))
       }
