@@ -7,6 +7,7 @@ file should only have two lines).
 * local macOS 10.12 install, R 3.3.2
 * Ubuntu 12.04.5 (on travis-ci), R devel
 * Windows (on appveyor), R 3.3.2
+* Windows (win-builder), R devel
 
 ## R CMD check results
 There were no ERRORs or WARNINGs. There was 1 NOTE:
