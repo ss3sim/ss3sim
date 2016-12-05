@@ -124,6 +124,11 @@ Example output from an ss3sim simulation. This example shows a crossed simulatio
 
 ## Papers published using ss3sim
 
+Stewart, I.J., C.C. Monnahan. 2016. Implications of process error in selectivity for approaches
+to weighting compositional data in fisheries stock assessments. Fisheries Research. In press.
+http://dx.doi.org/10.1016/j.fishres.2016.06.018. 
+([code repository](https://github.com/ss3sim/procdata)).
+
 Johnson, K.F., E. Councill, J.T. Thorson, E. Brooks, R.D. Methot, and A.E.
 Punt. 2016. Can autocorrelated recruitment be estimated using integrated
 assessment models and how does it affect population forecasts? Fisheries

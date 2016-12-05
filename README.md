@@ -101,6 +101,8 @@ Example output from an ss3sim simulation. This example shows a crossed simulatio
 Papers published using ss3sim
 -----------------------------
 
+Stewart, I.J., C.C. Monnahan. 2016. Implications of process error in selectivity for approaches to weighting compositional data in fisheries stock assessments. Fisheries Research. In press. <http://dx.doi.org/10.1016/j.fishres.2016.06.018>. ([code repository](https://github.com/ss3sim/procdata)).
+
 Johnson, K.F., E. Councill, J.T. Thorson, E. Brooks, R.D. Methot, and A.E. Punt. 2016. Can autocorrelated recruitment be estimated using integrated assessment models and how does it affect population forecasts? Fisheries Research 183:222–232. <http://doi.org/10.1016/j.fishres.2016.06.004>. ([code repository](https://github.com/kellijohnson/AR-perf-testing)).
 
 Kuriyama, P. T., K. Ono, F. Hurtado-Ferro, A. C. Hicks, I. G. Taylor, R. R. Licandeo, K. F. Johnson, S. C. Anderson, C. C. Monnahan, M. B. Rudd, C. C. Stawitz, and J. L. Valero. 2016. An empirical weight-at-age approach reduces estimation bias compared to modeling parametric growth in integrated, statistical stock assessment models when growth is time varying. Fisheries Research. 180:119–127. <http://doi.org/10.1016/j.fishres.2015.09.007>. ([code repository](https://github.com/ss3sim/Empirical)).
