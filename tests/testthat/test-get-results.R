@@ -31,6 +31,13 @@ test_that("get_results_all() doesn't overwrite files if overwrite_files = FALSE"
   fake_ss3sim_scalar <- read.csv("ss3sim_scalar.csv") # should be fake data
   # TODO: failing:
   # expect_true(identical(1L, ncol(fake_ss3sim_scalar)))
+
+  d <- read.csv("D0-F0-cod/results_scalar_D0-F0-cod.csv")
+  d$TotYield_MSY_om <- 3.141592
+  write.csv(d, "D0-F0-cod/results_scalar_D0-F0-cod.csv", row.names = FALSE)
+  get_results_all(overwrite_files = FALSE)
+  d <- read.csv("ss3sim_scalar.csv")
+  expect_identical(d$TotYield_MSY_om, 3.141592)
 })
 
 test_that("get_results_scenario() doesn't overwrite files if overwrite_files = FALSE", {
