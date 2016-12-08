@@ -1453,10 +1453,10 @@ Note that if the simulation aborts for any reason while `run_ss3sim` is running
 in parallel, you may need to abort the left over parallel processes. On Windows,
 open the task manager (Ctrl-Shift-Esc) and close any R processes.
 On a Mac, open Activity Monitor and force quit any R processes.
-Also, if you are working with a development version of `ss3sim` i.e.,
-`devtools::load_all()` or `devtools::install_()`
+Also, if you are working with a local development version of `ss3sim`
 and you are on a Windows machine, you may not be able to run in parallel 
-without building the package, restarting `R`, and installing the local build. 
+if you load the package with `devtools::load_all()`. 
+Instead, do a full install with `devtools::install()` (and potentially restart R if ss3sim was already loaded).
 
 # Putting SS3 in your path {#path}
 
