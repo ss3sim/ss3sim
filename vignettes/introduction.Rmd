@@ -1143,7 +1143,7 @@ The package also currently allows for specifying the effective
 sample sizes separately from the sample sizes (see below).
 See the function documentation for `sample_agecomp` and `sample_lcomp` for more detail.
 
-Here we describe the implementation of the Dirichlet distribution utilized
+Here we describe the implementation of the Dirichlet distribution used
 in the package. This distribution has the same range and mean, but a
 different variance controlled by a parameter (the variance is determined
 exclusively by the cell probabilities and sample size n the multinomial)
