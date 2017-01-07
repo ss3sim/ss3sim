@@ -1,5 +1,5 @@
 
-compare_dists <- function(nsamp = 100, cpar = 1, nyears = 1000, nsamp_same = FALSE) {
+compare_dists <- function(nsamp = 100, cpar = 1, nyears = 100, nsamp_same = FALSE) {
 
   probs <- rbeta(nyears, 3, 2)
   d <- gtools::rdirichlet(1, probs * (nsamp / cpar ^ 2 - 1))
