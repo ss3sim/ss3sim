@@ -1,8 +1,8 @@
 Package: ss3sim
 Type: Package
 Title: Fisheries Stock Assessment Simulation Testing with Stock Synthesis
-Version: 0.9.3
-Date: 2016-11-29
+Version: 0.9.3.9001
+Date: 2017-03-29
 Authors@R: c(person("Sean", "Anderson", email =
     "sean@seananderson.ca", role = c("aut", "cre")),
     person("Cole", "Monnahan", role = "aut"),
@@ -29,7 +29,8 @@ LazyData: true
 Suggests:
     knitr,
     doParallel,
-    reshape2
+    reshape2,
+    rmarkdown
 VignetteBuilder: knitr
 Depends:
     R (>= 3.3.1)
