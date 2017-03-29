@@ -67,6 +67,7 @@ is not specified in a case file, then a value of \code{NULL} will be passed,
 which may or may not be an appropriate value. Other arguments will be ignored
 if specified.
 }
+
 \examples{
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/models/cod-om/codOM.dat")
@@ -114,10 +115,6 @@ par(op)
 }
 
 }
-\author{
-Cole Monnahan and Kotaro Ono; modified from a version by Roberto
-  Licandeo and Felipe Hurtado-Ferro
-}
 \seealso{
 Other sampling functions: \code{\link{clean_data}},
   \code{\link{sample_agecomp}},
@@ -125,4 +122,7 @@ Other sampling functions: \code{\link{clean_data}},
   \code{\link{sample_mlacomp}},
   \code{\link{sample_wtatage}}
 }
-
+\author{
+Cole Monnahan and Kotaro Ono; modified from a version by Roberto
+  Licandeo and Felipe Hurtado-Ferro
+}

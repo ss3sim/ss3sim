@@ -29,4 +29,3 @@ will later be used in a \pkg{ss3sim} simulation.
 case_index(fleets = 2, case = 1, spp = "cod", years = list(7:10), sd = 0.1)
 done <- file.remove("index1-cod.txt")
 }
-

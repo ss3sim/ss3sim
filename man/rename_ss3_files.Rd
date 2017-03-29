@@ -20,4 +20,3 @@ Rename SS3-version-specific files
 \author{
 Sean C. Anderson
 }
-

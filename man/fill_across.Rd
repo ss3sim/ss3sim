@@ -17,11 +17,10 @@ fill_across(mat, minYear, maxYear)
 Function that fills in matrix across rows of wtatage data by interpolation
 Missing Rows are then backfilled
 }
-\author{
-Peter Kuriyama and Allan Hicks
-}
 \seealso{
 \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}},
   \code{\link{fill_across}}
 }
-
+\author{
+Peter Kuriyama and Allan Hicks
+}

@@ -51,4 +51,3 @@ fmsy.val <- profile_fmsy(om_in = omfolder, results_out = "fmsy",
   start = 0.1, end = 0.2, by_val = 0.05)
 }
 }
-

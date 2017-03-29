@@ -174,12 +174,11 @@ unlink("D0-F0-cod", recursive = TRUE)
 setwd(wd)
 }
 }
-\author{
-Sean C. Anderson
-}
 \seealso{
 \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
 \code{\link{run_bias_ss3}}, \code{\link{get_caseargs}},
 \code{\link{expand_scenarios}}
 }
-
+\author{
+Sean C. Anderson
+}

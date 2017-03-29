@@ -13,4 +13,3 @@ get_bin_info(dat)
 This function organizes arguments for other functions needed by 
 \code{change_bin}.
 }
-

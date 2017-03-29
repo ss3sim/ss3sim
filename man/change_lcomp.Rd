@@ -14,4 +14,3 @@ change_lcomp(...)
 \code{\link{sample_lcomp}} instead. \code{change_lcomp} will be removed
 in the next major version.
 }
-

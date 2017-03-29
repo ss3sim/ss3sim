@@ -213,11 +213,10 @@ unlink("D1-E0-F0-M0-cod", recursive = TRUE) # clean up
 setwd(wd)
 }
 }
+\seealso{
+\code{\link{run_ss3sim}}
+}
 \author{
 Sean Anderson with contributions from many others as listed in
   the DESCRIPTION file.
 }
-\seealso{
-\code{\link{run_ss3sim}}
-}
-

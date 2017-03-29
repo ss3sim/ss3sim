@@ -34,6 +34,7 @@ is not specified in a case file, then a value of \code{NULL} will be passed,
 which may or may not be an appropriate value. Other arguments will be ignored
 if specified.
 }
+
 \examples{
 # Create a temporary folder for the output:
 temp_path <- file.path(tempdir(), "ss3sim-maturity-example")
@@ -51,13 +52,12 @@ change_maturity(ctlfile, "test.ctl", maturity_option = 5L)
 unlink("test.ctl")
 setwd(wd)
 }
-\author{
-Sean C. Anderson
-}
 \seealso{
 Other change functions: \code{\link{change_data}},
   \code{\link{change_em_binning}}, \code{\link{change_e}},
   \code{\link{change_f}}, \code{\link{change_retro}},
   \code{\link{change_tv}}
 }
-
+\author{
+Sean C. Anderson
+}

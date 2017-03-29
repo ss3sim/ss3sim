@@ -68,9 +68,7 @@ is not specified in a case file, then a value of \code{NULL} will be passed,
 which may or may not be an appropriate value. Other arguments will be ignored
 if specified.
 }
-\author{
-Cole Monnahan, Allan Hicks, Peter Kuriyama
-}
+
 \seealso{
 \code{\link{fill_across}}
 
@@ -79,4 +77,6 @@ Other sampling functions: \code{\link{clean_data}},
   \code{\link{sample_calcomp}}, \code{\link{sample_index}},
   \code{\link{sample_lcomp}}, \code{\link{sample_mlacomp}}
 }
-
+\author{
+Cole Monnahan, Allan Hicks, Peter Kuriyama
+}

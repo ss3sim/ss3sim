@@ -32,4 +32,3 @@ names(dat_fixed$MeanSize_at_Age_obs)[3] == "FltSvy"
 \author{
 Kelli Johnson
 }
-

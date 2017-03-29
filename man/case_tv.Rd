@@ -60,4 +60,3 @@ unlink(temp_path, recursive = TRUE)
 \author{
 Peter Kuriyama
 }
-

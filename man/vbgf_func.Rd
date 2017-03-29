@@ -25,4 +25,3 @@ a vector of lengths predicted which correspond to the input ages
 \description{
 External estimation procedure for von Bertalanffy growth.
 }
-

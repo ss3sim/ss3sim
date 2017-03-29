@@ -43,9 +43,6 @@ have had leftover data from sampling purposes. See examples in
 \note{
 This function does not write the result to file.
 }
-\author{
-Cole Monnahan
-}
 \seealso{
 calculate_data_units, change_data
 
@@ -54,4 +51,6 @@ Other sampling functions: \code{\link{sample_agecomp}},
   \code{\link{sample_lcomp}}, \code{\link{sample_mlacomp}},
   \code{\link{sample_wtatage}}
 }
-
+\author{
+Cole Monnahan
+}

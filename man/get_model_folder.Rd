@@ -23,4 +23,3 @@ configurations.
 \examples{
 get_model_folder("cod-em")
 }
-

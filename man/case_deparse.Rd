@@ -19,4 +19,3 @@ Turn an argument describing an object into a character.
 \details{
 Includes checks to make sure multiple lines will not be created.
 }
-

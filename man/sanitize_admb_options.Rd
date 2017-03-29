@@ -19,4 +19,3 @@ be
 \author{
 Sean C. Anderson
 }
-

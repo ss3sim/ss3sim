@@ -58,10 +58,9 @@ unlink("ss3sim_ts.csv", recursive = TRUE)
 unlink("ss3sim_scalar.csv", recursive = TRUE)
 }
 }
-\author{
-Sean Anderson and Cole Monnahan
-}
 \seealso{
 \code{\link{get_results_all}}, \code{link{get_results_scenario}}
 }
-
+\author{
+Sean Anderson and Cole Monnahan
+}

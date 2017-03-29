@@ -14,4 +14,3 @@ files in the package \code{extdata} folder.
 This function is used by some developers of \pkg{ss3sim} for simulations. This
 function links to the "cases" folder in \code{extdata}.
 }
-

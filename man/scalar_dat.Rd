@@ -8,4 +8,3 @@
 Example scalar data from the ss3sim vignette
 }
 \keyword{data}
-

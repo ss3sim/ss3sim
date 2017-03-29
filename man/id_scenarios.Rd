@@ -19,4 +19,3 @@ Identify ss3sim scenarios within a directory
 \author{
 Merrill Rudd
 }
-

@@ -41,13 +41,12 @@ run_ss3sim(iterations = 1:2, scenarios =
 get_results_scenario(c("D0-F0-G0-S0-cod"))
 }
 }
-\author{
-Cole Monnahan
-}
 \seealso{
 Other get-results: \code{\link{get_results_all}},
   \code{\link{get_results_derived}},
   \code{\link{get_results_scalar}},
   \code{\link{get_results_timeseries}}
 }
-
+\author{
+Cole Monnahan
+}

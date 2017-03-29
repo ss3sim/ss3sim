@@ -74,6 +74,7 @@ is not specified in a case file, then a value of \code{NULL} will be passed,
 which may or may not be an appropriate value. Other arguments will be ignored
 if specified.
 }
+
 \examples{
 temp_path <- file.path(tempdir(), "ss3sim-test")
 dir.create(temp_path, showWarnings = FALSE)
@@ -96,13 +97,12 @@ setwd("..")
 unlink("ss3sim-test", recursive = TRUE)
 setwd(wd)
 }
-\author{
-Cole Monnahan, Kelli Johnson
-}
 \seealso{
 Other sampling functions: \code{\link{clean_data}},
   \code{\link{sample_agecomp}},
   \code{\link{sample_calcomp}}, \code{\link{sample_index}},
   \code{\link{sample_lcomp}}, \code{\link{sample_wtatage}}
 }
-
+\author{
+Cole Monnahan, Kelli Johnson
+}

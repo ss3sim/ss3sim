@@ -12,4 +12,3 @@ check_data(x)
 \description{
 Check that the SS3 data file looks correct
 }
-

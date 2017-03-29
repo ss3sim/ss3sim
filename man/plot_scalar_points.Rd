@@ -69,6 +69,7 @@ valid argument. The ts point and line plots are grouped internally by
  These functions print the \code{ggplot} object, but
 also return it invisibly for saving or printing again later.
 }
+
 \examples{
 scalar_dat$depletion <- with(scalar_dat,
   (depletion_om - depletion_em) / depletion_om)
@@ -78,4 +79,3 @@ plot_scalar_points(scalar_dat, x = "E", y = "depletion", horiz = 'D',
 \author{
 Cole Monnahan
 }
-

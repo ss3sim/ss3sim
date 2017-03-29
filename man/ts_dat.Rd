@@ -8,4 +8,3 @@
 Example time series data from the ss3sim vignette
 }
 \keyword{data}
-

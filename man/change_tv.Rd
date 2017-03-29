@@ -103,6 +103,7 @@ not used elsewhere (anything but D, E, F, or R) and (2) include the line
 \code{function_type; change_tv} in your case file. For example, you might
 want to use M for natural mortality, S for selectivity, or G for growth.
 }
+
 \examples{
 \dontrun{
 # Create a temporary folder for the output and set the working directory:
@@ -132,13 +133,12 @@ unlink("Simple")
 setwd(wd)
 }
 }
-\author{
-Kotaro Ono, Carey McGilliard, and Kelli Johnson
-}
 \seealso{
 Other change functions: \code{\link{change_data}},
   \code{\link{change_em_binning}}, \code{\link{change_e}},
   \code{\link{change_f}}, \code{\link{change_maturity}},
   \code{\link{change_retro}}
 }
-
+\author{
+Kotaro Ono, Carey McGilliard, and Kelli Johnson
+}

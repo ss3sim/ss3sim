@@ -56,4 +56,3 @@ unlink("D2-F0-testing", recursive = TRUE)
 \author{
 Sean Anderson, Kelli Johnson
 }
-

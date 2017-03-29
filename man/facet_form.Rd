@@ -29,4 +29,3 @@ plotting functions.
 \author{
 Cole Monnahan
 }
-

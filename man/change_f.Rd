@@ -47,6 +47,7 @@ is not specified in a case file, then a value of \code{NULL} will be passed,
 which may or may not be an appropriate value. Other arguments will be ignored
 if specified.
 }
+
 \examples{
 # Create a temporary folder for the output:
 temp_path <- file.path(tempdir(), "ss3sim-f-example")
@@ -59,13 +60,12 @@ par_file <- paste0(d, "/change_f/ss3.par")
 change_f(years = 1:49, years_alter = 2, fvals = 9999, par_file_in =
 par_file, par_file_out = paste0(temp_path, "/test.par"))
 }
-\author{
-Curry James Cunningham
-}
 \seealso{
 Other change functions: \code{\link{change_data}},
   \code{\link{change_em_binning}}, \code{\link{change_e}},
   \code{\link{change_maturity}},
   \code{\link{change_retro}}, \code{\link{change_tv}}
 }
-
+\author{
+Curry James Cunningham
+}

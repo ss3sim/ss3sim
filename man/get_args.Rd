@@ -14,4 +14,3 @@ get_args(file)
 Take a csv file, read it, and turn the first column into the list
 names and the second column into the list values.
 }
-

@@ -17,4 +17,3 @@ INIT value for sigmaR (recruitment deviations sigma)
 \author{
 Kelli Johnson
 }
-

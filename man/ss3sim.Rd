@@ -102,4 +102,3 @@ function documentation and all contributors are listed in the
 If you use \pkg{ss3sim} in a publication, please cite the package as
 indicated by running \code{citation("ss3sim")} in the \R console.
 }
-

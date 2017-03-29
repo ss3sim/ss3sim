@@ -59,6 +59,7 @@ valid argument. The ts point and line plots are grouped internally by
  These functions print the \code{ggplot} object, but
 also return it invisibly for saving or printing again later.
 }
+
 \examples{
 \dontrun{
 ts_dat$SpawnBio <- with(ts_dat, (SpawnBio_om-SpawnBio_em)/SpawnBio_om)
@@ -71,4 +72,3 @@ plot_ts_boxplot(ts_dat, y = "SpawnBio", horiz = "D", vert = "E",
 \author{
 Cole Monnahan
 }
-

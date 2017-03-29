@@ -28,10 +28,9 @@ expand_scenarios()
 expand_scenarios(cases = list(D = 0:3, E = 0, F = 0, M = 0, R = 0),
 species = "cod")
 }
-\author{
-Cole Monnahan and Sean Anderson
-}
 \seealso{
 \code{\link{run_ss3sim}}, \code{\link{get_results_all}}
 }
-
+\author{
+Cole Monnahan and Sean Anderson
+}

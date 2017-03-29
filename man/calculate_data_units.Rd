@@ -55,10 +55,9 @@ calculate_data_units(lcomp_params=list(fleets=1, years=c(3,4,6)),
 ## If CAL data called, need other types even if not specified
 calculate_data_units(calcomp_params=list(fleets=1, years=c(3,4,6)))
 }
-\author{
-Cole Monnahan
-}
 \seealso{
 clean_data, change_data
 }
-
+\author{
+Cole Monnahan
+}

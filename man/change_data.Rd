@@ -98,6 +98,7 @@ is not specified in a case file, then a value of \code{NULL} will be passed,
 which may or may not be an appropriate value. Other arguments will be ignored
 if specified.
 }
+
 \examples{
 d <- system.file("extdata", package = "ss3sim")
 fleets <- 1:2
@@ -151,9 +152,6 @@ dat3 <- clean_data(dat_list = dat2, lcomp_params = lcomp_params,
   calcomp_params = calcomp_params, mlacomp_params = mlacomp_params,
   verbose = TRUE)
 }
-\author{
-Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson
-}
 \seealso{
 \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
 
@@ -162,4 +160,6 @@ Other change functions: \code{\link{change_em_binning}},
   \code{\link{change_maturity}},
   \code{\link{change_retro}}, \code{\link{change_tv}}
 }
-
+\author{
+Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson
+}

@@ -20,4 +20,3 @@ the file, and write it back out to a new data file.
 \author{
 Kotaro Ono
 }
-

@@ -14,4 +14,3 @@ change_index(...)
 \code{\link{sample_index}} instead. \code{change_index} will be removed
 in the next major version.
 }
-

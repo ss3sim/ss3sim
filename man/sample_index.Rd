@@ -59,6 +59,7 @@ is not specified in a case file, then a value of \code{NULL} will be passed,
 which may or may not be an appropriate value. Other arguments will be ignored
 if specified.
 }
+
 \examples{
 \dontrun{
 # Find the example data location:
@@ -88,9 +89,6 @@ ggplot(ex3, aes(x=year, y=obs, group=index, ymin=0,
                 colour=as.factor(index)))+geom_point()
 }
 }
-\author{
-Cole Monnahan, Kotaro Ono
-}
 \seealso{
 Other sampling functions: \code{\link{clean_data}},
   \code{\link{sample_agecomp}},
@@ -98,4 +96,6 @@ Other sampling functions: \code{\link{clean_data}},
   \code{\link{sample_mlacomp}},
   \code{\link{sample_wtatage}}
 }
-
+\author{
+Cole Monnahan, Kotaro Ono
+}

@@ -16,4 +16,3 @@ Get negative log likelihood (NLL) values from a report file list
 \author{
 Merrill Rudd
 }
-

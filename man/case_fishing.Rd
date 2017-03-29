@@ -39,4 +39,3 @@ will later be used in a \pkg{ss3sim} simulation.
 case_fishing(1:100, 1:100, seq(0, 0.4, length.out = 100), 2, "cod")
 done <- file.remove("F2-cod.txt")
 }
-

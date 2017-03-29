@@ -15,4 +15,3 @@ get_caseval(scenario, case)
 \description{
 Take a scenario ID and a case type and return the case number
 }
-

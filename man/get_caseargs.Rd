@@ -86,4 +86,3 @@ get_caseargs(case_folder, scenario = "D0-E0-F0-M0-R0-S0-cod",
   case_files = list(E = "E", D = c("index", "lcomp", "agecomp"), F =
     "F", M = "M", R = "retro", S = "S"))
 }
-

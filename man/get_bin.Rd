@@ -23,4 +23,3 @@ Get SS3 binary/executable location in package
 get_bin()
 }
 }
-

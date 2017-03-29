@@ -41,4 +41,3 @@ change_rec_devs(recdevs_new = rlnorm(100), par_file_in = par_file,
 \author{
 Cole Monnahan
 }
-

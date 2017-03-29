@@ -48,4 +48,3 @@ unlink(temp_path, recursive = TRUE)
 \author{
 Curry James Cunningham; modified by Sean Anderson
 }
-

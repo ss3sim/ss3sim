@@ -33,13 +33,12 @@ data.frames to file: one for single scalar values (e.g. MSY) and a second
 that contains output for each year of the same model (timeseries, e.g.
 biomass(year)). These can always be joined later.
 }
-\author{
-Cole Monnahan, Merrill Rudd
-}
 \seealso{
 Other get-results: \code{\link{get_results_derived}},
   \code{\link{get_results_scalar}},
   \code{\link{get_results_scenario}},
   \code{\link{get_results_timeseries}}
 }
-
+\author{
+Cole Monnahan, Merrill Rudd
+}

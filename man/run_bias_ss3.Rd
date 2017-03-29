@@ -66,9 +66,6 @@ run_ss3sim(iterations = 1:1, scenarios = "D1-F0-cod",
 setwd(wd)
 }
 }
-\author{
-Carey McGilliard
-}
 \references{
 Methot, R. D. and Taylor, I. G. (2011). Adjusting for bias due to
 variability of estimated recruitments in fishery assessment models.
@@ -78,4 +75,6 @@ Can. J. Fish. Aquat. Sci., 68(10):1744-1760.
 \code{\link{run_ss3sim}}, \code{\link{ss3sim_base}},
 \code{\link{run_ss3model}}, \code{\link{bias_ss3}}
 }
-
+\author{
+Carey McGilliard
+}

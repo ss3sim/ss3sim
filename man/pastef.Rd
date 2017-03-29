@@ -12,4 +12,3 @@ pastef(...)
 \description{
 Paste with "/" as the separator
 }
-

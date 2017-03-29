@@ -14,4 +14,3 @@ change_agecomp(...)
 \code{\link{sample_agecomp}} instead. \code{change_agecomp} will be removed
 in the next major version.
 }
-

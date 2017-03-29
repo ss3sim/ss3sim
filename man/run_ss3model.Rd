@@ -66,10 +66,9 @@ These executables must be named exactly as they are at the link above. You
 can choose the SS mode by setting the argument \code{ss_mode} to
 \code{"safe"} or \code{"optimized"}.
 }
-\author{
-Sean C. Anderson
-}
 \seealso{
 \code{\link{ss3sim_base}}, \code{\link{run_ss3sim}}
 }
-
+\author{
+Sean C. Anderson
+}
