@@ -418,9 +418,9 @@ for(i in seq_along(temp.data)) {
     #Call ss3 for a run that includes the environmental link
     os <- .Platform$OS.type
       if(os == "unix") {
-        system(paste(ss_bin, "-noest"), ignore.stdout = TRUE)
+        system(paste(bin, "-noest"), ignore.stdout = TRUE)
       } else {
-        system(paste(ss_bin, "-noest"), show.output.on.console = FALSE, invisible = TRUE, ignore.stdout = TRUE)
+        system(paste(bin, "-noest"), show.output.on.console = FALSE, invisible = TRUE, ignore.stdout = TRUE)
       }
 
     #Change starter file option back to using .par!
