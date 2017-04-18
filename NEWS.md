@@ -1,3 +1,8 @@
+# ss3sim 0.9.4
+
+* Fix compatibility with dplyr 0.6.0
+* Fix issue with SS3 binary in development version #239
+
 # ss3sim 0.9.3
 
 * Fix LICENSE for CRAN

@@ -1,7 +1,8 @@
 language: r
 sudo: required
 cache: packages
-r: release
+r:
+  - devel
 
 before_script:
   - export DISPLAY=:99.0
