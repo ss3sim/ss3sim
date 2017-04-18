@@ -25,6 +25,8 @@ Authors@R: c(person("Sean", "Anderson", email =
 Description: Develops a framework for fisheries stock assessment simulation
     testing with Stock Synthesis 3 (SS3).
 License: MIT + file LICENSE
+URL: https://github.com/ss3sim/ss3sim
+BugReports: https://github.com/ss3sim/ss3sim/issues
 LazyData: true
 Suggests:
     knitr,
