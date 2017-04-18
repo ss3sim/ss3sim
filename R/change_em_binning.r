@@ -30,7 +30,7 @@
 #'   FALSE}.
 #' @importFrom r4ss SS_writedat
 #' @importFrom magrittr %>%
-#' @importFrom dplyr group_by_ summarise_each_ rename_ mutate_ inner_join funs_
+#' @importFrom dplyr group_by_ summarize_at rename_ mutate_ inner_join
 #' @export
 #' @family sample functions
 #' @family change functions
@@ -240,7 +240,7 @@ change_em_binning <- function(dat_list, dat_file_out, bin_vector, lbin_method = 
     new_cal <- inner_join(old_cal, lookup, by = "Lbin_lo") %>%
       group_by_(~Yr, ~lbin_new_low, ~lbin_new_high)
     dat_cols <- names(new_cal)[grep("^a[0-9.]+$", names(new_cal))]
-    new_cal <- summarise_each_(new_cal, funs_(~sum), vars = dat_cols) %>%
+    new_cal <- summarize_at(new_cal, .funs = sum, .vars = dat_cols) %>%
       rename_(Lbin_lo = ~lbin_new_low, Lbin_hi = ~lbin_new_high) %>%
       as.data.frame
 
