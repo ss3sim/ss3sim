@@ -1,4 +1,6 @@
-Fixes compatibility with soon to be released dplyr 0.6.0. Other minor bug fixes.
+Adds citation to Description field as requested.
+
+Fixes compatibility with soon to be released dplyr 0.6.0.
 
 ---
 
