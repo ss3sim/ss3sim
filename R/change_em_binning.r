@@ -240,9 +240,16 @@ change_em_binning <- function(dat_list, dat_file_out, bin_vector, lbin_method = 
     new_cal <- inner_join(old_cal, lookup, by = "Lbin_lo") %>%
       group_by_(~Yr, ~lbin_new_low, ~lbin_new_high)
     dat_cols <- names(new_cal)[grep("^a[0-9.]+$", names(new_cal))]
-    new_cal <- summarize_at(new_cal, .funs = sum, .vars = dat_cols) %>%
-      rename_(Lbin_lo = ~lbin_new_low, Lbin_hi = ~lbin_new_high) %>%
-      as.data.frame
+
+    if (utils::packageVersion("dplyr") > "0.5.0") {
+      new_cal <- summarize_at(new_cal, .funs = sum, .vars = dat_cols) %>%
+        rename_(Lbin_lo = ~lbin_new_low, Lbin_hi = ~lbin_new_high) %>%
+        as.data.frame
+    } else {
+      new_cal <- dplyr::summarise_each_(new_cal, dplyr::funs_(~sum), vars = dat_cols) %>%
+        rename_(Lbin_lo = ~lbin_new_low, Lbin_hi = ~lbin_new_high) %>%
+        as.data.frame
+    }
 
     new_cal$Nsamp <- rowSums(new_cal[, grepl("^a[0-9.]+$", names(new_cal))])
 
