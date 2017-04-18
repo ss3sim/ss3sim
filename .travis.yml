@@ -1,11 +1,7 @@
 language: r
 sudo: required
 cache: packages
-r: devel
-
-env:
-  global:
-    - R_CHECK_ARGS="--no-build-vignettes --no-manual"
+r: release
 
 before_script:
   - export DISPLAY=:99.0
