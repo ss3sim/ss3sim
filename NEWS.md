@@ -1,3 +1,7 @@
+# ss3sim 0.9.5
+
+* Adds citation to Description field
+
 # ss3sim 0.9.4
 
 * Fix compatibility with dplyr 0.6.0

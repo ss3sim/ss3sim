@@ -1,4 +1,4 @@
-Adds citation to Description field as requested.
+Adds citation to Description field as requested in the format <doi:10.1371/journal.pone.0092725>.
 
 Fixes compatibility with soon to be released dplyr 0.6.0.
 
