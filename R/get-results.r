@@ -440,17 +440,23 @@ get_results_timeseries <- function(report.file){
     xx <- xx[xx$Yr %in% years,]
     names(xx) <- gsub(":_1","", names(xx))
     # Get SPR from derived_quants
-    spr <- with(report.file$derived_quants,
-      report.file$derived_quants[grep("SPRratio_", LABEL), ])
-    spr$Yr <- sapply(strsplit(spr$LABEL, "_"), "[", 2)
+    spr <- report.file$derived_quants[grep("SPRratio_",
+      report.file$derived_quants[,
+      grep("label", colnames(report.file$derived_quants),
+      ignore.case = TRUE)]), ]
+    spr$Yr <- sapply(strsplit(
+      spr[, grep("label", colnames(spr), ignore.case = TRUE)], "_"), "[", 2)
     colnames(spr)[which(colnames(spr) == "Value")] <- "SPRratio"
     # Get recruitment deviations
     dev <- report.file$recruit
-    dev <- dev[dev$year %in% years, c("year", "dev")]
+    getcols <- c(grep("^y", colnames(dev), ignore.case = TRUE),
+      grep("dev", colnames(dev), ignore.case = TRUE))
+    dev <- dev[dev[, getcols[1]] %in% years, getcols]
     ## create final data.frame
     df <- merge(xx, spr[, c("SPRratio", "Yr")], by = "Yr", all.x = TRUE)
     df$SPRratio[is.na(df$SPRratio)] <- 0
-    df <- merge(df, dev, by.x = "Yr", by.y = "year", all.x = TRUE)
+    df <- merge(df, dev, by.x = "Yr",
+      by.y = colnames(dev)[getcols[1]], all.x = TRUE)
     rownames(df) <- NULL
     return(invisible(df))
 }
@@ -467,12 +473,18 @@ get_results_timeseries <- function(report.file){
 #' @author Kelli Johnson
 get_results_derived <- function(report.file){
     xx <- report.file$derived_quants
-    xx <- xx[, c("LABEL", "Value", "StdDev")]
-    xx$Yr <- sapply(strsplit(xx$LABEL, "_"), "[", 2)
-    xx$name <- sapply(strsplit(xx$LABEL, "_"), "[", 1)
+    xx <- xx[, c(
+      grep("Label", colnames(report.file$derived_quants),
+        ignore.case = TRUE, value = TRUE),
+      c("Value", "StdDev"))]
+    tosplit <- strsplit(
+      xx[, grep("Label", colnames(xx), ignore.case = TRUE)], "_")
+    xx$Yr <- sapply(tosplit, "[", 2)
+    xx$name <- sapply(tosplit, "[", 1)
+    badname <- grep("Label", colnames(xx), value = TRUE, ignore.case = TRUE)
     if (all(xx$StdDev == 0)) xx <- xx[, -which(colnames(xx) == "StdDev")]
     final <- reshape(xx, timevar = "name", idvar = "Yr", direction = "wide",
-      drop = "LABEL")
+      drop = badname)
     final <- final[-which(final$Yr == "Virgin"), ]
     rownames(final) <- NULL
     invisible(final)
@@ -488,16 +500,17 @@ get_results_derived <- function(report.file){
 #' @author Cole Monnahan; Merrill Rudd
 get_results_scalar <- function(report.file){
     der <- report.file$derived_quants
-    SSB_MSY <-  der[which(der$LABEL=="SSB_MSY"),]$Value
-    TotYield_MSY <-  der[which(der$LABEL=="TotYield_MSY"),]$Value
-    SSB_Unfished <-  der[which(der$LABEL=="SSB_Unfished"),]$Value
-    F_MSY <- der[der$LABEL == "Fstd_MSY", "Value"]
-    F_SPR <- der[der$LABEL == "Fstd_SPRtgt", "Value"]
+    getcol <- grep("label", colnames(der), ignore.case = TRUE)
+    SSB_MSY <- der[which(der[, getcol] =="SSB_MSY"), ]$Value
+    TotYield_MSY <-  der[which(der[, getcol] =="TotYield_MSY"),]$Value
+    SSB_Unfished <-  der[which(der[, getcol] =="SSB_Unfished"),]$Value
+    F_MSY <- der[der[, getcol]  == "Fstd_MSY", "Value"]
+    F_SPR <- der[der[, getcol]  == "Fstd_SPRtgt", "Value"]
     Catch_endyear <-
         rev(report.file$timeseries[,grep("dead\\(B\\)",
           names(report.file$timeseries))])[1]
     pars <- data.frame(t(report.file$parameters$Value))
-    names(pars) <- report.file$parameters$Label
+    names(pars) <- report.file$parameters[, grep("Label", colnames(report.file$parameters), ignore.case = TRUE)]
     ## Get the parameters stuck on bounds
     status <- report.file$parameters$Status
     params_stuck_low <- paste(names(pars)[which(status=="LO")], collapse=";")
