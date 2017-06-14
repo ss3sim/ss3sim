@@ -1454,8 +1454,8 @@ in parallel, you may need to abort the left over parallel processes. On Windows,
 open the task manager (Ctrl-Shift-Esc) and close any R processes.
 On a Mac, open Activity Monitor and force quit any R processes.
 Also, if you are working with a local development version of `ss3sim`
-and you are on a Windows machine, you may not be able to run in parallel 
-if you load the package with `devtools::load_all()`. 
+and you are on a Windows machine, you may not be able to run in parallel
+if you load the package with `devtools::load_all()`.
 Instead, do a full install with `devtools::install()` (and potentially restart R if ss3sim was already loaded).
 
 # Putting SS3 in your path {#path}
@@ -1471,7 +1471,7 @@ This approach saves on storage space since the SS3 binary is about 2.2 MB and
 having it located in each folder can be prohibitive in a large-scale simulation
 testing study.
 
-Some development versions on (github.com/ss3sim/ss3sim)[github] install
+Some development versions on [github](http://www.github.com/ss3sim/ss3sim) install
 this automatically but it is disallowed for CRAN submissions. In any case,
 it may be useful to put the binary in your path so that you can manually
 run models during development and testing (i.e., open command window in
