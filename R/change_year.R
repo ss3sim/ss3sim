@@ -338,8 +338,16 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
     numberoffleet <- gsub("#", "", numberoffleet)
     nfleets <- length(numberoffleet[numberoffleet != ""])
 
-    forecast <- SS_readforecast(for_file_in, nfleets, nareas,
-                                verbose = verbose)
+    # todo: remove the hard coding of nseas to 1.
+    # todo: dynamically determine the SS version number, where
+    # SS_readforecast sets it to 3.24 by default.
+    if (all(c("readAll", "nseas") %in% names(formals(SS_readforecast)))) {
+      forecast <- SS_readforecast(for_file_in, nfleets, nareas, nseas = 1,
+        readAll = TRUE, verbose = verbose)
+    } else {
+      forecast <- SS_readforecast(for_file_in, nfleets, nareas,
+        verbose = verbose)
+    }
     # Mandatory changes
     forecast$Bmark_years <- rep(0, 6) # Change relative to end year
     forecast$Fcast_years <- rep(0, 4) # Change relative to end year

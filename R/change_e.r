@@ -315,8 +315,14 @@ if(!is.null(par_name)) {
  }
    dat_list$endyr <- dat_list$endyr - forecast_num
 
-   ss3.for <- SS_readforecast(file = for_file_in, Nfleets = dat_list$Nfleet,
-     Nareas = dat_list$N_areas, verbose = verbose)
+   if (all(c("nseas", "readAll") %in% names(formals(SS_readforecast)))) {
+     ss3.for <- SS_readforecast(file = for_file_in, Nfleets = dat_list$Nfleet,
+     Nareas = dat_list$N_areas, verbose = verbose,
+     nseas = 1, readAll = TRUE)
+   } else {
+      ss3.for <- SS_readforecast(file = for_file_in, Nfleets = dat_list$Nfleet,
+        Nareas = dat_list$N_areas, verbose = verbose)
+   }
    ss3.for$Forecast <- 2 #Fish at F(MSY)
    ss3.for$Nforecastyrs <- forecast_num
    SS_writeforecast(ss3.for, file = "forecast.ss", overwrite = TRUE,
