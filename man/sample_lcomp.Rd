@@ -92,24 +92,27 @@ temp.list <- temp.list2 <- list()
 for(i in 1:40){
     temp.list[[i]] <-
       sample_lcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(2), cpar=c(3),
-                     Nsamp=list(100), years=list(1995),
-                     write_file=FALSE)
+                     Nsamp=list(100), years=list(95),
+                     write_file=FALSE)$lencomp
     temp.list2[[i]] <-
         sample_lcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(2),
-                     cpar=c(NA), Nsamp=list(100), years=list(1995),
-                     write_file=FALSE)
+                     cpar=c(NA), Nsamp=list(100), years=list(95),
+                     write_file=FALSE)$lencomp
 }
 ## Organize the data for plotting
 x1 <- reshape2::melt(do.call(rbind, temp.list)[,-(1:6)[-3]], id.vars="FltSvy")
 x2 <- reshape2::melt(do.call(rbind, temp.list2)[,-(1:6)[-3]], id.vars="FltSvy")
+Make proportional data
+x2 <- reshape2::melt(do.call(rbind, tapply(x2$value, list(x2$FltSvy, x2$variable), prop.table)))
 op <- par(mfrow=c(2,1))
 with(x1, boxplot(value~variable, las=2, ylim=c(0,.6), ylab="Proportion",
                  main="Overdispersed (cpar=3)",  xlab="length bin"))
-temp <- as.numeric(subset(dat_list$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
+temp <- as.numeric(subset(dat_list$lencomp, Yr==95 & FltSvy == 2)[-(1:6)])
 points(temp/sum(temp), pch="-", col="red")
-with(x2, boxplot(value~variable, las=2, ylim=c(0,.6), ylab="Proportion",
-                 main="Multinomial", xlab="length bin"))
-temp <- as.numeric(subset(dat_list$lencomp, Yr==1995 & FltSvy == 2)[-(1:6)])
+with(x2, boxplot(value~Var1, las=2, ylab="Proportion",
+                 main="Multinomial", xlab="length bin", xaxt = "n"))
+axis(side = 1, at = unique(x2$Var1), labels = unique(x1$variable), las = 2)
+temp <- as.numeric(subset(dat_list$lencomp, Yr==95 & FltSvy == 2)[-(1:6)])
 points(temp/sum(temp), pch="-", col="red")
 par(op)
 }
