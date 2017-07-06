@@ -775,6 +775,7 @@ E0 <- list(natM_type = "1Parm", natM_n_breakpoints = NULL,
 
 M0 <- list(NatM_p_1_Fem_GP_1 = rep(0, 100))
 
+# todo: add data_params so that this function runs.
 ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-M0-cod",
   f_params = F0, index_params = index1, lcomp_params = lcomp1,
   agecomp_params = agecomp1, estim_params = E0, tv_params = M0,
@@ -1411,9 +1412,7 @@ by setting `parallel = TRUE`:
 ```{r, parallel-three, eval=FALSE}
 run_ss3sim(iterations = 1, scenarios =
   c("D1-E0-F0-cod",
-    "D2-E0-F0-cod",
-    "D1-E1-F0-cod",
-    "D2-E1-F0-cod"),
+    "D1-E1-F0-cod"),
   case_files =
     list(F = "F", D = c("index", "lcomp", "agecomp"), E = "E"),
   case_folder = case_folder, om_dir = om, em_dir = em,
