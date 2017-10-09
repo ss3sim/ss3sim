@@ -12,7 +12,7 @@
 #' If used with \code{\link{run_ss3sim}} the case file should be named
 #' \code{wtatage}.
 #'
-#' @author Cole Monnahan, Allan Hicks, Peter Kuriyama
+#' @author Cole Monnahan, Allan Hicks, Peter Kuriyama, Gwladys Lambert
 #'
 #' @param wta_file_in The file to read weight-at-age from. Specifically to get the
 #'   age-0 weight-at-age. This is typically \code{wtatage.ss_new}.
@@ -24,10 +24,15 @@
 #'   resulting weight-at-age file will have values for all years and ages.One
 #'   function is \code{fill_across}.
 #' @param cv_wtatage A user specified CV for growth. Default is \code{NULL}.
+#' @param random_gen If numbers are randomly generated in case file
 #' @return A modified \code{.wtatage.ss} file if \code{write_file = TRUE}. A list
 #'   object containing the modified \code{.wtatage.ss} file is returned invisibly.
 #' @template lcomp-agecomp-index
 #' @template dat_list
+#' @param pop_agecomp A datafile of population age composition extracted from 
+#' \code{sample_calcomp} if the age-plus group in the observations if different from
+#' the population maximum age. This is used to calculate the weight-at-age as
+#' it has to be of the size of the population
 #' @template casefile-footnote
 #' @importFrom r4ss SS_parlines
 #' @seealso \code{\link{fill_across}}
@@ -54,9 +59,11 @@
 #     fleets = fleets, cv_wtatage = cv_wtatage)
 #
 
-sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
-                           years, fill_fnc = fill_across, write_file=TRUE, fleets,
-                           cv_wtatage = NULL){
+sample_wtatage <- function(wta_file_in, outfile, dat_list, pop_agecomp = NULL, ctl_file_in, #################### ADDED POP AGE COMP IN
+                           years, fill_fnc = fill_across, write_file=TRUE, fleets, 
+                           cv_wtatage = NULL, random_gen = NULL){
+
+  #  require(plyr)
   ##fill_type: specify type of fill, fill zeroes with first row? annual interpolation?
         ## Age Interpolation?
     ## A value of NULL for fleets signifies to turn this data off in the
@@ -70,13 +77,41 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
     ### ACH: Because you always have to have year 100, you may want to check for duplicates
     # years <- years[!duplicated(years)]
     #----------------------------------------------------------------------------
+    ### HERE CHANGE AGES FOR NUMBER FROM CAAL IF CAAL HAS BEEN USED WITH CLUSTERING ALGORITHM ###################################################################### ADDED IN !!!!!
 
-    agecomp <- dat_list$agecomp[dat_list$agecomp$Lbin_lo== -1,]
+    if (!is.null(pop_agecomp)) {
+      agecomp <- pop_agecomp[[1]]
+    } else {
+     agecomp <- dat_list$agecomp
+    }
+    agecomp <- agecomp[agecomp$Lbin_lo== -1| agecomp$Lbin_hi == -1,]
 
+    agecomp$Yr <- abs(agecomp$Yr)
+    agecomp$FltSvy <- abs(agecomp$FltSvy)
+    
+    # if ( !is.null(clusts)) {
+    # agecomp <- dat_list$agecomp[dat_list$agecomp$Lbin_lo!= -1,]
+    # age_cols <- agecomp[,c(9:dim(agecomp)[2])]
+    # groupColumns = colnames(agecomp)[1:6]
+    # dataColumns = colnames(age_cols)
+    # res = ddply(agecomp, groupColumns, function(x) colSums(x[dataColumns]))
+    # agecomp <- cbind.data.frame(res[,c(1:6)], Lbin_lo = -1, Lbin_hi = -1, res[,c(7:dim(res)[2])])
+    # }
+
+    years_age <-unique(cbind.data.frame(Yr=abs(agecomp$Yr),FltSvy=abs(agecomp$FltSvy)))
+    for (idx_flt in 1:length(unique(years_age$FltSvy))){
+      years[[idx_flt]] <- years[[idx_flt]][years[[idx_flt]] %in% years_age[years_age$FltSvy== fleets[idx_flt],"Yr"]]
+    }
+    
+    #####################
+    
     cat('sample size is ', unique(agecomp$Nsamp), '\n')
     agebin_vector <- dat_list$agebin_vector
+    if (!is.null(pop_agecomp))  agebin_vector <- pop_agecomp[[3]]
 
     mlacomp <- dat_list$MeanSize_at_Age_obs
+    if (!is.null(pop_agecomp))  mlacomp <- pop_agecomp[[2]]
+    
     if(is.null(mlacomp)) stop("No mean length-at-age data found in dat_list")
     ## Read in the control file
     ctl <-SS_parlines(ctl_file_in)
@@ -103,9 +138,12 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
         twos$fleet <- 2
         wtatage <- rbind(wtatage, twos)
     }
-
+    
+   # maxage <- wta_file_in[grep(x=wta_file_in, "maxage")]
+  #  maxage <- as.numeric(sub(" ", "", strsplit(maxage, "#")[[1]][1]))
+    
     age0 <- wtatage[!duplicated(wtatage$fleet),c("fleet","age0")]
-    wtatage.new.list <- list(1, 2) # temp storage for the new rows
+    wtatage.new.list <- list()#list(1, 2) # temp storage for the new rows
 
     #----------------------------------------------------------------------------
     #start sampling
@@ -128,43 +166,67 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
     #Start Sampling other fleets
     # fl <- 1
     # yr <- 1
-    for(fl in fleets) { #fleets must be 1:Nfleets
+    for(fl in 1:length(fleets)) { #fleets must be 1:Nfleets
+      
+      # if (!is.null(random_gen)){
+      #     lgth <- min(unique(dat_list$agecomp$Yr[dat_list$agecomp$FltSvy==fl]),length(years[[fl]]) 
+      #     years[[fl]] <- unique(sample(unique(dat_list$agecomp$Yr[dat_list$agecomp$FltSvy==fl]), length.out=lgth, replace=F))
+      # }
+      
+  #    ifl <- which(fleet==fl)
+      
         #set up wtatage matrix of sampled years
         wtatage.new.list[[fl]] <- as.data.frame(matrix(NA,nrow=length(years[[fl]]),ncol=ncol(wtatage)))
         names(wtatage.new.list[[fl]]) <- names(wtatage)
         row.names(wtatage.new.list[[fl]]) <- as.character(years[[fl]])
-
-        #===============Loop over Years Sampled
+        
+             if (!is.null(pop_agecomp))  {
+               wtatage.new.list[[fl]] <- wtatage.new.list[[fl]] [,c(1:c(7+max(agebin_vector)))]
+             } else {
+              wtatage.new.list[[fl]] <- wtatage.new.list[[fl]] [,c(1:c(7+dat_list$N_agebins))]
+                   }
+ 
+          #===============Loop over Years Sampled
         if(length(years[[fl]]) == 1) { #copy wtatage matrix from designated fleet
-            if(fl <= years[[fl]]) stop("You must designate an earlier fleet to copy from.\n")
+            if(fl <= years[[fl]]) stop("You must designate an earlier fleet to copy from.\n") # This does not make sense ...
             wtatage.new.list[[fl]] <- wtatage.new.list[[years[[fl]]]]
             wtatage.new.list[[fl]]$fleet <- fl
         } else {
-            for(yr in years[[fl]]) {
+            for(yr in years[[fl]]) {#
 
                 #----------------------------------------------------------------------------------------------------
                 #Step 1, draw from true age distributions
-                agecomp.temp <- agecomp[agecomp$Yr==yr & agecomp$FltSvy == fl, ]
+                agecomp.temp <- agecomp[agecomp$Yr==yr & agecomp$FltSvy == fleets[fl], ]
                 #ACH: I'm going with the motto of think about it. Why enter a year for wtatage when you do not have data?
                 if(nrow(agecomp.temp)==0) {stop("No age comp observations for year",yr,"and fleet",fl,"\n")}
+                # GL: I'm changing this by limiting to years that have been sampled
+             #   if(nrow(agecomp.temp)>0) {
+
+                # IN CASE THERE IS A GENDER THING:
+            #    for (sx in unique(agecomp.temp$Gender)) {
+            #     agecomp.temp <- agecomp.temp[agecomp.temp$Gender== sx, ]
 
                 ## Get the true age distributions
-                age.means <- as.numeric(agecomp.temp[-(1:9)])
+                age.means <- as.numeric(agecomp.temp[-(1:9)]) 
                 age.Nsamp <- as.numeric(agecomp.temp$Nsamp)
 
                 #----------------------------------------------------------------------------------------------------
                 #Step 2, determine # of fish in sample per bin
                 #Use a multinomial here but may need to have dirichlet or option to toggle between the two
                 age.samples <- rmultinom(n = 1, size = age.Nsamp, prob = age.means)
-
+                
+               # if (!is.null(pop_agecomp)) age.samples <- cbind(age.means) ###################################################################### ADDED IN !!!!!
+                
                 #----------------------------------------------------------------------------------------------------
                 #Step 3, use mean length-at-age to sample with normal/lognormal and user-specified cv
                 #first define mean length-at-age
 
                 #Change fleets name to FltSvy to keep everything consistent
                 names(mlacomp)[3] <- 'FltSvy'
+                #if (mlacomp$Gender[1] == 1) 
+                  names(mlacomp)[8:c(7+length(agebin_vector))] <-  paste0("a", agebin_vector)
                 # [which(names(mlacomp) == 'Fleet')]
-                mla.means <- as.numeric(mlacomp[mlacomp$Yr==yr & mlacomp$FltSvy==fl,
+                mla.means <- as.numeric(mlacomp[mlacomp$Yr==yr & mlacomp$FltSvy==fleets[fl],
                                                 paste0("a", agebin_vector)])
 
                 # CV.growth <- ctl[ctl$Label=="CV_young_Fem_GP_1", "INIT"]
@@ -194,16 +256,17 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
                 samp.wtatage <- sapply(weights.list, mean)
 
                 #concatenate everything
-                prefix <- wtatage[wtatage$yr==yr & wtatage$fleet==1,1:5]  #I used fleet=1 because wtatage_new only outputs fleet 1
+                prefix <- wtatage[wtatage$yr==yr & wtatage$fleet==1, 1:5]  # & wtatage$gender==sx I used fleet=1 because wtatage_new only outputs fleet 1
                 tmp.fl <- fl
-                wtatage.new.means <- c(unlist(prefix), tmp.fl, age0[age0$fleet == 1, 'age0'],
-                    samp.wtatage
-)
+                wtatage.new.means <- c(unlist(prefix), tmp.fl, age0[age0$fleet == 1, 'age0'], samp.wtatage)
                 #store to wtatage.new.list
                 wtatage.new.list[[fl]][as.character(yr), ] <- wtatage.new.means
+                
+   #             }
             }
         }
     }
+    
 
     #fill in missing values
     ## ## Do we need to check whether there was only one fleet? Or force this?
@@ -216,8 +279,9 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
     ##     wtatage.new.list[[2]]$fleet <- 2
     ## }
 
+   # wtatage.complete <- lapply(wtatage.new.list,c,minYear=dat_list$styr,maxYear=dat_list$endyr)
     wtatage.complete <- lapply(wtatage.new.list,fill_fnc,minYear=dat_list$styr,maxYear=dat_list$endyr)
-
+    
     # wtatage.new.list[[1]]
     # temp.wtatage <- wtatage.new.list[[1]]
 
@@ -294,7 +358,7 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
     if(write_file)    write.table(unsampled.wtatage[[3]], file=outfile, append=TRUE, row.names=F, col.names=F)
 
     #loop through fleets
-    for(i in fleets) {
+    for(i in 1:length(fleets)) {
         if(write_file)     cat("\n#Fleet",i,"\n",file=outfile,append=TRUE)
         wtatage.final[[i+3]] <- wtatage.complete[[i]]
         wtatage.final[[i+3]]$yr <- -1 * wtatage.final[[i+3]]$yr

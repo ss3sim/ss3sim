@@ -123,21 +123,21 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
             "get_results_scalar", "get_nll_components",
             "get_results_timeseries", "calculate_runtime"), .combine = rbind) %dopar% {
             ## If the files already exist just read them in, otherwise get results
-                scalar.file <- paste0(parallel_scenario,"/results_scalar_",parallel_scenario,".csv")
-                ts.file <- paste0(parallel_scenario,"/results_ts_",parallel_scenario,".csv")
-                ## Delete them if this is flagged on
-                if( overwrite_files){
-                    if(file.exists(scalar.file)) file.remove(scalar.file)
-                    if(file.exists(ts.file)) file.remove(ts.file)
+                 scalar.file <- paste0(parallel_scenario,"/results_scalar_",parallel_scenario,".csv")
+                 ts.file <- paste0(parallel_scenario,"/results_ts_",parallel_scenario,".csv")
+                # ## Delete them if this is flagged on
+                 if( overwrite_files){
+                #     if(file.exists(scalar.file)) file.remove(scalar.file)
+                #     if(file.exists(ts.file)) file.remove(ts.file)
                     get_results_scenario(scenario=parallel_scenario, directory=directory,
                                          overwrite_files=overwrite_files)
-                }
-                ## Check if still there and skip if already so, otherwise read in
-                ## and save to file
-                if(!file.exists(scalar.file) |  !file.exists(ts.file)){
-                    get_results_scenario(scenario=parallel_scenario, directory=directory,
-                                         overwrite_files=overwrite_files)
-                }
+                 }
+                # ## Check if still there and skip if already so, otherwise read in
+                # ## and save to file
+                 if(!file.exists(scalar.file) |  !file.exists(ts.file)){
+                     get_results_scenario(scenario=parallel_scenario, directory=directory,
+                                          overwrite_files=overwrite_files)
+                 }
         }
         ts.list <- scalar.list <- dq.list <- list()
         flag.na <- rep(0, length(scenarios))
@@ -174,20 +174,20 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         scalar.file <- paste0(scen,"/results_scalar_",scen,".csv")
         ts.file <- paste0(scen,"/results_ts_",scen,".csv")
         dq.file <- paste0(scen,"/results_dq_",scen,".csv")
-        ## Delete them if this is flagged on
-        if( overwrite_files){
-            if(file.exists(scalar.file)) file.remove(scalar.file)
-            if(file.exists(ts.file)) file.remove(ts.file)
-            if(file.exists(dq.file)) file.remove(dq.file)
+        # ## Delete them if this is flagged on
+         if( overwrite_files){
+        #     if(file.exists(scalar.file)) file.remove(scalar.file)
+        #     if(file.exists(ts.file)) file.remove(ts.file)
+        #     if(file.exists(dq.file)) file.remove(dq.file)
             get_results_scenario(scenario=scen, directory=directory,
                                  overwrite_files=overwrite_files)
-        }
-        ## Check if still there and skip if already so, otherwise read in
-        ## and save to file
-        if(!file.exists(scalar.file) | !file.exists(ts.file) | !file.exists(dq.file)){
-            get_results_scenario(scenario=scen, directory=directory,
-                                 overwrite_files=overwrite_files)
-        }
+         }
+        # ## Check if still there and skip if already so, otherwise read in
+        # ## and save to file
+         if(!file.exists(scalar.file) | !file.exists(ts.file) | !file.exists(dq.file)){
+             get_results_scenario(scenario=scen, directory=directory,
+                                  overwrite_files=overwrite_files)
+         }
         scalar.list[[i]] <- tryCatch(read.csv(scalar.file, stringsAsFactors=FALSE), error=function(e) NA)
         ts.list[[i]] <- tryCatch(read.csv(ts.file, stringsAsFactors=FALSE), error=function(e) NA)
         dq.list[[i]] <- tryCatch(read.csv(dq.file, stringsAsFactors=FALSE), error=function(e) NA)
@@ -305,12 +305,12 @@ get_results_scenario <- function(scenario, directory=getwd(),
             ## Otherwise read in and write to file
             report.em <-
                 SS_output(paste0(rep,"/em/"), covar=FALSE, verbose=FALSE,
-                          compfile="none", forecast=TRUE, warn=TRUE,
+                          forecast=TRUE, warn=TRUE,#compfile="none", 
                           readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
                           ncols=numcol)
             report.om <-
                 SS_output(paste0(rep,"/om/"), covar=FALSE, verbose=FALSE,
-                          compfile="none", forecast=FALSE, warn=TRUE,
+                         forecast=FALSE, warn=TRUE, # compfile="none", 
                           readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
                           ncols=numcol)
             ## ## Grab the residuals for the indices

@@ -41,7 +41,9 @@
 #'   additional options to the \code{SS3} command through the argument
 #'   \code{admb_options}.
 
-#' @author Sean C. Anderson
+#' @author Sean C. Anderson; Gwladys Lambert added a few lines to 
+#' solve the parallel option problem that occured with her library path 
+#' (may or may not have to be removed on other computers)
 #'
 #' @details The operating model folder should contain: \code{forecast.ss},
 #' \code{yourmodel.ctl}, \code{yourmodel.dat}, \code{ss3.par}, and
@@ -164,6 +166,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
   user_recdevs = NULL, parallel = FALSE, parallel_iterations = FALSE,
   ...) {
 
+  
   if(parallel) {
     cores <- setup_parallel()
     if(cores == 1) parallel <- FALSE
@@ -175,6 +178,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
         "specified number of iterations."))
     }
   }
+  
 
   # Get arguments for each scenario:
   arg_list <- lapply(scenarios, function(scenario) {
@@ -196,9 +200,31 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
       mlacomp_params    = a$mlacomp,
       em_binning_params = a$em_binning,
       retro_params      = a$retro,
-      estim_params      = a$E)
+      estim_params      = a$E,
+      a_params          = a$A,
+      sex_misspec_params= a$X,
+      p_params          = a$P 
+        )
   })
 
+  ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
+  ### RANDOM GENERATION OF A NUMBER OF YEARS TO SAMPLE COMP DATA ###
+  ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
+  
+  # Description - TEMPORARY OPTION
+  # I added this in because I wanted to randomly sample a number of years of length and age data in my scenarios
+  # In this situation, the years argument in my case files looks like: sample(1990:1015, 10)
+  # I needed to make sure the years sampled for length data only included years already sampled for indices
+  # and that years sampled for age (CAAL) data only included years with length data (also checks weight at age years)
+  # If I keep this in, I should include this function inside the loops though so the numbers generated are different for each iteration/scenario
+  # MAY BE REMOVED - JUST A TRIAL...
+  
+  run_random_check(arg_list) # FUNCTION TO BE FOUND BELOW
+   
+  ### ~~~~~~~~~ ###
+  ### MAIN CODE ###
+  ### ~~~~~~~~~ ###
+  
   # Note that inside a foreach loop you pop out of your current
   # environment until you go back into an exported function
   # therefore we need to add subst_r to the .export list
@@ -209,7 +235,11 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
   it_ <- NULL
 
   if (parallel) {
-    if (parallel_iterations) {
+    assign(".lib.loc", .libPaths()[1], envir = environment(.libPaths)) #"C:/Users/gwladys.lambert/Rlibs"
+    cl<-parallel::makeCluster(cores)
+    parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
+    doParallel::registerDoParallel(cl)
+     if (parallel_iterations) {
       ignore <- lapply(arg_list, function(x) {
         # First run bias-adjustment runs if requested:
         dots <- list(...)
@@ -224,16 +254,17 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
         }
 
         message("Running iterations in parallel.")
-        foreach::foreach(it_ = iterations, .packages = "ss3sim",
-          .verbose = TRUE, .export = "substr_r") %dopar%
+        foreach::foreach(it_ = iterations, .packages = c("ss3sim","reshape","Hmisc"), #.libPaths(.libPaths()[1]),
+          .verbose = TRUE, .export = c("substr_r")) %dopar% #, "hauls"
             do.call("ss3sim_base",  c(x, list(iterations = it_,
-              bias_already_run = TRUE), dots))
+                                              bias_already_run = TRUE), dots))
+       # do.call("ss3sim_base",  c(x, list(iterations = it_, ...)))
       })
     } else {
       message("Running scenarios in parallel.")
-      foreach::foreach(x = arg_list, .packages = "ss3sim",
-        .verbose = FALSE, .export = "substr_r") %dopar%
-          do.call("ss3sim_base", c(x, list(iterations = iterations, ...)))
+      foreach::foreach(x = arg_list, .packages = c("ss3sim"), #,"reshape","Hmisc".libPaths(.libPaths()[1]),
+        .verbose = TRUE, .export = c("substr_r")) %dopar% { #, "hauls"
+          do.call("ss3sim_base", c(x, list(iterations = iterations, ...)))}
     }
   } else {
     message("Running scenarios and iterations sequentially.")
@@ -247,4 +278,35 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
 
   message(paste("Completed iterations:", paste(iterations, collapse = ", "),
     "for scenarios:", paste(scenarios, collapse = ", ")))
+}
+
+
+# Here is the function for temporary checks of random years
+run_random_check <- function(arg_list) {
+  # Here change the random generation of numbers so lengths and age years match indices years
+  if (!is.null(arg_list[[1]]$lcomp_params$random_gen)) {
+    for (idx in arg_list[[1]]$lcomp_params$random_gen) {
+      idx_flt <- which(arg_list[[1]]$lcomp_params$fleets == idx)
+      lgth <- length(arg_list[[1]]$lcomp_params$years[[idx_flt]])
+      idx_flt_index <- which(arg_list[[1]]$index_params$fleets == idx)
+      if(length(idx_flt_index)!=0)
+        arg_list[[1]]$lcomp_params$years[[idx_flt]] <- arg_list[[1]]$index_params$years[[idx_flt_index]][seq(1, length(arg_list[[1]]$index_params$years[[idx_flt_index]]), 
+                                                                                                             length.out=min(lgth, length(arg_list[[1]]$index_params$years[[idx_flt_index]])))]
+    }}
+  if (!is.null(arg_list[[1]]$calcomp_params$random_gen)) {
+    for (idx in arg_list[[1]]$calcomp_params$fleets) {
+      idx_flt <- which(arg_list[[1]]$calcomp_params$fleets == idx)
+      lgth <- length(arg_list[[1]]$calcomp_params$years[[idx_flt]])
+      idx_flt_lengths <- which(arg_list[[1]]$lcomp_params$fleets == idx)
+      arg_list[[1]]$calcomp_params$years[[idx_flt]] <- arg_list[[1]]$lcomp_params$years[[idx_flt_lengths]][seq(1, length(arg_list[[1]]$lcomp_params$years[[idx_flt_lengths]]), 
+                                                                                                               length.out=min(lgth, length(arg_list[[1]]$lcomp_params$years[[idx_flt_lengths]])))]
+    }}
+  if (!is.null(arg_list[[1]]$wtatage_params$random_gen)) {
+    for (idx in arg_list[[1]]$wtatage_params$fleets) {
+      idx_flt <- which(arg_list[[1]]$wtatage_params$fleets == idx)
+      lgth <- length(arg_list[[1]]$wtatage_params$years[[idx_flt]])
+      idx_flt_lengths <- which(arg_list[[1]]$acomp_params$fleets == idx)
+      arg_list[[1]]$wtatage_params$years[[idx_flt]] <- arg_list[[1]]$acomp_params$years[[idx_flt_lengths]][seq(1, length(arg_list[[1]]$acomp_params$years[[idx_flt_lengths]]), 
+                                                                                                               length.out=min(lgth, length(arg_list[[1]]$acomp_params$years[[idx_flt_lengths]])))]
+    }}
 }

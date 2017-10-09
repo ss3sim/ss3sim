@@ -116,6 +116,8 @@ change_e <- function(ctl_file_in = "em.ctl",
   }
   #Read in the ctl file for the estimation model
   ss3.ctl <- readLines(ctl_file_in)
+  #Everywhere there is a \t replace by space
+  ss3.ctl <- gsub("\t", " ", ss3.ctl)
   #Run external estimator for growth if needed
   if(any(grepl("change_e_vbgf", par_int))) {
     if (length(dir(pattern = "vbgf")) != 1) {
@@ -155,7 +157,11 @@ change_e <- function(ctl_file_in = "em.ctl",
   # Determine how many genders the model has
   gen <- grep("NatM", ss3.ctl, value = TRUE)
   male <- TRUE %in% grepl("Mal", gen)
-
+  if (male == TRUE) { ############################################################################### ADDED A IF HERE TO SAY THAT IF THE MAKE LINE IS COMMENTED OUT IT SHOULD NOT COUNT
+     temp <- strsplit(gen[grepl("Mal", gen)], " ")
+     if (TRUE %in% grepl("#", paste(temp[[1]][1:5]))) male <- FALSE
+  }
+  
   natM.val <- pmatch(tolower(natM_type),
                      c("1parm", "n_breakpoints", "lorenzen",
                        "agespecific", "agespec_withseasinterpolate")) - 1

@@ -88,18 +88,19 @@ clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
     ## Length composition data
     a <- dat_list$lencomp
     if(is.null(lcomp_params$fleets)){
-        dat_list$lencomp <- NULL
-        dat_list$N_lencomp <- 0
+      dat_list$lencomp <- NULL
+      dat_list$N_lencomp <- 0
     } else {
-        dat_list$lencomp <- do.call(rbind,
-         lapply(1:length(lcomp_params$fleets), function(i)
-                a[a$FltSvy == lcomp_params$fleets[i] &
-                  a$Yr %in% lcomp_params$years[[i]],]))
-        dat_list$N_lencomp <- NROW(dat_list$lencomp)
+      dat_list$lencomp <- do.call(rbind,
+                                  lapply(1:length(lcomp_params$fleets), function(i)
+                                    a[a$FltSvy == lcomp_params$fleets[i] &
+                                        a$Yr %in% lcomp_params$years[[i]],]))
+      dat_list$N_lencomp <- NROW(dat_list$lencomp)
+     ### if (!is.null(lcomp_params$ESS) && lcomp_params$ESS %in% c("hauls","iterative")) {dat_list$lencomp$Nsamp <- lcomp_params$Nhauls} ################### NEEDED ????!?!!!!!!!!!
     }
     lcomp.N.removed <- NROW(a)-NROW(dat_list$lencomp)
     if(lcomp.N.removed !=0  & verbose)
-        message(paste(lcomp.N.removed, "lines of length comp data removed"))
+      message(paste(lcomp.N.removed, "lines of length comp data removed"))
 
     ## Mean length at age data
     ## Check to see if mean_outfile specifies that mlacomps should be deleted
@@ -126,49 +127,67 @@ clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
         message(paste(mlacomp.N.removed, "lines of mean length data removed"))
 
     ## Age comps and conditional age-at-length at the same time
+
     a <- dat_list$agecomp
     agecomp <- a[a$Lbin_lo < 0,]
     calcomp <- a[a$Lbin_lo >= 0, ]
+
     ## case with no age or cal data
     if(is.null(agecomp_params$fleets) & is.null(calcomp_params$fleets)){
-        new.agecomp <- new.calcomp <- NULL
-    } else if(!is.null(agecomp_params$fleets) & is.null(calcomp_params$fleets))
-          ## Case with just age comps and no calcomps
-      {
-          new.agecomp <- do.call(rbind,
-         lapply(1:length(agecomp_params$fleets), function(i)
-             agecomp[agecomp$FltSvy == agecomp_params$fleets[i] &
-                         agecomp$Yr %in% agecomp_params$years[[i]],]))
-          new.calcomp <- NULL
-      } else if(!is.null(agecomp_params$fleets) & !is.null(calcomp_params$fleets)){
-          ## Case with both types
-          new.agecomp <- do.call(rbind,
-         lapply(1:length(agecomp_params$fleets), function(i)
-             agecomp[agecomp$FltSvy == agecomp_params$fleets[i] &
-                         agecomp$Yr %in% agecomp_params$years[[i]],]))
-          new.calcomp <- do.call(rbind,
-         lapply(1:length(calcomp_params$fleets), function(i)
-             calcomp[calcomp$FltSvy == calcomp_params$fleets[i] &
-                         calcomp$Yr %in% calcomp_params$years[[i]],]))
-      } else if(is.null(agecomp_params$fleets) & !is.null(calcomp_params$fleets)){
-          ## case with only cal comps
-          new.agecomp <- NULL
-          new.calcomp <- do.call(rbind,
-         lapply(1:length(calcomp_params$fleets), function(i)
-             calcomp[calcomp$FltSvy == calcomp_params$fleets[i] &
-                         calcomp$Yr %in% calcomp_params$years[[i]],]))
+      new.agecomp <- new.calcomp <- NULL
+
+    ## Case with just age comps and no calcomps
+      } else if(!is.null(agecomp_params$fleets) & is.null(calcomp_params$fleets))  {
+      new.agecomp <- do.call(rbind,
+                             lapply(1:length(agecomp_params$fleets), function(i)
+                               agecomp[agecomp$FltSvy == agecomp_params$fleets[i] &
+                                         agecomp$Yr %in% agecomp_params$years[[i]],]))
+
+      new.calcomp <- NULL
+
+      ## Case with both types
+      } else if(!is.null(agecomp_params$fleets) & !is.null(calcomp_params$fleets)) {
+
+      new.agecomp <- do.call(rbind,
+                             lapply(1:length(agecomp_params$fleets), function(i)
+                               agecomp[agecomp$FltSvy == agecomp_params$fleets[i] &
+                                         agecomp$Yr %in% agecomp_params$years[[i]],]))
+      new.agecomp$FltSvy <- - abs(new.agecomp$FltSvy)
+
+      new.calcomp <- do.call(rbind,
+                             lapply(1:length(calcomp_params$fleets), function(i)
+                               calcomp[calcomp$FltSvy == calcomp_params$fleets[i] &
+                                         calcomp$Yr %in% calcomp_params$years[[i]],]))
+
+      ## case with only cal comps
+      } else if(is.null(agecomp_params$fleets) & !is.null(calcomp_params$fleets)) {
+
+      ## Do not remove marginal age comp info if it exists - only reason it would is if sampled calcomp with fit.on.agecomp turned off
+      #new.agecomp <- NULL
+      if (nrow(agecomp) != 0) {
+      new.agecomp <- do.call(rbind,
+                             lapply(1:length(calcomp_params$fleets), function(i)
+                               agecomp[abs(agecomp$FltSvy) == abs(calcomp_params$fleets[i]) &
+                                         agecomp$Yr %in% calcomp_params$years[[i]],]))
       }
+      new.calcomp <- do.call(rbind,
+                             lapply(1:length(calcomp_params$fleets), function(i)
+                               calcomp[abs(calcomp$FltSvy) == calcomp_params$fleets[i] &
+                                         calcomp$Yr %in% calcomp_params$years[[i]],]))
+
+    }
+
     ## Create clean dat file
     dat_list$agecomp <- rbind(new.agecomp, new.calcomp)
     dat_list$N_agecomp <- NROW(dat_list$agecomp)
     agecomp.N.removed <-
-        NROW(agecomp)-NROW(dat_list$agecomp[dat_list$agecomp$Lbin_lo < 0,])
+      NROW(agecomp)-NROW(dat_list$agecomp[dat_list$agecomp$Lbin_lo < 0,])
     calcomp.N.removed <-
-        NROW(calcomp)-NROW(dat_list$calcomp[dat_list$agecomp$Lbin_lo >= 0,])
+      NROW(calcomp)-NROW(dat_list$calcomp[dat_list$agecomp$Lbin_lo >= 0,])
     if(agecomp.N.removed !=0  & verbose)
-            message(paste(agecomp.N.removed, "lines of age data removed"))
+      message(paste(agecomp.N.removed, "lines of age data removed"))
     if(calcomp.N.removed !=0  & verbose)
-            message(paste(calcomp.N.removed, "lines of CAL data removed"))
+      message(paste(calcomp.N.removed, "lines of CAL data removed"))
     # Set data type to NULL in dat_list because if no rows exist
     # "[1]" # will be written in dat_list
     data.names <- c("lencomp", "agecomp", "MeanSize_at_Age_obs")

@@ -22,6 +22,8 @@
 #' parameters. Filename must contain "vbgf" to be used by \code{change_e}.
 #' Also, if "remove" is included in the filename, the mean length at age data
 #' will be removed from the \code{.dat} file and not be available to the EM.
+#' @param ageplus XXXXXXXXXXXXXXXXXXXXXXXXX
+#' @param pop_agecomp XXXXXXXXXXXXXXXXXXXXXXXXX
 #' @param verbose Logical value whether or not diagnostic information from
 #'   \pkg{r4ss} functions should be printed to the screen. Default is FALSE.
 #' @template sampling-return
@@ -30,31 +32,9 @@
 #' @importFrom r4ss SS_writedat SS_parlines
 #' @export
 #'
-#' @examples
-#' temp_path <- file.path(tempdir(), "ss3sim-test")
-#' dir.create(temp_path, showWarnings = FALSE)
-#' wd <- getwd()
-#' setwd(temp_path)
-#' d <- system.file("extdata/models/cod-om", package = "ss3sim")
-#' dat_in <- file.path(d, "codOM.dat")
-#' dat_list <- r4ss::SS_readdat(dat_in, verbose = FALSE)
-#' dat_list <- change_fltname(dat_list)
-#' dat_list <- change_data(dat_list, outfile = NULL, write_file = FALSE,
-#'   fleets = 1, years = 1990:2010, types = c("age", "mla"))
-#' dat_list <- change_fltname(dat_list)
-#' ctl_file_in <- file.path(d, "codOM.ctl")
-#'
-#' out <- sample_mlacomp(dat_list, outfile = NULL, ctl_file_in = ctl_file_in,
-#'                       fleets = 1, Nsamp = 30, years = list(1992),
-#'                       verbose = FALSE, mean_outfile = "test.csv", write_file = FALSE)
-#'
-#' setwd("..")
-#' unlink("ss3sim-test", recursive = TRUE)
-#' setwd(wd)
-
 
 sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
-                           years, write_file=TRUE, mean_outfile = NULL,
+                           years, write_file=TRUE, mean_outfile = NULL, ageplus = NULL, pop_agecomp= NULL, # Added age plus group for use with wtatage
                            verbose = TRUE){
 
   ## If fleets==NULL, quit here and delete the data so the EM doesn't use it.
@@ -69,24 +49,33 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
 
   check_data(dat_list)
   # Users can specify either Lbin_lo or Lbin_hi < 1 for agecomp data
-  agecomp <- dat_list$agecomp[dat_list$agecomp$Lbin_lo == -1 |
-                             dat_list$agecomp$Lbin_hi == -1, ]
+  agecomp <- dat_list$agecomp
+  if (!is.null(pop_agecomp)) agecomp <- pop_agecomp[[1]]
+  
+  agecomp <- agecomp[agecomp$Lbin_lo == -1 | agecomp$Lbin_hi == -1, ]
+  agecomp$Yr <- abs(agecomp$Yr)
+  agecomp$FltSvy <- abs(agecomp$FltSvy)
+  
   if (NROW(agecomp) == 0) {
     stop(paste0("No age data exist in the dat_list."))
   }
   mwacomp <- dat_list$MeanSize_at_Age_obs[dat_list$MeanSize_at_Age_obs$AgeErr < 0, ]
   mlacomp <- dat_list$MeanSize_at_Age_obs[dat_list$MeanSize_at_Age_obs$AgeErr > 0, ]
   agebin_vector <- dat_list$agebin_vector
-
+  if (!is.null(pop_agecomp)) agebin_vector <- pop_agecomp[[2]]
+  
   ## Read in the control file
   ctl <- SS_parlines(ctl_file_in)
     CV.growth <- ctl[ctl$Label == "CV_young_Fem_GP_1", "INIT"]
     CV.growth.old <- ctl[ctl$Label == "CV_old_Fem_GP_1", "INIT"]
     if (CV.growth != CV.growth.old) {
-      stop(paste0("sample_mlacomp does not support different values for the",
+      warning(paste0("sample_mlacomp does not support different values for the",
                   "CV's of young and old fish. Please the check ", ctl_file_in,
                   "and make sure CV_young_Fem_GP_1 (", CV.growth, ") is",
-                  " equal to CV_old_Fem_GP_1 (", CV.growth.old, ")."))
+                  " equal to CV_old_Fem_GP_1 (", CV.growth.old, "). The 2 CVs were averaged"))
+      CV.growth <- c(CV.growth + CV.growth.old)/2
+    #  warning(paste0("The old CV was replace by the average of the 2 cvs, i.e. ", CV.growth))
+      
     }
 
   ## Check inputs for errors
@@ -112,13 +101,14 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
                "supported by ss3sim, please reconfigure your model."))
   }
   # Check for a sample size for every year
-  if (length(Nsamp) != length(Nfleets)){
+  if (length(Nsamp) != Nfleets){ ############################ ERROR IN SS3SIM
     stop(paste("Nsamp was not included for all fleets in fleet.",
                "User must include a sample size for each fleet that can be",
                "repeated for each year for that fleet or specified as a list of",
                "vectors, with the same dimensions as years."))
   }
   if (any(sapply(Nsamp, length) == 1)) {
+    if (!is.list(Nsamp)) Nsamp <- as.list(Nsamp)
     repNsamp <- which(sapply(Nsamp, length) == 1)
     for (i in repNsamp){
       Nsamp[[i]] <- rep_len(Nsamp[[i]], length(years[[i]]))
@@ -129,9 +119,17 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
                "Length of years and Nsamp did not match for fleet(s)",
                fleets[which(sapply(Nsamp, length) != sapply(years, length))]))
   }
+  
+  # Make sure the years have got agecomp data
+  years_age <-unique(cbind.data.frame(Yr=abs(dat_list$agecomp$Yr),FltSvy=abs(dat_list$agecomp$FltSvy)))
+  for (idx_flt in 1:length(unique(years_age$FltSvy))){
+    years[[idx_flt]] <- years[[idx_flt]][years[[idx_flt]] %in% years_age[years_age$FltSvy== fleets[idx_flt],"Yr"]]
+  }
+  
   ## End input checks
 
   mlacomp.new.list <- list() # temp storage for the new rows
+  save_for_wtatage.list <- list() # temp storage for the new rows
   forexport <- list()
   k <- 1                 # each k is a new row of data, to be rbind'ed later
   # Loop through mla data for this fleet, given the years specified
@@ -153,6 +151,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
       }
       # Get the columns that pertain to the actual mla data and not metadata
       mla.means <- as.numeric(mlacomp.new[paste0("a", agebin_vector)])
+    
       # For each age, given year and fleet, get the expected length and CV
       # around length, then sample from it using lognormal (below)
       # length for a given age is lognormal with expected value = E[mla]
@@ -170,6 +169,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
                               agecomp$FltSvy == fl.temp, ]
       # remove the 9 columns of metadata
       age.means <- as.numeric(agecomp.temp[-(1:9)])
+      age.means  <- age.means/sum(age.means)
       # Get user input sample size, theoretically this cannot be bigger than age n
       age.Nsamp <- as.numeric(Nsamp[[fl]][j])
       if (age.Nsamp > sum(agecomp$Nsamp)) {
@@ -221,10 +221,72 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
       # Sometimes you draw 0 fish from an age class, resulting in NaN
       # For now, replace with filler values
       # TODO: Fix the placeholder values for missing age bins
-      mlacomp.new.means[is.nan(mlacomp.new.means)] <- -1
+       mlacomp.new.means[is.nan(mlacomp.new.means)] <- -1
+      # Change the missing value for an average of the adjacent ones - -1 does not work when using it for wtatage after...
+      missing <- which(mlacomp.new.means==-1)
+      values <- seq_along(mlacomp.new.means)[-missing]
+      for (fix_mla in missing){
+        dif <- c(values - fix_mla)
+        if (any(dif <0)) neg <- max(dif[dif<0])
+        if (any(dif >0)) pos <- min(dif[dif>0])
+        if (!any(dif <0)) neg <- pos
+        if (!any(dif >0)) pos <- neg
+        below <- mlacomp.new.means[values[which(dif == neg)]]
+        above <- mlacomp.new.means[values[which(dif == pos)]]
+        mlacomp.new.means[fix_mla] <- (below + above)/2
+      }
+      
       ## mla data needs the sample sizes, so concatenate those on
       mlacomp.new[-(1:7)] <- c(mlacomp.new.means, age.samples)
-      mlacomp.new.list[[k]] <- mlacomp.new
+      
+      
+      save_for_wtatage <- list(mlacomp.new) ##################################################################### NEW
+      
+      if (!is.null(ageplus)){      
+        
+        if (ageplus != max(pop_agecomp[[2]])) {
+          
+          save_for_wtatage  <- list(mlacomp.new) #newfile$MeanSize_at_Age_obs,
+            
+          # then cumulate in the ageplus group
+          dat_list$N_agebins     <- ageplus
+          #dat_list$agebin_vector <- seq(min(dat_list$agebin_vector), ageplus, 1)
+          
+          if (mlacomp.new$Gender[1]==3){
+            meansize_cols      <- save_for_wtatage[[1]][,c(8:c((8+dim(save_for_wtatage[[1]])[2])/2))]#save_for_wtatage[[2]]
+            meansize_cols_fem  <- meansize_cols[,1:c(ncol(meansize_cols)/2)]
+            meansize_cols_mal  <- meansize_cols[,c(ncol(meansize_cols)/2+1):ncol(meansize_cols)]
+            other              <- save_for_wtatage[[1]][,c(c((9+dim(save_for_wtatage[[1]])[2])/2):dim(save_for_wtatage[[1]])[2])]
+            other_fem          <- other[,1:c(ncol(other)/2)]
+            other_mal          <- other[,c(ncol(other)/2+1):ncol(other)]
+            plusgroup_idx      <- which(dat_list$agebin_vector==ageplus)
+            plusses_fem        <- meansize_cols_fem[,c(plusgroup_idx:ncol(meansize_cols_fem))]
+            plusses_mal        <- meansize_cols_mal[,c(plusgroup_idx:ncol(meansize_cols_mal))]
+            plusgroup_fem      <-  mean(plusses_fem[plusses_fem != -1])
+            plusgroup_mal      <-  mean(plusses_mal[plusses_mal != -1])#apply(plusses_mal[plusses_fem != -1], 1, mean)
+            idx_temp           <- ncol(mlacomp.new[,c(1:c(7+plusgroup_idx-1))]) + ncol(meansize_cols_fem)
+            mlacomp.new        <- cbind(mlacomp.new[,c(1:c(7+plusgroup_idx-1))],plusgroup_fem,mlacomp.new[,c(idx_temp:c(idx_temp+plusgroup_idx-2))],plusgroup_mal)
+            other_fem          <- other_fem[,1:plusgroup_idx]
+            other_mal          <- other_mal[,1:plusgroup_idx]
+            mlacomp.new       <- cbind(mlacomp.new, other_fem, other_mal) 
+          } else{
+            meansize_cols <- save_for_wtatage[[1]][,c(8:c((8+dim(save_for_wtatage[[1]])[2])/2))]
+            other <- save_for_wtatage[[1]][,c(c((9+dim(save_for_wtatage[[1]])[2])/2):dim(save_for_wtatage[[1]])[2])]
+            plusgroup_idx <- which(dat_list$agebin_vector==ageplus)
+            plusses <- meansize_cols[,c(plusgroup_idx:ncol(meansize_cols))]
+            plusgroup <- mean(plusses[plusses != -1])
+            mlacomp.new <- cbind(mlacomp.new[,c(1:c(7+plusgroup_idx-1))],plusgroup)
+            names(mlacomp.new)[ncol(mlacomp.new)] <- paste("a",ageplus, sep="")
+            other <- other[,1:plusgroup_idx]
+            mlacomp.new <- cbind(mlacomp.new, other)
+            
+          } 
+        }
+      }
+        
+        mlacomp.new.list[[k]] <- mlacomp.new
+        save_for_wtatage.list[[k]] <- save_for_wtatage[[1]]
+        
       k <- k + 1
     }
   } # end sampling
@@ -233,10 +295,11 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
   }
   ## Combine new rows together into one data.frame
   mlacomp.new <- do.call(rbind, mlacomp.new.list)
+  save_for_wtatage.new <- do.call(rbind, save_for_wtatage.list)
   dat_list$MeanSize_at_Age_obs <- rbind(mlacomp.new, mwacomp)
   dat_list$N_MeanSize_at_Age_obs <- NROW(mlacomp.new)
   ## Write the modified file
   if(write_file) SS_writedat(datlist = dat_list, outfile = outfile,
                              overwrite = TRUE, verbose = verbose)
-  return(invisible(dat_list))
+  return(invisible(list(dat_list,save_for_wtatage.new)))
 }

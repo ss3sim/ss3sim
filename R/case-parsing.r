@@ -159,21 +159,61 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
 
   # now, check for all "function_type = change_tv" and concatenate these
   # into a list to pass to change_param()
-  change_param_args <- sapply(argvalues_out, function(x) {
-    if ("function_type" %in% names(x)) {
-      if (x$function_type == "change_tv") {
-        y <- list(temporary_name = x$dev)
-        names(y) <- x$param
-        y
-      }}})
+  save_model <- NULL
+  
+  
+  # first extract the files that have a change_tv
+  
+  lst_names <- c()
+  change_param_args <- list()
+  change_param_args2 <- NULL
+  
+  for (i in 1:length(argvalues_out)) {
+    temp <- 1
+    if (!is.null(argvalues_out[[i]]$function_type)) {
+      if (argvalues_out[[i]]$function_type == "change_tv") {
+        temp <- list(argvalues_out[[i]]$dev)
+       if (length(argvalues_out[[i]]$param)>1) {
+         names(temp[[1]]) <- argvalues_out[[i]]$param
+       }
+        if (length(argvalues_out[[i]]$param)==1) {
+          names(temp) <- argvalues_out[[i]]$param
+          temp <- list(temp)
+         }
+        temp[[1]]$model <- argvalues_out[[i]]$model
+        # 2 different tables
+        #change_param_args2[i] <- temp
+        change_param_args2 <- c(change_param_args2, temp[[1]]$model)
+        temp[[1]]$model <- NULL
+        
+      }
+    }
+    change_param_args[i] <- temp
+    names(change_param_args)[i] <- names(argvalues_out)[i]  
+    if (is.null(argvalues_out[[i]]$function_type)) {
+      change_param_args[i] <- list(NULL) ########################################## ADDED THE LIST BIT IN ....
+    }
+  }
+  
 
+
+
+# change_param_args2 <- sapply(argvalues_out, function(x) {
+#     if ("function_type" %in% names(x)) {
+#       if (x$function_type == "change_tv") {
+#         y <- list(temporary_name = x$model) ############################## TRY FIT IN A NEW ARG TO DEFINE OM OR EM
+#         names(y) <- c(x$model)
+#         y
+#       }}})
+#   change_param_args2 <- unlist(change_param_args2)
+#   
   # remove elements that aren't time varying:
   args_null <- sapply(change_param_args, function(x) is.null(x))
   if (!length(which(args_null)) == length(args_null)) { # some are time varying
     change_param_args[which(args_null)] <- NULL
     # and re-arrange to pass to change_params
-    change_param_args_short <- lapply(change_param_args, "[[", 1)
-    names(change_param_args_short) <- sapply(change_param_args, function(x) names(x))
+    change_param_args_short <- unlist(change_param_args, recursive=F)#lapply(change_param_args, "[[", 1)
+    names(change_param_args_short) <- unlist(sapply(change_param_args, function(x) names(x))) ########### changed names here only
   } else {
     change_param_args_short <- NULL
   }
@@ -205,8 +245,16 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
     }
   }
 
+
   # and concatenate on the time varying arguments
-  c(argvalues_out, list(tv_params = change_param_args_short))
+  argvalues_out <- c(argvalues_out, list(tv_params = change_param_args_short))
+  
+  # Split tv_params between om and em
+  if (!is.null(change_param_args2)){
+    argvalues_out$tv_params$models <- change_param_args2#unlist(change_param_args2)[grep("model",names(unlist(change_param_args2)))]
+  }
+  argvalues_out
+  
 }
 
 #' Substring from right

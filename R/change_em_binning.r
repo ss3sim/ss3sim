@@ -30,7 +30,7 @@
 #'   FALSE}.
 #' @importFrom r4ss SS_writedat
 #' @importFrom magrittr %>%
-#' @importFrom dplyr group_by_ summarize_at rename_ mutate_ inner_join
+#' @importFrom dplyr group_by_ summarise_at rename_ mutate_ inner_join funs_
 #' @export
 #' @family sample functions
 #' @family change functions
@@ -71,6 +71,9 @@
 #' newdat$lbin_vector
 #' head(newdat$lencomp)
 #' newdat$agecomp
+#'
+#' # COULD ADD A 2 GENDER EXAMPLE USING THE NEW FLATHEAD MODEL FOR EXAMPLE
+#'
 
 change_em_binning <- function(dat_list, dat_file_out, bin_vector, lbin_method = NULL,
                               pop_binwidth=NULL, pop_minimum_size=NULL,
@@ -104,11 +107,11 @@ change_em_binning <- function(dat_list, dat_file_out, bin_vector, lbin_method = 
   if (is.null(dat_list$lencomp)) {
     stop("no lcomp data. Verify your case argument files")
   }
-  if (dat_list$Ngenders > 1) {
-    stop(paste("_Ngenders is greater than 1 in the model.",
-      "change_em_binning only works with single-gender models."))
-  }
-  if (!identical(as.integer(max(bin_vector)), as.integer(max(dat_list$lbin_vector)))) {
+  # if (dat_list$Ngenders > 1) {
+  #   stop(paste("_Ngenders is greater than 1 in the model.",
+  #     "change_em_binning only works with single-gender models."))
+  # }
+   if (!identical(as.integer(max(bin_vector)), as.integer(max(dat_list$lbin_vector)))) {
     stop(paste("The maximum value in the bin_vector is not equal to the",
       "original maximum length bin value."))
   }
@@ -122,7 +125,14 @@ change_em_binning <- function(dat_list, dat_file_out, bin_vector, lbin_method = 
   }
 
   # Find ID columns and data columns to replace:
-  old_len_columns <- grep("^l[0-9.]+$", names(dat_list$lencomp))
+  #old_len_columns <- grep("^l[0-9.]+$", names(dat_list$lencomp))
+   if (dat_list$Ngenders > 1) {
+     bin_vector <- c(bin_vector,bin_vector)
+     ids <- rep(c("f","m"), each=length(bin_vector)/2)
+   } else { ids <- "l"}
+
+
+  old_len_columns <- 7:ncol(dat_list$lencomp)
   old_lcomp_total <- sum(dat_list$lencomp[, old_len_columns]) # check later
   id_columns <- seq_along(names(dat_list$lencomp))[-old_len_columns]
   newdummy <- dat_list$lencomp[, old_len_columns]
@@ -131,42 +141,57 @@ change_em_binning <- function(dat_list, dat_file_out, bin_vector, lbin_method = 
   # change population length bin width
   lcomp_new <- as.data.frame(matrix(0, nrow = nrow(newdummy),
     ncol = length(bin_vector)))
-  names(lcomp_new) <- paste0("l", bin_vector)
+  names(lcomp_new) <- paste0(ids, bin_vector)
 
   # Re-bin length comps:
-  for (i in 1:length(bin_vector)) {
 
-    if (i == 1) {
-      select_col <- which(dat_list$lbin_vector < bin_vector[i + 1])
-      if (length(select_col) > 1) {
-        lcomp_new[, i] <- apply(newdummy[, select_col], 1, sum, na.rm = TRUE)
-      }
-      if (length(select_col) == 1)
-        lcomp_new[, i] = newdummy[, select_col]
-    }
-
-    if (i > 1 & i < length(bin_vector)) {
-      select_col <- which(dat_list$lbin_vector >= bin_vector[i] &
-          dat_list$lbin_vector < bin_vector[i + 1])
-      if (length(select_col) > 1) {
-        lcomp_new[, i] <- apply(newdummy[, select_col], 1, sum, na.rm = TRUE)
-      }
-      if (length(select_col) == 1)
-        lcomp_new[, i] = newdummy[, select_col]
-    }
-
-    if (i == length(bin_vector)) {
-      select_col <- which(dat_list$lbin_vector >= bin_vector[i])
-      if (length(select_col) > 1) {
-        lcomp_new[, i] <- apply(newdummy[, select_col], 1, sum, na.rm = TRUE)
-      }
-      if (length(select_col) == 1) {
-        lcomp_new[, i] <- newdummy[, select_col]
-      }
-    }
+  if (dat_list$Ngenders > 1) { ################################################## IN MY VERSION OF SS, I USE GENDER TYPE 1 or TYPE 3 (NOT TYPE 2...) EVERYTHIGN FORMATTED FOR THESE OPTIONS ONLY!!!
+    bin_vector <- unique(bin_vector)
+    lcomp_new_f <- lcomp_new[1:length(bin_vector)]
+    lcomp_new_m <- lcomp_new[c(length(bin_vector)+1):c(length(bin_vector)*2)]
+    lcomp_new <- list(lcomp_new_f, lcomp_new_m)
+  } else {
+    lcomp_new <- list(lcomp_new)
   }
 
-  new_lcomp_total <- sum(lcomp_new)
+    for (idx in 1:length(lcomp_new)){
+
+    for (i in 1:c(length(bin_vector))) {
+
+      if (i == 1) {
+        select_col <- which(dat_list$lbin_vector < bin_vector[i + 1])
+        if (length(select_col) > 1) {
+          lcomp_new[[idx]][, i] <- apply(newdummy[, select_col], 1, sum, na.rm = TRUE)
+        }
+        if (length(select_col) == 1)
+          lcomp_new[[idx]][, i] = newdummy[, select_col]
+      }
+
+      if (i > 1 & i < length(bin_vector)) {
+        select_col <- which(dat_list$lbin_vector >= bin_vector[i] &
+                              dat_list$lbin_vector < bin_vector[i + 1])
+        if (length(select_col) > 1) {
+          lcomp_new[[idx]][, i] <- apply(newdummy[, select_col], 1, sum, na.rm = TRUE)
+        }
+        if (length(select_col) == 1)
+          lcomp_new[[idx]][, i] = newdummy[, select_col]
+      }
+
+      if (i == length(bin_vector)) {
+        select_col <- which(dat_list$lbin_vector >= bin_vector[i])
+        if (length(select_col) > 1) {
+          lcomp_new[[idx]][, i] <- apply(newdummy[, select_col], 1, sum, na.rm = TRUE)
+        }
+        if (length(select_col) == 1) {
+          lcomp_new[[idx]][, i] <- newdummy[, select_col]
+        }
+      }
+    }
+    }
+
+  new_lcomp_total <-  lapply(lcomp_new,sum)
+  new_lcomp_total <-  sum(unlist(new_lcomp_total))
+
   if (!identical(old_lcomp_total, new_lcomp_total)) {
     stop(paste("Number of samples in the new lcomp data matrix does not match",
       "the number of samples in the original dataset."))
@@ -214,18 +239,34 @@ change_em_binning <- function(dat_list, dat_file_out, bin_vector, lbin_method = 
     }
 
     # to check later:
-    a_ids <- grep("^a[0-9.]+$", names(dat_list$agecomp))
-    old_age_dat <- dat_list$agecomp[, a_ids]
-    old_agecomp_total <- sum(old_age_dat)
+
+    if (dat_list$Ngenders > 1) {
+      acomp_f <- dat_list$agecomp[,1:c(9+length(dat_list$agebin_vector))]
+      names(acomp_f) <- c(names(dat_list$agecomp)[1:9],paste0("a.",dat_list$agebin_vector))
+      acomp_m <- dat_list$agecomp[,c(1:9,c(1+ncol(acomp_f)):ncol(dat_list$agecomp))]
+      names(acomp_m) <-  names(acomp_f)
+      acomp <- list(acomp_f, acomp_m)
+    } else {
+      acomp <- list(dat_list$agecomp)
+    }
+
+    old_age <- dat_list$agecomp[dat_list$agecomp$Lbin_lo == -1, ]
+    old_agecomp_total <- sum(dat_list$agecomp[,-c(1:9)])
+
+    for (idx in 1:length(acomp)){
+
+    a_ids <-  which(!is.na(as.numeric(gsub("[^[:digit:]]", "", names(acomp[[idx]]))))) #grep("^a[0-9.]+$", names(acomp[[idx]]))
+    names(acomp[[idx]])[a_ids] <- paste0("a.",seq_along(a_ids))
+    old_age_dat <- acomp[[idx]][, a_ids]
 
     # grab the data we'll work with:
-    old_age <- dat_list$agecomp[dat_list$agecomp$Lbin_lo == -1, ]
-    old_cal_all <- dat_list$agecomp[dat_list$agecomp$Lbin_lo != -1, ]
+    old_cal_all <- acomp[[idx]][acomp[[idx]]$Lbin_lo != -1, ]
 
     # remove columns we'll merge back in after:
     a_ids_character <- names(old_cal_all)[a_ids]
-    old_cal <- old_cal_all[ , c("Yr", "Lbin_lo", a_ids_character)]
-
+    old_cal <- old_cal_all[ , c("Yr","FltSvy","Lbin_lo", a_ids_character)] ######### I THINK THERE WAS A PROBLEM HERE IF RE-BINNING WITH SEVERAL FLEET
+                                                                           ######### MIGHT NEED TO CHECK THIS AGAIN + SEE IF USING DIFFERENT AGEING ERROR MATRICES
+                                                                           ######### WOULD ALSO CREATE A PROBLEM, i.e. Agerr MIGHT NEED TO BE INCLUDED HERE TOO...
     # make a lookup table of old and new bins:
     lookup <- data.frame(
       Lbin_lo = old_binvector,
@@ -238,38 +279,49 @@ change_em_binning <- function(dat_list, dat_file_out, bin_vector, lbin_method = 
     # this uses dplyr and pipes but avoids non-standard evaluation
     # http://cran.r-project.org/web/packages/dplyr/vignettes/nse.html
     new_cal <- inner_join(old_cal, lookup, by = "Lbin_lo") %>%
-      group_by_(~Yr, ~lbin_new_low, ~lbin_new_high)
+      group_by_(~Yr, ~FltSvy, ~lbin_new_low, ~lbin_new_high)
     dat_cols <- names(new_cal)[grep("^a[0-9.]+$", names(new_cal))]
-
     if (utils::packageVersion("dplyr") > "0.5.0") {
       new_cal <- summarize_at(new_cal, .funs = sum, .vars = dat_cols) %>%
-        rename_(Lbin_lo = ~lbin_new_low, Lbin_hi = ~lbin_new_high) %>%
-        as.data.frame
+       rename_(Lbin_lo = ~lbin_new_low, Lbin_hi = ~lbin_new_high) %>%
+       as.data.frame
     } else {
-      new_cal <- dplyr::summarise_each_(new_cal, dplyr::funs_(~sum), vars = dat_cols) %>%
-        rename_(Lbin_lo = ~lbin_new_low, Lbin_hi = ~lbin_new_high) %>%
-        as.data.frame
+      new_cal <- summarise_each_(new_cal, funs_(~sum), vars = dat_cols) %>%
+         rename_(Lbin_lo = ~lbin_new_low, Lbin_hi = ~lbin_new_high) %>%
+         as.data.frame
     }
-
     new_cal$Nsamp <- rowSums(new_cal[, grepl("^a[0-9.]+$", names(new_cal))])
 
     new_cal_meta_dat <- old_cal_all[1:nrow(new_cal),
       -which(names(old_cal_all) %in%
-        c("Yr", "Lbin_lo", a_ids_character, "Lbin_hi", "Nsamp"))]
+        c("Yr","FltSvy","Lbin_lo", a_ids_character, "Lbin_hi", "Nsamp"))]
     new_cal <- cbind(new_cal_meta_dat, new_cal)
 
     # re-order the columns:
     new_cal <- new_cal[, match(names(old_cal_all), names(new_cal))]
 
+    acomp[[idx]] <- new_cal
+    }
+
+    if (length(acomp) >1){
+      names(acomp[[1]]) <- c(names(dat_list$agecomp)[1:8],"f.Nsamp",paste0("f",dat_list$agebin_vector))
+      names(acomp[[2]]) <- c(names(dat_list$agecomp)[1:8],"m.Nsamp",paste0("m",dat_list$agebin_vector))
+      new_cal <- merge(acomp[[1]],acomp[[2]], all=T)
+      new_cal$Nsamp <- new_cal$f.Nsamp+new_cal$m.Nsamp
+      new_cal$f.Nsamp <- new_cal$m.Nsamp <- NULL
+      # re-order the columns:
+      new_cal <- new_cal[, match(names(dat_list$agecomp), names(new_cal))]
+    }
+
     # and slot the new data into the .dat file:
+    names(old_age) <- names(new_cal)
     dat_list$agecomp <- rbind(old_age, new_cal)
     dat_list$N_agecomp <- nrow(dat_list$agecomp)
-
-    new_age_dat <- dat_list$agecomp[, grepl("^a[0-9.]+$", names(dat_list$agecomp))]
-    new_agecomp_total <- sum(new_age_dat)
+    #new_age_dat <- dat_list$agecomp[, grepl("^a[0-9.]+$", names(dat_list$agecomp))]
+    new_agecomp_total <- sum(dat_list$agecomp[,-c(1:9)])
     if (!identical(old_agecomp_total, new_agecomp_total)) {
       stop(paste("Number of samples in the new agecomp data matrix does not match",
-        "the number of samples in the original dataset."))
+                 "the number of samples in the original dataset."))
     }
   }
 
