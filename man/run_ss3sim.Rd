@@ -180,5 +180,7 @@ setwd(wd)
 \code{\link{expand_scenarios}}
 }
 \author{
-Sean C. Anderson
+Sean C. Anderson; Gwladys Lambert added a few lines to 
+solve the parallel option problem that occured with her library path 
+(may or may not have to be removed on other computers)
 }

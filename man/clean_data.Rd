@@ -49,7 +49,9 @@ calculate_data_units, change_data
 Other sampling functions: \code{\link{sample_agecomp}},
   \code{\link{sample_calcomp}}, \code{\link{sample_index}},
   \code{\link{sample_lcomp}}, \code{\link{sample_mlacomp}},
-  \code{\link{sample_wtatage}}
+  \code{\link{sample_schools}},
+  \code{\link{sample_wtatage}},
+  \code{\link{schooling_pattern}}
 }
 \author{
 Cole Monnahan

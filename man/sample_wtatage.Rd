@@ -4,8 +4,9 @@
 \alias{sample_wtatage}
 \title{Sample empirial weight-at-age data and write to file for use by the EM}
 \usage{
-sample_wtatage(wta_file_in, outfile, dat_list, ctl_file_in, years,
-  fill_fnc = fill_across, write_file = TRUE, fleets, cv_wtatage = NULL)
+sample_wtatage(wta_file_in, outfile, dat_list, pop_agecomp = NULL,
+  ctl_file_in, years, fill_fnc = fill_across, write_file = TRUE, fleets,
+  cv_wtatage = NULL, random_gen = NULL)
 }
 \arguments{
 \item{wta_file_in}{The file to read weight-at-age from. Specifically to get the
@@ -17,6 +18,11 @@ Must end in \code{.dat} or equal \code{wtatage.ss}.}
 \item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
+
+\item{pop_agecomp}{A datafile of population age composition extracted from 
+\code{sample_calcomp} if the age-plus group in the observations if different from
+the population maximum age. This is used to calculate the weight-at-age as
+it has to be of the size of the population}
 
 \item{ctl_file_in}{A path to the control file, outputed from an OM, containing
 the OM parameters for growth and weight/length relationship. These values
@@ -42,6 +48,8 @@ pertains to other arguments. A missing value excludes that fleet from
 the fleet collected samples, keep the value to \code{fleets=NULL}.}
 
 \item{cv_wtatage}{A user specified CV for growth. Default is \code{NULL}.}
+
+\item{random_gen}{If numbers are randomly generated in case file}
 }
 \value{
 A modified \code{.wtatage.ss} file if \code{write_file = TRUE}. A list
@@ -75,8 +83,10 @@ if specified.
 Other sampling functions: \code{\link{clean_data}},
   \code{\link{sample_agecomp}},
   \code{\link{sample_calcomp}}, \code{\link{sample_index}},
-  \code{\link{sample_lcomp}}, \code{\link{sample_mlacomp}}
+  \code{\link{sample_lcomp}}, \code{\link{sample_mlacomp}},
+  \code{\link{sample_schools}},
+  \code{\link{schooling_pattern}}
 }
 \author{
-Cole Monnahan, Allan Hicks, Peter Kuriyama
+Cole Monnahan, Allan Hicks, Peter Kuriyama, Gwladys Lambert
 }

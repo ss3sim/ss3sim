@@ -94,7 +94,9 @@ Other sampling functions: \code{\link{clean_data}},
   \code{\link{sample_agecomp}},
   \code{\link{sample_calcomp}}, \code{\link{sample_lcomp}},
   \code{\link{sample_mlacomp}},
-  \code{\link{sample_wtatage}}
+  \code{\link{sample_schools}},
+  \code{\link{sample_wtatage}},
+  \code{\link{schooling_pattern}}
 }
 \author{
 Cole Monnahan, Kotaro Ono

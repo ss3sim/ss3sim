@@ -2,10 +2,13 @@
 % Please edit documentation in R/sample_lcomp.R
 \name{sample_lcomp}
 \alias{sample_lcomp}
-\title{Sample length compositions from expected values}
+\title{Sample length compositions from expected values.}
 \usage{
-sample_lcomp(dat_list, outfile, fleets = c(1, 2), Nsamp, years, cpar = 1,
-  ESS = NULL, write_file = TRUE)
+sample_lcomp(dat_list, outfile, fleets = c(1, 2), years, cpar = 1, Nsamp,
+  Nhauls = NULL, cl_factor = NULL, vals_at_cutoff = 0.1, ESS = NULL,
+  change_ess_now = NULL, plot.schools = F, parallel_lgths = F,
+  Nsamp_max = NULL, random_gen = NULL, empirical_aggs = NULL,
+  write_file = TRUE)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
@@ -20,28 +23,82 @@ pertains to other arguments. A missing value excludes that fleet from
 \code{outfile} (i.e. it turns it off so no samples are written). If none of
 the fleet collected samples, keep the value to \code{fleets=NULL}.}
 
-\item{Nsamp}{*A numeric list of the same length as \code{fleets}.
-Either single values or vectors of the same length as the number of
-years can be passed through. Single values are repeated for all
-years. If no fleet collected samples, keep the value to
-\code{Nsamp=NULL}.}
-
 \item{years}{*A list the same length as \code{fleets} giving the years as
 numeric vectors. If no fleet collected samples, keep the value to
 \code{years=NULL}.}
 
-\item{cpar}{*A numeric value or vector the same length as
-\code{fleets} controlling the variance of the Dirichlet
-distribution used for sampling. A value of \code{1} indicates the
-same standard deviation as a multinomial of the given \code{Nsamp},
-\code{2} indicates twice, etc. Values greater than one indicate
-overdispersion, and less underdispersion.}
+\item{cpar}{A numeric value or vector the same length as \code{fleets}
+controlling the variance of the Dirichlet distribution used for sampling. A
+value of 1 indicates the same standard deviation as a multinomial of the
+given Nsamp, 2 indicates twice, etc. Values greater than one indicate
+overdispersion, and less underdispersion. This is not compatible with the
+option to sample in schools, see \code{Nhauls}.}
 
-\item{ESS}{An effective sample size to write to file (but not use in
-sampling). The default of NULL means to use the true (internally
-calculated) ESS, which is \code{Nsamp} for the multinomial case or given
-by the formula under \code{cpar} for the Dirichlet case. Must match the
-structure of the \code{years} arguments.}
+\item{Nsamp}{A numeric list of the same length as fleets. Either single
+values or vectors of the same length as the number of years can be passed
+through. Single values are repeated for all years. If no fleet collected
+samples, keep the value to Nsamp=NULL. When using the option to sample
+lengths from fish schools (see the \code{Nhaul} argument), \code{Nsamp} is
+the number of length samples to be taken per haul.}
+
+\item{Nhauls}{A numeric list of the same length as fleets. Number of hauls
+to sample lengths data from. Default is NULL.
+Use only to activate the option to sample lengths data from fish schools,
+i.e., from aggregated data. It will call the \code{\link{sample_schools}}
+function.}
+
+\item{cl_factor}{this parameter determines the characteristics of the
+clusters (or fish schools) that form the expected distribution (combined by
+mixture distribution) year by year. \code{cl_factor} sets the maximum number of
+clusters that can be used to fit the expected length distribution which defines
+the mean length of these clusters. Used in combination with \code{empirical_aggs},
+it will overwrite the empirical vector of mean lengths. Each cluster is the
+gamma equivalent of a  normal distribution (gamma equivalent is used to avoid
+drawing negative length values). The number of clusters is defined by
+  \code{cl_factor}*(max(\code{vec})-min(\code{vec})).
+  A value of \code{cl_factor}=1 means that the number of clusters will be equal
+  to the range of lengths, i.e. the mean of each distribution will be 1 cm apart.
+  A value of 0.5 means that the number of clusters will be divided by 2, i.e.
+  mean length of each distribution every 2cm etc.}
+
+\item{vals_at_cutoff}{Value used to estimate the SD of the clusters (or fish
+schools) if \code{cl_factor} is derfined and \code{empirical_aggs} is not used.
+A value of 0.2 means that the SD of the normal distributions will
+be 20 percent of the full range of lengths.}
+
+\item{ESS}{Define effective sample size for lengths data. Has to be a list of
+the same length as the number of fleets. Can be a single value or a vector
+of length equal to the number of years. Can also be a character, i.e.
+"hauls", in which case the number of hauls sampled from will be used as
+ESS, if using the option to sample in schools.}
+
+\item{change_ess_now}{If ESS has to be changed at this stage or by the end of
+the sampling process in \code{\link{ss3sim_base}}. Default is NULL, meaning
+that it will be changed here (would do the same with TRUE). Set to FALSE to
+keep the original sample size until the end of the sampling process in
+\code{\link{ss3sim_base}}. This is important when sampling conditional
+age-at-length, using \code{\link{sample_calcomp}}, where the number of ages
+that can be sampled depends on the original number of lengths measured.}
+
+\item{plot.schools}{Default is FALSE. Set to TRUE to visualise the schools
+fitting process and sampling outputs when the \code{Nhauls} argument is not
+set to NULL.}
+
+\item{parallel_lgths}{If sampling several years, option to conduct the
+sampling in parallel (useful when using the schooling options). Default is
+FALSE. Note that the \code{plot.schools} option will not work in parallel.}
+
+\item{Nsamp_max}{Maximum number of lengths measurements to take if
+numbers-at-length are randomly generated in the case file. Default is NULL.}
+
+\item{random_gen}{If \code{years} are randomly generated, give the fleet
+number(s) for which they are. Default is NULL.}
+
+\item{empirical_aggs}{empirical data to create aggregation pattern, must include
+2 columns only, first mean lengths, then correponding SDs of hauls.
+\code{\link{schooling_pattern}} is called to fit a gam model and resample standard
+deviations from a new vector of mean lengths. Here this vector will be the empirical
+one if \code{cl_factor} is NULL, else see \code{cl_factor}.}
 
 \item{write_file}{A logical switch for whether to write \code{outfile} to
 disk. Can be turned off to speed up testing or exploration of the
@@ -51,13 +108,18 @@ below.}
 \value{
 A modified \code{.dat} file if \code{write_file=TRUE}. A list object
 containing the modified \code{.dat} file is returned invisibly.
+
+If the schooling option is turned on it will return a list of 2
+  objects. The first one is the \code{.dat} file, the second one is a
+  dataframe detailing the actual sampling, i.e. lengths measurements on a
+  haul by haul basis.
 }
 \description{
 Take a \code{data.SS_new} file containing expected values and sample to
 create observed length compositions which are then written to file for use by
-the estimation model.
-If used with \code{\link{run_ss3sim}} the case file should be named
-\code{lcomp}. A suggested (default) case letter is \code{D} for data.
+the estimation model. If used with \code{\link{run_ss3sim}} the case file
+should be named \code{lcomp}. A suggested (default) case letter is \code{D}
+for data.
 }
 \section{Which arguments to specifiy in case files}{
 
@@ -69,53 +131,133 @@ if specified.
 }
 
 \examples{
-d <- system.file("extdata", package = "ss3sim")
-f_in <- paste0(d, "/models/cod-om/codOM.dat")
-dat_list <- r4ss::SS_readdat(f_in, verbose = FALSE)
-dat_list <- change_fltname(dat_list)
+ d <- system.file("extdata", package = "ss3sim")
+ f_in <- paste0(d, "/models/cod-om/codOM.dat")
+ dat_list <- r4ss::SS_readdat(f_in, verbose = FALSE)
+ dat_list <- change_fltname(dat_list)
 
-## Generate with constant sample size across years
-ex1 <- sample_lcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(1,2),
-                    Nsamp=list(100,50), years=list(seq(26, 100, by=2),
-                                            80:100), write_file = FALSE)
+ ## Generate with constant sample size across years
+ ex1 <- sample_lcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(1,2),
+                     Nsamp=list(100,50), years=list(seq(26, 100, by=2),
+                                             80:100), write_file = FALSE)
 
-## Generate with varying Nsamp by year for first fleet
-ex2 <- sample_lcomp(dat_list=dat_list, outfile="test2.dat", fleets=c(1,2),
-                    Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
-                    years=list(seq(26, 44, by=2),
-                        80:100), write_file = FALSE)
-
+ ## Generate with varying Nsamp by year for first fleet
+ ex2 <- sample_lcomp(dat_list=dat_list, outfile="test2.dat", fleets=c(1,2),
+                     Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
+                     years=list(seq(26, 44, by=2),
+                         80:100), write_file = FALSE)
 \dontrun{
-## Plot distributions for a particular year to compare multinomial
-## vs. overdispersed Dirichlet
-temp.list <- temp.list2 <- list()
-for(i in 1:40){
-    temp.list[[i]] <-
-      sample_lcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(2), cpar=c(3),
-                     Nsamp=list(100), years=list(95),
-                     write_file=FALSE)$lencomp
-    temp.list2[[i]] <-
-        sample_lcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(2),
-                     cpar=c(NA), Nsamp=list(100), years=list(95),
-                     write_file=FALSE)$lencomp
-}
-## Organize the data for plotting
-x1 <- reshape2::melt(do.call(rbind, temp.list)[,-(1:6)[-3]], id.vars="FltSvy")
-x2 <- reshape2::melt(do.call(rbind, temp.list2)[,-(1:6)[-3]], id.vars="FltSvy")
-Make proportional data
-x2 <- reshape2::melt(do.call(rbind, tapply(x2$value, list(x2$FltSvy, x2$variable), prop.table)))
-op <- par(mfrow=c(2,1))
-with(x1, boxplot(value~variable, las=2, ylim=c(0,.6), ylab="Proportion",
-                 main="Overdispersed (cpar=3)",  xlab="length bin"))
-temp <- as.numeric(subset(dat_list$lencomp, Yr==95 & FltSvy == 2)[-(1:6)])
-points(temp/sum(temp), pch="-", col="red")
-with(x2, boxplot(value~Var1, las=2, ylab="Proportion",
-                 main="Multinomial", xlab="length bin", xaxt = "n"))
-axis(side = 1, at = unique(x2$Var1), labels = unique(x1$variable), las = 2)
-temp <- as.numeric(subset(dat_list$lencomp, Yr==95 & FltSvy == 2)[-(1:6)])
-points(temp/sum(temp), pch="-", col="red")
-par(op)
-}
+ # Plot distributions for a particular year to compare multinomial
+ # vs. overdispersed Dirichlet
+ temp.list <- temp.list2 <- list()
+ for(i in 1:40){
+     temp.list[[i]] <-
+       sample_lcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(2),
+                      cpar=c(3), years=list(95),
+                      Nsamp=list(100), write_file=FALSE)$lencomp
+     temp.list2[[i]] <-
+         sample_lcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(2),
+                      cpar=c(NA), Nsamp=list(100), years=list(95),
+                      write_file=FALSE)$lencomp
+ }
+ ## Organize the data for plotting
+ x1 <- reshape2::melt(do.call(rbind, temp.list)[,-(1:6)[-3]], id.vars="FltSvy")
+ x2 <- reshape2::melt(do.call(rbind, temp.list2)[,-(1:6)[-3]], id.vars="FltSvy")
+ Make proportional data
+ x2 <- reshape2::melt(do.call(rbind, tapply(x2$value, list(x2$FltSvy, x2$variable), prop.table)))
+ op <- par(mfrow=c(2,1))
+ with(x1, boxplot(value~variable, las=2, ylim=c(0,.6), ylab="Proportion",
+                  main="Overdispersed (cpar=3)",  xlab="length bin"))
+ temp <- as.numeric(subset(dat_list$lencomp, Yr==95 & FltSvy == 2)[-(1:6)])
+ points(temp/sum(temp), pch="-", col="red")
+ with(x2, boxplot(value~Var1, las=2, ylab="Proportion",
+                  main="Multinomial", xlab="length bin", xaxt = "n"))
+ axis(side = 1, at = unique(x2$Var1), labels = unique(x1$variable), las = 2)
+ temp <- as.numeric(subset(dat_list$lencomp, Yr==95 & FltSvy == 2)[-(1:6)])
+ points(temp/sum(temp), pch="-", col="red")
+ par(op)
+
+
+ ## Option to sample in schools (length aggregated fish)
+
+ # Generate with constant sample size across years
+ # If plot.schools = T, need to set the directory where the plot pdf will be
+ # saved and can be accessed and visualised
+ getwd()
+ ex1 <- sample_lcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(1,2),
+                     Nsamp=list(100,50), years=list(seq(96, 100, by=2),
+                     98:100), Nhauls= list(100,100), cl_factor = 0.5,
+                     vals_at_cutoff = 0.1, plot.schools = T, write_file = F)
+ # dat file
+ ex1a <- ex1[[1]]
+ # hauls file
+ ex1b <- ex1[[2]]
+
+ # Generate with varying Nsamp by year for first fleet
+ ex2 <- sample_lcomp(dat_list=dat_list, outfile="test2.dat", fleets=c(1,2),
+                     Nsamp=list(c(80,90,100), 50),
+                     years=list(seq(40, 44, by=2), 98:100),
+                     Nhauls= list(100,100), cl_factor = 0.5, vals_at_cutoff
+                     = 0.1, plot.schools = TRUE,  write_file = FALSE)
+ # dat file
+ ex2a <- ex2[[1]]
+hauls file
+ ex2b <- ex2[[2]]
+
+ # Testing the parallel version - runs years in parallel (not useful if
+ # running one year at a time)
+
+ library(doParallel)
+ library(compiler)
+ cores=7
+ assign(".lib.loc", .libPaths()[1], envir = environment(.libPaths))
+ cl<-makeCluster(cores)
+ clusterCall(cl, function(x) .libPaths(x), .libPaths())
+ registerDoParallel(cl)
+
+ ex3 <- sample_lcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(1,2),
+                              Nsamp=list(100,50), years=list(seq(96, 100,
+                              by=2), 98:100), Nhauls= list(100,100),
+                              cl_factor = 0.5, vals_at_cutoff = 0.1,
+                              plot.schools = TRUE,  write_file = FALSE,
+                              parallel_lgths = T)
+
+
+ # Compare multinomial and dirichlet to schools sampling
+ temp.list <- temp.list2 <- temp.list3 <- list()
+ for(i in 1:10){
+   temp.list[[i]] <-
+     sample_lcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(2), cpar=c(3),
+                  Nsamp=list(100), years=list(95),
+                  write_file=FALSE)$lencomp
+   temp.list2[[i]] <-
+     sample_lcomp(dat_list=dat_list, outfile="test2.dat", fleets=c(2), cpar=c(NA),
+                  Nsamp=list(100), years=list(95),
+                  write_file=FALSE)$lencomp
+   temp.list3[[i]] <-
+     sample_lcomp(dat_list=dat_list, outfile="test3.dat", fleets=c(2), cpar=c(NA),
+                  Nhauls= list(10),  Nsamp=list(10), years=list(95),
+                  cl_factor = 0.5, vals_at_cutoff = 0.1,
+                  plot.schools = F, write_file=FALSE)[[1]]$lencomp
+ # Note that the output of sample_lcomp is now a list of length 2.
+ # [[1]] is the data file for SS, [[2]] is the actual samples, haul by haul
+ }
+ # Organize the data for plotting
+ x1 <- reshape2::melt(do.call(rbind, temp.list)[,-(1:6)[-3]], id.vars="FltSvy")
+ x2 <- reshape2::melt(do.call(rbind, temp.list2)[,-(1:6)[-3]], id.vars="FltSvy")
+ x2$value <- x2$value/100
+ x3 <- reshape2::melt(do.call(rbind, temp.list3)[,-(1:6)[-3]], id.vars="FltSvy")
+ op <- par(mfrow=c(3,1))
+ par(op)
+ with(x1, boxplot(value~variable, las=2, ylab="Proportion",
+                  main="Overdispersed (cpar=3)", ylim=c(0,.06), xlab="length bin"))
+ with(x2, boxplot(value~variable, las=2, ylab="Proportion", ylim=c(0,.06),
+                  main="Multinomial",  xlab="length bin"))#ylim=c(0,.6),
+ with(x3, boxplot(value~variable, las=2, ylab="Proportion",
+                  main="Schools", ylim=c(0,.06),  xlab="length bin"))#ylim=c(0,.6),
+
+
+ }
 
 }
 \seealso{
@@ -123,9 +265,11 @@ Other sampling functions: \code{\link{clean_data}},
   \code{\link{sample_agecomp}},
   \code{\link{sample_calcomp}}, \code{\link{sample_index}},
   \code{\link{sample_mlacomp}},
-  \code{\link{sample_wtatage}}
+  \code{\link{sample_schools}},
+  \code{\link{sample_wtatage}},
+  \code{\link{schooling_pattern}}
 }
 \author{
-Cole Monnahan and Kotaro Ono; modified from a version by Roberto
-  Licandeo and Felipe Hurtado-Ferro
+Gwladys Lambert; modified from a version by Cole Monnahan and Kotaro
+  Ono
 }

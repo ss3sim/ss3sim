@@ -135,10 +135,12 @@ setwd(wd)
 }
 }
 \seealso{
-Other change functions: \code{\link{change_data}},
+Other change functions: \code{\link{change_a}},
+  \code{\link{change_data}},
   \code{\link{change_em_binning}}, \code{\link{change_f}},
-  \code{\link{change_maturity}},
-  \code{\link{change_retro}}, \code{\link{change_tv}}
+  \code{\link{change_maturity}}, \code{\link{change_p}},
+  \code{\link{change_retro}}, \code{\link{change_tv}},
+  \code{\link{change_x}}
 }
 \author{
 Kelli Johnson

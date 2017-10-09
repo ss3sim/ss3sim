@@ -2,11 +2,14 @@
 % Please edit documentation in R/sample_calcomp.R
 \name{sample_calcomp}
 \alias{sample_calcomp}
-\title{Sample conditional age-at-length (CAL) data and write to file for use by
-the EM.}
+\title{Sample conditional age-at-length (CAL) data and write to file for use by the
+EM.}
 \usage{
-sample_calcomp(dat_list, outfile, fleets = c(1, 2), years,
-  write_file = TRUE, Nsamp)
+sample_calcomp(dat_list, outfile, fleets = c(1, 2), years, Nsamp,
+  Nhauls = NULL, hauls = NULL, method = NULL, fixed.number = NULL,
+  ageplus = NULL, percent_read = c(100, 100), max_ss = NULL,
+  fit.on.agecomp = NULL, ESS = NULL, change_ess_now = NULL, rw = NULL,
+  write_file = TRUE, ctl = NULL, random_gen = NULL)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
@@ -25,39 +28,115 @@ the fleet collected samples, keep the value to \code{fleets=NULL}.}
 numeric vectors. If no fleet collected samples, keep the value to
 \code{years=NULL}.}
 
+\item{Nsamp}{Total number of age samples. The default will be to sample a
+proportional number of ages per length bin (i.e. proportional to the
+sampled number of lengths in that bin). Alternatively, if \code{"method"} 
+is NULL and \code{"fixed.number"} is TRUE, then \code{"Nsamp"} is the exact 
+number of ages to sample per length bin. If the \code{"method"} is "SRS", 
+i.e. Simple Random Sampling, or "length-strat",then the lengths should 
+have been sampled using the schooling option. See \code{\link{sample_lcomp}}. 
+\code{"Nsamp"} is the exact number of age samples to take from each haul
+when using "SRS", or the exact number of age samples to take from each
+length bin when using "length-strat".}
+
+\item{Nhauls}{Number of hauls to sample age data from. This can only be used
+if the lengths were sampled using the schooling option and must be used
+with \code{"method"} = "SRS" or "length-strat". See
+\code{\link{sample_lcomp}}.}
+
+\item{hauls}{Data file of sampled lengths per haul, extracted from
+\code{\link{sample_lcomp}} This is only required if the age sampling method
+is \code{"SRS"} or \code{"length-strat"}.}
+
+\item{method}{list of \code{"SRS"} for simple random sampling and/or
+\code{"length-strat"} for length-stratified approach. List along fleets.
+Default is NULL. If "SRS" or "length-strat" is used then the lengths have
+to have been sampled using the schooling option. See
+\code{\link{sample_lcomp}}.}
+
+\item{fixed.number}{Using the default multinomial length sampling option,
+should age data be sampled by fixed or proportional allocation? Default is
+FALSE for proportional. TRUE is for fixed number of ages at length.}
+
+\item{ageplus}{if not NULL, this is the new age-plus group to use for the
+sampled (observed) data. This option will be activated at the end of the
+script to sum up all age compositions above ageplus into one age group. The
+original age data composition will be saved in case of sampling
+weight-at-age data in the scenario, as weight-at-age should cover the full
+population age range.}
+
+\item{percent_read}{Number of otoliths collected vs read. This will randomly
+subsample a percentage of the total number of ages sampled from the design
+described. This option was included to mimic the process of ageing in the
+lab when all otoliths collected at sea can not be processed. The default
+value is 100, i.e. all otoliths collected are aged.}
+
+\item{max_ss}{Similar to \code{percent_read} This will randomly
+subsample a number of ages equal to \code{max_ss}. This option was included 
+to mimic the process of ageing in the lab when all otoliths collected at sea 
+can not be processed. The default value is NULL, i.e. all otoliths collected 
+are aged.}
+
+\item{fit.on.agecomp}{Default is FALSE. TRUE means the EM is to fit 
+on marginal age composition rather than conditional age-at-length. If using 
+this option, marginal composition is simply estimated by multiplying 
+conditional age-at-length with length proportions. This option could be 
+further developped to include ways to deal with missing age data (i.e. lengths
+present in the length sample but not in the age-at-length sample).}
+
+\item{ESS}{Define effective sample size for age data. Has to be a list of the
+same length as the number of fleets. Can be a single value or a vector of
+length equal to the number of years. Can also be a character, i.e. "hauls",
+in which case the number of hauls sampled from will be used as ESS, if
+using the option to sample in schools.}
+
+\item{change_ess_now}{If ESS has to be changed at this stage or by the end of
+the sampling process in \code{\link{ss3sim_base}}. Default is NULL, meaning
+that it will be changed here (would do the same with TRUE). Set to FALSE to
+keep the original sample size until the end of the sampling process in 
+\code{\link{ss3sim_base}}.}
+
+\item{rw}{NULL by default but use "iterative" for iterative re-weighing using
+McAllister and Ianelli method. NOTE - This option could easily be re-written 
+to give the choice between McA&I or Francis re-weighting.}
+
 \item{write_file}{A logical switch for whether to write \code{outfile} to
 disk. Can be turned off to speed up testing or exploration of the
 function. The new data are returned invisibly, as in the examples
 below.}
 
-\item{Nsamp}{*A numeric list of the same length as \code{fleets}.
-Either single values or vectors of the same length as the number of
-years can be passed through. Single values are repeated for all
-years. If no fleet collected samples, keep the value to
-\code{Nsamp=NULL}.}
+\item{ctl}{Path to the .ctl file in case of fitting on marginal age
+composition, as the weight on both age and length data will have to be
+halved in the .ctl file (as information on length used twice).}
+
+\item{random_gen}{If \code{years} are randomly generated, give the fleet
+number(s) for which they are. Default is NULL. THIS WS JUST A TRIAL - 
+NOT IMPORTANT, COULD/SHOULD BE REMOVED.}
 }
 \value{
 A modified \code{.dat} file if \code{write_file=TRUE}. A list object
 containing the modified \code{.dat} file is returned invisibly.
+
+If the option \code{ageplus} is activated, it returns a list of 2 objects. 
+The first one is the .dat file described above, the second one is the agecomp 
+element and the age vector prior to using the age plus group. This is because 
+the weight at age sampling requires age comps that use the same max age as the 
+max age of the pop.
 }
 \description{
-Sample conditional age-at-length (CAL) data and write to file for use by
-the EM.
-}
-\details{
-Take a \code{data.SS_new} file containing expected values and
-sample from true lengths, using length comp sample sizes, to get
-realistic sample sizes for age bins given a length. Only the multinomial
-distribution is currently implemented. xIf no fish are sampled then that
-row is discarded. A value of NULL for fleets indicates to delete the
-data so the EM If used with \code{\link{run_ss3sim}} the case file
-should be named \code{calcomp}.
+Take a \code{data.SS_new} file containing expected values and sample
+  from true lengths, using length comp sample sizes, to get realistic sample
+  sizes for age bins given a length. Only the multinomial distribution is
+  currently implemented. xIf no fish are sampled then that row is discarded.
+  A value of NULL for fleets indicates to delete the data so the EM If used
+  with \code{\link{run_ss3sim}} the case file should be named \code{calcomp}.
 }
 \note{
-This function is only reliable when using multinomial length
-compositions for the matching fleet. The real-valued length compositions
-resulting from the Dirichlet distribution cause difficulties in the
-sampling code. See the vignette for more.
+This function is only reliable when using multinomial length 
+  compositions for the matching fleet. The real-valued length compositions 
+  resulting from the Dirichlet distribution cause difficulties in the 
+  sampling code. See the vignette for more. Use the option that samples
+  lengths in schools to sample ages from fish aggregations.
 }
 \section{Which arguments to specifiy in case files}{
 
@@ -68,12 +147,192 @@ which may or may not be an appropriate value. Other arguments will be ignored
 if specified.
 }
 
+\examples{
+ \dontrun{
+ # To sample randomly, using a multinomial distribution, use sample_agecomp
+ # sample_calcomp creates proportional number of ages-at-length by default
+ 
+ d <- system.file("extdata", package = "ss3sim")
+ f_in <- paste0(d, "/models/cod-om/codOM.dat")
+ dat_list <- r4ss::SS_readdat(f_in, verbose = FALSE)
+ dat_list <- change_fltname(dat_list)
+ 
+ # Turn the marginal age data of teh example into conditional age data
+ dat_list_temp <- change_data(dat_list= dat_list, outfile="test1.txt", 
+                           fleets           = c(1,2),                  
+                           years            = c(26:100), 
+                           types            =  c("index","len","cal"),   
+                           write_file = F)
+dat_list <- dat_list_temp
+head(dat_list$agecomp)
+tail(dat_list$agecomp)
+                           
+## Turn off age comps by specifying fleets=NULL
+sample_calcomp(dat_list=dat_list, outfile="test1.dat",
+             fleets=NULL, Nsamp=list(5,5),
+             years=list(95, 95), write_file=FALSE)
+## Generate with a smaller number of fleet taking samples
+ex1 <- sample_calcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(2),
+                    Nsamp=list(c(1,5)), years=list(c(26,27)),
+                    write_file=FALSE)
+
+## Generate with varying Nsamp by year for first fleet
+ex2 <- sample_calcomp(dat_list=dat_list, outfile="test2.dat", fleets=c(1,2),
+                      Nsamp=list(c(rep(5, 5), rep(2, 5)), 6),
+                      years=list(seq(26, 44, 2),
+                                 c(26:100)), write_file=FALSE)
+tail(ex2$agecomp, 20)
+
+ ## Testing sampling a fixed number of ages-at-length
+ dat_list$lencomp$Nsamp <- 10000
+ ex3 <- sample_calcomp(dat_list=dat_list, outfile="test3.dat", fleets=c(1,2),
+                       Nsamp=list(20, 20), 
+                       years=list(seq(26, 44, 2),  c(26:100)),
+                       fixed.number = TRUE,
+                       write_file=FALSE)
+ head(ex3$agecomp)
+ tail(ex3$agecomp)
+ 
+ 
+ ## Testing sampling either random (SRS) or length-stratified 
+ ## (fixed number at length) 
+ ## with length schooling option
+ 
+ # First generate shooling length data
+ 
+ library(doParallel)
+ library(compiler)
+ cores=7
+ assign(".lib.loc", .libPaths()[1], envir = environment(.libPaths)) 
+ cl<-makeCluster(cores)
+ clusterCall(cl, function(x) .libPaths(x), .libPaths())
+ registerDoParallel(cl)
+ 
+ ex4 <- sample_lcomp(dat_list=dat_list, outfile="test4.dat", fleets=c(1,2),
+                     Nsamp=list(100,50), years=list(seq(94, 100, by=2), 95:100),
+                     Nhauls= list(100,100), cl_factor = 1,
+                     vals_at_cutoff = 0.15, plot.schools = FALSE,
+                     write_file = FALSE, parallel_lgths = TRUE)
+ dat_list <- ex4[[1]]
+ 
+ # then apply SRS
+ ex4a1 <- sample_calcomp(dat_list=dat_list, outfile="test4a.dat", fleets=c(1,2),
+                         Nsamp=list(10, 10), years=list(seq(94, 100, by=2), 
+                         95:100), method = list("SRS","SRS"), Nhauls = 
+                         list(100,100), hauls = ex4[[2]],
+                         write_file=FALSE, percent_read = c(100,100))
+ # changing percent read
+ ex4a2 <- sample_calcomp(dat_list=dat_list, outfile="test4a.dat", fleets=c(1,2),
+                         Nsamp=list(10, 10), years=list(seq(94, 100, by=2), 
+                         95:100), method = list("SRS","SRS"), Nhauls = 
+                         list(100,100), hauls = ex4[[2]],
+                         write_file=FALSE, percent_read = c(100,50))
+ # Length stratified
+ ex4b <- sample_calcomp(dat_list=dat_list, outfile="test4a.dat", fleets=c(1,2),
+                        Nsamp=list(10, 10), years=list(seq(94, 100, by=2), 
+                        95:100), method = list("length-strat","length-strat"), 
+                        Nhauls = list(100,100), hauls = ex4[[2]],
+                        write_file=FALSE)
+ # Other options
+ # Set up file so that ESS will be the number of hauls sampled from
+ ex4c_LS  <- sample_calcomp(dat_list=dat_list, outfile="test4a.dat", 
+                            fleets=c(1,2), Nsamp=list(10, 10), 
+                            years=list(seq(94, 100, by=2), 95:100),
+                            method = list("length-strat","length-strat"), 
+                            Nhauls = list(100,100), hauls = ex4[[2]],
+                            ESS = "hauls",  write_file=FALSE)
+ ex4c_SRS <- sample_calcomp(dat_list=dat_list, outfile="test4a.dat", 
+                            fleets=c(1,2), Nsamp=list(10, 10), 
+                            years=list(seq(94, 100, by=2), 95:100),
+                            method = list("SRS","SRS"), Nhauls = list(100,100), 
+                            hauls = ex4[[2]], ESS = list("hauls","hauls"), 
+                            write_file=FALSE)
+ # Define an age-plus group - useful if using weight at age as weight are required 
+ # at the population level
+ # You will have to use the ageplus option in sample_mla too for weight-at-age
+ ex4d      <- sample_calcomp(dat_list=dat_list, outfile="test4d.dat", 
+                             fleets=c(1,2), Nsamp=list(10, 10), 
+                             years=list(seq(94, 100, by=2), 95:100),
+                             method = list("SRS","SRS"), Nhauls = list(100,100), 
+                             hauls = ex4[[2]],  ESS = list("hauls","hauls"), 
+                             ageplus= 10, write_file=FALSE)
+ # Set up file so that the fit will be on marginal age data instead of 
+ # conditional age-at-length
+ # This requires to change the ctl_file as well, as the variance adjustment 
+ # will be set at 0.5 
+ # (i.e. using length and age data twice)
+ # A warning shows if there is no ctl file attached to the function 
+ # (there will be a .ctl file when running the full simulation)
+ d <- system.file("extdata", package = "ss3sim")
+ #ctl_f_in <- paste0(d, "/models/cod-om/codOM.ctl")
+ ex4e <- sample_calcomp(dat_list=dat_list, outfile="test4e.dat", fleets=c(1,2),
+                        Nsamp=list(10, 10), years=list(seq(94, 100, by=2), 
+                        95:100), method = list("length-strat","length-strat"), 
+                        Nhauls = list(100,100), hauls = ex4[[2]],
+                        fit.on.agecomp = TRUE,  write_file=FALSE)
+                        
+                        
+ ## Run cases showing Multinomial, Dirichlet(1) and over-dispersed
+ ## Dirichlet for different levels of sample sizes
+ op <- par(mfrow = c(1,3))
+ for(samplesize in c(45, 90, 180)){
+   ex5 <- sample_calcomp(dat_list=dat_list, outfile="test5.dat", fleets=c(1,2),
+                         Nsamp=list(samplesize, samplesize),
+                         write_file = FALSE,
+                         years=list(94,95)
+   )
+   # decrease sample size for other options as meaning is different
+   samplesize1 <- samplesize/45 # 45 is the number of length bins
+   ex6 <- sample_calcomp(dat_list=dat_list, outfile="test6.dat", fleets=c(1,2),
+                         Nsamp=list(samplesize1, samplesize1),
+                         write_file = FALSE, fixed.number = TRUE,
+                         years=list(94,95)
+   )
+   samplesize1 <- samplesize/5
+   ex7 <- sample_calcomp(dat_list=dat_list, outfile="test7.dat", fleets=c(1,2),
+                         Nsamp=list(samplesize1, samplesize1),
+                         write_file = FALSE,
+                         years=list(94,95),
+                         method = "SRS",
+                         Nhauls = list(5,5), hauls = ex4[[2]]
+   )
+   samplesize1 <- samplesize/45
+   ex8 <- sample_calcomp(dat_list=dat_list, outfile="test8.dat", fleets=c(1,2),
+                         Nsamp=list(samplesize1, samplesize1),
+                         write_file = FALSE,
+                         years=list(94,95),
+                         method = list("length-strat","length-strat"),
+                         Nhauls = list(50,50), hauls = ex4[[2]]
+   )
+   # true <- subset(dat_list$agecomp, FltSvy==-1 & Yr == 94)[-(1:9)]
+   true <- dat_list$agecomp[1, -(1:9)]
+   true <- true/sum(true)
+   plot(1:15, subset(ex5[[1]]$agecomp, FltSvy==-1)[1,-(1:9)], type="b", 
+        ylim=c(0,0.3),
+        col=1, xlab="Age", ylab="Proportion", main=paste("Sample size=",
+                                                         samplesize))
+   legend("topright", legend=c("Proportional at length", "Fixed at length",
+                               "SRS on schooling data", "Fixed at length on 
+                               schooling data","Truth"),
+          lty=1, col=1:5)
+   lines((1:15), subset(ex6[[1]]$agecomp, FltSvy==-1)[1,-(1:9)], type="b", col=2)
+   lines((1:15), subset(ex7[[1]]$agecomp, FltSvy==-1)[1,-(1:9)], type="b", col=3)
+   lines((1:15), subset(ex8[[1]]$agecomp, FltSvy==-1)[1,-(1:9)], type="b", col=4)
+   lines((1:15), true, col=5, lwd=2)
+ }
+ par(op)
+}
+
+}
 \seealso{
 Other sampling functions: \code{\link{clean_data}},
   \code{\link{sample_agecomp}}, \code{\link{sample_index}},
   \code{\link{sample_lcomp}}, \code{\link{sample_mlacomp}},
-  \code{\link{sample_wtatage}}
+  \code{\link{sample_schools}},
+  \code{\link{sample_wtatage}},
+  \code{\link{schooling_pattern}}
 }
 \author{
-Cole Monnahan, Kotaro Ono
+Gwladys Lambert; modified from a version by Cole Monnahan and Kotaro
+  Ono
 }

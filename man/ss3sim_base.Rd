@@ -5,10 +5,11 @@
 \title{Base wrapper function to run an ss3sim simulation}
 \usage{
 ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
-  agecomp_params, calcomp_params = NULL, wtatage_params = NULL,
-  mlacomp_params = NULL, em_binning_params = NULL, estim_params = NULL,
-  tv_params = NULL, om_dir, em_dir, retro_params = NULL,
-  data_params = NULL, call_change_data = TRUE, user_recdevs = NULL,
+  agecomp_params, calcomp_params = NULL, a_params = NULL,
+  wtatage_params = NULL, mlacomp_params = NULL, em_binning_params = NULL,
+  p_params = NULL, estim_params = NULL, tv_params = NULL, om_dir, em_dir,
+  retro_params = NULL, data_params = NULL, call_change_data = TRUE,
+  sex_misspec_params = NULL, user_recdevs = NULL,
   user_recdevs_warn = TRUE, bias_adjust = FALSE, bias_nsim = 5,
   bias_already_run = FALSE, hess_always = FALSE, print_logfile = TRUE,
   sleep = 0, conv_crit = 0.2, seed = 21, keep_compreport = TRUE, ...)
@@ -33,6 +34,9 @@ A mandatory case.}
 \item{calcomp_params}{A named list containing arguments for
 \code{\link{sample_calcomp}}, for conditional age-at-length data.}
 
+\item{a_params}{A named list containing arguments for
+\code{\link{change_a}}, to define ageing error.}
+
 \item{wtatage_params}{A named list containing arguments for
 \code{\link{sample_wtatage}}, for empirical weight-at-age data.}
 
@@ -41,6 +45,9 @@ A mandatory case.}
 
 \item{em_binning_params}{A named list containing arguments for
 \code{\link{change_em_binning}}.}
+
+\item{p_params}{A named list containing arguments for
+\code{\link{change_p}}, for changing selectivity parameters.}
 
 \item{estim_params}{A named list containing arguments for
 \code{\link{change_e}}.}
@@ -64,6 +71,9 @@ use for the specified simulations.}
 \code{\link{change_data}} and modify the OM at each iteration. Defaults to
 \code{TRUE}. See the vignette for further information on why you might
 choose to turn this off.}
+
+\item{sex_misspec_params}{A named list containing arguments for
+\code{\link{change_x}}, for mis-specifying sex in EM if OM is sex-specific.}
 
 \item{user_recdevs}{An optional matrix of recruitment deviations to replace
 the recruitment deviations built into the package. The columns represent
@@ -211,6 +221,13 @@ ss3sim_base(iterations = 1, scenarios = "D1-E0-F0-M0-cod",
 unlink("D1-E0-F0-M0-cod", recursive = TRUE) # clean up
 
 setwd(wd)
+
+ # Example to use ageing error, sex mispecification and changing selectivity
+
+A0 <- list()
+X0 <- list()
+P0 <- list()
+
 }
 }
 \seealso{
@@ -218,5 +235,5 @@ setwd(wd)
 }
 \author{
 Sean Anderson with contributions from many others as listed in
-  the DESCRIPTION file.
+  the DESCRIPTION file; Gwladys Lambert added extra options that are not in the master version of the package
 }

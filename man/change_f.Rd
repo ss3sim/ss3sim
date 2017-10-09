@@ -4,7 +4,7 @@
 \alias{change_f}
 \title{Alter the fishing mortality (\emph{F}) values in an SS3 \code{.par} file.}
 \usage{
-change_f(years, years_alter, fvals, par_file_in = "ss3.par",
+change_f(years, years_alter, fvals, fleets = NULL, par_file_in = "ss3.par",
   par_file_out = "ss3.par")
 }
 \arguments{
@@ -16,16 +16,22 @@ true years but must be the correct length (e.g., instead of
 \code{2000:2004} you can use \code{1:5}). Use this argument to create
 an index to old values. \code{years_alter} will use values in this vector.
 For example, with two seasons and one fishery that operates for 4 years
-you could use the following: \code{1:8}.}
+you could use the following: \code{1:8}. \code{years} should be written as a 
+list if several fishing fleets in the model}
 
 \item{years_alter}{*Vector of years for the which \emph{F} values will be altered.
 If there is more than one fishery or season, use the mapping system
 created in \code{years} because actual year values cannot be recycled.
 For example, to change the second season of the second year in the
-example above, use: \code{4}.}
+example above, use: \code{4}.\code{years_alter} should be written as a 
+list if several fishing fleets in the model}
 
 \item{fvals}{*Vector of \emph{F} values to be entered into \code{ss3.par} file,
-where \code{length(fvals) == length(years_alter)} must be true.}
+where \code{length(fvals) == length(years_alter)} must be true. 
+\code{fvals} should be written as a list if several fishing fleets in the model}
+
+\item{fleets}{Fleets for which to change F if more than one fishing fleet 
+in the model, default is NULL}
 
 \item{par_file_in}{A string providing the path to the input SS3 \code{.par} file.}
 
@@ -61,10 +67,12 @@ change_f(years = 1:49, years_alter = 2, fvals = 9999, par_file_in =
 par_file, par_file_out = paste0(temp_path, "/test.par"))
 }
 \seealso{
-Other change functions: \code{\link{change_data}},
+Other change functions: \code{\link{change_a}},
+  \code{\link{change_data}},
   \code{\link{change_em_binning}}, \code{\link{change_e}},
-  \code{\link{change_maturity}},
-  \code{\link{change_retro}}, \code{\link{change_tv}}
+  \code{\link{change_maturity}}, \code{\link{change_p}},
+  \code{\link{change_retro}}, \code{\link{change_tv}},
+  \code{\link{change_x}}
 }
 \author{
 Curry James Cunningham

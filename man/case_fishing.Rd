@@ -4,7 +4,8 @@
 \alias{case_fishing}
 \title{Write a case file for fishing data to the disk.}
 \usage{
-case_fishing(years = 1, years_alter = NULL, fvals = 2, case, spp)
+case_fishing(years = 1, years_alter = NULL, fvals = 2, fleets = 1, case,
+  spp)
 }
 \arguments{
 \item{years}{Vector of years for which \emph{F} values are specified,
@@ -26,6 +27,8 @@ example above, use: \code{4}.}
 \item{fvals}{Vector of \emph{F} values to be entered into \code{ss3.par} file,
 where \code{length(fvals) == length(years_alter)} must be true.}
 
+\item{fleets}{vector of fleets for which to change F (only one in master ss3sim)}
+
 \item{case}{The case number you want to write to.
 If \code{case = 1}, then the result will be \code{'F1'}.}
 
@@ -36,6 +39,7 @@ Use \R code to write arguments to the disk, which
 will later be used in a \pkg{ss3sim} simulation.
 }
 \examples{
-case_fishing(1:100, 1:100, seq(0, 0.4, length.out = 100), 2, "cod")
+case_fishing(years=1:100,years_alter= 1:100,fvals= seq(0, 0.4, length.out = 100), fleets=1, 
+case=2, spp="cod")
 done <- file.remove("F2-cod.txt")
 }

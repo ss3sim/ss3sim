@@ -155,11 +155,12 @@ dat3 <- clean_data(dat_list = dat2, lcomp_params = lcomp_params,
 \seealso{
 \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
 
-Other change functions: \code{\link{change_em_binning}},
-  \code{\link{change_e}}, \code{\link{change_f}},
-  \code{\link{change_maturity}},
-  \code{\link{change_retro}}, \code{\link{change_tv}}
+Other change functions: \code{\link{change_a}},
+  \code{\link{change_em_binning}}, \code{\link{change_e}},
+  \code{\link{change_f}}, \code{\link{change_maturity}},
+  \code{\link{change_p}}, \code{\link{change_retro}},
+  \code{\link{change_tv}}, \code{\link{change_x}}
 }
 \author{
-Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson
+Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson, Gwladys Lambert
 }

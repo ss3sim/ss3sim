@@ -83,12 +83,16 @@ newdat <- change_em_binning(olddat, dat_file_out = NULL, bin_vector = seq(20, 30
 newdat$lbin_vector
 head(newdat$lencomp)
 newdat$agecomp
+
+# COULD ADD A 2 GENDER EXAMPLE USING THE NEW FLATHEAD MODEL FOR EXAMPLE
+
 }
 \seealso{
-Other change functions: \code{\link{change_data}},
-  \code{\link{change_e}}, \code{\link{change_f}},
-  \code{\link{change_maturity}},
-  \code{\link{change_retro}}, \code{\link{change_tv}}
+Other change functions: \code{\link{change_a}},
+  \code{\link{change_data}}, \code{\link{change_e}},
+  \code{\link{change_f}}, \code{\link{change_maturity}},
+  \code{\link{change_p}}, \code{\link{change_retro}},
+  \code{\link{change_tv}}, \code{\link{change_x}}
 }
 \author{
 Kotaro Ono (length-composition rebinning), Sean Anderson

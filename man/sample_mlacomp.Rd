@@ -5,7 +5,8 @@
 \title{[BETA VERSION] Sample mean length (size-)-at-age data and write to file for use by the EM.}
 \usage{
 sample_mlacomp(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp, years,
-  write_file = TRUE, mean_outfile = NULL, verbose = TRUE)
+  write_file = TRUE, mean_outfile = NULL, ageplus = NULL,
+  pop_agecomp = NULL, verbose = TRUE)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
@@ -46,6 +47,10 @@ parameters. Filename must contain "vbgf" to be used by \code{change_e}.
 Also, if "remove" is included in the filename, the mean length at age data
 will be removed from the \code{.dat} file and not be available to the EM.}
 
+\item{ageplus}{XXXXXXXXXXXXXXXXXXXXXXXXX}
+
+\item{pop_agecomp}{XXXXXXXXXXXXXXXXXXXXXXXXX}
+
 \item{verbose}{Logical value whether or not diagnostic information from
 \pkg{r4ss} functions should be printed to the screen. Default is FALSE.}
 }
@@ -75,33 +80,13 @@ which may or may not be an appropriate value. Other arguments will be ignored
 if specified.
 }
 
-\examples{
-temp_path <- file.path(tempdir(), "ss3sim-test")
-dir.create(temp_path, showWarnings = FALSE)
-wd <- getwd()
-setwd(temp_path)
-d <- system.file("extdata/models/cod-om", package = "ss3sim")
-dat_in <- file.path(d, "codOM.dat")
-dat_list <- r4ss::SS_readdat(dat_in, verbose = FALSE)
-dat_list <- change_fltname(dat_list)
-dat_list <- change_data(dat_list, outfile = NULL, write_file = FALSE,
-  fleets = 1, years = 1990:2010, types = c("age", "mla"))
-dat_list <- change_fltname(dat_list)
-ctl_file_in <- file.path(d, "codOM.ctl")
-
-out <- sample_mlacomp(dat_list, outfile = NULL, ctl_file_in = ctl_file_in,
-                      fleets = 1, Nsamp = 30, years = list(1992),
-                      verbose = FALSE, mean_outfile = "test.csv", write_file = FALSE)
-
-setwd("..")
-unlink("ss3sim-test", recursive = TRUE)
-setwd(wd)
-}
 \seealso{
 Other sampling functions: \code{\link{clean_data}},
   \code{\link{sample_agecomp}},
   \code{\link{sample_calcomp}}, \code{\link{sample_index}},
-  \code{\link{sample_lcomp}}, \code{\link{sample_wtatage}}
+  \code{\link{sample_lcomp}}, \code{\link{sample_schools}},
+  \code{\link{sample_wtatage}},
+  \code{\link{schooling_pattern}}
 }
 \author{
 Cole Monnahan, Kelli Johnson
