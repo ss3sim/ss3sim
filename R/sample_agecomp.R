@@ -78,7 +78,7 @@
 #'      lines((1:15), true, col=4, lwd=2)
 #'  }
 #'  par(op)
-#'
+#'}
 #' @family sampling functions
 #' @export
 #'
