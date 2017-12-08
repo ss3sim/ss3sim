@@ -192,7 +192,7 @@ change_data <- function(dat_list, outfile, fleets, years, types,
   ## seriously slow down the OM to write uncessary calcomp data.
   if ("cal" %in% types) {
     agecomp <- dat_list$agecomp[dat_list$agecomp$Lbin_lo < 0, ]
-    agecomp$FltSvy <- - abs(agecomp$FltSvy)
+    # agecomp$FltSvy <- - abs(agecomp$FltSvy)
     new.calcomp <-
       make_dummy_dat_calcomp(fleets=fleets, years=years,
         age_bins=age_bins, len_bins=len_bins, gender=gender) ############################################ ADD GENDER IN HERE #######
