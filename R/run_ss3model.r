@@ -115,9 +115,9 @@ rename_ss3_files <- function(path, ss_bin, extensions,
           os == "unix" &
           !exists(paste0(path, "/", ss_bin, ".", extensions[i]))) {
           file.copy(
-            from = paste0(bin, ".", extensions[i]),
+            from = tolower(paste0(bin, ".", extensions[i])),
             to = paste0(path, "/", ss_bin, ".", extensions[i]))
-          file.remove(paste0(bin, ".", extensions[i]))
+          file.remove(tolower(paste0(bin, ".", extensions[i])))
         }
     }
     file.rename(from = paste0(path, "/", ss_bin, ".", extensions[i]),
