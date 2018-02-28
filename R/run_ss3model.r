@@ -105,7 +105,8 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
 #' @param extensions A character vector of file extensions to rename without
 #'   periods preceding the values.
 #' @author Sean C. Anderson
-rename_ss3_files <- function(path, ss_bin, extensions) {
+rename_ss3_files <- function(path, ss_bin, extensions,
+  os = NULL, bin = NULL) {
   for(i in seq_along(extensions)) {
     if (
       !is.null(os) &
