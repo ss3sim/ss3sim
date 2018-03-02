@@ -15,6 +15,17 @@ cache:
 
 # Adapt as necessary starting from here
 
+environment:
+  global:
+   WARNINGS_ARE_ERRORS: 0
+
+notifications:
+  - provider: Email
+  to:
+  - '{{commitAuthorEmail}}'
+  on_build_failure: true
+  on_build_status_changed: true
+
 build_script:
   - travis-tool.sh install_deps
 
