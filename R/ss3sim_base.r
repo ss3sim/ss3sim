@@ -177,13 +177,13 @@
 #' unlink("D1-E0-F0-M0-cod", recursive = TRUE) # clean up
 #'
 #' setwd(wd)
-#' 
+#'
 #'  # Example to use ageing error, sex mispecification and changing selectivity
-#' 
+#'
 #' A0 <- list()
 #' X0 <- list()
 #' P0 <- list()
-#' 
+#'
 #' }
 
 ss3sim_base <- function(iterations, scenarios, f_params,
@@ -273,6 +273,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       # Run the operating model
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
+      Sys.sleep(0.5)
       # Read in the data.ss_new file and write to ss3.dat in the om folder
       if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
           stop(paste0("The data.ss_new not created in *first* OM run for ",
@@ -281,28 +282,28 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         data_out = pastef(sc, i, "om", "ss3.dat"))
       # Remove the ss_new file in case the next run doesn't work we can tell
       file.remove(pastef(sc, i, "om", "data.ss_new"))
-      
-      
-      
+
+
+
       ##------------------------------------------------------------------##
       ##                 Changeing selectivity in both om and em          ##
       ##------------------------------------------------------------------##
-      
+
       # Change parameters of selectivity - choose age-based or length-based (both om and em), dome-shaped or flat-top for em and em separately and if the model is sex-based, choose pars for each sex
       run_change_p_full <- FALSE # default
       if(grepl("bias", i))  # it's a bias run
         run_change_p_full <- TRUE
       if(!bias_adjust)      # we aren't running bias adjustment
         run_change_p_full <- TRUE
-      
-      
+
+
       wd <- getwd()
       #### NEED TO add an option to say not to run the change_p for em if it bias has already been run since changes will have already been made???
       if (!is.null(p_params)){
-        setwd(pastef(wd, sc, i))        
+        setwd(pastef(wd, sc, i))
         p_params <- add_nulls(p_params, c("selex_om","selex_em","fleet","pars_om_selex","pars_em_selex","plot_selex_om","plot_selex_em","sex_flag","om_sex_offset","em_sex_offset"))
         with(p_params,
-             change_p(om_dir               = "om", 
+             change_p(om_dir               = "om",
                       om_ctl_file_in          = "om.ctl",
                       om_ctl_file_out         = "om.ctl",
                       par_file_in          = "ss3.par",
@@ -312,7 +313,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                       em_ctl_file_out         = "em.ctl",
                       selex_om               = selex_om,
                       selex_em               = selex_em,
-                      fleet               = fleet, 
+                      fleet               = fleet,
                       sex_flag            = sex_flag,
                       pars_om_selex       = pars_om_selex,
                       pars_em_selex       = pars_em_selex,
@@ -323,8 +324,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
              ))
         setwd(wd)
       }
-      
-      
+
+
       # Change time-varying parameters; e.g. M, selectivity, growth...
       wd <- getwd()
       if(!is.null(tv_params)) {
@@ -336,7 +337,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                        ctl_file_out        = "om.ctl"))
         setwd(wd)
       }
-      
+
 
       # Change the data structure in the OM to produce the expected
       # values we want. This sets up the 'dummy' bins before we run
@@ -353,7 +354,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                         wtatage_params  = wtatage_params)
       ## For the purpose of the simulation - if calcomp in there, make sure to create dummy data for agecomp too
       if (!is.null(calcomp_params))  data_args$types <- unique(c(data_args$types, "age"))
-      
+
       datfile.orig <- SS_readdat(pastef(sc, i, "om", "ss3.dat"),
                                  verbose = FALSE)
       datfile.orig <- change_fltname(datfile.orig)
@@ -369,11 +370,11 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           "tail_compression", "lcomp_constant"))
 
         # to save having to copy the data file twice, as taking a very long time...
-        write_file_flag <- TRUE 
+        write_file_flag <- TRUE
         if (!is.null(agecomp_params) | !is.null(calcomp_params) ) {
           if(!is.null(a_params)) {write_file_flag <- FALSE}
         }
-        
+
         # Note some are data_args and some are data_params:
         datfile.orig <- change_data(dat_list         = datfile.orig,
                     outfile          = pastef(sc, i, "om", "ss3.dat"),
@@ -390,15 +391,15 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                     write_file       = write_file_flag)
       }
 
-      
-      
+
+
       ##------------------------------------------------------------------##
       ## Add ageing error in the expected age data, before sampling error! #
       ##------------------------------------------------------------------##
       ### Include ageing error in the dummy data
       ### For each line where a data matrix has been defined - include the agerr # in
       ### If no ageing error has been defined arbitrarily use matrix 1 (i.e. no ageing error)
-      
+
       # Change A - i.e. add and change ageing error matrices
       # datfile.orig <- SS_readdat(pastef(sc, i, "om", "ss3.dat"),
       #                             verbose = FALSE)
@@ -406,7 +407,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         if(!is.null(a_params)) {
           a_params <- add_nulls(a_params, c("df","agerr_mat","mis_spec"))
           if(!is.null(a_params$df)){
-            dat_list <- with(a_params, 
+            dat_list <- with(a_params,
                              change_a(dat_list     = datfile.orig,
                                       outfile      = pastef(sc, i, "om", "ss3.dat"),
                                       df           = df,
@@ -424,18 +425,18 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           }
         }
       }
-      
+
       ######################################################################################
       ######################################################################################
-      
+
       setwd(wd)
       # Run the operating model and copy the dat file over
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
-      
+
       if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
           stop(paste0("The data.ss_new not created in *second* OM run for ",
                      sc, "-",i, ": is something wrong with initial model files?"))
-      
+
       try_write <- try(extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
                             data_out = pastef(sc, i, "em", "ss3.dat")), silent= T)
         if (is(try_write)[1]=="try-error") {
@@ -444,12 +445,12 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                                  data_out = pastef(sc, i, "em", "ss3.dat")), silent=T)
         }
       }
-      
-      
+
+
       ##---------------------------------------------------------------------------------------##
       ##                            Change tv for em model too                                 ##
       ##---------------------------------------------------------------------------------------##
-        
+
       # Change time-varying parameters; e.g. M, selectivity, growth...
       wd <- getwd()
         if(!is.null(tv_params)) {
@@ -463,59 +464,59 @@ ss3sim_base <- function(iterations, scenarios, f_params,
             setwd(wd)
           }
       }
-      
-      
+
+
       ##---------------------------------------------------------------------------------------##
       ## Mis-specifying sex in the Estimation Model by removing growth and sectivity dimorphism #
       ##---------------------------------------------------------------------------------------##
-      
+
       ### THIS IS TO MERGE 2 SEXES BEFORE SAMPLING SO EM WILL NOT HAVE DIMORPHIC GROWTH
-      
+
       ## Read in the datfile once and manipulate as a list object, then
       ## write it back to file at the end, before running the EM.
       #setwd(wd)
-      
+
       dat_list <- try(SS_readdat(pastef(sc, i, "em", "ss3.dat"),verbose = FALSE), silent=T)
       if (is(dat_list)[1] == "try-error") {
         while(is(dat_list)[1] == "try-error") {
             dat_list <- try(SS_readdat(pastef(sc, i, "em", "ss3.dat"),verbose = FALSE), silent=T)
         }
       }
-      
+
       dat_list <- change_fltname(dat_list)
-      
-      
+
+
       run_change_x_full <- FALSE # default
       if(grepl("bias", i))  # it's a bias run
         run_change_x_full <- TRUE
       if(!bias_adjust)      # we aren't running bias adjustment
         run_change_x_full <- TRUE
       ###################################### NEED TO ADD A CONDITION HERE TOO ##########################
-      
+
       if(!is.null(sex_misspec_params)) {
         sex_misspec_params <- add_nulls(sex_misspec_params, c("change_dat","change_ctl"))
         dat_list <- with(sex_misspec_params,
                          change_x(dat_file_in = pastef(sc, i, "em", "ss3.dat"),
                                   dat_file_out = pastef(sc, i, "em", "ss3.dat"),
-                                  ctl_file_in = pastef(sc, i, "em", "em.ctl"), 
-                                  ctl_file_out = pastef(sc, i, "em", "em.ctl"), 
-                                  change_dat= change_dat, 
+                                  ctl_file_in = pastef(sc, i, "em", "em.ctl"),
+                                  ctl_file_out = pastef(sc, i, "em", "em.ctl"),
+                                  change_dat= change_dat,
                                   change_ctl = change_ctl,
                                   write_file=FALSE))
         }
-      
+
       ######################################################################################
       ######################################################################################
-      
+
       ##-----------------------------------------------------------------------------------## ########################################### NEED TO ADD CHANGE OF AGEING ERROR IN MLA
       ## Run again the ageing error option in case the em model requires mis-specification ##
       ##-----------------------------------------------------------------------------------##
-      
+
       if (!is.null(agecomp_params) | !is.null(calcomp_params) ) {
         if(!is.null(a_params)) {
           a_params <- add_nulls(a_params, c("df","agerr_mat","mis_spec"))
           if(!is.null(a_params$mis_spec)){
-            dat_list <- with(a_params, 
+            dat_list <- with(a_params,
                              change_a(dat_list     = dat_list,
                                       outfile      = pastef(sc, i, "em", "ss3.dat"),
                                       df           = df,
@@ -525,13 +526,13 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           }
          }
       }
-      
+
       ######################################################################################
       ######################################################################################
       message(paste0("Running sampling for scenario: ", sc, "; iteration: ", i))
 
       message(paste0(".... Index"))
-      
+
       ## Survey biomass index
       index_params <- add_nulls(index_params, c("fleets", "years", "sds_obs"))
 
@@ -542,11 +543,11 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                      years           = years,
                      sds_obs         = sds_obs,
                      write_file      = FALSE))
-      
-      
-      
+
+
+
       ## Add error in the length comp data
-      
+
       if(!is.null(lcomp_params$fleets)){
         message(paste0(".... Length"))
         hauls <- NULL
@@ -572,7 +573,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                            change_ess_now   = change_ess_now,
                                            write_file       = FALSE,
                                            plot.schools     = plot.schools,
-                                           parallel_lgths   = parallel_lgths#, 
+                                           parallel_lgths   = parallel_lgths#,
                                             ))
         if (length(dat_list_temp)==2) {
           hauls    <- dat_list_temp[[2]]
@@ -580,17 +581,17 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           dat_list <- dat_list_temp[[1]]
         } else {
           dat_list <- dat_list_temp
-        }   
+        }
         setwd(wd)
       }
-      
+
       lcomp_params_print <- lcomp_params
       lcomp_params_print$Nsamp <- as.list(unique(dat_list$lencomp$Nsamp))
 
       ## Add error in the age comp data. Need to do this last since other
       ## sampling functions rely on the age data. Also, if user doesn't
       ## call this function we need to delete the data
-       
+
       if(!is.null(agecomp_params$fleets)){
         message(paste0(".... Ages"))
         agecomp_params <- add_nulls(agecomp_params,
@@ -606,7 +607,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                          write_file     = FALSE))
       }
 
-      
+
       if(!is.null(calcomp_params$fleets)){
         message(paste0(".... Ages"))
         hauls_temp <- NULL
@@ -638,7 +639,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                           #   effNsamp         = effNsamp,
                                              ageplus          = ageplus,
                                              ctl              = ctl))
-         
+
          if (length(dat_list_temp)==2) {
            pop_agecompa <- dat_list_temp[[2]]
            dat_list <- dat_list_temp[[1]]
@@ -646,7 +647,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
            dat_list <- dat_list_temp
          }
       }
-      
+
       calcomp_params_print <- calcomp_params
       calcomp_params_print$Nsamp <- dat_list$agecomp[dat_list$agecomp$Lbin_lo==-1,c(1,3,4,6,9)]
 
@@ -677,10 +678,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         } else {
           dat_list <- dat_list_temp
         }
-        
+
       }
-      
-      
+
+
       ## Add error in the empirical weight-at-age comp data. Note that if
       ## arguments are passed to this fucntion it's functionality is turned
       ## on by setting the maturity option to 5. If it's off SS will just
@@ -718,11 +719,11 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                               write_file  = TRUE,
                               cv_wtatage  = cv_wtatage))
         }
-        
+
         dat_list$N_MeanSize_at_Age_obs <- 0
         dat_list$MeanSize_at_Age_obs <- NULL
       }
-      
+
          ## Manipulate EM starter file for a possible retrospective analysis
       if(!is.null(retro_params)) {
       retro_params <- add_nulls(retro_params, "retro_yr")
@@ -790,10 +791,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                   run_change_e_full    = run_change_e_full))
         setwd(wd)
       }
-      
+
       ########## THIS IS WHERE WE CHANGE THE ESS
       dat_list=change_ESS(dat_list, lcomp_params, calcomp_params)
-      
+
       setwd(wd)
 
       # trick to slow down process to avoid error message with over-writing
@@ -804,7 +805,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           try_write <- try(fast_SS_writedat(datlist = dat_list, outfile = pastef(sc, i, "em", "ss3.dat"), overwrite = TRUE, verbose = FALSE), silent=T)
         }
       }
-      
+
       # Should we calculate the hessian?
         if(hess_always){
           hess <- TRUE           # estimate the hessian no matter what
@@ -818,16 +819,16 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       run_ss3model(scenarios = sc, iterations = i, type = "em",
         hess = hess, ...)
 
-      
+
       ##-----------------------------------------------------------------------------------##
       ##                  iterative re-weighting                                           ##
       ##-----------------------------------------------------------------------------------##
-    
+
       ############### CHECK THIS IS THE CORRECT WAY TO RE-WEIGHT THE DATA + ADD OPTION TO CHOOSE FRANCIS VS MC&I ##############
       ############### AT THE MOMOENT THE RE-WEIGHTING WILL ONLY HAPPEN BASED ON AN ARGUMENT IN CALCOMP_PARAMS    ##############
       ############### AND INDEX, LENGTH AND AGE WILL BE REWEIGHTED - WHICH IS NOT GREAT, NEED TO INCLUDE SEPARATE OPTIONS #####
       #########################################################################################################################
-      
+
       if(bias_already_run) {
         if (!is.null(calcomp_params$rw) ){ #&& calcomp_params$rw=="iterative"
           # first copy entire folder into em_adjeffN
@@ -836,19 +837,19 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           from <- pastef(model_dir)
           to <- pastef(sc, i, 'em_adjeffN')
           create.sim.folder(from, to)
-          
+
           # find new weights, replace and re-run
           # Get correction factors
           MyOutput = SS_output(dir = to,readwt = F, covar=FALSE, ncols=300)
-          
+
           #Get info on McAllister Ianelli weights:
           McIanelli_Length <-MyOutput$Length_comp_Eff_N_tuning_check
-          McIanelli_Length <- McIanelli_Length[order(McIanelli_Length$Fleet),] 
+          McIanelli_Length <- McIanelli_Length[order(McIanelli_Length$Fleet),]
           McIanelli_Age <-MyOutput$Age_comp_Eff_N_tuning_check
-          McIanelli_Age <- McIanelli_Age[order(McIanelli_Age$Fleet),] 
+          McIanelli_Age <- McIanelli_Age[order(McIanelli_Age$Fleet),]
           val_age <- round(McIanelli_Age$'HarEffN/MeanInputN'* McIanelli_Age$Var_Adj,2)
           val_length <- round(McIanelli_Length$'HarEffN/MeanInputN' * McIanelli_Length$Var_Adj,2)
-          
+
           # read the var adjust section of code and check that it is turned on
           ctl_temp <- readLines(pastef(sc, i,'em_adjeffN',"control.ss_new"))
           idx_var <- grep("_Variance_adjustments_to_input_values",ctl_temp)
@@ -866,9 +867,9 @@ ss3sim_base <- function(iterations, scenarios, f_params,
             ctl_temp[c(idx_var+2):c(idx_var+7)] <- new_var_adj_vals
             writeLines(ctl_temp, con=pastef(sc, i,'em_adjeffN',"control.ss_new"))
           }
-          
-          # Replace in ctl file ### 
-          
+
+          # Replace in ctl file ###
+
           new_table <- as.data.frame(matrix(0, ncol=length(MyOutput$fleet_ID), nrow=6))
           names(new_table) <- dat_list$fleetnames
           new_table[5,] <- 1
@@ -876,12 +877,12 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           new_table[5,names(new_table) %in% c(McIanelli_Age$FleetName)] <- c(val_age)
           new_table[4,names(new_table) %in% c(McIanelli_Length$FleetName)] <- c(val_length)
           new_table[6,] <- 1
-          
+
           SS_varadjust2(dir = to, ctlfile = "control.ss_new",
                         newctlfile = "control_modified.ss", keyword = "Variance_adjustments",
                         newtable = new_table, newrow = NULL, rownumber = NULL, maxcols = 1000,
                         overwrite = T, verbose = FALSE)
-          
+
           #state what old_SS_dat_filename and old_SS_ctl_filename are!!!
           old_SS_dat_filename <- "ss3"
           old_SS_ctl_filename <- "em"
@@ -889,17 +890,17 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           file.rename(paste(to,"forecast.ss_new", sep="\\"), paste(to,"Forecast.ss", sep="\\"))
           file.rename(paste(to,"starter.ss_new", sep="\\"), paste(to,"Starter.ss", sep="\\"))
           file.rename(paste(to,"control_modified.ss", sep="\\"), paste(to,paste(old_SS_ctl_filename,".ctl", sep=""), sep="\\"))
-          
+
           # Re-run
-          
+
           run_ss3model(scenarios = sc, iterations = i, type = "em_adjeffN",
                        hess = hess, ...)
-          
+
           setwd(wd)
         }
       }
-      
-      
+
+
       # Should we run bias adjustment? We should if bias_adjust is
       # true, and we are done running bias adjustments (i.e. we're on
       # the last "bias" iteration), and we haven't already run this
@@ -912,9 +913,9 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # on subsequent iterations
       }
 
-      
+
       lcomp_params <- lcomp_params_save
-      
+
 # TODO pull the log file writing into a separate function and update
 # for current arguments
       if(print_logfile) {
@@ -967,7 +968,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         print(sigmar)
 
         sink()
-        
+
       }
 
       file.remove(pastef(sc, i, fake_dat))
