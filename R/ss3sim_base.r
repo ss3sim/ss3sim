@@ -432,6 +432,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       setwd(wd)
       # Run the operating model and copy the dat file over
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
+      Sys.sleep(0.5)
 
       if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
           stop(paste0("The data.ss_new not created in *second* OM run for ",
@@ -818,6 +819,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       run_ss3model(scenarios = sc, iterations = i, type = "em",
         hess = hess, ...)
+      Sys.sleep(0.5)
 
 
       ##-----------------------------------------------------------------------------------##
@@ -895,6 +897,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
           run_ss3model(scenarios = sc, iterations = i, type = "em_adjeffN",
                        hess = hess, ...)
+          Sys.sleep(0.5)
 
           setwd(wd)
         }
