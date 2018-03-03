@@ -254,7 +254,8 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
         }
 
         message("Running iterations in parallel.")
-        foreach::foreach(it_ = iterations, .packages = c("ss3sim","reshape","Hmisc"), #.libPaths(.libPaths()[1]),
+        foreach::foreach(it_ = iterations, .packages = c("ss3sim","reshape","Hmisc"), .errorhandling =
+"pass" , #.libPaths(.libPaths()[1]),
           .verbose = TRUE, .export = c("substr_r")) %dopar% #, "hauls"
             do.call("ss3sim_base",  c(x, list(iterations = it_,
                                               bias_already_run = TRUE), dots))
@@ -262,7 +263,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
       })
     } else {
       message("Running scenarios in parallel.")
-      foreach::foreach(x = arg_list, .packages = c("ss3sim"), #,"reshape","Hmisc".libPaths(.libPaths()[1]),
+      foreach::foreach(x = arg_list, .packages = c("ss3sim"), .errorhandling ="pass", #,"reshape","Hmisc".libPaths(.libPaths()[1]),
         .verbose = TRUE, .export = c("substr_r")) %dopar% { #, "hauls"
           do.call("ss3sim_base", c(x, list(iterations = iterations, ...)))}
     }
