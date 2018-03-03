@@ -434,9 +434,9 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
       Sys.sleep(0.5)
 
-      #if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
-      #    stop(paste0("The data.ss_new not created in *second* OM run for ",
-      #               sc, "-",i, ": is something wrong with initial model files?"))
+      if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
+          stop(paste0("The data.ss_new not created in *second* OM run for ",
+                     sc, "-",i, ": is something wrong with initial model files?"))
 
       try_write <- try(extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
                             data_out = pastef(sc, i, "em", "ss3.dat")), silent= T)
