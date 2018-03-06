@@ -178,12 +178,6 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
         "specified number of iterations."))
     }
     
-      # removing the empty temporary scenario files created in Linux runs
-to_rm <- which(do.call(c, lapply(as.list(list.dirs()), function(x) length(list.files(x))))==0)
-if (length(to_rm)!=0) unlink(list.dirs()[to_rm], recursive=T)  
-  }
-  
-
   # Get arguments for each scenario:
   arg_list <- lapply(scenarios, function(scenario) {
     a <- get_caseargs(folder = case_folder, scenario = scenario,
@@ -283,6 +277,12 @@ if (length(to_rm)!=0) unlink(list.dirs()[to_rm], recursive=T)
 
   message(paste("Completed iterations:", paste(iterations, collapse = ", "),
     "for scenarios:", paste(scenarios, collapse = ", ")))
+
+  }
+   # removing the empty temporary scenario files created in Linux runs
+to_rm <- which(do.call(c, lapply(as.list(list.dirs()), function(x) length(list.files(x))))==0)
+if (length(to_rm)!=0) unlink(list.dirs()[to_rm], recursive=T)  
+
 }
 
 
