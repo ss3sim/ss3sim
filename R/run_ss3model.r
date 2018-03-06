@@ -85,7 +85,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
              dir.create(tolower(sc), showWarnings = FALSE); dir.create(pastef(tolower(sc),it), showWarnings = FALSE);
              dir.create(pastef(tolower(sc),it,type), showWarnings = FALSE)
              temp_path <- pastef(tolower(sc),it,type)
-             file.copy(paste0(ss_bin,".dat"),temp_path, recursive=T)
+             file.copy(paste0(pastef(getwd(),sc,it,type),"/",ss_bin, ".dat"), temp_path, recursive = T)
              }      
        
         system(paste0("cd ", pastef(sc, it, type), ";", paste0(pastef(getwd(), sc, it, type, ss_bin)," ",
