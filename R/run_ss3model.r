@@ -88,7 +88,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
              }      
        
         system(paste0("cd ", pastef(sc, it, type), ";", paste0(pastef(getwd(), sc, it, type, ss_bin),
-           ss_em_options, " ", admb_options), ignore.stdout = ignore.stdout, ...)
+           ss_em_options, " ", admb_options)), ignore.stdout = ignore.stdout, ...)
         
         # some files went into the temporary folder because of Linux/ADMB putting files elsewhere compared to Windows/ADMB
         file.copy(file.path(temp_path,list.files(temp_path)),pastef(sc,it,type), recursive=T)
