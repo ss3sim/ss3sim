@@ -447,7 +447,11 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         }
       }
 
-
+	     # this removes the files created in Linux runs
+if (file.exists(pastef(getwd(),sc, it, "om","ss3_24o_safe"))) file.remove(pastef(getwd(), sc, it, "om","ss3_24o_safe"))
+if (file.exists(pastef(getwd(),sc, it, "om","ss3_24o_opt"))) file.remove(pastef(getwd(), sc, it, "om","ss3_24o_opt"))
+	     
+	     
       ##---------------------------------------------------------------------------------------##
       ##                            Change tv for em model too                                 ##
       ##---------------------------------------------------------------------------------------##
@@ -820,7 +824,12 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       run_ss3model(scenarios = sc, iterations = i, type = "em",
         hess = hess, ...)
       Sys.sleep(0.5)
-
+										
+# remove files created in Linux runs
+if (file.exists(pastef(getwd(),sc, it, "em","ss3_24o_safe"))) file.remove(pastef(getwd(),sc, it, "em","ss3_24o_safe"))
+if (file.exists(pastef(getwd(),sc, it, "em","ss3_24o_opt"))) file.remove(pastef(getwd(),sc, it, "em","ss3_24o_opt"))
+										 
+										 
 
       ##-----------------------------------------------------------------------------------##
       ##                  iterative re-weighting                                           ##
@@ -860,6 +869,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           if (as.numeric(var_adj_line_split[1])==0){
             ctl_temp[idx_var] <- paste(1, var_adj_line_split[2])
             new_table <- as.data.frame(matrix(0, ncol=length(MyOutput$fleet_ID), nrow=6))
+		  
             new_table[4:6,] <- 1
             var_adj_vals_lines <- ctl_temp[c(idx_var+2):c(idx_var+7)]
             var_adj_vals_split <- strsplit(var_adj_vals_lines,"#")#[[1]]
@@ -898,7 +908,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           run_ss3model(scenarios = sc, iterations = i, type = "em_adjeffN",
                        hess = hess, ...)
           Sys.sleep(0.5)
-
+	# remove files created in Linux runs
+				
           setwd(wd)
         }
       }
