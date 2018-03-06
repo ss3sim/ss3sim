@@ -95,7 +95,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
         file.copy(file.path(temp_path,list.files(temp_path)),pastef(sc,it,type), recursive=T)
         # Once the em is run the temporary files can be deleted, leaving the scenario in though as other iterations might be running
         # the empty temporary scenario files will be removed at the end of run_ss3sim for now - this will probably have to be tidied up
-        if (type=="em") unlink(pastef(tolower(sc),it), recursive=T)
+        if (type=="em") unlink(pastef(tolower(getwd()),tolower(sc),it), recursive=T)
         # the executable is in the actual scenario folder, this will be removed in ss3sim_base where appropriate 
         #(i.e. after the 2 oms have run and after the em has run)
         
