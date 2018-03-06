@@ -82,7 +82,8 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
         # in the right place (problem with Linux/ADMB)
         if (!dir.exists(pastef(sc,it,type,ss_bin))) {               
              file.copy(bin,pastef(sc,it,type), recursive =T)
-             dir.create(pastef(tolower(getwd()),tolower(sc)), showWarnings = FALSE); dir.create(pastef(tolower(getwd()),tolower(sc),it), showWarnings = FALSE);
+             dir.create(tolower(getwd()), showWarnings = FALSE); dir.create(pastef(tolower(getwd()),tolower(sc)), showWarnings = FALSE); 
+             dir.create(pastef(tolower(getwd()),tolower(sc),it), showWarnings = FALSE);
              dir.create(pastef(tolower(getwd()),tolower(sc),it,type), showWarnings = FALSE)
              temp_path <- pastef(tolower(getwd()),tolower(sc),it,type)
              file.copy(paste0(pastef(getwd(),sc,it,type),"/",ss_bin, ".dat"), temp_path, recursive = T)
