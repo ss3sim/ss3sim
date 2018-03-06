@@ -310,4 +310,9 @@ run_random_check <- function(arg_list) {
       arg_list[[1]]$wtatage_params$years[[idx_flt]] <- arg_list[[1]]$acomp_params$years[[idx_flt_lengths]][seq(1, length(arg_list[[1]]$acomp_params$years[[idx_flt_lengths]]), 
                                                                                                                length.out=min(lgth, length(arg_list[[1]]$acomp_params$years[[idx_flt_lengths]])))]
     }}
+  
+  # removing the empty temporary scenario files created in Linux runs
+to_rm <- which(do.call(c, lapply(as.list(list.dirs()), function(x) length(list.files(x))))==0)
+if (length(to_rm)!=0) unlink(list.dirs()[to_rm], recursive=T)
+                                 
 }
