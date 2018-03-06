@@ -287,7 +287,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
 # to_rm <- which(do.call(c, lapply(as.list(list.dirs()), function(x) length(list.files(x))))==0)
 # if (length(to_rm)!=0) unlink(list.dirs()[to_rm], recursive=T)  
 # setwd(oldwd)
-                                  }
+#                                  }
  
 }
 
