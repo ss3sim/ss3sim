@@ -281,12 +281,12 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
     "for scenarios:", paste(scenarios, collapse = ", ")))
                           
    # removing the empty temporary scenario files created in Linux runs
- oldwd <- getwd()
- if (dir.exists(tolower(oldwd)) {
- setwd(tolower(oldwd))
- to_rm <- which(do.call(c, lapply(as.list(list.dirs()), function(x) length(list.files(x))))==0)
- if (length(to_rm)!=0) unlink(list.dirs()[to_rm], recursive=T)  
- setwd(oldwd)
+# oldwd <- getwd()
+# if (dir.exists(tolower(oldwd)) {
+# setwd(tolower(oldwd))
+# to_rm <- which(do.call(c, lapply(as.list(list.dirs()), function(x) length(list.files(x))))==0)
+# if (length(to_rm)!=0) unlink(list.dirs()[to_rm], recursive=T)  
+# setwd(oldwd)
                                   }
  
 }
