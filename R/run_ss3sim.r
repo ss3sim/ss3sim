@@ -177,6 +177,10 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
       stop(paste("The number of columns in user_recdevs is less than the",
         "specified number of iterations."))
     }
+    
+      # removing the empty temporary scenario files created in Linux runs
+to_rm <- which(do.call(c, lapply(as.list(list.dirs()), function(x) length(list.files(x))))==0)
+if (length(to_rm)!=0) unlink(list.dirs()[to_rm], recursive=T)  
   }
   
 
@@ -311,11 +315,5 @@ run_random_check <- function(arg_list) {
                                                                                                                length.out=min(lgth, length(arg_list[[1]]$acomp_params$years[[idx_flt_lengths]])))]
     }}
   
-  # removing the empty temporary scenario files created in Linux runs
-to_rm <- which(do.call(c, lapply(as.list(list.dirs()), function(x) length(list.files(x))))==0)
-if (length(to_rm)!=0) unlink(list.dirs()[to_rm], recursive=T)
-# run twice (1st time will rm iterations, 2nd scenarios
-to_rm <- which(do.call(c, lapply(as.list(list.dirs()), function(x) length(list.files(x))))==0)
-if (length(to_rm)!=0) unlink(list.dirs()[to_rm], recursive=T)
-                                 
+                        
 }
