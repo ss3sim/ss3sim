@@ -448,8 +448,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       }
 
 	     # this removes the files created in Linux runs
-if (file.exists(pastef(getwd(),sc, it, "om","ss3_24o_safe"))) file.remove(pastef(getwd(), sc, it, "om","ss3_24o_safe"))
-if (file.exists(pastef(getwd(),sc, it, "om","ss3_24o_opt"))) file.remove(pastef(getwd(), sc, it, "om","ss3_24o_opt"))
+if (file.exists(pastef(getwd(),sc, i, "om","ss3_24o_safe"))) file.remove(pastef(getwd(), sc, i, "om","ss3_24o_safe"))
+if (file.exists(pastef(getwd(),sc, i, "om","ss3_24o_opt"))) file.remove(pastef(getwd(), sc, i, "om","ss3_24o_opt"))
 	     
 	     
       ##---------------------------------------------------------------------------------------##
@@ -826,8 +826,8 @@ if (file.exists(pastef(getwd(),sc, it, "om","ss3_24o_opt"))) file.remove(pastef(
       Sys.sleep(0.5)
 										
 # remove files created in Linux runs
-if (file.exists(pastef(getwd(),sc, it, "em","ss3_24o_safe"))) file.remove(pastef(getwd(),sc, it, "em","ss3_24o_safe"))
-if (file.exists(pastef(getwd(),sc, it, "em","ss3_24o_opt"))) file.remove(pastef(getwd(),sc, it, "em","ss3_24o_opt"))
+if (file.exists(pastef(getwd(),sc, i, "em","ss3_24o_safe"))) file.remove(pastef(getwd(),sc, i, "em","ss3_24o_safe"))
+if (file.exists(pastef(getwd(),sc, i, "em","ss3_24o_opt"))) file.remove(pastef(getwd(),sc, i, "em","ss3_24o_opt"))
 										 
 										 
 
