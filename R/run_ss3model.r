@@ -77,11 +77,30 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
       message(paste0("Running ", toupper(type), " for scenario: ", sc,
         "; iteration: ", it))
       if(os == "unix") {
+        # make a temporary directory to solve the problem of lower vs capital path letters
+        # and copy executable in scenario directory because otherwise admb files not created in the right place 
+        # (problem with Linux/ADMB)
+        if (!exists(pastef(sc,it,type,ss_bin))) {               
+             file.copy(bin,pastef(sc,it,type))
+             dir.create(tolower(sc)); dir.create(pastef(tolower(sc),it));dir.create(pastef(tolower(sc),it,type))
+             temp_path <- pastef(tolower(sc),it,type)
+             file.copy(paste0(ss_bin,".dat"),temp_path)
+             }      
+        
         system(paste0("cd ", pastef(sc, it, type), ";", paste0(bin, " "),
            ss_em_options, " ", admb_options), ignore.stdout = ignore.stdout, ...)
+        
+        # some files went into the temporary folder because of Linux/ADMB putting files elsewhere compared to Windows/ADMB
+        file.copy(file.path(temp_path,list.files(temp_path)),pastef(sc,it,type), recursive=T)
+        # Once the em is run the temporary files can be deleted, leaving the scenario in though as other iterations might be running
+        # the empty temporary scenario files will be removed at the end of run_ss3sim for now - this will probably have to be tidied up
+        if (type=="em") unlink(pastef(tolower(sc),it), recursive=T)
+        # the executable is in the actual scenario folder, this will be removed in ss3sim_base where appropriate 
+        #(i.e. after the 2 oms have run and after the em has run)
+        
         rename_ss3_files(path = pastef(sc, it, type), ss_bin = ss_bin,
           extensions = c("par", "rep", "log", "bar"),
-          os = os, bin = bin)
+          os = NULL, bin = NULL)
       } else {
         wd <- getwd()
         setwd(pastef(sc, it, type))
@@ -108,18 +127,21 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
 rename_ss3_files <- function(path, ss_bin, extensions,
   os = NULL, bin = NULL) {
   for(i in seq_along(extensions)) {
-    if (
-      !is.null(os) &
-      !exists(paste0(path, "/", ss_bin, ".", extensions[i]))) {
-        if (
-          os == "unix" &
-          !exists(paste0(path, "/", ss_bin, ".", extensions[i]))) {
-          file.copy(
-            from = tolower(paste0(bin, ".", extensions[i])),
-            to = paste0(path, "/", ss_bin, ".", extensions[i]))
-          file.remove(tolower(paste0(bin, ".", extensions[i])))
-        }
-    }
+  # This was to copy files across from Linux executable folder into simulations folder
+    # but it created problem of overwriting when running in parallel
+    # Now the executable is copied within the scenario files so no need for that anymore 
+  #  if (
+  #    !is.null(os) &
+  #    !exists(paste0(path, "/", ss_bin, ".", extensions[i]))) {
+  #      if (
+  #        os == "unix" &
+  #        !exists(paste0(path, "/", ss_bin, ".", extensions[i]))) {
+  #        file.copy(
+  #          from = tolower(paste0(bin, ".", extensions[i])),
+  #          to = paste0(path, "/", ss_bin, ".", extensions[i]))
+  #        file.remove(tolower(paste0(bin, ".", extensions[i])))
+  #      }
+  #  }
     file.rename(from = paste0(path, "/", ss_bin, ".", extensions[i]),
                 to   = paste0(path, "/", "ss3",  ".", extensions[i]))
   }
