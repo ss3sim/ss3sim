@@ -77,16 +77,16 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
       message(paste0("Running ", toupper(type), " for scenario: ", sc,
         "; iteration: ", it))
       if(os == "unix") {
-        # make a temporary directory to solve the problem of lower vs capital path letters
-        # and copy executable in scenario directory because otherwise admb files not created in the right place 
-        # (problem with Linux/ADMB)
+        # make a temporary directory to solve the problem of lower vs capital path letters
+        # and copy executable in scenario directory because otherwise admb files not created
+        # in the right place (problem with Linux/ADMB)
         if (!dir.exists(pastef(sc,it,type,ss_bin))) {               
              file.copy(bin,pastef(sc,it,type))
              dir.create(tolower(sc)); dir.create(pastef(tolower(sc),it));dir.create(pastef(tolower(sc),it,type))
              temp_path <- pastef(tolower(sc),it,type)
              file.copy(paste0(ss_bin,".dat"),temp_path)
              }      
-        
+       
         system(paste0("cd ", pastef(sc, it, type), ";", paste0(bin, " "),
            ss_em_options, " ", admb_options), ignore.stdout = ignore.stdout, ...)
         
