@@ -81,10 +81,10 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
         # and copy executable in scenario directory because otherwise admb files not created
         # in the right place (problem with Linux/ADMB)
         if (!dir.exists(pastef(sc,it,type,ss_bin))) {               
-             file.copy(bin,pastef(sc,it,type))
+             file.copy(bin,pastef(sc,it,type), recursive =T)
              dir.create(tolower(sc)); dir.create(pastef(tolower(sc),it));dir.create(pastef(tolower(sc),it,type))
              temp_path <- pastef(tolower(sc),it,type)
-             file.copy(paste0(ss_bin,".dat"),temp_path)
+             file.copy(paste0(ss_bin,".dat"),temp_path, recursive=T)
              }      
        
         system(paste0("cd ", pastef(sc, it, type), ";", paste0(pastef(getwd(), sc, it, type, ss_bin),
