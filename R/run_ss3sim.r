@@ -314,5 +314,8 @@ run_random_check <- function(arg_list) {
   # removing the empty temporary scenario files created in Linux runs
 to_rm <- which(do.call(c, lapply(as.list(list.dirs()), function(x) length(list.files(x))))==0)
 if (length(to_rm)!=0) unlink(list.dirs()[to_rm], recursive=T)
+# run twice (1st time will rm iterations, 2nd scenarios
+to_rm <- which(do.call(c, lapply(as.list(list.dirs()), function(x) length(list.files(x))))==0)
+if (length(to_rm)!=0) unlink(list.dirs()[to_rm], recursive=T)
                                  
 }
