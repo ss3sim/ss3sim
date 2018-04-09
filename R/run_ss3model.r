@@ -71,6 +71,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
   bin <- get_bin(ss_bin)
 
   ss_em_options <- ifelse(hess, "", "-nohess")
+  exts          <- ifelse(hess, c("par", "rep", "log", "bar","cor"), c("par", "rep", "log", "bar")) 
 
   for(sc in scenarios) {
     for(it in iterations) {
@@ -104,18 +105,15 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
         if (type=="em") unlink(pastef(tolower(getwd()),tolower(sc),it), recursive=T)
         # the executable is in the actual scenario folder, this will be removed in ss3sim_base where appropriate 
         #(i.e. after the 2 oms have run and after the em has run)
-        
         rename_ss3_files(path = pastef(sc, it, type), ss_bin = ss_bin,
-          extensions = c("par", "rep", "log", "bar","cor"),
-          os = NULL, bin = NULL)
+          extensions = exts, os = NULL, bin = NULL)
       } else {
         wd <- getwd()
         setwd(pastef(sc, it, type))
         system(paste0(paste0(bin, " "), ss_em_options, admb_options),
           invisible = TRUE, ignore.stdout = ignore.stdout,
                show.output.on.console = show.output.on.console, ...)
-        rename_ss3_files(path = "", ss_bin = ss_bin,
-          extensions = c("par", "rep", "log", "bar","cor"),
+        rename_ss3_files(path = "", ss_bin = ss_bin, extensions = exts,
           os = NULL, bin = NULL)
         setwd(wd)
       }
