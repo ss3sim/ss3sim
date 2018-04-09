@@ -106,7 +106,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
         #(i.e. after the 2 oms have run and after the em has run)
         
         rename_ss3_files(path = pastef(sc, it, type), ss_bin = ss_bin,
-          extensions = c("par", "rep", "log", "bar"),
+          extensions = c("par", "rep", "log", "bar","cor"),
           os = NULL, bin = NULL)
       } else {
         wd <- getwd()
@@ -115,7 +115,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
           invisible = TRUE, ignore.stdout = ignore.stdout,
                show.output.on.console = show.output.on.console, ...)
         rename_ss3_files(path = "", ss_bin = ss_bin,
-          extensions = c("par", "rep", "log", "bar"),
+          extensions = c("par", "rep", "log", "bar","cor"),
           os = NULL, bin = NULL)
         setwd(wd)
       }
