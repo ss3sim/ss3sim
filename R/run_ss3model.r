@@ -71,7 +71,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
   bin <- get_bin(ss_bin)
 
   ss_em_options <- ifelse(hess, "", "-nohess")
-  exts          <- ifelse(hess, c("par", "rep", "log", "bar","cor"), c("par", "rep", "log", "bar")) 
+  exts          <- if(hess) c("par", "rep", "log", "bar","cor") else c("par", "rep", "log", "bar")
 
   for(sc in scenarios) {
     for(it in iterations) {
