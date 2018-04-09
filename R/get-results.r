@@ -307,12 +307,12 @@ get_results_scenario <- function(scenario, directory=getwd(),
                 SS_output(paste0(rep,"/em/"), covar=FALSE, verbose=FALSE,
                           forecast=TRUE, warn=TRUE,#compfile="none", 
                           readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
-                          ncols=numcol)
+                          ncols=numcol, aalmaxbinrange=500)
             report.om <-
                 SS_output(paste0(rep,"/om/"), covar=FALSE, verbose=FALSE,
                          forecast=FALSE, warn=TRUE, # compfile="none", 
                           readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
-                          ncols=numcol)
+                          ncols=numcol, aalmaxbinrange=500)
             ## ## Grab the residuals for the indices
             ## resids <- log(report.em$cpue$Obs) - log(report.em$cpue$Exp)
             ## resids.long <- data.frame(report.em$cpue[,c("FleetName", "Yr")], resids)
