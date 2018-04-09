@@ -84,6 +84,11 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
              file.copy(bin,pastef(sc,it,type), recursive =T)
              dir.create(tolower(getwd()), showWarnings = FALSE); dir.create(pastef(tolower(getwd()),tolower(sc)), showWarnings = FALSE); 
              dir.create(pastef(tolower(getwd()),tolower(sc),it), showWarnings = FALSE);
+          # correct for bias 
+          if (length(grep("bias",it))==1){
+              dir.create(pastef(tolower(getwd()),tolower(sc),"bias"), showWarnings = FALSE)
+              dir.create(pastef(tolower(getwd()),tolower(sc),"bias",strsplit(it,"bias/")[[1]][2]), showWarnings = FALSE)
+              }
              dir.create(pastef(tolower(getwd()),tolower(sc),it,type), showWarnings = FALSE)
              temp_path <- pastef(tolower(getwd()),tolower(sc),it,type)
              file.copy(paste0(pastef(getwd(),sc,it,type),"/",ss_bin, ".dat"), temp_path, recursive = T)
