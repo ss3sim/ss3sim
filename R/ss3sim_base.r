@@ -54,6 +54,10 @@
 #' @param bias_nsim If bias adjustment is run, how many simulations should the
 #'   bias adjustment factor be estimated from? It will take the mean of the
 #'   adjustment factors across these runs.
+#'   If \code{bias_nsim = Inf} then one bias adjustment procedure will be ran
+#'   for each iterations, and thus, the bias adjustment results will be
+#'   iteration specific. This option was found to have better results in
+#'   Johnson et al. (2016)
 #' @param bias_already_run If you've already run the bias runs for a scenario
 #'   (the bias folders and \code{.dat} files already exist) then you can set
 #'   this to \code{TRUE} to avoid re-running the bias adjustment routine.
@@ -338,7 +342,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         setwd(wd)
       }
 
-
       # Change the data structure in the OM to produce the expected
       # values we want. This sets up the 'dummy' bins before we run
       # the OM one last time. Then we'll sample from the expected values
@@ -437,7 +440,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
           stop(paste0("The data.ss_new not created in *second* OM run for ",
                      sc, "-",i, ": is something wrong with initial model files?"))
-
       try_write <- try(extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
                             data_out = pastef(sc, i, "em", "ss3.dat")), silent= T)
         if (is(try_write)[1]=="try-error") {
@@ -450,8 +452,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 	     # this removes the files created in Linux runs
 if (file.exists(pastef(getwd(),sc, i, "om","ss3_24o_safe"))) file.remove(pastef(getwd(), sc, i, "om","ss3_24o_safe"))
 if (file.exists(pastef(getwd(),sc, i, "om","ss3_24o_opt"))) file.remove(pastef(getwd(), sc, i, "om","ss3_24o_opt"))
-	     
-	     
+
+
       ##---------------------------------------------------------------------------------------##
       ##                            Change tv for em model too                                 ##
       ##---------------------------------------------------------------------------------------##
@@ -484,7 +486,7 @@ if (file.exists(pastef(getwd(),sc, i, "om","ss3_24o_opt"))) file.remove(pastef(g
       dat_list <- try(SS_readdat(pastef(sc, i, "em", "ss3.dat"),verbose = FALSE), silent=T)
       if (is(dat_list)[1] == "try-error") {
         while(is(dat_list)[1] == "try-error") {
-            dat_list <- try(SS_readdat(pastef(sc, i, "em", "ss3.dat"),verbose = FALSE), silent=T)
+            dat_list <- try(SS_readdat(pastef(sc, i, "em", "ss3.dat"),verbose = TRUE), silent=T)
         }
       }
 
@@ -812,7 +814,7 @@ if (file.exists(pastef(getwd(),sc, i, "om","ss3_24o_opt"))) file.remove(pastef(g
       }
 
       # Should we calculate the hessian?
-        if(hess_always){
+        if(hess_always | bias_nsim == Inf){
           hess <- TRUE           # estimate the hessian no matter what
         } else {
           if(grepl("bias", i)) { # it's a bias run so we need the hessian
@@ -824,12 +826,23 @@ if (file.exists(pastef(getwd(),sc, i, "om","ss3_24o_opt"))) file.remove(pastef(g
       run_ss3model(scenarios = sc, iterations = i, type = "em",
         hess = hess, ...)
       Sys.sleep(0.5)
-										
+      # Since we've now run the bias adjustment routine, copy the .ctl
+      # on subsequent iterations
+      # If we are doing bias adjustment for every run do so now
+      if (bias_nsim == Inf) {
+        bias_ss3(iter = i, dir = sc, single = TRUE)
+        # Run the model again to get the output. I might want to save some
+        # files in with _prebias appended to the name.
+        hess <- hess_always
+        run_ss3model(scenarios = sc, iterations = i, type = "em",
+          hess = hess, ...)
+        bias_already_run <- TRUE
+      }
+
 # remove files created in Linux runs
 if (file.exists(pastef(getwd(),sc, i, "em","ss3_24o_safe"))) file.remove(pastef(getwd(),sc, i, "em","ss3_24o_safe"))
 if (file.exists(pastef(getwd(),sc, i, "em","ss3_24o_opt"))) file.remove(pastef(getwd(),sc, i, "em","ss3_24o_opt"))
-										 
-										 
+
 
       ##-----------------------------------------------------------------------------------##
       ##                  iterative re-weighting                                           ##
@@ -869,7 +882,7 @@ if (file.exists(pastef(getwd(),sc, i, "em","ss3_24o_opt"))) file.remove(pastef(g
           if (as.numeric(var_adj_line_split[1])==0){
             ctl_temp[idx_var] <- paste(1, var_adj_line_split[2])
             new_table <- as.data.frame(matrix(0, ncol=length(MyOutput$fleet_ID), nrow=6))
-		  
+
             new_table[4:6,] <- 1
             var_adj_vals_lines <- ctl_temp[c(idx_var+2):c(idx_var+7)]
             var_adj_vals_split <- strsplit(var_adj_vals_lines,"#")#[[1]]
@@ -909,7 +922,7 @@ if (file.exists(pastef(getwd(),sc, i, "em","ss3_24o_opt"))) file.remove(pastef(g
                        hess = hess, ...)
           Sys.sleep(0.5)
 	# remove files created in Linux runs
-				
+
           setwd(wd)
         }
       }

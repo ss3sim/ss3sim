@@ -16,6 +16,9 @@
 #' @param dir Passes \code{dir} from the function \code{\link{run_bias_ss3}} to
 #'   \code{bias_ss3}. In \code{\link{run_bias_ss3}} this is run within an
 #'   \code{\link[base]{sapply}} function for each of the bias adjustment runs.
+#' @param single A logical value dictating whether the control file is changed
+#'   or if the results are just saved to a data frame. Where,
+#'   the latter happens in \code{single = FALSE}, which is the default.
 #' @seealso \code{\link{run_bias_ss3}}, \code{\link{run_ss3sim}},
 #'   \code{\link{ss3sim_base}}
 #' @importFrom r4ss SS_output SS_fitbiasramp
@@ -29,8 +32,16 @@
 #' of estimated recruitments in fishery assessment models. Can. J. Fish. Aquat.
 #' Sci., 68(10):1744-1760.
 
-bias_ss3 <- function(iter, dir) {
+bias_ss3 <- function(iter, dir, single = FALSE) {
+
+  # The outfile will be written in the main directory for the scenario
+  # rather than in each iteration folder. If this is a group run as
+  # originally written in ss3sim then the file will be in the bias
+  # folder. If this is a single = TRUE run then it will be in the
+  # main scenario folder b/c a bias adjustment is being performed
+  # for each run
   outfile = "AdjustBias.DAT"
+
   #Check that the run converged and that SS_output will not give you a stop()
   test <- readLines(file.path(dir, iter, "em", "Report.sso"))
   check <- sum(grepl("na", grep("SPB_[0-9]+", test, value = TRUE),
@@ -47,7 +58,25 @@ bias_ss3 <- function(iter, dir) {
         "covar.sso", forecast = FALSE, verbose = FALSE, ncols = 300,
         printstats = FALSE, NoCompOK = TRUE))
       pdf(paste0(dir, "/biasramp-", iter, ".pdf"))
-      biasvars = try(SS_fitbiasramp(replist = myoutput), TRUE)
+      # Fit the ramp and save the parameters
+      # Also, if \code{single = TRUE}, then save the
+      # control file for the next run
+      if (!single) biasvars = try(SS_fitbiasramp(replist = myoutput), TRUE)
+      if (single) {
+        emfile <- file.path(dir, iter, "em", "em.ctl")
+        refile <- file.path(dir, iter, "em", "Report.sso")
+        file.copy(emfile, gsub("em.ctl", "em_prebias.ctl", emfile))
+        file.copy(refile, gsub("Report", "Report_prebias", refile))
+        biasvars = try(SS_fitbiasramp(replist = myoutput,
+          verbose = FALSE, startvalues = NULL, method = "BFGS",
+          twoplots = TRUE, transform = FALSE, plot = TRUE, print = FALSE,
+          plotdir = "default", shownew = FALSE,
+          oldctl = emfile,
+          newctl = emfile,
+          altmethod = "nlminb", exclude_forecast = FALSE, pwidth = 6.5,
+          pheight = 5, punits = "in", ptsize = 10, res = 300, cex.main = 1),
+          silent = TRUE)
+      }
       dev.off()
     }
 
@@ -64,14 +93,8 @@ bias_ss3 <- function(iter, dir) {
       1], bias4 = biasvars$df[4, 1], bias5 = biasvars$df[5,
       1])
   }
-  if (iter == 1) {
-    write.table(bias.df, file = paste0(dir, "/", outfile),
-      row.names = FALSE, col.names = FALSE, quote = FALSE,
-      append = FALSE)
-  }
-  else {
-    write.table(bias.df, file = paste0(dir, "/", outfile),
-      row.names = FALSE, col.names = FALSE, quote = FALSE,
-      append = TRUE)
-  }
+  write.table(bias.df, file = file.path(dir, outfile),
+    row.names = FALSE, col.names = FALSE, quote = FALSE,
+    append = TRUE)
+
 }
