@@ -3,11 +3,10 @@ Type: Package
 Title: Fisheries Stock Assessment Simulation Testing with Stock Synthesis
 Version: 0.9.5.9000
 Date: 2017-06-29
-Authors@R: c(person("Sean", "Anderson", email =
-    "sean@seananderson.ca", role = c("aut", "cre")),
-    person("Kelli", "Johnson", 
+Authors@R: c(person("Kelli", "Johnson", 
     email = "kelli.johnson@noaa.gov",
     role = c("aut", "cre")),
+    person("Sean", "Anderson", role = "aut"),
     person("Curry", "Cunningham", role = "aut"),
     person("Kathryn Doering", role = "aut"),
     person("Allan", "Hicks", role = "aut"),
