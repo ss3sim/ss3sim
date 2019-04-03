@@ -69,3 +69,4 @@ Other change functions: \code{\link{change_data}},
 \author{
 Curry James Cunningham
 }
+\concept{change functions}

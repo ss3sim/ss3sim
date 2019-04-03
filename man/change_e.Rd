@@ -4,11 +4,11 @@
 \alias{change_e}
 \title{Methods to alter which parameters are estimated in a SS3 \code{.ctl} file.}
 \usage{
-change_e(ctl_file_in = "em.ctl", ctl_file_out = "em.ctl", dat_list = NULL,
-  for_file_in = "forecasts.ss", natM_type = "1Parm",
-  natM_n_breakpoints = NULL, natM_lorenzen = NULL, natM_val = c(NA, NA),
-  par_name = NULL, par_int = "NA", par_phase = "NA", forecast_num = 0,
-  run_change_e_full = TRUE, verbose = FALSE)
+change_e(ctl_file_in = "em.ctl", ctl_file_out = "em.ctl",
+  dat_list = NULL, for_file_in = "forecasts.ss", natM_type = "1Parm",
+  natM_n_breakpoints = NULL, natM_lorenzen = NULL, natM_val = c(NA,
+  NA), par_name = NULL, par_int = "NA", par_phase = "NA",
+  forecast_num = 0, run_change_e_full = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{ctl_file_in}{Input SS3 control file}
@@ -143,3 +143,4 @@ Other change functions: \code{\link{change_data}},
 \author{
 Kelli Johnson
 }
+\concept{change functions}

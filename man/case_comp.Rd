@@ -4,8 +4,8 @@
 \alias{case_comp}
 \title{Write a case file for length- or age-composition data}
 \usage{
-case_comp(fleets = 1, Nsamp = NULL, years = NULL, cpar = 2, type, case,
-  spp)
+case_comp(fleets = 1, Nsamp = NULL, years = NULL, cpar = 2, type,
+  case, spp)
 }
 \arguments{
 \item{fleets}{Vector of fleet numbers, where the order of

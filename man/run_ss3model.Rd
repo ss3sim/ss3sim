@@ -4,9 +4,10 @@
 \alias{run_ss3model}
 \title{Run an operating or estimation model for a specified set of scenario IDs}
 \usage{
-run_ss3model(scenarios, iterations, type = c("om", "em"), admb_options = "",
-  hess = FALSE, ignore.stdout = TRUE, admb_pause = 0.05,
-  ss_mode = c("safe", "optimized"), show.output.on.console = FALSE, ...)
+run_ss3model(scenarios, iterations, type = c("om", "em"),
+  admb_options = "", hess = FALSE, ignore.stdout = TRUE,
+  admb_pause = 0.05, ss_mode = c("safe", "optimized"),
+  show.output.on.console = FALSE, ...)
 }
 \arguments{
 \item{scenarios}{Which scenarios to run. Controls which folder contains the

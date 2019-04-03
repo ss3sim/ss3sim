@@ -106,3 +106,4 @@ Other sampling functions: \code{\link{clean_data}},
 \author{
 Cole Monnahan, Kelli Johnson
 }
+\concept{sampling functions}

@@ -4,8 +4,8 @@
 \alias{sample_index}
 \title{Sample the biomass with observation error}
 \usage{
-sample_index(dat_list, outfile, fleets, years, sds_obs, make_plot = FALSE,
-  write_file = TRUE)
+sample_index(dat_list, outfile, fleets, years, sds_obs,
+  make_plot = FALSE, write_file = TRUE)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
@@ -99,3 +99,4 @@ Other sampling functions: \code{\link{clean_data}},
 \author{
 Cole Monnahan, Kotaro Ono
 }
+\concept{sampling functions}

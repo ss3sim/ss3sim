@@ -6,12 +6,13 @@
 \usage{
 ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   agecomp_params, calcomp_params = NULL, wtatage_params = NULL,
-  mlacomp_params = NULL, em_binning_params = NULL, estim_params = NULL,
-  tv_params = NULL, om_dir, em_dir, retro_params = NULL,
-  data_params = NULL, call_change_data = TRUE, user_recdevs = NULL,
-  user_recdevs_warn = TRUE, bias_adjust = FALSE, bias_nsim = 5,
-  bias_already_run = FALSE, hess_always = FALSE, print_logfile = TRUE,
-  sleep = 0, conv_crit = 0.2, seed = 21, keep_compreport = TRUE, ...)
+  mlacomp_params = NULL, em_binning_params = NULL,
+  estim_params = NULL, tv_params = NULL, om_dir, em_dir,
+  retro_params = NULL, data_params = NULL, call_change_data = TRUE,
+  user_recdevs = NULL, user_recdevs_warn = TRUE, bias_adjust = FALSE,
+  bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
+  print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21,
+  keep_compreport = TRUE, ...)
 }
 \arguments{
 \item{iterations}{Which iterations to run. A numeric vector.}

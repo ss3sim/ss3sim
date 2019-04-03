@@ -66,3 +66,4 @@ Other change functions: \code{\link{change_data}},
 \author{
 Sean C. Anderson
 }
+\concept{change functions}

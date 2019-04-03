@@ -6,8 +6,8 @@
 \usage{
 change_data(dat_list, outfile, fleets, years, types, age_bins = NULL,
   len_bins = NULL, pop_binwidth = NULL, pop_minimum_size = NULL,
-  pop_maximum_size = NULL, lcomp_constant = NULL, tail_compression = NULL,
-  write_file = TRUE)
+  pop_maximum_size = NULL, lcomp_constant = NULL,
+  tail_compression = NULL, write_file = TRUE)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
@@ -163,3 +163,4 @@ Other change functions: \code{\link{change_em_binning}},
 \author{
 Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson
 }
+\concept{change functions}

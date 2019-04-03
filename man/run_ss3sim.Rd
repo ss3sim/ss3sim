@@ -6,7 +6,8 @@
 \usage{
 run_ss3sim(iterations, scenarios, case_folder, om_dir, em_dir,
   case_files = list(F = "F", D = c("index", "lcomp", "agecomp")),
-  user_recdevs = NULL, parallel = FALSE, parallel_iterations = FALSE, ...)
+  user_recdevs = NULL, parallel = FALSE, parallel_iterations = FALSE,
+  ...)
 }
 \arguments{
 \item{iterations}{Which iterations to run. A numeric vector. For example

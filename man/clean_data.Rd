@@ -6,8 +6,8 @@
 is not specified}
 \usage{
 clean_data(dat_list, index_params = NULL, lcomp_params = NULL,
-  agecomp_params = NULL, calcomp_params = NULL, mlacomp_params = NULL,
-  verbose = FALSE)
+  agecomp_params = NULL, calcomp_params = NULL,
+  mlacomp_params = NULL, verbose = FALSE)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
@@ -54,3 +54,4 @@ Other sampling functions: \code{\link{sample_agecomp}},
 \author{
 Cole Monnahan
 }
+\concept{sampling functions}

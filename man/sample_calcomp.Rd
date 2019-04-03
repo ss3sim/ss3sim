@@ -77,3 +77,4 @@ Other sampling functions: \code{\link{clean_data}},
 \author{
 Cole Monnahan, Kotaro Ono
 }
+\concept{sampling functions}

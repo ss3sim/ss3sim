@@ -5,8 +5,8 @@
 \title{Write time varying casefiles to the disk}
 \usage{
 case_tv(species, parameter, perc_change, outfile, dir_out = "cases",
-  dir_models = system.file("models", package = "ss3models"), nyears = 100,
-  verbose = FALSE)
+  dir_models = system.file("models", package = "ss3models"),
+  nyears = 100, verbose = FALSE)
 }
 \arguments{
 \item{species}{A vector of species, for which a unique case file will be

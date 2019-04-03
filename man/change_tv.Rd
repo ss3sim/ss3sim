@@ -142,3 +142,4 @@ Other change functions: \code{\link{change_data}},
 \author{
 Kotaro Ono, Carey McGilliard, and Kelli Johnson
 }
+\concept{change functions}

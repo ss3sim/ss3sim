@@ -4,7 +4,8 @@
 \alias{extract_expected_data}
 \title{Extract the expected data values}
 \usage{
-extract_expected_data(data_ss_new = "data.ss_new", data_out = "ss3.dat")
+extract_expected_data(data_ss_new = "data.ss_new",
+  data_out = "ss3.dat")
 }
 \arguments{
 \item{data_ss_new}{The location of the \code{.ss_new} file that was

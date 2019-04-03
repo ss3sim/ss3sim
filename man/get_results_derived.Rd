@@ -24,3 +24,4 @@ Other get-results: \code{\link{get_results_all}},
 \author{
 Kelli Johnson
 }
+\concept{get-results}

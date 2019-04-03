@@ -6,8 +6,9 @@
 \usage{
 change_year(year_begin = 1, year_end = 100, burnin = 0,
   ctl_file_in = NULL, ctl_file_out = "new.ctl", dat_file_in = NULL,
-  dat_file_out = "new.dat", par_file_in = NULL, par_file_out = "new.ss",
-  str_file_in = NULL, str_file_out = "starter.ss", for_file_in = NULL,
+  dat_file_out = "new.dat", par_file_in = NULL,
+  par_file_out = "new.ss", str_file_in = NULL,
+  str_file_out = "starter.ss", for_file_in = NULL,
   for_file_out = "forecast.ss", verbose = FALSE)
 }
 \arguments{

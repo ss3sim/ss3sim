@@ -4,7 +4,8 @@
 \alias{get_results_scenario}
 \title{Extract SS3 simulation results for one scenario.}
 \usage{
-get_results_scenario(scenario, directory = getwd(), overwrite_files = FALSE)
+get_results_scenario(scenario, directory = getwd(),
+  overwrite_files = FALSE)
 }
 \arguments{
 \item{scenario}{A single character giving the scenario from which to
@@ -50,3 +51,4 @@ Other get-results: \code{\link{get_results_all}},
 \author{
 Cole Monnahan
 }
+\concept{get-results}

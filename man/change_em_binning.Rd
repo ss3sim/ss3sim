@@ -6,8 +6,8 @@
 model}
 \usage{
 change_em_binning(dat_list, dat_file_out, bin_vector, lbin_method = NULL,
-  pop_binwidth = NULL, pop_minimum_size = NULL, pop_maximum_size = NULL,
-  write_file = TRUE)
+  pop_binwidth = NULL, pop_minimum_size = NULL,
+  pop_maximum_size = NULL, write_file = TRUE)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
@@ -94,3 +94,5 @@ Other change functions: \code{\link{change_data}},
 Kotaro Ono (length-composition rebinning), Sean Anderson
   (conditional age-at-length rebinning)
 }
+\concept{change functions}
+\concept{sample functions}
