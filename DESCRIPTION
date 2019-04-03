@@ -5,22 +5,24 @@ Version: 0.9.5.9000
 Date: 2017-06-29
 Authors@R: c(person("Sean", "Anderson", email =
     "sean@seananderson.ca", role = c("aut", "cre")),
-    person("Cole", "Monnahan", role = "aut"),
-    person("Kelli", "Johnson", role = "aut"),
-    person("Kotaro", "Ono", role = "aut"),
-    person("Juan", "Valero", role = "aut"),
+    person("Kelli", "Johnson", 
+    email = "kelli.johnson@noaa.gov",
+    role = c("aut", "cre")),
     person("Curry", "Cunningham", role = "aut"),
+    person("Kathryn Doering", role = "aut"),
     person("Allan", "Hicks", role = "aut"),
     person("Felipe", "Hurtado-Ferro", role = "aut"),
     person("Peter", "Kuriyama", role = "aut"),
     person("Roberto", "Licandeo", role = "aut"),
     person("Carey", "McGilliard", role = "aut"),
+    person("Cole", "Monnahan", role = "aut"),
     person("Melissa", "Muradian", role = "ctb"),
+    person("Kotaro", "Ono", role = "aut"),
     person("Merrill", "Rudd", role = "aut"),
     person("Christine", "Stawitz", role = "aut"),
     person("Cody", "Szuwalski", role = "aut"),
     person("Ian", "Taylor", role = "aut"),
-    person("Katyana", "Vert-pre", role = "aut"),
+    person("Juan", "Valero", role = "aut"),
     person("Athol", "Whitten", role = "aut"))
 Description: Develops a framework for fisheries stock assessment simulation
     testing with Stock Synthesis 3 (SS3) as described in Anderson et al.
