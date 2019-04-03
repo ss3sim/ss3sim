@@ -37,7 +37,7 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 Depends:
-    R (>= 3.3.3)
+    R (>= 3.3)
 Imports:
     foreach,
     plyr,
