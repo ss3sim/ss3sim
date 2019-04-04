@@ -1,7 +1,7 @@
 #' Replace recruitment deviations
 #'
 #' This function replaces the recruitment deviations in the
-#' \code{ss3.par} file with those specified in \code{recdevs_new}, as
+#' \code{ss.par} file with those specified in \code{recdevs_new}, as
 #' well as a comment (for debugging). It then writes a new file with
 #' name \code{par_file_out} into the working directory.
 #'
@@ -20,13 +20,13 @@
 #' temp_path <- file.path(tempdir(), "ss3sim-recdev-example")
 #' dir.create(temp_path, showWarnings = FALSE)
 #'
-#' par_file <- system.file("extdata", "models", "cod-om", "ss3.par",
+#' par_file <- system.file("extdata", "models", "cod-om", "ss.par",
 #'   package = "ss3sim")
 #' change_rec_devs(recdevs_new = rlnorm(100), par_file_in = par_file,
 #'   par_file_out = paste0(temp_path, "/test.par"))
 
-change_rec_devs <- function(recdevs_new, par_file_in = "ss3.par",
-  par_file_out="ss3.par"){
+change_rec_devs <- function(recdevs_new, par_file_in = "ss.par",
+  par_file_out="ss.par"){
   ## This is the pattern on the line before the vector of current recdevs
   pattern <- "# recdev1"
 
@@ -48,7 +48,7 @@ change_rec_devs <- function(recdevs_new, par_file_in = "ss3.par",
   ## Check that the length of the recdevs matches up
   if(length(recdevs_new) != length(recdevs.old)){
     stop("The new recdev vector isn't the same length as what is
-      currently in the ss3.par file")
+      currently in the ss.par file")
   }
 
   ## replace w/ new recdevs, adding back in that leading space
