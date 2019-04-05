@@ -124,7 +124,7 @@ system("ss3_24o_safe starter.ss -noest")
 
 change_tv(change_tv_list = list("NatM_p_1_Fem_GP_1" = c(rep(0, 20),
       rep(.1, 11)), "SR_BH_steep"=rnorm(31, 0, 0.05)), ctl_file_in =
-  "control.ss_new", ctl_file_out = "example.ctl", dat_file_in =
+  "simple.ctl", ctl_file_out = "example.ctl", dat_file_in =
   "simple.dat", dat_file_out = "example.dat")
 
 # Clean up:

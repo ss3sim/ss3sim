@@ -504,7 +504,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       }
 
       SS_writedat(datlist = dat_list, outfile = pastef(sc, i, "em", "ss3.dat"),
-        overwrite = TRUE, verbose = FALSE)
+        version = "3.24" ,overwrite = TRUE, verbose = FALSE)
 
       # Should we calculate the hessian?
         if(hess_always){

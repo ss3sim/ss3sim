@@ -85,17 +85,20 @@
 #' setwd(temp_path)
 #'
 #' d <- system.file("extdata", package = "ss3sim")
-#' ctl_file <- paste0(d, "/models/cod-om/codOM.ctl")
+#' ctl_file_orig <- paste0(d, "/models/cod-om/codOM.ctl")
+#' ctl_file_copy <- file.path(temp_path, "codOM.ctl")
+#' file.copy(from = ctl_file_orig, to = ctl_file_copy) # copy to temp_path
 #' data.old <- r4ss::SS_readdat(file.path(d, "models", "cod-om", "codOM.dat"))
-#' change_e(ctl_file_in = ctl_file, ctl_file_out = "change_e.ctl",
+#' change_e(ctl_file_in = "codOM.ctl", ctl_file_out = "change_e.ctl",
 #'          dat_list = data.old, for_file_in = "forecast.ss",
 #'          natM_type = "n_breakpoints", natM_n_breakpoints = c(1, 4),
 #'          natM_lorenzen = NULL, natM_val = c(.2, 3, 0.4, 5),
 #'          par_name = c("_steep", "SizeSel_1P_1_Fishery"),
 #'          par_int = c(0.3, 40), par_phase = c(3, 2),
 #'          forecast_num = 0, run_change_e_full = TRUE )
-#' # clean up
+#' # clean up the temporary files
 #' file.remove("change_e.ctl")
+#' file.remove("codOM.ctl")
 #' setwd(wd)
 #' }
 
@@ -125,7 +128,7 @@ change_e <- function(ctl_file_in = "em.ctl",
     }
     data <- read.csv(dir(pattern = "vbgf"), header = TRUE)
   #Get start values
-    pars <- SS_parlines(ctl_file_in, verbose = FALSE)
+    pars <- SS_parlines(ctl_file_in, version = "3.24", verbose = FALSE)
     change_e_vbgf <- try(
       sample_fit_vbgf(length.data = data,
         start.L1 = with(pars, INIT[Label == "L_at_Amin_Fem_GP_1"]),
@@ -317,11 +320,11 @@ if(!is.null(par_name)) {
 
    if (all(c("nseas", "readAll") %in% names(formals(SS_readforecast)))) {
      ss3.for <- SS_readforecast(file = for_file_in, Nfleets = dat_list$Nfleet,
-     Nareas = dat_list$N_areas, verbose = verbose,
+     Nareas = dat_list$N_areas, version = "3.24", verbose = verbose,
      nseas = 1, readAll = TRUE)
    } else {
       ss3.for <- SS_readforecast(file = for_file_in, Nfleets = dat_list$Nfleet,
-        Nareas = dat_list$N_areas, verbose = verbose)
+        Nareas = dat_list$N_areas, version = "3.24", verbose = verbose)
    }
    ss3.for$Forecast <- 2 #Fish at F(MSY)
    ss3.for$Nforecastyrs <- forecast_num

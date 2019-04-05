@@ -120,17 +120,20 @@ wd <- getwd()
 setwd(temp_path)
 
 d <- system.file("extdata", package = "ss3sim")
-ctl_file <- paste0(d, "/models/cod-om/codOM.ctl")
+ctl_file_orig <- paste0(d, "/models/cod-om/codOM.ctl")
+ctl_file_copy <- file.path(temp_path, "codOM.ctl")
+file.copy(from = ctl_file_orig, to = ctl_file_copy) # copy to temp_path
 data.old <- r4ss::SS_readdat(file.path(d, "models", "cod-om", "codOM.dat"))
-change_e(ctl_file_in = ctl_file, ctl_file_out = "change_e.ctl",
+change_e(ctl_file_in = "codOM.ctl", ctl_file_out = "change_e.ctl",
          dat_list = data.old, for_file_in = "forecast.ss",
          natM_type = "n_breakpoints", natM_n_breakpoints = c(1, 4),
          natM_lorenzen = NULL, natM_val = c(.2, 3, 0.4, 5),
          par_name = c("_steep", "SizeSel_1P_1_Fishery"),
          par_int = c(0.3, 40), par_phase = c(3, 2),
          forecast_num = 0, run_change_e_full = TRUE )
-# clean up
+# clean up the temporary files
 file.remove("change_e.ctl")
+file.remove("codOM.ctl")
 setwd(wd)
 }
 }

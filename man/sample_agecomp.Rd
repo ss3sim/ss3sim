@@ -118,15 +118,15 @@ for(samplesize in c(30, 100, 1000)){
     true <- true/sum(true)
     mult <- subset(ex4$agecomp, FltSvy==1)[1,-(1:9)]
     mult <- mult/sum(mult)
-    plot(1:15, mult, type="b", ylim=c(0,1),
+    plot(ex4$agebin_vector, mult, type="b", ylim=c(0,1),
          col=1, xlab="Age", ylab="Proportion", main=paste("Sample size=",
          samplesize))
     legend("topright", legend=c("Multinomial", "Dirichlet(1)",
                                 "Dirichlet(5)", "Truth"),
            lty=1, col=1:4)
-    lines((1:15), subset(ex5$agecomp, FltSvy==1)[1,-(1:9)], type="b", col=2)
-    lines((1:15), subset(ex6$agecomp, FltSvy==1)[1,-(1:9)], type="b", col=3)
-    lines((1:15), true, col=4, lwd=2)
+    lines((ex5$agebin_vector), subset(ex5$agecomp, FltSvy==1)[1,-(1:9)], type="b", col=2)
+    lines((ex6$agebin_vector), subset(ex6$agecomp, FltSvy==1)[1,-(1:9)], type="b", col=3)
+    lines((dat_list$agebin_vector), true, col=4, lwd=2)
 }
 par(op)
 }
