@@ -10,7 +10,7 @@ ss3.ctl
 1 # detailed age-structured reports in REPORT.SSO (0,1) 
 0 # write detailed info from first call to echoinput.sso (0,1) 
 0 # write parm values to ParmTrace.sso (0=no,1=good,active; 2=good,all; 3=every_iter,all_parms; 4=every,active)
-0 # write to cumreport.sso (0=no,1=like&timeseries; 2=add survey fits)
+1 # write to cumreport.sso (0=no,1=like&timeseries; 2=add survey fits)
 0 # Include prior_like for non-estimated parameters (0,1) 
 1 # Use Soft Boundaries to aid convergence (0,1) (recommended)
 2 # Number of datafiles to produce: 1st is input, 2nd is estimates, 3rd and higher are bootstrap

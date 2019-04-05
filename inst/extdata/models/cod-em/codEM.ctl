@@ -28,7 +28,7 @@
 0 #_CV_Growth_Pattern:  0 CV=f(LAA); 1 CV=F(A); 2 SD=F(LAA); 3 SD=F(A); 4 logSD=F(A)
 1 #_maturity_option:  1=length logistic; 2=age logistic; 3=read age-maturity matrix by growth_pattern; 4=read age-fecundity; 5=read fec and wt from wtatage.ss
 #_placeholder for empirical age-maturity by growth pattern
-2 #_First_Mature_Age
+0 #_First_Mature_Age
 1 #_fecundity option:(1)eggs=Wt*(a+b*Wt);(2)eggs=a*L^b;(3)eggs=a*Wt^b; (4)eggs=a+b*L; (5)eggs=a+b*W
 0 #_hermaphroditism option:  0=none; 1=age-specific fxn
 1 #_parameter_offset_approach (1=none, 2= M, G, CV_G as offset from female-GP1, 3=like SS2 V1.x)
@@ -69,7 +69,7 @@
 #_Spawner-Recruitment
 3 #_SR_function: 2=Ricker; 3=std_B-H; 4=SCAA; 5=Hockey; 6=B-H_flattop; 7=survival_3Parm
 #_LO HI INIT PRIOR PR_type SD PHASE
- 4 20 18.7 10.3 1 10 1 # SR_LN(R0)
+ 4 20 18.7 10.3 -1 10 1 # SR_LN(R0)
  0.2 1 0.65 0.7 -1 0.05 -4 # SR_BH_steep
  0 2 0.4 0.8 -1 0.8 -5 # SR_sigmaR
  -5 5 0 0 -1 1 -3 # SR_envlink
@@ -120,14 +120,14 @@
 #_for_env-var:_enter_index_of_the_env-var_to_be_linked
 #_Den-dep  env-var  extra_se  Q_type
  0 0 0 2 # 1 Fishery
- 0 0 0 2 # 2 SURVEY
+ 0 0 0 2 # 2 Survey
  0 0 0 2 # 3 CPUE
 #
 #_Cond 0 #_If q has random component, then 0=read one parm for each fleet with random q; 1=read a parm for each year of index
 #_Q_parms(if_any);Qunits_are_ln(q)
 # LO HI INIT PRIOR PR_type SD PHASE
  -3 3 0 0 -1 99 -5 # LnQ_base_1_Fishery
- -20 20 0 0 -1 99 5 # LnQ_base_2_SURVEY
+ -20 20 0 0 -1 99 5 # LnQ_base_2_Survey
  -20 20 0 0 -1 99 -5 # LnQ_base_3_CPUE
 #
 #_size_selex_types
@@ -139,22 +139,28 @@
 #
 #_age_selex_types
 #_Pattern ___ Male Special
- 10 0 0 0 # 1 Fishery
- 10 0 0 0 # 2 SURVEY
- 10 0 0 0 # 3 CPUE
+ 11 0 0 0 # 1 Fishery
+ 11 0 0 0 # 2 Survey
+ 11 0 0 0 # 3 CPUE
 #_LO HI INIT PRIOR PR_type SD PHASE env-var use_dev dev_minyr dev_maxyr dev_stddev Block Block_Fxn
  5.08 101.6 50.8 50.8 -1 0.05 2 0 0 0 0 0 0 0 # SizeSel_1P_1_Fishery
  -5 3 -3 -3 -1 0.05 -99 0 0 0 0 0 0 0 # SizeSel_1P_2_Fishery
  0 25.5 5.1 5.1 -1 0.05 3 0 0 0 0 0 0 0 # SizeSel_1P_3_Fishery
  -2 16 15 15 -1 0.05 -99 0 0 0 0 0 0 0 # SizeSel_1P_4_Fishery
  -15 5 -999 -999 -1 0.05 -99 0 0 0 0 0 0 0 # SizeSel_1P_5_Fishery
- -5 5 -999 -999 -1 0.05 -99 0 0 0 0 0 0 0 # SizeSel_1P_6_Fishery
+ -5 1000 999 999 -1 0.05 -99 0 0 0 0 0 0 0 # SizeSel_1P_6_Fishery
  4.18 83.6 41.8 41.8 -1 0.05 2 0 0 0 0 0 0 0 # SizeSel_2P_1_Survey
  -5 3 -4 -4 -1 0.05 -99 0 0 0 0 0 0 0 # SizeSel_2P_2_Survey
  0 26 5.2 5.2 -1 0.05 3 0 0 0 0 0 0 0 # SizeSel_2P_3_Survey
  -2 15 14 14 -1 0.05 -99 0 0 0 0 0 0 0 # SizeSel_2P_4_Survey
  -100 100 -99 -99 -1 0.05 -99 0 0 0 0 0 0 0 # SizeSel_2P_5_Survey
  -100 100 99 99 -1 0.05 -99 0 0 0 0 0 0 0 # SizeSel_2P_6_Survey
+ 0 1 0.1 0.1 -1 99 -3 0 0 0 0 0.5 0 0 # AgeSel_1P_1_Fishery
+ 0 101 100 100 -1 99 -3 0 0 0 0 0.5 0 0 # AgeSel_1P_2_Fishery
+ 0 1 0.1 0.1 -1 99 -3 0 0 0 0 0.5 0 0 # AgeSel_2P_1_Survey
+ 0 101 100 100 -1 99 -3 0 0 0 0 0.5 0 0 # AgeSel_2P_2_Survey
+ 0 1 0.1 0.1 -1 99 -3 0 0 0 0 0.5 0 0 # AgeSel_3P_1_CPUE
+ 0 101 100 100 -1 99 -3 0 0 0 0 0.5 0 0 # AgeSel_3P_2_CPUE
 #_Cond 0 #_custom_sel-env_setup (0/1)
 #_Cond -2 2 0 0 -1 99 -2 #_placeholder when no enviro fxns
 #_Cond 0 #_custom_sel-blk_setup (0/1)
