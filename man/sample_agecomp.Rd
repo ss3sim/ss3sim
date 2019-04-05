@@ -78,7 +78,7 @@ if specified.
 \examples{
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/models/cod-om/codOM.dat")
-dat_list <- r4ss::SS_readdat(f_in, verbose = FALSE)
+dat_list <- r4ss::SS_readdat(f_in, version = "3.24", verbose = FALSE)
 dat_list <- change_fltname(dat_list)
 
 ## Turn off age comps by specifying fleets=NULL

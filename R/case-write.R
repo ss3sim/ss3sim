@@ -143,7 +143,7 @@ case_tv <- function(species, parameter, perc_change, outfile,
 
   #Modify by percentage
   ctl <- file.path(dir_models, species, "om", "ss3.ctl")
-  pars <- lapply(ctl, SS_parlines)
+  pars <- lapply(ctl, SS_parlines, version = "3.24")
   val <- lapply(pars, function(x) x[grep(parameter, x$Label), "INIT"])
 
   if (length(perc_change) != nyears) {

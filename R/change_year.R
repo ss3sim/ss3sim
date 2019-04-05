@@ -71,7 +71,7 @@
 #' system("SS3_24o_safe starter.ss -noest")
 #'
 #' change_year(year_begin = 1, year_end = 100, burnin = 25,
-#'  ctl_file_in = "control.ss_new", ctl_file_out = "change_year.ctl",
+#'  ctl_file_in = "simple.ctl", ctl_file_out = "change_year.ctl",
 #'  dat_file_in = "simple.dat", dat_file_out = "change_year.dat",
 #'  par_file_in = "ss3.par", par_file_out = "change_year.par",
 #'  str_file_in = "starter.ss", str_file_out = "change_year_starter.ss",
@@ -215,7 +215,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
 
   # Work with dat file
   if (!is.null(dat_file_in)) {
-    ss3.dat <- SS_readdat(dat_file_in, verbose = verbose,
+    ss3.dat <- SS_readdat(dat_file_in, version = "3.24", verbose = verbose,
                                 echoall = FALSE, section = NULL)
     ss3.dat <- change_fltname(ss3.dat)
     ss3.dat$styr <- year_begin
@@ -323,7 +323,8 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
                   "sizefreq methods. Please remove the sizefreq",
                   "data and run change_year again."))
         }
-    SS_writedat(ss3.dat, dat_file_out, overwrite = TRUE, verbose = verbose)
+    SS_writedat(ss3.dat, dat_file_out, overwrite = TRUE, version = "3.24",
+      verbose = verbose)
   }
 
   # Work with forecast file
@@ -339,14 +340,13 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
     nfleets <- length(numberoffleet[numberoffleet != ""])
 
     # todo: remove the hard coding of nseas to 1.
-    # todo: dynamically determine the SS version number, where
-    # SS_readforecast sets it to 3.24 by default.
+    # todo: dynamically determine the SS version number
     if (all(c("readAll", "nseas") %in% names(formals(SS_readforecast)))) {
       forecast <- SS_readforecast(for_file_in, nfleets, nareas, nseas = 1,
-        readAll = TRUE, verbose = verbose)
+        readAll = TRUE, version = "3.24", verbose = verbose)
     } else {
       forecast <- SS_readforecast(for_file_in, nfleets, nareas,
-        verbose = verbose)
+        version = "3.24", verbose = verbose)
     }
     # Mandatory changes
     forecast$Bmark_years <- rep(0, 6) # Change relative to end year

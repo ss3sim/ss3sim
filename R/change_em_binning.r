@@ -39,7 +39,7 @@
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
-#' dat_list <- r4ss::SS_readdat(file = f_in, verbose = FALSE)
+#' dat_list <- r4ss::SS_readdat(file = f_in, version = "3.24", verbose = FALSE)
 #' l <- change_em_binning(dat_list, dat_file_out = NULL, lbin_method = 1,
 #'   bin_vector = seq(8, 30, by = 1), write_file = FALSE)
 #' print(l$lbin_vector)
@@ -47,7 +47,7 @@
 #'
 #' # An small example with conditional age-at-length re-binning:
 #' f <- system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim")
-#' d <- r4ss::SS_readdat(f, verbose = FALSE)
+#' d <- r4ss::SS_readdat(f, version = "3.24", verbose = FALSE)
 #'
 #' # Add catch at length data (and simplify the bin structure for this example)
 #' olddat <- change_data(d, outfile = NULL, write_file = FALSE,
@@ -275,7 +275,7 @@ change_em_binning <- function(dat_list, dat_file_out, bin_vector, lbin_method = 
 
   if (write_file) {
     SS_writedat(datlist = dat_list, outfile = dat_file_out, overwrite = TRUE,
-      verbose = FALSE)
+      version = "3.24", verbose = FALSE)
   }
   invisible(dat_list)
 }

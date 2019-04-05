@@ -56,8 +56,8 @@ file.copy(OM.ctl, "om.ctl")
 file.copy(EM.ctl, "em.ctl")
 
 ## Use SS_parlines to get the proper names for parameters for the data frame
-om.pars <- r4ss::SS_parlines(ctlfile="om.ctl")
-em.pars <- r4ss::SS_parlines(ctlfile="em.ctl")
+om.pars <- r4ss::SS_parlines(ctlfile="om.ctl", version = "3.24")
+em.pars <- r4ss::SS_parlines(ctlfile="em.ctl", version = "3.24")
 
 ## Set percentages to make lower and upper bounds
 lo.percent<-rep(.5,11)

@@ -28,15 +28,16 @@
 #' # Find the example data location:
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
-#' dat_list <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+#' dat_list <- r4ss::SS_readdat(f_in, section = 2, version = "3.24",
+#'                              verbose = FALSE)
 #' dat_list <- change_fltname(dat_list)
 #' outfile <- "test.dat"
 #' ex1 <- sample_index(dat_list, outfile, fleets=c(2,3),
+#' ex2 <- sample_index(dat_list, outfile, fleets=c(2,3),
+#'                     years=list(1938:2012, 1938:2012) ,
 #'                     years=list(1938:2012, 1938:2012) ,
 #'                     sds_obs=list(1e-6, 1e-6), write_file=FALSE,
 #'                     make_plot = TRUE)
-#' ex2 <- sample_index(dat_list, outfile, fleets=c(2,3),
-#'                     years=list(1938:2012, 1938:2012) ,
 #'                     sds_obs=list(.05, .05), write_file=FALSE,
 #'                     make_plot = TRUE)
 #' library(ggplot2)
@@ -133,7 +134,7 @@ stop(paste("A year specified in years was not found in the input file for fleet"
     if(Nfleets==0) newfile$N_cpue <- 0
     if(write_file)
         SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
-                    verbose = FALSE)
+                    version = "3.24", verbose = FALSE)
     return(invisible(newfile))
 }
 

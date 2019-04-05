@@ -292,7 +292,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                         mlacomp_params  = mlacomp_params,
                                         wtatage_params  = wtatage_params)
       datfile.orig <- SS_readdat(pastef(sc, i, "om", "ss3.dat"),
-                                 verbose = FALSE)
+                                 version = "3.24", verbose = FALSE)
       datfile.orig <- change_fltname(datfile.orig)
 
       if (call_change_data) {
@@ -331,7 +331,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ## Read in the datfile once and manipulate as a list object, then
       ## write it back to file at the end, before running the EM.
       dat_list <- SS_readdat(pastef(sc, i, "em", "ss3.dat"),
-                            verbose = FALSE)
+                             version = "3.24", verbose = FALSE)
       dat_list <- change_fltname(dat_list)
       ## Survey biomass index
       index_params <- add_nulls(index_params, c("fleets", "years", "sds_obs"))

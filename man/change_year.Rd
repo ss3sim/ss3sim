@@ -93,7 +93,7 @@ setwd("Simple")
 system("SS3_24o_safe starter.ss -noest")
 
 change_year(year_begin = 1, year_end = 100, burnin = 25,
- ctl_file_in = "control.ss_new", ctl_file_out = "change_year.ctl",
+ ctl_file_in = "simple.ctl", ctl_file_out = "change_year.ctl",
  dat_file_in = "simple.dat", dat_file_out = "change_year.dat",
  par_file_in = "ss3.par", par_file_out = "change_year.par",
  str_file_in = "starter.ss", str_file_out = "change_year_starter.ss",

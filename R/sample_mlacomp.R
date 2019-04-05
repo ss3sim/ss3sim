@@ -37,7 +37,7 @@
 #' setwd(temp_path)
 #' d <- system.file("extdata/models/cod-om", package = "ss3sim")
 #' dat_in <- file.path(d, "codOM.dat")
-#' dat_list <- r4ss::SS_readdat(dat_in, verbose = FALSE)
+#' dat_list <- r4ss::SS_readdat(dat_in, version = "3.24", verbose = FALSE)
 #' dat_list <- change_fltname(dat_list)
 #' dat_list <- change_data(dat_list, outfile = NULL, write_file = FALSE,
 #'   fleets = 1, years = 1990:2010, types = c("age", "mla"))
@@ -63,7 +63,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
     dat_list$N_MeanSize_at_Age_obs <- 0
     if (write_file)
       SS_writedat(datlist = dat_list, outfile = outfile, overwrite = TRUE,
-                  verbose = verbose)
+                  version = "3.24", verbose = verbose)
     return(invisible(dat_list))
   }
 
@@ -79,7 +79,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
   agebin_vector <- dat_list$agebin_vector
 
   ## Read in the control file
-  ctl <- SS_parlines(ctl_file_in)
+  ctl <- SS_parlines(ctl_file_in, version = "3.24")
     CV.growth <- ctl[ctl$Label == "CV_young_Fem_GP_1", "INIT"]
     CV.growth.old <- ctl[ctl$Label == "CV_old_Fem_GP_1", "INIT"]
     if (CV.growth != CV.growth.old) {
@@ -237,6 +237,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
   dat_list$N_MeanSize_at_Age_obs <- NROW(mlacomp.new)
   ## Write the modified file
   if(write_file) SS_writedat(datlist = dat_list, outfile = outfile,
-                             overwrite = TRUE, verbose = verbose)
+                             version = "3.24", overwrite = TRUE,
+                             verbose = verbose)
   return(invisible(dat_list))
 }

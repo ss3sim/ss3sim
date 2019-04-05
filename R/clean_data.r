@@ -18,7 +18,8 @@
 ## mlacomp_params= NULL
 ## d <- system.file("extdata", package = "ss3sim")
 ## f_in <- paste0(d, "/example-om/data.ss_new")
-## dat_list <- r4ss::SS_readdat(f_in, section = 2, verbose = FALSE)
+## dat_list <- r4ss::SS_readdat(f_in, section = 2, version = "3.24",
+##               verbose = FALSE)
 ## dat_list <- change_fltname(dat_list)
 ## data_units <- calculate_data_units(lcomp_params=lcomp_params,
 ##                      agecomp_params=agecomp_params,

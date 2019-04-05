@@ -88,7 +88,8 @@
 #' ctl_file_orig <- paste0(d, "/models/cod-om/codOM.ctl")
 #' ctl_file_copy <- file.path(temp_path, "codOM.ctl")
 #' file.copy(from = ctl_file_orig, to = ctl_file_copy) # copy to temp_path
-#' data.old <- r4ss::SS_readdat(file.path(d, "models", "cod-om", "codOM.dat"))
+#' data.old <- r4ss::SS_readdat(file.path(d, "models", "cod-om", "codOM.dat"),
+#'             version = "3.24")
 #' change_e(ctl_file_in = "codOM.ctl", ctl_file_out = "change_e.ctl",
 #'          dat_list = data.old, for_file_in = "forecast.ss",
 #'          natM_type = "n_breakpoints", natM_n_breakpoints = c(1, 4),

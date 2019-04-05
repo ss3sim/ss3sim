@@ -53,7 +53,7 @@ sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
         newfile$agecomp <- agecomp.age
         newfile$N_agecomp <- nrow(agecomp.age)
         if(write_file)
-            SS_writedat(datlist = newfile, outfile = outfile,
+            SS_writedat(datlist = newfile, outfile = outfile, version = "3.24",
                         overwrite = TRUE, verbose=FALSE)
         return(invisible(newfile))
     }
@@ -185,7 +185,7 @@ sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
     ## Write the modified file
     if(write_file)
         r4ss::SS_writedat(datlist = newfile, outfile = outfile,
-                          overwrite = TRUE, verbose=FALSE)
+                          version = "3.24", overwrite = TRUE, verbose=FALSE)
     return(invisible(newfile))
 }
 
