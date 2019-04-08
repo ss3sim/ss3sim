@@ -5,6 +5,8 @@
 #'
 #' @param om_in A directory for an \pkg{ss3sim} operating model.
 #' @param results_out A directory to place the results
+#' @param dat_file_name A string providing the name of the data file in the
+#'   directory \code{om_in}.
 #' @param start Lower fishing mortality level
 #' @param end Upper fishing mortality level
 #' @param by_val Interval in which you wish to increment the fishing mortality
@@ -31,10 +33,10 @@
 #'
 #'
 #' fmsy.val <- profile_fmsy(om_in = omfolder, results_out = "fmsy",
-#'   start = 0.1, end = 0.2, by_val = 0.05)
+#'   dat_file_name = "codOM.dat", start = 0.1, end = 0.2, by_val = 0.05)
 #' }
 
-profile_fmsy <- function(om_in, results_out,
+profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",
   start = 0.00, end = 1.5, by_val = 0.01, ss_mode = c("safe", "optimized")) {
             # overM needs to be the value
             # you want to add or subtract from the trueM
@@ -59,7 +61,7 @@ profile_fmsy <- function(om_in, results_out,
   setwd(newWD)
   file.copy(dir(omModel, full.names = TRUE), list.files(omModel))
   ## read in dat file to get years of model
-  datFile <- SS_readdat(file='ss3.dat', version = "3.24", verbose=FALSE)
+  datFile <- SS_readdat(file= dat_file_name, version = "3.24", verbose=FALSE)
   simlength <- datFile$endyr-datFile$styr+1
   if(!is.numeric(simlength) | simlength < 1)
       stop(paste("Calculated length of model from dat file was", simlength))

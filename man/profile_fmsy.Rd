@@ -4,13 +4,16 @@
 \alias{profile_fmsy}
 \title{Determine Fmsy for a given operating model}
 \usage{
-profile_fmsy(om_in, results_out, start = 0, end = 1.5, by_val = 0.01,
-  ss_mode = c("safe", "optimized"))
+profile_fmsy(om_in, results_out, dat_file_name = "ss3.dat", start = 0,
+  end = 1.5, by_val = 0.01, ss_mode = c("safe", "optimized"))
 }
 \arguments{
 \item{om_in}{A directory for an \pkg{ss3sim} operating model.}
 
 \item{results_out}{A directory to place the results}
+
+\item{dat_file_name}{A string providing the name of the data file in the
+directory \code{om_in}.}
 
 \item{start}{Lower fishing mortality level}
 
@@ -48,6 +51,6 @@ omfolder <- paste0(d, "/models/cod-om")
 
 
 fmsy.val <- profile_fmsy(om_in = omfolder, results_out = "fmsy",
-  start = 0.1, end = 0.2, by_val = 0.05)
+  dat_file_name = "codOM.dat", start = 0.1, end = 0.2, by_val = 0.05)
 }
 }

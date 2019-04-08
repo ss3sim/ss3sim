@@ -323,7 +323,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
                   "sizefreq methods. Please remove the sizefreq",
                   "data and run change_year again."))
         }
-    SS_writedat(ss3.dat, dat_file_out, overwrite = TRUE, version = "3.24",
+    r4ss::SS_writedat(ss3.dat, dat_file_out, overwrite = TRUE, version = "3.24",
       verbose = verbose)
   }
 
@@ -372,16 +372,18 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
     if (all(forecast$max_totalcatch_by_area == 0)) {
       forecast$max_totalcatch_by_area <- "#"
     }
-    if (all(forecast$fleet_assignment_to_allocation_group == 0)) {
-      forecast$fleet_assignment_to_allocation_group <- "#"
-    }
+    # changing 0 in fleet_assignment_to_allocation_group to "#" will not work
+    # with updated r4ss, so don't change.
+    # if (all(forecast$fleet_assignment_to_allocation_group == 0)) {
+    #   forecast$fleet_assignment_to_allocation_group <- "#"
+    # }
 
     if (forecast$fleet_relative_F != 1) {
       stop(paste("change_year is not set up do change the relative F",
             "or the catch per year. This must be done manually,",
             "or change to use first-last-allocation year."))
     }
-    SS_writeforecast(forecast, file = for_file_out,
+    r4ss::SS_writeforecast(forecast, file = for_file_out,
                      overwrite = TRUE, verbose = verbose)
   }
 }

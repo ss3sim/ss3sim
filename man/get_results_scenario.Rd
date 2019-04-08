@@ -38,6 +38,10 @@ em <- paste0(d, "/models/cod-em")
 run_ss3sim(iterations = 1:2, scenarios =
   c("D0-F0-G0-S0-cod"),
   case_folder = case_folder, om_dir = om, em_dir = em,
+  case_files = list(F = "F",
+                    D = c("index", "lcomp", "agecomp"),
+                    G = "G",
+                    S = "S"),
   bias_adjust = FALSE)
 get_results_scenario(c("D0-F0-G0-S0-cod"))
 }
