@@ -29,13 +29,26 @@ om <- paste0(d, "/models/cod-om")
 em <- paste0(d, "/models/cod-em")
 ignore <- file.copy(om, ".", recursive = TRUE)
 verbose <- FALSE
+# use reading the starter file to determine the model version.
+# get ss version by reading starter for om
+om_version <- r4ss::SS_readstarter(paste0(om, "/starter.ss"))
+if(om_version$SSversion == "3.24 or earlier"){
+  om_version <- "3.24" # assume 3.24
+} else if (om_version$SSversion == "3.30") {
+  om_version <- omversion$SSversion
+} else {
+  om_version <- NA # version not known
+}
 
 test_that("Forecast file is readable.", {
-  om.for <- r4ss::SS_readforecast(file.path(om, "forecast.ss"), 1, 1, verbose = verbose)
+  om.for <- r4ss::SS_readforecast(file.path(om, "forecast.ss"), 1, 1,
+                                  version = om_version, verbose = verbose)
   change_year(for_file_in = file.path(om, "forecast.ss"),
               for_file_out = "new.ss")
-  om.for.new <- r4ss::SS_readforecast("new.ss", 1, 1, verbose = verbose)
-  out <- evaluate_promise(r4ss::SS_readforecast("new.ss", 1, 1), print = TRUE)$output
+  om.for.new <- r4ss::SS_readforecast("new.ss", 1, 1, version = om_version,
+                                      verbose = verbose)
+  out <- evaluate_promise(r4ss::SS_readforecast("new.ss", 1, 1, version = om_version),
+                          print = TRUE)$output
   expect_equal(grepl("Error", out), FALSE)
 })
 
