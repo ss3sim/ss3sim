@@ -102,7 +102,7 @@ for(i in 1:40){
 ## Organize the data for plotting
 x1 <- reshape2::melt(do.call(rbind, temp.list)[,-(1:6)[-3]], id.vars="FltSvy")
 x2 <- reshape2::melt(do.call(rbind, temp.list2)[,-(1:6)[-3]], id.vars="FltSvy")
-Make proportional data
+# Make proportional data
 x2 <- reshape2::melt(do.call(rbind, tapply(x2$value, list(x2$FltSvy, x2$variable), prop.table)))
 op <- par(mfrow=c(2,1))
 with(x1, boxplot(value~variable, las=2, ylim=c(0,.6), ylab="Proportion",
