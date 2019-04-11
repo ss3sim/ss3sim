@@ -245,7 +245,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
 #'                     G = "G",
 #'                     S = "S"),
 #'   bias_adjust = FALSE)
-#' get_results_scenario(c("D0-F0-G0-S0-cod"))
+#' get_results_scenario(c("D0-F0-G0-S0-cod"), overwrite_files = TRUE)
 #' }
 get_results_scenario <- function(scenario, directory=getwd(),
                                  overwrite_files=FALSE){

@@ -70,23 +70,25 @@ dat_list <- r4ss::SS_readdat(f_in, section = 2, version = "3.24",
 dat_list <- change_fltname(dat_list)
 outfile <- "test.dat"
 ex1 <- sample_index(dat_list, outfile, fleets=c(2,3),
-ex2 <- sample_index(dat_list, outfile, fleets=c(2,3),
-                    years=list(1938:2012, 1938:2012) ,
                     years=list(1938:2012, 1938:2012) ,
                     sds_obs=list(1e-6, 1e-6), write_file=FALSE,
                     make_plot = TRUE)
+ex2 <- sample_index(dat_list, outfile, fleets=c(2,3),
+                    years=list(1938:2012, 1938:2012) ,
                     sds_obs=list(.05, .05), write_file=FALSE,
                     make_plot = TRUE)
 library(ggplot2)
-ggplot(ex1, aes(x=year, y=obs, group=index, ymin=0,
-                colour=as.factor(index)))+geom_line() + geom_point(data=ex2,
-                aes(x=year, y=obs, colour=as.factor(index), group=index))
+ggplot(ex1$CPUE, aes(x=year, y=obs, group=index, ymin=0,
+  colour = as.factor(index))) + 
+  geom_line() + 
+  geom_point(data=ex2$CPUE,
+    aes(x=year, y=obs, colour=as.factor(index), group=index))
 ## Exclude a fleet and have varying sds_obs by year
-ex3 <- sample_index(dat_list, outfile, fleets=c(2,NA),
-                    years=list(1938:2012, 1950),
-                    sds_obs=list(seq(.001, .1, len=75), .1),
+ex3 <- sample_index(dat_list, outfile, fleets=c(2),
+                    years=list(1938:2012),
+                    sds_obs=list(seq(.001, .1, len=75)),
                     write_file=FALSE)
-ggplot(ex3, aes(x=year, y=obs, group=index, ymin=0,
+ggplot(ex3$CPUE, aes(x=year, y=obs, group=index, ymin=0,
                 colour=as.factor(index)))+geom_point()
 }
 }

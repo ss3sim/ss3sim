@@ -125,7 +125,9 @@
 #' # A run with deterministic process error for model checking:
 #' recdevs_det <- matrix(0, nrow = 100, ncol = 20)
 #' run_ss3sim(iterations = 1:20, scenarios = "D0-E100-F0-cod",
-#'   case_folder = case_folder, om_dir = om, em_dir = em,
+#'   case_folder = case_folder, 
+#'   case_files = list(F = "F", D = c("index", "lcomp", "agecomp"), E = "E"),
+#'   om_dir = om, em_dir = em,
 #'   bias_adjust = TRUE, bias_nsim = 2, user_recdevs = recdevs_det)
 #' unlink("D0-E100-F0-cod", recursive = TRUE)
 #'

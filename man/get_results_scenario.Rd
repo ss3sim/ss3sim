@@ -43,7 +43,7 @@ run_ss3sim(iterations = 1:2, scenarios =
                     G = "G",
                     S = "S"),
   bias_adjust = FALSE)
-get_results_scenario(c("D0-F0-G0-S0-cod"))
+get_results_scenario(c("D0-F0-G0-S0-cod"), overwrite_files = TRUE)
 }
 }
 \seealso{
