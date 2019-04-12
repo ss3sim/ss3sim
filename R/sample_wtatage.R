@@ -48,7 +48,7 @@
 # cv_wtatage <- .5
 # write_file <- TRUE
 #
-# dat_list <- r4ss::SS_readdat(file=datfile, version = "3.24", verbose=FALSE)
+# dat_list <- r4ss::SS_readdat(file=datfile, version = NULL, verbose=FALSE)
 # test <- sample_wtatage(wta_file_in = wta_file_in, outfile = outfile, dat_list = dat_list,
 #     ctl_file_in = ctl_file_in, years = years, fill_fnc = fill_across,
 #     fleets = fleets, cv_wtatage = cv_wtatage)
@@ -79,7 +79,8 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
     mlacomp <- dat_list$MeanSize_at_Age_obs
     if(is.null(mlacomp)) stop("No mean length-at-age data found in dat_list")
     ## Read in the control file
-    ctl <-SS_parlines(ctl_file_in, version = "3.24")
+    ss_version <- get_ss_ver_file(ctl_file_in)
+    ctl <-SS_parlines(ctl_file_in, version = ss_version)
     ## Read in the file and grab the expected values
     wta_file_in <- readLines(wta_file_in)
 

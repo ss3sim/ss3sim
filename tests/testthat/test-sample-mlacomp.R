@@ -6,7 +6,7 @@ wd <- getwd()
 setwd(temp_path)
 
 test_that("sample_mlacomp() works", {
-  dat_list <- r4ss::SS_readdat(system.file("extdata/models/cod-om/codOM.dat", package = "ss3sim"), verbose = FALSE)
+  dat_list <- r4ss::SS_readdat(system.file("extdata/models/cod-om/codOM.dat", package = "ss3sim"), verbose = FALSE, version = NULL)
   fctl <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
   newdat <- change_data(dat_list, outfile = "codOM-temp.dat",
     types = c("age", "mla"), fleets = 1, years = 2000:2012, write_file = FALSE)
@@ -32,7 +32,7 @@ test_that("sample_mlacomp() works", {
 
 test_that("mean of sample_mlacomp() is unbiased", {
   dat_list <- r4ss::SS_readdat(system.file("extdata/models/cod-om/codOM.dat",
-    package = "ss3sim"), verbose = FALSE)
+    package = "ss3sim"), verbose = FALSE, version = NULL)
   fctl <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
   newdat <- change_data(dat_list, outfile = NULL, types = c("age", "mla"),
     fleets = 1, years = 2000, write_file = FALSE)

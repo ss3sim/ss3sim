@@ -1,3 +1,4 @@
+#V3.24
 #C forecast file written by R function SS_writeforecast
 #C rerun model to get more complete formatting in forecast.ss_new
 #C should work with SS version: SSv3.21_or_later
@@ -42,4 +43,4 @@
 0 #_Ncatch
 2 #_InputBasis
 #
-999 # verify end of input 
+999 # verify end of input

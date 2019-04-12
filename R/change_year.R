@@ -215,7 +215,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
 
   # Work with dat file
   if (!is.null(dat_file_in)) {
-    ss3.dat <- SS_readdat(dat_file_in, version = "3.24", verbose = verbose,
+    ss3.dat <- SS_readdat(dat_file_in, version = NULL, verbose = verbose,
                                 echoall = FALSE, section = NULL)
     ss3.dat <- change_fltname(ss3.dat)
     ss3.dat$styr <- year_begin
@@ -323,8 +323,9 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
                   "sizefreq methods. Please remove the sizefreq",
                   "data and run change_year again."))
         }
-    r4ss::SS_writedat(ss3.dat, dat_file_out, overwrite = TRUE, version = "3.24",
-      verbose = verbose)
+    dat_ss_vers <- get_ss_ver_dl(ss3.dat) # ss3.dat to specify the SS version
+    r4ss::SS_writedat(ss3.dat, dat_file_out, overwrite = TRUE,
+      version = dat_ss_vers, verbose = verbose)
   }
 
   # Work with forecast file
@@ -340,13 +341,13 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
     nfleets <- length(numberoffleet[numberoffleet != ""])
 
     # todo: remove the hard coding of nseas to 1.
-    # todo: dynamically determine the SS version number
+    for_ss_vers <- get_ss_ver_file(for_file_in) # get version from for_file_in
     if (all(c("readAll", "nseas") %in% names(formals(SS_readforecast)))) {
       forecast <- SS_readforecast(for_file_in, nfleets, nareas, nseas = 1,
-        readAll = TRUE, version = "3.24", verbose = verbose)
+        readAll = TRUE, version = for_ss_vers, verbose = verbose)
     } else {
       forecast <- SS_readforecast(for_file_in, nfleets, nareas,
-        version = "3.24", verbose = verbose)
+        version = for_ss_vers, verbose = verbose)
     }
     # Mandatory changes
     forecast$Bmark_years <- rep(0, 6) # Change relative to end year

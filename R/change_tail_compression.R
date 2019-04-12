@@ -30,8 +30,11 @@ change_tail_compression <- function(tail_compression, dat_list, dat_file_out,
 
   # The data sections are repeated in the data.ss_new files, so only use first one
   dat_list$comp_tail_compression[1] <- tail_compression
-  if(write_file) SS_writedat(dat_list, dat_file_out, overwrite = TRUE,
-                   version = "3.24", verbose = FALSE)
+  if(write_file) {
+    ss_version <- get_ss_ver_dl(dat_list)
+    SS_writedat(dat_list, dat_file_out, overwrite = TRUE,
+                version = ss_version, verbose = FALSE)
+    }
 
   invisible(dat_list)
 }

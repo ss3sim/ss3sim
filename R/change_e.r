@@ -89,7 +89,7 @@
 #' ctl_file_copy <- file.path(temp_path, "codOM.ctl")
 #' file.copy(from = ctl_file_orig, to = ctl_file_copy) # copy to temp_path
 #' data.old <- r4ss::SS_readdat(file.path(d, "models", "cod-om", "codOM.dat"),
-#'             version = "3.24")
+#'             version = NULL)
 #' change_e(ctl_file_in = "codOM.ctl", ctl_file_out = "change_e.ctl",
 #'          dat_list = data.old, for_file_in = "forecast.ss",
 #'          natM_type = "n_breakpoints", natM_n_breakpoints = c(1, 4),
@@ -114,6 +114,8 @@ change_e <- function(ctl_file_in = "em.ctl",
   if (!run_change_e_full & any(grepl("change_e_vbgf", par_int))) {
     run_change_e_full <- TRUE
   }
+  # get the ss_version from the control file to use with r4ss functions
+  ss_version <- get_ss_ver_file(ctl_file_in)
   if(run_change_e_full) {
   if(!file.exists(ctl_file_in)) {
     stop("Ctl file for the estimation model does not exist change_e failed.")
@@ -129,7 +131,7 @@ change_e <- function(ctl_file_in = "em.ctl",
     }
     data <- read.csv(dir(pattern = "vbgf"), header = TRUE)
   #Get start values
-    pars <- SS_parlines(ctl_file_in, version = "3.24", verbose = FALSE)
+    pars <- SS_parlines(ctl_file_in, version = ss_version, verbose = FALSE)
     change_e_vbgf <- try(
       sample_fit_vbgf(length.data = data,
         start.L1 = with(pars, INIT[Label == "L_at_Amin_Fem_GP_1"]),
@@ -321,11 +323,11 @@ if(!is.null(par_name)) {
 
    if (all(c("nseas", "readAll") %in% names(formals(SS_readforecast)))) {
      ss3.for <- SS_readforecast(file = for_file_in, Nfleets = dat_list$Nfleet,
-     Nareas = dat_list$N_areas, version = "3.24", verbose = verbose,
+     Nareas = dat_list$N_areas, version = ss_version, verbose = verbose,
      nseas = 1, readAll = TRUE)
    } else {
       ss3.for <- SS_readforecast(file = for_file_in, Nfleets = dat_list$Nfleet,
-        Nareas = dat_list$N_areas, version = "3.24", verbose = verbose)
+        Nareas = dat_list$N_areas, version = ss_version, verbose = verbose)
    }
    ss3.for$Forecast <- 2 #Fish at F(MSY)
    ss3.for$Nforecastyrs <- forecast_num

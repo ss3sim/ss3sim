@@ -20,7 +20,7 @@
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/models/cod-om/codOM.dat")
-#' dat_list <- r4ss::SS_readdat(f_in, version = "3.24", verbose = FALSE)
+#' dat_list <- r4ss::SS_readdat(f_in, version = NULL, verbose = FALSE)
 #' dat_list <- change_fltname(dat_list)
 #'
 #' ## Generate with constant sample size across years
@@ -112,7 +112,7 @@ sample_lcomp <- function(dat_list, outfile, fleets = c(1,2), Nsamp,
         }
     }
     ## End input checks
-
+    ss_version <- get_ss_ver_dl(dat_list)
     ## Resample from the length data
     ## The general approach here is to loop through each row to keep
     ## (depends on years input) and resample depending on Nsamp and
@@ -177,7 +177,7 @@ sample_lcomp <- function(dat_list, outfile, fleets = c(1,2), Nsamp,
     ## Write the modified file
     if(write_file)
         SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
-                    version = "3.24", verbose = FALSE)
+                    version = ss_version, verbose = FALSE)
     invisible(newfile)
 }
 

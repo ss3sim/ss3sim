@@ -42,6 +42,7 @@ sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
     }
 
     check_data(dat_list)
+    ss_version <- get_ss_ver_dl(dat_list)
     agecomp.age <- dat_list$agecomp[dat_list$agecomp$Lbin_lo== -1,]
     agecomp.cal <- dat_list$agecomp[dat_list$agecomp$Lbin_lo != -1,]
     lencomp <- dat_list$lencomp
@@ -52,9 +53,10 @@ sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
     if(is.null(fleets)){
         newfile$agecomp <- agecomp.age
         newfile$N_agecomp <- nrow(agecomp.age)
-        if(write_file)
-            SS_writedat(datlist = newfile, outfile = outfile, version = "3.24",
-                        overwrite = TRUE, verbose=FALSE)
+        if(write_file){
+          SS_writedat(datlist = newfile, outfile = outfile, version = ss_version,
+                      overwrite = TRUE, verbose=FALSE)
+        }
         return(invisible(newfile))
     }
     ## If not, do argument checks
@@ -183,9 +185,10 @@ sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
     }
 
     ## Write the modified file
-    if(write_file)
-        r4ss::SS_writedat(datlist = newfile, outfile = outfile,
-                          version = "3.24", overwrite = TRUE, verbose=FALSE)
+    if(write_file){
+      r4ss::SS_writedat(datlist = newfile, outfile = outfile,
+                        version = ss_version, overwrite = TRUE, verbose=FALSE)
+    }
     return(invisible(newfile))
 }
 

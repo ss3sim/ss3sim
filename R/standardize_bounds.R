@@ -44,8 +44,9 @@
 #' file.copy(EM.ctl, "em.ctl")
 #'
 #' ## Use SS_parlines to get the proper names for parameters for the data frame
-#' om.pars <- r4ss::SS_parlines(ctlfile="om.ctl", version = "3.24")
-#' em.pars <- r4ss::SS_parlines(ctlfile="em.ctl", version = "3.24")
+#' ss_version < get_ss_ver_file(file = "om.ctl") # get the ss version
+#' om.pars <- r4ss::SS_parlines(ctlfile="om.ctl", version = ss_version)
+#' em.pars <- r4ss::SS_parlines(ctlfile="em.ctl", version = ss_version)
 #'
 #' ## Set percentages to make lower and upper bounds
 #' lo.percent<-rep(.5,11)
@@ -74,15 +75,17 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
     stop(paste("In percent_df, the first column is currently named",
       colnames(percent_df)[1], "rename as 'Label'"))
   }
+  # Get the SS version, and assume it is the same for em and om.
+  ss_version <- get_ss_ver_file(file.path(dir, em_ctl_file))
   #Read in EM values
   em_pars <- SS_parlines(ctlfile = file.path(dir, em_ctl_file),
-                         version = "3.24", verbose = verbose)
+                         version = ss_version, verbose = verbose)
  #If an OM is passed
   if(nchar(om_ctl_file)>0){
 
     #Read in OM true value
     om_pars <- SS_parlines(ctlfile = file.path(dir, om_ctl_file),
-                           version = "3.24", verbose = verbose)
+                           version = ss_version, verbose = verbose)
 
     #Restrict the parameters which have their initial values
     #set equal to only those which occur in both the EM and OM
@@ -118,7 +121,7 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
       if (verbose) message(paste(print.verbose, collapse = "\n"))
 
     om_pars<-SS_parlines(ctlfile = file.path(dir,om_ctl_file),
-                         version = "3.24", verbose = verbose)
+                         version = ss_version, verbose = verbose)
 
    #Restrict the parameters which have their initial values
     #set equal to only those which occur in both the EM and OM

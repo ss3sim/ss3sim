@@ -105,7 +105,7 @@ fleets <- 1:2
 years <- c(5, 10, 15)
 types <- c("len", "age")
 file_in <- r4ss::SS_readdat(paste0(d, "/models/cod-om/codOM.dat"),
-             version = "3.24")
+             version = NULL)
 file_in <- change_fltname(file_in)
 
 # Basic test with just length data, default bins:
@@ -140,7 +140,7 @@ calcomp_params = list(Nsamp = list(1), fleets = c(1), years = 98)
 mlacomp_params = list(fleets = c(2), Nsamp = 54, years = list(c(1, 15)))
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/models/cod-om/codOM.dat")
-dat_list <- r4ss::SS_readdat(f_in, version = "3.24", verbose = FALSE)
+dat_list <- r4ss::SS_readdat(f_in, version = NULL, verbose = FALSE)
 dat_list <- change_fltname(dat_list)
 data_units <- calculate_data_units(index_params = index_params,
   lcomp_params = lcomp_params, agecomp_params = agecomp_params,

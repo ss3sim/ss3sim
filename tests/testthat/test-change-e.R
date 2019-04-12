@@ -10,7 +10,7 @@ setwd("Simple")
 
 verboseF <- FALSE
 
-datalist <- r4ss::SS_readdat("simple.dat", verbose = verboseF)
+datalist <- r4ss::SS_readdat("simple.dat", verbose = F, version = NULL)
 
 test_that("Use change_e to change forecast year", {
   nfors <- 10

@@ -61,7 +61,7 @@ profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",
   setwd(newWD)
   file.copy(dir(omModel, full.names = TRUE), list.files(omModel))
   ## read in dat file to get years of model
-  datFile <- SS_readdat(file= dat_file_name, version = "3.24", verbose=FALSE)
+  datFile <- SS_readdat(file= dat_file_name, version = NULL, verbose=FALSE)
   simlength <- datFile$endyr-datFile$styr+1
   if(!is.numeric(simlength) | simlength < 1)
       stop(paste("Calculated length of model from dat file was", simlength))
@@ -79,11 +79,11 @@ profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",
     system(paste(ss_bin, "-nohess"), show.output.on.console = FALSE,
            ignore.stdout=TRUE)
 
-	temp_feq <- SS_readdat("data.ss_new", verbose = FALSE, version = "3.24",
+	temp_feq <- SS_readdat("data.ss_new", verbose = FALSE, version = NULL,
                             section = 2)$catch$Fishery[simlength]
 	if(is.null(temp_feq))
 	{
-		fEqCatch[i] <- SS_readdat("data.ss_new", verbose = FALSE, version = "3.24",
+		fEqCatch[i] <- SS_readdat("data.ss_new", verbose = FALSE, version = NULL,
                             section = 2)$catch$fishery1[simlength]
 	} else {
 		fEqCatch[i] <- temp_feq

@@ -76,7 +76,7 @@
 #' years <- c(5, 10, 15)
 #' types <- c("len", "age")
 #' file_in <- r4ss::SS_readdat(paste0(d, "/models/cod-om/codOM.dat"),
-#'              version = "3.24")
+#'              version = NULL)
 #' file_in <- change_fltname(file_in)
 #'
 #' # Basic test with just length data, default bins:
@@ -111,7 +111,7 @@
 #' mlacomp_params = list(fleets = c(2), Nsamp = 54, years = list(c(1, 15)))
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/models/cod-om/codOM.dat")
-#' dat_list <- r4ss::SS_readdat(f_in, version = "3.24", verbose = FALSE)
+#' dat_list <- r4ss::SS_readdat(f_in, version = NULL, verbose = FALSE)
 #' dat_list <- change_fltname(dat_list)
 #' data_units <- calculate_data_units(index_params = index_params,
 #'   lcomp_params = lcomp_params, agecomp_params = agecomp_params,
@@ -213,7 +213,10 @@ change_data <- function(dat_list, outfile, fleets, years, types,
   }
 
   if (write_file) {
-    SS_writedat(datlist = dat_list, outfile = outfile, version = "3.24",
+    # get the SS version. Depending on the model version, the element refering
+    #to the ss version has a different name, so need to look for both.
+    ss_version <- get_ss_ver_dl(dat_list)
+    SS_writedat(datlist = dat_list, outfile = outfile, version = ss_version,
       overwrite = TRUE, verbose = FALSE)
   }
   invisible(dat_list)
