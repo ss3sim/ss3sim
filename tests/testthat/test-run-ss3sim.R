@@ -59,13 +59,13 @@ test_that("get_results_all is working", {
   unlink(c("ss3sim_scalar.csv", "ss3sim_ts.csv"))
 })
 
-test_that("get_results_all is working in parallel", {
-  skip_on_cran()
-  get_results_all(parallel = TRUE)
-  d <- read.csv("ss3sim_scalar.csv")
-  d <- read.csv("ss3sim_ts.csv")
-  unlink(c("ss3sim_scalar.csv", "ss3sim_ts.csv"))
-})
+# test_that("get_results_all is working in parallel", {
+#   skip_on_cran()
+#   get_results_all(parallel = TRUE)
+#   d <- read.csv("ss3sim_scalar.csv")
+#   d <- read.csv("ss3sim_ts.csv")
+#   unlink(c("ss3sim_scalar.csv", "ss3sim_ts.csv"))
+# })
 
 test_that("get_results_all warns if a scenario folder isn't available", {
   skip_on_cran()
