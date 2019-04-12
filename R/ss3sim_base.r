@@ -131,7 +131,7 @@
 #' d <- system.file("extdata", package = "ss3sim")
 #' om_dir <- paste0(d, "/models/cod-om")
 #' em_dir <- paste0(d, "/models/cod-em")
-#' a <- get_caseargs(folder = paste0(d, "/eg-cases"), 
+#' a <- get_caseargs(folder = paste0(d, "/eg-cases"),
 #'   case_files = list(F = "F", D = c("index", "lcomp", "agecomp"),
 #'     M = "M", E = "E"),
 #'   scenario = "F0-D0-M0-E0-cod")
@@ -294,7 +294,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                         mlacomp_params  = mlacomp_params,
                                         wtatage_params  = wtatage_params)
       datfile.orig <- SS_readdat(pastef(sc, i, "om", "ss3.dat"),
-                                 version = "3.24", verbose = FALSE)
+                                 version = NULL, verbose = FALSE)
       datfile.orig <- change_fltname(datfile.orig)
 
       if (call_change_data) {
@@ -333,7 +333,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ## Read in the datfile once and manipulate as a list object, then
       ## write it back to file at the end, before running the EM.
       dat_list <- SS_readdat(pastef(sc, i, "em", "ss3.dat"),
-                             version = "3.24", verbose = FALSE)
+                             version = NULL, verbose = FALSE)
       dat_list <- change_fltname(dat_list)
       ## Survey biomass index
       index_params <- add_nulls(index_params, c("fleets", "years", "sds_obs"))
@@ -504,9 +504,9 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                   run_change_e_full    = run_change_e_full))
         setwd(wd)
       }
-
+      ss_version <- get_ss_ver_dl(dat_list)
       SS_writedat(datlist = dat_list, outfile = pastef(sc, i, "em", "ss3.dat"),
-        version = "3.24" ,overwrite = TRUE, verbose = FALSE)
+        version = ss_version, overwrite = TRUE, verbose = FALSE)
 
       # Should we calculate the hessian?
         if(hess_always){
