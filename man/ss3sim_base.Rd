@@ -190,7 +190,7 @@ F0 <- list(years = 1:100, years_alter = 1:100, fvals = c(rep(0,
   25), rep(0.114, 75)))
 
 index1 <- list(fleets = 2, years = list(seq(62, 100, by = 2)), sds_obs =
-  0.1)
+  list(0.1))
 
 lcomp1 <- list(fleets = c(1, 2), Nsamp = list(100, 100), years =
   list(26:100, seq(62, 100, by = 2)), lengthbin_vector = NULL, cpar =
