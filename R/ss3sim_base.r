@@ -144,18 +144,18 @@
 #'
 #' # Or, create the argument lists directly in R and skip the case file setup:
 #'
-#' F0 <- list(years = 1913:2012, years_alter = 1913:2012, fvals = c(rep(0,
+#' F0 <- list(years = 1:100, years_alter = 1:100, fvals = c(rep(0,
 #'   25), rep(0.114, 75)))
 #'
-#' index1 <- list(fleets = 2, years = list(seq(1974, 2012, by = 2)), sds_obs =
-#'   list(0.1))
+#' index1 <- list(fleets = 2, years = list(seq(62, 100, by = 2)), sds_obs =
+#'   0.1)
 #'
 #' lcomp1 <- list(fleets = c(1, 2), Nsamp = list(100, 100), years =
-#'   list(1938:2012, seq(1974, 2012, by = 2)), lengthbin_vector = NULL, cpar =
+#'   list(26:100, seq(62, 100, by = 2)), lengthbin_vector = NULL, cpar =
 #'   c(1, 1))
 #'
 #' agecomp1 <- list(fleets = c(1, 2), Nsamp = list(100, 100), years =
-#'   list(1938:2012, seq(1974, 2012, by = 2)), agebin_vector = NULL, cpar =
+#'   list(26:100, seq(62, 100, by = 2)), agebin_vector = NULL, cpar =
 #'   c(1, 1))
 #'
 #' E0 <- list(natM_type = "1Parm", natM_n_breakpoints = NULL, natM_lorenzen =
