@@ -1,13 +1,18 @@
 context("Verify input")
 
+wd.old <- getwd()
+temp_path <- file.path(tempdir(), "verify_input")
+dir.create(temp_path, showWarnings = FALSE)
+setwd(temp_path)
+d <- system.file("extdata", package = "ss3sim")
+file.copy(file.path(d, "models", "cod-om"), ".", recursive = TRUE)
+file.remove("cod-om/codOM.dat")
+
 test_that("verify_input picks up a missing (data) file", {
-    d <- system.file("extdata", package = "ss3sim")
-    om <- paste0(d, "/models/cod-om")
-    file.copy(om, ".", recursive = TRUE)
-    file.remove("cod-om/codOM.dat")
   expect_error({
     verify_input(model_dir = "cod_om", type = "om")
   }
   )
     unlink("cod-om", recursive = TRUE)
+    setwd(wd.old)
 })
