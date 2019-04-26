@@ -24,7 +24,7 @@
 #'
 #' @export
 #' @author Cole Monnahan, Kotaro Ono
-#' @examples \dontrun{
+#' @examples \donttest{
 #' # Find the example data location:
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
@@ -42,8 +42,8 @@
 #'                     make_plot = TRUE)
 #' library(ggplot2)
 #' ggplot(ex1$CPUE, aes(x=year, y=obs, group=index, ymin=0,
-#'   colour = as.factor(index))) + 
-#'   geom_line() + 
+#'   colour = as.factor(index))) +
+#'   geom_line() +
 #'   geom_point(data=ex2$CPUE,
 #'     aes(x=year, y=obs, colour=as.factor(index), group=index))
 #' ## Exclude a fleet and have varying sds_obs by year

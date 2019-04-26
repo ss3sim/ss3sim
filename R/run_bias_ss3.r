@@ -45,7 +45,7 @@
 #' Methot, R. D. and Taylor, I. G. (2011). Adjusting for bias due to
 #' variability of estimated recruitments in fishery assessment models.
 #' Can. J. Fish. Aquat. Sci., 68(10):1744-1760.
-#' @examples \dontrun{
+#' @examples \donttest{
 #' # Create a temporary folder for the output:
 #' temp_path <- file.path(tempdir(), "ss3sim-bias-example")
 #' dir.create(temp_path, showWarnings = FALSE)

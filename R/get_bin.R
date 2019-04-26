@@ -9,7 +9,7 @@
 #'
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' get_bin()
 #' }
 

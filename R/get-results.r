@@ -232,7 +232,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
 #' @importFrom r4ss SS_output
 #' @family get-results
 #' @export
-#' @examples \dontrun{
+#' @examples \donttest{
 #' d <- system.file("extdata", package = "ss3sim")
 #' case_folder <- paste0(d, "/eg-cases")
 #' om <- paste0(d, "/models/cod-om")

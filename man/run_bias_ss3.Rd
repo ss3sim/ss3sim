@@ -47,7 +47,7 @@ This function: \itemize{
 }
 }
 \examples{
-\dontrun{
+\donttest{
 # Create a temporary folder for the output:
 temp_path <- file.path(tempdir(), "ss3sim-bias-example")
 dir.create(temp_path, showWarnings = FALSE)

@@ -85,7 +85,7 @@ ex2 <- sample_lcomp(dat_list=dat_list, outfile="test2.dat", fleets=c(1,2),
                     years=list(seq(26, 44, by=2),
                         80:100), write_file = FALSE)
 
-\dontrun{
+\donttest{
 ## Plot distributions for a particular year to compare multinomial
 ## vs. overdispersed Dirichlet
 temp.list <- temp.list2 <- list()

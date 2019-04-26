@@ -17,7 +17,7 @@
 #'   arguments. Found via \code{grep} so can be part of an argument name.
 #' @param ... Anything else to pass to \code{write.table}.
 #' @author Sean Anderson
-#' @examples \dontrun{
+#' @examples \donttest{
 #' create_argfiles()
 #' # Some example input lines:
 #' #

@@ -28,7 +28,7 @@
 #' head(calculate_re(ss3sim_ts, add = FALSE))
 #' head(calculate_re(ss3sim_scalar, add = FALSE))
 #'
-#' \dontrun{
+#' \donttest{
 #' # Full example:
 #' d <- system.file("extdata", package = "ss3sim")
 #' om <- paste0(d, "/models/cod-om")

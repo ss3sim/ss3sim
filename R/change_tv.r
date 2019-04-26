@@ -73,7 +73,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Create a temporary folder for the output and set the working directory:
 #' temp_path <- file.path(tempdir(), "ss3sim-tv-example")
 #' dir.create(temp_path, showWarnings = FALSE)

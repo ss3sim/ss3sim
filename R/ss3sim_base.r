@@ -114,7 +114,7 @@
 # \figure{simsteps.png}
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Create a temporary folder for the output and set the working directory:
 #' temp_path <- file.path(tempdir(), "ss3sim-base-example")
 #' dir.create(temp_path, showWarnings = FALSE)

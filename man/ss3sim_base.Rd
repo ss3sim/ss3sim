@@ -156,7 +156,7 @@ example below). For a generic higher-level function, see
 \code{\link{run_ss3sim}}.
 }
 \examples{
-\dontrun{
+\donttest{
 # Create a temporary folder for the output and set the working directory:
 temp_path <- file.path(tempdir(), "ss3sim-base-example")
 dir.create(temp_path, showWarnings = FALSE)
@@ -173,7 +173,7 @@ case_folder <- paste0(d, "/eg-cases")
 d <- system.file("extdata", package = "ss3sim")
 om_dir <- paste0(d, "/models/cod-om")
 em_dir <- paste0(d, "/models/cod-em")
-a <- get_caseargs(folder = paste0(d, "/eg-cases"), 
+a <- get_caseargs(folder = paste0(d, "/eg-cases"),
   case_files = list(F = "F", D = c("index", "lcomp", "agecomp"),
     M = "M", E = "E"),
   scenario = "F0-D0-M0-E0-cod")

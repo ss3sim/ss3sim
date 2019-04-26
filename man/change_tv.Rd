@@ -105,7 +105,7 @@ want to use M for natural mortality, S for selectivity, or G for growth.
 }
 
 \examples{
-\dontrun{
+\donttest{
 # Create a temporary folder for the output and set the working directory:
 temp_path <- file.path(tempdir(), "ss3sim-tv-example")
 dir.create(temp_path, showWarnings = FALSE)

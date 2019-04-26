@@ -75,7 +75,7 @@ For models that use the \code{.forecast} file, all references to years
 must be made with relative values (i.e., 0 or negative integers).
 }
 \examples{
-\dontrun{
+\donttest{
 # Create a temporary folder for the output and set the working directory:
 wd.old <- getwd()
 temp_path <- file.path(tempdir(), "change_year-example")

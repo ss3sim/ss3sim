@@ -76,7 +76,7 @@
 #' @importFrom r4ss SS_parlines SS_readforecast SS_writeforecast
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(r4ss)
 #' # Create a temporary folder for the output and set the working directory:
 #' temp_path <- file.path(tempdir(), "ss3sim-tv-example")

@@ -53,7 +53,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Create a temporary folder for the output and set the working directory:
 #' wd.old <- getwd()
 #' temp_path <- file.path(tempdir(), "change_year-example")

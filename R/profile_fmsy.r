@@ -27,13 +27,16 @@
 #' model is long enough to reach an equilibrium catch. The user is
 #' responsible for ensuring this fact.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' d <- system.file("extdata", package = "ss3sim")
 #' omfolder <- paste0(d, "/models/cod-om")
 #'
 #'
 #' fmsy.val <- profile_fmsy(om_in = omfolder, results_out = "fmsy",
 #'   dat_file_name = "codOM.dat", start = 0.1, end = 0.2, by_val = 0.05)
+#'
+#' #cleanup
+#' unlink("fmsy")
 #' }
 
 profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",

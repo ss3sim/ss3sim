@@ -29,7 +29,7 @@
 #' @importFrom r4ss SS_parlines SS_changepars
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' temp_path <- file.path(tempdir(), "standardize-bounds-example")
 #' dir.create(temp_path, showWarnings = FALSE)
 #' wd <- getwd()
@@ -44,7 +44,7 @@
 #' file.copy(EM.ctl, "em.ctl")
 #'
 #' ## Use SS_parlines to get the proper names for parameters for the data frame
-#' ss_version < get_ss_ver_file(file = "om.ctl") # get the ss version
+#' ss_version <- get_ss_ver_file(file = "om.ctl") # get the ss version
 #' om.pars <- r4ss::SS_parlines(ctlfile="om.ctl", version = ss_version)
 #' em.pars <- r4ss::SS_parlines(ctlfile="em.ctl", version = ss_version)
 #'
