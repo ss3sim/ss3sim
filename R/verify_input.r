@@ -60,8 +60,8 @@ verify_input <- function(model_dir, type = c("om", "em")) {
     }
   }
   if(type == "om") {
-    if (length(grep("ss3.par", files, ignore.case = TRUE))) {
-      f.par <- grep("ss3.par", files, ignore.case = TRUE)
+    if (length(grep("ss.par", files, ignore.case = TRUE))) {
+      f.par <- grep("ss.par", files, ignore.case = TRUE)
     } else {
       f.par <- NA
     }
@@ -78,7 +78,7 @@ verify_input <- function(model_dir, type = c("om", "em")) {
   }
   if(type == "om") {
     file.loc <- data.frame(f.ctl, f.dat, f.par, f.starter, f.forecast)
-    file.types <- c(".ctl file", ".dat file", "ss3.par file", "starter.ss
+    file.types <- c(".ctl file", ".dat file", "ss.par file", "starter.ss
       file", "forecast.ss file")
   }
   if(type == "em") {

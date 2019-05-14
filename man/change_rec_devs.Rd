@@ -4,8 +4,8 @@
 \alias{change_rec_devs}
 \title{Replace recruitment deviations}
 \usage{
-change_rec_devs(recdevs_new, par_file_in = "ss3.par",
-  par_file_out = "ss3.par")
+change_rec_devs(recdevs_new, par_file_in = "ss.par",
+  par_file_out = "ss.par")
 }
 \arguments{
 \item{recdevs_new}{A vector of new recruitment deviations.}
@@ -19,7 +19,7 @@ A modified SS3 \code{.par} file.
 }
 \description{
 This function replaces the recruitment deviations in the
-\code{ss3.par} file with those specified in \code{recdevs_new}, as
+\code{ss.par} file with those specified in \code{recdevs_new}, as
 well as a comment (for debugging). It then writes a new file with
 name \code{par_file_out} into the working directory.
 }
@@ -33,7 +33,7 @@ This function does not need to be specified in a case file if you
 temp_path <- file.path(tempdir(), "ss3sim-recdev-example")
 dir.create(temp_path, showWarnings = FALSE)
 
-par_file <- system.file("extdata", "models", "cod-om", "ss3.par",
+par_file <- system.file("extdata", "models", "cod-om", "ss.par",
   package = "ss3sim")
 change_rec_devs(recdevs_new = rlnorm(100), par_file_in = par_file,
   par_file_out = paste0(temp_path, "/test.par"))
