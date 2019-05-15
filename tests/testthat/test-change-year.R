@@ -64,7 +64,7 @@ test_that("Correct lines are changed in starter file.", {
 test_that("Recruitment devs are of correct length in par file.", {
   start <- 1; end <- 100; burn <- 20
   change_year(year_begin = start, year_end = end, burnin = burn,
-              par_file_in = file.path(om, "ss3.par"),
+              par_file_in = file.path(om, "ss.par"),
               par_file_out = "new.ss")
   new <- readLines("new.ss")
   getnew <- new[grep("recdev1", new) + 1]

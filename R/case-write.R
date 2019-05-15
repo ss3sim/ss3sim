@@ -192,7 +192,7 @@ case_tv <- function(species, parameter, perc_change, outfile,
 #' created in \code{years} because actual year values cannot be recycled.
 #' For example, to change the second season of the second year in the
 #' example above, use: \code{4}.
-#' @param fvals Vector of \emph{F} values to be entered into \code{ss3.par} file,
+#' @param fvals Vector of \emph{F} values to be entered into \code{ss.par} file,
 #' where \code{length(fvals) == length(years_alter)} must be true.
 #' @param case The case number you want to write to.
 #'   If \code{case = 1}, then the result will be \code{'F1'}.

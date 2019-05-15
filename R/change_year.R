@@ -68,12 +68,12 @@
 #' setwd("Simple")
 #'
 #' # Run SS3 to create control.ss_new and Report.sso:
-#' system("SS3_24o_safe starter.ss -noest")
+#' system("ss_safe starter.ss -noest")
 #'
 #' change_year(year_begin = 1, year_end = 100, burnin = 25,
 #'  ctl_file_in = "simple.ctl", ctl_file_out = "change_year.ctl",
 #'  dat_file_in = "simple.dat", dat_file_out = "change_year.dat",
-#'  par_file_in = "ss3.par", par_file_out = "change_year.par",
+#'  par_file_in = "ss.par", par_file_out = "change_year.par",
 #'  str_file_in = "starter.ss", str_file_out = "change_year_starter.ss",
 #'  for_file_in = "forecast.ss", for_file_out = "change_year_forecast.ss")
 #'
@@ -184,13 +184,13 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
 
   # Work with par file
   if (!is.null(par_file_in)) {
-    ss3.par <- readLines(con = par_file_in, warn = verbose)
+    ss.par <- readLines(con = par_file_in, warn = verbose)
     # Work with recdevs in par file
-    recdev.line <- grep("recdev1", ss3.par) + 1
-    ss3.par[recdev.line] <- paste(rep(0, year_span), collapse = " ")
+    recdev.line <- grep("recdev1", ss.par) + 1
+    ss.par[recdev.line] <- paste(rep(0, year_span), collapse = " ")
 
     # Work with F values in par file
-    F.words <- grep("F", ss3.par, value = TRUE)
+    F.words <- grep("F", ss.par, value = TRUE)
       if (any(grepl("Fcast_recruitments", F.words))) {
         warning("right now the code does not work with Fcast_recruitments")
       }
@@ -198,19 +198,19 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
         warning("right now the code does not work with Fcast_impl_error")
       }
       if (any(grepl("F_rate", F.words))) {
-            F.line <- grep("F_rate", ss3.par)
-            F.init.line <- grep("init_F", ss3.par)
+            F.line <- grep("F_rate", ss.par)
+            F.init.line <- grep("init_F", ss.par)
             # Remove old F's
-            ss3.par <- ss3.par[-(F.line[1]:(max(F.line) + 1))]
+            ss.par <- ss.par[-(F.line[1]:(max(F.line) + 1))]
             counter <- F.init.line + 1
             for (f in seq(year_span)) {
               F.template <- c(paste0("# F_rate[", f, "]:"), 0)
-              ss3.par <- append(ss3.par, F.template,
+              ss.par <- append(ss.par, F.template,
                                 after = counter)
               counter <- counter + 2
             }
       }
-    writeLines(ss3.par, con = par_file_out)
+    writeLines(ss.par, con = par_file_out)
   }
 
   # Work with dat file

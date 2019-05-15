@@ -44,13 +44,13 @@
 #' @author Sean C. Anderson
 #'
 #' @details The operating model folder should contain: \code{forecast.ss},
-#' \code{yourmodel.ctl}, \code{yourmodel.dat}, \code{ss3.par}, and
+#' \code{yourmodel.ctl}, \code{yourmodel.dat}, \code{ss.par}, and
 #' \code{starter.ss}. The files should be the versions that are returned from an
 #' SS run as \code{.ss_new} files. This is important because it creates
 #' consistent formatting which many of the functions in this package depend on.
 #' Rename the \code{.ss_new} files as listed above (and in all lowercase). The
 #' estimation model folder should contain all the same files listed above except
-#' the \code{ss3.par} and \code{yourmodel.dat} files, which are unnecessary but
+#' the \code{ss.par} and \code{yourmodel.dat} files, which are unnecessary but
 #' can be included if desired. See the vignette for details on modifying an
 #' existing \code{SS3} model to run with \pkg{ss3sim}. Alternatively, you might
 #' consider modifying one of the built-in model configurations.
@@ -125,7 +125,7 @@
 #' # A run with deterministic process error for model checking:
 #' recdevs_det <- matrix(0, nrow = 100, ncol = 20)
 #' run_ss3sim(iterations = 1:20, scenarios = "D0-E100-F0-cod",
-#'   case_folder = case_folder, 
+#'   case_folder = case_folder,
 #'   case_files = list(F = "F", D = c("index", "lcomp", "agecomp"), E = "E"),
 #'   om_dir = om, em_dir = em,
 #'   bias_adjust = TRUE, bias_nsim = 2, user_recdevs = recdevs_det)

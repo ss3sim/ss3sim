@@ -90,7 +90,7 @@
 #' setwd("Simple")
 #'
 #' # Run SS3 to create control.ss_new and Report.sso:
-#' system("ss3_24o_safe starter.ss -noest")
+#' system("ss_safe starter.ss -noest")
 #'
 #' change_tv(change_tv_list = list("NatM_p_1_Fem_GP_1" = c(rep(0, 20),
 #'       rep(.1, 11)), "SR_BH_steep"=rnorm(31, 0, 0.05)), ctl_file_in =
@@ -106,12 +106,12 @@
 change_tv <- function(change_tv_list,
   ctl_file_in = "control.ss_new", ctl_file_out = "om.ctl",
   dat_file_in = "ss3.dat", dat_file_out = "ss3.dat",
-  par_file_in = "ss3.par", par_file_out = "ss3.par",
+  par_file_in = "ss.par", par_file_out = "ss.par",
   str_file_in = "starter.ss", str_file_out = "starter.ss",
   rpt_file_in = "Report.sso") {
 
   # Always use safe mode here:
-  ss_bin <- "ss3_24o_safe"
+  ss_bin <- "ss_safe"
 
   ss3.ctl    <- readLines(con = ctl_file_in)
   ss3.dat    <- readLines(con = dat_file_in)
@@ -431,7 +431,7 @@ for(i in seq_along(temp.data)) {
       overwrite = TRUE, verbose = FALSE, warn = FALSE)
 
   ss3.report <- readLines(con = rpt_file_in)
-  ss3.par    <- readLines(con = par_file_in)
+  ss.par    <- readLines(con = par_file_in)
 
   env.name <- sapply(names(change_tv_list), function(x) {
                 ifelse(grepl("envlink", x),
@@ -451,10 +451,10 @@ for(q in seq_along(change_tv_list)) {
     if(env.lab[q] == "sr" | env.lab[q] == "qs") next
     if(env.lab[q] == "mg") {
       search.phrase <- paste0("# MGparm[", env.parnum[q] - 1, "]:")
-      line.a <- grep(search.phrase, ss3.par, fixed = TRUE)
+      line.a <- grep(search.phrase, ss.par, fixed = TRUE)
       add.par <- c(paste0("# MGparm[",env.parnum[q],"]:"),
                    "1.00000000000")
-      ss3.par <- append(ss3.par, add.par, (line.a + 1))
+      ss.par <- append(ss.par, add.par, (line.a + 1))
           }
     if(env.lab[q] == "sx") {
       num.sx <- grep("Sel_.._", ss3.report )
@@ -476,10 +476,10 @@ for(q in seq_along(change_tv_list)) {
         pos.sx <- pos.sx[getthisone]
       }
       search.phrase <- paste0("# selparm[", pos.sx - 1, "]:")
-      line.a <- grep(search.phrase, ss3.par, fixed = TRUE)
+      line.a <- grep(search.phrase, ss.par, fixed = TRUE)
       add.par <- c(paste0("# selparm[",pos.sx,"]:"),
                    "1.00000000000")
-      ss3.par <- append(ss3.par, add.par, (line.a + 1))
+      ss.par <- append(ss.par, add.par, (line.a + 1))
           } }
     if(any(env.lab == "qs")) {
       qs.relevant <- (max(grep("F_fleet", ss3.report)) + 1) :
@@ -492,16 +492,16 @@ for(q in seq_along(change_tv_list)) {
       qs.count <- seq_along(qs.old)
       qs.new <- as.vector(rbind(paste0("# Q_parm[", qs.count, "]:"),
                                 qs.old))
-      ss3.par  <- ss3.par[-(grep("# Q_parm[1]:", ss3.par, fixed = TRUE) :
-                 (grep("# selparm[1]:", ss3.par, fixed = TRUE) - 1))]
-      ss3.par <- append(ss3.par, qs.new,
+      ss.par  <- ss.par[-(grep("# Q_parm[1]:", ss.par, fixed = TRUE) :
+                 (grep("# selparm[1]:", ss.par, fixed = TRUE) - 1))]
+      ss.par <- append(ss.par, qs.new,
                         (grep("# selparm[1]:",
-                              ss3.par, fixed = TRUE) - 1))
+                              ss.par, fixed = TRUE) - 1))
       }
     if(any(env.lab == "sr")) {
       sr.parnum <- which(grep("SR_envlink", ss3.report) == grep("SR", ss3.report))
-      ss3.par[grep(paste0("# SR_parm[", sr.parnum, "]:"),
-              ss3.par, fixed = TRUE) + 1 ] <- "1.00000000000"
+      ss.par[grep(paste0("# SR_parm[", sr.parnum, "]:"),
+              ss.par, fixed = TRUE) + 1 ] <- "1.00000000000"
           }
-    writeLines(ss3.par, con = par_file_out)
+    writeLines(ss.par, con = par_file_out)
   }

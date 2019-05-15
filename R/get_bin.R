@@ -13,7 +13,7 @@
 #' get_bin()
 #' }
 
-get_bin <- function(bin_name = "ss3_24o_opt") {
+get_bin <- function(bin_name = "ss_opt") {
   # code inspiration from glmmADMB package:
   if (.Platform$OS.type == "windows") {
     platform <- "Windows64"

@@ -50,7 +50,7 @@ profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",
   on.exit(expr = setwd(origWD), add = FALSE)
 
   if(ss_mode[1] == "optimized") ss_mode <- "opt"
-  ss_bin <- paste0("ss3_24o_", ss_mode[1])
+  ss_bin <- paste0("ss_", ss_mode[1])
   ss_bin <- get_bin(ss_bin)
 
   fVector <- seq(start, end, by_val)
@@ -69,16 +69,16 @@ profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",
   if(!is.numeric(simlength) | simlength < 1)
       stop(paste("Calculated length of model from dat file was", simlength))
   ## remove recdevs from par
-  parFile <- readLines("ss3.par", warn = FALSE)
+  parFile <- readLines("ss.par", warn = FALSE)
   recDevLine <- grep("# recdev1", parFile) + 1
   sigmaRLine <- grep("# SR_parm[3]", parFile, fixed = TRUE) + 1
   parFile[recDevLine] <- paste(rep(0, simlength), collapse = ", ")
   parFile[sigmaRLine] <- 0.001
-  writeLines(parFile, "ss3.par")
+  writeLines(parFile, "ss.par")
   for(i in seq(fVector)) {
     change_f(years = 1:simlength, years_alter = 1:simlength,
              fvals = rep(fVector[i], simlength),
-             par_file_in = "ss3.par", par_file_out = "ss3.par" )
+             par_file_in = "ss.par", par_file_out = "ss.par" )
     system(paste(ss_bin, "-nohess"), show.output.on.console = FALSE,
            ignore.stdout=TRUE)
 

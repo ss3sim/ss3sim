@@ -20,7 +20,7 @@
 #' created in \code{years} because actual year values cannot be recycled.
 #' For example, to change the second season of the second year in the
 #' example above, use: \code{4}.
-#' @param fvals *Vector of \emph{F} values to be entered into \code{ss3.par} file,
+#' @param fvals *Vector of \emph{F} values to be entered into \code{ss.par} file,
 #' where \code{length(fvals) == length(years_alter)} must be true.
 #' @template par_file_in
 #' @template par_file_out
@@ -34,14 +34,14 @@
 #'
 #' # Find the example .par file in the package data:
 #' d <- system.file("extdata", package = "ss3sim")
-#' par_file <- paste0(d, "/change_f/ss3.par")
+#' par_file <- paste0(d, "/change_f/ss.par")
 #'
 #' change_f(years = 1:49, years_alter = 2, fvals = 9999, par_file_in =
 #' par_file, par_file_out = paste0(temp_path, "/test.par"))
 #' @export
 
-change_f <- function(years, years_alter, fvals, par_file_in = "ss3.par",
-  par_file_out = "ss3.par") {
+change_f <- function(years, years_alter, fvals, par_file_in = "ss.par",
+  par_file_out = "ss.par") {
 
   n.years_alter <- length(years_alter)
 
@@ -51,18 +51,18 @@ change_f <- function(years, years_alter, fvals, par_file_in = "ss3.par",
         'Does NOT equal length of supplied Fvalues:', length(fvals)))
   }
 
-  # Read in ss3.par file
-  ss3.par <- readLines(par_file_in) # Original
-  ss3.par.new <- ss3.par # New file
+  # Read in ss.par file
+  ss.par <- readLines(par_file_in) # Original
+  ss.par.new <- ss.par # New file
 
   for(y in 1:n.years_alter) {
   	temp.year <- which(years == years_alter[y])
-    temp.loc <- which(ss3.par == paste('# F_rate[', temp.year, ']:', sep=''))
-    ss3.par.new[temp.loc+1] <- fvals[y]
+    temp.loc <- which(ss.par == paste('# F_rate[', temp.year, ']:', sep=''))
+    ss.par.new[temp.loc+1] <- fvals[y]
   }
 
   # Write new .par file
-  writeLines(ss3.par.new, con = par_file_out)
+  writeLines(ss.par.new, con = par_file_out)
   close(file(par_file_out))
-  invisible(ss3.par.new)
+  invisible(ss.par.new)
 }

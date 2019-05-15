@@ -90,12 +90,12 @@ file.copy(simple, ".", recursive = TRUE)
 setwd("Simple")
 
 # Run SS3 to create control.ss_new and Report.sso:
-system("SS3_24o_safe starter.ss -noest")
+system("ss_safe starter.ss -noest")
 
 change_year(year_begin = 1, year_end = 100, burnin = 25,
  ctl_file_in = "simple.ctl", ctl_file_out = "change_year.ctl",
  dat_file_in = "simple.dat", dat_file_out = "change_year.dat",
- par_file_in = "ss3.par", par_file_out = "change_year.par",
+ par_file_in = "ss.par", par_file_out = "change_year.par",
  str_file_in = "starter.ss", str_file_out = "change_year_starter.ss",
  for_file_in = "forecast.ss", for_file_out = "change_year_forecast.ss")
 

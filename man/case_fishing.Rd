@@ -23,7 +23,7 @@ created in \code{years} because actual year values cannot be recycled.
 For example, to change the second season of the second year in the
 example above, use: \code{4}.}
 
-\item{fvals}{Vector of \emph{F} values to be entered into \code{ss3.par} file,
+\item{fvals}{Vector of \emph{F} values to be entered into \code{ss.par} file,
 where \code{length(fvals) == length(years_alter)} must be true.}
 
 \item{case}{The case number you want to write to.
