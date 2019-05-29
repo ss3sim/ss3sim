@@ -46,6 +46,8 @@
 #' or \code{\link{sample_agecomp}}.
 #' For models that use the \code{.forecast} file, all references to years
 #' must be made with relative values (i.e., 0 or negative integers).
+#' The code changes the begining and ending year for benchmark values to be the end
+#' year of the model and \code{year_begin} is ignored for the forecast file.
 #'
 #' @importFrom r4ss SS_readdat SS_readforecast SS_readstarter
 #'   SS_writedat SS_writeforecast SS_writestarter
@@ -330,33 +332,17 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
 
   # Work with forecast file
   if (!is.null(for_file_in)) {
-    forecastlines <- readLines(for_file_in, warn = verbose)
-    numberofareas <- forecastlines[grep("max totalcatch by area", forecastlines) + 1]
-    numberofareas <- strsplit(numberofareas, " ")[[1]]
-    numberofareas <- gsub("#", "", numberofareas)
-    nareas <- length(numberofareas[numberofareas != ""])
-    numberoffleet <- forecastlines[grep("max totalcatch by fleet", forecastlines) + 1]
-    numberoffleet <- strsplit(numberoffleet, " ")[[1]]
-    numberoffleet <- gsub("#", "", numberoffleet)
-    nfleets <- length(numberoffleet[numberoffleet != ""])
-
     # todo: remove the hard coding of nseas to 1.
     for_ss_vers <- get_ss_ver_file(for_file_in) # get version from for_file_in
-    if (all(c("readAll", "nseas") %in% names(formals(SS_readforecast)))) {
-      forecast <- SS_readforecast(for_file_in, nfleets, nareas, nseas = 1,
-        readAll = TRUE, version = for_ss_vers, verbose = verbose)
-    } else {
-      forecast <- SS_readforecast(for_file_in, nfleets, nareas,
-        version = for_ss_vers, verbose = verbose)
-    }
+    forecast <- SS_readforecast(for_file_in, nfleets, nareas,
+      version = for_ss_vers, verbose = verbose)
     # Mandatory changes
-    forecast$Bmark_years <- rep(0, 6) # Change relative to end year
-    forecast$Fcast_years <- rep(0, 4) # Change relative to end year
+    forecast$Bmark_years <- rep(year_end, 10) # Change relative to end year
+    forecast$Fcast_years <- rep(0, 6) # Change relative to end year
     forecast$Ydecl <- years.use[1]
     forecast$Yinit <- -1 # Change to endyear + 1
-    if (forecast$Ncatch != 0) {
+    if (!is.null(nrow(forecast$ForeCatch))) {
       if (verbose) message(paste("Removing all catches from forecast file."))
-      forecast$Ncatch <- 0
       forecast$ForeCatch <- NULL
     }
     if (forecast$FirstYear_for_caps_and_allocations != 0) {
@@ -368,10 +354,10 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
         forecast$FirstYear_for_caps_and_allocations <- year_end + 1
     }
     if (all(forecast$max_totalcatch_by_fleet == 0)) {
-      forecast$max_totalcatch_by_fleet <- "#"
+      forecast$max_totalcatch_by_fleet <- NULL
     }
     if (all(forecast$max_totalcatch_by_area == 0)) {
-      forecast$max_totalcatch_by_area <- "#"
+      forecast$max_totalcatch_by_area <- NULL
     }
     # changing 0 in fleet_assignment_to_allocation_group to "#" will not work
     # with updated r4ss, so don't change.
