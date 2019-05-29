@@ -30,7 +30,6 @@
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' dat_list <- r4ss::SS_readdat(f_in, section = 2, version = NULL,
 #'                              verbose = FALSE)
-#' dat_list <- change_fltname(dat_list)
 #' outfile <- "test.dat"
 #' ex1 <- sample_index(dat_list, outfile, fleets=c(2,3),
 #'                     years=list(1938:2012, 1938:2012) ,

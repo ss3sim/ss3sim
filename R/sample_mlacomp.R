@@ -38,10 +38,8 @@
 #' d <- system.file("extdata/models/cod-om", package = "ss3sim")
 #' dat_in <- file.path(d, "codOM.dat")
 #' dat_list <- r4ss::SS_readdat(dat_in, version = NULL, verbose = FALSE)
-#' dat_list <- change_fltname(dat_list)
 #' dat_list <- change_data(dat_list, outfile = NULL, write_file = FALSE,
 #'   fleets = 1, years = 1990:2010, types = c("age", "mla"))
-#' dat_list <- change_fltname(dat_list)
 #' ctl_file_in <- file.path(d, "codOM.ctl")
 #'
 #' out <- sample_mlacomp(dat_list, outfile = NULL, ctl_file_in = ctl_file_in,

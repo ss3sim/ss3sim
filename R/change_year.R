@@ -217,7 +217,6 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
   if (!is.null(dat_file_in)) {
     ss3.dat <- SS_readdat(dat_file_in, version = NULL, verbose = verbose,
                                 echoall = FALSE, section = NULL)
-    ss3.dat <- change_fltname(ss3.dat)
     ss3.dat$styr <- year_begin
     # Save old terminal year for the forecast file
     oldendyear <- ss3.dat$endyr

@@ -20,7 +20,6 @@
 ## f_in <- paste0(d, "/example-om/data.ss_new")
 ## dat_list <- r4ss::SS_readdat(f_in, section = 2, version = NULL,
 ##               verbose = FALSE)
-## dat_list <- change_fltname(dat_list)
 ## data_units <- calculate_data_units(lcomp_params=lcomp_params,
 ##                      agecomp_params=agecomp_params,
 ##                      calcomp_params=calcomp_params,

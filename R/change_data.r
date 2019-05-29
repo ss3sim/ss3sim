@@ -77,7 +77,6 @@
 #' types <- c("len", "age")
 #' file_in <- r4ss::SS_readdat(paste0(d, "/models/cod-om/codOM.dat"),
 #'              version = NULL)
-#' file_in <- change_fltname(file_in)
 #'
 #' # Basic test with just length data, default bins:
 #' out <- change_data(file_in, outfile = "ignore.dat", types = "len",
@@ -112,7 +111,6 @@
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/models/cod-om/codOM.dat")
 #' dat_list <- r4ss::SS_readdat(f_in, version = NULL, verbose = FALSE)
-#' dat_list <- change_fltname(dat_list)
 #' data_units <- calculate_data_units(index_params = index_params,
 #'   lcomp_params = lcomp_params, agecomp_params = agecomp_params,
 #'   calcomp_params = calcomp_params, mlacomp_params = mlacomp_params)
