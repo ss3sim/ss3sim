@@ -147,10 +147,10 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
     ss3.ctl <- manipulate(ss3.ctl, "first year of main recr_devs", year_begin)
     ss3.ctl <- manipulate(ss3.ctl, "last year of main recr_devs", year_end)
     ss3.ctl <- manipulate(ss3.ctl, "_recdev_early_start", 0)
-    ss3.ctl <- manipulate(ss3.ctl, "_last_early_yr_nobias_adj_in_MPD", year_begin)
+    ss3.ctl <- manipulate(ss3.ctl, "_last_yr_nobias_adj_in_MPD", year_begin)
     ss3.ctl <- manipulate(ss3.ctl, "_first_yr_fullbias_adj_in_MPD", year_begin)
     ss3.ctl <- manipulate(ss3.ctl, "_last_yr_fullbias_adj_in_MPD", year_end)
-    ss3.ctl <- manipulate(ss3.ctl, "_first_recent_yr_nobias_adj_in_MPD", year_end)
+    ss3.ctl <- manipulate(ss3.ctl, "_end_yr_for_ramp_in_MPD", year_end)
     ss3.ctl <- manipulate(ss3.ctl, "_max_bias_adj_in_MPD", -1)
     # Check F ballpark year
     ballpark.val <- strsplit(grep("F ballpark year", ss3.ctl, value = TRUE),
@@ -162,9 +162,8 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
     } else{
       ss3.ctl <- manipulate(ss3.ctl, "F ballpark year", year_begin * -1)
     }
-    fmethod <- strsplit(grep("F_Method", ss3.ctl, value = TRUE), "")[[1]]
-    fmethod <- fmethod[-which(fmethod == " ")][1]
-    if (fmethod == 2) {
+    fmethod <- substring(trimws(grep("F_Method:", ss3.ctl, value = TRUE)), 1, 1)
+    if (fmethod == "2") {
       # Find number of input lines
       startFline <- grep("# overall start F value; overall phase;", ss3.ctl)
       startFvalue <- strsplit(ss3.ctl[startFline], " ")[[1]]
@@ -180,7 +179,6 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
         }
       }
     }
-    ss3.ctl <- ss3.ctl[-grep("#DisplayOnly", ss3.ctl)]
     writeLines(ss3.ctl, con = ctl_file_out)
   }
 
