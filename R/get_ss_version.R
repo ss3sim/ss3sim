@@ -1,4 +1,4 @@
-#' Get ths ss version (either 3.24 or 3.30) from a \code{dat_list} list.
+#' Get the ss version (either 3.24 or 3.30) from a \code{dat_list} list.
 #'
 #' @description # Get the SS version from a list \code{dat_list} that was a
 #'   originally read in using \code{\link[r4ss]{SS_readdat}}.
@@ -11,10 +11,10 @@ get_ss_ver_dl <- function(dat_list){
   } else {
     stop("SS datafile version not found.") # Change to be more informative?
   }
-  version
+  return(version)
 }
 
-#' Get ths ss version (either 3.24 or 3.30) from an ss file
+#' Get the ss version (either 3.24 or 3.30) from an ss file
 #'
 #' @description # Get the SS version from the top line in an SS file.
 #' as done in \code{\link[r4ss]{SS_readdat}}.
@@ -31,7 +31,9 @@ get_ss_ver_file <- function(file){
   if(version %in% c("3.24", "3.30")){ # perhaps too much output?
     #cat("assuming version", version, "based on first line of file\n")
   } else{
-    stop(c("Input 'version' not found on first line of file. Must be 3.24 or 3.30. Please add comment on first line. If 3.24, first line must start with #V3.24 ; if 3.30, must start with #V3.30 ."))
+    stop("Input 'version' not found on first line of file.",
+      "\nMust be 3.24 or 3.30. Please add comment on first line.",
+      "\nIf 3.24, first line must start with '#V3.24'; if 3.30, must start with '#V3.30'.")
   }
-  version
+  return(version)
 }
