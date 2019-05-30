@@ -35,7 +35,7 @@ om_version <- r4ss::SS_readstarter(paste0(om, "/starter.ss"))
 if(om_version$SSversion == "3.24 or earlier"){
   om_version <- "3.24" # assume 3.24
 } else if (om_version$SSversion == "3.30") {
-  om_version <- omversion$SSversion
+  om_version <- om_version$SSversion
 } else {
   om_version <- NA # version not known
 }
@@ -72,33 +72,16 @@ test_that("Recruitment devs are of correct length in par file.", {
   expect_equal(nchar(getnew), end - start + 1)
 })
 
-if (!"ss3models" %in% installed.packages()) {
-  devtools::install_github("ss3sim/ss3models")
-}
-d <- system.file(file.path("models", "yellow"), package = "ss3models")
-file.copy(file.path(d, "om"), ".", recursive = TRUE)
-setwd("om")
-
-test_that("Control file references correct years", {
-  # Manipulate files
-  change_year(year_begin = 1, year_end = 500, burnin = 100,
-    ctl_file_in = "ss3.ctl", ctl_file_out = "change.ctl",
-    dat_file_in = "ss3.dat", dat_file_out = "change.dat")
-  test <- readLines("change.ctl")
-  t1 <- grep("first year of main recr_devs", test)
-  t2 <- grep("last year of main recr_devs", test)
-  t3 <- grep("_last_early_yr", test)
-  t4 <- grep("_first_yr_fullbias_adj", test)
-  t5 <- grep("_last_yr_fullbias_adj", test)
-  t6 <- grep("_first_recent_yr_nobias_adj", test)
-    # Check F ballpark year
-  range <- 1:26
-  expect_true(as.numeric(strsplit(test[t1], "#")[[1]][1]) %in% range)
-  expect_true(as.numeric(strsplit(test[t2], "#")[[1]][1]) == 500)
-  expect_true(as.numeric(strsplit(test[t3], "#")[[1]][1]) <= 1)
-  expect_true(as.numeric(strsplit(test[t4], "#")[[1]][1]) == 1)
-  expect_true(as.numeric(strsplit(test[t5], "#")[[1]][1]) == 500)
-  expect_true(as.numeric(strsplit(test[t6], "#")[[1]][1]) >= 500)
+test_that("Changes to dat file with change_year.", {
+  start <- 1999; end <- 2000; burn <- 0
+  change_year(year_begin = start, year_end = end, burnin = burn,
+              dat_file_in = file.path(om, "codOM.dat"),
+              dat_file_out = "newdat.ss")
+  new <- r4ss::SS_readdat("newdat.ss", verbose = FALSE)
+  expect_equal(end, new$endyr)
+  expect_equal(nrow(new$lencomp), 1)
+  expect_equal(nrow(new$agecomp), 1)
+  expect_equal(nrow(new$catch), length(start:end) + 1)
 })
 
 setwd(wd.old)
