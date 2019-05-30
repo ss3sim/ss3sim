@@ -139,12 +139,6 @@ change_data <- function(dat_list, outfile, fleets, years, types,
     choices = c("index","len", "age", "cal", "mla", "mwa"),
     several.ok = TRUE)
 
-  ## Test for compatibility with ss3sim
-  if (dat_list$Ngenders > 1) {
-    stop(paste("_Ngenders is greater than 1 in the operating model.",
-      "change_data only works with single-gender models."))
-  }
-
   ## TODO: Need to do things like change age matrices?
   ## TODO: Change the data vectors if specified?
 
@@ -209,10 +203,7 @@ change_data <- function(dat_list, outfile, fleets, years, types,
   }
 
   if (write_file) {
-    # get the SS version. Depending on the model version, the element refering
-    #to the ss version has a different name, so need to look for both.
-    ss_version <- get_ss_ver_dl(dat_list)
-    SS_writedat(datlist = dat_list, outfile = outfile, version = ss_version,
+    SS_writedat(datlist = dat_list, outfile = outfile, version = dat_list$ReadVersion,
       overwrite = TRUE, verbose = FALSE)
   }
   invisible(dat_list)
@@ -301,6 +292,7 @@ change_pop_bin <- function(dat_list, binwidth = NULL, minimum_size = NULL,
 
 #' Check that the SS3 data file looks correct
 #'
+#' #todo: Think about survey timing, old check of 0.5 was removed.
 #' @param x An SS3 data list object as read in by \code{\link[r4ss]{SS_readdat}}.
 #' @export
 
@@ -312,7 +304,7 @@ check_data <- function(x) {
     stop(paste("the column *type* wasn't found in the SS3 data file;",
       "the data file should be output from r4ss::SS_readdat()"))
 
-  if (x$Ngenders > 1)
+  if (x$Ngenders > 1L)
     stop(paste("_Ngenders is greater than 1 in the operating model.",
       "ss3sim currently only works with single-gender models."))
 
@@ -327,7 +319,7 @@ check_data <- function(x) {
       "are represented in the SS3 data file. See the SS3 manual."))
   }
 
-  if (!identical(x$Nfleet, 1))
+  if (!identical(x$Nfleet, 1L))
     stop("Nfleet in the SS3 data file must be set to 1.")
 
   if (!identical(x$Nsurveys, 2))
@@ -339,10 +331,7 @@ check_data <- function(x) {
   if (!identical(x$fleetnames, c("Fishery", "Survey", "CPUE")))
     stop("Fleet names in the SS3 data file must be Fishery%Survey%CPUE")
 
-  if (!identical(x$surveytiming, c(0.5, 0.5, 0.5)))
-    stop("_surveytiming_in_season must be set to 0.5 for all fleets.")
-
-  if (!identical(x$areas, c(1, 1, 1)))
+  if (!identical(x$areas, rep(1, 3)))
     stop(paste("_area_assignments_for_each_fishery_and_survey must be set to 1",
       "for all fleets in the SS3 data file."))
 
