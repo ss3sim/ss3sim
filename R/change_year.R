@@ -217,114 +217,98 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
   if (!is.null(dat_file_in)) {
     ss3.dat <- SS_readdat(dat_file_in, version = NULL, verbose = verbose,
                                 echoall = FALSE, section = NULL)
+    oldsrtyear <- ss3.dat$styr
     ss3.dat$styr <- year_begin
     # Save old terminal year for the forecast file
     oldendyear <- ss3.dat$endyr
     ss3.dat$endyr <- year_end
     # Change catch
-    n.catch <- ss3.dat$N_catch
-    data.catch <- ss3.dat$catch
-    data.catch.seasons <- unique(data.catch$seas)
-    dim.fleets <- dim(data.catch)[2] - which(names(data.catch) == "year")
-    dim.data <- c(length(data.catch.seasons) * length(years.use), dim.fleets + 2)
-    data.catch.new <- matrix(NA, nrow = dim.data[1], ncol = dim.data[2])
+    seafleet.catch <- unique(ss3.dat$catch[, c("seas", "fleet")])
+    if (!all(tapply(seafleet.catch$seas, seafleet.catch$fleet,
+      function(x) length(unique(x))) == 1)) stop("ss3sim does not",
+      " accomodate changing the year of a model with multiple seasons",
+      " for a given fleet.")
+    data.catch.new <- setNames(do.call("rbind", apply(seafleet.catch, 1, 
+      function(x) expand.grid(
+        c(-999, year_begin:year_end), x[1], x[2], 1, 0.01,
+        stringsAsFactors = FALSE))),
+      colnames(ss3.dat[["catch"]]))
+    row.names(data.catch.new) <- NULL
+    data.catch.new[data.catch.new[, "year"] < 0, "catch"] <- 0
+    ss3.dat$catch <- data.catch.new
 
-    counter <- 1
-    for(q in seq_along(years.use)) {
-      for(s in seq_along(data.catch.seasons)) {
-        data.catch.new[counter, ] <- c(rep(1, dim.fleets), years.use[q],
-                                       data.catch.seasons[s])
-        counter <- counter + 1
-      }
-    }
-    ss3.dat$catch <- as.data.frame(data.catch.new)
-    colnames(ss3.dat$catch) <- NULL
-    ss3.dat$N_catch <- dim(data.catch.new)[1]
     # Change CPUE data
-    n.cpue  <- ss3.dat$N_cpue
-    data.cpue <- ss3.dat$CPUE
-    data.cpue.seasons <- unique(data.cpue$seas)
-    data.cpue.index <- unique(data.cpue$index)
-    num.row <- length(data.cpue.seasons) * length(years.use) * length(data.cpue.index)
-    data.cpue.new <- matrix(NA, nrow = num.row, ncol = dim(data.cpue)[2])
-    counter <- 1
-    for(s in seq_along(data.cpue.seasons)) {
-      for(i in seq_along(data.cpue.index)) {
-        for(y in seq_along(years.use)) {
-          se.value <- data.cpue[data.cpue$index == data.cpue.index[i] &
-              data.cpue$seas == data.cpue.seasons[s], "se_log"][1]
-          data.cpue.new[counter, ] <- c(years.use[y], data.cpue.seasons[s],
-                                        data.cpue.index[i], 1, se.value)
-          counter <- counter + 1
-        }
-      }
-    }
-    colnames(data.cpue.new) <- names(data.cpue)
-    ss3.dat$CPUE <- as.data.frame(data.cpue.new)
-    ss3.dat$N_cpue <- dim(data.cpue.new)[1]
+    seafleet.cpue <- unique(ss3.dat$CPUE[, c("seas", "index")])
+    if (!all(tapply(seafleet.cpue$seas, seafleet.cpue$index,
+      function(x) length(unique(x))) == 1)) stop("ss3sim does not",
+      " accomodate changing the year of a model with multiple seasons",
+      " for a given index.")
+    data.cpue.new <- setNames(do.call("rbind", apply(seafleet.cpue, 1, 
+      function(x) expand.grid(year_begin:year_end, x[1], x[2], 1, 0.01,
+        stringsAsFactors = FALSE))),
+      colnames(ss3.dat[["CPUE"]]))
+    row.names(data.cpue.new) <- NULL
+    ss3.dat$CPUE <- data.cpue.new
     # Change discard
-    n.discard <- ss3.dat$N_discard
-    n.discard.fleets <- ss3.dat$N_discard_fleets
-    if (n.discard > 0 & n.discard.fleets > 0) {
-      data.discard <- ss3.dat$discard_data
-      data.discard.new <- expand.grid(years.use,
-                                      unique(data.discard$Seas),
-                                      unique(data.discard$Flt),
-                                      0, 0)
-      colnames(data.discard.new) <- colnames(data.discard)
+    if (ss3.dat$N_discard_fleets > 0) {
+      seafleet.disc <- unique(ss3.dat$discard_data[, c("Seas", "Flt")])
+      if (!all(tapply(seafleet.disc$Seas, seafleet.disc$Flt,
+        function(x) length(unique(x))) == 1)) stop("ss3sim does not",
+        " accomodate changing the year of a model with multiple seasons",
+        " for a given discard fleet.")
+      data.disc.new <- setNames(do.call("rbind", apply(seafleet.disc, 1, 
+        function(x) expand.grid(year_begin:year_end, x[1], x[2], 1, 0.01,
+        stringsAsFactors = FALSE))),
+        colnames(ss3.dat[["discard_data"]]))
+      row.names(data.disc.new) <- NULL
       ss3.dat$discard_data <- data.discard.new
-      ss3.dat$N_discard <- dim(data.discard.new)[1]
     }
     # Change meanbodyweight if it exists
-    n.meanbdwt <- ss3.dat$N_meanbodywt
-    if (n.meanbdwt > 0) {
-      ss3.dat$meanbodywt <- ss3.dat$meanbodywt[1, ]
-      ss3.dat$meanbodywt$Year <- years.use[1]
-      ss3.dat$N_meanbodywt <- dim(ss3.dat$meanbodywt)[1]
+    if (!is.null(ss3.dat$meanbodywt)) {
+      seafleet.mbdwt <- unique(ss3.dat$meanbodywt[, 
+        c("Seas", "Fleet", "Partition", "Type")])
+      if (!all(tapply(seafleet.mbdwt$Seas, 
+        INDEX = seafleet.mbdwt[, c("Fleet", "Partition", "Type")],
+        function(x) length(unique(x)))[,1,] == 1)) stop("ss3sim does not",
+        " accomodate changing the year of a model with multiple seasons",
+        " for a given fleet with mean body weight data.")
+      data.mbdwt.new <- setNames(do.call("rbind", apply(seafleet.mbdwt, 1, 
+        function(x) expand.grid(year_begin:year_end, x[1], x[2], x[3], x[4], 1, 0.01,
+        stringsAsFactors = FALSE))),
+        colnames(ss3.dat[["meanbodywt"]]))
+      row.names(data.mbdwt.new) <- NULL
+      ss3.dat$meanbodywt <- data.mbdwt.new
     }
-
     # Change length comps
-    n.lcomp <- ss3.dat$N_lencomp
-    if (n.lcomp > 0) {
+    if (!is.null(ss3.dat$lencomp)) {
       ss3.dat$lencomp <- ss3.dat$lencomp[1, ]
-        ss3.dat$lencomp$Yr[1] <- years.use[1]
-        ss3.dat$N_lencomp <- dim(ss3.dat$lencomp)[1]
+      ss3.dat$lencomp$Yr <- year_end
     }
     # Change age comps
-    n.acomp <- ss3.dat$N_agecomp
-    if (n.acomp > 0) {
-        ss3.dat$agecomp <- ss3.dat$agecomp[1, ]
-        ss3.dat$agecomp$Yr[1] <- years.use[1]
-        ss3.dat$N_agecomp <- dim(ss3.dat$agecomp)[1]
+    if (!is.null(ss3.dat$agecomp)) {
+      ss3.dat$agecomp <- ss3.dat$agecomp[1, ]
+      ss3.dat$agecomp$Yr <- year_end
     }
     # Change length at age
-    n.ccomp <- ss3.dat$N_MeanSize_at_Age_obs
-    if (n.ccomp > 0) {
-        ss3.dat$MeanSize_at_Age_obs <- ss3.dat$MeanSize_at_Age_obs[1, ]
-        ss3.dat$MeanSize_at_Age_obs$Yr <- years.use[1]
-        ss3.dat$N_MeanSize_at_Age_obs <- dim(ss3.dat$MeanSize_at_Age_obs)[1]
-      }
+    if (!is.null(ss3.dat$MeanSize_at_Age_obs)) {
+      ss3.dat$MeanSize_at_Age_obs <- ss3.dat$MeanSize_at_Age_obs[1, ]
+      ss3.dat$MeanSize_at_Age_obs$Yr <- year_end
+    }
     # environmental parameters
-    num.env <- ss3.dat$N_environ_variables
-    if (num.env > 0) {
-        data.env <- ss3.dat$envdat
-        data.env.variables <- unique(data.env$Variable)
-        data.env.new <- data.frame("Yr" = rep(seq(year_begin, year_end),
-                                              num.env),
-                                   "Variable" = rep(data.env.variables,
-                                     each = year_span),
-                                   "Value" = rep(0, num.env * year_span))
-        ss3.dat$envdat <- data.env.new
+    if (ss3.dat$N_environ_variables > 0) {
+      ss3.dat$envdat <- setNames(expand.grid(year_begin:year_end, 
+        unique(ss3.dat$envdat$Variable), 0,
+        stringsAsFactors = FALSE),
+        colnames(ss3.dat$envdat))
     }
     # size frequency
-        if (any(grepl("# N sizefreq methods to read", ss3.dat))) {
-            stop(paste("change_year does not accomodate dat files with",
-                  "sizefreq methods. Please remove the sizefreq",
-                  "data and run change_year again."))
-        }
-    dat_ss_vers <- get_ss_ver_dl(ss3.dat) # ss3.dat to specify the SS version
+    if (ss3.dat$N_sizefreq_methods > 0) {
+      stop("change_year does not accomodate dat files with ",
+        "sizefreq methods.\nPlease remove the sizefreq",
+        "data and run change_year again.")
+    }
     r4ss::SS_writedat(ss3.dat, dat_file_out, overwrite = TRUE,
-      version = dat_ss_vers, verbose = verbose)
+      version = ss3.dat$ReadVersion, verbose = verbose)
   }
 
   # Work with forecast file
