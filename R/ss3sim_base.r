@@ -264,8 +264,11 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
           stop(paste0("The data.ss_new not created in *first* OM run for ",
                      sc, "-",i, ": is something wrong with initial model files?"))
-      extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
-        data_out = pastef(sc, i, "om", "ss3.dat"))
+      expdata <- r4ss::SS_readdat(pastef(sc, i, "om", "data.ss_new"),
+        section = 2, verbose = FALSE)
+      r4ss::SS_writedat(expdata, pastef(sc, i, "om", "ss3.dat"),
+        overwrite = TRUE, verbose = FALSE)
+      rm(expdata)
       # Remove the ss_new file in case the next run doesn't work we can tell
       file.remove(pastef(sc, i, "om", "data.ss_new"))
       # Change time-varying parameters; e.g. M, selectivity, growth...
@@ -327,8 +330,11 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
           stop(paste0("The data.ss_new not created in *second* OM run for ",
                      sc, "-",i, ": is something wrong with initial model files?"))
-      extract_expected_data(data_ss_new = pastef(sc, i, "om", "data.ss_new"),
-                            data_out = pastef(sc, i, "em", "ss3.dat"))
+      expdata <- r4ss::SS_readdat(pastef(sc, i, "om", "data.ss_new"),
+        section = 2, verbose = FALSE)
+      r4ss::SS_writedat(expdata, pastef(sc, i, "em", "ss3.dat"),
+        overwrite = TRUE, verbose = FALSE)
+      rm(expdata)
       ## Read in the datfile once and manipulate as a list object, then
       ## write it back to file at the end, before running the EM.
       dat_list <- SS_readdat(pastef(sc, i, "em", "ss3.dat"),
