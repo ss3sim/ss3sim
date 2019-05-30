@@ -2,13 +2,15 @@
 % Please edit documentation in R/get_sigma.r
 \name{get_sigmar}
 \alias{get_sigmar}
-\title{Get recruitment deviation sigma}
+\title{Get Variability About Recruitment Deviations ($\sigma_R$)}
 \usage{
 get_sigmar(om)
 }
 \arguments{
 \item{om}{The name of the operating model, which should be the prefix of
-the \code{.ctl} file, eg. "myOM".}
+the \code{.ctl} file, e.g., "myOM".
+A full directory can be specified with the the prefix of the file name but
+leaving off the '.ctl' portion.}
 }
 \description{
 Use the name of the operating model to open the ctl file and obtain the 
