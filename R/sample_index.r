@@ -62,12 +62,8 @@ sample_index <- function(dat_list, outfile, fleets, years, sds_obs,
     cpue <- dat_list$CPUE
     ## Check inputs for errors
     Nfleets <- length(fleets)
-    # if(length(unique(cpue$index)) != Nfleets)
-        # stop(paste0("Number of fleets specified (",Nfleets,
-                    # ") does not match input file (",
-                    # length(unique(cpue$index)), ")"))
     if(FALSE %in% (fleets %in% unique(cpue$index)))
-        stop(paste0("The specified fleet number specified does not match input file"))
+        stop(paste0("The specified fleet numbers do not match input file"))
     if(Nfleets!= 0 & class(sds_obs) != "list" | length(sds_obs) != Nfleets)
         stop("sds_obs needs to be a list of same length as fleets")
     if(Nfleets!= 0 & class(years) != "list" | length(years) != Nfleets)
@@ -152,7 +148,7 @@ stop(paste("A year specified in years was not found in the input file for fleet"
 #' @export
 
 change_index <- function(...) {
-  warning(paste("change_index is a depreciated function.",
+  warning(paste("change_index is a deprecated function.",
     "Please use sample_index instead. change_index will",
     "be removed in the next major version."))
   sample_index(...)
