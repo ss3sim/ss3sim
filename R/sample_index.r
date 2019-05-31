@@ -12,7 +12,6 @@
 #' @template lcomp-agecomp-index
 #' @template dat_list
 #' @template ctl_file_in
-#' @template ctl_file_out
 #' @param sds_obs *A list the same length as \code{fleets}. The list should
 #'   contain either single values or numeric vectors of the same length as the
 #'   number of years which represent the standard deviation of the observation
@@ -57,7 +56,7 @@
 #' }
 #' @family sampling functions
 
-sample_index <- function(dat_list, outfile, ctl_file_in, ctl_file_out, fleets, years, sds_obs,
+sample_index <- function(dat_list, outfile, ctl_file_in, fleets, years, sds_obs,
                          make_plot = FALSE, write_file=TRUE){
     check_data(dat_list)
     ss_version <- get_ss_ver_dl(dat_list)
@@ -126,37 +125,42 @@ stop(paste("A year specified in years was not found in the input file for fleet"
           unique(cpue.new$index), title = "Index", bty = "n")
     }
 
+    ## Check that the number of fleets with q parameters in the control file is
+    ## consistent with the number of fleets with indices, if it isn't not stop
+    ## code.
+    ## TODO: change the q parm section to be consistent with the data file and
+    ## return, instead of generating an error? Want to do this just for EM.
+    ctl <- readLines(ctl_file_in)
+    # find the line number of header for the q section
+    q_head <- grep("fleet *link *link_info *extra_se *biasadj *float", ctl)
+    # find the line number of terminator for the q section
+    q_term <- grep("-9999", ctl)
+    q_term <- q_term[which(q_term>q_head)][1] # should be the line closest to q_head
+    q_parms <- ctl[(q_head+1):(q_term-1)]
+    if(length(q_parms>0)) { #remove lines with whitespace
+      ws <- grep("^$|^ +$", q_parms)
+      if(length(ws)>0) {
+        ws <- -ws
+        q_parms <- q_parms[ws]
+      }
+    }
+    if(length(q_parms)!= Nfleets){
+      stop(paste0("Number of fleets with indices specified is not consistent",
+                  "with the control file ", ctl_file_in))
+    }
+
     ## Open the .dat file for the assessment model and find the right lines to
     ## overwrite
     newfile <- dat_list
     newfile$CPUE <- cpue.new
     if(Nfleets>0) newfile$N_cpue <- nrow(cpue.new)
     if(Nfleets==0) newfile$N_cpue <- 0
+
     if(write_file)
         SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
                     version = ss_version, verbose = FALSE)
 
-    ## Check that the number of q parameters in the control file is consistent
-    ## with the fleet indices, if it isn't not stop code.
-    ## TODO: change the q parm section to be consistent with the data file and
-    ## return, instead of generating an error. May need to manipulate other
-    ## functions so that this happens for the OM and EM.
-    ctl <- readLines(ctl_file_in)
-    # find the line number of header for the q section
-    q_head <- grep("fleet *link *link_info *extra_se *biasadj *float", ctl)
-    # find the line number of terminator for the q section
-    q_term <- grep(-9999, ctl)
-    q_term <- q_term[which(q_term>q_head)][1] # should be the line closest to q_head
-    q_parms <- ctl[(q_head+1):(q_term-1)]
-    ws <- grep("^$|^ +$", q_parms)
-    if(length(ws)>0){
-      ws <- -ws
-      q_parms <- q_parms[ws] #remove lines with whitespace
-    }
-    if(length(q_parms)!= Nfleets){
-      stop(paste0("Number of fleets with indices specified is not consistent",
-                  "with the control file ", ctl_file_in))
-    }
+
     return(invisible(newfile))
 }
 
