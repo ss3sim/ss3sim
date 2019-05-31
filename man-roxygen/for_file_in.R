@@ -1,2 +1,2 @@
-#' @param for_file_in A string providing the path to the input SS3
+#' @param for_file_in A string providing the path to the input SS
 #'   \code{forecast.ss} file.

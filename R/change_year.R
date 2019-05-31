@@ -23,7 +23,7 @@
 #' @template str_file_in
 #' @param str_file_out Output SS3 starter file, if \code{NULL} the file will
 #'   be named the same as the \code{str_file_in}
-#' @param for_file_in Input SS3 forecast file
+#' @template for_file_in
 #' @param for_file_out Output SS3 forecast file, if \code{NULL} the file
 #'   will be named the same as the \code{for_file_in}
 #' @param verbose Logical argument that is passed on to internal calls to r4ss
@@ -228,7 +228,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
       function(x) length(unique(x))) == 1)) stop("ss3sim does not",
       " accomodate changing the year of a model with multiple seasons",
       " for a given fleet.")
-    data.catch.new <- setNames(do.call("rbind", apply(seafleet.catch, 1, 
+    data.catch.new <- setNames(do.call("rbind", apply(seafleet.catch, 1,
       function(x) expand.grid(
         c(-999, year_begin:year_end), x[1], x[2], 1, 0.01,
         stringsAsFactors = FALSE))),
@@ -243,7 +243,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
       function(x) length(unique(x))) == 1)) stop("ss3sim does not",
       " accomodate changing the year of a model with multiple seasons",
       " for a given index.")
-    data.cpue.new <- setNames(do.call("rbind", apply(seafleet.cpue, 1, 
+    data.cpue.new <- setNames(do.call("rbind", apply(seafleet.cpue, 1,
       function(x) expand.grid(year_begin:year_end, x[1], x[2], 1, 0.01,
         stringsAsFactors = FALSE))),
       colnames(ss3.dat[["CPUE"]]))
@@ -256,7 +256,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
         function(x) length(unique(x))) == 1)) stop("ss3sim does not",
         " accomodate changing the year of a model with multiple seasons",
         " for a given discard fleet.")
-      data.disc.new <- setNames(do.call("rbind", apply(seafleet.disc, 1, 
+      data.disc.new <- setNames(do.call("rbind", apply(seafleet.disc, 1,
         function(x) expand.grid(year_begin:year_end, x[1], x[2], 1, 0.01,
         stringsAsFactors = FALSE))),
         colnames(ss3.dat[["discard_data"]]))
@@ -265,14 +265,14 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
     }
     # Change meanbodyweight if it exists
     if (!is.null(ss3.dat$meanbodywt)) {
-      seafleet.mbdwt <- unique(ss3.dat$meanbodywt[, 
+      seafleet.mbdwt <- unique(ss3.dat$meanbodywt[,
         c("Seas", "Fleet", "Partition", "Type")])
-      if (!all(tapply(seafleet.mbdwt$Seas, 
+      if (!all(tapply(seafleet.mbdwt$Seas,
         INDEX = seafleet.mbdwt[, c("Fleet", "Partition", "Type")],
         function(x) length(unique(x)))[,1,] == 1)) stop("ss3sim does not",
         " accomodate changing the year of a model with multiple seasons",
         " for a given fleet with mean body weight data.")
-      data.mbdwt.new <- setNames(do.call("rbind", apply(seafleet.mbdwt, 1, 
+      data.mbdwt.new <- setNames(do.call("rbind", apply(seafleet.mbdwt, 1,
         function(x) expand.grid(year_begin:year_end, x[1], x[2], x[3], x[4], 1, 0.01,
         stringsAsFactors = FALSE))),
         colnames(ss3.dat[["meanbodywt"]]))
@@ -296,7 +296,7 @@ change_year <- function(year_begin = 1, year_end = 100, burnin = 0,
     }
     # environmental parameters
     if (ss3.dat$N_environ_variables > 0) {
-      ss3.dat$envdat <- setNames(expand.grid(year_begin:year_end, 
+      ss3.dat$envdat <- setNames(expand.grid(year_begin:year_end,
         unique(ss3.dat$envdat$Variable), 0,
         stringsAsFactors = FALSE),
         colnames(ss3.dat$envdat))

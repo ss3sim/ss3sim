@@ -13,7 +13,7 @@
 #' @template lcomp-agecomp-index
 #' @template Nsamp
 #' @template dat_list
-#' @param ctl_file_in A path to the control file, outputed from an OM, containing
+#' @param ctl_file_in A path to the control file, output from an OM, containing
 #'   the OM parameters for growth. These values are used to determine the
 #'   uncertainty about size for fish sampled in each age bin.
 #' @param mean_outfile A path to write length and age data for external

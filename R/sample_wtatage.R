@@ -16,7 +16,7 @@
 #'
 #' @param wta_file_in The file to read weight-at-age from. Specifically to get the
 #'   age-0 weight-at-age. This is typically \code{wtatage.ss_new}.
-#' @param ctl_file_in A path to the control file, outputed from an OM, containing
+#' @param ctl_file_in A path to the control file, output from an OM, containing
 #'   the OM parameters for growth and weight/length relationship. These values
 #'   are used to determine the uncertainty about weight for fish sampled in each
 #'   age bin. Commonly \code{control.ss_new}
