@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_ss_version.R
 \name{get_ss_ver_file}
 \alias{get_ss_ver_file}
-\title{Get ths ss version (either 3.24 or 3.30) from an ss file (but not forecast.ss)}
+\title{Get the ss version (either 3.24 or 3.30) from an ss file}
 \usage{
 get_ss_ver_file(file)
 }

@@ -16,21 +16,21 @@ in the operating model that currently do not use environmental deviations and
 the vectors correspond to deviations. See the section "Specifying the
 \code{change_tv_list}" below for help on specifying this argument.}
 
-\item{ctl_file_in}{A string providing the path to the input SS3 \code{.ctl} file.}
+\item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
 
-\item{ctl_file_out}{A string providing the path to the output SS3 \code{.ctl} file.}
+\item{ctl_file_out}{A string providing the path to the output SS \code{.ctl} file.}
 
-\item{dat_file_in}{A string providing the path to the input SS3 \code{.dat} file.}
+\item{dat_file_in}{A string providing the path to the input SS \code{.dat} file.}
 
-\item{dat_file_out}{A string providing the path to the output SS3 \code{.dat} file.}
+\item{dat_file_out}{A string providing the path to the output SS \code{.dat} file.}
 
-\item{par_file_in}{A string providing the path to the input SS3 \code{.par} file.}
+\item{par_file_in}{A string providing the path to the input SS \code{.par} file.}
 
-\item{par_file_out}{A string providing the path to the output SS3 \code{.par} file.}
+\item{par_file_out}{A string providing the path to the output SS \code{.par} file.}
 
-\item{str_file_in}{A string providing the path to the input SS3 \code{starter.ss} file.}
+\item{str_file_in}{A string providing the path to the input SS \code{starter.ss} file.}
 
-\item{str_file_out}{A string providing the path to the output SS3 \code{starter.ss} file.}
+\item{str_file_out}{A string providing the path to the output SS \code{starter.ss} file.}
 
 \item{rpt_file_in}{Input SS3 report file}
 }

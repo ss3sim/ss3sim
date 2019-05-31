@@ -27,9 +27,9 @@ example above, use: \code{4}.}
 \item{fvals}{*Vector of \emph{F} values to be entered into \code{ss.par} file,
 where \code{length(fvals) == length(years_alter)} must be true.}
 
-\item{par_file_in}{A string providing the path to the input SS3 \code{.par} file.}
+\item{par_file_in}{A string providing the path to the input SS \code{.par} file.}
 
-\item{par_file_out}{A string providing the path to the output SS3 \code{.par} file.}
+\item{par_file_out}{A string providing the path to the output SS \code{.par} file.}
 }
 \value{
 A modified SS3 \code{.par} file.

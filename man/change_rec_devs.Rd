@@ -10,9 +10,9 @@ change_rec_devs(recdevs_new, par_file_in = "ss.par",
 \arguments{
 \item{recdevs_new}{A vector of new recruitment deviations.}
 
-\item{par_file_in}{A string providing the path to the input SS3 \code{.par} file.}
+\item{par_file_in}{A string providing the path to the input SS \code{.par} file.}
 
-\item{par_file_out}{A string providing the path to the output SS3 \code{.par} file.}
+\item{par_file_out}{A string providing the path to the output SS \code{.par} file.}
 }
 \value{
 A modified SS3 \code{.par} file.

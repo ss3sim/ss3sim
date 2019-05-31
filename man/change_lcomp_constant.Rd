@@ -19,7 +19,7 @@ an error when zeroes exist in the data. Instead use a very small value like
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
-\item{dat_file_out}{A string providing the path to the output SS3 \code{.dat} file.}
+\item{dat_file_out}{A string providing the path to the output SS \code{.dat} file.}
 
 \item{write_file}{Should the data file be written to disk?}
 }

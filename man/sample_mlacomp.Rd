@@ -15,7 +15,7 @@ you select option \code{section=2}.}
 \item{outfile}{A character string of the new file name to be created.
 Must end in \code{.dat} or equal \code{wtatage.ss}.}
 
-\item{ctl_file_in}{A path to the control file, outputed from an OM, containing
+\item{ctl_file_in}{A path to the control file, output from an OM, containing
 the OM parameters for growth. These values are used to determine the
 uncertainty about size for fish sampled in each age bin.}
 
@@ -83,10 +83,8 @@ setwd(temp_path)
 d <- system.file("extdata/models/cod-om", package = "ss3sim")
 dat_in <- file.path(d, "codOM.dat")
 dat_list <- r4ss::SS_readdat(dat_in, version = NULL, verbose = FALSE)
-dat_list <- change_fltname(dat_list)
 dat_list <- change_data(dat_list, outfile = NULL, write_file = FALSE,
   fleets = 1, years = 1990:2010, types = c("age", "mla"))
-dat_list <- change_fltname(dat_list)
 ctl_file_in <- file.path(d, "codOM.ctl")
 
 out <- sample_mlacomp(dat_list, outfile = NULL, ctl_file_in = ctl_file_in,

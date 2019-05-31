@@ -72,7 +72,6 @@ if specified.
 d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/models/cod-om/codOM.dat")
 dat_list <- r4ss::SS_readdat(f_in, version = NULL, verbose = FALSE)
-dat_list <- change_fltname(dat_list)
 
 ## Generate with constant sample size across years
 ex1 <- sample_lcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(1,2),

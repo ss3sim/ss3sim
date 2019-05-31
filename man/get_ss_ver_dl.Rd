@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_ss_version.R
 \name{get_ss_ver_dl}
 \alias{get_ss_ver_dl}
-\title{Get ths ss version (either 3.24 or 3.30) from a \code{dat_list} list.}
+\title{Get the ss version (either 3.24 or 3.30) from a \code{dat_list} list.}
 \usage{
 get_ss_ver_dl(dat_list)
 }

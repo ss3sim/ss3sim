@@ -11,15 +11,16 @@ change_e(ctl_file_in = "em.ctl", ctl_file_out = "em.ctl",
   forecast_num = 0, run_change_e_full = TRUE, verbose = FALSE)
 }
 \arguments{
-\item{ctl_file_in}{Input SS3 control file}
+\item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
 
-\item{ctl_file_out}{Output SS3 control file}
+\item{ctl_file_out}{A string providing the path to the output SS \code{.ctl} file.}
 
 \item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
-\item{for_file_in}{Input SS3 forecast file}
+\item{for_file_in}{A string providing the path to the input SS
+\code{forecast.ss} file.}
 
 \item{natM_type}{*A character string corresponding to option 0:4 in SS3 (i.e.
 "1Parm", "n_breakpoints", "Lorenzen", "agespecific",

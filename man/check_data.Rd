@@ -10,5 +10,5 @@ check_data(x)
 \item{x}{An SS3 data list object as read in by \code{\link[r4ss]{SS_readdat}}.}
 }
 \description{
-Check that the SS3 data file looks correct
+#todo: Think about survey timing, old check of 0.5 was removed.
 }

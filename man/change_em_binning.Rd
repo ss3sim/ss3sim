@@ -14,7 +14,7 @@ change_em_binning(dat_list, dat_file_out, bin_vector, lbin_method = NULL,
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
-\item{dat_file_out}{A string providing the path to the output SS3 \code{.dat} file.}
+\item{dat_file_out}{A string providing the path to the output SS \code{.dat} file.}
 
 \item{bin_vector}{A numeric vector of new length bins to substitute into the
 \code{ss3.dat} file.}

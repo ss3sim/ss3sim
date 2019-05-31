@@ -17,7 +17,7 @@ negative value indicates to SS3 to ignore it (not use that feature).}
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
-\item{dat_file_out}{A string providing the path to the output SS3 \code{.dat} file.}
+\item{dat_file_out}{A string providing the path to the output SS \code{.dat} file.}
 
 \item{write_file}{A logical value indicating if the altered file should be
 written to the disk. The default value is \code{TRUE}.}

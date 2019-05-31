@@ -21,27 +21,28 @@ for EM models, to establish a period with no fishing.
 Note that the value should correspond to the number of years, not a year
 value.}
 
-\item{ctl_file_in}{A string providing the path to the input SS3 \code{.ctl} file.}
+\item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
 
 \item{ctl_file_out}{Output SS3 control file, if \code{NULL} the file will be
 named the same as the \code{ctl_file_in}}
 
-\item{dat_file_in}{A string providing the path to the input SS3 \code{.dat} file.}
+\item{dat_file_in}{A string providing the path to the input SS \code{.dat} file.}
 
 \item{dat_file_out}{Output SS3 data file, if \code{NULL} the file will be
 named the same as the \code{dat_file_in}}
 
-\item{par_file_in}{A string providing the path to the input SS3 \code{.par} file.}
+\item{par_file_in}{A string providing the path to the input SS \code{.par} file.}
 
 \item{par_file_out}{Output SS3 parameter file, if \code{NULL} the file will
 be named the same as the \code{par_file_in}}
 
-\item{str_file_in}{A string providing the path to the input SS3 \code{starter.ss} file.}
+\item{str_file_in}{A string providing the path to the input SS \code{starter.ss} file.}
 
 \item{str_file_out}{Output SS3 starter file, if \code{NULL} the file will
 be named the same as the \code{str_file_in}}
 
-\item{for_file_in}{Input SS3 forecast file}
+\item{for_file_in}{A string providing the path to the input SS
+\code{forecast.ss} file.}
 
 \item{for_file_out}{Output SS3 forecast file, if \code{NULL} the file
 will be named the same as the \code{for_file_in}}
@@ -73,6 +74,8 @@ To remove data use \code{\link{sample_index}}, \code{\link{sample_lcomp}},
 or \code{\link{sample_agecomp}}.
 For models that use the \code{.forecast} file, all references to years
 must be made with relative values (i.e., 0 or negative integers).
+The code changes the begining and ending year for benchmark values to be the end
+year of the model and \code{year_begin} is ignored for the forecast file.
 }
 \examples{
 \donttest{

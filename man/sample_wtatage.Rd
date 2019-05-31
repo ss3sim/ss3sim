@@ -19,7 +19,7 @@ Must end in \code{.dat} or equal \code{wtatage.ss}.}
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
-\item{ctl_file_in}{A path to the control file, outputed from an OM, containing
+\item{ctl_file_in}{A path to the control file, output from an OM, containing
 the OM parameters for growth and weight/length relationship. These values
 are used to determine the uncertainty about weight for fish sampled in each
 age bin. Commonly \code{control.ss_new}}
