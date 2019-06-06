@@ -9,7 +9,7 @@ add_CPUE <- function(ctl.in, ctl.out = NULL, overwrite = FALSE,
 	ctl <- readLines(ctl.in)
 		
 	startline <- findspot("Q_setup", ctl, gopast = "#")
-  q[, "name"] <- paste0("# q_", q[, "fleet"], " qstuff")
+  q[, "name"] <- paste0("#LnQ_base_Survey(", q[, "fleet"], ")")
   Q_setup <- apply(q[, c("fleet", "link", "extra_se", "biasadj", "float", "name")], 
   	1, paste, collapse = " ")
   ctl <- append(x = ctl, 
