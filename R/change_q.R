@@ -99,3 +99,32 @@ remove_CPUE <- function(string,
   r4ss::SS_writedat(dat, dat.out,
   	verbose = FALSE, overwrite = overwrite)
 }
+
+#' Remove a q setup line into an SS control file only
+#'
+#' This function removesa q setup line from a SS 3.30 control file
+#' @param string A string with the fleetname to remove.
+#' @param ctl.in An SS control file name to read in.
+#' @param ctl.out The SS control file to read out.
+#' @param overwrite Logical. Overwrite an existing file with the same name as
+#'   \code{ctl.out} or \code{data.out}?
+#' @return A modified SS control file.
+#' @author Kelli Johnson
+remove_q_ctl <- function(string,
+                        ctl.in, ctl.out,
+                        overwrite = FALSE) {
+
+  # ctl file
+  ctl <- readLines(ctl.in)
+  line <- findspot("Q_setup", ctl, gopast = "#")
+  while(!grepl(string, ctl[line])) line <- line + 1
+  ctl <- ctl[-line]
+  line <- findspot("Q_parms", ctl, gopast = "#")
+  while(!grepl(string, ctl[line])) line <- line + 1
+  ctl <- ctl[-line]
+  if (!is.null(ctl.out)) {
+    write <- TRUE
+    if (file.exists(ctl.out) & !overwrite) write <- FALSE
+    if (write) writeLines(text = ctl, con = ctl.out)
+  }
+}

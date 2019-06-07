@@ -304,7 +304,19 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         # doesn't trip up change_data:
         datfile.orig <- clean_data(dat_list = datfile.orig,
           index_params = index_params, verbose = FALSE)
-
+        # Need to also change the number of q parameters in the control so that
+        # It matches the datafile:
+        #assume either 1 or 2 fleets (numbered 2 or 3) are only options.
+        if (length(index_params$fleets) == 1){
+          if(index_params$fleets == 2 | index_params$fleets == 3){
+            #fleetname to remove
+            rm_fleetname <- datfile.orig$fleetnames[c(-1, -index_params$fleets)]
+            remove_q_ctl(rm_fleetname, ctl.in = pastef(sc, i, "om", "om.ctl"),
+                        ctl.out = pastef(sc, i, "om", "om.ctl"), overwrite = T)
+          } else stop("Currently, only fleets numbered 2 or 3 should be able to",
+                      "have indices of abundance. Please check the fleet numbers",
+                      "for index parameters.")
+        }
         data_params <- add_nulls(data_params, c("age_bins", "len_bins",
           "pop_binwidth", "pop_minimum_size", "pop_maximum_size",
           "tail_compression", "lcomp_constant"))
