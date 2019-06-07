@@ -281,6 +281,35 @@ change_e <- function(ctl_file_in = "em.ctl",
 
 if(!is.null(par_name)) {
   par_name <- unlist(strsplit(par_name, split = ","))
+  par_name_q <- grep("LnQ_", par_name, value = TRUE)
+  if (length(par_name_q) > 0) {
+    parsinmodel <- SS_parlines(ctlfile = ctl_file_in, dir = NULL,
+      version = ss_version, verbose = verbose, active = FALSE)
+    defaultq <- SS_parlines(dir = NULL,
+      ctlfile = dir(pattern = "\\.ctl",
+        path = system.file("extdata", "models", "cod-em", package = "ss3sim"),
+        full.name = TRUE),
+        version = ss_version, verbose = verbose, active = FALSE)
+    defaultq <- defaultq[grep("LnQ_", defaultq$Label), ]
+    fleet_q <- sapply(strsplit(par_name_q, "\\(|\\)|_"),
+      function(x) x[grepl("[0-9]+", x)])
+    for (iiq in seq_along(par_name_q)) {
+      if (any(grepl(par_name_q[iiq], parsinmodel$Label))) next
+      add_CPUE(ctl.in = ctl_file_in, ctl.out = ctl_file_in,
+        overwrite = TRUE,
+        q = data.frame(
+          "fleet" = type.convert(fleet_q[iiq], as.is = TRUE),
+          "link" = 1, "link_info" = 0, "extra_se" = 0, "biasadj" = 0, "float" = 0,
+          "LO" = defaultq$LO, "HI" = defaultq$HI, "INIT" = defaultq$INIT,
+          "PRIOR" = defaultq$PRIOR, "PR_SD" = defaultq$PR_SD,
+          "PR_type" = defaultq$PR_type, "PHASE" = defaultq$PHASE,
+          "env_var" = 0, "use_dev" = 0,
+          "dev_mnyr" = 0,  "dev_mxyr" = 0, "dev_PH" = 0,
+          "Block" = 0, "Blk_Fxn" = 0,
+          "name" = as.character(par_name_q[iiq])))
+    }
+  }
+
   phasenochange <- is.na(par_phase)
   if(any(phasenochange)) {
     SS_changepars(dir = NULL, ctlfile = ctl_file_in,
