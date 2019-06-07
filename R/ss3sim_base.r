@@ -344,7 +344,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       dat_list <- with(index_params,
         sample_index(dat_list        = dat_list,
-                     ctl_file_in     = pastef(sc, i, "om", "om.ctl"),
                      outfile         = NULL,
                      ctl_file_in     = pastef(sc, i, "om", "om.ctl"),
                      fleets          = fleets,
