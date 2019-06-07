@@ -1,6 +1,6 @@
 add_CPUE <- function(ctl.in, ctl.out = NULL, overwrite = FALSE,
 	q = data.frame(
-		"fleet" = 3, "link" = 1, "extra_se" = 0, "biasadj" = 0, "float" = 0,
+		"fleet" = 3, "link" = 1, "link_info" = 0, "extra_se" = 0, "biasadj" = 0, "float" = 0,
 		"LO" = -20, "HI" = 20, "INIT" = 0, "PRIOR" = 0, "PR_SD" = 99, 
 		"PR_type" = 0, "PHASE" = 1, "env_var" = 0, "use_dev" = 0, 
 		"dev_mnyr" = 0,  "dev_mxyr" = 0, "dev_PH" = 0, 
@@ -10,7 +10,7 @@ add_CPUE <- function(ctl.in, ctl.out = NULL, overwrite = FALSE,
 		
 	startline <- findspot("Q_setup", ctl, gopast = "#")
   q[, "name"] <- paste0("#LnQ_base_Survey(", q[, "fleet"], ")")
-  Q_setup <- apply(q[, c("fleet", "link", "extra_se", "biasadj", "float", "name")], 
+  Q_setup <- apply(q[, c("fleet", "link", "link_info", "extra_se", "biasadj", "float", "name")], 
   	1, paste, collapse = " ")
   ctl <- append(x = ctl, 
   	values = Q_setup,
