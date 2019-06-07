@@ -4,12 +4,13 @@ add_CPUE <- function(ctl.in, ctl.out = NULL, overwrite = FALSE,
 		"LO" = -20, "HI" = 20, "INIT" = 0, "PRIOR" = 0, "PR_SD" = 99, 
 		"PR_type" = 0, "PHASE" = 1, "env_var" = 0, "use_dev" = 0, 
 		"dev_mnyr" = 0,  "dev_mxyr" = 0, "dev_PH" = 0, 
-		"Block" = 0, "Blk_Fxn" = 0)) {
+		"Block" = 0, "Blk_Fxn" = 0, "name" = NULL)) {
 	
 	ctl <- readLines(ctl.in)
 		
 	startline <- findspot("Q_setup", ctl, gopast = "#")
-  q[, "name"] <- paste0("#LnQ_base_Survey(", q[, "fleet"], ")")
+	if (is.null(q[, "name"])) q[, "name"] <- paste0("#LnQ_base_Survey(", q[, "fleet"], ")")
+  if (substr(trimws(q[, "name"]), 1, 1) != "#") q[, "name"] <- paste0("#", q[, "name"])
   Q_setup <- apply(q[, c("fleet", "link", "link_info", "extra_se", "biasadj", "float", "name")], 
   	1, paste, collapse = " ")
   ctl <- append(x = ctl, 
