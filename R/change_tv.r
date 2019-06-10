@@ -114,14 +114,9 @@ change_tv <- function(change_tv_list,
   ss_bin <- "ss_safe"
 
   ss3.ctl    <- readLines(con = ctl_file_in)
-  ss3.dat    <- readLines(con = dat_file_in)
+  ss3.dat    <- SS_readdat(dat_file_in)
   ss3.starter<- SS_readstarter(file = str_file_in, verbose = FALSE)
   ss3.report <- readLines(con = rpt_file_in)
-
-  year.beg <- grep("#_styr",  ss3.dat, value = TRUE )
-  year.end <- grep("#_endyr", ss3.dat, value = TRUE )
-  year.beg <- as.numeric(sub(" ", "", strsplit(year.beg, "#")[[1]][1]))
-  year.end <- as.numeric(sub(" ", "", strsplit(year.end, "#")[[1]][1]))
 
 # For all variables the following coding is used
    # mg = Natural mortality and growth parameters
@@ -143,38 +138,18 @@ parameters that are already specified as time-varying.")
 
 # Divide .dat file at the environmental variable table
   # If no environmental variables create an empty table to be filled later
-  dat.varnum.text <- grep("#_N_environ_variables", ss3.dat,
-                          fixed = TRUE, value = TRUE)
-  dat.varnum <- as.numeric(gsub('([0-9]*).*','\\1', dat.varnum.text))
-  dat.varnum.counter <- dat.varnum
-  dat.tbl.ch <- c(grep("#_N_environ_obs",              ss3.dat, fixed = TRUE),
-                  grep("# N sizefreq methods to read", ss3.dat, fixed = TRUE))
-  ss3.dat.top <- ss3.dat[1:dat.tbl.ch[1]]
-  if(dat.tbl.ch[2] - dat.tbl.ch[1] == 1) {
+  dat.varnum.counter <- ss3.dat$N_environ_variables
+
+  if(is.null(ss3.dat$envdat)) {
     ss3.dat.tbl <- data.frame(array(dim=c(0,3),
                                     dimnames = list(NULL,
-                                                    c("year", "variable", "value"))))
+                                                    c("Yr", "Variable", "Value"))))
   } else {
-      ss3.dat.tbl <- ss3.dat[(dat.tbl.ch[1] + 1) :
-                             (dat.tbl.ch[2] - 1)]
-      ss3.dat.tbl <- do.call("rbind",
-                             sapply(ss3.dat.tbl,
-                                   strsplit, split = " "))[,-1]
-      ss3.dat.tbl <- as.data.frame(ss3.dat.tbl,
-                                   stringsAsFactors = FALSE,
-                                   class = c("integer", "numeric", "numeric"),
-                                   rowames = NA)
-      colnames(ss3.dat.tbl) <- c("year", "variable", "value")
-      row.names(ss3.dat.tbl) <- NULL
-    }
-  ss3.dat.bottom <- ss3.dat[dat.tbl.ch[2]:length(ss3.dat)]
-
-  fleet.names <- ss3.dat[grep("#_N_areas", ss3.dat)[1] + 1]
-  fleet.names <- strsplit(fleet.names, "%")[[1]]
-
+    ss3.dat.tbl <- ss3dat$envdat
+  }
   divider.a <- grep("#_Spawner-Recruitment", ss3.ctl, fixed = TRUE)[1]
   divider.b <- grep("#_Q_setup", ss3.ctl, fixed = TRUE)[1]
-  divider.c <- grep("selex_types", ss3.ctl, fixed = TRUE)[1]
+  divider.c <- grep("_size_selex_patterns", ss3.ctl, fixed = TRUE)[1]
   lab <- sapply(names(change_tv_list), function(x) {
                                val <- grep(pattern = x, x = ss3.ctl, fixed = TRUE)[1]
                                if(is.na(val)) {
@@ -187,7 +162,7 @@ control.ss_new file?"))}
                                if(val > divider.a & val < divider.b) temp <- "sr"
                                if(val > divider.b & val < divider.c) temp <- "qs"
                                if(val > divider.c) temp <- "sx"
-                               if(x %in% fleet.names) temp <- "qs"
+                               if(x %in% ss3.dat$fleetnames) temp <- "qs"
                                temp
                              })
   tab <- as.data.frame.table(table(lab))
@@ -283,10 +258,10 @@ for(i in seq_along(temp.data)) {
     # param`(y) = param + link*env(y,-g)
     val[8] <- -1 * dat.varnum.counter
     ss3.ctl[par.ch] <- paste(c(val, "#",  names(temp.data)[i]), collapse=" ")
-  dat <- data.frame(year = year.beg:year.end,
+  dat <- data.frame(year = ss3.dat$styr:ss3.dat$endyr,
                     variable = dat.varnum.counter,
                     value = temp.data[i])
-  names(dat) <- c("year", "variable", "value")
+  names(dat) <- c("Yr", "Variable", "Value")
     ss3.dat.tbl <- rbind(ss3.dat.tbl, dat)
 }
 
@@ -341,10 +316,10 @@ temp.data <- change_tv_list[lab == "sr"]
     ss3.ctl[sr.ch+1] <- "3 #_SR_env_target_0=none;1=devs;_2=R0;_3=steepness"
   }
 
-  dat <- data.frame(year = year.beg:year.end,
+  dat <- data.frame(year = ss3.dat$styr:ss3.dat$endyr,
                     variable = dat.varnum.counter,
                     value = temp.data)
-    names(dat) <- c("year", "variable", "value")
+    names(dat) <- c("Yr", "Variable", "Value")
     ss3.dat.tbl <- rbind(ss3.dat.tbl, dat)
 }
   sr.parameter <- which(lab == "sr")
@@ -372,16 +347,16 @@ for(i in seq_along(temp.data)) {
   names(change_tv_list)[which(names(change_tv_list) ==
                               names(temp.data)[i])] <-
                   paste0("Q_envlink_",
-                        which(fleet.names == names(temp.data)[i]),
+                        which(ss3.dat$fleetnames == names(temp.data)[i]),
                         "_", names(temp.data)[i])
 
   paste.into.ctl <- c(paste.into.ctl,
                       paste("-2 2 1 0 -1 99 -5 #", names(temp.data)[i]))
 
-  dat <- data.frame(year = year.beg:year.end,
+  dat <- data.frame(year = ss3.dat$styr:ss3.dat$endyr,
                     variable = dat.varnum.counter,
                     value = temp.data[i])
-  names(dat) <- c("year", "variable", "value")
+  names(dat) <- c("Yr", "Variable", "Value")
     ss3.dat.tbl <- rbind(ss3.dat.tbl, dat)
 }
   par.spec <- grep("#_Q_parms\\(if_any\\)", ss3.ctl)
@@ -393,17 +368,10 @@ for(i in seq_along(temp.data)) {
                                                  paste.into.ctl,
                                                  (par.spec + 1 + par.power))
 
-    ss3.dat.top[grep(" #_N_environ_variables",
-                     ss3.dat.top, fixed = TRUE)] <- paste(dat.varnum.counter,
-                                                          " #_N_environ_variables")
-    ss3.dat.top[grep(" #_N_environ_obs",
-                     ss3.dat.top, fixed = TRUE)] <- paste((year.end - year.beg + 1) * dat.varnum.counter,
-                                        " #_N_environ_obs")
-    ss3.dat.new=c(ss3.dat.top,
-                  apply(ss3.dat.tbl, 1, paste, collapse = " "),
-                  ss3.dat.bottom)
-    writeLines(ss3.dat.new, con = dat_file_out)
-    writeLines(ss3.ctl, con= ctl_file_out)
+  ss3.dat$N_environ_variables <- dat.varnum.counter
+  ss3.dat$envdat <- ss3.dat.tbl
+
+    SS_writedat(ss3.dat, dat_file_out)
 
     #run SS with with no estimation and no hessian
     #first change starter file option to use .par to .ctl
