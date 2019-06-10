@@ -521,6 +521,20 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                   run_change_e_full    = run_change_e_full))
         setwd(wd)
       }
+      # As with the OM, need to remove q setup and parlines in the EM that are
+      # not used.
+      #assume either 1 or 2 fleets (numbered 2 or 3) are only options.
+      if (length(index_params$fleets) == 1){
+        if(index_params$fleets == 2 | index_params$fleets == 3){
+          #fleetname to remove
+          rm_fleetname <- datfile.orig$fleetnames[c(-1, -index_params$fleets)]
+          remove_q_ctl(rm_fleetname, ctl.in = pastef(sc, i, "em", "em.ctl"),
+                       ctl.out = pastef(sc, i, "em", "em.ctl"), overwrite = T)
+        } else stop("Currently, only fleets numbered 2 or 3 should be able to",
+                    "have indices of abundance. Please check the fleet numbers",
+                    "for index parameters.")
+      }
+
       ss_version <- get_ss_ver_dl(dat_list)
       SS_writedat(datlist = dat_list, outfile = pastef(sc, i, "em", "ss3.dat"),
         version = ss_version, overwrite = TRUE, verbose = FALSE)
