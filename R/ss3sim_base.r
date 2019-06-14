@@ -276,10 +276,11 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(!is.null(tv_params)) {
         setwd(pastef(sc, i, "om"))
         # not running add_null() b/c parameters in tv_params are userspecified
-        with(tv_params,
+        #
+        #with(tv_params,
           change_tv(change_tv_list      = tv_params,
                     ctl_file_in         = "om.ctl",
-                    ctl_file_out        = "om.ctl"))
+                    ctl_file_out        = "om.ctl")#)
         setwd(wd)
       }
 
