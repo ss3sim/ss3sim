@@ -90,7 +90,7 @@
 #' setwd("Simple")
 #'
 #' # Run SS3 to create control.ss_new and Report.sso:
-#' system("ss_safe starter.ss -noest")
+#' system("ss_safe starter.ss -nohess")
 #'
 #' change_tv(change_tv_list = list("NatM_p_1_Fem_GP_1" = c(rep(0, 20),
 #'       rep(.1, 11)), "SR_BH_steep"=rnorm(31, 0, 0.05)), ctl_file_in =
@@ -122,6 +122,11 @@ change_tv <- function(change_tv_list,
 
   # TODO: add a check that the directories associated with the out files are all
   # the same.
+  out_dirnames<- lapply(c(ctl_file_out, dat_file_out, par_file_out, str_file_out), function(x) dirname(x))
+  out_dirnames <- unique(unlist(out_dirnames))
+  if (length(out_dirnames) > 1) stop("directories for all files created need to
+                                     all be the same in order for the function",
+                                     "change_tv to work.")
 
   # For all variables the following coding is used
    # mg = Natural mortality and growth parameters
@@ -434,11 +439,12 @@ for(i in seq_along(temp.data)) {
          "parameters. Please contact the developers if you are interested in",
          "using this feature.")
   }
-
   # Finish changing the data file based on the tv params.
   ss3.dat$N_environ_variables <- dat.varnum.counter
   ss3.dat$envdat <- ss3.dat.tbl
-  #run SS with with no estimation and no hessian
+
+  #run SS with with no estimation and no hessian to get a new .par file and
+  # a control ss_new file.
   #first change starter file option from use .par to .ctl
   ss3.starter$init_values_src <- 0 # dont use par
   ss3.starter$datfile <- basename(dat_file_out)
@@ -449,30 +455,57 @@ for(i in seq_along(temp.data)) {
   SS_writestarter(mylist = ss3.starter, dir = dirname(str_file_out),
                   file = basename(str_file_out), overwrite = TRUE,
                   verbose = FALSE, warn = FALSE)
+  #In case putting the out files in a different base dir, change the wd and copy
+  # over the forcast file
+  if(dirname(ctl_file_in) != dirname(ctl_file_out)){
+    file.copy(file.path(dirname(str_file_in),"forecast.ss"), to = file.path(dirname(str_file_out), "forecast.ss"), overwrite = TRUE) #use the same forecast file.
+    old_dir <- getwd()
+    setwd(dirname(ctl_file_out))
+    on.exit(setwd(old_dir), add = TRUE) # just in case exits on error.
+  }
+
   bin <- get_bin(ss_bin)
   #Call ss3 for a run that includes the environmental link
   os <- .Platform$OS.type
   if(os == "unix") {
-    system(paste(bin, "-noest"), ignore.stdout = TRUE)
+    system(paste(bin, "-nohess"), ignore.stdout = TRUE)
     } else {
-      system(paste(bin, "-noest"), show.output.on.console = FALSE, invisible = TRUE, ignore.stdout = TRUE)
+      system(paste(bin, "-nohess"), show.output.on.console = FALSE, invisible = TRUE, ignore.stdout = TRUE)
     }
 
-  #Change starter file option back to using .par
+  # change wd back, if needed.
+  if(dirname(ctl_file_in) != dirname(ctl_file_out)){
+    setwd(old_dir)
+  }
+
+
+  #Check that inputs were read successfully
+  echoinput <- readLines(file.path(dirname(str_file_out), "echoinput.sso"))
+  checkread <- grep("999  If you see 999, we got to the end of the control file successfully!",
+                   echoinput)
+  if(length(checkread < 1)) {
+    stop("OM model run during change_tv() was not read successfully by ss. ",
+         "Please check the model files in ", dirname(str_file_out), " to ",
+         "identify the specific issue.")
+  }
+  # TODO: add a check that the model was successfully run without exiting early.
+
+  #Change starter file option back to using .par and write to file again.
   ss3.starter$init_values_src <- 1
   SS_writestarter(mylist = ss3.starter, dir = dirname(str_file_out),
                   file = basename(str_file_out), overwrite = TRUE,
                   verbose = FALSE, warn = FALSE)
-  # read in the new report, par, and ctl file files.
-  ss3.report <- readLines(con = rpt_file_in)
-  ss.par    <- readLines(con = par_file_in)
+  # read in the new report, par, and ctl file files. Note that Report.sso and
+  # ss.par are the names created by SS when model runs are done.
+  ss3.report <- readLines(con = file.path(dirname(str_file_out), "Report.sso"))
+  ss.par    <- readLines(con = file.path(dirname(str_file_out), "ss.par"))
   ss3.ctl_new <- readLines(con = file.path(dirname(str_file_out),"control.ss_new"))
 
   # Use the control.ss_new file from the model run so the formatting is better.
-  file.copy(file.path(dirname(str_file_out),"control.ss_new"), to = ctl_file_out, overwrite = T)
-  # could also do the same for the .dat file, but not necessary
+  file.copy(file.path(dirname(str_file_out),"control.ss_new"),
+            to = ctl_file_out, overwrite = TRUE)
 
-  #TODO: verify the below still works.
+  #TODO: verify the below still works, or rather, is it even necessary?
   #Use look for and change the new parameters in .par so that the .par file
   # can be used when running new models.
   env.name <- sapply(names(change_tv_list), function(x) {
