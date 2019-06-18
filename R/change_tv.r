@@ -70,7 +70,7 @@
 #' \code{function_type; change_tv} in your case file. For example, you might
 #' want to use M for natural mortality, S for selectivity, or G for growth.
 #'
-#' @importFrom r4ss SS_readstarter SS_writestarter
+#' @importFrom r4ss SS_readstarter SS_writestarter SS_readdat
 #'
 #' @export
 #'
@@ -115,10 +115,10 @@ change_tv <- function(change_tv_list,
 
   # read in necessary ss files.
   ss3.ctl    <- readLines(con = ctl_file_in)
-  ss3.dat    <- SS_readdat(dat_file_in)
+  ss3.dat    <- SS_readdat(dat_file_in, verbose = FALSE)
   ss3.starter<- SS_readstarter(file = str_file_in, verbose = FALSE)
   ss3.report <- readLines(con = rpt_file_in) #TODO: consider if can use ss_summary instead.
-  ss3.ctl.parlines <- SS_parlines(ctl_file_in)
+  ss3.ctl.parlines <- SS_parlines(ctl_file_in, verbose = FALSE)
 
   # TODO: add a check that the directories associated with the out files are all
   # the same.

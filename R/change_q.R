@@ -72,6 +72,7 @@ findspot <- function(string, lines, gopast = NULL, goto = NULL) {
 #' @param overwrite Logical. Overwrite an existing file with the same name as
 #'   \code{ctl.out} or \code{data.out}?
 #' @return A modified SS control file.
+#' @importFrom r4ss SS_writedat
 #' @author Kelli Johnson
 remove_CPUE <- function(string,
 	ctl.in, ctl.out,
@@ -96,7 +97,7 @@ remove_CPUE <- function(string,
   dat <- r4ss::SS_readdat(dat.in, verbose = FALSE)
   fleetnum <- grep(string, dat$fleetnames)
   dat$CPUE <- dat$CPUE[dat$CPUE$index != fleetnum, ]
-  r4ss::SS_writedat(dat, dat.out,
+  SS_writedat(dat, dat.out,
   	verbose = FALSE, overwrite = overwrite)
 }
 

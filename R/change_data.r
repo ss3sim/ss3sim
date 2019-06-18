@@ -76,7 +76,7 @@
 #' years <- c(5, 10, 15)
 #' types <- c("len", "age")
 #' file_in <- r4ss::SS_readdat(paste0(d, "/models/cod-om/codOM.dat"),
-#'              version = NULL)
+#'              version = NULL, verbose = FALSE)
 #'
 #' # Basic test with just length data, default bins:
 #' out <- change_data(file_in, outfile = "ignore.dat", types = "len",
