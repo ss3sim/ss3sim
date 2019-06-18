@@ -135,9 +135,17 @@ change_tv <- function(change_tv_list,
    # sx = Selectivity parameters
 
   # Check that none of the variables are already time varying
-  #TODO: do this using SS_parlines() and ctl file instead of grep and report.
+  # TODO: do this using SS_parlines() and ctl file instead of grep and report.
   # then, no longer need to do inital model run in ss3sim_base to get a report
   # file.
+  # TODO:Also, change this so this script can be used with other time varying
+  # parameters already in the model
+  # TODO: Add in capabilities to change timevarying SR parameters. only 1 time
+  # varying SR parameter allowed?
+  # Need to check whether this is true or not for SS3.30 like it was for SS3.24.
+  # TODO: if the variable being added is the same over years, then there is no
+  # need to use timevarying. Check this, and change the init value in the ctl
+  # file instead of time varying if this is the case.
     baseom.tv <- grep("_ENV", ss3.report, value = TRUE)
     baseom.tv <- sapply(baseom.tv, function(x) {
                         temp <- strsplit(x, "_ENV")[[1]][1]
@@ -195,75 +203,6 @@ control.ss_new file?"))}
   tab <- as.data.frame.table(table(lab))
   # Check that there are no environmental links specified
 
-
-# Pretty sure can get rid of this section; written for 3.24 v of SS
-#   mg.ch <- grep("custom_MG-env_setup (0/1)",  ss3.ctl, fixed = TRUE)
-#   if("mg" %in% tab$lab) {
-#   if(subset(tab, lab == "mg", select = "Freq") > 0 ) {
-#     test.tmp <- regmatches(ss3.ctl[mg.ch], gregexpr("[[:digit:]]+", ss3.ctl[mg.ch]))
-#       test.tmp <- as.numeric(unlist(test.tmp))[1]
-#       if(test.tmp == 1) {
-#         stop(
-# "ss3sim does not support the use of custom environmental linkages. Instead
-# specify, 0 #_custom_MG-env_setup (0/1), for the environmental linkage.")
-#     }
-#     ss3.ctl[mg.ch] <- paste(0, "#custom_MG-env_setup (0/1)")
-#     ss3.ctl[(mg.ch + 1)] <- "-1 2 1 0 -1 99 -2  # env link specification i.e fixed to 1"
-#     adjust.ch <- grep("#_env/block/dev_adjust_method", ss3.ctl)[1]
-#     test.tmp <- ss3.ctl[adjust.ch]
-#       test.tmp <- as.numeric(strsplit(test.tmp, "#")[[1]][1])
-#       if(is.na(test.tmp)) {
-#         ss3.ctl[adjust.ch] <- "1 #_env/block/dev_adjust_method"
-#       } else {
-#       if(test.tmp == 2) {
-#         warning(
-# "The time-varying adjustment constraint in the natural mortality and growth
-# section of the given operating model specifies a logistic transformation. change_tv
-# implements additive environmental deviates and constraining the adjusted
-# parameter to the bounds of the base parameter may lead to undesired
-# transformations. To avoid this, either change the bounds of the base parameter
-# and ignore this warning or change the .ctl file to implement env, blocks,
-# and deviations that are not constrained by bounds. To do the later, find
-# 2 #_env/block/dev_adjust_method
-# in the .ctl file and change it to
-# 1 #_env/block/dev_adjust_method.")
-#       }}
-#
-#   }
-#   }
-#
-#   sx.ch <- grep("custom_sel-env_setup (0/1)", ss3.ctl, fixed = TRUE)
-#   if("sx" %in% tab$lab) {
-#   if(subset(tab, lab == "sx", select = "Freq") > 0 ) {
-#     test.tmp <- regmatches(ss3.ctl[sx.ch], gregexpr("[[:digit:]]+", ss3.ctl[sx.ch]))
-#       test.tmp <- as.numeric(unlist(test.tmp))[1]
-#       if(test.tmp == 1) {
-#         stop(
-# "ss3sim does not support the use of custom environmental linkages. Instead
-# specify, 0 #_custom_sel-env_setup (0/1), for the environmental linkage.")
-#     }
-#     ss3.ctl[sx.ch] <- paste(0, "#custom_sel-env_setup (0/1)")
-#     ss3.ctl[(sx.ch + 1)] <- "-1 2 1 0 -1 99 -2 # env link specification i.e fixed to 1"
-#     adjust.ch <- grep("#_env/block/dev_adjust_method", ss3.ctl)[2]
-#     test.tmp <- ss3.ctl[adjust.ch]
-#       test.tmp <- as.numeric(strsplit(test.tmp, "#")[[1]][1])
-#       if(is.na(test.tmp)) {
-#         ss3.ctl[adjust.ch] <- "1 #_env/block/dev_adjust_method"
-#       } else {
-#       if(test.tmp == 2) {
-#         warning(
-# "The time-varying adjustment constraint in the selectivity section of the given
-# operating model specifies a logistic transformation. ss3sim::change_tv implements additive
-# environmental deviates and constraining the adjusted parameter to the bounds of
-# the base parameter may lead to undesired transformations. To avoid this, either
-# change the bounds of the base parameter and ignore this warning or change the
-# givent .ctl file to implement env, blocks, and deviations that are not
-# constrained by bounds. To do the later find 2 #_env/block/dev_adjust_method in
-# the .ctl file and change it to 1 #_env/block/dev_adjust_method.")
-#       }}
-#   }
-#   }
-
 # For MG parms or selectivity parameters, turn on the environmental link in the
 # ctl file parameter line and add the values to the environmental data in the
 # data file.
@@ -299,113 +238,6 @@ for(i in seq_along(temp.data)) {
                     "Value" = temp.data[i])
     ss3.dat.tbl <- rbind(ss3.dat.tbl, dat)
 }
-
-
-#No longer need now that SR parms have long lines as well.
-  #TODO: retain warnings?Maybe need to incorporate warnings
-# temp.data <- change_tv_list[lab == "sr"]
-#   if(length(temp.data) > 0) {
-#     sr.ch <- grep("#_SR_env_link", ss3.ctl, fixed = TRUE)
-#     sr.base <- as.numeric(gsub('([0-9]*).*','\\1',ss3.ctl[sr.ch+1]))
-#     type <- ifelse(grepl("R0", names(temp.data), ignore.case = TRUE) == 1,
-#                    "virgin",
-#                    ifelse(grepl("steep", names(temp.data), ignore.case = TRUE) == 1,
-#                    "steep",
-#                    ifelse(grepl("dev", names(temp.data), ignore.case = TRUE) == 1,
-#                    "devs", "NA")))
-#     if(type=="NA") {
-#       stop("Did not recognize the name for the stock recruit parameter
-#             as recruitment deviations, virgin recruitment, or steepness,
-#             please rename and rerun the scenario")
-#     }
-#     if(type == "devs") {
-#       warning("ss3sim uses annual recruitment deviations and may not work
-#                with a model that ties recruitment deviations to environmental
-#                covariates. If you need to compare the environment to annual
-#                recruitment deviations, the preferred option is to transform the
-#                environmental variable into an age 0 pre-recruit survey. See
-#                page 55 of the SS3 version 3.24f manual for more information.")
-#     }
-#     if(length(temp.data) > 1 ) {
-#       stop("Currently SS3 only allows one stock recruit paramater at a
-#             time, R0 or steepness, to vary with an environmental
-#             covariate.")
-#     }
-#
-#     if(sr.base > 0) {
-#       stop("Currently SS3 does not allow environmental deviations
-#             for multiple stock recruit parameters.
-#             Please remove the environmental covariate from the base operating model
-#             and run the scenario again.")
-#     }
-#
-#   sr.shortline.ch <- grep("# SR_envlink", ss3.ctl, fixed = TRUE)
-#   ss3.ctl[sr.shortline.ch] <- "-5 5 1 0 -1 99 -3 # SR_envlink"
-#   dat.varnum.counter <- dat.varnum.counter + 1
-#   ss3.ctl[sr.ch] <- paste(dat.varnum.counter, "#_SR_env_link")
-#
-#   if(length(grep("dev", names(temp.data), fixed = TRUE)) > 0) {
-#     ss3.ctl[sr.ch+1] <- "1 #_SR_env_target_0=none;1=devs;_2=R0;_3=steepness"
-#   }
-#   if(length(grep("R0", names(temp.data), fixed = TRUE)) > 0) {
-#     ss3.ctl[sr.ch+1] <- "2 #_SR_env_target_0=none;1=devs;_2=R0;_3=steepness"
-#   }
-#   if(length(grep("steep", names(temp.data), fixed = TRUE)) > 0) {
-#     ss3.ctl[sr.ch+1] <- "3 #_SR_env_target_0=none;1=devs;_2=R0;_3=steepness"
-#   }
-#
-#   dat <- data.frame(year = ss3.dat$styr:ss3.dat$endyr,
-#                     variable = dat.varnum.counter,
-#                     value = temp.data)
-#     names(dat) <- c("Yr", "Variable", "Value")
-#     ss3.dat.tbl <- rbind(ss3.dat.tbl, dat)
-# }
-#   sr.parameter <- which(lab == "sr")
-#   if(length(sr.parameter) > 0) {
-#     names(change_tv_list)[sr.parameter] <- "SR_envlink"
-#   }
-#
-#   temp.data <- change_tv_list[lab == "qs"]
-#   paste.into.ctl <- NULL
-# for(i in seq_along(temp.data)) {
-#   dat.varnum.counter <- dat.varnum.counter + 1
-#   ctl.relevant <- grep("#_Q_setup", ss3.ctl) :
-#                   grep("#_Cond 0 #_If q has random component", ss3.ctl)
-#   par.ch <- grep(names(temp.data)[i], ss3.ctl, fixed = TRUE)
-#   par.ch <- par.ch[which(par.ch %in% ctl.relevant)]
-#   par.ex <- regexpr(names(temp.data)[i], ss3.ctl[par.ch])[1]
-#   val <- ss3.ctl[par.ch]
-#   val.name <- strsplit(val, "#")[[1]][2]
-#   val.pars <- strsplit(val, "#")[[1]][1]
-#   val.pars <- strsplit(gsub(" ","",val.pars,""),"")[[1]]
-#   val.pars[2] <- dat.varnum.counter
-#   ss3.ctl[par.ch] <- paste(paste(val.pars, collapse = " "),
-#                            "#", val.name, sep = " ")
-#
-#   names(change_tv_list)[which(names(change_tv_list) ==
-#                               names(temp.data)[i])] <-
-#                   paste0("Q_envlink_",
-#                         which(ss3.dat$fleetnames == names(temp.data)[i]),
-#                         "_", names(temp.data)[i])
-#
-#   paste.into.ctl <- c(paste.into.ctl,
-#                       paste("-2 2 1 0 -1 99 -5 #", names(temp.data)[i]))
-#
-#   dat <- data.frame(year = ss3.dat$styr:ss3.dat$endyr,
-#                     variable = dat.varnum.counter,
-#                     value = temp.data[i])
-#   names(dat) <- c("Yr", "Variable", "Value")
-#     ss3.dat.tbl <- rbind(ss3.dat.tbl, dat)
-# }
-  #TODO: perhaps retain parts of this for adding the short parameter lines.
-  # par.spec <- grep("#_Q_parms\\(if_any\\)", ss3.ctl)
-  # # Check to see if any Q_parms have a power function,
-  # # if so change par.spec to place Q_env after Q_power
-  # par.power<- grep("Q_power_", ss3.ctl, fixed=TRUE)
-  # par.power<- ifelse(length(par.power) == 0, 0, length(par.power))
-  # if(!is.null(paste.into.ctl)) ss3.ctl <- append(ss3.ctl,
-  #                                                paste.into.ctl,
-  #                                                (par.spec + 1 + par.power))
 
 
   # Set time varying autogeneration setting to all 1's to make sure SS will not
@@ -499,7 +331,7 @@ for(i in seq_along(temp.data)) {
   }
   # TODO: add a check that the model was successfully run without exiting early.
 
-  #Change starter file option back to using .par and write to file again.
+  # Change starter file option back to using .par and write to file again.
   ss3.starter$init_values_src <- 1
   SS_writestarter(mylist = ss3.starter, dir = dirname(str_file_out),
                   file = basename(str_file_out), overwrite = TRUE,
@@ -514,88 +346,10 @@ for(i in seq_along(temp.data)) {
   file.copy(file.path(dirname(str_file_out),"control.ss_new"),
             to = ctl_file_out, overwrite = TRUE)
 
-# TODO: verify the below is NOT needed; was in inital function, but I think is
-# unnecessary now, given it is used before recdevs and Fs are manually added to
-# the control file.
-
-#   #Use look for and change the new parameters in .par so that the .par file
-#   # can be used when running new models.
-#   env.name <- sapply(names(change_tv_list), function(x) {
-#                 ifelse(grepl("envlink", x),
-#                        x,
-#                        paste(x, "ENV", sep = "_"))
-#               })
-#   env.parnum <- sapply(env.name, function(x) {
-#       temp <- grep(x, ss3.report, value = TRUE)
-#       temp <- strsplit(temp, " ")[[1]][1]
-#       as.numeric(temp)
-#     })
-#     # ensure order is same throughout:
-#     env.name <- sort(env.parnum)
-#     env.lab <- sort(lab)
-#     env.parnum <- sort(env.parnum)
-# for(q in seq_along(change_tv_list)) {
-#     if(env.lab[q] == "sr" | env.lab[q] == "qs") next
-#     if(env.lab[q] == "mg") {
-#       search.phrase <- paste0("# MGparm[", env.parnum[q] - 1, "]:")
-#       line.a <- grep(search.phrase, ss.par, fixed = TRUE)
-#       add.par <- c(paste0("# MGparm[",env.parnum[q],"]:"),
-#                    "1.00000000000")
-#       ss.par <- append(ss.par, add.par, (line.a + 1))
-#           }
-#     if(env.lab[q] == "sx") {
-#       num.sx <- grep("Sel_.._", ss3.report )
-#       pos.sx <- grep(env.name[q], ss3.report[num.sx])
-#       # The above code is looking for a number, which might be in more
-#       # than one line, but really we just want to check that the
-#       # parameter number is in a line that contains the letters ENV
-#       if (length(pos.sx) > 1) {
-#         allnames <- grep(env.name[q], ss3.report[num.sx], value = TRUE)
-#         allchars <- strsplit(allnames, " ")
-#         allchars <- lapply(allchars, function(x) x[!x == ""])
-#         getthisone <- grep(env.name[q], sapply(allchars, "[[", 1))
-#         doublecheck <- grep("ENV", allnames)
-#         if (getthisone != doublecheck) {
-#           stop("The selectivity parameter cannot be indexed using\n
-#                the current framework. Please contact the developers\n
-#                and let them know, so that this can be fixed.")
-#         }
-#         pos.sx <- pos.sx[getthisone]
-#       }
-#       search.phrase <- paste0("# selparm[", pos.sx - 1, "]:")
-#       line.a <- grep(search.phrase, ss.par, fixed = TRUE)
-#       add.par <- c(paste0("# selparm[",pos.sx,"]:"),
-#                    "1.00000000000")
-#       ss.par <- append(ss.par, add.par, (line.a + 1))
-#           } }
-#     if(any(env.lab == "qs")) {
-#       qs.relevant <- (max(grep("F_fleet", ss3.report)) + 1) :
-#                       (grep("Sel_", ss3.report)[1] - 1)
-#       qs.old  <- sapply(strsplit(ss3.report[qs.relevant], " "),
-#                         "[[", 3)
-#       # find the section in the par with the q params
-#       # delete them
-#       # put in new words and new vals
-#       qs.count <- seq_along(qs.old)
-#       qs.new <- as.vector(rbind(paste0("# Q_parm[", qs.count, "]:"),
-#                                 qs.old))
-#       ss.par  <- ss.par[-(grep("# Q_parm[1]:", ss.par, fixed = TRUE) :
-#                  (grep("# selparm[1]:", ss.par, fixed = TRUE) - 1))]
-#       ss.par <- append(ss.par, qs.new,
-#                         (grep("# selparm[1]:",
-#                               ss.par, fixed = TRUE) - 1))
-#       }
-#     if(any(env.lab == "sr")) {
-#       sr.parnum <- which(grep("SR_envlink", ss3.report) == grep("SR", ss3.report))
-#       ss.par[grep(paste0("# SR_parm[", sr.parnum, "]:"),
-#               ss.par, fixed = TRUE) + 1 ] <- "1.00000000000"
-#     }
-#     # Write the manipulated .par file out so it can be used as part of the new
-#     # OM.
-#     writeLines(ss.par, con = par_file_out)
   }
 
-# add short time varying parameter lines
+#' Add short time varying parameter lines. At time of writing, this method will
+#' work for MG, selectivity, and catchability time varying, but not for SR
 #' @param string The code representing the section the parameter is from.
 #' @param tab As created in \code{change_tv()}
 #' @param ctl_string The code as called in the .ss_new comment for time varying.
