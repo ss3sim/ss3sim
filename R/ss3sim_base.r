@@ -186,7 +186,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
   # In case ss3sim_base is stopped before finishing:
   old_wd <- getwd()
-  on.exit(setwd(old_wd))
+  on.exit(setwd(old_wd), add = TRUE)
 
   if(bias_already_run & bias_adjust){
       warning("bias_adjust set to FALSE because bias_already_run is TRUE")
@@ -200,6 +200,11 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   }
 
   for(sc in scenarios) {
+    # TODO maybe: manipuate the OM for each scenario ONLY; this can't be done
+    # in parallel, but may be faster than doing OM model runs for each
+    # scenario in parallel (test this). Then, once the OM is created, it can
+    # then be copied into each folder (along with the EM) and sampled from for
+    # each iteration.
     for(i in iterations) {
 
       # Create folders, copy models, check for necessary files, rename
@@ -221,6 +226,38 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(bias_already_run) {
         file.copy(from = pastef(sc, "bias", "em.ctl"), to = pastef(sc,
             i, "em", "em.ctl"), overwrite = TRUE)
+      }
+
+      # Make the OM as specified by the user -----------------------------------
+      # Do a first initial model run to make sure the ctl file is consistent
+      # with the par file.
+      tmp_starter <- SS_readstarter(file.path(sc,i,"om","starter.ss"),
+                                    verbose = FALSE)
+      tmp_starter$init_values_src <- 0 # don't use par
+      SS_writestarter(tmp_starter, dir = file.path(sc,i,"om"),
+                      overwrite = TRUE ,verbose = FALSE)
+      # run the OM.
+      run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
+      # TODO: add a check to make sure model ran each time. Maybe use echoinput?
+      # Or some other file?
+      # change starter back to use par
+      tmp_starter$init_values_src <- 1 # use par
+      SS_writestarter(tmp_starter, dir = file.path(sc,i,"om"),
+                      overwrite = TRUE ,verbose = FALSE)
+      # Change the control file if using timevarying, and rerun the model.
+      #TODO: if possible, change so the model run before tv_params is not if
+      # tv_params is done, as it will save time.
+
+      if(!is.null(tv_params)) {
+        # Change time-varying parameters; e.g. M, selectivity, growth...
+        wd <- getwd()
+        setwd(file.path(sc, i, "om"))
+        # not running add_null() b/c parameters in tv_params are userspecified
+        #with(tv_params,
+        change_tv(change_tv_list      = tv_params,
+                  ctl_file_in         = "om.ctl",
+                  ctl_file_out        = "om.ctl")#)
+        setwd(wd)
       }
 
       # The following section adds recruitment deviations
@@ -248,7 +285,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       change_rec_devs(recdevs_new = sc_i_recdevs, par_file_in =
         pastef(sc, i, "om", "ss.par"), par_file_out = pastef(sc, i,
           "om", "ss.par"))
-
       # Change F
       f_params <- add_nulls(f_params, c("years", "years_alter", "fvals"))
       with(f_params,
@@ -258,7 +294,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                  par_file_in         = pastef(sc, i, "om", "ss.par"),
                  par_file_out            = pastef(sc, i, "om", "ss.par")))
 
-      # Run the operating model
+      # Run the operating model to get expected values in the data.ss_new after
+      # adding in the recdevs and F's to the .par file.
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
       # Read in the data.ss_new file and write to ss3.dat in the om folder
       if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
@@ -271,25 +308,14 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       rm(expdata)
       # Remove the ss_new file in case the next run doesn't work we can tell
       file.remove(pastef(sc, i, "om", "data.ss_new"))
-      # Change time-varying parameters; e.g. M, selectivity, growth...
-      wd <- getwd()
-      if(!is.null(tv_params)) {
-        setwd(pastef(sc, i, "om"))
-        # not running add_null() b/c parameters in tv_params are userspecified
-        #
-        #with(tv_params,
-          change_tv(change_tv_list      = tv_params,
-                    ctl_file_in         = "om.ctl",
-                    ctl_file_out        = "om.ctl")#)
-        setwd(wd)
-      }
+      #TODO: perhaps do this with every run of the OM and use its presence
+      # or absence to verify if a run worked or not?
 
       # Change the data structure in the OM to produce the expected
       # values we want. This sets up the 'dummy' bins before we run
       # the OM one last time. Then we'll sample from the expected values
       # with error.
-      sample_args <- list(lcomp_params, agecomp_params, calcomp_params,
-        mlacomp_params)
+
       ## This returns a superset of all years/fleets/data types needed to
       ## do sampling.
       data_args <- calculate_data_units(lcomp_params    = lcomp_params,
@@ -348,6 +374,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       r4ss::SS_writedat(expdata, pastef(sc, i, "em", "ss3.dat"),
         overwrite = TRUE, verbose = FALSE)
       rm(expdata)
+
+      # Sample from the OM -----------------------------------------------------
       ## Read in the datfile once and manipulate as a list object, then
       ## write it back to file at the end, before running the EM.
       dat_list <- SS_readdat(pastef(sc, i, "em", "ss3.dat"),
@@ -455,14 +483,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                          Nsamp            = Nsamp,
                                          write_file       = FALSE))
       }
-      ## Manipulate EM starter file for a possible retrospective analysis
-      if(!is.null(retro_params)) {
-      retro_params <- add_nulls(retro_params, "retro_yr")
-      with(retro_params,
-        change_retro(str_file_in    = pastef(sc, i, "em", "starter.ss"),
-                     str_file_out   = pastef(sc, i, "em", "starter.ss"),
-                     retro_yr        = retro_yr))
-      }
 
       ## End of manipulating the data file, so clean it and write it
       dat_list <- clean_data(dat_list      = dat_list,
@@ -473,7 +493,18 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                             mlacomp_params = mlacomp_params,
                             verbose        = FALSE)
 
-	  ## Now change the binning structure in the EM ss3.dat file as needed
+      # Make EM as specified by user -------------------------------------------
+
+      ## Manipulate EM starter file for a possible retrospective analysis
+      if(!is.null(retro_params)) {
+        retro_params <- add_nulls(retro_params, "retro_yr")
+        with(retro_params,
+             change_retro(str_file_in    = pastef(sc, i, "em", "starter.ss"),
+                          str_file_out   = pastef(sc, i, "em", "starter.ss"),
+                          retro_yr        = retro_yr))
+      }
+
+	    ## Now change the binning structure in the EM ss3.dat file as needed
       if (!is.null(em_binning_params$lbin_method)) {
           em_binning_params <- add_nulls(em_binning_params,
             c("lbin_method", "bin_vector", "pop_binwidth",
@@ -539,7 +570,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ss_version <- get_ss_ver_dl(dat_list)
       SS_writedat(datlist = dat_list, outfile = pastef(sc, i, "em", "ss3.dat"),
         version = ss_version, overwrite = TRUE, verbose = FALSE)
-
+      # Run the EM -------------------------------------------------------------
       # Should we calculate the hessian?
         if(hess_always){
           hess <- TRUE           # estimate the hessian no matter what
@@ -564,7 +595,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # Since we've now run the bias adjustment routine, copy the .ctl
       # on subsequent iterations
       }
-
+# Write log file ---------------------------------------------------------------
 # TODO pull the log file writing into a separate function and update
 # for current arguments
       if(print_logfile) {

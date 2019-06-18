@@ -1,17 +1,17 @@
 #' Verify and standardize SS3 input files
 #'
 #' This function verifies the contents of operating model (\code{om}) and
-#' estimation model (\code{em}) folders. If the contents are correct, the
+#'   estimation model (\code{em}) folders (i.e., it checks that the necessary SS
+#'   input files are available). If the contents are correct, the
 #' \code{.ctl} and \code{.dat} files are renamed to standardized names and the
 #' \code{starter.ss} file is updated to reflect these names. If the contents
-#' are incorrect then a warning is issued and the simulation is aborted.
+#'   are incorrect then a warning is issued and the simulation is aborted.
 #'
 #' @author Curry James Cunningham; modified by Sean Anderson
 #' @details This is a helper function to be used within the larger wrapper
-#' simulation functions.
-#' @return
-#' Returns a version of the folder with sanitized files or an error if some
-#' files are missing.
+#'   simulation functions.
+#' @return Returns a version of the folder with sanitized files or an error if
+#'   some files are missing.
 #
 #' @param model_dir Directory name for model. This folder should contain the
 #'   \code{.ctl}, \code{.dat}, files etc.
@@ -63,11 +63,14 @@ verify_input <- function(model_dir, type = c("om", "em")) {
     }
   }
   if(type == "om") {
-    if (length(grep("ss.par", files, ignore.case = TRUE))) {
-      f.par <- grep("ss.par", files, ignore.case = TRUE)
-    } else {
-      f.par <- NA
-    }
+
+    #commented out, because the inital .par will be generated in ss3sim_base(),
+    # to ensure it is consistent with the ctl file.
+    # if (length(grep("ss.par", files, ignore.case = TRUE))) {
+    #   f.par <- grep("ss.par", files, ignore.case = TRUE)
+    # } else {
+    #   f.par <- NA
+    # }
   }
   if (length(grep("starter.ss", files, ignore.case = TRUE))) {
     f.starter <- grep("starter.ss", files, ignore.case = TRUE)
@@ -80,9 +83,9 @@ verify_input <- function(model_dir, type = c("om", "em")) {
     f.forecast <- NA
   }
   if(type == "om") {
-    file.loc <- data.frame(f.ctl, f.dat, f.par, f.starter, f.forecast)
-    file.types <- c(".ctl file", ".dat file", "ss.par file", "starter.ss
-      file", "forecast.ss file")
+    file.loc <- data.frame(f.ctl, f.dat, f.starter, f.forecast) #f.par was removed
+    file.types <- c(".ctl file", ".dat file", "starter.ss
+      file", "forecast.ss file") # "ss.par file",  was removed
   }
   if(type == "em") {
     file.loc <- data.frame(f.ctl, f.starter, f.forecast)

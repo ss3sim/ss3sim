@@ -135,6 +135,9 @@ change_tv <- function(change_tv_list,
    # sx = Selectivity parameters
 
   # Check that none of the variables are already time varying
+  #TODO: do this using SS_parlines() and ctl file instead of grep and report.
+  # then, no longer need to do inital model run in ss3sim_base to get a report
+  # file.
     baseom.tv <- grep("_ENV", ss3.report, value = TRUE)
     baseom.tv <- sapply(baseom.tv, function(x) {
                         temp <- strsplit(x, "_ENV")[[1]][1]
@@ -455,6 +458,12 @@ for(i in seq_along(temp.data)) {
   SS_writestarter(mylist = ss3.starter, dir = dirname(str_file_out),
                   file = basename(str_file_out), overwrite = TRUE,
                   verbose = FALSE, warn = FALSE)
+
+  #echoinput is used for error checking, so delete if there is already a version
+  # of it in the out directory.
+  if(file.exists(file.path(dirname(str_file_out), "echoinput.sso"))){
+    file.remove(file.path(dirname(str_file_out), "echoinput.sso"))
+  }
   #In case putting the out files in a different base dir, change the wd and copy
   # over the forcast file
   if(dirname(ctl_file_in) != dirname(ctl_file_out)){
@@ -463,7 +472,7 @@ for(i in seq_along(temp.data)) {
     setwd(dirname(ctl_file_out))
     on.exit(setwd(old_dir), add = TRUE) # just in case exits on error.
   }
-
+ #TODO: change to using run_ss3model instead, if possible.
   bin <- get_bin(ss_bin)
   #Call ss3 for a run that includes the environmental link
   os <- .Platform$OS.type
@@ -483,9 +492,9 @@ for(i in seq_along(temp.data)) {
   echoinput <- readLines(file.path(dirname(str_file_out), "echoinput.sso"))
   checkread <- grep("999  If you see 999, we got to the end of the control file successfully!",
                    echoinput)
-  if(length(checkread < 1)) {
+  if(length(checkread) < 1) {
     stop("OM model run during change_tv() was not read successfully by ss. ",
-         "Please check the model files in ", dirname(str_file_out), " to ",
+         "Please check the model files in ", normalizePath(dirname(str_file_out)), " to ",
          "identify the specific issue.")
   }
   # TODO: add a check that the model was successfully run without exiting early.
@@ -505,82 +514,85 @@ for(i in seq_along(temp.data)) {
   file.copy(file.path(dirname(str_file_out),"control.ss_new"),
             to = ctl_file_out, overwrite = TRUE)
 
-  #TODO: verify the below still works, or rather, is it even necessary?
-  #Use look for and change the new parameters in .par so that the .par file
-  # can be used when running new models.
-  env.name <- sapply(names(change_tv_list), function(x) {
-                ifelse(grepl("envlink", x),
-                       x,
-                       paste(x, "ENV", sep = "_"))
-              })
-  env.parnum <- sapply(env.name, function(x) {
-      temp <- grep(x, ss3.report, value = TRUE)
-      temp <- strsplit(temp, " ")[[1]][1]
-      as.numeric(temp)
-    })
-    # ensure order is same throughout:
-    env.name <- sort(env.parnum)
-    env.lab <- sort(lab)
-    env.parnum <- sort(env.parnum)
-for(q in seq_along(change_tv_list)) {
-    if(env.lab[q] == "sr" | env.lab[q] == "qs") next
-    if(env.lab[q] == "mg") {
-      search.phrase <- paste0("# MGparm[", env.parnum[q] - 1, "]:")
-      line.a <- grep(search.phrase, ss.par, fixed = TRUE)
-      add.par <- c(paste0("# MGparm[",env.parnum[q],"]:"),
-                   "1.00000000000")
-      ss.par <- append(ss.par, add.par, (line.a + 1))
-          }
-    if(env.lab[q] == "sx") {
-      num.sx <- grep("Sel_.._", ss3.report )
-      pos.sx <- grep(env.name[q], ss3.report[num.sx])
-      # The above code is looking for a number, which might be in more
-      # than one line, but really we just want to check that the
-      # parameter number is in a line that contains the letters ENV
-      if (length(pos.sx) > 1) {
-        allnames <- grep(env.name[q], ss3.report[num.sx], value = TRUE)
-        allchars <- strsplit(allnames, " ")
-        allchars <- lapply(allchars, function(x) x[!x == ""])
-        getthisone <- grep(env.name[q], sapply(allchars, "[[", 1))
-        doublecheck <- grep("ENV", allnames)
-        if (getthisone != doublecheck) {
-          stop("The selectivity parameter cannot be indexed using\n
-               the current framework. Please contact the developers\n
-               and let them know, so that this can be fixed.")
-        }
-        pos.sx <- pos.sx[getthisone]
-      }
-      search.phrase <- paste0("# selparm[", pos.sx - 1, "]:")
-      line.a <- grep(search.phrase, ss.par, fixed = TRUE)
-      add.par <- c(paste0("# selparm[",pos.sx,"]:"),
-                   "1.00000000000")
-      ss.par <- append(ss.par, add.par, (line.a + 1))
-          } }
-    if(any(env.lab == "qs")) {
-      qs.relevant <- (max(grep("F_fleet", ss3.report)) + 1) :
-                      (grep("Sel_", ss3.report)[1] - 1)
-      qs.old  <- sapply(strsplit(ss3.report[qs.relevant], " "),
-                        "[[", 3)
-      # find the section in the par with the q params
-      # delete them
-      # put in new words and new vals
-      qs.count <- seq_along(qs.old)
-      qs.new <- as.vector(rbind(paste0("# Q_parm[", qs.count, "]:"),
-                                qs.old))
-      ss.par  <- ss.par[-(grep("# Q_parm[1]:", ss.par, fixed = TRUE) :
-                 (grep("# selparm[1]:", ss.par, fixed = TRUE) - 1))]
-      ss.par <- append(ss.par, qs.new,
-                        (grep("# selparm[1]:",
-                              ss.par, fixed = TRUE) - 1))
-      }
-    if(any(env.lab == "sr")) {
-      sr.parnum <- which(grep("SR_envlink", ss3.report) == grep("SR", ss3.report))
-      ss.par[grep(paste0("# SR_parm[", sr.parnum, "]:"),
-              ss.par, fixed = TRUE) + 1 ] <- "1.00000000000"
-    }
-    # Write the manipulated .par file out so it can be used as part of the new
-    # OM.
-    writeLines(ss.par, con = par_file_out)
+# TODO: verify the below is NOT needed; was in inital function, but I think is
+# unnecessary now, given it is used before recdevs and Fs are manually added to
+# the control file.
+
+#   #Use look for and change the new parameters in .par so that the .par file
+#   # can be used when running new models.
+#   env.name <- sapply(names(change_tv_list), function(x) {
+#                 ifelse(grepl("envlink", x),
+#                        x,
+#                        paste(x, "ENV", sep = "_"))
+#               })
+#   env.parnum <- sapply(env.name, function(x) {
+#       temp <- grep(x, ss3.report, value = TRUE)
+#       temp <- strsplit(temp, " ")[[1]][1]
+#       as.numeric(temp)
+#     })
+#     # ensure order is same throughout:
+#     env.name <- sort(env.parnum)
+#     env.lab <- sort(lab)
+#     env.parnum <- sort(env.parnum)
+# for(q in seq_along(change_tv_list)) {
+#     if(env.lab[q] == "sr" | env.lab[q] == "qs") next
+#     if(env.lab[q] == "mg") {
+#       search.phrase <- paste0("# MGparm[", env.parnum[q] - 1, "]:")
+#       line.a <- grep(search.phrase, ss.par, fixed = TRUE)
+#       add.par <- c(paste0("# MGparm[",env.parnum[q],"]:"),
+#                    "1.00000000000")
+#       ss.par <- append(ss.par, add.par, (line.a + 1))
+#           }
+#     if(env.lab[q] == "sx") {
+#       num.sx <- grep("Sel_.._", ss3.report )
+#       pos.sx <- grep(env.name[q], ss3.report[num.sx])
+#       # The above code is looking for a number, which might be in more
+#       # than one line, but really we just want to check that the
+#       # parameter number is in a line that contains the letters ENV
+#       if (length(pos.sx) > 1) {
+#         allnames <- grep(env.name[q], ss3.report[num.sx], value = TRUE)
+#         allchars <- strsplit(allnames, " ")
+#         allchars <- lapply(allchars, function(x) x[!x == ""])
+#         getthisone <- grep(env.name[q], sapply(allchars, "[[", 1))
+#         doublecheck <- grep("ENV", allnames)
+#         if (getthisone != doublecheck) {
+#           stop("The selectivity parameter cannot be indexed using\n
+#                the current framework. Please contact the developers\n
+#                and let them know, so that this can be fixed.")
+#         }
+#         pos.sx <- pos.sx[getthisone]
+#       }
+#       search.phrase <- paste0("# selparm[", pos.sx - 1, "]:")
+#       line.a <- grep(search.phrase, ss.par, fixed = TRUE)
+#       add.par <- c(paste0("# selparm[",pos.sx,"]:"),
+#                    "1.00000000000")
+#       ss.par <- append(ss.par, add.par, (line.a + 1))
+#           } }
+#     if(any(env.lab == "qs")) {
+#       qs.relevant <- (max(grep("F_fleet", ss3.report)) + 1) :
+#                       (grep("Sel_", ss3.report)[1] - 1)
+#       qs.old  <- sapply(strsplit(ss3.report[qs.relevant], " "),
+#                         "[[", 3)
+#       # find the section in the par with the q params
+#       # delete them
+#       # put in new words and new vals
+#       qs.count <- seq_along(qs.old)
+#       qs.new <- as.vector(rbind(paste0("# Q_parm[", qs.count, "]:"),
+#                                 qs.old))
+#       ss.par  <- ss.par[-(grep("# Q_parm[1]:", ss.par, fixed = TRUE) :
+#                  (grep("# selparm[1]:", ss.par, fixed = TRUE) - 1))]
+#       ss.par <- append(ss.par, qs.new,
+#                         (grep("# selparm[1]:",
+#                               ss.par, fixed = TRUE) - 1))
+#       }
+#     if(any(env.lab == "sr")) {
+#       sr.parnum <- which(grep("SR_envlink", ss3.report) == grep("SR", ss3.report))
+#       ss.par[grep(paste0("# SR_parm[", sr.parnum, "]:"),
+#               ss.par, fixed = TRUE) + 1 ] <- "1.00000000000"
+#     }
+#     # Write the manipulated .par file out so it can be used as part of the new
+#     # OM.
+#     writeLines(ss.par, con = par_file_out)
   }
 
 # add short time varying parameter lines
