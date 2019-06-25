@@ -233,6 +233,11 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # with the par file. Not necessary if uing tv_params, as this function
       # does a model run not from the par file.
       if(is.null(tv_params)) {
+        # get rid of control.ss_new if it exists, as its presence will be used to
+        # check that the model ran successfully
+        if(file.exists(file.path(sc, i, "om", "control.ss_new"))) {
+          file.remove(file.path(sc, i, "om", "control.ss_new"))
+        }
         tmp_starter <- SS_readstarter(file.path(sc,i,"om","starter.ss"),
                                       verbose = FALSE)
         tmp_starter$init_values_src <- 0 # don't use par
@@ -240,8 +245,12 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                         overwrite = TRUE ,verbose = FALSE)
         # run the OM.
         run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
-        # TODO: add a check to make sure model ran each time. Maybe use echoinput?
-        # Or some other file?
+
+        #Check that model ran successfully
+        if(!file.exists(file.path(sc, i, "om", "control.ss_new"))) {
+          stop("The *first* OM model run did not complete. Please check the ",
+               " model files in ", normalizePath(file.path(sc,i,"om")), ".")
+        }
         # save the control.ss_new as om.ctl so formatting is consistent in ctl.
         # should this be done for data.ss_new as well?
         file.copy(file.path(sc,i,"om","control.ss_new"),
@@ -303,7 +312,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
       # Read in the data.ss_new file and write to ss3.dat in the om folder
       if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
-          stop(paste0("The data.ss_new not created in *first* OM run for ",
+          stop(paste0("The data.ss_new not created in *second* OM run for ",
                      sc, "-",i, ": is something wrong with initial model files?"))
       expdata <- r4ss::SS_readdat(pastef(sc, i, "om", "data.ss_new"),
         section = 2, verbose = FALSE)
@@ -312,8 +321,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       rm(expdata)
       # Remove the ss_new file in case the next run doesn't work we can tell
       file.remove(pastef(sc, i, "om", "data.ss_new"))
-      #TODO: perhaps do this with every run of the OM and use its presence
-      # or absence to verify if a run worked or not?
 
       # Change the data structure in the OM to produce the expected
       # values we want. This sets up the 'dummy' bins before we run
@@ -371,7 +378,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # Run the operating model and copy the dat file over
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
       if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
-          stop(paste0("The data.ss_new not created in *second* OM run for ",
+          stop(paste0("The data.ss_new not created in *third* OM run for ",
                      sc, "-",i, ": is something wrong with initial model files?"))
       expdata <- r4ss::SS_readdat(pastef(sc, i, "om", "data.ss_new"),
         section = 2, verbose = FALSE)

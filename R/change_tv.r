@@ -283,10 +283,11 @@ for(i in seq_along(temp.data)) {
                   file = basename(str_file_out), overwrite = TRUE,
                   verbose = FALSE, warn = FALSE)
 
-  #echoinput is used for error checking, so delete if there is already a version
-  # of it in the out directory.
-  if(file.exists(file.path(dirname(str_file_out), "echoinput.sso"))){
-    file.remove(file.path(dirname(str_file_out), "echoinput.sso"))
+  # get rid of control.ss_new if it exists, as its presence will be used to
+  # check that the model ran successfully
+
+  if(file.exists(file.path(dirname(str_file_out), "control.ss_new"))) {
+    file.remove(file.path(dirname(str_file_out), "control.ss_new"))
   }
   #In case putting the out files in a different base dir, change the wd and copy
   # over the forcast file
@@ -299,6 +300,7 @@ for(i in seq_along(temp.data)) {
  #TODO: change to using run_ss3model instead, if possible.
   bin <- get_bin(ss_bin)
   #Call ss3 for a run that includes the environmental link
+  message("Running OM to add Timevarying parameters.")
   os <- .Platform$OS.type
   if(os == "unix") {
     system(paste(bin, "-nohess"), ignore.stdout = TRUE)
@@ -311,23 +313,17 @@ for(i in seq_along(temp.data)) {
     setwd(old_dir)
   }
 
-
-  #Check that inputs were read successfully
-  echoinput <- readLines(file.path(dirname(str_file_out), "echoinput.sso"))
-  checkread <- grep("999  If you see 999, we got to the end of the control file successfully!",
-                   echoinput)
-  if(length(checkread) < 1) {
-    stop("OM model run during change_tv() was not read successfully by ss. ",
-         "Please check the model files in ", normalizePath(dirname(str_file_out)), " to ",
-         "identify the specific issue.")
-  }
-  # TODO: add a check that the model was successfully run without exiting early.
-
   # Change starter file option back to using .par and write to file again.
   ss3.starter$init_values_src <- 1
   SS_writestarter(mylist = ss3.starter, dir = dirname(str_file_out),
                   file = basename(str_file_out), overwrite = TRUE,
                   verbose = FALSE, warn = FALSE)
+
+  #Check that model ran successfully
+  if(!file.exists(file.path(dirname(str_file_out), "control.ss_new"))) {
+    stop("OM model run during change_tv() did not complete. Please check the",
+         " model files in ", normalizePath(dirname(str_file_out)), ".")
+  }
   # read in the new par and ctl file files. Note that
   # ss.par are the names created by SS when model runs are done.
   ss.par    <- readLines(con = file.path(dirname(str_file_out), "ss.par"))
@@ -336,8 +332,7 @@ for(i in seq_along(temp.data)) {
   # Use the control.ss_new file from the model run so the formatting is better.
   file.copy(file.path(dirname(str_file_out),"control.ss_new"),
             to = ctl_file_out, overwrite = TRUE)
-
-  }
+}
 
 #' Add short time varying parameter lines. At time of writing, this method will
 #' work for MG, selectivity, and catchability time varying, but not for SR
