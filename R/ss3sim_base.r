@@ -230,24 +230,28 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       # Make the OM as specified by the user -----------------------------------
       # Do a first initial model run to make sure the ctl file is consistent
-      # with the par file.
-      tmp_starter <- SS_readstarter(file.path(sc,i,"om","starter.ss"),
-                                    verbose = FALSE)
-      tmp_starter$init_values_src <- 0 # don't use par
-      SS_writestarter(tmp_starter, dir = file.path(sc,i,"om"),
-                      overwrite = TRUE ,verbose = FALSE)
-      # run the OM.
-      run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
-      # TODO: add a check to make sure model ran each time. Maybe use echoinput?
-      # Or some other file?
-      # change starter back to use par
-      tmp_starter$init_values_src <- 1 # use par
-      SS_writestarter(tmp_starter, dir = file.path(sc,i,"om"),
-                      overwrite = TRUE ,verbose = FALSE)
-      # Change the control file if using timevarying, and rerun the model.
-      #TODO: if possible, change so the model run before tv_params is not if
-      # tv_params is done, as it will save time.
-
+      # with the par file. Not necessary if uing tv_params, as this function
+      # does a model run not from the par file.
+      if(is.null(tv_params)) {
+        tmp_starter <- SS_readstarter(file.path(sc,i,"om","starter.ss"),
+                                      verbose = FALSE)
+        tmp_starter$init_values_src <- 0 # don't use par
+        SS_writestarter(tmp_starter, dir = file.path(sc,i,"om"),
+                        overwrite = TRUE ,verbose = FALSE)
+        # run the OM.
+        run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
+        # TODO: add a check to make sure model ran each time. Maybe use echoinput?
+        # Or some other file?
+        # save the control.ss_new as om.ctl so formatting is consistent in ctl.
+        # should this be done for data.ss_new as well?
+        file.copy(file.path(sc,i,"om","control.ss_new"),
+                  to = file.path(sc,i,"om","om.ctl"), overwrite = TRUE)
+        # change starter back to use par
+        tmp_starter$init_values_src <- 1 # use par
+        SS_writestarter(tmp_starter, dir = file.path(sc,i,"om"),
+                        overwrite = TRUE ,verbose = FALSE)
+      }
+      # Change the control file if using timevarying, and run the model.
       if(!is.null(tv_params)) {
         # Change time-varying parameters; e.g. M, selectivity, growth...
         wd <- getwd()
@@ -533,6 +537,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         run_change_e_full <- TRUE
 
       if(!is.null(estim_params)) {
+        wd <- getwd()
         setwd(pastef(sc, i, "em"))
         estim_params <- add_nulls(estim_params,
           c("natM_type", "natM_n_breakpoints", "natM_lorenzen", "natM_val",

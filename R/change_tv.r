@@ -17,7 +17,6 @@
 #' @template par_file_out
 #' @template str_file_in
 #' @template str_file_out
-#' @param rpt_file_in Input SS3 report file
 #' @author Kotaro Ono, Carey McGilliard, and Kelli Johnson
 #' @family change functions
 #' @return The function creates modified versions of the \code{.par},
@@ -89,7 +88,7 @@
 #' file.copy(simple, ".", recursive = TRUE)
 #' setwd("Simple")
 #'
-#' # Run SS3 to create control.ss_new and Report.sso:
+#' # Run SS3 to create control.ss_new and ss.par:
 #' system("ss_safe starter.ss -nohess")
 #'
 #' change_tv(change_tv_list = list("NatM_p_1_Fem_GP_1" = c(rep(0, 20),
@@ -107,8 +106,7 @@ change_tv <- function(change_tv_list,
   ctl_file_in = "control.ss_new", ctl_file_out = "om.ctl",
   dat_file_in = "ss3.dat", dat_file_out = "ss3.dat",
   par_file_in = "ss.par", par_file_out = "ss.par",
-  str_file_in = "starter.ss", str_file_out = "starter.ss",
-  rpt_file_in = "Report.sso") {
+  str_file_in = "starter.ss", str_file_out = "starter.ss") {
 
   # Always use safe mode here:
   ss_bin <- "ss_safe"
@@ -117,9 +115,7 @@ change_tv <- function(change_tv_list,
   ss3.ctl    <- readLines(con = ctl_file_in)
   ss3.dat    <- SS_readdat(dat_file_in, verbose = FALSE)
   ss3.starter<- SS_readstarter(file = str_file_in, verbose = FALSE)
-  ss3.report <- readLines(con = rpt_file_in) #TODO: consider if can use ss_summary instead.
   ss3.ctl.parlines <- SS_parlines(ctl_file_in, verbose = FALSE)
-
   # TODO: add a check that the directories associated with the out files are all
   # the same.
   out_dirnames<- lapply(c(ctl_file_out, dat_file_out, par_file_out, str_file_out), function(x) dirname(x))
@@ -134,11 +130,7 @@ change_tv <- function(change_tv_list,
    # qs = Catchability paramaters
    # sx = Selectivity parameters
 
-  # Check that none of the variables are already time varying
-  # TODO: do this using SS_parlines() and ctl file instead of grep and report.
-  # then, no longer need to do inital model run in ss3sim_base to get a report
-  # file.
-  # TODO:Also, change this so this script can be used with other time varying
+  # TODO:change so this script can be used with other time varying
   # parameters already in the model
   # TODO: Add in capabilities to change timevarying SR parameters. only 1 time
   # varying SR parameter allowed?
@@ -146,27 +138,26 @@ change_tv <- function(change_tv_list,
   # TODO: if the variable being added is the same over years, then there is no
   # need to use timevarying. Check this, and change the init value in the ctl
   # file instead of time varying if this is the case.
-    baseom.tv <- grep("_ENV", ss3.report, value = TRUE)
-    baseom.tv <- sapply(baseom.tv, function(x) {
-                        temp <- strsplit(x, "_ENV")[[1]][1]
-                        strsplit(temp, " ")[[1]][2]
-                       })
-  if(any(baseom.tv %in% names(change_tv_list) == "TRUE")) {
-    stop(
-"One or more of the parameters listed in change_tv is already time-varying in
-the base operating model. ss3sim cannot change time-varying properties of
-parameters that are already specified as time-varying.")
+
+  # check that the parameter we want to change is not already time varyingin the
+  # model; if it is, stop code
+  baseom_tv <-  ss3.ctl.parlines[(ss3.ctl.parlines$Label %in% names(change_tv_list)), ,
+                                 drop = FALSE]
+  if(any(baseom_tv[, c("env-var", "use_dev", "Block")] != 0)) {
+    stop("One or more of the parameters listed in change_tv is already ",
+         "time-varying in the base operating model. ss3sim cannot change ",
+         "time-varying properties of parameters that are already specified as ",
+         "time-varying.")
   }
   # For now, stop if there are any time varying parameters specified.
-  # TODO: make this so the existing time varying structure can be retained.
-  if(length(baseom.tv)>0){
+  # TODO: make this so the existing time varying structure can be retained., and
+  # this check can be eliminated.
+  if(any(ss3.ctl.parlines[ , c("env-var", "use_dev", "Block")] != 0)){
     stop( "There are one or more environmental linkages specified already in",
           " the base operating model. At this time ss3sim cannot change time-",
           "varying properties of parameters when there are already time-varying",
           "parameters specified in the base operating model.")
   }
-  #TODO: find a way to check for existence of blocks and devs, too, otherwise the
-  # check above is incomplete.
 
   # Divide .dat file at the environmental variable table
   # If no environmental variables create an empty table to be filled later
@@ -263,6 +254,7 @@ for(i in seq_along(temp.data)) {
   }
   #TODO: check no time varying sr parameters.
 
+
   # add short time varying parameter lines at their necessary sections.
   for(n in c("mg", "qs", "sx")){
     n_string <- switch(n, "mg" = "MG", "qs" = "Q", "sx" = "selex")
@@ -336,9 +328,8 @@ for(i in seq_along(temp.data)) {
   SS_writestarter(mylist = ss3.starter, dir = dirname(str_file_out),
                   file = basename(str_file_out), overwrite = TRUE,
                   verbose = FALSE, warn = FALSE)
-  # read in the new report, par, and ctl file files. Note that Report.sso and
+  # read in the new par and ctl file files. Note that
   # ss.par are the names created by SS when model runs are done.
-  ss3.report <- readLines(con = file.path(dirname(str_file_out), "Report.sso"))
   ss.par    <- readLines(con = file.path(dirname(str_file_out), "ss.par"))
   ss3.ctl_new <- readLines(con = file.path(dirname(str_file_out),"control.ss_new"))
 
