@@ -253,8 +253,8 @@ get_results_scenario <- function(scenario, directory=getwd(),
     ## especially in case of an error
     old_wd <- getwd()
     on.exit(setwd(old_wd))
-    if (file.exists(pastef(directory, scenario))) {
-        setwd(pastef(directory, scenario))
+    if (file.exists(file.path(directory, scenario))) {
+        setwd(file.path(directory, scenario))
     } else {
         stop(paste("Scenario", scenario, "does not exist in", directory))
     }

@@ -219,13 +219,13 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # Make fake .dat files to silence SS3/ADMB:
       fake_dat <- c("om/ss_opt.dat", "om/ss_safe.dat",
         "em/ss_opt.dat", "em/ss_safe.dat")
-      sapply(fake_dat, function(fi) write("\n", pastef(pastef(sc, i, fi))))
+      sapply(fake_dat, function(fi) write("\n", file.path(sc, i, fi)))
 
       # If we're bias adjusting, then copy over the .ctl file to the
       # em folder
       if(bias_already_run) {
-        file.copy(from = pastef(sc, "bias", "em.ctl"),
-                  to = pastef(sc, i, "em", "em.ctl"), overwrite = TRUE)
+        file.copy(from = file.path(sc, "bias", "em.ctl"),
+                  to = file.path(sc, i, "em", "em.ctl"), overwrite = TRUE)
       }
 
       # Make the OM as specified by the user -----------------------------------
@@ -275,7 +275,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       # The following section adds recruitment deviations
       # First, pull in sigma R from the operating model
-      sigmar <- get_sigmar(pastef(sc, i, "om", "om"))
+      sigmar <- get_sigmar(file.path(sc, i, "om", "om"))
 
       # Second, take the true iteration, even if we're working with
       # "bias" iterations
@@ -296,32 +296,32 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       # Add new rec devs overwriting om/ss.par
       change_rec_devs(recdevs_new  = sc_i_recdevs,
-                      par_file_in  = pastef(sc, i, "om", "ss.par"),
-                      par_file_out = pastef(sc, i, "om", "ss.par"))
+                      par_file_in  = file.path(sc, i, "om", "ss.par"),
+                      par_file_out = file.path(sc, i, "om", "ss.par"))
       # Change F
       f_params <- add_nulls(f_params, c("years", "years_alter", "fvals"))
       with(f_params,
         change_f(years               = years,
                  years_alter         = years_alter,
                  fvals               = fvals,
-                 par_file_in         = pastef(sc, i, "om", "ss.par"),
-                 par_file_out        = pastef(sc, i, "om", "ss.par")))
+                 par_file_in         = file.path(sc, i, "om", "ss.par"),
+                 par_file_out        = file.path(sc, i, "om", "ss.par")))
 
       # Run the operating model to get expected values in the data.ss_new after
       # adding in the recdevs and F's to the .par file.
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
       # Read in the data.ss_new file and write to ss3.dat in the om folder
-      if(!file.exists(pastef(sc, i, "om", "data.ss_new"))) {
+      if(!file.exists(file.path(sc, i, "om", "data.ss_new"))) {
           stop("The data.ss_new not created in *second* OM run for ", sc, "-",i,
                ": is something wrong with initial model files?")
       }
-      expdata <- r4ss::SS_readdat(pastef(sc, i, "om", "data.ss_new"),
+      expdata <- r4ss::SS_readdat(file.path(sc, i, "om", "data.ss_new"),
                                   section = 2, verbose = FALSE)
-      r4ss::SS_writedat(expdata, pastef(sc, i, "om", "ss3.dat"),
+      r4ss::SS_writedat(expdata, file.path(sc, i, "om", "ss3.dat"),
                         overwrite = TRUE, verbose = FALSE)
       rm(expdata)
       # Remove the ss_new file in case the next run doesn't work we can tell
-      file.remove(pastef(sc, i, "om", "data.ss_new"))
+      file.remove(file.path(sc, i, "om", "data.ss_new"))
 
       # Change the data structure in the OM to produce the expected
       # values we want. This sets up the 'dummy' bins before we run
@@ -335,7 +335,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                         calcomp_params  = calcomp_params,
                                         mlacomp_params  = mlacomp_params,
                                         wtatage_params  = wtatage_params)
-      datfile.orig <- SS_readdat(pastef(sc, i, "om", "ss3.dat"),
+      datfile.orig <- SS_readdat(file.path(sc, i, "om", "ss3.dat"),
                                  version = NULL, verbose = FALSE)
 
       if (call_change_data) {
@@ -350,8 +350,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           if(index_params$fleets == 2 | index_params$fleets == 3){
             #fleetname to remove
             rm_fleetname <- datfile.orig$fleetnames[c(-1, -index_params$fleets)]
-            remove_q_ctl(rm_fleetname, ctl.in = pastef(sc, i, "om", "om.ctl"),
-                        ctl.out = pastef(sc, i, "om", "om.ctl"), overwrite = T)
+            remove_q_ctl(rm_fleetname, ctl.in = file.path(sc, i, "om", "om.ctl"),
+                        ctl.out = file.path(sc, i, "om", "om.ctl"), overwrite = T)
           } else stop("Currently, only fleets numbered 2 or 3 should be able to",
                       "have indices of abundance. Please check the fleet numbers",
                       "for index parameters.")
@@ -362,7 +362,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
         # Note some are data_args and some are data_params:
         change_data(dat_list         = datfile.orig,
-                    outfile          = pastef(sc, i, "om", "ss3.dat"),
+                    outfile          = file.path(sc, i, "om", "ss3.dat"),
                     fleets           = data_args$fleets,
                     years            = data_args$years,
                     types            = data_args$types,
@@ -378,19 +378,19 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       # Run the operating model and copy the dat file over
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
-      if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
+      if(!file.exists(file.path(sc, i, "om", "data.ss_new")))
           stop(paste0("The data.ss_new not created in *third* OM run for ",
                      sc, "-",i, ": is something wrong with initial model files?"))
-      expdata <- r4ss::SS_readdat(pastef(sc, i, "om", "data.ss_new"),
+      expdata <- r4ss::SS_readdat(file.path(sc, i, "om", "data.ss_new"),
         section = 2, verbose = FALSE)
-      r4ss::SS_writedat(expdata, pastef(sc, i, "em", "ss3.dat"),
+      r4ss::SS_writedat(expdata, file.path(sc, i, "em", "ss3.dat"),
         overwrite = TRUE, verbose = FALSE)
       rm(expdata)
 
       # Sample from the OM -----------------------------------------------------
       ## Read in the datfile once and manipulate as a list object, then
       ## write it back to file at the end, before running the EM.
-      dat_list <- SS_readdat(pastef(sc, i, "em", "ss3.dat"),
+      dat_list <- SS_readdat(file.path(sc, i, "em", "ss3.dat"),
                              version = NULL, verbose = FALSE)
       ## Survey biomass index
       index_params <- add_nulls(index_params, c("fleets", "years", "sds_obs"))
@@ -398,7 +398,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       dat_list <- with(index_params,
         sample_index(dat_list        = dat_list,
                      outfile         = NULL,
-                     ctl_file_in     = pastef(sc, i, "om", "om.ctl"),
+                     ctl_file_in     = file.path(sc, i, "om", "om.ctl"),
                      fleets          = fleets,
                      years           = years,
                      sds_obs         = sds_obs,
@@ -447,14 +447,14 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           ## so exit early if this is the case.
           if(!is.null(wtatage_params$fleets)){
               ## Make sure W@A option is turned on in the EM
-              change_maturity(ctl_file_in=pastef(sc, i, "em", "em.ctl"),
-                              ctl_file_out=pastef(sc, i, "em", "em.ctl"),
+              change_maturity(ctl_file_in=file.path(sc, i, "em", "em.ctl"),
+                              ctl_file_out=file.path(sc, i, "em", "em.ctl"),
                               maturity_option=5)
               with(wtatage_params,
-                   sample_wtatage(wta_file_in = pastef(sc, i, "om", "wtatage.ss_new"),
-                                  outfile     = pastef(sc, i, "em", "wtatage.ss"),
+                   sample_wtatage(wta_file_in = file.path(sc, i, "om", "wtatage.ss_new"),
+                                  outfile     = file.path(sc, i, "em", "wtatage.ss"),
                                   dat_list    = dat_list,
-                                  ctl_file_in = pastef(sc, i, "om", "control.ss_new"),
+                                  ctl_file_in = file.path(sc, i, "om", "control.ss_new"),
                                   fleets      = fleets,
                                   years       = years,
                                   write_file  = TRUE,
@@ -472,11 +472,11 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           dat_list <- with(mlacomp_params,
                           sample_mlacomp(dat_list       = dat_list,
                                          outfile        = NULL,
-                                         ctl_file_in    = pastef(sc, i, "om", "control.ss_new"),
+                                         ctl_file_in    = file.path(sc, i, "om", "control.ss_new"),
                                          fleets         = fleets,
                                          Nsamp          = Nsamp,
                                          years          = years,
-                                         mean_outfile   = pastef(sc, i, "em",
+                                         mean_outfile   = file.path(sc, i, "em",
                                                                  paste0(mean_outfile, ".csv")),
                                          write_file     = FALSE))
       }
@@ -511,8 +511,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(!is.null(retro_params)) {
         retro_params <- add_nulls(retro_params, "retro_yr")
         with(retro_params,
-             change_retro(str_file_in    = pastef(sc, i, "em", "starter.ss"),
-                          str_file_out   = pastef(sc, i, "em", "starter.ss"),
+             change_retro(str_file_in    = file.path(sc, i, "em", "starter.ss"),
+                          str_file_out   = file.path(sc, i, "em", "starter.ss"),
                           retro_yr        = retro_yr))
       }
 
@@ -546,7 +546,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       if(!is.null(estim_params)) {
         wd <- getwd()
-        setwd(pastef(sc, i, "em"))
+        setwd(file.path(sc, i, "em"))
         estim_params <- add_nulls(estim_params,
           c("natM_type", "natM_n_breakpoints", "natM_lorenzen", "natM_val",
             "par_name", "par_int", "par_phase", "forecast_num"))
@@ -573,15 +573,15 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         if(index_params$fleets == 2 | index_params$fleets == 3){
           #fleetname to remove
           rm_fleetname <- datfile.orig$fleetnames[c(-1, -index_params$fleets)]
-          remove_q_ctl(rm_fleetname, ctl.in = pastef(sc, i, "em", "em.ctl"),
-                       ctl.out = pastef(sc, i, "em", "em.ctl"), overwrite = T)
+          remove_q_ctl(rm_fleetname, ctl.in = file.path(sc, i, "em", "em.ctl"),
+                       ctl.out = file.path(sc, i, "em", "em.ctl"), overwrite = T)
         } else stop("Currently, only fleets numbered 2 or 3 should be able to",
                     "have indices of abundance. Please check the fleet numbers",
                     "for index parameters.")
       }
 
       ss_version <- get_ss_ver_dl(dat_list)
-      SS_writedat(datlist = dat_list, outfile = pastef(sc, i, "em", "ss3.dat"),
+      SS_writedat(datlist = dat_list, outfile = file.path(sc, i, "em", "ss3.dat"),
         version = ss_version, overwrite = TRUE, verbose = FALSE)
       # Run the EM -------------------------------------------------------------
       # Should we calculate the hessian?
@@ -601,8 +601,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # true, and we are done running bias adjustments (i.e. we're on
       # the last "bias" iteration), and we haven't already run this
       # yet.
-      if(bias_adjust & i == pastef("bias", bias_nsim) & !bias_already_run) {
-        run_bias_ss3(dir = pastef(sc, "bias"), outdir = pastef(sc,
+      if(bias_adjust & i == file.path("bias", bias_nsim) & !bias_already_run) {
+        run_bias_ss3(dir = file.path(sc, "bias"), outdir = file.path(sc,
             "bias"), nsim = bias_nsim, conv_crit = conv_crit)
         bias_already_run <- TRUE
       # Since we've now run the bias adjustment routine, copy the .ctl
@@ -614,7 +614,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(print_logfile) {
         today <- format(Sys.time(), "%Y-%m-%d")
         me <- Sys.info()["nodename"]
-        sink(pastef(sc, i, "log.txt"))
+        sink(file.path(sc, i, "log.txt"))
         cat("These models were run on ", today,
             "\non the computer ", me,
             "\nin the folder ", getwd(),
@@ -663,10 +663,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         sink()
       }
 
-      file.remove(pastef(sc, i, fake_dat))
+      file.remove(file.path(sc, i, fake_dat))
       if (!keep_compreport) {
-        file.remove(pastef(sc, i, "om", "CompReport.sso"))
-        file.remove(pastef(sc, i, "em", "CompReport.sso"))
+        file.remove(file.path(sc, i, "om", "CompReport.sso"))
+        file.remove(file.path(sc, i, "em", "CompReport.sso"))
       }
       #  Pause to reduce average CPUE use?
       Sys.sleep(sleep)

@@ -77,13 +77,13 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
       message(paste0("Running ", toupper(type), " for scenario: ", sc,
         "; iteration: ", it))
       if(os == "unix") {
-        system(paste0("cd ", pastef(sc, it, type), ";", paste0(bin, " "),
+        system(paste0("cd ", file.path(sc, it, type), ";", paste0(bin, " "),
            ss_em_options, " ", admb_options), ignore.stdout = ignore.stdout, ...)
-        rename_ss3_files(path = pastef(sc, it, type), ss_bin = ss_bin,
+        rename_ss3_files(path = file.path(sc, it, type), ss_bin = ss_bin,
           extensions = c("par", "rep", "log", "bar"))
       } else {
         wd <- getwd()
-        setwd(pastef(sc, it, type))
+        setwd(file.path(sc, it, type))
         system(paste0(paste0(bin, " "), ss_em_options, admb_options),
           invisible = TRUE, ignore.stdout = ignore.stdout,
                show.output.on.console = show.output.on.console, ...)

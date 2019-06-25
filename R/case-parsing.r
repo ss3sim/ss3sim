@@ -155,7 +155,7 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
   }
   args_out2 <- unlist(args_out)
   names(args_out2) <- unlist(case_files)
-  argvalues_out <- lapply(args_out2, function(x) get_args(pastef(folder, x)))
+  argvalues_out <- lapply(args_out2, function(x) get_args(file.path(folder, x)))
 
   # now, check for all "function_type = change_tv" and concatenate these
   # into a list to pass to change_param()
