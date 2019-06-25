@@ -116,14 +116,16 @@ change_tv <- function(change_tv_list,
   ss3.dat     <- SS_readdat(dat_file_in, verbose = FALSE)
   ss3.starter <- SS_readstarter(file = str_file_in, verbose = FALSE)
   ss3.ctl.parlines <- SS_parlines(ctl_file_in, verbose = FALSE)
-  # TODO: add a check that the directories associated with the out files are all
-  # the same.
+
+  # Function requires that the directories associated with the out files are all
+  #   the same, so check this.
   out_dirnames <- lapply(c(ctl_file_out, dat_file_out, par_file_out, str_file_out),
                         function(x) dirname(x))
   out_dirnames <- unique(unlist(out_dirnames))
-  if (length(out_dirnames) > 1) stop("directories for all files created need to
-                                     all be the same in order for the function",
-                                     "change_tv to work.")
+  if (length(out_dirnames) > 1) {
+    stop("Directories for all out files need to be the same in order for the",
+         "function change_tv to work.")
+  }
 
   # For all variables the following coding is used
    # mg = Natural mortality and growth parameters
@@ -155,7 +157,7 @@ change_tv <- function(change_tv_list,
   # this check can be eliminated.
   if(any(ss3.ctl.parlines[ , c("env-var", "use_dev", "Block")] != 0)) {
     stop( "There are one or more environmental linkages specified already in",
-          " the base operating model. At this time ss3sim cannot change time-",
+          " the base operating model. At this time, ss3sim cannot change time-",
           "varying properties of parameters when there are already time-varying",
           "parameters specified in the base operating model.")
   }
@@ -181,10 +183,10 @@ change_tv <- function(change_tv_list,
                 function(x) {
                   val <- grep(pattern = x, x = ss3.ctl, fixed = TRUE)[1]
                   if(is.na(val)) {
-                    stop( "Could not locate the parameter", x, "in the",
+                    stop( "Could not locate the parameter ", x, " in the ",
                           "operating model .ctl file. Check that the parameter",
-                          "is spelled correctly and in the correct case.",
-                          "Have you standardized your .ctl file by running it",
+                          " is spelled correctly and in the correct case. ",
+                          "Have you standardized your .ctl file by running it ",
                           "through SS and used the control.ss_new file?")
                   }
                                if(val < divider.a) temp <- "mg"
@@ -246,17 +248,17 @@ for(i in seq_along(temp.data)) {
   # find comment for no time varying MG
   tv_cmt <- grep("#_no timevary", ss3.ctl) #unfortunately, does not exist for SR
   if (length(tv_cmt) < 3) {
-  stop("Time varying parameters for biology, catchability, or selectivity are",
-       "currently implemented in the base operating model. ss3sim currently",
-       "Cannot manipulate base operating models with time varying parameters",
-       "prespecified.")
+  stop("ss3sim could not find all ctl file locations where time varying ",
+       "short parameter lines should be specified for biology, catchability, ",
+       "and selectivity. Please make sure you are using a standardized ctl ",
+       "file generated from SS (i.e., was a control.ss_new file)"
+       )
   }
   if (length(tv_cmt) > 3) {
     stop("There are more than three lines in the control file ", ctl_file_in,
          " that include the text '#_no timevary. Please make sure you are",
          "using a control file that has the default .ss_new formatting.")
   }
-  #TODO: check no time varying sr parameters.
 
   # add short time varying parameter lines at their necessary sections.
   for(n in c("mg", "qs", "sx")) {
@@ -268,6 +270,7 @@ for(i in seq_along(temp.data)) {
     stop("Currently, ss3sim cannot manipulate stock recruitment time varying",
          "parameters. Please contact the developers if you are interested in",
          "using this feature.")
+
   }
   # Finish changing the data file based on the tv params.
   ss3.dat$N_environ_variables <- dat.varnum.counter
