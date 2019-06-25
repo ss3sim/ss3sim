@@ -188,7 +188,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   old_wd <- getwd()
   on.exit(setwd(old_wd), add = TRUE)
 
-  if(bias_already_run & bias_adjust){
+  if(bias_already_run & bias_adjust) {
       warning("bias_adjust set to FALSE because bias_already_run is TRUE")
       bias_adjust <- FALSE
   }
@@ -224,8 +224,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # If we're bias adjusting, then copy over the .ctl file to the
       # em folder
       if(bias_already_run) {
-        file.copy(from = pastef(sc, "bias", "em.ctl"), to = pastef(sc,
-            i, "em", "em.ctl"), overwrite = TRUE)
+        file.copy(from = pastef(sc, "bias", "em.ctl"),
+                  to = pastef(sc, i, "em", "em.ctl"), overwrite = TRUE)
       }
 
       # Make the OM as specified by the user -----------------------------------
@@ -257,7 +257,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                   to = file.path(sc,i,"om","om.ctl"), overwrite = TRUE)
         # change starter back to use par
         tmp_starter$init_values_src <- 1 # use par
-        SS_writestarter(tmp_starter, dir = file.path(sc,i,"om"),
+        SS_writestarter(tmp_starter, dir = file.path(sc, i, "om"),
                         overwrite = TRUE ,verbose = FALSE)
       }
       # Change the control file if using timevarying, and run the model.
@@ -285,7 +285,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       recdevs <- get_recdevs(iteration = this_run_num, n = 2000, seed = seed)
       if(is.null(user_recdevs)) {
         sc_i_recdevs <- sigmar * recdevs - sigmar^2/2 # from the package data
-      } else {if(user_recdevs_warn & i == 1){
+      } else {if(user_recdevs_warn & i == 1) {
           warning(paste("No bias correction is done internally for user-supplied",
               "recruitment deviations and must be done manually. See the",
               "vignette for more details. Biased recruitment deviations can",
@@ -295,9 +295,9 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       }
 
       # Add new rec devs overwriting om/ss.par
-      change_rec_devs(recdevs_new = sc_i_recdevs, par_file_in =
-        pastef(sc, i, "om", "ss.par"), par_file_out = pastef(sc, i,
-          "om", "ss.par"))
+      change_rec_devs(recdevs_new  = sc_i_recdevs,
+                      par_file_in  = pastef(sc, i, "om", "ss.par"),
+                      par_file_out = pastef(sc, i, "om", "ss.par"))
       # Change F
       f_params <- add_nulls(f_params, c("years", "years_alter", "fvals"))
       with(f_params,
@@ -305,19 +305,20 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                  years_alter         = years_alter,
                  fvals               = fvals,
                  par_file_in         = pastef(sc, i, "om", "ss.par"),
-                 par_file_out            = pastef(sc, i, "om", "ss.par")))
+                 par_file_out        = pastef(sc, i, "om", "ss.par")))
 
       # Run the operating model to get expected values in the data.ss_new after
       # adding in the recdevs and F's to the .par file.
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
       # Read in the data.ss_new file and write to ss3.dat in the om folder
-      if(!file.exists(pastef(sc, i, "om", "data.ss_new")))
-          stop(paste0("The data.ss_new not created in *second* OM run for ",
-                     sc, "-",i, ": is something wrong with initial model files?"))
+      if(!file.exists(pastef(sc, i, "om", "data.ss_new"))) {
+          stop("The data.ss_new not created in *second* OM run for ", sc, "-",i,
+               ": is something wrong with initial model files?")
+      }
       expdata <- r4ss::SS_readdat(pastef(sc, i, "om", "data.ss_new"),
-        section = 2, verbose = FALSE)
+                                  section = 2, verbose = FALSE)
       r4ss::SS_writedat(expdata, pastef(sc, i, "om", "ss3.dat"),
-        overwrite = TRUE, verbose = FALSE)
+                        overwrite = TRUE, verbose = FALSE)
       rm(expdata)
       # Remove the ss_new file in case the next run doesn't work we can tell
       file.remove(pastef(sc, i, "om", "data.ss_new"))

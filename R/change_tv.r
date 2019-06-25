@@ -17,7 +17,7 @@
 #' @template par_file_out
 #' @template str_file_in
 #' @template str_file_out
-#' @author Kotaro Ono, Carey McGilliard, and Kelli Johnson
+#' @author Kotaro Ono, Carey McGilliard, Kelli Johnson, and Kathryn Doering
 #' @family change functions
 #' @return The function creates modified versions of the \code{.par},
 #'   \code{.starter}, \code{.ctl}, and \code{.dat} files.
@@ -112,13 +112,14 @@ change_tv <- function(change_tv_list,
   ss_bin <- "ss_safe"
 
   # read in necessary ss files.
-  ss3.ctl    <- readLines(con = ctl_file_in)
-  ss3.dat    <- SS_readdat(dat_file_in, verbose = FALSE)
-  ss3.starter<- SS_readstarter(file = str_file_in, verbose = FALSE)
+  ss3.ctl     <- readLines(con = ctl_file_in)
+  ss3.dat     <- SS_readdat(dat_file_in, verbose = FALSE)
+  ss3.starter <- SS_readstarter(file = str_file_in, verbose = FALSE)
   ss3.ctl.parlines <- SS_parlines(ctl_file_in, verbose = FALSE)
   # TODO: add a check that the directories associated with the out files are all
   # the same.
-  out_dirnames<- lapply(c(ctl_file_out, dat_file_out, par_file_out, str_file_out), function(x) dirname(x))
+  out_dirnames <- lapply(c(ctl_file_out, dat_file_out, par_file_out, str_file_out),
+                        function(x) dirname(x))
   out_dirnames <- unique(unlist(out_dirnames))
   if (length(out_dirnames) > 1) stop("directories for all files created need to
                                      all be the same in order for the function",
@@ -152,7 +153,7 @@ change_tv <- function(change_tv_list,
   # For now, stop if there are any time varying parameters specified.
   # TODO: make this so the existing time varying structure can be retained., and
   # this check can be eliminated.
-  if(any(ss3.ctl.parlines[ , c("env-var", "use_dev", "Block")] != 0)){
+  if(any(ss3.ctl.parlines[ , c("env-var", "use_dev", "Block")] != 0)) {
     stop( "There are one or more environmental linkages specified already in",
           " the base operating model. At this time ss3sim cannot change time-",
           "varying properties of parameters when there are already time-varying",
@@ -176,21 +177,24 @@ change_tv <- function(change_tv_list,
   divider.a <- grep("#_Spawner-Recruitment", ss3.ctl, fixed = TRUE)[1]
   divider.b <- grep("#_Q_setup", ss3.ctl, fixed = TRUE)[1]
   divider.c <- grep("_size_selex_patterns", ss3.ctl, fixed = TRUE)[1]
-  lab <- sapply(names(change_tv_list), function(x) {
-                               val <- grep(pattern = x, x = ss3.ctl, fixed = TRUE)[1]
-                               if(is.na(val)) {
-                                 stop(paste(
-"Could not locate the parameter", x, "in the operating model .ctl file.", "Check
-that the parameter is spelled", "correctly and in the correct case.", "Have you
-standardized your .ctl file", "by running it through SS and used the
-control.ss_new file?"))}
+  lab <- sapply(names(change_tv_list),
+                function(x) {
+                  val <- grep(pattern = x, x = ss3.ctl, fixed = TRUE)[1]
+                  if(is.na(val)) {
+                    stop( "Could not locate the parameter", x, "in the",
+                          "operating model .ctl file. Check that the parameter",
+                          "is spelled correctly and in the correct case.",
+                          "Have you standardized your .ctl file by running it",
+                          "through SS and used the control.ss_new file?")
+                  }
                                if(val < divider.a) temp <- "mg"
                                if(val > divider.a & val < divider.b) temp <- "sr"
                                if(val > divider.b & val < divider.c) temp <- "qs"
                                if(val > divider.c) temp <- "sx"
                                if(x %in% ss3.dat$fleetnames) temp <- "qs"
                                temp
-                             })
+                }
+               )
   tab <- as.data.frame.table(table(lab))
   # Check that there are no environmental links specified
 
@@ -223,7 +227,7 @@ for(i in seq_along(temp.data)) {
     # value of g in year y (env(y,-g))
     # param`(y) = param + link*env(y,-g)
     val[8] <- as.numeric(paste0("2", "0", dat.varnum.counter))
-    ss3.ctl[par.ch] <- paste(c(val, "#",  names(temp.data)[i]), collapse=" ")
+    ss3.ctl[par.ch] <- paste(c(val, "#",  names(temp.data)[i]), collapse = " ")
   dat <- data.frame("Yr" = ss3.dat$styr:ss3.dat$endyr,
                     "Variable" = dat.varnum.counter,
                     "Value" = temp.data[i])
@@ -234,33 +238,32 @@ for(i in seq_along(temp.data)) {
   # Set time varying autogeneration setting to all 1's to make sure SS will not
   # autogenerate them.
   autogen_line <- grep("# autogen: ", ss3.ctl)
-  ss3.ctl[grep("# autogen: ", ss3.ctl)] <- paste0("1 1 1 1 1 # autogen: 1st element for",
-                                  "biology, 2nd for SR, 3rd for Q, 4th",
-                                  "reserved, 5th for selex")
+  ss3.ctl[grep("# autogen: ", ss3.ctl)] <- paste0("1 1 1 1 1 # autogen: 1st ",
+                                                  "element for biology, 2nd ",
+                                                  "for SR, 3rd for Q, 4th",
+                                                  "reserved, 5th for selex")
 
-  # find comment for no time varying MG TODO
+  # find comment for no time varying MG
   tv_cmt <- grep("#_no timevary", ss3.ctl) #unfortunately, does not exist for SR
-  if (length(tv_cmt)<3){
+  if (length(tv_cmt) < 3) {
   stop("Time varying parameters for biology, catchability, or selectivity are",
        "currently implemented in the base operating model. ss3sim currently",
        "Cannot manipulate base operating models with time varying parameters",
        "prespecified.")
   }
-
-  if (length(tv_cmt)>3){
+  if (length(tv_cmt) > 3) {
     stop("There are more than three lines in the control file ", ctl_file_in,
-         " that include the text '#_no timevary. Please make sure you are using ",
-         "a control file that has the default .ss_new formatting.")
+         " that include the text '#_no timevary. Please make sure you are",
+         "using a control file that has the default .ss_new formatting.")
   }
   #TODO: check no time varying sr parameters.
 
-
   # add short time varying parameter lines at their necessary sections.
-  for(n in c("mg", "qs", "sx")){
+  for(n in c("mg", "qs", "sx")) {
     n_string <- switch(n, "mg" = "MG", "qs" = "Q", "sx" = "selex")
     ss3.ctl <- add_tv_parlines(n, tab, n_string, ss3.ctl)
   }
-  if("sr" %in% tab$lab){
+  if("sr" %in% tab$lab) {
     #TODO:  allow SR params to be changed
     stop("Currently, ss3sim cannot manipulate stock recruitment time varying",
          "parameters. Please contact the developers if you are interested in",
@@ -291,25 +294,29 @@ for(i in seq_along(temp.data)) {
   }
   #In case putting the out files in a different base dir, change the wd and copy
   # over the forcast file
-  if(dirname(ctl_file_in) != dirname(ctl_file_out)){
-    file.copy(file.path(dirname(str_file_in),"forecast.ss"), to = file.path(dirname(str_file_out), "forecast.ss"), overwrite = TRUE) #use the same forecast file.
+  if(dirname(ctl_file_in) != dirname(ctl_file_out)) {
+    file.copy(file.path(dirname(str_file_in),"forecast.ss"),
+              to = file.path(dirname(str_file_out), "forecast.ss"),
+              overwrite = TRUE) #use the same forecast file.
     old_dir <- getwd()
     setwd(dirname(ctl_file_out))
     on.exit(setwd(old_dir), add = TRUE) # just in case exits on error.
   }
- #TODO: change to using run_ss3model instead, if possible.
+ #TODO: change to using run_ss3model instead, if possible. (but may not be
+  # because of different file path name?)
   bin <- get_bin(ss_bin)
   #Call ss3 for a run that includes the environmental link
-  message("Running OM to add Timevarying parameters.")
+  message("Running OM to add timevarying parameters.")
   os <- .Platform$OS.type
   if(os == "unix") {
     system(paste(bin, "-nohess"), ignore.stdout = TRUE)
     } else {
-      system(paste(bin, "-nohess"), show.output.on.console = FALSE, invisible = TRUE, ignore.stdout = TRUE)
+      system(paste(bin, "-nohess"), show.output.on.console = FALSE,
+             invisible = TRUE, ignore.stdout = TRUE)
     }
 
   # change wd back, if needed.
-  if(dirname(ctl_file_in) != dirname(ctl_file_out)){
+  if(dirname(ctl_file_in) != dirname(ctl_file_out)) {
     setwd(old_dir)
   }
 
@@ -326,11 +333,11 @@ for(i in seq_along(temp.data)) {
   }
   # read in the new par and ctl file files. Note that
   # ss.par are the names created by SS when model runs are done.
-  ss.par    <- readLines(con = file.path(dirname(str_file_out), "ss.par"))
-  ss3.ctl_new <- readLines(con = file.path(dirname(str_file_out),"control.ss_new"))
+  ss.par    <- readLines(file.path(dirname(str_file_out), "ss.par"))
+  ss3.ctl_new <- readLines(file.path(dirname(str_file_out), "control.ss_new"))
 
   # Use the control.ss_new file from the model run so the formatting is better.
-  file.copy(file.path(dirname(str_file_out),"control.ss_new"),
+  file.copy(file.path(dirname(str_file_out), "control.ss_new"),
             to = ctl_file_out, overwrite = TRUE)
 }
 
@@ -340,12 +347,14 @@ for(i in seq_along(temp.data)) {
 #' @param tab As created in \code{change_tv()}
 #' @param ctl_string The code as called in the .ss_new comment for time varying.
 #' @param ss3.ctl A ss control file that has been read in using \code{readLines()}.
-add_tv_parlines <- function(string, tab, ctl_string, ss3.ctl){
+#' @return A modified version of ss3.ctl (a vector of strings), containing the
+#'   new parameter line
+add_tv_parlines <- function(string, tab, ctl_string, ss3.ctl) {
   if (string %in% tab$lab){
     line_num <- grep(paste0("#_no timevary ",ctl_string) , ss3.ctl)
     n_pars <- tab[tab$lab == string, "Freq"]
     # Don't bother labeling, because will run through to get ss_new control.
-    if(n_pars>0){
+    if(n_pars > 0) {
       lines <- rep("-2 2 1 0 99 0 -5", times = n_pars)
       ss3.ctl <- append(ss3.ctl, lines, after = line_num)
     }
