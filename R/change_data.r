@@ -338,9 +338,6 @@ check_data <- function(x) {
   if (!identical(x$N_discard_fleets, 0))
     stop("_N_fleets_with_discard must set to 0 in the SS3 data file.")
 
-  if (!identical(x$N_discard, 0))
-    stop("N discard obs must set to 0 in the SS3 data file.")
-
   if (!identical(x$N_meanbodywt, 0))
     stop("_N_meanbodywt_obs must be set to 0 in the SS3 data file.")
 
@@ -348,9 +345,4 @@ check_data <- function(x) {
     stop(paste("Ageing error definition values must all be set to 0.001 in the",
       "SS3 data file"))
 
-  ## expected_index_years <- as.numeric(rep(seq(x$styr, x$endyr), 2))
-  ## if (!identical(x$CPUE$year, expected_index_years)) {
-  ##   stop(paste("The SS3 data file must contain (dummy) index data for all years",
-  ##     "for both fleet 1 (the fishery) and fleet 3 (CPUE)"))
-  ## }
 }
