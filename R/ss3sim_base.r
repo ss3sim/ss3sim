@@ -242,7 +242,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                       verbose = FALSE)
         tmp_starter$init_values_src <- 0 # don't use par
         SS_writestarter(tmp_starter, dir = file.path(sc,i,"om"),
-                        overwrite = TRUE ,verbose = FALSE)
+                        overwrite = TRUE ,verbose = FALSE, warn = FALSE)
         # run the OM.
         run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
 
@@ -258,7 +258,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         # change starter back to use par
         tmp_starter$init_values_src <- 1 # use par
         SS_writestarter(tmp_starter, dir = file.path(sc, i, "om"),
-                        overwrite = TRUE ,verbose = FALSE)
+                        overwrite = TRUE, verbose = FALSE, warn = FALSE)
       }
       # Change the control file if using timevarying, and run the model.
       if(!is.null(tv_params)) {
