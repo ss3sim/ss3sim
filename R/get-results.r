@@ -569,6 +569,7 @@ get_nll_components <- function(report.file){
       ifelse(length(like_mat[which(rownames(like_mat)==x), 1])==0,
                 NA, like_mat[which(rownames(like_mat)==x), 1]))
     names(vec) <- NLL_names
+    vec[is.na(vec)] <- NA
 
     return(vec)
 }
