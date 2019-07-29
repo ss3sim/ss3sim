@@ -87,7 +87,8 @@ id_scenarios <- function(directory){
 get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
   user_scenarios=NULL, parallel=FALSE){
 
-    on.exit(setwd(directory))
+    old_wd <- getwd()
+    on.exit(setwd(old_wd))
 
     if(parallel) {
       cores <- setup_parallel()
