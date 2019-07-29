@@ -342,8 +342,10 @@ get_results_scenario <- function(scenario, directory=getwd(),
 
             ## Combine them together and massage a bit
             scalar <- cbind(scalar.om, scalar.em, t(bias))
-            ts <- cbind(timeseries.om, timeseries.em)
-            dq <- cbind(derived.om, derived.em)
+            ts <- merge(timeseries.om, timeseries.em, 
+              by.x = "Yr_om", by.y = "Yr_em", all = TRUE)
+            dq <- merge(derived.om, derived.em, 
+              by.x = "Yr_om", by.y = "Yr_em", all = TRUE)
             scalar$scenario <- ts$scenario <- dq$scenario <- scenario
             scalar$replicate <- ts$replicate <- dq$replicate <- rep
 
