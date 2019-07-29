@@ -479,6 +479,9 @@ get_results_timeseries <- function(report.file){
 #' @family get-results
 #' @author Kelli Johnson
 get_results_derived <- function(report.file){
+    #todo: Move val-1/std to stddev column for those pars that need it
+    #todo: move time series values to the time series data frame
+    #todo: move the point estimates to the scalar data frame
     xx <- report.file$derived_quants
     xx <- xx[, c(
       grep("Label", colnames(report.file$derived_quants),
@@ -490,9 +493,10 @@ get_results_derived <- function(report.file){
     xx$name <- sapply(tosplit, "[", 1)
     badname <- grep("Label", colnames(xx), value = TRUE, ignore.case = TRUE)
     if (all(xx$StdDev == 0)) xx <- xx[, -which(colnames(xx) == "StdDev")]
+    xx <- xx[grep("[0-9]", xx$Yr), ]
+    xx$name <- gsub("\\(|\\)", "", xx$name)
     final <- reshape(xx, timevar = "name", idvar = "Yr", direction = "wide",
       drop = badname)
-    final <- final[-which(final$Yr == "Virgin"), ]
     rownames(final) <- NULL
     invisible(final)
 }
