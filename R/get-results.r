@@ -509,13 +509,13 @@ get_results_scalar <- function(report.file){
     der <- report.file$derived_quants
     getcol <- grep("label", colnames(der), ignore.case = TRUE)
     SSB_MSY <- der[which(der[, getcol] =="SSB_MSY"), ]$Value
-    TotYield_MSY <-  der[which(der[, getcol] =="TotYield_MSY"),]$Value
-    SSB_Unfished <-  der[which(der[, getcol] =="SSB_Unfished"),]$Value
+    TotYield_MSY <-  der[which(der[, getcol] =="Dead_Catch_MSY"),]$Value
+    SSB_Unfished <-  der[grep("^SSB_unfished", der[, getcol], ignore.case = TRUE), "Value"]
     F_MSY <- der[der[, getcol]  == "Fstd_MSY", "Value"]
-    F_SPR <- der[der[, getcol]  == "Fstd_SPRtgt", "Value"]
+    F_SPR <- der[der[, getcol]  == "Fstd_SPR", "Value"]
     Catch_endyear <-
-        rev(report.file$timeseries[,grep("dead\\(B\\)",
-          names(report.file$timeseries))])[1]
+        tail(report.file$timeseries[report.file$timeseries$Era == "TIME",grep("dead\\(B\\)",
+          names(report.file$timeseries))], 1)
     pars <- data.frame(t(report.file$parameters$Value))
     names(pars) <- report.file$parameters[, grep("Label", colnames(report.file$parameters), ignore.case = TRUE)]
     ## Get the parameters stuck on bounds
