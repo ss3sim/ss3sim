@@ -188,16 +188,23 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   old_wd <- getwd()
   on.exit(setwd(old_wd), add = TRUE)
 
+  # TODO: remove bias adjustment options for now.
   if(bias_already_run & bias_adjust) {
       warning("bias_adjust set to FALSE because bias_already_run is TRUE")
       bias_adjust <- FALSE
   }
 
-
   # The first bias_nsim runs will be bias-adjustment runs
   if(bias_adjust) {
     iterations <- c(paste0("bias/", c(1:bias_nsim)), iterations)
   }
+
+  #TODO: consider adding a check of OM/EM structures before starting loop?
+  # Probably sufficient to just warn if not structured correctly. Some things
+  # to check:
+  # - no .par file and .par file not used in the starter file, q's and selectivities
+  # -  included for all fleets (i.e., fishing and surveys)
+  # - Anything else?
 
   for(sc in scenarios) {
     # TODO maybe: manipuate the OM for each scenario ONLY; this can't be done
@@ -213,54 +220,27 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         iterations = i, type = "om")
       iteration_existed <- copy_ss3models(model_dir = em_dir, scenarios = sc,
         iterations = i, type = "em")
-      if(iteration_existed)
-          next
+      if(iteration_existed) next
 
       # Make fake .dat files to silence SS3/ADMB:
+      # TODO: still need these?
       fake_dat <- c("om/ss_opt.dat", "om/ss_safe.dat",
         "em/ss_opt.dat", "em/ss_safe.dat")
       sapply(fake_dat, function(fi) write("\n", file.path(sc, i, fi)))
 
+
       # If we're bias adjusting, then copy over the .ctl file to the
       # em folder
+      #TODO: remove bias adjustment code.
       if(bias_already_run) {
         file.copy(from = file.path(sc, "bias", "em.ctl"),
                   to = file.path(sc, i, "em", "em.ctl"), overwrite = TRUE)
       }
 
       # Make the OM as specified by the user -----------------------------------
-      # Do a first initial model run to make sure the ctl file is consistent
-      # with the par file. Not necessary if uing tv_params, as this function
-      # does a model run not from the par file.
-      if(is.null(tv_params)) {
-        # get rid of control.ss_new if it exists, as its presence will be used to
-        # check that the model ran successfully
-        if(file.exists(file.path(sc, i, "om", "control.ss_new"))) {
-          file.remove(file.path(sc, i, "om", "control.ss_new"))
-        }
-        tmp_starter <- SS_readstarter(file.path(sc,i,"om","starter.ss"),
-                                      verbose = FALSE)
-        tmp_starter$init_values_src <- 0 # don't use par
-        SS_writestarter(tmp_starter, dir = file.path(sc,i,"om"),
-                        overwrite = TRUE ,verbose = FALSE, warn = FALSE)
-        # run the OM.
-        run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
 
-        #Check that model ran successfully
-        if(!file.exists(file.path(sc, i, "om", "control.ss_new"))) {
-          stop("The *first* OM model run did not complete. Please check the ",
-               " model files in ", normalizePath(file.path(sc,i,"om")), ".")
-        }
-        # save the control.ss_new as om.ctl so formatting is consistent in ctl.
-        # should this be done for data.ss_new as well?
-        file.copy(file.path(sc,i,"om","control.ss_new"),
-                  to = file.path(sc,i,"om","om.ctl"), overwrite = TRUE)
-        # change starter back to use par
-        tmp_starter$init_values_src <- 1 # use par
-        SS_writestarter(tmp_starter, dir = file.path(sc, i, "om"),
-                        overwrite = TRUE, verbose = FALSE, warn = FALSE)
-      }
-      # Change the control file if using timevarying, and run the model.
+      # Change the control file if using timevarying
+      #TODO: change function so it does not run the model.
       if(!is.null(tv_params)) {
         # Change time-varying parameters; e.g. M, selectivity, growth...
         wd <- getwd()
@@ -272,11 +252,9 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                   ctl_file_out        = "om.ctl")#)
         setwd(wd)
       }
-
       # The following section adds recruitment deviations
       # First, pull in sigma R from the operating model
       sigmar <- get_sigmar(file.path(sc, i, "om", "om"))
-
       # Second, take the true iteration, even if we're working with
       # "bias" iterations
       # This turns "bias/1" into "1" and leaves "1" unchanged
@@ -286,19 +264,21 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(is.null(user_recdevs)) {
         sc_i_recdevs <- sigmar * recdevs - sigmar^2/2 # from the package data
       } else {if(user_recdevs_warn & i == 1) {
-          warning(paste("No bias correction is done internally for user-supplied",
-              "recruitment deviations and must be done manually. See the",
-              "vignette for more details. Biased recruitment deviations can",
-              "lead to biased model results."), .call = FALSE)
+          warning("No bias correction is done internally for user-supplied ",
+              "recruitment deviations and must be done manually. See the ",
+              "vignette for more details. Biased recruitment deviations can ",
+              "lead to biased model results.", call. = FALSE)
         }
         sc_i_recdevs <- user_recdevs[, this_run_num] # user specified recdevs
       }
-
-      # Add new rec devs overwriting om/ss.par
+      # TODO: modify change_rec_devs function so recdevs added to ctl instead of
+      # om/ss.par file
       change_rec_devs(recdevs_new  = sc_i_recdevs,
                       par_file_in  = file.path(sc, i, "om", "ss.par"),
                       par_file_out = file.path(sc, i, "om", "ss.par"))
-      # Change F
+
+      # TODO: modify change_F function so F added to ctl file instead of
+      # om/ss.par file
       f_params <- add_nulls(f_params, c("years", "years_alter", "fvals"))
       with(f_params,
         change_f(years               = years,
@@ -307,22 +287,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                  par_file_in         = file.path(sc, i, "om", "ss.par"),
                  par_file_out        = file.path(sc, i, "om", "ss.par")))
 
-      # Run the operating model to get expected values in the data.ss_new after
-      # adding in the recdevs and F's to the .par file.
-      run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
-      # Read in the data.ss_new file and write to ss3.dat in the om folder
-      if(!file.exists(file.path(sc, i, "om", "data.ss_new"))) {
-          stop("The data.ss_new not created in *second* OM run for ", sc, "-",i,
-               ": is something wrong with initial model files?")
-      }
-      expdata <- r4ss::SS_readdat(file.path(sc, i, "om", "data.ss_new"),
-                                  section = 2, verbose = FALSE)
-      r4ss::SS_writedat(expdata, file.path(sc, i, "om", "ss3.dat"),
-                        overwrite = TRUE, verbose = FALSE)
-      rm(expdata)
-      # Remove the ss_new file in case the next run doesn't work we can tell
-      file.remove(file.path(sc, i, "om", "data.ss_new"))
-
       # Change the data structure in the OM to produce the expected
       # values we want. This sets up the 'dummy' bins before we run
       # the OM one last time. Then we'll sample from the expected values
@@ -330,7 +294,9 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       ## This returns a superset of all years/fleets/data types needed to
       ## do sampling.
-      data_args <- calculate_data_units(lcomp_params    = lcomp_params,
+      data_args <- calculate_data_units(
+                                        # why no specification of index_params here? Need?
+                                        lcomp_params    = lcomp_params,
                                         agecomp_params  = agecomp_params,
                                         calcomp_params  = calcomp_params,
                                         mlacomp_params  = mlacomp_params,
@@ -342,10 +308,13 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         # Start by clearing out the old data. Important so that extra data
         # doesn't trip up change_data:
         datfile.orig <- clean_data(dat_list = datfile.orig,
-          index_params = index_params, verbose = FALSE)
+          index_params = index_params, verbose = FALSE) # why only index_params called here?
         # Need to also change the number of q parameters in the control so that
         # It matches the datafile:
         #assume either 1 or 2 fleets (numbered 2 or 3) are only options.
+        #TODO: make this more general so it can work with any generalized model
+        # that no indices were specified.Also consider if this should be moved
+        # elsewhere in the code? (e.g., out of the call_change_data if statement?)
         if (length(index_params$fleets) == 1){
           if(index_params$fleets == 2 | index_params$fleets == 3){
             #fleetname to remove
@@ -379,7 +348,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # Run the operating model and copy the dat file over
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
       if(!file.exists(file.path(sc, i, "om", "data.ss_new")))
-          stop(paste0("The data.ss_new not created in *third* OM run for ",
+          stop(paste0("The data.ss_new not created in the OM run for ",
                      sc, "-",i, ": is something wrong with initial model files?"))
       expdata <- r4ss::SS_readdat(file.path(sc, i, "om", "data.ss_new"),
         section = 2, verbose = FALSE)

@@ -13,10 +13,6 @@
 #' @template ctl_file_out
 #' @template dat_file_in
 #' @template dat_file_out
-#' @template par_file_in
-#' @template par_file_out
-#' @template str_file_in
-#' @template str_file_out
 #' @author Kotaro Ono, Carey McGilliard, Kelli Johnson, and Kathryn Doering
 #' @family change functions
 #' @return The function creates modified versions of the \code{.par},
@@ -104,23 +100,16 @@
 
 change_tv <- function(change_tv_list,
   ctl_file_in = "control.ss_new", ctl_file_out = "om.ctl",
-  dat_file_in = "ss3.dat", dat_file_out = "ss3.dat",
-  par_file_in = "ss.par", par_file_out = "ss.par",
-  str_file_in = "starter.ss", str_file_out = "starter.ss") {
-
-  # Always use safe mode here:
-  ss_bin <- "ss_safe"
+  dat_file_in = "ss3.dat", dat_file_out = "ss3.dat") {
 
   # read in necessary ss files.
-  ss3.ctl     <- readLines(con = ctl_file_in)
-  ss3.dat     <- SS_readdat(dat_file_in, verbose = FALSE)
-  ss3.starter <- SS_readstarter(file = str_file_in, verbose = FALSE)
+  ss3.ctl <- readLines(con = ctl_file_in)
+  ss3.dat <- SS_readdat(dat_file_in, verbose = FALSE)
   ss3.ctl.parlines <- SS_parlines(ctl_file_in, verbose = FALSE)
 
   # Function requires that the directories associated with the out files are all
   #   the same, so check this.
-  out_dirnames <- lapply(c(ctl_file_out, dat_file_out, par_file_out, str_file_out),
-                        function(x) dirname(x))
+  out_dirnames <- lapply(c(ctl_file_out, dat_file_out), function(x) dirname(x))
   out_dirnames <- unique(unlist(out_dirnames))
   if (length(out_dirnames) > 1) {
     stop("Directories for all out files need to be the same in order for the",
@@ -276,72 +265,13 @@ for(i in seq_along(temp.data)) {
   ss3.dat$N_environ_variables <- dat.varnum.counter
   ss3.dat$envdat <- ss3.dat.tbl
 
-  #run SS with with no estimation and no hessian to get a new .par file and
-  # a control ss_new file.
-  #first change starter file option from use .par to .ctl
-  ss3.starter$init_values_src <- 0 # dont use par
-  ss3.starter$datfile <- basename(dat_file_out)
-  ss3.starter$ctlfile <- basename(ctl_file_out)
-  #write out files needed for this run.
+  # Write out manipulated files.
+  # TODO: may want to make the ctl file have more standard commenting if not
+  # going to run the OM except for once at the end... eventually, perhaps using
+  # SS_read/writectl instead can be useful in this regard.
   writeLines(ss3.ctl, ctl_file_out)
   SS_writedat(ss3.dat, dat_file_out, overwrite = TRUE, verbose = FALSE)
-  SS_writestarter(mylist = ss3.starter, dir = dirname(str_file_out),
-                  file = basename(str_file_out), overwrite = TRUE,
-                  verbose = FALSE, warn = FALSE)
 
-  # get rid of control.ss_new if it exists, as its presence will be used to
-  # check that the model ran successfully
-
-  if(file.exists(file.path(dirname(str_file_out), "control.ss_new"))) {
-    file.remove(file.path(dirname(str_file_out), "control.ss_new"))
-  }
-  #In case putting the out files in a different base dir, change the wd and copy
-  # over the forcast file
-  if(dirname(ctl_file_in) != dirname(ctl_file_out)) {
-    file.copy(file.path(dirname(str_file_in),"forecast.ss"),
-              to = file.path(dirname(str_file_out), "forecast.ss"),
-              overwrite = TRUE) #use the same forecast file.
-    old_dir <- getwd()
-    setwd(dirname(ctl_file_out))
-    on.exit(setwd(old_dir), add = TRUE) # just in case exits on error.
-  }
- #TODO: change to using run_ss3model instead, if possible. (but may not be
-  # because of different file path name?)
-  bin <- get_bin(ss_bin)
-  #Call ss3 for a run that includes the environmental link
-  message("Running OM to add timevarying parameters.")
-  os <- .Platform$OS.type
-  if(os == "unix") {
-    system(paste(bin, "-nohess"), ignore.stdout = TRUE)
-    } else {
-      system(paste(bin, "-nohess"), show.output.on.console = FALSE,
-             invisible = TRUE, ignore.stdout = TRUE)
-    }
-
-  # change wd back, if needed.
-  if(dirname(ctl_file_in) != dirname(ctl_file_out)) {
-    setwd(old_dir)
-  }
-
-  # Change starter file option back to using .par and write to file again.
-  ss3.starter$init_values_src <- 1
-  SS_writestarter(mylist = ss3.starter, dir = dirname(str_file_out),
-                  file = basename(str_file_out), overwrite = TRUE,
-                  verbose = FALSE, warn = FALSE)
-
-  #Check that model ran successfully
-  if(!file.exists(file.path(dirname(str_file_out), "control.ss_new"))) {
-    stop("OM model run during change_tv() did not complete. Please check the",
-         " model files in ", normalizePath(dirname(str_file_out)), ".")
-  }
-  # read in the new par and ctl file files. Note that
-  # ss.par are the names created by SS when model runs are done.
-  ss.par    <- readLines(file.path(dirname(str_file_out), "ss.par"))
-  ss3.ctl_new <- readLines(file.path(dirname(str_file_out), "control.ss_new"))
-
-  # Use the control.ss_new file from the model run so the formatting is better.
-  file.copy(file.path(dirname(str_file_out), "control.ss_new"),
-            to = ctl_file_out, overwrite = TRUE)
 }
 
 #' Add short time varying parameter lines. At time of writing, this method will
@@ -357,6 +287,7 @@ add_tv_parlines <- function(string, tab, ctl_string, ss3.ctl) {
     line_num <- grep(paste0("#_no timevary ",ctl_string) , ss3.ctl)
     n_pars <- tab[tab$lab == string, "Freq"]
     # Don't bother labeling, because will run through to get ss_new control.
+    # TODO: may want to add labels?
     if(n_pars > 0) {
       lines <- rep("-2 2 1 0 99 0 -5", times = n_pars)
       ss3.ctl <- append(ss3.ctl, lines, after = line_num)
