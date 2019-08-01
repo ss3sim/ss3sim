@@ -105,18 +105,25 @@ remove_CPUE <- function(string,
 #'
 #' This function removesa q setup line from a SS 3.30 control file
 #' @param string A string with the fleetname to remove.
-#' @param ctl.in An SS control file name to read in.
+#' @param ctl.in An SS control file name to read in if filename = TRUE otherwise
+#'   an SS control file vector already read using readLines()
+#' @param filename Does function expect ctl.in to be a filename? defaults to
+#'   TRUE. See \code{ctl.in} definition.
 #' @param ctl.out The SS control file to read out.
 #' @param overwrite Logical. Overwrite an existing file with the same name as
 #'   \code{ctl.out} or \code{data.out}?
-#' @return A modified SS control file.
+#' @return A modified SS control file vector.
 #' @author Kelli Johnson
 remove_q_ctl <- function(string,
-                        ctl.in, ctl.out,
+                        ctl.in, filename = TRUE, ctl.out,
                         overwrite = FALSE) {
 
   # ctl file
-  ctl <- readLines(ctl.in)
+  if(filename == TRUE) {
+    ctl <- readLines(ctl.in)
+  } else {
+    ctl <- ctl.in
+  }
   line <- findspot("Q_setup", ctl, gopast = "#")
   while(!grepl(string, ctl[line])) line <- line + 1
   ctl <- ctl[-line]
@@ -128,4 +135,5 @@ remove_q_ctl <- function(string,
     if (file.exists(ctl.out) & !overwrite) write <- FALSE
     if (write) writeLines(text = ctl, con = ctl.out)
   }
+  invisible(ctl) # useful if not writing to file.
 }

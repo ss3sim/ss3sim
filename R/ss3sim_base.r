@@ -307,30 +307,31 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if (call_change_data) {
         # Start by clearing out the old data. Important so that extra data
         # doesn't trip up change_data:
-        datfile.orig <- clean_data(dat_list = datfile.orig,
+        datfile.modified <- clean_data(dat_list = datfile.orig,
           index_params = index_params, verbose = FALSE) # why only index_params called here?
-        # Need to also change the number of q parameters in the control so that
-        # It matches the datafile:
-        #assume either 1 or 2 fleets (numbered 2 or 3) are only options.
-        #TODO: make this more general so it can work with any generalized model
-        # that no indices were specified.Also consider if this should be moved
-        # elsewhere in the code? (e.g., out of the call_change_data if statement?)
-        if (length(index_params$fleets) == 1){
-          if(index_params$fleets == 2 | index_params$fleets == 3){
-            #fleetname to remove
-            rm_fleetname <- datfile.orig$fleetnames[c(-1, -index_params$fleets)]
-            remove_q_ctl(rm_fleetname, ctl.in = file.path(sc, i, "om", "om.ctl"),
-                        ctl.out = file.path(sc, i, "om", "om.ctl"), overwrite = T)
-          } else stop("Currently, only fleets numbered 2 or 3 should be able to",
-                      "have indices of abundance. Please check the fleet numbers",
-                      "for index parameters.")
+
+        # Remove q setup lines and parlines for fleets that aren't being used as
+        # an index of abundance.
+        #TODO: make sure working correctly and make sure ok that inside of if statement.
+        remove_fleetnames <- datfile.orig$fleetnames[-index_params$fleets]
+        # get list of remove_fleetnames
+        # first param is fleetnames to remove
+        if(length(remove_fleetnames) > 0){
+          tmp_ctl <- readLines(file.path(sc,i, "om", "om.ctl"))
+          for(n in remove_fleetnames) {
+            tmp_ctl <- remove_q_ctl(n, ctl.in = tmp_ctl, filename = FALSE,
+                                ctl.out = NULL)
+          }
+          # write here rather than in function to reduce number of times writing
+          # to file.
+          writeLines(tmp_ctl, file.path(sc,i, "om", "om.ctl"))
         }
         data_params <- add_nulls(data_params, c("age_bins", "len_bins",
           "pop_binwidth", "pop_minimum_size", "pop_maximum_size",
           "tail_compression", "lcomp_constant"))
 
         # Note some are data_args and some are data_params:
-        change_data(dat_list         = datfile.orig,
+        change_data(dat_list         = datfile.modified,
                     outfile          = file.path(sc, i, "om", "ss3.dat"),
                     fleets           = data_args$fleets,
                     years            = data_args$years,
@@ -538,6 +539,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # As with the OM, need to remove q setup and parlines in the EM that are
       # not used.
       #assume either 1 or 2 fleets (numbered 2 or 3) are only options.
+      #TODO: change this to be more general.
+      # fleets_included <- unique(dat_list$CPUE$index)
+      # #fleets include in em.ctl ?? Perhaps it could be moved to change_e, because
+      # it is changing something in the estimation model?
       if (length(index_params$fleets) == 1){
         if(index_params$fleets == 2 | index_params$fleets == 3){
           #fleetname to remove
