@@ -162,11 +162,13 @@
 #_5:  0/1 for biasadj or not
 #_6:  0/1 to float
 #_   fleet      link link_info  extra_se   biasadj     float  #  fleetname
+         1         1         0         0         0         0  #  Fishery
          2         1         0         0         0         0  #  Survey
 -9999 0 0 0 0 0
 #
 #_Q_parms(if_any);Qunits_are_ln(q)
 #_          LO            HI          INIT         PRIOR         PR_SD       PR_type      PHASE    env-var    use_dev   dev_mnyr   dev_mxyr     dev_PH      Block    Blk_Fxn  #  parm_name
+           -20            20             0             0            99             0          5          0          0          0          0          0          0          0  #  LnQ_base_Fishery(1)
            -20            20             0             0            99             0          5          0          0          0          0          0          0          0  #  LnQ_base_Survey(2)
 #_no timevary Q parameters
 #
@@ -190,7 +192,6 @@
 #_Pattern Discard Male Special
  24 0 0 0 # 1 Fishery
  24 0 0 0 # 2 Survey
- 15 0 0 1 # 3 CPUE
 #
 #_age_selex_patterns
 #Pattern:_0; parm=0; selex=1.0 for ages 0 to maxage
@@ -212,7 +213,6 @@
 #_Pattern Discard Male Special
  11 0 0 0 # 1 Fishery
  11 0 0 0 # 2 Survey
- 11 0 0 0 # 3 CPUE
 #
 #_          LO            HI          INIT         PRIOR         PR_SD       PR_type      PHASE    env-var    use_dev   dev_mnyr   dev_mxyr     dev_PH      Block    Blk_Fxn  #  parm_name
 # 1   Fishery LenSelex
@@ -229,16 +229,12 @@
             -2            15            14            14          0.05             0        -99          0          0          0          0          0          0          0  #  SizeSel_P4_Survey(2)
           -100           100           -99           -99          0.05             0        -99          0          0          0          0          0          0          0  #  SizeSel_P5_Survey(2)
           -100           100            99            99          0.05             0        -99          0          0          0          0          0          0          0  #  SizeSel_P6_Survey(2)
-# 3   CPUE LenSelex
 # 1   Fishery AgeSelex
              0             1           0.1           0.1            99             0         -3          0          0          0          0        0.5          0          0  #  AgeSel_P1_Fishery(1)
              0           101           100           100            99             0         -3          0          0          0          0        0.5          0          0  #  AgeSel_P2_Fishery(1)
 # 2   Survey AgeSelex
              0             1           0.1           0.1            99             0         -3          0          0          0          0        0.5          0          0  #  AgeSel_P1_Survey(2)
              0           101           100           100            99             0         -3          0          0          0          0        0.5          0          0  #  AgeSel_P2_Survey(2)
-# 3   CPUE AgeSelex
-             0             1           0.1           0.1            99             0         -3          0          0          0          0        0.5          0          0  #  AgeSel_P1_CPUE(3)
-             0           101           100           100            99             0         -3          0          0          0          0        0.5          0          0  #  AgeSel_P2_CPUE(3)
 #_no timevary selex parameters
 #
 0   #  use 2D_AR1 selectivity(0/1):  experimental feature
