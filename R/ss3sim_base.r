@@ -277,15 +277,13 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                       par_file_in  = file.path(sc, i, "om", "ss.par"),
                       par_file_out = file.path(sc, i, "om", "ss.par"))
 
-      # TODO: modify change_F function so F added to ctl file instead of
-      # om/ss.par file
-      f_params <- add_nulls(f_params, c("years", "years_alter", "fvals"))
+      f_params <- add_nulls(f_params, c("years", "fisheries", "fvals"))
       with(f_params,
         change_f(years               = years,
-                 years_alter         = years_alter,
+                 fisheries           = fisheries,
                  fvals               = fvals,
-                 par_file_in         = file.path(sc, i, "om", "ss.par"),
-                 par_file_out        = file.path(sc, i, "om", "ss.par")))
+                 ctl_file_in         = file.path(sc, i, "om", "om.ctl"),
+                 ctl_file_out        = file.path(sc, i, "om", "om.ctl")))
 
       # Change the data structure in the OM to produce the expected
       # values we want. This sets up the 'dummy' bins before we run
@@ -536,22 +534,23 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                   run_change_e_full    = run_change_e_full))
         setwd(wd)
       }
-      # As with the OM, need to remove q setup and parlines in the EM that are
-      # not used.
-      #assume either 1 or 2 fleets (numbered 2 or 3) are only options.
-      #TODO: change this to be more general.
-      # fleets_included <- unique(dat_list$CPUE$index)
-      # #fleets include in em.ctl ?? Perhaps it could be moved to change_e, because
+
+      #TODO: Perhaps removing the q could be moved to change_e, because
       # it is changing something in the estimation model?
-      if (length(index_params$fleets) == 1){
-        if(index_params$fleets == 2 | index_params$fleets == 3){
-          #fleetname to remove
-          rm_fleetname <- datfile.orig$fleetnames[c(-1, -index_params$fleets)]
-          remove_q_ctl(rm_fleetname, ctl.in = file.path(sc, i, "em", "em.ctl"),
-                       ctl.out = file.path(sc, i, "em", "em.ctl"), overwrite = T)
-        } else stop("Currently, only fleets numbered 2 or 3 should be able to",
-                    "have indices of abundance. Please check the fleet numbers",
-                    "for index parameters.")
+      qpars <- r4ss::SS_parlines(file.path(sc, i, "em", "em.ctl"))
+      qpars <- qpars[grep("^LnQ", qpars$Label), ]
+      qinmodel <- type.convert(gsub("[a-zA-Z\\(\\)_]", "", qpars$Label))
+      for (irem in qinmodel) {
+        if (irem %in% unique(datfile.modified$CPUE$index)) next
+          remove_q_ctl(irem, 
+            ctl.in = file.path(sc, i, "em", "em.ctl"),
+            ctl.out = file.path(sc, i, "em", "em.ctl"), 
+            overwrite = TRUE)
+      }
+      if (any(!unique(datfile.modified$CPUE$index) %in% qinmodel)) {
+        stop("Currently, only fleets numbered 2 or 3 should be able to",
+          "have indices of abundance. Please check the fleet numbers",
+          "for index parameters.")
       }
 
       ss_version <- get_ss_ver_dl(dat_list)
