@@ -1,59 +1,67 @@
 #' Replace recruitment deviations
 #'
 #' This function replaces the recruitment deviations in the
-#' \code{ss.par} file with those specified in \code{recdevs_new}, as
-#' well as a comment (for debugging). It then writes a new file with
-#' name \code{par_file_out} into the working directory.
+#' control file with those specified in \code{recdevs}. 
+#' The new control file is then written to the disk if 
+#' \code{ctl_file_out} is specified. 
+#' It is imperative that the path provided in \code{ctl_file_in}
+#' be to a \code{ss_new} file so \code{change_rec_devs} can 
+#' properly determine how many recruitment deviations to input
+#' into the control file. 
 #'
-#' @param recdevs_new A vector of new recruitment deviations.
-#' @template par_file_in
-#' @template par_file_out
-#' @return A modified SS3 \code{.par} file.
-#' @author Cole Monnahan
-#' @details This function does not need to be specified in a case file if you
-#'   are running and ss3sim simulation through case files with
-#'   \code{\link{run_ss3sim}}.
+#' This function does not need to be specified in a case file if you
+#' are running an ss3sim simulation using \code{\link{run_ss3sim}}.
+#' 
+#' @param recdevs A vector of recruitment deviations to be entered into
+#' the SS control file. A single value will be repeated for every value in
+#' \code{years} or \code{length(years) == length(recdevs)} must be true.
+#' @template ctl_file_in
+#' @template ctl_file_out
+#' @return A modified SS control file.
+#' @author Kelli Faye Johnson
 #' @export
 #'
 #' @examples
-#' # Create a temporary folder for the output:
-#' temp_path <- file.path(tempdir(), "ss3sim-recdev-example")
-#' dir.create(temp_path, showWarnings = FALSE)
-#'
-#' par_file <- system.file("extdata", "models", "cod-om", "ss.par",
-#'   package = "ss3sim")
-#' change_rec_devs(recdevs_new = rlnorm(100), par_file_in = par_file,
-#'   par_file_out = paste0(temp_path, "/test.par"))
+#' d <- system.file(file.path("extdata", "models"), package = "ss3sim")
+#' change_rec_devs(recdevs = rlnorm(100), 
+#'   ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
+#'   ctl_file_out = file.path(tempdir(), "control_recdevs.ss"))
 
-change_rec_devs <- function(recdevs_new, par_file_in = "ss.par",
-  par_file_out="ss.par"){
-  ## This is the pattern on the line before the vector of current recdevs
-  pattern <- "# recdev1"
+change_rec_devs <- function(recdevs, 
+  ctl_file_in, ctl_file_out = "control_recruitment.ss") {
 
-  if(!file.exists(par_file_in)) stop(paste("File", par_file_in,"not found"))
-  par <- readLines(par_file_in, warn = FALSE)
-  which.line <- grep(pattern=pattern, x=par)+1
-
-  ## grab the old ones, note there is a leading space that needs to be
-  ## deleted
-  recdevs.old <- par[which.line]
-  recdevs.old <- gsub("^\\s+|\\s+$", "", recdevs.old) # remove leading blank
-  recdevs.old <- gsub("\\s+", " ", recdevs.old)       # remove >1 blanks
-  recdevs.old <- as.numeric(unlist(strsplit(recdevs.old, split= " ")))
-  num.years <- length(recdevs.old)
-
-  ##  Cut off extra recdevs:
-  recdevs_new <- recdevs_new[1:length(recdevs.old)]
-
-  ## Check that the length of the recdevs matches up
-  if(length(recdevs_new) != length(recdevs.old)){
-    stop("The new recdev vector isn't the same length as what is
-      currently in the ss.par file")
+  ctl <- readLines(ctl_file_in)
+  devs <- grep("#\\s*[0-9]+[RFE]", ctl, value = TRUE)
+  years <- unlist(strsplit(
+    gsub("^_", "", 
+    gsub("^#\\s*|\\s|R|F|E", "_", devs)), "_+"))
+  n.years <- length(years)
+  recdevs <- recdevs[seq_along(years)]
+  newdata <- data.frame(
+    "Yr" = years,
+    "recdev" = recdevs)
+    
+  locations <- grep("do_recdev", ctl)
+  ctl[locations] <- gsub("^[0-4]\\s*", "1 ", trimws(ctl[locations]))
+  ctl[locations + 4] <- gsub("^[0-1]\\s*", "1 ", trimws(ctl[locations + 4]))
+  locations <- grep("read_recdevs|Fishing Mortality info", ctl)
+  if (length(locations) > 2) stop("Fishing Mortality info was found more", 
+    " than once in the control file")
+  if (length(locations) == 1) {
+    locations[2] <- grep("F ballpark$", ctl)
   }
-
-  ## replace w/ new recdevs, adding back in that leading space
-  par[which.line] <- paste0(" ", recdevs_new, collapse="")
-  ## Write it back to file
-  writeLines(par, con = par_file_out)
+  ctl[locations[1]] <- gsub("^[0-9]+\\s*", paste0(n.years, " "), 
+    trimws(ctl[locations[1]]))
+  ctl <- ctl[-((locations[1] + 1):(locations[2] - 1))]
+  ctl <- append(ctl, 
+    values = apply(newdata, 1, paste, collapse = " "),
+    after = locations[1])
+  
+  # Write new control file
+  if (!is.null(ctl_file_out)) {
+    writeLines(ctl, con = ctl_file_out)
+    close(file(ctl_file_out))
+  }
+  invisible(ctl)
 }
 

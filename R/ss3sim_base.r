@@ -271,11 +271,9 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         }
         sc_i_recdevs <- user_recdevs[, this_run_num] # user specified recdevs
       }
-      # TODO: modify change_rec_devs function so recdevs added to ctl instead of
-      # om/ss.par file
-      change_rec_devs(recdevs_new  = sc_i_recdevs,
-                      par_file_in  = file.path(sc, i, "om", "ss.par"),
-                      par_file_out = file.path(sc, i, "om", "ss.par"))
+      change_rec_devs(recdevs      = sc_i_recdevs,
+                      ctl_file_in  = file.path(sc, i, "om", "om.ctl"),
+                      ctl_file_out = file.path(sc, i, "om", "om.ctl"))
 
       f_params <- add_nulls(f_params, c("years", "fisheries", "fvals"))
       with(f_params,
