@@ -202,8 +202,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   #TODO: consider adding a check of OM/EM structures before starting loop?
   # Probably sufficient to just warn if not structured correctly. Some things
   # to check:
-  # - no .par file and .par file not used in the starter file, q's and selectivities
-  # -  included for all fleets (i.e., fishing and surveys)
+  # - no .par file and .par file not used in the starter file
+  # -  q included for all fleets (i.e., fishing and surveys).
   # - Anything else?
 
   for(sc in scenarios) {
@@ -240,7 +240,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # Make the OM as specified by the user -----------------------------------
 
       # Change the control file if using timevarying
-      #TODO: change function so it does not run the model.
       if(!is.null(tv_params)) {
         # Change time-varying parameters; e.g. M, selectivity, growth...
         wd <- getwd()
@@ -259,7 +258,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # "bias" iterations
       # This turns "bias/1" into "1" and leaves "1" unchanged
       this_run_num <- as.numeric(rev(strsplit(as.character(i), "/")[[1]])[1])
-
       recdevs <- get_recdevs(iteration = this_run_num, n = 2000, seed = seed)
       if(is.null(user_recdevs)) {
         sc_i_recdevs <- sigmar * recdevs - sigmar^2/2 # from the package data
@@ -308,10 +306,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
         # Remove q setup lines and parlines for fleets that aren't being used as
         # an index of abundance.
-        #TODO: make sure working correctly and make sure ok that inside of if statement.
         remove_fleetnames <- datfile.orig$fleetnames[-index_params$fleets]
         # get list of remove_fleetnames
         # first param is fleetnames to remove
+
         if(length(remove_fleetnames) > 0){
           tmp_ctl <- readLines(file.path(sc,i, "om", "om.ctl"))
           for(n in remove_fleetnames) {
@@ -322,6 +320,19 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           # to file.
           writeLines(tmp_ctl, file.path(sc,i, "om", "om.ctl"))
         }
+        # check qs are correct.
+        qpars_OM <- r4ss::SS_parlines(file.path(sc,i, "om", "om.ctl"))
+        qpars_OM <- qpars_OM[grep("^LnQ", qpars_OM$Label), ]
+        qinOM <- type.convert(gsub("[a-zA-Z\\(\\)_]", "", qpars_OM$Label))
+        #TODO: can get rid of this check if it is done earlier on the original
+        # EM and OM files read in.
+        if (any(!(index_params$fleets %in% qinOM))) {
+          stop("There are fleets with indices in the OM that do not have q ",
+               "parameters specified. Please make sure your OM control file ",
+               "includes q parameters for every fleet that may have an index."
+               )
+        }
+
         data_params <- add_nulls(data_params, c("age_bins", "len_bins",
           "pop_binwidth", "pop_minimum_size", "pop_maximum_size",
           "tail_compression", "lcomp_constant"))
@@ -540,15 +551,17 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       qinmodel <- type.convert(gsub("[a-zA-Z\\(\\)_]", "", qpars$Label))
       for (irem in qinmodel) {
         if (irem %in% unique(datfile.modified$CPUE$index)) next
-          remove_q_ctl(irem, 
+          remove_q_ctl(irem,
             ctl.in = file.path(sc, i, "em", "em.ctl"),
-            ctl.out = file.path(sc, i, "em", "em.ctl"), 
+            ctl.out = file.path(sc, i, "em", "em.ctl"),
             overwrite = TRUE)
       }
+      #TODO: can get rid of this check if it is done earlier on the original
+      # EM and OM files read in.
       if (any(!unique(datfile.modified$CPUE$index) %in% qinmodel)) {
-        stop("Currently, only fleets numbered 2 or 3 should be able to",
-          "have indices of abundance. Please check the fleet numbers",
-          "for index parameters.")
+        stop("There are fleets with indices in the EM that do not have q ",
+               "parameters specified. Please make sure your EM control file ",
+               "includes q parameters for every fleet that may have an index.")
       }
 
       ss_version <- get_ss_ver_dl(dat_list)
