@@ -1,0 +1,4 @@
+# A sample case file for arbitrary M change_tv() arguments
+function_type; change_tv
+param; NatM_p_1_Fem_GP_1
+dev; seq(0.05, 0.1, length.out = 100)
