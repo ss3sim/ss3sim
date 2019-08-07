@@ -269,6 +269,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         }
         sc_i_recdevs <- user_recdevs[, this_run_num] # user specified recdevs
       }
+
       change_rec_devs(recdevs      = sc_i_recdevs,
                       ctl_file_in  = file.path(sc, i, "om", "om.ctl"),
                       ctl_file_out = file.path(sc, i, "om", "om.ctl"))
@@ -360,10 +361,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                      sc, "-",i, ": is something wrong with initial model files?"))
       expdata <- r4ss::SS_readdat(file.path(sc, i, "om", "data.ss_new"),
         section = 2, verbose = FALSE)
+      #TODO: rather than write expdata to file: dat_list <- expdata; rm(expdata)
       r4ss::SS_writedat(expdata, file.path(sc, i, "em", "ss3.dat"),
         overwrite = TRUE, verbose = FALSE)
       rm(expdata)
-
       # Sample from the OM -----------------------------------------------------
       ## Read in the datfile once and manipulate as a list object, then
       ## write it back to file at the end, before running the EM.
@@ -375,11 +376,11 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       dat_list <- with(index_params,
         sample_index(dat_list        = dat_list,
                      outfile         = NULL,
-                     ctl_file_in     = file.path(sc, i, "om", "om.ctl"),
                      fleets          = fleets,
                      years           = years,
                      sds_obs         = sds_obs,
                      write_file      = FALSE))
+
       ## Add error in the length comp data
       if(!is.null(lcomp_params$fleets)){
           lcomp_params <- add_nulls(lcomp_params,
