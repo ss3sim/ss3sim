@@ -67,10 +67,6 @@
 #'   depend on the iteration value, but also on the value of \code{seed}. A
 #'   given combination of iteration, number of years, and \code{seed} value will
 #'   result in the same recruitment deviations.
-#' @param keep_compreport Logical: should the SS3 file \code{CompReport.sso} be
-#'   kept or deleted? \code{CompReport.sso} is often rather large and so
-#'   deleting it can save space but the file is needed for some of the \pkg{r4ss}
-#'   plots among other purposes.
 #' @param ... Anything extra to pass to \code{\link{run_ss3model}}. For
 #' example, you may want to pass additional options to \code{SS3} through
 #' the argument \code{admb_options}. Anything that doesn't match a named
@@ -182,7 +178,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   user_recdevs = NULL, user_recdevs_warn = TRUE, bias_adjust = FALSE,
   bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
   print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21,
-  keep_compreport = TRUE, ...) {
+  ...) {
 
   # In case ss3sim_base is stopped before finishing:
   old_wd <- getwd()
@@ -651,10 +647,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       }
 
       file.remove(file.path(sc, i, fake_dat))
-      if (!keep_compreport) {
-        file.remove(file.path(sc, i, "om", "CompReport.sso"))
-        file.remove(file.path(sc, i, "em", "CompReport.sso"))
-      }
       #  Pause to reduce average CPUE use?
       Sys.sleep(sleep)
 
