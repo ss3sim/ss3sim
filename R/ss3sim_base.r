@@ -558,9 +558,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       #TODO: can get rid of this check if it is done earlier on the original
       # EM and OM files read in.
       if (any(!unique(datfile.modified$CPUE$index) %in% qinmodel)) {
-        stop("There are fleets with indices in the EM that do not have q ",
-               "parameters specified. Please make sure your EM control file ",
-               "includes q parameters for every fleet that may have an index.")
+        stop("Add q parameters to your EM for all fleets with an index.")
       }
 
       ss_version <- get_ss_ver_dl(dat_list)
