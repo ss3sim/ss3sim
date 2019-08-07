@@ -61,16 +61,18 @@ change_f <- function(years, fisheries, fvals, seasons = 1, ses = 0.005,
    if (length(fvals) != 1 & length(fvals) != n.years) {
     stop("The number of years to alter, ", n.years,
       ", does NOT equal length of supplied F values, ", length(fvals))
-  }
+   }
    if (length(fisheries) != 1 & length(fisheries) != n.years) {
     stop("The number of years to alter, ", n.years,
-      ", does NOT equal length of supplied fleet values, ", length(fvals))
+      ", does NOT equal length of supplied fleet values, ", length(fisheries),
+      ". Please change the number of fleet values so there is either 1 value ",
+      "or ", n.years, " values.")
   }
   newdata <- data.frame(
-    "Fleet" = fisheries, 
+    "Fleet" = fisheries,
     "Yr" = years,
     "Seas" = seasons,
-    "F_value" = fvals, 
+    "F_value" = fvals,
     "se" = ses,
     "phase" = 1)
 

@@ -305,6 +305,21 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         datfile.modified <- clean_data(dat_list = datfile.orig,
           index_params = index_params, verbose = FALSE) # why only index_params called here?
 
+        # check qs are correct.
+        qpars_OM <- r4ss::SS_parlines(file.path(sc,i, "om", "om.ctl"))
+        qpars_OM <- qpars_OM[grep("^LnQ", qpars_OM$Label), ]
+        qinOM <- type.convert(gsub("[a-zA-Z\\(\\)_]", "", qpars_OM$Label))
+        #TODO: can get rid of this check if it is done earlier on the original
+        # EM and OM files read in.
+        if (any(!(index_params$fleets %in% qinOM))) {
+          stop("There are user-selected fleets with indices that do not have q ",
+               "parameters specified in the OM. User selected fleets: ",
+               paste(index_params$fleets, collapse = ", "),
+               "; fleets with q in OM control file: ", paste(qinOM, collapse = ", "),
+               ". Please make sure your OM control file includes q parameters ",
+               "for every fleet that may have an index."
+          )
+        }
         # Remove q setup lines and parlines for fleets that aren't being used as
         # an index of abundance.
         remove_fleetnames <- datfile.orig$fleetnames[-index_params$fleets]
@@ -320,18 +335,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           # write here rather than in function to reduce number of times writing
           # to file.
           writeLines(tmp_ctl, file.path(sc,i, "om", "om.ctl"))
-        }
-        # check qs are correct.
-        qpars_OM <- r4ss::SS_parlines(file.path(sc,i, "om", "om.ctl"))
-        qpars_OM <- qpars_OM[grep("^LnQ", qpars_OM$Label), ]
-        qinOM <- type.convert(gsub("[a-zA-Z\\(\\)_]", "", qpars_OM$Label))
-        #TODO: can get rid of this check if it is done earlier on the original
-        # EM and OM files read in.
-        if (any(!(index_params$fleets %in% qinOM))) {
-          stop("There are fleets with indices in the OM that do not have q ",
-               "parameters specified. Please make sure your OM control file ",
-               "includes q parameters for every fleet that may have an index."
-               )
         }
 
         data_params <- add_nulls(data_params, c("age_bins", "len_bins",
@@ -353,7 +356,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                     lcomp_constant   = data_params$lcomp_constant,
                     write_file       = TRUE)
       }
-
       # Run the operating model and copy the dat file over
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
       if(!file.exists(file.path(sc, i, "om", "data.ss_new")))
