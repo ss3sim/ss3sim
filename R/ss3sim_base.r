@@ -203,7 +203,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   # - Anything else?
 
   for(sc in scenarios) {
-    # TODO maybe: manipuate the OM for each scenario ONLY; this can't be done
+    # TODO maybe: manipulate the OM for each scenario ONLY; this can't be done
     # in parallel, but may be faster than doing OM model runs for each
     # scenario in parallel (test this). Then, once the OM is created, it can
     # then be copied into each folder (along with the EM) and sampled from for
@@ -219,7 +219,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(iteration_existed) next
 
       # Make fake .dat files to silence SS3/ADMB:
-      # TODO: still need these?
       fake_dat <- c("om/ss_opt.dat", "om/ss_safe.dat",
         "em/ss_opt.dat", "em/ss_safe.dat")
       sapply(fake_dat, function(fi) write("\n", file.path(sc, i, fi)))
@@ -235,16 +234,15 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       # Make the OM as specified by the user -----------------------------------
 
-      # Change the control file if using timevarying
+      # Change the control file if using time varying
       if(!is.null(tv_params)) {
         # Change time-varying parameters; e.g. M, selectivity, growth...
         wd <- getwd()
         setwd(file.path(sc, i, "om"))
-        # not running add_null() b/c parameters in tv_params are userspecified
-        #with(tv_params,
+        # not running add_null() b/c parameters in tv_params are user specified
         change_tv(change_tv_list      = tv_params,
                   ctl_file_in         = "om.ctl",
-                  ctl_file_out        = "om.ctl")#)
+                  ctl_file_out        = "om.ctl")
         setwd(wd)
       }
       # The following section adds recruitment deviations
@@ -366,6 +364,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # Sample from the OM -----------------------------------------------------
       ## Read in the datfile once and manipulate as a list object, then
       ## write it back to file at the end, before running the EM.
+      # todo: use expdata rather than reading in the file again
       dat_list <- SS_readdat(file.path(sc, i, "em", "ss3.dat"),
                              version = NULL, verbose = FALSE)
       ## Survey biomass index
@@ -412,7 +411,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       }
 
       ## Add error in the empirical weight-at-age comp data. Note that if
-      ## arguments are passed to this fucntion it's functionality is turned
+      ## arguments are passed to this function it's functionality is turned
       ## on by setting the maturity option to 5. If it's off SS will just
       ## ignore the wtatage.dat file so no need to turn it "off" like the
       ## other data.
