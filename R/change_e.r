@@ -52,9 +52,6 @@
 #' @param forecast_num *Number of years to perform forecasts. For those years,
 #'   the data will be removed from the \code{dat_list}, enabling SS3 to
 #'   generate forecasts rather than use the data to fit the model.
-#' @param run_change_e_full *If \code{FALSE} \code{change_e} will only
-#'   manipulate for forecasting, if \code{TRUE} (default) the full function
-#'   capability will be ran.
 #' @template verbose
 #'
 #' @details Turning parameters on and off is the main function of
@@ -96,7 +93,7 @@
 #'          natM_lorenzen = NULL, natM_val = c(.2, 3, 0.4, 5),
 #'          par_name = c("_steep", "SizeSel_1P_1_Fishery"),
 #'          par_int = c(0.3, 40), par_phase = c(3, 2),
-#'          forecast_num = 0, run_change_e_full = TRUE )
+#'          forecast_num = 0)
 #' # clean up the temporary files
 #' file.remove("change_e.ctl")
 #' file.remove("codOM.ctl")
@@ -108,19 +105,11 @@ change_e <- function(ctl_file_in = "em.ctl",
     for_file_in = "forecasts.ss", natM_type = "1Parm",
     natM_n_breakpoints = NULL, natM_lorenzen = NULL, natM_val = c(NA, NA),
     par_name = NULL, par_int = "NA", par_phase = "NA",
-    forecast_num = 0, run_change_e_full = TRUE,
+    forecast_num = 0, 
     verbose = FALSE) {
 
-  if (!run_change_e_full & any(grepl("change_e_vbgf", par_int))) {
-    run_change_e_full <- TRUE
-  }
   # get the ss_version from the control file to use with r4ss functions
   ss_version <- get_ss_ver_file(ctl_file_in)
-  if(run_change_e_full) {
-  if(!file.exists(ctl_file_in)) {
-    stop("Ctl file for the estimation model does not exist change_e failed.")
-  }
-  #Read in the ctl file for the estimation model
   ss3.ctl <- readLines(ctl_file_in)
   #Run external estimator for growth if needed
   if(any(grepl("change_e_vbgf", par_int))) {
@@ -337,7 +326,6 @@ if(!is.null(par_name)) {
       newlos = NULL, newhis = NULL, estimate = TRUE, verbose = verbose,
       newphs = par_phase[pasepos])
   }
-}
 }
  if(forecast_num > 0) {
    if(is.null(dat_list)) {

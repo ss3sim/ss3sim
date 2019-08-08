@@ -45,12 +45,6 @@
 #'   warning regarding biased recruitment deviations off when \code{user_recdevs}
 #'   are specified.
 #' @param bias_adjust Run bias adjustment first? See \code{\link{run_bias_ss3}}.
-#' @param bias_nsim If bias adjustment is run, how many simulations should the
-#'   bias adjustment factor be estimated from? It will take the mean of the
-#'   adjustment factors across these runs.
-#' @param bias_already_run If you've already run the bias runs for a scenario
-#'   (the bias folders and \code{.dat} files already exist) then you can set
-#'   this to \code{TRUE} to avoid re-running the bias adjustment routine.
 #' @param hess_always If \code{TRUE} then the Hessian will always be calculated.
 #'   If \code{FALSE} then the Hessian will only be calculated for
 #'   bias-adjustment runs thereby saving time.
@@ -58,10 +52,6 @@
 #' @param sleep A time interval (in seconds) to pause on each iteration. Useful
 #'   if you want to reduce average CPU time -- perhaps because you're working on
 #'   a shared server.
-#' @param conv_crit The maximum percentage of bias iterations that can produce a
-#'   non-invertible Hessian before a warning will be produced. If this
-#'   percentage is exceeded then a file \code{WARNINGS.txt} will be produced.
-#'   Currently, the simulations will continue to run.
 #' @param seed The seed value to pass to \code{\link{get_recdevs}} when
 #'   generating recruitment deviations. The generated recruitment deviations
 #'   depend on the iteration value, but also on the value of \code{seed}. A
@@ -82,10 +72,6 @@
 #' is. There will be folders named after your scenarios. They will
 #' look like this:
 #' \itemize{
-#' \item \code{D0-F0-cod/bias/1/om}
-#' \item \code{D0-F0-cod/bias/1/em}
-#' \item \code{D0-F0-cod/bias/2/om}
-#' \item ...
 #' \item \code{D0-F0-cod/1/om}
 #' \item \code{D0-F0-cod/1/em}
 #' \item \code{D0-F0-cod/2/om}
@@ -175,24 +161,21 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   wtatage_params = NULL, mlacomp_params = NULL, em_binning_params = NULL,
   estim_params = NULL, tv_params = NULL, om_dir, em_dir,
   retro_params = NULL, data_params = NULL, call_change_data = TRUE,
-  user_recdevs = NULL, user_recdevs_warn = TRUE, bias_adjust = FALSE,
-  bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
-  print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21,
+  user_recdevs = NULL, user_recdevs_warn = TRUE,
+  bias_adjust = FALSE, hess_always = FALSE,
+  print_logfile = TRUE, sleep = 0, seed = 21,
   ...) {
 
   # In case ss3sim_base is stopped before finishing:
   old_wd <- getwd()
   on.exit(setwd(old_wd), add = TRUE)
 
-  # TODO: remove bias adjustment options for now.
-  if(bias_already_run & bias_adjust) {
-      warning("bias_adjust set to FALSE because bias_already_run is TRUE")
-      bias_adjust <- FALSE
-  }
-
-  # The first bias_nsim runs will be bias-adjustment runs
   if(bias_adjust) {
-    iterations <- c(paste0("bias/", c(1:bias_nsim)), iterations)
+    # todo:
+    # after running the EM r4ss::SS_fitbiasramp()
+    # Put those values in the EM
+    # Run the EM again
+    warning("Bias adjustment is not yet implemented, please do so manually.")
   }
 
   #TODO: consider adding a check of OM/EM structures before starting loop?
@@ -223,15 +206,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         "em/ss_opt.dat", "em/ss_safe.dat")
       sapply(fake_dat, function(fi) write("\n", file.path(sc, i, fi)))
 
-
-      # If we're bias adjusting, then copy over the .ctl file to the
-      # em folder
-      #TODO: remove bias adjustment code.
-      if(bias_already_run) {
-        file.copy(from = file.path(sc, "bias", "em.ctl"),
-                  to = file.path(sc, i, "em", "em.ctl"), overwrite = TRUE)
-      }
-
       # Make the OM as specified by the user -----------------------------------
 
       # Change the control file if using time varying
@@ -248,11 +222,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # The following section adds recruitment deviations
       # First, pull in sigma R from the operating model
       sigmar <- get_sigmar(file.path(sc, i, "om", "om"))
-      # Second, take the true iteration, even if we're working with
-      # "bias" iterations
-      # This turns "bias/1" into "1" and leaves "1" unchanged
-      this_run_num <- as.numeric(rev(strsplit(as.character(i), "/")[[1]])[1])
-      recdevs <- get_recdevs(iteration = this_run_num, n = 2000, seed = seed)
+      recdevs <- get_recdevs(iteration = i, n = 2000, seed = seed)
       if(is.null(user_recdevs)) {
         sc_i_recdevs <- sigmar * recdevs - sigmar^2/2 # from the package data
       } else {if(user_recdevs_warn & i == 1) {
@@ -261,7 +231,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
               "vignette for more details. Biased recruitment deviations can ",
               "lead to biased model results.", call. = FALSE)
         }
-        sc_i_recdevs <- user_recdevs[, this_run_num] # user specified recdevs
+        sc_i_recdevs <- user_recdevs[, i] # user specified recdevs
       }
 
       change_rec_devs(recdevs      = sc_i_recdevs,
@@ -508,16 +478,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       }
 
       # Manipulate EM control file to adjust what gets estimated
-      # We'll only a portion of the function, the ctl part if
-      # it's a bias run or if bias adjustment isn't getting run.
-      # This is because the bias adjustment runs
-      # already manipulates the .ctl file appropriately.
-      # Must always run the other portion for the forecast
-      run_change_e_full <- FALSE # default
-      if(grepl("bias", i))  # it's a bias run
-        run_change_e_full <- TRUE
-      if(!bias_adjust)      # we aren't running bias adjustment
-        run_change_e_full <- TRUE
 
       if(!is.null(estim_params)) {
         wd <- getwd()
@@ -537,8 +497,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                   par_name             = par_name,
                   par_int              = par_int,
                   par_phase            = par_phase,
-                  forecast_num         = forecast_num,
-                  run_change_e_full    = run_change_e_full))
+                  forecast_num         = forecast_num))
         setwd(wd)
       }
 
@@ -564,29 +523,23 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       SS_writedat(datlist = dat_list, outfile = file.path(sc, i, "em", "ss3.dat"),
         version = ss_version, overwrite = TRUE, verbose = FALSE)
       # Run the EM -------------------------------------------------------------
-      # Should we calculate the hessian?
-        if(hess_always){
-          hess <- TRUE           # estimate the hessian no matter what
-        } else {
-          if(grepl("bias", i)) { # it's a bias run so we need the hessian
-            hess <- TRUE
-          } else {               # not a bias run, and hessian not specified
-            hess <- FALSE
-        }}
-
       run_ss3model(scenarios = sc, iterations = i, type = "em",
-        hess = hess, ...)
+        hess = ifelse(bias_adjust, TRUE, hess_always), ...)
 
-      # Should we run bias adjustment? We should if bias_adjust is
-      # true, and we are done running bias adjustments (i.e. we're on
-      # the last "bias" iteration), and we haven't already run this
-      # yet.
-      if(bias_adjust & i == file.path("bias", bias_nsim) & !bias_already_run) {
-        run_bias_ss3(dir = file.path(sc, "bias"), outdir = file.path(sc,
-            "bias"), nsim = bias_nsim, conv_crit = conv_crit)
-        bias_already_run <- TRUE
-      # Since we've now run the bias adjustment routine, copy the .ctl
-      # on subsequent iterations
+      if(bias_adjust) {
+        #todo: save the pre-bias adjustment output as 
+        # files with different names or in a subfolder
+        file.copy(file.path(sc, i, "em", "em.ctl"),
+          file.path(sc, i, "em", "em_beforebias.ctl"))
+        biasoutput <- r4ss::SS_output(file.path(sc, i, "em"),
+          repfile = "Report.sso", compfile = "none", covarfile = "covar.sso",
+          forecast = FALSE, verbose = FALSE, printstats = FALSE,
+          NoCompOK = TRUE)
+        ramp <- r4ss::SS_fitbiasramp(replist = biasoutput,
+          verbose = FALSE, plot = FALSE, print = TRUE, 
+          shownew = FALSE, 
+          oldctl = file.path(sc, i, "em", "em.ctl"),
+          newctl = file.path(sc, i, "em", "em.ctl"))
       }
 # Write log file ---------------------------------------------------------------
 # TODO pull the log file writing into a separate function and update
@@ -627,14 +580,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         print(call_change_data)
         cat("\n\n# bias adjust?\n")
         print(bias_adjust)
-        cat("\n\n# bias nsim\n")
-        print(bias_nsim)
         cat("\n\n# hess always?\n")
         print(hess_always)
         cat("\n\n# User recdevs?\n")
         print(user_recdevs)
-        cat("\n\n# Bias already run?\n")
-        print(bias_already_run)
         cat("\n\n# This run used the recruitment deviations (before scaling to sigma r):\n")
         print(sc_i_recdevs)
         cat("\n\n# With sigma r of\n")

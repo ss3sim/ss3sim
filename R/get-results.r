@@ -64,9 +64,9 @@ id_scenarios <- function(directory){
 #'
 #' This high level function extracts results from SS3 model runs. Give it a
 #' directory which contains directories for different "scenario" runs, within
-#' which are replicates and potentially bias adjustment runs. It writes two
-#' data.frames to file: one for single scalar values (e.g. MSY) and a second
-#' that contains output for each year of the same model (timeseries, e.g.
+#' which are replicates. It writes two data.frames to file: 
+#' one for single scalar values (e.g., MSY) and a second
+#' that contains output for each year of the same model (timeseries, e.g.,
 #' biomass(year)). These can always be joined later.
 #'
 #' @param directory The directory which contains scenario folders with
@@ -275,19 +275,8 @@ get_results_scenario <- function(scenario, directory=getwd(),
               and overwrite_files=FALSE"))
         }
     }
-    ## Check for bias correction for this scenario, grab it if exists otherwise
-    ## report NAs
-    bias <- c("bias.converged" = NA, "bias.tried" = NA)
-    if(length(grep("bias", dir()))==1){
-        bias.file <- read.table(file="bias/AdjustBias.DAT", header=FALSE)
-        ## The ones with NAs mean it didn't converge
-        bias[1] <- NROW(na.omit(bias.file))
-        bias[2] <- NROW(bias.file)
-    }
 
-    ## Loop through each replicate, not including the bias folders, and get
-    ## results from both models
-    ## Remove the .csv files and bias folder, they are not reps
+    ## Loop through each replicate and get results from both models
     reps.dirs <- list.files(pattern = "[0-9]+$")
     reps.dirs <- sort(as.numeric(reps.dirs))
     if(length(reps.dirs)==0)
@@ -341,7 +330,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
             names(derived.em) <- paste0(names(derived.em), "_em")
 
             ## Combine them together and massage a bit
-            scalar <- cbind(scalar.om, scalar.em, t(bias))
+            scalar <- cbind(scalar.om, scalar.em)
             ts <- merge(timeseries.om, timeseries.em, 
               by.x = "Yr_om", by.y = "Yr_em", all = TRUE)
             dq <- merge(derived.om, derived.em, 
