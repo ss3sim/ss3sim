@@ -34,19 +34,19 @@
 #'   \code{NULL} then the length bin structure will be taken from the OM.
 #' @param pop_binwidth *Population length bin width. Note that this value must
 #'   be smaller than the bin width specified in length composition data
-#'   \code{len_bins} or SS3 will fail (see notes in the SS3 manual).
+#'   \code{len_bins} or SS will fail (see notes in the SS manual).
 #' @param pop_minimum_size *Population minimum length bin value.
 #' @param pop_maximum_size *Population maximum length bin value.
 #' @param lcomp_constant *A new robustification constant for length composition
 #'   data to be used. Must be a numeric value, as a proportion. For example 0.1
-#'   means 10 percent. See the SS3 manual for further information. A \code{NULL}
+#'   means 10 percent. See the SS manual for further information. A \code{NULL}
 #'   value indicates no action resulting in using the current value, and a value
 #'   of 0 will throw an error since that leads to an error when zeroes exist in
 #'   the data. Instead use a very small value like \code{1e-07}.
-#' @param tail_compression *A new tail compression value to be used in SS3. Must
+#' @param tail_compression *A new tail compression value to be used in SS. Must
 #'   be a numeric value, as a proportion. For example 0.1 means 10 percent. See
-#'   the SS3 manual for further information. A \code{NULL} value indicates no
-#'   action, a negative value indicates to SS3 to ignore it (not use that
+#'   the SS manual for further information. A \code{NULL} value indicates no
+#'   action, a negative value indicates to SS to ignore it (not use that
 #'   feature).
 #' @param write_file Should the \code{.dat} file be written? The new \code{.dat}
 #'   file will always be returned invisibly by the function. Setting
@@ -129,8 +129,8 @@ change_data <- function(dat_list, outfile, fleets, years, types,
   write_file = TRUE) {
 
   # TODO: pop length bins must not be wider than the length data bins, but the
-  # boundaries of the bins do not need to align (from SS3 manual)
-  # this is also checked within SS3 and will create a fatal error
+  # boundaries of the bins do not need to align (from SS manual)
+  # this is also checked within SS and will create a fatal error
 
   check_data(dat_list)
 
@@ -290,10 +290,10 @@ change_pop_bin <- function(dat_list, binwidth = NULL, minimum_size = NULL,
   invisible(dat_list)
 }
 
-#' Check that the SS3 data file looks correct
+#' Check that the SS data file looks correct
 #'
 #' #todo: Think about survey timing, old check of 0.5 was removed.
-#' @param x An SS3 data list object as read in by \code{\link[r4ss]{SS_readdat}}.
+#' @param x An SS data list object as read in by \code{\link[r4ss]{SS_readdat}}.
 #' @export
 
 check_data <- function(x) {
@@ -301,29 +301,29 @@ check_data <- function(x) {
     stop("data file isn't a list; should be output from r4ss::SS_readdat()")
 
   if (!"type" %in% names(x))
-    stop(paste("the column *type* wasn't found in the SS3 data file;",
-      "the data file should be output from r4ss::SS_readdat()"))
+    stop("the column *type* wasn't found in the SS data file;",
+      " the data file should be output from r4ss::SS_readdat()")
 
   if (x$Ngenders > 1L)
-    stop(paste("_Ngenders is greater than 1 in the operating model.",
-      "ss3sim currently only works with single-gender models."))
+    stop("_Ngenders is greater than 1 in the operating model.",
+      " ss3sim currently only works with single-gender models.")
 
   if (!is.null(x$lbin_method)) {
     if (x$lbin_method > 2)
-      stop("lbin_method in the SS3 data file should be either 1 or 2")
+      stop("lbin_method in the SS data file should be either 1 or 2")
   }
 
   if (!identical(x$Lbin_method, 3)) {
-    stop(paste("Lbin_method (note the capital L as it is represented in r4ss)",
-      "must be set to 3. This specifies how the conditional age-at-length data",
-      "are represented in the SS3 data file. See the SS3 manual."))
+    stop("Lbin_method must be 3 to specify how the conditional",
+      "age-at-length data are represented in the SS data file. ",
+      "\nSee the SS manual.")
   }
 
   if (!identical(x$N_areas, 1))
-    stop("N_areas in the SS3 data file must be set to 1.")
+    stop("N_areas in the SS data file must be set to 1.")
 
   if (!identical(x$areas, rep(1, x$Nfleets)))
-    stop(paste("_area_assignments_for_each_fishery_and_survey must be set to 1",
-      "for all fleets in the SS3 data file."))
+    stop("_area_assignments_for_each_fishery_and_survey must be set to 1",
+      " for all fleets in the SS data file.")
 
 }
