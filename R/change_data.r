@@ -292,7 +292,6 @@ change_pop_bin <- function(dat_list, binwidth = NULL, minimum_size = NULL,
 
 #' Check that the SS data file looks correct
 #'
-#' #todo: Think about survey timing, old check of 0.5 was removed.
 #' @param x An SS data list object as read in by \code{\link[r4ss]{SS_readdat}}.
 #' @export
 
