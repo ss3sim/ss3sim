@@ -299,10 +299,6 @@ check_data <- function(x) {
   if (!is.list(x))
     stop("data file isn't a list; should be output from r4ss::SS_readdat()")
 
-  if (!"type" %in% names(x))
-    stop("the column *type* wasn't found in the SS data file;",
-      " the data file should be output from r4ss::SS_readdat()")
-
   if (x$Ngenders > 1L)
     stop("_Ngenders is greater than 1 in the operating model.",
       " ss3sim currently only works with single-gender models.")
