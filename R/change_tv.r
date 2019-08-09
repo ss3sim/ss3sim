@@ -67,7 +67,7 @@
 #' \code{function_type; change_tv} in your case file. For example, you might
 #' want to use M for natural mortality, S for selectivity, or G for growth.
 #'
-#' @importFrom r4ss SS_readstarter SS_writestarter SS_readdat
+#' @importFrom r4ss SS_readdat SS_writedat
 #'
 #' @export
 #'
