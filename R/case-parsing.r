@@ -133,7 +133,7 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
   # Check that all cases are contained in the scenario:
   out_sink <- sapply(case_vals, function(x) {
     if (!grepl(x, scenario))
-      stop(paste("Case", x, "isn't contained in scenario", scenario))
+      stop(paste("Case", x, "isn't contained in scenario", scenario, ".\n"))
   })
 
   # Check that all scenario-declared cases have files:
@@ -198,10 +198,9 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
       fxn_name <- sample_case_function
     }
     matches <- names(argvalues_out[[i]]) %in% fxn_formals
-
     if (sum(matches) != length(matches)) {
-      stop(paste0(names(argvalues_out[[i]])[!matches],
-        " is not an argument in the function ", fxn_name))
+      stop(paste(names(argvalues_out[[i]])[!matches],
+        "is not an argument in the function ", fxn_name, ".\n"))
     }
   }
 
