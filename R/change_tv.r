@@ -152,6 +152,16 @@ change_tv <- function(change_tv_list,
           "parameters specified in the base operating model.")
   }
 
+  # check the user is not requesting tv paramters that should not or cannot be
+  # time varying
+  invalid_pars <- c("CV_young", "CV_old", "SR_sigmaR", "SR_autocorr")
+  any_invalid <- lapply(invalid_pars, function(x) grep(x, names(change_tv_list)))
+  if(length(unique(unlist(any_invalid))) > 0) {
+    stop("Some requested time-varying parameters are not allowed. User ",
+         "requested variable(s) ",
+         paste0(invalid_pars[which(any_invalid > 0)], collapse = ", "),
+         " should not or cannot be time varying in Stock Synthesis models.")
+  }
   # Divide .dat file at the environmental variable table
   # If no environmental variables create an empty table to be filled later
   dat.varnum.counter <- ss3.dat$N_environ_variables

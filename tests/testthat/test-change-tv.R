@@ -91,3 +91,12 @@ test_that("change_tv() works when there are 2 MG parms", {
   expect_length(grep("-2 2 1 0 99 0 -5 # TV_par_line for MG parameters" ,
                      out$ctl_out), 2)
 })
+
+test_that("change_tv() errors when given bad input",{
+  suppressWarnings(expect_error(change_tv(
+   change_tv_list = list("SR_autocorr" = 1),
+   ctl_file_in = file.path(om, "codOM.ctl"),
+   ctl_file_out = NULL,
+   dat_file_in = file.path(om, "codOM.dat"),
+   dat_file_out = NULL)))
+})
