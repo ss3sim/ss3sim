@@ -1,0 +1,3 @@
+# A sample case file for OM change_o() arguments
+par_name; c("NatM_p_1_Fem_GP_1","SR_LN(R0)")
+par_int; c(0.15, 16.8)

@@ -10,6 +10,7 @@
 #' @param scenarios Which scenarios to run.
 #' @param tv_params A named list containing arguments for
 #'   \code{\link{change_tv}} (time-varying).
+#' @param operat_params A named list containing arguments for \code{\link{change_o}}.
 #' @param f_params A named list containing arguments for \code{\link{change_f}}.
 #'   A mandatory case.
 #' @param index_params A named list containing arguments for
@@ -159,7 +160,7 @@
 ss3sim_base <- function(iterations, scenarios, f_params,
   index_params, lcomp_params, agecomp_params, calcomp_params = NULL,
   wtatage_params = NULL, mlacomp_params = NULL, em_binning_params = NULL,
-  estim_params = NULL, tv_params = NULL, om_dir, em_dir,
+  estim_params = NULL, tv_params = NULL, operat_params = NULL, om_dir, em_dir,
   retro_params = NULL, data_params = NULL, call_change_data = TRUE,
   user_recdevs = NULL, user_recdevs_warn = TRUE,
   bias_adjust = FALSE, hess_always = FALSE,
@@ -218,6 +219,15 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                   ctl_file_in         = "om.ctl",
                   ctl_file_out        = "om.ctl")
         setwd(wd)
+      }
+      # change the OM control file for NOT time varying parameters.
+      if(!is.null(operat_params)) {
+        change_o(
+                 par_name = operat_params$par_name,
+                 par_int = operat_params$par_int,
+                 ctl_file_in = file.path(sc, i, "om", "om.ctl"),
+                 ctl_file_out = file.path(sc,i, "om", "om.ctl")
+                 )
       }
       # The following section adds recruitment deviations
       # First, pull in sigma R from the operating model
@@ -527,7 +537,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         hess = ifelse(bias_adjust, TRUE, hess_always), ...)
 
       if(bias_adjust) {
-        #todo: save the pre-bias adjustment output as 
+        #todo: save the pre-bias adjustment output as
         # files with different names or in a subfolder
         file.copy(file.path(sc, i, "em", "em.ctl"),
           file.path(sc, i, "em", "em_beforebias.ctl"))
@@ -536,8 +546,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           forecast = FALSE, verbose = FALSE, printstats = FALSE,
           NoCompOK = TRUE)
         ramp <- r4ss::SS_fitbiasramp(replist = biasoutput,
-          verbose = FALSE, plot = FALSE, print = TRUE, 
-          shownew = FALSE, 
+          verbose = FALSE, plot = FALSE, print = TRUE,
+          shownew = FALSE,
           oldctl = file.path(sc, i, "em", "em.ctl"),
           newctl = file.path(sc, i, "em", "em.ctl"))
       }
