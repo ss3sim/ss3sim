@@ -141,8 +141,7 @@
 #' setwd(wd)
 #' }
 
-run_ss3sim <- function(iterations, scenarios, case_folder,
-  om_dir, em_dir,
+run_ss3sim <- function(iterations, scenarios, case_folder, om_dir, em_dir,
   case_files = list(F = "F", D = c("index", "lcomp", "agecomp")),
   user_recdevs = NULL, parallel = FALSE, parallel_iterations = FALSE,
   ...) {
@@ -154,15 +153,15 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
 
   if(!is.null(user_recdevs)) {
     if(ncol(user_recdevs) < max(iterations)) {
-      stop(paste("The number of columns in user_recdevs is less than the",
-        "specified number of iterations."))
+      stop("The number of columns in user_recdevs is less than the",
+        "specified number of iterations.")
     }
   }
 
   # Get arguments for each scenario:
   arg_list <- lapply(scenarios, function(scenario) {
     a <- get_caseargs(folder = case_folder, scenario = scenario,
-      case_files = case_files)
+                      case_files = case_files)
     list(
       scenarios         = scenario,
       user_recdevs      = user_recdevs,
@@ -182,7 +181,6 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
       retro_params      = a$retro,
       estim_params      = a$E)
   })
-
   # Note that inside a foreach loop you pop out of your current
   # environment until you go back into an exported function
   # therefore we need to add subst_r to the .export list
@@ -212,11 +210,8 @@ run_ss3sim <- function(iterations, scenarios, case_folder,
     ignore <- lapply(arg_list, function(x) {
       do.call("ss3sim_base", c(x, list(iterations = iterations, ...)))
     })
-    # to understand what we just did, play with this toy code:
-    # aa <- list(x = 1:2, y = 3:4)
-    # do.call("plot", c(aa, list(pch = 20)))
   }
 
-  message(paste("Completed iterations:", paste(iterations, collapse = ", "),
-    "for scenarios:", paste(scenarios, collapse = ", ")))
+  message("Completed iterations:", paste(iterations, collapse = ", "),
+    "for scenarios:", paste(scenarios, collapse = ", "))
 }

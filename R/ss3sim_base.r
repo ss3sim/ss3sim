@@ -295,12 +295,12 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           )
         }
         # Remove q setup lines and parlines for fleets that aren't being used as
-        # an index of abundance.
+        # an index of abundance. TODO: perhaps make into a function?
         remove_fleetnames <- datfile.orig$fleetnames[-index_params$fleets]
         # get list of remove_fleetnames
         # first param is fleetnames to remove
 
-        if(length(remove_fleetnames) > 0){
+        if(length(remove_fleetnames) > 0) {
           tmp_ctl <- readLines(file.path(sc,i, "om", "om.ctl"))
           for(n in remove_fleetnames) {
             tmp_ctl <- remove_q_ctl(n, ctl.in = tmp_ctl, filename = FALSE,
@@ -392,9 +392,11 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       ## Add error in the empirical weight-at-age comp data. Note that if
       ## arguments are passed to this function it's functionality is turned
-      ## on by setting the maturity option to 5. If it's off SS will just
+      ## on by setting the wtatage switch to 1. If it's off SS will just
       ## ignore the wtatage.dat file so no need to turn it "off" like the
       ## other data.
+      #TODO: check below section, as wtatage implementation has changed from 3.24
+      # to 3.30.
       if(!is.null(wtatage_params)){
           wtatage_params <-
               add_nulls(wtatage_params, c("fleets", "Nsamp", "years", "cv_wtatage"))
@@ -444,6 +446,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ## cal data are independent of the agecomp data for this
       ## package. Thus the sampling of agecomps has no influence on the
       ## calcomp data and vice versa.
+      #TODO: is there a more realistic way to implement?
       if(!is.null(calcomp_params$fleets)){
           calcomp_params <- add_nulls(calcomp_params, c("fleets", "years", "Nsamp"))
           dat_list <- with(calcomp_params,
