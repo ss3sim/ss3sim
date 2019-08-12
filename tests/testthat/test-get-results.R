@@ -1,26 +1,28 @@
 context("get results")
-
+#TODO: rewrite so no need to run model.
 temp_path <- file.path(tempdir(), "ss3sim-test")
 dir.create(temp_path, showWarnings = FALSE)
 wd <- getwd()
 setwd(temp_path)
+on.exit(setwd(wd), add = TRUE)
 
 d <- system.file("extdata", package = "ss3sim")
-om <- paste0(d, "/models/cod-om")
-em <- paste0(d, "/models/cod-em")
-case_folder <- paste0(d, "/eg-cases")
+om <- file.path(d, "models", "cod-om")
+em <- file.path(d, "models", "cod-em")
+case_folder <- file.path(d, "eg-cases")
 
 test_that("get_results_all() works", {
   skip_on_cran()
 
-  run_ss3sim(iterations = 1, scenarios = "D0-F0-cod",
+  suppressWarnings(run_ss3sim(iterations = 1, scenarios = "D0-F0-cod",
     case_folder = case_folder, om_dir = om, em_dir = em,
-    ss_mode = "optimized")
+    ss_mode = "optimized"))
 
   get_results_all()
   expect_true(file.exists("ss3sim_scalar.csv"))
   expect_true(file.exists("ss3sim_ts.csv"))
 })
+
 
 test_that("get_results_all() doesn't overwrite files if overwrite_files = FALSE", {
   skip_on_cran()
@@ -29,8 +31,9 @@ test_that("get_results_all() doesn't overwrite files if overwrite_files = FALSE"
   write.csv(1, file = "ss3sim_scalar.csv", row.names = FALSE) # fake data, 1 column
   get_results_all(overwrite_files = FALSE)
   fake_ss3sim_scalar <- read.csv("ss3sim_scalar.csv") # should be fake data
-  # TODO: failing:
-  # expect_true(identical(1L, ncol(fake_ss3sim_scalar)))
+  #TODO: this test fails, but seems to be testing correctly. Need to fix
+  # function, not test, apparently.
+  expect_identical(1L, ncol(fake_ss3sim_scalar))
 
   d <- read.csv("D0-F0-cod/results_scalar_D0-F0-cod.csv")
   d$TotYield_MSY_om <- 3.141592
@@ -43,7 +46,8 @@ test_that("get_results_all() doesn't overwrite files if overwrite_files = FALSE"
 test_that("get_results_scenario() doesn't overwrite files if overwrite_files = FALSE", {
   skip_on_cran()
 
-  expect_error(get_results_scenario("D0-F0-cod", overwrite_files = FALSE))
+  expect_error(get_results_scenario("D0-F0-cod", overwrite_files = FALSE),
+               "Files already exist for")
 })
 
 test_that("get_results_scenario() does overwrite files if overwrite_files = TRUE", {
@@ -56,5 +60,3 @@ test_that("get_results_scenario() does overwrite files if overwrite_files = TRUE
   unlink(c("ss3sim_scalar.csv", "ss3sim_ts.csv"))
   unlink("D0-F0-cod", recursive = TRUE)
 })
-
-setwd(wd)

@@ -7,6 +7,7 @@ setwd(temp_path)
 d <- system.file("extdata", package = "ss3sim")
 file.copy(file.path(d, "Simple"), ".", recursive = TRUE)
 setwd("Simple")
+on.exit(setwd(wd.old), add = TRUE)
 
 test_that("Control file references correct years", {
   # Manipulate files
@@ -61,17 +62,6 @@ test_that("Correct lines are changed in starter file.", {
   expect_equal(getnew, c("-1", "-2"))
 })
 
-test_that("Recruitment devs are of correct length in par file.", {
-  start <- 1; end <- 100; burn <- 20
-  change_year(year_begin = start, year_end = end, burnin = burn,
-              par_file_in = file.path(om, "ss.par"),
-              par_file_out = "new.ss")
-  new <- readLines("new.ss")
-  getnew <- new[grep("recdev1", new) + 1]
-  getnew <- gsub(" ", "", getnew)
-  expect_equal(nchar(getnew), end - start + 1)
-})
-
 test_that("Changes to dat file with change_year.", {
   start <- 1999; end <- 2000; burn <- 0
   change_year(year_begin = start, year_end = end, burnin = burn,
@@ -84,5 +74,4 @@ test_that("Changes to dat file with change_year.", {
   expect_equal(nrow(new$catch), length(start:end) + 1)
 })
 
-setwd(wd.old)
 unlink(temp_path, recursive = TRUE)

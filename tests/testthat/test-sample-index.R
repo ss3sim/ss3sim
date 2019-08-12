@@ -1,22 +1,17 @@
 context("sample_index() is working")
 
-
-
 temp_path <- file.path(tempdir(), "ss3sim-test")
 dir.create(temp_path, showWarnings = FALSE)
 wd <- getwd()
 setwd(temp_path)
+on.exit(setwd(wd), add = TRUE)
 
 d <- system.file("extdata", package = "ss3sim")
-om <- paste0(d, "/models/cod-om")
-em <- paste0(d, "/models/cod-em")
-case_folder <- paste0(d, "/eg-cases")
-a <- get_caseargs(folder = paste0(d, "/eg-cases"),
+case_folder <- file.path(d, "eg-cases")
+a <- get_caseargs(folder = case_folder,
                   case_files = list(F = "F", D = c("index", "lcomp", "agecomp"),
                                     M = "M", E = "E"),
                   scenario = "F1-D0-M1-E0-cod")
-# maybe also read in an data.ss_new file example ?
-#exp_vals <- file.path(d, "example-om", data.ss_new)
 
 exp_vals <- SS_readdat(file.path(d, "example-om", "ss3_expected_values.dat"),
                        version = NULL, verbose = FALSE)
@@ -40,6 +35,8 @@ expect_equal(order(unique(sampled_index$CPUE$index)),
 # check input values sampled correctly (not generalizable to other cases)
 set.seed(123)
 samples <- exp_vals$CPUE$obs *
-  exp(rnorm(length(exp_vals$CPUE$obs), mean = 0, sd = a$index$sds_obs[[1]]) - a$index$sds_obs[[1]]^2 / 2)
+  exp(rnorm(length(exp_vals$CPUE$obs),
+            mean = 0,
+            sd = a$index$sds_obs[[1]]) - a$index$sds_obs[[1]]^2 / 2)
 expect_equal(sampled_index$CPUE$obs,samples)
 })

@@ -1,5 +1,5 @@
-context("Changing parameters in an EM")
-
+context("Changing EM binning and parameters in an EM")
+#TODO: add tests for change_e() and change_em_binning()
 wd.old <- getwd()
 temp_path <- file.path(tempdir(), "pars")
 dir.create(temp_path, showWarnings = FALSE)
