@@ -402,9 +402,13 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           ## so exit early if this is the case.
           if(!is.null(wtatage_params$fleets)){
               ## Make sure W@A option is turned on in the EM
-              change_maturity(ctl_file_in=file.path(sc, i, "em", "em.ctl"),
-                              ctl_file_out=file.path(sc, i, "em", "em.ctl"),
-                              maturity_option=5)
+              tmp_ctl <- readLines(file.path(sc,i,"em","em.ctl"))
+              wtatage_line <- grep("0 means do not read wtatage.ss", tmp_ctl, fixed =TRUE)
+              wtatage_option <- strsplit(tmp_ctl[wtatage_line], " ")[[1]]
+              wtatage_option[1] <- 1
+              tmp_ctl[wtatage_line] <- paste(wtatage_option, collapse = " ")
+              writeLines(file.path(sc, i, "em", "em.ctl"))
+              #sample wtatage.
               with(wtatage_params,
                    sample_wtatage(wta_file_in = file.path(sc, i, "om", "wtatage.ss_new"),
                                   outfile     = file.path(sc, i, "em", "wtatage.ss"),
