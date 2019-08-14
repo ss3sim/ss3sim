@@ -10,13 +10,14 @@ change_maturity(ctl_file_in = "em.ctl", ctl_file_out = "em.ctl",
 \arguments{
 \item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
 
-\item{ctl_file_out}{A string providing the path to the output SS \code{.ctl} file.}
+\item{ctl_file_out}{A string providing the path to the output SS control file. If the value is \code{NULL}, the file will not be written to the disk.}
 
 \item{maturity_option}{*An integer specifying \code{1} for length logistic,
 \code{2} for age logistic, \code{3} to read age-maturity for each female,
-\code{4} to read age-fecundity for each female growth patern, or \code{5}
-to read empirical age-fecundity and body weight-at-age from a separate
-file (\code{wtatage.ss}).}
+\code{4} to read age-fecundity for each female growth patern, or \code{6}
+to read vector of length-based maturity values. Not that \code{5} has been
+deprecated in SS 3.30. Note also that only \code{1} and \code{2} are
+currently implemented in this function.}
 }
 \value{
 A modified SS3 control file.
@@ -46,8 +47,8 @@ setwd(temp_path)
 ctlfile <- system.file("extdata", "models", "cod-em",
  "codEM.ctl", package = "ss3sim")
 
-# Change the maturity option from 1 to 5:
-change_maturity(ctlfile, "test.ctl", maturity_option = 5L)
+# Change the maturity option from 1 to 2:
+change_maturity(ctlfile, "test.ctl", maturity_option = 2L)
 
 unlink("test.ctl")
 setwd(wd)
@@ -55,7 +56,8 @@ setwd(wd)
 \seealso{
 Other change functions: \code{\link{change_data}},
   \code{\link{change_em_binning}}, \code{\link{change_e}},
-  \code{\link{change_f}}, \code{\link{change_retro}},
+  \code{\link{change_f_par}}, \code{\link{change_f}},
+  \code{\link{change_o}}, \code{\link{change_retro}},
   \code{\link{change_tv}}
 }
 \author{

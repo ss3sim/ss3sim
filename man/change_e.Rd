@@ -8,12 +8,12 @@ change_e(ctl_file_in = "em.ctl", ctl_file_out = "em.ctl",
   dat_list = NULL, for_file_in = "forecasts.ss", natM_type = "1Parm",
   natM_n_breakpoints = NULL, natM_lorenzen = NULL, natM_val = c(NA,
   NA), par_name = NULL, par_int = "NA", par_phase = "NA",
-  forecast_num = 0, run_change_e_full = TRUE, verbose = FALSE)
+  forecast_num = 0, verbose = FALSE)
 }
 \arguments{
 \item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
 
-\item{ctl_file_out}{A string providing the path to the output SS \code{.ctl} file.}
+\item{ctl_file_out}{A string providing the path to the output SS control file. If the value is \code{NULL}, the file will not be written to the disk.}
 
 \item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
@@ -68,10 +68,6 @@ the phase for a given parameter.}
 the data will be removed from the \code{dat_list}, enabling SS3 to
 generate forecasts rather than use the data to fit the model.}
 
-\item{run_change_e_full}{*If \code{FALSE} \code{change_e} will only
-manipulate for forecasting, if \code{TRUE} (default) the full function
-capability will be ran.}
-
 \item{verbose}{When \code{TRUE} messages will be returned
 from the function. Often useful for debugging. The default
 is \code{FALSE}.}
@@ -125,14 +121,14 @@ ctl_file_orig <- paste0(d, "/models/cod-om/codOM.ctl")
 ctl_file_copy <- file.path(temp_path, "codOM.ctl")
 file.copy(from = ctl_file_orig, to = ctl_file_copy) # copy to temp_path
 data.old <- r4ss::SS_readdat(file.path(d, "models", "cod-om", "codOM.dat"),
-            version = NULL)
+            version = NULL, verbose = FALSE)
 change_e(ctl_file_in = "codOM.ctl", ctl_file_out = "change_e.ctl",
          dat_list = data.old, for_file_in = "forecast.ss",
          natM_type = "n_breakpoints", natM_n_breakpoints = c(1, 4),
          natM_lorenzen = NULL, natM_val = c(.2, 3, 0.4, 5),
          par_name = c("_steep", "SizeSel_1P_1_Fishery"),
          par_int = c(0.3, 40), par_phase = c(3, 2),
-         forecast_num = 0, run_change_e_full = TRUE )
+         forecast_num = 0)
 # clean up the temporary files
 file.remove("change_e.ctl")
 file.remove("codOM.ctl")
@@ -141,8 +137,9 @@ setwd(wd)
 }
 \seealso{
 Other change functions: \code{\link{change_data}},
-  \code{\link{change_em_binning}}, \code{\link{change_f}},
-  \code{\link{change_maturity}},
+  \code{\link{change_em_binning}},
+  \code{\link{change_f_par}}, \code{\link{change_f}},
+  \code{\link{change_maturity}}, \code{\link{change_o}},
   \code{\link{change_retro}}, \code{\link{change_tv}}
 }
 \author{

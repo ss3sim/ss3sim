@@ -37,7 +37,7 @@ then the age bin structure will be taken from the OM.}
 
 \item{pop_binwidth}{*Population length bin width. Note that this value must
 be smaller than the bin width specified in length composition data
-\code{len_bins} or SS3 will fail (see notes in the SS3 manual).}
+\code{len_bins} or SS will fail (see notes in the SS manual).}
 
 \item{pop_minimum_size}{*Population minimum length bin value.}
 
@@ -45,15 +45,15 @@ be smaller than the bin width specified in length composition data
 
 \item{lcomp_constant}{*A new robustification constant for length composition
 data to be used. Must be a numeric value, as a proportion. For example 0.1
-means 10 percent. See the SS3 manual for further information. A \code{NULL}
+means 10 percent. See the SS manual for further information. A \code{NULL}
 value indicates no action resulting in using the current value, and a value
 of 0 will throw an error since that leads to an error when zeroes exist in
 the data. Instead use a very small value like \code{1e-07}.}
 
-\item{tail_compression}{*A new tail compression value to be used in SS3. Must
+\item{tail_compression}{*A new tail compression value to be used in SS. Must
 be a numeric value, as a proportion. For example 0.1 means 10 percent. See
-the SS3 manual for further information. A \code{NULL} value indicates no
-action, a negative value indicates to SS3 to ignore it (not use that
+the SS manual for further information. A \code{NULL} value indicates no
+action, a negative value indicates to SS to ignore it (not use that
 feature).}
 
 \item{write_file}{Should the \code{.dat} file be written? The new \code{.dat}
@@ -105,7 +105,7 @@ fleets <- 1:2
 years <- c(5, 10, 15)
 types <- c("len", "age")
 file_in <- r4ss::SS_readdat(paste0(d, "/models/cod-om/codOM.dat"),
-             version = NULL)
+             version = NULL, verbose = FALSE)
 
 # Basic test with just length data, default bins:
 out <- change_data(file_in, outfile = "ignore.dat", types = "len",
@@ -155,9 +155,10 @@ dat3 <- clean_data(dat_list = dat2, lcomp_params = lcomp_params,
 \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
 
 Other change functions: \code{\link{change_em_binning}},
-  \code{\link{change_e}}, \code{\link{change_f}},
-  \code{\link{change_maturity}},
-  \code{\link{change_retro}}, \code{\link{change_tv}}
+  \code{\link{change_e}}, \code{\link{change_f_par}},
+  \code{\link{change_f}}, \code{\link{change_maturity}},
+  \code{\link{change_o}}, \code{\link{change_retro}},
+  \code{\link{change_tv}}
 }
 \author{
 Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson

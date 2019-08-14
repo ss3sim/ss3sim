@@ -59,7 +59,7 @@ parallel. This would be useful if you were only running one scenario
 but you wanted to run it faster.}
 
 \item{...}{Anything else to pass to \code{\link{ss3sim_base}}. This could
-include \code{bias_adjust} and \code{bias_nsim}. Also, you can pass
+include \code{bias_adjust}. Also, you can pass
 additional options to the \code{SS3} command through the argument
 \code{admb_options}.}
 }
@@ -68,10 +68,6 @@ The output will appear in whatever your current \R working directory
 is. There will be folders named after your scenarios. They will
 look like this:
 \itemize{
-\item \code{D0-F0-cod/bias/1/om}
-\item \code{D0-F0-cod/bias/1/em}
-\item \code{D0-F0-cod/bias/2/om}
-\item ...
 \item \code{D0-F0-cod/1/om}
 \item \code{D0-F0-cod/1/em}
 \item \code{D0-F0-cod/2/om}
@@ -126,18 +122,9 @@ run_ss3sim(iterations = 1, scenarios = "D0-F0-E0-cod",
 unlink("D0-F0-cod", recursive = TRUE) # clean up
 
 # With bias adjustment:
-# (Note that bias_nsim should be bigger, say 5 or 10, but it is set
-# to 2 here so the example runs faster.)
 run_ss3sim(iterations = 1, scenarios = "D1-F0-cod",
   case_folder = case_folder, om_dir = om, em_dir = em,
-  bias_adjust = TRUE, bias_nsim = 2)
-
-# Restarting the previous run using the existing bias-adjustment
-# output
-run_ss3sim(iterations = 2:3, scenarios = "D1-F0-cod",
-  case_folder = case_folder, om_dir = om, em_dir = em,
-  bias_adjust = FALSE, bias_already_run = TRUE)
-unlink("D1-F0-cod", recursive = TRUE)
+  bias_adjust = TRUE)
 
 # A run with deterministic process error for model checking:
 recdevs_det <- matrix(0, nrow = 100, ncol = 20)
@@ -145,7 +132,7 @@ run_ss3sim(iterations = 1:20, scenarios = "D0-E100-F0-cod",
   case_folder = case_folder,
   case_files = list(F = "F", D = c("index", "lcomp", "agecomp"), E = "E"),
   om_dir = om, em_dir = em,
-  bias_adjust = TRUE, bias_nsim = 2, user_recdevs = recdevs_det)
+  bias_adjust = TRUE, user_recdevs = recdevs_det)
 unlink("D0-E100-F0-cod", recursive = TRUE)
 
 # An example of a run using parallel processing across 2 cores:
@@ -167,19 +154,13 @@ run_ss3sim(iterations = 1:2, scenarios = c("D0-F0-cod"),
   parallel = TRUE, parallel_iterations = TRUE)
 unlink("D0-F0-cod", recursive = TRUE)
 
-# parallel iterations with bias adjustment:
-run_ss3sim(iterations = 1:2, scenarios = c("D0-F0-cod"),
-  case_folder = case_folder, om_dir = om, em_dir = em, parallel = TRUE,
-  parallel_iterations = TRUE, bias_adjust = TRUE, bias_nsim = 2)
-unlink("D0-F0-cod", recursive = TRUE)
-
 # Return to original working directory:
 setwd(wd)
 }
 }
 \seealso{
 \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
-\code{\link{run_bias_ss3}}, \code{\link{get_caseargs}},
+\code{\link{get_caseargs}},
 \code{\link{expand_scenarios}}
 }
 \author{

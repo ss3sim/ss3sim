@@ -2,7 +2,7 @@
 % Please edit documentation in R/pastef.r
 \name{pastef}
 \alias{pastef}
-\title{Paste with "/" as the separator}
+\title{Paste with "/" as the separator (deprecated)}
 \usage{
 pastef(...)
 }
@@ -10,5 +10,5 @@ pastef(...)
 \item{...}{Objects to paste together}
 }
 \description{
-Paste with "/" as the separator
+Paste with "/" as the separator (deprecated)
 }

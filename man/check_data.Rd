@@ -2,13 +2,13 @@
 % Please edit documentation in R/change_data.r
 \name{check_data}
 \alias{check_data}
-\title{Check that the SS3 data file looks correct}
+\title{Check that the SS data file looks correct}
 \usage{
 check_data(x)
 }
 \arguments{
-\item{x}{An SS3 data list object as read in by \code{\link[r4ss]{SS_readdat}}.}
+\item{x}{An SS data list object as read in by \code{\link[r4ss]{SS_readdat}}.}
 }
 \description{
-#todo: Think about survey timing, old check of 0.5 was removed.
+Check that the SS data file looks correct
 }

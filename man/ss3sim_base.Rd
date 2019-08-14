@@ -7,12 +7,11 @@
 ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   agecomp_params, calcomp_params = NULL, wtatage_params = NULL,
   mlacomp_params = NULL, em_binning_params = NULL,
-  estim_params = NULL, tv_params = NULL, om_dir, em_dir,
-  retro_params = NULL, data_params = NULL, call_change_data = TRUE,
-  user_recdevs = NULL, user_recdevs_warn = TRUE, bias_adjust = FALSE,
-  bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
-  print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21,
-  keep_compreport = TRUE, ...)
+  estim_params = NULL, tv_params = NULL, operat_params = NULL,
+  om_dir, em_dir, retro_params = NULL, data_params = NULL,
+  call_change_data = TRUE, user_recdevs = NULL,
+  user_recdevs_warn = TRUE, bias_adjust = FALSE, hess_always = FALSE,
+  print_logfile = TRUE, sleep = 0, seed = 21, ...)
 }
 \arguments{
 \item{iterations}{Which iterations to run. A numeric vector.}
@@ -49,6 +48,8 @@ A mandatory case.}
 \item{tv_params}{A named list containing arguments for
 \code{\link{change_tv}} (time-varying).}
 
+\item{operat_params}{A named list containing arguments for \code{\link{change_o}}.}
+
 \item{om_dir}{The directory with the operating model you want to copy and use
 for the specified simulations.}
 
@@ -84,14 +85,6 @@ are specified.}
 
 \item{bias_adjust}{Run bias adjustment first? See \code{\link{run_bias_ss3}}.}
 
-\item{bias_nsim}{If bias adjustment is run, how many simulations should the
-bias adjustment factor be estimated from? It will take the mean of the
-adjustment factors across these runs.}
-
-\item{bias_already_run}{If you've already run the bias runs for a scenario
-(the bias folders and \code{.dat} files already exist) then you can set
-this to \code{TRUE} to avoid re-running the bias adjustment routine.}
-
 \item{hess_always}{If \code{TRUE} then the Hessian will always be calculated.
 If \code{FALSE} then the Hessian will only be calculated for
 bias-adjustment runs thereby saving time.}
@@ -102,21 +95,11 @@ bias-adjustment runs thereby saving time.}
 if you want to reduce average CPU time -- perhaps because you're working on
 a shared server.}
 
-\item{conv_crit}{The maximum percentage of bias iterations that can produce a
-non-invertible Hessian before a warning will be produced. If this
-percentage is exceeded then a file \code{WARNINGS.txt} will be produced.
-Currently, the simulations will continue to run.}
-
 \item{seed}{The seed value to pass to \code{\link{get_recdevs}} when
 generating recruitment deviations. The generated recruitment deviations
 depend on the iteration value, but also on the value of \code{seed}. A
 given combination of iteration, number of years, and \code{seed} value will
 result in the same recruitment deviations.}
-
-\item{keep_compreport}{Logical: should the SS3 file \code{CompReport.sso} be
-kept or deleted? \code{CompReport.sso} is often rather large and so
-deleting it can save space but the file is needed for some of the \pkg{r4ss}
-plots among other purposes.}
 
 \item{...}{Anything extra to pass to \code{\link{run_ss3model}}. For
 example, you may want to pass additional options to \code{SS3} through
@@ -131,10 +114,6 @@ The output will appear in whatever your current \R working directory
 is. There will be folders named after your scenarios. They will
 look like this:
 \itemize{
-\item \code{D0-F0-cod/bias/1/om}
-\item \code{D0-F0-cod/bias/1/em}
-\item \code{D0-F0-cod/bias/2/om}
-\item ...
 \item \code{D0-F0-cod/1/om}
 \item \code{D0-F0-cod/1/em}
 \item \code{D0-F0-cod/2/om}
