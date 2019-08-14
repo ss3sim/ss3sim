@@ -56,18 +56,21 @@
 change_f <- function(years, fisheries, fvals, seasons = 1, ses = 0.005,
   ctl_file_in, ctl_file_out = "control_fishing.ss") {
 
-  n.years <- length(years)
-
-   if (length(fvals) != 1 & length(fvals) != n.years) {
-    stop("The number of years to alter, ", n.years,
-      ", does NOT equal length of supplied F values, ", length(fvals))
+  # check inputs
+  input_list <- list(fisheries = fisheries, fvals = fvals, seasons = seasons, ses = ses)
+  is_invalid <-  mapply(function(input, n.years) {
+                  #if(!is.vector(input)){stop("expected vector")}
+                        val <- length(input)!= 1 & length(input) != n.years
+                  },
+                  input = input_list,
+                  MoreArgs = list(n.years=length(years)),
+                  SIMPLIFY = FALSE
+                  )
+   if(any(is_invalid == TRUE)){
+       stop("The length of variable(s) ", paste0(names(which(is_invalid == TRUE)), collapse = ", "), " is/are invalid. Please change ",
+            "so that there is/are either 1 value or ", length(years), " values.")
    }
-   if (length(fisheries) != 1 & length(fisheries) != n.years) {
-    stop("The number of years to alter, ", n.years,
-      ", does NOT equal length of supplied fleet values, ", length(fisheries),
-      ". Please change the number of fleet values so there is either 1 value ",
-      "or ", n.years, " values.")
-  }
+  # change f by finding location and inserting values.
   newdata <- data.frame(
     "Fleet" = fisheries,
     "Yr" = years,
@@ -75,21 +78,26 @@ change_f <- function(years, fisheries, fvals, seasons = 1, ses = 0.005,
     "F_value" = fvals,
     "se" = ses,
     "phase" = 1)
-
   ctl <- readLines(ctl_file_in)
   locations <- grep("F_Method", ctl, ignore.case = TRUE)
-  if (length(locations) < 2) stop("F_Method wasn't found in the control file")
+  if (length(locations) < 2) {
+    #Note: this check is not robust against all situations of using non-standard
+    #SS comments.
+    stop("Phrase 'F_Method' should be found at least 2 times in the control ",
+         "file, but was found ", length(locations), " times. Please make sure ",
+         "a control file with standard SS comments is being used.")
+  }
   locations <- locations[c(1, length(locations))]
   location_terminal <- grep("Q_setup", ctl, ignore.case = FALSE)
   ctl[locations[1]] <- gsub("^[1-4]\\s*", "2 ", trimws(ctl[locations[1]]))
   location_middle <- (locations[1] + 1):(locations[2] - 1)
   ctl[location_middle] <- c(
-    paste(ifelse(max(fvals) < 4, 4, max(fvals) * 2), 
+    paste(ifelse(max(fvals) < 4, 4, max(fvals) * 2),
       " # max F or harvest rate, depends on F_Method"),
     rep("#", length(location_middle) - 2),
     paste(0, 1, length(years), "# overall start F value; overall phase; N detailed inputs to read"))
   ctl <- ctl[-((locations[2] + 1):(location_terminal-1))]
-  ctl <- append(ctl, 
+  ctl <- append(ctl,
     values = apply(newdata, 1, paste, collapse = " "),
     after = locations[2])
 
