@@ -68,38 +68,17 @@ expect_error(change_f(input$years,
               "The length of variable(s) ses is/are invalid", fixed = TRUE)
 })
 
-# TODO maybe: change_F is currently not robust against all combinations of
-# users using control files without standard ss_new commenting. May be worth
-# changing in the future (but will be easier to do if can use r4ss::readctl
-# instead of readLines and grep.) Can use these tests if want to do this:
-# test_that("change_f give expected error with invalid control file", {
-#   ctl <- readLines("codOM.ctl")
-#   mod_ctl <- ctl
-#   # modify ctl file so that it is missing an F_Method comment.
-#   f_lines <- grep("F_Method", mod_ctl)
-#   mod_ctl[f_lines[1]] <- "2"
-#   writeLines(mod_ctl, "codOM_1_cmt_missing.ctl")
-#   expect_error(ctl <-  change_f(input$years,
-#                         input$fisheries,
-#                         input$fvals,
-#                         ctl_file_in = "codOM_1_cmt_missing.ctl",
-#                         ctl_file_out = NULL),
-#   "Phrase 'F_Method' should be found 3 times in the control file",
-#   fixed = TRUE)
-#   # remove Q setup comment
-#   mod_ctl <- ctl
-#   q_line <- grep("Q_setup", mod_ctl)
-#   mod_ctl[q_line] <- "#"
-#   writeLines(mod_ctl, "codOM_q_cmt_missing.ctl")
-#   # TODO: modify change_f so the below tests passes (chainging the error message
-#   # to something more informative.)
-#   expect_error(
-#     change_f(input$years,
-#                         input$fisheries,
-#                         input$fvals,
-#                         ctl_file_in = "codOM_q_cmt_missing.ctl",
-#                         ctl_file_out = NULL), "My error")
-# })
+mod_ctl <- ctl
+q_line <- grep("Q_setup", mod_ctl)
+mod_ctl[q_line] <- "#"
+writeLines(mod_ctl, "codOM_q_cmt_missing.ctl")
+expect_error(change_f(input$years,
+                      input$fisheries,
+                      input$fvals,
+                      ctl_file_in = "codOM_q_cmt_missing.ctl",
+                      ctl_file_out = NULL), 
+            "Q_setup was not found in the ctl_file_in")
+})
 
 test_that("change_f provides correct output w/o detailed F setup", {
   # modify codOM.ctl to not have detailed F setup, following formatting in an

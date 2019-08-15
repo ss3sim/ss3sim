@@ -89,6 +89,9 @@ change_f <- function(years, fisheries, fvals, seasons = 1, ses = 0.005,
   }
   locations <- locations[c(1, length(locations))]
   location_terminal <- grep("Q_setup", ctl, ignore.case = FALSE)
+  if (length(location_terminal) == 0) {
+    stop("Q_setup was not found in the ctl_file_in")
+  }
   ctl[locations[1]] <- gsub("^[1-4]\\s*", "2 ", trimws(ctl[locations[1]]))
   location_middle <- (locations[1] + 1):(locations[2] - 1)
   ctl[location_middle] <- c(
