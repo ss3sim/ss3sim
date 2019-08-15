@@ -16,7 +16,6 @@ test_that("Delimiters error", {
 
 d <- system.file("extdata", package = "ss3sim")
 eg_cases  <- file.path(d, "eg-cases")
-# fix these broken tests
 
 test_that("No time varying OK", {
     out <- get_caseargs(folder = eg_cases,
