@@ -220,21 +220,3 @@ sample_agecomp <- function(dat_list, outfile, fleets = c(1,2), Nsamp,
     }
     invisible(newfile)
 }
-
-
-#' (Depreciated) Sample age compositions from expected values
-#'
-#' \code{change_agecomp} is a depreciated function. Please use
-#' \code{\link{sample_agecomp}} instead. \code{change_agecomp} will be removed
-#' in the next major version.
-#'
-#' @param ... Arguments that get passed to \code{\link{sample_agecomp}}.
-#'
-#' @export
-
-change_agecomp <- function(...) {
-  warning(paste("change_agecomp is a depreciated function.",
-    "Please use sample_agecomp instead. change_agecomp will",
-    "be removed in the next major version."))
-  sample_agecomp(...)
-}

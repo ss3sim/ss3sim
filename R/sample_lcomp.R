@@ -179,20 +179,3 @@ sample_lcomp <- function(dat_list, outfile, fleets = c(1,2), Nsamp,
                     version = ss_version, verbose = FALSE)
     invisible(newfile)
 }
-
-#' (Depreciated) Sample length compositions from expected values
-#'
-#' \code{change_lcomp} is a depreciated function. Please use
-#' \code{\link{sample_lcomp}} instead. \code{change_lcomp} will be removed
-#' in the next major version.
-#'
-#' @param ... Arguments that get passed to \code{\link{sample_lcomp}}.
-#'
-#' @export
-
-change_lcomp <- function(...) {
-    warning(paste("change_lcomp is a depreciated function.",
-                  "Please use sample_lcomp instead. change_lcomp will",
-                  "be removed in the next major version."))
-    sample_lcomp(...)
-}

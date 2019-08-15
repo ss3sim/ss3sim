@@ -143,21 +143,3 @@ sample_index <- function(dat_list, outfile, fleets, years, sds_obs,
 
   invisible(newfile)
 }
-
-
-#' (Depreciated) Sample the biomass with observation error
-#'
-#' \code{change_index} is a depreciated function. Please use
-#' \code{\link{sample_index}} instead. \code{change_index} will be removed
-#' in the next major version.
-#'
-#' @param ... Arguments that get passed to \code{\link{sample_index}}.
-#'
-#' @export
-
-change_index <- function(...) {
-  warning(paste("change_index is a deprecated function.",
-    "Please use sample_index instead. change_index will",
-    "be removed in the next major version."))
-  sample_index(...)
-}
