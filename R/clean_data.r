@@ -33,11 +33,11 @@ clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
     ## but not for all cases, such as when extra types are generated for
     ## sampling purposes.
 
-    # check inputs
     if(is.null(dat_list$type)) {
       stop("dat_list must be an r4ss data file read into R using ",
-      "r4ss::SSreaddat()")
+           "r4ss::SSreaddat()")
     }
+
     if(dat_list$type != "Stock_Synthesis_data_file") {
       stop("dat_list must be an r4ss data file read into R using ",
            "r4ss::SSreaddat()")
@@ -50,42 +50,7 @@ clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
                        agecomp_params = agecomp_params,
                        calcomp_params = calcomp_params,
                        mlacomp_parms = mlacomp_params)
-    str_err <- lapply(all_params, FUN = function(params){
-      if(is.null(params)|is.null(params$fleets)|is.null(unlist(params$years))){
-        error <- FALSE
-        return(error)
-      }
-      is_vector <- is.atomic(params$fleets)
-      is_list <- is.list(params$years)
-      test_length <- length(params$fleets) == length(params$years)
-       if(is_vector == FALSE | is_list == FALSE | test_length == FALSE) error <- TRUE
-       else error <- FALSE
-    })
-    if(any(unlist(str_err) == TRUE)) {
-      str_err_names <- names(str_err)[which(unlist(str_err == TRUE))]
-      stop("The structure of ",
-           paste0(str_err_names, collapse = ", "), " is not valid.")
-    }
-    range_err <-  lapply(all_params, FUN = function(params, dat_list) {
-      if(is.null(params)) {
-        error <- FALSE
-      } else if (is.null(params$fleets)|is.null(unlist(params$years))) {
-        error <- FALSE
-      } else if(any(!params$fleets %in% 1:dat_list$Nfleets)) {
-        error <- TRUE
-      } else if(any(unlist(params$years) < dat_list$styr)|
-                any(unlist(params$years) > dat_list$endyr)) {
-        error <- TRUE
-      } else {
-        error <- FALSE
-      }
-    }, dat_list = dat_list)
-    if(any(unlist(range_err) == TRUE)) {
-      range_err_names <- names(range_err)[which(unlist(range_err == TRUE))]
-      stop("Fleets or years specified in ",
-      paste0(range_err_names, collapse = ", "), " are not valid values in the ",
-      "datafile")
-    }
+    check_data_str_range(all_params, dat_list)
     # check that index_params specified
     if(is.null(index_params$fleets)) {
       stop("Indices are currently mandatory: index_params is NULL")
@@ -202,4 +167,55 @@ clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
     }
 
     return(invisible(dat_list))
+}
+
+#' Check that the param list inputs have correct structure and range given an
+#' associated data file
+#'
+#' @param all_params A named list of the parameters cointaining at a min9mum
+#'   year and fleet values
+#' @param dat_list An SS data list object as read in by \code{\link[r4ss]{SS_readdat}}.
+#' @export
+
+check_data_str_range <- function(all_params, dat_list) {
+  str_err <- lapply(all_params, FUN = function(params){
+    if(is.null(params)|is.null(params$fleets)|is.null(unlist(params$years))){
+      error <- FALSE
+      return(error)
+    }
+    is_vector <- is.atomic(params$fleets)
+    is_list <- is.list(params$years)
+    test_length <- length(params$fleets) == length(params$years)
+    if(is_vector == FALSE | is_list == FALSE | test_length == FALSE) {
+      error <- TRUE
+    } else {
+      error <- FALSE
+    }
+  })
+  if(any(unlist(str_err) == TRUE)) {
+    str_err_names <- names(str_err)[which(unlist(str_err == TRUE))]
+    stop("The structure of ",
+         paste0(str_err_names, collapse = ", "), " is not valid.")
+  }
+  range_err <-  lapply(all_params, FUN = function(params, dat_list) {
+    if(is.null(params)) {
+      error <- FALSE
+    } else if (is.null(params$fleets)|is.null(unlist(params$years))) {
+      error <- FALSE
+    } else if(any(!params$fleets %in% 1:dat_list$Nfleets)) {
+      error <- TRUE
+    } else if(any(unlist(params$years) < dat_list$styr)|
+              any(unlist(params$years) > dat_list$endyr)) {
+      error <- TRUE
+    } else {
+      error <- FALSE
+    }
+  }, dat_list = dat_list)
+  if(any(unlist(range_err) == TRUE)) {
+    range_err_names <- names(range_err)[which(unlist(range_err == TRUE))]
+    stop("Fleets or years specified in ",
+         paste0(range_err_names, collapse = ", "), " are not valid values in the ",
+         "datafile")
+  }
+  invisible(all_params)
 }
