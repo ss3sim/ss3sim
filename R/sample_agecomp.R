@@ -12,6 +12,7 @@
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
 #' @template dat_list
+#' @template outfile
 #' @template Nsamp
 #' @param keep_conditional A logical if conditional age-at-length data
 #'   should be kept or removed entirely from the \code{.dat} file.
@@ -30,37 +31,33 @@
 #' dat_list <- r4ss::SS_readdat(f_in, version = NULL, verbose = FALSE)
 #'
 #' ## Turn off age comps by specifying fleets=NULL
-#' sample_agecomp(dat_list=dat_list, outfile="test1.dat",
+#' sample_agecomp(dat_list=dat_list, outfile=NULL,
 #'                fleets=NULL, cpar=c(5,NA), Nsamp=list(100,100),
-#'                years=list(1995, 1995), write_file=FALSE)
+#'                years=list(1995, 1995))
 #'
 #' ## Generate with a smaller number of fleet taking samples
-#' ex1 <- sample_agecomp(dat_list=dat_list, outfile="test1.dat", fleets=c(2),
-#'                       Nsamp=list(c(10,50)), years=list(c(26,27)),
-#'                       write_file=FALSE)
+#' ex1 <- sample_agecomp(dat_list=dat_list, fleets=c(2),
+#'                       Nsamp=list(c(10,50)), years=list(c(26,27)))
 #'
 #' ## Generate with varying Nsamp by year for first fleet
-#' ex2 <- sample_agecomp(dat_list=dat_list, outfile="test2.dat", fleets=c(1,2),
+#' ex2 <- sample_agecomp(dat_list=dat_list, outfile=NULL, fleets=c(1,2),
 #'                       Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
 #'                       years=list(seq(26, 44, 2),
-#'                           c(26:100)), write_file=FALSE)
+#'                           c(26:100)))
 #'
 #' ## Run three  cases showing Multinomial, Dirichlet(1) and over-dispersed
 #' ## Dirichlet for different levels of sample sizes
 #' op <- par(mfrow = c(1,3))
 #' set.seed(1)
 #' for(samplesize in c(30, 100, 1000)){
-#'     ex4 <- sample_agecomp(dat_list=dat_list, outfile="test4.dat", fleets=c(1,2),
+#'     ex4 <- sample_agecomp(dat_list=dat_list, outfile=NULL, fleets=c(1,2),
 #'                           Nsamp=list(samplesize, samplesize),
-#'                           write_file = FALSE,
 #'                           years=list(50,50), cpar=c(NA, 1))
-#'     ex5 <- sample_agecomp(dat_list=dat_list, outfile="test5.dat", fleets=c(1,2),
+#'     ex5 <- sample_agecomp(dat_list=dat_list, outfile=NULL, fleets=c(1,2),
 #'                           Nsamp=list(samplesize, samplesize),
-#'                           write_file = FALSE,
 #'                           years=list(50,50), cpar=c(1, 1))
-#'     ex6 <- sample_agecomp(dat_list=dat_list, outfile="test6.dat", fleets=c(1,2),
+#'     ex6 <- sample_agecomp(dat_list=dat_list, outfile=NULL, fleets=c(1,2),
 #'                           Nsamp=list(samplesize, samplesize),
-#'                           write_file = FALSE,
 #'                           years=list(50,50), cpar=c(5, 1))
 #'     true <- subset(dat_list$agecomp, FltSvy==1 & Yr == 50)[-(1:9)]
 #'     true <- true/sum(true)
@@ -79,8 +76,8 @@
 #' par(op)
 #' @family sampling functions
 #' @export
-sample_agecomp <- function(dat_list, outfile, fleets = c(1,2), Nsamp,
-                           years, cpar=1, ESS=NULL, write_file=TRUE,
+sample_agecomp <- function(dat_list, outfile = NULL, fleets = c(1,2), Nsamp,
+                           years, cpar=1, ESS=NULL,
                            keep_conditional = TRUE){
     ## The new agecomp is mostly based on the old one so start with
     ## that
@@ -213,7 +210,7 @@ sample_agecomp <- function(dat_list, outfile, fleets = c(1,2), Nsamp,
     }
 
     ## Write the modified file
-    if(write_file){
+    if (!is.null(outfile)){
       ss_version <- get_ss_ver_dl(newfile)
       SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
                   version = ss_version, verbose = FALSE)

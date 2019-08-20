@@ -13,6 +13,7 @@
 #' @template lcomp-agecomp-index
 #' @template Nsamp
 #' @template dat_list
+#' @template outfile
 #' @param ctl_file_in A path to the control file, output from an OM, containing
 #'   the OM parameters for growth. These values are used to determine the
 #'   uncertainty about size for fish sampled in each age bin.
@@ -38,13 +39,13 @@
 #' d <- system.file("extdata/models/cod-om", package = "ss3sim")
 #' dat_in <- file.path(d, "codOM.dat")
 #' dat_list <- r4ss::SS_readdat(dat_in, version = NULL, verbose = FALSE)
-#' dat_list <- change_data(dat_list, outfile = NULL, write_file = FALSE,
+#' dat_list <- change_data(dat_list, outfile = NULL,
 #'   fleets = 1, years = 1990:2010, types = c("age", "mla"))
 #' ctl_file_in <- file.path(d, "codOM.ctl")
 #'
 #' out <- sample_mlacomp(dat_list, outfile = NULL, ctl_file_in = ctl_file_in,
 #'                       fleets = 1, Nsamp = 30, years = list(1992),
-#'                       verbose = FALSE, mean_outfile = "test.csv", write_file = FALSE)
+#'                       verbose = FALSE, mean_outfile = "test.csv")
 #'
 #' setwd("..")
 #' unlink("ss3sim-test", recursive = TRUE)
@@ -52,7 +53,7 @@
 
 
 sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
-                           years, write_file=TRUE, mean_outfile = NULL,
+                           years, mean_outfile = NULL,
                            verbose = TRUE){
 
   ss_version <- get_ss_ver_dl(dat_list)
@@ -60,7 +61,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
   if (is.null(fleets)) {
     dat_list$MeanSize_at_Age_obs <- data.frame("#")
     dat_list$N_MeanSize_at_Age_obs <- 0
-    if (write_file)
+    if (!is.null(outfile))
       SS_writedat(datlist = dat_list, outfile = outfile, overwrite = TRUE,
                   version = ss_version, verbose = verbose)
     return(invisible(dat_list))
@@ -89,7 +90,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
     }
 
   ## Check inputs for errors
-  if (!is.null(outfile) & write_file){
+  if (!is.null(outfile)){
     if (substr_r(outfile,4) != ".dat") {
       stop(paste0("outfile ", outfile, " needs to end in .dat"))
     }
@@ -235,7 +236,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
   dat_list$MeanSize_at_Age_obs <- rbind(mlacomp.new, mwacomp)
   dat_list$N_MeanSize_at_Age_obs <- NROW(mlacomp.new)
   ## Write the modified file
-  if(write_file) SS_writedat(datlist = dat_list, outfile = outfile,
+  if (!is.null(outfile)) SS_writedat(datlist = dat_list, outfile = outfile,
                              version =   ss_version, overwrite = TRUE,
                              verbose = verbose)
   return(invisible(dat_list))

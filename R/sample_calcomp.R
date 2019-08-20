@@ -18,14 +18,15 @@
 #'
 #' @template lcomp-agecomp-index
 #' @template dat_list
+#' @template outfile
 #' @template Nsamp
 #' @template sampling-return
 #' @template casefile-footnote
 #' @family sampling functions
 #' @export
 
-sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
-                           write_file=TRUE, Nsamp){
+sample_calcomp <- function(dat_list, outfile = NULL, fleets = c(1,2), years,
+                           Nsamp){
     ## The samples are taken from the expected values, where the
     ## age-at-length data is in the age matrix but has a -1 for Lbin_lo and
     ## Lbin_hi, so subset those out, but don't delete the age values since
@@ -53,7 +54,7 @@ sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
     if(is.null(fleets)){
         newfile$agecomp <- agecomp.age
         newfile$N_agecomp <- nrow(agecomp.age)
-        if(write_file){
+        if(!is.null(outfile)){
           SS_writedat(datlist = newfile, outfile = outfile, version = ss_version,
                       overwrite = TRUE, verbose=FALSE)
         }
@@ -185,7 +186,7 @@ sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
     }
 
     ## Write the modified file
-    if(write_file){
+    if (!is.null(outfile)){
       r4ss::SS_writedat(datlist = newfile, outfile = outfile,
                         version = ss_version, overwrite = TRUE, verbose=FALSE)
     }

@@ -25,9 +25,9 @@
 ##                      calcomp_params=calcomp_params,
 ##                      mlacomp_params=mlacomp_params)
 ## dat2 <- with(data_units, change_data(dat_list=dat_list, fleets=fleets, years=years,
-##                              types=types, write_file=FALSE))
+##                              types=types))
 ## dat2 <- change_data(dat_list, fleets=c(1,2), years=c(4,5),
-##                     types=c("age","len", "mla", "cal"), write_file=FALSE)
+##                     types=c("age","len", "mla", "cal"))
 ## dat_list <- dat2
 ## dat3 <- clean_datfile(dat_list=dat2, lcomp_params=lcomp_params,
 ##                      agecomp_params=agecomp_params,

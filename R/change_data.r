@@ -17,8 +17,7 @@
 #' See the vignette for more details.
 #'
 #' @template dat_list
-#' @param outfile A character value giving the location of an SS \code{.dat}
-#'   file to output, if \code{write_file=TRUE}.
+#' @template outfile
 #' @param fleets A numeric vector of fleets
 #' @param years A numeric vector of years
 #' @param types A vector that can take combinations of the following entries:
@@ -48,11 +47,6 @@
 #'   the SS manual for further information. A \code{NULL} value indicates no
 #'   action, a negative value indicates to SS to ignore it (not use that
 #'   feature).
-#' @param write_file Should the \code{.dat} file be written? The new \code{.dat}
-#'   file will always be returned invisibly by the function. Setting
-#'   \code{write_file = FALSE} can be useful for testing. Note that you must
-#'   supply a value to the argument \code{outfile}, but this argument can be set
-#'   to any arbitrary value (such as \code{NULL}) if \code{write_file = FALSE}.
 #'
 #' @details The robustification constant is added to both the observed and
 #'   expected proportions of length composition data, before being normalized
@@ -60,8 +54,8 @@
 #'   and when to use it for optimal effect. The same value is used for all
 #'   length data.
 #'
-#' @return An invisible data list, and a file is written if \code{write_file =
-#'   TRUE}.
+#' @return An invisible data list, and a file is written to the disk if an
+#' entry other than \code{NULL} is provided for \code{outfile}.
 #' @family change functions
 #'
 #' @template casefile-footnote
@@ -79,21 +73,21 @@
 #'              version = NULL, verbose = FALSE)
 #'
 #' # Basic test with just length data, default bins:
-#' out <- change_data(file_in, outfile = "ignore.dat", types = "len",
-#'   years = years, fleets = fleets, write_file = FALSE)
+#' out <- change_data(file_in, outfile = NULL, types = "len",
+#'   years = years, fleets = fleets)
 #' print(out$lbin_vector)
 #' print(out$lencomp)
 #'
 #' # Change the length bins:
-#' out <- change_data(file_in, "ignore.dat", types = "len",
-#'   years = years, fleets = fleets, len_bins = 3:6, write_file = FALSE)
+#' out <- change_data(file_in, outfile = NULL, types = "len",
+#'   years = years, fleets = fleets, len_bins = 3:6)
 #' out$lbin_vector
 #' out$lencomp
 #'
 #' # Change the population length bins:
-#' out <- change_data(file_in, "ignore.dat", types = "len",
+#' out <- change_data(file_in, outfile = NULL, types = "len",
 #'   years = years, fleets = fleets, pop_binwidth = 1, pop_minimum_size = 5,
-#'   pop_maximum_size = 210, write_file = FALSE)
+#'   pop_maximum_size = 210)
 #' out$binwidth
 #' out$maximum_size
 #' out$minimum_size
@@ -116,17 +110,16 @@
 #'   calcomp_params = calcomp_params, mlacomp_params = mlacomp_params)
 #' data_units
 #' dat2 <- with(data_units, change_data(dat_list = dat_list, fleets = fleets,
-#'   years = years, types = types, write_file = FALSE))
+#'   years = years, types = types))
 #' dat3 <- clean_data(dat_list = dat2, lcomp_params = lcomp_params,
 #'   index_params = index_params, agecomp_params = agecomp_params,
 #'   calcomp_params = calcomp_params, mlacomp_params = mlacomp_params,
 #'   verbose = TRUE)
 
-change_data <- function(dat_list, outfile, fleets, years, types,
+change_data <- function(dat_list, outfile = NULL, fleets, years, types,
   age_bins = NULL, len_bins = NULL, pop_binwidth = NULL,
   pop_minimum_size = NULL, pop_maximum_size = NULL,
-  lcomp_constant = NULL, tail_compression = NULL,
-  write_file = TRUE) {
+  lcomp_constant = NULL, tail_compression = NULL) {
 
   # TODO: pop length bins must not be wider than the length data bins, but the
   # boundaries of the bins do not need to align (from SS manual)
@@ -202,7 +195,7 @@ change_data <- function(dat_list, outfile, fleets, years, types,
                   write_file = FALSE)
   }
 
-  if (write_file) {
+  if (!is.null(outfile)) {
     SS_writedat(datlist = dat_list, outfile = outfile, version = dat_list$ReadVersion,
       overwrite = TRUE, verbose = FALSE)
   }

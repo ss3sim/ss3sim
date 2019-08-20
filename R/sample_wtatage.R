@@ -24,10 +24,11 @@
 #'   resulting weight-at-age file will have values for all years and ages.One
 #'   function is \code{fill_across}.
 #' @param cv_wtatage A user specified CV for growth. Default is \code{NULL}.
-#' @return A modified \code{.wtatage.ss} file if \code{write_file = TRUE}. A list
+#' @return A modified \code{.wtatage.ss} file if \code{!is.null(outfile)}. A list
 #'   object containing the modified \code{.wtatage.ss} file is returned invisibly.
 #' @template lcomp-agecomp-index
 #' @template dat_list
+#' @template outfile
 #' @template casefile-footnote
 #' @importFrom r4ss SS_parlines
 #' @seealso \code{\link{fill_across}}
@@ -46,7 +47,6 @@
 # fill_fnc <- fill_across
 # fleets <- list(1, 2)
 # cv_wtatage <- .5
-# write_file <- TRUE
 #
 # dat_list <- r4ss::SS_readdat(file=datfile, version = NULL, verbose=FALSE)
 # test <- sample_wtatage(wta_file_in = wta_file_in, outfile = outfile, dat_list = dat_list,
@@ -55,7 +55,7 @@
 #
 
 sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
-                           years, fill_fnc = fill_across, write_file=TRUE, fleets,
+                           years, fill_fnc = fill_across, fleets,
                            cv_wtatage = NULL){
   ##fill_type: specify type of fill, fill zeroes with first row? annual interpolation?
         ## Age Interpolation?
@@ -269,37 +269,37 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
     # Nlines <- Nlines + sum(unlist(lapply(wtatage.complete,nrow)))
 
     ##write wtatage.ss file
-    if(write_file)    cat(Nlines,"# Number of lines of weight-at-age input to be read\n",file=outfile)
-    if(write_file)    cat(dat_list$Nages,"# Maximum Age\n",file=outfile,append=TRUE)
+    if(is.null(outfile)) cat(Nlines,"# Number of lines of weight-at-age input to be read\n",file=outfile)
+    if(is.null(outfile)) cat(dat_list$Nages,"# Maximum Age\n",file=outfile,append=TRUE)
 
     #loop through the various matrices and build up wtatage.final while doing it
     wtatage.final <- list()
 
-    if(write_file)     cat("#Fleet -2, fecundity\n",file=outfile,append=TRUE)
+    if(is.null(outfile)) cat("#Fleet -2, fecundity\n",file=outfile,append=TRUE)
     wtatage.final[[1]] <- unsampled.wtatage[[1]]
 
     # wtatage.final[[1]] <- fecund
     # wtatage.final[[1]]$yr <- -1 * wtatage.final[[1]]$yr
-    if(write_file)    write.table(unsampled.wtatage[[1]], file=outfile, append=TRUE, row.names=F, col.names=F)
+    if(!is.null(outfile)) write.table(unsampled.wtatage[[1]], file=outfile, append=TRUE, row.names=F, col.names=F)
 
-    if(write_file)    cat("\n#Fleet -1\n",file=outfile,append=TRUE)
+    if(!is.null(outfile)) cat("\n#Fleet -1\n",file=outfile,append=TRUE)
     # wtatage.final[[2]] <- fltNeg1
     wtatage.final[[2]] <- unsampled.wtatage[[2]]
     # wtatage.final[[2]]$yr <- -1 * wtatage.final[[2]]$yr
-    if(write_file)        write.table(unsampled.wtatage[[2]], file=outfile, append=TRUE, row.names=F, col.names=F)
+    if(!is.null(outfile))     write.table(unsampled.wtatage[[2]], file=outfile, append=TRUE, row.names=F, col.names=F)
 
-    if(write_file)    cat("\n#Fleet 0\n",file=outfile,append=TRUE)
+    if(!is.null(outfile)) cat("\n#Fleet 0\n",file=outfile,append=TRUE)
     # wtatage.final[[3]] <- fltZero
     wtatage.final[[3]] <- unsampled.wtatage[[3]]
     # wtatage.final[[3]]$yr <- -1 * wtatage.final[[3]]$yr
-    if(write_file)    write.table(unsampled.wtatage[[3]], file=outfile, append=TRUE, row.names=F, col.names=F)
+    if(!is.null(outfile)) write.table(unsampled.wtatage[[3]], file=outfile, append=TRUE, row.names=F, col.names=F)
 
     #loop through fleets
     for(i in fleets) {
-        if(write_file)     cat("\n#Fleet",i,"\n",file=outfile,append=TRUE)
+        if(!is.null(outfile))     cat("\n#Fleet",i,"\n",file=outfile,append=TRUE)
         wtatage.final[[i+3]] <- wtatage.complete[[i]]
         wtatage.final[[i+3]]$yr <- -1 * wtatage.final[[i+3]]$yr
-        if(write_file)    write.table(wtatage.final[[i+3]], file=outfile, append=TRUE, row.names=F, col.names=F)
+        if(!is.null(outfile))    write.table(wtatage.final[[i+3]], file=outfile, append=TRUE, row.names=F, col.names=F)
     }
 
     return(invisible(wtatage.final))

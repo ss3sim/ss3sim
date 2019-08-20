@@ -50,7 +50,7 @@
 #' d <- r4ss::SS_readdat(f, version = NULL, verbose = FALSE)
 #'
 #' # Add catch at length data (and simplify the bin structure for this example)
-#' olddat <- change_data(d, outfile = NULL, write_file = FALSE,
+#' olddat <- change_data(d, outfile = NULL, 
 #'   types = c("len", "age", "cal"), fleets = 1, years = seq(2000, 2002),
 #'   age_bins = 1:3, len_bins = 4:8)
 #' olddat$agecomp
@@ -59,7 +59,7 @@
 #' newdat$agecomp
 #'
 #' # A larger conditional age-at-length re-rebinning example:
-#' olddat <- change_data(d, outfile = NULL, write_file = FALSE,
+#' olddat <- change_data(d, outfile = NULL, 
 #'  types = c("len", "age", "cal"), fleets = 1, years = seq(2000, 2005),
 #'  age_bins = seq(1, 5), len_bins = round(seq(20, 30, length.out = 13), 1))
 #'

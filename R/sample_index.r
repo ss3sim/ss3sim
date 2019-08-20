@@ -11,6 +11,7 @@
 #'
 #' @template lcomp-agecomp-index
 #' @template dat_list
+#' @template outfile
 #' @param sds_obs *A list the same length as \code{fleets}. The list should
 #'   contain either single values or numeric vectors of the same length as the
 #'   number of years which represent the standard deviation of the observation
@@ -30,14 +31,13 @@
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' dat_list <- r4ss::SS_readdat(f_in, section = 2, version = NULL,
 #'                              verbose = FALSE)
-#' outfile <- "test.dat"
-#' ex1 <- sample_index(dat_list, outfile, fleets=c(2,3),
+#' ex1 <- sample_index(dat_list, outfile = NULL, fleets=c(2,3),
 #'                     years=list(1938:2012, 1938:2012) ,
-#'                     sds_obs=list(1e-6, 1e-6), write_file=FALSE,
+#'                     sds_obs=list(1e-6, 1e-6), 
 #'                     make_plot = TRUE)
-#' ex2 <- sample_index(dat_list, outfile, fleets=c(2,3),
+#' ex2 <- sample_index(dat_list, outfile = NULL, fleets=c(2,3),
 #'                     years=list(1938:2012, 1938:2012) ,
-#'                     sds_obs=list(.05, .05), write_file=FALSE,
+#'                     sds_obs=list(.05, .05), 
 #'                     make_plot = TRUE)
 #' library(ggplot2)
 #' ggplot(ex1$CPUE, aes(x=year, y=obs, group=index, ymin=0,
@@ -46,17 +46,16 @@
 #'   geom_point(data=ex2$CPUE,
 #'     aes(x=year, y=obs, colour=as.factor(index), group=index))
 #' ## Exclude a fleet and have varying sds_obs by year
-#' ex3 <- sample_index(dat_list, outfile, fleets=c(2),
+#' ex3 <- sample_index(dat_list, outfile = NULL, fleets=c(2),
 #'                     years=list(1938:2012),
-#'                     sds_obs=list(seq(.001, .1, len=75)),
-#'                     write_file=FALSE)
+#'                     sds_obs=list(seq(.001, .1, len=75)))
 #' ggplot(ex3$CPUE, aes(x=year, y=obs, group=index, ymin=0,
 #'                 colour=as.factor(index)))+geom_point()
 #' }
 #' @family sampling functions
 
-sample_index <- function(dat_list, outfile, fleets, years, sds_obs,
-                         make_plot = FALSE, write_file=TRUE) {
+sample_index <- function(dat_list, outfile = NULL, fleets, years, sds_obs,
+                         make_plot = FALSE) {
   check_data(dat_list)
   cpue <- dat_list$CPUE # CPUE expected values.
   ## Check inputs for errors
@@ -136,7 +135,7 @@ sample_index <- function(dat_list, outfile, fleets, years, sds_obs,
   if(Nfleets > 0) newfile$N_cpue <- nrow(cpue.new)
   if(Nfleets == 0 ) newfile$N_cpue <- 0
 
-  if(write_file) {
+  if (!is.null(outfile)) {
     SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
                 version = newfile$ReadVersion, verbose = FALSE)
   }

@@ -327,8 +327,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                     pop_minimum_size = data_params$pop_minimum_size,
                     pop_maximum_size = data_params$pop_maximum_size,
                     tail_compression = data_params$tail_compression,
-                    lcomp_constant   = data_params$lcomp_constant,
-                    write_file       = TRUE)
+                    lcomp_constant   = data_params$lcomp_constant)
       }
       # Run the operating model and copy the dat file over
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
@@ -355,8 +354,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                      outfile         = NULL,
                      fleets          = fleets,
                      years           = years,
-                     sds_obs         = sds_obs,
-                     write_file      = FALSE))
+                     sds_obs         = sds_obs))
 
       ## Add error in the length comp data
       if(!is.null(lcomp_params$fleets)){
@@ -369,8 +367,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                             Nsamp            = Nsamp,
                             years            = years,
                             cpar             = cpar,
-                            ESS              = ESS,
-                            write_file       = FALSE))
+                            ESS              = ESS))
       }
 
       ## Add error in the age comp data. Need to do this last since other
@@ -386,8 +383,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                          Nsamp          = Nsamp,
                                          years          = years,
                                          cpar           = cpar,
-                                         ESS            = ESS,
-                                         write_file     = FALSE))
+                                         ESS            = ESS))
       }
 
       ## Add error in the empirical weight-at-age comp data. Note that if
@@ -418,7 +414,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                   ctl_file_in = file.path(sc, i, "om", "control.ss_new"),
                                   fleets      = fleets,
                                   years       = years,
-                                  write_file  = TRUE,
                                   cv_wtatage  = cv_wtatage))
           }
       }
@@ -438,8 +433,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                          Nsamp          = Nsamp,
                                          years          = years,
                                          mean_outfile   = file.path(sc, i, "em",
-                                                                 paste0(mean_outfile, ".csv")),
-                                         write_file     = FALSE))
+                                                                 paste0(mean_outfile, ".csv"))))
       }
 
       ## Add error in the conditional age at length comp data. The
@@ -454,8 +448,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                          outfile          = NULL,
                                          fleets           = fleets,
                                          years            = years,
-                                         Nsamp            = Nsamp,
-                                         write_file       = FALSE))
+                                         Nsamp            = Nsamp))
       }
 
       ## End of manipulating the data file, so clean it and write it

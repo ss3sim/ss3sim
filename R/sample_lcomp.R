@@ -12,6 +12,7 @@
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
 #' @template dat_list
+#' @template outfile
 #' @template Nsamp
 #' @template casefile-footnote
 #' @template sampling-return
@@ -23,15 +24,15 @@
 #' dat_list <- r4ss::SS_readdat(f_in, version = NULL, verbose = FALSE)
 #'
 #' ## Generate with constant sample size across years
-#' ex1 <- sample_lcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(1,2),
+#' ex1 <- sample_lcomp(dat_list=dat_list, outfile = NULL, fleets=c(1,2),
 #'                     Nsamp=list(100,50), years=list(seq(26, 100, by=2),
-#'                                             80:100), write_file = FALSE)
+#'                                             80:100))
 #'
 #' ## Generate with varying Nsamp by year for first fleet
-#' ex2 <- sample_lcomp(dat_list=dat_list, outfile="test2.dat", fleets=c(1,2),
+#' ex2 <- sample_lcomp(dat_list=dat_list, outfile = NULL, fleets=c(1,2),
 #'                     Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
 #'                     years=list(seq(26, 44, by=2),
-#'                         80:100), write_file = FALSE)
+#'                         80:100))
 #'
 #' \donttest{
 #' ## Plot distributions for a particular year to compare multinomial
@@ -39,13 +40,11 @@
 #' temp.list <- temp.list2 <- list()
 #' for(i in 1:40){
 #'     temp.list[[i]] <-
-#'       sample_lcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(2), cpar=c(3),
-#'                      Nsamp=list(100), years=list(95),
-#'                      write_file=FALSE)$lencomp
+#'       sample_lcomp(dat_list=dat_list, outfile = NULL, fleets=2, cpar=c(3),
+#'                      Nsamp=list(100), years=list(95))$lencomp
 #'     temp.list2[[i]] <-
-#'         sample_lcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(2),
-#'                      cpar=c(NA), Nsamp=list(100), years=list(95),
-#'                      write_file=FALSE)$lencomp
+#'         sample_lcomp(dat_list=dat_list, outfile = NULL, fleets=c(2),
+#'                      cpar=c(NA), Nsamp=list(100), years=list(95))$lencomp
 #' }
 #' ## Organize the data for plotting
 #' x1 <- reshape2::melt(do.call(rbind, temp.list)[,-(1:6)[-3]], id.vars="FltSvy")
@@ -69,7 +68,7 @@
 #' @family sampling functions
 
 sample_lcomp <- function(dat_list, outfile, fleets = c(1,2), Nsamp,
-                         years, cpar = 1, ESS=NULL, write_file = TRUE){
+                         years, cpar = 1, ESS=NULL){
 
     ## The new lcomp is mostly based on the old one so start with that
     check_data(dat_list)
@@ -174,7 +173,7 @@ sample_lcomp <- function(dat_list, outfile, fleets = c(1,2), Nsamp,
     if(Nfleets==0) newfile$N_lencomp <- 0
 
     ## Write the modified file
-    if(write_file)
+    if (!is.null(outfile))
         SS_writedat(datlist = newfile, outfile = outfile, overwrite = TRUE,
                     version = ss_version, verbose = FALSE)
     invisible(newfile)
