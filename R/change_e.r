@@ -277,7 +277,7 @@ if(!is.null(par_name)) {
     defaultq <- SS_parlines(dir = NULL,
       ctlfile = dir(pattern = "\\.ctl",
         path = system.file("extdata", "models", "cod-em", package = "ss3sim"),
-        full.name = TRUE),
+        full.names = TRUE),
         version = ss_version, verbose = verbose, active = FALSE)
     defaultq <- defaultq[grep("LnQ_", defaultq$Label), ]
     fleet_q <- sapply(strsplit(par_name_q, "\\(|\\)|_"),
