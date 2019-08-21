@@ -45,7 +45,7 @@
 #' @param user_recdevs_warn A logical argument allowing users to turn the
 #'   warning regarding biased recruitment deviations off when \code{user_recdevs}
 #'   are specified.
-#' @param bias_adjust Run bias adjustment first? See \code{\link{run_bias_ss3}}.
+#' @param bias_adjust Run bias adjustment first?.
 #' @param hess_always If \code{TRUE} then the Hessian will always be calculated.
 #'   If \code{FALSE} then the Hessian will only be calculated for
 #'   bias-adjustment runs thereby saving time.
