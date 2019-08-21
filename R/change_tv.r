@@ -171,7 +171,7 @@ change_tv <- function(change_tv_list,
                                     dimnames = list(NULL,
                                                     c("Yr", "Variable", "Value"))))
   } else {
-    ss3.dat.tbl <- ss3dat$envdat
+    ss3.dat.tbl <- ss3.dat$envdat
   }
 
   # Find where the params to change are in the control file, and stop the
