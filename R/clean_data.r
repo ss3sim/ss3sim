@@ -1,4 +1,3 @@
-
 ## Some prelim tests for development, use these to create unit tests????
 
 ## scen <- expand_scenarios(cases=list(D=80, E=0, F=0), species="fla")
@@ -34,7 +33,6 @@
 ##                      calcomp_params=calcomp_params,
 ##                      mlacomp_params=mlacomp_params,
 ##                       verbose=TRUE)
-
 #' Given sampling arguments remove ("clean") all data in a .dat file that
 #' is not specified
 #'
@@ -60,30 +58,56 @@
 #' @family sampling functions
 #' @return An invisible cleaned data list as an object.
 #' @note This function does not write the result to file.
-#' @export
+#' @import dplyr
+#' @importFrom tidyr complete nesting
 clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
                        agecomp_params=NULL, calcomp_params=NULL,
                        mlacomp_params=NULL, verbose=FALSE ){
-    ## Should somehow have a check that dat_list is valid. None for now.
-    ## Note that verbose=TRUE will print how many rows are removed. The
     ## sampling functions should themselves remove data for most cases, but
     ## but not for all cases, such as when extra types are generated for
     ## sampling purposes.
 
+    if(is.null(dat_list$type)) {
+      stop("dat_list must be an r4ss data file read into R using ",
+           "r4ss::SSreaddat()")
+    }
+
+    if(dat_list$type != "Stock_Synthesis_data_file") {
+      stop("dat_list must be an r4ss data file read into R using ",
+           "r4ss::SSreaddat()")
+    }
+    # checks for years and fleets in params. check structure and range so that
+    # function does not fail later with uninformative message or pass when it
+    # shouldn't.
+    all_params <- list(index_params = index_params,
+                       lcomp_params = lcomp_params,
+                       agecomp_params = agecomp_params,
+                       calcomp_params = calcomp_params,
+                       mlacomp_parms = mlacomp_params)
+    check_data_str_range(all_params, dat_list)
+    # check that index_params specified
+    if(is.null(index_params$fleets)) {
+      stop("Indices are currently mandatory: index_params is NULL")
+    }
+
     ## CPUE
     a <- dat_list$CPUE
-    if(is.null(index_params$fleets)){
-        stop("Indices are currently mandatory: index_params is NULL")
-    } else {
-        dat_list$CPUE <- do.call(rbind,
-         lapply(1:length(index_params$fleets), function(i)
-                a[a$index == index_params$fleets[i] &
-                  a$year %in% index_params$years[[i]],]))
-        dat_list$N_cpue <- NROW(dat_list$CPUE)
-    }
+    dat_list$CPUE <- do.call(rbind,
+     lapply(1:length(index_params$fleets), function(i)
+            a[a$index == index_params$fleets[i] &
+              a$year %in% index_params$years[[i]],]))
+    dat_list$N_cpue <- NROW(dat_list$CPUE)
+    dat_list$NCPUEObs <- dat_list$CPUE %>%
+                          group_by(index) %>%
+                          summarize(count = n()) %>%
+                          complete(nesting(index = dat_list$CPUEinfo$Fleet),
+                                           fill = list(count = 0)) %>%
+                          arrange(index)
+    dat_list$NCPUEObs <- dat_list$NCPUEObs$count
+
     index.N.removed <- NROW(a)-NROW(dat_list$CPUE)
     if(index.N.removed !=0  & verbose)
-        message(paste(index.N.removed, "lines of CPUE data removed"))
+        message(index.N.removed, " lines of CPUE data removed")
 
     ## Length composition data
     a <- dat_list$lencomp
@@ -99,7 +123,7 @@ clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
     }
     lcomp.N.removed <- NROW(a)-NROW(dat_list$lencomp)
     if(lcomp.N.removed !=0  & verbose)
-        message(paste(lcomp.N.removed, "lines of length comp data removed"))
+        message(lcomp.N.removed, " lines of length comp data removed")
 
     ## Mean length at age data
     ## Check to see if mean_outfile specifies that mlacomps should be deleted
@@ -123,7 +147,7 @@ clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
     }
     mlacomp.N.removed <- NROW(a) - NROW(dat_list$MeanSize_at_Age_obs)
     if(mlacomp.N.removed !=0 & verbose)
-        message(paste(mlacomp.N.removed, "lines of mean length data removed"))
+        message(mlacomp.N.removed, " lines of mean length data removed")
 
     ## Age comps and conditional age-at-length at the same time
     a <- dat_list$agecomp
@@ -166,9 +190,9 @@ clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
     calcomp.N.removed <-
         NROW(calcomp)-NROW(dat_list$calcomp[dat_list$agecomp$Lbin_lo >= 0,])
     if(agecomp.N.removed !=0  & verbose)
-            message(paste(agecomp.N.removed, "lines of age data removed"))
+            message(agecomp.N.removed, " lines of age data removed")
     if(calcomp.N.removed !=0  & verbose)
-            message(paste(calcomp.N.removed, "lines of CAL data removed"))
+            message(calcomp.N.removed, " lines of CAL data removed")
     # Set data type to NULL in dat_list because if no rows exist
     # "[1]" # will be written in dat_list
     data.names <- c("lencomp", "agecomp", "MeanSize_at_Age_obs")
@@ -177,4 +201,55 @@ clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
     }
 
     return(invisible(dat_list))
+}
+
+#' Check that the param list inputs have correct structure and range given an
+#' associated data file
+#'
+#' @param all_params A named list of the parameters cointaining at a min9mum
+#'   year and fleet values
+#' @param dat_list An SS data list object as read in by \code{\link[r4ss]{SS_readdat}}.
+#' @export
+
+check_data_str_range <- function(all_params, dat_list) {
+  str_err <- lapply(all_params, FUN = function(params){
+    if(is.null(params)|is.null(params$fleets)|is.null(unlist(params$years))){
+      error <- FALSE
+      return(error)
+    }
+    is_vector <- is.atomic(params$fleets)
+    is_list <- is.list(params$years)
+    test_length <- length(params$fleets) == length(params$years)
+    if(is_vector == FALSE | is_list == FALSE | test_length == FALSE) {
+      error <- TRUE
+    } else {
+      error <- FALSE
+    }
+  })
+  if(any(unlist(str_err) == TRUE)) {
+    str_err_names <- names(str_err)[which(unlist(str_err == TRUE))]
+    stop("The structure of ",
+         paste0(str_err_names, collapse = ", "), " is not valid.")
+  }
+  range_err <-  lapply(all_params, FUN = function(params, dat_list) {
+    if(is.null(params)) {
+      error <- FALSE
+    } else if (is.null(params$fleets)|is.null(unlist(params$years))) {
+      error <- FALSE
+    } else if(any(!params$fleets %in% 1:dat_list$Nfleets)) {
+      error <- TRUE
+    } else if(any(unlist(params$years) < dat_list$styr)|
+              any(unlist(params$years) > dat_list$endyr)) {
+      error <- TRUE
+    } else {
+      error <- FALSE
+    }
+  }, dat_list = dat_list)
+  if(any(unlist(range_err) == TRUE)) {
+    range_err_names <- names(range_err)[which(unlist(range_err == TRUE))]
+    stop("Fleets or years specified in ",
+         paste0(range_err_names, collapse = ", "), " are not valid values in the ",
+         "datafile")
+  }
+  invisible(all_params)
 }

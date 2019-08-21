@@ -7,7 +7,7 @@
 #' values (OM "truth") when the operating model is run, from which data can be
 #' sampled.  For each data type altered, \code{change_data} will add data for
 #' the fleets and years given; potentially adding many rows of redundant data.
-#' Currently, \code{.dat} files with multiple genders cannot be manipulated with
+#' Currently, \code{.dat} files with multiple sexes cannot be manipulated with
 #' \code{change_data}. \code{\link{calculate_data_units}} is used internally in
 #' \code{\link{ss3sim_base}} to create a superset of fleets and years from
 #' sample arguments, and \code{\link{clean_data}} to strip out unused data after
@@ -61,6 +61,8 @@
 #' @template casefile-footnote
 #'
 #' @importFrom r4ss SS_readdat SS_writedat
+#' @importFrom tidyr complete nesting
+#' @import dplyr
 #' @export
 #' @seealso \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
 #' @author Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson
@@ -126,11 +128,19 @@ change_data <- function(dat_list, outfile = NULL, fleets, years, types,
   # this is also checked within SS and will create a fatal error
 
   check_data(dat_list)
-
   ## Input checks:
   types <- match.arg(types,
     choices = c("index","len", "age", "cal", "mla", "mwa"),
     several.ok = TRUE)
+  if ((!is.atomic(fleets)) | (!is.atomic(years))) {
+    stop("fleets and years input both need to be numeric vectors")
+  }
+  if(any(years < dat_list$styr) | any(years > dat_list$endyr)) {
+    stop("Some years specified in years are not within the model years of dat_list")
+  }
+  if(any(!fleets %in% 1:dat_list$Nfleets)){
+    stop("Some fleets specified in fleets are not included in dat_list")
+  }
 
   ## TODO: Need to do things like change age matrices?
   ## TODO: Change the data vectors if specified?
@@ -148,6 +158,13 @@ change_data <- function(dat_list, outfile = NULL, fleets, years, types,
   if ("index" %in% types) {
     dat_list$CPUE <- make_dummy_dat_index(fleets = fleets, years = years)
     dat_list$N_cpue <- nrow(dat_list$CPUE)
+    dat_list$NCPUEObs <- dat_list$CPUE %>%
+                          group_by(index) %>%
+                          summarize(count = n()) %>%
+                          complete(nesting(index = dat_list$CPUEinfo$Fleet),
+                                   fill = list(count = 0)) %>%
+                          arrange(index)
+    dat_list$NCPUEObs <- dat_list$NCPUEObs$count
   }
   if ("len" %in% types) {
     dat_list$lencomp <- make_dummy_dat_lencomp(fleets = fleets, years = years,
@@ -258,9 +275,7 @@ calculate_data_units <- function(index_params = NULL, lcomp_params = NULL,
   ## different based on different algorithms.
 
 
-  #To-Do
-  ##Put line for wtatage
-  #if wtatage is in types what do I need to make sure is there
+  #TODO: correct for wtatage??
   types <- names(sample_args)[!sample_args_null]
   if("cal" %in% types) types <- c(types, "len", "age")
   if("wtatage" %in% types) types <- c(types, "age", "mla")
@@ -292,9 +307,19 @@ check_data <- function(x) {
   if (!is.list(x))
     stop("data file isn't a list; should be output from r4ss::SS_readdat()")
 
+  if(is.null(x$type)) {
+    stop("dat_list must be an r4ss data file read into R using ",
+         "r4ss::SSreaddat()")
+  }
+
+  if(x$type != "Stock_Synthesis_data_file") {
+    stop("dat_list must be an r4ss data file read into R using ",
+         "r4ss::SSreaddat()")
+  }
+
   if (x$Ngenders > 1L)
     stop("_Ngenders is greater than 1 in the operating model.",
-      " ss3sim currently only works with single-gender models.")
+      " ss3sim currently only works with single-sex models.")
 
   if (!is.null(x$lbin_method)) {
     if (x$lbin_method > 2)
@@ -313,5 +338,5 @@ check_data <- function(x) {
   if (!identical(x$areas, rep(1, x$Nfleets)))
     stop("_area_assignments_for_each_fishery_and_survey must be set to 1",
       " for all fleets in the SS data file.")
-
 }
+

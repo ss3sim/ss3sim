@@ -74,7 +74,7 @@ specified, to the SS \code{.dat} file. This causes SS to produce expected
 values (OM "truth") when the operating model is run, from which data can be
 sampled.  For each data type altered, \code{change_data} will add data for
 the fleets and years given; potentially adding many rows of redundant data.
-Currently, \code{.dat} files with multiple genders cannot be manipulated with
+Currently, \code{.dat} files with multiple sexes cannot be manipulated with
 \code{change_data}. \code{\link{calculate_data_units}} is used internally in
 \code{\link{ss3sim_base}} to create a superset of fleets and years from
 sample arguments, and \code{\link{clean_data}} to strip out unused data after
