@@ -282,7 +282,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         # check qs are correct.
         qpars_OM <- r4ss::SS_parlines(file.path(sc,i, "om", "om.ctl"))
         qpars_OM <- qpars_OM[grep("^LnQ", qpars_OM$Label), ]
-        qinOM <- type.convert(gsub("[a-zA-Z\\(\\)_]", "", qpars_OM$Label))
+        qinOM <- utils::type.convert(gsub("[a-zA-Z\\(\\)_]", "", qpars_OM$Label))
         #TODO: can get rid of this check if it is done earlier on the original
         # EM and OM files read in.
         if (any(!(index_params$fleets %in% qinOM))) {
@@ -515,7 +515,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # it is changing something in the estimation model?
       qpars <- r4ss::SS_parlines(file.path(sc, i, "em", "em.ctl"))
       qpars <- qpars[grep("^LnQ", qpars$Label), ]
-      qinmodel <- type.convert(gsub("[a-zA-Z\\(\\)_]", "", qpars$Label))
+      qinmodel <- utils::type.convert(gsub("[a-zA-Z\\(\\)_]", "", qpars$Label))
       for (irem in qinmodel) {
         if (irem %in% unique(datfile.modified$CPUE$index)) next
           remove_q_ctl(irem,
