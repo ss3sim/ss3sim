@@ -478,13 +478,12 @@ ss3sim_base <- function(iterations, scenarios, f_params,
               "pop_minimum_size", "pop_maximum_size"))
           dat_list <- change_em_binning(
               dat_list         = dat_list,
-              dat_file_out     = NULL,
+              outfile          = NULL,
               bin_vector       = em_binning_params$bin_vector,
               lbin_method      = em_binning_params$lbin_method,
               pop_binwidth     = em_binning_params$pop_binwidth,
               pop_minimum_size = em_binning_params$pop_minimum_size,
-              pop_maximum_size = em_binning_params$pop_maximum_size,
-              write_file       = FALSE)
+              pop_maximum_size = em_binning_params$pop_maximum_size)
       }
 
       # Manipulate EM control file to adjust what gets estimated

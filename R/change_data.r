@@ -203,13 +203,11 @@ change_data <- function(dat_list, outfile = NULL, fleets, years, types,
 
   if(!is.null(lcomp_constant)) {
     dat_list <- change_lcomp_constant(lcomp_constant = lcomp_constant,
-                  dat_list = dat_list, dat_file_out = "ignore.dat",
-                  write_file = FALSE)
+      dat_list = dat_list, outfile = NULL)
   }
   if(!is.null(tail_compression)) {
     dat_list <- change_tail_compression(tail_compression = tail_compression,
-                  dat_list = dat_list, dat_file_out = "ignore.dat",
-                  write_file = FALSE)
+      dat_list = dat_list, outfile = NULL)
   }
 
   if (!is.null(outfile)) {

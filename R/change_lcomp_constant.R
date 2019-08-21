@@ -3,7 +3,7 @@
 #' This function replaces the robustification value for length composition data
 #' in a \code{.dat} file that was read in using \code{\link[r4ss]{SS_readdat}}
 #' with those specified in
-#' \code{lcomp_constant}. It then writes a new file with name \code{dat_file_out}
+#' \code{lcomp_constant}. It then writes a new file with name \code{outfile}
 #' into the working directory. If used with \code{\link{run_ss3sim}} the case
 #' file should be named \code{lcomp_constant}. A suggested case letter is
 #' \code{C}.
@@ -20,16 +20,14 @@
 #'   an error when zeroes exist in the data. Instead use a very small value like
 #'   1e-07.
 #' @template dat_list
-#' @template dat_file_out
-#' @param write_file Should the data file be written to disk?
+#' @template outfile
 #' @return A modified SS3 \code{.dat} file, and that file returned invisibly
 #'   (for testing) as a vector of character lines.
 #' @template casefile-footnote
 #' @author Cole Monnahan
 #' @importFrom r4ss SS_writedat
 
-change_lcomp_constant <- function(lcomp_constant, dat_list, dat_file_out,
-  write_file = TRUE){
+change_lcomp_constant <- function(lcomp_constant, dat_list, outfile = NULL){
 
   if(is.null(lcomp_constant)) return(invisible(NULL))
   stopifnot(is.numeric(lcomp_constant))
@@ -38,9 +36,9 @@ change_lcomp_constant <- function(lcomp_constant, dat_list, dat_file_out,
   # The data sections are repeated in the data.ss_new files, so only use first one
   dat_list$add_to_comp[1] <- lcomp_constant
 
-  if(write_file){
+  if (!is.null(outfile)) {
     ss_version <- get_ss_ver_dl(dat_list)
-    SS_writedat(dat_list, dat_file_out, overwrite = TRUE,
+    SS_writedat(dat_list, outfile, overwrite = TRUE,
                              version = ss_version, verbose = FALSE)
   }
 

@@ -13,11 +13,11 @@ context("sample_mlacomp() is working")
 #   dat_list <- SS_readdat(system.file("extdata/models/cod-om/codOM.dat", package = "ss3sim"), verbose = FALSE, version = NULL)
 #   fctl <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
 #   newdat <- change_data(dat_list, outfile = "codOM-temp.dat",
-#     types = c("age", "mla"), fleets = 1, years = 25:(25+12), write_file = FALSE)
+#     types = c("age", "mla"), fleets = 1, years = 25:(25+12), outfile = NULL)
 #   set.seed(123)
 #   #newdat <- change_fltname(newdat)
 #   out <- sample_mlacomp(newdat, outfile = "ignore.dat", ctl_file_in = fctl,
-#     Nsamp = list(rep(50, 13)), years = list(25:(25+12)), write_file = FALSE,
+#     Nsamp = list(rep(50, 13)), years = list(25:(25+12)), outfile = NULL,
 #     mean_outfile = NULL)
 #   # Make the expected names based on the original codOM datalist value
 #   expected_names <-  c("Yr", "Seas", "FltSvy", "Gender", "Part", "AgeErr",
@@ -39,12 +39,12 @@ context("sample_mlacomp() is working")
 #     package = "ss3sim"), verbose = FALSE, version = NULL)
 #   fctl <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
 #   newdat <- change_data(dat_list, outfile = NULL, types = c("age", "mla"),
-#     fleets = 1, years = 25, write_file = FALSE)
+#     fleets = 1, years = 25, outfile = NULL)
 #   #newdat <- change_fltname(newdat)
 #   newdat$agecomp$Nsamp <- 800000
 #   ctlfile <- system.file("extdata/models/cod-om/codOM.ctl", package = "ss3sim")
 #   out <- suppressWarnings(  sample_mlacomp(newdat, outfile = NULL, ctl_file_in = ctlfile,
-#     Nsamp = list(rep(800000, 1)), years = list(25), write_file = FALSE,
+#     Nsamp = list(rep(800000, 1)), years = list(25), outfile = NULL,
 #     mean_outfile = NULL) )
 #   result <- out$MeanSize_at_Age_obs[, -(1:9)]
 #   samplesize <- result[grepl("N", names(result))]

@@ -32,7 +32,7 @@ test_that("change_data is working with only types inputs", {
   flt_input <- 2
   changed_dat <- change_data(dat, fleets =  flt_input, years = yr_input,
                              types = c("index", "len", "age", "mla"),
-                              write_file = FALSE)
+    outfile = NULL)
   expect_equal(changed_dat$CPUE$year,  yr_input)
   expect_equal(sort(unique(changed_dat$CPUE$index)), flt_input)
   expect_equal(changed_dat$NCPUEObs, c(0, length(yr_input)))
@@ -55,14 +55,14 @@ test_that("change_data() exits on error when incorrect input given",{
   flt_input <- 5
   expect_error(change_data(dat, fleets =  2, years = yr_input,
                              types = "index",
-                             write_file = FALSE),
+                             outfile = NULL),
                "Some years specified in years are not within the model years of dat_list")
   expect_error(change_data(dat, fleets =  flt_input, years = seq(5, 25, by = 5),
                            types = "index",
-                           write_file = FALSE),
+                           outfile = NULL),
                "Some fleets specified in fleets are not included in dat_list")
   expect_error(change_data(dat, fleets = list(2), years = list(5,10,15),
-                           types = "index", write_file = FALSE), "fleets and years input both need to be numeric vectors")
+                           types = "index", outfile = NULL), "fleets and years input both need to be numeric vectors")
 })
 
 test_that("change_data() works with binning, tail compression, and lcomp constant", {

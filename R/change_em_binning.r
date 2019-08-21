@@ -8,7 +8,7 @@
 #' conditional age-at-length data then these data will be re-binned as well.
 #'
 #' @template dat_list
-#' @template dat_file_out
+#' @template outfile
 #' @param bin_vector A numeric vector of new length bins to substitute into the
 #'   \code{ss3.dat} file.
 #' @param lbin_method A numeric value of either \code{NULL, 1, 2, 3} to change
@@ -22,12 +22,6 @@
 #' necessary for \code{lbin_method=2}
 #' @param pop_maximum_size *Population maximum length bin value. Only
 #' necessary for \code{lbin_method=2}
-#' @param write_file Should the \code{.dat} file be written? The new \code{.dat}
-#'   file will always be returned invisibly by the function. Setting
-#'   \code{write_file = FALSE} can be useful for testing. Note that you must
-#'   supply a value to the argument \code{dat_file_out}, but this argument can be
-#'   set to any arbitrary value (such as \code{NULL}) if \code{write_file =
-#'   FALSE}.
 #' @importFrom r4ss SS_writedat
 #' @importFrom magrittr %>%
 #' @importFrom dplyr group_by_ summarize_at rename_ mutate_ inner_join
@@ -40,8 +34,8 @@
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- paste0(d, "/example-om/data.ss_new")
 #' dat_list <- r4ss::SS_readdat(file = f_in, version = NULL, verbose = FALSE)
-#' l <- change_em_binning(dat_list, dat_file_out = NULL, lbin_method = 1,
-#'   bin_vector = seq(8, 30, by = 1), write_file = FALSE)
+#' l <- change_em_binning(dat_list, outfile = NULL, lbin_method = 1,
+#'   bin_vector = seq(8, 30, by = 1))
 #' print(l$lbin_vector)
 #' print(head(l$lencomp))
 #'
@@ -54,8 +48,8 @@
 #'   types = c("len", "age", "cal"), fleets = 1, years = seq(2000, 2002),
 #'   age_bins = 1:3, len_bins = 4:8)
 #' olddat$agecomp
-#' newdat <- change_em_binning(olddat, dat_file_out = NULL, bin_vector = c(4, 6, 8),
-#'   lbin_method = 1, write_file = FALSE)
+#' newdat <- change_em_binning(olddat, outfile = NULL, bin_vector = c(4, 6, 8),
+#'   lbin_method = 1)
 #' newdat$agecomp
 #'
 #' # A larger conditional age-at-length re-rebinning example:
@@ -66,15 +60,15 @@
 #' olddat$lbin_vector
 #' head(olddat$lencomp)
 #' head(olddat$agecomp)
-#' newdat <- change_em_binning(olddat, dat_file_out = NULL, bin_vector = seq(20, 30, 2),
-#'  lbin_method = 1, write_file = FALSE)
+#' newdat <- change_em_binning(olddat, outfile = NULL, bin_vector = seq(20, 30, 2),
+#'  lbin_method = 1)
 #' newdat$lbin_vector
 #' head(newdat$lencomp)
 #' newdat$agecomp
 
-change_em_binning <- function(dat_list, dat_file_out, bin_vector, lbin_method = NULL,
+change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method = NULL,
                               pop_binwidth=NULL, pop_minimum_size=NULL,
-                              pop_maximum_size=NULL, write_file = TRUE) {
+                              pop_maximum_size=NULL) {
 
   ## If lbin_method is NULL then don't do anything
   if (is.null(lbin_method)) return(NULL)
@@ -273,9 +267,9 @@ change_em_binning <- function(dat_list, dat_file_out, bin_vector, lbin_method = 
     }
   }
 
-  if (write_file) {
+  if (!is.null(outfile)) {
     SS_version <- get_ss_ver_dl(dat_list)
-    SS_writedat(datlist = dat_list, outfile = dat_file_out, overwrite = TRUE,
+    SS_writedat(datlist = dat_list, outfile = outfile, overwrite = TRUE,
       version = SS_version, verbose = FALSE)
   }
   invisible(dat_list)

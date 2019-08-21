@@ -23,8 +23,7 @@ sampled_index <- with(a$index,
                                    outfile         = NULL,
                                    fleets          = fleets,
                                    years           = years,
-                                   sds_obs         = sds_obs,
-                                   write_file      = FALSE))
+                                   sds_obs         = sds_obs))
 # check SD filled in correctly
 expect_equal(sampled_index$CPUE$se_log,
              rep(a$index$sds_obs[[1]], length.out = nrow(sampled_index$CPUE)))
