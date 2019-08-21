@@ -76,7 +76,7 @@ profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",
   parFile[sigmaRLine] <- 0.001
   writeLines(parFile, "ss.par")
   for(i in seq(fVector)) {
-    change_f(years = 1:simlength, years_alter = 1:simlength,
+    change_f_par(years = 1:simlength, years_alter = 1:simlength,
              fvals = rep(fVector[i], simlength),
              par_file_in = "ss.par", par_file_out = "ss.par" )
     system(paste(ss_bin, "-nohess"), show.output.on.console = FALSE,
