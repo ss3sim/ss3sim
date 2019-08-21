@@ -28,6 +28,9 @@ sample_comp <- function(data, Nsamp, fleets, years, ESS = NULL, cpar = 1) {
   if (is.null(Nsamp)) return(data[0, ])
   if (is.null(cpar)) cpar <- NA
   Nfleets <- length(fleets)
+  if (length(Nsamp) == 1 & Nfleets > 1) Nsamp <- rep(Nsamp, Nfleets)
+  if (length(years) == 1 & Nfleets > 1) years <- rep(years, Nfleets)
+  if (length(years) != Nfleets) stop("Need >=1 year per fleet in years")
 
   # Use input sample size if ESS=NULL unless using Dirichlet
   useESS <- TRUE
