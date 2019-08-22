@@ -23,7 +23,7 @@
 #'
 #' @examples
 #' d <- system.file(file.path("extdata", "models"), package = "ss3sim")
-#' change_rec_devs(recdevs = rlnorm(100),
+#' change_rec_devs(recdevs = rlnorm(101),
 #'   ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
 #'   ctl_file_out = file.path(tempdir(), "control_recdevs.ss"))
 
