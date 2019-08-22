@@ -1,4 +1,4 @@
-#' Add NULL values to non-existent list elements
+#' Add \code{NULL} values to non-existent list elements
 #'
 #' @param param_list A list in which the names correspond to parameter names
 #'   and the values correspond to the values to be passed.
