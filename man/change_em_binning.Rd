@@ -5,16 +5,20 @@
 \title{Change population and observed length composition bins in an SS estimation
 model}
 \usage{
-change_em_binning(dat_list, dat_file_out, bin_vector, lbin_method = NULL,
-  pop_binwidth = NULL, pop_minimum_size = NULL,
-  pop_maximum_size = NULL, write_file = TRUE)
+change_em_binning(dat_list, outfile = NULL, bin_vector,
+  lbin_method = NULL, pop_binwidth = NULL, pop_minimum_size = NULL,
+  pop_maximum_size = NULL)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
-\item{dat_file_out}{A string providing the path to the output SS \code{.dat} file.}
+\item{outfile}{A character string specifying the file name to use
+when writing the information to the disk. The string must include
+the proper file extension. No file is written using the default value
+of \code{NULL}, which leads to increased speed because writing the 
+file takes time and computing resources.}
 
 \item{bin_vector}{A numeric vector of new length bins to substitute into the
 \code{ss3.dat} file.}
@@ -33,13 +37,6 @@ necessary for \code{lbin_method=2}}
 
 \item{pop_maximum_size}{*Population maximum length bin value. Only
 necessary for \code{lbin_method=2}}
-
-\item{write_file}{Should the \code{.dat} file be written? The new \code{.dat}
-file will always be returned invisibly by the function. Setting
-\code{write_file = FALSE} can be useful for testing. Note that you must
-supply a value to the argument \code{dat_file_out}, but this argument can be
-set to any arbitrary value (such as \code{NULL}) if \code{write_file =
-FALSE}.}
 }
 \description{
 \code{change_em_binning} alters the bin structure for the population and
@@ -49,37 +46,34 @@ according to the user's specification. If the data file also contails
 conditional age-at-length data then these data will be re-binned as well.
 }
 \examples{
-d <- system.file("extdata", package = "ss3sim")
-f_in <- paste0(d, "/example-om/data.ss_new")
-dat_list <- r4ss::SS_readdat(file = f_in, version = NULL, verbose = FALSE)
-l <- change_em_binning(dat_list, dat_file_out = NULL, lbin_method = 1,
-  bin_vector = seq(8, 30, by = 1), write_file = FALSE)
-print(l$lbin_vector)
-print(head(l$lencomp))
-
 # An small example with conditional age-at-length re-binning:
 f <- system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim")
 d <- r4ss::SS_readdat(f, version = NULL, verbose = FALSE)
-
+l <- change_em_binning(d, outfile = NULL, lbin_method = 1,
+  bin_vector = seq(20, 152, by = 4))
+print(l$lbin_vector)
+print(head(l$lencomp))
 # Add catch at length data (and simplify the bin structure for this example)
-olddat <- change_data(d, outfile = NULL, write_file = FALSE,
-  types = c("len", "age", "cal"), fleets = 1, years = seq(2000, 2002),
+olddat <- change_data(d, outfile = NULL,
+  types = c("len", "age", "cal"), fleets = 1,
+  years = seq(d$styr, d$styr + 4),
   age_bins = 1:3, len_bins = 4:8)
 olddat$agecomp
-newdat <- change_em_binning(olddat, dat_file_out = NULL, bin_vector = c(4, 6, 8),
-  lbin_method = 1, write_file = FALSE)
+newdat <- change_em_binning(olddat, outfile = NULL, bin_vector = c(4, 6, 8),
+  lbin_method = 1)
 newdat$agecomp
 
 # A larger conditional age-at-length re-rebinning example:
-olddat <- change_data(d, outfile = NULL, write_file = FALSE,
- types = c("len", "age", "cal"), fleets = 1, years = seq(2000, 2005),
+olddat <- change_data(d, outfile = NULL,
+ types = c("len", "age", "cal"), fleets = 1,
+ years = seq(d$styr, d$styr + 4),
  age_bins = seq(1, 5), len_bins = round(seq(20, 30, length.out = 13), 1))
 
 olddat$lbin_vector
 head(olddat$lencomp)
 head(olddat$agecomp)
-newdat <- change_em_binning(olddat, dat_file_out = NULL, bin_vector = seq(20, 30, 2),
- lbin_method = 1, write_file = FALSE)
+newdat <- change_em_binning(olddat, outfile = NULL, bin_vector = seq(20, 30, 2),
+ lbin_method = 1)
 newdat$lbin_vector
 head(newdat$lencomp)
 newdat$agecomp
