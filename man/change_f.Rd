@@ -72,7 +72,7 @@ if specified.
 
 \examples{
 d <- system.file(file.path("extdata", "models"), package = "ss3sim")
-change_f_ctl(years = 1:50, fisheries = 1, fvals = 0.2,
+change_f(years = 1:50, fisheries = 1, fvals = 0.2,
   ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
   ctl_file_out = file.path(tempdir(), "control_fishing.ss"))
 }

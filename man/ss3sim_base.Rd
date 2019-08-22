@@ -83,7 +83,7 @@ Biased recruitment deviations can lead to biased model results.}
 warning regarding biased recruitment deviations off when \code{user_recdevs}
 are specified.}
 
-\item{bias_adjust}{Run bias adjustment first? See \code{\link{run_bias_ss3}}.}
+\item{bias_adjust}{Run bias adjustment first?.}
 
 \item{hess_always}{If \code{TRUE} then the Hessian will always be calculated.
 If \code{FALSE} then the Hessian will only be calculated for

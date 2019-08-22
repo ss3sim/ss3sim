@@ -5,30 +5,27 @@
 \title{Sample conditional age-at-length (CAL) data and write to file for use by
 the EM.}
 \usage{
-sample_calcomp(dat_list, outfile, fleets = c(1, 2), years,
-  write_file = TRUE, Nsamp)
+sample_calcomp(dat_list, outfile = NULL, fleets = c(1, 2), years,
+  Nsamp)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
-\item{outfile}{A character string of the new file name to be created.
-Must end in \code{.dat} or equal \code{wtatage.ss}.}
+\item{outfile}{A character string specifying the file name to use
+when writing the information to the disk. The string must include
+the proper file extension. No file is written using the default value
+of \code{NULL}, which leads to increased speed because writing the 
+file takes time and computing resources.}
 
-\item{fleets}{*A numeric vector giving the fleets to be used. This order also
-pertains to other arguments. A missing value excludes that fleet from
-\code{outfile} (i.e. it turns it off so no samples are written). If none of
-the fleet collected samples, keep the value to \code{fleets=NULL}.}
+\item{fleets}{*A vector of integers specifying which fleets to include.
+The order of the fleets pertains to the input order of other arguments.
+An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 
 \item{years}{*A list the same length as \code{fleets} giving the years as
 numeric vectors. If no fleet collected samples, keep the value to
 \code{years=NULL}.}
-
-\item{write_file}{A logical switch for whether to write \code{outfile} to
-disk. Can be turned off to speed up testing or exploration of the
-function. The new data are returned invisibly, as in the examples
-below.}
 
 \item{Nsamp}{*A numeric list of the same length as \code{fleets}.
 Either single values or vectors of the same length as the number of
@@ -37,7 +34,7 @@ years. If no fleet collected samples, keep the value to
 \code{Nsamp=NULL}.}
 }
 \value{
-A modified \code{.dat} file if \code{write_file=TRUE}. A list object
+A modified \code{.dat} file if \code{!is.null(outfile)}. A list object
 containing the modified \code{.dat} file is returned invisibly.
 }
 \description{

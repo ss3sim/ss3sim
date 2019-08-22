@@ -5,15 +5,17 @@
 \title{Sample empirial weight-at-age data and write to file for use by the EM}
 \usage{
 sample_wtatage(wta_file_in, outfile, dat_list, ctl_file_in, years,
-  fill_fnc = fill_across, write_file = TRUE, fleets,
-  cv_wtatage = NULL)
+  fill_fnc = fill_across, fleets, cv_wtatage = NULL)
 }
 \arguments{
 \item{wta_file_in}{The file to read weight-at-age from. Specifically to get the
 age-0 weight-at-age. This is typically \code{wtatage.ss_new}.}
 
-\item{outfile}{A character string of the new file name to be created.
-Must end in \code{.dat} or equal \code{wtatage.ss}.}
+\item{outfile}{A character string specifying the file name to use
+when writing the information to the disk. The string must include
+the proper file extension. No file is written using the default value
+of \code{NULL}, which leads to increased speed because writing the 
+file takes time and computing resources.}
 
 \item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
@@ -32,20 +34,14 @@ numeric vectors. If no fleet collected samples, keep the value to
 resulting weight-at-age file will have values for all years and ages.One
 function is \code{fill_across}.}
 
-\item{write_file}{A logical switch for whether to write \code{outfile} to
-disk. Can be turned off to speed up testing or exploration of the
-function. The new data are returned invisibly, as in the examples
-below.}
-
-\item{fleets}{*A numeric vector giving the fleets to be used. This order also
-pertains to other arguments. A missing value excludes that fleet from
-\code{outfile} (i.e. it turns it off so no samples are written). If none of
-the fleet collected samples, keep the value to \code{fleets=NULL}.}
+\item{fleets}{*A vector of integers specifying which fleets to include.
+The order of the fleets pertains to the input order of other arguments.
+An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 
 \item{cv_wtatage}{A user specified CV for growth. Default is \code{NULL}.}
 }
 \value{
-A modified \code{.wtatage.ss} file if \code{write_file = TRUE}. A list
+A modified \code{.wtatage.ss} file if \code{!is.null(outfile)}. A list
   object containing the modified \code{.wtatage.ss} file is returned invisibly.
 }
 \description{

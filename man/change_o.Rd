@@ -40,9 +40,6 @@ and implements parameter value changes that are NOT time varying.
 \code{change_o} is specifically set up to work with an operating model
 \code{.ctl} file.
 }
-\details{
-
-}
 \section{Which arguments to specifiy in case files}{
 
 All function argument descriptions that start with an asterisk (*) will be passed

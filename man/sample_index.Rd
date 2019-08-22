@@ -4,21 +4,23 @@
 \alias{sample_index}
 \title{Sample the biomass with observation error}
 \usage{
-sample_index(dat_list, outfile, fleets, years, sds_obs,
-  make_plot = FALSE, write_file = TRUE)
+sample_index(dat_list, outfile = NULL, fleets, years, sds_obs,
+  make_plot = FALSE)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
-\item{outfile}{A character string of the new file name to be created.
-Must end in \code{.dat} or equal \code{wtatage.ss}.}
+\item{outfile}{A character string specifying the file name to use
+when writing the information to the disk. The string must include
+the proper file extension. No file is written using the default value
+of \code{NULL}, which leads to increased speed because writing the 
+file takes time and computing resources.}
 
-\item{fleets}{*A numeric vector giving the fleets to be used. This order also
-pertains to other arguments. A missing value excludes that fleet from
-\code{outfile} (i.e. it turns it off so no samples are written). If none of
-the fleet collected samples, keep the value to \code{fleets=NULL}.}
+\item{fleets}{*A vector of integers specifying which fleets to include.
+The order of the fleets pertains to the input order of other arguments.
+An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 
 \item{years}{*A list the same length as \code{fleets} giving the years as
 numeric vectors. If no fleet collected samples, keep the value to
@@ -31,14 +33,9 @@ error. Single values are repeated for all years.}
 
 \item{make_plot}{A logical switch for whether to make a crude plot showing
 the results. Useful for testing and exploring the function.}
-
-\item{write_file}{A logical switch for whether to write \code{outfile} to
-disk. Can be turned off to speed up testing or exploration of the
-function. The new data are returned invisibly, as in the examples
-below.}
 }
 \value{
-A modified \code{.dat} file if \code{write_file=TRUE}. A list object
+A modified \code{.dat} file if \code{!is.null(outfile)}. A list object
 containing the modified \code{.dat} file is returned invisibly.
 }
 \description{
@@ -67,14 +64,13 @@ d <- system.file("extdata", package = "ss3sim")
 f_in <- paste0(d, "/example-om/data.ss_new")
 dat_list <- r4ss::SS_readdat(f_in, section = 2, version = NULL,
                              verbose = FALSE)
-outfile <- "test.dat"
-ex1 <- sample_index(dat_list, outfile, fleets=c(2,3),
+ex1 <- sample_index(dat_list, outfile = NULL, fleets=c(2,3),
                     years=list(1938:2012, 1938:2012) ,
-                    sds_obs=list(1e-6, 1e-6), write_file=FALSE,
+                    sds_obs=list(1e-6, 1e-6), 
                     make_plot = TRUE)
-ex2 <- sample_index(dat_list, outfile, fleets=c(2,3),
+ex2 <- sample_index(dat_list, outfile = NULL, fleets=c(2,3),
                     years=list(1938:2012, 1938:2012) ,
-                    sds_obs=list(.05, .05), write_file=FALSE,
+                    sds_obs=list(.05, .05), 
                     make_plot = TRUE)
 library(ggplot2)
 ggplot(ex1$CPUE, aes(x=year, y=obs, group=index, ymin=0,
@@ -83,10 +79,9 @@ ggplot(ex1$CPUE, aes(x=year, y=obs, group=index, ymin=0,
   geom_point(data=ex2$CPUE,
     aes(x=year, y=obs, colour=as.factor(index), group=index))
 ## Exclude a fleet and have varying sds_obs by year
-ex3 <- sample_index(dat_list, outfile, fleets=c(2),
+ex3 <- sample_index(dat_list, outfile = NULL, fleets=c(2),
                     years=list(1938:2012),
-                    sds_obs=list(seq(.001, .1, len=75)),
-                    write_file=FALSE)
+                    sds_obs=list(seq(.001, .1, len=75)))
 ggplot(ex3$CPUE, aes(x=year, y=obs, group=index, ymin=0,
                 colour=as.factor(index)))+geom_point()
 }
