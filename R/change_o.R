@@ -23,7 +23,6 @@
 #' @return The function creates modified versions of the  \code{.ctl} files. The
 #'   function also returns \code{change_o_list} invisibly.
 #' @template casefile-footnote
-#' @details
 #'
 #' @section Specifying the \code{change_o_list}:
 #'
