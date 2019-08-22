@@ -71,8 +71,8 @@
 #' fleets <- 1:2
 #' years <- c(5, 10, 15)
 #' types <- c("len", "age")
-#' file_in <- r4ss::SS_readdat(paste0(d, "/models/cod-om/codOM.dat"),
-#'              version = NULL, verbose = FALSE)
+#' file_in <- r4ss::SS_readdat(file.path(d, "models", "cod-om", "codOM.dat"),
+#'   version = NULL, verbose = FALSE)
 #'
 #' # Basic test with just length data, default bins:
 #' out <- change_data(file_in, outfile = NULL, types = "len",
@@ -102,18 +102,15 @@
 #' lcomp_params = list(Nsamp = list(12345), fleets = 1, years = list(c(1, 5)))
 #' agecomp_params = list(Nsamp = list(12345), fleets = c(1, 2),
 #'   years = list(2, c(15, 16)))
-#' calcomp_params = list(Nsamp = list(1), fleets = c(1), years = 98)
+#' calcomp_params = list(Nsamp = list(1), fleets = c(1), years = list(98))
 #' mlacomp_params = list(fleets = c(2), Nsamp = 54, years = list(c(1, 15)))
-#' d <- system.file("extdata", package = "ss3sim")
-#' f_in <- paste0(d, "/models/cod-om/codOM.dat")
-#' dat_list <- r4ss::SS_readdat(f_in, version = NULL, verbose = FALSE)
 #' data_units <- calculate_data_units(index_params = index_params,
 #'   lcomp_params = lcomp_params, agecomp_params = agecomp_params,
 #'   calcomp_params = calcomp_params, mlacomp_params = mlacomp_params)
 #' data_units
-#' dat2 <- with(data_units, change_data(dat_list = dat_list, fleets = fleets,
+#' dat2 <- with(data_units, change_data(dat_list = file_in, fleets = fleets,
 #'   years = years, types = types))
-#' dat3 <- clean_data(dat_list = dat2, lcomp_params = lcomp_params,
+#' dat3 <- ss3sim:::clean_data(dat_list = dat2, lcomp_params = lcomp_params,
 #'   index_params = index_params, agecomp_params = agecomp_params,
 #'   calcomp_params = calcomp_params, mlacomp_params = mlacomp_params,
 #'   verbose = TRUE)
