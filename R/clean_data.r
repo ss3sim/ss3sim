@@ -203,14 +203,15 @@ clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
     return(invisible(dat_list))
 }
 
-#' Check that the param list inputs have correct structure and range given an
-#' associated data file
+#' Check input arguments for data
 #'
-#' @param all_params A named list of the parameters cointaining at a min9mum
+#' Check that the param list inputs have correct structure and range given an
+#' associated data file.
+#'
+#' @param all_params A named list of the parameters containing at a minimum
 #'   year and fleet values
 #' @param dat_list An SS data list object as read in by \code{\link[r4ss]{SS_readdat}}.
-#' @export
-
+#'
 check_data_str_range <- function(all_params, dat_list) {
   str_err <- lapply(all_params, FUN = function(params){
     if(is.null(params)|is.null(params$fleets)|is.null(unlist(params$years))){
