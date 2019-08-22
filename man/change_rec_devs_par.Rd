@@ -28,16 +28,6 @@ This function does not need to be specified in a case file if you
   are running and ss3sim simulation through case files with
   \code{\link{run_ss3sim}}.
 }
-\examples{
-# Create a temporary folder for the output:
-temp_path <- file.path(tempdir(), "ss3sim-recdev-example")
-dir.create(temp_path, showWarnings = FALSE)
-
-par_file <- system.file("extdata", "models", "cod-om", "ss.par",
-  package = "ss3sim")
-change_rec_devs(recdevs_new = rlnorm(100), par_file_in = par_file,
-  par_file_out = paste0(temp_path, "/test.par"))
-}
 \author{
 Cole Monnahan
 }
