@@ -507,7 +507,7 @@ get_results_scalar <- function(report.file){
     F_MSY <- der[der[, getcol]  == "Fstd_MSY", "Value"]
     F_SPR <- der[der[, getcol]  == "Fstd_SPR", "Value"]
     Catch_endyear <-
-        tail(report.file$timeseries[report.file$timeseries$Era == "TIME",grep("dead\\(B\\)",
+        utils::tail(report.file$timeseries[report.file$timeseries$Era == "TIME",grep("dead\\(B\\)",
           names(report.file$timeseries))], 1)
     pars <- data.frame(t(report.file$parameters$Value))
     names(pars) <- report.file$parameters[, grep("Label", colnames(report.file$parameters), ignore.case = TRUE)]
