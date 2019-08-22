@@ -59,7 +59,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
   ss_version <- get_ss_ver_dl(dat_list)
   ## If fleets==NULL, quit here and delete the data so the EM doesn't use it.
   if (is.null(fleets)) {
-    dat_list$MeanSize_at_Age_obs <- data.frame("#")
+    dat_list$MeanSize_at_Age_obs <- NULL
     dat_list$N_MeanSize_at_Age_obs <- 0
     if (!is.null(outfile))
       SS_writedat(datlist = dat_list, outfile = outfile, overwrite = TRUE,
@@ -137,7 +137,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
   # Loop through mla data for this fleet, given the years specified
   for (fl in 1:length(fleets)) {
     fl.temp <- fleets[fl]
-    mlacomp.fl <- mlacomp[mlacomp$FltSvy == fleets[fl] &
+    mlacomp.fl <- mlacomp[mlacomp$Flt == fleets[fl] &
                           mlacomp$Yr %in% years[[fl]], ]
     if (length(years[[fl]]) != length(unique(mlacomp.fl$Yr))) {
       stop(paste("A year specified in years for fleet", fl.temp, "was not",
@@ -167,7 +167,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
       sds.log <- sqrt(log(1 + sds^2 / mla.means^2))
       # Get the true age distributions, probability of being a fish of age x
       agecomp.temp <- agecomp[agecomp$Yr == yr.temp &
-                              agecomp$FltSvy == fl.temp, ]
+                              agecomp$Flt == fl.temp, ]
       # remove the 9 columns of metadata
       age.means <- as.numeric(agecomp.temp[-(1:9)])
       # Get user input sample size, theoretically this cannot be bigger than age n
