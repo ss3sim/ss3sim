@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_sigma.r
 \name{get_sigmar}
 \alias{get_sigmar}
-\title{Get Variability About Recruitment Deviations ($\sigma_R$)}
+\title{Get Variability About Recruitment Deviations (\eqn{\sigma_R})}
 \usage{
 get_sigmar(om)
 }

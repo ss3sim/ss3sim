@@ -1,4 +1,4 @@
-#' Get Variability About Recruitment Deviations ($\sigma_R$)
+#' Get Variability About Recruitment Deviations (\eqn{\sigma_R})
 #' 
 #' Use the name of the operating model to open the ctl file and obtain the 
 #' INIT value for sigmaR (recruitment deviations sigma)
