@@ -31,6 +31,9 @@
 #'   then the age bin structure will be taken from the OM.
 #' @param len_bins *A numeric vector of length bins to use. If left as
 #'   \code{NULL} then the length bin structure will be taken from the OM.
+#'   For conditional age-at-length (CAAL) data, the last value provided to 
+#'   \code{len_bins} will be used for Lbin_lo and -1 will be used for Lbin_hi
+#'   for the largest length bin category, i.e., row of CAAL data. 
 #' @param pop_binwidth *Population length bin width. Note that this value must
 #'   be smaller than the bin width specified in length composition data
 #'   \code{len_bins} or SS will fail (see notes in the SS manual).
