@@ -4,7 +4,7 @@
 #' \code{change_em_binning} alters the bin structure for the population and
 #' length composition data in an SS estimation model. It is done by taking the
 #' original length composition info from the EM \code{ss3.dat} then changing
-#' according to the user's specification. If the data file also contails
+#' according to the user's specification. If the data file also contains
 #' conditional age-at-length data then these data will be re-binned as well.
 #'
 #' @template dat_list
@@ -68,19 +68,22 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
                               pop_maximum_size=NULL) {
 
   ## If lbin_method is NULL then don't do anything
-  if (is.null(lbin_method)) return(NULL)
-
+  if (is.null(lbin_method)){
+    return(NULL)
+  }
   # error checking
   if (!is.numeric(bin_vector)) {
     stop("bin_vector must be numeric")
   }
+
   if (length(bin_vector) > length(dat_list$lbin_vector)) {
-    stop(paste("The specified bin_vector is longer than the original",
-      "lbin_vector in the SS3 data file and therefore can't be re-binned."))
+    stop("The specified bin_vector is longer than the original ",
+         "lbin_vector in the SS3 data file and therefore can't be re-binned.")
   }
+
   if (length(bin_vector) == 1) {
-    warning(paste("length(bin_vector) == 1; are you sure you",
-      "input a full numeric vector of bins and not a bin size?"))
+    warning("length(bin_vector) == 1; are you sure you input a full numeric ",
+            "vector of bins and not a bin size?")
   }
   ## verify correct pop bin specification
   if (!is.null(lbin_method)) {
@@ -96,20 +99,20 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
     stop("no lcomp data. Verify your case argument files")
   }
   if (dat_list$Ngenders > 1) {
-    stop(paste("_Ngenders is greater than 1 in the model.",
-      "change_em_binning only works with single-gender models."))
+    stop("_Ngenders is greater than 1 in the model.change_em_binning only ",
+         "works with single-sex models.")
   }
   if (!identical(as.integer(max(bin_vector)), as.integer(max(dat_list$lbin_vector)))) {
-    stop(paste("The maximum value in the bin_vector is not equal to the",
-      "original maximum length bin value."))
+    stop("The maximum value in the bin_vector is not equal to the original ",
+         "maximum length bin value.")
   }
   if(!identical(as.integer(min(bin_vector)), as.integer(min(dat_list$lbin_vector)))) {
-    stop(paste("The minimum value in the bin_vector is not equal to the",
-      "original maximum length bin value."))
+    stop("The minimum value in the bin_vector is not equal to the original ",
+         "minimum length bin value.")
   }
   if (any(!is_divisible(bin_vector, by_ = dat_list$binwidth)) ) {
-    stop(paste("One or more of the values in bin_vector are not divisible by",
-      "the population binwidth specified in the SS3 data file."))
+    stop("One or more of the values in bin_vector are not divisible by the ",
+      "population binwidth specified in the SS3 data file.")
   }
 
   # Find ID columns and data columns to replace:
@@ -159,8 +162,9 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
 
   new_lcomp_total <- sum(lcomp_new)
   if (!identical(old_lcomp_total, new_lcomp_total)) {
-    stop(paste("Number of samples in the new lcomp data matrix does not match",
-      "the number of samples in the original dataset."))
+    #TODO: is this a necessary check? remove if not add test if so.
+    stop("Number of samples in the new lcomp data matrix does not match the ",
+         "number of samples in the original dataset.")
   }
 
   # Substitute new bins:
@@ -177,10 +181,12 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
       dat_list$binwidth <- NULL
       dat_list$minimum_size <- NULL
       dat_list$maximum_size <- NULL
+      dat_list$lbin_vector_pop <- dat_list$lbin_vector
     } else {
       ## it is 2 so we  need to specify width, min and max
       dat_list <- change_pop_bin(dat_list, binwidth = pop_binwidth,
-        minimum_size = pop_minimum_size, maximum_size = pop_maximum_size)
+                                 minimum_size = pop_minimum_size,
+                                 maximum_size = pop_maximum_size)
     }
   }
 
@@ -188,19 +194,19 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
   # if all Lbin_lo == -1 then there aren't any CAL data:
   if (length(unique(dat_list$agecomp$Lbin_lo)) > 1) {
     if (!identical(dat_list$Lbin_method, 3)) {
-      stop(paste("Lbin_method was not set to 3 in the SS3 data file.",
-        "change_em_binning() requires the data file to specify conditional",
-        "age-at-length data with Lbin_method == 3. See the SS3 manual. Note",
-        "the capital L in Lbin_method."))
-    }
+      stop("Lbin_method was not set to 3 in the SS3 data file. ",
+           "change_em_binning() requires the data file to specify conditional ",
+           "age-at-length data with Lbin_method == 3. See the SS3 manual. Note ",
+           "the capital L in Lbin_method.")
+      }
 
     if (dat_list$lbin_method == 2) {
       population_bins <- seq(dat_list$minimum_size, dat_list$maximum_size,
         by = dat_list$binwidth)
       if (!all(bin_vector %in% population_bins)) {
-        stop(paste("One or more of bin_vector is not contained in the",
-                   "population bins (and lbin_method = 2). This is required in",
-                   "SS for conditional age-at-length composition data."))
+        stop("One or more of bin_vector is not contained in the ",
+             "population bins (and lbin_method = 2). This is required in ",
+             "SS for conditional age-at-length composition data.")
       }
     }
 
@@ -228,10 +234,12 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
     # the re-binning happens here:
     # this uses dplyr and pipes but avoids non-standard evaluation
     # http://cran.r-project.org/web/packages/dplyr/vignettes/nse.html
+    #TODO: convert from using group_by_ to group_by because now can program
+    # with verions without extra "_" at end, which are now deprecated.
     new_cal <- inner_join(old_cal, lookup, by = "Lbin_lo") %>%
       group_by_(~Yr, ~lbin_new_low, ~lbin_new_high)
     dat_cols <- names(new_cal)[grep("^a[0-9.]+$", names(new_cal))]
-
+    # TODO: maybe require dplyr >0.5.0 instead of add this?
     if (utils::packageVersion("dplyr") > "0.5.0") {
       new_cal <- summarize_at(new_cal, .funs = sum, .vars = dat_cols) %>%
         rename_(Lbin_lo = ~lbin_new_low, Lbin_hi = ~lbin_new_high) %>%
@@ -253,14 +261,14 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
     new_cal <- new_cal[, match(names(old_cal_all), names(new_cal))]
 
     # and slot the new data into the .dat file:
-    dat_list$agecomp <- rbind(old_age, new_cal)
+    dat_list$agecomp   <- rbind(old_age, new_cal)
     dat_list$N_agecomp <- nrow(dat_list$agecomp)
 
     new_age_dat <- dat_list$agecomp[, grepl("^a[0-9.]+$", names(dat_list$agecomp))]
     new_agecomp_total <- sum(new_age_dat)
     if (!identical(old_agecomp_total, new_agecomp_total)) {
-      stop(paste("Number of samples in the new agecomp data matrix does not match",
-        "the number of samples in the original dataset."))
+      stop("Number of samples in the new agecomp data matrix does not match",
+           "the number of samples in the original dataset.")
     }
   }
 

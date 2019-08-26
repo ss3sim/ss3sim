@@ -31,9 +31,9 @@
 #'   then the age bin structure will be taken from the OM.
 #' @param len_bins *A numeric vector of length bins to use. If left as
 #'   \code{NULL} then the length bin structure will be taken from the OM.
-#'   For conditional age-at-length (CAAL) data, the last value provided to 
+#'   For conditional age-at-length (CAAL) data, the last value provided to
 #'   \code{len_bins} will be used for Lbin_lo and -1 will be used for Lbin_hi
-#'   for the largest length bin category, i.e., row of CAAL data. 
+#'   for the largest length bin category, i.e., row of CAAL data.
 #' @param pop_binwidth *Population length bin width. Note that this value must
 #'   be smaller than the bin width specified in length composition data
 #'   \code{len_bins} or SS will fail (see notes in the SS manual).
@@ -285,14 +285,18 @@ calculate_data_units <- function(index_params = NULL, lcomp_params = NULL,
 
 change_pop_bin <- function(dat_list, binwidth = NULL, minimum_size = NULL,
   maximum_size = NULL){
-
+  if(length(binwidth) > 1 | length(minimum_size) > 1 |
+     length(maximum_size) > 1) {
+    warning("Some inputs to function had length > 1. Using first value of ",
+            "vector input only.")
+  }
   if (!is.null(binwidth)) dat_list$binwidth <- binwidth[1]
   if (!is.null(minimum_size)) dat_list$minimum_size <- minimum_size[1]
   if (!is.null(maximum_size)) dat_list$maximum_size <- maximum_size[1]
-
-  ## FIXME: Cole left this note:
-  ## The ageing error matrices must also
-  ## be changed because they have one column per population length bin
+  #according to SS manual 3.30.14, this is how the number of bins is calculated.
+  nlbin_pop <- (dat_list$maximum_size - dat_list$minimum_size)/dat_list$binwidth + 1
+  dat_list$lbin_vector_pop <- seq(dat_list$minimum_size, dat_list$maximum_size,
+                                  length.out = nlbin_pop)
   invisible(dat_list)
 }
 
