@@ -37,7 +37,7 @@ then the age bin structure will be taken from the OM.}
 
 \item{len_bins}{*A numeric vector of length bins to use. If left as
 \code{NULL} then the length bin structure will be taken from the OM.
-For conditional age-at-length (CAAL) data, the last value provided to 
+For conditional age-at-length (CAAL) data, the last value provided to
 \code{len_bins} will be used for Lbin_lo and -1 will be used for Lbin_hi
 for the largest length bin category, i.e., row of CAAL data.}
 

@@ -42,7 +42,7 @@ necessary for \code{lbin_method=2}}
 \code{change_em_binning} alters the bin structure for the population and
 length composition data in an SS estimation model. It is done by taking the
 original length composition info from the EM \code{ss3.dat} then changing
-according to the user's specification. If the data file also contails
+according to the user's specification. If the data file also contains
 conditional age-at-length data then these data will be re-binned as well.
 }
 \examples{
