@@ -283,13 +283,36 @@ calculate_data_units <- function(index_params = NULL, lcomp_params = NULL,
   return(list(fleets = fleets, years = years, types = types))
 }
 
+#' Set up population length bin structure
+#'
+#' The population length bins in Stock Synthesis structure size data and
+#' empirical weight-at-age data.
+#' \code{change_pop_bin} changes the data file to contain
+#' specifications to create a vector (length-bin method of 2) rather than
+#' the actual bins from the length data (length-bin method of 1) or
+#' an actual vector (length-bin method of 3).
+#'
+#' The only required argument is \code{dat_list} and the remaining arguments
+#' default to a value of \code{NULL}, which leads to the data file not being
+#' changed.
+#' @template dat_list
+#' @param binwidth A numeric value specifying the width of the size bins.
+#' @param minimum_size The smallest size bin.
+#' @param maximum_size The largest size bin.
+#' @param maximum_age The highest age. Used to structure the maximum age of
+#' the population and the ageing-error matrix, which will be assumed
+#' to have no bias and maximum precision for any added ages.
+#' @return A modified Stock Synthesis data file in list form. The list
+#' is only returned if it is assigned to an object.
+#'
 change_pop_bin <- function(dat_list, binwidth = NULL, minimum_size = NULL,
-  maximum_size = NULL){
+                           maximum_size = NULL, maximum_age = NULL) {
   if(length(binwidth) > 1 | length(minimum_size) > 1 |
      length(maximum_size) > 1) {
     warning("Some inputs to function had length > 1. Using first value of ",
             "vector input only.")
   }
+  dat_list$lbin_method <- 2
   if (!is.null(binwidth)) dat_list$binwidth <- binwidth[1]
   if (!is.null(minimum_size)) dat_list$minimum_size <- minimum_size[1]
   if (!is.null(maximum_size)) dat_list$maximum_size <- maximum_size[1]
@@ -297,6 +320,18 @@ change_pop_bin <- function(dat_list, binwidth = NULL, minimum_size = NULL,
   nlbin_pop <- (dat_list$maximum_size - dat_list$minimum_size)/dat_list$binwidth + 1
   dat_list$lbin_vector_pop <- seq(dat_list$minimum_size, dat_list$maximum_size,
                                   length.out = nlbin_pop)
+  if (!is.null(maximum_age)) {
+    if (dat_list$N_ageerror_definitions > 0) {
+      if (NCOL(dat_list$ageerror) < (maximum_age + 1)) {
+        dat_list$ageerror[, NCOL(dat_list$ageerror):maximum_age + 1] <-
+          rep(c(-1, 0), dat_list$N_ageerror_definitions)
+      } else {
+        dat_list$ageerror <- dat_list$ageerror[, 1:(maximum_age + 1)]
+      }
+    }
+    dat_list$Nages <- maximum_age
+  }
+
   invisible(dat_list)
 }
 
