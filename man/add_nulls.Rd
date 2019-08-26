@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_nulls.R
 \name{add_nulls}
 \alias{add_nulls}
-\title{Add NULL values to non-existent list elements}
+\title{Add \code{NULL} values to non-existent list elements}
 \usage{
 add_nulls(param_list, desired_params)
 }
@@ -18,7 +18,7 @@ A list with the desired elements as described by the
   \code{param_list} will be returned with values of \code{NULL}.
 }
 \description{
-Add NULL values to non-existent list elements
+Add \code{NULL} values to non-existent list elements
 }
 \author{
 Sean C. Anderson
