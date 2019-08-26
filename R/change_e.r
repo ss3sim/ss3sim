@@ -105,7 +105,7 @@ change_e <- function(ctl_file_in = "em.ctl",
     for_file_in = "forecasts.ss", natM_type = "1Parm",
     natM_n_breakpoints = NULL, natM_lorenzen = NULL, natM_val = c(NA, NA),
     par_name = NULL, par_int = "NA", par_phase = "NA",
-    forecast_num = 0, 
+    forecast_num = 0,
     verbose = FALSE) {
 
   # get the ss_version from the control file to use with r4ss functions
@@ -114,9 +114,9 @@ change_e <- function(ctl_file_in = "em.ctl",
   #Run external estimator for growth if needed
   if(any(grepl("change_e_vbgf", par_int))) {
     if (length(dir(pattern = "vbgf")) != 1) {
-      stop(paste("The necessary file containing \"vbgf\" does not exist in",
-        getwd(), "Please make sure the correct data is available for the",
-        "external estimator."))
+      stop("The necessary file containing \"vbgf\" does not exist in ",
+           getwd(), ". Please make sure the correct data is available for the ",
+           "external estimator.")
     }
     data <- read.csv(dir(pattern = "vbgf"), header = TRUE)
   #Get start values
@@ -162,9 +162,9 @@ change_e <- function(ctl_file_in = "em.ctl",
     natM.type.val[[1]][1] <- natM.val
     ss3.ctl[natM.type.line] <- paste(natM.type.val[[1]], collapse = " #")
     if(natM.type.org > 0) {
-      stop(paste("change_e can only change a .ctl from a simple 1 parameter",
-                 "natural mortality type to a more complicated parameter",
-                 "setup and not the other way around."))
+      stop("change_e can only change a .ctl from a simple 1 parameter natural ",
+           "mortality type to a more complicated parameter setup and not ",
+           "the other way around.")
     }
     # specify natM optional lines according to type
   	natM.input <- grep("#_no additional input for selected M option",
@@ -172,15 +172,15 @@ change_e <- function(ctl_file_in = "em.ctl",
     if(natM.val == 1) {
       natM_breakpoints <- length(natM_n_breakpoints)
       if(male == FALSE & !(length(natM_val) == (natM_breakpoints * 2))) {
-        stop(paste("Must specify a int and phase for each natural mortality",
-                   "parameter in the vector natM_val."))
+        stop("Must specify a int and phase for each natural mortality ",
+             "parameter in the vector natM_val.")
       }
       if(male == TRUE & !(length(natM_val) == (natM_breakpoints * 2 * 2))) {
-        stop(paste("Must specify an int and phase for each M parameter",
-                   "in the vector natM_val. This model has two genders",
-                   "thus for each breakpoint there must be four entries in,",
-                   "natM_val (i.e., int_female_1, phase_female_1, int_female_2,",
-                   "phase_female_2, int_male_1, phase_male_1, etc.)."))
+        stop("Must specify an int and phase for each M parameter in the vector",
+             " natM_val. This model has two genders, thus for each breakpoint ",
+             "there must be four entries in natM_val (i.e., int_female_1, ",
+             "phase_female_1, int_female_2, phase_female_2, int_male_1, ",
+             "phase_male_1, etc.).")
       }
   	  ss3.ctl[natM.input] <- paste(natM_breakpoints, "#_N_breakpoints")
   	  ss3.ctl <- append(ss3.ctl,
@@ -190,9 +190,9 @@ change_e <- function(ctl_file_in = "em.ctl",
   	}
     if(natM.val == 2) {
       if(length(natM_lorenzen) > 1) {
-        stop(paste("SS3, version O, uses a single age value for the Lorenzen",
-                   "function even if there is > 1 gender.",
-                   "length(natM_lorenzen) == 1, not", length(natM_lorenzen)))
+        stop("SS, version O, uses a single age value for the Lorenzen ",
+              "function even if there is > 1 sex.length(natM_lorenzen) == 1, ",
+              "not ", length(natM_lorenzen))
       }
       ss3.ctl[natM.input] <- paste(natM_lorenzen,
                                   "#_reference age for Lorenzen M")
@@ -314,9 +314,9 @@ if(!is.null(par_name)) {
 }
  if(forecast_num > 0) {
    if(is.null(dat_list)) {
-     stop(paste("A list object read in by r4ss::SS_readdat must be passed",
-       "to change_e using the dat_list argument if the user wishes to",
-       "implement or change the number of forecasts."))
+     stop("A list object read in by r4ss::SS_readdat must be passed ",
+          "to change_e using the dat_list argument if the user wishes to ",
+          "implement or change the number of forecasts.")
    }
  if(!file.exists(for_file_in)) {
    stop("Forecast file for the estimation model does not exist.")

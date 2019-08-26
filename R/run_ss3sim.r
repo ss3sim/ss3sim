@@ -153,7 +153,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder, om_dir, em_dir,
 
   if(!is.null(user_recdevs)) {
     if(ncol(user_recdevs) < max(iterations)) {
-      stop("The number of columns in user_recdevs is less than the",
+      stop("The number of columns in user_recdevs is less than the ",
         "specified number of iterations.")
     }
   }
