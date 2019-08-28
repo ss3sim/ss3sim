@@ -53,5 +53,6 @@ Imports:
     graphics,
     stats,
     utils
+Remotes: github::r4ss/r4ss
 RoxygenNote: 6.1.1
 Encoding: UTF-8
