@@ -8,6 +8,7 @@ d <- system.file("extdata", package = "ss3sim")
 file.copy(file.path(d, "Simple"), ".", recursive = TRUE)
 setwd("Simple")
 on.exit(setwd(wd.old), add = TRUE)
+on.exit(unlink(file.path(temp_path, "Simple"), recursive = TRUE), add = TRUE)
 
 test_that("Control file references correct years", {
   # Manipulate files

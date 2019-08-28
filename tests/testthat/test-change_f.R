@@ -66,8 +66,7 @@ expect_error(change_f(input$years,
                        ctl_file_in = "codOM.ctl",
                        ctl_file_out = NULL),
               "The length of variable(s) ses is/are invalid", fixed = TRUE)
-})
-
+ctl <- readLines("codOM.ctl")
 mod_ctl <- ctl
 q_line <- grep("Q_setup", mod_ctl)
 mod_ctl[q_line] <- "#"
@@ -76,7 +75,7 @@ expect_error(change_f(input$years,
                       input$fisheries,
                       input$fvals,
                       ctl_file_in = "codOM_q_cmt_missing.ctl",
-                      ctl_file_out = NULL), 
+                      ctl_file_out = NULL),
             "Q_setup was not found in the ctl_file_in")
 })
 
@@ -104,8 +103,8 @@ test_that("change_f provides correct output w/o detailed F setup", {
   expect_equal(F_det_e_line-F_det_s_line+1, length(input$years))
 })
 
-test_that("change_f provides correct output when F_method is 1 or 3 ", {
-  #TODO develop test for this we think it is neceessary, or remove.
-  ctl <-  change_f(input$years, input$fisheries, input$fvals,
-                   ctl_file_in = "codEM.ctl", ctl_file_out = NULL)
-})
+# test_that("change_f provides correct output when F_method is 1 or 3 ", {
+#   #TODO develop test for this we think it is neceessary, or remove.
+#   ctl <-  change_f(input$years, input$fisheries, input$fvals,
+#                    ctl_file_in = "codEM.ctl", ctl_file_out = NULL)
+# })

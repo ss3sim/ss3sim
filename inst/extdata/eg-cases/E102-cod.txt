@@ -1,0 +1,10 @@
+# description: *Deterministic* single estimated M w/ init at historic
+# value, change intits for fishery and SR_sigmaR
+natM_type;          NULL
+natM_n_breakpoints; NULL
+natM_lorenzen;      NULL
+natM_val;           NULL
+par_name;           LnQ_base_Fishery(1),SR_sigmaR
+par_int;            c(2,0.001)
+par_phase;          c(1,-1)
+forecast_num;       3
