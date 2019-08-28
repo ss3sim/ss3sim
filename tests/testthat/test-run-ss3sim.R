@@ -11,6 +11,7 @@ dir.create(temp_path, showWarnings = FALSE)
 wd <- getwd()
 setwd(temp_path)
 on.exit(setwd(wd), add = TRUE)
+#on.exit(unlink(temp_path, recursive = TRUE), add = TRUE)
 
 d <- system.file("extdata", package = "ss3sim")
 om <- file.path(d, "models", "cod-om")
@@ -45,26 +46,29 @@ test_that("run_ss3sim works with multiple scenarios (no parallel)", {
   unlink("D1-F0-cod", recursive = TRUE)
 })
 
-# Test will be skipped on CRAN load b/c binary (moved from change-e)
-om <- file.path(d, "models", "cod-om")
-em <- file.path(d, "models", "cod-em")
+test_that("run_ss3sim gives error if conditional age at length used", {
+  # when CAL implemented, will want to remove this test.
+  skip_on_cran()
+  expect_error(run_ss3sim(iterations  = 1,
+                          scenarios = "F1-D0-M1-E0-O0-cod",
+                          case_folder = file.path(d, "eg-cases"),
+                          om_dir = om_dir,
+                          em_dir = em_dir,
+                          case_files = list(F = "F",
+                                            D = c("index", "lcomp", "agecomp",
+                                                  "calcomp"),
+                                            M = "M", E = "E", O = "O")
+  ), "Conditional age at length (CAL) is not yet implemented", fixed = TRUE)
+})
 
-file.copy(file.path(d, "eg-cases"), ".", recursive = TRUE)
-case_folder <- file.path("eg-cases")
 case_files <- list(F = "F", D = c("index", "lcomp", "agecomp"), E = "E")
-
-newcase <- file.path("eg-cases", "E102-cod.txt")
-file.copy(file.path("eg-cases", "E101-cod.txt"), newcase)
-temp <- readLines(newcase)
-temp[10] <- "forecast_num; 3"
-writeLines(temp, newcase)
-
 test_that("A basic run_ss3sim scenario with forecasting runs", {
   skip_on_cran()
-  run_ss3sim(iterations = 1, scenarios = "D0-E102-F0-cod",
+  suppressWarnings(run_ss3sim(iterations = 1, scenarios = "D0-E102-F0-cod",
              case_folder = case_folder, case_files = case_files,
              om_dir = om, em_dir = em,
-             ss_mode = "optimized")
+             ss_mode = "optimized"))
+  expect_true("control.ss_new" %in% list.files(file.path("D0-E102-F0-cod", "1", "em")))
   report <- r4ss::SS_output(file.path("D0-E102-F0-cod", "1", "em"),
                             covar = FALSE, ncols = 400, NoCompOK = TRUE)
   get_results_all()

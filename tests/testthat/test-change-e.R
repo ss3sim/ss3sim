@@ -1,5 +1,5 @@
 context("Changing EM binning and parameters in an EM")
-#TODO: add tests for change_e() and change_em_binning()
+#TODO: add tests for change_e()
 wd.old <- getwd()
 temp_path <- file.path(tempdir(), "pars")
 dir.create(temp_path, showWarnings = FALSE)
@@ -99,32 +99,33 @@ test_that("change_em_binning works with method = 2", {
   expect_equal(ncol(output$lencomp)-6, length(new_bin_vec))
 })
 
-test_that("change_em_binning works with cond. age at length", {
-# TODO: finish developing this test (may need revisions)
-#   new_bin_vec <- seq(min(datalist$lbin_vector), max(datalist$lbin_vector), by = 4)
-#   # add the max value if necessary.
-#   if(new_bin_vec[length(new_bin_vec)] != datalist$lbin_vector[length(datalist$lbin_vector)]){
-#     new_bin_vec <- c(new_bin_vec,
-#                      datalist$lbin_vector[length(datalist$lbin_vector)])
-#   }
-#
-#   pop_bin_input <- 5
-#   pop_min_size_input <- min(datalist$lbin_vector_pop) - 1
-#   pop_max_size_input <- max(datalist$lbin_vector_pop) + 5
-# # TODO add tests.
-#  datalist_CAL <- datalist
-#  # change approximately half of the obs to CAL
-#  a_col <- ncol(datalist_CAL$agecomp)
-#  max_change <- as.integer(a_col/2)
-#  datalist_CAL$agecomp$Lbin_lo[1:max_change] <- new_bin_vec[length(new_bin_vec)-2]
-#  datalist_CAL$agecomp$Lbin_hi[1:max_change] <- new_bin_vec[2]
-#  output <- change_em_binning(dat_list = datalist_CAL,
-#                              bin_vector = new_bin_vec,
-#                              lbin_method = 2,
-#                              pop_binwidth = pop_bin_input,
-#                              pop_minimum_size = pop_min_size_input,
-#                              pop_maximum_size = pop_max_size_input)
+test_that("change_em_binning exits on error if cond. age at length", {
+  # remove test if implementing CAL
+  new_bin_vec <- seq(min(datalist$lbin_vector), max(datalist$lbin_vector), by = 4)
+  # add the max value if necessary.
+  if(new_bin_vec[length(new_bin_vec)] != datalist$lbin_vector[length(datalist$lbin_vector)]){
+    new_bin_vec <- c(new_bin_vec,
+                     datalist$lbin_vector[length(datalist$lbin_vector)])
+  }
 
+  pop_bin_input <- 5
+  pop_min_size_input <- min(datalist$lbin_vector_pop) - 1
+  pop_max_size_input <- max(datalist$lbin_vector_pop) + 5
+# TODO add tests.
+ datalist_CAL <- datalist
+ # change approximately half of the obs to CAL
+ a_col <- nrow(datalist_CAL$agecomp)
+ max_change <- as.integer(a_col/2)
+ datalist_CAL$agecomp$Lbin_lo[1:max_change] <- new_bin_vec[2]
+ datalist_CAL$agecomp$Lbin_hi[1:max_change] <- new_bin_vec[length(new_bin_vec)-2]
+ expect_error(change_em_binning(dat_list = datalist_CAL,
+                                bin_vector = new_bin_vec,
+                                lbin_method = 2,
+                                pop_binwidth = pop_bin_input,
+                                pop_minimum_size = pop_min_size_input,
+                                pop_maximum_size = pop_max_size_input),
+              "Conditional age at length (CAL) is not yet implemented",
+              fixed = TRUE)
 })
 
 test_that("change_EM_binning returns NULL if lbin method is NULL", {

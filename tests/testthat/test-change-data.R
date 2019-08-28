@@ -7,7 +7,6 @@ dat <- SS_readdat(file.path(om, "codOM.dat"), verbose = FALSE)
 
 test_that("calculate_data_units is working",{
   generic_list <- list(fleets = 2, years = list(seq(35, 95, by = 5)))
-  #What is the point o fthis function? Does it still work as expected?
   result <- calculate_data_units(index_params = generic_list)
   expect_equal(result$fleets, generic_list$fleets)
   expect_equal(result$years, unlist(generic_list$years))
@@ -21,10 +20,10 @@ test_that("calculate_data_units is working",{
   result_3 <- calculate_data_units(index_params  = generic_list,
                                    lcomp_params  = generic_list,
                                    agecomp_params = generic_list,
-                                   calcomp_params = generic_list,
+                                   calcomp_params = NULL,
                                    mlacomp_params = generic_list,
                                    wtatage_params = generic_list)
-  expect_equal(result_3$types, c("index", "len", "age", "cal", "mla", "wtatage"))
+  expect_equal(result_3$types, c("index", "len", "age", "mla", "wtatage"))
 })
 
 test_that("change_data is working with only types inputs", {
@@ -46,9 +45,15 @@ test_that("change_data is working with only types inputs", {
   expect_equal(sort(unique(changed_dat$MeanSize_at_Age_obs$Flt)), flt_input)
   expect_equal(nrow(changed_dat$MeanSize_at_Age_obs), changed_dat$N_MeanSize_at_Age_obs)
 })
-test_that("change_data is working with conditional length at age", {
-  #TODO: add test for conditional length at age.
-  })
+test_that("change_data gives error if trying to use conditional length at age", {
+  yr_input <- seq(35, 100, by = 5)
+  flt_input <- 2
+  expect_error(change_data(dat, fleets =  flt_input, years = yr_input,
+                           types = c("index", "len", "age", "cal"),
+                           outfile = NULL),
+               "Conditional age at length (CAL) is not yet implemented",
+               fixed = TRUE)
+})
 
 test_that("change_data() exits on error when incorrect input given",{
   yr_input <- seq(100, 125, by = 5)
@@ -65,6 +70,7 @@ test_that("change_data() exits on error when incorrect input given",{
                            types = "index", outfile = NULL), "fleets and years input both need to be numeric vectors")
 })
 
-test_that("change_data() works with binning, tail compression, and lcomp constant", {
-  #TODO: add tests()
-})
+#TODO: add tests()
+# test_that("change_data() works with binning, tail compression, and lcomp constant", {
+#
+# })

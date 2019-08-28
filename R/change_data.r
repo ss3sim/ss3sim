@@ -187,6 +187,9 @@ change_data <- function(dat_list, outfile = NULL, fleets, years, types,
   ## to print them, so don't need it. TODO check this is right. It can
   ## seriously slow down the OM to write uncessary calcomp data.
   if ("cal" %in% types) {
+    #this stop message can be removed once conditional age at length implemented
+    stop("Conditional age at length (CAL) is not yet implemented, please only ",
+         "use models and scenarios without CAL.")
     agecomp <- dat_list$agecomp[dat_list$agecomp$Lbin_lo < 0, ]
     new.calcomp <- make_dummy_dat_calcomp(fleets = fleets,years = years,
                      age_bins = age_bins, len_bins = len_bins)
@@ -275,7 +278,11 @@ calculate_data_units <- function(index_params = NULL, lcomp_params = NULL,
 
   #TODO: correct for wtatage??
   types <- names(sample_args)[!sample_args_null]
-  if("cal" %in% types) types <- c(types, "len", "age")
+  if("cal" %in% types) {
+    stop("Conditional age at length (CAL) is not yet implemented, please only ",
+         "use models and scenarios without CAL.")
+    types <- c(types, "len", "age")
+  }
   if("wtatage" %in% types) types <- c(types, "age", "mla")
   if("mla" %in% types) types <- c(types, "age")
   ## Need this line to remove duplicates

@@ -27,6 +27,9 @@
 
 sample_calcomp <- function(dat_list, outfile = NULL, fleets = c(1,2), years,
                            Nsamp){
+  #this stop message can be removed once conditional age at length implemented
+  stop("Conditional age at length (CAL) is not yet implemented, please only ",
+       "use models and scenarios without CAL.")
     ## The samples are taken from the expected values, where the
     ## age-at-length data is in the age matrix but has a -1 for Lbin_lo and
     ## Lbin_hi, so subset those out, but don't delete the age values since

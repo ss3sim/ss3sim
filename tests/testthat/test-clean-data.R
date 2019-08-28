@@ -41,14 +41,16 @@ test_that("clean_dat is working for mean size at age (mla_comp)",{
   expect_equal(new_dat$N_MeanSize_at_Age_obs, length(new_dat$MeanSize_at_Age_obs$Yr))
 })
 
-test_that("clean_dat is working for conditional length at age", {
+test_that("clean_dat exits on error if conditional age at length", {
+  #this test can be removed when CAL is implemented
   index_params <- list(fleets  = 2,
                        years   = list(c(1980,1986,1992,1998)),
                        sds_obs = list(0.2))
-  new_dat <- clean_data(dat_sim,
+   expect_error(clean_data(dat_sim,
                         index_params = index_params,
-                        calcomp_params = calcomp_params)
-  # TODO: create this test.
+                        calcomp_params = calcomp_params),
+                "Conditional age at length (CAL) is not yet implemented",
+                fixed = TRUE)
 })
 
 test_that("clean_data fails when r4ss list object not used", {
