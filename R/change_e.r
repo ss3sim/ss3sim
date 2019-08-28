@@ -14,29 +14,6 @@
 #' @template ctl_file_out
 #' @template dat_list
 #' @template for_file_in
-#' @param natM_type *A character string corresponding to option 0:4 in SS3 (i.e.
-#'   "1Parm", "n_breakpoints", "Lorenzen", "agespecific",
-#'   "agespec_withseasinterpolate"). A value of \code{NA} will leave the
-#'   configuration of natural mortality as specified in \code{ctl_file_in}.
-#' @param natM_n_breakpoints *A vector of ages at which you want breakpoints.
-#'   Only used if you specify \code{natM_type = "n_breakpoints"}.
-#' @param natM_lorenzen *The reference age for the Lorenzen function.  Only used
-#'   if you specify \code{natM_type = "Lorenzen"}. Length should be one even
-#'   if the \code{.ctl} has two genders.
-#' @param natM_val *A vector of numeric values. Interpretation of the values are
-#'   dependent upon \code{natM_type}. If \code{natM_type = "agespecific"} or
-#'   \code{natM_type = "agespec_withseasinterpolate"} the vector specifies the
-#'   fixed natural mortality parameters for each integer age.  Specify values
-#'   in the following order: female area 1, female area 2, male area 1, male
-#'   area, etc. Ensure that there is one entry per integer age x area x gender.
-#'   If \code{natM_type = "1Param"}, \code{natM_type = "n_breakpoints"}, or
-#'   \code{natM_type = "Lorenzen"} the vector specifies the initial and phase
-#'   values for each natM parameter (i.e. \code{c(int, phase, int, phase,
-#'   etc.)}, where the first two values could correspond to ages 0-2 natural
-#'   mortality and the third and fourth value could correspond to ages 3-8
-#'   natural mortality).  For any specified initial value, the parameter bounds
-#'   will be altered to 50 percent above and below the specified initial value,
-#'   if the initial value lies above or below the original bounds.
 #' @param par_name *A vector of values, separated by commas.  Each value
 #'   corresponds to a parameter that you wish to turn on or off in the
 #'   \code{ctl_file_in}. The values will later be turned into character values
@@ -53,7 +30,10 @@
 #'   the data will be removed from the \code{dat_list}, enabling SS3 to
 #'   generate forecasts rather than use the data to fit the model.
 #' @template verbose
-#'
+#' @param natM_type Deprecated. Should have value NULL.
+#' @param natM_n_breakpoints Deprecated. Should have value NULL.
+#' @param natM_lorenzen Deprecated. Should have value NULL.
+#' @param natM_val Deprecated. Should have value NULL.
 #' @details Turning parameters on and off is the main function of
 #'   \code{change_e}.  \code{change_e} was not created with the capability of
 #'   adding parameters to a \code{.ctl} file.  The function can only add
@@ -101,13 +81,32 @@
 #' }
 
 change_e <- function(ctl_file_in = "em.ctl",
-    ctl_file_out = "em.ctl", dat_list = NULL,
-    for_file_in = "forecasts.ss", natM_type = "1Parm",
-    natM_n_breakpoints = NULL, natM_lorenzen = NULL, natM_val = c(NA, NA),
-    par_name = NULL, par_int = "NA", par_phase = "NA",
-    forecast_num = 0,
-    verbose = FALSE) {
+                     ctl_file_out = "em.ctl",
+                     dat_list = NULL,
+                     for_file_in = "forecasts.ss",
+                     par_name = NULL,
+                     par_int = "NA",
+                     par_phase = "NA",
+                     forecast_num = 0,
+                     verbose = FALSE,
+                     #below are deprecated parameters:
+                     natM_type = NULL,
+                     natM_n_breakpoints = NULL,
+                     natM_lorenzen = NULL,
+                     natM_val = NULL) {
 
+ # provide errors if deprecated parameters are used.
+  lapply(list(natM_type = natM_type, natM_n_breakpoints = natM_n_breakpoints,
+                natM_lorenzen = natM_lorenzen , natM_val = natM_val),
+         function(x) if(!is.null(x)) {
+          stop("Parameters in change_e: natM_type, natM_n_breakpoints, ",
+               "natM_lorenzen, and natM_val have been deprecated and cannot be ",
+               "used. Instead, please make sure the default values NULL are used",
+               "for deprecated parameters and specify your natural mortality ",
+               "type within the EM model itself. If you wish to change the ",
+               "value or phase of M parameter(s), please use parameters ",
+               "par_name, par_init, and par_phase.")
+          })
   # get the ss_version from the control file to use with r4ss functions
   ss_version <- get_ss_ver_file(ctl_file_in)
   ss3.ctl <- readLines(ctl_file_in)
@@ -147,126 +146,7 @@ change_e <- function(ctl_file_in = "em.ctl",
     par_int[!par_int %in% c(NA, "NA", "Nan")] <-
       as.numeric(par_int[!par_int %in% c(NA, "NA", "Nan")])
   }
-  # Determine how many genders the model has
-  gen <- grep("NatM", ss3.ctl, value = TRUE)
-  male <- TRUE %in% grepl("Mal", gen)
-
-  natM.val <- pmatch(tolower(natM_type),
-                     c("1parm", "n_breakpoints", "lorenzen",
-                       "agespecific", "agespec_withseasinterpolate")) - 1
-  if(!is.na(natM.val)) {
-    # change the natM type from 1Parm to correct type
-    natM.type.line <- grep("_natM_type", ss3.ctl)
-    natM.type.val <- strsplit(ss3.ctl[natM.type.line], "#")
-    natM.type.org <- as.numeric(natM.type.val[[1]][1])
-    natM.type.val[[1]][1] <- natM.val
-    ss3.ctl[natM.type.line] <- paste(natM.type.val[[1]], collapse = " #")
-    if(natM.type.org > 0) {
-      stop("change_e can only change a .ctl from a simple 1 parameter natural ",
-           "mortality type to a more complicated parameter setup and not ",
-           "the other way around.")
-    }
-    # specify natM optional lines according to type
-  	natM.input <- grep("#_no additional input for selected M option",
-                       ss3.ctl)
-    if(natM.val == 1) {
-      natM_breakpoints <- length(natM_n_breakpoints)
-      if(male == FALSE & !(length(natM_val) == (natM_breakpoints * 2))) {
-        stop("Must specify a int and phase for each natural mortality ",
-             "parameter in the vector natM_val.")
-      }
-      if(male == TRUE & !(length(natM_val) == (natM_breakpoints * 2 * 2))) {
-        stop("Must specify an int and phase for each M parameter in the vector",
-             " natM_val. This model has two genders, thus for each breakpoint ",
-             "there must be four entries in natM_val (i.e., int_female_1, ",
-             "phase_female_1, int_female_2, phase_female_2, int_male_1, ",
-             "phase_male_1, etc.).")
-      }
-  	  ss3.ctl[natM.input] <- paste(natM_breakpoints, "#_N_breakpoints")
-  	  ss3.ctl <- append(ss3.ctl,
-  	                   values = paste0(paste(natM_n_breakpoints, collapse = " "),
-                                       " # age(real) at M breakpoints"),
-  	                   after = natM.input)
-  	}
-    if(natM.val == 2) {
-      if(length(natM_lorenzen) > 1) {
-        stop("SS, version O, uses a single age value for the Lorenzen ",
-              "function even if there is > 1 sex.length(natM_lorenzen) == 1, ",
-              "not ", length(natM_lorenzen))
-      }
-      ss3.ctl[natM.input] <- paste(natM_lorenzen,
-                                  "#_reference age for Lorenzen M")
-    }
-    if(natM.val == 3 | natM.val == 4) {
-       ss3.ctl[natM.input] <- paste0(" #_Age_natmort_by gender x growthpattern")
-       ss3.ctl <- append(ss3.ctl, values = paste(natM_val, collapse = " "),
-                        after = natM.input)
-       ss3.ctl <- ss3.ctl[-grep("# NatM_", ss3.ctl)]
-      }
-    # specify the initial and phase values for natM if used
-    if(natM.val == 0 | natM.val == 1 | natM.val == 2) {
-       natM.p.line1f <- grep("# NatM_p_1_Fem_GP_1", ss3.ctl)
-   	   natM.p.valf <- unlist(strsplit(ss3.ctl[natM.p.line1f], split = " "))
-       natM.p.valf <- natM.p.valf[which(nchar(natM.p.valf) > 0)]
-       if(male) {
-         natM.p.line1m <- grep("# NatM_p_1_Mal_GP_1", ss3.ctl)
-   	     natM.p.valm <- unlist(strsplit(ss3.ctl[natM.p.line1m], split = " "))
-         natM.p.valm <- natM.p.valm[which(nchar(natM.p.valm) > 0)]
-       }
-       counter <- 0
-       seq.len <- length(natM_val)
-       if(male) seq.len <- seq.len / 2
-         for(i in 1:seq.len) {
-   	      if(i %% 2 == 0) next
-             if(!is.na(natM_val[i])) {
-               natM.p.valf[3] <- natM_val[i]
-   	           #check to ensure that int is between the bounds
-   		       if(as.numeric(natM.p.valf[3]) < as.numeric(natM.p.valf[1])) {
-                 natM.p.valf[1] <- natM_val[i] * 0.5
-   		       }
-               if(as.numeric(natM.p.valf[3]) > as.numeric(natM.p.valf[2])) {
-                 natM.p.valf[2] <- natM_val[i] * 1.5
-               }
-   			 }
-   		  if(!is.na(natM_val[i + 1])) {
-            natM.p.valf[7] <- natM_val[i + 1]
-   		  }
-          if(male) {
-            if(!is.na(natM_val[i + seq.len])) {
-               natM.p.valm[3] <- natM_val[i + seq.len]
-   	           #check to ensure that int is between the bounds
-   		       if(as.numeric(natM.p.valm[3]) < as.numeric(natM.p.valm[1])) {
-                 natM.p.valm[1] <- natM_val[i + seq.len] * 0.5
-   		       }
-               if(as.numeric(natM.p.valm[3]) > as.numeric(natM.p.valm[2])) {
-                 natM.p.valm[2] <- natM_val[i + seq.len] * 1.5
-               }
-   			 }
-   		  if(!is.na(natM_val[i + seq.len + 1])) {
-            natM.p.valm[7] <- natM_val[i + seq.len + 1]
-   		  }
-          }
-          counter <- counter + 1
-   		  natM.p.valf[grep("GP", natM.p.valf)] <- paste0("NatM_p_1_Fem_GP_", counter)
-          if(male) natM.p.valm[grep("GP", natM.p.valm)] <- paste0("NatM_p_1_Mal_GP_", counter)
-  		  if(i == 1) {
-            ss3.ctl[natM.p.line1f] <- paste(natM.p.valf, collapse = " " )
-            if(male) ss3.ctl[natM.p.line1m] <- paste(natM.p.valm, collapse = " " )
-   		  } else {
-              ss3.ctl <- append(ss3.ctl, values = paste(natM.p.valf, collapse = " " ),
-   		                       after = (natM.p.line1f + counter - 2))
-              if(male) {
-                natM.p.line1m <- grep("NatM_p_1_Mal_GP_1", ss3.ctl)
-                ss3.ctl <- append(ss3.ctl, values = paste(natM.p.valm, collapse = " " ),
-   		                         after = (natM.p.line1m + counter - 2))
-              }
-              }
-   		}
-  }
-  writeLines(ss3.ctl, ctl_file_out)
-} else {
   file.copy(ctl_file_in, ctl_file_out)
-}
 
 if(!is.null(par_name)) {
   par_name <- unlist(strsplit(par_name, split = ","))
@@ -299,7 +179,8 @@ if(!is.null(par_name)) {
       newctlfile = ctl_file_out,
       linenums = NULL, strings = par_name[phaseneg],
       newvals = par_int[phaseneg], repeat.vals = verbose,
-      newlos = NULL, newhis = NULL, estimate = FALSE, verbose = verbose,
+      newlos = NULL, newhis = NULL,
+      estimate = rep(FALSE, times = length(par_name[phaseneg])), verbose = verbose,
       newphs = par_phase[phaseneg])
   }
   pasepos <- which(par_phase >= 0)
@@ -308,7 +189,9 @@ if(!is.null(par_name)) {
       newctlfile = ctl_file_out,
       linenums = NULL, strings = par_name[pasepos],
       newvals = par_int[pasepos], repeat.vals = verbose,
-      newlos = NULL, newhis = NULL, estimate = TRUE, verbose = verbose,
+      newlos = NULL, newhis = NULL,
+      estimate = rep(TRUE, times = length(par_name[pasepos])),
+      verbose = verbose,
       newphs = par_phase[pasepos])
   }
 }

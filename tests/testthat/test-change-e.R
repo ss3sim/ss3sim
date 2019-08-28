@@ -1,5 +1,4 @@
 context("Changing EM binning and parameters in an EM")
-#TODO: add tests for change_e()
 wd.old <- getwd()
 temp_path <- file.path(tempdir(), "pars")
 dir.create(temp_path, showWarnings = FALSE)
@@ -12,14 +11,14 @@ on.exit(setwd(wd.old), add = TRUE)
 on.exit(unlink(temp_path, recursive = TRUE), add = TRUE)
 datalist <- r4ss::SS_readdat("codOM.dat", verbose = F, version = NULL)
 
-#TODO: see if this test is useful or not.
+
 test_that("change_e changes forecast year successfully", {
   nfors <- 10
   # Manipulate files
-  datnew <- change_e(ctl_file_in = "codOM.ctl",
+  datnew <- suppressWarnings(change_e(ctl_file_in = "codOM.ctl",
     ctl_file_out = "change.ctl",
     dat_list = datalist, for_file_in = "forecast.ss",
-    forecast_num = nfors)
+    forecast_num = nfors))
   test <- readLines("forecast.ss")
   t1 <- grep("#_Forecast", test)
   t2 <- grep("#_Nforecastyrs", test)
@@ -29,26 +28,87 @@ test_that("change_e changes forecast year successfully", {
 })
 
 test_that("change_e works as expected", {
-  #TODO: add tests
-  #TODO: fix error (may be error in r4ss::change_pars()), though. but
-  # could change input in ss3sim instead, perhaps?
- # output <- change_e(ctl_file_in = "codOM.ctl",
- #                    ctl_file_out = "change_e.ctl",
- #                    dat_list = datalist,
- #                    for_file_in = "forecast.ss",
- #                    natM_type = "n_breakpoints",
- #                    natM_n_breakpoints = c(1, 4),
- #                    natM_lorenzen = NULL,
- #                    natM_val = c(.2, 3, 0.4, 5),
- #                    par_name = c("_steep", "SizeSel_P1_Fishery"),
- #                    par_int = c(0.3, 40),
- #                    par_phase = c(3, 2),
- #                    forecast_num = 0)
+ output <- suppressWarnings(change_e(ctl_file_in = "codOM.ctl",
+                            ctl_file_out = "change_e.ctl",
+                            dat_list = datalist,
+                            for_file_in = "forecast.ss",
+                            natM_type = NULL,
+                            natM_n_breakpoints = NULL,
+                            natM_lorenzen = NULL,
+                            natM_val = NULL,
+                            par_name = c("SR_BH_steep", "SizeSel_P1_Fishery"),
+                            par_int = c(0.3, 40),
+                            par_phase = c(3, 2),
+                            forecast_num = 0))
+ new_ctl <- suppressWarnings(SS_parlines("change_e.ctl"))
+ steep_line <- which(new_ctl$Label == "SR_BH_steep")
+ sel_line <- which(new_ctl$Label == "SizeSel_P1_Fishery(1)")
+ expect_equal(new_ctl[steep_line, "INIT"], 0.3)
+ expect_equal(new_ctl[steep_line, "PHASE"], 3)
+ expect_equal(new_ctl[sel_line, "INIT"], 40)
+ expect_equal(new_ctl[sel_line, "PHASE"], 2)
+})
+test_that("change_e M inputs are properly deprecated", {
+  #TODO: develop this.
+  expect_error(change_e(ctl_file_in = "codOM.ctl",
+                            ctl_file_out = "change_e.ctl",
+                            dat_list = datalist,
+                            for_file_in = "forecast.ss",
+                            natM_type = "n_breakpoints",
+                            natM_n_breakpoints = NULL,
+                            natM_lorenzen = NULL,
+                            natM_val = NULL,
+                            par_name = c("SR_BH_steep", "SizeSel_P1_Fishery"),
+                            par_int = c(0.3, 40),
+                            par_phase = c(3, 2),
+                            forecast_num = 0),
+  "Parameters in change_e: natM_type, natM_n_breakpoints, natM_lorenzen, and natM_val have been deprecated",
+  fixed = TRUE)
+  expect_error(change_e(ctl_file_in = "codOM.ctl",
+                        ctl_file_out = "change_e.ctl",
+                        dat_list = datalist,
+                        for_file_in = "forecast.ss",
+                        natM_type = NULL,
+                        natM_n_breakpoints = c(1, 4),
+                        natM_lorenzen = NULL,
+                        natM_val = NULL,
+                        par_name = c("SR_BH_steep", "SizeSel_P1_Fishery"),
+                        par_int = c(0.3, 40),
+                        par_phase = c(3, 2),
+                        forecast_num = 0),
+               "Parameters in change_e: natM_type, natM_n_breakpoints, natM_lorenzen, and natM_val have been deprecated",
+               fixed = TRUE)
+  expect_error(change_e(ctl_file_in = "codOM.ctl",
+                        ctl_file_out = "change_e.ctl",
+                        dat_list = datalist,
+                        for_file_in = "forecast.ss",
+                        natM_type = NULL,
+                        natM_n_breakpoints = NULL,
+                        natM_lorenzen = NULL,
+                        natM_val = c(.2, 3, 0.4, 5),
+                        par_name = c("SR_BH_steep", "SizeSel_P1_Fishery"),
+                        par_int = c(0.3, 40),
+                        par_phase = c(3, 2),
+                        forecast_num = 0),
+               "Parameters in change_e: natM_type, natM_n_breakpoints, natM_lorenzen, and natM_val have been deprecated",
+               fixed = TRUE)
+  expect_error(change_e(ctl_file_in = "codOM.ctl",
+                        ctl_file_out = "change_e.ctl",
+                        dat_list = datalist,
+                        for_file_in = "forecast.ss",
+                        natM_type = NULL,
+                        natM_n_breakpoints = NULL,
+                        natM_lorenzen = c(0.1,0.2,0.3),
+                        natM_val = NULL,
+                        par_name = c("SR_BH_steep", "SizeSel_P1_Fishery"),
+                        par_int = c(0.3, 40),
+                        par_phase = c(3, 2),
+                        forecast_num = 0),
+               "Parameters in change_e: natM_type, natM_n_breakpoints, natM_lorenzen, and natM_val have been deprecated",
+               fixed = TRUE)
+
 })
 
-test_that("change_e stops on error when expected", {
-  #TODO: add tests
-})
 test_that("change_em_binning works with method = 1", {
   new_bin_vec <- seq(min(datalist$lbin_vector), max(datalist$lbin_vector), by = 4)
   # add the max value if necessary.
