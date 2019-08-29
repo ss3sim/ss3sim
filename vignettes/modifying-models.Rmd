@@ -1,91 +1,35 @@
 ---
-title: "Modifying the model setups included with ss3sim"
+title: "Modifying the model included with ss3sim"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     fig_caption: true
 bibliography: refs.bib
 vignette: >
-  %\VignetteIndexEntry{Modifying existing ss3sim model setups}
+  %\VignetteIndexEntry{Modifying the model included with ss3sim}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
 
 # Modifying the OM and EM models included with ss3sim {#modify}
 
-ss3sim comes with three built-in SS3 operating and estimation model setups:
-a cod-like (slow-growing and long-lived),
-flatfish-like (fast-growing and long-lived),
-and sardine-like (fast-growing and short-lived).
-These model setups are based on North Sea cod (*Gadus morhua*,
-R. Methot, pers. comm.), yellowtail flounder (*Limanda ferruginea*, R. Methot, pers. comm.),
-and Pacific sardine [*Sardinops sagax caeruleus;* @hill2012].
-Further details on these models are available in @johnson2014 and @ono2014.
-These models were stripped down and simplified to make them more generic for simulation testing.
-In doing this, we removed many of the subtle features of the model setups.
-While these model setups are generic and cover a wide range of life history types,
-they may not be suitable for all users.
-Therefore, in this section, we outline strategies for modifying the existing SS3 models.
+ss3sim comes with a built-in Stock Synthesis (SS) operating model (OM) and estimation model (EM) for a cod-like (slow-growing and long-lived) species. This cod-like species is based on North Sea cod (*Gadus morhua*; R. Methot, pers. comm.). The original assessment model was simplified to make it more generic for simulation testing and structured to work with ss3sim.
+Previous ss3sim simulation studies also used flatfish-like (fast-growing and long-lived) and sardine-like (fast-growing and short-lived) model set ups.
+These model setups were based yellowtail flounder (*Limanda ferruginea*; R. Methot, pers. comm.) and Pacific sardine [*Sardinops sagax caeruleus*; @hill2012]. The specific details (e.g., many fleets, tagging data, seasons, etc.) of the original model setups were not important and removed to produce a set of models generic enough to represent different life-history types. Further details on these models are available in @johnson2014 and @ono2014.
+While these model setups are generic and cover a wide range of life-history types, they may not be suitable for all users. Therefore, in this section, we outline strategies for modifying the existing SS model available within the ss3sim package.
 
-Before proceeding it is worth considering the scope and place of ss3sim as a simulation package.
-The package was designed as a tool for examining structural differences in
-alternative model setups.
-These differences could be between an OM and EM [e.g. @johnson2014] or between multiple EMs [e.g. @ono2014].
-Therefore, the specific details (e.g. many fleets, tagging data, seasons, etc.)
-of the original model setups were not important and removed to produce a set of generic life-history-type models.
-ss3sim is not designed for testing arbitrary SS3 models, but rather properties of assessment models in general.
-Thus ss3sim is not ideal for quickly exploring properties of a
-particular assessment model and other software packages should be explored if
-that is your goal (see accompanying for alternatives).
+ss3sim is not designed for testing properties of specific SS models, but rather properties of assessment models in general. Currently, there are many features of SS that cannot be manipulated by ss3sim. For example, seasons, hermaphrodism, multiple areas, movement, growth morphs, and platoons. All features that have been removed from the cod-like species if they were present in the original assessment.
+It is possible to create new models that will work within the ss3sim framework, but this task will be complicated and likely require extensive knowledge of SS3 and R. This process is described in more detail in Sections \ref{sec:om-setup} and \ref{sec:em-setup}. We recommend adapting the current built-in models to match your desired model setup because the configuration of this model has already been tested within ss3sim and is easily adaptable.
 
-Here is a list of SS3 features that are not currently implemented in ss3sim:
-
-- Seasons, sexes, hermaphrodism, multiple areas, movement, growth morphs,
-  and platoons
-- Data other than scientific surveys, commercial indices of
-  abundance and age/length compositions: age-at-length, discards,
-  mean weights, etc.
-
-Some of the features may work within the ss3sim framework, but are untested.
-
-It is possible to create new models that will work within the ss3sim
-framework, but this task will be complicated and likely require extensive
-knowledge of SS3 and R, as well as modification of the ss3sim
-functions. This process is described in more detail in Sections
-\ref{sec:om-setup} and \ref{sec:em-setup}.
-
-Instead of creating entirely new models, we recommend adapting the current
-built-in models to match the desired model setups for a new simulation study. Since
-these models have been thoroughly tested and used with ss3sim already
-[see @johnson2014; @ono2014],
-they make an ideal starting place. Before proceeding it would be wise to examine
-the built-in models to determine how closely they match your desired model
-setups and whether simple changes can get you reasonably close for simulation purposes.
-
-Say for example you want to modify the cod model to have different
-maturity, and then explore different sampling schemes using the
+For example, youcan modify the cod OM and EM files to have a different
+maturity before exploring sampling schemes using the
 `sample_index`, `sample_lcomp`, and `sample_agecomp`
 functions. The following steps provide a basic guideline for how to accomplish this:
 
-- Using the original cod model create the case argument files you desire for
-  your simulation and verify they run with the original cod model using the
-  function `run_ss3sim`. It is probably best to do a shorter
-  deterministic run ([see the section on deterministic runs](introduction.html#deterministic)).
-  After running, read in the
-  data and do visual checks for proper functionality.
-- Find the original cod model. This can be found in the `inst/extdata/models`
-  folder inside the package, located by `system.file("extdata/models", package = "ss3sim")`
-  Make a copy of the cod models (OM and EM) and rename them as desired.
-- Make a single change to either the `.dat` or `.ctl` files
-  for the new model and run them manually with SS3
-  if there is any question if they might break the model.
-- Rerun the model through `run_ss3sim` and verify it is still
-  working. If errors occur in the
-  R function you will need to examine the function to determine why the error is
-  occurring and fix by changing the R function and reloading it.
-- Repeat previous steps with all small changes until the models are
-  satisfactory.
+- Create case-argument files or list structures for your simulation and verify they run with the original cod model using the function `run_ss3sim` or `ss3sim_base`, respectively. It is probably best to do a shorter deterministic run ([see the section on deterministic runs](introduction.html#deterministic)) rather than a run with process error. After running, read in the data and do visual checks for proper functionality.
+- Locate the cod model OM and EM files using `system.file(file.path("extdata", "models"), package = "ss3sim")`.
+- Copy the OM and EM folders and rename them as desired.
+- Make a single change to either the `.dat` or `.ctl` files for the new model and run them manually with SS via the command line or a `system` call within R if there is any question if they might break the model.
+- Rerun the model through `run_ss3sim` and verify it is still working.
+- Repeat previous two steps with each small change you desire to make.
 - Turn off deterministic runs and run the simulation stochastically.
-- If your new model works well with the package and is significantly
-  different than what is built-in, please contact the ss3sim package
-  managers for inclusion in future versions.
