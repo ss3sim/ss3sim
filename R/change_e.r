@@ -195,6 +195,7 @@ if(!is.null(par_name)) {
       newphs = par_phase[pasepos])
   }
 }
+
  if(forecast_num > 0) {
    if(is.null(dat_list)) {
      stop("A list object read in by r4ss::SS_readdat must be passed ",
@@ -204,6 +205,7 @@ if(!is.null(par_name)) {
  if(!file.exists(for_file_in)) {
    stop("Forecast file for the estimation model does not exist.")
  }
+   endyr_orig <- dat_list$endyr
    dat_list$endyr <- dat_list$endyr - forecast_num
 
    if (all(c("nseas", "readAll") %in% names(formals(SS_readforecast)))) {
@@ -216,8 +218,73 @@ if(!is.null(par_name)) {
    }
    ss3.for$Forecast <- 2 #Fish at F(MSY)
    ss3.for$Nforecastyrs <- forecast_num
+   # change years in forecast file to make sure they are within the model bounds.
+   # (warning provided to user if changed)
+   ss3.for <- change_e_fcast_yrs(dat_list$styr, endyr_orig, dat_list$endyr, ss3.for)
    SS_writeforecast(ss3.for, file = "forecast.ss", overwrite = TRUE,
      verbose = verbose)
  }
 if(!is.null(dat_list)) invisible(dat_list)
+}
+
+#' Check and change forecast file years if necessary
+#'
+#' Check if forecast years and benchmark years within the forecast file are
+#' within the model start year and end year.
+#' @param styr The model start year, an integer
+#' @param endyr_orig The original end year that the forecast file assumed, an
+#'  integer
+#' @param endyr_new The new end year, an integer
+#' @param fcast_list
+#' @return A changed forecast list.
+change_e_fcast_yrs <- function(styr = 0,
+                               endyr_orig = 100,
+                               endyr_new = 100,
+                               fcast_list) {
+  yrs_list <- list(bmark = fcast_list$Bmark_years, fcast = fcast_list$Fcast_years)
+  names_list <- names(yrs_list)
+  new_yrs <- mapply(
+    function(yrs, name, styr, endyr_orig, endyr_new) {
+      warn <- FALSE
+      yrs_orig <- yrs
+      # absolute
+     if(any(yrs > endyr_new)){
+      indices <-  which(yrs > endyr_new)
+      to_change <- yrs[indices]
+      diff_from_orig <- endyr_orig - to_change
+      new_vals <- endyr_new - diff_from_orig
+      warning(name, " had some years that were greater than the end year.",
+              "Changing these values.")
+      yrs[indices] <- new_vals
+      warn <- TRUE
+     }
+     # relative
+     nyrs <- endyr_new - styr
+     if(any(yrs < -nyrs)) {
+       indices <- which(yrs < -nyrs)
+       warning(name, " had some relative years that were out of range.",
+               "Changing these values.")
+       # set so is still the same distance from start value.
+       val_more_than_styr <- endyr_orig - styr + 1 + yrs[indices]
+       new_vals <- endyr_new - styr + 1 - val_more_than_styr
+       new_vals <- -new_vals # make negative.
+       yrs[indices] <- new_vals
+       warn <-  TRUE
+     }
+     if(warn) {
+       warning(name, "was changed from ", yrs_orig, " to ", yrs, ". If this ",
+               "behavior is undesirable, please make sure the benchmark years ",
+               "and forecast years are within the EM's styr and endyr given ",
+               "the E case chosen.")
+     }
+     yrs
+  }, yrs_list, names_list, MoreArgs = list(styr = styr,
+                                           endyr_orig = endyr_orig,
+                                           endyr_new = endyr_new),
+  SIMPLIFY = FALSE
+  )
+  # replace old values in forecast list
+  fcast_list$Bmark_years <- new_yrs$bmark
+  fcast_list$Fcast_years <- new_yrs$fcast
+  fcast_list
 }

@@ -32,7 +32,6 @@ test_that("A basic run_ss3sim scenario runs and existing iteration skipped", {
                             em_dir = em,
                             ss_mode = "optimized"),
     "already exists", all = TRUE, fixed = TRUE)
-
   unlink("D0-F0-cod", recursive = TRUE) # clean up
 })
 
@@ -73,9 +72,8 @@ test_that("A basic run_ss3sim scenario with forecasting runs", {
                             covar = FALSE, ncols = 400, NoCompOK = TRUE)
   get_results_all()
   res <- read.csv("ss3sim_scalar.csv", header = TRUE)
-  t1 <- res[, grep("LnQ_base_3_CPU", colnames(res))]
-  t2 <- res[, grep("SR_sigmaR", colnames(res))]
-  expect_true(t1[1] == t1[2])
-  expect_true(t2[2] == 0.001)
+  expect_equal(res$LnQ_base_Survey_2_em, 0.7)
+  expect_equal(res$SR_sigmaR_em, 0.001)
+  #TODO: add expectation that shows that forecasting worked.
   unlink("D0-E102-F0-cod", recursive = TRUE) # clean up
 })
