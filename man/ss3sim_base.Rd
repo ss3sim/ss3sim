@@ -31,7 +31,9 @@ A mandatory case.}
 \code{\link{sample_agecomp}}. A mandatory case.}
 
 \item{calcomp_params}{A named list containing arguments for
-\code{\link{sample_calcomp}}, for conditional age-at-length data.}
+\code{\link{sample_calcomp}}, for conditional age-at-length data.
+Currently CAL is not implemented in this version of ss3sim,
+so calcomp_params should be NULL.}
 
 \item{wtatage_params}{A named list containing arguments for
 \code{\link{sample_wtatage}}, for empirical weight-at-age data.}

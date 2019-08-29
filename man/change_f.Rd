@@ -79,8 +79,7 @@ change_f(years = 1:50, fisheries = 1, fvals = 0.2,
 \seealso{
 Other change functions: \code{\link{change_data}},
   \code{\link{change_em_binning}}, \code{\link{change_e}},
-  \code{\link{change_f_par}},
-  \code{\link{change_maturity}}, \code{\link{change_o}},
+  \code{\link{change_f_par}}, \code{\link{change_o}},
   \code{\link{change_retro}}, \code{\link{change_tv}}
 }
 \author{

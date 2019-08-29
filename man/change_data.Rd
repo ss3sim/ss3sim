@@ -153,9 +153,8 @@ dat3 <- ss3sim:::clean_data(dat_list = dat2, lcomp_params = lcomp_params,
 
 Other change functions: \code{\link{change_em_binning}},
   \code{\link{change_e}}, \code{\link{change_f_par}},
-  \code{\link{change_f}}, \code{\link{change_maturity}},
-  \code{\link{change_o}}, \code{\link{change_retro}},
-  \code{\link{change_tv}}
+  \code{\link{change_f}}, \code{\link{change_o}},
+  \code{\link{change_retro}}, \code{\link{change_tv}}
 }
 \author{
 Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson
