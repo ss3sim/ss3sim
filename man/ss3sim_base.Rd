@@ -146,15 +146,15 @@ setwd(temp_path)
 
 # Find the data in the ss3sim package:
 d <- system.file("extdata", package = "ss3sim")
-om <- paste0(d, "/models/cod-om")
-em <- paste0(d, "/models/cod-em")
-case_folder <- paste0(d, "/eg-cases")
+om <- file.path(d, "models", "cod-om")
+em <- file.path(d, "models", "cod-em")
+case_folder <- file.path(d, "eg-cases")
 
 # Pull in file paths from the package example data:
 d <- system.file("extdata", package = "ss3sim")
-om_dir <- paste0(d, "/models/cod-om")
-em_dir <- paste0(d, "/models/cod-em")
-a <- get_caseargs(folder = paste0(d, "/eg-cases"),
+om_dir <- file.path(d, "models", "cod-om")
+em_dir <- file.path(d, "models", "cod-em")
+a <- get_caseargs(folder = file.path(d, "eg-cases"),
   case_files = list(F = "F", D = c("index", "lcomp", "agecomp"),
     M = "M", E = "E"),
   scenario = "F0-D0-M0-E0-cod")

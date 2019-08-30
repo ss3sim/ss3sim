@@ -96,7 +96,7 @@ existing \code{SS3} model to run with \pkg{ss3sim}. Alternatively, you might
 consider modifying one of the built-in model configurations.
 }
 \examples{
-\dontrun{
+ \dontrun{
 # Create a temporary folder for the output and set the working directory:
 temp_path <- file.path(tempdir(), "ss3sim-example")
 dir.create(temp_path, showWarnings = FALSE)
@@ -105,9 +105,9 @@ setwd(temp_path)
 
 # Find the data in the ss3sim package:
 d <- system.file("extdata", package = "ss3sim")
-om <- paste0(d, "/models/cod-om")
-em <- paste0(d, "/models/cod-em")
-case_folder <- paste0(d, "/eg-cases")
+om <- file.path(d, "models", "cod-om")
+em <- file.path(d, "models", "cod-em")
+case_folder <- file.path(d, "eg-cases")
 
 # Without bias adjustment:
 run_ss3sim(iterations = 1, scenarios = "D0-F0-cod",

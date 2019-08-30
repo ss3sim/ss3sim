@@ -235,7 +235,7 @@ if(!is.null(dat_list)) invisible(dat_list)
 #' @param endyr_orig The original end year that the forecast file assumed, an
 #'  integer
 #' @param endyr_new The new end year, an integer
-#' @param fcast_list
+#' @param fcast_list forecast file read in using r4ss (is a list)
 #' @return A changed forecast list.
 change_e_fcast_yrs <- function(styr = 0,
                                endyr_orig = 100,

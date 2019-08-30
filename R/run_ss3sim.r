@@ -79,7 +79,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#'  \dontrun{
 #' # Create a temporary folder for the output and set the working directory:
 #' temp_path <- file.path(tempdir(), "ss3sim-example")
 #' dir.create(temp_path, showWarnings = FALSE)
@@ -89,7 +89,7 @@
 #' # Find the data in the ss3sim package:
 #' d <- system.file("extdata", package = "ss3sim")
 #' om <- file.path(d, "models", "cod-om")
-#' em <- file.path(d, "models", cod-em")
+#' em <- file.path(d, "models", "cod-em")
 #' case_folder <- file.path(d, "eg-cases")
 #'
 #' # Without bias adjustment:

@@ -28,7 +28,7 @@ Creates two .csv files in the current working directory:
 \description{
 This high level function extracts results from SS3 model runs. Give it a
 directory which contains directories for different "scenario" runs, within
-which are replicates. It writes two data.frames to file: 
+which are replicates. It writes two data.frames to file:
 one for single scalar values (e.g., MSY) and a second
 that contains output for each year of the same model (timeseries, e.g.,
 biomass(year)). These can always be joined later.
