@@ -29,17 +29,15 @@ test_that("get_results_all() doesn't overwrite files if overwrite_files = FALSE"
 
   unlink("ss3sim_scalar.csv")
   write.csv(1, file = "ss3sim_scalar.csv", row.names = FALSE) # fake data, 1 column
-  get_results_all(overwrite_files = FALSE)
+  expect_warning(get_results_all(overwrite_files = FALSE))
   fake_ss3sim_scalar <- read.csv("ss3sim_scalar.csv") # should be fake data
-  #TODO: this test fails, but seems to be testing correctly. Need to fix
-  # function, not test, apparently.
   expect_identical(1L, ncol(fake_ss3sim_scalar))
 
   d <- read.csv("D0-F0-cod/results_scalar_D0-F0-cod.csv")
   d$TotYield_MSY_om <- 3.141592
   write.csv(d, "D0-F0-cod/results_scalar_D0-F0-cod.csv", row.names = FALSE)
-  get_results_all(overwrite_files = FALSE)
-  d <- read.csv("ss3sim_scalar.csv")
+  expect_warning(get_results_all(overwrite_files = FALSE))
+  d <- read.csv(file.path("D0-F0-cod", "results_scalar_D0-F0-cod.csv"))
   expect_identical(d$TotYield_MSY_om, 3.141592)
 })
 
@@ -52,9 +50,9 @@ test_that("get_results_scenario() doesn't overwrite files if overwrite_files = F
 
 test_that("get_results_scenario() does overwrite files if overwrite_files = TRUE", {
   skip_on_cran()
-
+  write.csv(1, file.path("D0-F0-cod", "results_scalar_D0-F0-cod.csv"))
   get_results_scenario("D0-F0-cod", overwrite_files = TRUE)
-  ss3sim_scalar <- read.csv("ss3sim_scalar.csv") # should be real data
+  ss3sim_scalar <- read.csv(file.path("D0-F0-cod", "results_scalar_D0-F0-cod.csv")) # should be real data
   expect_true(ncol(ss3sim_scalar) > 1)
 
   unlink(c("ss3sim_scalar.csv", "ss3sim_ts.csv"))

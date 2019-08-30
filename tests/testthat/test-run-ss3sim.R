@@ -68,9 +68,9 @@ test_that("A basic run_ss3sim scenario with forecasting runs", {
              om_dir = om, em_dir = em,
              ss_mode = "optimized"))
   expect_true("control.ss_new" %in% list.files(file.path("D0-E102-F0-cod", "1", "em")))
-  report <- r4ss::SS_output(file.path("D0-E102-F0-cod", "1", "em"),
-                            covar = FALSE, ncols = 400, NoCompOK = TRUE)
-  get_results_all()
+  report <- suppressWarnings(r4ss::SS_output(file.path("D0-E102-F0-cod", "1", "em"),
+                            covar = FALSE, ncols = 400, NoCompOK = TRUE))
+  suppressWarnings(get_results_all())
   res <- read.csv("ss3sim_scalar.csv", header = TRUE)
   expect_equal(res$LnQ_base_Survey_2_em, 0.7)
   expect_equal(res$SR_sigmaR_em, 0.001)

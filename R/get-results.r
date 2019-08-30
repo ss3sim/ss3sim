@@ -64,7 +64,7 @@ id_scenarios <- function(directory){
 #'
 #' This high level function extracts results from SS3 model runs. Give it a
 #' directory which contains directories for different "scenario" runs, within
-#' which are replicates. It writes two data.frames to file: 
+#' which are replicates. It writes two data.frames to file:
 #' one for single scalar values (e.g., MSY) and a second
 #' that contains output for each year of the same model (timeseries, e.g.,
 #' biomass(year)). These can always be joined later.
@@ -161,20 +161,36 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         ts.all$ID <- paste(ts.all$scenario, ts.all$replicate, sep="-")
         dq.all <- do.call(plyr::rbind.fill, dq.list.out)
         dq.all$ID <- paste(dq.all$scenario, dq.all$replicate, sep="-")
-        write.csv(scalar.all, file="ss3sim_scalar.csv")
-        write.csv(ts.all, file="ss3sim_ts.csv")
+        if(file.exists("ss3sim_scalar.csv")){
+          if(overwrite_files) write.csv(scalar.all, file="ss3sim_scalar.csv")
+          else {
+            warning("ss3sim_scalar.csv already exists and overwrite_files = FALSE, ",
+                    "so a new file was not written")
+          }
+        } else { # can write either way
+          write.csv(scalar.all, file="ss3sim_scalar.csv")
+        }
+        if(file.exists("ss3sim_ts.csv")) {
+          if(overwrite_files) write.csv(ts.all, file="ss3sim_ts.csv")
+          else {
+            warning("ss3sim_ts.csv already exists and overwrite_files = FALSE, ",
+                    "so a new file was not written")
+          }
+        } else { # can write either way
+          write.csv(ts.all, file="ss3sim_ts.csv")
+        }
         ## write.csv(dq.all, file="ss3sim_dq.csv")
-        message(paste("Final result files written to", directory))
-    } else{
+        #message("Final result files written to", directory)
+    } else {
     ## Loop through each scenario in folder in serial
     dq.list <- ts.list <- scalar.list <- list()
     for(i in 1:length(scenarios)){
         setwd(directory)
         scen <- scenarios[i]
         ## If the files already exist just read them in, otherwise get results
-        scalar.file <- paste0(scen,"/results_scalar_",scen,".csv")
-        ts.file <- paste0(scen,"/results_ts_",scen,".csv")
-        dq.file <- paste0(scen,"/results_dq_",scen,".csv")
+        scalar.file <- file.path(scen, paste0("results_scalar_", scen, ".csv"))
+        ts.file <- file.path(scen,paste0("results_ts_",scen,".csv"))
+        dq.file <- file.path(scen, paste0("results_dq_",scen,".csv"))
         ## Delete them if this is flagged on
         if( overwrite_files){
             if(file.exists(scalar.file)) file.remove(scalar.file)
@@ -203,10 +219,26 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
     ts.all$ID <- paste(ts.all$scenario, ts.all$replicate, sep="-")
     dq.all <- do.call(plyr::rbind.fill, dq.list)
     dq.all$ID <- paste(dq.all$scenario, dq.all$replicate, sep="-")
-    write.csv(scalar.all, file="ss3sim_scalar.csv")
-    write.csv(ts.all, file="ss3sim_ts.csv")
+    if(file.exists("ss3sim_scalar.csv")){
+      if(overwrite_files) write.csv(scalar.all, file="ss3sim_scalar.csv")
+      else {
+        warning("ss3sim_scalar.csv already exists and overwrite_files = FALSE, ",
+                   "so a new file was not written")
+      }
+    } else { # can write either way
+      write.csv(scalar.all, file="ss3sim_scalar.csv")
+    }
+    if(file.exists("ss3sim_ts.csv")) {
+      if(overwrite_files) write.csv(ts.all, file="ss3sim_ts.csv")
+      else {
+        warning("ss3sim_ts.csv already exists and overwrite_files = FALSE, ",
+                "so a new file was not written")
+      }
+    } else { # can write either way
+      write.csv(ts.all, file="ss3sim_ts.csv")
+    }
     ## write.csv(dq.all, file="ss3sim_dq.csv")
-    message(paste("Final result files written to", directory))
+    #message("Final result files written to ", directory)
   }
 }
 
@@ -331,9 +363,9 @@ get_results_scenario <- function(scenario, directory=getwd(),
 
             ## Combine them together and massage a bit
             scalar <- cbind(scalar.om, scalar.em)
-            ts <- merge(timeseries.om, timeseries.em, 
+            ts <- merge(timeseries.om, timeseries.em,
               by.x = "Yr_om", by.y = "Yr_em", all = TRUE)
-            dq <- merge(derived.om, derived.em, 
+            dq <- merge(derived.om, derived.em,
               by.x = "Yr_om", by.y = "Yr_em", all = TRUE)
             scalar$scenario <- ts$scenario <- dq$scenario <- scenario
             scalar$replicate <- ts$replicate <- dq$replicate <- rep
