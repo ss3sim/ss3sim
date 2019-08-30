@@ -1,8 +1,9 @@
-# description: no qCPUE, change SR value
-natM_type;          NULL
-natM_n_breakpoints; NULL
+# description: *Deterministic* single estimated M w/ init at historic
+# value, no qCPUE,
+natM_type;          1Parm      
+natM_n_breakpoints; NULL  
 natM_lorenzen;      NULL
-natM_val;           NULL
+natM_val;           c(0.20,3)
 par_name;           LnQ_base_3_CPUE,SR_sigmaR
 par_int;            c(NA,0.001)
 par_phase;          c(-1,-1)
