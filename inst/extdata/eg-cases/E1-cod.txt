@@ -1,10 +1,10 @@
 # description: Single estimated M w/ init at historic value, no qCPUE,
 # fixed steepness
-natM_type;          1Parm      
-natM_n_breakpoints; NULL  
+natM_type;          NULL
+natM_n_breakpoints; NULL
 natM_lorenzen;      NULL
-natM_val;           c(0.20,3)
-par_name;           LnQ_base_3_CPUE
+natM_val;           NULL
+par_name;           LnQ_base_1_Fishery(1)
 par_int;            NA
 par_phase;          -1
 forecast_num;       0
