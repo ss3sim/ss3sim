@@ -1,11 +1,11 @@
 #description: fixed M with no qSurvey
 #author: KO
-natM_type;          NULL      
-natM_n_breakpoints; NULL  
+natM_type;          NULL
+natM_n_breakpoints; NULL
 natM_lorenzen;      NULL
-natM_val;           c(NA,NA)
-par_name;           LnQ_base_2_,CV_young,CV_old
+natM_val;           NULL
+par_name;           LnQ_base_Survey(2),CV_young,CV_old
 par_int;            c(NA,NA,NA)
 par_phase;          c(-1,-1,-1)
- 
-forecast_num;       0 
+
+forecast_num;       0

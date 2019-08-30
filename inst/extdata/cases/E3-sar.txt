@@ -1,11 +1,11 @@
 #description:Fixed M at true value, Estimate h, no qCPUE
 #author: MM
-natM_type;          NULL      
-natM_n_breakpoints; NULL  
+natM_type;          NULL
+natM_n_breakpoints; NULL
 natM_lorenzen;      NULL
-natM_val;           c(NA,-3)
-par_name;           _steep,LnQ_base_3_CPUE
-par_int;            c(NA,NA)
-par_phase;          c(4,-1)
- 
-forecast_num;       0 
+natM_val;           NULL
+par_name;           c(_steep, LnQ_base_Fishery(1), NatM_p_1_Fem_GP_1)
+par_int;            c(NA,NA,NA)
+par_phase;          c(4,-1, -3)
+
+forecast_num;       0

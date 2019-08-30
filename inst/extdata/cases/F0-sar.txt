@@ -1,4 +1,4 @@
 # author: KO
 years; 1913:2012
-years_alter; 1913:2012
+fisheries; 1
 fvals; c(rep(0, 25), rep(0.356, 75))
