@@ -105,8 +105,8 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
 #' @author Sean C. Anderson
 rename_ss3_files <- function(path, ss_bin, extensions) {
   for(i in seq_along(extensions)) {
-    file.rename(from = paste0(path, "/", ss_bin, ".", extensions[i]),
-                to   = paste0(path, "/", "ss3",  ".", extensions[i]))
+    file.rename(from = file.path(path, paste0(ss_bin, ".", extensions[i])),
+                to   = file.path(path, paste0("ss3",  ".", extensions[i])))
   }
 }
 

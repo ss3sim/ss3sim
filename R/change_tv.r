@@ -81,7 +81,7 @@
 #'
 #' # Find the SS3 "Simple" model in the package data:
 #' d <- system.file("extdata", package = "ss3sim")
-#' simple <- paste0(d, "/Simple")
+#' simple <- file.path(d, "Simple")
 #' dir.create("Simple")
 #' file.copy(simple, ".", recursive = TRUE)
 #' setwd("Simple")

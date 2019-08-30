@@ -14,6 +14,6 @@
 #' get_model_folder("cod-em")
 get_model_folder <- function(folder_name) {
   d <- system.file("extdata", package = "ss3sim")
-  f <- paste0(d, "/models/", folder_name)
+  f <- file.path(d, "models", folder_name)
   f
 }

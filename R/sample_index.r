@@ -28,16 +28,16 @@
 #' @examples \donttest{
 #' # Find the example data location:
 #' d <- system.file("extdata", package = "ss3sim")
-#' f_in <- paste0(d, "/example-om/data.ss_new")
+#' f_in <- file.path(d, "example-om", "data.ss_new")
 #' dat_list <- r4ss::SS_readdat(f_in, section = 2, version = NULL,
 #'                              verbose = FALSE)
 #' ex1 <- sample_index(dat_list, outfile = NULL, fleets=c(2,3),
 #'                     years=list(1938:2012, 1938:2012) ,
-#'                     sds_obs=list(1e-6, 1e-6), 
+#'                     sds_obs=list(1e-6, 1e-6),
 #'                     make_plot = TRUE)
 #' ex2 <- sample_index(dat_list, outfile = NULL, fleets=c(2,3),
 #'                     years=list(1938:2012, 1938:2012) ,
-#'                     sds_obs=list(.05, .05), 
+#'                     sds_obs=list(.05, .05),
 #'                     make_plot = TRUE)
 #' library(ggplot2)
 #' ggplot(ex1$CPUE, aes(x=year, y=obs, group=index, ymin=0,

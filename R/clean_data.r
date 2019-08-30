@@ -16,7 +16,7 @@
 ## calcomp_params= list(Nsamp=list(1), fleets=c(1), years=98)
 ## mlacomp_params= NULL
 ## d <- system.file("extdata", package = "ss3sim")
-## f_in <- paste0(d, "/example-om/data.ss_new")
+## f_in <- file.path(d, "example-om", "data.ss_new")
 ## dat_list <- r4ss::SS_readdat(f_in, section = 2, version = NULL,
 ##               verbose = FALSE)
 ## data_units <- calculate_data_units(lcomp_params=lcomp_params,

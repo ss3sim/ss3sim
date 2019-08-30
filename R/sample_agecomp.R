@@ -2,7 +2,7 @@
 #'
 #' Extract age-composition data from a \code{.ss_new} data file and sample
 #' the data. It is assumed that the composition data will be expected values
-#' as written by Stock Synthesis in the second section of the data file, but 
+#' as written by Stock Synthesis in the second section of the data file, but
 #' one can also sample input data. The resulting age-composition
 #' data are assumed to represent observed age composition and will overwrite
 #' the age data in \code{dat_list}, which is returned invisibly.
@@ -30,7 +30,7 @@
 #'
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
-#' f_in <- paste0(d, "/models/cod-om/codOM.dat")
+#' f_in <- fie.path(d, "models", "cod-om", "codOM.dat")
 #' dat_list <- r4ss::SS_readdat(f_in, version = NULL, verbose = FALSE)
 #'
 #' ## Turn off age comps by specifying fleets=NULL
@@ -57,17 +57,17 @@
 #' for (samplesize in c(30, 100, 1000)) {
 #'   if (samplesize > 30) par(mar = c(5.1, 1, 4.1, 2.1))
 #'   plot(dat_list$agebin_vector, true, type = "b", ylim = c(0, 1),
-#'     col = 4, lwd = 2, xlab = "Age", 
+#'     col = 4, lwd = 2, xlab = "Age",
 #'     ylab = ifelse(samplesize == 30, "Proportion", ""),
 #'     main = paste("Sample size =", samplesize))
 #'   if (samplesize == 30) {
-#'     legend("topright", lty = 1, col = 1:4, bty = "n", 
-#'       legend = c("Multinomial", "Dirichlet(1)", "Dirichlet(4)", "Truth")) 
+#'     legend("topright", lty = 1, col = 1:4, bty = "n",
+#'       legend = c("Multinomial", "Dirichlet(1)", "Dirichlet(4)", "Truth"))
 #'   }
 #'   for (i in seq_along(cpars)) {
 #'     ex <- sample_agecomp(dat_list = dat_list, outfile = NULL, fleets = 1,
 #'       Nsamp = list(samplesize), years = list(50), cpar = cpars[i])$agecomp
-#'     lines(dat_list$agebin_vector, prop.table(ex[1, -(1:9)]), 
+#'     lines(dat_list$agebin_vector, prop.table(ex[1, -(1:9)]),
 #'       col = i, type = "b")
 #'   }
 #' }

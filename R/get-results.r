@@ -124,8 +124,8 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
             "get_results_scalar", "get_nll_components",
             "get_results_timeseries", "calculate_runtime"), .combine = rbind) %dopar% {
             ## If the files already exist just read them in, otherwise get results
-                scalar.file <- paste0(parallel_scenario,"/results_scalar_",parallel_scenario,".csv")
-                ts.file <- paste0(parallel_scenario,"/results_ts_",parallel_scenario,".csv")
+                scalar.file <- file.path(parallel_scenario,paste0("results_scalar_",parallel_scenario,".csv"))
+                ts.file <- file.path(parallel_scenario, paste0("results_ts_",parallel_scenario,".csv"))
                 ## Delete them if this is flagged on
                 if( overwrite_files){
                     if(file.exists(scalar.file)) file.remove(scalar.file)
@@ -143,9 +143,9 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         ts.list <- scalar.list <- dq.list <- list()
         flag.na <- rep(0, length(scenarios))
         for(i in 1:length(scenarios)){
-            scalar.file <- paste0(scenarios[i],"/results_scalar_",scenarios[i],".csv")
-            ts.file <- paste0(scenarios[i],"/results_ts_",scenarios[i],".csv")
-            dq.file <- paste0(scenarios[i],"/results_dq_",scenarios[i],".csv")
+            scalar.file <- file.path(scenarios[i],paste0("results_scalar_",scenarios[i],".csv"))
+            ts.file <- file.path(scenarios[i],paste0("results_ts_",scenarios[i],".csv"))
+            dq.file <- file.path(scenarios[i],paste0("results_dq_",scenarios[i],".csv"))
             scalar.list[[i]] <- tryCatch(read.csv(scalar.file, stringsAsFactors=FALSE), error=function(e) NA)
             ts.list[[i]] <- tryCatch(read.csv(ts.file, stringsAsFactors=FALSE), error=function(e) NA)
             dq.list[[i]] <- tryCatch(read.csv(dq.file, stringsAsFactors=FALSE), error=function(e) NA)
@@ -267,9 +267,9 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
 #' @export
 #' @examples \donttest{
 #' d <- system.file("extdata", package = "ss3sim")
-#' case_folder <- paste0(d, "/eg-cases")
-#' om <- paste0(d, "/models/cod-om")
-#' em <- paste0(d, "/models/cod-em")
+#' case_folder <- file.path(d, "eg-cases")
+#' om <- file.path(d, "models", "cod-om")
+#' em <- paste0(d, "models", "cod-em")
 #' run_ss3sim(iterations = 1:2, scenarios =
 #'   c("D0-F0-G0-S0-cod"),
 #'   case_folder = case_folder, om_dir = om, em_dir = em,
@@ -299,12 +299,12 @@ get_results_scenario <- function(scenario, directory=getwd(),
     if(file.exists(scalar.file) | file.exists(ts.file) | file.exists(dq.file)){
         if(overwrite_files) {
             ## Delete them and continue
-            message(paste0("Files deleted for ", scenario))
+            message("Files deleted for ", scenario)
             file.remove(scalar.file, ts.file, dq.file)
         } else {
             ## Stop the progress
-            stop(paste0("Files already exist for ", scenario,"
-              and overwrite_files=FALSE"))
+            stop("Files already exist for ", scenario,"
+              and overwrite_files=FALSE")
         }
     }
 
@@ -315,7 +315,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
         stop(paste("Error:No replicates for scenario", scenario))
     ## Loop through replicates and extract results using r4ss::SS_output
     resids.list <- list()
-    message(paste0("Starting ", scenario, " with ", length(reps.dirs), " iterations"))
+    message("Starting ", scenario, " with ", length(reps.dirs), " iterations")
     ## Get the number of columns for this scenario
     numcol <- read.table(file.path(reps.dirs[1], "om", "Report.sso"),
       col.names = 1:300, fill = TRUE, quote = "",
@@ -325,17 +325,17 @@ get_results_scenario <- function(scenario, directory=getwd(),
         ## Check that the model finished running and if not skip it but
         ## report that ID
         ID <- paste0(scenario, "-", rep)
-        if(!file.exists(paste0(rep,"/em/Report.sso"))){
-            message(paste("Missing Report.sso file for:", ID, "; skipping..."))
+        if(!file.exists(file.path(rep,"em", "Report.sso"))){
+            message("Missing Report.sso file for: ", ID, "; skipping...")
         } else {
             ## Otherwise read in and write to file
             report.em <-
-                SS_output(paste0(rep,"/em/"), covar=FALSE, verbose=FALSE,
+                SS_output(file.path(rep,"em"), covar=FALSE, verbose=FALSE,
                           compfile="none", forecast=TRUE, warn=TRUE,
                           readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
                           ncols=numcol)
             report.om <-
-                SS_output(paste0(rep,"/om/"), covar=FALSE, verbose=FALSE,
+                SS_output(file.path(rep,"om"), covar=FALSE, verbose=FALSE,
                           compfile="none", forecast=FALSE, warn=TRUE,
                           readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
                           ncols=numcol)
@@ -412,16 +412,16 @@ get_results_scenario <- function(scenario, directory=getwd(),
 
             ## Also get some meta data and other convergence info like the
             ## version, runtime, etc. as checks
-            temp <- readLines(con=paste0(rep,"/em/Report.sso"), n=10)
+            temp <- readLines(con=file.path(rep,"em", "Report.sso"), n=10)
             scalar$version <- temp[1]
             scalar$RunTime <- calculate_runtime(temp[4],temp[5])
-            scalar$hessian <- file.exists(paste0(rep,"/em/admodel.cov"))
+            scalar$hessian <- file.exists(file.path(rep,"em", "admodel.cov"))
             ## The number of iterations for the run is only in this file for
             ## some reason.
-            if(!file.exists(paste0(rep,"/em/CumReport.sso"))) {
+            if(!file.exists(file.path(rep,"em", "CumReport.sso"))) {
                 Niterations <- NA
             } else {
-                cumrep <- readLines(paste0(rep,"/em/CumReport.sso"), n=5)
+                cumrep <- readLines(file.path(rep,"em", "CumReport.sso"), n=5)
                 tmp <- grep("N_iter", cumrep)
                 if(length(tmp)==0){
                     scalar$Niterations <- NA

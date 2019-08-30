@@ -88,9 +88,9 @@
 #'
 #' # Find the data in the ss3sim package:
 #' d <- system.file("extdata", package = "ss3sim")
-#' om <- paste0(d, "/models/cod-om")
-#' em <- paste0(d, "/models/cod-em")
-#' case_folder <- paste0(d, "/eg-cases")
+#' om <- file.path(d, "models", "cod-om")
+#' em <- file.path(d, "models", cod-em")
+#' case_folder <- file.path(d, "eg-cases")
 #'
 #' # Without bias adjustment:
 #' run_ss3sim(iterations = 1, scenarios = "D0-F0-cod",
