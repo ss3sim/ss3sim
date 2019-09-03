@@ -72,32 +72,30 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # Create a temporary folder for the output and set the working directory:
 #' temp_path <- file.path(tempdir(), "ss3sim-tv-example")
 #' dir.create(temp_path, showWarnings = FALSE)
 #' wd <- getwd()
 #' setwd(temp_path)
+#' on.exit(setwd(wd), add = TRUE)
 #'
-#' # Find the SS3 "Simple" model in the package data:
 #' d <- system.file("extdata", package = "ss3sim")
-#' simple <- file.path(d, "Simple")
-#' dir.create("Simple")
-#' file.copy(simple, ".", recursive = TRUE)
-#' setwd("Simple")
+#' om <- file.path(d, "models", "cod-om")
+#' dir.create("cod-om")
+#' file.copy(om, ".", recursive = TRUE)
+#' setwd("cod-om")
 #'
-#' # Run SS3 to create control.ss_new and ss.par:
-#' system("ss_safe starter.ss -nohess")
-#'
-#' change_tv(change_tv_list = list("NatM_p_1_Fem_GP_1" = c(rep(0, 20),
-#'       rep(.1, 11)), "SR_BH_steep"=rnorm(31, 0, 0.05)), ctl_file_in =
-#'   "simple.ctl", ctl_file_out = "example.ctl", dat_file_in =
-#'   "simple.dat", dat_file_out = "example.dat")
+#' change_tv(change_tv_list =
+#'             list("NatM_p_1_Fem_GP_1" = c(rep(0, 20), rep(.1, 80)),
+#'                  "SR_BH_steep"=rnorm(100, 0, 0.05)),
+#'           ctl_file_in  = "codOM.ctl",
+#'           ctl_file_out = "example.ctl",
+#'           dat_file_in  = "codOM.dat",
+#'           dat_file_out = "example.dat")
 #'
 #' # Clean up:
-#' setwd("../")
-#' unlink("Simple")
-#' setwd(wd)
+#' unlink("cod-om", recursive = TRUE)
 #' }
 
 change_tv <- function(change_tv_list,

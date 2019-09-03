@@ -76,7 +76,7 @@ plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #' @export
 #' @import ggplot2
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' ts_dat$SpawnBio <- with(ts_dat, (SpawnBio_om-SpawnBio_em)/SpawnBio_om)
 #' # Merge in max_grad, a performance metric, to use for color
 #' ts_dat <- merge(scalar_dat[, c("ID", "max_grad")], ts_dat)

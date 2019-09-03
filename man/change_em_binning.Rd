@@ -46,37 +46,52 @@ according to the user's specification. If the data file also contains
 conditional age-at-length data then these data will be re-binned as well.
 }
 \examples{
-# An small example with conditional age-at-length re-binning:
+# Note that typically this function is used with estimation models in ss3sim,
+# but it is used with an operating model data file in the following examples.
 f <- system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim")
 d <- r4ss::SS_readdat(f, version = NULL, verbose = FALSE)
-l <- change_em_binning(d, outfile = NULL, lbin_method = 1,
+
+# An example with lbin_method = 1
+l1 <- change_em_binning(d, outfile = NULL, lbin_method = 1,
   bin_vector = seq(20, 152, by = 4))
-print(l$lbin_vector)
-print(head(l$lencomp))
-# Add catch at length data (and simplify the bin structure for this example)
-olddat <- change_data(d, outfile = NULL,
-  types = c("len", "age", "cal"), fleets = 1,
-  years = seq(d$styr, d$styr + 4),
-  age_bins = 1:3, len_bins = 4:8)
-olddat$agecomp
-newdat <- change_em_binning(olddat, outfile = NULL, bin_vector = c(4, 6, 8),
-  lbin_method = 1)
-newdat$agecomp
+l1$lbin_vector
+head(l1$lencomp)
 
-# A larger conditional age-at-length re-rebinning example:
-olddat <- change_data(d, outfile = NULL,
- types = c("len", "age", "cal"), fleets = 1,
- years = seq(d$styr, d$styr + 4),
- age_bins = seq(1, 5), len_bins = round(seq(20, 30, length.out = 13), 1))
-
-olddat$lbin_vector
-head(olddat$lencomp)
-head(olddat$agecomp)
-newdat <- change_em_binning(olddat, outfile = NULL, bin_vector = seq(20, 30, 2),
- lbin_method = 1)
-newdat$lbin_vector
-head(newdat$lencomp)
-newdat$agecomp
+#An example with lbin_method = 2
+new_bin_vec <- seq(min(d$lbin_vector), max(d$lbin_vector), by = 4)
+# add the max value if necessary.
+if(new_bin_vec[length(new_bin_vec)] != d$lbin_vector[length(d$lbin_vector)]){
+  new_bin_vec <- c(new_bin_vec,
+                   d$lbin_vector[length(d$lbin_vector)])
+}
+pop_bin_input <- 5
+pop_min_size_input <- min(d$lbin_vector_pop) - 1
+pop_max_size_input <- max(d$lbin_vector_pop) + 5
+lbin_vec_pop <-seq(pop_min_size_input,
+                   pop_max_size_input,
+                   length.out = (pop_max_size_input - pop_min_size_input)/
+                     pop_bin_input + 1
+)
+l2 <- change_em_binning(dat_list = d,
+                            bin_vector = new_bin_vec,
+                            lbin_method = 2,
+                            #Note: need more inputs with lbin_method = 2
+                            pop_binwidth = pop_bin_input,
+                            pop_minimum_size = pop_min_size_input,
+                            pop_maximum_size = pop_max_size_input)
+l2$lbin_method
+# note bin width is now the same as the input
+pop_bin_input
+l2$binwidth
+# note the minimum size has changed based on the input:
+pop_min_size_input
+l2$minimum_size
+# so has max
+l2$maximum_size
+l2$lbin_vector
+#other modified components:
+l2$lbin_vector_pop
+head(l2$lencomp)
 }
 \seealso{
 Other change functions: \code{\link{change_data}},

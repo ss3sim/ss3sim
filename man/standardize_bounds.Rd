@@ -41,7 +41,7 @@ function adjusts the LO and HI values in the \code{em_ctl_file} to
 be a fixed percentage of the initial value for every parameter.
 }
 \examples{
-\donttest{
+\dontrun{
 temp_path <- file.path(tempdir(), "standardize-bounds-example")
 dir.create(temp_path, showWarnings = FALSE)
 wd <- getwd()

@@ -4,7 +4,7 @@ natM_type;          NULL
 natM_n_breakpoints; NULL
 natM_lorenzen;      NULL
 natM_val;           NULL
-par_name;           LnQ_base_Survey(2),SR_sigmaR
+par_name;           c("LnQ_base_Survey(2)","SR_sigmaR")
 par_int;            c(0.7,0.001)
 par_phase;          c(-1,-1)
 forecast_num;       3

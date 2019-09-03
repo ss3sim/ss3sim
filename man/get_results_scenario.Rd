@@ -30,20 +30,21 @@ these .csv files and combines them together into a single "final"
 dataframe.
 }
 \examples{
-\donttest{
+\dontrun{
 d <- system.file("extdata", package = "ss3sim")
 case_folder <- file.path(d, "eg-cases")
 om <- file.path(d, "models", "cod-om")
-em <- paste0(d, "models", "cod-em")
+em <- file.path(d, "models", "cod-em")
 run_ss3sim(iterations = 1:2, scenarios =
-  c("D0-F0-G0-S0-cod"),
+  c("D0-F0-cod"),
   case_folder = case_folder, om_dir = om, em_dir = em,
   case_files = list(F = "F",
-                    D = c("index", "lcomp", "agecomp"),
-                    G = "G",
-                    S = "S"),
+                    D = c("index", "lcomp", "agecomp")),
   bias_adjust = FALSE)
-get_results_scenario(c("D0-F0-G0-S0-cod"), overwrite_files = TRUE)
+get_results_scenario(c("D0-F0-cod"), overwrite_files = TRUE)
+
+#clean up
+unlink("D0-F0-cod", recursive = TRUE)
 }
 }
 \seealso{

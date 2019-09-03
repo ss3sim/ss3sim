@@ -58,7 +58,7 @@ if specified.
 }
 
 \examples{
-\donttest{
+\dontrun{
 # Find the example data location:
 d <- system.file("extdata", package = "ss3sim")
 f_in <- file.path(d, "example-om", "data.ss_new")

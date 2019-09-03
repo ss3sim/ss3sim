@@ -53,7 +53,7 @@ This function (\code{create_argfiles}) automatically adds a line
 as a starting point for \code{change_tv}.
 }
 \examples{
-\donttest{
+\dontrun{
 create_argfiles()
 # Some example input lines:
 #

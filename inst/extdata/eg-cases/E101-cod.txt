@@ -4,7 +4,7 @@ natM_type;          NULL
 natM_n_breakpoints; NULL
 natM_lorenzen;      NULL
 natM_val;           NULL
-par_name;           c(LnQ_base_1_Fishery(1),SR_sigmaR,NatM_p_1_Fem_GP_1)
+par_name;           c("LnQ_base_Fishery(1)","SR_sigmaR,NatM_p_1_Fem_GP_1")
 par_int;            c(NA,0.001, 0.20)
 par_phase;          c(-1,-1,3)
 forecast_num;       0

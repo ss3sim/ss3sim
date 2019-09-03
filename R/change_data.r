@@ -96,28 +96,6 @@
 #' out$binwidth
 #' out$maximum_size
 #' out$minimum_size
-#'
-#' # Sample from index, length composition, age composition, catch at length,
-#' # mean length at age data: (normally this is all done from within run_ss3sim).
-#'
-#' index_params = list(fleets = c(1, 2), years = list(c(1, 2),
-#'   c(10, 11)), sds_obs = c(0.1, 0.2))
-#' lcomp_params = list(Nsamp = list(12345), fleets = 1, years = list(c(1, 5)))
-#' agecomp_params = list(Nsamp = list(12345), fleets = c(1, 2),
-#'   years = list(2, c(15, 16)))
-#' calcomp_params = list(Nsamp = list(1), fleets = c(1), years = list(98))
-#' mlacomp_params = list(fleets = c(2), Nsamp = 54, years = list(c(1, 15)))
-#' data_units <- calculate_data_units(index_params = index_params,
-#'   lcomp_params = lcomp_params, agecomp_params = agecomp_params,
-#'   calcomp_params = calcomp_params, mlacomp_params = mlacomp_params)
-#' data_units
-#' dat2 <- with(data_units, change_data(dat_list = file_in, fleets = fleets,
-#'   years = years, types = types))
-#' dat3 <- ss3sim:::clean_data(dat_list = dat2, lcomp_params = lcomp_params,
-#'   index_params = index_params, agecomp_params = agecomp_params,
-#'   calcomp_params = calcomp_params, mlacomp_params = mlacomp_params,
-#'   verbose = TRUE)
-
 change_data <- function(dat_list, outfile = NULL, fleets, years, types,
   age_bins = NULL, len_bins = NULL, pop_binwidth = NULL,
   pop_minimum_size = NULL, pop_maximum_size = NULL,
@@ -245,15 +223,11 @@ change_data <- function(dat_list, outfile = NULL, fleets, years, types,
 #' @note See further examples in \code{\link{change_data}}.
 #' @return An invisible list of fleets, years, and types.
 #' @examples
-#' ## Should throw error since nothing passed
-#' # calculate_data_units()
 #' ## Only one fleet
-#' calculate_data_units(lcomp_params=list(fleets=1, years=c(3,4,6)))
+#' calculate_data_units(lcomp_params = list(fleets = 1, years = c(3, 4, 6)))
 #' ## Add new fleet
-#' calculate_data_units(lcomp_params=list(fleets=1, years=c(3,4,6)),
-#'                      agecomp_params=list(fleets=2, years=5))
-#' ## If CAL data called, need other types even if not specified
-#' calculate_data_units(calcomp_params=list(fleets=1, years=c(3,4,6)))
+#' calculate_data_units(lcomp_params = list(fleets = 1, years = c(3, 4, 6)),
+#'                      agecomp_params = list(fleets = 2, years = 5))
 #' @export
 calculate_data_units <- function(index_params = NULL, lcomp_params = NULL,
   agecomp_params = NULL, calcomp_params = NULL,

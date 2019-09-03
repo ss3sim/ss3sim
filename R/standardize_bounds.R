@@ -29,7 +29,7 @@
 #' @importFrom r4ss SS_parlines SS_changepars
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' temp_path <- file.path(tempdir(), "standardize-bounds-example")
 #' dir.create(temp_path, showWarnings = FALSE)
 #' wd <- getwd()

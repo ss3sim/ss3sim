@@ -27,7 +27,7 @@
 #' model is long enough to reach an equilibrium catch. The user is
 #' responsible for ensuring this fact.
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' d <- system.file("extdata", package = "ss3sim")
 #' omfolder <- paste0(d, "/models/cod-om")
 #'
