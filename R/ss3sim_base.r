@@ -271,60 +271,60 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       datfile.orig <- SS_readdat(file.path(sc, i, "om", "ss3.dat"),
                                  version = NULL, verbose = FALSE)
 
-        # Start by clearing out the old data. Important so that extra data
-        # doesn't trip up change_data:
-        datfile.modified <- clean_data(dat_list = datfile.orig,
-          index_params = index_params, verbose = FALSE) # why only index_params called here?
+      # Start by clearing out the old data. Important so that extra data
+      # doesn't trip up change_data:
+      datfile.modified <- clean_data(dat_list = datfile.orig,
+        index_params = index_params, verbose = FALSE) # why only index_params called here?
 
-        # check qs are correct.
-        qpars_OM <- r4ss::SS_parlines(file.path(sc,i, "om", "om.ctl"))
-        qpars_OM <- qpars_OM[grep("^LnQ", qpars_OM$Label), ]
-        qinOM <- utils::type.convert(gsub("[a-zA-Z\\(\\)_]", "", qpars_OM$Label))
-        #TODO: can get rid of this check if it is done earlier on the original
-        # EM and OM files read in.
-        if (any(!(index_params$fleets %in% qinOM))) {
-          stop("There are user-selected fleets with indices that do not have q ",
-               "parameters specified in the OM. User selected fleets: ",
-               paste(index_params$fleets, collapse = ", "),
-               "; fleets with q in OM control file: ", paste(qinOM, collapse = ", "),
-               ". Please make sure your OM control file includes q parameters ",
-               "for every fleet that may have an index."
-          )
+      # check qs are correct.
+      qpars_OM <- r4ss::SS_parlines(file.path(sc,i, "om", "om.ctl"))
+      qpars_OM <- qpars_OM[grep("^LnQ", qpars_OM$Label), ]
+      qinOM <- utils::type.convert(gsub("[a-zA-Z\\(\\)_]", "", qpars_OM$Label))
+      #TODO: can get rid of this check if it is done earlier on the original
+      # EM and OM files read in.
+      if (any(!(index_params$fleets %in% qinOM))) {
+        stop("There are user-selected fleets with indices that do not have q ",
+             "parameters specified in the OM. User selected fleets: ",
+             paste(index_params$fleets, collapse = ", "),
+             "; fleets with q in OM control file: ", paste(qinOM, collapse = ", "),
+             ". Please make sure your OM control file includes q parameters ",
+             "for every fleet that may have an index."
+        )
+      }
+      # Remove q setup lines and parlines for fleets that aren't being used as
+      # an index of abundance. TODO: perhaps make into a function?
+      remove_fleetnames <- datfile.orig$fleetnames[-index_params$fleets]
+      # get list of remove_fleetnames
+      # first param is fleetnames to remove
+
+      if(length(remove_fleetnames) > 0) {
+        tmp_ctl <- readLines(file.path(sc,i, "om", "om.ctl"))
+        for(n in remove_fleetnames) {
+          tmp_ctl <- remove_q_ctl(n, ctl.in = tmp_ctl, filename = FALSE,
+                              ctl.out = NULL)
         }
-        # Remove q setup lines and parlines for fleets that aren't being used as
-        # an index of abundance. TODO: perhaps make into a function?
-        remove_fleetnames <- datfile.orig$fleetnames[-index_params$fleets]
-        # get list of remove_fleetnames
-        # first param is fleetnames to remove
+        # write here rather than in function to reduce number of times writing
+        # to file.
+        writeLines(tmp_ctl, file.path(sc,i, "om", "om.ctl"))
+      }
 
-        if(length(remove_fleetnames) > 0) {
-          tmp_ctl <- readLines(file.path(sc,i, "om", "om.ctl"))
-          for(n in remove_fleetnames) {
-            tmp_ctl <- remove_q_ctl(n, ctl.in = tmp_ctl, filename = FALSE,
-                                ctl.out = NULL)
-          }
-          # write here rather than in function to reduce number of times writing
-          # to file.
-          writeLines(tmp_ctl, file.path(sc,i, "om", "om.ctl"))
-        }
+      data_params <- add_nulls(data_params, c("age_bins", "len_bins",
+        "pop_binwidth", "pop_minimum_size", "pop_maximum_size",
+        "tail_compression", "lcomp_constant"))
 
-        data_params <- add_nulls(data_params, c("age_bins", "len_bins",
-          "pop_binwidth", "pop_minimum_size", "pop_maximum_size",
-          "tail_compression", "lcomp_constant"))
-
-        # Note some are data_args and some are data_params:
-        change_data(dat_list         = datfile.modified,
-                    outfile          = file.path(sc, i, "om", "ss3.dat"),
-                    fleets           = data_args$fleets,
-                    years            = data_args$years,
-                    types            = data_args$types,
-                    age_bins         = data_params$age_bins,
-                    len_bins         = data_params$len_bins,
-                    pop_binwidth     = data_params$pop_binwidth,
-                    pop_minimum_size = data_params$pop_minimum_size,
-                    pop_maximum_size = data_params$pop_maximum_size,
-                    tail_compression = data_params$tail_compression,
-                    lcomp_constant   = data_params$lcomp_constant)
+      # Note some are data_args and some are data_params:
+      change_data(dat_list         = datfile.modified,
+                  outfile          = file.path(sc, i, "om", "ss3.dat"),
+                  fleets           = data_args$fleets,
+                  years            = data_args$years,
+                  types            = data_args$types,
+                  age_bins         = data_params$age_bins,
+                  len_bins         = data_params$len_bins,
+                  pop_binwidth     = data_params$pop_binwidth,
+                  pop_minimum_size = data_params$pop_minimum_size,
+                  pop_maximum_size = data_params$pop_maximum_size,
+                  tail_compression = data_params$tail_compression,
+                  lcomp_constant   = data_params$lcomp_constant)
 
       # Run the operating model and copy the dat file over
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
