@@ -965,17 +965,8 @@ to generate a superset of all necessary fleet and year combinations.
 See [the section below](#obs-error) for more information on these types
 of data.
 
-The dynamic creation of available data is the default behavior of the
-package. In practice this means the user does not need to manage which data
-types, fleets, or years are produced by the OM. However, in some cases the
-user may wish to disable this behavior and there is a top-level argument
-available in `ss3sim_base` called `call_change_data`
-(default of `TRUE`). For example, in some cases it may be more
-beneficial to call `change_data` before the simulation to manually
-prepare the OM data file, which will then be available for all subsequent EMs.
-Dynamic OM data creation would then be unnecessary.
 
-In the default case of dynamic data creation, we apply the following rules
+The dynamic creation of available data is the default behavior of the package. In practice this means the user does not need to manage which data types, fleets, or years are produced by the OM. The following rules are applied
 if the arguments to any sampling function are not `NULL`:
 
 - If `sample_agecomp`, generate age-composition data

@@ -35,10 +35,6 @@
 #'   \code{\link{change_em_binning}}.
 #' @param data_params A named list containing arguments for
 #'   \code{\link{change_data}}.
-#' @param call_change_data A boolean of whether to call
-#'   \code{\link{change_data}} and modify the OM at each iteration. Defaults to
-#'   \code{TRUE}. See the vignette for further information on why you might
-#'   choose to turn this off.
 #' @param om_dir The directory with the operating model you want to copy and use
 #'   for the specified simulations.
 #' @param em_dir The directory with the estimation model you want to copy and
@@ -163,7 +159,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   index_params, lcomp_params, agecomp_params, calcomp_params = NULL,
   wtatage_params = NULL, mlacomp_params = NULL, em_binning_params = NULL,
   estim_params = NULL, tv_params = NULL, operat_params = NULL, om_dir, em_dir,
-  retro_params = NULL, data_params = NULL, call_change_data = TRUE,
+  retro_params = NULL, data_params = NULL, 
   user_recdevs = NULL, user_recdevs_warn = TRUE,
   bias_adjust = FALSE, hess_always = FALSE,
   print_logfile = TRUE, sleep = 0, seed = 21,
@@ -275,7 +271,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       datfile.orig <- SS_readdat(file.path(sc, i, "om", "ss3.dat"),
                                  version = NULL, verbose = FALSE)
 
-      if (call_change_data) {
         # Start by clearing out the old data. Important so that extra data
         # doesn't trip up change_data:
         datfile.modified <- clean_data(dat_list = datfile.orig,
@@ -330,7 +325,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                     pop_maximum_size = data_params$pop_maximum_size,
                     tail_compression = data_params$tail_compression,
                     lcomp_constant   = data_params$lcomp_constant)
-      }
+
       # Run the operating model and copy the dat file over
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
       if(!file.exists(file.path(sc, i, "om", "data.ss_new")))
@@ -590,8 +585,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         print(agecomp_params)
         cat("\n\n# chante_retro arguments\n")
         print(retro_params)
-        cat("\n\n# call_change_data?\n")
-        print(call_change_data)
         cat("\n\n# bias adjust?\n")
         print(bias_adjust)
         cat("\n\n# hess always?\n")

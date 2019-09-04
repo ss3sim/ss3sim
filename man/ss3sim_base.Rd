@@ -9,9 +9,9 @@ ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   mlacomp_params = NULL, em_binning_params = NULL,
   estim_params = NULL, tv_params = NULL, operat_params = NULL,
   om_dir, em_dir, retro_params = NULL, data_params = NULL,
-  call_change_data = TRUE, user_recdevs = NULL,
-  user_recdevs_warn = TRUE, bias_adjust = FALSE, hess_always = FALSE,
-  print_logfile = TRUE, sleep = 0, seed = 21, ...)
+  user_recdevs = NULL, user_recdevs_warn = TRUE, bias_adjust = FALSE,
+  hess_always = FALSE, print_logfile = TRUE, sleep = 0, seed = 21,
+  ...)
 }
 \arguments{
 \item{iterations}{Which iterations to run. A numeric vector.}
@@ -63,11 +63,6 @@ use for the specified simulations.}
 
 \item{data_params}{A named list containing arguments for
 \code{\link{change_data}}.}
-
-\item{call_change_data}{A boolean of whether to call
-\code{\link{change_data}} and modify the OM at each iteration. Defaults to
-\code{TRUE}. See the vignette for further information on why you might
-choose to turn this off.}
 
 \item{user_recdevs}{An optional matrix of recruitment deviations to replace
 the recruitment deviations built into the package. The columns represent
