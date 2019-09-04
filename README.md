@@ -30,48 +30,30 @@ Or, install the development version from GitHub:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("ss3sim/ss3sim") # without vignettes (faster)
-devtools::install_github("ss3sim/ss3sim", build_vignettes = TRUE) # with vignettes
+devtools::install_github("ss3sim/ss3sim", 
+  ref = "development", build_vignettes = TRUE, dependencies = TRUE)
+library(ss3sim)
 ```
 
-We'd suggest using the GitHub version since it comes with SS3 executables/binaries. If you're using the CRAN version, you'll need to install these binaries and place them in your system path. ss3sim requires a specific version of the SS3 binary/executable. With the permission of Rick Methot, we have hosted those files [here](https://github.com/ss3sim/ss3sim/tree/master/inst/bin). See the Introduction vignette with `vignette("introduction", "ss3sim")` for more details.
+We'd suggest using the GitHub version since it comes with the SS executables/binaries. If you're using the CRAN version, you'll need to install the binary and place it in your system path. ss3sim requires a specific version of SS. See the Introduction vignette with `vignette("introduction", "ss3sim")` for more details.
 
-If you would like to run simulations in parallel, then also run:
-
-``` r
-install.packages(c("doParallel", "foreach"))
-```
-
-You can then load ss3sim with:
-
-``` r
-library("ss3sim")
-```
-
-You can read the help files with:
+You can read the help files and access the vignettes for reproducible examples of ss3sim simulations with
 
 ``` r
 ?ss3sim
-```
-
-and access the vignettes for reproducible examples of ss3sim simulations with:
-
-``` r
 browseVignettes("ss3sim")
 ```
-
-In addition to the vignette, we published a [paper](http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0092725) in PLOS ONE, which describes the package.
 
 The ss3sim simulation setup
 ---------------------------
 
 An ss3sim simulation requires three types of input:
 
-1.  a base model of the underlying truth (an SS3 operating model)
-2.  a base model of how you will assess that truth (an SS3 estimation model),
+1.  a base model of the underlying truth (an SS operating model)
+2.  a base model of how you will assess that truth (an SS estimation model),
 3.  a set of cases that deviate from these base models that you want to compare (configuration arguments provided as plain-text control files).
 
-You can find examples of these SS3 operating and estimation models [within the package data](https://github.com/seananderson/ss3sim/tree/master/inst/extdata/models). Plain-text case files for some current simulation projects run by the developers of the package are [also available](https://github.com/seananderson/ss3sim/tree/master/inst/extdata/cases) along with the [case files for the examples](https://github.com/seananderson/ss3sim/tree/master/inst/extdata/eg-cases) used in the paper and vignette.
+You can find examples of these SS operating and estimation models [within the package data](https://github.com/seananderson/ss3sim/tree/master/inst/extdata/models). Plain-text case files for some current simulation projects run by the developers of the package are [also available](https://github.com/seananderson/ss3sim/tree/master/inst/extdata/cases) along with the [case files for the examples](https://github.com/seananderson/ss3sim/tree/master/inst/extdata/eg-cases) used in the paper and vignette.
 
 ![An illustration of the input and output file and folder structure.](https://raw.githubusercontent.com/ss3sim/ss3sim/f763cfb462a9e68db670155070cd554812a65160/man/figures/filestructure.png)
 
@@ -126,12 +108,10 @@ citation("ss3sim")
 
 To cite ss3sim in publications use:
 
-  Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, Valero, JL,
-  Cunningham, CJ, Hurtado-Ferro, F, Kuriyama, P, Licandeo, R,
-  McGilliard, CR, Rudd, M, Stawitz, CC, Szuwalski, CS, Taylor, IG,
-  Vert-pre, KA, and Whitten, AR (2016). ss3sim: Fisheries Stock
+  Anderson, SC, Doering, K, Johnson, KF, Monnahan, CC, 
+  Stawitz, CC, and Taylor, IG (2019). ss3sim: Fisheries Stock
   Assessment Simulation Testing with Stock Synthesis. R package
-  version 0.9.3.
+  version 1.0.0.
 
   Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, and Valero, JL
   (2014). ss3sim: An R package for fisheries stock assessment
@@ -141,9 +121,9 @@ To cite ss3sim in publications use:
 toBibtex(citation("ss3sim"))
 @Manual{,
   title = {ss3sim: Fisheries Stock Assessment Simulation Testing with Stock Synthesis},
-  author = {Sean C. Anderson and Cole C. Monnahan and Kelli F. Johnson and Kotaro Ono and Juan L. Valero and Curry J. Cunningham and Felipe Hurtado-Ferro and Peter Kuriyama and Roberto Licandeo and Carey R. McGilliard and Merrill Rudd and Christine C. Stawitz and Cody S. Szuwalski and Ian G. Taylor and Katyana A. Vert-pre and Athol R. Whitten},
-  year = {2016},
-  note = {R package version 0.9.3},
+  author = {Sean C. Anderson and Kathryn Doering and Kelli F. Johnson and Cole C. Monnahan and Christine C. Stawitz and Ian G. Taylor},
+  year = {2019},
+  note = {R package version 1.0.0},
 }
 
 @Article{,
