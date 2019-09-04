@@ -60,9 +60,7 @@
 #' example, you may want to pass additional options to \code{SS3} through
 #' the argument \code{admb_options}. Anything that doesn't match a named
 #' argument in \code{\link{run_ss3model}} will be passed to the
-#' \code{\link{system}} call that runs \code{SS3}.  Also, see the argument
-#' \code{ss_mode} to choose between safe or optimized SS3 executables
-#' (default is safe mode).
+#' \code{\link{system}} call that runs \code{SS3}.
 #' @author Sean Anderson with contributions from many others as listed in
 #'   the DESCRIPTION file.
 #' @importFrom r4ss SS_readdat
@@ -201,8 +199,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(iteration_existed) next
 
       # Make fake .dat files to silence SS3/ADMB:
-      fake_dat <- c("om/ss_opt.dat", "om/ss_safe.dat",
-        "em/ss_opt.dat", "em/ss_safe.dat")
+      fake_dat <- c("om/ss.dat", "em/ss.dat")
       sapply(fake_dat, function(fi) write("\n", file.path(sc, i, fi)))
 
       # Make the OM as specified by the user -----------------------------------

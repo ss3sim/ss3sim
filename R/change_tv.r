@@ -87,7 +87,7 @@
 #' setwd("Simple")
 #'
 #' # Run SS3 to create control.ss_new and ss.par:
-#' system("ss_safe starter.ss -nohess")
+#' system("ss starter.ss -nohess")
 #'
 #' change_tv(change_tv_list = list("NatM_p_1_Fem_GP_1" = c(rep(0, 20),
 #'       rep(.1, 11)), "SR_BH_steep"=rnorm(31, 0, 0.05)), ctl_file_in =

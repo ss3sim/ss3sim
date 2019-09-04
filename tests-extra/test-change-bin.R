@@ -7,6 +7,6 @@ em <- paste0(d, "/models/cod-em")
 case_folder <- "cases"
 
 run_ss3sim(iterations = 1, scenarios = "D2-E0-F0-R0-M0-cod",
-  case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "safe")
+  case_folder = case_folder, om_dir = om, em_dir = em)
 unlink("D2-E0-F0-R0-M0-cod", recursive = TRUE)
 #unlink("D0-E0-F0-R0-M0-cod", recursive = TRUE)

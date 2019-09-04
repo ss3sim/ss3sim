@@ -88,14 +88,14 @@ expect_warning(get_results_all(over = TRUE))
 
 # serial:
 # run_ss3sim(iterations = 1:1, scenarios = "D0-E0-F0-R0-M0-T0-cod",
-#   case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "safe",
+#   case_folder = case_folder, om_dir = om, em_dir = em,
 #   case_files = case_files)
 # unlink("D0-E0-F0-R0-M0-T0-cod", recursive = TRUE) # clean up
 
 # parallel:
 # run_ss3sim(iterations = 1:1,
 #   scenarios = c("D0-E0-F0-R0-M0-T0-cod", "D0-E0-F0-R1-M0-T0-cod"),
-#   case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "safe",
+#   case_folder = case_folder, om_dir = om, em_dir = em,
 #   case_files = case_files, parallel = TRUE)
 # unlink("D0-E0-F0-R0-M0-T0-cod", recursive = TRUE) # clean up
 # unlink("D0-E0-F0-R1-M0-T0-cod", recursive = TRUE) # clean up
