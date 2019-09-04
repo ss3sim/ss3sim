@@ -43,7 +43,7 @@ test_ss3sim <- function(scenario, reset_expectations = FALSE, ...) {
   case_folder <- "cases"
 
   run_ss3sim(iterations = 1, scenarios = scenario, case_folder = case_folder,
-    om_dir = om, em_dir = em, ss_mode = "safe", seed = 1, ...)
+    om_dir = om, em_dir = em, seed = 1, ...)
 
   get_results_all(user_scenarios = scenario)
   results_scalar <- read.csv("ss3sim_scalar.csv")

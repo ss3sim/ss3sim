@@ -7,7 +7,7 @@ em <- paste0(d, "/models/cod-em")
 case_folder <- paste0(d, "/eg-cases")
 
 run_ss3sim(iterations = 1, scenarios = "D0-E0-F0-R0-M0-cod",
-  case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "safe")
+  case_folder = case_folder, om_dir = om, em_dir = em)
 get_results_all()
 
 expect_true(file.exists("ss3sim_scalar.csv"))

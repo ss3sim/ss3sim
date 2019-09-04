@@ -35,10 +35,6 @@
 #'   \code{\link{change_em_binning}}.
 #' @param data_params A named list containing arguments for
 #'   \code{\link{change_data}}.
-#' @param call_change_data A boolean of whether to call
-#'   \code{\link{change_data}} and modify the OM at each iteration. Defaults to
-#'   \code{TRUE}. See the vignette for further information on why you might
-#'   choose to turn this off.
 #' @param om_dir The directory with the operating model you want to copy and use
 #'   for the specified simulations.
 #' @param em_dir The directory with the estimation model you want to copy and
@@ -64,9 +60,7 @@
 #' example, you may want to pass additional options to \code{SS3} through
 #' the argument \code{admb_options}. Anything that doesn't match a named
 #' argument in \code{\link{run_ss3model}} will be passed to the
-#' \code{\link{system}} call that runs \code{SS3}.  Also, see the argument
-#' \code{ss_mode} to choose between safe or optimized SS3 executables
-#' (default is safe mode).
+#' \code{\link{system}} call that runs \code{SS3}.
 #' @author Sean Anderson with contributions from many others as listed in
 #'   the DESCRIPTION file.
 #' @importFrom r4ss SS_readdat
@@ -174,7 +168,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   index_params, lcomp_params, agecomp_params, calcomp_params = NULL,
   wtatage_params = NULL, mlacomp_params = NULL, em_binning_params = NULL,
   estim_params = NULL, tv_params = NULL, operat_params = NULL, om_dir, em_dir,
-  retro_params = NULL, data_params = NULL, call_change_data = TRUE,
+  retro_params = NULL, data_params = NULL, 
   user_recdevs = NULL, user_recdevs_warn = TRUE,
   bias_adjust = FALSE, hess_always = FALSE,
   print_logfile = TRUE, sleep = 0, seed = 21,
@@ -216,8 +210,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(iteration_existed) next
 
       # Make fake .dat files to silence SS3/ADMB:
-      fake_dat <- c("om/ss_opt.dat", "om/ss_safe.dat",
-        "em/ss_opt.dat", "em/ss_safe.dat")
+      fake_dat <- c("om/ss.dat", "em/ss.dat")
       sapply(fake_dat, function(fi) write("\n", file.path(sc, i, fi)))
 
       # Make the OM as specified by the user -----------------------------------
@@ -286,62 +279,61 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       datfile.orig <- SS_readdat(file.path(sc, i, "om", "ss3.dat"),
                                  version = NULL, verbose = FALSE)
 
-      if (call_change_data) {
-        # Start by clearing out the old data. Important so that extra data
-        # doesn't trip up change_data:
-        datfile.modified <- clean_data(dat_list = datfile.orig,
-          index_params = index_params, verbose = FALSE) # why only index_params called here?
+      # Start by clearing out the old data. Important so that extra data
+      # doesn't trip up change_data:
+      datfile.modified <- clean_data(dat_list = datfile.orig,
+        index_params = index_params, verbose = FALSE) # why only index_params called here?
 
-        # check qs are correct.
-        qpars_OM <- r4ss::SS_parlines(file.path(sc,i, "om", "om.ctl"))
-        qpars_OM <- qpars_OM[grep("^LnQ", qpars_OM$Label), ]
-        qinOM <- utils::type.convert(gsub("[a-zA-Z\\(\\)_]", "", qpars_OM$Label))
-        #TODO: can get rid of this check if it is done earlier on the original
-        # EM and OM files read in.
-        if (any(!(index_params$fleets %in% qinOM))) {
-          stop("There are user-selected fleets with indices that do not have q ",
-               "parameters specified in the OM. User selected fleets: ",
-               paste(index_params$fleets, collapse = ", "),
-               "; fleets with q in OM control file: ", paste(qinOM, collapse = ", "),
-               ". Please make sure your OM control file includes q parameters ",
-               "for every fleet that may have an index."
-          )
-        }
-        # Remove q setup lines and parlines for fleets that aren't being used as
-        # an index of abundance. TODO: perhaps make into a function?
-        remove_fleetnames <- datfile.orig$fleetnames[-index_params$fleets]
-        # get list of remove_fleetnames
-        # first param is fleetnames to remove
-
-        if(length(remove_fleetnames) > 0) {
-          tmp_ctl <- readLines(file.path(sc,i, "om", "om.ctl"))
-          for(n in remove_fleetnames) {
-            tmp_ctl <- remove_q_ctl(n, ctl.in = tmp_ctl, filename = FALSE,
-                                ctl.out = NULL)
-          }
-          # write here rather than in function to reduce number of times writing
-          # to file.
-          writeLines(tmp_ctl, file.path(sc,i, "om", "om.ctl"))
-        }
-
-        data_params <- add_nulls(data_params, c("age_bins", "len_bins",
-          "pop_binwidth", "pop_minimum_size", "pop_maximum_size",
-          "tail_compression", "lcomp_constant"))
-
-        # Note some are data_args and some are data_params:
-        change_data(dat_list         = datfile.modified,
-                    outfile          = file.path(sc, i, "om", "ss3.dat"),
-                    fleets           = data_args$fleets,
-                    years            = data_args$years,
-                    types            = data_args$types,
-                    age_bins         = data_params$age_bins,
-                    len_bins         = data_params$len_bins,
-                    pop_binwidth     = data_params$pop_binwidth,
-                    pop_minimum_size = data_params$pop_minimum_size,
-                    pop_maximum_size = data_params$pop_maximum_size,
-                    tail_compression = data_params$tail_compression,
-                    lcomp_constant   = data_params$lcomp_constant)
+      # check qs are correct.
+      qpars_OM <- r4ss::SS_parlines(file.path(sc,i, "om", "om.ctl"))
+      qpars_OM <- qpars_OM[grep("^LnQ", qpars_OM$Label), ]
+      qinOM <- utils::type.convert(gsub("[a-zA-Z\\(\\)_]", "", qpars_OM$Label))
+      #TODO: can get rid of this check if it is done earlier on the original
+      # EM and OM files read in.
+      if (any(!(index_params$fleets %in% qinOM))) {
+        stop("There are user-selected fleets with indices that do not have q ",
+             "parameters specified in the OM. User selected fleets: ",
+             paste(index_params$fleets, collapse = ", "),
+             "; fleets with q in OM control file: ", paste(qinOM, collapse = ", "),
+             ". Please make sure your OM control file includes q parameters ",
+             "for every fleet that may have an index."
+        )
       }
+      # Remove q setup lines and parlines for fleets that aren't being used as
+      # an index of abundance. TODO: perhaps make into a function?
+      remove_fleetnames <- datfile.orig$fleetnames[-index_params$fleets]
+      # get list of remove_fleetnames
+      # first param is fleetnames to remove
+
+      if(length(remove_fleetnames) > 0) {
+        tmp_ctl <- readLines(file.path(sc,i, "om", "om.ctl"))
+        for(n in remove_fleetnames) {
+          tmp_ctl <- remove_q_ctl(n, ctl.in = tmp_ctl, filename = FALSE,
+                              ctl.out = NULL)
+        }
+        # write here rather than in function to reduce number of times writing
+        # to file.
+        writeLines(tmp_ctl, file.path(sc,i, "om", "om.ctl"))
+      }
+
+      data_params <- add_nulls(data_params, c("age_bins", "len_bins",
+        "pop_binwidth", "pop_minimum_size", "pop_maximum_size",
+        "tail_compression", "lcomp_constant"))
+
+      # Note some are data_args and some are data_params:
+      change_data(dat_list         = datfile.modified,
+                  outfile          = file.path(sc, i, "om", "ss3.dat"),
+                  fleets           = data_args$fleets,
+                  years            = data_args$years,
+                  types            = data_args$types,
+                  age_bins         = data_params$age_bins,
+                  len_bins         = data_params$len_bins,
+                  pop_binwidth     = data_params$pop_binwidth,
+                  pop_minimum_size = data_params$pop_minimum_size,
+                  pop_maximum_size = data_params$pop_maximum_size,
+                  tail_compression = data_params$tail_compression,
+                  lcomp_constant   = data_params$lcomp_constant)
+
       # Run the operating model and copy the dat file over
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
       if(!file.exists(file.path(sc, i, "om", "data.ss_new")))
@@ -601,8 +593,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         print(agecomp_params)
         cat("\n\n# chante_retro arguments\n")
         print(retro_params)
-        cat("\n\n# call_change_data?\n")
-        print(call_change_data)
         cat("\n\n# bias adjust?\n")
         print(bias_adjust)
         cat("\n\n# hess always?\n")

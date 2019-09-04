@@ -11,11 +11,6 @@
 #' @param end Upper fishing mortality level
 #' @param by_val Interval in which you wish to increment the fishing mortality
 #'   level
-#' @param ss_mode SS3 binary option. One of \code{"safe"} for the safe version
-#'   of SS3 or \code{"optimized"} for the optimized version of SS3. The relevant
-#'   binary needs to be in your system's path. See the vignette
-#'   \code{vignette("ss3sim-vignette", package = "ss3sim")} for details and
-#'   links to the binary files. Defaults to safe mode.
 #' @importFrom r4ss SS_readdat SS_writedat
 #' @return Creates a plot and a table with catches and F values (see the
 #'   \code{results_out} folder). Also invisibly returns the Fmsy table as a data
@@ -41,7 +36,7 @@
 #' }
 
 profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",
-  start = 0.00, end = 1.5, by_val = 0.01, ss_mode = c("safe", "optimized")) {
+  start = 0.00, end = 1.5, by_val = 0.01) {
             # overM needs to be the value
             # you want to add or subtract from the trueM
             # or the case file you want to get the value
@@ -50,9 +45,7 @@ profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",
   origWD <- getwd()
   on.exit(expr = setwd(origWD), add = FALSE)
 
-  if(ss_mode[1] == "optimized") ss_mode <- "opt"
-  ss_bin <- paste0("ss_", ss_mode[1])
-  ss_bin <- get_bin(ss_bin)
+  ss_bin <- get_bin("ss")
 
   fVector <- seq(start, end, by_val)
   fEqCatch <- NULL
