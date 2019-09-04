@@ -1,9 +1,9 @@
 #' Get SS3 binary/executable location in package
 #'
-#' @param bin_name Name of SS3 binary
+#' @param bin_name Name of SS3 binary, defaults to "ss_safe"
 #'
 #' @return The path to an SS3 binary. If using the GitHub version of the
-#'   package, this will be an internal binary. Otherewise, this function
+#'   package, this will be an internal binary. Otherwise, this function
 #'   will search for a version of the binary in your path. See the
 #'   ss3sim vignette.
 #'
@@ -13,7 +13,7 @@
 #' get_bin()
 #' }
 
-get_bin <- function(bin_name = "ss_opt") {
+get_bin <- function(bin_name = "ss") {
   # code inspiration from glmmADMB package:
   if (.Platform$OS.type == "windows") {
     platform <- "Windows64"

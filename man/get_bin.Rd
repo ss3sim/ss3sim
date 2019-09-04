@@ -4,14 +4,14 @@
 \alias{get_bin}
 \title{Get SS3 binary/executable location in package}
 \usage{
-get_bin(bin_name = "ss_opt")
+get_bin(bin_name = "ss_safe")
 }
 \arguments{
-\item{bin_name}{Name of SS3 binary}
+\item{bin_name}{Name of SS3 binary, defaults to "ss_safe"}
 }
 \value{
 The path to an SS3 binary. If using the GitHub version of the
-  package, this will be an internal binary. Otherewise, this function
+  package, this will be an internal binary. Otherwise, this function
   will search for a version of the binary in your path. See the
   ss3sim vignette.
 }

@@ -46,6 +46,7 @@ temp_path <- file.path(tempdir(), "standardize-bounds-example")
 dir.create(temp_path, showWarnings = FALSE)
 wd <- getwd()
 setwd(temp_path)
+on.exit(setwd(wd), add = TRUE)
 
 ## Set to the path and filename of the OM and EM control files
 OM.ctl <- system.file("extdata", "models", "cod-om", "codOM.ctl",
@@ -56,9 +57,7 @@ file.copy(OM.ctl, "om.ctl")
 file.copy(EM.ctl, "em.ctl")
 
 ## Use SS_parlines to get the proper names for parameters for the data frame
-ss_version <- get_ss_ver_file(file = "om.ctl") # get the ss version
-om.pars <- r4ss::SS_parlines(ctlfile="om.ctl", version = ss_version)
-em.pars <- r4ss::SS_parlines(ctlfile="em.ctl", version = ss_version)
+em.pars <- r4ss::SS_parlines(ctlfile = "em.ctl")
 
 ## Set percentages to make lower and upper bounds
 lo.percent<-rep(.5,11)
@@ -69,11 +68,12 @@ percent_df<-data.frame(Label=as.character(em.pars[c(1:6,17,27:30),"Label"]),
   lo=lo.percent,hi=hi.percent)
 
 ##Run function
-standardize_bounds(percent_df = percent_df, dir = temp_path, em_ctl_file = "em.ctl",
+standardize_bounds(percent_df = percent_df, dir = ".",
+                   em_ctl_file = "em.ctl",
                    om_ctl_file = "om.ctl")
+unlink("om.ctl")
+unlink("em.ctl")
 unlink(temp_path, recursive = TRUE)
-
-setwd(wd)
 }
 }
 \author{

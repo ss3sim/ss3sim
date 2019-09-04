@@ -61,29 +61,41 @@ if specified.
 \dontrun{
 # Find the example data location:
 d <- system.file("extdata", package = "ss3sim")
-f_in <- file.path(d, "example-om", "data.ss_new")
-dat_list <- r4ss::SS_readdat(f_in, section = 2, version = NULL,
-                             verbose = FALSE)
-ex1 <- sample_index(dat_list, outfile = NULL, fleets=c(2,3),
-                    years=list(1938:2012, 1938:2012) ,
-                    sds_obs=list(1e-6, 1e-6),
-                    make_plot = TRUE)
-ex2 <- sample_index(dat_list, outfile = NULL, fleets=c(2,3),
-                    years=list(1938:2012, 1938:2012) ,
-                    sds_obs=list(.05, .05),
-                    make_plot = TRUE)
-library(ggplot2)
-ggplot(ex1$CPUE, aes(x=year, y=obs, group=index, ymin=0,
-  colour = as.factor(index))) +
-  geom_line() +
-  geom_point(data=ex2$CPUE,
-    aes(x=year, y=obs, colour=as.factor(index), group=index))
-## Exclude a fleet and have varying sds_obs by year
-ex3 <- sample_index(dat_list, outfile = NULL, fleets=c(2),
-                    years=list(1938:2012),
-                    sds_obs=list(seq(.001, .1, len=75)))
-ggplot(ex3$CPUE, aes(x=year, y=obs, group=index, ymin=0,
-                colour=as.factor(index)))+geom_point()
+f_in <- file.path(d, "example-om", "ss3_expected_values.dat")
+dat_list <- SS_readdat(f_in, version = NULL, verbose = FALSE)
+# Note the initial expected values for the index data:
+dat_list$CPUE # Only has expected values for fleet 2 in every other year from
+# 76 to 100, so can only sample from fleet 2 during every other year between
+# 76 and 100
+sam_yrs <- seq(76, 100, by = 2)
+ex1 <- sample_index(dat_list,
+                   outfile = NULL,
+                   fleets = 2,
+                   years = list(sam_yrs),
+                   sds_obs=list(seq(.001, .1,
+                     length.out = length(sam_yrs))))
+ex1$CPUE
+# could sample from less years, but not more:
+ex2 <- sample_index(dat_list,
+                    outfile = NULL,
+                    fleets = 2,
+                    years = list(sam_yrs[c(-1, -2)]),
+                    sds_obs=list(seq(.001, .1,
+                      length.out = length(sam_yrs[c(-1, -2)]))))
+ex2$CPUE
+# Also, sd can be fixed across years:
+ex3 <- sample_index(dat_list,
+                    outfile = NULL,
+                    fleets = 2,
+                    years = list(sam_yrs),
+                    sds_obs=list(0.01))
+ex3$CPUE
+# If fleet 1 also had expected values in the index that you wanted to sample:
+# ex4 <- sample_index(dat_list,
+#                     outfile = NULL,
+#                     fleets = c(1,2),
+#                     years = list(sam_yrs, sam_yrs),
+#                     sds_obs=list(0.01, 0.01))
 }
 }
 \seealso{
