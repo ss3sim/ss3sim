@@ -22,15 +22,14 @@ case_folder <- file.path(d, "eg-cases")
 test_that("A basic run_ss3sim scenario runs and existing iteration skipped", {
   skip_on_cran()
   suppressWarnings(run_ss3sim(iterations = 1, scenarios = "D0-F0-cod",
-    case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "optimized"))
+    case_folder = case_folder, om_dir = om, em_dir = em))
   #check ran
   expect_true("control.ss_new" %in% list.files(file.path("D0-F0-cod","1", "em")))
   #check provides warning if skippint iteration.
   expect_warning(run_ss3sim(iterations = 1, scenarios = "D0-F0-cod",
                             case_folder = case_folder,
                             om_dir = om,
-                            em_dir = em,
-                            ss_mode = "optimized"),
+                            em_dir = em),
     "already exists", all = TRUE, fixed = TRUE)
   unlink("D0-F0-cod", recursive = TRUE) # clean up
 })
@@ -38,7 +37,7 @@ test_that("A basic run_ss3sim scenario runs and existing iteration skipped", {
 test_that("run_ss3sim works with multiple scenarios (no parallel)", {
   skip_on_cran()
   suppressWarnings(run_ss3sim(iterations = 1, scenarios = c("D0-F0-cod", "D1-F0-cod"),
-             case_folder = case_folder, om_dir = om, em_dir = em, ss_mode = "optimized"))
+             case_folder = case_folder, om_dir = om, em_dir = em))
   expect_true("control.ss_new" %in% list.files(file.path("D0-F0-cod","1", "em")))
   expect_true("control.ss_new" %in% list.files(file.path("D1-F0-cod", "1", "em")))
   unlink("D0-F0-cod", recursive = TRUE) # clean up
@@ -65,8 +64,7 @@ test_that("A basic run_ss3sim scenario with forecasting runs", {
   skip_on_cran()
   suppressWarnings(run_ss3sim(iterations = 1, scenarios = "D0-E102-F0-cod",
              case_folder = case_folder, case_files = case_files,
-             om_dir = om, em_dir = em,
-             ss_mode = "optimized"))
+             om_dir = om, em_dir = em))
   expect_true("control.ss_new" %in% list.files(file.path("D0-E102-F0-cod", "1", "em")))
   report <- suppressWarnings(r4ss::SS_output(file.path("D0-E102-F0-cod", "1", "em"),
                             covar = FALSE, ncols = 400, NoCompOK = TRUE))

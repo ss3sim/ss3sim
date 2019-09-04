@@ -4,7 +4,7 @@
 \alias{get_bin}
 \title{Get SS3 binary/executable location in package}
 \usage{
-get_bin(bin_name = "ss_safe")
+get_bin(bin_name = "ss")
 }
 \arguments{
 \item{bin_name}{Name of SS3 binary, defaults to "ss_safe"}

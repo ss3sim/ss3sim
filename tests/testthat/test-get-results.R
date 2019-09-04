@@ -15,9 +15,7 @@ test_that("get_results_all() works", {
   skip_on_cran()
 
   suppressWarnings(run_ss3sim(iterations = 1, scenarios = "D0-F0-cod",
-    case_folder = case_folder, om_dir = om, em_dir = em,
-    ss_mode = "optimized"))
-
+    case_folder = case_folder, om_dir = om, em_dir = em))
   get_results_all()
   expect_true(file.exists("ss3sim_scalar.csv"))
   expect_true(file.exists("ss3sim_ts.csv"))
@@ -43,7 +41,6 @@ test_that("get_results_all() doesn't overwrite files if overwrite_files = FALSE"
 
 test_that("get_results_scenario() doesn't overwrite files if overwrite_files = FALSE", {
   skip_on_cran()
-
   expect_error(get_results_scenario("D0-F0-cod", overwrite_files = FALSE),
                "Files already exist for")
 })

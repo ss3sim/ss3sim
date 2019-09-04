@@ -102,9 +102,7 @@ result in the same recruitment deviations.}
 example, you may want to pass additional options to \code{SS3} through
 the argument \code{admb_options}. Anything that doesn't match a named
 argument in \code{\link{run_ss3model}} will be passed to the
-\code{\link{system}} call that runs \code{SS3}.  Also, see the argument
-\code{ss_mode} to choose between safe or optimized SS3 executables
-(default is safe mode).}
+\code{\link{system}} call that runs \code{SS3}.}
 }
 \value{
 The output will appear in whatever your current \R working directory
