@@ -34,7 +34,7 @@ devtools::install_github("ss3sim/ss3sim",
 library(ss3sim)
 ```
 
-We'd suggest using the GitHub version since it comes with the SS executables/binaries. If you're using the CRAN version, you'll need to install the binary and place it in your system path. ss3sim requires a specific version of SS. See the Introduction vignette with `vignette("introduction", "ss3sim")` for more details.
+We suggest using the GitHub version because it comes with the SS executable/binary. If you are using the CRAN version, you'll need to install the binary and place it in your system path. See the Introduction vignette with `vignette("introduction", "ss3sim")` for more details on how to get the latest version of SS and place it in your path.
 
 You can read the help files and access the vignettes for reproducible examples of ss3sim simulations with
 
@@ -61,7 +61,7 @@ An illustration of the input and output file and folder structure.
 How ss3sim works
 ----------------
 
-ss3sim works by converting simulation arguments (e.g. a given natural mortality trajectory) into manipulations of SS3 configuration files. It takes care of running the operating and estimation models as well as making these manipulations at the appropriate stage in the simulation.
+ss3sim works by converting simulation arguments (e.g., a given natural mortality trajectory) into manipulations of SS configuration files. It takes care of running the operating and estimation models as well as making these manipulations at the appropriate stage in the simulation.
 
 ss3sim functions are divided into three types:
 
