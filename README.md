@@ -4,7 +4,7 @@ ss3sim
 
 [![Build Status](https://travis-ci.org/ss3sim/ss3sim.png?branch=master)](https://travis-ci.org/ss3sim/ss3sim) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/ss3sim/ss3sim?branch=master&svg=true)](https://ci.appveyor.com/project/ss3sim/ss3sim) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ss3sim)](https://cran.r-project.org/package=ss3sim)
 
-ss3sim is an R package that facilitates flexible, rapid, and reproducible fisheries stock assessment simulation testing with the widely-used [Stock Synthesis 3](http://nft.nefsc.noaa.gov/Stock_Synthesis_3.htm) (SS3) statistical age-structured stock assessment framework.
+ss3sim is an R package that facilitates flexible, rapid, and reproducible fisheries stock assessment simulation testing with the widely-used [Stock Synthesis](https://vlab.ncep.noaa.gov/web/stock-synthesis) (SS) statistical age-structured stock assessment framework.
 
 Contents
 --------
