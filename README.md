@@ -1,4 +1,3 @@
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 ss3sim
 ======
 
@@ -101,39 +100,9 @@ Anderson, S.C., C.C. Monnahan, K.F. Johnson, K. Ono, J.L. Valero. ss3sim: An R p
 Citing ss3sim
 -------------
 
-If you use ss3sim in a publication, please cite ss3sim as shown by `citation("ss3sim")`:
+If you use ss3sim in a publication, please cite ss3sim as shown by
 
 ``` r
 citation("ss3sim")
-
-To cite ss3sim in publications use:
-
-  Anderson, SC, Doering, K, Johnson, KF, Monnahan, CC, 
-  Stawitz, CC, and Taylor, IG (2019). ss3sim: Fisheries Stock
-  Assessment Simulation Testing with Stock Synthesis. R package
-  version 1.0.0.
-
-  Anderson, SC, Monnahan, CC, Johnson, KF, Ono, K, and Valero, JL
-  (2014). ss3sim: An R package for fisheries stock assessment
-  simulation with Stock Synthesis. PLOS ONE. 9(4): e92725.
-  http://doi.org/10.1371/journal.pone.0092725.
-
 toBibtex(citation("ss3sim"))
-@Manual{,
-  title = {ss3sim: Fisheries Stock Assessment Simulation Testing with Stock Synthesis},
-  author = {Sean C. Anderson and Kathryn Doering and Kelli F. Johnson and Cole C. Monnahan and Christine C. Stawitz and Ian G. Taylor},
-  year = {2019},
-  note = {R package version 1.0.0},
-}
-
-@Article{,
-  title = {ss3sim: An {R} package for fisheries stock assessment simulation with {Stock Synthesis}},
-  author = {Sean C. Anderson and Cole C. Monnahan and Kelli F. Johnson and Kotaro Ono and Juan L. Valero},
-  year = {2014},
-  journal = {PLOS ONE},
-  volume = {9},
-  number = {4},
-  pages = {e92725},
-  doi = {10.1371/journal.pone.0092725},
-}
 ```
