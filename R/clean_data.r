@@ -1,38 +1,3 @@
-## Some prelim tests for development, use these to create unit tests????
-
-## scen <- expand_scenarios(cases=list(D=80, E=0, F=0), species="fla")
-## case_files <- list(F = "F",  E="E",  D =
-##     c("index", "lcomp", "agecomp"))
-## a <- get_caseargs(folder = 'data test cases', scenario = scen[1],
-##                   case_files = case_files)
-## lcomp_params= a$lcomp
-## agecomp_params= a$agecomp
-## calcomp_params= a$calcomp
-## mlacomp_params= a$mlacomp
-
-
-## lcomp_params= list(Nsamp=list(12345), fleets=1, years=list(c(1,5)))
-## agecomp_params= list(Nsamp=list(12345), fleets=c(1,2), years=list(2,c(15,16)))
-## calcomp_params= list(Nsamp=list(1), fleets=c(1), years=98)
-## mlacomp_params= NULL
-## d <- system.file("extdata", package = "ss3sim")
-## f_in <- file.path(d, "example-om", "data.ss_new")
-## dat_list <- r4ss::SS_readdat(f_in, section = 2, version = NULL,
-##               verbose = FALSE)
-## data_units <- calculate_data_units(lcomp_params=lcomp_params,
-##                      agecomp_params=agecomp_params,
-##                      calcomp_params=calcomp_params,
-##                      mlacomp_params=mlacomp_params)
-## dat2 <- with(data_units, change_data(dat_list=dat_list, fleets=fleets, years=years,
-##                              types=types))
-## dat2 <- change_data(dat_list, fleets=c(1,2), years=c(4,5),
-##                     types=c("age","len", "mla", "cal"))
-## dat_list <- dat2
-## dat3 <- clean_datfile(dat_list=dat2, lcomp_params=lcomp_params,
-##                      agecomp_params=agecomp_params,
-##                      calcomp_params=calcomp_params,
-##                      mlacomp_params=mlacomp_params,
-##                       verbose=TRUE)
 #' Given sampling arguments remove ("clean") all data in a .dat file that
 #' is not specified
 #'
