@@ -103,8 +103,8 @@ test_that("change_f provides correct output w/o detailed F setup", {
   expect_equal(F_det_e_line-F_det_s_line+1, length(input$years))
 })
 
-# test_that("change_f provides correct output when F_method is 1 or 3 ", {
-#   #TODO develop test for this we think it is neceessary, or remove.
-#   ctl <-  change_f(input$years, input$fisheries, input$fvals,
-#                    ctl_file_in = "codEM.ctl", ctl_file_out = NULL)
-# })
+test_that("change_f provides error when F_method is 1 or 3 ", {
+  expect_error(change_f(input$years, input$fisheries, input$fvals,
+                   ctl_file_in = "codEM.ctl", ctl_file_out = NULL),
+               "change_F only works with F_method = 2")
+})
