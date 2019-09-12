@@ -25,12 +25,12 @@ ss3sim is an R package to make it relatively quick and easy to run simulations w
 ## Installation of ss3sim
 
 ss3sim can be run on OS X, Windows, or Linux.
-The CRAN version of ss3sim mirrors the master branch of the [github repository](https://github.com/ss3sim/ss3sim), which houses the code base. The development version contains the newest features that are not available in the CRAN version and can be installed from using devtools.
+The [CRAN version of ss3sim](https://cran.r-project.org/package=ss3sim) mirrors the master branch of the [github repository](https://github.com/ss3sim/ss3sim), which houses the code base. The development version contains the newest features that are not available in the CRAN version and can be installed from using devtools.
 
 ```{r, install-and-load, eval=FALSE}
 # CRAN version
 install.packages("ss3sim")
-# Github version, which depends on 'devtools'
+# Github version, which depends on "devtools"
 # install.packages("devtools")
 devtools::install_github("ss3sim/ss3sim", 
   ref = "development", dependencies = TRUE, build_vignettes = TRUE)
@@ -40,7 +40,9 @@ library("ss3sim")
 
 ## Stock Synthesis (SS)
 
-ss3sim was originally based on SS version 3.24O. The package was updated in 2019 to use a more recent version of SS and dedicated effort will be dedicated to keep the package up to date. The most recent version of SS that was tested for use with ss3sim is available on github (e.g., see [here](https://github.com/ss3sim/ss3sim/blob/master/inst/bin/Windows64/ss.exe?raw=true) for the Windows version) or can be obtained from the SS repository on [Vlab](https://vlab.ncep.noaa.gov/web/stock-synthesis/document-library/-/document_library/0LmuycloZeIt/view/5042555?_com_liferay_document_library_web_portlet_DLPortlet_INSTANCE_0LmuycloZeIt_redirect=https%3A%2F%2Fvlab.ncep.noaa.gov%3A443%2Fweb%2Fstock-synthesis%2Fdocument-library%3Fp_p_id%3Dcom_liferay_document_library_web_portlet_DLPortlet_INSTANCE_0LmuycloZeIt%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview). ss3sim uses the safe version, which checks that vector, matrix, or array bounds are not exceeded. There is a slight overhead in this checking, but it may help identify issues. ss3sim requires that this binary, i.e., ss.exe, be in your path. This means that your operating system knows where the binary file is located. See [the vignette section on paths](#path) for details. 
+ss3sim was originally based on SS version 3.24O. The package was updated in 2019 to use SS 3.30 and future efforts will be dedicated to continuing to keep ss3sim up to date with SS builds. The most recent version of SS that was tested for use with ss3sim is available on github (e.g., see [here](https://github.com/ss3sim/ss3sim/blob/master/inst/bin/Windows64/ss.exe?raw=true) for the Windows version) or can be obtained from the SS repository on [Vlab](https://vlab.ncep.noaa.gov/web/stock-synthesis/document-library/-/document_library/0LmuycloZeIt/view/5042555?_com_liferay_document_library_web_portlet_DLPortlet_INSTANCE_0LmuycloZeIt_redirect=https%3A%2F%2Fvlab.ncep.noaa.gov%3A443%2Fweb%2Fstock-synthesis%2Fdocument-library%3Fp_p_id%3Dcom_liferay_document_library_web_portlet_DLPortlet_INSTANCE_0LmuycloZeIt%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview). ss3sim uses the safe version, which checks that vector, matrix, or array bounds are not exceeded. There is a slight overhead in this checking, but it may help identify issues. ss3sim requires that this binary, i.e., ss.exe, be in your path. This means that your operating system knows where the binary file is located. See [the vignette section on paths](#path) for details. 
+
+ss3sim also relies on [r4ss](https://github.com/r4ss/r4ss) to read and write SS files. r4ss is also available on [CRAN](https://cran.r-project.org/package=r4ss) though we exclusively rely on the github version of the package. Feel free to install r4ss directly via `devtools::install_github("r4ss/r4ss")`, though installing ss3sim will do this for you if you don"t already have r4ss available in your R library. 
 
 ## Help files
 
@@ -331,84 +333,67 @@ data("ts_dat", package = "ss3sim")
 
 ### Post-processing of results
 
-  * calculate some useful values in new columns
+  * calculate the relative error (RE)
+  * get gradient information from the scalar information and merge it into the time-series data frame
   * separate the deterministic from the stochastic simulation runs
   * format the results using a long data frame
 
 ```{r, transform-output}
-scalar_dat <- transform(scalar_dat,
-  steep = (SR_BH_steep_om - SR_BH_steep_em)/SR_BH_steep_om,
-  logR0 = (SR_LN_R0_om - SR_LN_R0_em)/SR_LN_R0_om,
-  depletion = (depletion_om - depletion_em)/depletion_om,
-  SSB_MSY = (SSB_MSY_em - SSB_MSY_om)/SSB_MSY_om,
-  SR_sigmaR = (SR_sigmaR_em - SR_sigmaR_om)/SR_sigmaR_om,
-  NatM = (NatM_p_1_Fem_GP_1_em - NatM_p_1_Fem_GP_1_om)/
-     NatM_p_1_Fem_GP_1_om)
-
-ts_dat <- transform(ts_dat,
-  SpawnBio = (SpawnBio_em - SpawnBio_om)/SpawnBio_om,
-  Recruit_0 = (Recruit_0_em - Recruit_0_om)/Recruit_0_om)
+scalar_dat <- calculate_re(scalar_dat, add = TRUE)
+ts_dat <- calculate_re(ts_dat, add = TRUE)
 ts_dat <- merge(ts_dat, scalar_dat[,c("scenario", "replicate",
     "max_grad")])
 
-scalar_dat_det <- subset(scalar_dat, E %in% c("E100", "E101"))
-scalar_dat_sto <- subset(scalar_dat, E %in% c("E0", "E1"))
-ts_dat_det <- subset(ts_dat, E %in% c("E100", "E101"))
-ts_dat_sto <- subset(ts_dat, E %in% c("E0", "E1"))
+scalar_dat_det <- scalar_dat[scalar_dat$E %in% c("E100", "E101"), ]
+scalar_dat_sto <- scalar_dat[scalar_dat$E %in% c("E0", "E1"), ]
+ts_dat_det <- ts_dat[ts_dat$E %in% c("E100", "E101"), ]
+ts_dat_sto <- ts_dat[ts_dat$E %in% c("E0", "E1"), ]
 
-scalar_dat_long <- reshape2::melt(scalar_dat[,c("scenario", "D", "E",
-  "replicate", "max_grad", "steep", "logR0", "depletion", "SSB_MSY",
-  "SR_sigmaR", "NatM")], id.vars = c("scenario", "D", "E",
-  "replicate", "max_grad"))
-scalar_dat_long <- plyr::rename(scalar_dat_long,
-  c("value" = "relative_error"))
+scalar_dat_long <- scalar_dat
+colnames(scalar_dat_long) <- gsub("(.+)_re", "RE _\\1", colnames(scalar_dat_long))
+scalar_dat_long <- reshape(scalar_dat_long, sep = " _", 
+  direction = "long",
+  varying = grep(" _", colnames(scalar_dat_long)),
+  idvar = c("scenario", "replicate"),
+  timevar = "parameter")
 ```
 
 ### Boxplots
 
 Use the long-data format to create a multi-panel plot with ggplot. 
 
-```{r, relative-error-boxplots-det, fig.height=7, fig.width=5, fig.cap="Box plots of the relative error for deterministic runs. *M* is fixed at the true value from the OM (E100) or estimated (E101). The standard deviation on the survey index observation error is 0.001 (D100)."}
-library("ggplot2")
-p <- ggplot(subset(scalar_dat_long, E %in% c("E100", "E101") &
-       variable != "SR_sigmaR"), aes(D, relative_error)) +
-     geom_boxplot() +
-     geom_hline(aes(yintercept = 0), lty = 2) +
-     facet_grid(variable~E) +
-     theme_bw() + ylim(-0.4, 0.4)
+```{r, relative-error-boxplots-det, fig.height=7, fig.width=5, fig.cap="Box plots of the relative error (RE) for deterministic runs. *M* is fixed at the true value from the OM (E100) or estimated (E101). The standard deviation on the survey index observation error is 0.001 (D100)."}
+p <- plot_scalar_boxplot(scalar_dat_long[
+  scalar_dat_long$parameter %in% c("depletion", "SR_BH_steep", "SSB_MSY") &
+  scalar_dat_long$E %in% c("E100", "E101"), ], 
+  x = "D", y = "RE", re = FALSE,
+  vert = "E", horiz = "parameter", print = FALSE)
 print(p)
+# see plot_scalar_points() for another plotting function
 ```
 
 Let's look at the relative error in estimates of spawning biomass. We will colour the time series according to the maximum gradient. Small values of the maximum gradient (approximately 0.001 or less) indicate that model convergence is likely. Larger values (greater than 1) indicate that model convergence is unlikely. Results of individual iterations are jittered around the vertical axis to aid in visualization. The following three blocks of code produce Figures~\ref{fig:plot-sto-ts}, \ref{fig:ssb-ts-plots}, and \ref{fig:relative-error-boxplots-sto}.
 
 ```{r, plot-sto-ts, fig.height=5, fig.width=7, fig.cap="Time series of relative error in spawning stock biomass."}
-p <- ggplot(ts_dat_sto, aes(x = year)) + xlab("Year") +
-    theme_bw() + geom_line(aes(y = SpawnBio, group = replicate,
-    colour = max_grad), alpha = 0.3, size = 0.15) + facet_grid(D~E) +
-    scale_color_gradient(low = "gray", high = "red")
+p <- plot_ts_lines(ts_dat_sto, y='SpawnBio_re', 
+  vert = "E", horiz="D", print = FALSE, col = "max_grad")
 print(p)
 ```
 
 ```{r, ssb-ts-plots, fig.height=5, fig.width=7, cache=TRUE, fig.cap="Spawning stock biomass time series."}
-p <- ggplot(ts_dat_sto, aes(year, SpawnBio_em, group = replicate)) +
-  geom_line(alpha = 0.3, aes(colour = max_grad)) + facet_grid(D~E) +
-  scale_color_gradient(low = "darkgrey", high = "red") + theme_bw()
+p <- plot_ts_lines(ts_dat_sto, y='SpawnBio_em', 
+  vert = "E", horiz="D", print = FALSE, col = "max_grad")
 print(p)
 ```
 
-```{r, relative-error-boxplots-sto, fig.height=7, fig.width=5, cache=TRUE, fig.cap="Box plots of relative error for stochastic runs. *M* is fixed at the true value from the OM (E0) or estimated (E1). The standard deviation on the survey index observation error is 0.4 (D1) or 0.1 (D0), representing an increase in survey sampling effort."}
-p <- ggplot(subset(scalar_dat_long, E %in% c("E0", "E1")),
-       aes(D, relative_error)) +
-     geom_boxplot() + geom_hline(aes(yintercept = 0), lty = 2) +
-     facet_grid(variable~E) +
-     geom_jitter(aes(colour = max_grad),
-       position = position_jitter(height = 0, width = 0.1),
-       alpha = 0.4, size = 1.5) +
-     scale_color_gradient(low = "darkgrey", high = "red") +
-     theme_bw()
+```{r, relative-error-boxplots-sto, fig.height=7, fig.width=5, cache=TRUE, fig.cap="Box plots of relative error (RE) for stochastic runs. *M* is fixed at the true value from the OM (E0) or estimated (E1). The standard deviation on the survey index observation error is 0.4 (D1) or 0.1 (D0), representing an increase in survey sampling effort."}
+p <- plot_scalar_boxplot(scalar_dat_long[
+  scalar_dat_long$parameter %in% c("depletion", "SR_BH_steep", "SSB_MSY") &
+  scalar_dat_long$E %in% c("E0", "E1"), ], 
+  x = "D", y = "RE", re = FALSE, 
+  vert = "E", horiz = "parameter", print = FALSE)
 print(p)
 ```
-
 
 # Using ss3sim_base directly {#ss3simbase}
 
@@ -466,7 +451,7 @@ ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-M0-cod",
 
 # Scenarios, combinations of case IDs
 
-You do not need to stick with the scenario ID scheme laid out by default in ss3sim. You are free to choose your own scheme by adjusting the list of values passed to the `case_files` argument in `run_ss3sim()`. Below is an example where we'll specify the arguments to the sampling functions via their own case files. We'll arbitrarily call these cases X, Y, and Z. We will start by copying over some case arguments built into the package. We will copy what was called `index0-cod.txt`, `lcomp0-cod.txt`, and `agecomp0-cod.txt` into `X-cod.txt`, `Y-cod.txt`, and `Z-cod.txt`. Then we’ll set up our custom `case_files` list and call `run_ss3sim()`
+You do not need to stick with the scenario ID scheme laid out by default in ss3sim. You are free to choose your own scheme by adjusting the list of values passed to the `case_files` argument in `run_ss3sim()`. Below is an example where we"ll specify the arguments to the sampling functions via their own case files. We"ll arbitrarily call these cases X, Y, and Z. We will start by copying over some case arguments built into the package. We will copy what was called `index0-cod.txt`, `lcomp0-cod.txt`, and `agecomp0-cod.txt` into `X-cod.txt`, `Y-cod.txt`, and `Z-cod.txt`. Then we’ll set up our custom `case_files` list and call `run_ss3sim()`
 
 ```{r, alternative-case-lists, eval=FALSE}
 case_folder <- system.file("extdata", "eg-cases", package = "ss3sim")
@@ -496,18 +481,17 @@ run_ss3sim(iterations = 1,
   case_files = case_files)
 ```
 
-
 ## Time-varying parameters in the OM {#time-varying}
 
 The ss3sim package includes the capability for inducing time-varying changes in parameters in the OM. The package currently does not have built-in functions to turn on/off the estimation of time-varying parameters, so this cannot be done with case arguments. However, it is possible to create versions of an EM with and without time-varying estimation of a parameter. This approach would allow for testing of differences between estimating a single, constant parameter vs.\ a time-varying estimate.
 
-You can specify any parameter defined in your  OM model as time varying through the `change_tv` function. The function works by adding an environmental deviate ($env$) to the base parameter ($par$), creating a time varying parameter ($par'$) for each year ($y$),
+You can specify any parameter defined in your  OM model as time varying through the `change_tv` function. The function works by adding an environmental deviate ($env$) to the base parameter ($par$), creating a time varying parameter ($par"$) for each year ($y$),
 \begin{equation}
-par'_y = par + link * env_y.
+par"_y = par + link * env_y.
 \end{equation}
 The $link$ is pre-specified to a value of one and $par$ is the base value for the given parameter, as defined by the INIT value in the `.ctl` file. For all catchability parameters (*q*), the deviate will be added to the log transform of the base parameter using the following equation:
 \begin{equation}
-  \log(q'_{y}) = \log(q) + link * env_{y}.
+  \log(q"_{y}) = \log(q) + link * env_{y}.
 \end{equation}
 The vector of deviates must contain one value for every year of the simulation and can be specified as zero for years in which the parameter does not deviate from the base parameter value.
 
@@ -624,7 +608,7 @@ The following steps are used to generate overdispersed samples:
 
 ### Effective sample sizes
 
-The term 'effective sample size' (ESS) for SS often refers to the tuned sample size, right-weighted depending on the information contained in the data. These values are estimated after an initial run and then written to the .dat file and SS is run again [@francis2011]. Perhaps a better term would be 'input sample size' to contrast it with what was originally sampled.
+The term "effective sample size" (ESS) for SS often refers to the tuned sample size, right-weighted depending on the information contained in the data. These values are estimated after an initial run and then written to the .dat file and SS is run again [@francis2011]. Perhaps a better term would be "input sample size" to contrast it with what was originally sampled.
 
 In any case, the default behavior for both multinomial and Dirichlet generated composition data is to set the effective sample size automatically in the `sample_lcomp` and `sample_agecomp` functions. In the case of the multinomial, the effective sample size is just the original sample size (i.e., how many fish were sampled, the number of sampled tows, etc.). However, with the Dirichlet distribution, the effective sample size depends on the parameters passed to these functions and is automatically calculated internally and passed on to the `.dat` file. The effective sample size is calculated as $N_{eff}=n/c^2$, where $c$ is `cpar`. Note that these values will not necessarily be integer-valued, and SS handles this without issue.
 
@@ -695,19 +679,18 @@ Note that for both built-in and user-specified recdevs, ss3sim will reuse the sa
 
 In many cases, you may want to make the observation and process error reproducible. For instance, you may want to reuse process error so that differences between scenarios are not confounded with process error. More broadly, you may want to make a simulation reproducible on another machine by another user (such as a reviewer).
 
-By default ss3sim sets a seed based on the iteration number. This will create the same recruitment deviations for a given iteration number. You can therefore avoid having the same recruitment deviations for a given iteration number by either specifying your own recruitment deviation matrix through the `user_recdevs` argument or by changing the iteration numbers (e.g., using iterations 101 to 200 instead of 1 to 100).
-
-If you want the different scenarios to have different process error you will need to make separate calls to `run_ss3sim` for each scenario and pass a different matrix of `user_recdevs` (see [the section on process noise](#pro-error)) or pass different iteration numbers.
+By default ss3sim sets a seed based on the iteration number. This will create the same recruitment deviations for a given iteration number. You can therefore avoid having the same recruitment deviations for a given iteration number by either specifying your own recruitment deviation matrix through the `user_recdevs` argument or by changing the iteration numbers (e.g., using iterations 101 to 200 instead of 1 to 100). If you use the latter method, you must specify a vector of iterations instead of a single number. The vector will specify which numbers along a number line to use versus a single number leads to 1:x iterations being generated. If you want the different scenarios to have different process error you will need to make separate calls to `run_ss3sim` for each scenario. 
 
 The observation error seed (affecting the index, length composition, and age composition sampling) is set during the OM generation. Therefore, a given iteration-case-file-argument combination will generate repeatable results. Given that different case arguments can generate different sampling routines (e.g., stochastically sampling or not sampling from the age compositions or sampling a different number of years) the observation error is not necessarily comparable across different case arguments.
 
 # Parallel computing with ss3sim {#parallel}
 
-ss3sim can easily run multiple scenarios in parallel to speed up simulations. To run a simulation in parallel, you need to register multiple cores or clusters and set `parallel = TRUE` in `run_ss3sim`. For example, we could have run the previous example in parallel with the following code. First, we register four cores
+ss3sim can easily run multiple scenarios in parallel to speed up simulations. To run a simulation in parallel, you need to register multiple cores or clusters and set `parallel = TRUE` in `run_ss3sim`. For example, we could have run the previous example in parallel with the following code. First, one would need to find out how many cores are on their computer, (e.g., `r Sys.getenv("NUMBER_OF_PROCESSORS")`) and register a portion of those for parallel processing
 
 ```{r, parallel-one, eval=FALSE}
 require(doParallel)
-registerDoParallel(cores = 4)
+
+registerDoParallel(cores = ifelse(Sys.getenv("NUMBER_OF_PROCESSORS")<6, 2, 4))
 ```
 
 We can check to make sure we are set up to run in parallel
@@ -761,7 +744,7 @@ The development version on [github](http://www.github.com/ss3sim/ss3sim) install
 
 ## For Unix (OS X and Linux)
 
-To check if SS is in your path, open a Terminal window and type `which ss` and hit enter. If you get nothing returned, then SS is not in your path. The easiest way to fix this is to move the SS binary to a folder that's already in your path. To find existing path folders type `echo $PATH` in the terminal and hit enter. Now move the SS binary to one of these folders. For example, in a Terminal window type:
+To check if SS is in your path, open a Terminal window and type `which ss` and hit enter. If you get nothing returned, then SS is not in your path. The easiest way to fix this is to move the SS binary to a folder that"s already in your path. To find existing path folders type `echo $PATH` in the terminal and hit enter. Now move the SS binary to one of these folders. For example, in a Terminal window type:
 
     sudo cp ~/Downloads/SS/usr/bin/
 
