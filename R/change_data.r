@@ -64,8 +64,6 @@
 #' @template casefile-footnote
 #'
 #' @importFrom r4ss SS_readdat SS_writedat
-#' @importFrom tidyr complete nesting
-#' @import dplyr
 #' @export
 #' @seealso \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
 #' @author Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson
@@ -136,13 +134,6 @@ change_data <- function(dat_list, outfile = NULL, fleets, years, types,
   if ("index" %in% types) {
     dat_list$CPUE <- make_dummy_dat_index(fleets = fleets, years = years)
     dat_list$N_cpue <- nrow(dat_list$CPUE)
-    dat_list$NCPUEObs <- dat_list$CPUE %>%
-                          group_by(index) %>%
-                          summarize(count = n()) %>%
-                          complete(nesting(index = dat_list$CPUEinfo$Fleet),
-                                   fill = list(count = 0)) %>%
-                          arrange(index)
-    dat_list$NCPUEObs <- dat_list$NCPUEObs$count
   }
   if ("len" %in% types) {
     dat_list$lencomp <- make_dummy_dat_lencomp(fleets = fleets, years = years,

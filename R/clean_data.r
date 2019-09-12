@@ -23,7 +23,6 @@
 #' @family sampling functions
 #' @return An invisible cleaned data list as an object.
 #' @note This function does not write the result to file.
-#' @import dplyr
 #' @importFrom tidyr complete nesting
 clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
                        agecomp_params=NULL, calcomp_params=NULL,
@@ -66,13 +65,6 @@ clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
             a[a$index == index_params$fleets[i] &
               a$year %in% index_params$years[[i]],]))
     dat_list$N_cpue <- NROW(dat_list$CPUE)
-    dat_list$NCPUEObs <- dat_list$CPUE %>%
-                          group_by(index) %>%
-                          summarize(count = n()) %>%
-                          complete(nesting(index = dat_list$CPUEinfo$Fleet),
-                                           fill = list(count = 0)) %>%
-                          arrange(index)
-    dat_list$NCPUEObs <- dat_list$NCPUEObs$count
 
     index.N.removed <- NROW(a)-NROW(dat_list$CPUE)
     if(index.N.removed !=0  & verbose)
