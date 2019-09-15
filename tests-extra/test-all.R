@@ -197,7 +197,7 @@ test_ss3sim("D0-E1-F0-R0-M1-cod")
 # NLL_Parm_devs_em NLL_Crash_Pen_em bias1 bias2 bias3 bias4 bias5 bias.converged
 # 1                0                0    NA    NA    NA    NA    NA             NA
 # 2                0                0    NA    NA    NA    NA    NA             NA
-# bias.tried           scenario replicate  D  E  F  R  M species    max_grad version
+# bias.tried           scenario iteration  D  E  F  R  M species    max_grad version
 # 1         NA D0-E1-F0-R0-M1-cod         1 D0 E1 F0 R0 M1     cod 0.001306860 #V3.24O
 # 2         NA D0-E1-F0-R0-M1-cod         1 D0 E1 F0 R0 M1     cod 0.000848066 #V3.24O
 # RunTime hessian                   ID

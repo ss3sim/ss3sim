@@ -64,7 +64,7 @@ id_scenarios <- function(directory){
 #'
 #' This high level function extracts results from SS3 model runs. Give it a
 #' directory which contains directories for different "scenario" runs, within
-#' which are replicates. It writes two data.frames to file:
+#' which are iterations. It writes two data.frames to file:
 #' one for single scalar values (e.g., MSY) and a second
 #' that contains output for each year of the same model (timeseries, e.g.,
 #' biomass(year)). These can always be joined later.
@@ -72,7 +72,7 @@ id_scenarios <- function(directory){
 #' @param directory The directory which contains scenario folders with
 #'   results.
 #' @param overwrite_files A switch to determine if existing files should be
-#'   overwritten, useful for testing purposes or if new replicates are run.
+#'   overwritten, useful for testing purposes or if new iterations are run.
 #' @param user_scenarios A character vector of scenarios that should be read
 #'   in. Default is \code{NULL}, which indicates find all scenario folders in
 #'   \code{directory}.
@@ -156,11 +156,11 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         dq.list.out <- dq.list[which(flag.na!=1)]
         ## Combine all scenarios together and save into big final files
         scalar.all <- do.call(plyr::rbind.fill, scalar.list.out)
-        scalar.all$ID <- paste(scalar.all$scenario, scalar.all$replicate, sep = "-")
+        scalar.all$ID <- paste(scalar.all$scenario, scalar.all$iteration, sep = "-")
         ts.all <- do.call(plyr::rbind.fill, ts.list.out)
-        ts.all$ID <- paste(ts.all$scenario, ts.all$replicate, sep="-")
+        ts.all$ID <- paste(ts.all$scenario, ts.all$iteration, sep="-")
         dq.all <- do.call(plyr::rbind.fill, dq.list.out)
-        dq.all$ID <- paste(dq.all$scenario, dq.all$replicate, sep="-")
+        dq.all$ID <- paste(dq.all$scenario, dq.all$iteration, sep="-")
         if(file.exists("ss3sim_scalar.csv")){
           if(overwrite_files) write.csv(scalar.all, file="ss3sim_scalar.csv")
           else {
@@ -214,11 +214,11 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
     dq.list <- dq.list[which(!is.na(dq.list))]
     ## Combine all scenarios together and save into big final files
     scalar.all <- do.call(plyr::rbind.fill, scalar.list)
-    scalar.all$ID <- paste(scalar.all$scenario, scalar.all$replicate, sep = "-")
+    scalar.all$ID <- paste(scalar.all$scenario, scalar.all$iteration, sep = "-")
     ts.all <- do.call(plyr::rbind.fill, ts.list)
-    ts.all$ID <- paste(ts.all$scenario, ts.all$replicate, sep="-")
+    ts.all$ID <- paste(ts.all$scenario, ts.all$iteration, sep="-")
     dq.all <- do.call(plyr::rbind.fill, dq.list)
-    dq.all$ID <- paste(dq.all$scenario, dq.all$replicate, sep="-")
+    dq.all$ID <- paste(dq.all$scenario, dq.all$iteration, sep="-")
     if(file.exists("ss3sim_scalar.csv")){
       if(overwrite_files) write.csv(scalar.all, file="ss3sim_scalar.csv")
       else {
@@ -244,13 +244,13 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
 
 #' Extract SS3 simulation results for one scenario.
 #'
-#' Function that extracts results from all replicates inside a supplied
+#' Function that extracts results from all iterations inside a supplied
 #' scenario folder. The function writes 3 .csv files to the scenario
-#' folder: (1) scalar metrics with one value per replicate (e.g. \eqn{R_0},
+#' folder: (1) scalar metrics with one value per iteration (e.g. \eqn{R_0},
 #' \eqn{h}), (2) a timeseries data ('ts') which contains multiple values per
-#' replicate (e.g.  \eqn{SSB_y} for a range of years \eqn{y}), and (3) [currently
+#' iteration (e.g.  \eqn{SSB_y} for a range of years \eqn{y}), and (3) [currently
 #' disabled and not tested] residuals on the log scale from the surveys
-#' across all replicates. The function \code{get_results_all} loops through
+#' across all iterations. The function \code{get_results_all} loops through
 #' these .csv files and combines them together into a single "final"
 #' dataframe.
 #'
@@ -259,7 +259,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
 #' @param directory The directory which contains the scenario folder.
 #' @param overwrite_files A boolean (default is \code{FALSE}) for whether to delete
 #'   any files previously created with this function. This is intended to be
-#'   used if replicates were added since the last time it was called, or any
+#'   used if iterations were added since the last time it was called, or any
 #'   changes were made to this function.
 #' @author Cole Monnahan
 #' @importFrom r4ss SS_output
@@ -310,12 +310,12 @@ get_results_scenario <- function(scenario, directory=getwd(),
         }
     }
 
-    ## Loop through each replicate and get results from both models
+    ## Loop through each iteration and get results from both models
     reps.dirs <- list.files(pattern = "[0-9]+$")
     reps.dirs <- sort(as.numeric(reps.dirs))
     if(length(reps.dirs)==0)
-        stop(paste("Error:No replicates for scenario", scenario))
-    ## Loop through replicates and extract results using r4ss::SS_output
+        stop(paste("Error:No iterations for scenario", scenario))
+    ## Loop through iterations and extract results using r4ss::SS_output
     resids.list <- list()
     message("Starting ", scenario, " with ", length(reps.dirs), " iterations")
     ## Get the number of columns for this scenario
@@ -370,7 +370,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
             dq <- merge(derived.om, derived.em,
               by.x = "Yr_om", by.y = "Yr_em", all = TRUE)
             scalar$scenario <- ts$scenario <- dq$scenario <- scenario
-            scalar$replicate <- ts$replicate <- dq$replicate <- rep
+            scalar$iteration <- ts$iteration <- dq$iteration <- rep
 
             ## parse the scenarios into columns for plotting later
             scenario.scalar <-

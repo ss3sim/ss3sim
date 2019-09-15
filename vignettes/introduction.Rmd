@@ -341,7 +341,7 @@ data("ts_dat", package = "ss3sim")
 ```{r, transform-output}
 scalar_dat <- calculate_re(scalar_dat, add = TRUE)
 ts_dat <- calculate_re(ts_dat, add = TRUE)
-ts_dat <- merge(ts_dat, scalar_dat[,c("scenario", "replicate",
+ts_dat <- merge(ts_dat, scalar_dat[,c("scenario", "iteration",
     "max_grad")])
 
 scalar_dat_det <- scalar_dat[scalar_dat$E %in% c("E100", "E101"), ]
@@ -354,7 +354,7 @@ colnames(scalar_dat_long) <- gsub("(.+)_re", "RE _\\1", colnames(scalar_dat_long
 scalar_dat_long <- reshape(scalar_dat_long, sep = " _", 
   direction = "long",
   varying = grep(" _", colnames(scalar_dat_long)),
-  idvar = c("scenario", "replicate"),
+  idvar = c("scenario", "iteration"),
   timevar = "parameter")
 ```
 

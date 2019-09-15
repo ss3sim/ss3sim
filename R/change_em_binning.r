@@ -187,6 +187,7 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
   dat_list$N_lbins <- length(dat_list$lbin_vector)
 
   # change the lbin_method, if it's NULL leave it as is
+  browser()
   if (!is.null(lbin_method)) {
     ## otherwise if 1 it will use the data bins and requires no more
     ## input
@@ -260,10 +261,12 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
     dat_cols <- names(new_cal)[grep("^a[0-9.]+$", names(new_cal))]
     # TODO: maybe require dplyr >0.5.0 instead of add this?
     if (utils::packageVersion("dplyr") > "0.5.0") {
+    	browser()
       new_cal <- summarize_at(new_cal, .funs = sum, .vars = dat_cols) %>%
         rename_(Lbin_lo = ~lbin_new_low, Lbin_hi = ~lbin_new_high) %>%
         as.data.frame
     } else {
+    	browser()
       new_cal <- dplyr::summarise_each_(new_cal, dplyr::funs_(~sum), vars = dat_cols) %>%
         rename_(Lbin_lo = ~lbin_new_low, Lbin_hi = ~lbin_new_high) %>%
         as.data.frame
