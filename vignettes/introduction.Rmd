@@ -5,6 +5,7 @@ output:
   rmarkdown::html_vignette:
     toc: true
     number_sections: true
+    toc_depth: 2
     fig_caption: true
 bibliography: refs.bib
 csl: cjfas.csl
@@ -18,14 +19,22 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
-# ss3sim overview 
+# Overview 
 
-ss3sim is an R package to make it relatively quick and easy to run simulations with Stock Synthesis (SS). The package consists of a series of low-level functions that facilitate manipulating SS configuration files, running SS models, and combining the output and some wrapper functions to control simulation experiments, e.g., `run_ss3sim`. Much of this vignette is focused on how to effectively use `run_ss3sim`. If you use ss3sim in a publication, please cite the package as indicated by `citation("ss3sim")`. 
+ss3sim is an R package to make it relatively quick and easy to run simulations with Stock Synthesis (SS). The package consists of 
 
-## Installation of ss3sim
+  * a series of low-level functions that facilitate manipulating 
+    * SS configuration files, 
+    * running SS models, and 
+    * combining the output and 
+  * wrapper functions to control simulation experiments, e.g., `run_ss3sim`. 
+
+Much of this vignette is focused on how to effectively use `run_ss3sim`. If you use ss3sim in a publication, please cite the package as indicated by `citation("ss3sim")`. 
+
+## Installation
 
 ss3sim can be run on OS X, Windows, or Linux.
-The [CRAN version of ss3sim](https://cran.r-project.org/package=ss3sim) mirrors the master branch of the [github repository](https://github.com/ss3sim/ss3sim), which houses the code base. The development version contains the newest features that are not available in the CRAN version and can be installed from using devtools.
+The [CRAN version](https://cran.r-project.org/package=ss3sim) of ss3sim mirrors the master branch of the [github repository](https://github.com/ss3sim/ss3sim) that houses the code base. The development version contains the newest features that are not available in the CRAN version and can be installed from using devtools.
 
 ```{r, install-and-load, eval=FALSE}
 # CRAN version
@@ -40,14 +49,13 @@ library("ss3sim")
 
 ## Stock Synthesis (SS)
 
-ss3sim was originally based on SS version 3.24O. The package was updated in 2019 to use SS 3.30 and future efforts will be dedicated to continuing to keep ss3sim up to date with SS builds. The most recent version of SS that was tested for use with ss3sim is available on github (e.g., see [here](https://github.com/ss3sim/ss3sim/blob/master/inst/bin/Windows64/ss.exe?raw=true) for the Windows version) or can be obtained from the SS repository on [Vlab](https://vlab.ncep.noaa.gov/web/stock-synthesis/document-library/-/document_library/0LmuycloZeIt/view/5042555?_com_liferay_document_library_web_portlet_DLPortlet_INSTANCE_0LmuycloZeIt_redirect=https%3A%2F%2Fvlab.ncep.noaa.gov%3A443%2Fweb%2Fstock-synthesis%2Fdocument-library%3Fp_p_id%3Dcom_liferay_document_library_web_portlet_DLPortlet_INSTANCE_0LmuycloZeIt%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview). ss3sim uses the safe version, which checks that vector, matrix, or array bounds are not exceeded. There is a slight overhead in this checking, but it may help identify issues. ss3sim requires that this binary, i.e., ss.exe, be in your path. This means that your operating system knows where the binary file is located. See [the vignette section on paths](#path) for details. 
+ss3sim was originally based on SS 3.24O. In 2019, ss3sim was updated to use SS 3.30, and future efforts will be dedicated to continuing to keep ss3sim up to date with SS. The most recent version of SS that was tested for use with ss3sim is available on github (e.g., see [here](https://github.com/ss3sim/ss3sim/blob/master/inst/bin/Windows64/ss.exe?raw=true) for the Windows version) or can be obtained from the SS repository on [Vlab](https://vlab.ncep.noaa.gov/web/stock-synthesis/document-library/-/document_library/0LmuycloZeIt/view/5042555?_com_liferay_document_library_web_portlet_DLPortlet_INSTANCE_0LmuycloZeIt_redirect=https%3A%2F%2Fvlab.ncep.noaa.gov%3A443%2Fweb%2Fstock-synthesis%2Fdocument-library%3Fp_p_id%3Dcom_liferay_document_library_web_portlet_DLPortlet_INSTANCE_0LmuycloZeIt%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview). ss3sim uses the safe version of SS, which is slightly slower than the optimized version because it checks that vector, matrix, and array bounds are not exceeded. ss3sim requires that `ss.exe` be in your path. This means that your operating system knows where the binary file is located. See [the vignette section on paths](#path) for details. 
 
-ss3sim also relies on [r4ss](https://github.com/r4ss/r4ss) to read and write SS files. r4ss is also available on [CRAN](https://cran.r-project.org/package=r4ss) though we exclusively rely on the github version of the package. Feel free to install r4ss directly via `devtools::install_github("r4ss/r4ss")`, though installing ss3sim will do this for you if you don"t already have r4ss available in your R library. 
+ss3sim also relies on the R package [r4ss](https://github.com/r4ss/r4ss) to read and write SS files. r4ss is available on [CRAN](https://cran.r-project.org/package=r4ss) but we exclusively rely on the github version. Feel free to install r4ss directly via `devtools::install_github("r4ss/r4ss")`, though installing ss3sim will do this for you if you don't already have r4ss available in your R library. 
 
 ## Help files
 
-Please direct any questions, suggestions, or bug reports to the ss3sim
-[issue tracker](https://github.com/ss3sim/ss3sim/issues). A brief, formal summary of the original package is available from @anderson2014a. More up-to-date help can be found using the help files available within the current package, which can be accessed using the standard `?functionname` notation, or by reading the vignettes (including this one), which can be accessed with `browseVignettes()`, e.g., 
+A brief, formal summary of the original package is available from @anderson2014a. More up-to-date help can be found using the help files available within the package, e.g., `?functionname`, or by reading the vignettes, e.g., `browseVignettes()`. 
 
 ```{r, help, eval=FALSE}
 ?ss3sim
@@ -55,13 +63,16 @@ help(package = "ss3sim")
 browseVignettes("ss3sim")
 ```
 
+Please direct any questions, suggestions, or bug reports to the ss3sim
+[issue tracker](https://github.com/ss3sim/ss3sim/issues). 
+
 # Simulation overview
 
 ## Setting up the file structure
 
-The ss3sim package is set up assuming there is an established base-case operating model (OM) and estimation model (EM) to work with. ss3sim comes with a generic, built-in model setup that can be used as is, modified, or replaced. (For more details, see the [vignette on modifying these model setups](modifying-models.html) or the [vignette on creating your own OM and EMs](making-models.html)). 
+The ss3sim package is set up assuming there is an established base-case operating model (OM) and estimation model (EM) to work with. ss3sim comes with a generic, built-in model setup that can be used as is, modified, or replaced. (For more details, see the vignettes on [modifying these model setups](modifying-models.html) and [creating your own OM and EMs](making-models.html)). Each OM and EM should be in its own folder. 
 
-Each OM and EM should be in its own folder. The OM folder should have the following files:
+The OM folder should have the following files:
 
 ```
 yourOMmodel.ctl
@@ -80,11 +91,11 @@ forecast.ss
 
 The names of the `.ctl` and `.dat` files are not important. The wrapper functions within ss3sim will rename the files after they are copied to appropriate folders. These files should be derived from `.ss_new` files but with file extensions as shown above. It is important to use `.ss_new` files so the files have consistent formatting. Many of the functions in this package and r4ss depend on that formatting.
 
-To obtain `.ss_new` files, open a command window in the OM folders and type `ss` to run the model. Once the model is finished running, it will generate a number of files, including `.ss_new` files. Remove the `.ss_new` file extension from the files needed and add the appropriate file extension. Then, move the generated data file to the EM folder and run the EM.
+To obtain `.ss_new` files, open a command window in the OM folder and type `ss` to run the model. Once the model is finished running, it will generate a number of files, including `.ss_new` files. Remove the `.ss_new` file extension from the files needed and add the appropriate file extension. Then, move the generated data file to the EM folder and run the EM. This step is not necessary if you choose to use the provided OM and EM because it was already done for you.
 
 ## Cases and scenarios {#case-parsing}
 
-The wrapper function `run_ss3sim` uses unique case identifiers that combine to create unique scenarios. The types of cases are data quality (D), estimation (E), fishing mortality (F), retrospective (R), and any other letter describing a time varying case (e.g., M for natural mortality, S for selectivity, or G for growth). These case IDs are followed by an alphanumeric stock or species identifier (e.g., `cod`). The different versions of each case are identified with numbers. For example, the base-case scenario for a cod stock might be `D0-E0-F0-M0-cod`. The order of the cases does not matter, as long as they are used consistently.
+The wrapper function `run_ss3sim` uses the `scenarios` argument to determine how to run the simulation. Each 'scenario' is a combination of letters, numbers, and dashes, where the letter x number combinations that combine to create unique scenarios are referred to as cases. The types of cases are data quality (D), estimation (E), fishing mortality (F), retrospective (R), and any other letter describing a time varying case (e.g., M for natural mortality, S for selectivity, or G for growth). The different versions of each case are identified with numbers. Combinations of cases are followed by an alphanumeric stock or species identifier (e.g., `cod`) to complete the scenario. For example, the base-case scenario for a cod stock might be `D0-E0-F0-M0-cod`. The order of the cases does not matter, as long as they are used consistently.
 
 ss3sim relies on a set of plain text files to control the simulation. These plain text files are read by `get_caseval` and turned into argument lists that are passed to `run_ss3sim`. The function `create_argfiles` creates template input files. It reads the various functions and parses the arguments and default values into plain text files. The default settings create these files:
 
@@ -99,6 +110,8 @@ ss3sim relies on a set of plain text files to control the simulation. These plai
 5.  `lcomp0-spp.txt` (controlled by the `D` (data) case)
 
 6.  `X0-spp.txt` (for a time-varying parameter X, where X could be any time-varying case letter)
+
+7. `R0-spp.txt` (for retrospective cases)
 
 ![Illustration of input and output folder and file structure for an ss3sim simulation. Folders are shown in blue, input files in orange, and output files in grey. All input and output files are in plain text format. Case files (orange files at bottom left) combine cases (e.g., M0 for a given natural mortality trajectory) with groups of OMs and EMs (e.g., cod like). Alternatively, a user can skip setting up case files and specify the simulation cases directly in R code (see [the vignette section on using ss3sim_base()](#ss3simbase)](filestructure.png)
 
@@ -742,7 +755,7 @@ Instead of copying the SS binary file (`ss.exe`) to each folder within a simulat
 
 The development version on [github](http://www.github.com/ss3sim/ss3sim) installs the executable automatically but it is disallowed for CRAN submissions. In any case, it may be useful to put the binary in your path so that you can manually run models during development and testing (i.e., open command window in folder of OM or EM run and run the binary to see SS output).
 
-## For Unix (OS X and Linux)
+## Unix (OS X and Linux)
 
 To check if SS is in your path, open a Terminal window and type `which ss` and hit enter. If you get nothing returned, then SS is not in your path. The easiest way to fix this is to move the SS binary to a folder that"s already in your path. To find existing path folders type `echo $PATH` in the terminal and hit enter. Now move the SS binary to one of these folders. For example, in a Terminal window type:
 
@@ -766,7 +779,7 @@ If you have previously modified your path to add a non-standard location for the
 
     Sys.setenv(PATH=paste(Sys.getenv("PATH"),"/my/folder",sep=":"))
 
-## For Windows
+## Windows
 
 To check if SS is in your path for Windows 7 and 8: open a DOS prompt and type `ss -?` and hit enter. If you get a line like `ss is not recognized...` then SS is not in your path. To add the SS binary file to your path, follow these steps:
 
@@ -790,9 +803,5 @@ To check if SS is in your path for Windows 7 and 8: open a DOS prompt and type `
 8. Restart your computer
 
 9. Go back to the DOS prompt and try typing `ss -?` and hitting return again.
-
-# Additional sections to the vignette {#additional}
-
-This introduction vignette covers the basics of ss3sim. We have included additional vignettes if you wish to dive more deeply into [creating your own ss3sim functions](making-functions.html), [creating your own SS OM or EM model setups](making-models.html) for use with ss3sim, or [modifying existing OM and EM model setups](modifying-models.html).
 
 # References
