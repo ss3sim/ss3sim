@@ -8,47 +8,39 @@ profile_fmsy(om_in, results_out, dat_file_name = "ss3.dat", start = 0,
   end = 1.5, by_val = 0.01)
 }
 \arguments{
-\item{om_in}{A directory for an \pkg{ss3sim} operating model.}
+\item{om_in}{A directory for an \pkg{ss3sim} operating model}
 
-\item{results_out}{A directory to place the results}
-
-\item{dat_file_name}{A string providing the name of the data file in the
-directory \code{om_in}.}
+\item{results_out}{A directory to save the results}
 
 \item{start}{Lower fishing mortality level}
 
 \item{end}{Upper fishing mortality level}
 
 \item{by_val}{Interval in which you wish to increment the fishing mortality
-level}
+level from \code{start} to \code{end}}
 }
 \value{
-Creates a plot and a table with catches and F values (see the
-  \code{results_out} folder). Also invisibly returns the Fmsy table as a data
-  frame.
+Creates a plot and a table with catches and F values. 
+Also, invisibly returns a table of F and catch as a data frame.
 }
 \description{
-Runs an operating model over a range of fishing mortality levels to
-determine the profile of F values from which Fmsy can be determined.
+Runs an operating model over a range of fishing mortality (F) levels to
+determine the F at the maximum sustainable yield (Fmsy).
 }
 \details{
 This function extracts the number of years from the model dat
-file and then runs at a constant level of fishing for each year,
+file and then runs the model with a constant level of fishing for each year,
 extracting the catch in the last year. This assumes the length of the
 model is long enough to reach an equilibrium catch. The user is
 responsible for ensuring this fact.
 }
 \examples{
 \dontrun{
-#Note: need a .par file to run this.
-# d <- system.file("extdata", package = "ss3sim")
-# omfolder <- paste0(d, "/models/cod-om")
-#
-#
-# fmsy.val <- profile_fmsy(om_in = omfolder, results_out = "fmsy",
-#   dat_file_name = "codOM.dat", start = 0.1, end = 0.2, by_val = 0.05)
-#
-# #cleanup
-# unlink("fmsy")
+  d <- system.file("extdata", package = "ss3sim")
+  omfolder <- file.path(d, "models", "cod-om")
+  fmsy.val <- profile_fmsy(om_in = omfolder, results_out = "fmsy",
+    start = 0.1, end = 0.2, by_val = 0.05)
+  #cleanup
+  unlink("fmsy", recursive = TRUE)
 }
 }

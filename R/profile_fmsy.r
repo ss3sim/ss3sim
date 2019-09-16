@@ -1,103 +1,94 @@
 #' Determine Fmsy for a given operating model
 #'
-#' Runs an operating model over a range of fishing mortality levels to
-#' determine the profile of F values from which Fmsy can be determined.
+#' Runs an operating model over a range of fishing mortality (F) levels to
+#' determine the F at the maximum sustainable yield (Fmsy).
 #'
-#' @param om_in A directory for an \pkg{ss3sim} operating model.
-#' @param results_out A directory to place the results
-#' @param dat_file_name A string providing the name of the data file in the
-#'   directory \code{om_in}.
+#' @param om_in A directory for an \pkg{ss3sim} operating model
+#' @param results_out A directory to save the results
 #' @param start Lower fishing mortality level
 #' @param end Upper fishing mortality level
 #' @param by_val Interval in which you wish to increment the fishing mortality
-#'   level
-#' @importFrom r4ss SS_readdat SS_writedat
-#' @return Creates a plot and a table with catches and F values (see the
-#'   \code{results_out} folder). Also invisibly returns the Fmsy table as a data
-#'   frame.
+#'   level from \code{start} to \code{end}
+#' @importfrom r4ss SS_readdat SS_readforecast SS_changepars
+#' @return Creates a plot and a table with catches and F values. 
+#' Also, invisibly returns a table of F and catch as a data frame.
 #' @export
 #' @details This function extracts the number of years from the model dat
-#' file and then runs at a constant level of fishing for each year,
+#' file and then runs the model with a constant level of fishing for each year,
 #' extracting the catch in the last year. This assumes the length of the
 #' model is long enough to reach an equilibrium catch. The user is
 #' responsible for ensuring this fact.
 #' @examples
 #' \dontrun{
-#' #Note: need a .par file to run this.
-#' # d <- system.file("extdata", package = "ss3sim")
-#' # omfolder <- paste0(d, "/models/cod-om")
-#' #
-#' #
-#' # fmsy.val <- profile_fmsy(om_in = omfolder, results_out = "fmsy",
-#' #   dat_file_name = "codOM.dat", start = 0.1, end = 0.2, by_val = 0.05)
-#' #
-#' # #cleanup
-#' # unlink("fmsy")
+#'   d <- system.file("extdata", package = "ss3sim")
+#'   omfolder <- file.path(d, "models", "cod-om")
+#'   fmsy.val <- profile_fmsy(om_in = omfolder, results_out = "fmsy",
+#'     start = 0.1, end = 0.2, by_val = 0.05)
+#'   #cleanup
+#'   unlink("fmsy", recursive = TRUE)
 #' }
 
 profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",
   start = 0.00, end = 1.5, by_val = 0.01) {
-            # overM needs to be the value
-            # you want to add or subtract from the trueM
-            # or the case file you want to get the value
-            # that you add to M in the last year, i.e. "M1"
-            # used for + trueM
+  
   origWD <- getwd()
   on.exit(expr = setwd(origWD), add = FALSE)
 
   ss_bin <- get_bin("ss")
+  dat_file_name <- dir(om_in, pattern = "\\.dat")
 
   fVector <- seq(start, end, by_val)
   fEqCatch <- NULL
-  omModel <- om_in
-  if(!file.exists(omModel)) {
+  if(!file.exists(om_in)) {
     stop("OM folder does not exist")
   }
-  newWD <- results_out
-  dir.create(newWD, showWarnings = FALSE)
-  setwd(newWD)
-  file.copy(dir(omModel, full.names = TRUE), list.files(omModel))
+  dir.create(results_out, showWarnings = FALSE)
+  setwd(results_out)
+  ignore <- file.copy(dir(om_in, full.names = TRUE), list.files(om_in))
   ## read in dat file to get years of model
-  datFile <- SS_readdat(file= dat_file_name, version = NULL, verbose=FALSE)
+  datFile <- r4ss::SS_readdat(file= dat_file_name, 
+    version = NULL, verbose=FALSE)
   simlength <- datFile$endyr-datFile$styr+1
   if(!is.numeric(simlength) | simlength < 1)
       stop(paste("Calculated length of model from dat file was", simlength))
-  ## remove recdevs from par
-  parFile <- readLines("ss.par", warn = FALSE)
-  recDevLine <- grep("# recdev1", parFile) + 1
-  sigmaRLine <- grep("# SR_parm[3]", parFile, fixed = TRUE) + 1
-  parFile[recDevLine] <- paste(rep(0, simlength), collapse = ", ")
-  parFile[sigmaRLine] <- 0.001
-  writeLines(parFile, "ss.par")
+  forecast <- r4ss::SS_readforecast(file = dir(pattern = "forecast"),
+    verbose = FALSE)
+  forecast$Nforecastyrs
+  ## remove recdevs
+  change_rec_devs(rep(0, simlength + forecast$Nforecastyrs),
+    ctl_file_in = dir(pattern = "ctl"),
+    ctl_file_out = dir(pattern = "ctl"))
+  r4ss::SS_changepars(ctlfile = dir(pattern = "ctl"),
+    newctlfile = dir(pattern = "ctl"),
+    strings = "SR_sigmaR", newvals = 0.001, newlos = 0,
+    estimate = FALSE, verbose = FALSE)
+  
+  if (NROW((datFile$fleetinfo[datFile$fleetinfo$type == 1, ])) > 1) {
+    stop("profile_fmsy is not meant to work with more than one fishery")
+  }
   for(i in seq(fVector)) {
-    change_f_par(years = 1:simlength, years_alter = 1:simlength,
-             fvals = rep(fVector[i], simlength),
-             par_file_in = "ss.par", par_file_out = "ss.par" )
+    change_f(years = 1:simlength, 
+      fisheries = as.numeric(row.names(datFile$fleetinfo[datFile$fleetinfo$type == 1, ])),
+      fvals = rep(fVector[i], simlength),
+      ctl_file_in = dir(pattern = "ctl"), 
+      ctl_file_out = dir(pattern = "ctl"))
     system(paste(ss_bin, "-nohess"), show.output.on.console = FALSE,
            ignore.stdout=TRUE)
-
-	temp_feq <- SS_readdat("data.ss_new", verbose = FALSE, version = NULL,
-                            section = 2)$catch$Fishery[simlength]
-	if(is.null(temp_feq))
-	{
-		fEqCatch[i] <- SS_readdat("data.ss_new", verbose = FALSE, version = NULL,
-                            section = 2)$catch$fishery1[simlength]
-	} else {
-		fEqCatch[i] <- temp_feq
-	}
+	fEqCatch[i] <- r4ss::SS_readdat("data.ss_new", 
+    verbose = FALSE, version = NULL,
+                            section = 2)$catch$catch[simlength]
   }
   pdf("Fmsy.pdf")
-      par(mar = c(4, 6, 4, 4))
-      plot(fVector, fEqCatch, las = 1,
-           xlab = "Fishing mortality rate", ylab = "")
-	  mtext(side = 2, text = "Yield at equilibrium", line = 4)
+      plot(fVector, fEqCatch, type = "b",
+           xlab = "Fishing mortality rate", ylab = "Yield at equilibrium")
       maxFVal <- which.max(fEqCatch)
 	  Fmsy <- fVector[maxFVal]
       abline(v = Fmsy)
-      mtext(text = paste(om_in, "\n",
-	                     "Fmsy \n", Fmsy, "\n",
-                       "Catch at Fmsy \n", max(fEqCatch)),
-               side = 1, line = -2, las = 1)
+      mtext(text = paste(" OM = ", om_in, "\n",
+	                     "Fishing mortality at maximum yield (Fmsy) = ", 
+                       Fmsy, "\n",
+                       "Landings at Fmsy = ", max(fEqCatch), "(mt)"),
+               side = 1, line = -1, las = 1, adj = 0)
   dev.off()
   FmsyTable <- data.frame(fValues = fVector,
                           eqCatch = fEqCatch)
