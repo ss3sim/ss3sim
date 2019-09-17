@@ -341,12 +341,7 @@ get_results_scenario <- function(scenario, directory=getwd(),
                           compfile="none", forecast=FALSE, warn=TRUE,
                           readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
                           ncols=numcol)
-            ## ## Grab the residuals for the indices
-            ## resids <- log(report.em$cpue$Obs) - log(report.em$cpue$Exp)
-            ## resids.long <- data.frame(report.em$cpue[,c("FleetName", "Yr")], resids)
-            ## resids.list[[rep]] <-
-            ##     cbind(scenario, rep, reshape2::dcast(resids.long, FleetName~Yr,
-            ##                                          value.var="resids"))
+
             ## Get scalars from the two models
             scalar.om <- get_results_scalar(report.om)
             names(scalar.om) <- paste0(names(scalar.om),"_om")

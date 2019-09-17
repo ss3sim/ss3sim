@@ -21,7 +21,6 @@ LazyData: true
 Suggests:
     knitr,
     doParallel,
-    reshape2,
     rmarkdown
 VignetteBuilder: knitr
 Depends:
@@ -34,9 +33,6 @@ Imports:
     lubridate,
     ggplot2,
     bbmle,
-    dplyr,
-    tidyr,
-    magrittr,
     grDevices,
     graphics,
     stats,
