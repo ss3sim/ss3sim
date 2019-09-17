@@ -30,7 +30,6 @@ Imports:
     plyr,
     r4ss,
     gtools,
-    lubridate,
     ggplot2,
     bbmle,
     grDevices,

@@ -1,44 +1,3 @@
-#' Calculate run time
-#'
-#' Internal function used by \code{get_results_scenario} to calculate the
-#' runtime (in minutes) from a \code{Report.sso} file.
-#'
-#' @param start_time Vector of characters as read in from the r4ss report file
-#' @param end_time Vector of characters as read in from the r4ss report
-#' file
-#' @return A numeric value representing the number of minutes of total
-#' runtime as reported by SS.
-#' @details This runtime includes the overhead for reading and writing the
-#' file up to the Report.sso time stamp.
-#' @author Cole Monnahan
-calculate_runtime <- function(start_time, end_time) {
-  ## The start_time and end_time strings are complex and need to be cleaned up
-  ## before processing into date objects.
-  start <- data.frame(do.call(rbind, strsplit(x = as.character(start_time),
-    split = " ", fixed = T))[, -(1:2)])
-  end <- data.frame(do.call(rbind, strsplit(x = as.character(end_time),
-    split = " ", fixed = T))[, -(1:2)])
-  start <- as.data.frame(t(start))
-  end <- as.data.frame(t(end))
-  if(ncol(start) == 4) {
-    names(start) <- names(end) <- c("month", "day", "time", "year")
-  }
-  if(ncol(start) == 5) {
-    names(start) <- names(end) <- c("month", "", "day", "time", "year")
-  }
-  if(ncol(start) %in% c(4, 5)) {
-    start.date <- lubridate::ymd_hms(with(start, paste(year,
-      month, day, time, sep = "-")))
-    end.date <- lubridate::ymd_hms(with(end, paste(year,
-      month, day, time, sep = "-")))
-    ## run.mins <- as.vector(end.date - start.date)
-    run.mins <- as.vector(difftime(end.date, start.date, units='secs'))/60
-  } else {
-    run.mins <- NA
-  }
-  return(run.mins)
-}
-
 #' Identify ss3sim scenarios within a directory
 #'
 #' @param directory The directory which contains scenario folders with
@@ -122,7 +81,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         results_all <- foreach(parallel_scenario = scenarios, .verbose = FALSE,
             .export = c("pastef", "get_results_scenario",
             "get_results_scalar", "get_nll_components",
-            "get_results_timeseries", "calculate_runtime"), .combine = rbind) %dopar% {
+            "get_results_timeseries"), .combine = rbind) %dopar% {
             ## If the files already exist just read them in, otherwise get results
                 scalar.file <- file.path(parallel_scenario,paste0("results_scalar_",parallel_scenario,".csv"))
                 ts.file <- file.path(parallel_scenario, paste0("results_ts_",parallel_scenario,".csv"))
@@ -411,7 +370,9 @@ get_results_scenario <- function(scenario, directory=getwd(),
             ## version, runtime, etc. as checks
             temp <- readLines(con=file.path(rep,"em", "Report.sso"), n=10)
             scalar$version <- temp[1]
-            scalar$RunTime <- calculate_runtime(temp[4],temp[5])
+            scalar$RunTime <- eval(parse(text=gsub(
+              "([0-9]+) hours, ([0-9]+) minutes, ([0-9]+) seconds.", 
+              "\\1*60+\\2+\\3/60", report.em$RunTime)))
             scalar$hessian <- file.exists(file.path(rep,"em", "admodel.cov"))
             ## The number of iterations for the run is only in this file for
             ## some reason.
