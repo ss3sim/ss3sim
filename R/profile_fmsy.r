@@ -9,8 +9,8 @@
 #' @param end Upper fishing mortality level
 #' @param by_val Interval in which you wish to increment the fishing mortality
 #'   level from \code{start} to \code{end}
-#' @importfrom r4ss SS_readdat SS_readforecast SS_changepars
-#' @return Creates a plot and a table with catches and F values. 
+#' @importFrom r4ss SS_readdat SS_readforecast SS_changepars
+#' @return Creates a plot and a table with catches and F values.
 #' Also, invisibly returns a table of F and catch as a data frame.
 #' @export
 #' @details This function extracts the number of years from the model dat
@@ -30,7 +30,7 @@
 
 profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",
   start = 0.00, end = 1.5, by_val = 0.01) {
-  
+
   origWD <- getwd()
   on.exit(expr = setwd(origWD), add = FALSE)
 
@@ -46,7 +46,7 @@ profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",
   setwd(results_out)
   ignore <- file.copy(dir(om_in, full.names = TRUE), list.files(om_in))
   ## read in dat file to get years of model
-  datFile <- r4ss::SS_readdat(file= dat_file_name, 
+  datFile <- r4ss::SS_readdat(file= dat_file_name,
     version = NULL, verbose=FALSE)
   simlength <- datFile$endyr-datFile$styr+1
   if(!is.numeric(simlength) | simlength < 1)
@@ -62,19 +62,19 @@ profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",
     newctlfile = dir(pattern = "ctl"),
     strings = "SR_sigmaR", newvals = 0.001, newlos = 0,
     estimate = FALSE, verbose = FALSE)
-  
+
   if (NROW((datFile$fleetinfo[datFile$fleetinfo$type == 1, ])) > 1) {
     stop("profile_fmsy is not meant to work with more than one fishery")
   }
   for(i in seq(fVector)) {
-    change_f(years = 1:simlength, 
+    change_f(years = 1:simlength,
       fisheries = as.numeric(row.names(datFile$fleetinfo[datFile$fleetinfo$type == 1, ])),
       fvals = rep(fVector[i], simlength),
-      ctl_file_in = dir(pattern = "ctl"), 
+      ctl_file_in = dir(pattern = "ctl"),
       ctl_file_out = dir(pattern = "ctl"))
     system(paste(ss_bin, "-nohess"), show.output.on.console = FALSE,
            ignore.stdout=TRUE)
-	fEqCatch[i] <- r4ss::SS_readdat("data.ss_new", 
+	fEqCatch[i] <- r4ss::SS_readdat("data.ss_new",
     verbose = FALSE, version = NULL,
                             section = 2)$catch$catch[simlength]
   }
@@ -85,7 +85,7 @@ profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",
 	  Fmsy <- fVector[maxFVal]
       abline(v = Fmsy)
       mtext(text = paste(" OM = ", om_in, "\n",
-	                     "Fishing mortality at maximum yield (Fmsy) = ", 
+	                     "Fishing mortality at maximum yield (Fmsy) = ",
                        Fmsy, "\n",
                        "Landings at Fmsy = ", max(fEqCatch), "(mt)"),
                side = 1, line = -1, las = 1, adj = 0)

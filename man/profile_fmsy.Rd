@@ -20,7 +20,7 @@ profile_fmsy(om_in, results_out, dat_file_name = "ss3.dat", start = 0,
 level from \code{start} to \code{end}}
 }
 \value{
-Creates a plot and a table with catches and F values. 
+Creates a plot and a table with catches and F values.
 Also, invisibly returns a table of F and catch as a data frame.
 }
 \description{
