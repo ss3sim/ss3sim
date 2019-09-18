@@ -1,4 +1,0 @@
-   user  system elapsed 
-689.558  27.028 723.916 
-    user   system  elapsed 
-1318.908   53.366 1375.753 
