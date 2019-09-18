@@ -250,11 +250,11 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
     # the re-binning happens here:
     new_cal <- merge(old_cal, lookup, by = "Lbin_lo", all = FALSE, sort = FALSE)
     dat_cols <- names(new_cal)[grep("^a[0-9.]+$", names(new_cal))]
-    new_cal <- stats::aggregate(new_cal2[,dat_cols],
+    new_cal <- stats::aggregate(new_cal[,dat_cols],
       by = list(
-        "Yr" = new_cal2$Yr,
-        "Lbin_lo" = new_cal2$lbin_new_low,
-        "Lbin_hi" = new_cal2$lbin_new_high),
+        "Yr" = new_cal$Yr,
+        "Lbin_lo" = new_cal$lbin_new_low,
+        "Lbin_hi" = new_cal$lbin_new_high),
       sum)
 
     new_cal$Nsamp <- rowSums(new_cal[, grepl("^a[0-9.]+$", names(new_cal))])
