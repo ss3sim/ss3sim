@@ -27,7 +27,6 @@ Depends:
     R (>= 3.3)
 Imports:
     foreach,
-    plyr,
     r4ss,
     gtools,
     ggplot2,

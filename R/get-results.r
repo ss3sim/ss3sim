@@ -114,11 +114,11 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         ts.list.out <- ts.list[which(flag.na!=1)]
         dq.list.out <- dq.list[which(flag.na!=1)]
         ## Combine all scenarios together and save into big final files
-        scalar.all <- do.call(plyr::rbind.fill, scalar.list.out)
+        scalar.all <- add_colnames(scalar.list.out, bind = TRUE)
         scalar.all$ID <- paste(scalar.all$scenario, scalar.all$iteration, sep = "-")
-        ts.all <- do.call(plyr::rbind.fill, ts.list.out)
+        ts.all <- add_colnames(ts.list.out, bind = TRUE)
         ts.all$ID <- paste(ts.all$scenario, ts.all$iteration, sep="-")
-        dq.all <- do.call(plyr::rbind.fill, dq.list.out)
+        dq.all <- add_colnames(dq.list.out, bind = TRUE)
         dq.all$ID <- paste(dq.all$scenario, dq.all$iteration, sep="-")
         if(file.exists("ss3sim_scalar.csv")){
           if(overwrite_files) write.csv(scalar.all, file="ss3sim_scalar.csv")
@@ -172,11 +172,11 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
     ts.list <- ts.list[which(!is.na(ts.list))]
     dq.list <- dq.list[which(!is.na(dq.list))]
     ## Combine all scenarios together and save into big final files
-    scalar.all <- do.call(plyr::rbind.fill, scalar.list)
+    scalar.all <- add_colnames(scalar.list, bind = TRUE)
     scalar.all$ID <- paste(scalar.all$scenario, scalar.all$iteration, sep = "-")
-    ts.all <- do.call(plyr::rbind.fill, ts.list)
+    ts.all <- add_colnames(ts.list, bind = TRUE)
     ts.all$ID <- paste(ts.all$scenario, ts.all$iteration, sep="-")
-    dq.all <- do.call(plyr::rbind.fill, dq.list)
+    dq.all <- add_colnames(dq.list, bind = TRUE)
     dq.all$ID <- paste(dq.all$scenario, dq.all$iteration, sep="-")
     if(file.exists("ss3sim_scalar.csv")){
       if(overwrite_files) write.csv(scalar.all, file="ss3sim_scalar.csv")
