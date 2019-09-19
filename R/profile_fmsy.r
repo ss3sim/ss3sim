@@ -49,8 +49,6 @@ profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",
   datFile <- r4ss::SS_readdat(file= dat_file_name, 
     version = NULL, verbose=FALSE)
   simlength <- datFile$endyr-datFile$styr+1
-  if(!is.numeric(simlength) | simlength < 1)
-      stop(paste("Calculated length of model from dat file was", simlength))
   forecast <- r4ss::SS_readforecast(file = dir(pattern = "forecast"),
     verbose = FALSE)
   forecast$Nforecastyrs
@@ -74,9 +72,13 @@ profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",
       ctl_file_out = dir(pattern = "ctl"))
     system(paste(ss_bin, "-nohess"), show.output.on.console = FALSE,
            ignore.stdout=TRUE)
-	fEqCatch[i] <- r4ss::SS_readdat("data.ss_new", 
-    verbose = FALSE, version = NULL,
-                            section = 2)$catch$catch[simlength]
+    allcatch <- r4ss::SS_readdat("data.ss_new", 
+      verbose = FALSE, version = NULL, section = 2)$catch$catch
+    endcatch <- tail(allcatch, ceiling(datFile$Nages * 0.5))
+    if (sd(endcatch) / mean(endcatch) > 1e-04) stop("The population doesn't", 
+      " appear to be reaching equilibrium, \n", 
+      "the model should be ran for more than ", simlength, " years.")
+	  fEqCatch[i] <- allcatch[simlength]
   }
   pdf("Fmsy.pdf")
       plot(fVector, fEqCatch, type = "b",
