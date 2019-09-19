@@ -23,8 +23,6 @@
 #' @param pop_maximum_size *Population maximum length bin value. Only
 #' necessary for \code{lbin_method=2}
 #' @importFrom r4ss SS_writedat
-#' @importFrom magrittr %>%
-#' @importFrom dplyr group_by_ summarize_at rename_ mutate_ inner_join
 #' @export
 #' @family sample functions
 #' @family change functions
@@ -80,7 +78,6 @@
 change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method = NULL,
                               pop_binwidth=NULL, pop_minimum_size=NULL,
                               pop_maximum_size=NULL) {
-
   ## If lbin_method is NULL then don't do anything
   if (is.null(lbin_method)){
     return(NULL)
@@ -187,7 +184,6 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
   dat_list$N_lbins <- length(dat_list$lbin_vector)
 
   # change the lbin_method, if it's NULL leave it as is
-  browser()
   if (!is.null(lbin_method)) {
     ## otherwise if 1 it will use the data bins and requires no more
     ## input
@@ -252,25 +248,14 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
           bin_vector)+1])
 
     # the re-binning happens here:
-    # this uses dplyr and pipes but avoids non-standard evaluation
-    # http://cran.r-project.org/web/packages/dplyr/vignettes/nse.html
-    #TODO: convert from using group_by_ to group_by because now can program
-    # with verions without extra "_" at end, which are now deprecated.
-    new_cal <- inner_join(old_cal, lookup, by = "Lbin_lo") %>%
-      group_by_(~Yr, ~lbin_new_low, ~lbin_new_high)
+    new_cal <- merge(old_cal, lookup, by = "Lbin_lo", all = FALSE, sort = FALSE)
     dat_cols <- names(new_cal)[grep("^a[0-9.]+$", names(new_cal))]
-    # TODO: maybe require dplyr >0.5.0 instead of add this?
-    if (utils::packageVersion("dplyr") > "0.5.0") {
-    	browser()
-      new_cal <- summarize_at(new_cal, .funs = sum, .vars = dat_cols) %>%
-        rename_(Lbin_lo = ~lbin_new_low, Lbin_hi = ~lbin_new_high) %>%
-        as.data.frame
-    } else {
-    	browser()
-      new_cal <- dplyr::summarise_each_(new_cal, dplyr::funs_(~sum), vars = dat_cols) %>%
-        rename_(Lbin_lo = ~lbin_new_low, Lbin_hi = ~lbin_new_high) %>%
-        as.data.frame
-    }
+    new_cal <- stats::aggregate(new_cal[,dat_cols],
+      by = list(
+        "Yr" = new_cal$Yr,
+        "Lbin_lo" = new_cal$lbin_new_low,
+        "Lbin_hi" = new_cal$lbin_new_high),
+      sum)
 
     new_cal$Nsamp <- rowSums(new_cal[, grepl("^a[0-9.]+$", names(new_cal))])
 

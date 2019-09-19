@@ -269,7 +269,6 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
     # Nlines <- Nlines + sum(unlist(lapply(wtatage.complete,nrow)))
 
     ##write wtatage.ss file
-    if(is.null(outfile)) cat(Nlines,"# Number of lines of weight-at-age input to be read\n",file=outfile)
     if(is.null(outfile)) cat(dat_list$Nages,"# Maximum Age\n",file=outfile,append=TRUE)
 
     #loop through the various matrices and build up wtatage.final while doing it
@@ -301,10 +300,9 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
         wtatage.final[[i+3]]$yr <- -1 * wtatage.final[[i+3]]$yr
         if(!is.null(outfile))    write.table(wtatage.final[[i+3]], file=outfile, append=TRUE, row.names=F, col.names=F)
     }
+    endline <- data.frame(t(c(-9999, 1, 1, 1, 1, rep(0, dat_list$Nages))))
+    if(!is.null(outfile)) write.table(endline, file = outfile, apend = TRUE,
+        row.names = FALSE, col.names = FALSE)
 
     return(invisible(wtatage.final))
 }
-
-
-
-

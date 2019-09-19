@@ -8,7 +8,7 @@ change_f(years, fisheries, fvals, seasons = 1, ses = 0.005,
   ctl_file_in, ctl_file_out = "control_fishing.ss")
 }
 \arguments{
-\item{years}{*Vector of integers that will map to each \code{fvals} 
+\item{years}{*Vector of integers that will map to each \code{fvals}
 specifying which year the fishing level pertains to.}
 
 \item{fisheries}{*Vector of integers that will map to each \code{fvals}
@@ -16,18 +16,18 @@ specifying which fleet the fishing level pertains to.
 A single value will be repeated for every value in \code{years} or
 \code{length(years) == length(fisheries)} must be true.}
 
-\item{fvals}{*Vector of \emph{F} values to be entered into the 
+\item{fvals}{*Vector of \emph{F} values to be entered into the
 SS control file. A single value will be repeated for every value in \code{years} or
 \code{length(years) == length(fvals)} must be true.}
 
 \item{seasons}{Vector of seasons to be entered into the
 SS control file. A single value will be repeated for every value in \code{years} or
-\code{length(years) == length(ses)} must be true. 
+\code{length(years) == length(ses)} must be true.
 The default is 1, which will be applied to all fisheries in all years.}
 
 \item{ses}{Vector of fishing level standard errors (ses) to be entered into the
 SS control file. A single value will be repeated for every value in \code{years} or
-\code{length(years) == length(ses)} must be true. 
+\code{length(years) == length(ses)} must be true.
 The default is 0.005, which will be applied to all fisheries in all years.}
 
 \item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
@@ -38,21 +38,21 @@ The default is 0.005, which will be applied to all fisheries in all years.}
 Modified SS control file.
 }
 \description{
-Alter fishing mortality (\emph{F}) for a Stock Synthesis simulation 
+Alter fishing mortality (\emph{F}) for a Stock Synthesis simulation
 via changes to the control file. The argument \code{years} is the only
 argument that must be a vector, where other vectors, e.g., \code{fisheries},
 will be repeated if a single value is provided.
 }
 \details{
-Using the control file depends on 
-(1) the starter file is set up to read parameters from the control file 
+Using the control file depends on
+(1) the starter file is set up to read parameters from the control file
 rather than the par file and
 (2) the data file having a dummy catch entry for every year, fishery
-combination that will be specified in the control file. 
-\emph{F} values currently in the control file will be removed and 
+combination that will be specified in the control file.
+\emph{F} values currently in the control file will be removed and
 the newly specified values will replace them.
 Users do not need to specify values for years in which there
-will be zero fishing because SS will be parameterized to assume 
+will be zero fishing because SS will be parameterized to assume
 no fishing in missing years.
 
 The control file is currently read in using \code{readLines} but will

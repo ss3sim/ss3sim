@@ -23,7 +23,6 @@
 #' @family sampling functions
 #' @return An invisible cleaned data list as an object.
 #' @note This function does not write the result to file.
-#' @importFrom tidyr complete nesting
 clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
                        agecomp_params=NULL, calcomp_params=NULL,
                        mlacomp_params=NULL, verbose=FALSE ){

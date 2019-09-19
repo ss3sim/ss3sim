@@ -21,22 +21,16 @@ LazyData: true
 Suggests:
     knitr,
     doParallel,
-    reshape2,
     rmarkdown
 VignetteBuilder: knitr
 Depends:
     R (>= 3.3)
 Imports:
     foreach,
-    plyr,
     r4ss,
     gtools,
-    lubridate,
     ggplot2,
     bbmle,
-    dplyr,
-    tidyr,
-    magrittr,
     grDevices,
     graphics,
     stats,
