@@ -27,7 +27,7 @@
 #'   unlink("fmsy", recursive = TRUE)
 #' }
 
-profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",
+profile_fmsy <- function(om_in, results_out, 
   start = 0.00, end = 1.5, by_val = 0.01) {
 
   origWD <- getwd()
