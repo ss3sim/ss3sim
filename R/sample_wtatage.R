@@ -301,7 +301,7 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
         if(!is.null(outfile))    write.table(wtatage.final[[i+3]], file=outfile, append=TRUE, row.names=F, col.names=F)
     }
     endline <- data.frame(t(c(-9999, 1, 1, 1, 1, rep(0, dat_list$Nages))))
-    if(!is.null(outfile)) write.table(endline, file = outfile, apend = TRUE,
+    if(!is.null(outfile)) write.table(endline, file = outfile, append = TRUE,
         row.names = FALSE, col.names = FALSE)
 
     return(invisible(wtatage.final))
