@@ -90,30 +90,24 @@ if specified.
 
 \examples{
 \dontrun{
-library(r4ss)
-# Create a temporary folder for the output and set the working directory:
-temp_path <- file.path(tempdir(), "ss3sim-tv-example")
-dir.create(temp_path, showWarnings = FALSE)
-wd <- getwd()
-setwd(temp_path)
-on.exit(wd, add = TRUE)
 
-d <- system.file("extdata", package = "ss3sim")
-ctl_file_orig <- paste0(d, "/models/cod-om/codOM.ctl")
-ctl_file_copy <- file.path(temp_path, "codOM.ctl")
-file.copy(from = ctl_file_orig, to = ctl_file_copy) # copy to temp_path
-data.old <- r4ss::SS_readdat(file.path(d, "models", "cod-om", "codOM.dat"),
-            version = NULL, verbose = FALSE)
-change_e(ctl_file_in = "codOM.ctl", ctl_file_out = "change_e.ctl",
-         dat_list = data.old, for_file_in = "forecast.ss",
+d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
+data.old <- r4ss::SS_readdat(
+  system.file("extdata", "models", "cod-om", "codOM.dat",
+    package = "ss3sim"),
+  version = NULL, verbose = FALSE)
+change_e(
+  ctl_file_in = file.path(d, "codOM.ctl"),
+  ctl_file_out = file.path(tempdir(), "change_e.ctl"),
+  dat_list = data.old,
+  for_file_in = file.path(d, "forecast.ss"),
          natM_type = NULL, natM_n_breakpoints = NULL,
          natM_lorenzen = NULL, natM_val = NULL,
          par_name = c("_steep", "SizeSel_P1_Fishery(1)"),
          par_int = c(0.3, 40), par_phase = c(3, 2),
          forecast_num = 0)
 # clean up the temporary files
-file.remove("change_e.ctl")
-file.remove("codOM.ctl")
+file.remove(file.path(tempdir(), "change_e.ctl"))
 }
 }
 \seealso{

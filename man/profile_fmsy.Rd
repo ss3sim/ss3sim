@@ -4,8 +4,7 @@
 \alias{profile_fmsy}
 \title{Determine Fmsy for a given operating model}
 \usage{
-profile_fmsy(om_in, results_out, dat_file_name = "ss3.dat", start = 0,
-  end = 1.5, by_val = 0.01)
+profile_fmsy(om_in, results_out, start = 0, end = 1.5, by_val = 0.01)
 }
 \arguments{
 \item{om_in}{A directory for an \pkg{ss3sim} operating model}
@@ -36,9 +35,8 @@ responsible for ensuring this fact.
 }
 \examples{
 \dontrun{
-  d <- system.file("extdata", package = "ss3sim")
-  omfolder <- file.path(d, "models", "cod-om")
-  fmsy.val <- profile_fmsy(om_in = omfolder, results_out = "fmsy",
+  d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
+  fmsy.val <- profile_fmsy(om_in = d, results_out = "fmsy",
     start = 0.1, end = 0.2, by_val = 0.05)
   #cleanup
   unlink("fmsy", recursive = TRUE)
