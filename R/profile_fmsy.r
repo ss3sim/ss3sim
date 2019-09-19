@@ -49,9 +49,8 @@ profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",
   datFile <- r4ss::SS_readdat(file= dat_file_name, 
     version = NULL, verbose=FALSE)
   simlength <- datFile$endyr-datFile$styr+1
-  forecast <- r4ss::SS_readforecast(file = dir(pattern = "forecast"),
+  forecast <- r4ss::SS_readforecast(file = dir(pattern = "forecast\\.ss$"),
     verbose = FALSE)
-  forecast$Nforecastyrs
   ## remove recdevs
   change_rec_devs(rep(0, simlength + forecast$Nforecastyrs),
     ctl_file_in = dir(pattern = "ctl"),
