@@ -54,30 +54,24 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' library(r4ss)
-#' # Create a temporary folder for the output and set the working directory:
-#' temp_path <- file.path(tempdir(), "ss3sim-tv-example")
-#' dir.create(temp_path, showWarnings = FALSE)
-#' wd <- getwd()
-#' setwd(temp_path)
-#' on.exit(wd, add = TRUE)
 #'
-#' d <- system.file("extdata", package = "ss3sim")
-#' ctl_file_orig <- paste0(d, "/models/cod-om/codOM.ctl")
-#' ctl_file_copy <- file.path(temp_path, "codOM.ctl")
-#' file.copy(from = ctl_file_orig, to = ctl_file_copy) # copy to temp_path
-#' data.old <- r4ss::SS_readdat(file.path(d, "models", "cod-om", "codOM.dat"),
-#'             version = NULL, verbose = FALSE)
-#' change_e(ctl_file_in = "codOM.ctl", ctl_file_out = "change_e.ctl",
-#'          dat_list = data.old, for_file_in = "forecast.ss",
+#' d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
+#' data.old <- r4ss::SS_readdat(
+#'   system.file("extdata", "models", "cod-om", "codOM.dat",
+#'     package = "ss3sim"),
+#'   version = NULL, verbose = FALSE)
+#' change_e(
+#'   ctl_file_in = file.path(d, "codOM.ctl"),
+#'   ctl_file_out = file.path(tempdir(), "change_e.ctl"),
+#'   dat_list = data.old,
+#'   for_file_in = file.path(d, "forecast.ss"),
 #'          natM_type = NULL, natM_n_breakpoints = NULL,
 #'          natM_lorenzen = NULL, natM_val = NULL,
 #'          par_name = c("_steep", "SizeSel_P1_Fishery(1)"),
 #'          par_int = c(0.3, 40), par_phase = c(3, 2),
 #'          forecast_num = 0)
 #' # clean up the temporary files
-#' file.remove("change_e.ctl")
-#' file.remove("codOM.ctl")
+#' file.remove(file.path(tempdir(), "change_e.ctl"))
 #' }
 
 change_e <- function(ctl_file_in = "em.ctl",
@@ -95,6 +89,11 @@ change_e <- function(ctl_file_in = "em.ctl",
                      natM_lorenzen = NULL,
                      natM_val = NULL) {
 
+  # Work with the out file b/c r4ss sometimes assumes the in and out files
+  # will be in the same directory, so now we can specify the out directory
+  # and out file and not overwrite the original file
+  file.copy(ctl_file_in, ctl_file_out)
+
  # provide errors if deprecated parameters are used.
   lapply(list(natM_type = natM_type, natM_n_breakpoints = natM_n_breakpoints,
                 natM_lorenzen = natM_lorenzen , natM_val = natM_val),
@@ -108,8 +107,8 @@ change_e <- function(ctl_file_in = "em.ctl",
                "par_name, par_init, and par_phase.")
           })
   # get the ss_version from the control file to use with r4ss functions
-  ss_version <- get_ss_ver_file(ctl_file_in)
-  ss3.ctl <- readLines(ctl_file_in)
+  ss_version <- get_ss_ver_file(ctl_file_out)
+  ss3.ctl <- readLines(ctl_file_out)
   #Run external estimator for growth if needed
   if(any(grepl("change_e_vbgf", par_int))) {
     if (length(dir(pattern = "vbgf")) != 1) {
@@ -119,7 +118,7 @@ change_e <- function(ctl_file_in = "em.ctl",
     }
     data <- read.csv(dir(pattern = "vbgf"), header = TRUE)
   #Get start values
-    pars <- SS_parlines(ctl_file_in, version = ss_version, verbose = FALSE)
+    pars <- SS_parlines(ctl_file_out, version = ss_version, verbose = FALSE)
     change_e_vbgf <- try(
       sample_fit_vbgf(length.data = data,
         start.L1 = with(pars, INIT[Label == "L_at_Amin_Fem_GP_1"]),
@@ -146,14 +145,13 @@ change_e <- function(ctl_file_in = "em.ctl",
     par_int[!par_int %in% c(NA, "NA", "Nan")] <-
       as.numeric(par_int[!par_int %in% c(NA, "NA", "Nan")])
   }
-  file.copy(ctl_file_in, ctl_file_out)
 
 
 if(!is.null(par_name)) {
   par_name <- unlist(strsplit(par_name, split = ","))
   par_name_q <- grep("LnQ_", par_name, value = TRUE)
   if (length(par_name_q) > 0) {
-    parsinmodel <- SS_parlines(ctlfile = ctl_file_in, dir = NULL,
+    parsinmodel <- SS_parlines(ctlfile = ctl_file_out, dir = NULL,
       version = ss_version, verbose = verbose, active = FALSE)
     defaultq <- SS_parlines(dir = NULL,
       ctlfile = dir(pattern = "\\.ctl",
@@ -167,8 +165,9 @@ if(!is.null(par_name)) {
 
   phasenochange <- is.na(par_phase)
   if(any(phasenochange)) {
-    SS_changepars(dir = NULL, ctlfile = ctl_file_in,
-      newctlfile = ctl_file_out,
+    SS_changepars(dir = dirname(ctl_file_out),
+      ctlfile = basename(ctl_file_out),
+      newctlfile = basename(ctl_file_out),
       linenums = NULL, strings = par_name[phasenochange],
       newvals = par_int[phasenochange], repeat.vals = verbose,
       newlos = NULL, newhis = NULL, estimate = NULL, verbose = verbose,
@@ -176,8 +175,9 @@ if(!is.null(par_name)) {
   }
   phaseneg <- which(par_phase < 0)
   if(length(phaseneg) > 0) {
-    SS_changepars(dir = NULL, ctlfile = ctl_file_in,
-      newctlfile = ctl_file_out,
+    SS_changepars(dir = dirname(ctl_file_out),
+      ctlfile = basename(ctl_file_out),
+      newctlfile = basename(ctl_file_out),
       linenums = NULL, strings = par_name[phaseneg],
       newvals = par_int[phaseneg], repeat.vals = verbose,
       newlos = NULL, newhis = NULL,
@@ -186,8 +186,9 @@ if(!is.null(par_name)) {
   }
   pasepos <- which(par_phase >= 0)
   if(length(pasepos) > 0) {
-    SS_changepars(dir = NULL, ctlfile = ctl_file_in,
-      newctlfile = ctl_file_out,
+    SS_changepars(dir = dirname(ctl_file_out),
+      ctlfile = basename(ctl_file_out),
+      newctlfile = basename(ctl_file_out),
       linenums = NULL, strings = par_name[pasepos],
       newvals = par_int[pasepos], repeat.vals = verbose,
       newlos = NULL, newhis = NULL,
