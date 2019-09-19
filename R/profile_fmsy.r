@@ -72,9 +72,9 @@ profile_fmsy <- function(om_in, results_out,
            ignore.stdout=TRUE)
     allcatch <- r4ss::SS_readdat("data.ss_new", 
       verbose = FALSE, version = NULL, section = 2)$catch$catch
-    endcatch <- tail(allcatch, ceiling(datFile$Nages * 0.5))
-    if (sd(endcatch) / mean(endcatch) > 1e-04) stop("The population doesn't", 
-      " appear to be reaching equilibrium, \n", 
+    endcatch <- utils::tail(allcatch, ceiling(datFile$Nages * 0.5))
+    if (stats::sd(endcatch) / mean(endcatch) > 1e-04) stop("The population doesn't",
+      " appear to be reaching equilibrium, \n",
       "the model should be ran for more than ", simlength, " years.")
 	  fEqCatch[i] <- allcatch[simlength]
   }
@@ -83,7 +83,7 @@ profile_fmsy <- function(om_in, results_out,
            xlab = "Fishing mortality rate", ylab = "Yield at equilibrium")
       maxFVal <- which.max(fEqCatch)
 	  Fmsy <- fVector[maxFVal]
-      points(x = Fmsy, y = max(fEqCatch), 
+      graphics::points(x = Fmsy, y = max(fEqCatch), 
         col = "red", pch = 19)
       mtext(text = paste(" OM = ", om_in, "\n",
 	                     "Fishing mortality at maximum yield (Fmsy) = ",
