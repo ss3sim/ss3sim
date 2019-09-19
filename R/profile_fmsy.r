@@ -83,7 +83,8 @@ profile_fmsy <- function(om_in, results_out, dat_file_name = "ss3.dat",
            xlab = "Fishing mortality rate", ylab = "Yield at equilibrium")
       maxFVal <- which.max(fEqCatch)
 	  Fmsy <- fVector[maxFVal]
-      abline(v = Fmsy)
+      points(x = Fmsy, y = max(fEqCatch), 
+        col = "red", pch = 19)
       mtext(text = paste(" OM = ", om_in, "\n",
 	                     "Fishing mortality at maximum yield (Fmsy) = ", 
                        Fmsy, "\n",
