@@ -215,6 +215,6 @@ run_ss3sim <- function(iterations, scenarios, case_folder, om_dir, em_dir,
     })
   }
 
-  message("Completed iterations:", paste(iterations, collapse = ", "),
-    "for scenarios:", paste(scenarios, collapse = ", "))
+  message("Completed iterations: ", paste(iterations, collapse = ", "),
+    " for scenarios: ", paste(scenarios, collapse = ", "))
 }
