@@ -4,19 +4,22 @@
 \alias{profile_fmsy}
 \title{Determine Fmsy for a given operating model}
 \usage{
-profile_fmsy(om_in, results_out, start = 0, end = 1.5, by_val = 0.01)
+profile_fmsy(om_in, results_out, start = 0, end = 1.5, by_val = 0.01,
+  verbose = FALSE)
 }
 \arguments{
-\item{om_in}{A directory for an \pkg{ss3sim} operating model}
+\item{om_in}{A full or relative path to a directory that contains an
+\pkg{ss3sim} operating model.}
 
-\item{results_out}{A directory to save the results}
+\item{results_out}{A full or relative path to a directory where the results
+will be saved. The directory will be created if it doesn't already exist.}
 
-\item{start}{Lower fishing mortality level}
+\item{start}{Lower fishing mortality levels that will be explored.}
 
-\item{end}{Upper fishing mortality level}
+\item{end}{Upper fishing mortality levels that will be explored.}
 
-\item{by_val}{Interval in which you wish to increment the fishing mortality
-level from \code{start} to \code{end}}
+\item{by_val}{Interval at which F will be incremented between \code{start}
+and \code{end}.}
 }
 \value{
 Creates a plot and a table with catches and F values.
@@ -24,14 +27,28 @@ Also, invisibly returns a table of F and catch as a data frame.
 }
 \description{
 Runs an operating model over a range of fishing mortality (F) levels to
-determine the F at the maximum sustainable yield (Fmsy).
+determine the F at maximum sustainable yield (Fmsy).
 }
 \details{
-This function extracts the number of years from the model dat
+This function extracts the number of years from the data
 file and then runs the model with a constant level of fishing for each year,
 extracting the catch in the last year. This assumes the length of the
 model is long enough to reach an equilibrium catch. The user is
-responsible for ensuring this fact.
+responsible for ensuring this fact. If the function is run with
+\code{verbose = TRUE}, which is not the default, users will be provided
+with coefficient of variations of the catches in the terminal years of
+the model. Here, terminal is defined as half as many years as there are
+ages in the population dynamics of your model. 
+Thus, if the population plus group starts at age twenty, 
+then the standard deviation of the last ten years of catch
+divided by the mean catch over that same time will be printed to the
+screen for each model that is ran. For the default cod model provided within
+the package, the CV is less than 1e-04 for all F levels explored.
+
+Ensure that the argument \code{om_in} leads to an operating model that is
+configured for use within \pkg{ss3sim}. For example, the F type must 
+allow for an input vector of Fs rather than catches, along with other
+specifications.
 }
 \examples{
 \dontrun{
