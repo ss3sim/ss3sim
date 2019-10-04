@@ -2,19 +2,17 @@ context("Test clean_data()")
 
 d <- system.file("extdata", package = "ss3sim")
 om_dir <- file.path(d, "models", "cod-om")
-sim_dir <- file.path(d, "Simple")
 
 # get the necessary inputs
 dat <- SS_readdat(file.path(om_dir, "codOM.dat")) # a data file
-dat_sim <- SS_readdat(file.path(sim_dir, "simple.dat"))
 
 # Note: only the fleets and years list components matter for this function to
 # work, so did not specify the other components.
 index_params   <- list(fleets = 2, years = list(seq(50, 100, by = 10)))
 lcomp_params   <- index_params
 agecomp_params <-  index_params
-mlacomp_params <- list(fleets = 1, years = list(c(1971)))
-calcomp_params <- mlacomp_params
+mlacomp_params <- list(fleets = 1, years = list(c(2)))
+calcomp_params <- list(fleets = 1, years = list(c(26)))
 
 test_that("clean_data is working for index, age comp, and length comp", {
   new_dat <- clean_data(dat, index_params = index_params,
@@ -26,27 +24,50 @@ test_that("clean_data is working for index, age comp, and length comp", {
   expect_equal(sort(new_dat$CPUE$year), sort(index_params$years[[1]]))
   expect_equal(sort(new_dat$lencomp$Yr), sort(lcomp_params$years[[1]]))
   expect_equal(sort(new_dat$agecomp$Yr), sort(index_params$years[[1]]))
-  expect_equal(sum(new_dat$NCPUEObs), length(new_dat$CPUE$year))
+  expect_equal(sum(new_dat$N_cpue), length(new_dat$CPUE$year))
 })
 
 test_that("clean_dat is working for mean size at age (mla_comp)",{
+  # create some mla data to add to the data.
+  dat$use_MeanSize_at_Age_obs <- 1
+  dat$MeanSize_at_Age_obs <- data.frame(Yr = 1:10,
+                                        Seas = 1,
+                                        FltSvy = c(rep(1, times = 5),
+                                                   rep(2, times = 5)),
+                                        Gender = 3,
+                                        Part = 0,
+                                        AgeErr = 1,
+                                        Ignore = 2,
+                                        f1 = 30, f2 = 40,
+                                        m1 = 20, m2 = 25,
+                                        N_f1 = 20, N_f2 = 20,
+                                        N_f3 = 20, N_f4 = 20)
   index_params <- list(fleets  = 2,
-                       years   = list(c(1980,1986,1992,1998)),
+                       years   = list(c(1,5,7,10)),
                        sds_obs = list(0.2))
-  new_dat <- clean_data(dat_sim,
+  new_dat <- clean_data(dat,
                         index_params = index_params,
                         mlacomp_params = mlacomp_params)
-  expect_false(nrow(new_dat$MeanSize_at_Age_obs) == nrow(dat_sim$MeanSize_at_Age_obs))
+  expect_false(nrow(new_dat$MeanSize_at_Age_obs) == nrow(dat$MeanSize_at_Age_obs))
   expect_equal(sort(new_dat$MeanSize_at_Age_obs$Yr), sort(mlacomp_params$years[[1]]))
   expect_equal(new_dat$N_MeanSize_at_Age_obs, length(new_dat$MeanSize_at_Age_obs$Yr))
 })
 
 test_that("clean_dat exits on error if conditional age at length", {
-  #this test can be removed when CAL is implemented
-  index_params <- list(fleets  = 2,
-                       years   = list(c(1980,1986,1992,1998)),
+  # remove test if implementing CAL
+  new_bin_vec <- seq(min(dat$lbin_vector), max(dat$lbin_vector), by = 4)
+  # add the max value if necessary.
+  data_CAL <- dat
+  # change approximately half of the obs to CAL
+  a_col <- nrow(data_CAL$agecomp)
+  max_change <- as.integer(a_col/2)
+  data_CAL$agecomp$Lbin_lo[1:max_change] <- new_bin_vec[2]
+  data_CAL$agecomp$Lbin_hi[1:max_change] <- new_bin_vec[length(new_bin_vec)-2]
+  # this test can be removed when CAL is implemented
+  index_params <- list(fleets  = 1,
+                       years   = list(c(26,29,34,50)),
                        sds_obs = list(0.2))
-   expect_error(clean_data(dat_sim,
+   expect_error(clean_data(data_CAL,
                         index_params = index_params,
                         calcomp_params = calcomp_params),
                 "Conditional age at length (CAL) is not yet implemented",

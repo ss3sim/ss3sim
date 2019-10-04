@@ -1,9 +1,0 @@
-#description: Single fixed M at mle, fixed steepness, no CPUE, no length-at-age
-natM_type;          NULL
-natM_n_breakpoints; NULL
-natM_lorenzen;      NULL
-natM_val;           NULL
-par_name;           LnQ_base_3_CPUE,CV_young,CV_old
-par_int;            c(NA,NA,NA)
-par_phase;          c(-1,-1,-1)
-forecast_num;       0

@@ -1,4 +1,0 @@
-# description: 2 years retro for cod
-# author: SCA
-# notes: 
-retro_yr; -2

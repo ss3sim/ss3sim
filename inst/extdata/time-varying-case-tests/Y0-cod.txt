@@ -1,5 +1,0 @@
-# A sample case file for arbitrary change_tv() arguments
-# could also be coded as an o case because no time varying is necessary
-function_type; change_tv
-param; something_else
-dev; rep(1, 100)

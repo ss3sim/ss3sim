@@ -34,7 +34,7 @@ test_that("change_data is working with only types inputs", {
     outfile = NULL)
   expect_equal(changed_dat$CPUE$year,  yr_input)
   expect_equal(sort(unique(changed_dat$CPUE$index)), flt_input)
-  expect_equal(changed_dat$NCPUEObs, c(0, length(yr_input)))
+  expect_equal(changed_dat$N_cpue, length(yr_input))
   expect_equal(changed_dat$lencomp$Yr, yr_input)
   expect_equal(sort(unique(changed_dat$lencomp$Flt)), flt_input)
   expect_equal(nrow(changed_dat$lencomp), changed_dat$N_lencomp)

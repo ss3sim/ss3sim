@@ -30,7 +30,7 @@
 #' # Find the example data location:
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- file.path(d, "example-om", "ss3_expected_values.dat")
-#' dat_list <- SS_readdat(f_in, version = NULL, verbose = FALSE)
+#' dat_list <- r4ss::SS_readdat(f_in, version = NULL, verbose = FALSE)
 #' # Note the initial expected values for the index data:
 #' dat_list$CPUE # Only has expected values for fleet 2 in every other year from
 #' # 76 to 100, so can only sample from fleet 2 during every other year between

@@ -1,9 +1,0 @@
-#description: M is fixed at the M that produces 30% of MSY
-natM_type;          NULL
-natM_n_breakpoints; NULL
-natM_lorenzen;      NULL
-natM_val;           NULL
-par_name;           c(LnQ_base_Fishery(1), NatM_p_1_Fem_GP_1)
-par_int;            c(NA, 0.255)
-par_phase;          c(-6, -1)
-forecast_num;       0

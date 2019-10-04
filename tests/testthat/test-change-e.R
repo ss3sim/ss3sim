@@ -171,7 +171,6 @@ test_that("change_em_binning exits on error if cond. age at length", {
   pop_bin_input <- 5
   pop_min_size_input <- min(datalist$lbin_vector_pop) - 1
   pop_max_size_input <- max(datalist$lbin_vector_pop) + 5
-# TODO add tests.
  datalist_CAL <- datalist
  # change approximately half of the obs to CAL
  a_col <- nrow(datalist_CAL$agecomp)

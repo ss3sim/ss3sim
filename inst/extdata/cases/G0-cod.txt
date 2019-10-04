@@ -1,4 +1,0 @@
-#note: could also convert this case into an O one, since no time varying required.
-function_type; change_tv
-param; VonBert_K_Fem_GP_1
-dev; rep(0, 100)

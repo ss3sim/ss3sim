@@ -1,4 +1,0 @@
-#Note: could convert this case into an O once b/c no timevarying needed.
-function_type; change_tv
-param; SizeSel_P1_Fishery(1)
-dev; rep(0, 100)
