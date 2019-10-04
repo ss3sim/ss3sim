@@ -2,7 +2,7 @@
 #'
 #' Runs an operating model over a range of fishing mortality (F) levels to
 #' determine the F at maximum sustainable yield (Fmsy).
-#' 
+#'
 #' @param om_in A full or relative path to a directory that contains an
 #'   \pkg{ss3sim} operating model.
 #' @param results_out A full or relative path to a directory where the results
@@ -11,7 +11,9 @@
 #' @param end Upper fishing mortality levels that will be explored.
 #' @param by_val Interval at which F will be incremented between \code{start}
 #'   and \code{end}.
+#' @template verbose
 #' @importFrom r4ss SS_readdat SS_readforecast SS_changepars
+#' @importFrom stats sd
 #' @return Creates a plot and a table with catches and F values.
 #' Also, invisibly returns a table of F and catch as a data frame.
 #' @export
@@ -23,18 +25,18 @@
 #' \code{verbose = TRUE}, which is not the default, users will be provided
 #' with coefficient of variations of the catches in the terminal years of
 #' the model. Here, terminal is defined as half as many years as there are
-#' ages in the population dynamics of your model. 
-#' Thus, if the population plus group starts at age twenty, 
+#' ages in the population dynamics of your model.
+#' Thus, if the population plus group starts at age twenty,
 #' then the standard deviation of the last ten years of catch
 #' divided by the mean catch over that same time will be printed to the
 #' screen for each model that is ran. For the default cod model provided within
 #' the package, the CV is less than 1e-04 for all F levels explored.
 #'
 #' Ensure that the argument \code{om_in} leads to an operating model that is
-#' configured for use within \pkg{ss3sim}. For example, the F type must 
+#' configured for use within \pkg{ss3sim}. For example, the F type must
 #' allow for an input vector of Fs rather than catches, along with other
 #' specifications.
-#' 
+#'
 #' @examples
 #' \dontrun{
 #'   d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
@@ -44,7 +46,7 @@
 #'   unlink("fmsy", recursive = TRUE)
 #' }
 
-profile_fmsy <- function(om_in, results_out, 
+profile_fmsy <- function(om_in, results_out,
   start = 0.00, end = 1.5, by_val = 0.01, verbose = FALSE) {
 
   origWD <- getwd()
@@ -61,7 +63,7 @@ profile_fmsy <- function(om_in, results_out,
   fVector <- seq(start, end, by_val)
   fEqCatch <- NULL
   CVs <- NULL
-  
+
   ## read in dat file to get years of model
   datFile <- r4ss::SS_readdat(file= starter$datfile,
     version = NULL, verbose = FALSE)
@@ -87,24 +89,24 @@ profile_fmsy <- function(om_in, results_out,
       ctl_file_out = starter$ctlfile)
     system(paste(ss_bin, "-nohess"), show.output.on.console = FALSE,
            ignore.stdout=TRUE)
-    allcatch <- r4ss::SS_readdat("data.ss_new", 
+    allcatch <- r4ss::SS_readdat("data.ss_new",
       verbose = FALSE, version = NULL, section = 2)$catch$catch
     endcatch <- utils::tail(allcatch, ceiling(datFile$Nages * 0.5))
 	  CVs[i] <- round(sd(endcatch) / mean(endcatch), 5)
     fEqCatch[i] <- allcatch[simlength]
   }
-  if (verbose) message("The CVs of the catch in the last ", 
+  if (verbose) message("The CVs of the catch in the last ",
     ceiling(datFile$Nages * 0.5), " years of each model that was run were\n",
     paste(CVs, collapse = " * "), "\nIf these are large, the model",
     " might not be reaching equilibrium and\n",
     "should be ran for more than ", simlength, " years.")
-  
+
   pdf("Fmsy.pdf")
       plot(fVector, fEqCatch, type = "b",
            xlab = "Fishing mortality rate", ylab = "Yield at equilibrium")
       maxFVal <- which.max(fEqCatch)
 	  Fmsy <- fVector[maxFVal]
-      graphics::points(x = Fmsy, y = max(fEqCatch), 
+      graphics::points(x = Fmsy, y = max(fEqCatch),
         col = "red", pch = 19)
       mtext(text = paste(" OM = ", om_in, "\n",
 	                     "Fishing mortality at maximum yield (Fmsy) = ",

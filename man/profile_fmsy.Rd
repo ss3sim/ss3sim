@@ -20,6 +20,10 @@ will be saved. The directory will be created if it doesn't already exist.}
 
 \item{by_val}{Interval at which F will be incremented between \code{start}
 and \code{end}.}
+
+\item{verbose}{When \code{TRUE} messages will be returned
+from the function. Often useful for debugging. The default
+is \code{FALSE}.}
 }
 \value{
 Creates a plot and a table with catches and F values.
@@ -38,15 +42,15 @@ responsible for ensuring this fact. If the function is run with
 \code{verbose = TRUE}, which is not the default, users will be provided
 with coefficient of variations of the catches in the terminal years of
 the model. Here, terminal is defined as half as many years as there are
-ages in the population dynamics of your model. 
-Thus, if the population plus group starts at age twenty, 
+ages in the population dynamics of your model.
+Thus, if the population plus group starts at age twenty,
 then the standard deviation of the last ten years of catch
 divided by the mean catch over that same time will be printed to the
 screen for each model that is ran. For the default cod model provided within
 the package, the CV is less than 1e-04 for all F levels explored.
 
 Ensure that the argument \code{om_in} leads to an operating model that is
-configured for use within \pkg{ss3sim}. For example, the F type must 
+configured for use within \pkg{ss3sim}. For example, the F type must
 allow for an input vector of Fs rather than catches, along with other
 specifications.
 }

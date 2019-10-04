@@ -1,8 +1,8 @@
 #' Replace recruitment deviations
 #'
 #' This function replaces the recruitment deviations in the
-#' control file of a Stock Synthesis model with those specified in \the argument
-#' code{recdevs}. The new control file is then written to the disk if
+#' control file of a Stock Synthesis model with those specified in the argument
+#' \code{recdevs}. The new control file is then written to the disk if
 #' \code{ctl_file_out} is specified.
 #' It is imperative that the path provided in \code{ctl_file_in}
 #' be to a \code{ss_new} file so \code{change_rec_devs} can
@@ -14,10 +14,10 @@
 #'
 #' @param recdevs A vector of recruitment deviations to be entered into
 #' the SS control file. The vector must be the same length as the vector
-#' of recruitment deviations that are commented out in the \code{ss_new} 
-#' control file. This vector can be found by searching for 
-#' \code{# all recruitment deviations} within the file. 
-#' If a single value is provided instead of a vector, the value 
+#' of recruitment deviations that are commented out in the \code{ss_new}
+#' control file. This vector can be found by searching for
+#' \code{# all recruitment deviations} within the file.
+#' If a single value is provided instead of a vector, the value
 #' will be repeated for every recruitment deviation in the model.
 #' Alternatively, users can supply a named vector with each name being a year
 #' of the model. Missing years will be filled in with values of zero.
@@ -25,6 +25,7 @@
 #' @template ctl_file_out
 #' @return A modified SS control file.
 #' @author Kelli Faye Johnson
+#' @importFrom utils type.convert
 #' @export
 #'
 #' @examples
