@@ -63,7 +63,7 @@
 #' \code{\link{system}} call that runs \code{SS3}.
 #' @author Sean Anderson with contributions from many others as listed in
 #'   the DESCRIPTION file.
-#' @importFrom r4ss SS_readdat
+#' @importFrom r4ss SS_readdat SS_readforecast
 #' @return
 #' The output will appear in whatever your current \R working directory
 #' is. There will be folders named after your scenarios. They will
@@ -249,7 +249,15 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         }
         sc_i_recdevs <- user_recdevs[, i] # user specified recdevs
       }
-
+      
+      # Find number of years in OM to change recdevs and F
+      datfile.orig <- SS_readdat(file.path(sc, i, "om", "ss3.dat"),
+                                 version = NULL, verbose = FALSE)
+      forfile.orig <- SS_readforecast(file.path(sc, i, "om", "forecast.ss"),
+        verbose = FALSE)
+      xyears <- seq(datfile.orig[["styr"]], 
+        datfile.orig[["endyr"]] + forfile.orig$Nforecastyrs)
+      sc_i_recdevs <- setNames(sc_i_recdevs[seq_along(xyears)], xyears)
       change_rec_devs(recdevs      = sc_i_recdevs,
                       ctl_file_in  = file.path(sc, i, "om", "om.ctl"),
                       ctl_file_out = file.path(sc, i, "om", "om.ctl"))
@@ -276,8 +284,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                         calcomp_params  = calcomp_params,
                                         mlacomp_params  = mlacomp_params,
                                         wtatage_params  = wtatage_params)
-      datfile.orig <- SS_readdat(file.path(sc, i, "om", "ss3.dat"),
-                                 version = NULL, verbose = FALSE)
 
       # Start by clearing out the old data. Important so that extra data
       # doesn't trip up change_data:

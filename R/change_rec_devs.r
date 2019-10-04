@@ -1,20 +1,26 @@
 #' Replace recruitment deviations
 #'
 #' This function replaces the recruitment deviations in the
-#' control file with those specified in \code{recdevs}.
-#' The new control file is then written to the disk if
+#' control file of a Stock Synthesis model with those specified in \the argument
+#' code{recdevs}. The new control file is then written to the disk if
 #' \code{ctl_file_out} is specified.
 #' It is imperative that the path provided in \code{ctl_file_in}
 #' be to a \code{ss_new} file so \code{change_rec_devs} can
-#' properly determine how many recruitment deviations to input
-#' into the control file.
+#' properly determine where to place the recruitment deviations
+#' in the control file.
 #'
 #' This function does not need to be specified in a case file if you
 #' are running an ss3sim simulation using \code{\link{run_ss3sim}}.
 #'
 #' @param recdevs A vector of recruitment deviations to be entered into
-#' the SS control file. A single value will be repeated for every value in
-#' \code{years} or \code{length(years) == length(recdevs)} must be true.
+#' the SS control file. The vector must be the same length as the vector
+#' of recruitment deviations that are commented out in the \code{ss_new} 
+#' control file. This vector can be found by searching for 
+#' \code{# all recruitment deviations} within the file. 
+#' If a single value is provided instead of a vector, the value 
+#' will be repeated for every recruitment deviation in the model.
+#' Alternatively, users can supply a named vector with each name being a year
+#' of the model. Missing years will be filled in with values of zero.
 #' @template ctl_file_in
 #' @template ctl_file_out
 #' @return A modified SS control file.
@@ -26,41 +32,48 @@
 #' change_rec_devs(recdevs = rlnorm(101),
 #'   ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
 #'   ctl_file_out = file.path(tempdir(), "control_recdevs.ss"))
+#' # Change the recruitment deviations in years 2:11
+#' change_rec_devs(recdevs = setNames(rlnorm(10), 2:11),
+#'   ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
+#'   ctl_file_out = file.path(tempdir(), "control_recdevsInitial.ss"))
+#' sapply(dir(tempdir(), pattern = "control_.+ss", full.names = TRUE), unlink)
 
 change_rec_devs <- function(recdevs,
   ctl_file_in, ctl_file_out = "control_recruitment.ss") {
 
   ctl <- readLines(ctl_file_in)
-  default_err_msg <- paste0(" Please make sure you are using a control file ",
-                            "that was run through SS to get a control.ss_new ",
-                            "so that it has the default SS comments that ",
-                            "ss3sim expects.")
-  devs <- grep("#\\s*[0-9]+[RFE]", ctl, value = TRUE)
-  years <- unlist(strsplit(
-    gsub("^_", "",
-    gsub("^#\\s*|\\s|R|F|E", "_", devs)), "_+"))
+  default_err_msg <- paste0(" Please make sure you are using a control file\n",
+    "that was run through SS to get a control.ss_new\n",
+    "so that it has the default SS comments that ",
+    "ss3sim expects.")
+
+  vecnames <- type.convert(names(recdevs), as.is = TRUE)
+  if (!all(is.numeric(vecnames))) {
+    devs <- grep("#\\s*[0-9]+[RFE]", ctl, value = TRUE)
+    years <- unlist(strsplit(
+      gsub("^_", "",
+      gsub("^#\\s*|\\s|R|F|E", "_", devs)), "_+"))
+    if (length(recdevs) == 1) recdevs <- rep(recdevs, length.out = n.years)
+  } else {years <- vecnames}
   n.years <- length(years)
-  if(length(devs) == 0 | n.years == 0) {
+  if(n.years == 0) {
     stop("The number of recdevs and their associated years could not be ",
-         "determined from the control file.", default_err_msg)
+         "determined\nfrom the control file.", default_err_msg)
   }
-  if(length(recdevs) < n.years & length(recdevs)>1) {
-    stop("The length of recdevs was greater than 1, but smaller than the number ",
-         "of years required. Please change to have either length of 1 or at ",
-         "least ", n.years, " values")
-   } else if(length(recdevs) == 1) {
-     recdevs <- rep(recdevs, length.out = n.years)
+  if(length(recdevs) != n.years) {
+    stop("The length of recdevs was, ", sum(!is.na((recdevs))),
+    	", and does not match the number of years in the model.\n",
+      "Please change input argument 'recdevs' to have either length of 1,\n",
+      "which will be repeated for each year in the model, or ", n.years, ".")
    }
-  recdevs <- recdevs[seq_along(years)]
   newdata <- data.frame(
     "Yr" = years,
     "recdev" = recdevs)
   if(anyNA(newdata)) {
-    stop("change_rec_devs is attempting to add in NA values for recruitment ",
-         "deviations values or associated years in the control file. Please ",
-         "contact the ss3sim developers for help with this issue.")
+    stop("change_rec_devs is attempting to add in NA values for recruitment\n",
+       "deviations values or associated years in the control file.")
   }
-  locations <- grep("do_recdev", ctl) # find start of recruitmen devs section
+  locations <- grep("do_recdev", ctl) # find start of recdevs section
   #turn on recruitment devs and advanced options
   ctl[locations] <- gsub("^[0-4]\\s*", "1 ", trimws(ctl[locations]))
   # TODO: add ability to turn on advanced options with this script if they are
@@ -78,7 +91,7 @@ change_rec_devs <- function(recdevs,
     # Add other code to add in the other lines needed instead of stopping.
   } else if(read_adv_option != 1){
     stop("The value in the OM control file to read advanced options is ",
-         read_adv_option, "which is not a valid input.")
+         read_adv_option, ", but should be 1.")
   }
   # Find location to insert recdevs.
   locations <- grep("read_recdevs", ctl)

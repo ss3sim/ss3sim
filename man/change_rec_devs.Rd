@@ -9,8 +9,14 @@ change_rec_devs(recdevs, ctl_file_in,
 }
 \arguments{
 \item{recdevs}{A vector of recruitment deviations to be entered into
-the SS control file. A single value will be repeated for every value in
-\code{years} or \code{length(years) == length(recdevs)} must be true.}
+the SS control file. The vector must be the same length as the vector
+of recruitment deviations that are commented out in the \code{ss_new} 
+control file. This vector can be found by searching for 
+\code{# all recruitment deviations} within the file. 
+If a single value is provided instead of a vector, the value 
+will be repeated for every recruitment deviation in the model.
+Alternatively, users can supply a named vector with each name being a year
+of the model. Missing years will be filled in with values of zero.}
 
 \item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
 
@@ -21,13 +27,13 @@ A modified SS control file.
 }
 \description{
 This function replaces the recruitment deviations in the
-control file with those specified in \code{recdevs}.
-The new control file is then written to the disk if
+control file of a Stock Synthesis model with those specified in \the argument
+code{recdevs}. The new control file is then written to the disk if
 \code{ctl_file_out} is specified.
 It is imperative that the path provided in \code{ctl_file_in}
 be to a \code{ss_new} file so \code{change_rec_devs} can
-properly determine how many recruitment deviations to input
-into the control file.
+properly determine where to place the recruitment deviations
+in the control file.
 }
 \details{
 This function does not need to be specified in a case file if you
@@ -38,6 +44,11 @@ d <- system.file(file.path("extdata", "models"), package = "ss3sim")
 change_rec_devs(recdevs = rlnorm(101),
   ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
   ctl_file_out = file.path(tempdir(), "control_recdevs.ss"))
+# Change the recruitment deviations in years 2:11
+change_rec_devs(recdevs = setNames(rlnorm(10), 2:11),
+  ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
+  ctl_file_out = file.path(tempdir(), "control_recdevsInitial.ss"))
+sapply(dir(tempdir(), pattern = "control_.+ss", full.names = TRUE), unlink)
 }
 \author{
 Kelli Faye Johnson
