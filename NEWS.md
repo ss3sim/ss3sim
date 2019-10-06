@@ -1,3 +1,51 @@
+# ss3sim 1.0.0
+
+* Improved the documentation of many functions
+* Updated, added, or removed examples increasing the number of functions with
+helpful examples
+* Update profile_fmsy to allow for relative or absolute paths to directories
+and provide a better message if verbose = TRUE warning users when they may have
+not run their model long enough to reach equilibrium
+* Remove reliance on tidyverse packages
+* Change to 'iteration' instead of 'replicate'
+* Update the license to 2019
+* Change readme from Rmd to md file
+* Deleted the vignette on making functions and updated remaining vignettes
+* Remove bias adjustment capability and sampling of conditional age-at-length
+data; both will eventually be added back to the package with better code
+* Remove write_file argument from many functions and rely on other input
+arguments to determine if a file should be written to the disk, such as
+if the name of the file is NULL then nothing is written
+* Create change_o for the operating model so users can input INIT values
+for parameters in their operating model rather than having to use a dev
+vector and the change_tv function
+* Implement check of q parameter such that a given q is created from a template
+for each survey-like data set included after sampling
+* Manipulate control file rather than par file and delete the par
+file from the operating model folder
+* Use merge rather than cbind for those instances that the names of the 
+columns in the results file from the OM do not exactly match the EM.
+* Fix get_results working directory issue
+* Deprecate change_year, change_fltname, change_maturity, and pastef
+* Reduce restrictions placed on the operating and estimation models used
+by individual users to allow for multiple fleets, two-sexed models, and other
+trivial changes such as different fleet names. Feel free to email the
+developers if there is a feature that you want or one that isn't working as
+expected because more work in planned in this area.
+* Implement the use of more r4ss functions such as SS_readstarter and 
+SS_writestarter to decrease the amount of original code in ss3sim
+* Increase the number of functions with examples and update examples
+to not change the users working directory when possible.
+* Change to providing a single model inside the package rather than
+maintaining models both in the package and in ss3sim/ss3models
+* Kelli Faye Johnson is now the maintainer of the package
+* updated authors to reflect current contributors
+* reduced the complexity of sampling functions by initiating the same
+protocol for ages and lengths, where each function calls a simple function
+* Update functions to work with latest version of r4ss, which is compatible
+with SS 3.3.0, and change to using the newer executable of SS without the
+option to specify safe or optimized
+
 # ss3sim 0.9.5
 
 * Adds citation to Description field
