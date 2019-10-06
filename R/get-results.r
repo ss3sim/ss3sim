@@ -79,7 +79,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         `%dopar%` <- NULL
 
         results_all <- foreach(parallel_scenario = scenarios, .verbose = FALSE,
-            .export = c("pastef", "get_results_scenario",
+            .export = c("get_results_scenario",
             "get_results_scalar", "get_nll_components",
             "get_results_timeseries"), .combine = rbind) %dopar% {
             ## If the files already exist just read them in, otherwise get results
