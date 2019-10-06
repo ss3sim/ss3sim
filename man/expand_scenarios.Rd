@@ -19,18 +19,20 @@ A character vector of scenario IDs. The case IDs will be
 alphabetically sorted.
 }
 \description{
-Create vectors of scenarios from inputs. For passing to
-\code{\link{run_ss3sim}}, or \code{\link{get_results_all}}. Default
-case values are the base case (\code{0}).
+Create vectors of scenarios from case letters, case numbers,
+and species codes. Scenarios are passed to
+\code{\link{run_ss3sim}} and \code{\link{get_results_all}}. 
+Case letters 'D' and 'F' are mandatory and provide the data 
+sampling and fishing history for the operating model.
 }
 \examples{
 expand_scenarios()
 expand_scenarios(cases = list(D = 0:3, E = 0, F = 0, M = 0, R = 0),
-species = "cod")
+  species = "cod")
 }
 \seealso{
 \code{\link{run_ss3sim}}, \code{\link{get_results_all}}
 }
 \author{
-Cole Monnahan and Sean Anderson
+Cole Monnahan and Sean C. Anderson
 }
