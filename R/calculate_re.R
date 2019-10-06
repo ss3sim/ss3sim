@@ -23,16 +23,12 @@
 #' @export
 #' @examples
 #' # Example with built in package data:
-#' d1 <- system.file("extdata", "output", "ss3sim_ts.csv",
-#'   package = "ss3sim")
-#' d2 <- system.file("extdata", "output", "ss3sim_scalar.csv",
-#'   package = "ss3sim")
-#' ss3sim_ts <- read.csv(d1)
-#' ss3sim_scalar <- read.csv(d2)
-#'
-#' head(calculate_re(ss3sim_ts))
-#' head(calculate_re(ss3sim_ts, add = FALSE))
-#' head(calculate_re(ss3sim_scalar, add = FALSE))
+#' data("ts_dat", package = "ss3sim")
+#' data("scalar_dat", package = "ss3sim")
+#' head(calculate_re(ts_dat))
+#' head(calculate_re(ts_dat, add = FALSE))
+#' head(calculate_re(scalar_dat, add = FALSE))
+#' rm("ts_dat", "scalar_dat")
 #'
 calculate_re <- function(dat, add = TRUE) {
 
