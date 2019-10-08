@@ -339,7 +339,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                   pop_minimum_size = data_params$pop_minimum_size,
                   pop_maximum_size = data_params$pop_maximum_size,
                   tail_compression = data_params$tail_compression,
-                  lcomp_constant   = data_params$lcomp_constant)
+                  lcomp_constant   = data_params$lcomp_constant,
+                  nsex = datfile.orig$Ngenders)
 
       # Run the operating model and copy the dat file over
       run_ss3model(scenarios = sc, iterations = i, type = "om", ...)

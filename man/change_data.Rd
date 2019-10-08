@@ -7,7 +7,7 @@
 change_data(dat_list, outfile = NULL, fleets, years, types,
   age_bins = NULL, len_bins = NULL, pop_binwidth = NULL,
   pop_minimum_size = NULL, pop_maximum_size = NULL,
-  lcomp_constant = NULL, tail_compression = NULL)
+  lcomp_constant = NULL, tail_compression = NULL, nsex = 1)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
@@ -61,6 +61,11 @@ be a numeric value, as a proportion. For example 0.1 means 10 percent. See
 the SS manual for further information. A \code{NULL} value indicates no
 action, a negative value indicates to SS to ignore it (not use that
 feature).}
+
+\item{nsex}{An integer value of 1 or 2 specifying the number of sexes in the
+model. If 1, then females are the only included sex. This information can be
+found in the data file for a given model and dictates how the composition
+data are structured.}
 }
 \value{
 An invisible data list, and a file is written to the disk if an

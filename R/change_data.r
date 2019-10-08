@@ -50,6 +50,7 @@
 #'   the SS manual for further information. A \code{NULL} value indicates no
 #'   action, a negative value indicates to SS to ignore it (not use that
 #'   feature).
+#' @template nsex
 #'
 #' @details The robustification constant is added to both the observed and
 #'   expected proportions of length composition data, before being normalized
@@ -97,7 +98,8 @@
 change_data <- function(dat_list, outfile = NULL, fleets, years, types,
   age_bins = NULL, len_bins = NULL, pop_binwidth = NULL,
   pop_minimum_size = NULL, pop_maximum_size = NULL,
-  lcomp_constant = NULL, tail_compression = NULL) {
+  lcomp_constant = NULL, tail_compression = NULL,
+  nsex = 1) {
 
   # TODO: pop length bins must not be wider than the length data bins, but the
   # boundaries of the bins do not need to align (from SS manual)
@@ -137,7 +139,7 @@ change_data <- function(dat_list, outfile = NULL, fleets, years, types,
   }
   if ("len" %in% types) {
     dat_list$lencomp <- make_dummy_dat_lencomp(fleets = fleets, years = years,
-                          len_bins = len_bins)
+                          len_bins = len_bins, nsex = nsex)
     dat_list$lbin_vector <- len_bins
     dat_list$N_lencomp <- nrow(dat_list$lencomp)
     dat_list$N_lbins <- length(len_bins)
@@ -146,7 +148,7 @@ change_data <- function(dat_list, outfile = NULL, fleets, years, types,
   if ("age" %in% types) {
     conditional_data <- dat_list$agecomp[dat_list$agecomp$Lbin_lo >= 0, ]
     new.agecomp <- make_dummy_dat_agecomp(fleets = fleets, years = years,
-                     age_bins = age_bins)
+                     age_bins = age_bins, nsex = nsex)
     dat_list$agecomp <- rbind(new.agecomp, conditional_data)
     dat_list$agebin_vector <- age_bins
     dat_list$N_agecomp <- nrow(dat_list$agecomp)
@@ -161,7 +163,7 @@ change_data <- function(dat_list, outfile = NULL, fleets, years, types,
          "use models and scenarios without CAL.")
     agecomp <- dat_list$agecomp[dat_list$agecomp$Lbin_lo < 0, ]
     new.calcomp <- make_dummy_dat_calcomp(fleets = fleets,years = years,
-                     age_bins = age_bins, len_bins = len_bins)
+                     age_bins = age_bins, len_bins = len_bins, nsex = nsex)
     dat_list$agecomp <- rbind(agecomp, new.calcomp)
     dat_list$agebin_vector <- age_bins
     dat_list$N_agecomp <- nrow(dat_list$agecomp)
@@ -325,10 +327,6 @@ check_data <- function(x) {
     stop("dat_list must be an r4ss data file read into R using ",
          "r4ss::SSreaddat()")
   }
-
-  if (x$Ngenders > 1L)
-    stop("_Ngenders is greater than 1 in the operating model.",
-      " ss3sim currently only works with single-sex models.")
 
   if (!is.null(x$lbin_method)) {
     if (x$lbin_method > 2)
