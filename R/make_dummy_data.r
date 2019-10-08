@@ -1,23 +1,19 @@
 make_dummy_dat_index <- function(fleets, years) {
-    ## expand dummy data across all types:
     dummy_dat_list <- lapply(fleets, function(fleet) {
         data.frame("year"   = years, "Seas" = 1, "index"  = fleet,
                    "obs" = 1, "se_log" = .1,
                    stringsAsFactors = FALSE)})
     dummy_dat <- as.data.frame(do.call('rbind', dummy_dat_list))
-    ## Add the dummy data for each data cell
     dummy_dat
 }
 
 
-    ## expand dummy data across all types:
 make_dummy_dat_lencomp <- function(fleets, years, len_bins, nsex = 1) {
     dummy_dat_list <- lapply(fleets, function(fleet) {
         data.frame("Yr"   = years, "Seas" = 1, "Flt"  = fleet,
                    "Gender" = ifelse(nsex == 1, 0, 3), "Part"   = 0, "Nsamp" = 10,
                    stringsAsFactors = FALSE)})
     dummy_dat <- as.data.frame(do.call('rbind', dummy_dat_list))
-    ## Add the dummy data for each data cell
     dummy_df <- data.frame(matrix(1, nrow=nrow(dummy_dat), 
       ncol = nsex * length(len_bins)))
     names(dummy_df) <- paste0("l", len_bins)
@@ -25,25 +21,18 @@ make_dummy_dat_lencomp <- function(fleets, years, len_bins, nsex = 1) {
 }
 
 make_dummy_dat_agecomp <- function(fleets, years, age_bins, nsex = 1) {
-    ## expand dummy data across all types:
     dummy_dat_list <- lapply(fleets, function(fleet)
         data.frame("Yr"   = years, "Seas" = 1, "Flt"  = fleet, 
                    "Gender" = ifelse(nsex == 1, 0, 3),
                    "Part"   = 0, "AgeErr"=1, "Lbin_lo"=-1, "Lbin_hi"=-1,
                    "Nsamp" = length(age_bins), stringsAsFactors = FALSE))
     dummy_dat <- as.data.frame(do.call('rbind', dummy_dat_list))
-    ## Add the dummy data for each data cell
     dummy_df <- data.frame(matrix(1, nrow=nrow(dummy_dat), 
       ncol = nsex * length(age_bins)))
     names(dummy_df) <- paste0("a", age_bins)
     cbind(dummy_dat, dummy_df)
 }
 
-## fleets <- c(1,2)
-## years <- c(7,9)
-## age_bins <- c(1,5,10)
-## Lbin_lo <- (1:5)[-5]
-## Lbin_hi <- (1:5)[-1]
 make_dummy_dat_calcomp <- function(fleets, years, age_bins,
                                   len_bins, nsex = 1) {
     Lbin_lo <- len_bins
@@ -56,7 +45,6 @@ make_dummy_dat_calcomp <- function(fleets, years, age_bins,
                    "Nsamp" = length(age_bins), stringsAsFactors = FALSE)))
     dummy_dat_list <- unlist(dummy_dat_list, recursive=FALSE)
     dummy_dat <- as.data.frame(do.call('rbind', dummy_dat_list))
-    ## Add the dummy data for each data cell
     dummy_df <- data.frame(matrix(1, nrow=nrow(dummy_dat), 
       ncol = nsex * length(age_bins)))
     names(dummy_df) <- paste0("a", age_bins)
@@ -64,14 +52,11 @@ make_dummy_dat_calcomp <- function(fleets, years, age_bins,
 }
 
 make_dummy_dat_mlacomp <- function(fleets, years, age_bins) {
-    ## expand dummy data across all types:
     dummy_dat_list <- lapply(fleets, function(fleet)
         data.frame("Yr"   = years, "Seas" = 1, "Flt"  = fleet, "Gender" = 0,
                    "Part"   = 0, "AgeErr"=1, "Nsamp" = 10, stringsAsFactors = FALSE))
     dummy_dat <- as.data.frame(do.call('rbind', dummy_dat_list))
-    ## Add the dummy data for each data cell
     dummy_df <- data.frame(matrix(1, nrow=nrow(dummy_dat), ncol=length(age_bins)*2))
     names(dummy_df) <- c(paste0("a", c(age_bins)), paste0("N", c(age_bins)))
     cbind(dummy_dat, dummy_df)
 }
-
