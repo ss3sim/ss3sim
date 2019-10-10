@@ -54,7 +54,7 @@ create_argfiles <- function(functions = c("lcomp0-spp" =
     delim = "; ", ignore = c("file", "dir", "make_plot"), ...) {
   if(!is.character(functions))
     stop("Functions must be a vector of character.")
-  for(i in 1:length(functions)) {
+  for(i in seq_along(functions)) {
     x <- formals(functions[i])
     args_ignore <- as.numeric(unlist(sapply(ignore,
           function(z) grep(z, names(x)))))

@@ -9,7 +9,7 @@ id_scenarios <- function(directory){
     ## Get unique scenarios that exist in the folder. Might be other random
     ## stuff in the folder so be careful to extract only scenario folders.
     all.dirs <- list.dirs(path=directory, full.names=FALSE, recursive=FALSE)
-    temp.dirs <- sapply(1:length(all.dirs), function(i) {
+    temp.dirs <- sapply(seq_along(all.dirs), function(i) {
         x <- unlist(strsplit(all.dirs[i], split="/"))
         return(x[length(x)])
     })
@@ -101,7 +101,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         }
         ts.list <- scalar.list <- dq.list <- list()
         flag.na <- rep(0, length(scenarios))
-        for(i in 1:length(scenarios)){
+        for(i in seq_along(scenarios)){
             scalar.file <- file.path(scenarios[i],paste0("results_scalar_",scenarios[i],".csv"))
             ts.file <- file.path(scenarios[i],paste0("results_ts_",scenarios[i],".csv"))
             dq.file <- file.path(scenarios[i],paste0("results_dq_",scenarios[i],".csv"))
@@ -143,7 +143,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
     } else {
     ## Loop through each scenario in folder in serial
     dq.list <- ts.list <- scalar.list <- list()
-    for(i in 1:length(scenarios)){
+    for(i in seq_along(scenarios)){
         setwd(directory)
         scen <- scenarios[i]
         ## If the files already exist just read them in, otherwise get results

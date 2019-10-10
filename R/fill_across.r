@@ -25,7 +25,7 @@
 fill_across <- function(mat, minYear, maxYear) {
   ##Initial Checks
   mat$yr <- abs(mat$yr)
-  mat$index <- 1:nrow(mat)
+  mat$index <- seq_len(nrow(mat))
 
   # check.mat <- mat
 
@@ -33,8 +33,7 @@ fill_across <- function(mat, minYear, maxYear) {
   if(length(unique(mat$fleet)) != 1) stop('Too Many Fleets')
 
   #Interpolate Values across Rows
-  for(ii in 1:max(mat$index))
-  {
+  for(ii in seq_len(max(mat$index))) {
     temp <- mat[ii, ]
     na.index <- which(is.na(temp))
 
@@ -95,7 +94,7 @@ fill_across <- function(mat, minYear, maxYear) {
 
   diffs <- diff(fill.index)
 
-  for(ii in 1:length(fill.index))
+  for(ii in seq_along(fill.index))
   {
     curr <- fill.index[ii]
 

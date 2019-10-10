@@ -139,7 +139,7 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
   names(lcomp_new) <- paste0("l", bin_vector)
 
   # Re-bin length comps:
-  for (i in 1:length(bin_vector)) {
+  for (i in seq_along(bin_vector)) {
 
     if (i == 1) {
       select_col <- which(dat_list$lbin_vector < bin_vector[i + 1])
@@ -259,7 +259,7 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
 
     new_cal$Nsamp <- rowSums(new_cal[, grepl("^a[0-9.]+$", names(new_cal))])
 
-    new_cal_meta_dat <- old_cal_all[1:nrow(new_cal),
+    new_cal_meta_dat <- old_cal_all[seq_len(nrow(new_cal)),
       -which(names(old_cal_all) %in%
         c("Yr", "Lbin_lo", a_ids_character, "Lbin_hi", "Nsamp"))]
     new_cal <- cbind(new_cal_meta_dat, new_cal)

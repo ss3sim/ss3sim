@@ -179,11 +179,12 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
                 #Sample: I used a for loop to keep things understandable for me. could use apply also
 
                 #create empty list to store lengths and weights
-                lengths.list <- as.list(seq(1:nrow(age.samples)))
+                # todo: could be a bug here in seq(seq_len())
+                lengths.list <- as.list(seq(seq_len(nrow(age.samples))))
                 weights.list <- lengths.list
 
                 #fill in list by sampling from normal distribution
-                for(ii in 1:nrow(age.samples))
+                for(ii in seq_len(nrow(age.samples)))
                 {
                   lengths.list[[ii]] <- suppressWarnings(rnorm(n = age.samples[ii], mean = mla.means[ii], sd = sds[ii]))
 

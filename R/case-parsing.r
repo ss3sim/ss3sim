@@ -150,7 +150,7 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
 
   args_out <- vector("list", length = length(case_files))
   names(args_out) <- names(case_files)
-  for(i in 1:length(case_files)) {
+  for(i in seq_along(case_files)) {
     args_out[[i]] <- paste0(case_files[[i]], case_vals[i], "-", spp, ext)
   }
   args_out2 <- unlist(args_out)

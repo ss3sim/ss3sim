@@ -60,7 +60,7 @@ clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
     ## CPUE
     a <- dat_list$CPUE
     dat_list$CPUE <- do.call(rbind,
-     lapply(1:length(index_params$fleets), function(i)
+     lapply(seq_along(index_params$fleets), function(i)
             a[a$index == index_params$fleets[i] &
               a$year %in% index_params$years[[i]],]))
     dat_list$N_cpue <- NROW(dat_list$CPUE)
@@ -76,7 +76,7 @@ clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
         dat_list$N_lencomp <- 0
     } else {
         dat_list$lencomp <- do.call(rbind,
-         lapply(1:length(lcomp_params$fleets), function(i)
+         lapply(seq_along(lcomp_params$fleets), function(i)
                 a[a$FltSvy == lcomp_params$fleets[i] &
                   a$Yr %in% lcomp_params$years[[i]],]))
         dat_list$N_lencomp <- NROW(dat_list$lencomp)
@@ -100,7 +100,7 @@ clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
     } else {
         dat_list$MeanSize_at_Age_obs <-
             do.call(rbind,
-         lapply(1:length(mlacomp_params$fleets), function(i)
+         lapply(seq_along(mlacomp_params$fleets), function(i)
                 a[a$FltSvy == mlacomp_params$fleets[i] &
                   a$Yr %in% mlacomp_params$years[[i]],]))
         dat_list$N_MeanSize_at_Age_obs <- NROW(dat_list$MeanSize_at_Age_obs)
@@ -120,25 +120,25 @@ clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
           ## Case with just age comps and no calcomps
       {
           new.agecomp <- do.call(rbind,
-         lapply(1:length(agecomp_params$fleets), function(i)
+         lapply(seq_along(agecomp_params$fleets), function(i)
              agecomp[agecomp$FltSvy == agecomp_params$fleets[i] &
                          agecomp$Yr %in% agecomp_params$years[[i]],]))
           new.calcomp <- NULL
       } else if(!is.null(agecomp_params$fleets) & !is.null(calcomp_params$fleets)){
           ## Case with both types
           new.agecomp <- do.call(rbind,
-         lapply(1:length(agecomp_params$fleets), function(i)
+         lapply(seq_along(agecomp_params$fleets), function(i)
              agecomp[agecomp$FltSvy == agecomp_params$fleets[i] &
                          agecomp$Yr %in% agecomp_params$years[[i]],]))
           new.calcomp <- do.call(rbind,
-         lapply(1:length(calcomp_params$fleets), function(i)
+         lapply(seq_along(calcomp_params$fleets), function(i)
              calcomp[calcomp$FltSvy == calcomp_params$fleets[i] &
                          calcomp$Yr %in% calcomp_params$years[[i]],]))
       } else if(is.null(agecomp_params$fleets) & !is.null(calcomp_params$fleets)){
           ## case with only cal comps
           new.agecomp <- NULL
           new.calcomp <- do.call(rbind,
-         lapply(1:length(calcomp_params$fleets), function(i)
+         lapply(seq_along(calcomp_params$fleets), function(i)
              calcomp[calcomp$FltSvy == calcomp_params$fleets[i] &
                          calcomp$Yr %in% calcomp_params$years[[i]],]))
       }
@@ -197,7 +197,7 @@ check_data_str_range <- function(all_params, dat_list) {
       error <- FALSE
     } else if (is.null(params$fleets)|is.null(unlist(params$years))) {
       error <- FALSE
-    } else if(any(!params$fleets %in% 1:dat_list$Nfleets)) {
+    } else if(any(!params$fleets %in% seq_len(dat_list$Nfleets))) {
       error <- TRUE
     } else if(any(unlist(params$years) < dat_list$styr)|
               any(unlist(params$years) > dat_list$endyr)) {

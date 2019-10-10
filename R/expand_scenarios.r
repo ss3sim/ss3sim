@@ -28,7 +28,7 @@ expand_scenarios <- function(cases = list(D = 0, E = 0, F = 0,
   cases_all <- c(cases, list(species))
   case_names <- names(cases_all)
   cases_paste <- list()
-  for(i in 1:length(cases_all)) {
+  for(i in seq_along(cases_all)) {
     cases_paste[[i]] <- paste0(case_names[i], cases_all[[i]])
   }
   df <- expand.grid(cases_paste, stringsAsFactors = FALSE)

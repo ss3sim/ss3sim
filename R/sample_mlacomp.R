@@ -128,7 +128,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
   forexport <- list()
   k <- 1                 # each k is a new row of data, to be rbind'ed later
   # Loop through mla data for this fleet, given the years specified
-  for (fl in 1:length(fleets)) {
+  for (fl in seq_along(fleets)) {
     fl.temp <- fleets[fl]
     mlacomp.fl <- mlacomp[mlacomp$Flt == fleets[fl] &
                           mlacomp$Yr %in% years[[fl]], ]
@@ -136,7 +136,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
       stop(paste("A year specified in years for fleet", fl.temp, "was not",
                  "found in the input dat_list for fleet", fl.temp))
     }
-    for (j in 1:NROW(mlacomp.fl)) {
+    for (j in seq_len(NROW(mlacomp.fl))) {
       yr.temp <- mlacomp.fl$Yr[j]
       # Loop through mla data for this fleet / year combo
       mlacomp.new <- mlacomp.fl[j, ]
@@ -179,12 +179,12 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
       if (any(age.means > 1)) {
         # Create a vector of empirical samples of ages, such that each age bin
         # is repeated equal to the number of observed fish in that bin.
-        prob.age.ints <- unlist(sapply(1:length(age.means), function(x) {
+        prob.age.ints <- unlist(sapply(seq_along(age.means), function(x) {
           rep(x, age.means[x])
           }))
         # Resample to guarantee the sample size does not exceed the observed
         temp <- sample(x = prob.age.ints, size = age.Nsamp, replace = FALSE)
-        age.samples <- sapply(1:length(age.means), function(x) sum(temp == x))
+        age.samples <- sapply(seq_along(age.means), function(x) sum(temp == x))
       } else {
         # in the case of overdispersed age comp data
         age.samples <- rmultinom(n = 1, size = as.integer(age.Nsamp),
@@ -196,7 +196,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
 
       # apply sampling across columns (ages) to get sample of lengths
       lengths.list <-
-        lapply(1:length(means.log), function(kk) {
+        lapply(seq_along(means.log), function(kk) {
           exp(rnorm(n = age.samples[kk], mean = means.log[kk],
           sd = sds.log[kk]))
           })

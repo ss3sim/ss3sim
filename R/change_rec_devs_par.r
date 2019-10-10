@@ -34,7 +34,7 @@ change_rec_devs_par <- function(recdevs_new, par_file_in = "ss.par",
   num.years <- length(recdevs.old)
 
   ##  Cut off extra recdevs:
-  recdevs_new <- recdevs_new[1:length(recdevs.old)]
+  recdevs_new <- recdevs_new[seq_along(recdevs.old)]
 
   ## Check that the length of the recdevs matches up
   if(length(recdevs_new) != length(recdevs.old)){

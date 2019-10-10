@@ -170,7 +170,7 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
     #Get indices of parameters to standardize; first column is in the data frame
   # and second is in the EM read values
     indices_to_standardize<-matrix(ncol=2,nrow=nrow(percent_df))
-    indices_to_standardize[, 1] <- 1:NROW(percent_df)
+    indices_to_standardize[, 1] <- seq_len(NROW(percent_df))
     indices_to_standardize[, 2] <- indexem
 
     #Change lo and hi's

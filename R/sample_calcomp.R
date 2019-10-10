@@ -38,7 +38,7 @@ sample_calcomp <- function(dat_list, outfile = NULL, fleets = c(1,2), years,
     ## Input checks
     Nfleets <- NROW(fleets)
     if (Nfleets>0){
-        for(i in 1:Nfleets){
+        for(i in seq_len(Nfleets)) {
             if(length(Nsamp[[i]])>1 & length(Nsamp[[i]]) != length(years[[i]]))
                 stop(paste0("Length of Nsamp does not match length of years for",
                   "fleet ",fleets[i]))
@@ -82,7 +82,7 @@ sample_calcomp <- function(dat_list, outfile = NULL, fleets = c(1,2), years,
     newcomp.list <- list() # temp storage for the new rows
     k <- 1                 # each k is a new row of data, to be rbind'ed later
     ## Loop through each fleet
-    for(i in 1:length(fleets)){
+    for(i in seq_along(fleets)){
         fl <- fleets[i]
         if (length(Nsamp[[i]]) == 1) {
             Nsamp[[i]] <- rep(Nsamp[[i]], length(years[[i]]))
@@ -118,11 +118,11 @@ sample_calcomp <- function(dat_list, outfile = NULL, fleets = c(1,2), years,
                 ## This code creates a vector of empirical samples of
                 ## length, such that each length bin is repeated equal to
                 ## the number of observed fish in that bin
-                prob.len.ints <- unlist(sapply(1:length(prob.len), function(i) rep(i, prob.len[i])))
+                prob.len.ints <- unlist(sapply(seq_along(prob.len), function(i) rep(i, prob.len[i])))
                 ## Now resample from it, garuanteeing that the sample size
                 ## doesn't exceed
                 temp <- sample(x=prob.len.ints, size=Nsamp[[i]][yr.ind], replace=FALSE)
-                Nsamp.ages.per.lbin <- sapply(1:length(prob.len), function(i) sum(temp==i))
+                Nsamp.ages.per.lbin <- sapply(seq_along(prob.len), function(i) sum(temp==i))
                 ## Note: If you're ageing all fish this isn't needed, but holds.
             } else {
                 ## (2) case of Dirichlet. No way to verify more fish are
@@ -138,7 +138,7 @@ sample_calcomp <- function(dat_list, outfile = NULL, fleets = c(1,2), years,
         ## length bin and sample # fish in each age bin, given expected
         ## conditional age-at-length
         newcomp$Nsamp <- Nsamp.ages.per.lbin
-        for(ll in 1:nrow(newcomp)){
+        for(ll in seq_len(nrow(newcomp))) {
             N.temp <- newcomp$Nsamp[ll]
             if(N.temp>0){
                 cal.temp <-
