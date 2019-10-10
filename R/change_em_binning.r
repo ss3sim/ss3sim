@@ -147,7 +147,7 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
         lcomp_new[, i] <- apply(newdummy[, select_col], 1, sum, na.rm = TRUE)
       }
       if (length(select_col) == 1)
-        lcomp_new[, i] = newdummy[, select_col]
+        lcomp_new[, i] <- newdummy[, select_col]
     }
 
     if (i > 1 & i < length(bin_vector)) {
@@ -157,7 +157,7 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
         lcomp_new[, i] <- apply(newdummy[, select_col], 1, sum, na.rm = TRUE)
       }
       if (length(select_col) == 1)
-        lcomp_new[, i] = newdummy[, select_col]
+        lcomp_new[, i] <- newdummy[, select_col]
     }
 
     if (i == length(bin_vector)) {
