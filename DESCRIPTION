@@ -10,7 +10,19 @@ Authors@R: c(person("Kelli", "Johnson",
     person("Kathryn Doering", role = "aut"),
     person("Cole", "Monnahan", role = "aut"),
     person("Christine", "Stawitz", role = "aut"),
-    person("Ian", "Taylor", role = "aut"))
+    person("Ian", "Taylor", role = "aut"),
+    person("Curry", "Cunningham", role = "ctb"),
+    person("Allan", "Hicks", role = "ctb"),
+    person("Felipe", "Hurtado-Ferro", role = "ctb"),
+    person("Peter", "Kuriyama", role = "ctb"),
+    person("Roberto", "Licandeo", role = "ctb"),
+    person("Carey", "McGilliard", role = "ctb"),
+    person("Melissa", "Murdian", role = "ctb"),
+    person("Kotaro", "Ono", role = "ctb"),
+    person("Merrill", "Rudd", role = "ctb"),
+    person("Cody", "Szuwalski", role = "ctb"),
+    person("Juan", "Valero", role = "ctb"),
+    person("Athol", "Whitten", role = "ctb"))
 Description: Develops a framework for fisheries stock assessment simulation
     testing with Stock Synthesis (SS) as described in Anderson et al.
     (2014) <doi:10.1371/journal.pone.0092725>.
