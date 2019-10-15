@@ -7,12 +7,11 @@
 ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
   agecomp_params, calcomp_params = NULL, wtatage_params = NULL,
   mlacomp_params = NULL, em_binning_params = NULL,
-  estim_params = NULL, tv_params = NULL, om_dir, em_dir,
-  retro_params = NULL, data_params = NULL, call_change_data = TRUE,
+  estim_params = NULL, tv_params = NULL, operat_params = NULL,
+  om_dir, em_dir, retro_params = NULL, data_params = NULL,
   user_recdevs = NULL, user_recdevs_warn = TRUE, bias_adjust = FALSE,
-  bias_nsim = 5, bias_already_run = FALSE, hess_always = FALSE,
-  print_logfile = TRUE, sleep = 0, conv_crit = 0.2, seed = 21,
-  keep_compreport = TRUE, ...)
+  hess_always = FALSE, print_logfile = TRUE, sleep = 0, seed = 21,
+  ...)
 }
 \arguments{
 \item{iterations}{Which iterations to run. A numeric vector.}
@@ -32,7 +31,9 @@ A mandatory case.}
 \code{\link{sample_agecomp}}. A mandatory case.}
 
 \item{calcomp_params}{A named list containing arguments for
-\code{\link{sample_calcomp}}, for conditional age-at-length data.}
+\code{\link{sample_calcomp}}, for conditional age-at-length data.
+Currently CAL is not implemented in this version of ss3sim,
+so calcomp_params should be NULL.}
 
 \item{wtatage_params}{A named list containing arguments for
 \code{\link{sample_wtatage}}, for empirical weight-at-age data.}
@@ -49,6 +50,8 @@ A mandatory case.}
 \item{tv_params}{A named list containing arguments for
 \code{\link{change_tv}} (time-varying).}
 
+\item{operat_params}{A named list containing arguments for \code{\link{change_o}}.}
+
 \item{om_dir}{The directory with the operating model you want to copy and use
 for the specified simulations.}
 
@@ -60,11 +63,6 @@ use for the specified simulations.}
 
 \item{data_params}{A named list containing arguments for
 \code{\link{change_data}}.}
-
-\item{call_change_data}{A boolean of whether to call
-\code{\link{change_data}} and modify the OM at each iteration. Defaults to
-\code{TRUE}. See the vignette for further information on why you might
-choose to turn this off.}
 
 \item{user_recdevs}{An optional matrix of recruitment deviations to replace
 the recruitment deviations built into the package. The columns represent
@@ -82,15 +80,7 @@ Biased recruitment deviations can lead to biased model results.}
 warning regarding biased recruitment deviations off when \code{user_recdevs}
 are specified.}
 
-\item{bias_adjust}{Run bias adjustment first? See \code{\link{run_bias_ss3}}.}
-
-\item{bias_nsim}{If bias adjustment is run, how many simulations should the
-bias adjustment factor be estimated from? It will take the mean of the
-adjustment factors across these runs.}
-
-\item{bias_already_run}{If you've already run the bias runs for a scenario
-(the bias folders and \code{.dat} files already exist) then you can set
-this to \code{TRUE} to avoid re-running the bias adjustment routine.}
+\item{bias_adjust}{Run bias adjustment first?.}
 
 \item{hess_always}{If \code{TRUE} then the Hessian will always be calculated.
 If \code{FALSE} then the Hessian will only be calculated for
@@ -102,39 +92,23 @@ bias-adjustment runs thereby saving time.}
 if you want to reduce average CPU time -- perhaps because you're working on
 a shared server.}
 
-\item{conv_crit}{The maximum percentage of bias iterations that can produce a
-non-invertible Hessian before a warning will be produced. If this
-percentage is exceeded then a file \code{WARNINGS.txt} will be produced.
-Currently, the simulations will continue to run.}
-
 \item{seed}{The seed value to pass to \code{\link{get_recdevs}} when
 generating recruitment deviations. The generated recruitment deviations
 depend on the iteration value, but also on the value of \code{seed}. A
 given combination of iteration, number of years, and \code{seed} value will
 result in the same recruitment deviations.}
 
-\item{keep_compreport}{Logical: should the SS3 file \code{CompReport.sso} be
-kept or deleted? \code{CompReport.sso} is often rather large and so
-deleting it can save space but the file is needed for some of the \pkg{r4ss}
-plots among other purposes.}
-
 \item{...}{Anything extra to pass to \code{\link{run_ss3model}}. For
 example, you may want to pass additional options to \code{SS3} through
 the argument \code{admb_options}. Anything that doesn't match a named
 argument in \code{\link{run_ss3model}} will be passed to the
-\code{\link{system}} call that runs \code{SS3}.  Also, see the argument
-\code{ss_mode} to choose between safe or optimized SS3 executables
-(default is safe mode).}
+\code{\link{system}} call that runs \code{SS3}.}
 }
 \value{
 The output will appear in whatever your current \R working directory
 is. There will be folders named after your scenarios. They will
 look like this:
 \itemize{
-\item \code{D0-F0-cod/bias/1/om}
-\item \code{D0-F0-cod/bias/1/em}
-\item \code{D0-F0-cod/bias/2/om}
-\item ...
 \item \code{D0-F0-cod/1/om}
 \item \code{D0-F0-cod/1/em}
 \item \code{D0-F0-cod/2/om}
@@ -158,60 +132,73 @@ example below). For a generic higher-level function, see
 \examples{
 \dontrun{
 # Create a temporary folder for the output and set the working directory:
-temp_path <- file.path(tempdir(), "ss3sim-base-example")
-dir.create(temp_path, showWarnings = FALSE)
-wd <- getwd()
-setwd(temp_path)
+  # Create a temporary folder for the output and set the working directory:
+  temp_path <- file.path(tempdir(), "ss3sim-base-example")
+  dir.create(temp_path, showWarnings = FALSE)
+  wd <- getwd()
+  setwd(temp_path)
+  on.exit(setwd(wd), add = TRUE)
 
-# Find the data in the ss3sim package:
-d <- system.file("extdata", package = "ss3sim")
-om <- paste0(d, "/models/cod-om")
-em <- paste0(d, "/models/cod-em")
-case_folder <- paste0(d, "/eg-cases")
+  # Find the data in the ss3sim package:
+  d <- system.file("extdata", package = "ss3sim")
+  om <- file.path(d, "models", "cod-om")
+  em <- file.path(d, "models", "cod-em")
+  case_folder <- file.path(d, "eg-cases")
 
-# Pull in file paths from the package example data:
-d <- system.file("extdata", package = "ss3sim")
-om_dir <- paste0(d, "/models/cod-om")
-em_dir <- paste0(d, "/models/cod-em")
-a <- get_caseargs(folder = paste0(d, "/eg-cases"), scenario =
-"F0-D0-M0-E0-cod")
+  # Pull in file paths from the package example data:
+  d <- system.file("extdata", package = "ss3sim")
+  om_dir <- file.path(d, "models", "cod-om")
+  em_dir <- file.path(d, "models", "cod-em")
+  a <- get_caseargs(folder = file.path(d, "eg-cases"),
+                    case_files = list(F = "F",
+                                      D = c("index", "lcomp", "agecomp"),
+                                      E = "E"),
+                    scenario = "F0-D0-E0-cod")
+  ss3sim_base(iterations = 1,
+              scenarios = "F0-D0-E0-cod",
+              f_params = a$F,
+              index_params = a$index,
+              lcomp_params = a$lcomp,
+              agecomp_params = a$agecomp,
+              tv_params = a$tv_params,
+              estim_params = a$E,
+              om_dir = om_dir,
+              em_dir = em_dir)
+  unlink("F0-D0-E0-cod", recursive = TRUE) # clean up
 
-ss3sim_base(iterations = 1, scenarios = "M0-F0-D0-E0-cod",
-  f_params = a$F, index_params = a$index, lcomp_params = a$lcomp,
-  agecomp_params = a$agecomp, tv_params = a$tv_params, estim_params = a$E,
-  om_dir = om_dir, em_dir = em_dir)
-unlink("M0-F0-D0-E0-cod", recursive = TRUE) # clean up
+  # Or, create the argument lists directly in R and skip the case file setup:
 
-# Or, create the argument lists directly in R and skip the case file setup:
+  F0 <- list(years = 1:100,
+             fisheries = 1,
+             fvals = c(rep(0, 25), rep(0.114, 75)))
 
-F0 <- list(years = 1913:2012, years_alter = 1913:2012, fvals = c(rep(0,
-  25), rep(0.114, 75)))
+  index1 <- list(fleets = 2, years = list(seq(62, 100, by = 2)),
+                 sds_obs = list(0.1))
 
-index1 <- list(fleets = 2, years = list(seq(1974, 2012, by = 2)), sds_obs =
-  list(0.1))
+  lcomp1 <- list(fleets = c(1, 2), Nsamp = list(100, 100),
+                 years = list(26:100, seq(62, 100, by = 2)),
+                 lengthbin_vector = NULL, cpar = c(1, 1))
 
-lcomp1 <- list(fleets = c(1, 2), Nsamp = list(100, 100), years =
-  list(1938:2012, seq(1974, 2012, by = 2)), lengthbin_vector = NULL, cpar =
-  c(1, 1))
+  agecomp1 <- list(fleets = c(1, 2), Nsamp = list(100, 100),
+                   years = list(26:100, seq(62, 100, by = 2)),
+                   agebin_vector = NULL, cpar = c(1, 1))
 
-agecomp1 <- list(fleets = c(1, 2), Nsamp = list(100, 100), years =
-  list(1938:2012, seq(1974, 2012, by = 2)), agebin_vector = NULL, cpar =
-  c(1, 1))
+  E0 <- list(natM_type = NULL, natM_n_breakpoints = NULL, natM_lorenzen = NULL,
+             natM_val = NULL,
+             par_name = c("LnQ_base_Fishery", "NatM_p_1_Fem_GP_1"),
+             par_int = c(NA, NA), par_phase = c(-1, -1), forecast_num = 0)
 
-E0 <- list(natM_type = "1Parm", natM_n_breakpoints = NULL, natM_lorenzen =
-  NULL, natM_val = c(NA,-1), par_name = "LnQ_base_3_CPUE", par_int = NA,
-  par_phase = -1, forecast_num = 0)
+  ss3sim_base(iterations = 1,
+              scenarios = "D1-E0-F0-cod", #name as desired
+              f_params = F0,
+              index_params = index1,
+              lcomp_params = lcomp1,
+              agecomp_params = agecomp1,
+              estim_params = E0,
+              om_dir = om,
+              em_dir = em)
 
-M0 <- list(NatM_p_1_Fem_GP_1 = rep(0, 100))
-
-ss3sim_base(iterations = 1, scenarios = "D1-E0-F0-M0-cod",
-  f_params = F0, index_params = index1, lcomp_params = lcomp1,
-  agecomp_params = agecomp1, estim_params = E0, tv_params = M0,
-  om_dir = om, em_dir = em)
-
-unlink("D1-E0-F0-M0-cod", recursive = TRUE) # clean up
-
-setwd(wd)
+  unlink("D1-E0-F0-cod", recursive = TRUE) # clean up
 }
 }
 \seealso{

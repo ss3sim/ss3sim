@@ -6,9 +6,7 @@
 \usage{
 change_tv(change_tv_list, ctl_file_in = "control.ss_new",
   ctl_file_out = "om.ctl", dat_file_in = "ss3.dat",
-  dat_file_out = "ss3.dat", par_file_in = "ss3.par",
-  par_file_out = "ss3.par", str_file_in = "starter.ss",
-  str_file_out = "starter.ss", rpt_file_in = "Report.sso")
+  dat_file_out = "ss3.dat")
 }
 \arguments{
 \item{change_tv_list}{*A list of named vectors. Names correspond to parameters
@@ -16,27 +14,19 @@ in the operating model that currently do not use environmental deviations and
 the vectors correspond to deviations. See the section "Specifying the
 \code{change_tv_list}" below for help on specifying this argument.}
 
-\item{ctl_file_in}{A string providing the path to the input SS3 \code{.ctl} file.}
+\item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
 
-\item{ctl_file_out}{A string providing the path to the output SS3 \code{.ctl} file.}
+\item{ctl_file_out}{A string providing the path to the output SS control file. If the value is \code{NULL}, the file will not be written to the disk.}
 
-\item{dat_file_in}{A string providing the path to the input SS3 \code{.dat} file.}
+\item{dat_file_in}{A string providing the path to the input SS \code{.dat} file.}
 
-\item{dat_file_out}{A string providing the path to the output SS3 \code{.dat} file.}
-
-\item{par_file_in}{A string providing the path to the input SS3 \code{.par} file.}
-
-\item{par_file_out}{A string providing the path to the output SS3 \code{.par} file.}
-
-\item{str_file_in}{A string providing the path to the input SS3 \code{starter.ss} file.}
-
-\item{str_file_out}{A string providing the path to the output SS3 \code{starter.ss} file.}
-
-\item{rpt_file_in}{Input SS3 report file}
+\item{dat_file_out}{A string providing the path to the output SS \code{.dat} file.}
 }
 \value{
-The function creates modified versions of the \code{.par},
-  \code{.starter}, \code{.ctl}, and \code{.dat} files.
+The function creates modified versions of the  \code{.ctl} and
+  \code{.dat} files if ctl_file_out and dat_file_out are not NULL. The function
+  also returns a list of the modified \code{.ctl} and \code{.dat} R objects
+  invisibly.
 }
 \description{
 \code{change_tv} takes SS3 \code{.ctl}, \code{.par}, and \code{.dat} files
@@ -111,35 +101,33 @@ temp_path <- file.path(tempdir(), "ss3sim-tv-example")
 dir.create(temp_path, showWarnings = FALSE)
 wd <- getwd()
 setwd(temp_path)
+on.exit(setwd(wd), add = TRUE)
 
-# Find the SS3 "Simple" model in the package data:
 d <- system.file("extdata", package = "ss3sim")
-simple <- paste0(d, "/Simple")
-dir.create("Simple")
-file.copy(simple, ".", recursive = TRUE)
-setwd("Simple")
+om <- file.path(d, "models", "cod-om")
+dir.create("cod-om")
+file.copy(om, ".", recursive = TRUE)
+setwd("cod-om")
 
-# Run SS3 to create control.ss_new and Report.sso:
-system("ss3_24o_safe starter.ss -noest")
-
-change_tv(change_tv_list = list("NatM_p_1_Fem_GP_1" = c(rep(0, 20),
-      rep(.1, 11)), "SR_BH_steep"=rnorm(31, 0, 0.05)), ctl_file_in =
-  "control.ss_new", ctl_file_out = "example.ctl", dat_file_in =
-  "simple.dat", dat_file_out = "example.dat")
+change_tv(change_tv_list =
+            list("NatM_p_1_Fem_GP_1" = c(rep(0, 20), rep(.1, 80)),
+                 "SR_BH_steep"=rnorm(100, 0, 0.05)),
+          ctl_file_in  = "codOM.ctl",
+          ctl_file_out = "example.ctl",
+          dat_file_in  = "codOM.dat",
+          dat_file_out = "example.dat")
 
 # Clean up:
-setwd("../")
-unlink("Simple")
-setwd(wd)
+unlink("cod-om", recursive = TRUE)
 }
 }
 \seealso{
 Other change functions: \code{\link{change_data}},
   \code{\link{change_em_binning}}, \code{\link{change_e}},
-  \code{\link{change_f}}, \code{\link{change_maturity}},
-  \code{\link{change_retro}}
+  \code{\link{change_f_par}}, \code{\link{change_f}},
+  \code{\link{change_o}}, \code{\link{change_retro}}
 }
 \author{
-Kotaro Ono, Carey McGilliard, and Kelli Johnson
+Kotaro Ono, Carey McGilliard, Kelli Johnson, and Kathryn Doering
 }
 \concept{change functions}

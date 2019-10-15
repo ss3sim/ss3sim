@@ -5,16 +5,20 @@
 \title{Change population and observed length composition bins in an SS estimation
 model}
 \usage{
-change_em_binning(dat_list, dat_file_out, bin_vector, lbin_method = NULL,
-  pop_binwidth = NULL, pop_minimum_size = NULL,
-  pop_maximum_size = NULL, write_file = TRUE)
+change_em_binning(dat_list, outfile = NULL, bin_vector,
+  lbin_method = NULL, pop_binwidth = NULL, pop_minimum_size = NULL,
+  pop_maximum_size = NULL)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
-\item{dat_file_out}{A string providing the path to the output SS3 \code{.dat} file.}
+\item{outfile}{A character string specifying the file name to use
+when writing the information to the disk. The string must include
+the proper file extension. No file is written using the default value
+of \code{NULL}, which leads to increased speed because writing the 
+file takes time and computing resources.}
 
 \item{bin_vector}{A numeric vector of new length bins to substitute into the
 \code{ss3.dat} file.}
@@ -33,61 +37,66 @@ necessary for \code{lbin_method=2}}
 
 \item{pop_maximum_size}{*Population maximum length bin value. Only
 necessary for \code{lbin_method=2}}
-
-\item{write_file}{Should the \code{.dat} file be written? The new \code{.dat}
-file will always be returned invisibly by the function. Setting
-\code{write_file = FALSE} can be useful for testing. Note that you must
-supply a value to the argument \code{dat_file_out}, but this argument can be
-set to any arbitrary value (such as \code{NULL}) if \code{write_file =
-FALSE}.}
 }
 \description{
 \code{change_em_binning} alters the bin structure for the population and
 length composition data in an SS estimation model. It is done by taking the
 original length composition info from the EM \code{ss3.dat} then changing
-according to the user's specification. If the data file also contails
+according to the user's specification. If the data file also contains
 conditional age-at-length data then these data will be re-binned as well.
 }
 \examples{
-d <- system.file("extdata", package = "ss3sim")
-f_in <- paste0(d, "/example-om/data.ss_new")
-dat_list <- r4ss::SS_readdat(file = f_in, verbose = FALSE)
-l <- change_em_binning(dat_list, dat_file_out = NULL, lbin_method = 1,
-  bin_vector = seq(8, 30, by = 1), write_file = FALSE)
-print(l$lbin_vector)
-print(head(l$lencomp))
-
-# An small example with conditional age-at-length re-binning:
+# Note that typically this function is used with estimation models in ss3sim,
+# but it is used with an operating model data file in the following examples.
 f <- system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim")
-d <- r4ss::SS_readdat(f, verbose = FALSE)
+d <- r4ss::SS_readdat(f, version = NULL, verbose = FALSE)
 
-# Add catch at length data (and simplify the bin structure for this example)
-olddat <- change_data(d, outfile = NULL, write_file = FALSE,
-  types = c("len", "age", "cal"), fleets = 1, years = seq(2000, 2002),
-  age_bins = 1:3, len_bins = 4:8)
-olddat$agecomp
-newdat <- change_em_binning(olddat, dat_file_out = NULL, bin_vector = c(4, 6, 8),
-  lbin_method = 1, write_file = FALSE)
-newdat$agecomp
+# An example with lbin_method = 1
+l1 <- change_em_binning(d, outfile = NULL, lbin_method = 1,
+  bin_vector = seq(20, 152, by = 4))
+l1$lbin_vector
+head(l1$lencomp)
 
-# A larger conditional age-at-length re-rebinning example:
-olddat <- change_data(d, outfile = NULL, write_file = FALSE,
- types = c("len", "age", "cal"), fleets = 1, years = seq(2000, 2005),
- age_bins = seq(1, 5), len_bins = round(seq(20, 30, length.out = 13), 1))
-
-olddat$lbin_vector
-head(olddat$lencomp)
-head(olddat$agecomp)
-newdat <- change_em_binning(olddat, dat_file_out = NULL, bin_vector = seq(20, 30, 2),
- lbin_method = 1, write_file = FALSE)
-newdat$lbin_vector
-head(newdat$lencomp)
-newdat$agecomp
+#An example with lbin_method = 2
+new_bin_vec <- seq(min(d$lbin_vector), max(d$lbin_vector), by = 4)
+# add the max value if necessary.
+if(new_bin_vec[length(new_bin_vec)] != d$lbin_vector[length(d$lbin_vector)]){
+  new_bin_vec <- c(new_bin_vec,
+                   d$lbin_vector[length(d$lbin_vector)])
+}
+pop_bin_input <- 5
+pop_min_size_input <- min(d$lbin_vector_pop) - 1
+pop_max_size_input <- max(d$lbin_vector_pop) + 5
+lbin_vec_pop <-seq(pop_min_size_input,
+                   pop_max_size_input,
+                   length.out = (pop_max_size_input - pop_min_size_input)/
+                     pop_bin_input + 1
+)
+l2 <- change_em_binning(dat_list = d,
+                            bin_vector = new_bin_vec,
+                            lbin_method = 2,
+                            #Note: need more inputs with lbin_method = 2
+                            pop_binwidth = pop_bin_input,
+                            pop_minimum_size = pop_min_size_input,
+                            pop_maximum_size = pop_max_size_input)
+l2$lbin_method
+# note bin width is now the same as the input
+pop_bin_input
+l2$binwidth
+# note the minimum size has changed based on the input:
+pop_min_size_input
+l2$minimum_size
+# so has max
+l2$maximum_size
+l2$lbin_vector
+#other modified components:
+l2$lbin_vector_pop
+head(l2$lencomp)
 }
 \seealso{
 Other change functions: \code{\link{change_data}},
-  \code{\link{change_e}}, \code{\link{change_f}},
-  \code{\link{change_maturity}},
+  \code{\link{change_e}}, \code{\link{change_f_par}},
+  \code{\link{change_f}}, \code{\link{change_o}},
   \code{\link{change_retro}}, \code{\link{change_tv}}
 }
 \author{

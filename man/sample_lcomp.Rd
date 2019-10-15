@@ -2,23 +2,25 @@
 % Please edit documentation in R/sample_lcomp.R
 \name{sample_lcomp}
 \alias{sample_lcomp}
-\title{Sample length compositions from expected values}
+\title{Sample length compositions from a Stock Synthesis data file}
 \usage{
-sample_lcomp(dat_list, outfile, fleets = c(1, 2), Nsamp, years,
-  cpar = 1, ESS = NULL, write_file = TRUE)
+sample_lcomp(dat_list, outfile, fleets, Nsamp, years, cpar = 1,
+  ESS = NULL)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
-\item{outfile}{A character string of the new file name to be created.
-Must end in \code{.dat} or equal \code{wtatage.ss}.}
+\item{outfile}{A character string specifying the file name to use
+when writing the information to the disk. The string must include
+the proper file extension. No file is written using the default value
+of \code{NULL}, which leads to increased speed because writing the 
+file takes time and computing resources.}
 
-\item{fleets}{*A numeric vector giving the fleets to be used. This order also
-pertains to other arguments. A missing value excludes that fleet from
-\code{outfile} (i.e. it turns it off so no samples are written). If none of
-the fleet collected samples, keep the value to \code{fleets=NULL}.}
+\item{fleets}{*A vector of integers specifying which fleets to include.
+The order of the fleets pertains to the input order of other arguments.
+An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 
 \item{Nsamp}{*A numeric list of the same length as \code{fleets}.
 Either single values or vectors of the same length as the number of
@@ -30,34 +32,41 @@ years. If no fleet collected samples, keep the value to
 numeric vectors. If no fleet collected samples, keep the value to
 \code{years=NULL}.}
 
-\item{cpar}{*A numeric value or vector the same length as
+\item{cpar}{A numeric value or vector the same length as
 \code{fleets} controlling the variance of the Dirichlet
-distribution used for sampling. A value of \code{1} indicates the
+distribution used for sampling. A value of \code{1} leads to the
 same standard deviation as a multinomial of the given \code{Nsamp},
 \code{2} indicates twice, etc. Values greater than one indicate
-overdispersion, and less underdispersion.}
+overdispersion, and less underdispersion. \code{NULL} or \code{NA}
+for a given fleet will lead to no dispersion.}
 
-\item{ESS}{An effective sample size to write to file (but not use in
-sampling). The default of NULL means to use the true (internally
-calculated) ESS, which is \code{Nsamp} for the multinomial case or given
-by the formula under \code{cpar} for the Dirichlet case. Must match the
-structure of the \code{years} arguments.}
-
-\item{write_file}{A logical switch for whether to write \code{outfile} to
-disk. Can be turned off to speed up testing or exploration of the
-function. The new data are returned invisibly, as in the examples
-below.}
+\item{ESS}{The final effective sample size (ESS) associated with the
+simulated data. The ESS is not used to generate the simulated data
+but can be used as an input sample size in subsequent models that estimate
+population parameters or status.
+The default, \code{NULL}, leads to the true (internally calculated)
+#' ESS being used, which is \code{Nsamp} for the multinomial case or given
+by the formula under \code{cpar} for the Dirichlet case.
+At least one value must be provided for each fleet or a vector of
+year-specific values can be used for any given fleet.
+The argument accepts a list with entries,
+either a single integer or a vector of integers, for each fleet.}
 }
 \value{
-A modified \code{.dat} file if \code{write_file=TRUE}. A list object
+A modified \code{.dat} file if \code{!is.null(outfile)}. A list object
 containing the modified \code{.dat} file is returned invisibly.
 }
 \description{
-Take a \code{data.SS_new} file containing expected values and sample to
-create observed length compositions which are then written to file for use by
-the estimation model.
-If used with \code{\link{run_ss3sim}} the case file should be named
-\code{lcomp}. A suggested (default) case letter is \code{D} for data.
+Extract length-composition data from a \code{.ss_new} data file and sample
+the data. It is assumed that the composition data will be expected values
+as written by Stock Synthesis in the second section of the data file, but 
+one can also sample input data. The resulting length-composition
+data are assumed to represent observed length composition and will overwrite
+the length data in \code{dat_list}, which is returned invisibly. 
+The data file can also be written to the disk, if a file path is provided to
+\code{outfile}, and used as simulated data by an estimation model.
+If used with \code{\link{run_ss3sim}}, the case file should be named
+\code{agecomp}. A suggested (default) case letter is \code{D} for data.
 }
 \section{Which arguments to specifiy in case files}{
 
@@ -69,56 +78,18 @@ if specified.
 }
 
 \examples{
-d <- system.file("extdata", package = "ss3sim")
-f_in <- paste0(d, "/models/cod-om/codOM.dat")
-dat_list <- r4ss::SS_readdat(f_in, verbose = FALSE)
-dat_list <- change_fltname(dat_list)
-
+dat_list <- r4ss::SS_readdat(verbose = FALSE,
+  file = system.file(file.path("extdata", "models", "cod-om", "codOM.dat"), 
+  package="ss3sim"))
 ## Generate with constant sample size across years
-ex1 <- sample_lcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(1,2),
-                    Nsamp=list(100,50), years=list(seq(26, 100, by=2),
-                                            80:100), write_file = FALSE)
-
-## Generate with varying Nsamp by year for first fleet
-ex2 <- sample_lcomp(dat_list=dat_list, outfile="test2.dat", fleets=c(1,2),
-                    Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
-                    years=list(seq(26, 44, by=2),
-                        80:100), write_file = FALSE)
-
-\dontrun{
-## Plot distributions for a particular year to compare multinomial
-## vs. overdispersed Dirichlet
-temp.list <- temp.list2 <- list()
-for(i in 1:40){
-    temp.list[[i]] <-
-      sample_lcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(2), cpar=c(3),
-                     Nsamp=list(100), years=list(95),
-                     write_file=FALSE)$lencomp
-    temp.list2[[i]] <-
-        sample_lcomp(dat_list=dat_list, outfile="test1.dat", fleets=c(2),
-                     cpar=c(NA), Nsamp=list(100), years=list(95),
-                     write_file=FALSE)$lencomp
-}
-## Organize the data for plotting
-x1 <- reshape2::melt(do.call(rbind, temp.list)[,-(1:6)[-3]], id.vars="FltSvy")
-x2 <- reshape2::melt(do.call(rbind, temp.list2)[,-(1:6)[-3]], id.vars="FltSvy")
-Make proportional data
-x2 <- reshape2::melt(do.call(rbind, tapply(x2$value, list(x2$FltSvy, x2$variable), prop.table)))
-op <- par(mfrow=c(2,1))
-with(x1, boxplot(value~variable, las=2, ylim=c(0,.6), ylab="Proportion",
-                 main="Overdispersed (cpar=3)",  xlab="length bin"))
-temp <- as.numeric(subset(dat_list$lencomp, Yr==95 & FltSvy == 2)[-(1:6)])
-points(temp/sum(temp), pch="-", col="red")
-with(x2, boxplot(value~Var1, las=2, ylab="Proportion",
-                 main="Multinomial", xlab="length bin", xaxt = "n"))
-axis(side = 1, at = unique(x2$Var1), labels = unique(x1$variable), las = 2)
-temp <- as.numeric(subset(dat_list$lencomp, Yr==95 & FltSvy == 2)[-(1:6)])
-points(temp/sum(temp), pch="-", col="red")
-par(op)
-}
+ex1 <- sample_lcomp(dat_list=dat_list, outfile = NULL, 
+  fleets = 1:2, Nsamp = list(100, 50), 
+  years=list(seq(26, 100, by = 2), 80:100))
 
 }
 \seealso{
+\code{\link{sample_agecomp}} for more examples
+
 Other sampling functions: \code{\link{clean_data}},
   \code{\link{sample_agecomp}},
   \code{\link{sample_calcomp}}, \code{\link{sample_index}},
@@ -126,7 +97,6 @@ Other sampling functions: \code{\link{clean_data}},
   \code{\link{sample_wtatage}}
 }
 \author{
-Cole Monnahan and Kotaro Ono; modified from a version by Roberto
-  Licandeo and Felipe Hurtado-Ferro
+Cole Monnahan and Kotaro Ono
 }
 \concept{sampling functions}

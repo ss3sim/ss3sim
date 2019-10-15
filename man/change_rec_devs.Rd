@@ -4,40 +4,52 @@
 \alias{change_rec_devs}
 \title{Replace recruitment deviations}
 \usage{
-change_rec_devs(recdevs_new, par_file_in = "ss3.par",
-  par_file_out = "ss3.par")
+change_rec_devs(recdevs, ctl_file_in,
+  ctl_file_out = "control_recruitment.ss")
 }
 \arguments{
-\item{recdevs_new}{A vector of new recruitment deviations.}
+\item{recdevs}{A vector of recruitment deviations to be entered into
+the SS control file. The vector must be the same length as the vector
+of recruitment deviations that are commented out in the \code{ss_new}
+control file. This vector can be found by searching for
+\code{# all recruitment deviations} within the file.
+If a single value is provided instead of a vector, the value
+will be repeated for every recruitment deviation in the model.
+Alternatively, users can supply a named vector with each name being a year
+of the model. Missing years will be filled in with values of zero.}
 
-\item{par_file_in}{A string providing the path to the input SS3 \code{.par} file.}
+\item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
 
-\item{par_file_out}{A string providing the path to the output SS3 \code{.par} file.}
+\item{ctl_file_out}{A string providing the path to the output SS control file. If the value is \code{NULL}, the file will not be written to the disk.}
 }
 \value{
-A modified SS3 \code{.par} file.
+A modified SS control file.
 }
 \description{
 This function replaces the recruitment deviations in the
-\code{ss3.par} file with those specified in \code{recdevs_new}, as
-well as a comment (for debugging). It then writes a new file with
-name \code{par_file_out} into the working directory.
+control file of a Stock Synthesis model with those specified in the argument
+\code{recdevs}. The new control file is then written to the disk if
+\code{ctl_file_out} is specified.
+It is imperative that the path provided in \code{ctl_file_in}
+be to a \code{ss_new} file so \code{change_rec_devs} can
+properly determine where to place the recruitment deviations
+in the control file.
 }
 \details{
 This function does not need to be specified in a case file if you
-  are running and ss3sim simulation through case files with
-  \code{\link{run_ss3sim}}.
+are running an ss3sim simulation using \code{\link{run_ss3sim}}.
 }
 \examples{
-# Create a temporary folder for the output:
-temp_path <- file.path(tempdir(), "ss3sim-recdev-example")
-dir.create(temp_path, showWarnings = FALSE)
-
-par_file <- system.file("extdata", "models", "cod-om", "ss3.par",
-  package = "ss3sim")
-change_rec_devs(recdevs_new = rlnorm(100), par_file_in = par_file,
-  par_file_out = paste0(temp_path, "/test.par"))
+d <- system.file(file.path("extdata", "models"), package = "ss3sim")
+change_rec_devs(recdevs = rlnorm(101),
+  ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
+  ctl_file_out = file.path(tempdir(), "control_recdevs.ss"))
+# Change the recruitment deviations in years 2:11
+change_rec_devs(recdevs = setNames(rlnorm(10), 2:11),
+  ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
+  ctl_file_out = file.path(tempdir(), "control_recdevsInitial.ss"))
+sapply(dir(tempdir(), pattern = "control_.+ss", full.names = TRUE), unlink)
 }
 \author{
-Cole Monnahan
+Kelli Faye Johnson
 }

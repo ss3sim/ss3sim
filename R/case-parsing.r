@@ -133,7 +133,7 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
   # Check that all cases are contained in the scenario:
   out_sink <- sapply(case_vals, function(x) {
     if (!grepl(x, scenario))
-      stop(paste("Case", x, "isn't contained in scenario", scenario))
+      stop(paste("Case", x, "isn't contained in scenario", scenario, ".\n"))
   })
 
   # Check that all scenario-declared cases have files:
@@ -150,12 +150,12 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
 
   args_out <- vector("list", length = length(case_files))
   names(args_out) <- names(case_files)
-  for(i in 1:length(case_files)) {
+  for(i in seq_along(case_files)) {
     args_out[[i]] <- paste0(case_files[[i]], case_vals[i], "-", spp, ext)
   }
   args_out2 <- unlist(args_out)
   names(args_out2) <- unlist(case_files)
-  argvalues_out <- lapply(args_out2, function(x) get_args(pastef(folder, x)))
+  argvalues_out <- lapply(args_out2, function(x) get_args(file.path(folder, x)))
 
   # now, check for all "function_type = change_tv" and concatenate these
   # into a list to pass to change_param()
@@ -198,10 +198,9 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
       fxn_name <- sample_case_function
     }
     matches <- names(argvalues_out[[i]]) %in% fxn_formals
-
     if (sum(matches) != length(matches)) {
-      stop(paste0(names(argvalues_out[[i]])[!matches],
-        " is not an argument in the function ", fxn_name))
+      stop(paste(names(argvalues_out[[i]])[!matches],
+        "is not an argument in the function ", fxn_name, ".\n"))
     }
   }
 

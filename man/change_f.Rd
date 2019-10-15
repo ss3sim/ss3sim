@@ -2,41 +2,63 @@
 % Please edit documentation in R/change_f.r
 \name{change_f}
 \alias{change_f}
-\title{Alter the fishing mortality (\emph{F}) values in an SS3 \code{.par} file.}
+\title{Alter fishing mortality (\emph{F}) using the SS control file}
 \usage{
-change_f(years, years_alter, fvals, par_file_in = "ss3.par",
-  par_file_out = "ss3.par")
+change_f(years, fisheries, fvals, seasons = 1, ses = 0.005,
+  ctl_file_in, ctl_file_out = "control_fishing.ss")
 }
 \arguments{
-\item{years}{*Vector of years for which \emph{F} values are specified,
-if there is more than one fleet or season the catches must be ordered by
-season:year:fishey (e.g., season1year1fishery1, season2year1fishery1,
-season1year2fishery1). The actual vector does not have to correspond to
-true years but must be the correct length (e.g., instead of
-\code{2000:2004} you can use \code{1:5}). Use this argument to create
-an index to old values. \code{years_alter} will use values in this vector.
-For example, with two seasons and one fishery that operates for 4 years
-you could use the following: \code{1:8}.}
+\item{years}{*Vector of integers that will map to each \code{fvals}
+specifying which year the fishing level pertains to.}
 
-\item{years_alter}{*Vector of years for the which \emph{F} values will be altered.
-If there is more than one fishery or season, use the mapping system
-created in \code{years} because actual year values cannot be recycled.
-For example, to change the second season of the second year in the
-example above, use: \code{4}.}
+\item{fisheries}{*Vector of integers that will map to each \code{fvals}
+specifying which fleet the fishing level pertains to.
+A single value will be repeated for every value in \code{years} or
+\code{length(years) == length(fisheries)} must be true.}
 
-\item{fvals}{*Vector of \emph{F} values to be entered into \code{ss3.par} file,
-where \code{length(fvals) == length(years_alter)} must be true.}
+\item{fvals}{*Vector of \emph{F} values to be entered into the
+SS control file. A single value will be repeated for every value in \code{years} or
+\code{length(years) == length(fvals)} must be true.}
 
-\item{par_file_in}{A string providing the path to the input SS3 \code{.par} file.}
+\item{seasons}{Vector of seasons to be entered into the
+SS control file. A single value will be repeated for every value in \code{years} or
+\code{length(years) == length(ses)} must be true.
+The default is 1, which will be applied to all fisheries in all years.}
 
-\item{par_file_out}{A string providing the path to the output SS3 \code{.par} file.}
+\item{ses}{Vector of fishing level standard errors (ses) to be entered into the
+SS control file. A single value will be repeated for every value in \code{years} or
+\code{length(years) == length(ses)} must be true.
+The default is 0.005, which will be applied to all fisheries in all years.}
+
+\item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
+
+\item{ctl_file_out}{A string providing the path to the output SS control file. If the value is \code{NULL}, the file will not be written to the disk.}
 }
 \value{
-A modified SS3 \code{.par} file.
+Modified SS control file.
 }
 \description{
-Takes an SS3 \code{.par} file and changes the \emph{F} values for specified years.
-If used with \code{\link{run_ss3sim}} the case file should be named
+Alter fishing mortality (\emph{F}) for a Stock Synthesis simulation
+via changes to the control file. The argument \code{years} is the only
+argument that must be a vector, where other vectors, e.g., \code{fisheries},
+will be repeated if a single value is provided.
+}
+\details{
+Using the control file depends on
+(1) the starter file is set up to read parameters from the control file
+rather than the par file and
+(2) the data file having a dummy catch entry for every year, fishery
+combination that will be specified in the control file.
+\emph{F} values currently in the control file will be removed and
+the newly specified values will replace them.
+Users do not need to specify values for years in which there
+will be zero fishing because SS will be parameterized to assume
+no fishing in missing years.
+
+The control file is currently read in using \code{readLines} but will
+eventually shift to using code specific to Stock Synthesis to alter
+a structured list.
+If used with \code{\link{run_ss3sim}}, the case file should be named
 \code{F}. A suggested (default) case letter is \code{F}.
 }
 \section{Which arguments to specifiy in case files}{
@@ -49,24 +71,18 @@ if specified.
 }
 
 \examples{
-# Create a temporary folder for the output:
-temp_path <- file.path(tempdir(), "ss3sim-f-example")
-dir.create(temp_path, showWarnings = FALSE)
-
-# Find the example .par file in the package data:
-d <- system.file("extdata", package = "ss3sim")
-par_file <- paste0(d, "/change_f/ss3.par")
-
-change_f(years = 1:49, years_alter = 2, fvals = 9999, par_file_in =
-par_file, par_file_out = paste0(temp_path, "/test.par"))
+d <- system.file(file.path("extdata", "models"), package = "ss3sim")
+change_f(years = 1:50, fisheries = 1, fvals = 0.2,
+  ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
+  ctl_file_out = file.path(tempdir(), "control_fishing.ss"))
 }
 \seealso{
 Other change functions: \code{\link{change_data}},
   \code{\link{change_em_binning}}, \code{\link{change_e}},
-  \code{\link{change_maturity}},
+  \code{\link{change_f_par}}, \code{\link{change_o}},
   \code{\link{change_retro}}, \code{\link{change_tv}}
 }
 \author{
-Curry James Cunningham
+Kelli Faye Johnson
 }
 \concept{change functions}

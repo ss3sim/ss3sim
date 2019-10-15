@@ -1,9 +1,9 @@
 # description: Fixed M, no qSurvey, fixed steepness
-natM_type;          1Parm      
-natM_n_breakpoints; NULL  
+natM_type;          NULL
+natM_n_breakpoints; NULL
 natM_lorenzen;      NULL
-natM_val;           c(NA,-1)
-par_name;           LnQ_base_3_CPUE
-par_int;            NA
-par_phase;          -1
+natM_val;           NULL
+par_name;           c("LnQ_base_Fishery", "NatM_p_1_Fem_GP_1")
+par_int;            c(NA, NA)
+par_phase;          c(-1, -1)
 forecast_num;       0

@@ -1,4 +1,0 @@
-# A sample case file for arbitrary selectivity change_tv() arguments
-function_type; change_tv
-param; SizeSel_1P_1_Fishery
-dev; rep(0, 100)

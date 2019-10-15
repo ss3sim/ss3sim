@@ -5,24 +5,26 @@
 \title{[BETA VERSION] Sample mean length (size-)-at-age data and write to file for use by the EM.}
 \usage{
 sample_mlacomp(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp, years,
-  write_file = TRUE, mean_outfile = NULL, verbose = TRUE)
+  mean_outfile = NULL, verbose = TRUE)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
-\item{outfile}{A character string of the new file name to be created.
-Must end in \code{.dat} or equal \code{wtatage.ss}.}
+\item{outfile}{A character string specifying the file name to use
+when writing the information to the disk. The string must include
+the proper file extension. No file is written using the default value
+of \code{NULL}, which leads to increased speed because writing the 
+file takes time and computing resources.}
 
-\item{ctl_file_in}{A path to the control file, outputed from an OM, containing
+\item{ctl_file_in}{A path to the control file, output from an OM, containing
 the OM parameters for growth. These values are used to determine the
 uncertainty about size for fish sampled in each age bin.}
 
-\item{fleets}{*A numeric vector giving the fleets to be used. This order also
-pertains to other arguments. A missing value excludes that fleet from
-\code{outfile} (i.e. it turns it off so no samples are written). If none of
-the fleet collected samples, keep the value to \code{fleets=NULL}.}
+\item{fleets}{*A vector of integers specifying which fleets to include.
+The order of the fleets pertains to the input order of other arguments.
+An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 
 \item{Nsamp}{*A numeric list of the same length as \code{fleets}.
 Either single values or vectors of the same length as the number of
@@ -33,11 +35,6 @@ years. If no fleet collected samples, keep the value to
 \item{years}{*A list the same length as \code{fleets} giving the years as
 numeric vectors. If no fleet collected samples, keep the value to
 \code{years=NULL}.}
-
-\item{write_file}{A logical switch for whether to write \code{outfile} to
-disk. Can be turned off to speed up testing or exploration of the
-function. The new data are returned invisibly, as in the examples
-below.}
 
 \item{mean_outfile}{A path to write length and age data for external
 estimation of parametric growth. If \code{NULL} no file will be written.
@@ -50,7 +47,7 @@ will be removed from the \code{.dat} file and not be available to the EM.}
 \pkg{r4ss} functions should be printed to the screen. Default is FALSE.}
 }
 \value{
-A modified \code{.dat} file if \code{write_file=TRUE}. A list object
+A modified \code{.dat} file if \code{!is.null(outfile)}. A list object
 containing the modified \code{.dat} file is returned invisibly.
 }
 \description{
@@ -76,26 +73,19 @@ if specified.
 }
 
 \examples{
-temp_path <- file.path(tempdir(), "ss3sim-test")
-dir.create(temp_path, showWarnings = FALSE)
-wd <- getwd()
-setwd(temp_path)
-d <- system.file("extdata/models/cod-om", package = "ss3sim")
+d <- system.file(file.path("extdata", "models", "cod-om"),
+  package = "ss3sim")
 dat_in <- file.path(d, "codOM.dat")
-dat_list <- r4ss::SS_readdat(dat_in, verbose = FALSE)
-dat_list <- change_fltname(dat_list)
-dat_list <- change_data(dat_list, outfile = NULL, write_file = FALSE,
-  fleets = 1, years = 1990:2010, types = c("age", "mla"))
-dat_list <- change_fltname(dat_list)
+dat_list <- r4ss::SS_readdat(dat_in, version = NULL, verbose = FALSE)
+dat_list <- change_data(dat_list, outfile = NULL,
+  fleets = 1, years = seq(dat_list$styr, dat_list$styr + 5),
+  types = c("age", "mla"))
 ctl_file_in <- file.path(d, "codOM.ctl")
 
 out <- sample_mlacomp(dat_list, outfile = NULL, ctl_file_in = ctl_file_in,
-                      fleets = 1, Nsamp = 30, years = list(1992),
-                      verbose = FALSE, mean_outfile = "test.csv", write_file = FALSE)
+  fleets = 1, Nsamp = 30, years = list(dat_list$styr + 5),
+  verbose = FALSE, mean_outfile = NULL)
 
-setwd("..")
-unlink("ss3sim-test", recursive = TRUE)
-setwd(wd)
 }
 \seealso{
 Other sampling functions: \code{\link{clean_data}},

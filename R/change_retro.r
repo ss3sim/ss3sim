@@ -19,6 +19,8 @@
 #' @return A modified SS3 starter file.
 #' @template casefile-footnote
 #' @family change functions
+#' @importFrom r4ss SS_readstarter SS_writestarter
+#'
 #' @examples
 #' # Create a temporary folder for the output:
 #' temp_path <- file.path(tempdir(), "ss3sim-retro-example")
@@ -46,12 +48,11 @@ change_retro <- function(str_file_in = "starter.ss", str_file_out =
   if(abs(retro_yr - round(retro_yr)) > .Machine$double.eps^0.5)
     stop("retro_yr should be a whole number or integer")
 
-  starter <- readLines(str_file_in)
+  starter <- SS_readstarter(file = str_file_in, verbose = FALSE)
 
-  starter_line <- grep("retrospective", starter)
-  retro_dat <- strsplit(starter[starter_line], " ")[[1]]
-  retro_dat[1] <- retro_yr
-  starter[starter_line] <- paste(retro_dat, collapse = " ")
+  starter$retro_yr <- retro_yr
 
-  writeLines(starter, str_file_out)
+  SS_writestarter(mylist = starter,
+    dir = dirname(str_file_out), file = basename(str_file_out),
+    verbose = FALSE, warn = FALSE, overwrite = TRUE)
 }

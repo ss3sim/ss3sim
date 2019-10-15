@@ -71,7 +71,7 @@ sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
     c(start.cv.young,lo.cv.young, hi.cv.young),
     c(start.cv.old, lo.cv.old, hi.cv.old)))
   transformed <- rep(0,5)
-  for(i in 1:nrow(pars.mat)){
+  for(i in seq_len(nrow(pars.mat))) {
     transformed[i] <- inv_logistic(pars.mat[i,1], pars.mat[i,2], pars.mat[i,3])
   }
 

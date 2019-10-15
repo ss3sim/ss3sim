@@ -13,7 +13,8 @@
 #' @template lcomp-agecomp-index
 #' @template Nsamp
 #' @template dat_list
-#' @param ctl_file_in A path to the control file, outputed from an OM, containing
+#' @template outfile
+#' @param ctl_file_in A path to the control file, output from an OM, containing
 #'   the OM parameters for growth. These values are used to determine the
 #'   uncertainty about size for fish sampled in each age bin.
 #' @param mean_outfile A path to write length and age data for external
@@ -31,39 +32,31 @@
 #' @export
 #'
 #' @examples
-#' temp_path <- file.path(tempdir(), "ss3sim-test")
-#' dir.create(temp_path, showWarnings = FALSE)
-#' wd <- getwd()
-#' setwd(temp_path)
-#' d <- system.file("extdata/models/cod-om", package = "ss3sim")
+#' d <- system.file(file.path("extdata", "models", "cod-om"),
+#'   package = "ss3sim")
 #' dat_in <- file.path(d, "codOM.dat")
-#' dat_list <- r4ss::SS_readdat(dat_in, verbose = FALSE)
-#' dat_list <- change_fltname(dat_list)
-#' dat_list <- change_data(dat_list, outfile = NULL, write_file = FALSE,
-#'   fleets = 1, years = 1990:2010, types = c("age", "mla"))
-#' dat_list <- change_fltname(dat_list)
+#' dat_list <- r4ss::SS_readdat(dat_in, version = NULL, verbose = FALSE)
+#' dat_list <- change_data(dat_list, outfile = NULL,
+#'   fleets = 1, years = seq(dat_list$styr, dat_list$styr + 5),
+#'   types = c("age", "mla"))
 #' ctl_file_in <- file.path(d, "codOM.ctl")
 #'
 #' out <- sample_mlacomp(dat_list, outfile = NULL, ctl_file_in = ctl_file_in,
-#'                       fleets = 1, Nsamp = 30, years = list(1992),
-#'                       verbose = FALSE, mean_outfile = "test.csv", write_file = FALSE)
+#'   fleets = 1, Nsamp = 30, years = list(dat_list$styr + 5),
+#'   verbose = FALSE, mean_outfile = NULL)
 #'
-#' setwd("..")
-#' unlink("ss3sim-test", recursive = TRUE)
-#' setwd(wd)
-
-
 sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
-                           years, write_file=TRUE, mean_outfile = NULL,
+                           years, mean_outfile = NULL,
                            verbose = TRUE){
 
+  ss_version <- get_ss_ver_dl(dat_list)
   ## If fleets==NULL, quit here and delete the data so the EM doesn't use it.
   if (is.null(fleets)) {
-    dat_list$MeanSize_at_Age_obs <- data.frame("#")
+    dat_list$MeanSize_at_Age_obs <- NULL
     dat_list$N_MeanSize_at_Age_obs <- 0
-    if (write_file)
+    if (!is.null(outfile))
       SS_writedat(datlist = dat_list, outfile = outfile, overwrite = TRUE,
-                  verbose = verbose)
+                  version = ss_version, verbose = verbose)
     return(invisible(dat_list))
   }
 
@@ -79,7 +72,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
   agebin_vector <- dat_list$agebin_vector
 
   ## Read in the control file
-  ctl <- SS_parlines(ctl_file_in)
+  ctl <- SS_parlines(ctl_file_in, version = ss_version)
     CV.growth <- ctl[ctl$Label == "CV_young_Fem_GP_1", "INIT"]
     CV.growth.old <- ctl[ctl$Label == "CV_old_Fem_GP_1", "INIT"]
     if (CV.growth != CV.growth.old) {
@@ -90,7 +83,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
     }
 
   ## Check inputs for errors
-  if (!is.null(outfile) & write_file){
+  if (!is.null(outfile)){
     if (substr_r(outfile,4) != ".dat") {
       stop(paste0("outfile ", outfile, " needs to end in .dat"))
     }
@@ -135,15 +128,15 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
   forexport <- list()
   k <- 1                 # each k is a new row of data, to be rbind'ed later
   # Loop through mla data for this fleet, given the years specified
-  for (fl in 1:length(fleets)) {
+  for (fl in seq_along(fleets)) {
     fl.temp <- fleets[fl]
-    mlacomp.fl <- mlacomp[mlacomp$FltSvy == fleets[fl] &
+    mlacomp.fl <- mlacomp[mlacomp$Flt == fleets[fl] &
                           mlacomp$Yr %in% years[[fl]], ]
     if (length(years[[fl]]) != length(unique(mlacomp.fl$Yr))) {
       stop(paste("A year specified in years for fleet", fl.temp, "was not",
                  "found in the input dat_list for fleet", fl.temp))
     }
-    for (j in 1:NROW(mlacomp.fl)) {
+    for (j in seq_len(NROW(mlacomp.fl))) {
       yr.temp <- mlacomp.fl$Yr[j]
       # Loop through mla data for this fleet / year combo
       mlacomp.new <- mlacomp.fl[j, ]
@@ -167,7 +160,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
       sds.log <- sqrt(log(1 + sds^2 / mla.means^2))
       # Get the true age distributions, probability of being a fish of age x
       agecomp.temp <- agecomp[agecomp$Yr == yr.temp &
-                              agecomp$FltSvy == fl.temp, ]
+                              agecomp$Flt == fl.temp, ]
       # remove the 9 columns of metadata
       age.means <- as.numeric(agecomp.temp[-(1:9)])
       # Get user input sample size, theoretically this cannot be bigger than age n
@@ -186,12 +179,12 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
       if (any(age.means > 1)) {
         # Create a vector of empirical samples of ages, such that each age bin
         # is repeated equal to the number of observed fish in that bin.
-        prob.age.ints <- unlist(sapply(1:length(age.means), function(x) {
+        prob.age.ints <- unlist(sapply(seq_along(age.means), function(x) {
           rep(x, age.means[x])
           }))
         # Resample to guarantee the sample size does not exceed the observed
         temp <- sample(x = prob.age.ints, size = age.Nsamp, replace = FALSE)
-        age.samples <- sapply(1:length(age.means), function(x) sum(temp == x))
+        age.samples <- sapply(seq_along(age.means), function(x) sum(temp == x))
       } else {
         # in the case of overdispersed age comp data
         age.samples <- rmultinom(n = 1, size = as.integer(age.Nsamp),
@@ -203,7 +196,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
 
       # apply sampling across columns (ages) to get sample of lengths
       lengths.list <-
-        lapply(1:length(means.log), function(kk) {
+        lapply(seq_along(means.log), function(kk) {
           exp(rnorm(n = age.samples[kk], mean = means.log[kk],
           sd = sds.log[kk]))
           })
@@ -236,7 +229,8 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
   dat_list$MeanSize_at_Age_obs <- rbind(mlacomp.new, mwacomp)
   dat_list$N_MeanSize_at_Age_obs <- NROW(mlacomp.new)
   ## Write the modified file
-  if(write_file) SS_writedat(datlist = dat_list, outfile = outfile,
-                             overwrite = TRUE, verbose = verbose)
+  if (!is.null(outfile)) SS_writedat(datlist = dat_list, outfile = outfile,
+                             version =   ss_version, overwrite = TRUE,
+                             verbose = verbose)
   return(invisible(dat_list))
 }

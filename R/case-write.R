@@ -118,9 +118,13 @@ case_index <- function(fleets = 1, years = NULL, sd = 2, case, spp) {
 #' om <- file.path(d, "models", "cod-om")
 #' ig <- file.copy(om, temp_path, recursive = TRUE)
 #' ig <- file.rename(file.path(temp_path, "cod-om"), file.path(temp_path, "om"))
+#' filenames <- dir(file.path(temp_path, "om"), full.names = TRUE)
+#' ig <- file.rename(filenames, gsub("codOM\\.|ss\\.", "ss3.", filenames))
+#'
 #' verify_input(file.path(temp_path, "om"), type = "om")
 #' ig <- file.rename(file.path(temp_path, "om", "om.ctl"),
 #'   file.path(temp_path, "om", "ss3.ctl"))
+#'
 #' case_tv(species = "cod", parameter = "NatM_p_1_Fem_GP_1",
 #' perc_change = rep(0.5, 100), outfile = "G1",
 #' dir_out = temp_path, dir_models = gsub("/cod", "", temp_path),
@@ -143,7 +147,7 @@ case_tv <- function(species, parameter, perc_change, outfile,
 
   #Modify by percentage
   ctl <- file.path(dir_models, species, "om", "ss3.ctl")
-  pars <- lapply(ctl, SS_parlines)
+  pars <- lapply(ctl, SS_parlines, version = "3.24")
   val <- lapply(pars, function(x) x[grep(parameter, x$Label), "INIT"])
 
   if (length(perc_change) != nyears) {
@@ -188,7 +192,7 @@ case_tv <- function(species, parameter, perc_change, outfile,
 #' created in \code{years} because actual year values cannot be recycled.
 #' For example, to change the second season of the second year in the
 #' example above, use: \code{4}.
-#' @param fvals Vector of \emph{F} values to be entered into \code{ss3.par} file,
+#' @param fvals Vector of \emph{F} values to be entered into \code{ss.par} file,
 #' where \code{length(fvals) == length(years_alter)} must be true.
 #' @param case The case number you want to write to.
 #'   If \code{case = 1}, then the result will be \code{'F1'}.

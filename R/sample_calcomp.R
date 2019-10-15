@@ -18,14 +18,18 @@
 #'
 #' @template lcomp-agecomp-index
 #' @template dat_list
+#' @template outfile
 #' @template Nsamp
 #' @template sampling-return
 #' @template casefile-footnote
 #' @family sampling functions
 #' @export
 
-sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
-                           write_file=TRUE, Nsamp){
+sample_calcomp <- function(dat_list, outfile = NULL, fleets = c(1,2), years,
+                           Nsamp){
+  #this stop message can be removed once conditional age at length implemented
+  stop("Conditional age at length (CAL) is not yet implemented, please only ",
+       "use models and scenarios without CAL.")
     ## The samples are taken from the expected values, where the
     ## age-at-length data is in the age matrix but has a -1 for Lbin_lo and
     ## Lbin_hi, so subset those out, but don't delete the age values since
@@ -34,7 +38,7 @@ sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
     ## Input checks
     Nfleets <- NROW(fleets)
     if (Nfleets>0){
-        for(i in 1:Nfleets){
+        for(i in seq_len(Nfleets)) {
             if(length(Nsamp[[i]])>1 & length(Nsamp[[i]]) != length(years[[i]]))
                 stop(paste0("Length of Nsamp does not match length of years for",
                   "fleet ",fleets[i]))
@@ -42,6 +46,7 @@ sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
     }
 
     check_data(dat_list)
+    ss_version <- get_ss_ver_dl(dat_list)
     agecomp.age <- dat_list$agecomp[dat_list$agecomp$Lbin_lo== -1,]
     agecomp.cal <- dat_list$agecomp[dat_list$agecomp$Lbin_lo != -1,]
     lencomp <- dat_list$lencomp
@@ -52,9 +57,10 @@ sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
     if(is.null(fleets)){
         newfile$agecomp <- agecomp.age
         newfile$N_agecomp <- nrow(agecomp.age)
-        if(write_file)
-            SS_writedat(datlist = newfile, outfile = outfile,
-                        overwrite = TRUE, verbose=FALSE)
+        if(!is.null(outfile)){
+          SS_writedat(datlist = newfile, outfile = outfile, version = ss_version,
+                      overwrite = TRUE, verbose=FALSE)
+        }
         return(invisible(newfile))
     }
     ## If not, do argument checks
@@ -76,7 +82,7 @@ sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
     newcomp.list <- list() # temp storage for the new rows
     k <- 1                 # each k is a new row of data, to be rbind'ed later
     ## Loop through each fleet
-    for(i in 1:length(fleets)){
+    for(i in seq_along(fleets)){
         fl <- fleets[i]
         if (length(Nsamp[[i]]) == 1) {
             Nsamp[[i]] <- rep(Nsamp[[i]], length(years[[i]]))
@@ -112,11 +118,11 @@ sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
                 ## This code creates a vector of empirical samples of
                 ## length, such that each length bin is repeated equal to
                 ## the number of observed fish in that bin
-                prob.len.ints <- unlist(sapply(1:length(prob.len), function(i) rep(i, prob.len[i])))
+                prob.len.ints <- unlist(sapply(seq_along(prob.len), function(i) rep(i, prob.len[i])))
                 ## Now resample from it, garuanteeing that the sample size
                 ## doesn't exceed
                 temp <- sample(x=prob.len.ints, size=Nsamp[[i]][yr.ind], replace=FALSE)
-                Nsamp.ages.per.lbin <- sapply(1:length(prob.len), function(i) sum(temp==i))
+                Nsamp.ages.per.lbin <- sapply(seq_along(prob.len), function(i) sum(temp==i))
                 ## Note: If you're ageing all fish this isn't needed, but holds.
             } else {
                 ## (2) case of Dirichlet. No way to verify more fish are
@@ -132,7 +138,7 @@ sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
         ## length bin and sample # fish in each age bin, given expected
         ## conditional age-at-length
         newcomp$Nsamp <- Nsamp.ages.per.lbin
-        for(ll in 1:nrow(newcomp)){
+        for(ll in seq_len(nrow(newcomp))) {
             N.temp <- newcomp$Nsamp[ll]
             if(N.temp>0){
                 cal.temp <-
@@ -183,9 +189,10 @@ sample_calcomp <- function(dat_list, outfile, fleets = c(1,2), years,
     }
 
     ## Write the modified file
-    if(write_file)
-        r4ss::SS_writedat(datlist = newfile, outfile = outfile,
-                          overwrite = TRUE, verbose=FALSE)
+    if (!is.null(outfile)){
+      r4ss::SS_writedat(datlist = newfile, outfile = outfile,
+                        version = ss_version, overwrite = TRUE, verbose=FALSE)
+    }
     return(invisible(newfile))
 }
 

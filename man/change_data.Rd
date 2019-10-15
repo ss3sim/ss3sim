@@ -4,18 +4,21 @@
 \alias{change_data}
 \title{Change the data that is available as output from an SS operating model.}
 \usage{
-change_data(dat_list, outfile, fleets, years, types, age_bins = NULL,
-  len_bins = NULL, pop_binwidth = NULL, pop_minimum_size = NULL,
-  pop_maximum_size = NULL, lcomp_constant = NULL,
-  tail_compression = NULL, write_file = TRUE)
+change_data(dat_list, outfile = NULL, fleets, years, types,
+  age_bins = NULL, len_bins = NULL, pop_binwidth = NULL,
+  pop_minimum_size = NULL, pop_maximum_size = NULL,
+  lcomp_constant = NULL, tail_compression = NULL, nsex = 1)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
-\item{outfile}{A character value giving the location of an SS \code{.dat}
-file to output, if \code{write_file=TRUE}.}
+\item{outfile}{A character string specifying the file name to use
+when writing the information to the disk. The string must include
+the proper file extension. No file is written using the default value
+of \code{NULL}, which leads to increased speed because writing the 
+file takes time and computing resources.}
 
 \item{fleets}{A numeric vector of fleets}
 
@@ -33,11 +36,14 @@ mean length at age data.}
 then the age bin structure will be taken from the OM.}
 
 \item{len_bins}{*A numeric vector of length bins to use. If left as
-\code{NULL} then the length bin structure will be taken from the OM.}
+\code{NULL} then the length bin structure will be taken from the OM.
+For conditional age-at-length (CAAL) data, the last value provided to
+\code{len_bins} will be used for Lbin_lo and -1 will be used for Lbin_hi
+for the largest length bin category, i.e., row of CAAL data.}
 
 \item{pop_binwidth}{*Population length bin width. Note that this value must
 be smaller than the bin width specified in length composition data
-\code{len_bins} or SS3 will fail (see notes in the SS3 manual).}
+\code{len_bins} or SS will fail (see notes in the SS manual).}
 
 \item{pop_minimum_size}{*Population minimum length bin value.}
 
@@ -45,26 +51,25 @@ be smaller than the bin width specified in length composition data
 
 \item{lcomp_constant}{*A new robustification constant for length composition
 data to be used. Must be a numeric value, as a proportion. For example 0.1
-means 10 percent. See the SS3 manual for further information. A \code{NULL}
+means 10 percent. See the SS manual for further information. A \code{NULL}
 value indicates no action resulting in using the current value, and a value
 of 0 will throw an error since that leads to an error when zeroes exist in
 the data. Instead use a very small value like \code{1e-07}.}
 
-\item{tail_compression}{*A new tail compression value to be used in SS3. Must
+\item{tail_compression}{*A new tail compression value to be used in SS. Must
 be a numeric value, as a proportion. For example 0.1 means 10 percent. See
-the SS3 manual for further information. A \code{NULL} value indicates no
-action, a negative value indicates to SS3 to ignore it (not use that
+the SS manual for further information. A \code{NULL} value indicates no
+action, a negative value indicates to SS to ignore it (not use that
 feature).}
 
-\item{write_file}{Should the \code{.dat} file be written? The new \code{.dat}
-file will always be returned invisibly by the function. Setting
-\code{write_file = FALSE} can be useful for testing. Note that you must
-supply a value to the argument \code{outfile}, but this argument can be set
-to any arbitrary value (such as \code{NULL}) if \code{write_file = FALSE}.}
+\item{nsex}{An integer value of 1 or 2 specifying the number of sexes in the
+model. If 1, then females are the only included sex. This information can be
+found in the data file for a given model and dictates how the composition
+data are structured.}
 }
 \value{
-An invisible data list, and a file is written if \code{write_file =
-  TRUE}.
+An invisible data list, and a file is written to the disk if an
+entry other than \code{NULL} is provided for \code{outfile}.
 }
 \description{
 \code{change_data} alters the data structure for a data list as read in by
@@ -74,7 +79,7 @@ specified, to the SS \code{.dat} file. This causes SS to produce expected
 values (OM "truth") when the operating model is run, from which data can be
 sampled.  For each data type altered, \code{change_data} will add data for
 the fleets and years given; potentially adding many rows of redundant data.
-Currently, \code{.dat} files with multiple genders cannot be manipulated with
+Currently, \code{.dat} files with multiple sexes cannot be manipulated with
 \code{change_data}. \code{\link{calculate_data_units}} is used internally in
 \code{\link{ss3sim_base}} to create a superset of fleets and years from
 sample arguments, and \code{\link{clean_data}} to strip out unused data after
@@ -104,60 +109,35 @@ d <- system.file("extdata", package = "ss3sim")
 fleets <- 1:2
 years <- c(5, 10, 15)
 types <- c("len", "age")
-file_in <- r4ss::SS_readdat(paste0(d, "/models/cod-om/codOM.dat"))
-file_in <- change_fltname(file_in)
+file_in <- r4ss::SS_readdat(file.path(d, "models", "cod-om", "codOM.dat"),
+  version = NULL, verbose = FALSE)
 
 # Basic test with just length data, default bins:
-out <- change_data(file_in, outfile = "ignore.dat", types = "len",
-  years = years, fleets = fleets, write_file = FALSE)
+out <- change_data(file_in, outfile = NULL, types = "len",
+  years = years, fleets = fleets)
 print(out$lbin_vector)
 print(out$lencomp)
 
 # Change the length bins:
-out <- change_data(file_in, "ignore.dat", types = "len",
-  years = years, fleets = fleets, len_bins = 3:6, write_file = FALSE)
+out <- change_data(file_in, outfile = NULL, types = "len",
+  years = years, fleets = fleets, len_bins = 3:6)
 out$lbin_vector
 out$lencomp
 
 # Change the population length bins:
-out <- change_data(file_in, "ignore.dat", types = "len",
+out <- change_data(file_in, outfile = NULL, types = "len",
   years = years, fleets = fleets, pop_binwidth = 1, pop_minimum_size = 5,
-  pop_maximum_size = 210, write_file = FALSE)
+  pop_maximum_size = 210)
 out$binwidth
 out$maximum_size
 out$minimum_size
-
-# Sample from index, length composition, age composition, catch at length,
-# mean length at age data: (normally this is all done from within run_ss3sim).
-
-index_params = list(fleets = c(1, 2), years = list(c(1, 2),
-  c(10, 11)), sds_obs = c(0.1, 0.2))
-lcomp_params = list(Nsamp = list(12345), fleets = 1, years = list(c(1, 5)))
-agecomp_params = list(Nsamp = list(12345), fleets = c(1, 2),
-  years = list(2, c(15, 16)))
-calcomp_params = list(Nsamp = list(1), fleets = c(1), years = 98)
-mlacomp_params = list(fleets = c(2), Nsamp = 54, years = list(c(1, 15)))
-d <- system.file("extdata", package = "ss3sim")
-f_in <- paste0(d, "/models/cod-om/codOM.dat")
-dat_list <- r4ss::SS_readdat(f_in, verbose = FALSE)
-dat_list <- change_fltname(dat_list)
-data_units <- calculate_data_units(index_params = index_params,
-  lcomp_params = lcomp_params, agecomp_params = agecomp_params,
-  calcomp_params = calcomp_params, mlacomp_params = mlacomp_params)
-data_units
-dat2 <- with(data_units, change_data(dat_list = dat_list, fleets = fleets,
-  years = years, types = types, write_file = FALSE))
-dat3 <- clean_data(dat_list = dat2, lcomp_params = lcomp_params,
-  index_params = index_params, agecomp_params = agecomp_params,
-  calcomp_params = calcomp_params, mlacomp_params = mlacomp_params,
-  verbose = TRUE)
 }
 \seealso{
 \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
 
 Other change functions: \code{\link{change_em_binning}},
-  \code{\link{change_e}}, \code{\link{change_f}},
-  \code{\link{change_maturity}},
+  \code{\link{change_e}}, \code{\link{change_f_par}},
+  \code{\link{change_f}}, \code{\link{change_o}},
   \code{\link{change_retro}}, \code{\link{change_tv}}
 }
 \author{

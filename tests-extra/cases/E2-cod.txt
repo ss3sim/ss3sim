@@ -1,9 +1,0 @@
-natM_type; 1Parm
-natM_n_breakpoints; NULL
-natM_lorenzen; NULL
-natM_val; c(NA, NA)
-par_name; c("L_at_Amin", "L_at_Amax", "VonBert_K", "CV_young", "CV_old")
-par_int; rep(NA, 5)
-par_phase; rep(-1, 5)
-forecast_num; 0
-run_change_e_full; TRUE

@@ -2,23 +2,25 @@
 % Please edit documentation in R/sample_agecomp.R
 \name{sample_agecomp}
 \alias{sample_agecomp}
-\title{Sample age compositions from expected values}
+\title{Sample age compositions from a Stock Synthesis data file}
 \usage{
-sample_agecomp(dat_list, outfile, fleets = c(1, 2), Nsamp, years,
-  cpar = 1, ESS = NULL, write_file = TRUE, keep_conditional = TRUE)
+sample_agecomp(dat_list, outfile = NULL, fleets, Nsamp, years,
+  cpar = 1, ESS = NULL, keep_conditional = TRUE)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
-\item{outfile}{A character string of the new file name to be created.
-Must end in \code{.dat} or equal \code{wtatage.ss}.}
+\item{outfile}{A character string specifying the file name to use
+when writing the information to the disk. The string must include
+the proper file extension. No file is written using the default value
+of \code{NULL}, which leads to increased speed because writing the 
+file takes time and computing resources.}
 
-\item{fleets}{*A numeric vector giving the fleets to be used. This order also
-pertains to other arguments. A missing value excludes that fleet from
-\code{outfile} (i.e. it turns it off so no samples are written). If none of
-the fleet collected samples, keep the value to \code{fleets=NULL}.}
+\item{fleets}{*A vector of integers specifying which fleets to include.
+The order of the fleets pertains to the input order of other arguments.
+An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 
 \item{Nsamp}{*A numeric list of the same length as \code{fleets}.
 Either single values or vectors of the same length as the number of
@@ -30,40 +32,47 @@ years. If no fleet collected samples, keep the value to
 numeric vectors. If no fleet collected samples, keep the value to
 \code{years=NULL}.}
 
-\item{cpar}{*A numeric value or vector the same length as
+\item{cpar}{A numeric value or vector the same length as
 \code{fleets} controlling the variance of the Dirichlet
-distribution used for sampling. A value of \code{1} indicates the
+distribution used for sampling. A value of \code{1} leads to the
 same standard deviation as a multinomial of the given \code{Nsamp},
 \code{2} indicates twice, etc. Values greater than one indicate
-overdispersion, and less underdispersion.}
+overdispersion, and less underdispersion. \code{NULL} or \code{NA}
+for a given fleet will lead to no dispersion.}
 
-\item{ESS}{An effective sample size to write to file (but not use in
-sampling). The default of NULL means to use the true (internally
-calculated) ESS, which is \code{Nsamp} for the multinomial case or given
-by the formula under \code{cpar} for the Dirichlet case. Must match the
-structure of the \code{years} arguments.}
-
-\item{write_file}{A logical switch for whether to write \code{outfile} to
-disk. Can be turned off to speed up testing or exploration of the
-function. The new data are returned invisibly, as in the examples
-below.}
+\item{ESS}{The final effective sample size (ESS) associated with the
+simulated data. The ESS is not used to generate the simulated data
+but can be used as an input sample size in subsequent models that estimate
+population parameters or status.
+The default, \code{NULL}, leads to the true (internally calculated)
+#' ESS being used, which is \code{Nsamp} for the multinomial case or given
+by the formula under \code{cpar} for the Dirichlet case.
+At least one value must be provided for each fleet or a vector of
+year-specific values can be used for any given fleet.
+The argument accepts a list with entries,
+either a single integer or a vector of integers, for each fleet.}
 
 \item{keep_conditional}{A logical if conditional age-at-length data
-should be kept or removed entirely from the \code{.dat} file.
-\code{sample_agecomp} only works on the age composition data
+should be kept or removed entirely from the data file.
+\code{sample_agecomp} only works on the age-composition data
 and not on the conditional age-at-length data. To sample the
-conditional data set \code{keep_conditional} to \code{TRUE}
+conditional data, set \code{keep_conditional} to \code{TRUE}
 and use \code{\link{sample_calcomp}}.}
 }
 \value{
-A modified \code{.dat} file if \code{write_file=TRUE}. A list object
+A modified \code{.dat} file if \code{!is.null(outfile)}. A list object
 containing the modified \code{.dat} file is returned invisibly.
 }
 \description{
-Take a \code{data.SS_new} file containing expected values and sample to
-create observed age compositions which are then written to file for use by
-the estimation model.
-If used with \code{\link{run_ss3sim}} the case file should be named
+Extract age-composition data from a \code{.ss_new} data file and sample
+the data. It is assumed that the composition data will be expected values
+as written by Stock Synthesis in the second section of the data file, but
+one can also sample input data. The resulting age-composition
+data are assumed to represent observed age composition and will overwrite
+the age data in \code{dat_list}, which is returned invisibly.
+The data file can also be written to the disk, if a file path is provided to
+\code{outfile}, and used as simulated data by an estimation model.
+If used with \code{\link{run_ss3sim}}, the case file should be named
 \code{agecomp}. A suggested (default) case letter is \code{D} for data.
 }
 \section{Which arguments to specifiy in case files}{
@@ -77,56 +86,46 @@ if specified.
 
 \examples{
 d <- system.file("extdata", package = "ss3sim")
-f_in <- paste0(d, "/models/cod-om/codOM.dat")
-dat_list <- r4ss::SS_readdat(f_in, verbose = FALSE)
-dat_list <- change_fltname(dat_list)
+f_in <- file.path(d, "models", "cod-om", "codOM.dat")
+dat_list <- r4ss::SS_readdat(f_in, version = NULL, verbose = FALSE)
 
 ## Turn off age comps by specifying fleets=NULL
-sample_agecomp(dat_list=dat_list, outfile="test1.dat",
-               fleets=NULL, cpar=c(5,NA), Nsamp=list(100,100),
-               years=list(1995, 1995), write_file=FALSE)
+test <- sample_agecomp(dat_list = dat_list, fleets = NULL)
 
 ## Generate with a smaller number of fleet taking samples
-ex1 <- sample_agecomp(dat_list=dat_list, outfile="test1.dat", fleets=c(2),
-                      Nsamp=list(c(10,50)), years=list(c(26,27)),
-                      write_file=FALSE)
+ex1 <- sample_agecomp(dat_list = dat_list, outfile = NULL,
+  fleets = 2, Nsamp = list(c(10, 50)), years = list(c(26, 27)))
+NROW(ex1$agecomp) == 2
 
 ## Generate with varying Nsamp by year for first fleet
-ex2 <- sample_agecomp(dat_list=dat_list, outfile="test2.dat", fleets=c(1,2),
-                      Nsamp=list(c(rep(50, 5), rep(100, 5)), 50),
-                      years=list(seq(26, 44, 2),
-                          c(26:100)), write_file=FALSE)
+ex2 <- sample_agecomp(dat_list = dat_list, outfile = NULL,
+  fleets = c(1, 2),
+  Nsamp = list(c(rep(50, 5), rep(100, 5)), 50),
+  years = list(seq(26, 44, 2), c(26:100)))
 
-## Run three  cases showing Multinomial, Dirichlet(1) and over-dispersed
+## Run three  cases showing Multinomial, Dirichlet(1), and over-dispersed
 ## Dirichlet for different levels of sample sizes
-op <- par(mfrow = c(1,3))
+op <- par(mfrow = c(1, 3))
 set.seed(1)
-for(samplesize in c(30, 100, 1000)){
-    ex4 <- sample_agecomp(dat_list=dat_list, outfile="test4.dat", fleets=c(1,2),
-                          Nsamp=list(samplesize, samplesize),
-                          write_file = FALSE,
-                          years=list(50,50), cpar=c(NA, 1))
-    ex5 <- sample_agecomp(dat_list=dat_list, outfile="test5.dat", fleets=c(1,2),
-                          Nsamp=list(samplesize, samplesize),
-                          write_file = FALSE,
-                          years=list(50,50), cpar=c(1, 1))
-    ex6 <- sample_agecomp(dat_list=dat_list, outfile="test6.dat", fleets=c(1,2),
-                          Nsamp=list(samplesize, samplesize),
-                          write_file = FALSE,
-                          years=list(50,50), cpar=c(5, 1))
-    true <- subset(dat_list$agecomp, FltSvy==1 & Yr == 50)[-(1:9)]
-    true <- true/sum(true)
-    mult <- subset(ex4$agecomp, FltSvy==1)[1,-(1:9)]
-    mult <- mult/sum(mult)
-    plot(1:15, mult, type="b", ylim=c(0,1),
-         col=1, xlab="Age", ylab="Proportion", main=paste("Sample size=",
-         samplesize))
-    legend("topright", legend=c("Multinomial", "Dirichlet(1)",
-                                "Dirichlet(5)", "Truth"),
-           lty=1, col=1:4)
-    lines((1:15), subset(ex5$agecomp, FltSvy==1)[1,-(1:9)], type="b", col=2)
-    lines((1:15), subset(ex6$agecomp, FltSvy==1)[1,-(1:9)], type="b", col=3)
-    lines((1:15), true, col=4, lwd=2)
+true <- prop.table(dat_list$agecomp[
+  dat_list$agecomp$FltSvy == 1 & dat_list$agecomp$Yr == 50, -(1:9)])
+cpars <- c(NA, 1, 4)
+for (samplesize in c(30, 100, 1000)) {
+  if (samplesize > 30) par(mar = c(5.1, 1, 4.1, 2.1))
+  plot(dat_list$agebin_vector, true, type = "b", ylim = c(0, 1),
+    col = 4, lwd = 2, xlab = "Age",
+    ylab = ifelse(samplesize == 30, "Proportion", ""),
+    main = paste("Sample size =", samplesize))
+  if (samplesize == 30) {
+    legend("topright", lty = 1, col = 1:4, bty = "n",
+      legend = c("Multinomial", "Dirichlet(1)", "Dirichlet(4)", "Truth"))
+  }
+  for (i in seq_along(cpars)) {
+    ex <- sample_agecomp(dat_list = dat_list, outfile = NULL, fleets = 1,
+      Nsamp = list(samplesize), years = list(50), cpar = cpars[i])$agecomp
+    lines(dat_list$agebin_vector, prop.table(ex[1, -(1:9)]),
+      col = i, type = "b")
+  }
 }
 par(op)
 }
@@ -137,7 +136,6 @@ Other sampling functions: \code{\link{clean_data}},
   \code{\link{sample_wtatage}}
 }
 \author{
-Cole Monnahan and Kotaro Ono; modified from a version by Roberto
-Licandeo and Felipe Hurtado-Ferro
+Cole Monnahan and Kotaro Ono
 }
 \concept{sampling functions}

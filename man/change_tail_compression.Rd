@@ -4,8 +4,7 @@
 \alias{change_tail_compression}
 \title{Replace tail compression value for length composition data.}
 \usage{
-change_tail_compression(tail_compression, dat_list, dat_file_out,
-  write_file = TRUE)
+change_tail_compression(tail_compression, dat_list, outfile = NULL)
 }
 \arguments{
 \item{tail_compression}{*The new tail_compression value to be used. Must be a
@@ -17,10 +16,11 @@ negative value indicates to SS3 to ignore it (not use that feature).}
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
 
-\item{dat_file_out}{A string providing the path to the output SS3 \code{.dat} file.}
-
-\item{write_file}{A logical value indicating if the altered file should be
-written to the disk. The default value is \code{TRUE}.}
+\item{outfile}{A character string specifying the file name to use
+when writing the information to the disk. The string must include
+the proper file extension. No file is written using the default value
+of \code{NULL}, which leads to increased speed because writing the 
+file takes time and computing resources.}
 }
 \value{
 A modified SS3 \code{.dat} file, and that file returned invisibly

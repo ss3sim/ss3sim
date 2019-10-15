@@ -1,30 +1,29 @@
 Package: ss3sim
 Type: Package
 Title: Fisheries Stock Assessment Simulation Testing with Stock Synthesis
-Version: 0.9.5.9000
-Date: 2017-06-29
+Version: 1.0.0.0
 Authors@R: c(person("Kelli", "Johnson", 
     email = "kelli.johnson@noaa.gov",
     role = c("aut", "cre")),
     person("Sean", "Anderson", role = "aut"),
-    person("Curry", "Cunningham", role = "aut"),
     person("Kathryn Doering", role = "aut"),
-    person("Allan", "Hicks", role = "aut"),
-    person("Felipe", "Hurtado-Ferro", role = "aut"),
-    person("Peter", "Kuriyama", role = "aut"),
-    person("Roberto", "Licandeo", role = "aut"),
-    person("Carey", "McGilliard", role = "aut"),
     person("Cole", "Monnahan", role = "aut"),
-    person("Melissa", "Muradian", role = "ctb"),
-    person("Kotaro", "Ono", role = "aut"),
-    person("Merrill", "Rudd", role = "aut"),
     person("Christine", "Stawitz", role = "aut"),
-    person("Cody", "Szuwalski", role = "aut"),
     person("Ian", "Taylor", role = "aut"),
-    person("Juan", "Valero", role = "aut"),
-    person("Athol", "Whitten", role = "aut"))
+    person("Curry", "Cunningham", role = "ctb"),
+    person("Allan", "Hicks", role = "ctb"),
+    person("Felipe", "Hurtado-Ferro", role = "ctb"),
+    person("Peter", "Kuriyama", role = "ctb"),
+    person("Roberto", "Licandeo", role = "ctb"),
+    person("Carey", "McGilliard", role = "ctb"),
+    person("Melissa", "Murdian", role = "ctb"),
+    person("Kotaro", "Ono", role = "ctb"),
+    person("Merrill", "Rudd", role = "ctb"),
+    person("Cody", "Szuwalski", role = "ctb"),
+    person("Juan", "Valero", role = "ctb"),
+    person("Athol", "Whitten", role = "ctb"))
 Description: Develops a framework for fisheries stock assessment simulation
-    testing with Stock Synthesis 3 (SS3) as described in Anderson et al.
+    testing with Stock Synthesis (SS) as described in Anderson et al.
     (2014) <doi:10.1371/journal.pone.0092725>.
 License: MIT + file LICENSE
 URL: https://github.com/ss3sim/ss3sim
@@ -33,23 +32,20 @@ LazyData: true
 Suggests:
     knitr,
     doParallel,
-    reshape2,
     rmarkdown
 VignetteBuilder: knitr
 Depends:
     R (>= 3.3)
 Imports:
     foreach,
-    plyr,
     r4ss,
     gtools,
-    lubridate,
     ggplot2,
     bbmle,
-    dplyr,
-    magrittr,
     grDevices,
     graphics,
     stats,
     utils
+Remotes: github::r4ss/r4ss
 RoxygenNote: 6.1.1
+Encoding: UTF-8

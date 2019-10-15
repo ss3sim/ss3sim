@@ -15,31 +15,36 @@ extract results.}
 
 \item{overwrite_files}{A boolean (default is \code{FALSE}) for whether to delete
 any files previously created with this function. This is intended to be
-used if replicates were added since the last time it was called, or any
+used if iterations were added since the last time it was called, or any
 changes were made to this function.}
 }
 \description{
-Function that extracts results from all replicates inside a supplied
+Function that extracts results from all iterations inside a supplied
 scenario folder. The function writes 3 .csv files to the scenario
-folder: (1) scalar metrics with one value per replicate (e.g. \eqn{R_0},
+folder: (1) scalar metrics with one value per iteration (e.g. \eqn{R_0},
 \eqn{h}), (2) a timeseries data ('ts') which contains multiple values per
-replicate (e.g.  \eqn{SSB_y} for a range of years \eqn{y}), and (3) [currently
+iteration (e.g.  \eqn{SSB_y} for a range of years \eqn{y}), and (3) [currently
 disabled and not tested] residuals on the log scale from the surveys
-across all replicates. The function \code{get_results_all} loops through
+across all iterations. The function \code{get_results_all} loops through
 these .csv files and combines them together into a single "final"
 dataframe.
 }
 \examples{
 \dontrun{
 d <- system.file("extdata", package = "ss3sim")
-case_folder <- paste0(d, "/eg-cases")
-om <- paste0(d, "/models/cod-om")
-em <- paste0(d, "/models/cod-em")
+case_folder <- file.path(d, "eg-cases")
+om <- file.path(d, "models", "cod-om")
+em <- file.path(d, "models", "cod-em")
 run_ss3sim(iterations = 1:2, scenarios =
-  c("D0-F0-G0-S0-cod"),
+  c("D0-F0-cod"),
   case_folder = case_folder, om_dir = om, em_dir = em,
+  case_files = list(F = "F",
+                    D = c("index", "lcomp", "agecomp")),
   bias_adjust = FALSE)
-get_results_scenario(c("D0-F0-G0-S0-cod"))
+get_results_scenario(c("D0-F0-cod"), overwrite_files = TRUE)
+
+#clean up
+unlink("D0-F0-cod", recursive = TRUE)
 }
 }
 \seealso{

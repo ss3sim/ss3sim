@@ -1,14 +1,18 @@
-Adds citation to Description field as requested in the format <doi:10.1371/journal.pone.0092725>.
+Major (i.e., non-backwards compatible) release in conjunction with release
+of r4ss version 1.35.0
 
-Fixes compatibility with soon to be released dplyr 0.6.0.
+Change maintainer from sean@seananderson.ca to kelli.johnson@noaa.gov
 
 ---
 
 ## Test environments
-* local macOS 10.12 install, R 3.3.3
-* Ubuntu 12.04.5 (on travis-ci), R devel
-* Windows (on appveyor), R 3.3.3
-* Windows (win-builder), R devel
+* local OS X install, R 3.6.1
+* local Windows, R 3.6.1
+* Ubuntu Trusty 14.04 (on travis-ci), R devel
+* win-builder (R devel)
 
 ## R CMD check results
 There were no ERRORs, NOTES, or WARNINGs.
+
+## Downstream dependencies
+There are currently no downstream dependencies for this package.

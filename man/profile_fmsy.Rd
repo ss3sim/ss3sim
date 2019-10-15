@@ -5,49 +5,61 @@
 \title{Determine Fmsy for a given operating model}
 \usage{
 profile_fmsy(om_in, results_out, start = 0, end = 1.5, by_val = 0.01,
-  ss_mode = c("safe", "optimized"))
+  verbose = FALSE)
 }
 \arguments{
-\item{om_in}{A directory for an \pkg{ss3sim} operating model.}
+\item{om_in}{A full or relative path to a directory that contains an
+\pkg{ss3sim} operating model.}
 
-\item{results_out}{A directory to place the results}
+\item{results_out}{A full or relative path to a directory where the results
+will be saved. The directory will be created if it doesn't already exist.}
 
-\item{start}{Lower fishing mortality level}
+\item{start}{Lower fishing mortality levels that will be explored.}
 
-\item{end}{Upper fishing mortality level}
+\item{end}{Upper fishing mortality levels that will be explored.}
 
-\item{by_val}{Interval in which you wish to increment the fishing mortality
-level}
+\item{by_val}{Interval at which F will be incremented between \code{start}
+and \code{end}.}
 
-\item{ss_mode}{SS3 binary option. One of \code{"safe"} for the safe version
-of SS3 or \code{"optimized"} for the optimized version of SS3. The relevant
-binary needs to be in your system's path. See the vignette
-\code{vignette("ss3sim-vignette", package = "ss3sim")} for details and
-links to the binary files. Defaults to safe mode.}
+\item{verbose}{When \code{TRUE} messages will be returned
+from the function. Often useful for debugging. The default
+is \code{FALSE}.}
 }
 \value{
-Creates a plot and a table with catches and F values (see the
-  \code{results_out} folder). Also invisibly returns the Fmsy table as a data
-  frame.
+Creates a plot and a table with catches and F values.
+Also, invisibly returns a table of F and catch as a data frame.
 }
 \description{
-Runs an operating model over a range of fishing mortality levels to
-determine the profile of F values from which Fmsy can be determined.
+Runs an operating model over a range of fishing mortality (F) levels to
+determine the F at maximum sustainable yield (Fmsy).
 }
 \details{
-This function extracts the number of years from the model dat
-file and then runs at a constant level of fishing for each year,
+This function extracts the number of years from the data
+file and then runs the model with a constant level of fishing for each year,
 extracting the catch in the last year. This assumes the length of the
 model is long enough to reach an equilibrium catch. The user is
-responsible for ensuring this fact.
+responsible for ensuring this fact. If the function is run with
+\code{verbose = TRUE}, which is not the default, users will be provided
+with coefficient of variations of the catches in the terminal years of
+the model. Here, terminal is defined as half as many years as there are
+ages in the population dynamics of your model.
+Thus, if the population plus group starts at age twenty,
+then the standard deviation of the last ten years of catch
+divided by the mean catch over that same time will be printed to the
+screen for each model that is ran. For the default cod model provided within
+the package, the CV is less than 1e-04 for all F levels explored.
+
+Ensure that the argument \code{om_in} leads to an operating model that is
+configured for use within \pkg{ss3sim}. For example, the F type must
+allow for an input vector of Fs rather than catches, along with other
+specifications.
 }
 \examples{
 \dontrun{
-d <- system.file("extdata", package = "ss3sim")
-omfolder <- paste0(d, "/models/cod-om")
-
-
-fmsy.val <- profile_fmsy(om_in = omfolder, results_out = "fmsy",
-  start = 0.1, end = 0.2, by_val = 0.05)
+  d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
+  fmsy.val <- profile_fmsy(om_in = d, results_out = "fmsy",
+    start = 0.1, end = 0.2, by_val = 0.05)
+  #cleanup
+  unlink("fmsy", recursive = TRUE)
 }
 }
