@@ -1,3 +1,6 @@
+# ss3sim 1.0.4
+* change [travis configuration](https://towardsdatascience.com/travis-ci-for-r-advanced-guide-719cb2d9e0e5) to use Xenial 
+
 # ss3sim 1.0.3
 * Realized broken links are because of case not full path and changed
 all links back to shorter path with lower-case first letter
