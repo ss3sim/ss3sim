@@ -21,9 +21,9 @@ function.}
 \item{par_name}{*A character vector of parameter names to pass in. NULL unless
 want to use instead of \code{change_o_list}.}
 
-\item{par_int}{*A numeric vector of p arameter initial values to pass in. NULL
+\item{par_int}{*A numeric vector of parameter initial values to pass in. NULL
 unless want to use instead of \code{change_o_list}. Must have the same
-length and be in the sampe order as \code{par_names}, as the names should
+length and be in the same order as \code{par_names}, as the names should
 correspond with their initial values.}
 
 \item{verbose}{When \code{TRUE} messages will be returned

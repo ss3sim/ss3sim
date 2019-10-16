@@ -1,4 +1,4 @@
-#' Sample empirial weight-at-age data and write to file for use by the EM
+#' Sample empirical weight-at-age data and write to file for use by the EM
 #'
 #' Take a \code{data.SS_new} file containing expected values and sample from
 #' true ages to get realistic proportions for the number of fish in each age

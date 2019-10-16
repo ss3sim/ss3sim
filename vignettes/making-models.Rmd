@@ -25,7 +25,7 @@ ss3sim package.  First, we cover setting up an [OM](#om-setup) and then and [EM]
 
 # Setting up a new operating model {#om-setup}
 
-The first step to setting up and OM is to run the assessment model to make sure the model runs and estimates parameters as desired. We recommend opening a command window inside your OM and EM folders to help test whether the model still runs at many points along the process. After turning parameter estimation off in the starter file (see below), the model can be checked by running `ss3_24o_safe -nohess` to make sure the input files are read in properly and the model writes the new input files. Use the `.ss_new` files produced as a starting point to ensure that your SS input files are properly formated.
+The first step to setting up and OM is to run the assessment model to make sure the model runs and estimates parameters as desired. We recommend opening a command window inside your OM and EM folders to help test whether the model still runs at many points along the process. After turning parameter estimation off in the starter file (see below), the model can be checked by running `ss3_24o_safe -nohess` to make sure the input files are read in properly and the model writes the new input files. Use the `.ss_new` files produced as a starting point to ensure that your SS input files are properly formatted.
 
 Note that there will be an error message in the command window indicating that ADMB cannot find the data file because ADMB expects a certain name and SS uses a name stored in the starter file. You can safely ignore this error.
 
@@ -51,7 +51,7 @@ Note that there will be an error message in the command window indicating that A
 
 8.  Specify how catch is reported by setting `# F_report_units` to `1` if catch is reported in biomass or `2` if catch is reported in numbers. Additionally, comment out the next line, `#_min and max age over which average F will be calculated`, by removing all characters prior to the hash symbol.
 
-9.  Implement catches using instantaneous fishing mortality by changing `# F_report_basis` to `0`. Intantaneous fishing mortality is used rather than an input vector of catches to ensure that the catches are not more than available population biomass, which can happen with absolute catch rather than fishing mortality.
+9.  Implement catches using instantaneous fishing mortality by changing `# F_report_basis` to `0`. Instantaneous fishing mortality is used rather than an input vector of catches to ensure that the catches are not more than available population biomass, which can happen with absolute catch rather than fishing mortality.
 
 ## Control file modifications
 1. Delete the `<modelname>.ctl` file and rename `control.ss_new` to `om.ctl`. Modify this new file.
@@ -83,11 +83,11 @@ Note that there will be an error message in the command window indicating that A
 
 2.  Specify the start and end year for the simulation by modifying `#_styr` and `#_endyr`. Years can be specified as a number line (i.e., `1` and `5`) or as actual years (i.e., `2001` and `2005`).
 
-3.  Specify the type, timing, area (1), units, catch multipler, and name for each fleet with one row per fleet before `#Bycatch_fleet_input_goes_next`. The fleet names specified here will be used in the case files to specify and change characteristics of each fleet throughout the simulation.
+3.  Specify the type, timing, area (1), units, catch multiplier, and name for each fleet with one row per fleet before `#Bycatch_fleet_input_goes_next`. The fleet names specified here will be used in the case files to specify and change characteristics of each fleet throughout the simulation.
 
 4.  Specify the number of mean body weight observations across all selected sizes and ages to be specific to measured fish by setting `#_N_meanbodywt` to `0`. Subsequently, specify `1` under `#_DF_for_meanbodywt_T-distribution_like` - this is the degree of freedom for the Student’s T distribution used to evaluated the mean body weight deviations in the following line. The degrees of freedom must be specified even if there are zero mean body weight observations.
 
-5.  Set the length bin method to 1 or 2 in the line labelled `# length bin method`. Using a value of `1`, the bins refer to the data bins (specified later). Using a value of `2` instructs SS to generate the bin widths from a user specified minimum and maximum value. In the following three lines, specify the bin width for population size composition data; the minimum size, or the lower edge of the first bin and size at age zero; and the maximum size, or lower edge of the last bin. The length data bins MUST be wider than the population bin but the boundaries do not have to align.
+5.  Set the length bin method to 1 or 2 in the line labeled `# length bin method`. Using a value of `1`, the bins refer to the data bins (specified later). Using a value of `2` instructs SS to generate the bin widths from a user specified minimum and maximum value. In the following three lines, specify the bin width for population size composition data; the minimum size, or the lower edge of the first bin and size at age zero; and the maximum size, or lower edge of the last bin. The length data bins MUST be wider than the population bin but the boundaries do not have to align.
 
 6.  Specify `#_comp_tail_compression` to any negative value to turn off tail compression.
 

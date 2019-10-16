@@ -102,7 +102,7 @@ option to specify safe or optimized
 * The `get_results` function now returns run time, a list of parameters that were
   on bounds, and recruitment deviations.
 
-* Switch vignette to R Markdown and HTML ouput (#194)
+* Switch vignette to R Markdown and HTML output (#194)
 
 * Add re-binning within the estimation model of length and conditional
   age-at-length data (#201, #205)

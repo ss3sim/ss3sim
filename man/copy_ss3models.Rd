@@ -24,7 +24,7 @@ The function will create the folders as needed.}
 affects whether the model folder gets named "om" or "em"}
 }
 \value{
-An invisble boolean for whether that iteration already
+An invisible boolean for whether that iteration already
 existed. A set of nested folders starting with the scenario ID, then the
 iterations, then "om" or "em", and then the SS model files.
 }

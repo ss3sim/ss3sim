@@ -2,7 +2,7 @@
 % Please edit documentation in R/sample_wtatage.R
 \name{sample_wtatage}
 \alias{sample_wtatage}
-\title{Sample empirial weight-at-age data and write to file for use by the EM}
+\title{Sample empirical weight-at-age data and write to file for use by the EM}
 \usage{
 sample_wtatage(wta_file_in, outfile, dat_list, ctl_file_in, years,
   fill_fnc = fill_across, fleets, cv_wtatage = NULL)

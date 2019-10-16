@@ -11,7 +11,7 @@ vbgf_func(L1, L.inf, k, ages, a3)
 
 \item{L.inf}{Length at infinity}
 
-\item{k}{von bertalanffy growth rate parameter}
+\item{k}{von Bertalanffy growth rate parameter}
 
 \item{ages}{vector of ages in the data for which you want to predict mean
 length-at-age}

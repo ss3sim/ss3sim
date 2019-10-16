@@ -10,7 +10,7 @@ change_f_par(years, years_alter, fvals, par_file_in = "ss.par",
 \arguments{
 \item{years}{*Vector of years for which \emph{F} values are specified,
 if there is more than one fleet or season the catches must be ordered by
-season:year:fishey (e.g., season1year1fishery1, season2year1fishery1,
+season:year:fishery (e.g., season1year1fishery1, season2year1fishery1,
 season1year2fishery1). The actual vector does not have to correspond to
 true years but must be the correct length (e.g., instead of
 \code{2000:2004} you can use \code{1:5}). Use this argument to create

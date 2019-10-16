@@ -13,9 +13,9 @@
 #' @template ctl_file_out
 #' @param par_name *A character vector of parameter names to pass in. NULL unless
 #'   want to use instead of \code{change_o_list}.
-#' @param par_int *A numeric vector of p arameter initial values to pass in. NULL
+#' @param par_int *A numeric vector of parameter initial values to pass in. NULL
 #'   unless want to use instead of \code{change_o_list}. Must have the same
-#'   length and be in the sampe order as \code{par_names}, as the names should
+#'   length and be in the same order as \code{par_names}, as the names should
 #'   correspond with their initial values.
 #' @template verbose
 #' @author Kathryn Doering
