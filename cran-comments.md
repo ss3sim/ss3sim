@@ -1,13 +1,13 @@
 Major (i.e., non-backwards compatible) release in conjunction with release
-of r4ss version 1.35.0
+of r4ss version 1.35.0.
 
-Change maintainer from sean@seananderson.ca to kelli.johnson@noaa.gov
+Change maintainer from <sean@seananderson.ca> to <kelli.johnson@noaa.gov>.
 
 ---
 
 ## Test environments
-* local OS X install, R 3.6.1
 * local Windows, R 3.6.1
+* local macOS install 10.14.6, R 3.6.1
 * Ubuntu Trusty 14.04 (on travis-ci), R devel
 * win-builder (R devel)
 
