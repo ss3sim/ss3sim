@@ -38,7 +38,7 @@ Depends:
     R (>= 3.3)
 Imports:
     foreach,
-    r4ss,
+    r4ss (>= 1.35.0),
     gtools,
     ggplot2,
     bbmle,
@@ -48,3 +48,4 @@ Imports:
     utils
 RoxygenNote: 6.1.1
 Encoding: UTF-8
+Remotes: r4ss/r4ss
