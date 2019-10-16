@@ -1,5 +1,5 @@
 Major (i.e., non-backwards compatible) release in conjunction with release
-of r4ss version 1.35.0.
+of r4ss version 1.36.1.
 
 This version changes the maintainer from <sean@seananderson.ca> to <kelli.johnson@noaa.gov>. This was confirmed by an email to <CRAN-submissions@R-project.org> on Oct. 16 2019.
 
