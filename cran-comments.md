@@ -1,9 +1,25 @@
-Major (i.e., non-backwards compatible) release in conjunction with release
-of r4ss version 1.36.1.
+## Resubmission
+This is a resubmission of the major (i.e., non-backwards compatible)
+release of ss3sim 1.0.0. In this version I have taken care of 
+1 Note, 1 Error, and fixed two broken links (see below).
 
-This version changes the maintainer from <sean@seananderson.ca> to <kelli.johnson@noaa.gov>. This was confirmed by an email to <CRAN-submissions@R-project.org> on Oct. 16 2019.
+### Note
+The package maintainer was changed from Sean Anderson <sean@seananderson.ca>
+to Kelli F. Johnson <kelli.johnson@noaa.gov>. Sean Anderson sent an email
+regarding the change on October 16, 2019 to forewarn CRAN.
 
----
+### Error
+r4ss is a required packages of ss3sim. The error, 
+`Package required and available but unsuitable version: ‘r4ss’`,
+will be taken care of once the newly submitted r4ss version 1.36.1 is approved.
+Version 1.36.1 of r4ss was submitted to CRAN just minutes before 
+the submission of ss3sim version 1.0.0.
+
+### Broken links
+
+* fixed the invalid URL in Readme.md
+* fixed the invalid URI in inst/doc/introduction.html
+* confirmed the success of a potentially invalid URI in inst/doc/introduction.html
 
 ## Test environments
 * local Windows, R 3.6.1
