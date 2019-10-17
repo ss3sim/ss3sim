@@ -1,6 +1,6 @@
 ## Resubmission
-This is a resubmission of the major (i.e., non-backwards compatible)
-release of ss3sim 1.0.0. In this version I have taken care of 
+This is a resubmission ss3sim, where the version has increased to 1.0.1.
+In this version I have taken care of 
 1 Note, 1 Error, and fixed two broken links (see below).
 
 ### Note
@@ -12,14 +12,12 @@ regarding the change on October 16, 2019 to forewarn CRAN.
 r4ss is a required packages of ss3sim. The error, 
 `Package required and available but unsuitable version: ‘r4ss’`,
 will be taken care of once the newly submitted r4ss version 1.36.1 is approved.
-Version 1.36.1 of r4ss was submitted to CRAN just minutes before 
-the submission of ss3sim version 1.0.0.
 
 ### Broken links
 
 * fixed the invalid URL in Readme.md
 * fixed the invalid URI in inst/doc/introduction.html
-* confirmed the success of a potentially invalid URI in inst/doc/introduction.html
+* confirmed the success of a potentially invalid URI in inst/doc/making-models.html
 
 ## Test environments
 * local Windows, R 3.6.1
@@ -28,7 +26,8 @@ the submission of ss3sim version 1.0.0.
 * win-builder (R devel)
 
 ## R CMD check results
-There were no ERRORs, NOTES, or WARNINGs.
+The 1 Note and 1 Error are addressed above in the resubmission comments.
+Locally on Windows (R 3.6.1) there are no Notes, Warnings, or Errors.
 
 ## Downstream dependencies
 There are currently no downstream dependencies for this package.

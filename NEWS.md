@@ -1,3 +1,8 @@
+# ss3sim 1.0.1
+
+* fixed broken links in Readme.md and inst/doc/introduction.html
+* confirmed that the links in inst/doc/making-models.html are working
+
 # ss3sim 1.0.0
 
 * Improved the documentation of many functions
