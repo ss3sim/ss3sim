@@ -54,7 +54,7 @@ An ss3sim simulation requires three types of input:
 2.  a base model of how you will assess that truth (an SS estimation model),
 3.  a set of cases that deviate from these base models that you want to compare (configuration arguments provided as plain-text control files).
 
-You can find examples of these SS operating and estimation models [within the package data](https://github.com/seananderson/ss3sim/tree/master/inst/extdata/models). Plain-text case files for some current simulation projects run by the developers of the package are [also available](https://github.com/seananderson/ss3sim/tree/master/inst/extdata/cases) along with the [case files for the examples](https://github.com/seananderson/ss3sim/tree/master/inst/extdata/eg-cases) used in the paper and vignette.
+You can find examples of these SS operating and estimation models [within the package data](https://github.com/ss3sim/ss3sim/tree/master/inst/extdata/models). Plain-text case files for some current simulation projects run by the developers of the package are [also available](https://github.com/ss3sim/ss3sim/tree/master/inst/extdata/eg-cases) along with the [case files for the examples](https://github.com/ss3sim/ss3sim/tree/master/inst/extdata/eg-cases) used in the paper and vignette.
 
 ![An illustration of the input and output file and folder structure.](https://raw.githubusercontent.com/ss3sim/ss3sim/f763cfb462a9e68db670155070cd554812a65160/man/figures/filestructure.png)
 
