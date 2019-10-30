@@ -1,4 +1,5 @@
 # ss3sim 1.0.4
+* Add create_logo() to generate github logo
 * change [travis configuration](https://towardsdatascience.com/travis-ci-for-r-advanced-guide-719cb2d9e0e5) to use Xenial 
 
 # ss3sim 1.0.3
