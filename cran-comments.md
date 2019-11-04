@@ -1,7 +1,8 @@
 ## Resubmission
-This is a resubmission ss3sim, where the version has increased to 1.0.1.
+This is a resubmission ss3sim, where the version has increased to 1.0.2.
 In this version I have taken care of 
-1 Note, 1 Error, and fixed two broken links (see below).
+a broken link in one of the vignettes that referenced the Introduction 
+vignette (see below).
 
 ### Note
 The package maintainer was changed from Sean Anderson <sean@seananderson.ca>
@@ -14,9 +15,6 @@ r4ss is a required packages of ss3sim. The error,
 will be taken care of once the newly submitted r4ss version 1.36.1 is approved.
 
 ### Broken links
-
-* fixed the invalid URL in Readme.md
-* fixed the invalid URI in inst/doc/introduction.html
 * confirmed the success of a potentially invalid URI in inst/doc/making-models.html
 
 ## Test environments
