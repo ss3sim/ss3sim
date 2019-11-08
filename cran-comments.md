@@ -1,8 +1,7 @@
 ## Resubmission
-This is a resubmission ss3sim, where the version has increased to 1.0.2.
-In this version I have taken care of 
-a broken link in one of the vignettes that referenced the Introduction 
-vignette (see below).
+This is a resubmission ss3sim, where the version has increased to 1.0.3.
+In this version I have taken care of the broken links that had a wrong
+case, i.e., I vs. i.
 
 ### Note
 The package maintainer was changed from Sean Anderson <sean@seananderson.ca>
@@ -10,12 +9,10 @@ to Kelli F. Johnson <kelli.johnson@noaa.gov>. Sean Anderson sent an email
 regarding the change on October 16, 2019 to forewarn CRAN.
 
 ### Error
-r4ss is a required packages of ss3sim. The error, 
-`Package required and available but unsuitable version: ‘r4ss’`,
-will be taken care of once the newly submitted r4ss version 1.36.1 is approved.
+None
 
 ### Broken links
-* confirmed the success of a potentially invalid URI in inst/doc/making-models.html
+* changed the case of the URI to match that of the saved files.
 
 ## Test environments
 * local Windows, R 3.6.1
@@ -24,7 +21,7 @@ will be taken care of once the newly submitted r4ss version 1.36.1 is approved.
 * win-builder (R devel)
 
 ## R CMD check results
-The 1 Note and 1 Error are addressed above in the resubmission comments.
+The 1 Note is addressed above in the resubmission comments.
 Locally on Windows (R 3.6.1) there are no Notes, Warnings, or Errors.
 
 ## Downstream dependencies

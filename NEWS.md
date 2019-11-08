@@ -1,3 +1,8 @@
+# ss3sim 1.0.3
+* Realized broken links are because of case not full path and changed
+all links back to shorter path with lower-case first letter
+* include NOAA disclaimer in README
+
 # ss3sim 1.0.2
 
 * changed link in inst/doc/making-models.html to a more explicit link
