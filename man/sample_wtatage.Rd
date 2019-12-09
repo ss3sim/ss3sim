@@ -4,8 +4,16 @@
 \alias{sample_wtatage}
 \title{Sample empirical weight-at-age data and write to file for use by the EM}
 \usage{
-sample_wtatage(wta_file_in, outfile, dat_list, ctl_file_in, years,
-  fill_fnc = fill_across, fleets, cv_wtatage = NULL)
+sample_wtatage(
+  wta_file_in,
+  outfile,
+  dat_list,
+  ctl_file_in,
+  years,
+  fill_fnc = fill_across,
+  fleets,
+  cv_wtatage = NULL
+)
 }
 \arguments{
 \item{wta_file_in}{The file to read weight-at-age from. Specifically to get the
@@ -69,10 +77,13 @@ if specified.
 \seealso{
 \code{\link{fill_across}}
 
-Other sampling functions: \code{\link{clean_data}},
-  \code{\link{sample_agecomp}},
-  \code{\link{sample_calcomp}}, \code{\link{sample_index}},
-  \code{\link{sample_lcomp}}, \code{\link{sample_mlacomp}}
+Other sampling functions: 
+\code{\link{clean_data}()},
+\code{\link{sample_agecomp}()},
+\code{\link{sample_calcomp}()},
+\code{\link{sample_index}()},
+\code{\link{sample_lcomp}()},
+\code{\link{sample_mlacomp}()}
 }
 \author{
 Cole Monnahan, Allan Hicks, Peter Kuriyama

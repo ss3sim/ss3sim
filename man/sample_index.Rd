@@ -4,8 +4,14 @@
 \alias{sample_index}
 \title{Sample the biomass with observation error}
 \usage{
-sample_index(dat_list, outfile = NULL, fleets, years, sds_obs,
-  make_plot = FALSE)
+sample_index(
+  dat_list,
+  outfile = NULL,
+  fleets,
+  years,
+  sds_obs,
+  make_plot = FALSE
+)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
@@ -99,11 +105,13 @@ ex3$CPUE
 }
 }
 \seealso{
-Other sampling functions: \code{\link{clean_data}},
-  \code{\link{sample_agecomp}},
-  \code{\link{sample_calcomp}}, \code{\link{sample_lcomp}},
-  \code{\link{sample_mlacomp}},
-  \code{\link{sample_wtatage}}
+Other sampling functions: 
+\code{\link{clean_data}()},
+\code{\link{sample_agecomp}()},
+\code{\link{sample_calcomp}()},
+\code{\link{sample_lcomp}()},
+\code{\link{sample_mlacomp}()},
+\code{\link{sample_wtatage}()}
 }
 \author{
 Cole Monnahan, Kotaro Ono

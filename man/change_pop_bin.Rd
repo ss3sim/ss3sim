@@ -4,8 +4,13 @@
 \alias{change_pop_bin}
 \title{Set up population length bin structure}
 \usage{
-change_pop_bin(dat_list, binwidth = NULL, minimum_size = NULL,
-  maximum_size = NULL, maximum_age = NULL)
+change_pop_bin(
+  dat_list,
+  binwidth = NULL,
+  minimum_size = NULL,
+  maximum_size = NULL,
+  maximum_age = NULL
+)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from

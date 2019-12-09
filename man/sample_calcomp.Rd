@@ -2,11 +2,9 @@
 % Please edit documentation in R/sample_calcomp.R
 \name{sample_calcomp}
 \alias{sample_calcomp}
-\title{Sample conditional age-at-length (CAL) data and write to file for use by
-the EM.}
+\title{Sample conditional age-at-length (CAL) data}
 \usage{
-sample_calcomp(dat_list, outfile = NULL, fleets = c(1, 2), years,
-  Nsamp)
+sample_calcomp(dat_list, outfile = NULL, fleets = c(1, 2), years, Nsamp)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
@@ -38,23 +36,37 @@ A modified \code{.dat} file if \code{!is.null(outfile)}. A list object
 containing the modified \code{.dat} file is returned invisibly.
 }
 \description{
-Sample conditional age-at-length (CAL) data and write to file for use by
-the EM.
+Samples conditional age-at-length (CAL) data from expected values of length
+proportions and expected values of age proportions (conditional on length)
+from the operating model (OM) and writes the samples to file for use by the
+estimation model (EM).
 }
 \details{
-Take a \code{data.SS_new} file containing expected values and
-sample from true lengths, using length comp sample sizes, to get
-realistic sample sizes for age bins given a length. Only the multinomial
-distribution is currently implemented. xIf no fish are sampled then that
-row is discarded. A value of NULL for fleets indicates to delete the
-data so the EM If used with \code{\link{run_ss3sim}} the case file
-should be named \code{calcomp}.
+This function takes a \code{data.SS_new} file from an OM containing
+ expected values of length proportions and age proportions, conditional on
+ length. First, sample from true length proportions, using the length comp sample
+ sizes, to get realistic sample sizes for age bins given their lengths. Next,
+ use these sample sizes and the expected values of age proportions
+ (conditional on length) to sample for realistic age proportions. If no fish
+ are sampled, for a row of age proportions, then that row is discarded. A
+ value of NULL for fleets indicates to delete the data, so if the EM is used
+ with \code{\link{run_ss3sim}}, the case file should be named \code{calcomp}.
+ Only the multinomial distribution is currently implemented, so this function
+ cannot be used with the dirichlet distribution. Note also that this sampling
+ procedure represents the case where 1) lengths are sampled randomly, 2) fish
+ are lengthed and placed into bins, and 3) a subset of lengthed fish are
+ aged, where a constant proportion from each length bin are selected for
+ aging. This does NOT represent response stratified sampling where a subset
+ of lengthed fish are aged, and a constant number from each length bin is
+ selected for aging, although these data could also be put into a Stock
+ Synthesis model as "Conditional Age at Length."
 }
 \note{
 This function is only reliable when using multinomial length
-compositions for the matching fleet. The real-valued length compositions
-resulting from the Dirichlet distribution cause difficulties in the
-sampling code. See the vignette for more.
+ compositions for the fleet(s) with conditional age at length sampling. The
+ real-valued length compositions resulting from the Dirichlet distribution
+ cause difficulties in the sampling code. See the vignette for more
+ information.
 }
 \section{Which arguments to specifiy in case files}{
 
@@ -66,10 +78,13 @@ if specified.
 }
 
 \seealso{
-Other sampling functions: \code{\link{clean_data}},
-  \code{\link{sample_agecomp}}, \code{\link{sample_index}},
-  \code{\link{sample_lcomp}}, \code{\link{sample_mlacomp}},
-  \code{\link{sample_wtatage}}
+Other sampling functions: 
+\code{\link{clean_data}()},
+\code{\link{sample_agecomp}()},
+\code{\link{sample_index}()},
+\code{\link{sample_lcomp}()},
+\code{\link{sample_mlacomp}()},
+\code{\link{sample_wtatage}()}
 }
 \author{
 Cole Monnahan, Kotaro Ono

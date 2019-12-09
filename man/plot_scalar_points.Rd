@@ -4,9 +4,19 @@
 \alias{plot_scalar_points}
 \title{Plot scalar values as points.}
 \usage{
-plot_scalar_points(data, x, y, horiz = NULL, horiz2 = NULL,
-  vert = NULL, vert2 = NULL, color = NULL, relative.error = FALSE,
-  axes.free = TRUE, print = TRUE)
+plot_scalar_points(
+  data,
+  x,
+  y,
+  horiz = NULL,
+  horiz2 = NULL,
+  vert = NULL,
+  vert2 = NULL,
+  color = NULL,
+  relative.error = FALSE,
+  axes.free = TRUE,
+  print = TRUE
+)
 }
 \arguments{
 \item{data}{A valid data frame containing scalar or timeseries values

@@ -4,14 +4,33 @@
 \alias{ss3sim_base}
 \title{Base wrapper function to run an ss3sim simulation}
 \usage{
-ss3sim_base(iterations, scenarios, f_params, index_params, lcomp_params,
-  agecomp_params, calcomp_params = NULL, wtatage_params = NULL,
-  mlacomp_params = NULL, em_binning_params = NULL,
-  estim_params = NULL, tv_params = NULL, operat_params = NULL,
-  om_dir, em_dir, retro_params = NULL, data_params = NULL,
-  user_recdevs = NULL, user_recdevs_warn = TRUE, bias_adjust = FALSE,
-  hess_always = FALSE, print_logfile = TRUE, sleep = 0, seed = 21,
-  ...)
+ss3sim_base(
+  iterations,
+  scenarios,
+  f_params,
+  index_params,
+  lcomp_params,
+  agecomp_params,
+  calcomp_params = NULL,
+  wtatage_params = NULL,
+  mlacomp_params = NULL,
+  em_binning_params = NULL,
+  estim_params = NULL,
+  tv_params = NULL,
+  operat_params = NULL,
+  om_dir,
+  em_dir,
+  retro_params = NULL,
+  data_params = NULL,
+  user_recdevs = NULL,
+  user_recdevs_warn = TRUE,
+  bias_adjust = FALSE,
+  hess_always = FALSE,
+  print_logfile = TRUE,
+  sleep = 0,
+  seed = 21,
+  ...
+)
 }
 \arguments{
 \item{iterations}{Which iterations to run. A numeric vector.}

@@ -4,10 +4,21 @@
 \alias{change_data}
 \title{Change the data that is available as output from an SS operating model.}
 \usage{
-change_data(dat_list, outfile = NULL, fleets, years, types,
-  age_bins = NULL, len_bins = NULL, pop_binwidth = NULL,
-  pop_minimum_size = NULL, pop_maximum_size = NULL,
-  lcomp_constant = NULL, tail_compression = NULL, nsex = 1)
+change_data(
+  dat_list,
+  outfile = NULL,
+  fleets,
+  years,
+  types,
+  age_bins = NULL,
+  len_bins = NULL,
+  pop_binwidth = NULL,
+  pop_minimum_size = NULL,
+  pop_maximum_size = NULL,
+  lcomp_constant = NULL,
+  tail_compression = NULL,
+  nsex = 1
+)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
@@ -135,10 +146,14 @@ out$minimum_size
 \seealso{
 \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
 
-Other change functions: \code{\link{change_em_binning}},
-  \code{\link{change_e}}, \code{\link{change_f_par}},
-  \code{\link{change_f}}, \code{\link{change_o}},
-  \code{\link{change_retro}}, \code{\link{change_tv}}
+Other change functions: 
+\code{\link{change_em_binning}()},
+\code{\link{change_e}()},
+\code{\link{change_f_par}()},
+\code{\link{change_f}()},
+\code{\link{change_o}()},
+\code{\link{change_retro}()},
+\code{\link{change_tv}()}
 }
 \author{
 Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson

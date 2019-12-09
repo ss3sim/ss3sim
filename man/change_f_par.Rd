@@ -4,8 +4,13 @@
 \alias{change_f_par}
 \title{Alter the fishing mortality (\emph{F}) values in an SS3 \code{.par} file.}
 \usage{
-change_f_par(years, years_alter, fvals, par_file_in = "ss.par",
-  par_file_out = "ss.par")
+change_f_par(
+  years,
+  years_alter,
+  fvals,
+  par_file_in = "ss.par",
+  par_file_out = "ss.par"
+)
 }
 \arguments{
 \item{years}{*Vector of years for which \emph{F} values are specified,
@@ -61,10 +66,14 @@ change_f_par(years = 1:49, years_alter = 2, fvals = 9999, par_file_in =
 par_file, par_file_out = paste0(temp_path, "/test.par"))
 }
 \seealso{
-Other change functions: \code{\link{change_data}},
-  \code{\link{change_em_binning}}, \code{\link{change_e}},
-  \code{\link{change_f}}, \code{\link{change_o}},
-  \code{\link{change_retro}}, \code{\link{change_tv}}
+Other change functions: 
+\code{\link{change_data}()},
+\code{\link{change_em_binning}()},
+\code{\link{change_e}()},
+\code{\link{change_f}()},
+\code{\link{change_o}()},
+\code{\link{change_retro}()},
+\code{\link{change_tv}()}
 }
 \author{
 Curry James Cunningham

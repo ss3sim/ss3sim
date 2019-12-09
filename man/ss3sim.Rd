@@ -3,7 +3,6 @@
 \docType{package}
 \name{ss3sim}
 \alias{ss3sim}
-\alias{ss3sim-package}
 \title{ss3sim: Fisheries stock assessment simulation testing with Stock Synthesis}
 \description{
 The \pkg{ss3sim} \R package is designed to facilitate rapid, reproducible,

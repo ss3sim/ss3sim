@@ -4,8 +4,12 @@
 \alias{get_caseargs}
 \title{Take a scenario ID and return argument lists}
 \usage{
-get_caseargs(folder, scenario, ext = ".txt", case_files = list(F = "F",
-  D = c("index", "lcomp", "agecomp")))
+get_caseargs(
+  folder,
+  scenario,
+  ext = ".txt",
+  case_files = list(F = "F", D = c("index", "lcomp", "agecomp"))
+)
 }
 \arguments{
 \item{folder}{The folder to look for input files in.}

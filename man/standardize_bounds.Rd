@@ -4,8 +4,15 @@
 \alias{standardize_bounds}
 \title{Standardize the bounds of the estimation model control file.}
 \usage{
-standardize_bounds(percent_df, dir, em_ctl_file, om_ctl_file = "",
-  verbose = FALSE, estimate = NULL, ...)
+standardize_bounds(
+  percent_df,
+  dir,
+  em_ctl_file,
+  om_ctl_file = "",
+  verbose = FALSE,
+  estimate = NULL,
+  ...
+)
 }
 \arguments{
 \item{percent_df}{A \code{data.frame} with nine rows and three columns.

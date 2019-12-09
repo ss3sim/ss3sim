@@ -4,8 +4,7 @@
 \alias{sample_lcomp}
 \title{Sample length compositions from a Stock Synthesis data file}
 \usage{
-sample_lcomp(dat_list, outfile, fleets, Nsamp, years, cpar = 1,
-  ESS = NULL)
+sample_lcomp(dat_list, outfile, fleets, Nsamp, years, cpar = 1, ESS = NULL)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
@@ -90,11 +89,13 @@ ex1 <- sample_lcomp(dat_list=dat_list, outfile = NULL,
 \seealso{
 \code{\link{sample_agecomp}} for more examples
 
-Other sampling functions: \code{\link{clean_data}},
-  \code{\link{sample_agecomp}},
-  \code{\link{sample_calcomp}}, \code{\link{sample_index}},
-  \code{\link{sample_mlacomp}},
-  \code{\link{sample_wtatage}}
+Other sampling functions: 
+\code{\link{clean_data}()},
+\code{\link{sample_agecomp}()},
+\code{\link{sample_calcomp}()},
+\code{\link{sample_index}()},
+\code{\link{sample_mlacomp}()},
+\code{\link{sample_wtatage}()}
 }
 \author{
 Cole Monnahan and Kotaro Ono

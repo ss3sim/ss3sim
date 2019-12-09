@@ -16,10 +16,11 @@ Returns a data.frame of the results for SSB, recruitment,
 forecasts, and effort by year.
 }
 \seealso{
-Other get-results: \code{\link{get_results_all}},
-  \code{\link{get_results_scalar}},
-  \code{\link{get_results_scenario}},
-  \code{\link{get_results_timeseries}}
+Other get-results: 
+\code{\link{get_results_all}()},
+\code{\link{get_results_scalar}()},
+\code{\link{get_results_scenario}()},
+\code{\link{get_results_timeseries}()}
 }
 \author{
 Kelli Johnson

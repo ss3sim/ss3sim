@@ -4,8 +4,11 @@
 \alias{change_retro}
 \title{Alter a starter file for a retrospective analysis}
 \usage{
-change_retro(str_file_in = "starter.ss", str_file_out = "starter.ss",
-  retro_yr = 0)
+change_retro(
+  str_file_in = "starter.ss",
+  str_file_out = "starter.ss",
+  retro_yr = 0
+)
 }
 \arguments{
 \item{str_file_in}{A string providing the path to the input SS \code{starter.ss} file.}
@@ -58,10 +61,14 @@ change_retro(starterfile, paste0(temp_path, "/retro-5-starter.ss"),
 retro_yr = -5)
 }
 \seealso{
-Other change functions: \code{\link{change_data}},
-  \code{\link{change_em_binning}}, \code{\link{change_e}},
-  \code{\link{change_f_par}}, \code{\link{change_f}},
-  \code{\link{change_o}}, \code{\link{change_tv}}
+Other change functions: 
+\code{\link{change_data}()},
+\code{\link{change_em_binning}()},
+\code{\link{change_e}()},
+\code{\link{change_f_par}()},
+\code{\link{change_f}()},
+\code{\link{change_o}()},
+\code{\link{change_tv}()}
 }
 \author{
 Sean C. Anderson

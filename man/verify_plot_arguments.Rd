@@ -4,8 +4,19 @@
 \alias{verify_plot_arguments}
 \title{A helper function to check the correct input for the plotting functions.}
 \usage{
-verify_plot_arguments(data, x, y, horiz, horiz2, vert, vert2, color,
-  relative.error, axes.free, print)
+verify_plot_arguments(
+  data,
+  x,
+  y,
+  horiz,
+  horiz2,
+  vert,
+  vert2,
+  color,
+  relative.error,
+  axes.free,
+  print
+)
 }
 \arguments{
 \item{data}{A valid data frame containing scalar or timeseries values

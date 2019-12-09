@@ -4,8 +4,15 @@
 \alias{change_f}
 \title{Alter fishing mortality (\emph{F}) using the SS control file}
 \usage{
-change_f(years, fisheries, fvals, seasons = 1, ses = 0.005,
-  ctl_file_in, ctl_file_out = "control_fishing.ss")
+change_f(
+  years,
+  fisheries,
+  fvals,
+  seasons = 1,
+  ses = 0.005,
+  ctl_file_in,
+  ctl_file_out = "control_fishing.ss"
+)
 }
 \arguments{
 \item{years}{*Vector of integers that will map to each \code{fvals}
@@ -77,10 +84,14 @@ change_f(years = 1:50, fisheries = 1, fvals = 0.2,
   ctl_file_out = file.path(tempdir(), "control_fishing.ss"))
 }
 \seealso{
-Other change functions: \code{\link{change_data}},
-  \code{\link{change_em_binning}}, \code{\link{change_e}},
-  \code{\link{change_f_par}}, \code{\link{change_o}},
-  \code{\link{change_retro}}, \code{\link{change_tv}}
+Other change functions: 
+\code{\link{change_data}()},
+\code{\link{change_em_binning}()},
+\code{\link{change_e}()},
+\code{\link{change_f_par}()},
+\code{\link{change_o}()},
+\code{\link{change_retro}()},
+\code{\link{change_tv}()}
 }
 \author{
 Kelli Faye Johnson

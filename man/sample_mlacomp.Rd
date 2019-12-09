@@ -4,8 +4,16 @@
 \alias{sample_mlacomp}
 \title{[BETA VERSION] Sample mean length (size-)-at-age data and write to file for use by the EM.}
 \usage{
-sample_mlacomp(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp, years,
-  mean_outfile = NULL, verbose = TRUE)
+sample_mlacomp(
+  dat_list,
+  outfile,
+  ctl_file_in,
+  fleets = 1,
+  Nsamp,
+  years,
+  mean_outfile = NULL,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
@@ -88,10 +96,13 @@ out <- sample_mlacomp(dat_list, outfile = NULL, ctl_file_in = ctl_file_in,
 
 }
 \seealso{
-Other sampling functions: \code{\link{clean_data}},
-  \code{\link{sample_agecomp}},
-  \code{\link{sample_calcomp}}, \code{\link{sample_index}},
-  \code{\link{sample_lcomp}}, \code{\link{sample_wtatage}}
+Other sampling functions: 
+\code{\link{clean_data}()},
+\code{\link{sample_agecomp}()},
+\code{\link{sample_calcomp}()},
+\code{\link{sample_index}()},
+\code{\link{sample_lcomp}()},
+\code{\link{sample_wtatage}()}
 }
 \author{
 Cole Monnahan, Kelli Johnson

@@ -15,10 +15,11 @@ Extract scalar quantities from an \code{\link[r4ss]{SS_output}} list from a mode
 Returns a data.frame of the results (a single row) which can be rbinded later.
 }
 \seealso{
-Other get-results: \code{\link{get_results_all}},
-  \code{\link{get_results_derived}},
-  \code{\link{get_results_scenario}},
-  \code{\link{get_results_timeseries}}
+Other get-results: 
+\code{\link{get_results_all}()},
+\code{\link{get_results_derived}()},
+\code{\link{get_results_scenario}()},
+\code{\link{get_results_timeseries}()}
 }
 \author{
 Cole Monnahan; Merrill Rudd

@@ -4,8 +4,7 @@
 \alias{get_results_scenario}
 \title{Extract SS3 simulation results for one scenario.}
 \usage{
-get_results_scenario(scenario, directory = getwd(),
-  overwrite_files = FALSE)
+get_results_scenario(scenario, directory = getwd(), overwrite_files = FALSE)
 }
 \arguments{
 \item{scenario}{A single character giving the scenario from which to
@@ -48,10 +47,11 @@ unlink("D0-F0-cod", recursive = TRUE)
 }
 }
 \seealso{
-Other get-results: \code{\link{get_results_all}},
-  \code{\link{get_results_derived}},
-  \code{\link{get_results_scalar}},
-  \code{\link{get_results_timeseries}}
+Other get-results: 
+\code{\link{get_results_all}()},
+\code{\link{get_results_derived}()},
+\code{\link{get_results_scalar}()},
+\code{\link{get_results_timeseries}()}
 }
 \author{
 Cole Monnahan
