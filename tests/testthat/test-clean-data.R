@@ -12,7 +12,7 @@ index_params   <- list(fleets = 2, years = list(seq(50, 100, by = 10)))
 lcomp_params   <- index_params
 agecomp_params <-  index_params
 mlacomp_params <- list(fleets = 1, years = list(c(2)))
-calcomp_params <- list(fleets = 1, years = list(c(26)))
+calcomp_params <- list(fleets = 1, years = list(c(26, 27)))
 
 test_that("clean_data is working for index, age comp, and length comp", {
   new_dat <- clean_data(dat, index_params = index_params,
@@ -53,8 +53,7 @@ test_that("clean_dat is working for mean size at age (mla_comp)",{
   expect_equal(new_dat$N_MeanSize_at_Age_obs, length(new_dat$MeanSize_at_Age_obs$Yr))
 })
 
-test_that("clean_dat exits on error if conditional age at length", {
-  # remove test if implementing CAL
+test_that("clean_dat works for conditional age at length", {
   new_bin_vec <- seq(min(dat$lbin_vector), max(dat$lbin_vector), by = 4)
   # add the max value if necessary.
   data_CAL <- dat
@@ -67,11 +66,14 @@ test_that("clean_dat exits on error if conditional age at length", {
   index_params <- list(fleets  = 1,
                        years   = list(c(26,29,34,50)),
                        sds_obs = list(0.2))
-   expect_error(clean_data(data_CAL,
-                        index_params = index_params,
-                        calcomp_params = calcomp_params),
-                "Conditional age at length (CAL) is not yet implemented",
-                fixed = TRUE)
+  new_dat <- clean_data(data_CAL,
+                          index_params = index_params,
+                          calcomp_params = calcomp_params)
+  expect_true(all(new_dat$agecomp$Yr %in% unlist(calcomp_params$years)))
+  expect_true(all(new_dat$agecomp$FltSvy %in% unlist(calcomp_params$fleets)))
+  expect_true(length(new_dat$agecomp$Yr) ==
+                length(unlist(calcomp_params$years))*
+                length(unlist(calcomp_params$fleets)))
 })
 
 test_that("clean_data fails when r4ss list object not used", {

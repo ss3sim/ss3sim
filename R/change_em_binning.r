@@ -202,11 +202,6 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
   }
 
   # Re-bin conditional age-at-length comps (not implemented)
-  if(any(unique(dat_list$agecomp$Lbin_lo) > 1)){
-    #this stop message can be removed once conditional age at length implemented
-    stop("Conditional age at length (CAL) is not yet implemented, please only ",
-         "use models and scenarios without CAL.")
-  }
   # if all Lbin_lo == -1 then there aren't any CAL data:
   if (length(unique(dat_list$agecomp$Lbin_lo)) > 1) {
     if (!identical(dat_list$Lbin_method, 3)) {

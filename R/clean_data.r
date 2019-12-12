@@ -53,10 +53,7 @@ clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
       stop("Indices are currently mandatory: index_params is NULL")
     }
     #this stop message can be removed once conditional age at length implemented
-    if(!is.null(calcomp_params)){
-      stop("Conditional age at length (CAL) is not yet implemented, please only ",
-           "use models and scenarios without CAL.")
-    }
+
     ## CPUE
     a <- dat_list$CPUE
     dat_list$CPUE <- do.call(rbind,

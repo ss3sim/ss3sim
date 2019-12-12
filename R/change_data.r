@@ -158,10 +158,17 @@ change_data <- function(dat_list, outfile = NULL, fleets, years, types,
   ## to print them, so don't need it. TODO check this is right. It can
   ## seriously slow down the OM to write uncessary calcomp data.
   if ("cal" %in% types) {
-    #this stop message can be removed once conditional age at length implemented
-    stop("Conditional age at length (CAL) is not yet implemented, please only ",
-         "use models and scenarios without CAL.")
-    agecomp <- dat_list$agecomp[dat_list$agecomp$Lbin_lo < 0, ]
+    agecomp <- dat_list$agecomp[dat_list$agecomp$Lbin_lo %in% c(-1, 0) &
+                                dat_list$agecomp$Lbin_hi %in% c(-1, 0), ]
+    if(!is.null(agecomp) && any(agecomp$Lbin_lo == 0 | agecomp$Lbin_hi == 0)) {
+      warning("Some regular age comp data (i.e., not conditional on length) ",
+              "had Lbin_lo and/or Lbin_high values as 0. It is safer to have ",
+              " all these values as -1 according to the Stock Synthesis user ",
+              "manual, so changing all to -1.")
+      age_comp$Lbin_lo <- -1
+      age_comp$Lbin_hi <- -1
+    }
+
     new.calcomp <- make_dummy_dat_calcomp(fleets = fleets,years = years,
                      age_bins = age_bins, len_bins = len_bins, nsex = nsex)
     dat_list$agecomp <- rbind(agecomp, new.calcomp)
@@ -246,8 +253,6 @@ calculate_data_units <- function(index_params = NULL, lcomp_params = NULL,
   #TODO: correct for wtatage??
   types <- names(sample_args)[!sample_args_null]
   if("cal" %in% types) {
-    stop("Conditional age at length (CAL) is not yet implemented, please only ",
-         "use models and scenarios without CAL.")
     types <- c(types, "len", "age")
   }
   if("wtatage" %in% types) types <- c(types, "age", "mla")

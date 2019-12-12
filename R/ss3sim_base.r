@@ -21,8 +21,6 @@
 #'   \code{\link{sample_agecomp}}. A mandatory case.
 #' @param calcomp_params A named list containing arguments for
 #'   \code{\link{sample_calcomp}}, for conditional age-at-length data.
-#'   Currently CAL is not implemented in this version of ss3sim,
-#'   so calcomp_params should be NULL.
 #' @param wtatage_params A named list containing arguments for
 #'   \code{\link{sample_wtatage}}, for empirical weight-at-age data.
 #' @param mlacomp_params A named list containing arguments for
@@ -455,9 +453,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ## calcomp data and vice versa.
       #TODO: is there a more realistic way to implement?
       if(!is.null(calcomp_params$fleets)){
-        #this stop message can be removed once conditional age at length implemented
-        stop("Conditional age at length (CAL) is not yet implemented, please only ",
-             "use models and scenarios without CAL.")
           calcomp_params <- add_nulls(calcomp_params, c("fleets", "years", "Nsamp"))
           dat_list <- with(calcomp_params,
                           sample_calcomp(dat_list         = dat_list,

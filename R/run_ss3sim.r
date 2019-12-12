@@ -160,11 +160,6 @@ run_ss3sim <- function(iterations, scenarios, case_folder, om_dir, em_dir,
   arg_list <- lapply(scenarios, function(scenario) {
     a <- get_caseargs(folder = case_folder, scenario = scenario,
                       case_files = case_files)
-    #this stop message can be removed once conditional age at length implemented
-    if(!is.null(a$calcomp)) {
-    stop("Conditional age at length (CAL) is not yet implemented, please only ",
-         "use models and scenarios without CAL.")
-    }
     list(
       scenarios         = scenario,
       user_recdevs      = user_recdevs,
