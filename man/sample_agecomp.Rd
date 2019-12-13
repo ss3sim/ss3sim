@@ -4,8 +4,16 @@
 \alias{sample_agecomp}
 \title{Sample age compositions from a Stock Synthesis data file}
 \usage{
-sample_agecomp(dat_list, outfile = NULL, fleets, Nsamp, years,
-  cpar = 1, ESS = NULL, keep_conditional = TRUE)
+sample_agecomp(
+  dat_list,
+  outfile = NULL,
+  fleets,
+  Nsamp,
+  years,
+  cpar = 1,
+  ESS = NULL,
+  keep_conditional = TRUE
+)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
@@ -130,10 +138,13 @@ for (samplesize in c(30, 100, 1000)) {
 par(op)
 }
 \seealso{
-Other sampling functions: \code{\link{clean_data}},
-  \code{\link{sample_calcomp}}, \code{\link{sample_index}},
-  \code{\link{sample_lcomp}}, \code{\link{sample_mlacomp}},
-  \code{\link{sample_wtatage}}
+Other sampling functions: 
+\code{\link{clean_data}()},
+\code{\link{sample_calcomp}()},
+\code{\link{sample_index}()},
+\code{\link{sample_lcomp}()},
+\code{\link{sample_mlacomp}()},
+\code{\link{sample_wtatage}()}
 }
 \author{
 Cole Monnahan and Kotaro Ono

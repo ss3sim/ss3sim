@@ -5,8 +5,7 @@
 \title{Copy the operating and estimation models and create a folder
 structure}
 \usage{
-copy_ss3models(model_dir, scenarios, iterations = 1:100, type = c("om",
-  "em"))
+copy_ss3models(model_dir, scenarios, iterations = 1:100, type = c("om", "em"))
 }
 \arguments{
 \item{model_dir}{A directory containing the operating or estimation

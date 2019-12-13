@@ -4,8 +4,7 @@
 \alias{change_e_fcast_yrs}
 \title{Check and change forecast file years if necessary}
 \usage{
-change_e_fcast_yrs(styr = 0, endyr_orig = 100, endyr_new = 100,
-  fcast_list)
+change_e_fcast_yrs(styr = 0, endyr_orig = 100, endyr_new = 100, fcast_list)
 }
 \arguments{
 \item{styr}{The model start year, an integer}

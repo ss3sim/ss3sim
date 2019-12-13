@@ -4,8 +4,7 @@
 \alias{remove_q_ctl}
 \title{Remove a q setup line into an SS control file only}
 \usage{
-remove_q_ctl(string, ctl.in, filename = TRUE, ctl.out,
-  overwrite = FALSE)
+remove_q_ctl(string, ctl.in, filename = TRUE, ctl.out, overwrite = FALSE)
 }
 \arguments{
 \item{string}{A string with the fleetname to remove.}

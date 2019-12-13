@@ -4,8 +4,10 @@
 \alias{expand_scenarios}
 \title{Create vectors of scenario IDs}
 \usage{
-expand_scenarios(cases = list(D = 0, E = 0, F = 0, M = 0, R = 0),
-  species = c("cod", "fla", "sar"))
+expand_scenarios(
+  cases = list(D = 0, E = 0, F = 0, M = 0, R = 0),
+  species = c("cod", "fla", "sar")
+)
 }
 \arguments{
 \item{cases}{A named list of cases. The names in the list are the

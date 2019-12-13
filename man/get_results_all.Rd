@@ -4,8 +4,12 @@
 \alias{get_results_all}
 \title{Extract SS3 simulation output}
 \usage{
-get_results_all(directory = getwd(), overwrite_files = FALSE,
-  user_scenarios = NULL, parallel = FALSE)
+get_results_all(
+  directory = getwd(),
+  overwrite_files = FALSE,
+  user_scenarios = NULL,
+  parallel = FALSE
+)
 }
 \arguments{
 \item{directory}{The directory which contains scenario folders with
@@ -34,10 +38,11 @@ that contains output for each year of the same model (timeseries, e.g.,
 biomass(year)). These can always be joined later.
 }
 \seealso{
-Other get-results: \code{\link{get_results_derived}},
-  \code{\link{get_results_scalar}},
-  \code{\link{get_results_scenario}},
-  \code{\link{get_results_timeseries}}
+Other get-results: 
+\code{\link{get_results_derived}()},
+\code{\link{get_results_scalar}()},
+\code{\link{get_results_scenario}()},
+\code{\link{get_results_timeseries}()}
 }
 \author{
 Cole Monnahan, Merrill Rudd

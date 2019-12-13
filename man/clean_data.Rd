@@ -5,9 +5,15 @@
 \title{Given sampling arguments remove ("clean") all data in a .dat file that
 is not specified}
 \usage{
-clean_data(dat_list, index_params = NULL, lcomp_params = NULL,
-  agecomp_params = NULL, calcomp_params = NULL,
-  mlacomp_params = NULL, verbose = FALSE)
+clean_data(
+  dat_list,
+  index_params = NULL,
+  lcomp_params = NULL,
+  agecomp_params = NULL,
+  calcomp_params = NULL,
+  mlacomp_params = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
@@ -46,10 +52,13 @@ This function does not write the result to file.
 \seealso{
 calculate_data_units, change_data
 
-Other sampling functions: \code{\link{sample_agecomp}},
-  \code{\link{sample_calcomp}}, \code{\link{sample_index}},
-  \code{\link{sample_lcomp}}, \code{\link{sample_mlacomp}},
-  \code{\link{sample_wtatage}}
+Other sampling functions: 
+\code{\link{sample_agecomp}()},
+\code{\link{sample_calcomp}()},
+\code{\link{sample_index}()},
+\code{\link{sample_lcomp}()},
+\code{\link{sample_mlacomp}()},
+\code{\link{sample_wtatage}()}
 }
 \author{
 Cole Monnahan

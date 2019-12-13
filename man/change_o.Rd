@@ -4,9 +4,14 @@
 \alias{change_o}
 \title{Methods to include parameters in an SS3operating model}
 \usage{
-change_o(change_o_list, ctl_file_in = "control.ss_new",
-  ctl_file_out = "om.ctl", par_name = NULL, par_int = NULL,
-  verbose = FALSE)
+change_o(
+  change_o_list,
+  ctl_file_in = "control.ss_new",
+  ctl_file_out = "om.ctl",
+  par_name = NULL,
+  par_int = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{change_o_list}{*A list of named vectors. Names correspond to parameters
@@ -68,10 +73,14 @@ want to use M for natural mortality, S for selectivity, or G for growth.
 }
 
 \seealso{
-Other change functions: \code{\link{change_data}},
-  \code{\link{change_em_binning}}, \code{\link{change_e}},
-  \code{\link{change_f_par}}, \code{\link{change_f}},
-  \code{\link{change_retro}}, \code{\link{change_tv}}
+Other change functions: 
+\code{\link{change_data}()},
+\code{\link{change_em_binning}()},
+\code{\link{change_e}()},
+\code{\link{change_f_par}()},
+\code{\link{change_f}()},
+\code{\link{change_retro}()},
+\code{\link{change_tv}()}
 }
 \author{
 Kathryn Doering

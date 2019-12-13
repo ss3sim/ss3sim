@@ -4,11 +4,21 @@
 \alias{change_e}
 \title{Methods to alter which parameters are estimated in a SS3 \code{.ctl} file.}
 \usage{
-change_e(ctl_file_in = "em.ctl", ctl_file_out = "em.ctl",
-  dat_list = NULL, for_file_in = "forecasts.ss", par_name = NULL,
-  par_int = "NA", par_phase = "NA", forecast_num = 0,
-  verbose = FALSE, natM_type = NULL, natM_n_breakpoints = NULL,
-  natM_lorenzen = NULL, natM_val = NULL)
+change_e(
+  ctl_file_in = "em.ctl",
+  ctl_file_out = "em.ctl",
+  dat_list = NULL,
+  for_file_in = "forecasts.ss",
+  par_name = NULL,
+  par_int = "NA",
+  par_phase = "NA",
+  forecast_num = 0,
+  verbose = FALSE,
+  natM_type = NULL,
+  natM_n_breakpoints = NULL,
+  natM_lorenzen = NULL,
+  natM_val = NULL
+)
 }
 \arguments{
 \item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
@@ -111,11 +121,14 @@ file.remove(file.path(tempdir(), "change_e.ctl"))
 }
 }
 \seealso{
-Other change functions: \code{\link{change_data}},
-  \code{\link{change_em_binning}},
-  \code{\link{change_f_par}}, \code{\link{change_f}},
-  \code{\link{change_o}}, \code{\link{change_retro}},
-  \code{\link{change_tv}}
+Other change functions: 
+\code{\link{change_data}()},
+\code{\link{change_em_binning}()},
+\code{\link{change_f_par}()},
+\code{\link{change_f}()},
+\code{\link{change_o}()},
+\code{\link{change_retro}()},
+\code{\link{change_tv}()}
 }
 \author{
 Kelli Johnson

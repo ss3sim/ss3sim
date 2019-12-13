@@ -4,13 +4,15 @@
 \alias{cleanup_ss3}
 \title{Clean up after an SS3 run}
 \usage{
-cleanup_ss3(dir_name, clean_vector = c("admodel.*", "ss3.eva",
-  "fmin.log", "*.rpt", "variance", "ss3.b0*", "ss3.p0*", "ss3.r0*",
-  "ss3.bar", "ss3.cor", "ss3.log", "ss3.rep", "checkup.sso",
-  "cumreport.sso", "derived_posteriors.sso ", "echoinput.sso",
-  "parmtrace.sso", "posterior_vectors.sso", "posteriors.sso",
-  "rebuild.sso", "sis_table.sso", "data.ss_new", "forecast.ss_new",
-  "control.ss_new", "starter.ss_new", "wtatage.ss_new"))
+cleanup_ss3(
+  dir_name,
+  clean_vector = c("admodel.*", "ss3.eva", "fmin.log", "*.rpt", "variance", "ss3.b0*",
+    "ss3.p0*", "ss3.r0*", "ss3.bar", "ss3.cor", "ss3.log", "ss3.rep", "checkup.sso",
+    "cumreport.sso", "derived_posteriors.sso ", "echoinput.sso", "parmtrace.sso",
+    "posterior_vectors.sso", "posteriors.sso", "rebuild.sso", "sis_table.sso",
+    "data.ss_new", "forecast.ss_new", "control.ss_new", "starter.ss_new",
+    "wtatage.ss_new")
+)
 }
 \arguments{
 \item{dir_name}{The directory of interest, the function ignores

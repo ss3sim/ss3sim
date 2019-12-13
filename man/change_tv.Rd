@@ -4,9 +4,13 @@
 \alias{change_tv}
 \title{Methods to include time-varying parameters in an SS3 operating model}
 \usage{
-change_tv(change_tv_list, ctl_file_in = "control.ss_new",
-  ctl_file_out = "om.ctl", dat_file_in = "ss3.dat",
-  dat_file_out = "ss3.dat")
+change_tv(
+  change_tv_list,
+  ctl_file_in = "control.ss_new",
+  ctl_file_out = "om.ctl",
+  dat_file_in = "ss3.dat",
+  dat_file_out = "ss3.dat"
+)
 }
 \arguments{
 \item{change_tv_list}{*A list of named vectors. Names correspond to parameters
@@ -122,10 +126,14 @@ unlink("cod-om", recursive = TRUE)
 }
 }
 \seealso{
-Other change functions: \code{\link{change_data}},
-  \code{\link{change_em_binning}}, \code{\link{change_e}},
-  \code{\link{change_f_par}}, \code{\link{change_f}},
-  \code{\link{change_o}}, \code{\link{change_retro}}
+Other change functions: 
+\code{\link{change_data}()},
+\code{\link{change_em_binning}()},
+\code{\link{change_e}()},
+\code{\link{change_f_par}()},
+\code{\link{change_f}()},
+\code{\link{change_o}()},
+\code{\link{change_retro}()}
 }
 \author{
 Kotaro Ono, Carey McGilliard, Kelli Johnson, and Kathryn Doering

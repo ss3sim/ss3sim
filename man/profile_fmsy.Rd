@@ -4,8 +4,14 @@
 \alias{profile_fmsy}
 \title{Determine Fmsy for a given operating model}
 \usage{
-profile_fmsy(om_in, results_out, start = 0, end = 1.5, by_val = 0.01,
-  verbose = FALSE)
+profile_fmsy(
+  om_in,
+  results_out,
+  start = 0,
+  end = 1.5,
+  by_val = 0.01,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{om_in}{A full or relative path to a directory that contains an

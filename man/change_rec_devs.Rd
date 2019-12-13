@@ -4,8 +4,7 @@
 \alias{change_rec_devs}
 \title{Replace recruitment deviations}
 \usage{
-change_rec_devs(recdevs, ctl_file_in,
-  ctl_file_out = "control_recruitment.ss")
+change_rec_devs(recdevs, ctl_file_in, ctl_file_out = "control_recruitment.ss")
 }
 \arguments{
 \item{recdevs}{A vector of recruitment deviations to be entered into

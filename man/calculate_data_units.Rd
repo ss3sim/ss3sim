@@ -5,9 +5,14 @@
 \title{Given sampling arguments, calculate super set of fleets, years, and data
 types.}
 \usage{
-calculate_data_units(index_params = NULL, lcomp_params = NULL,
-  agecomp_params = NULL, calcomp_params = NULL,
-  mlacomp_params = NULL, wtatage_params = NULL)
+calculate_data_units(
+  index_params = NULL,
+  lcomp_params = NULL,
+  agecomp_params = NULL,
+  calcomp_params = NULL,
+  mlacomp_params = NULL,
+  wtatage_params = NULL
+)
 }
 \arguments{
 \item{index_params}{Named lists containing the arguments for
