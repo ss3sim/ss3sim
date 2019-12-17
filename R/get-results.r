@@ -278,10 +278,6 @@ get_results_scenario <- function(scenario, directory=getwd(),
     resids.list <- list()
     message("Starting ", scenario, " with ", length(reps.dirs), " iterations")
     ## Get the number of columns for this scenario
-    numcol <- read.table(file.path(reps.dirs[1], "om", "Report.sso"),
-      col.names = 1:300, fill = TRUE, quote = "",
-      colClasses = "character", nrows = -1, comment.char = "")
-    numcol <- max(which(apply(numcol, 2, function(x) all(x == "")) == FALSE)) + 1
     for(rep in reps.dirs){
         ## Check that the model finished running and if not skip it but
         ## report that ID
@@ -294,12 +290,12 @@ get_results_scenario <- function(scenario, directory=getwd(),
                 SS_output(file.path(rep,"em"), covar=FALSE, verbose=FALSE,
                           compfile="none", forecast=TRUE, warn=TRUE,
                           readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
-                          ncols=numcol)
+                          ncols=NULL)
             report.om <-
                 SS_output(file.path(rep,"om"), covar=FALSE, verbose=FALSE,
                           compfile="none", forecast=FALSE, warn=TRUE,
                           readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
-                          ncols=numcol)
+                          ncols=NULL)
 
             ## Get scalars from the two models
             scalar.om <- get_results_scalar(report.om)
