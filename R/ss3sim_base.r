@@ -127,7 +127,8 @@
 #'               tv_params = a$tv_params,
 #'               estim_params = a$E,
 #'               om_dir = om_dir,
-#'               em_dir = em_dir)
+#'               em_dir = em_dir,
+#'               bias_adjust = TRUE)
 #'   unlink("F0-D0-E0-cod", recursive = TRUE) # clean up
 #'
 #'   # Or, create the argument lists directly in R and skip the case file setup:
@@ -178,14 +179,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   # In case ss3sim_base is stopped before finishing:
   old_wd <- getwd()
   on.exit(setwd(old_wd), add = TRUE)
-
-  if(bias_adjust) {
-    # todo:
-    # after running the EM r4ss::SS_fitbiasramp()
-    # Put those values in the EM
-    # Run the EM again
-    warning("Bias adjustment is not yet implemented, please do so manually.")
-  }
 
   #TODO: consider adding a check of OM/EM structures before starting loop?
   # Probably sufficient to just warn if not structured correctly. Some things
@@ -552,19 +545,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         hess = ifelse(bias_adjust, TRUE, hess_always), ...)
 
       if(bias_adjust) {
-        #todo: save the pre-bias adjustment output as
-        # files with different names or in a subfolder
-        file.copy(file.path(sc, i, "em", "em.ctl"),
-          file.path(sc, i, "em", "em_beforebias.ctl"))
-        biasoutput <- r4ss::SS_output(file.path(sc, i, "em"),
-          repfile = "Report.sso", compfile = "none", covarfile = "covar.sso",
-          forecast = FALSE, verbose = FALSE, printstats = FALSE,
-          NoCompOK = TRUE)
-        ramp <- r4ss::SS_fitbiasramp(replist = biasoutput,
-          verbose = FALSE, plot = FALSE, print = TRUE,
-          shownew = FALSE,
-          oldctl = file.path(sc, i, "em", "em.ctl"),
-          newctl = file.path(sc, i, "em", "em.ctl"))
+        bias <- calculate_bias(dir = file.path(sc, i, "em"), 
+          ctl_file_in = "em.ctl")
+        run_ss3model(scenarios = sc, iterations = i, type = "em",
+          hess = ifelse(bias_adjust, TRUE, hess_always), ...)
       }
 # Write log file ---------------------------------------------------------------
 # TODO pull the log file writing into a separate function and update
