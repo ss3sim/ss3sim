@@ -204,6 +204,8 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
   # Re-bin conditional age-at-length comps (not implemented)
   # if all Lbin_lo == -1 then there aren't any CAL data:
   if (length(unique(dat_list$agecomp$Lbin_lo)) > 1) {
+    stop("There is conditional age at length data. Currently, rebinning",
+         "does not work when there is conditional age at length data.")
     if (!identical(dat_list$Lbin_method, 3)) {
       stop("Lbin_method was not set to 3 in the SS3 data file. ",
            "change_em_binning() requires the data file to specify conditional ",

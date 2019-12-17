@@ -7,22 +7,32 @@
 #'
 #' @details This function takes a \code{data.SS_new} file from an OM containing
 #'  expected values of length proportions and age proportions, conditional on
-#'  length. First, sample from true length proportions, using the length comp sample
-#'  sizes, to get realistic sample sizes for age bins given their lengths. Next,
+#'  length. First, sample from true length proportions, using the length comp
+#'  sample sizes, to get realistic sample sizes for age bins given their lengths.
+#'  Note that the overall total sample size for all CAL bins is specified by
+#'  the user for the given fleet and year in \code{Nsamp}. Next,
 #'  use these sample sizes and the expected values of age proportions
 #'  (conditional on length) to sample for realistic age proportions. If no fish
-#'  are sampled, for a row of age proportions, then that row is discarded. A
-#'  value of NULL for fleets indicates to delete the data, so if the EM is used
-#'  with \code{\link{run_ss3sim}}, the case file should be named \code{calcomp}.
-#'  Only the multinomial distribution is currently implemented, so this function
-#'  cannot be used with the dirichlet distribution. Note also that this sampling
-#'  procedure represents the case where 1) lengths are sampled randomly, 2) fish
-#'  are lengthed and placed into bins, and 3) a subset of lengthed fish are
-#'  aged, where a constant proportion from each length bin are selected for
-#'  aging. This does NOT represent response stratified sampling where a subset
-#'  of lengthed fish are aged, and a constant number from each length bin is
-#'  selected for aging, although these data could also be put into a Stock
-#'  Synthesis model as "Conditional Age at Length."
+#'  are sampled, for a row of age proportions in conditional age at length data,
+#'  then that row is discarded. A value of NULL for fleets indicates to delete
+#'  the conditional age at length data data (but not the marginal age data). If
+#'  the EM is used with \code{\link{run_ss3sim}}, the case file should be named
+#'   \code{calcomp}. Only the multinomial distribution is currently implemented,
+#'  so this function cannot be used with the dirichlet distribution.\par
+#'  Note that this function cannot handle all types of conditional age at length
+#'  sampling. This function requires that there be a row of conditional age at
+#'  length data for each length data bin (for each year and fleet that sampling
+#'  is specified to be performed), where Lbin_lo and Lbin_hi are the
+#'  same value.
+#'  TODO note: check that the below is true, given that the user specifies the
+#'  number of fish to age for each fleet and year.
+#'  Note also that this sampling procedure represents the case where 1) lengths are
+#'  sampled randomly, 2) fish are lengthed and placed into bins, and 3) a subset
+#'  of lengthed fish are aged, where a constant proportion from each length bin
+#'  are selected for aging. This does NOT represent response stratified sampling
+#'  where a subset of lengthed fish are aged, and a constant number from each
+#'  length bin is selected for aging, although these data could also be put into
+#'  a Stock Synthesis model as "Conditional Age at Length."
 #'
 #' @note This function is only reliable when using multinomial length
 #'  compositions for the fleet(s) with conditional age at length sampling. The
@@ -35,13 +45,18 @@
 #' @template lcomp-agecomp-index
 #' @template dat_list
 #' @template outfile
-#' @template Nsamp
+#' @param Nsamp *A numeric list of the same length as fleets. Either single
+#'  values or vectors of the same length as the number of years can be passed
+#'  through. Single values are repeated for all years. If no fleet collected
+#'  samples, specify \code{Nsamp = NULL}. Specifically, for
+#'  \code{sample_calcomp}, \code{Nsamp} denotes the total number of conditional
+#'   age at length samples for a given year and fleet across all length bins.
 #' @template sampling-return
 #' @template casefile-footnote
 #' @family sampling functions
 #' @export
 
-sample_calcomp <- function(dat_list, outfile = NULL, fleets = c(1,2), years,
+sample_calcomp <- function(dat_list, outfile = NULL, fleets, years,
                            Nsamp){
     ## The samples are taken from the expected values, where the
     ## age-at-length data is in the age matrix but has a -1 for Lbin_lo and
@@ -57,36 +72,44 @@ sample_calcomp <- function(dat_list, outfile = NULL, fleets = c(1,2), years,
                   "fleet ",fleets[i]))
         }
     }
-
     check_data(dat_list)
-    ss_version <- get_ss_ver_dl(dat_list)
-    agecomp.age <- dat_list$agecomp[dat_list$agecomp$Lbin_lo== -1,]
-    agecomp.cal <- dat_list$agecomp[dat_list$agecomp$Lbin_lo != -1,]
+    # Get necessary values
+    ss_version <- get_ss_ver_dl(dat_list) # to use later in SS_writedat calls
+    # Divide up age comp into marginal and CAL; we will only be sampling from
+    # cal in this function, but want to retain the marginal age comps.
+    agecomp.age <- dat_list$agecomp[dat_list$agecomp$Lbin_lo== -1,] # marginal
+    agecomp.cal <- dat_list$agecomp[dat_list$agecomp$Lbin_lo != -1,] # CAL
     lencomp <- dat_list$lencomp
-    lbin_vector <- dat_list$lbin_vector
+    lbin_vector <- dat_list$lbin_vector # This is the vector of data length bins
     newfile <- dat_list
     ## A value of NULL for fleets indicates not to sample and strip out the
-    ## data from the file.
+    ## CAL data from the file.
     if(is.null(fleets)){
-        newfile$agecomp <- agecomp.age
-        newfile$N_agecomp <- nrow(agecomp.age)
+        newfile$agecomp <- agecomp.age # only leave in maraginal age comps
+        # newfile$N_agecomp <- nrow(agecomp.age) # not needed in SS 3.30
         if(!is.null(outfile)){
           SS_writedat(datlist = newfile, outfile = outfile, version = ss_version,
                       overwrite = TRUE, verbose=FALSE)
         }
         return(invisible(newfile))
     }
-    ## If not, do argument checks
-    if(nrow(agecomp.cal)==0)
+    ## If not, do additional argument checks
+    if(nrow(agecomp.cal)==0) { #TODO: maybe turn this into a warning instead?
         stop("No conditional age-at-length data found")
-    ## if(nrow(agecomp.age)==0)
-    ##     stop("No agecomp data found -- something is wrong with sampling inputs")
+    }
     Nfleets <- length(fleets)
     ## changed this from .cal to .age
     if(any(!fleets %in% unique(agecomp.cal$FltSvy)))
         stop(paste0("The specified fleet number: ",fleets, " does not match input file"))
     if(class(years) != "list" | length(years) != Nfleets)
         stop("years needs to be a list of same length as fleets")
+    # check that Lbin_lo and Lbin_hi are the same for all CAL data. This is
+    # a requirement of how the function is currently written
+    if(!all(agecomp.cal$Lbin_lo == agecomp.cal$Lbin_hi)) {
+      stop("In order to use sample_calcomp, for each row of conditional age at",
+           " length data, Lbin_lo must equal Lbin_hi. Currently, this is not ",
+           "the case for all conditional age at length data within dat_list.")
+    }
     ## End input checks
 
     ## The general approach here is to loop through each fl/yr combination
@@ -110,9 +133,20 @@ sample_calcomp <- function(dat_list, outfile = NULL, fleets = c(1,2), years,
         ## Only loop through the subset of years for this fleet
         for(yr in years[[i]]) {
             newcomp <- agecomp.cal.fl[agecomp.cal.fl$Yr==yr, ]
-            if(nrow(newcomp) != length(lbin_vector))
-                stop(paste("number of length bins does not match calcomp data: fleet", fl, ", year", yr))
-            if(NROW(newcomp) == 0) stop("no age data found")
+            #Note that the below check may be redundant...
+            if(nrow(newcomp) != length(lbin_vector)) {
+                stop("The number of conditional age at length data rows for ",
+                "fleet ", fl, "and year ", yr, " is not the same as the number",
+                " of length bins. For each fleet and year, please make sure ",
+                "there is row where Lbin_lo and Lbin_hi are equal to each of ",
+                "the values in lbin_vector: ",
+                paste0(lbin_vector, collapse = ", "), ". Note that Lbin_lo and",
+                "Lbin_hi if conditional age at length data should always have",
+                "the same values in order for sample_calcomp() to work.")
+            }
+            if(NROW(newcomp) == 0) {
+              stop("no age data found for fleet ", fl, "and yr ", yr)
+            }
             ## Get the sample sizes of the length and age comps.
             Nsamp.len <- lencomp$Nsamp[lencomp$Yr==yr & lencomp$FltSvy==fl]
             ## Nsamp.age <- agecomp.age$Nsamp[agecomp.age$Yr==yr & agecomp.age$FltSvy==fl]
@@ -121,8 +155,14 @@ sample_calcomp <- function(dat_list, outfile = NULL, fleets = c(1,2), years,
             if(any(is.na(prob.len))) stop("Invalid length probs in sample_calcomp -- likely due to missing length data")
             ## From observed length distribution, sample which fish to age.
             yr.ind <- which(years[[i]]==yr)
-            if(Nsamp[[i]][yr.ind] > Nsamp.len)
-                stop("More age samples specified than fish collected for calcomps")
+            if(Nsamp[[i]][yr.ind] > Nsamp.len) {
+                stop("More age samples specified than fish collected for ",
+                 "calcomps for fleet ", fl, " and year ", yr, ". Please ",
+                 "adjust the Nsamp specified via sample_calcomp function input",
+                 " for the given fleet in year so that it is less than the ",
+                 "Nsamp in the length composition data for the same fleet and ",
+                 "year.")
+            }
             ## The Dirichlet case is annoying since the values of prob.len
             ## will be <1 and not whole fish, and we can't multiply by
             ## sample size to get them b/c they are real. Thus two cases:
@@ -183,21 +223,21 @@ sample_calcomp <- function(dat_list, outfile = NULL, fleets = c(1,2), years,
             ## age and cal
             newcomp.final <- rbind(agecomp.age, newcomp.final)
             newfile$agecomp <- newcomp.final
-            newfile$N_agecomp <- NROW(newcomp.final)
+            #newfile$N_agecomp <- NROW(newcomp.final) # Not needed in SS 3.30
         } else {
             ## age but not cal
             newfile$agecomp <- newcomp.final
-            newfile$N_agecomp <- NROW(newcomp.final)
+            #newfile$N_agecomp <- NROW(newcomp.final) # Not needed in SS 3.30
         }
     } else {
         ## only cal
         if(NROW(agecomp.cal)>0){
             newfile$agecomp <- newcomp.final
-            newfile$N_agecomp <- NROW(newcomp.final)
+            #newfile$N_agecomp <- NROW(newcomp.final) # Not needed in SS 3.30
         } else {
             ## no age nor cal data
             newfile$agecomp <- NULL
-            newfile$N_agecomp <- 0
+            #newfile$N_agecomp <- 0 # Not needed in SS 3.30
         }
     }
 

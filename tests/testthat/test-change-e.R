@@ -158,7 +158,7 @@ test_that("change_em_binning works with method = 2", {
   expect_equal(ncol(output$lencomp)-6, length(new_bin_vec))
 })
 
-test_that("change_em_binning works with cond. age at length", {
+test_that("change_em_binning exits on error with cond. age at length", {
   # a valid bin vector when there is CAL must only include values that are in
   # the population bins, supposedly.
   #I think this test is broken and needs to be fixed.
@@ -174,14 +174,13 @@ test_that("change_em_binning works with cond. age at length", {
  max_change <- as.integer(a_col/2)
  datalist_CAL$agecomp$Lbin_lo[1:max_change] <- new_bin_vec[2]
  datalist_CAL$agecomp$Lbin_hi[1:max_change] <- new_bin_vec[length(new_bin_vec)-2]
- output <- change_em_binning(dat_list = datalist_CAL,
+ expect_error(change_em_binning(dat_list = datalist_CAL,
                                 bin_vector = new_bin_vec,
                                 lbin_method = 2,
                                 pop_binwidth = pop_bin_input,
                                 pop_minimum_size = pop_min_size_input,
-                                pop_maximum_size = pop_max_size_input)
- # need to add expectations - just a dummy one for now.
- expect_equal(1,1)
+                                pop_maximum_size = pop_max_size_input),
+              "There is conditional age at length data")
 })
 
 

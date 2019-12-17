@@ -119,6 +119,85 @@ test_that("sample_comp produces less variable compositions with lower cpar" ,{
   test2 <- ss3sim:::sample_comp(exp_dat$agecomp,
     fleets = unique(exp_dat$agecomp$FltSvy),
     Nsamp = 1000, years = list(exp_dat$agecomp$Yr), cpar = 6)
-  expect_true(mean(apply(test[, -(1:9)], 1, var)) < 
+  expect_true(mean(apply(test[, -(1:9)], 1, var)) <
     mean(apply(test2[, -(1:9)], 1, var)))
+})
+
+test_that("sample_calcomp works", {
+  #TODO: write an expectation to ensure that sampling is being done correctly
+  # (this could be a regression test)
+  set.seed(2)
+  # add calcomp expected values to the agecomp dataset.
+  calcomp <-  exp_dat$agecomp
+  len_bins <- colnames(exp_dat$lencomp)[7:ncol(exp_dat$lencomp)]
+  len_bins <- unlist(lapply(strsplit(len_bins, split = "l"),
+                                function(x) x[2]))
+  age_colnames <- colnames(calcomp)[10:ncol(calcomp)]
+  #Add CAL for 96
+  calcomp_96 <- data.frame(Yr = 96, Seas = 1, FltSvy = 1, Gender = 0, Part = 0,
+                           Ageerr = 1, Lbin_lo = len_bins,
+                           Lbin_hi = len_bins, Nsamp = 5)
+  calcomp_96 <- cbind(calcomp_96,
+                          data.frame(matrix(1, ncol = ncol(calcomp) - 9,
+                                            nrow = NROW(calcomp_96))))
+  colnames(calcomp_96)[10:ncol(calcomp_96)] <- age_colnames
+  calcomp <- calcomp[calcomp$Yr != 96, ]
+  calcomp <- rbind(calcomp, calcomp_96)
+  exp_dat$agecomp <- calcomp
+  exp_dat$lencomp$Nsamp <- 50
+  test <- sample_calcomp(exp_dat,
+                         fleets = list(1),
+                         years = list(96),
+                         Nsamp = list(50))
+expect_error(sample_calcomp(exp_dat,
+                            fleets = list(1),
+                            years = list(96),
+                #expect error b/c this value is too high for the N length bins.
+                            Nsamp = list(100)),
+             "More age samples specified than fish collected for", fixed = TRUE)
+# expect error b/c there is no fleet 4.
+expect_error(sample_calcomp(exp_dat,
+                              fleets = list(4),
+                              years = list(96),
+                              Nsamp = list(10)),
+             "does not match input file", fixed = TRUE)
+# expect error b/c wrong years
+expect_error(sample_calcomp(exp_dat,
+                            fleets = list(1),
+                            years = list(150),
+                            Nsamp = list(10),
+            "A year specified in years was not found in the input file for fleet",
+            fixed = TRUE))
+# Make sure when fleet is NULL returns no CAL data.
+dat <- sample_calcomp(exp_dat,
+                       fleets = NULL,
+                       years = NULL,
+                       Nsamp = NULL)
+# should be no CAL data, but the marginal age comps should be left untouched.
+expect_equivalent(NROW(dat$agecomp[dat$agecomp$Lbin_lo != -1, ]), 0)
+expect_equivalent(exp_dat$agecomp[exp_dat$agecomp$Lbin_lo == -1, ],
+                  dat$agecomp)
+
+# try using different bins where Lbin_lo and Lbin_hi are not equal. Note that
+# this cannot be done the way the sample_calcomp function is currently written.
+cal_yr <- 96
+test_dif_bins <- data.frame(Yr = cal_yr, Seas = 1, FltSvy = 1, Gender = 0,
+                             Part = 0, Ageerr = 1,
+                             Lbin_lo = len_bins[seq(1, length(len_bins), by = 2)],
+                             Lbin_hi = len_bins[c(seq(2, length(len_bins), by = 2),
+                                                  length(len_bins))],
+                             Nsamp = 5)
+test_dif_bins <- cbind(test_dif_bins, data.frame(matrix(1, ncol = ncol(calcomp) - 9,
+                    nrow = NROW(test_dif_bins))))
+colnames(test_dif_bins)[10:ncol(test_dif_bins)] <- age_colnames
+calcomp <- calcomp[calcomp$Yr != cal_yr, ]
+calcomp <- rbind(calcomp, test_dif_bins)
+dat_diff_bins <- exp_dat
+dat_diff_bins$agecomp <- calcomp
+expect_error(sample_calcomp(dat_diff_bins,
+                      fleets = list(1),
+                      years = list(cal_yr),
+                      Nsamp = list(10)),
+           "In order to use sample_calcomp, for each row of conditional age at",
+            fixed = TRUE)
 })
