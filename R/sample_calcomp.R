@@ -24,24 +24,20 @@
 #'  length data for each length data bin (for each year and fleet that sampling
 #'  is specified to be performed), where Lbin_lo and Lbin_hi are the
 #'  same value.
-#'  TODO note: check that the below is true, given that the user specifies the
-#'  number of fish to age for each fleet and year.
-#'  Note also that this sampling procedure represents the case where 1) lengths are
-#'  sampled randomly, 2) fish are lengthed and placed into bins, and 3) a subset
-#'  of lengthed fish are aged, where a constant proportion from each length bin
-#'  are selected for aging. This does NOT represent response stratified sampling
-#'  where a subset of lengthed fish are aged, and a constant number from each
-#'  length bin is selected for aging, although these data could also be put into
-#'  a Stock Synthesis model as "Conditional Age at Length."
-#'
+#'  Note also that this sampling procedure represents simple random sampling for
+#'  conditional age at length, where 1) lengths are sampled randomly, 2) fish
+#'  are lengthed and placed into bins, and 3) a subset of lengthed fish are
+#'  aged, where a constant proportion from each length bin are selected for
+#'  aging. This does NOT represent length stratified sampling where a subset of
+#'  lengthed fish are aged, and a constant number from each length bin is
+#'  selected for aging, although these data could also be put into a Stock
+#'  Synthesis model as "Conditional Age at Length."
 #' @note This function is only reliable when using multinomial length
 #'  compositions for the fleet(s) with conditional age at length sampling. The
 #'  real-valued length compositions resulting from the Dirichlet distribution
 #'  cause difficulties in the sampling code. See the vignette for more
 #'  information.
-#'
 #' @author Cole Monnahan, Kotaro Ono
-#'
 #' @template lcomp-agecomp-index
 #' @template dat_list
 #' @template outfile

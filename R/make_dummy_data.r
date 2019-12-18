@@ -36,8 +36,9 @@ make_dummy_dat_agecomp <- function(fleets, years, age_bins, nsex = 1) {
 make_dummy_dat_calcomp <- function(fleets, years, age_bins,
                                   len_bins, nsex = 1) {
     Lbin_lo <- len_bins
-    # shift all length bins by 1 and add the max len bin by using the code -1.
-    Lbin_hi <- c(len_bins[-1], -1)
+    #to select only 1 bin, Lbin_lo and Lbin_hi should be the same (according to
+    # Rick Methot and Ian Taylor)
+    Lbin_hi <- len_bins
     dummy_dat_list <- lapply(fleets, function(fleet)
                              lapply(years, function(yr)
         data.frame("Yr"   = yr, "Seas" = 1, "Flt"  = fleet,

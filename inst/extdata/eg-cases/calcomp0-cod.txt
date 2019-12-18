@@ -1,0 +1,3 @@
+fleets; c(1)
+Nsamp; list(100)
+years; list(c(96,100))

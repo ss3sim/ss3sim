@@ -47,16 +47,35 @@ test_that("run_ss3sim works with multiple scenarios (no parallel)", {
 test_that("run_ss3sim gives error if conditional age at length used", {
   # when CAL implemented, will want to remove this test.
   skip_on_cran()
-  expect_error(run_ss3sim(iterations  = 1,
-                          scenarios = "F1-D0-M1-E0-O0-cod",
+  scen <- "F1-D0-M0-E0-O0-cod"
+  run_ss3sim(iterations  = 1,
+                          scenarios = scen,
                           case_folder = file.path(d, "eg-cases"),
-                          om_dir = om_dir,
-                          em_dir = em_dir,
+                          om_dir = om,
+                          em_dir = em,
                           case_files = list(F = "F",
                                             D = c("index", "lcomp", "agecomp",
                                                   "calcomp"),
                                             M = "M", E = "E", O = "O")
-  ), "Conditional age at length (CAL) is not yet implemented", fixed = TRUE)
+  )
+  calcomp_args <- get_args(file.path(case_folder, "calcomp0-cod.txt"))
+  EM_datfile <- SS_readdat(file.path(scen, "1", "EM", "ss3.dat"))
+  # check the length comps to make sure CAL consistent
+  lengths <- EM_datfile$lencomp
+  lengths <- lengths[lengths$Yr %in% calcomp_args$years[[1]] &
+                lengths$FltSvy %in% calcomp_args$fleets, ]
+  expect_true(all(calcomp_args$years[[1]] %in% lengths$Yr))
+  expect_true(all(calcomp_args$fleets %in% lengths$FltSvy))
+  # check the age comps (note that this is not a generalizable test and would
+  # need to be refactored to apply to other cases.
+  for (yr in calcomp_args$years[[1]]) {
+    for (ft in calcomp_args$fleets) {
+      tmp_agecomp <- EM_datfile$agecomp[EM_datfile$agecomp$Yr == yr &
+                                        EM_datfile$agecomp$FltSvy, ]
+      tmp_agecomp <- tmp_agecomp[tmp_agecomp$Lbin_lo != -1, ]
+      expect_equivalent(sum(tmp_agecomp$Nsamp),  calcomp_args$Nsamp[[1]])
+    }
+  }
 })
 
 case_files <- list(F = "F", D = c("index", "lcomp", "agecomp"), E = "E")
