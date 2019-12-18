@@ -11,7 +11,7 @@ dir.create(temp_path, showWarnings = FALSE)
 wd <- getwd()
 setwd(temp_path)
 on.exit(setwd(wd), add = TRUE)
-#on.exit(unlink(temp_path, recursive = TRUE), add = TRUE)
+on.exit(unlink(temp_path, recursive = TRUE), add = TRUE)
 
 d <- system.file("extdata", package = "ss3sim")
 om <- file.path(d, "models", "cod-om")
@@ -67,8 +67,9 @@ test_that("A basic run_ss3sim scenario with forecasting runs", {
              om_dir = om, em_dir = em))
   expect_true("control.ss_new" %in% list.files(file.path("D0-E102-F0-cod", "1", "em")))
   report <- suppressWarnings(r4ss::SS_output(file.path("D0-E102-F0-cod", "1", "em"),
-                            covar = FALSE, ncols = 400, NoCompOK = TRUE))
-  suppressWarnings(get_results_all())
+                            covar = FALSE, ncols = 400, NoCompOK = TRUE,
+                            verbose = FALSE, printstats = FALSE))
+  get_results_all()
   res <- read.csv("ss3sim_scalar.csv", header = TRUE)
   expect_equal(res$LnQ_base_Survey_2_em, 0.7)
   expect_equal(res$SR_sigmaR_em, 0.001)

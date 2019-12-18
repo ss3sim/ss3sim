@@ -27,7 +27,7 @@ test_that("run_ss3sim fails if ncol(user_recdevs) is too small for iterations", 
 })
 test_that("change_rec_devs() works with vector of recdevs", {
   set.seed(123)
-  recdevs <- rnorm(2000, 0, 1) #don't worry about bias correction here.
+  recdevs <- rnorm(101, 0, 1) #don't worry about bias correction here.
   out_ctl <- change_rec_devs(recdevs, ctl_file_in = "codOM.ctl",
                              ctl_file_out = NULL)
   n_recdevs_line <- grep("#_read_recdevs", out_ctl, fixed = TRUE)
@@ -48,12 +48,30 @@ test_that("change_rec_devs works with single recdev value", {
   expect_equal(n_recdevs, l_recdev_line-f_recdev_line+1)
 })
 
+test_that("change_rec_devs works with named list", {
+  rec_devs_yrs <- c(1, 5)
+  devs <- c(0.05, 0.05)
+  names(devs) <- rec_devs_yrs
+  out_ctl <- change_rec_devs(devs, "codOM.ctl", NULL)
+  n_recdevs_line <- grep("#_read_recdevs", out_ctl, fixed = TRUE)
+  n_recdevs <- as.numeric(strsplit(trimws(out_ctl[n_recdevs_line]), "\\s+")[[1]][1])
+  f_recdev_line <-n_recdevs_line+1
+  l_recdev_line <- grep("#Fishing Mortality info", out_ctl, fixed = TRUE)-1
+  # check that the number of years corresponds with number of lines inserted.
+  expect_equal(n_recdevs, l_recdev_line-f_recdev_line+1)
+  # check that these are for the correct years
+  read_yrs <- out_ctl[(n_recdevs_line+1):(n_recdevs_line+length(rec_devs_yrs))]
+  read_yrs <- unlist(lapply(strsplit(trimws(read_yrs), "\\s+"),
+                            function(x) x[1]))
+  expect_equivalent(as.integer(rec_devs_yrs), as.integer(read_yrs))
+})
+
 test_that("change_rec_devs gives error when provided too few recdevs", {
   set.seed(123)
   recdevs <- rnorm(2, 0, 1) # too short
   expect_error(change_rec_devs(recdevs, ctl_file_in = "codOM.ctl",
                   ctl_file_out = NULL),
-               "The length of recdevs was greater than 1, but smaller than ")
+               "The length of recdevs was")
 })
 
 test_that("change_rec_devs gives error when cannot find info on number and yrs for recdevs", {
@@ -66,7 +84,7 @@ test_that("change_rec_devs gives error when cannot find info on number and yrs f
   writeLines(ctl[-(tmp_start:tmp_end)], "codOM_mod.ctl")
   expect_error(change_rec_devs(recdevs, "codOM_mod.ctl", NULL),
                paste0("The number of recdevs and their associated years could",
-                       " not be determined from the control file"))
+                       " not be determined"))
 })
 
 test_that("change_rec_devs give error when advanced recdevs options are off",{
@@ -79,7 +97,7 @@ test_that("change_rec_devs give error when advanced recdevs options are off",{
   ctl[s_adv] <- "0"
   ctl <- ctl[-((s_adv+1):e_adv)]
   writeLines(ctl, "codOM_no_adv.ctl")
-  expect_error(change_rec_devs(rnorm(200), "codOM_no_adv.ctl", NULL),
+  expect_error(change_rec_devs(rnorm(101), "codOM_no_adv.ctl", NULL),
               paste0("Currently ss3sim can only add recruitment deviations to ",
                      "control files that have advanced recruitment options ",
                      "turned on"))
@@ -87,7 +105,7 @@ test_that("change_rec_devs give error when advanced recdevs options are off",{
 
 test_that("change_rec_devs looks for spot to put recdevs as expected",{
   set.seed(123)
-  recdevs <- rnorm(200)
+  recdevs <- rnorm(101)
   ctl <- readLines("codOM.ctl")
   # missing starting spot.
   recdev_line <- grep("_read_recdevs", ctl)
