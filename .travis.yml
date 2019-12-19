@@ -15,5 +15,6 @@ notifications:
 
 r_packages:
   - devtools
+r_github_packages: r4ss/r4ss@development
 
 warnings_are_errors: false
