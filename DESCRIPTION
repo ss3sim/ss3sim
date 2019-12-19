@@ -32,7 +32,8 @@ LazyData: true
 Suggests:
     knitr,
     doParallel,
-    rmarkdown
+    rmarkdown,
+    testthat
 VignetteBuilder: knitr
 Depends:
     R (>= 3.3)
@@ -46,6 +47,6 @@ Imports:
     graphics,
     stats,
     utils
-Remotes: github::r4ss/r4ss
-RoxygenNote: 7.0.2
+Remotes: github::r4ss/r4ss@development
+RoxygenNote: 7.0.2.9000
 Encoding: UTF-8
