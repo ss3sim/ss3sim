@@ -59,7 +59,7 @@ test_that("run_ss3sim runs if conditional age at length used", {
                                             M = "M", E = "E", O = "O")
   )
   calcomp_args <- get_args(file.path(case_folder, "calcomp0-cod.txt"))
-  EM_datfile <- SS_readdat(file.path(scen, "1", "EM", "ss3.dat"))
+  EM_datfile <- r4ss::SS_readdat(file.path(scen, "1", "EM", "ss3.dat"))
   # check the length comps to make sure CAL consistent
   lengths <- EM_datfile$lencomp
   lengths <- lengths[lengths$Yr %in% calcomp_args$years[[1]] &
@@ -76,7 +76,7 @@ test_that("run_ss3sim runs if conditional age at length used", {
       expect_equivalent(sum(tmp_agecomp$Nsamp),  calcomp_args$Nsamp[[1]])
     }
   }
-  unlink(scen, recursive = TRUE)
+  unlink(file.path(temp_path, scen), recursive = TRUE)
 })
 
 case_files <- list(F = "F", D = c("index", "lcomp", "agecomp"), E = "E")
