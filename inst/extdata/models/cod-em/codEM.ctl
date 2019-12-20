@@ -111,8 +111,8 @@
 100 # last year of main recr_devs; forecast devs start in following year
 3 #_recdev phase
 1 # (0/1) to read 13 advanced options
- 0 #_recdev_early_start (0=none; neg value makes relative to recdev_start)
- -4 #_recdev_early_phase
+1 #_recdev_early_start (0=none; neg value makes relative to recdev_start)
+4 #_recdev_early_phase
  0 #_forecast_recruitment phase (incl. late recr) (0 value resets to maxphase+1)
  1 #_lambda for Fcast_recr_like occurring before endyr+1
  1 #_last_yr_nobias_adj_in_MPD; begin of ramp
