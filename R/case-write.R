@@ -119,7 +119,7 @@ case_index <- function(fleets = 1, years = NULL, sd = 2, case, spp) {
 #' ig <- file.copy(om, temp_path, recursive = TRUE)
 #' ig <- file.rename(file.path(temp_path, "cod-om"), file.path(temp_path, "om"))
 #' filenames <- dir(file.path(temp_path, "om"), full.names = TRUE)
-#' ig <- file.rename(filenames, gsub("codOM\\.|ss\\.", "ss3.", filenames))
+#' ig <- file.rename(filenames, gsub("codOM\\\.|ss\\\.", "ss3.", filenames))
 #'
 #' verify_input(file.path(temp_path, "om"), type = "om")
 #' ig <- file.rename(file.path(temp_path, "om", "om.ctl"),
