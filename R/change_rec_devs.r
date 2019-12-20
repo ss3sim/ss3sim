@@ -54,9 +54,12 @@ change_rec_devs <- function(recdevs,
     years <- unlist(strsplit(
       gsub("^_", "",
       gsub("^#\\s*|\\s|R|F|E", "_", devs)), "_+"))
+    n.years <- length(years)
     if (length(recdevs) == 1) recdevs <- rep(recdevs, length.out = n.years)
-  } else {years <- vecnames}
-  n.years <- length(years)
+  } else {
+    years <- vecnames
+    n.years <- length(years)
+  }
   if(n.years == 0) {
     stop("The number of recdevs and their associated years could not be ",
          "determined\nfrom the control file.", default_err_msg)

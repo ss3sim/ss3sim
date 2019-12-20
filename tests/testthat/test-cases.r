@@ -36,7 +36,7 @@ test_that("Time varying parsed", {
                                           E = "E",
                                           O = "O"),
                         scenario = "F1-D0-M1-E100-O0-cod")
-    expect_equal(length(out$tv_params), 1)
+    expect_length(out$tv_params, 1)
     expect_equal(names(out$tv_params)[1], "NatM_p_1_Fem_GP_1")
 })
 

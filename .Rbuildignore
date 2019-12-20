@@ -13,7 +13,6 @@
 ^vignettes/Makefile$
 ^R/tags$
 ^Session\.vim$
-^tests$
 ^\.travis\.yml$
 ^cran-comments\.md$
 tags
