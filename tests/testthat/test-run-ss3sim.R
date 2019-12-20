@@ -6,7 +6,7 @@ context("run_ss3sim and get-results functions work across a range of scenarios")
 # TODO: turn runs of ss3sim into actual expectations
 # also add tests of ss3sim_base in addition to run_ss3sim.
 
-temp_path <- file.path(tempdir(), "ss3sim-test")
+temp_path <- file.path(tempdir(), "run-ss3sim-test")
 dir.create(temp_path, showWarnings = FALSE)
 wd <- getwd()
 setwd(temp_path)
@@ -44,7 +44,7 @@ test_that("run_ss3sim works with multiple scenarios (no parallel)", {
   unlink("D1-F0-cod", recursive = TRUE)
 })
 
-test_that("run_ss3sim gives error if conditional age at length used", {
+test_that("run_ss3sim runs if conditional age at length used", {
   # when CAL implemented, will want to remove this test.
   skip_on_cran()
   scen <- "F1-D0-M0-E0-O0-cod"
@@ -76,16 +76,18 @@ test_that("run_ss3sim gives error if conditional age at length used", {
       expect_equivalent(sum(tmp_agecomp$Nsamp),  calcomp_args$Nsamp[[1]])
     }
   }
+  unlink(scen, recursive = TRUE)
 })
 
 case_files <- list(F = "F", D = c("index", "lcomp", "agecomp"), E = "E")
 test_that("A basic run_ss3sim scenario with forecasting runs", {
   skip_on_cran()
-  suppressWarnings(run_ss3sim(iterations = 1, scenarios = "D0-E102-F0-cod",
+  scen <- "D0-E102-F0-cod"
+  suppressWarnings(run_ss3sim(iterations = 1, scenarios = scen,
              case_folder = case_folder, case_files = case_files,
              om_dir = om, em_dir = em))
-  expect_true("control.ss_new" %in% list.files(file.path("D0-E102-F0-cod", "1", "em")))
-  report <- suppressWarnings(r4ss::SS_output(file.path("D0-E102-F0-cod", "1", "em"),
+  expect_true("control.ss_new" %in% list.files(file.path(scen, "1", "em")))
+  report <- suppressWarnings(r4ss::SS_output(file.path(scen, "1", "em"),
                             covar = FALSE, ncols = 400, NoCompOK = TRUE,
                             verbose = FALSE, printstats = FALSE))
   get_results_all()
@@ -93,5 +95,5 @@ test_that("A basic run_ss3sim scenario with forecasting runs", {
   expect_equal(res$LnQ_base_Survey_2_em, 0.7)
   expect_equal(res$SR_sigmaR_em, 0.001)
   #TODO: add expectation that shows that forecasting worked.
-  unlink("D0-E102-F0-cod", recursive = TRUE) # clean up
+  unlink(scen, recursive = TRUE) # clean up
 })

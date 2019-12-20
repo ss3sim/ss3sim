@@ -18,7 +18,7 @@
 #'  the conditional age at length data data (but not the marginal age data). If
 #'  the EM is used with \code{\link{run_ss3sim}}, the case file should be named
 #'   \code{calcomp}. Only the multinomial distribution is currently implemented,
-#'  so this function cannot be used with the dirichlet distribution.\par
+#'  so this function cannot be used with the dirichlet distribution.
 #'  Note that this function cannot handle all types of conditional age at length
 #'  sampling. This function requires that there be a row of conditional age at
 #'  length data for each length data bin (for each year and fleet that sampling

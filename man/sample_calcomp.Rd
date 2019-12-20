@@ -4,7 +4,7 @@
 \alias{sample_calcomp}
 \title{Sample conditional age-at-length (CAL) data}
 \usage{
-sample_calcomp(dat_list, outfile = NULL, fleets = c(1, 2), years, Nsamp)
+sample_calcomp(dat_list, outfile = NULL, fleets, years, Nsamp)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
@@ -25,11 +25,12 @@ An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 numeric vectors. If no fleet collected samples, keep the value to
 \code{years=NULL}.}
 
-\item{Nsamp}{*A numeric list of the same length as \code{fleets}.
-Either single values or vectors of the same length as the number of
-years can be passed through. Single values are repeated for all
-years. If no fleet collected samples, keep the value to
-\code{Nsamp=NULL}.}
+\item{Nsamp}{*A numeric list of the same length as fleets. Either single
+values or vectors of the same length as the number of years can be passed
+through. Single values are repeated for all years. If no fleet collected
+samples, specify \code{Nsamp = NULL}. Specifically, for
+\code{sample_calcomp}, \code{Nsamp} denotes the total number of conditional
+ age at length samples for a given year and fleet across all length bins.}
 }
 \value{
 A modified \code{.dat} file if \code{!is.null(outfile)}. A list object
@@ -44,20 +45,29 @@ estimation model (EM).
 \details{
 This function takes a \code{data.SS_new} file from an OM containing
  expected values of length proportions and age proportions, conditional on
- length. First, sample from true length proportions, using the length comp sample
- sizes, to get realistic sample sizes for age bins given their lengths. Next,
+ length. First, sample from true length proportions, using the length comp
+ sample sizes, to get realistic sample sizes for age bins given their lengths.
+ Note that the overall total sample size for all CAL bins is specified by
+ the user for the given fleet and year in \code{Nsamp}. Next,
  use these sample sizes and the expected values of age proportions
  (conditional on length) to sample for realistic age proportions. If no fish
- are sampled, for a row of age proportions, then that row is discarded. A
- value of NULL for fleets indicates to delete the data, so if the EM is used
- with \code{\link{run_ss3sim}}, the case file should be named \code{calcomp}.
- Only the multinomial distribution is currently implemented, so this function
- cannot be used with the dirichlet distribution. Note also that this sampling
- procedure represents the case where 1) lengths are sampled randomly, 2) fish
+ are sampled, for a row of age proportions in conditional age at length data,
+ then that row is discarded. A value of NULL for fleets indicates to delete
+ the conditional age at length data data (but not the marginal age data). If
+ the EM is used with \code{\link{run_ss3sim}}, the case file should be named
+  \code{calcomp}. Only the multinomial distribution is currently implemented,
+ so this function cannot be used with the dirichlet distribution.
+ Note that this function cannot handle all types of conditional age at length
+ sampling. This function requires that there be a row of conditional age at
+ length data for each length data bin (for each year and fleet that sampling
+ is specified to be performed), where Lbin_lo and Lbin_hi are the
+ same value.
+ Note also that this sampling procedure represents simple random sampling for
+ conditional age at length, where 1) lengths are sampled randomly, 2) fish
  are lengthed and placed into bins, and 3) a subset of lengthed fish are
  aged, where a constant proportion from each length bin are selected for
- aging. This does NOT represent response stratified sampling where a subset
- of lengthed fish are aged, and a constant number from each length bin is
+ aging. This does NOT represent length stratified sampling where a subset of
+ lengthed fish are aged, and a constant number from each length bin is
  selected for aging, although these data could also be put into a Stock
  Synthesis model as "Conditional Age at Length."
 }
