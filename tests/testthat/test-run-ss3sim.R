@@ -76,7 +76,7 @@ test_that("run_ss3sim runs if conditional age at length used", {
       expect_equivalent(sum(tmp_agecomp$Nsamp),  calcomp_args$Nsamp[[1]])
     }
   }
-  unlink(file.path(temp_path, scen), recursive = TRUE)
+  unlink(scen, recursive = TRUE)
 })
 
 case_files <- list(F = "F", D = c("index", "lcomp", "agecomp"), E = "E")
