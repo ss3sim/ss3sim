@@ -59,8 +59,8 @@ test_that("run_ss3sim runs if conditional age at length used", {
                                             M = "M", E = "E", O = "O")
   )
   calcomp_args <- get_args(file.path(case_folder, "calcomp0-cod.txt"))
-  EM_datfile <- r4ss::SS_readdat(file.path(temp_path, scen, "1", "EM", "ss3.dat"),
-                                 verbose = FALSE, version = "3.30")
+  EM_datfile <- r4ss::SS_readdat(file.path(temp_path, scen, "1", "em", "ss3.dat"),
+                                 verbose = FALSE)
   # check the length comps to make sure CAL consistent
   lengths <- EM_datfile$lencomp
   lengths <- lengths[lengths$Yr %in% calcomp_args$years[[1]] &
