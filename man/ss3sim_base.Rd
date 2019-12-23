@@ -182,7 +182,8 @@ example below). For a generic higher-level function, see
               tv_params = a$tv_params,
               estim_params = a$E,
               om_dir = om_dir,
-              em_dir = em_dir)
+              em_dir = em_dir,
+              bias_adjust = TRUE)
   unlink("F0-D0-E0-cod", recursive = TRUE) # clean up
 
   # Or, create the argument lists directly in R and skip the case file setup:

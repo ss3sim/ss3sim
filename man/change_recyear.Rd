@@ -9,9 +9,8 @@ change_recyear(ctl_list, main)
 \arguments{
 \item{ctl_list}{A control file read in by \code{\link[r4ss]{SS_readctl}}.}
 
-\item{firstyear}{An integer value specifying the year in which you want to start
-fitting your data. The default is \code{NULL}, which will look to the first year
-with a non-zero catch in \code{dat_list} and use that as the first year.}
+\item{main}{An integer value specifying the year in which you want to
+start the main period of recruitment.}
 }
 \value{
 A \code{\link[r4ss]{SS_readctl}} list with an augmented start year of
