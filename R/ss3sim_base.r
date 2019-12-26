@@ -543,12 +543,13 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # Run the EM -------------------------------------------------------------
       run_ss3model(scenarios = sc, iterations = i, type = "em",
         hess = ifelse(bias_adjust, TRUE, hess_always), ...)
+      success <- get_success(dir = file.path(sc, i, "em"))
 
-      if(bias_adjust) {
+      if(bias_adjust & all(success > 0)) {
         bias <- calculate_bias(dir = file.path(sc, i, "em"), 
           ctl_file_in = "em.ctl")
         run_ss3model(scenarios = sc, iterations = i, type = "em",
-          hess = ifelse(bias_adjust, TRUE, hess_always), ...)
+            hess = ifelse(bias_adjust, TRUE, hess_always), ...)
       }
 # Write log file ---------------------------------------------------------------
 # TODO pull the log file writing into a separate function and update

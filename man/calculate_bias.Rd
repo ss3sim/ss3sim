@@ -19,14 +19,20 @@ A list of bias adjustment parameters.
 Bias adjustment is performed to ensure that the only the most informative
 data available are used when estimating recruitment deviations.
 This process involves running the estimation method with the hessian
-both this function and then running the estimation method again with
-the new values.
+both before this function and then running the estimation method again with
+the new values. Estimation files in the original folder will be deleted to
+ensure that convergence afterwards is not based on the input run.
+These files are permanently archived in the \code{bias_[0-9]{2}} folder
+within the directory. Only the three middle steps listed below are performed
+using \code{calculate_bias}, and the rest of the steps must be performed
+externally.
 }
 \details{
 \itemize{
 \item Estimate recruitment and the standard error about those estimates.
 \item Correct the estimates given their estimated uncertainty using a ramp.
 \item Save a new control file.
+\item Move original estimation files.
 \item Estimate model parameters.
 }
 }

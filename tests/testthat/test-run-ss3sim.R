@@ -25,12 +25,31 @@ test_that("A basic run_ss3sim scenario runs and existing iteration skipped", {
     case_folder = case_folder, om_dir = om, em_dir = em))
   #check ran
   expect_true("control.ss_new" %in% list.files(file.path("D0-F0-cod","1", "em")))
+  success <- get_success(file.path("D0-F0-cod", "1", "em"))
+  expect_equal(success["ran"], c("ran" = 1),
+    label = "Sucess vector for the Report file is")
+  expect_equal(success["hess"], c("hess" = 0),
+    label = "Sucess vector for the hessian file is")
   #check provides warning if skippint iteration.
   expect_warning(run_ss3sim(iterations = 1, scenarios = "D0-F0-cod",
                             case_folder = case_folder,
                             om_dir = om,
                             em_dir = em),
     "already exists", all = TRUE, fixed = TRUE)
+  biasdir <- file.path("D0-F0-cod", "1", "em")
+  expect_warning(calculate_bias(dir = biasdir, "em.ctl"),
+    label = "With no hessian calculate_bias")
+  setwd(biasdir)
+  expect_true(file.exists("bias_00"))
+  unlink("bias_00", recursive = TRUE)
+  system(get_bin(), show.output.on.console = FALSE)
+  bias_list <- calculate_bias(getwd(), "em.ctl")
+  expect_equal(bias_list$df$value[5], 0.56, tolerance = 0.01,
+    label = "Estimated max adjust")
+  bias_list <- suppressWarnings(calculate_bias(getwd(), "em.ctl"))
+  expect_true(file.exists("bias_01"),
+    label = "The bias_01 folder is present after calling bias 2x")
+  setwd(temp_path)
   unlink("D0-F0-cod", recursive = TRUE) # clean up
 })
 
