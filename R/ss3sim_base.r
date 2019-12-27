@@ -63,7 +63,7 @@
 #' \code{\link{system}} call that runs \code{SS3}.
 #' @author Sean Anderson with contributions from many others as listed in
 #'   the DESCRIPTION file.
-#' @importFrom r4ss SS_readdat SS_readforecast
+#' @import r4ss
 #' @importFrom stats setNames
 #' @return
 #' The output will appear in whatever your current \R working directory
@@ -533,7 +533,14 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       }
 
       ss_version <- get_ss_ver_dl(dat_list)
-      SS_writedat(datlist = dat_list, outfile = file.path(sc, i, "em", "ss3.dat"),
+      ctl_list <- r4ss::SS_readctl(file.path(sc, i, "em", "em.ctl"),
+        use_datlist = TRUE, datlist = dat_list, verbose = FALSE)
+      newlists <- change_year(dat_list, ctl_list)
+      SS_writedat(datlist = newlists$dat_list,
+        outfile = file.path(sc, i, "em", "ss3.dat"),
+        version = ss_version, overwrite = TRUE, verbose = FALSE)
+      SS_writectl(ctllist = newlists$ctl_list,
+        outfile = file.path(sc, i, "em", "em.ctl"),
         version = ss_version, overwrite = TRUE, verbose = FALSE)
       # Run the EM -------------------------------------------------------------
       run_ss3model(scenarios = sc, iterations = i, type = "em",
@@ -541,7 +548,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       success <- get_success(dir = file.path(sc, i, "em"))
 
       if(bias_adjust & all(success > 0)) {
-        bias <- calculate_bias(dir = file.path(sc, i, "em"), 
+        bias <- calculate_bias(dir = file.path(sc, i, "em"),
           ctl_file_in = "em.ctl")
         run_ss3model(scenarios = sc, iterations = i, type = "em",
             hess = ifelse(bias_adjust, TRUE, hess_always), ...)
