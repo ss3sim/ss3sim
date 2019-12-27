@@ -105,12 +105,7 @@
 #'
 #'   # Find the data in the ss3sim package:
 #'   d <- system.file("extdata", package = "ss3sim")
-#'   om <- file.path(d, "models", "cod-om")
-#'   em <- file.path(d, "models", "cod-em")
 #'   case_folder <- file.path(d, "eg-cases")
-#'
-#'   # Pull in file paths from the package example data:
-#'   d <- system.file("extdata", package = "ss3sim")
 #'   om_dir <- file.path(d, "models", "cod-om")
 #'   em_dir <- file.path(d, "models", "cod-em")
 #'   a <- get_caseargs(folder = file.path(d, "eg-cases"),
@@ -160,8 +155,8 @@
 #'               lcomp_params = lcomp1,
 #'               agecomp_params = agecomp1,
 #'               estim_params = E0,
-#'               om_dir = om,
-#'               em_dir = em)
+#'               om_dir = om_dir,
+#'               em_dir = em_dir)
 #'
 #'   unlink("D1-E0-F0-cod", recursive = TRUE) # clean up
 #' }
