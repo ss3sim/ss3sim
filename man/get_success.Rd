@@ -2,15 +2,13 @@
 % Please edit documentation in R/get_success.R
 \name{get_success}
 \alias{get_success}
-\title{Determine if SS run was successful}
+\title{Determine if a SS run was successful}
 \usage{
 get_success(dir)
 }
 \arguments{
 \item{dir}{A character string specifying the path to the folder with the
 results from the run of the SS model.}
-
-\item{hessian}{A logical specifying if the hessian was included.}
 }
 \value{
 A named vector with two values, \code{ran} and \code{hess},
