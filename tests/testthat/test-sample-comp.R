@@ -146,33 +146,45 @@ test_that("sample_calcomp works", {
   exp_dat$agecomp <- calcomp
   exp_dat$lencomp$Nsamp <- 50
   test <- sample_calcomp(exp_dat,
-                         fleets = list(1),
+                         exp_dat,
+                         fleets = c(1),
                          years = list(96),
-                         Nsamp = list(50))
+                         Nsamp_lengths = list(50),
+                         Nsamp_ages = list(10),
+                         ESS_lengths = NULL,
+                         ESS_ages = NULL)
 expect_error(sample_calcomp(exp_dat,
-                            fleets = list(1),
+                            exp_dat,
+                            fleets = c(1),
                             years = list(96),
-                #expect error b/c this value is too high for the N length bins.
-                            Nsamp = list(100)),
+                #expect error b/c Nsamp_lengths is too low for the Nsamp_ages
+                            Nsamp_lengths = list(10),
+                            Nsamp_ages = list(20)),
              "More age samples specified than fish collected for", fixed = TRUE)
 # expect error b/c there is no fleet 4.
-expect_error(sample_calcomp(exp_dat,
-                              fleets = list(4),
-                              years = list(96),
-                              Nsamp = list(10)),
+expect_error(sample_calcomp(dat_list = exp_dat,
+                            exp_vals_list = exp_dat,
+                            fleets = c(4),
+                            years = list(96),
+                            Nsamp_lengths = list(10),
+                            Nsamp_ages = list(20)),
              "does not match input file", fixed = TRUE)
-# expect error b/c wrong years
-expect_error(sample_calcomp(exp_dat,
-                            fleets = list(1),
+#expect error b/c wrong years
+expect_error(sample_calcomp(dat_list = exp_dat,
+                            exp_vals_list = exp_dat,
+                            fleets = c(1),
                             years = list(150),
-                            Nsamp = list(10),
+                            Nsamp_lengths = list(10),
+                            Nsamp_ages = list(5)),
             "A year specified in years was not found in the input file for fleet",
-            fixed = TRUE))
+            fixed = TRUE)
 # Make sure when fleet is NULL returns no CAL data.
-dat <- sample_calcomp(exp_dat,
+dat <- sample_calcomp(dat_list = exp_dat,
+                      exp_vals_list = exp_dat,
                        fleets = NULL,
                        years = NULL,
-                       Nsamp = NULL)
+                       Nsamp_lengths = NULL,
+                       Nsamp_ages = NULL)
 # should be no CAL data, but the marginal age comps should be left untouched.
 expect_equivalent(NROW(dat$agecomp[dat$agecomp$Lbin_lo != -1, ]), 0)
 expect_equivalent(exp_dat$agecomp[exp_dat$agecomp$Lbin_lo == -1, ],
@@ -194,10 +206,12 @@ calcomp <- calcomp[calcomp$Yr != cal_yr, ]
 calcomp <- rbind(calcomp, test_dif_bins)
 dat_diff_bins <- exp_dat
 dat_diff_bins$agecomp <- calcomp
-expect_error(sample_calcomp(dat_diff_bins,
-                      fleets = list(1),
+expect_error(sample_calcomp(dat_list = dat_diff_bins,
+                            exp_vals_list = dat_diff_bins,
+                      fleets = c(1),
                       years = list(cal_yr),
-                      Nsamp = list(10)),
+                      Nsamp_lengths = list(10),
+                      Nsamp_ages = list(5)),
            "In order to use sample_calcomp, for each row of conditional age at",
             fixed = TRUE)
 })

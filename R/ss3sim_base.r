@@ -350,7 +350,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       #TODO: rather than write expdata to file: dat_list <- expdata; rm(expdata)
       r4ss::SS_writedat(expdata, file.path(sc, i, "em", "ss3.dat"),
         overwrite = TRUE, verbose = FALSE)
-      rm(expdata)
       # Sample from the OM -----------------------------------------------------
       ## Read in the datfile once and manipulate as a list object, then
       ## write it back to file at the end, before running the EM.
@@ -379,6 +378,9 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                             years            = years,
                             cpar             = cpar,
                             ESS              = ESS))
+         lcomps_sampled <- TRUE # needed if calcomps, if using.
+      } else {
+         lcomps_sampled <- FALSE # needed for calcomps, if using
       }
 
       ## Add error in the age comp data. Need to do this last since other
@@ -448,18 +450,26 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       }
 
       ## Add error in the conditional age at length comp data. The
-      ## cal data are independent of the agecomp data for this
-      ## package. Thus the sampling of agecomps has no influence on the
-      ## calcomp data and vice versa.
-      #TODO: is there a more realistic way to implement?
+      ## cal data are independent of the marginal agecomp and length comp data
+      ## in the SS 3.30 implementation.New length comp data is created
+      ## especially for conditional age at length comp data.
       if(!is.null(calcomp_params$fleets)){
-          calcomp_params <- add_nulls(calcomp_params, c("fleets", "years", "Nsamp"))
+          calcomp_params <- add_nulls(calcomp_params,
+                                      c("fleets", "years", "Nsamp_lengths",
+                                        "Nsamp_ages", "method", "ESS_lengths",
+                                        "ESS_ages"))
           dat_list <- with(calcomp_params,
                           sample_calcomp(dat_list         = dat_list,
+                                         exp_vals_list    =  expdata, # the expected values
                                          outfile          = NULL,
                                          fleets           = fleets,
                                          years            = years,
-                                         Nsamp            = Nsamp))
+                                         Nsamp_lengths    = Nsamp_lengths,
+                                         Nsamp_ages       = Nsamp_ages,
+                                         ESS_lengths      = ESS_lengths,
+                                         ESS_ages         = ESS_ages,
+                                         method           = method,
+                                         lcomps_sampled   = lcomps_sampled))
       }
 
       ## End of manipulating the data file, so clean it and write it
