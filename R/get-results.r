@@ -58,7 +58,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
     if(is.null(user_scenarios)) {
         scenarios <- id_scenarios(directory=directory)
     } else {
-        temp_scenarios <- id_scenarios(directory=directory)
+        temp_scenarios <- dir(path = directory, include.dirs = TRUE)
         scenarios <- user_scenarios[which(user_scenarios %in% temp_scenarios)]
         if(any(user_scenarios %in% temp_scenarios==FALSE)){
             warning(paste(user_scenarios[which(user_scenarios %in%
@@ -164,9 +164,9 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
             get_results_scenario(scenario=scen, directory=directory,
                                  overwrite_files=overwrite_files)
         }
-        scalar.list[[i]] <- tryCatch(read.csv(scalar.file, stringsAsFactors=FALSE), error=function(e) NA)
-        ts.list[[i]] <- tryCatch(read.csv(ts.file, stringsAsFactors=FALSE), error=function(e) NA)
-        dq.list[[i]] <- tryCatch(read.csv(dq.file, stringsAsFactors=FALSE), error=function(e) NA)
+        scalar.list[[i]] <- tryCatch(suppressWarnings(read.csv(scalar.file, stringsAsFactors=FALSE)), error=function(e) NA)
+        ts.list[[i]] <- tryCatch(suppressWarnings(read.csv(ts.file, stringsAsFactors=FALSE)), error=function(e) NA)
+        dq.list[[i]] <- tryCatch(suppressWarnings(read.csv(dq.file, stringsAsFactors=FALSE)), error=function(e) NA)
     }
     scalar.list <- scalar.list[which(!is.na(scalar.list))]
     ts.list <- ts.list[which(!is.na(ts.list))]
@@ -282,13 +282,17 @@ get_results_scenario <- function(scenario, directory=getwd(),
         ## Check that the model finished running and if not skip it but
         ## report that ID
         ID <- paste0(scenario, "-", rep)
-        if(!file.exists(file.path(rep,"em", "Report.sso"))){
+        if(!file.exists(file.path(rep,"em", "Report.sso")) |
+            file.size(file.path(rep,"em", "Report.sso")) == 0){
             message("Missing Report.sso file for: ", ID, "; skipping...")
         } else {
+            forecastTF <- ifelse(file.size(
+              file.path(rep, "em", "Forecast-report.sso")) %in% c(0, NA),
+              FALSE, TRUE)
             ## Otherwise read in and write to file
             report.em <-
                 SS_output(file.path(rep,"em"), covar=FALSE, verbose=FALSE,
-                          compfile="none", forecast=TRUE, warn=TRUE,
+                          compfile="none", forecast=forecastTF, warn=TRUE,
                           readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
                           ncols=NULL)
             report.om <-
