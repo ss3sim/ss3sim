@@ -10,8 +10,11 @@ services:
 
 notifications:
   email:
+    recipients:
+      - kelli.johnson@noaa.gov
+      - kathryn.doering@noaa.gov
     on_success: change
-    on_failure: change
+    on_failure: always
 
 r_packages:
   - devtools
