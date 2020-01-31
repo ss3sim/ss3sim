@@ -133,7 +133,7 @@ test_that("run_ss3sim runs for a complex scenario", {
   )
   # test taht the EM ran successfully (using creation of data.ss_new as a proxy.)
   # TODO make more detailed expectations for this test.
-  expect_true(exists(file.path(temp_path, scen, "1", "em", "data.ss_new")))
+  expect_true(file.exists(file.path(temp_path, scen, "1", "em", "data.ss_new")))
 })
 unlink("F1-D0-M0-E0-O0-cod", recursive = TRUE)
 
