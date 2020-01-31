@@ -44,8 +44,40 @@ test_that("run_ss3sim works with multiple scenarios (no parallel)", {
 unlink("D0-F0-cod", recursive = TRUE) # clean up
 unlink("D1-F0-cod", recursive = TRUE)
 
-test_that("run_ss3sim runs if conditional age at length used", {
-  # when CAL implemented, will want to remove this test.
+test_that("run_ss3sim runs with CAL data", {
+  skip_on_cran()
+  scen <- "F1-D0-cod"
+  run_ss3sim(iterations  = 1,
+             scenarios = scen,
+             case_folder = file.path(d, "eg-cases"),
+             om_dir = om,
+             em_dir = em,
+             case_files = list(F = "F",
+                               D = c("index", "calcomp"))
+  )
+  calcomp_args <- get_args(file.path(case_folder, "calcomp0-cod.txt"))
+  EM_datfile <- r4ss::SS_readdat(file.path(temp_path, scen, "1", "em", "ss3.dat"),
+                                 verbose = FALSE)
+  # check the length comps to make sure CAL consistent
+  lengths <- EM_datfile$lencomp
+  lengths <- lengths[lengths$Yr %in% calcomp_args$years[[1]] &
+                       lengths$FltSvy %in% calcomp_args$fleets, ]
+  expect_true(all(calcomp_args$years[[1]] %in% lengths$Yr))
+  expect_true(all(calcomp_args$fleets %in% lengths$FltSvy))
+  # check the age comps (note that this is not a generalizable test and would
+  # need to be refactored to apply to other cases.
+  for (yr in calcomp_args$years[[1]]) {
+    for (ft in calcomp_args$fleets) {
+      tmp_agecomp <- EM_datfile$agecomp[EM_datfile$agecomp$Yr == yr &
+                                          EM_datfile$agecomp$FltSvy, ]
+      tmp_agecomp <- tmp_agecomp[tmp_agecomp$Lbin_lo != -1, ]
+      expect_equivalent(sum(tmp_agecomp$Nsamp),  calcomp_args$Nsamp_ages[[1]])
+    }
+  }
+})
+unlink("F1-D0-cod", recursive = TRUE)
+
+test_that("run_ss3sim runs for a complex scenario", {
   skip_on_cran()
   scen <- "F1-D0-M0-E0-O0-cod"
   run_ss3sim(iterations  = 1,
@@ -58,25 +90,9 @@ test_that("run_ss3sim runs if conditional age at length used", {
                                                   "calcomp"),
                                             M = "M", E = "E", O = "O")
   )
-  calcomp_args <- get_args(file.path(case_folder, "calcomp0-cod.txt"))
-  EM_datfile <- r4ss::SS_readdat(file.path(temp_path, scen, "1", "em", "ss3.dat"),
-                                 verbose = FALSE)
-  # check the length comps to make sure CAL consistent
-  lengths <- EM_datfile$lencomp
-  lengths <- lengths[lengths$Yr %in% calcomp_args$years[[1]] &
-                lengths$FltSvy %in% calcomp_args$fleets, ]
-  expect_true(all(calcomp_args$years[[1]] %in% lengths$Yr))
-  expect_true(all(calcomp_args$fleets %in% lengths$FltSvy))
-  # check the age comps (note that this is not a generalizable test and would
-  # need to be refactored to apply to other cases.
-  for (yr in calcomp_args$years[[1]]) {
-    for (ft in calcomp_args$fleets) {
-      tmp_agecomp <- EM_datfile$agecomp[EM_datfile$agecomp$Yr == yr &
-                                        EM_datfile$agecomp$FltSvy, ]
-      tmp_agecomp <- tmp_agecomp[tmp_agecomp$Lbin_lo != -1, ]
-      expect_equivalent(sum(tmp_agecomp$Nsamp),  calcomp_args$Nsamp[[1]])
-    }
-  }
+  # test taht the EM ran successfully (using creation of data.ss_new as a proxy.)
+  # TODO make more detailed expectations for this test.
+  expect_true(exists(file.path(temp_path, scen, "1", "em", "data.ss_new")))
 })
 unlink("F1-D0-M0-E0-O0-cod", recursive = TRUE)
 

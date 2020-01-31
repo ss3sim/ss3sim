@@ -472,7 +472,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                          lcomps_sampled   = lcomps_sampled))
       }
 
-      ## End of manipulating the data file, so clean it and write it
+      ## End of manipulating the data file (except for rebinning), so clean it
       dat_list <- clean_data(dat_list      = dat_list,
                             index_params   = index_params,
                             lcomp_params   = lcomp_params,

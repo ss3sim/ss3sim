@@ -332,5 +332,5 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
       r4ss::SS_writedat(datlist = newfile, outfile = outfile,
                         version = ss_version, overwrite = TRUE, verbose=FALSE)
     }
-    return(invisible(newfile))
+    invisible(newfile)
 }

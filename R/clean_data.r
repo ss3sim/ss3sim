@@ -66,17 +66,46 @@ clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
     if(index.N.removed !=0  & verbose)
         message(index.N.removed, " lines of CPUE data removed")
 
-    ## Length composition data
+    ## Length composition data and length composition from CAL comps
     a <- dat_list$lencomp
-    if(is.null(lcomp_params$fleets)){
+    if(is.null(lcomp_params$fleets) & is.null(calcomp_params$fleets)){
         dat_list$lencomp <- NULL
         dat_list$N_lencomp <- 0
-    } else {
+    }
+    if(!is.null(lcomp_params$fleets) & is.null(calcomp_params$fleets)) {
         dat_list$lencomp <- do.call(rbind,
          lapply(seq_along(lcomp_params$fleets), function(i)
                 a[a$FltSvy == lcomp_params$fleets[i] &
                   a$Yr %in% lcomp_params$years[[i]],]))
         dat_list$N_lencomp <- NROW(dat_list$lencomp)
+    }
+    if(is.null(lcomp_params$fleets) & !is.null(calcomp_params$fleets)){
+      dat_list$lencomp <- do.call(rbind,
+                                  lapply(seq_along(calcomp_params$fleets), function(i)
+                                    a[a$FltSvy == calcomp_params$fleets[i] &
+                                        a$Yr %in% calcomp_params$years[[i]],]))
+      dat_list$N_lencomp <- NROW(dat_list$lencomp)
+    }
+    if(!is.null(lcomp_params$fleets) & !is.null(calcomp_params$fleets)) {
+      # get set of fleets in years in both param sets
+      tmp_yrs <- lapply(seq_len(dat_list$Nfleets),
+        function(f, len, cal) {
+         len_ind <-  which(f == len$fleets)
+         cal_ind <- which(f == cal$fleets)
+         yrs <- NULL
+         if(length(len_ind) == 1) {
+           yrs <- c(yrs, len$years)
+         }
+         if(length(cal_ind) == 1) {
+           yrs <- c(yrs, cal$years)
+         }
+         yrs <- unique(yrs)
+      },len = lcomp_params, cal = calcomp_params)
+      dat_list$lencomp <- do.call(rbind,
+                                  lapply(seq_len(dat_list$Nfleets), function(i)
+                                    a[a$FltSvy == i &
+                                        a$Yr %in% unlist(tmp_yrs[[i]]),]))
+      dat_list$N_lencomp <- NROW(dat_list$lencomp)
     }
     lcomp.N.removed <- NROW(a)-NROW(dat_list$lencomp)
     if(lcomp.N.removed !=0  & verbose)
