@@ -134,7 +134,15 @@ change_tv <- function(change_tv_list,
   # model; if it is, stop code
   baseom_tv <-  ss3.ctl.parlines[(ss3.ctl.parlines$Label %in% names(change_tv_list)), ,
                                  drop = FALSE]
-  if(any(baseom_tv[, c("env-var", "use_dev", "Block")] != 0)) {
+  # get the par names
+  env_var_name <- colnames(baseom_tv)[grep("^env[_-]var", colnames(baseom_tv))]
+  use_dev_name <- colnames(baseom_tv)[grep("(^dev_link$)|(^use_dev$)", colnames(baseom_tv))]
+  block_name   <- colnames(baseom_tv)[grep("^Block$", colnames(baseom_tv))]
+  tv_names <- c(env_var_name, use_dev_name, block_name)
+  if(length(tv_names) != 3) {
+    stop("ss3sim not reading time varying column names correctly.")
+  }
+  if(any(baseom_tv[, tv_names] != 0)) {
     stop("One or more of the parameters listed in change_tv is already ",
          "time-varying in the base operating model. ss3sim cannot change ",
          "time-varying properties of parameters that are already specified as ",
@@ -143,7 +151,7 @@ change_tv <- function(change_tv_list,
   # For now, stop if there are any time varying parameters specified.
   # TODO: make this so the existing time varying structure can be retained., and
   # this check can be eliminated.
-  if(any(ss3.ctl.parlines[ , c("env-var", "use_dev", "Block")] != 0)) {
+  if(any(ss3.ctl.parlines[ , tv_names] != 0)) {
     stop( "There are one or more environmental linkages specified already in",
           " the base operating model. At this time, ss3sim cannot change time-",
           "varying properties of parameters when there are already time-varying",

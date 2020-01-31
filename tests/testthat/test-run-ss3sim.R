@@ -25,12 +25,53 @@ test_that("A basic run_ss3sim scenario runs and existing iteration skipped", {
     case_folder = case_folder, om_dir = om, em_dir = em))
   #check ran
   expect_true("control.ss_new" %in% list.files(file.path("D0-F0-cod","1", "em")))
+  success <- get_success(file.path("D0-F0-cod", "1", "em"))
+  expect_equal(success["ran"], c("ran" = 1),
+    label = "Sucess vector for the Report file is")
+  expect_equal(success["hess"], c("hess" = 0),
+    label = "Sucess vector for the hessian file is")
+  suppressMessages(get_results_all())
+  expect_true(file.exists("ss3sim_scalar.csv"))
+  expect_true(file.exists("ss3sim_ts.csv"))
+  scalar <- read.csv("ss3sim_scalar.csv")
+  # check OM specs
+  expect_equal(scalar[1, "depletion_om"], 0.4242,
+    tolerance = 0.0001, label = "OM depletion")
+  expect_equal(scalar[1, "ForeRecr_101_om"], 0.09666,
+    tolerance = 0.0001, label = "OM forecast recruitment in year 101")
+  expect_equal(as.numeric(scalar[1, "SSB_MSY_om"]), 1417980000,
+    label = "OM SSB at MSY")
+  # check EM specs
+  expect_equal(as.numeric(scalar[1, "SSB_MSY_em"]), 1417980000,
+    scale = 1000000000000000, label = "EM SSB at MSY")
+  expect_equal(as.numeric(scalar[1, "Catch_endyear_em"]), 180383000,
+    label = "EM terminal catch")
+  expect_equal(scalar[1, "SR_LN_R0_em"], 18.7,
+    tolerance = 0.01, label = "EM terminal year catch")
   #check provides warning if skippint iteration.
   expect_warning(run_ss3sim(iterations = 1, scenarios = "D0-F0-cod",
                             case_folder = case_folder,
                             om_dir = om,
                             em_dir = em),
     "already exists", all = TRUE, fixed = TRUE)
+
+  biasdir <- file.path("D0-F0-cod", "1", "em")
+  expect_warning(calculate_bias(dir = biasdir, "em.ctl"),
+    label = "With no hessian calculate_bias")
+  setwd(biasdir)
+  expect_true(file.exists("bias_00"))
+  unlink("bias_00", recursive = TRUE)
+  system(get_bin(), show.output.on.console = FALSE)
+  bias_list <- calculate_bias(getwd(), "em.ctl")
+  expect_equal(bias_list$df$value[5], 0.56, tolerance = 0.01,
+    label = "Estimated max adjust")
+  bias_list <- suppressWarnings(calculate_bias(getwd(), "em.ctl"))
+  expect_true(file.exists("bias_01"),
+    label = "The bias_01 folder is present after calling bias 2x")
+  setwd(temp_path)
+  unlink("D0-F0-cod", recursive = TRUE) # clean up
+  unlink("ss3sim_*", recursive = TRUE)
+
 })
 unlink("D0-F0-cod", recursive = TRUE) # clean up
 
@@ -105,12 +146,16 @@ test_that("A basic run_ss3sim scenario with forecasting runs", {
              om_dir = om, em_dir = em))
   expect_true("control.ss_new" %in% list.files(file.path(scen, "1", "em")))
   report <- suppressWarnings(r4ss::SS_output(file.path(scen, "1", "em"),
+
                             covar = FALSE, ncols = 400, NoCompOK = TRUE,
                             verbose = FALSE, printstats = FALSE))
   get_results_all()
   res <- read.csv("ss3sim_scalar.csv", header = TRUE)
   expect_equal(res$LnQ_base_Survey_2_em, 0.7)
   expect_equal(res$SR_sigmaR_em, 0.001)
-  #TODO: add expectation that shows that forecasting worked.
+  expect_equal(table(report$timeseries$Era)["FORE"], c("FORE" = 3),
+    label = "Number of forecast years")
+  unlink("D0-E102-F0-cod", recursive = TRUE) # clean up
+  unlink("ss3sim_*", recursive = TRUE) # clean up
 })
 unlink("D0-E102-F0-cod", recursive = TRUE) # clean up

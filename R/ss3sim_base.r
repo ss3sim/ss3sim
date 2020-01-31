@@ -61,7 +61,7 @@
 #' \code{\link{system}} call that runs \code{SS3}.
 #' @author Sean Anderson with contributions from many others as listed in
 #'   the DESCRIPTION file.
-#' @importFrom r4ss SS_readdat SS_readforecast
+#' @import r4ss
 #' @importFrom stats setNames
 #' @return
 #' The output will appear in whatever your current \R working directory
@@ -103,12 +103,7 @@
 #'
 #'   # Find the data in the ss3sim package:
 #'   d <- system.file("extdata", package = "ss3sim")
-#'   om <- file.path(d, "models", "cod-om")
-#'   em <- file.path(d, "models", "cod-em")
 #'   case_folder <- file.path(d, "eg-cases")
-#'
-#'   # Pull in file paths from the package example data:
-#'   d <- system.file("extdata", package = "ss3sim")
 #'   om_dir <- file.path(d, "models", "cod-om")
 #'   em_dir <- file.path(d, "models", "cod-em")
 #'   a <- get_caseargs(folder = file.path(d, "eg-cases"),
@@ -125,7 +120,8 @@
 #'               tv_params = a$tv_params,
 #'               estim_params = a$E,
 #'               om_dir = om_dir,
-#'               em_dir = em_dir)
+#'               em_dir = em_dir,
+#'               bias_adjust = TRUE)
 #'   unlink("F0-D0-E0-cod", recursive = TRUE) # clean up
 #'
 #'   # Or, create the argument lists directly in R and skip the case file setup:
@@ -157,8 +153,8 @@
 #'               lcomp_params = lcomp1,
 #'               agecomp_params = agecomp1,
 #'               estim_params = E0,
-#'               om_dir = om,
-#'               em_dir = em)
+#'               om_dir = om_dir,
+#'               em_dir = em_dir)
 #'
 #'   unlink("D1-E0-F0-cod", recursive = TRUE) # clean up
 #' }
@@ -176,14 +172,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   # In case ss3sim_base is stopped before finishing:
   old_wd <- getwd()
   on.exit(setwd(old_wd), add = TRUE)
-
-  if(bias_adjust) {
-    # todo:
-    # after running the EM r4ss::SS_fitbiasramp()
-    # Put those values in the EM
-    # Run the EM again
-    warning("Bias adjustment is not yet implemented, please do so manually.")
-  }
 
   #TODO: consider adding a check of OM/EM structures before starting loop?
   # Probably sufficient to just warn if not structured correctly. Some things
@@ -550,26 +538,25 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       }
 
       ss_version <- get_ss_ver_dl(dat_list)
-      SS_writedat(datlist = dat_list, outfile = file.path(sc, i, "em", "ss3.dat"),
+      ctl_list <- r4ss::SS_readctl(file.path(sc, i, "em", "em.ctl"),
+        use_datlist = TRUE, datlist = dat_list, verbose = FALSE)
+      newlists <- change_year(dat_list, ctl_list)
+      SS_writedat(datlist = newlists$dat_list,
+        outfile = file.path(sc, i, "em", "ss3.dat"),
+        version = ss_version, overwrite = TRUE, verbose = FALSE)
+      SS_writectl(ctllist = newlists$ctl_list,
+        outfile = file.path(sc, i, "em", "em.ctl"),
         version = ss_version, overwrite = TRUE, verbose = FALSE)
       # Run the EM -------------------------------------------------------------
       run_ss3model(scenarios = sc, iterations = i, type = "em",
         hess = ifelse(bias_adjust, TRUE, hess_always), ...)
+      success <- get_success(dir = file.path(sc, i, "em"))
 
-      if(bias_adjust) {
-        #todo: save the pre-bias adjustment output as
-        # files with different names or in a subfolder
-        file.copy(file.path(sc, i, "em", "em.ctl"),
-          file.path(sc, i, "em", "em_beforebias.ctl"))
-        biasoutput <- r4ss::SS_output(file.path(sc, i, "em"),
-          repfile = "Report.sso", compfile = "none", covarfile = "covar.sso",
-          forecast = FALSE, verbose = FALSE, printstats = FALSE,
-          NoCompOK = TRUE)
-        ramp <- r4ss::SS_fitbiasramp(replist = biasoutput,
-          verbose = FALSE, plot = FALSE, print = TRUE,
-          shownew = FALSE,
-          oldctl = file.path(sc, i, "em", "em.ctl"),
-          newctl = file.path(sc, i, "em", "em.ctl"))
+      if(bias_adjust & all(success > 0)) {
+        bias <- calculate_bias(dir = file.path(sc, i, "em"),
+          ctl_file_in = "em.ctl")
+        run_ss3model(scenarios = sc, iterations = i, type = "em",
+            hess = ifelse(bias_adjust, TRUE, hess_always), ...)
       }
 # Write log file ---------------------------------------------------------------
 # TODO pull the log file writing into a separate function and update

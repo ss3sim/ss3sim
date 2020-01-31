@@ -21,10 +21,9 @@
 #_Cond 1.0 # first age that moves (real age at begin of season, not integer) also cond on do_migration>0
 #_Cond 1 1 1 2 4 10 # example move definition for seas=1, morph=1, source=1 dest=2, age1=4, age2=10
 #
-1 #_Nblock_Patterns
- 1 #_blocks_per_pattern
+0 #_Nblock_Patterns
+#_blocks_per_pattern
 # begin and end years of blocks
- 0 0
 #
 # controls for all timevary parameters
 1 #_env/block/dev_adjust_method for all time-vary parms (1=warn relative to base parm bounds; 3=no bound check)
@@ -108,12 +107,12 @@
             -5             5             0             0             1             0         -4          0          0          0          0          0          0          0 # SR_regime
              0             0             0             0             0             0        -99          0          0          0          0          0          0          0 # SR_autocorr
 1 #do_recdev:  0=none; 1=devvector (R=F(SSB)+dev); 2=deviations (R=F(SSB)+dev); 3=deviations (R=R0*dev; dev2=R-f(SSB)); 4=like 3 with sum(dev2) adding penalty
-1 # first year of main recr_devs; early devs can preceed this era
+25 # first year of main recr_devs; early devs can preceed this era
 100 # last year of main recr_devs; forecast devs start in following year
 3 #_recdev phase
 1 # (0/1) to read 13 advanced options
- 0 #_recdev_early_start (0=none; neg value makes relative to recdev_start)
- -4 #_recdev_early_phase
+1 #_recdev_early_start (0=none; neg value makes relative to recdev_start)
+4 #_recdev_early_phase
  0 #_forecast_recruitment phase (incl. late recr) (0 value resets to maxphase+1)
  1 #_lambda for Fcast_recr_like occurring before endyr+1
  1 #_last_yr_nobias_adj_in_MPD; begin of ramp
