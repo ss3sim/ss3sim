@@ -3,4 +3,6 @@ fleets; c(1)
 years; list(c(96,100))
 Nsamp_lengths; list(100)
 Nsamp_ages; list(20)
+ESS_lengths; list(50)
+ESS_ages; list(10)
 method; "simple_random" #other option: length_stratified

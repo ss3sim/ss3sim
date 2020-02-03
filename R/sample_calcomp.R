@@ -64,27 +64,29 @@
 #'   option), the fish aged are randomly sampled from the age bins, so the number
 #'   sampled in each age bin is not equal. In "length_stratified", an equal
 #'   number of fish are aged from each length bin.
-#' @param ESS_lengths *This parameter is not yet used.*
-#'  The final effective sample size (ESS) associated with the
+#' @param ESS_lengths  The final effective sample size (ESS) associated with the
 #'  simulated length data generated for conditional age at length samples. The
 #'  ESS is not used to generate the simulated data but can be used as an input
 #'  sample size in subsequent models that estimate population parameters or
 #'  status. The default, NULL, leads to the true (internally calculated)
-#'  effective sample size being used, which is Nsamp_lengths for the multinomial
-#'  case. At least one value must be provided for each fleet or a vector of
-#'  year-specific values can be used for any given fleet. The argument accepts a
-#'  list with entries, either a single integer or a vector of integers, for each
-#'  fleet.
-#' @param ESS_ages *This parameter is not yet used*
-#'  The final effective sample size (ESS) associated with the
+#'  effective sample size being used, which is \code{Nsamp_lengths} for the
+#'  multinomial case. \code{ESS_lengths} should be a numeric list of the same
+#'  length as fleets. Either single values or vectors of the same length as the
+#'  number of years can be passed through. Single values are repeated for all
+#'  years. Note that the dimensions of ESS_lengths must be compatible with the
+#'  dimensions of \code{Nsample_lengths}.
+#' @param ESS_ages The final effective sample size (ESS) associated with the
 #'  simulated conditional age at length data. The ESS is not used to generate
 #'  the simulated data but can be used as an input sample size in subsequent
 #'  models that estimate population parameters or status. The default, NULL,
 #'  leads to the true (internally calculated) effective sample size being used,
-#'  which is Nsamp_ages for the multinomial case. At least one value must be
-#'  provided for each fleet or a vector of year-specific values can be used for
-#'  any given fleet. The argument accepts a list with entries, either a single
-#'  integer or a vector of integers, for each fleet.
+#'  which is Nsamp_ages for the multinomial case. \code{ESS_ages} should be
+#'  a numeric list of the same length as fleets. Either single values or vectors
+#'  of the same length as the number of years can be passed through. Single
+#'  values are repeated for all years. Note that the dimensions of ESS_lengths
+#'  must be compatible with the dimensions of \code{Nsample_ages}. The input
+#'  value will be apportioned among the conditional age at length bins as the
+#'  \code{Nsamp_ages} is and therefore can be a fractional value.
 #' @param lcomps_sampled Have marginal length comps already been sampled and are
 #'  included in \code{dat_list[["lencomp"]]}? If FALSE, expected values are in
 #'  present in \code{datlist[["lencomp"]]}.
@@ -100,13 +102,6 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
                            ESS_ages = NULL,
                            lcomps_sampled = FALSE) {
 
-  # TODO: implement these as the input sample sizes. This warning can then be
-  # removed.
-   if(!is.null(ESS_lengths) | !is.null(ESS_ages)) {
-     warning("ESS_lengths and ESS_ages is not yet implemented. Using ",
-             "Nsamp_lengths and Nsamp_ages as the input sample sizes for ",
-             "the estimation model.")
-   }
   #TODO: add in length_stratified
     method <- match.arg(arg = method, choices = c("simple_random"))
     ## The samples are taken from the expected values, where the
@@ -153,8 +148,14 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
         stop("No conditional age-at-length expected values found")
     }
     Nfleets <- length(fleets)
-    if(any(!fleets %in% unique(agecomp.cal$FltSvy)))
-        stop(paste0("The specified fleet number: ",fleets, " does not match input file"))
+    if(any(!fleets %in% unique(agecomp.cal$FltSvy))){
+        stop("A fleet specified in fleets was not found in ",
+        "the fleets in age comps for dat_list.")
+    }
+    if(any(!fleets %in% unique(exp_vals_list$lencomp$FltSvy))) {
+      stop("A fleet specified in fleets was not found in the fleets in len ",
+           "comps for exp_vals_list.")
+    }
     if(class(years) != "list" | length(years) != Nfleets)
         stop("years needs to be a list of same length as fleets")
     # check that Lbin_lo and Lbin_hi are the same for all CAL data. This is
@@ -201,14 +202,23 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
            "and year.")
     }
     # Check that the years specified are valid
-    mapply(function(f, y, d) {
-      yrs_in_mod <- unique(d[d$FltSvy == f, "Yr"])
-      if(!any(y %in% yrs_in_mod)) {
-        stop("A year specified in years was not found in the input file for ",
-             "fleet ", f)
-      }
-    },  f = fleets, y = years, MoreArgs = list(d = agecomp.cal))
-
+    check_yrs <- function(f, y, d) {
+     yrs_in_mod <- unique(d[d$FltSvy == f, "Yr"])
+     if(any(!y %in% yrs_in_mod)) {
+       stop("A year specified in years was not found in the expected value ",
+            "age comps or length comps for fleet ", f, ". Years in expected ",
+            "values (length or age comps): ",
+            paste0(yrs_in_mod, collapse = ", "), "; Years ",
+            "specified through years:", paste0(y, collapse = ", "))
+     }
+   }
+   # check years in both age and length comp
+   mapply(check_yrs,
+          f = fleets, y = years,
+          MoreArgs = list(d = exp_vals_list[["lencomp"]]))
+    mapply(check_yrs,
+           f = fleets, y = years,
+           MoreArgs = list(d = agecomp.cal))
     ## End input checks
     # sample the length comp data that will then be used to get conditional age
     # at length samples.
@@ -238,13 +248,13 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
             #Note that the below check may be redundant...
             if(nrow(newcomp) != length(lbin_vector)) {
                 stop("The number of conditional age at length data rows for ",
-                "fleet ", fl, "and year ", yr, " is not the same as the number",
+                "fleet ", fl, " and year ", yr, " is not the same as the number",
                 " of length bins. For each fleet and year, please make sure ",
                 "there is row where Lbin_lo and Lbin_hi are equal to each of ",
                 "the values in lbin_vector: ",
                 paste0(lbin_vector, collapse = ", "), ". Note that Lbin_lo and",
-                "Lbin_hi if conditional age at length data should always have",
-                "the same values in order for sample_calcomp() to work.")
+                " Lbin_hi if conditional age at length data should always have",
+                " the same values in order for sample_calcomp() to work.")
             }
             if(NROW(newcomp) == 0) {
               stop("no age data found for fleet ", fl, "and yr ", yr)
@@ -306,6 +316,93 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
     ## Combine back together into final data frame with the different data
     ## types
     newcomp.final <- do.call(rbind, newcomp.list)
+
+    # Effective sample sizes ----
+    # length
+    if(!is.null(ESS_lengths)) {
+      if(!length(ESS_lengths) %in% c(1,length(fleets))) {
+        stop("Dimensions of ESS_lengths is not compatible with other",
+             " arguments.")
+      }
+      if(length(unlist(ESS_lengths)) == 1) {
+        CAL_lencomp[, "Nsamp"] <- unlist(ESS_lengths)
+      } else {
+        #match up with each year and fleet
+        for(flt in seq_along(fleets)) {
+          tmp_yrs <- years[[flt]]
+          tmp_ess <- ESS_lengths[[flt]]
+          if(length(tmp_ess) == 1) tmp_ess <- rep(tmp_ess, times = length(tmp_yrs))
+          if(length(tmp_ess) != length(tmp_yrs)) {
+            stop("Dimensions of ESS_lengths is not compatible with other",
+                 " arguments. For fleet ", fleets[flt], " years had length ",
+                 length(yrs), " and there were ", length(tmp_ess), "values ",
+                 "in ESS_lengths for the fleet, but it should have 1 or ", length(yrs),
+                 "values.")
+          }
+          for(yr in seq_along(tmp_yrs)) {
+            CAL_lencomp[CAL_lencomp$FltSvy == flt &
+                        CAL_lencomp$Yr == tmp_yrs[yr], "Nsamp"] <-
+              tmp_ess[yr]
+          }
+        }
+      }
+    }
+    # ages?
+    # maybe it would be better to have 2 parameters for this?
+    # ESS_ages_proportion Which will divide it up
+    # ESS_ages_all_equal which sets all age bins the same (e.g., 1)
+    # TODO: implment adding in effective sample size for ages.Think more about
+    # the most user friendly way to do this. will start by just implementing a
+    # ESS_ages which divides up the same as Nsamp_ages. Can modify this to be
+    # more flexible in the future.
+    if(!is.null(ESS_ages)) {
+      if(!length(ESS_ages) %in% c(1,length(fleets))) {
+        stop("Dimensions of ESS_ages is not compatible with other",
+             " arguments.")
+      }
+      if(length(unlist(ESS_ages)) == 1) {
+        dat_combos <- unique(newcomp.final[, c("Yr", "FltSvy")])
+        for(dc in seq_len(nrow(dat_combos))) {
+          tmp_combo <- dat_combos[dc, ]
+          tmp_total_Nsamp <-
+            sum(newcomp.final[newcomp.final$FltSvy == tmp_combo$FltSvy&
+                              newcomp.final$Yr == tmp_combo$Yr, "Nsamp"])
+          tmp_frac <- newcomp.final[
+                       newcomp.final$FltSvy == tmp_combo$FltSvy&
+                       newcomp.final$Yr == tmp_combo$Yr, "Nsamp"]/tmp_total_Nsamp
+          # replace Nsamp
+          newcomp.final[
+            newcomp.final$FltSvy == tmp_combo$FltSvy&
+              newcomp.final$Yr == tmp_combo$Yr, "Nsamp"] <- tmp_frac * unlist(ESS_ages)
+        }
+      } else {
+        #match up with each year and fleet
+        for(flt in seq_along(fleets)) {
+          tmp_yrs <- years[[flt]]
+          tmp_ess <- ESS_ages[[flt]]
+          if(length(tmp_ess) == 1) tmp_ess <- rep(tmp_ess, times = length(tmp_yrs))
+          if(length(tmp_ess) != length(tmp_yrs)) {
+            stop("Dimensions of ESS_ages is not compatible with other",
+                 " arguments. For fleet ", fleets[flt], " years had length ",
+                 length(yrs), " and there were ", length(tmp_ess), "values ",
+                 "in ESS_ages for the fleet, but it should have 1 or ", length(yrs),
+                 "values.")
+          }
+          for(yr in seq_along(tmp_yrs)) {
+           tmp_total_Nsamp <-  sum(newcomp.final[newcomp.final$FltSvy == flt &
+                                 newcomp.final$Yr == tmp_yrs[yr], "Nsamp"])
+           tmp_frac <- newcomp.final[
+                         newcomp.final$FltSvy == flt &
+                         newcomp.final$Yr == tmp_yrs[yr], "Nsamp"] /
+                         tmp_total_Nsamp
+           # replace Nsamp
+           newcomp.final[newcomp.final$FltSvy == flt &
+                         newcomp.final$Yr == tmp_yrs[yr], "Nsamp"] <-
+             tmp_frac * tmp_ess[yr]
+          }
+        }
+      }
+    }
     # add the new length comp
     if(!is.null(lencomp_marginal)) {
       newfile[["lencomp"]] <- rbind(CAL_lencomp, lencomp_marginal)

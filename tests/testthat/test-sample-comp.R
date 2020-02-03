@@ -142,17 +142,142 @@ test_that("sample_calcomp works", {
                                             nrow = NROW(calcomp_96))))
   colnames(calcomp_96)[10:ncol(calcomp_96)] <- age_colnames
   calcomp <- calcomp[calcomp$Yr != 96, ]
+
   calcomp <- rbind(calcomp, calcomp_96)
   exp_dat$agecomp <- calcomp
   exp_dat$lencomp$Nsamp <- 50
-  test <- sample_calcomp(exp_dat,
-                         exp_dat,
-                         fleets = c(1),
-                         years = list(96),
-                         Nsamp_lengths = list(50),
-                         Nsamp_ages = list(10),
-                         ESS_lengths = NULL,
-                         ESS_ages = NULL)
+
+  # make 1 more data set with 2 years of calcomp data for test with more complexity
+  calcomp_98 <- calcomp_96
+  calcomp_98$Yr <- 98
+  calcomp_2 <- rbind(calcomp, calcomp_98)
+  exp_dat_2 <- exp_dat
+  exp_dat_2$agecomp <- calcomp_2
+
+# test a basic case
+test <- sample_calcomp(exp_dat,
+                       exp_dat,
+                       fleets = c(1),
+                       years = list(96),
+                       Nsamp_lengths = list(50),
+                       Nsamp_ages = list(10))
+# expectations for length comp
+expect_true(nrow(test[["lencomp"]]) == 1)
+expect_true(test[["lencomp"]][,"Yr"] == 96)
+expect_true(test[["lencomp"]][,"FltSvy"] == 1)
+expect_true(test[["lencomp"]][, "Nsamp"] == 50)
+# expectations for age comp
+tmp_age <- test[["agecomp"]]
+tmp_age <- tmp_age[tmp_age$Lbin_lo != -1 & tmp_age$Lbin_hi != - 1, ]
+expect_true(all(tmp_age[,"Yr"] %in% 96))
+expect_true(all(tmp_age[, "FltSvy"] %in% 1))
+expect_true(sum(tmp_age$Nsamp) == 10)
+
+# test a basic case where the marginals are kept
+test_keep_marginals <- sample_calcomp(exp_dat,
+                       exp_dat,
+                       fleets = c(1),
+                       years = list(96),
+                       Nsamp_lengths = list(50),
+                       Nsamp_ages = list(10),
+                       lcomps_sampled = TRUE) # keep len comps
+# expectations for length comp
+expect_true(nrow(test_keep_marginals[["lencomp"]]) > 1)
+# expectations for age comp
+tmp_age <- test_keep_marginals[["agecomp"]]
+tmp_age <- tmp_age[tmp_age$Lbin_lo != -1 & tmp_age$Lbin_hi != - 1, ]
+expect_true(all(tmp_age[,"Yr"] %in% 96))
+expect_true(all(tmp_age[, "FltSvy"] %in% 1))
+expect_true(sum(tmp_age$Nsamp) == 10)
+
+
+#test a basic case, but change the ESS.
+test_add_ess <- sample_calcomp(exp_dat,
+                       exp_dat,
+                       fleets = c(1),
+                       years = list(96),
+                       Nsamp_lengths = list(50),
+                       Nsamp_ages = list(10),
+                       ESS_lengths = list(30),
+                       ESS_ages = list(20))
+# expectations for length comp
+expect_true(nrow(test_add_ess[["lencomp"]]) == 1)
+expect_true(test_add_ess[["lencomp"]][,"Yr"] == 96)
+expect_true(test_add_ess[["lencomp"]][,"FltSvy"] == 1)
+expect_true(test_add_ess[["lencomp"]][, "Nsamp"] == 30)
+# expectations for age comp
+tmp_age <- test_add_ess[["agecomp"]]
+tmp_age <- tmp_age[tmp_age$Lbin_lo != -1 & tmp_age$Lbin_hi != - 1, ]
+expect_true(all(tmp_age[,"Yr"] %in% 96))
+expect_true(all(tmp_age[, "FltSvy"] %in% 1))
+expect_true(sum(tmp_age$Nsamp) == 20)
+
+#test a basic case, but use ESS and keep the len comps
+test_add_ess_keep_marg <- sample_calcomp(exp_dat,
+                               exp_dat,
+                               fleets = c(1),
+                               years = list(96),
+                               Nsamp_lengths = list(50),
+                               Nsamp_ages = list(10),
+                               ESS_lengths = list(30),
+                               ESS_ages = list(20),
+                               lcomps_sampled = TRUE)
+# expectations for length comp
+expect_true(nrow(test_add_ess_keep_marg[["lencomp"]]) > 1)
+expect_true(test_add_ess_keep_marg[["lencomp"]][1, "Nsamp"] == 30)
+# the following should hold unless the value in exp_dat for Nsamp is 30 for
+# any of the observations
+expect_true(all(test_add_ess_keep_marg[["lencomp"]][-1, "Nsamp"] != 30))
+# expectations for age comp
+tmp_age <- test_add_ess_keep_marg[["agecomp"]]
+tmp_age <- tmp_age[tmp_age$Lbin_lo != -1 & tmp_age$Lbin_hi != - 1, ]
+expect_true(all(tmp_age[,"Yr"] %in% 96))
+expect_true(all(tmp_age[, "FltSvy"] %in% 1))
+expect_true(sum(tmp_age$Nsamp) == 20)
+
+# test with multiple years of CAL
+test_2_yrs_CAL <- sample_calcomp(exp_dat_2,
+                       exp_dat_2,
+                       fleets = c(1),
+                       years = list(c(96, 98)),
+                       Nsamp_lengths = list(50),
+                       Nsamp_ages = list(10),
+                       ESS_lengths = list(30),
+                       ESS_ages = list(20))
+# expectations for length comp
+expect_true(nrow(test_2_yrs_CAL[["lencomp"]]) == 2)
+
+expect_true(all(test_2_yrs_CAL[["lencomp"]][,"Yr"] %in% c(96, 98)))
+expect_true(all(test_2_yrs_CAL[["lencomp"]][,"FltSvy"] == 1))
+expect_true(all(test_2_yrs_CAL[["lencomp"]][, "Nsamp"] == 30))
+# expectations for age comp
+tmp_age <- test_2_yrs_CAL[["agecomp"]]
+tmp_age <- tmp_age[tmp_age$Lbin_lo != -1 & tmp_age$Lbin_hi != - 1, ]
+expect_true(all(tmp_age[,"Yr"] %in% c(96,98)))
+expect_true(all(tmp_age[, "FltSvy"] %in% 1))
+expect_true(sum(tmp_age$Nsamp) == 40) # because 2 years of 20 samples each.
+
+#test with more complex sampling structure
+test_2_yrs_CAL_complex <- sample_calcomp(exp_dat_2,
+                                 exp_dat_2,
+                                 fleets = c(1),
+                                 years = list(c(96, 98)),
+                                 Nsamp_lengths = list(c(50, 30)),
+                                 Nsamp_ages = list(c(10, 10)),
+                                 ESS_lengths = list(c(30, 20)),
+                                 ESS_ages = list(c(20, 20)))
+# expectations for length comp
+expect_true(nrow(test_2_yrs_CAL_complex[["lencomp"]]) == 2)
+expect_true(all(test_2_yrs_CAL_complex[["lencomp"]][,"Yr"] %in% c(96, 98)))
+expect_true(all(test_2_yrs_CAL_complex[["lencomp"]][,"FltSvy"] == 1))
+expect_true(all(test_2_yrs_CAL_complex[["lencomp"]][, "Nsamp"] == c(30, 20)))
+# expectations for age comp
+tmp_age <- test_2_yrs_CAL[["agecomp"]]
+tmp_age <- tmp_age[tmp_age$Lbin_lo != -1 & tmp_age$Lbin_hi != - 1, ]
+expect_true(all(tmp_age[,"Yr"] %in% c(96,98)))
+expect_true(all(tmp_age[, "FltSvy"] %in% 1))
+expect_true(sum(tmp_age$Nsamp) == 40) # because 2 years of 20 samples each.
+
 expect_error(sample_calcomp(exp_dat,
                             exp_dat,
                             fleets = c(1),
@@ -168,7 +293,7 @@ expect_error(sample_calcomp(dat_list = exp_dat,
                             years = list(96),
                             Nsamp_lengths = list(10),
                             Nsamp_ages = list(20)),
-             "does not match input file", fixed = TRUE)
+             "A fleet specified in fleets was not found", fixed = TRUE)
 #expect error b/c wrong years
 expect_error(sample_calcomp(dat_list = exp_dat,
                             exp_vals_list = exp_dat,
@@ -176,8 +301,21 @@ expect_error(sample_calcomp(dat_list = exp_dat,
                             years = list(150),
                             Nsamp_lengths = list(10),
                             Nsamp_ages = list(5)),
-            "A year specified in years was not found in the input file for fleet",
+            "A year specified in years was not found",
             fixed = TRUE)
+
+# expect error b/c of wrong years
+expect_error(sample_calcomp(exp_dat_2,
+                                 exp_dat_2,
+                                 fleets = c(1),
+                                 years = list(c(96, 97)),
+                                 Nsamp_lengths = list(50),
+                                 Nsamp_ages = list(10),
+                                 ESS_lengths = list(30),
+                                 ESS_ages = list(20)),
+                            "A year specified in years was not found",
+                            fixed = TRUE)
+
 # Make sure when fleet is NULL returns no CAL data.
 dat <- sample_calcomp(dat_list = exp_dat,
                       exp_vals_list = exp_dat,
@@ -189,7 +327,27 @@ dat <- sample_calcomp(dat_list = exp_dat,
 expect_equivalent(NROW(dat$agecomp[dat$agecomp$Lbin_lo != -1, ]), 0)
 expect_equivalent(exp_dat$agecomp[exp_dat$agecomp$Lbin_lo == -1, ],
                   dat$agecomp)
-
+# Test error if bad input for ESS used
+expect_error(sample_calcomp(exp_dat,
+                            exp_dat,
+                            fleets = c(1),
+                            years = list(96),
+                            Nsamp_lengths = list(50),
+                            Nsamp_ages = list(10),
+                            ESS_lengths = list(30,1),
+                            ESS_ages = list(20)),
+             "Dimensions of ESS_lengths is not compatible with other arguments",
+             fixed = TRUE)
+expect_error(sample_calcomp(exp_dat,
+                            exp_dat,
+                            fleets = c(1),
+                            years = list(96),
+                            Nsamp_lengths = list(50),
+                            Nsamp_ages = list(10),
+                            ESS_lengths = list(30),
+                            ESS_ages = list(20,1)),
+             "Dimensions of ESS_ages is not compatible with other arguments",
+             fixed = TRUE)
 # try using different bins where Lbin_lo and Lbin_hi are not equal. Note that
 # this cannot be done the way the sample_calcomp function is currently written.
 cal_yr <- 96
@@ -206,6 +364,7 @@ calcomp <- calcomp[calcomp$Yr != cal_yr, ]
 calcomp <- rbind(calcomp, test_dif_bins)
 dat_diff_bins <- exp_dat
 dat_diff_bins$agecomp <- calcomp
+
 expect_error(sample_calcomp(dat_list = dat_diff_bins,
                             exp_vals_list = dat_diff_bins,
                       fleets = c(1),
