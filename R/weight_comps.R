@@ -75,7 +75,8 @@ weight_comps <- function(method = c("MI", "Francis", "DM"),
       var_adj <-  rbind(out$Length_comp_Eff_N_tuning_check,
                         out$Age_comp_Eff_N_tuning_check)
       if(method == "Francis") {
-        var_adj <- r4ss::SS_tune_comps(out, write = FALSE, option = "Francis")
+        var_adj <- r4ss::SS_tune_comps(out, write = FALSE, option = "Francis",
+                                       verbose = FALSE)
       }
       var_adj <- var_adj[, 1:3]
       colnames(var_adj) <- c("Factor", "Fleet", "Value")
