@@ -45,7 +45,7 @@ test_that("weight_comps works for MI method", {
                fleets = c(1,2))
   # create an expectation that arent dummy ones.
   dat <- r4ss::SS_readdat(file.path(scen_path_MI, "ss3.dat" ), verbose = FALSE)
-  ctl <- r4ss::SS_readctl(file.path(scen_path_MI, "codem.ctl"), verbose = FALSE,
+  ctl <- r4ss::SS_readctl(file.path(scen_path_MI, "codEM.ctl"), verbose = FALSE,
                           use_datlist = TRUE, datlist = dat)
   expect_equivalent(ctl$Variance_adjustment_list, test[[length(test)]]) # only true if no adjustments initially.
   expect_true(all(test$Value <= 1))
@@ -61,7 +61,7 @@ test_that("weight_comps works for Francis", {
                niters_weighting = 1,
                fleets = c(1,2))
   dat <- r4ss::SS_readdat(file.path(scen_path_Francis, "ss3.dat" ), verbose = FALSE)
-  ctl <- r4ss::SS_readctl(file.path(scen_path_Francis, "codem.ctl"), verbose = FALSE,
+  ctl <- r4ss::SS_readctl(file.path(scen_path_Francis, "codEM.ctl"), verbose = FALSE,
                           use_datlist = TRUE, datlist = dat)
   expect_equivalent(ctl$Variance_adjustment_list, test[[length(test)]]) # only true if no adjustments initially.
   expect_true(all(test$Value <= 1)) # should always be true.
@@ -75,7 +75,7 @@ test_that("weight_comps works for DM", {
                fleets = c(1,2)
                )
   dat <- r4ss::SS_readdat(file.path(scen_path_DM, "ss3.dat" ), verbose = FALSE)
-  ctl <- r4ss::SS_readctl(file.path(scen_path_DM, "codem.ctl"), verbose = FALSE,
+  ctl <- r4ss::SS_readctl(file.path(scen_path_DM, "codEM.ctl"), verbose = FALSE,
                           use_datlist = TRUE, datlist = dat)
   expect_true(!is.null(ctl[["dirichlet_parms"]]))
   comp_info <- rbind(dat$len_info, dat$age_info)
