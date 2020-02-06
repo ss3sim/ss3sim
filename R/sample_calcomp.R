@@ -335,8 +335,9 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
           if(length(tmp_ess) != length(tmp_yrs)) {
             stop("Dimensions of ESS_lengths is not compatible with other",
                  " arguments. For fleet ", fleets[flt], " years had length ",
-                 length(yrs), " and there were ", length(tmp_ess), "values ",
-                 "in ESS_lengths for the fleet, but it should have 1 or ", length(yrs),
+                 length(tmp_yrs), " and there were ", length(tmp_ess), "values ",
+                 "in ESS_lengths for the fleet, but it should have 1 or ",
+                 length(tmp_yrs),
                  "values.")
           }
           for(yr in seq_along(tmp_yrs)) {
@@ -384,8 +385,8 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
           if(length(tmp_ess) != length(tmp_yrs)) {
             stop("Dimensions of ESS_ages is not compatible with other",
                  " arguments. For fleet ", fleets[flt], " years had length ",
-                 length(yrs), " and there were ", length(tmp_ess), "values ",
-                 "in ESS_ages for the fleet, but it should have 1 or ", length(yrs),
+                 length(tmp_yrs), " and there were ", length(tmp_ess), "values ",
+                 "in ESS_ages for the fleet, but it should have 1 or ", length(tmp_yrs),
                  "values.")
           }
           for(yr in seq_along(tmp_yrs)) {

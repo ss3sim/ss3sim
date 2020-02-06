@@ -27,7 +27,9 @@
 #' @param hess_always If \code{TRUE} then the Hessian will always be calculated.
 #'  If \code{FALSE} then the Hessian will only be calculated for
 #'  bias-adjustment runs thereby saving time.
-#' @param fleets A vector of numeric values specifying which fleets you want to tune.
+#' @param fleets A vector of numeric values specifying which fleets you want to
+#'  tune.
+#' @param ... Anything else to pass to \code{\link{run_ss3model}}.
 weight_comps <- function(method = c("MI", "Francis", "DM"),
                          #dirbase = ".",
                          run = TRUE,

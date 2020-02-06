@@ -42,7 +42,10 @@ ss3sim.}
 If \code{FALSE} then the Hessian will only be calculated for
 bias-adjustment runs thereby saving time.}
 
-\item{fleets}{A vector of numeric values specifying which fleets you want to tune.}
+\item{fleets}{A vector of numeric values specifying which fleets you want to
+tune.}
+
+\item{...}{Anything else to pass to \code{\link{run_ss3model}}.}
 }
 \description{
 Weight age or length composition data in the Estimation model using a
