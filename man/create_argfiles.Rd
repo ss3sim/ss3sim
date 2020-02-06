@@ -6,11 +6,11 @@
 \usage{
 create_argfiles(
   functions = c(`lcomp0-spp` = "sample_lcomp", `agecomp0-spp` = "sample_agecomp",
-    `index0-spp` = "sample_index", `F0-spp` = "change_f", `R0-spp` = "change_retro",
-    `E0-spp` = "change_e", `X0-spp` = "change_tv"),
+    `index0-spp` = "sample_index", `calcomp0-spp` = "sample_calcomp", `F0-spp` =
+    "change_f", `R0-spp` = "change_retro", `E0-spp` = "change_e", `X0-spp` = "change_tv"),
   ext = ".txt",
   delim = "; ",
-  ignore = c("file", "dir", "make_plot"),
+  ignore = c("file", "dir", "make_plot", "dat", "exp_vals"),
   ...
 )
 }

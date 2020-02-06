@@ -22,6 +22,7 @@ ss3sim_base(
   em_dir,
   retro_params = NULL,
   data_params = NULL,
+  weight_comps_params = NULL,
   user_recdevs = NULL,
   user_recdevs_warn = TRUE,
   bias_adjust = FALSE,
@@ -80,6 +81,9 @@ use for the specified simulations.}
 
 \item{data_params}{A named list containing arguments for
 \code{\link{change_data}}.}
+
+\item{weight_comps_params}{A named list containing arguments for
+\code{\link{weight_comps}}.}
 
 \item{user_recdevs}{An optional matrix of recruitment deviations to replace
 the recruitment deviations built into the package. The columns represent
