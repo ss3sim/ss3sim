@@ -33,6 +33,8 @@
 #'   \code{\link{change_em_binning}}.
 #' @param data_params A named list containing arguments for
 #'   \code{\link{change_data}}.
+#' @param weight_comps_params A named list containing arguments for
+#'   \code{\link{weight_comps}}.
 #' @param om_dir The directory with the operating model you want to copy and use
 #'   for the specified simulations.
 #' @param em_dir The directory with the estimation model you want to copy and
@@ -163,7 +165,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   index_params, lcomp_params, agecomp_params, calcomp_params = NULL,
   wtatage_params = NULL, mlacomp_params = NULL, em_binning_params = NULL,
   estim_params = NULL, tv_params = NULL, operat_params = NULL, om_dir, em_dir,
-  retro_params = NULL, data_params = NULL,
+  retro_params = NULL, data_params = NULL, weight_comps_params = NULL,
   user_recdevs = NULL, user_recdevs_warn = TRUE,
   bias_adjust = FALSE, hess_always = FALSE,
   print_logfile = TRUE, sleep = 0, seed = 21,
@@ -548,15 +550,29 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         outfile = file.path(sc, i, "em", "em.ctl"),
         version = ss_version, overwrite = TRUE, verbose = FALSE)
       # Run the EM -------------------------------------------------------------
-      run_ss3model(scenarios = sc, iterations = i, type = "em",
-        hess = ifelse(bias_adjust, TRUE, hess_always), ...)
+      if(is.null(weight_comps_params)) {
+        run_ss3model(scenarios = sc, iterations = i, type = "em",
+          hess = ifelse(bias_adjust, TRUE, hess_always), ...)
+
+      } else {
+        final_weights <- weight_comps(method = weight_comps_params$method,
+                           niters_weighting = weight_comps_params$niters_weighting,
+                           fleets = weight_comps_params$fleets,
+                           run    = TRUE,
+                           bias_adjust = bias_adjust,
+                           hess_always = hess_always,
+                           scen = sc,
+                           iter = i)
+        #TODO: make sure this works with bias and with plotting
+      }
+
       success <- get_success(dir = file.path(sc, i, "em"))
 
       if(bias_adjust & all(success > 0)) {
         bias <- calculate_bias(dir = file.path(sc, i, "em"),
-          ctl_file_in = "em.ctl")
+                               ctl_file_in = "em.ctl")
         run_ss3model(scenarios = sc, iterations = i, type = "em",
-            hess = ifelse(bias_adjust, TRUE, hess_always), ...)
+                     hess = ifelse(bias_adjust, TRUE, hess_always), ...)
       }
 # Write log file ---------------------------------------------------------------
 # TODO pull the log file writing into a separate function and update
