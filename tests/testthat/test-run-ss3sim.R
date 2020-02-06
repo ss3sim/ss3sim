@@ -112,7 +112,7 @@ test_that("run_ss3sim runs with CAL data", {
       tmp_agecomp <- EM_datfile$agecomp[EM_datfile$agecomp$Yr == yr &
                                           EM_datfile$agecomp$FltSvy, ]
       tmp_agecomp <- tmp_agecomp[tmp_agecomp$Lbin_lo != -1, ]
-      expect_equivalent(sum(tmp_agecomp$Nsamp),  calcomp_args$Nsamp_ages[[1]])
+      expect_equivalent(sum(tmp_agecomp$Nsamp),  calcomp_args$ESS_ages[[1]])
     }
   }
 })
