@@ -101,23 +101,48 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
                            method = "simple_random", ESS_lengths = NULL,
                            ESS_ages = NULL,
                            lcomps_sampled = FALSE) {
-
   #TODO: add in length_stratified
+
     method <- match.arg(arg = method, choices = c("simple_random"))
-    ## The samples are taken from the expected values, where the
-    ## age-at-length data is in the age matrix but has a -1 for Lbin_lo and
-    ## Lbin_hi, so subset those out, but don't delete the age values since
-    ## those are already sampled from, or might be sampled later so need to
-    ## leave them there.
+    ## A value of NULL for fleets indicates not to sample and strip out the
+    ## CAL data from the file.
+    # Divide up age comp into marginal and CAL; we will only be sampling from
+    # cal in this function, but want to retain the marginal age comps.
+    agecomp.age <- dat_list$agecomp[dat_list$agecomp$Lbin_lo== -1,] # marginal
+    agecomp.cal <- dat_list$agecomp[dat_list$agecomp$Lbin_lo != -1,] # CAL
+    lbin_vector <- dat_list$lbin_vector # This is the vector of data length bins
+    newfile <- dat_list
+    if(is.null(fleets)){
+      newfile$agecomp <- agecomp.age # only leave in maraginal age comps
+      if(!is.null(outfile)){
+        SS_writedat(datlist = newfile, outfile = outfile, version = ss_version,
+                    overwrite = TRUE, verbose=FALSE)
+      }
+      return(invisible(newfile))
+    }
+    # input checks and standardize the arg dimensions
+    years <- standardize_sampling_args(fleets = fleets, years = years,
+                                       other_input = Nsamp_lengths,
+                                       return_val = "years",
+                                       other_input_name = "Nsamp_lengths")
+    Nsamp_lengths <- standardize_sampling_args(fleets = fleets,years = years,
+                                               other_input = Nsamp_lengths,
+                                               other_input_name = "Nsamp_lengths")
+    Nsamp_ages <- standardize_sampling_args(fleets = fleets,years = years,
+                                            other_input = Nsamp_ages,
+                                            other_input_name = "Nsamp_ages")
+    if(!is.null(ESS_lengths)) {
+    ESS_lengths <- standardize_sampling_args(fleets = fleets,years = years,
+                                             other_input = ESS_lengths,
+                                             other_input_name = "ESS_lengths")
+    }
+    if(!is.null(ESS_ages)) {
+    ESS_ages <- standardize_sampling_args(fleets = fleets, years = years,
+                                          other_input = ESS_ages,
+                                          other_input_name = "ESS_ages")
+    }
     ## Input checks
     Nfleets <- NROW(fleets)
-    if (Nfleets>0){
-        for(i in seq_len(Nfleets)) {
-            if(length(Nsamp_ages[[i]])>1 & length(Nsamp_ages[[i]]) != length(years[[i]]))
-                stop(paste0("Length of Nsamp_ages does not match length of years for",
-                  "fleet ",fleets[i]))
-        }
-    }
     check_data(dat_list)
 
     # Get necessary values
@@ -127,22 +152,8 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
     } else {
       lencomp_marginal <- NULL
     }
-    # Divide up age comp into marginal and CAL; we will only be sampling from
-    # cal in this function, but want to retain the marginal age comps.
-    agecomp.age <- dat_list$agecomp[dat_list$agecomp$Lbin_lo== -1,] # marginal
-    agecomp.cal <- dat_list$agecomp[dat_list$agecomp$Lbin_lo != -1,] # CAL
-    lbin_vector <- dat_list$lbin_vector # This is the vector of data length bins
-    newfile <- dat_list
-    ## A value of NULL for fleets indicates not to sample and strip out the
-    ## CAL data from the file.
-    if(is.null(fleets)){
-        newfile$agecomp <- agecomp.age # only leave in maraginal age comps
-        if(!is.null(outfile)){
-          SS_writedat(datlist = newfile, outfile = outfile, version = ss_version,
-                      overwrite = TRUE, verbose=FALSE)
-        }
-        return(invisible(newfile))
-    }
+
+
     ## If not, do additional argument checks
     if(nrow(agecomp.cal)==0) { #TODO: maybe turn this into a warning instead?
         stop("No conditional age-at-length expected values found")
@@ -156,10 +167,6 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
       stop("A fleet specified in fleets was not found in the fleets in len ",
            "comps for exp_vals_list.")
     }
-    if(class(years) != "list" | length(years) != Nfleets)
-        stop("years needs to be a list of same length as fleets")
-    # check that Lbin_lo and Lbin_hi are the same for all CAL data. This is
-    # a requirement of how the function is currently written
     if(!all(agecomp.cal$Lbin_lo == agecomp.cal$Lbin_hi)) {
       stop("In order to use sample_calcomp, for each row of conditional age at",
            " length data, Lbin_lo must equal Lbin_hi. Currently, this is not ",
@@ -320,34 +327,18 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
     # Effective sample sizes ----
     # length
     if(!is.null(ESS_lengths)) {
-      if(!length(ESS_lengths) %in% c(1,length(fleets))) {
-        stop("Dimensions of ESS_lengths is not compatible with other",
-             " arguments.")
-      }
-      if(length(unlist(ESS_lengths)) == 1) {
-        CAL_lencomp[, "Nsamp"] <- unlist(ESS_lengths)
-      } else {
         #match up with each year and fleet
-        for(flt in seq_along(fleets)) {
-          tmp_yrs <- years[[flt]]
-          tmp_ess <- ESS_lengths[[flt]]
-          if(length(tmp_ess) == 1) tmp_ess <- rep(tmp_ess, times = length(tmp_yrs))
-          if(length(tmp_ess) != length(tmp_yrs)) {
-            stop("Dimensions of ESS_lengths is not compatible with other",
-                 " arguments. For fleet ", fleets[flt], " years had length ",
-                 length(tmp_yrs), " and there were ", length(tmp_ess), "values ",
-                 "in ESS_lengths for the fleet, but it should have 1 or ",
-                 length(tmp_yrs),
-                 "values.")
-          }
-          for(yr in seq_along(tmp_yrs)) {
-            CAL_lencomp[CAL_lencomp$FltSvy == flt &
-                        CAL_lencomp$Yr == tmp_yrs[yr], "Nsamp"] <-
-              tmp_ess[yr]
+      for(flt in seq_along(fleets)) {
+        tmp_yrs <- years[[flt]]
+        tmp_ess <- ESS_lengths[[flt]]
+        for(yr in seq_along(tmp_yrs)) {
+          CAL_lencomp[CAL_lencomp$FltSvy == flt &
+                      CAL_lencomp$Yr == tmp_yrs[yr], "Nsamp"] <-
+            tmp_ess[yr]
           }
         }
       }
-    }
+    #}
     # ages?
     # maybe it would be better to have 2 parameters for this?
     # ESS_ages_proportion Which will divide it up
@@ -357,10 +348,6 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
     # ESS_ages which divides up the same as Nsamp_ages. Can modify this to be
     # more flexible in the future.
     if(!is.null(ESS_ages)) {
-      if(!length(ESS_ages) %in% c(1,length(fleets))) {
-        stop("Dimensions of ESS_ages is not compatible with other",
-             " arguments.")
-      }
       if(length(unlist(ESS_ages)) == 1) {
         dat_combos <- unique(newcomp.final[, c("Yr", "FltSvy")])
         for(dc in seq_len(nrow(dat_combos))) {
@@ -410,7 +397,6 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
     } else {
       newfile[["lencomp"]] <- CAL_lencomp
     }
-
     #age comps
     if(NROW(agecomp.age) > 0 & NROW(newcomp.final) > 0) {
       newfile[["agecomp"]] <- rbind(agecomp.age, newcomp.final)
@@ -424,7 +410,6 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
     if(NROW(agecomp.age) == 0 & NROW(newcomp.final) == 0) {
       newfile[["agecomp"]] <- NULL
     }
-
     ## Write the modified file
     if (!is.null(outfile)){
       r4ss::SS_writedat(datlist = newfile, outfile = outfile,

@@ -336,7 +336,7 @@ expect_error(sample_calcomp(exp_dat,
                             Nsamp_ages = list(10),
                             ESS_lengths = list(30,1),
                             ESS_ages = list(20)),
-             "Dimensions of ESS_lengths is not compatible with other arguments",
+             "ESS_lengths did not have the correct dimensions",
              fixed = TRUE)
 expect_error(sample_calcomp(exp_dat,
                             exp_dat,
@@ -346,7 +346,7 @@ expect_error(sample_calcomp(exp_dat,
                             Nsamp_ages = list(10),
                             ESS_lengths = list(30),
                             ESS_ages = list(20,1)),
-             "Dimensions of ESS_ages is not compatible with other arguments",
+             "ESS_ages did not have the correct dimensions",
              fixed = TRUE)
 # try using different bins where Lbin_lo and Lbin_hi are not equal. Note that
 # this cannot be done the way the sample_calcomp function is currently written.
