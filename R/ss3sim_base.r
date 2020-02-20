@@ -179,7 +179,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   # Probably sufficient to just warn if not structured correctly. Some things
   # to check:
   # - no .par file and .par file not used in the starter file
-  # -  q included for all fleets (i.e., fishing and surveys).
   # - Anything else?
 
   for(sc in scenarios) {
@@ -279,37 +278,17 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       datfile.modified <- clean_data(dat_list = datfile.orig,
         index_params = index_params, verbose = FALSE) # why only index_params called here?
 
-      # check qs are correct.
-      qpars_OM <- r4ss::SS_parlines(file.path(sc,i, "om", "om.ctl"))
-      qpars_OM <- qpars_OM[grep("^LnQ", qpars_OM$Label), ]
-      qinOM <- utils::type.convert(gsub("[a-zA-Z\\(\\)_]", "", qpars_OM$Label))
-      #TODO: can get rid of this check if it is done earlier on the original
-      # EM and OM files read in.
-      if (any(!(index_params$fleets %in% qinOM))) {
-        stop("There are user-selected fleets with indices that do not have q ",
-             "parameters specified in the OM. User selected fleets: ",
-             paste(index_params$fleets, collapse = ", "),
-             "; fleets with q in OM control file: ", paste(qinOM, collapse = ", "),
-             ". Please make sure your OM control file includes q parameters ",
-             "for every fleet that may have an index."
-        )
-      }
-      # Remove q setup lines and parlines for fleets that aren't being used as
-      # an index of abundance. TODO: perhaps make into a function?
-      remove_fleetnames <- datfile.orig$fleetnames[-index_params$fleets]
-      # get list of remove_fleetnames
-      # first param is fleetnames to remove
-
-      if(length(remove_fleetnames) > 0) {
-        tmp_ctl <- readLines(file.path(sc,i, "om", "om.ctl"))
-        for(n in remove_fleetnames) {
-          tmp_ctl <- remove_q_ctl(n, ctl.in = tmp_ctl, filename = FALSE,
-                              ctl.out = NULL)
-        }
-        # write here rather than in function to reduce number of times writing
-        # to file.
-        writeLines(tmp_ctl, file.path(sc,i, "om", "om.ctl"))
-      }
+      # check q OM values are correct.
+      ctlom <- r4ss::SS_readctl(file = file.path(sc,i, "om", "om.ctl"),
+        use_datlist = TRUE, datlist = datfile.orig,
+        verbose = FALSE, echoall = FALSE)
+      qtasks <- check_q(ctl_list = ctlom, Nfleets = datfile.orig$Nfleets,
+        desiredfleets = index_params$fleets)
+      ctlom <- change_q(string_add = qtasks$add, string_remove = qtasks$remove,
+        overwrite = TRUE,
+        ctl_file_in = file.path(sc,i, "om", "om.ctl"),
+        ctl_list = NULL, dat_list = datfile.modified,
+        ctl_file_out = file.path(sc,i, "om", "om.ctl"))
 
       data_params <- add_nulls(data_params, c("age_bins", "len_bins",
         "pop_binwidth", "pop_minimum_size", "pop_maximum_size",
@@ -475,7 +454,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                           retro_yr        = retro_yr))
       }
 
-	    ## Now change the binning structure in the EM ss3.dat file as needed
+      ## Now change the binning structure in the EM ss3.dat file as needed
       if (!is.null(em_binning_params$lbin_method)) {
           em_binning_params <- add_nulls(em_binning_params,
             c("lbin_method", "bin_vector", "pop_binwidth",
@@ -514,27 +493,20 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         setwd(wd)
       }
 
-      #TODO: Perhaps removing the q could be moved to change_e, because
-      # it is changing something in the estimation model?
-      qpars <- r4ss::SS_parlines(file.path(sc, i, "em", "em.ctl"))
-      qpars <- qpars[grep("^LnQ", qpars$Label), ]
-      qinmodel <- utils::type.convert(gsub("[a-zA-Z\\(\\)_]", "", qpars$Label))
-      for (irem in qinmodel) {
-        if (irem %in% unique(datfile.modified$CPUE$index)) next
-          remove_q_ctl(irem,
-            ctl.in = file.path(sc, i, "em", "em.ctl"),
-            ctl.out = file.path(sc, i, "em", "em.ctl"),
-            overwrite = TRUE)
-      }
-      #TODO: can get rid of this check if it is done earlier on the original
-      # EM and OM files read in.
-      if (any(!unique(datfile.modified$CPUE$index) %in% qinmodel)) {
-        stop("Add q parameters to your EM for all fleets with an index.")
-      }
+      # check q EM values are correct.
+      ctlem <- r4ss::SS_readctl(file = file.path(sc,i, "em", "em.ctl"),
+        use_datlist = TRUE, datlist = datfile.orig,
+        verbose = FALSE, echoall = FALSE)
+      qtasks <- check_q(ctl_list = ctlem, Nfleets = datfile.orig$Nfleets,
+        desiredfleets = index_params$fleets)
+      ctl_list <- change_q(string_add = qtasks$add, string_remove = qtasks$remove,
+        overwrite = TRUE,
+        ctl_file_in = file.path(sc,i, "em", "em.ctl"),
+        ctl_list = NULL, dat_list = datfile.modified,
+        ctl_file_out = NULL)
 
       ss_version <- get_ss_ver_dl(dat_list)
-      ctl_list <- r4ss::SS_readctl(file.path(sc, i, "em", "em.ctl"),
-        use_datlist = TRUE, datlist = dat_list, verbose = FALSE)
+
       newlists <- change_year(dat_list, ctl_list)
       SS_writedat(datlist = newlists$dat_list,
         outfile = file.path(sc, i, "em", "ss3.dat"),
