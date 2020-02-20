@@ -297,19 +297,18 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # Remove q setup lines and parlines for fleets that aren't being used as
       # an index of abundance. TODO: perhaps make into a function?
       remove_fleetnames <- datfile.orig$fleetnames[-index_params$fleets]
-      # get list of remove_fleetnames
-      # first param is fleetnames to remove
-
-      if(length(remove_fleetnames) > 0) {
-        tmp_ctl <- readLines(file.path(sc,i, "om", "om.ctl"))
-        for(n in remove_fleetnames) {
-          tmp_ctl <- remove_q_ctl(n, ctl.in = tmp_ctl, filename = FALSE,
-                              ctl.out = NULL)
-        }
-        # write here rather than in function to reduce number of times writing
-        # to file.
-        writeLines(tmp_ctl, file.path(sc,i, "om", "om.ctl"))
-      }
+      omctlx <- r4ss::SS_readctl(file.path(sc,i, "om", "om.ctl"),
+        use_datlist = TRUE, datlist = datfile.modified,
+        verbose = FALSE, echoall = FALSE)
+      omctlx$Q_setup$extra_se <- 0
+      omctlx$Q_setup$Q_type <- 0
+      omctlx$Q_setup$Q_type[index_params$fleets] <- 2
+      omctlx$Q_options <- omctlx$Q_options[omctlx$Q_options$fleet %in% index_params$fleets, ]
+      omctlx$Q_parms <- omctlx$Q_parms[
+        mapply(grep, paste0("\\(", index_params$fleets), "\\)",
+        MoreArgs = list(x = rownames(omctlx$Q_parms))), ]
+      r4ss::SS_writectl(omctlx,
+        file.path(sc,i, "om", "om.ctl"), verbose = FALSE, overwrite = TRUE)
 
       data_params <- add_nulls(data_params, c("age_bins", "len_bins",
         "pop_binwidth", "pop_minimum_size", "pop_maximum_size",
