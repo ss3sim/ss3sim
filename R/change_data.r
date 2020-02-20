@@ -173,6 +173,7 @@ change_data <- function(dat_list, outfile = NULL, fleets, years, types,
     dat_list$MeanSize_at_Age_obs <- make_dummy_dat_mlacomp(fleets = fleets,
                                       years = years, age_bins = age_bins)
     dat_list$N_MeanSize_at_Age_obs <- nrow(dat_list$MeanSize_at_Age_obs)
+    dat_list$use_MeanSize_at_Age_obs <- 1
   }
 
   if(!is.null(lcomp_constant)) {
