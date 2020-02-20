@@ -82,22 +82,11 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
     ss_version <- get_ss_ver_file(ctl_file_in)
     ctl <-SS_parlines(ctl_file_in, version = ss_version)
     ## Read in the file and grab the expected values
-    wta_file_in <- readLines(wta_file_in)
-
-    ## Remove double spaces, which SS3 writes in the 7th column
-    wta_file_in <- gsub("  ", replacement=" ", x=wta_file_in)
-    xx <- grep(x=wta_file_in, "#yr seas gender growpattern birthseas fleet")
-    if(length(xx)!=1) stop("Failed to read in wtatage file")
-    header <- unlist(strsplit(wta_file_in[xx], " "))
-    header[-(1:6)] <- paste("age",header[-(1:6)],sep="")
-    ## It appears the first three lines need to be there for some
-    ## reason. ****TODO Peter****: fix this if need be??
-
-    wtatage <- wta_file_in[(xx+1):length(wta_file_in)]
-    wtatage <-  as.data.frame(matrix(as.numeric(unlist(strsplit(wtatage, split=" "))),
-                                     nrow=length(wtatage), byrow=TRUE))
-    names(wtatage) <- gsub("#", replacement="", x=header)
+    wtatage <- r4ss::SS_readwtatage(wta_file_in, verbose = FALSE)
+    colnames(wtatage) <- tolower(colnames(wtatage))
+    colnames(wtatage) <- gsub("([0-9]+)", "age\\1", colnames(wtatage))
     wtatage$yr <- abs(wtatage$yr)
+    # Not sure what this if is for
     if(2 %in% unique(wtatage$fleet) == FALSE){
         ones <- wtatage[wtatage$fleet == 1, ]
         twos <- ones
