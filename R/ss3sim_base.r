@@ -512,6 +512,9 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                   forecast_num         = forecast_num))
         setwd(wd)
       }
+      if (!"msa" %in% data_args$types) {
+        dat_list$use_MeanSize_at_Age_obs <- 0
+      }
 
       #TODO: Perhaps removing the q could be moved to change_e, because
       # it is changing something in the estimation model?
