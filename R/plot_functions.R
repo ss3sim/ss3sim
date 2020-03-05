@@ -44,13 +44,14 @@ plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' @export
 #' @import ggplot2
 #' @template plot-functions-x
+#' @param fill A string. Color for filling the boxplots
 #' @examples
 #' scalar_dat$depletion <- with(scalar_dat,
 #'   (depletion_om - depletion_em) / depletion_om)
 #' plot_scalar_boxplot(scalar_dat, x = "E", y = "depletion", horiz = "D",
 #'   relative.error = TRUE)
 plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
-  vert=NULL, vert2=NULL, relative.error=FALSE, axes.free=TRUE, print=TRUE) {
+  vert=NULL, vert2=NULL, fill = "none", relative.error=FALSE, axes.free=TRUE, print=TRUE) {
     ## Verify the inputs are correct, throws informative error if not
     verify_plot_arguments(data = data, x = x, y = y, horiz = horiz,
       horiz2 = horiz2, vert = vert, vert2 = vert2, color = NULL,
@@ -63,8 +64,8 @@ plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
     }
     ## Use helper function to build formula for facet_grid
     form <- facet_form(horiz, horiz2, vert, vert2)
-    g <- g+geom_boxplot(aes_string(x=x,y=y), size=.2, outlier.size=1,
-                        outlier.colour=rgb(0,0,0,.5))
+    g <- g+geom_boxplot(aes_string(x=x,y=y), fill = fill, size=.2,
+                        outlier.size=1, outlier.colour=rgb(0,0,0,.5))
     if(!is.null(form))
         g <- g + facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))
         if(print) print(g)
@@ -73,6 +74,7 @@ plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #' Plot timeseries values as boxplots.
 #'
 #' @template plot-functions
+#' @param fill A string. Color for filling the boxplots
 #' @export
 #' @import ggplot2
 #' @examples
@@ -84,7 +86,8 @@ plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #'   relative.error = TRUE)
 #' }
 plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
-  vert2=NULL, relative.error=FALSE, axes.free=TRUE, print=TRUE) {
+                            fill = "none", vert2=NULL, relative.error=FALSE,
+                            axes.free=TRUE, print=TRUE) {
     ## Verify the inputs are correct, throws informative error if not
     verify_plot_arguments(data = data, x = NULL, y = y, horiz = horiz,
       horiz2 = horiz2, vert = vert, vert2 = vert2, color = NULL,
@@ -97,7 +100,7 @@ plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
     }
     ## Use helper function to build formula for facet_grid
     form <- facet_form(horiz, horiz2, vert, vert2)
-    g <- g+geom_boxplot(aes_string(y=y,group="year"),
+    g <- g+geom_boxplot(aes_string(y=y,group="year"), fill = fill,
                         outlier.colour=rgb(0,0,0,.3),  lwd=.3,
                         outlier.size=.8, fatten=3)
     if(!is.null(form))
