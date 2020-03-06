@@ -187,6 +187,55 @@ plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
     return(invisible(g))
 }
 
+
+#' Make a cumulative mean plot for a parameter
+#'
+#' @param data A valid data frame containing scalar or timeseries values
+#'  from a \pkg{ss3sim} simulation. That data are generated from
+#'  \code{\link{get_results_all}}.
+#' @param par The column name of the parameter in data of which to plot
+#'  cumulative mean. A string.
+#' @param order_var A column to order the data before calculating the cumulative
+#'  mean
+#' @param group A column in data to group the data together before calculating
+#'  the cumulative mean
+#' @param use_facet Should the group be used to create facets? If TRUE, facets
+#'  are created; If FALSE, grouping will be done by making different color lines
+#'  in the same plot.
+#' @return A list containing the ggplot object and the data used to make it
+plot_cummean <- function(data, var, order_var = "iteration", group = NULL,
+                         use_facet = TRUE) {
+  # Manipulate the data
+  data <- data[, c(order_var, group, var)] # select cols
+  data <- data[order(data[, order_var]), ]   # arrange
+  # group and calculate cumsum
+  if(!is.null(group)){
+  group_vals <- unique(data[, group])
+  } else {
+    group_vals <- NULL
+  }
+  #TODO: need to make sure this works with no grouping variable.
+  data_list <- lapply(group_vals, function(val, data, group, var) {
+                  tmp_dat <- data[data[, group] == val, ]
+                  cum_mean_col <- cumsum(tmp_dat[, var])/seq_along(tmp_dat[,var])
+                  tmp_dat$cummean <- cum_mean_col
+                  tmp_dat
+  }, data = data, group = group, var = var)
+  new_data <- do.call("rbind", data_list)
+  g <- ggplot(data = new_data, aes_string(x = order_var, y = "cummean"))
+  if(use_facet) {
+    g <- g +
+           geom_line() +
+           geom_point() +
+           facet_wrap(group)
+  } else {
+    g <- g +
+           geom_line(aes_string(color = group))+
+           geom_point(aes_string(color = group))
+  }
+  return_list <- list(plot = g, data = new_data)
+}
+
 #' A helper function for building a ggplot facet. Used internally by the
 #' plotting functions.
 #'
