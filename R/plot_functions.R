@@ -193,7 +193,7 @@ plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' @param data A valid data frame containing scalar or timeseries values
 #'  from a \pkg{ss3sim} simulation. That data are generated from
 #'  \code{\link{get_results_all}}.
-#' @param par The column name of the parameter in data of which to plot
+#' @param var The column name of the parameter in data of which to plot
 #'  cumulative mean. A string.
 #' @param order_var A column to order the data before calculating the cumulative
 #'  mean
@@ -202,9 +202,30 @@ plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' @param use_facet Should the group be used to create facets? If TRUE, facets
 #'  are created; If FALSE, grouping will be done by making different color lines
 #'  in the same plot.
+#' @export
+#' @import ggplot2
 #' @return A list containing the ggplot object and the data used to make it
+#' @examples
+#' data("scalar_dat", package = "ss3sim")
+#' obj <- plot_cummean(scalar_dat,
+#'                     "VonBert_K_Fem_GP_1_em",
+#'                     group = "scenario",
+#'                     use_facet = TRUE)
+#' obj$plot
+#' obj$data
+#' # group can also be left NULL if only plotting a single scenario.
+#' # it is recommended to set use_facet FALSE in this case.
+#' scen_to_use <- unique(scalar_dat$scenario)[1]
+#' scalar_dat_1_scen <- scalar_dat[scalar_dat$scanario == scen_to_use, ]
+#' obj2 <- plot_cummean(scalar_dat_1_scen,
+#'                      var = "VonBert_K_Fem_GP_1_em",
+#'                      group = NULL,
+#'                      use_facet = FALSE)
+#' obj2$plot
+#' obj2$data
+#'
 plot_cummean <- function(data, var, order_var = "iteration", group = NULL,
-                         use_facet = TRUE) {
+                         use_facet = FALSE) {
   # Manipulate the data
   data <- data[, c(order_var, group, var)] # select cols
   data <- data[order(data[, order_var]), ]   # arrange
@@ -212,7 +233,9 @@ plot_cummean <- function(data, var, order_var = "iteration", group = NULL,
   if(!is.null(group)){
   group_vals <- unique(data[, group])
   } else {
-    group_vals <- NULL
+    group <- "dummy_val"
+    data$dummy_val <- rep("group", times = nrow(data))
+    group_vals <- "group"
   }
   #TODO: need to make sure this works with no grouping variable.
   data_list <- lapply(group_vals, function(val, data, group, var) {
@@ -222,6 +245,10 @@ plot_cummean <- function(data, var, order_var = "iteration", group = NULL,
                   tmp_dat
   }, data = data, group = group, var = var)
   new_data <- do.call("rbind", data_list)
+  if(group == "dummy_val") {
+    new_data <-  new_data[,(colnames(new_data) != "dummy_val")]
+    group <- NULL
+  }
   g <- ggplot(data = new_data, aes_string(x = order_var, y = "cummean"))
   if(use_facet) {
     g <- g +
