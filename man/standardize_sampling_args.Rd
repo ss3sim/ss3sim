@@ -26,9 +26,10 @@ within years.}
 
 \item{return_val}{If "other_input", return the manipulated other_input value;
 if "years", return the manipulated year input. If "both" return both as list
-components
-@param other_input_name Only necessary if "both" is used as the return
- value}
+components}
+
+\item{other_input_name}{Only necessary if "both" is used as the return
+value}
 }
 \description{
 Function to check and standardize list components of sampling functions

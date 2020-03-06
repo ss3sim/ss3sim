@@ -233,8 +233,9 @@ substr_r <- function(x, n){
 #' @param return_val If "other_input", return the manipulated other_input value;
 #'  if "years", return the manipulated year input. If "both" return both as list
 #'  components
-#'  @param other_input_name Only necessary if "both" is used as the return
+#' @param other_input_name Only necessary if "both" is used as the return
 #'   value
+#'
 standardize_sampling_args <- function(fleets, years, other_input, return_val = "other_input", other_input_name = "other_input") {
   # function input checks
   if(!return_val %in% c("other_input", "years","both")) {
