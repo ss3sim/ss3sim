@@ -10,7 +10,7 @@ plot_ts_boxplot(
   horiz = NULL,
   horiz2 = NULL,
   vert = NULL,
-  fill = "none",
+  fill = NA,
   vert2 = NULL,
   relative.error = FALSE,
   axes.free = TRUE,

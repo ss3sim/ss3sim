@@ -12,7 +12,7 @@ plot_scalar_boxplot(
   horiz2 = NULL,
   vert = NULL,
   vert2 = NULL,
-  fill = "none",
+  fill = NA,
   relative.error = FALSE,
   axes.free = TRUE,
   print = TRUE

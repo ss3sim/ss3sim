@@ -51,7 +51,7 @@ plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' plot_scalar_boxplot(scalar_dat, x = "E", y = "depletion", horiz = "D",
 #'   relative.error = TRUE)
 plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
-  vert=NULL, vert2=NULL, fill = "none", relative.error=FALSE, axes.free=TRUE, print=TRUE) {
+  vert=NULL, vert2=NULL, fill = NA, relative.error=FALSE, axes.free=TRUE, print=TRUE) {
     ## Verify the inputs are correct, throws informative error if not
     verify_plot_arguments(data = data, x = x, y = y, horiz = horiz,
       horiz2 = horiz2, vert = vert, vert2 = vert2, color = NULL,
@@ -86,7 +86,7 @@ plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #'   relative.error = TRUE)
 #' }
 plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
-                            fill = "none", vert2=NULL, relative.error=FALSE,
+                            fill = NA, vert2=NULL, relative.error=FALSE,
                             axes.free=TRUE, print=TRUE) {
     ## Verify the inputs are correct, throws informative error if not
     verify_plot_arguments(data = data, x = NULL, y = y, horiz = horiz,
