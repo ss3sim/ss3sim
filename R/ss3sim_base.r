@@ -405,7 +405,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
               wtatage_option <- strsplit(tmp_ctl[wtatage_line], " ")[[1]]
               wtatage_option[1] <- 1
               tmp_ctl[wtatage_line] <- paste(wtatage_option, collapse = " ")
-              writeLines(file.path(sc, i, "em", "em.ctl"))
+              writeLines(tmp_ctl, file.path(sc, i, "em", "em.ctl"))
               #sample wtatage.
               with(wtatage_params,
                    sample_wtatage(wta_file_in = file.path(sc, i, "om", "wtatage.ss_new"),
@@ -474,7 +474,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                           retro_yr        = retro_yr))
       }
 
-	    ## Now change the binning structure in the EM ss3.dat file as needed
+      ## Now change the binning structure in the EM ss3.dat file as needed
       if (!is.null(em_binning_params$lbin_method)) {
           em_binning_params <- add_nulls(em_binning_params,
             c("lbin_method", "bin_vector", "pop_binwidth",
