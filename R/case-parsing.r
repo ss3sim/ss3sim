@@ -156,9 +156,9 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
   args_out2 <- unlist(args_out)
   names(args_out2) <- unlist(case_files)
   argvalues_out <- lapply(args_out2, function(x) get_args(file.path(folder, x)))
-
   # now, check for all "function_type = change_tv" and concatenate these
   # into a list to pass to change_param()
+
   change_param_args <- sapply(argvalues_out, function(x) {
     if ("function_type" %in% names(x)) {
       if (x$function_type == "change_tv") {
@@ -178,8 +178,29 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
     change_param_args_short <- NULL
   }
 
+
   # remove time varying elements from argvalues_out:
   argvalues_out <- argvalues_out[which(args_null)]
+  # remove weight_comps values also, b/c don't expect them to match the
+  # same function names. Maybe make its own check to check inputs.
+  which_not_wt <- lapply(argvalues_out, function(x) {
+    if(is.null(x[["function_type"]])) {
+      r <- TRUE
+    } else if(x[["function_type"]] == "weight_comps"){
+      r <- FALSE
+    } else {
+      r <- TRUE
+    }
+    r
+  })
+  which_not_wt <- unlist(which_not_wt)
+  weight_comps_params <- argvalues_out[(!which_not_wt)]
+  if(length(weight_comps_params) > 1) {
+    stop("Multiple cases have function type = 'weight_comps', but there should",
+         "only be 1 case with this function type.")
+  }
+  argvalues_out <- argvalues_out[which_not_wt]
+
 
   # test that all specified arguments match function arguments:
   for (i in seq_along(argvalues_out)) {
@@ -204,8 +225,50 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
     }
   }
 
-  # and concatenate on the time varying arguments
-  c(argvalues_out, list(tv_params = change_param_args_short))
+  # check weight_comps_params
+  if(length(weight_comps_params) == 1) {
+    fxn_name <- "weight_comps"
+    fxn_formals <- tryCatch(names(formals(fxn_name)),
+                            error = function(e) "")
+    wc_to_check <- weight_comps_params[[1]][which(names(weight_comps_params[[1]]) != "function_type")]
+    matches <- names(wc_to_check) %in% fxn_formals
+    if (sum(matches) != length(matches)) {
+      stop(paste(names(weight_comps_params[[1]])[!matches],
+                 "is not an argument in the function ", fxn_name, ".\n"))
+    }
+  }
+  # and concatenate on the time varying arguments, weight comps arguments
+  argvalues_out <- c(argvalues_out, list(tv_params = change_param_args_short))
+  argvalues_out <- c(argvalues_out, weight_comps_params)
+}
+
+#' return the weight_comps args
+#'
+#' @param args List of args created by \code{get_caseargs()}.
+get_weight_comps_args <- function(args) {
+  # same function names. Maybe make its own check to check inputs.
+  which_wt <- lapply(args, function(x) {
+    if(is.null(x[["function_type"]])) {
+      r <- FALSE
+    } else if(x[["function_type"]] == "weight_comps"){
+      r <- TRUE
+    } else {
+      r <- FALSE
+    }
+    r
+  })
+  which_wt <- unlist(which_wt)
+  if(any(which_wt == TRUE)) {
+    weight_comps_params <- args[(which_wt)]
+    if(length(weight_comps_params) > 1) {
+      stop("Multiple cases have function type = 'weight_comps', but there should",
+         "only be 1 case with this function type.")
+    }
+    weight_comps_params <- weight_comps_params[[1]]
+  } else {
+    weight_comps_params <- NULL
+  }
+  weight_comps_params
 }
 
 #' Substring from right

@@ -19,6 +19,7 @@ em <- file.path(d, "models", "cod-em")
 case_folder <- file.path(d, "eg-cases")
 
 
+
 test_that("A basic run_ss3sim scenario runs and existing iteration skipped", {
   skip_on_cran()
   suppressWarnings(run_ss3sim(iterations = 1, scenarios = "D0-F0-cod",
@@ -137,6 +138,31 @@ test_that("run_ss3sim runs for a complex scenario", {
 })
 unlink("F1-D0-M0-E0-O0-cod", recursive = TRUE)
 
+# only run this test locally, b/c  only uses an extra feature
+test_that("run_ss3sim runs with data weighting", {
+  skip_on_cran()
+  skip_on_travis()
+  skip_on_appveyor()
+  scen <- "F1-D1-W0-cod"
+  run_ss3sim(iterations  = 1,
+             scenarios = scen,
+             case_folder = file.path(d, "eg-cases"),
+             om_dir = om,
+             em_dir = em,
+             case_files = list(F = "F",
+                               D = c("index", "agecomp", "lcomp"),
+                               W = "W")
+  )
+
+  DW_dat <- r4ss::SS_readdat(file.path("F1-D1-W0-cod", "1", "em", "ss3.dat"), verbose = FALSE)
+
+  DW_ctl <- r4ss::SS_readctl(file.path("F1-D1-W0-cod", "1", "em", "em.ctl"), use_datlist = TRUE,
+                             datlist = DW_dat, verbose = FALSE)
+  expect_true(DW_ctl$DoVar_adjust == 1)
+  expect_true(all(DW_ctl$Variance_adjustment_list$Factor %in% c(4,5)))
+})
+unlink(file.path("F1-D1-W0-cod"), recursive = TRUE)
+
 case_files <- list(F = "F", D = c("index", "lcomp", "agecomp"), E = "E")
 test_that("A basic run_ss3sim scenario with forecasting runs", {
   skip_on_cran()
@@ -159,3 +185,5 @@ test_that("A basic run_ss3sim scenario with forecasting runs", {
   unlink("ss3sim_*", recursive = TRUE) # clean up
 })
 unlink("D0-E102-F0-cod", recursive = TRUE) # clean up
+
+
