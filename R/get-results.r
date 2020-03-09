@@ -514,6 +514,25 @@ get_results_scalar <- function(report.file){
     if(length(effort.index)>0) pars <- pars[,-effort.index]
     names(pars) <- gsub("\\(","_", names(pars))
     names(pars) <- gsub("\\)","", names(pars))
+    #get the comps variables
+    if(nrow(report.file[["Length_comp_Eff_N_tuning_check"]]) > 0) {
+      len_comp_tuning <- data.frame(t(report.file$Length_comp_Eff_N_tuning_check$Curr_Var_Adj))
+      colnames(len_comp_tuning) <-
+        paste0("Curr_Var_Adj_lcomp_flt_",
+               report.file$Length_comp_Eff_N_tuning_check$Fleet, "_",
+               report.file$Length_comp_Eff_N_tuning_check$Fleet_name)
+    } else {
+      len_comp_tuning <- data.frame(matrix(nrow = 1, ncol = 0))
+    }
+    if(nrow(report.file[["Age_comp_Eff_N_tuning_check"]]) > 0) {
+      age_comp_tuning <- data.frame(t(report.file$Age_comp_Eff_N_tuning_check$Curr_Var_Adj))
+      colnames(age_comp_tuning) <-
+        paste0("Curr_Var_Adj_agecomp_flt_",
+               report.file$Age_comp_Eff_N_tuning_check$Fleet, "_",
+               report.file$Age_comp_Eff_N_tuning_check$Fleet_name)
+    } else {
+      age_comp_tuning <- data.frame(matrix(nrow = 1, ncol = 1))
+    }
     max_grad <- report.file$maximum_gradient_component
     depletion <- report.file$current_depletion
     NLL_vec <- get_nll_components(report.file)
@@ -530,7 +549,8 @@ get_results_scalar <- function(report.file){
     df <- data.frame(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion
                 , F_MSY, F_SPR, bias,
                 params_on_bound, params_stuck_low, params_stuck_high, pars,
-                Catch_endyear, t(NLL_vec), stringsAsFactors=FALSE)
+                Catch_endyear, t(NLL_vec),len_comp_tuning, age_comp_tuning,
+                stringsAsFactors=FALSE)
     return(invisible(df))
 }
 
