@@ -6,7 +6,8 @@
 \usage{
 weight_comps(
   method = c("MI", "Francis", "DM"),
-  run = TRUE,
+  init_run = TRUE,
+  main_run = TRUE,
   niters_weighting = 1,
   iter,
   scen,
@@ -21,8 +22,11 @@ weight_comps(
 "MI" (for MacAllister-Ianelli), "Francis", or "DM" (for dirichlet
 multinomial). For now, only 1 option can be used}
 
-\item{run}{A logical value specifying if the model should be run. If \code{FALSE},
-Stock Synthesis will not be run, just the parameters will be calculated. Note
+\item{init_run}{A logical value specifying if the model should be run before
+iterative reweighting. Only relavent to \code{method = c("MI", "Francis")}.}
+
+\item{main_run}{A logical value specifying if the model should be run to
+ weight the comps.
 that run = \code{FALSE} will only work for \code{niters_weighting = 1} and
 \code{method = "MI"} or \code{"Francis"}}
 

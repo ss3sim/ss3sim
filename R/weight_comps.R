@@ -6,9 +6,10 @@
 #' @param method  Which method of comp weighting shoudl be use? Options are
 #'  "MI" (for MacAllister-Ianelli), "Francis", or "DM" (for dirichlet
 #'  multinomial). For now, only 1 option can be used
-
-#' @param run A logical value specifying if the model should be run. If \code{FALSE},
-#'  Stock Synthesis will not be run, just the parameters will be calculated. Note
+#' @param init_run A logical value specifying if the model should be run before
+#'  iterative reweighting. Only relavent to \code{method = c("MI", "Francis")}.
+#' @param main_run A logical value specifying if the model should be run to
+#'   weight the comps.
 #'  that run = \code{FALSE} will only work for \code{niters_weighting = 1} and
 #'  \code{method = "MI"} or \code{"Francis"}
 #' @param niters_weighting The number of times you want to tune the model.
@@ -32,7 +33,8 @@
 #' @param ... Anything else to pass to \code{\link{run_ss3model}}.
 weight_comps <- function(method = c("MI", "Francis", "DM"),
                          #dirbase = ".",
-                         run = TRUE,
+                         init_run = TRUE,
+                         main_run = TRUE,
                          niters_weighting = 1,
                          #writedir = NULL,
                          iter,
@@ -50,17 +52,13 @@ weight_comps <- function(method = c("MI", "Francis", "DM"),
     stop("Invalid input for parameter method: ", method, ". Please make sure method ",
          "is one or more of the following: 'MI', 'Francis', 'DM'." )
   }
-  if(run == FALSE & niters_weighting > 1 & (!method %in% c("MI", "Francis"))) {
-    stop("Invalid options specified. run = FALSE will only work for ",
-         "niters_weighting = 1 and method = MI or Francis")
-  }
   # need some input check for fleets? maybe check if they are present in
   # age or length comps and exclude if in neither?
   mod_path <- file.path(scen, iter, "em")
   # Tuning methods: MI, Francis ----
   if(method == "MI"| method == "Francis") {
     # 1. Initial model run
-    if(run == TRUE) {
+    if(init_run == TRUE) {
     run_ss3model(scenarios = scen, iterations = iter, type = "em",
                  hess = ifelse(bias_adjust, TRUE, hess_always), ...)
     success <- get_success(dir = mod_path)
@@ -121,7 +119,7 @@ weight_comps <- function(method = c("MI", "Francis", "DM"),
                        overwrite = TRUE,
                        verbose = FALSE)
       # 4. run SS again with reweighting
-      if(run == TRUE) {
+      if(main_run == TRUE) {
         run_ss3model(scenarios = scen, iterations = iter, type = "em",
                      hess = ifelse(bias_adjust, TRUE, hess_always), ...)
         #TODO:I think this only works if you delete files from old runs or
@@ -187,6 +185,7 @@ weight_comps <- function(method = c("MI", "Francis", "DM"),
                 overwrite = TRUE)
     r4ss::SS_writectl(ctl, file.path(mod_path, start$ctlfile), verbose = FALSE,
                 overwrite = TRUE)
+    if(main_run == TRUE) {
     run_ss3model(scenarios = scen, iterations = iter, type = "em",
                  hess = ifelse(bias_adjust, TRUE, hess_always), ...)
     success <- get_success(dir = mod_path)
@@ -196,6 +195,9 @@ weight_comps <- function(method = c("MI", "Francis", "DM"),
     )
     # figure out what to read in for weights? maybe the DM param ests?
     weights <- out[["Dirichlet_Multinomial_pars"]]
+    } else {
+      weights <- NA
+    }
   }
   weights
 }

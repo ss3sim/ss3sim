@@ -49,7 +49,6 @@ test_that("weight_comps works for MI method", {
   test <- weight_comps(method = "MI",
                iter = "1",
                scen = "D1-F1-cod",
-               run = TRUE,
                niters_weighting = 1,
                fleets = c(1,2))
   # create an expectation that arent dummy ones.
@@ -66,7 +65,6 @@ test_that("weight_comps works for Francis", {
   test <- weight_comps(method = "Francis",
                iter = "2",
                scen = "D1-F1-cod",
-               run = TRUE,
                niters_weighting = 1,
                fleets = c(1,2))
   dat <- r4ss::SS_readdat(file.path(scen_path_Francis, "ss3.dat" ), verbose = FALSE)

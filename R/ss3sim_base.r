@@ -549,31 +549,54 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       SS_writectl(ctllist = newlists$ctl_list,
         outfile = file.path(sc, i, "em", "em.ctl"),
         version = ss_version, overwrite = TRUE, verbose = FALSE)
-      # Run the EM -------------------------------------------------------------
-      if(is.null(weight_comps_params)) {
-        run_ss3model(scenarios = sc, iterations = i, type = "em",
-          hess = ifelse(bias_adjust, TRUE, hess_always), ...)
-
-      } else {
-        final_weights <- weight_comps(method = weight_comps_params$method,
-                           niters_weighting = weight_comps_params$niters_weighting,
-                           fleets = weight_comps_params$fleets,
-                           run    = TRUE,
-                           bias_adjust = bias_adjust,
-                           hess_always = hess_always,
-                           scen = sc,
-                           iter = i)
-        #TODO: make sure this works with bias and with plotting
+      # Add dirichlet multinomial parameters if using
+      if(!is.null(weight_comps_params)) {
+        if(weight_comps_params$method == "DM") {
+           # convert model so it can be used
+          weight_comps(method = weight_comps_params$method,
+                       fleets = weight_comps_params$fleets,
+                       init_run = FALSE, # although not really needed for DM
+                       main_run    = FALSE,
+                       bias_adjust = bias_adjust,
+                       hess_always = hess_always,
+                       scen = sc,
+                       iter = i)
+        }
       }
-
+      # Run the EM -------------------------------------------------------------
+      # run model 1x as-is, regardless if data weighting used or not.
+      run_ss3model(scenarios = sc, iterations = i, type = "em",
+                   hess = ifelse(bias_adjust, TRUE, hess_always), ...)
       success <- get_success(dir = file.path(sc, i, "em"))
-
       if(bias_adjust & all(success > 0)) {
+        #run model to do the bias adjustment
         bias <- calculate_bias(dir = file.path(sc, i, "em"),
                                ctl_file_in = "em.ctl")
         run_ss3model(scenarios = sc, iterations = i, type = "em",
                      hess = ifelse(bias_adjust, TRUE, hess_always), ...)
       }
+      if(!is.null(weight_comps_params)) {
+        # do the DM (only 1 run needed, and only needed if bias adj. done.)
+        if(bias_adjust & all(success > 0) & weight_comps_params$method == "DM") {
+        # model already changed to include the DM parameters, so only need to
+        # rerun model again, not call the weight_comps function
+          run_ss3model(scenarios = sc, iterations = i, type = "em",
+                       hess = ifelse(bias_adjust, TRUE, hess_always), ...)
+        }
+        # need to do data tuning, fregardless of if bias adjustment was done.
+        if(weight_comps_params$method %in% c("MI", "Francis")) {
+          weight_comps(method = weight_comps_params$method,
+                       fleets = weight_comps_params$fleets,
+                       niters_weighting = weight_comps_params$niters_weighting,
+                       init_run = FALSE,
+                       main_run = TRUE,
+                       bias_adjust = bias_adjust,
+                       hess_always = hess_always,
+                       scen = sc,
+                       iter = i)
+        }
+      }
+
 # Write log file ---------------------------------------------------------------
 # TODO pull the log file writing into a separate function and update
 # for current arguments
