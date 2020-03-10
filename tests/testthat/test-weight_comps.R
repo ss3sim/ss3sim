@@ -35,6 +35,15 @@ file.rename(file.path(scen_path_MI, "testing_em_cod.dat"), file.path(scen_path_M
 file.rename(file.path(scen_path_Francis, "testing_em_cod.dat"), file.path(scen_path_Francis,"ss3.dat"))
 file.rename(file.path(scen_path_DM, "testing_em_cod.dat"), file.path(scen_path_DM,"ss3.dat"))
 
+test_that("get_last_phase works", {
+  start <- r4ss::SS_readstarter(file.path(em, "starter.ss"), verbose = FALSE)
+  dat <- r4ss::SS_readdat(data, verbose = FALSE)
+  ctl <- r4ss::SS_readctl(file.path(em, start$ctlfile), use_datlist = TRUE,
+                          datlist = dat, verbose = FALSE)
+  last_phase <- get_last_phase(ctl)
+  expect_true(last_phase == 5) # based on last known value.
+})
+
 test_that("weight_comps works for MI method", {
   skip_on_cran()
   test <- weight_comps(method = "MI",

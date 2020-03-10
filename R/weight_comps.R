@@ -153,13 +153,28 @@ weight_comps <- function(method = c("MI", "Francis", "DM"),
     dat[["age_info"]][fleets_age, "ParmSelect"] <-
       (length(fleets_len)+1):(length(fleets_len)+length(fleets_age))
     npars <- length(fleets_len) + length(fleets_age)
+    # get the highest phase in the model
+    last_phase <- get_last_phase(ctl)
+    # add check that last_phase is less than max_phase in starter. If not,
+    #modify the max phase and send warning.
+    if(last_phase >= start[["last_estimation_phase"]]) {
+      warning("The last phase used in the EM control file, ", last_phase,
+              ", is higher or the same as the last_estimation_phase in the ",
+              "starter file currently set to ",
+              start[["last_estimation_phase"]], ".",
+              "Changing the last_estimation_phase in the starter file to ",
+               last_phase+1, ".")
+      start[["last_estimation_phase"]] <- last_phase + 1
+      r4ss::SS_writestarter(start, dir = mod_path, verbose = FALSE,
+                            overwrite = TRUE)
+    }
     ctl[["dirichlet_parms"]] <- data.frame("LO" = rep(-5, times = npars),
                                            "HI" = 20,
                                            "INIT" = 0.5,
                                            "PRIOR" = 0,
                                            "PR_SD" = 1.813,
                                            "PR_type" = 6,
-                                           "PHASE" = 2,
+                                           "PHASE" = last_phase + 1,
                                            "env_var&link" = 0,
                                            "dev_link" = 0,
                                            "dev_minyr" = 0,
@@ -185,3 +200,23 @@ weight_comps <- function(method = c("MI", "Francis", "DM"),
   weights
 }
 
+#' Get the highest phase used in the control file
+#'
+#' @param ctl A control file list read in using \code{r4ss::SS_readctl}.
+#' @author Kathryn Doering
+get_last_phase <- function(ctl) {
+ # read all phases in ctl
+   df_vec <- c("MG_parms","MG_parms_tv","MG_parms_seas", "SRparm", "SR_parms",
+               "SR_parms_tv", "recr_cycle_pars", "init_F", "Q_parms",
+               "Q_parms_tv", "size_selex_parms","size_selex_parms_tv",
+               "age_selex_parms", "age_selex_parms_tv", "dirichlet_parms", "pars_2D_AR",
+               "TG_loss_init", "TG_loss_cronic", "TG_overdispersion",
+               "TG_Report_fleet", "TG_Report_fleet_decay")
+   atomic_vec <- c("recdev_phase","recdev_early_phase", "Fcast_recr_phase")
+   phases <- c(unlist(lapply(df_vec,
+                             function(x, l)
+                               l[[x]][, c("PHASE", "dev_PH")], l = ctl)),
+               unlist(lapply(atomic_vec, function(x, l) l[[x]], l = ctl)),
+               ctl[["F_setup2"]][2], ctl[["specs_2D_AR"]][,"devphase"])
+   last_phase <- ceiling(max(phases)) # round up if not integer value.
+}
