@@ -514,6 +514,35 @@ get_results_scalar <- function(report.file){
     if(length(effort.index)>0) pars <- pars[,-effort.index]
     names(pars) <- gsub("\\(","_", names(pars))
     names(pars) <- gsub("\\)","", names(pars))
+    #get the comps variables
+    # todo: change this permanently to second option when converted to .15
+    if ("Length_Comp_Fit_Summary" %in% names(report.file)) {
+      report.file[["Length_comp_Eff_N_tuning_check"]] <-
+        report.file[["Length_Comp_Fit_Summary"]]
+    }
+    if(nrow(report.file[["Length_comp_Eff_N_tuning_check"]]) > 0) {
+      len_comp_tuning <- data.frame(t(report.file$Length_comp_Eff_N_tuning_check$Curr_Var_Adj))
+      colnames(len_comp_tuning) <-
+        paste0("Curr_Var_Adj_lcomp_flt_",
+               report.file$Length_comp_Eff_N_tuning_check$Fleet, "_",
+               report.file$Length_comp_Eff_N_tuning_check$Fleet_name)
+    } else {
+      len_comp_tuning <- data.frame(matrix(nrow = 1, ncol = 0))
+    }
+    # todo: change this permanently to second option when converted to .15
+    if ("Age_Comp_Fit_Summary" %in% names(report.file)) {
+      report.file[["Age_comp_Eff_N_tuning_check"]] <-
+        report.file[["Age_Comp_Fit_Summary"]]
+    }
+    if(nrow(report.file[["Age_comp_Eff_N_tuning_check"]]) > 0) {
+      age_comp_tuning <- data.frame(t(report.file$Age_comp_Eff_N_tuning_check$Curr_Var_Adj))
+      colnames(age_comp_tuning) <-
+        paste0("Curr_Var_Adj_agecomp_flt_",
+               report.file$Age_comp_Eff_N_tuning_check$Fleet, "_",
+               report.file$Age_comp_Eff_N_tuning_check$Fleet_name)
+    } else {
+      age_comp_tuning <- data.frame(matrix(nrow = 1, ncol = 1))
+    }
     max_grad <- report.file$maximum_gradient_component
     depletion <- report.file$current_depletion
     NLL_vec <- get_nll_components(report.file)
