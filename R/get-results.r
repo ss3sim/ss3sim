@@ -220,6 +220,8 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
 #'   any files previously created with this function. This is intended to be
 #'   used if iterations were added since the last time it was called, or any
 #'   changes were made to this function.
+#' @param om_name The name of the folder containing the om model run
+#' @param em_name The name of the folder containing the em model run.
 #' @author Cole Monnahan
 #' @importFrom r4ss SS_output
 #' @family get-results
@@ -242,7 +244,8 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
 #' unlink("D0-F0-cod", recursive = TRUE)
 #' }
 get_results_scenario <- function(scenario, directory=getwd(),
-                                 overwrite_files=FALSE){
+                                 overwrite_files=FALSE, om_name = "om",
+                                 em_name = "em"){
     ## This function moves the wd around so make sure to reset on exit,
     ## especially in case of an error
     old_wd <- getwd()
@@ -282,21 +285,21 @@ get_results_scenario <- function(scenario, directory=getwd(),
         ## Check that the model finished running and if not skip it but
         ## report that ID
         ID <- paste0(scenario, "-", rep)
-        if(!file.exists(file.path(rep,"em", "Report.sso")) |
-            file.size(file.path(rep,"em", "Report.sso")) == 0){
+        if(!file.exists(file.path(rep,em_name, "Report.sso")) |
+            file.size(file.path(rep,em_name, "Report.sso")) == 0){
             message("Missing Report.sso file for: ", ID, "; skipping...")
         } else {
             forecastTF <- ifelse(file.size(
-              file.path(rep, "em", "Forecast-report.sso")) %in% c(0, NA),
+              file.path(rep, em_name, "Forecast-report.sso")) %in% c(0, NA),
               FALSE, TRUE)
             ## Otherwise read in and write to file
             report.em <-
-                SS_output(file.path(rep,"em"), covar=FALSE, verbose=FALSE,
+                SS_output(file.path(rep,em_name), covar=FALSE, verbose=FALSE,
                           compfile="none", forecast=forecastTF, warn=TRUE,
                           readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
                           ncols=NULL)
             report.om <-
-                SS_output(file.path(rep,"om"), covar=FALSE, verbose=FALSE,
+                SS_output(file.path(rep,om_name), covar=FALSE, verbose=FALSE,
                           compfile="none", forecast=FALSE, warn=TRUE,
                           readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
                           ncols=NULL)
@@ -368,18 +371,18 @@ get_results_scenario <- function(scenario, directory=getwd(),
 
             ## Also get some meta data and other convergence info like the
             ## version, runtime, etc. as checks
-            temp <- readLines(con=file.path(rep,"em", "Report.sso"), n=10)
+            temp <- readLines(con=file.path(rep,em_name, "Report.sso"), n=10)
             scalar$version <- temp[1]
             scalar$RunTime <- eval(parse(text=gsub(
-              "([0-9]+) hours, ([0-9]+) minutes, ([0-9]+) seconds.", 
+              "([0-9]+) hours, ([0-9]+) minutes, ([0-9]+) seconds.",
               "\\1*60+\\2+\\3/60", report.em$RunTime)))
-            scalar$hessian <- file.exists(file.path(rep,"em", "admodel.cov"))
+            scalar$hessian <- file.exists(file.path(rep,em_name, "admodel.cov"))
             ## The number of iterations for the run is only in this file for
             ## some reason.
-            if(!file.exists(file.path(rep,"em", "CumReport.sso"))) {
+            if(!file.exists(file.path(rep,em_name, "CumReport.sso"))) {
                 Niterations <- NA
             } else {
-                cumrep <- readLines(file.path(rep,"em", "CumReport.sso"), n=5)
+                cumrep <- readLines(file.path(rep,em_name, "CumReport.sso"), n=5)
                 tmp <- grep("N_iter", cumrep)
                 if(length(tmp)==0){
                     scalar$Niterations <- NA
