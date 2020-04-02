@@ -46,7 +46,8 @@ Imports:
     grDevices,
     graphics,
     stats,
-    utils
+    utils,
+    zoo
 Remotes: github::r4ss/r4ss@development
 RoxygenNote: 7.1.0
 Encoding: UTF-8

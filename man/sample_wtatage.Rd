@@ -5,20 +5,17 @@
 \title{Sample empirical weight-at-age data and write to file for use by the EM}
 \usage{
 sample_wtatage(
-  wta_file_in,
   outfile,
   dat_list,
   ctl_file_in,
   years,
   fill_fnc = fill_across,
   fleets,
-  cv_wtatage = NULL
+  cv_wtatage = NULL,
+  distribution = c("rmultinom")
 )
 }
 \arguments{
-\item{wta_file_in}{The file to read weight-at-age from. Specifically to get the
-age-0 weight-at-age. This is typically \code{wtatage.ss_new}.}
-
 \item{outfile}{A character string specifying the file name to use
 when writing the information to the disk. The string must include
 the proper file extension. No file is written using the default value
@@ -47,6 +44,9 @@ The order of the fleets pertains to the input order of other arguments.
 An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 
 \item{cv_wtatage}{A user specified CV for growth. Default is \code{NULL}.}
+
+\item{distribution}{Specify the distribution to sample from. Currently, only one distribution
+is available, the multinomial.}
 }
 \value{
 A modified \code{.wtatage.ss} file if \code{!is.null(outfile)}. A list
@@ -74,6 +74,25 @@ which may or may not be an appropriate value. Other arguments will be ignored
 if specified.
 }
 
+\examples{
+d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
+dat <- r4ss::SS_readdat(dir(d, full.names = TRUE, pattern = "\\\\.dat"),
+  verbose = FALSE)
+dat[["use_MeanSize_at_Age_obs"]] <- 1
+temp <- t(sapply(rnorm(length(26:100), mean = 10), 
+  seq, to = 100, length.out = dat$Nages))
+colnames(temp) <- paste0("a", 1:dat$Nages)
+dat[["MeanSize_at_Age_obs"]] <- data.frame(
+  "Yr" = 26:100, "Seas" = 1, "FltSvy" = 1, "Gender" = 0, "Part" = 0,
+  "AgeErr" = 0, "Ignore" = 10, temp)
+wt <- sample_wtatage(outfile = NULL, dat_list = dat,
+ ctl_file_in = dir(d, full.names = TRUE, pattern = "\\\\.ctl"),
+ years = list(50:100), fill_fnc = fill_across,
+  fleets = list(1), cv_wtatage = 0.05)
+
+rm(d, dat, temp, wt)
+
+}
 \seealso{
 \code{\link{fill_across}}
 

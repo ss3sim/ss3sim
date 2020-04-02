@@ -14,8 +14,6 @@
 #'
 #' @author Cole Monnahan, Allan Hicks, Peter Kuriyama
 #'
-#' @param wta_file_in The file to read weight-at-age from. Specifically to get the
-#'   age-0 weight-at-age. This is typically \code{wtatage.ss_new}.
 #' @param ctl_file_in A path to the control file, output from an OM, containing
 #'   the OM parameters for growth and weight/length relationship. These values
 #'   are used to determine the uncertainty about weight for fish sampled in each
@@ -24,6 +22,7 @@
 #'   resulting weight-at-age file will have values for all years and ages.One
 #'   function is \code{fill_across}.
 #' @param cv_wtatage A user specified CV for growth. Default is \code{NULL}.
+#' @template distribution
 #' @return A modified \code{.wtatage.ss} file if \code{!is.null(outfile)}. A list
 #'   object containing the modified \code{.wtatage.ss} file is returned invisibly.
 #' @template lcomp-agecomp-index
@@ -31,279 +30,143 @@
 #' @template outfile
 #' @template casefile-footnote
 #' @importFrom r4ss SS_parlines
+#' @importFrom stats aggregate
 #' @seealso \code{\link{fill_across}}
 #' @family sampling functions
 #' @export
-#
-# # #For Debugging
-# setwd('/Users/peterkuriyama/School/Research/capam_growth/sample_wtatage_test/')
-# # source('fill_across.r')
-# #
-# wta_file_in <- "om/wtatage.ss_new"
-# outfile <- "em/wtatage.ss"
-# datfile <- "em/ss3.dat"
-# ctl_file_in <- "om/control.ss_new"
-# years <- list(seq(2, 100, 1), seq(2, 100, 1))
-# fill_fnc <- fill_across
-# fleets <- list(1, 2)
-# cv_wtatage <- .5
-#
-# dat_list <- r4ss::SS_readdat(file=datfile, version = NULL, verbose=FALSE)
-# test <- sample_wtatage(wta_file_in = wta_file_in, outfile = outfile, dat_list = dat_list,
-#     ctl_file_in = ctl_file_in, years = years, fill_fnc = fill_across,
-#     fleets = fleets, cv_wtatage = cv_wtatage)
-#
+#' @examples
+#' d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
+#' dat <- r4ss::SS_readdat(dir(d, full.names = TRUE, pattern = "\\.dat"),
+#'   verbose = FALSE)
+#' dat[["use_MeanSize_at_Age_obs"]] <- 1
+#' temp <- t(sapply(rnorm(length(26:100), mean = 10), 
+#'   seq, to = 100, length.out = dat$Nages))
+#' colnames(temp) <- paste0("a", 1:dat$Nages)
+#' dat[["MeanSize_at_Age_obs"]] <- data.frame(
+#'   "Yr" = 26:100, "Seas" = 1, "FltSvy" = 1, "Gender" = 0, "Part" = 0,
+#'   "AgeErr" = 0, "Ignore" = 10, temp)
+#' wt <- sample_wtatage(outfile = NULL, dat_list = dat,
+#'  ctl_file_in = dir(d, full.names = TRUE, pattern = "\\.ctl"),
+#'  years = list(50:100), fill_fnc = fill_across,
+#'   fleets = list(1), cv_wtatage = 0.05)
+#'
+#' rm(d, dat, temp, wt)
+#'
+sample_wtatage <- function(outfile, dat_list, ctl_file_in,
+  years, fill_fnc = fill_across, fleets,
+  cv_wtatage = NULL, distribution = c("rmultinom")){
 
-sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
-                           years, fill_fnc = fill_across, fleets,
-                           cv_wtatage = NULL){
-  ##fill_type: specify type of fill, fill zeroes with first row? annual interpolation?
-        ## Age Interpolation?
-    ## A value of NULL for fleets signifies to turn this data off in the
-    ## EM. So quit early and in ss3sim_base do NOT turn wtatage on using
-    ## the maturity function
-    if(is.null(cv_wtatage)) stop('specify cv_wtatage in case file')
+  distribution <- match.arg(distribution, several.ok = FALSE)
 
-    cat('cv_wtatage is', cv_wtatage, '\n')
-    if(is.null(fleets)) return(NULL)
-
-    ### ACH: Because you always have to have year 100, you may want to check for duplicates
-    # years <- years[!duplicated(years)]
-    #----------------------------------------------------------------------------
-
-    agecomp <- dat_list$agecomp[dat_list$agecomp$Lbin_lo== -1,]
-
-    cat('sample size is ', unique(agecomp$Nsamp), '\n')
-    agebin_vector <- dat_list$agebin_vector
-
-    mlacomp <- dat_list$MeanSize_at_Age_obs
-    if(is.null(mlacomp)) stop("No mean length-at-age data found in dat_list")
-    ## Read in the control file
-    ss_version <- get_ss_ver_file(ctl_file_in)
-    ctl <-SS_parlines(ctl_file_in, version = ss_version)
-    ## Read in the file and grab the expected values
-    wta_file_in <- readLines(wta_file_in)
-
-    ## Remove double spaces, which SS3 writes in the 7th column
-    wta_file_in <- gsub("  ", replacement=" ", x=wta_file_in)
-    xx <- grep(x=wta_file_in, "#yr seas gender growpattern birthseas fleet")
-    if(length(xx)!=1) stop("Failed to read in wtatage file")
-    header <- unlist(strsplit(wta_file_in[xx], " "))
-    header[-(1:6)] <- paste("age",header[-(1:6)],sep="")
-    ## It appears the first three lines need to be there for some
-    ## reason. ****TODO Peter****: fix this if need be??
-
-    wtatage <- wta_file_in[(xx+1):length(wta_file_in)]
-    wtatage <-  as.data.frame(matrix(as.numeric(unlist(strsplit(wtatage, split=" "))),
-                                     nrow=length(wtatage), byrow=TRUE))
-    names(wtatage) <- gsub("#", replacement="", x=header)
-    wtatage$yr <- abs(wtatage$yr)
-    if(2 %in% unique(wtatage$fleet) == FALSE){
-        ones <- wtatage[wtatage$fleet == 1, ]
-        twos <- ones
-        twos$fleet <- 2
-        wtatage <- rbind(wtatage, twos)
+  if(is.null(cv_wtatage)) stop("Specify cv_wtatage to sample weight-at-age data.")
+  if(is.null(dat_list$MeanSize_at_Age_obs)) stop("data_list doesn't contain",
+    " mean size-at-age observations.")
+  if(any(dat_list$agecomp$Gender != 0)) {
+    stop("sample_wtatage cannot handle multiple gender models right now.")
+  }
+  ## fleets = NULL turns off this data type in ss3sim_base
+  if(is.null(fleets)) return(NULL)
+  if(any(!fleets %in% seq(dat_list$Nfleets))) {
+    stop("Not all fleets in fleets, ", paste(fleets, collapse = ", "), ", are available.")
+  }
+  if(length(fleets) > 1) {
+    if(length(years) == 1) {
+      years[2:length(fleets)] <- years[1]
     }
-
-    age0 <- wtatage[!duplicated(wtatage$fleet),c("fleet","age0")]
-    wtatage.new.list <- list(1, 2) # temp storage for the new rows
-
-    #----------------------------------------------------------------------------
-    #start sampling
-    #Pull wtatage for fleets -2, -1, and 0 from OM for now.
-    #-2 is age-specific fecundity * maturity
-    #-1 is population wt-at-age in middle of season
-    #0 is population wt-at-age in beginning of season2
-    unsampled.wtatage <- list(1, 2, 3)
-    unsampled.wtatage[[1]] <- wtatage[which(wtatage$fleet == -2), ]
-    unsampled.wtatage[[2]] <- wtatage[which(wtatage$fleet == -1), ]
-    unsampled.wtatage[[3]] <- wtatage[which(wtatage$fleet == 0), ]
-
-    #Change all years to negatives so it will work with ss
-    unsampled.wtatage <- lapply(unsampled.wtatage,
-        function(x){
-              x$yr <- -x$yr
-              return(x)
-        })
-
-    #Start Sampling other fleets
-    # fl <- 1
-    # yr <- 1
-    for(fl in fleets) { #fleets must be 1:Nfleets
-        #set up wtatage matrix of sampled years
-        wtatage.new.list[[fl]] <- as.data.frame(matrix(NA,nrow=length(years[[fl]]),ncol=ncol(wtatage)))
-        names(wtatage.new.list[[fl]]) <- names(wtatage)
-        row.names(wtatage.new.list[[fl]]) <- as.character(years[[fl]])
-
-        #===============Loop over Years Sampled
-        if(length(years[[fl]]) == 1) { #copy wtatage matrix from designated fleet
-            if(fl <= years[[fl]]) stop("You must designate an earlier fleet to copy from.\n")
-            wtatage.new.list[[fl]] <- wtatage.new.list[[years[[fl]]]]
-            wtatage.new.list[[fl]]$fleet <- fl
-        } else {
-            for(yr in years[[fl]]) {
-
-                #----------------------------------------------------------------------------------------------------
-                #Step 1, draw from true age distributions
-                agecomp.temp <- agecomp[agecomp$Yr==yr & agecomp$FltSvy == fl, ]
-                #ACH: I'm going with the motto of think about it. Why enter a year for wtatage when you do not have data?
-                if(nrow(agecomp.temp)==0) {stop("No age comp observations for year",yr,"and fleet",fl,"\n")}
-
-                ## Get the true age distributions
-                age.means <- as.numeric(agecomp.temp[-(1:9)])
-                age.Nsamp <- as.numeric(agecomp.temp$Nsamp)
-
-                #----------------------------------------------------------------------------------------------------
-                #Step 2, determine # of fish in sample per bin
-                #Use a multinomial here but may need to have dirichlet or option to toggle between the two
-                age.samples <- rmultinom(n = 1, size = age.Nsamp, prob = age.means)
-
-                #----------------------------------------------------------------------------------------------------
-                #Step 3, use mean length-at-age to sample with normal/lognormal and user-specified cv
-                #first define mean length-at-age
-
-                #Change fleets name to FltSvy to keep everything consistent
-                names(mlacomp)[3] <- 'FltSvy'
-                # [which(names(mlacomp) == 'Fleet')]
-                mla.means <- as.numeric(mlacomp[mlacomp$Yr==yr & mlacomp$FltSvy==fl,
-                                                paste0("a", agebin_vector)])
-
-                # CV.growth <- ctl[ctl$Label=="CV_young_Fem_GP_1", "INIT"]
-                CV.growth <- cv_wtatage #User-Specified
-
-                #Define growth parameters
-                Wtlen1 <- ctl[ctl$Label=="Wtlen_1_Fem", "INIT"]
-                Wtlen2 <- ctl[ctl$Label=="Wtlen_2_Fem", "INIT"]
-                sds <- mla.means*CV.growth
-
-                #Sample: I used a for loop to keep things understandable for me. could use apply also
-
-                #create empty list to store lengths and weights
-                # todo: could be a bug here in seq(seq_len())
-                lengths.list <- as.list(seq(seq_len(nrow(age.samples))))
-                weights.list <- lengths.list
-
-                #fill in list by sampling from normal distribution
-                for(ii in seq_len(nrow(age.samples)))
-                {
-                  lengths.list[[ii]] <- suppressWarnings(rnorm(n = age.samples[ii], mean = mla.means[ii], sd = sds[ii]))
-
-                  #Step 4, convert lengths to weights with no error
-                  weights.list[[ii]] <- Wtlen1 * lengths.list[[ii]] ^ Wtlen2
-                }
-
-                #step 5, calculate new mean weight at age
-                samp.wtatage <- sapply(weights.list, mean)
-
-                #concatenate everything
-                prefix <- wtatage[wtatage$yr==yr & wtatage$fleet==1,1:5]  #I used fleet=1 because wtatage_new only outputs fleet 1
-                tmp.fl <- fl
-                wtatage.new.means <- c(unlist(prefix), tmp.fl, age0[age0$fleet == 1, 'age0'],
-                    samp.wtatage
-)
-                #store to wtatage.new.list
-                wtatage.new.list[[fl]][as.character(yr), ] <- wtatage.new.means
-            }
-        }
+    if(length(cv_wtatage) == 1){
+      cv_wtatage[2:length(fleets)] <- cv_wtatage[1]
     }
+  }
 
-    #fill in missing values
-    ## ## Do we need to check whether there was only one fleet? Or force this?
-    ## if(!is.data.frame(wtatage.new.list[[1]])){
-    ##     wtatage.new.list[[1]] <- wtatage.new.list[[2]]
-    ##     wtatage.new.list[[1]]$fleet <- 1
-    ## }
-    ## if(!is.data.frame(wtatage.new.list[[2]])){
-    ##     wtatage.new.list[[2]] <- wtatage.new.list[[1]]
-    ##     wtatage.new.list[[2]]$fleet <- 2
-    ## }
+  # compress conditionals to a marginal number of samples per year
+  agecomp <- stats::aggregate(. ~ Yr + FltSvy + Gender, FUN = sum,
+    data = dat_list$agecomp[, grep("Yr|Flt|samp|Gend|^a[0-9]", colnames(dat_list$agecomp))])
 
-    wtatage.complete <- lapply(wtatage.new.list,fill_fnc,minYear=dat_list$styr,maxYear=dat_list$endyr)
+  mlacomp <- split_comp(dat_list$MeanSize_at_Age_obs)
+  ## Read in the control file
+  ss_version <- get_ss_ver_file(ctl_file_in)
+  ctl <-SS_parlines(ctl_file_in, version = ss_version)
+  #Define growth parameters
+  Wtlen1 <- ctl[grep("Wtlen_1_Fem", ctl$Label), "INIT"]
+  Wtlen2 <- ctl[grep("Wtlen_2_Fem", ctl$Label), "INIT"]
+  if(any(grepl("Wtlen_1_M|GP_[2-9]", ctl$Label))) {
+    stop("sample_wtatage does not currently accommodate",
+      " 2-sex models or multiple growth morphs.")
+  }
 
-    # wtatage.new.list[[1]]
-    # temp.wtatage <- wtatage.new.list[[1]]
+  wtatage <- make_dummy_wtatage(fleets = unlist(fleets),
+    years = dat_list$styr:dat_list$endyr,
+    age_bins = 0:dat_list$Nages)
+  for(fl in fleets) {
+    for(yr in years[[fl]]) {
+      #Step 1, draw from true age distributions if there were samples
+      agecomp.temp <- split_comp(
+        agecomp[agecomp$Yr==yr & agecomp$FltSvy == fl, ])
+      if(agecomp.temp$n==0) next
+      if(NROW(agecomp.temp$data) > 1) stop("More than one row of age samples",
+        " when sampling by fleet and year in sample_wtatage.")
 
-    # filled.wtatage <- fill_fnc(mat = temp.wtatage, minYear = dat_list$styr, maxYear = dat_list$endyr)
+      #Step 2, determine # of fish in sample per bin
+      #todo: have option to use DM instead of multinomial
+      if(distribution == "rmultinom") {
+        age.samples <- rmultinom(n = 1,
+          size = agecomp.temp$meta[, "Nsamp"],
+          prob = agecomp.temp$raw)
+      } else{
+        stop("No other distributions are coded to sample the number of ages yet.")
+      }
+      #Step 3, use mean length-at-age to sample with normal/lognormal and user-specified cv
+      #first define mean length-at-age
+      mla.means <- mlacomp$raw[mlacomp$meta$Yr == yr & mlacomp$meta$FltSvy == fl, ]
 
-    #Manually check
-    # write.csv(temp.wtatage, file = 'wtatage1_gaps.csv')
-    # write.csv(filled.wtatage, file = 'wtatage1_filled.csv')
-    # save(wtatage.complete, file = '/Users/peterkuriyama/School/Research/capam_growth/Empirical/runs/wtatage.complete.Rdata')
-
-    # wtatage.complete[[dat_list$Nfleet+1]] <- wtatage.complete[[dat_list$Nfleet]]
-    # print(dat_list$Nfleet+1)
-
-    # fltNeg1 <- fltZero <- wtatage.complete[[dat_list$Nfleet+1]]  #first survey
-    # fltNeg1 <- fltZero <- wtatage.complete[[dat_list$Nfleet+1]]  #first survey
-    # fltNeg1$fleet <- -1
-    # fltZero$fleet <- 0
-
-
-
-    #----------------------------------------------------------------------------------------------------
-    #Comment this out because I just copied from the original file
-    # mat.fn <- function(x,age) {
-    #     omega3 <- x[1]
-    #     omega4 <- x[2]
-    #     den <- 1+exp(omega3*(age-omega4))
-    #     return(1/den)
-    # }
-
-    # # ctl[ctl$Label=="Mat_slope_Fem","INIT"]
-    # # ctl[ctl$Label=="Mat50%_Fem","INIT"]
-    # # # print(c(ctl[ctl$Label=="Mat_slope_Fem","INIT"],ctl[ctl$Label=="Mat50%_Fem","INIT"]))
-
-    # matAtAge <- mat.fn(c(ctl[ctl$Label=="Mat_slope_Fem","INIT"],ctl[ctl$Label=="Mat50%_Fem","INIT"]),agebin_vector)
-    # matAtAge <- c(0, matAtAge)
-
-    # # fecund <- matAtAge * wtatage.complete[[dat_list$Nfleet+1]][,-(1:6)]
-    # #Adjusted Matrix Multiplication
-    # fecund <- t(apply(wtatage.complete[[dat_list$Nfleet+1]][,-(1:6)], 1, FUN = function(x) matAtAge * x))
-
-    # fecund <- cbind(wtatage.complete[[dat_list$Nfleet+1]][,1:6],fecund)
-    # fecund$fleet <- -2
-
-    # Nlines <- nrow(fecund)+nrow(fltNeg1)+nrow(fltZero)
-    Nlines <- sum(unlist(lapply(unsampled.wtatage, nrow)))
-    Nlines <- Nlines + sum(unlist(lapply(wtatage.complete, nrow)))
-
-    # Nlines <- Nlines + sum(unlist(lapply(wtatage.complete,nrow)))
-
-    ##write wtatage.ss file
-    if(is.null(outfile)) cat(dat_list$Nages,"# Maximum Age\n",file=outfile,append=TRUE)
-
-    #loop through the various matrices and build up wtatage.final while doing it
-    wtatage.final <- list()
-
-    if(is.null(outfile)) cat("#Fleet -2, fecundity\n",file=outfile,append=TRUE)
-    wtatage.final[[1]] <- unsampled.wtatage[[1]]
-
-    # wtatage.final[[1]] <- fecund
-    # wtatage.final[[1]]$yr <- -1 * wtatage.final[[1]]$yr
-    if(!is.null(outfile)) write.table(unsampled.wtatage[[1]], file=outfile, append=TRUE, row.names=F, col.names=F)
-
-    if(!is.null(outfile)) cat("\n#Fleet -1\n",file=outfile,append=TRUE)
-    # wtatage.final[[2]] <- fltNeg1
-    wtatage.final[[2]] <- unsampled.wtatage[[2]]
-    # wtatage.final[[2]]$yr <- -1 * wtatage.final[[2]]$yr
-    if(!is.null(outfile))     write.table(unsampled.wtatage[[2]], file=outfile, append=TRUE, row.names=F, col.names=F)
-
-    if(!is.null(outfile)) cat("\n#Fleet 0\n",file=outfile,append=TRUE)
-    # wtatage.final[[3]] <- fltZero
-    wtatage.final[[3]] <- unsampled.wtatage[[3]]
-    # wtatage.final[[3]]$yr <- -1 * wtatage.final[[3]]$yr
-    if(!is.null(outfile)) write.table(unsampled.wtatage[[3]], file=outfile, append=TRUE, row.names=F, col.names=F)
-
-    #loop through fleets
-    for(i in fleets) {
-        if(!is.null(outfile))     cat("\n#Fleet",i,"\n",file=outfile,append=TRUE)
-        wtatage.final[[i+3]] <- wtatage.complete[[i]]
-        wtatage.final[[i+3]]$yr <- -1 * wtatage.final[[i+3]]$yr
-        if(!is.null(outfile))    write.table(wtatage.final[[i+3]], file=outfile, append=TRUE, row.names=F, col.names=F)
+      #step 4, sampling from normal distribution
+      lengths.list <- mapply(rnorm, n = age.samples, mean = mla.means,
+        sd = mla.means * cv_wtatage[fl])
+      if(any(unlist(lengths.list) < 0)) {
+        stop("CV of weight-at-age (cv_wtatage = ", cv_wtatage[fl], ") is too large",
+          "\nfish of negative length are being sampled in the call to rnorm for lengths.")
+      }
+      
+      #step 5, calculate new mean weight at age
+      wtatage[wtatage$yr == yr & wtatage$fleet == fl,
+        grep("^a[1-9]",colnames(wtatage))] <- sapply(lengths.list,
+        function(x) mean(Wtlen1 * x^Wtlen2), simplify = TRUE)
     }
-    endline <- data.frame(t(c(-9999, 1, 1, 1, 1, rep(0, dat_list$Nages))))
-    if(!is.null(outfile)) write.table(endline, file = outfile, append = TRUE,
-        row.names = FALSE, col.names = FALSE)
+    if(all(is.na(wtatage[wtatage$fleet == fl, grep("a[0-9]", colnames(wtatage))]))) {
+      stop("No weight-at-age data were sampled, probably because age data weren't available.")
+    }    
+    wtatage[wtatage$fleet == fl, ] <- fill_wtatage(wtatage[wtatage$fleet == fl, ])
+    availableyears <- max(wtatage[wtatage$fleet == fl, "yr"])
+    # Make maximum year a negative to fill in all remaining years for the forecasting
+    wtatage[wtatage$fleet == fl & wtatage$yr == availableyears, "yr"] <- -1 * availableyears
+  }
 
-    return(invisible(wtatage.final))
+  maturity.pars <- ctl[grep("^Mat", ctl$Label), "INIT"]
+  maturityatage <- exp(
+    maturity.pars[1]*maturity.pars[2] + 0:dat_list$Nages *-1* maturity.pars[2]) /
+    (1+exp(maturity.pars[1]*maturity.pars[2] + 0:dat_list$Nages * -1*maturity.pars[2]))
+  population <- fill_wtatage(aggregate(. ~ yr + seas + sex + bio_pattern + birthseas,
+    data = type.convert(wtatage),
+    FUN = function(x) mean(x, na.rm = TRUE), na.action = "na.pass"))
+  populationpieces <- fill_header(population)
+  fecundity <- cbind(
+    populationpieces[["prefix"]],
+    as.matrix(populationpieces[["data"]]) %*% diag(maturityatage))
+  colnames(fecundity) <- populationpieces[["cols"]]
+  fecundity$fleet <- -2
+
+  fleetsneeded <- c(-1:0,seq(dat_list$Nfleets)[!seq(dat_list$Nfleets)%in%fleets])
+  wtatagesampled <- rbind(fecundity, wtatage, do.call("rbind",
+    mapply(`[<-`, replicate(length(fleetsneeded), population, simplify = FALSE), 'fleet',
+      value = fleetsneeded,
+      SIMPLIFY = FALSE)))
+  colnames(wtatagesampled)[1:6] <- tools::toTitleCase(colnames(wtatagesampled)[1:6])
+
+  if(!is.null(outfile)) {
+    r4ss::SS_writewtatage(wtatagesampled,
+      file = basename(outfile), dir = dirname(outfile), overwrite=TRUE,
+      verbose = FALSE, warn = FALSE)
+  }
+
+    return(invisible(wtatagesampled))
 }

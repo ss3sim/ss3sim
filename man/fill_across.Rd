@@ -2,25 +2,15 @@
 % Please edit documentation in R/fill_across.r
 \name{fill_across}
 \alias{fill_across}
-\title{Fill in matrix across rows of weight-at-age data by interpolation}
+\title{Fill rows in a matrix}
 \usage{
-fill_across(mat, minYear, maxYear)
+fill_across(mat)
 }
 \arguments{
-\item{mat}{A matrix}
-
-\item{minYear}{Minimum year}
-
-\item{maxYear}{Maximum year}
+\item{mat}{A numeric matrix, typically information extracted from a
+data frame but leaving the meta-data behind. Algebraic functions can
+then be applied rows or columns of this matrix.}
 }
 \description{
-Function that fills in matrix across rows of wtatage data by interpolation
-Missing Rows are then backfilled
-}
-\seealso{
-\code{\link{sample_lcomp}}, \code{\link{sample_agecomp}},
-  \code{\link{fill_across}}
-}
-\author{
-Peter Kuriyama and Allan Hicks
+Fill rows in a matrix
 }

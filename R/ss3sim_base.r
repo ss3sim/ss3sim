@@ -385,11 +385,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
               wtatage_option <- strsplit(tmp_ctl[wtatage_line], " ")[[1]]
               wtatage_option[1] <- 1
               tmp_ctl[wtatage_line] <- paste(wtatage_option, collapse = " ")
-              writeLines(file.path(sc, i, "em", "em.ctl"))
+              writeLines(tmp_ctl, file.path(sc, i, "em", "em.ctl"))
               #sample wtatage.
               with(wtatage_params,
-                   sample_wtatage(wta_file_in = file.path(sc, i, "om", "wtatage.ss_new"),
-                                  outfile     = file.path(sc, i, "em", "wtatage.ss"),
+                   sample_wtatage(outfile     = file.path(sc, i, "em", "wtatage.ss"),
                                   dat_list    = dat_list,
                                   ctl_file_in = file.path(sc, i, "om", "control.ss_new"),
                                   fleets      = fleets,
@@ -491,6 +490,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                   par_phase            = par_phase,
                   forecast_num         = forecast_num))
         setwd(wd)
+      }
+
+      if (!"msa" %in% data_args$types) {
+        dat_list$use_MeanSize_at_Age_obs <- 0
       }
 
       # check q EM values are correct.

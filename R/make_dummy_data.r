@@ -60,3 +60,16 @@ make_dummy_dat_mlacomp <- function(fleets, years, age_bins) {
     names(dummy_df) <- c(paste0("a", c(age_bins)), paste0("N", c(age_bins)))
     cbind(dummy_dat, dummy_df)
 }
+
+make_dummy_wtatage <- function(fleets, years, age_bins, sex = 1, fill = NA) {
+  dummy_dat_list <- expand.grid(
+    "yr" = years,
+    "seas" = 1,
+    "sex" = sex,
+    "bio_pattern" = 1,
+    "birthseas" = 1,
+    "fleet" = fleets
+    )
+  dummy_dat_list[, paste0("a", age_bins)] <- fill
+  return(dummy_dat_list)
+}
