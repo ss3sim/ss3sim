@@ -81,8 +81,7 @@ change_f <- function(years, fisheries, fvals, seasons = 1, ses = 0.005,
   ctl <- readLines(ctl_file_in)
   locations <- grep("F_Method", ctl, ignore.case = TRUE)
   if (length(locations) < 2) {
-    #Note: this check is not robust against all situations of using non-standard
-    #SS comments.
+    # todo: use r4ss::SS_readctl to pass a control list rather than readLines
     stop("Phrase 'F_Method' should be found at least 2 times in the control ",
          "file, but was found ", length(locations), " times. Please make sure ",
          "a control file with standard SS comments is being used.")
@@ -99,16 +98,13 @@ change_f <- function(years, fisheries, fvals, seasons = 1, ses = 0.005,
     stop("Q_setup was not found in the ctl_file_in")
   }
   ctl[locations[1]] <- gsub("^[1-4]\\s*", "2 ", trimws(ctl[locations[1]]))
-  location_middle <- (locations[1] + 1):(locations[2] - 1)
-  ctl[location_middle] <- c(
+  ctl <- c(ctl[1:locations[1]],
     paste(ifelse(max(fvals) < 4, 4, max(fvals) * 2),
       " # max F or harvest rate, depends on F_Method"),
-    rep("#", length(location_middle) - 2),
-    paste(0, 1, length(years), "# overall start F value; overall phase; N detailed inputs to read"))
-  ctl <- ctl[-((locations[2] + 1):(location_terminal-1))]
-  ctl <- append(ctl,
-    values = apply(newdata, 1, paste, collapse = " "),
-    after = locations[2])
+    paste(0, 1, length(years),
+      "# overall start F value; overall phase; N detailed inputs to read"),
+    apply(newdata, 1, paste, collapse = " "),
+    ctl[location_terminal:length(ctl)])
 
   # Write new control file
   if (!is.null(ctl_file_out)) {
