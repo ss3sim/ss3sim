@@ -35,8 +35,6 @@ id_scenarios <- function(directory){
 #' @param user_scenarios A character vector of scenarios that should be read
 #'   in. Default is \code{NULL}, which indicates find all scenario folders in
 #'   \code{directory}.
-#' @param parallel Should the function be run on multiple cores? You will
-#'   need to set up parallel processing as shown in \code{\link{run_ss3sim}}.
 #' @export
 #' @return Returns a list of 3 dataframes: scalar, ts, and dq.
 #' Creates two .csv files in the current working directory:
@@ -44,15 +42,10 @@ id_scenarios <- function(directory){
 #' @author Cole Monnahan, Merrill Rudd
 #' @family get-results
 get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
-  user_scenarios=NULL, parallel=FALSE){
+  user_scenarios=NULL){
 
     old_wd <- getwd()
     on.exit(setwd(old_wd))
-
-    if(parallel) {
-      cores <- setup_parallel()
-      if(cores == 1) parallel <- FALSE
-    }
 
     ## Choose whether to do all scenarios or the vector passed by user
     if(is.null(user_scenarios)) {
@@ -70,128 +63,58 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
         stop(paste("Error: No scenarios found in:",directory))
     message(paste("Extracting results from", length(scenarios), "scenarios"))
 
-    if(parallel){
-        parallel_scenario <- NULL
-        # to satisfy R CMD check in the foreach() call below
-        foreach <- NULL
-        `%dopar%` <- NULL
-
-        results_all <- foreach(parallel_scenario = scenarios, .verbose = FALSE,
-            .export = c("get_results_scenario", "get_results_iter",
-            "get_results_mod",
-            "get_results_scalar", "get_nll_components",
-            "get_results_timeseries"), .combine = rbind) %dopar% {
-            ## If the files already exist just read them in, otherwise get results
-                scalar.file <- file.path(parallel_scenario,paste0("results_scalar_",parallel_scenario,".csv"))
-                ts.file <- file.path(parallel_scenario, paste0("results_ts_",parallel_scenario,".csv"))
-                ## Delete them if this is flagged on
-                if( overwrite_files){
-                    if(file.exists(scalar.file)) file.remove(scalar.file)
-                    if(file.exists(ts.file)) file.remove(ts.file)
-                    get_results_scenario(scenario=parallel_scenario, directory=directory,
-                                         overwrite_files=overwrite_files)
-                }
-                ## Check if still there and skip if already so, otherwise read in
-                ## and save to file
-                if(!file.exists(scalar.file) |  !file.exists(ts.file)){
-                    get_results_scenario(scenario=parallel_scenario, directory=directory,
-                                         overwrite_files=overwrite_files)
-                }
-        }
-        ts.list <- scalar.list <- dq.list <-
-          vector(mode = "list", length = length(scenarios))
-        flag.na <- rep(0, length(scenarios))
-        #TODO: refactor this using apply functions.
-        for(i in seq_along(scenarios)){
-            scalar.file <- file.path(scenarios[i],paste0("results_scalar_",scenarios[i],".csv"))
-            ts.file <- file.path(scenarios[i],paste0("results_ts_",scenarios[i],".csv"))
-            dq.file <- file.path(scenarios[i],paste0("results_dq_",scenarios[i],".csv"))
-            scalar.list[[i]] <- tryCatch(read.csv(scalar.file, stringsAsFactors=FALSE), error=function(e) NA)
-            ts.list[[i]] <- tryCatch(read.csv(ts.file, stringsAsFactors=FALSE), error=function(e) NA)
-            dq.list[[i]] <- tryCatch(read.csv(dq.file, stringsAsFactors=FALSE), error=function(e) NA)
-            if(all(is.na(scalar.list[[i]]))){flag.na[i] <- 1}
-        }
-        scalar.list.out <- scalar.list[which(flag.na!=1)]
-        ts.list.out <- ts.list[which(flag.na!=1)]
-        dq.list.out <- dq.list[which(flag.na!=1)]
-        ## Combine all scenarios together and save into big final files
-        scalar.all <- add_colnames(scalar.list.out, bind = TRUE)
-        ts.all <- add_colnames(ts.list.out, bind = TRUE)
-        dq.all <- add_colnames(dq.list.out, bind = TRUE)
-        if(file.exists("ss3sim_scalar.csv")){
-          if(overwrite_files) write.csv(scalar.all, file="ss3sim_scalar.csv")
-          else {
-            warning("ss3sim_scalar.csv already exists and overwrite_files = FALSE, ",
-                    "so a new file was not written")
-          }
-        } else { # can write either way
-          write.csv(scalar.all, file="ss3sim_scalar.csv")
-        }
-        if(file.exists("ss3sim_ts.csv")) {
-          if(overwrite_files) write.csv(ts.all, file="ss3sim_ts.csv")
-          else {
-            warning("ss3sim_ts.csv already exists and overwrite_files = FALSE, ",
-                    "so a new file was not written")
-          }
-        } else { # can write either way
-          write.csv(ts.all, file="ss3sim_ts.csv")
-        }
-        ## write.csv(dq.all, file="ss3sim_dq.csv")
-        #message("Final result files written to", directory)
-    } else {
     ## Loop through each scenario in folder in serial
-    dq.list <- ts.list <- scalar.list <-
-      vector(mode = "list", length = length(scenarios))
-    for(i in seq_along(scenarios)){
-        setwd(directory)
-        scen <- scenarios[i]
-        ## If the files already exist just read them in, otherwise get results
-        scalar.file <- file.path(scen, paste0("results_scalar_", scen, ".csv"))
-        ts.file <- file.path(scen,paste0("results_ts_",scen,".csv"))
-        dq.file <- file.path(scen, paste0("results_dq_",scen,".csv"))
-        ## Delete them if this is flagged on
-        if( overwrite_files){
-            if(file.exists(scalar.file)) file.remove(scalar.file)
-            if(file.exists(ts.file)) file.remove(ts.file)
-            if(file.exists(dq.file)) file.remove(dq.file)
-            get_results_scenario(scenario=scen, directory=directory,
-                                 overwrite_files=overwrite_files)
-        }
-        ## Check if still there and skip if already so, otherwise read in
-        ## and save to file
-        if(!file.exists(scalar.file) | !file.exists(ts.file) | !file.exists(dq.file)){
-            get_results_scenario(scenario=scen, directory=directory,
-                                 overwrite_files=overwrite_files)
-        }
-        scalar.list[[i]] <- tryCatch(suppressWarnings(read.csv(scalar.file, stringsAsFactors=FALSE)), error=function(e) NA)
-        ts.list[[i]] <- tryCatch(suppressWarnings(read.csv(ts.file, stringsAsFactors=FALSE)), error=function(e) NA)
-        dq.list[[i]] <- tryCatch(suppressWarnings(read.csv(dq.file, stringsAsFactors=FALSE)), error=function(e) NA)
-    }
-    scalar.list <- scalar.list[which(!is.na(scalar.list))]
-    ts.list <- ts.list[which(!is.na(ts.list))]
-    dq.list <- dq.list[which(!is.na(dq.list))]
-    ## Combine all scenarios together and save into big final files
-    scalar.all <- add_colnames(scalar.list, bind = TRUE)
-    ts.all <- add_colnames(ts.list, bind = TRUE)
-    dq.all <- add_colnames(dq.list, bind = TRUE)
-    if(file.exists("ss3sim_scalar.csv")){
-      if(overwrite_files) write.csv(scalar.all, file="ss3sim_scalar.csv")
-      else {
-        warning("ss3sim_scalar.csv already exists and overwrite_files = FALSE, ",
-                   "so a new file was not written")
+  dq.list <- ts.list <- scalar.list <-
+    vector(mode = "list", length = length(scenarios))
+  for(i in seq_along(scenarios)){
+      setwd(directory)
+      scen <- scenarios[i]
+      ## If the files already exist just read them in, otherwise get results
+      scalar.file <- file.path(scen, paste0("results_scalar_", scen, ".csv"))
+      ts.file <- file.path(scen,paste0("results_ts_",scen,".csv"))
+      dq.file <- file.path(scen, paste0("results_dq_",scen,".csv"))
+      ## Delete them if this is flagged on
+      if( overwrite_files){
+          if(file.exists(scalar.file)) file.remove(scalar.file)
+          if(file.exists(ts.file)) file.remove(ts.file)
+          if(file.exists(dq.file)) file.remove(dq.file)
+          get_results_scenario(scenario=scen, directory=directory,
+                               overwrite_files=overwrite_files)
       }
-    } else { # can write either way
-      write.csv(scalar.all, file="ss3sim_scalar.csv")
-    }
-    if(file.exists("ss3sim_ts.csv")) {
-      if(overwrite_files) write.csv(ts.all, file="ss3sim_ts.csv")
-      else {
-        warning("ss3sim_ts.csv already exists and overwrite_files = FALSE, ",
-                "so a new file was not written")
+      ## Check if still there and skip if already so, otherwise read in
+      ## and save to file
+      if(!file.exists(scalar.file) | !file.exists(ts.file) | !file.exists(dq.file)){
+          get_results_scenario(scenario=scen, directory=directory,
+                               overwrite_files=overwrite_files)
       }
-    } else { # can write either way
-      write.csv(ts.all, file="ss3sim_ts.csv")
+      scalar.list[[i]] <- tryCatch(suppressWarnings(read.csv(scalar.file, stringsAsFactors=FALSE)), error=function(e) NA)
+      ts.list[[i]] <- tryCatch(suppressWarnings(read.csv(ts.file, stringsAsFactors=FALSE)), error=function(e) NA)
+      dq.list[[i]] <- tryCatch(suppressWarnings(read.csv(dq.file, stringsAsFactors=FALSE)), error=function(e) NA)
+  }
+  scalar.list <- scalar.list[which(!is.na(scalar.list))]
+  ts.list <- ts.list[which(!is.na(ts.list))]
+  dq.list <- dq.list[which(!is.na(dq.list))]
+  ## Combine all scenarios together and save into big final files
+  scalar.all <- add_colnames(scalar.list, bind = TRUE)
+  ts.all <- add_colnames(ts.list, bind = TRUE)
+  dq.all <- add_colnames(dq.list, bind = TRUE)
+  if(file.exists("ss3sim_scalar.csv")){
+    if(overwrite_files) write.csv(scalar.all, file="ss3sim_scalar.csv")
+    else {
+      warning("ss3sim_scalar.csv already exists and overwrite_files = FALSE, ",
+                 "so a new file was not written")
     }
+  } else { # can write either way
+    write.csv(scalar.all, file="ss3sim_scalar.csv")
+  }
+  if(file.exists("ss3sim_ts.csv")) {
+    if(overwrite_files) write.csv(ts.all, file="ss3sim_ts.csv")
+    else {
+      warning("ss3sim_ts.csv already exists and overwrite_files = FALSE, ",
+              "so a new file was not written")
+    }
+  } else { # can write either way
+    write.csv(ts.all, file="ss3sim_ts.csv")
   }
 ret <- list(scalar = scalar.all,
                   ts = ts.all,
