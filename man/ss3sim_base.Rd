@@ -35,7 +35,8 @@ ss3sim_base(
 \arguments{
 \item{iterations}{Which iterations to run. A numeric vector.}
 
-\item{scenarios}{Which scenarios to run.}
+\item{scenarios}{A name to use as the folder name for the unique combination
+of parameters for the OM and EM.}
 
 \item{f_params}{A named list containing arguments for \code{\link{change_f}}.
 A mandatory case.}
