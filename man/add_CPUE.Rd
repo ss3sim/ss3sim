@@ -9,9 +9,9 @@ add_CPUE(
   ctl.out = NULL,
   overwrite = FALSE,
   q = data.frame(fleet = 3, link = 1, link_info = 0, extra_se = 0, biasadj = 0, float =
-    0, LO = -20, HI = 20, INIT = 0, PRIOR = 0, PR_SD = 99, PR_type = 0, PHASE = 1, env_var
-    = 0, use_dev = 0, dev_mnyr = 0, dev_mxyr = 0, dev_PH = 0, Block = 0, Blk_Fxn = 0, name
-    = NULL)
+    0, LO = -20, HI = 20, INIT = 0, PRIOR = 0, PR_SD = 99, PR_type = 0, PHASE = 1,
+    env_var = 0, use_dev = 0, dev_mnyr = 0, dev_mxyr = 0, dev_PH = 0, Block = 0, Blk_Fxn
+    = 0, name = NULL)
 )
 }
 \arguments{
