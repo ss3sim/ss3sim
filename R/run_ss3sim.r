@@ -160,11 +160,7 @@ run_ss3sim <- function(iterations, scenarios, case_folder, om_dir, em_dir,
   arg_list <- lapply(scenarios, function(scenario) {
     a <- get_caseargs(folder = case_folder, scenario = scenario,
                       case_files = case_files)
-    #this stop message can be removed once conditional age at length implemented
-    if(!is.null(a$calcomp)) {
-    stop("Conditional age at length (CAL) is not yet implemented, please only ",
-         "use models and scenarios without CAL.")
-    }
+    w <- get_weight_comps_args(a) # get the weight_comps args
     list(
       scenarios         = scenario,
       user_recdevs      = user_recdevs,
@@ -182,7 +178,8 @@ run_ss3sim <- function(iterations, scenarios, case_folder, om_dir, em_dir,
       mlacomp_params    = a$mlacomp,
       em_binning_params = a$em_binning,
       retro_params      = a$retro,
-      estim_params      = a$E)
+      estim_params      = a$E,
+      weight_comps_params = w)
   })
   # Note that inside a foreach loop you pop out of your current
   # environment until you go back into an exported function

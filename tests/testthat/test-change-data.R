@@ -45,14 +45,16 @@ test_that("change_data is working with only types inputs", {
   expect_equal(sort(unique(changed_dat$MeanSize_at_Age_obs$Flt)), flt_input)
   expect_equal(nrow(changed_dat$MeanSize_at_Age_obs), changed_dat$N_MeanSize_at_Age_obs)
 })
-test_that("change_data gives error if trying to use conditional length at age", {
+test_that("change_data works with conditional length at age", {
   yr_input <- seq(35, 100, by = 5)
   flt_input <- 2
-  expect_error(change_data(dat, fleets =  flt_input, years = yr_input,
+  output <- change_data(dat, fleets =  flt_input, years = yr_input,
                            types = c("index", "len", "age", "cal"),
-                           outfile = NULL),
-               "Conditional age at length (CAL) is not yet implemented",
-               fixed = TRUE)
+                           outfile = NULL)
+  yrs_out <- unique(output$agecomp$Yr)
+  yrs_out <- yrs_out[order(yrs_out)]
+  expect_equivalent(unique(output$agecomp$Flt),  unique(flt_input))
+  expect_equivalent(yrs_out, yr_input)
 })
 
 test_that("change_data() exits on error when incorrect input given",{

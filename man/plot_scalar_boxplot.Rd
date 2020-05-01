@@ -12,6 +12,7 @@ plot_scalar_boxplot(
   horiz2 = NULL,
   vert = NULL,
   vert2 = NULL,
+  fill = NA,
   relative.error = FALSE,
   axes.free = TRUE,
   print = TRUE
@@ -37,6 +38,8 @@ indicates no faceting.}
 the first (\code{vert}) and second (\code{vert2}) level of faceting in
 the vertical direction. E.g. "M" or "species". A value of NULL (default)
 indicates no faceting.}
+
+\item{fill}{A string. Color for filling the boxplots}
 
 \item{relative.error}{Boolean for whether the y-axis should be
 interpreted as relative error. If \code{TRUE}, \code{ylim} is set to

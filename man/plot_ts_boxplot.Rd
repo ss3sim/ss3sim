@@ -10,6 +10,7 @@ plot_ts_boxplot(
   horiz = NULL,
   horiz2 = NULL,
   vert = NULL,
+  fill = NA,
   vert2 = NULL,
   relative.error = FALSE,
   axes.free = TRUE,
@@ -33,6 +34,8 @@ indicates no faceting.}
 the first (\code{vert}) and second (\code{vert2}) level of faceting in
 the vertical direction. E.g. "M" or "species". A value of NULL (default)
 indicates no faceting.}
+
+\item{fill}{A string. Color for filling the boxplots}
 
 \item{relative.error}{Boolean for whether the y-axis should be
 interpreted as relative error. If \code{TRUE}, \code{ylim} is set to

@@ -559,7 +559,8 @@ get_results_scalar <- function(report.file){
     df <- data.frame(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion
                 , F_MSY, F_SPR, bias,
                 params_on_bound, params_stuck_low, params_stuck_high, pars,
-                Catch_endyear, t(NLL_vec), stringsAsFactors=FALSE)
+                Catch_endyear, t(NLL_vec),len_comp_tuning, age_comp_tuning,
+                stringsAsFactors=FALSE)
     return(invisible(df))
 }
 

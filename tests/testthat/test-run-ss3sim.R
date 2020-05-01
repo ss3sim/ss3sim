@@ -6,7 +6,7 @@ context("run_ss3sim and get-results functions work across a range of scenarios")
 # TODO: turn runs of ss3sim into actual expectations
 # also add tests of ss3sim_base in addition to run_ss3sim.
 
-temp_path <- file.path(tempdir(), "ss3sim-test")
+temp_path <- file.path(tempdir(), "run-ss3sim-test")
 dir.create(temp_path, showWarnings = FALSE)
 wd <- getwd()
 setwd(temp_path)
@@ -17,6 +17,7 @@ d <- system.file("extdata", package = "ss3sim")
 om <- file.path(d, "models", "cod-om")
 em <- file.path(d, "models", "cod-em")
 case_folder <- file.path(d, "eg-cases")
+
 
 
 test_that("A basic run_ss3sim scenario runs and existing iteration skipped", {
@@ -54,6 +55,7 @@ test_that("A basic run_ss3sim scenario runs and existing iteration skipped", {
                             om_dir = om,
                             em_dir = em),
     "already exists", all = TRUE, fixed = TRUE)
+
   biasdir <- file.path("D0-F0-cod", "1", "em")
   expect_warning(calculate_bias(dir = biasdir, "em.ctl"),
     label = "With no hessian calculate_bias")
@@ -70,7 +72,9 @@ test_that("A basic run_ss3sim scenario runs and existing iteration skipped", {
   setwd(temp_path)
   unlink("D0-F0-cod", recursive = TRUE) # clean up
   unlink("ss3sim_*", recursive = TRUE)
+
 })
+unlink("D0-F0-cod", recursive = TRUE) # clean up
 
 test_that("run_ss3sim works with multiple scenarios (no parallel)", {
   skip_on_cran()
@@ -78,35 +82,99 @@ test_that("run_ss3sim works with multiple scenarios (no parallel)", {
              case_folder = case_folder, om_dir = om, em_dir = em))
   expect_true("control.ss_new" %in% list.files(file.path("D0-F0-cod","1", "em")))
   expect_true("control.ss_new" %in% list.files(file.path("D1-F0-cod", "1", "em")))
-  unlink("D0-F0-cod", recursive = TRUE) # clean up
-  unlink("D1-F0-cod", recursive = TRUE)
 })
+unlink("D0-F0-cod", recursive = TRUE) # clean up
+unlink("D1-F0-cod", recursive = TRUE)
 
-test_that("run_ss3sim gives error if conditional age at length used", {
-  # when CAL implemented, will want to remove this test.
+test_that("run_ss3sim runs with CAL data", {
   skip_on_cran()
-  expect_error(run_ss3sim(iterations  = 1,
-                          scenarios = "F1-D0-M1-E0-O0-cod",
+  scen <- "F1-D0-cod"
+  run_ss3sim(iterations  = 1,
+             scenarios = scen,
+             case_folder = file.path(d, "eg-cases"),
+             om_dir = om,
+             em_dir = em,
+             case_files = list(F = "F",
+                               D = c("index", "calcomp"))
+  )
+  calcomp_args <- get_args(file.path(case_folder, "calcomp0-cod.txt"))
+  EM_datfile <- r4ss::SS_readdat(file.path(temp_path, scen, "1", "em", "ss3.dat"),
+                                 verbose = FALSE)
+  # check the length comps to make sure CAL consistent
+  lengths <- EM_datfile$lencomp
+  lengths <- lengths[lengths$Yr %in% calcomp_args$years[[1]] &
+                       lengths$FltSvy %in% calcomp_args$fleets, ]
+  expect_true(all(calcomp_args$years[[1]] %in% lengths$Yr))
+  expect_true(all(calcomp_args$fleets %in% lengths$FltSvy))
+  # check the age comps (note that this is not a generalizable test and would
+  # need to be refactored to apply to other cases.
+  for (yr in calcomp_args$years[[1]]) {
+    for (ft in calcomp_args$fleets) {
+      tmp_agecomp <- EM_datfile$agecomp[EM_datfile$agecomp$Yr == yr &
+                                          EM_datfile$agecomp$FltSvy, ]
+      tmp_agecomp <- tmp_agecomp[tmp_agecomp$Lbin_lo != -1, ]
+      expect_equivalent(sum(tmp_agecomp$Nsamp),  calcomp_args$ESS_ages[[1]])
+    }
+  }
+})
+unlink("F1-D0-cod", recursive = TRUE)
+
+test_that("run_ss3sim runs for a complex scenario", {
+  skip_on_cran()
+  scen <- "F1-D0-M0-E0-O0-cod"
+  run_ss3sim(iterations  = 1,
+                          scenarios = scen,
                           case_folder = file.path(d, "eg-cases"),
-                          om_dir = om_dir,
-                          em_dir = em_dir,
+                          om_dir = om,
+                          em_dir = em,
                           case_files = list(F = "F",
                                             D = c("index", "lcomp", "agecomp",
                                                   "calcomp"),
                                             M = "M", E = "E", O = "O")
-  ), "Conditional age at length (CAL) is not yet implemented", fixed = TRUE)
+  )
+  # test taht the EM ran successfully (using creation of data.ss_new as a proxy.)
+  # TODO make more detailed expectations for this test.
+  expect_true(file.exists(file.path(temp_path, scen, "1", "em", "data.ss_new")))
 })
+unlink("F1-D0-M0-E0-O0-cod", recursive = TRUE)
+
+# only run this test locally, b/c  only uses an extra feature
+test_that("run_ss3sim runs with data weighting", {
+  skip_on_cran()
+  skip_on_travis()
+  skip_on_appveyor()
+  scen <- "F1-D1-W0-cod"
+  run_ss3sim(iterations  = 1,
+             scenarios = scen,
+             case_folder = file.path(d, "eg-cases"),
+             om_dir = om,
+             em_dir = em,
+             case_files = list(F = "F",
+                               D = c("index", "agecomp", "lcomp"),
+                               W = "W")
+  )
+
+  DW_dat <- r4ss::SS_readdat(file.path("F1-D1-W0-cod", "1", "em", "ss3.dat"), verbose = FALSE)
+
+  DW_ctl <- r4ss::SS_readctl(file.path("F1-D1-W0-cod", "1", "em", "em.ctl"), use_datlist = TRUE,
+                             datlist = DW_dat, verbose = FALSE)
+  expect_true(DW_ctl$DoVar_adjust == 1)
+  expect_true(all(DW_ctl$Variance_adjustment_list$Factor %in% c(4,5)))
+})
+unlink(file.path("F1-D1-W0-cod"), recursive = TRUE)
 
 case_files <- list(F = "F", D = c("index", "lcomp", "agecomp"), E = "E")
 test_that("A basic run_ss3sim scenario with forecasting runs", {
   skip_on_cran()
-  suppressWarnings(run_ss3sim(iterations = 1, scenarios = "D0-E102-F0-cod",
+  scen <- "D0-E102-F0-cod"
+  suppressWarnings(run_ss3sim(iterations = 1, scenarios = scen,
              case_folder = case_folder, case_files = case_files,
              om_dir = om, em_dir = em))
-  expect_true("control.ss_new" %in% list.files(file.path("D0-E102-F0-cod", "1", "em")))
-  report <- r4ss::SS_output(file.path("D0-E102-F0-cod", "1", "em"),
+  expect_true("control.ss_new" %in% list.files(file.path(scen, "1", "em")))
+  report <- suppressWarnings(r4ss::SS_output(file.path(scen, "1", "em"),
+
                             covar = FALSE, ncols = 400, NoCompOK = TRUE,
-                            verbose = FALSE, printstats = FALSE)
+                            verbose = FALSE, printstats = FALSE))
   get_results_all()
   res <- read.csv("ss3sim_scalar.csv", header = TRUE)
   expect_equal(res$LnQ_base_Survey_2_em, 0.7)
@@ -116,3 +184,6 @@ test_that("A basic run_ss3sim scenario with forecasting runs", {
   unlink("D0-E102-F0-cod", recursive = TRUE) # clean up
   unlink("ss3sim_*", recursive = TRUE) # clean up
 })
+unlink("D0-E102-F0-cod", recursive = TRUE) # clean up
+
+

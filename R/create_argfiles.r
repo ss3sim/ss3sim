@@ -46,19 +46,27 @@
 #' \code{function_type; change_tv} to the top of a case file \code{X0-spp.txt}
 #' as a starting point for \code{change_tv}.
 
-create_argfiles <- function(functions = c("lcomp0-spp" =
-    "sample_lcomp", "agecomp0-spp" = "sample_agecomp", "index0-spp" =
-    "sample_index", "F0-spp" = "change_f",
-    "R0-spp" = "change_retro", "E0-spp" = "change_e",
-    "X0-spp" = "change_tv"), ext = ".txt",
-    delim = "; ", ignore = c("file", "dir", "make_plot"), ...) {
+create_argfiles <- function(
+  functions = c("lcomp0-spp" = "sample_lcomp",
+                "agecomp0-spp" = "sample_agecomp",
+                "index0-spp" = "sample_index",
+                "calcomp0-spp" = "sample_calcomp",
+                "F0-spp" = "change_f",
+                "R0-spp" = "change_retro",
+                "E0-spp" = "change_e",
+                "X0-spp" = "change_tv"),
+  ext = ".txt",
+  delim = "; ",
+  ignore = c("file", "dir", "make_plot", "dat", "exp_vals"), ...) {
+
   if(!is.character(functions))
     stop("Functions must be a vector of character.")
   for(i in seq_along(functions)) {
     x <- formals(functions[i])
     args_ignore <- as.numeric(unlist(sapply(ignore,
           function(z) grep(z, names(x)))))
-    message(paste("Ignoring", names(x)[args_ignore], "in", functions[i]))
+    message("Ignoring ", paste0(names(x)[args_ignore], collapse = ", "), " in ",
+            paste0(functions[i], collapse = ", "))
     x <- x[-args_ignore]
     d <- data.frame(args = names(x), vals = as.character(x))
     if(functions[[i]] == "change_tv") {
@@ -67,5 +75,6 @@ create_argfiles <- function(functions = c("lcomp0-spp" =
     write.table(d, file = paste0(names(functions)[i], ext), sep = delim,
       row.names = FALSE, col.names = FALSE, quote = FALSE, ...)
   }
-  message(paste("Created the template file", paste0(names(functions), ext)))
+  message("Created the template file ", paste0(names(functions), ext,
+                                               collapse = ", "))
 }
