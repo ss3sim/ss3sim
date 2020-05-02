@@ -29,8 +29,8 @@
 #'   simulation will crash with an error about missing files. The default
 #'   value is set to \code{0.01} seconds, just to be safe.
 #' @param show.output.on.console Logical: passed on to
-#'   \code{\link[base]{system}}.
-#' @param ... Anything else to pass to \code{\link[base]{system}}.
+#'   \code{system}.
+#' @param ... Anything else to pass to \code{system}.
 #' @seealso \code{\link{ss3sim_base}}, \code{\link{run_ss3sim}}
 #' @author Sean C. Anderson
 #' @export

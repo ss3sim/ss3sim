@@ -12,7 +12,7 @@ random number seed.}
 
 \item{n}{The length of the vector returned.}
 
-\item{seed}{An integer value to pass to \code{\link[base]{set.seed}}.}
+\item{seed}{An integer value to pass to \code{\link{set.seed}}.}
 }
 \value{
 A vector of standard normal recruitment deviations.
