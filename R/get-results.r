@@ -584,3 +584,66 @@ make_df <- function(list_name, list_df) {
                   make.row.names = FALSE))
   df
 }
+
+#' Convert long-style ss3sim output to wide format
+#'
+#' This function exists for back compatibility. Note that this will only work
+#' if the column model_run has only the strings"om" or "em".
+#' @param lng A long dataframe produced from get_results_all().
+#' @return A wide dataframe (separate columns for em and om results)
+#' @export
+#' @examples \dontrun{
+#'   scalar <-  read.csv("ss3sim_scalar.csv")
+#'   scalar_wide <- convert_to_wide(scalar)
+#'
+#'   ts <- read.csv("ss3sim_ts.csv")
+#'   ts_wide <- convert_to_wide(scalar)
+#' }
+#' @author Kathryn Doering
+convert_to_wide <- function(lng) {
+  em_df <- lng[lng$model_run == "em", ,drop = FALSE]
+  colnames(em_df) <- paste0(colnames(em_df), "_em")
+  which(colnames(em_df) %in% c("iteration_em", "scenario_em"))
+  colnames(em_df)[colnames(em_df) == "iteration_em"] <- "iteration"
+  colnames(em_df)[colnames(em_df) == "scenario_em"] <- "scenario"
+  if("year_em" %in% colnames(em_df)) {
+    colnames(em_df)[colnames(em_df) == "year_em"] <- "year"
+  }
+  colnames(em_df)[colnames(em_df) == "max_grad_em"] <- "max_grad"
+  colnames(em_df)[colnames(em_df) == "version_em"] <- "version"
+  colnames(em_df)[colnames(em_df) == "RunTime_em"] <- "RunTime"
+  colnames(em_df)[colnames(em_df) == "hessian_em"] <- "hessian"
+  colnames(em_df)[colnames(em_df) == "Niterations_em"] <- "Niterations"
+  em_df <- em_df[, setdiff(colnames(em_df), c("X_em", "model_run_em"))]
+
+  om_df <- lng[lng$model_run == "om", ,drop = FALSE]
+  colnames(om_df) <- paste0(colnames(om_df), "_om")
+  colnames(om_df)[colnames(om_df) == "iteration_om"] <- "iteration"
+  colnames(om_df)[colnames(om_df) == "scenario_om"] <- "scenario"
+  if("year_om" %in% colnames(om_df)) {
+    colnames(om_df)[colnames(om_df) == "year_om"] <- "year"
+  }
+  # remove some columns
+  om_df <- om_df[, setdiff(colnames(om_df),
+                           c("max_grad_om", "version_om", "RunTime_om",
+                             "hessian_om", "Niterations_om",
+                             "params_on_bound_om", "params_stuck_low_om",
+                             "params_stuck_high_om", "X_om", "model_run_om"))]
+  # merge back together
+  wide <- merge(om_df, em_df, all = TRUE )
+
+  # add in old cols
+  wide$ID <- paste0(wide$scenario, "-", wide$iteration)
+
+  # add code to divide ID into the different codes and species
+  ## parse the scenarios into columns for plotting later
+  # use this old code:
+  new_cols <-
+    data.frame(do.call(rbind, strsplit(gsub("([0-9]+-)", "\\1 ",
+                                            as.character(wide$scenario)), "- ")),
+               stringsAsFactors = FALSE)
+  names(new_cols) <-
+    c(substr(as.vector(as.character(
+      new_cols[1,-ncol(new_cols)])), 1,1) ,"species")
+  wide <- cbind(wide, new_cols)
+}

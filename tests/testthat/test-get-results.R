@@ -61,6 +61,21 @@ test_that("get_results_all() works", {
   expect_true(all(c("year", "model_run", "iteration") %in% colnames(res$dq)))
 })
 
+test_that("convert_to_wide() works", {
+  scalar <-  read.csv("ss3sim_scalar.csv")
+  scalar <- scalar[scalar$model_run %in% c("om", "em"), ]
+  scalar_wide <- convert_to_wide(scalar)
+  ts <- read.csv("ss3sim_ts.csv")
+  ts <- ts[ts$model_run %in% c("om", "em"), ]
+  ts_wide <- convert_to_wide(ts)
+  expect_true(ncol(scalar) < ncol(scalar_wide))
+  expect_true(all(c("ID", "D", "F", "species") %in% colnames(scalar_wide)))
+  expect_true(nrow(scalar_wide) == 1)
+  expect_true(ncol(ts) < ncol(ts_wide))
+  expect_true(nrow(ts_wide) == 101)
+  expect_true(all(c("ID", "D", "F", "species") %in% colnames(ts_wide)))
+})
+
 
 test_that("get_results_all() doesn't overwrite files if overwrite_files = FALSE", {
   skip_on_cran()
