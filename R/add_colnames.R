@@ -1,9 +1,9 @@
 #' Create matching column names across a list of data frames
 #' 
 #' Add missing columns to each data frame in the list allowing
-#' for the use \code{\link[base]{rbind}} to create a single data frame.
-#' The code is based on \code{\link[plyr]{rbind.fill}}, but we
-#' didn't want to depend on that package for just one function
+#' for the use \code{rbind} to create a single data frame.
+#' The code is based on \code{rbind.fill} from the \code{plyr} package,
+#' but we didn't want to depend on that package for just one function
 #' given it had not been updated since 2016.
 #' 
 #' @param dfs A list of data frames, where the length can be one.

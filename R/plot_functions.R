@@ -44,13 +44,14 @@ plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' @export
 #' @import ggplot2
 #' @template plot-functions-x
+#' @param fill A string. Color for filling the boxplots
 #' @examples
 #' scalar_dat$depletion <- with(scalar_dat,
 #'   (depletion_om - depletion_em) / depletion_om)
 #' plot_scalar_boxplot(scalar_dat, x = "E", y = "depletion", horiz = "D",
 #'   relative.error = TRUE)
 plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
-  vert=NULL, vert2=NULL, relative.error=FALSE, axes.free=TRUE, print=TRUE) {
+  vert=NULL, vert2=NULL, fill = NA, relative.error=FALSE, axes.free=TRUE, print=TRUE) {
     ## Verify the inputs are correct, throws informative error if not
     verify_plot_arguments(data = data, x = x, y = y, horiz = horiz,
       horiz2 = horiz2, vert = vert, vert2 = vert2, color = NULL,
@@ -63,8 +64,8 @@ plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
     }
     ## Use helper function to build formula for facet_grid
     form <- facet_form(horiz, horiz2, vert, vert2)
-    g <- g+geom_boxplot(aes_string(x=x,y=y), size=.2, outlier.size=1,
-                        outlier.colour=rgb(0,0,0,.5))
+    g <- g+geom_boxplot(aes_string(x=x,y=y), fill = fill, size=.2,
+                        outlier.size=1, outlier.colour=rgb(0,0,0,.5))
     if(!is.null(form))
         g <- g + facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))
         if(print) print(g)
@@ -73,6 +74,7 @@ plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #' Plot timeseries values as boxplots.
 #'
 #' @template plot-functions
+#' @param fill A string. Color for filling the boxplots
 #' @export
 #' @import ggplot2
 #' @examples
@@ -84,7 +86,8 @@ plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #'   relative.error = TRUE)
 #' }
 plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
-  vert2=NULL, relative.error=FALSE, axes.free=TRUE, print=TRUE) {
+                            fill = NA, vert2=NULL, relative.error=FALSE,
+                            axes.free=TRUE, print=TRUE) {
     ## Verify the inputs are correct, throws informative error if not
     verify_plot_arguments(data = data, x = NULL, y = y, horiz = horiz,
       horiz2 = horiz2, vert = vert, vert2 = vert2, color = NULL,
@@ -97,7 +100,7 @@ plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
     }
     ## Use helper function to build formula for facet_grid
     form <- facet_form(horiz, horiz2, vert, vert2)
-    g <- g+geom_boxplot(aes_string(y=y,group="year"),
+    g <- g+geom_boxplot(aes_string(y=y,group="year"), fill = fill,
                         outlier.colour=rgb(0,0,0,.3),  lwd=.3,
                         outlier.size=.8, fatten=3)
     if(!is.null(form))
@@ -182,6 +185,82 @@ plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
     }
     if(print) print(g)
     return(invisible(g))
+}
+
+
+#' Make a cumulative mean plot for a parameter
+#'
+#' @param data A valid data frame containing scalar or timeseries values
+#'  from a \pkg{ss3sim} simulation. That data are generated from
+#'  \code{\link{get_results_all}}.
+#' @param var The column name of the parameter in data of which to plot
+#'  cumulative mean. A string.
+#' @param order_var A column to order the data before calculating the cumulative
+#'  mean
+#' @param group A column in data to group the data together before calculating
+#'  the cumulative mean
+#' @param use_facet Should the group be used to create facets? If TRUE, facets
+#'  are created; If FALSE, grouping will be done by making different color lines
+#'  in the same plot.
+#' @export
+#' @import ggplot2
+#' @return A list containing the ggplot object and the data used to make it
+#' @examples
+#' data("scalar_dat", package = "ss3sim")
+#' obj <- plot_cummean(scalar_dat,
+#'                     "VonBert_K_Fem_GP_1_em",
+#'                     group = "scenario",
+#'                     use_facet = TRUE)
+#' obj$plot
+#' obj$data
+#' # group can also be left NULL if only plotting a single scenario.
+#' # it is recommended to set use_facet FALSE in this case.
+#' scen_to_use <- unique(scalar_dat$scenario)[1]
+#' scalar_dat_1_scen <- scalar_dat[scalar_dat$scanario == scen_to_use, ]
+#' obj2 <- plot_cummean(scalar_dat_1_scen,
+#'                      var = "VonBert_K_Fem_GP_1_em",
+#'                      group = NULL,
+#'                      use_facet = FALSE)
+#' obj2$plot
+#' obj2$data
+#'
+plot_cummean <- function(data, var, order_var = "iteration", group = NULL,
+                         use_facet = FALSE) {
+  # Manipulate the data
+  data <- data[, c(order_var, group, var)] # select cols
+  data <- data[order(data[, order_var]), ]   # arrange
+  # group and calculate cumsum
+  if(!is.null(group)){
+  group_vals <- unique(data[, group])
+  } else {
+    group <- "dummy_val"
+    data$dummy_val <- rep("group", times = nrow(data))
+    group_vals <- "group"
+  }
+  #TODO: need to make sure this works with no grouping variable.
+  data_list <- lapply(group_vals, function(val, data, group, var) {
+                  tmp_dat <- data[data[, group] == val, ]
+                  cum_mean_col <- cumsum(tmp_dat[, var])/seq_along(tmp_dat[,var])
+                  tmp_dat$cummean <- cum_mean_col
+                  tmp_dat
+  }, data = data, group = group, var = var)
+  new_data <- do.call("rbind", data_list)
+  if(group == "dummy_val") {
+    new_data <-  new_data[,(colnames(new_data) != "dummy_val")]
+    group <- NULL
+  }
+  g <- ggplot(data = new_data, aes_string(x = order_var, y = "cummean"))
+  if(use_facet) {
+    g <- g +
+           geom_line() +
+           geom_point() +
+           facet_wrap(group)
+  } else {
+    g <- g +
+           geom_line(aes_string(color = group))+
+           geom_point(aes_string(color = group))
+  }
+  return_list <- list(plot = g, data = new_data)
 }
 
 #' A helper function for building a ggplot facet. Used internally by the

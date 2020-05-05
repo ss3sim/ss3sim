@@ -7,7 +7,8 @@
 #' through \code{\link{run_ss3sim}}, but can also be used directly.
 #'
 #' @param iterations Which iterations to run. A numeric vector.
-#' @param scenarios Which scenarios to run.
+#' @param scenarios A name to use as the folder name for the unique combination
+#'   of parameters for the OM and EM.
 #' @param tv_params A named list containing arguments for
 #'   \code{\link{change_tv}} (time-varying).
 #' @param operat_params A named list containing arguments for \code{\link{change_o}}.
@@ -21,8 +22,6 @@
 #'   \code{\link{sample_agecomp}}. A mandatory case.
 #' @param calcomp_params A named list containing arguments for
 #'   \code{\link{sample_calcomp}}, for conditional age-at-length data.
-#'   Currently CAL is not implemented in this version of ss3sim,
-#'   so calcomp_params should be NULL.
 #' @param wtatage_params A named list containing arguments for
 #'   \code{\link{sample_wtatage}}, for empirical weight-at-age data.
 #' @param mlacomp_params A named list containing arguments for
@@ -35,6 +34,8 @@
 #'   \code{\link{change_em_binning}}.
 #' @param data_params A named list containing arguments for
 #'   \code{\link{change_data}}.
+#' @param weight_comps_params A named list containing arguments for
+#'   \code{\link{weight_comps}}.
 #' @param om_dir The directory with the operating model you want to copy and use
 #'   for the specified simulations.
 #' @param em_dir The directory with the estimation model you want to copy and
@@ -165,7 +166,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   index_params, lcomp_params, agecomp_params, calcomp_params = NULL,
   wtatage_params = NULL, mlacomp_params = NULL, em_binning_params = NULL,
   estim_params = NULL, tv_params = NULL, operat_params = NULL, om_dir, em_dir,
-  retro_params = NULL, data_params = NULL,
+  retro_params = NULL, data_params = NULL, weight_comps_params = NULL,
   user_recdevs = NULL, user_recdevs_warn = TRUE,
   bias_adjust = FALSE, hess_always = FALSE,
   print_logfile = TRUE, sleep = 0, seed = 21,
@@ -175,19 +176,13 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   old_wd <- getwd()
   on.exit(setwd(old_wd), add = TRUE)
 
-  #TODO: consider adding a check of OM/EM structures before starting loop?
-  # Probably sufficient to just warn if not structured correctly. Some things
-  # to check:
-  # - no .par file and .par file not used in the starter file
-  # -  q included for all fleets (i.e., fishing and surveys).
-  # - Anything else?
-
-  for(sc in scenarios) {
     # TODO maybe: manipulate the OM for each scenario ONLY; this can't be done
     # in parallel, but may be faster than doing OM model runs for each
     # scenario in parallel (test this). Then, once the OM is created, it can
     # then be copied into each folder (along with the EM) and sampled from for
     # each iteration.
+  stopifnot(length(scenarios) == 1)
+  sc <- scenarios
     for(i in iterations) {
 
       # Create folders, copy models, check for necessary files, rename
@@ -280,36 +275,16 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         index_params = index_params, verbose = FALSE) # why only index_params called here?
 
       # check qs are correct.
-      qpars_OM <- r4ss::SS_parlines(file.path(sc,i, "om", "om.ctl"))
-      qpars_OM <- qpars_OM[grep("^LnQ", qpars_OM$Label), ]
-      qinOM <- utils::type.convert(gsub("[a-zA-Z\\(\\)_]", "", qpars_OM$Label))
-      #TODO: can get rid of this check if it is done earlier on the original
-      # EM and OM files read in.
-      if (any(!(index_params$fleets %in% qinOM))) {
-        stop("There are user-selected fleets with indices that do not have q ",
-             "parameters specified in the OM. User selected fleets: ",
-             paste(index_params$fleets, collapse = ", "),
-             "; fleets with q in OM control file: ", paste(qinOM, collapse = ", "),
-             ". Please make sure your OM control file includes q parameters ",
-             "for every fleet that may have an index."
-        )
-      }
-      # Remove q setup lines and parlines for fleets that aren't being used as
-      # an index of abundance. TODO: perhaps make into a function?
-      remove_fleetnames <- datfile.orig$fleetnames[-index_params$fleets]
-      # get list of remove_fleetnames
-      # first param is fleetnames to remove
-
-      if(length(remove_fleetnames) > 0) {
-        tmp_ctl <- readLines(file.path(sc,i, "om", "om.ctl"))
-        for(n in remove_fleetnames) {
-          tmp_ctl <- remove_q_ctl(n, ctl.in = tmp_ctl, filename = FALSE,
-                              ctl.out = NULL)
-        }
-        # write here rather than in function to reduce number of times writing
-        # to file.
-        writeLines(tmp_ctl, file.path(sc,i, "om", "om.ctl"))
-      }
+    ctlom <- r4ss::SS_readctl(file = file.path(sc,i, "om", "om.ctl"),
+      use_datlist = TRUE, datlist = datfile.orig,
+      verbose = FALSE, echoall = FALSE)
+    qtasks <- check_q(ctl_list = ctlom, Nfleets = datfile.orig$Nfleets,
+      desiredfleets = index_params$fleets)
+    ctlom <- change_q(string_add = qtasks$add, string_remove = qtasks$remove,
+      overwrite = TRUE,
+      ctl_file_in = file.path(sc,i, "om", "om.ctl"),
+      ctl_list = NULL, dat_list = datfile.modified,
+      ctl_file_out = file.path(sc,i, "om", "om.ctl"))
 
       data_params <- add_nulls(data_params, c("age_bins", "len_bins",
         "pop_binwidth", "pop_minimum_size", "pop_maximum_size",
@@ -340,7 +315,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       #TODO: rather than write expdata to file: dat_list <- expdata; rm(expdata)
       r4ss::SS_writedat(expdata, file.path(sc, i, "em", "ss3.dat"),
         overwrite = TRUE, verbose = FALSE)
-      rm(expdata)
       # Sample from the OM -----------------------------------------------------
       ## Read in the datfile once and manipulate as a list object, then
       ## write it back to file at the end, before running the EM.
@@ -369,6 +343,9 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                             years            = years,
                             cpar             = cpar,
                             ESS              = ESS))
+         lcomps_sampled <- TRUE # needed if calcomps, if using.
+      } else {
+         lcomps_sampled <- FALSE # needed for calcomps, if using
       }
 
       ## Add error in the age comp data. Need to do this last since other
@@ -438,24 +415,29 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       }
 
       ## Add error in the conditional age at length comp data. The
-      ## cal data are independent of the agecomp data for this
-      ## package. Thus the sampling of agecomps has no influence on the
-      ## calcomp data and vice versa.
-      #TODO: is there a more realistic way to implement?
+      ## cal data are independent of the marginal agecomp and length comp data
+      ## in the SS 3.30 implementation.New length comp data is created
+      ## especially for conditional age at length comp data.
       if(!is.null(calcomp_params$fleets)){
-        #this stop message can be removed once conditional age at length implemented
-        stop("Conditional age at length (CAL) is not yet implemented, please only ",
-             "use models and scenarios without CAL.")
-          calcomp_params <- add_nulls(calcomp_params, c("fleets", "years", "Nsamp"))
+          calcomp_params <- add_nulls(calcomp_params,
+                                      c("fleets", "years", "Nsamp_lengths",
+                                        "Nsamp_ages", "method", "ESS_lengths",
+                                        "ESS_ages"))
           dat_list <- with(calcomp_params,
                           sample_calcomp(dat_list         = dat_list,
+                                         exp_vals_list    =  expdata, # the expected values
                                          outfile          = NULL,
                                          fleets           = fleets,
                                          years            = years,
-                                         Nsamp            = Nsamp))
+                                         Nsamp_lengths    = Nsamp_lengths,
+                                         Nsamp_ages       = Nsamp_ages,
+                                         ESS_lengths      = ESS_lengths,
+                                         ESS_ages         = ESS_ages,
+                                         method           = method,
+                                         lcomps_sampled   = lcomps_sampled))
       }
 
-      ## End of manipulating the data file, so clean it and write it
+      ## End of manipulating the data file (except for rebinning), so clean it
       dat_list <- clean_data(dat_list      = dat_list,
                             index_params   = index_params,
                             lcomp_params   = lcomp_params,
@@ -514,27 +496,18 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         setwd(wd)
       }
 
-      #TODO: Perhaps removing the q could be moved to change_e, because
-      # it is changing something in the estimation model?
-      qpars <- r4ss::SS_parlines(file.path(sc, i, "em", "em.ctl"))
-      qpars <- qpars[grep("^LnQ", qpars$Label), ]
-      qinmodel <- utils::type.convert(gsub("[a-zA-Z\\(\\)_]", "", qpars$Label))
-      for (irem in qinmodel) {
-        if (irem %in% unique(datfile.modified$CPUE$index)) next
-          remove_q_ctl(irem,
-            ctl.in = file.path(sc, i, "em", "em.ctl"),
-            ctl.out = file.path(sc, i, "em", "em.ctl"),
-            overwrite = TRUE)
-      }
-      #TODO: can get rid of this check if it is done earlier on the original
-      # EM and OM files read in.
-      if (any(!unique(datfile.modified$CPUE$index) %in% qinmodel)) {
-        stop("Add q parameters to your EM for all fleets with an index.")
-      }
-
+# check q EM values are correct.
+    ctlem <- r4ss::SS_readctl(file = file.path(sc,i, "em", "em.ctl"),
+      use_datlist = TRUE, datlist = datfile.orig,
+      verbose = FALSE, echoall = FALSE)
+    qtasks <- check_q(ctl_list = ctlem, Nfleets = datfile.orig$Nfleets,
+      desiredfleets = index_params$fleets)
+    ctl_list <- change_q(string_add = qtasks$add, string_remove = qtasks$remove,
+      overwrite = TRUE,
+      ctl_file_in = file.path(sc,i, "em", "em.ctl"),
+      ctl_list = NULL, dat_list = datfile.modified,
+      ctl_file_out = NULL)
       ss_version <- get_ss_ver_dl(dat_list)
-      ctl_list <- r4ss::SS_readctl(file.path(sc, i, "em", "em.ctl"),
-        use_datlist = TRUE, datlist = dat_list, verbose = FALSE)
       newlists <- change_year(dat_list, ctl_list)
       SS_writedat(datlist = newlists$dat_list,
         outfile = file.path(sc, i, "em", "ss3.dat"),
@@ -542,17 +515,53 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       SS_writectl(ctllist = newlists$ctl_list,
         outfile = file.path(sc, i, "em", "em.ctl"),
         version = ss_version, overwrite = TRUE, verbose = FALSE)
-      # Run the EM -------------------------------------------------------------
-      run_ss3model(scenarios = sc, iterations = i, type = "em",
-        hess = ifelse(bias_adjust, TRUE, hess_always), ...)
-      success <- get_success(dir = file.path(sc, i, "em"))
-
-      if(bias_adjust & all(success > 0)) {
-        bias <- calculate_bias(dir = file.path(sc, i, "em"),
-          ctl_file_in = "em.ctl")
-        run_ss3model(scenarios = sc, iterations = i, type = "em",
-            hess = ifelse(bias_adjust, TRUE, hess_always), ...)
+      # Add dirichlet multinomial parameters if using
+      if(!is.null(weight_comps_params)) {
+        if(weight_comps_params$method == "DM") {
+           # convert model so it can be used
+          weight_comps(method = weight_comps_params$method,
+                       fleets = weight_comps_params$fleets,
+                       init_run = FALSE, # although not really needed for DM
+                       main_run    = FALSE,
+                       bias_adjust = bias_adjust,
+                       hess_always = hess_always,
+                       scen = sc,
+                       iter = i)
+        }
       }
+      # Run the EM -------------------------------------------------------------
+      # run model 1x as-is, regardless if data weighting used or not.
+      run_ss3model(scenarios = sc, iterations = i, type = "em",
+                   hess = ifelse(bias_adjust, TRUE, hess_always), ...)
+      success <- get_success(dir = file.path(sc, i, "em"))
+      if(bias_adjust & all(success > 0)) {
+        #run model to do the bias adjustment
+        bias <- calculate_bias(dir = file.path(sc, i, "em"),
+                               ctl_file_in = "em.ctl")
+        run_ss3model(scenarios = sc, iterations = i, type = "em",
+                     hess = ifelse(bias_adjust, TRUE, hess_always), ...)
+      }
+      if(!is.null(weight_comps_params)) {
+        # do the DM (only 1 run needed, and only needed if bias adj. done.)
+        if(bias_adjust & all(success > 0) & weight_comps_params$method == "DM") {
+        # model already changed to include the DM parameters, so only need to
+        # rerun model again, not call the weight_comps function
+          run_ss3model(scenarios = sc, iterations = i, type = "em",
+                       hess = ifelse(bias_adjust, TRUE, hess_always), ...)
+        }
+        # need to do data tuning, fregardless of if bias adjustment was done.
+        if(weight_comps_params$method %in% c("MI", "Francis")) {
+          weight_comps(method = weight_comps_params$method,
+                       fleets = weight_comps_params$fleets,
+                       niters_weighting = weight_comps_params$niters_weighting,
+                       init_run = FALSE,
+                       main_run = TRUE,
+                       bias_adjust = bias_adjust,
+                       hess_always = hess_always,
+                       scen = sc,
+                       iter = i)
+        }
+
 # Write log file ---------------------------------------------------------------
 # TODO pull the log file writing into a separate function and update
 # for current arguments

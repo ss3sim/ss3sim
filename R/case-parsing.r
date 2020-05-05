@@ -156,9 +156,9 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
   args_out2 <- unlist(args_out)
   names(args_out2) <- unlist(case_files)
   argvalues_out <- lapply(args_out2, function(x) get_args(file.path(folder, x)))
-
   # now, check for all "function_type = change_tv" and concatenate these
   # into a list to pass to change_param()
+
   change_param_args <- sapply(argvalues_out, function(x) {
     if ("function_type" %in% names(x)) {
       if (x$function_type == "change_tv") {
@@ -178,8 +178,29 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
     change_param_args_short <- NULL
   }
 
+
   # remove time varying elements from argvalues_out:
   argvalues_out <- argvalues_out[which(args_null)]
+  # remove weight_comps values also, b/c don't expect them to match the
+  # same function names. Maybe make its own check to check inputs.
+  which_not_wt <- lapply(argvalues_out, function(x) {
+    if(is.null(x[["function_type"]])) {
+      r <- TRUE
+    } else if(x[["function_type"]] == "weight_comps"){
+      r <- FALSE
+    } else {
+      r <- TRUE
+    }
+    r
+  })
+  which_not_wt <- unlist(which_not_wt)
+  weight_comps_params <- argvalues_out[(!which_not_wt)]
+  if(length(weight_comps_params) > 1) {
+    stop("Multiple cases have function type = 'weight_comps', but there should",
+         "only be 1 case with this function type.")
+  }
+  argvalues_out <- argvalues_out[which_not_wt]
+
 
   # test that all specified arguments match function arguments:
   for (i in seq_along(argvalues_out)) {
@@ -204,8 +225,50 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
     }
   }
 
-  # and concatenate on the time varying arguments
-  c(argvalues_out, list(tv_params = change_param_args_short))
+  # check weight_comps_params
+  if(length(weight_comps_params) == 1) {
+    fxn_name <- "weight_comps"
+    fxn_formals <- tryCatch(names(formals(fxn_name)),
+                            error = function(e) "")
+    wc_to_check <- weight_comps_params[[1]][which(names(weight_comps_params[[1]]) != "function_type")]
+    matches <- names(wc_to_check) %in% fxn_formals
+    if (sum(matches) != length(matches)) {
+      stop(paste(names(weight_comps_params[[1]])[!matches],
+                 "is not an argument in the function ", fxn_name, ".\n"))
+    }
+  }
+  # and concatenate on the time varying arguments, weight comps arguments
+  argvalues_out <- c(argvalues_out, list(tv_params = change_param_args_short))
+  argvalues_out <- c(argvalues_out, weight_comps_params)
+}
+
+#' return the weight_comps args
+#'
+#' @param args List of args created by \code{get_caseargs()}.
+get_weight_comps_args <- function(args) {
+  # same function names. Maybe make its own check to check inputs.
+  which_wt <- lapply(args, function(x) {
+    if(is.null(x[["function_type"]])) {
+      r <- FALSE
+    } else if(x[["function_type"]] == "weight_comps"){
+      r <- TRUE
+    } else {
+      r <- FALSE
+    }
+    r
+  })
+  which_wt <- unlist(which_wt)
+  if(any(which_wt == TRUE)) {
+    weight_comps_params <- args[(which_wt)]
+    if(length(weight_comps_params) > 1) {
+      stop("Multiple cases have function type = 'weight_comps', but there should",
+         "only be 1 case with this function type.")
+    }
+    weight_comps_params <- weight_comps_params[[1]]
+  } else {
+    weight_comps_params <- NULL
+  }
+  weight_comps_params
 }
 
 #' Substring from right
@@ -216,4 +279,75 @@ get_caseargs <- function(folder, scenario, ext = ".txt",
 #' @param n The number of characters from the right to extract
 substr_r <- function(x, n){
   substr(x, nchar(x)-n+1, nchar(x))
+}
+
+
+#' Function to check and standardize list components of sampling functions
+#'
+#'
+#' @param fleets Fleet numbers as a vector
+#' @param years Number of years as a list. The number of list components should
+#'  be one or the same length as fleets. Within the list compoenents should be
+#'  a vector of years to correspond with each fleet.
+#' @param other_input Some other input to interpret. The number of list
+#'  components should be one or the same length as fleets. Within the list
+#'  components should be a vector of length 1 the same length as the vectors
+#'  within years.
+#' @param return_val If "other_input", return the manipulated other_input value;
+#'  if "years", return the manipulated year input. If "both" return both as list
+#'  components
+#' @param other_input_name Only necessary if "both" is used as the return
+#'   value
+#'
+standardize_sampling_args <- function(fleets, years, other_input, return_val = "other_input", other_input_name = "other_input") {
+  # function input checks
+  if(!return_val %in% c("other_input", "years","both")) {
+    stop("The parameter return_val is ", return_val, ", which is not a valid ",
+         "option. Please set it as either 'other_input', 'years', or 'both'.")
+  }
+  #  check inputs
+  msg <- NULL
+  if(!is.atomic(fleets)) msg <- c(msg, "fleets is not a vector.")
+  if(!is.list(years)) msg <- c(msg, "'years' is not a list.")
+  if(!is.list(other_input)) msg <- c(msg, paste0(other_input_name,
+                                                 " is not a list."))
+  if(!is.null(msg)) {
+    stop("Input(s) were not the correct type: ",
+         paste0(msg, collapse = " "))
+  }
+  # manipulate values
+  # make sure years and other_inputs has the same number of list components as
+  # the number of fleets
+  if(length(years) == 1 & length(fleets) > 1) {
+    years <- rep(years, length(fleets))
+  }
+  if(length(other_input) == 1 & length(fleets > 1)) {
+    other_input <- rep(other_input, length(fleets))
+  }
+  # make sure other_inputs has the same length vectors as the number of years
+  for(i in seq_len(length(years))) {
+    tmp_yrs <- years[[i]]
+    tmp_o_i <- other_input[[i]]
+    if(length(tmp_o_i) == 1 & length(tmp_yrs) >1) {
+      tmp_o_i <- rep(tmp_o_i, length.out = length(tmp_yrs))
+      other_input[[i]] <- tmp_o_i
+    }
+    if(length(tmp_o_i) != length(tmp_yrs)) {
+      stop(other_input_name, " did not have the correct dimensions.")
+    }
+  }
+
+  if(length(other_input) != length(years)) {
+    stop(other_input_name, " did not have the correct dimensions.")
+  }
+  # return
+  if(return_val == "other_input") {
+    to_return <- other_input
+  } else if (return_val == "years") {
+    to_return <- years
+  } else if (return_val == "both") {
+    to_return <- list(years, other_input)
+    names(to_return) <- c("years", other_input_name)
+  }
+  to_return
 }

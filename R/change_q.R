@@ -1,139 +1,151 @@
-#' Add a q setup line into an SS control file
+#' Add or remove a q in an SS control file
 #'
-#' This function adds a q setup line to an SS 3.30 control file
-#' @param ctl.in An SS control file name to read in.
-#' @param ctl.out The SS control file to read out.
-#' @param overwrite Logical. Overwrite an existing file with the same name as
-#'   \code{ctl.out}?
-#' @param q a dataframe containing the q parameter lines to add.
-#' @return A modified SS control file.
-#' @author Kelli Johnson
-add_CPUE <- function(ctl.in, ctl.out = NULL, overwrite = FALSE,
-	q = data.frame(
-		"fleet" = 3, "link" = 1, "link_info" = 0, "extra_se" = 0, "biasadj" = 0, "float" = 0,
-		"LO" = -20, "HI" = 20, "INIT" = 0, "PRIOR" = 0, "PR_SD" = 99,
-		"PR_type" = 0, "PHASE" = 1, "env_var" = 0, "use_dev" = 0,
-		"dev_mnyr" = 0,  "dev_mxyr" = 0, "dev_PH" = 0,
-		"Block" = 0, "Blk_Fxn" = 0, "name" = NULL)) {
-
-	ctl <- readLines(ctl.in)
-
-	startline <- findspot("Q_setup", ctl, gopast = "#")
-	if (is.null(q[, "name"])) q[, "name"] <- paste0("#LnQ_base_Survey(", q[, "fleet"], ")")
-  if (substr(trimws(q[, "name"]), 1, 1) != "#") q[, "name"] <- paste0("#", q[, "name"])
-  Q_setup <- apply(q[, c("fleet", "link", "link_info", "extra_se", "biasadj", "float", "name")],
-  	1, paste, collapse = " ")
-  ctl <- append(x = ctl,
-  	values = Q_setup,
-	  after = startline)
-
-  endline <- findspot("Q_parms", ctl, goto = "#_no")
-  Q_parms <- apply(q[, c("LO", "HI", "INIT", "PRIOR", "PR_SD",
-		"PR_type", "PHASE", "env_var", "use_dev", "dev_mnyr",
-		"dev_mxyr", "dev_PH", "Block", "Blk_Fxn", "name")],
-  	1, paste, collapse = " ")
-  ctl <- append(x = ctl,
-  	values = Q_parms,
-	  after = endline - 1)
-  if (!is.null(ctl.out)) {
-  	write <- TRUE
-  	if (file.exists(ctl.out) & !overwrite) write <- FALSE
-  	if (write) writeLines(text = ctl, con = ctl.out)
+#' This function adds or removes a q setup line in an SS control file.
+#' 
+#' @details
+#' Parameters that are added are simple versions of the structures available
+#' within Stock Synthesis. For example, the current functionality of
+#' \code{change_q} does not allow for modeling an additional parameter for
+#' added variance for the given survey of interest. Though it will remove
+#' that parameter if present for a given fleet that no longer has survey data.
+#' Additionally, the float term is not used and is instead set to zero.
+#' 
+#' \code{change_q} can add and remove parameters in the control file
+#' simultaneously, and thus, it is not necessary to call the function twice
+#' when wanting to perform both operations. A helper function,
+#' \code{\link{check_q}} is a available to determine which fleets one should
+#' remove and add.
+#' @param string_add A vector of character strings with the fleetnames to add.
+#' Numeric values representing the fleet number are also allowed or any
+#' combination thereof.
+#' @param string_remove A vector of character strings with the fleetnames to remove.
+#' Numeric values representing the fleet number are also allowed or any
+#' combination thereof.
+#' @template ctl_list
+#' @template dat_list
+#' @template ctl_file_in
+#' @template dat_file_in
+#' @template ctl_file_out
+#' @template overwrite
+#' @template verbose
+#' @return A modified SS control file list with the same structure as that read
+#' in by \code{\link[r4ss]{SS_readctl}}.
+#' @seealso \code{\link{change_q}}
+#' @author Kelli Faye Johnson
+change_q <- function(string_add = NULL, string_remove = NULL,
+  ctl_list, dat_list, ctl_file_in = NULL, dat_file_in = NULL, ctl_file_out = NULL,
+  overwrite = FALSE, verbose = FALSE) {
+  
+  if(is.null(string_add) & is.null(string_remove)) {
+    stop("Either string_add or string_remove must have an entry.")
   }
-  invisible(ctl)
+  if(!is.null(dat_file_in)) {
+    dat_list <- r4ss::SS_readdat(verbose = FALSE, echoall = FALSE,
+      file = dat_file_in)
+  }
+  if(!is.null(ctl_file_in)) {
+    ctl_list <- r4ss::SS_readctl(verbose = FALSE, echoall = FALSE,
+      file = ctl_file_in,
+      use_datlist = TRUE, datlist = dat_list)
+  }
+  add <- remove <- NULL
+
+  for(ii in c("remove", "add")) {
+    thisloop <- get(paste0("string_", ii))
+    if(is.null(thisloop)) next
+    chars <- grepl("[a-zA-Z]", thisloop)
+    temp <- unlist(type.convert(ifelse(grepl("[a-zA-Z]", thisloop),
+      mapply(grep, thisloop, 
+        MoreArgs = list(x = dat_list[["fleetnames"]], ignore.case = TRUE)),
+      thisloop), as.is = TRUE))
+    if(length(thisloop) != length(temp) & verbose) {
+      warning("Not all fleets in string.", ii, " were present to be removed.",
+        "\nThose not present will be ignored.")
+    }
+    temp <- temp[order(temp)]
+    if(!all(temp %in% seq(dat_list$Nfleets))) {
+      warning("Not all fleets in string.", ii, " were present to be removed.")
+      temp <- temp[temp %in% seq(dat_list$Nfleets)]
+    }
+    assign(ii, temp)
+  }
+
+  if(!is.null(string_remove) & length(remove) > 0) {
+    ctl_list$Q_setup[remove, ] <- 0
+    ctl_list$Q_options <- ctl_list$Q_options[!ctl_list$Q_options$fleet %in% remove, ]
+    if(NROW(ctl_list[["Q_options"]]) == 0) {
+      ctl_list$Q_options <- NULL
+      ctl_list$Q_parms <- NULL
+    } else {
+      ctl_list$Q_parms <- ctl_list$Q_parms[
+        !grepl(paste0(remove, "\\)$", collapse = "|"), row.names(ctl_list$Q_parms)), ]
+    }
+  }
+
+  if(!is.null(string_add) & length(add) > 0) {
+    ctl_list$Q_setup[add, ] <- 0
+    ctl_list$Q_setup[add, "Q_type"] <- 2
+    # todo: add ability to estimate extra SE
+    # ctl_list$Q_setup[add, "extra_se"] <- 1
+    ctl_list$Q_options <- rbind(
+      data.frame("fleet" = add, "link" = 1, "link_info" = 1, 
+        "extra_se" = 0, "biasadj" = 0, "float" = 1),
+      ctl_list$Q_options)
+    ctl_list$Q_options <- ctl_list$Q_options[order(ctl_list$Q_options$fleet), ]
+    row.names(ctl_list$Q_options)[add] <- dat_list$fleetnames[add]
+    temp <- data.frame("LO" = -3, "HI" = 3, "INIT" = 0.0, "PRIOR" = 0,
+        "PR_SD" = 99, "PR_type" = 0, "PHASE" = -5, "env_var&link" = 0,
+        "dev_link" = 0, "dev_minyr" = 0, "dev_maxyr" = 0,
+        "dev_PH" = 0, "Block" = 0, "Block_Fxn" = 0)
+    temp[seq(dat_list$Nfleets), ] <- temp[1, ]
+    temp <- temp[add, ]
+    row.names(temp) <- paste0("LnQ_base_", dat_list$fleetnames[add], "(", add, ")")
+    ctl_list$Q_parms <- rbind(temp, ctl_list$Q_parms)
+    ctl_list$Q_parms <- ctl_list$Q_parms[order(
+      type.convert(gsub("a-zA-Z_\\(\\)", "", row.names(ctl_list$Q_parms)))), ]
+  }
+
+  if (!is.null(ctl_file_out)) {
+    SS_writectl(ctllist = ctl_list, outfile = ctl_file_out,
+      verbose = FALSE, overwrite = overwrite)
+  }
+  invisible(ctl_list)
 }
 
-findspot <- function(string, lines, gopast = NULL, goto = NULL) {
-	searchfor <- NULL
-	if (!is.null(gopast)) searchfor <- gopast
-	if (!is.null(goto)) {
-		searchfor <- paste(sapply(strsplit(goto, "")[[1]],
-		function(x) paste0("[^", x, "]")), collapse = "")
-	}
-	if (is.null(searchfor)) stop("gopast or goto must be specified.")
-
-	loc <- grep(string, lines)
-	while(grepl(searchfor,
-		substring(trimws(lines[loc]), 1, nchar(searchfor)))) {
-		loc <- loc + 1
-	}
-	if (!is.null(goto)) loc <- loc - 1
-	return(loc)
-}
-
-#' Remove a q setup line into an SS control file
+#' Check if desired q parameters exist in control file
+#' 
+#' Check a Stock Synthesis control file to determine if the desired fleets
+#' have q parameters.
+#' 
+#' @template ctl_list
+#' @param Nfleets The number of fleets in the model. This can be determined
+#' from the data file or using \code{\link[r4ss]{SS_readdat}}, of which
+#' \code{Nfleets} is a named element.
+#' @param desiredfleets A numeric vector specifying which fleets you want
+#' to have q parameters for.
+#' @export
+#' @return A list with two vectors specifying which fleets to add and which
+#' to remove from the control file.
+#' @seealso \code{change_q}
+#' @examples
+#' dat <- r4ss::SS_readdat(
+#'   dir(system.file("extdata", "models", "cod-om", package = "ss3sim"),
+#'  "\\.dat", full.names = TRUE), verbose = FALSE)
+#' ctl <- r4ss::SS_readctl(
+#'   dir(system.file("extdata", "models", "cod-om", package = "ss3sim"),
+#'  "\\.ctl", full.names = TRUE), verbose = FALSE, echoall = FALSE,
+#'  use_datlist = TRUE, datlist = dat)
+#' stopifnot(check_q(ctl, dat$Nfleets, desiredfleets = 1)$remove == 2)
+#' stopifnot(all(mapply(is.null, check_q(ctl, dat$Nfleets, desiredfleets = 1:2))))
+#' stopifnot(check_q(ctl, dat$Nfleets, desiredfleets = 1:3)$add == 3)
+#' stopifnot(check_q(ctl, dat$Nfleets, desiredfleets = 2:3)$remove == 1)
 #'
-#' This function removesa q setup line from a SS 3.30 control file
-#' @param string A string with the fleetname to remove.
-#' @param ctl.in An SS control file name to read in.
-#' @param ctl.out The SS control file to read out.
-#' @param dat.in An SS data file name to read in.
-#' @param dat.out An SS data file name to read out.
-#' @param overwrite Logical. Overwrite an existing file with the same name as
-#'   \code{ctl.out} or \code{data.out}?
-#' @return A modified SS control file.
-#' @importFrom r4ss SS_writedat
-#' @author Kelli Johnson
-remove_CPUE <- function(string,
-	ctl.in, ctl.out,
-	dat.in, dat.out,
-	overwrite = FALSE) {
-
-	# ctl file
-	ctl <- readLines(ctl.in)
-	line <- findspot("Q_setup", ctl, gopast = "#")
-  while(!grepl(string, ctl[line])) line <- line + 1
-  ctl <- ctl[-line]
-  line <- findspot("Q_parms", ctl, gopast = "#")
-  while(!grepl(string, ctl[line])) line <- line + 1
-  ctl <- ctl[-line]
-  if (!is.null(ctl.out)) {
-  	write <- TRUE
-  	if (file.exists(ctl.out) & !overwrite) write <- FALSE
-  	if (write) writeLines(text = ctl, con = ctl.out)
-  }
-
-  # dat file
-  dat <- r4ss::SS_readdat(dat.in, verbose = FALSE)
-  fleetnum <- grep(string, dat$fleetnames)
-  dat$CPUE <- dat$CPUE[dat$CPUE$index != fleetnum, ]
-  SS_writedat(dat, dat.out,
-  	verbose = FALSE, overwrite = overwrite)
-}
-
-#' Remove a q setup line into an SS control file only
-#'
-#' This function removesa q setup line from a SS 3.30 control file
-#' @param string A string with the fleetname to remove.
-#' @param ctl.in An SS control file name to read in if filename = TRUE otherwise
-#'   an SS control file vector already read using readLines()
-#' @param filename Does function expect ctl.in to be a filename? defaults to
-#'   TRUE. See \code{ctl.in} definition.
-#' @param ctl.out The SS control file to read out.
-#' @param overwrite Logical. Overwrite an existing file with the same name as
-#'   \code{ctl.out} or \code{data.out}?
-#' @return A modified SS control file vector.
-#' @author Kelli Johnson
-remove_q_ctl <- function(string,
-                        ctl.in, filename = TRUE, ctl.out,
-                        overwrite = FALSE) {
-
-  # ctl file
-  if(filename == TRUE) {
-    ctl <- readLines(ctl.in)
-  } else {
-    ctl <- ctl.in
-  }
-  line <- findspot("Q_setup", ctl, gopast = "#")
-  while(!grepl(string, ctl[line])) line <- line + 1
-  ctl <- ctl[-line]
-  line <- findspot("Q_parms", ctl, gopast = "#")
-  while(!grepl(string, ctl[line])) line <- line + 1
-  ctl <- ctl[-line]
-  if (!is.null(ctl.out)) {
-    write <- TRUE
-    if (file.exists(ctl.out) & !overwrite) write <- FALSE
-    if (write) writeLines(text = ctl, con = ctl.out)
-  }
-  invisible(ctl) # useful if not writing to file.
+check_q <- function(ctl_list, Nfleets, desiredfleets) {
+  remove <- seq(Nfleets)[which(!ifelse(seq(Nfleets) %in% desiredfleets,
+    ctl_list$Q_setup$Q_type == 2, ctl_list$Q_setup$Q_type ==  0))]
+  add <- desiredfleets[which(!ifelse(desiredfleets %in% seq(Nfleets),
+    ctl_list$Q_setup$Q_type == 2, ctl_list$Q_setup$Q_type ==  0))]
+  if(length(add) == 0) add <- NULL
+  if(length(remove) == 0) remove <- NULL
+  return(list("add" = add, "remove" = remove))
 }

@@ -23,8 +23,8 @@ input <- list(years = 1:100,
 test_that("change_f works with F val for each year", {
   ctl <- change_f(input$years, input$fisheries, input$fvals, ctl_file_in = "codOM.ctl",
              ctl_file_out = NULL)
-  F_det_s_line <- grep("Fleet Yr Seas F_value se phase (for detailed setup of F_Method",
-                       ctl, fixed = TRUE)+1
+  F_det_s_line <- 1 + max(grep(x = ctl,
+    "overall start F value|Fleet Yr Seas F_value se phase \\(for detailed setup of F_Method"))
   F_det_e_line <- grep("Q_setup for fleets with cpue or survey data", ctl,
                        fixed = TRUE)-1
   expect_equal(F_det_e_line-F_det_s_line+1, length(input$years))
@@ -34,8 +34,8 @@ test_that("change_f works with a single F value", {
   input$fvals <- 0.1
   ctl <- change_f(input$years, input$fisheries, input$fvals, ctl_file_in = "codOM.ctl",
                   ctl_file_out = NULL)
-  F_det_s_line <- grep("Fleet Yr Seas F_value se phase (for detailed setup of F_Method",
-                       ctl, fixed = TRUE)+1
+  F_det_s_line <- 1 + max(grep(x = ctl,
+    "overall start F value|Fleet Yr Seas F_value se phase \\(for detailed setup of F_Method"))
   F_det_e_line <- grep("Q_setup for fleets with cpue or survey data", ctl,
                        fixed = TRUE)-1
   expect_equal(F_det_e_line-F_det_s_line+1, length(input$years))
@@ -96,8 +96,8 @@ test_that("change_f provides correct output w/o detailed F setup", {
   writeLines(mod_ctl, "codOM_no_det.ctl")
   test_ctl <- change_f(input$years, input$fisheries, input$fvals,
                        ctl_file_in = "codOM_no_det.ctl", ctl_file_out = NULL)
-  F_det_s_line <- grep("Fleet Yr Seas F_value se phase (for detailed setup of F_Method",
-                       test_ctl, fixed = TRUE)+1
+  F_det_s_line <- 1 + max(grep(x = test_ctl,
+    "overall start F value|Fleet Yr Seas F_value se phase \\(for detailed setup of F_Method"))
   F_det_e_line <- grep("Q_setup for fleets with cpue or survey data", test_ctl,
                        fixed = TRUE)-1
   expect_equal(F_det_e_line-F_det_s_line+1, length(input$years))

@@ -457,11 +457,11 @@ get_results_derived <- function(report.file) {
 get_results_scalar <- function(report.file) {
     der <- report.file$derived_quants
     getcol <- grep("label", colnames(der), ignore.case = TRUE)
-    SSB_MSY <- der[which(der[, getcol] == "SSB_MSY"), ]$Value
-    TotYield_MSY <- der[which(der[, getcol] == "Dead_Catch_MSY"), ]$Value
-    SSB_Unfished <- der[grep("^SSB_unfished", der[, getcol], ignore.case = TRUE), "Value"]
-    F_MSY <- der[grep("^((annF)|(Fstd))_MSY$", der[, getcol], ignore.case = TRUE), "Value"]
-    F_SPR <- der[grep("^((annF)|(Fstd))_SPR$", der[, getcol], ignore.case = TRUE), "Value"]
+    SSB_MSY <- der[which(der[, getcol] =="SSB_MSY"), ]$Value
+    TotYield_MSY <-  der[which(der[, getcol] =="Dead_Catch_MSY"),]$Value
+    SSB_Unfished <-  der[grep("^SSB_unfished", der[, getcol], ignore.case = TRUE), "Value"]
+    F_MSY <- der[grep("Fsdt_MSY|annF_MSY", der[, getcol]), "Value"]
+    F_SPR <- der[grep("Fsdt_SPR|annF_SPR", der[, getcol]), "Value"]
     Catch_endyear <-
         utils::tail(report.file$timeseries[report.file$timeseries$Era == "TIME", grep("dead\\(B\\)",
           names(report.file$timeseries))], 1)
@@ -529,14 +529,14 @@ get_results_scalar <- function(report.file) {
     df <- data.frame(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion
                 , F_MSY, F_SPR, bias,
                 params_on_bound, params_stuck_low, params_stuck_high, pars,
-                Catch_endyear, t(NLL_vec), stringsAsFactors = FALSE)
+                Catch_endyear, t(NLL_vec), len_comp_tuning, age_comp_tuning,
+                stringsAsFactors = FALSE)
     ## Also get some meta data and other convergence info like the
     ## version, runtime, etc. as checks
     df$version <- report.file$SS_version
     df$RunTime <- eval(parse(text = gsub(
       "([0-9]+) hours, ([0-9]+) minutes, ([0-9]+) seconds.",
       "\\1*60+\\2+\\3/60", report.file$RunTime)))
-
     return(invisible(df))
 }
 

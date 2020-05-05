@@ -2,15 +2,30 @@
 % Please edit documentation in R/sample_calcomp.R
 \name{sample_calcomp}
 \alias{sample_calcomp}
-\title{Sample conditional age-at-length (CAL) data and write to file for use by
-the EM.}
+\title{Sample conditional age-at-length (CAL) data}
 \usage{
-sample_calcomp(dat_list, outfile = NULL, fleets = c(1, 2), years, Nsamp)
+sample_calcomp(
+  dat_list,
+  exp_vals_list,
+  outfile = NULL,
+  fleets,
+  years,
+  Nsamp_lengths,
+  Nsamp_ages,
+  method = "simple_random",
+  ESS_lengths = NULL,
+  ESS_ages = NULL,
+  lcomps_sampled = FALSE
+)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
 you select option \code{section=2}.}
+
+\item{exp_vals_list}{This is a data list containing all expected values. It
+should not be modified by previous sampling functions to contain sampled
+data.}
 
 \item{outfile}{A character string specifying the file name to use
 when writing the information to the disk. The string must include
@@ -26,34 +41,103 @@ An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 numeric vectors. If no fleet collected samples, keep the value to
 \code{years=NULL}.}
 
-\item{Nsamp}{*A numeric list of the same length as \code{fleets}.
-Either single values or vectors of the same length as the number of
-years can be passed through. Single values are repeated for all
-years. If no fleet collected samples, keep the value to
-\code{Nsamp=NULL}.}
+\item{Nsamp_lengths}{*A numeric list of the same length as fleets. Either
+single values or vectors of the same length as the number of years can be
+passed through. Single values are repeated for all years. If no fleet
+collected samples, specify \code{Nsamp_lengths = NULL}. Specifically, for
+\code{sample_calcomp}, \code{Nsamp_lengths} denotes the total number of
+length samples for a given year and fleet across all length bins that can be
+used to then sample the conditional age at length samples.
+\code{Nsamp_lengths} must be greater than or equal to \code{Nsamp_ages}.}
+
+\item{Nsamp_ages}{*A numeric list of the same length as fleets. Either single
+values or vectors of the same length as the number of years can be passed
+through. Single values are repeated for all years. If no fleet collected
+samples, specify \code{Nsamp_ages = NULL}. Specifically, for
+\code{sample_calcomp}, \code{Nsamp_ages} denotes the total number of
+conditional age at length samples for a given year and fleet across all
+length bins. \code{Nsamp_ages} must be less than \code{Nsamp_lengths}.}
+
+\item{method}{The method used to sample ages from the lengths. Options are
+"simple_random" and "length_stratified". In "simple_random" (the default
+option), the fish aged are randomly sampled from the age bins, so the number
+sampled in each age bin is not equal. In "length_stratified", an equal
+number of fish are aged from each length bin.}
+
+\item{ESS_lengths}{The final effective sample size (ESS) associated with the
+simulated length data generated for conditional age at length samples. The
+ESS is not used to generate the simulated data but can be used as an input
+sample size in subsequent models that estimate population parameters or
+status. The default, NULL, leads to the true (internally calculated)
+effective sample size being used, which is \code{Nsamp_lengths} for the
+multinomial case. \code{ESS_lengths} should be a numeric list of the same
+length as fleets. Either single values or vectors of the same length as the
+number of years can be passed through. Single values are repeated for all
+years. Note that the dimensions of ESS_lengths must be compatible with the
+dimensions of \code{Nsample_lengths}.}
+
+\item{ESS_ages}{The final effective sample size (ESS) associated with the
+simulated conditional age at length data. The ESS is not used to generate
+the simulated data but can be used as an input sample size in subsequent
+models that estimate population parameters or status. The default, NULL,
+leads to the true (internally calculated) effective sample size being used,
+which is Nsamp_ages for the multinomial case. \code{ESS_ages} should be
+a numeric list of the same length as fleets. Either single values or vectors
+of the same length as the number of years can be passed through. Single
+values are repeated for all years. Note that the dimensions of ESS_lengths
+must be compatible with the dimensions of \code{Nsample_ages}. The input
+value will be apportioned among the conditional age at length bins as the
+\code{Nsamp_ages} is and therefore can be a fractional value.}
+
+\item{lcomps_sampled}{Have marginal length comps already been sampled and are
+included in \code{dat_list[["lencomp"]]}? If FALSE, expected values are in
+present in \code{datlist[["lencomp"]]}.}
 }
 \value{
 A modified \code{.dat} file if \code{!is.null(outfile)}. A list object
 containing the modified \code{.dat} file is returned invisibly.
 }
 \description{
-Sample conditional age-at-length (CAL) data and write to file for use by
-the EM.
+Samples conditional age-at-length (CAL) data from expected values of length
+proportions and expected values of age proportions (conditional on length)
+from the operating model (OM) and writes the samples to file for use by the
+estimation model (EM).
 }
 \details{
-Take a \code{data.SS_new} file containing expected values and
-sample from true lengths, using length comp sample sizes, to get
-realistic sample sizes for age bins given a length. Only the multinomial
-distribution is currently implemented. xIf no fish are sampled then that
-row is discarded. A value of NULL for fleets indicates to delete the
-data so the EM If used with \code{\link{run_ss3sim}} the case file
-should be named \code{calcomp}.
+This function takes a \code{data.SS_new} file from an OM containing
+ expected values of length proportions and age proportions, conditional on
+ length. First, sample from true length proportions, using the length comp
+ sample sizes, to get realistic sample sizes for age bins given their lengths.
+ Note that the overall total sample size for all CAL bins is specified by
+ the user for the given fleet and year in \code{Nsamp_ages}. Next,
+ use these sample sizes and the expected values of age proportions
+ (conditional on length) to sample for realistic age proportions. If no fish
+ are sampled, for a row of age proportions in conditional age at length data,
+ then that row is discarded. A value of NULL for fleets indicates to delete
+ the conditional age at length data data (but not the marginal age data). If
+ the EM is used with \code{\link{run_ss3sim}}, the case file should be named
+  \code{calcomp}. Only the multinomial distribution is currently implemented,
+ so this function cannot be used with the dirichlet distribution.
+ Note that this function cannot handle all types of conditional age at length
+ sampling. This function requires that there be a row of conditional age at
+ length data for each length data bin (for each year and fleet that sampling
+ is specified to be performed), where Lbin_lo and Lbin_hi are the
+ same value.
+ Note also that this sampling procedure represents simple random sampling for
+ conditional age at length, where 1) lengths are sampled randomly, 2) fish
+ are lengthed and placed into bins, and 3) a subset of lengthed fish are
+ aged, where a constant proportion from each length bin are selected for
+ aging. This does NOT represent length stratified sampling where a subset of
+ lengthed fish are aged, and a constant number from each length bin is
+ selected for aging, although these data could also be put into a Stock
+ Synthesis model as "Conditional Age at Length."
 }
 \note{
 This function is only reliable when using multinomial length
-compositions for the matching fleet. The real-valued length compositions
-resulting from the Dirichlet distribution cause difficulties in the
-sampling code. See the vignette for more.
+ compositions for the fleet(s) with conditional age at length sampling. The
+ real-valued length compositions resulting from the Dirichlet distribution
+ cause difficulties in the sampling code. See the vignette for more
+ information.
 }
 \section{Which arguments to specifiy in case files}{
 

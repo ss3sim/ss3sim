@@ -70,7 +70,9 @@ profile_fmsy <- function(om_in, results_out,
   simlength <- datFile$endyr-datFile$styr+1
   forecast <- r4ss::SS_readforecast(file = "forecast.ss", verbose = FALSE)
   ## remove recdevs
-  change_rec_devs(rep(0, simlength + forecast$Nforecastyrs),
+  change_rec_devs(setNames(
+    rep(0, simlength + forecast$Nforecastyrs),
+    datFile$styr:(simlength + forecast$Nforecastyrs)),
     ctl_file_in = starter$ctlfile,
     ctl_file_out = starter$ctlfile)
   r4ss::SS_changepars(ctlfile = starter$ctlfile,

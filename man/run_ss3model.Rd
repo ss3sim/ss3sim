@@ -42,9 +42,9 @@ simulation will crash with an error about missing files. The default
 value is set to \code{0.01} seconds, just to be safe.}
 
 \item{show.output.on.console}{Logical: passed on to
-\code{\link[base]{system}}.}
+\code{system}.}
 
-\item{...}{Anything else to pass to \code{\link[base]{system}}.}
+\item{...}{Anything else to pass to \code{system}.}
 }
 \description{
 This function takes care of calling SS3. Importantly, it parses whether the

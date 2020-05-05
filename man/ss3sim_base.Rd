@@ -22,6 +22,7 @@ ss3sim_base(
   em_dir,
   retro_params = NULL,
   data_params = NULL,
+  weight_comps_params = NULL,
   user_recdevs = NULL,
   user_recdevs_warn = TRUE,
   bias_adjust = FALSE,
@@ -35,7 +36,8 @@ ss3sim_base(
 \arguments{
 \item{iterations}{Which iterations to run. A numeric vector.}
 
-\item{scenarios}{Which scenarios to run.}
+\item{scenarios}{A name to use as the folder name for the unique combination
+of parameters for the OM and EM.}
 
 \item{f_params}{A named list containing arguments for \code{\link{change_f}}.
 A mandatory case.}
@@ -50,9 +52,7 @@ A mandatory case.}
 \code{\link{sample_agecomp}}. A mandatory case.}
 
 \item{calcomp_params}{A named list containing arguments for
-\code{\link{sample_calcomp}}, for conditional age-at-length data.
-Currently CAL is not implemented in this version of ss3sim,
-so calcomp_params should be NULL.}
+\code{\link{sample_calcomp}}, for conditional age-at-length data.}
 
 \item{wtatage_params}{A named list containing arguments for
 \code{\link{sample_wtatage}}, for empirical weight-at-age data.}
@@ -82,6 +82,9 @@ use for the specified simulations.}
 
 \item{data_params}{A named list containing arguments for
 \code{\link{change_data}}.}
+
+\item{weight_comps_params}{A named list containing arguments for
+\code{\link{weight_comps}}.}
 
 \item{user_recdevs}{An optional matrix of recruitment deviations to replace
 the recruitment deviations built into the package. The columns represent

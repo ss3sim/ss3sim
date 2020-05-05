@@ -49,7 +49,6 @@ test_that("change_e works as expected", {
  expect_equal(new_ctl[sel_line, "PHASE"], 2)
 })
 test_that("change_e M inputs are properly deprecated", {
-  #TODO: develop this.
   expect_error(change_e(ctl_file_in = "codOM.ctl",
                             ctl_file_out = "change_e.ctl",
                             dat_list = datalist,
@@ -159,18 +158,16 @@ test_that("change_em_binning works with method = 2", {
   expect_equal(ncol(output$lencomp)-6, length(new_bin_vec))
 })
 
-test_that("change_em_binning exits on error if cond. age at length", {
-  # remove test if implementing CAL
-  new_bin_vec <- seq(min(datalist$lbin_vector), max(datalist$lbin_vector), by = 4)
-  # add the max value if necessary.
-  if(new_bin_vec[length(new_bin_vec)] != datalist$lbin_vector[length(datalist$lbin_vector)]){
-    new_bin_vec <- c(new_bin_vec,
-                     datalist$lbin_vector[length(datalist$lbin_vector)])
-  }
-
-  pop_bin_input <- 5
-  pop_min_size_input <- min(datalist$lbin_vector_pop) - 1
-  pop_max_size_input <- max(datalist$lbin_vector_pop) + 5
+test_that("change_em_binning exits on error with cond. age at length", {
+  # a valid bin vector when there is CAL must only include values that are in
+  # the population bins, supposedly.
+  #I think this test is broken and needs to be fixed.
+ pop_bin_input <- 2
+ pop_min_size_input <- min(datalist$lbin_vector_pop) + 1
+ pop_max_size_input <- max(datalist$lbin_vector_pop) - 1
+ new_bin_vec <- seq(min(datalist$lbin_vector),
+                    max(datalist$lbin_vector),
+                    by = 3*2)
  datalist_CAL <- datalist
  # change approximately half of the obs to CAL
  a_col <- nrow(datalist_CAL$agecomp)
@@ -183,9 +180,9 @@ test_that("change_em_binning exits on error if cond. age at length", {
                                 pop_binwidth = pop_bin_input,
                                 pop_minimum_size = pop_min_size_input,
                                 pop_maximum_size = pop_max_size_input),
-              "Conditional age at length (CAL) is not yet implemented",
-              fixed = TRUE)
+              "There is conditional age at length data")
 })
+
 
 test_that("change_EM_binning returns NULL if lbin method is NULL", {
  expect_null(change_em_binning(dat_list = datalist, bin_vector = 2:10,
