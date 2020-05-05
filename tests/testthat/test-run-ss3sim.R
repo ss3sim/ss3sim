@@ -35,18 +35,20 @@ test_that("A basic run_ss3sim scenario runs and existing iteration skipped", {
   expect_true(file.exists("ss3sim_ts.csv"))
   scalar <- read.csv("ss3sim_scalar.csv")
   # check OM specs
-  expect_equal(scalar[1, "depletion_om"], 0.4242,
+  om_line <- which(scalar$model_run == "om")
+  expect_equal(scalar[om_line, "depletion"], 0.4242,
     tolerance = 0.0001, label = "OM depletion")
-  expect_equal(scalar[1, "ForeRecr_101_om"], 0.09666,
+  expect_equal(scalar[om_line, "ForeRecr_101"], 0.09666,
     tolerance = 0.0001, label = "OM forecast recruitment in year 101")
-  expect_equal(as.numeric(scalar[1, "SSB_MSY_om"]), 1417980000,
+  expect_equal(as.numeric(scalar[om_line, "SSB_MSY"]), 1417980000,
     label = "OM SSB at MSY")
   # check EM specs
-  expect_equal(as.numeric(scalar[1, "SSB_MSY_em"]), 1417980000,
+  em_line <- which(scalar$model_run == "em")
+  expect_equal(as.numeric(scalar[em_line, "SSB_MSY"]), 1417980000,
     scale = 1000000000000000, label = "EM SSB at MSY")
-  expect_equal(as.numeric(scalar[1, "Catch_endyear_em"]), 180383000,
+  expect_equal(as.numeric(scalar[em_line, "Catch_endyear"]), 180383000,
     label = "EM terminal catch")
-  expect_equal(scalar[1, "SR_LN_R0_em"], 18.7,
+  expect_equal(scalar[em_line, "SR_LN_R0"], 18.7,
     tolerance = 0.01, label = "EM terminal year catch")
   #check provides warning if skippint iteration.
   expect_warning(run_ss3sim(iterations = 1, scenarios = "D0-F0-cod",
@@ -109,8 +111,9 @@ test_that("A basic run_ss3sim scenario with forecasting runs", {
                             verbose = FALSE, printstats = FALSE)
   get_results_all()
   res <- read.csv("ss3sim_scalar.csv", header = TRUE)
-  expect_equal(res$LnQ_base_Survey_2_em, 0.7)
-  expect_equal(res$SR_sigmaR_em, 0.001)
+  em_line <- which(res$model_run == "em")
+  expect_equal(res[em_line, "LnQ_base_Survey_2"], 0.7)
+  expect_equal(res[em_line, "SR_sigmaR"], 0.001)
   expect_equal(table(report$timeseries$Era)["FORE"], c("FORE" = 3),
     label = "Number of forecast years")
   unlink("D0-E102-F0-cod", recursive = TRUE) # clean up
