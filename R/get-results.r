@@ -510,7 +510,7 @@ get_results_scalar <- function(report.file) {
                report.file$Age_comp_Eff_N_tuning_check$Fleet, "_",
                report.file$Age_comp_Eff_N_tuning_check$Fleet_name)
     } else {
-      age_comp_tuning <- data.frame(matrix(nrow = 1, ncol = 1),
+      age_comp_tuning <- data.frame(matrix(nrow = 1, ncol = 0),
                                     stringsAsFactors = FALSE)
     }
     max_grad <- report.file$maximum_gradient_component
