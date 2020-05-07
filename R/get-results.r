@@ -66,8 +66,8 @@ get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
     ## Loop through each scenario in folder in serial
   dq.list <- ts.list <- scalar.list <-
     vector(mode = "list", length = length(scenarios))
+  setwd(directory)
   for (i in seq_along(scenarios)) {
-      setwd(directory)
       scen <- scenarios[i]
       ## If the files already exist just read them in, otherwise get results
       scalar.file <- file.path(scen, paste0("results_scalar_", scen, ".csv"))
