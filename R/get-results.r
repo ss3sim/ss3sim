@@ -544,22 +544,16 @@ get_results_scalar <- function(report.file) {
 
 #' Get negative log likelihood (NLL) values from a report file list
 #'
+#' Names of the available NLL components will depend on the version
+#' of the model. Names are native to the estimation framework and all
+#' available components are extracted.
 #' @template report.file
 #' @author Merrill Rudd
+#' @return A vector of named numeric values, where \code{"NLL_"} is
+#' appended to the names in the \code{report.file}.
 get_nll_components <- function(report.file) {
-    ## Possible likelihood components from SS3.tpl
-    NLL_components <- c("TOTAL", "Catch", "Equil_catch", "Survey", "Discard",
-      "Mean_body_wt", "Length_comp", "Age_comp", "Size_at_age", "SizeFreq",
-      "Morphcomp", "Tag_comp", "Tag_negbin", "Recruitment",
-      "Forecast_Recruitment", "Parm_priors", "Parm_softbounds", "Parm_devs",
-      "Crash_Pen")
-    NLL_names <- paste("NLL", NLL_components, sep = "_")
-
-    like_mat <- report.file$likelihoods_used
-    vec <- sapply(NLL_components, function(x)
-      ifelse(length(like_mat[which(rownames(like_mat) == x), 1]) == 0,
-                NA, like_mat[which(rownames(like_mat) == x), 1]))
-    names(vec) <- NLL_names
+    vec <- setNames(report.file$likelihoods_used$values,
+      paste0("NLL_", row.names(report.file$likelihoods_used)))
     vec[is.na(vec)] <- NA
 
     return(vec)

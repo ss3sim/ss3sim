@@ -10,8 +10,14 @@ get_nll_components(report.file)
 \item{report.file}{An \code{\link[r4ss]{SS_output}} list for a model
 (operating model or estimation model).}
 }
+\value{
+A vector of named numeric values, where \code{"NLL_"} is
+appended to the names in the \code{report.file}.
+}
 \description{
-Get negative log likelihood (NLL) values from a report file list
+Names of the available NLL components will depend on the version
+of the model. Names are native to the estimation framework and all
+available components are extracted.
 }
 \author{
 Merrill Rudd
