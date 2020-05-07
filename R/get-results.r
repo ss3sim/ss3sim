@@ -399,6 +399,7 @@ get_results_timeseries <- function(report.file) {
     getcols <- c(grep("^y", colnames(dev), ignore.case = TRUE),
       grep("dev", colnames(dev), ignore.case = TRUE))
     dev <- dev[dev[, getcols[1]] %in% years, getcols]
+    colnames(dev) <- gsub("dev", "rec_dev", colnames(dev), ignore.case = TRUE)
     ## create final data.frame
     df <- merge(xx, spr[, c("SPRratio", "Yr")], by = "Yr", all.x = TRUE)
     df$SPRratio[is.na(df$SPRratio)] <- 0
