@@ -378,13 +378,14 @@ get_results_mod <- function(dir = getwd(), is_EM = NULL, is_OM = NULL) {
 #' @author Cole Monnahan
 get_results_timeseries <- function(report.file) {
     years <- report.file$startyr:(report.file$endyr +
-                                  ifelse(is.na(report.file$nforecastyears) ==
-                                      TRUE, 0,
+                                  ifelse(is.na(report.file$nforecastyears),
+                                         0,
                                          report.file$nforecastyears))
-    xx <- subset(report.file$timeseries,
-                 select = c("Yr", "SpawnBio", "Recruit_0", "F:_1"))
+    F_cols <- grep("^F:_", colnames(report.file$timeseries))
+    other_cols <- which(colnames(report.file$timeseries) %in%
+                          c("Yr", "SpawnBio", "Recruit_0"))
+    xx <- report.file$timeseries[, c(other_cols, F_cols)]
     xx <- xx[xx$Yr %in% years, ]
-    names(xx) <- gsub(":_1", "", names(xx))
     # Get SPR from derived_quants
     spr <- report.file$derived_quants[grep("SPRratio_",
       report.file$derived_quants[,
