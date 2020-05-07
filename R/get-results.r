@@ -462,8 +462,8 @@ get_results_scalar <- function(report.file) {
     SSB_MSY <- der[which(der[, getcol] =="SSB_MSY"), ]$Value
     TotYield_MSY <-  der[which(der[, getcol] =="Dead_Catch_MSY"),]$Value
     SSB_Unfished <-  der[grep("^SSB_unfished", der[, getcol], ignore.case = TRUE), "Value"]
-    F_MSY <- der[grep("Fsdt_MSY|annF_MSY", der[, getcol]), "Value"]
-    F_SPR <- der[grep("Fsdt_SPR|annF_SPR", der[, getcol]), "Value"]
+    F_MSY <- der[grep("Fstd_MSY|annF_MSY", der[, getcol]), "Value"]
+    F_SPR <- der[grep("Fstd_SPR|annF_SPR", der[, getcol]), "Value"]
     Catch_endyear <-
         utils::tail(report.file$timeseries[report.file$timeseries$Era == "TIME", grep("dead\\(B\\)",
           names(report.file$timeseries))], 1)
