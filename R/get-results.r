@@ -99,22 +99,22 @@ get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
   ts.all <- add_colnames(ts.list, bind = TRUE)
   dq.all <- add_colnames(dq.list, bind = TRUE)
   if (file.exists("ss3sim_scalar.csv")) {
-    if (overwrite_files) write.csv(scalar.all, file = "ss3sim_scalar.csv")
+    if (overwrite_files) write.csv(scalar.all, file = "ss3sim_scalar.csv", row.names = FALSE)
     else {
       warning("ss3sim_scalar.csv already exists and overwrite_files = FALSE, ",
                  "so a new file was not written")
     }
   } else { # can write either way
-    write.csv(scalar.all, file = "ss3sim_scalar.csv")
+    write.csv(scalar.all, file = "ss3sim_scalar.csv", row.names = FALSE)
   }
   if (file.exists("ss3sim_ts.csv")) {
-    if (overwrite_files) write.csv(ts.all, file = "ss3sim_ts.csv")
+    if (overwrite_files) write.csv(ts.all, file = "ss3sim_ts.csv", row.names = FALSE)
     else {
       warning("ss3sim_ts.csv already exists and overwrite_files = FALSE, ",
               "so a new file was not written")
     }
   } else { # can write either way
-    write.csv(ts.all, file = "ss3sim_ts.csv")
+    write.csv(ts.all, file = "ss3sim_ts.csv", row.names = FALSE)
   }
 ret <- list(scalar = scalar.all,
                   ts = ts.all,
