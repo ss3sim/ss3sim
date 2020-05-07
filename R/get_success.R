@@ -19,9 +19,9 @@ get_success <- function(dir) {
   } else {
     return(outvec)
   }
-  par_file_in <- dir(dir, pattern = ".+par$")
-  cor_file_in <- gsub("par", "cor", par_file_in)
-  if (file.exists(file.path(dir, cor_file_in))) {
+  cor_file_in <- dir(dir, pattern = ".+\\.cor$")
+  stopifnot(length(cor_file_in) <= 1)
+  if (length(cor_file_in) == 1) {
     if (file.exists(file.path(dir, "covar.sso"))) {
       outvec["hess"] <- 1
     }
