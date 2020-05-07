@@ -14,7 +14,7 @@
 #'   or should the original EM and OM columns be dropped? If \code{FALSE} then
 #'   the returned data frame will have only the identifying columns and the new
 #'   relative error columns. You could then merge selected columns back into
-#'   \code{dat} if you wished. The default is to return all columns.  
+#'   \code{dat} if you wished. The default is to return all columns.
 #' @param EM A character value specifying the name of the EM to calculate the
 #'   RE of when the results are provided in long format and there is the potential
 #'   for multiple EMs. See the column \code{model_run} for options.
@@ -24,7 +24,9 @@
 #' input data frame, i.e., \code{dat}, but with additional columns, where 
 #' \code{'_re'} is appended to the base string of the column name.
 #' All \code{NAN} and \code{Inf} values are returned as \code{NA} values,
-#' typically because you cannot divide by zero. 
+#' typically because you cannot divide by zero. Irrelevant columns, i.e.,
+#' columns of entirely zero of \code{NA} are removed prior to returning the
+#' data frame.
 #' @export
 #' @examples
 #' # Example with built in package data:
@@ -53,14 +55,15 @@ calculate_re <- function(dat, add = TRUE, EM = "em") {
     dat[, om_names]
   names(re) <- gsub("_em", "_re", names(re))
 
-  # strip out NLL if these are scalar data:
+  # strip out NLL
+  # strip out columns of all NAs or zeros
   re <- re[, !grepl("NLL", names(re))]
   re[is.na(re)] <- NA
   re[is.infinite(as.matrix(re))] <- NA
-
+  re <- re[, apply(re, 2, function(x) !all(x %in% c(NA, 0)))]
+  # Remove all OM and EM columns if only returning RE
   if (!add) {
-    data.frame(dat[,-which(names(dat) %in%
-      c(om_names, em_names))], re)
+    data.frame(dat[, !grepl("_om|_em", colnames(dat))], re)
   } else {
     data.frame(dat, re)
   }

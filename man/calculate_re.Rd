@@ -29,7 +29,9 @@ The default is to return a data frame structured the same as the
 input data frame, i.e., \code{dat}, but with additional columns, where 
 \code{'_re'} is appended to the base string of the column name.
 All \code{NAN} and \code{Inf} values are returned as \code{NA} values,
-typically because you cannot divide by zero.
+typically because you cannot divide by zero. Irrelevant columns, i.e.,
+columns of entirely zero of \code{NA} are removed prior to returning the
+data frame.
 }
 \description{
 Calculate the relative error (RE; [EM - OM]/OM) of 

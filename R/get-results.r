@@ -632,7 +632,8 @@ convert_to_wide <- function(lng) {
                              "params_on_bound_om", "params_stuck_low_om",
                              "params_stuck_high_om", "X_om", "model_run_om"))]
   # merge back together
-  wide <- merge(om_df, em_df, all = TRUE )
+  wide <- merge(om_df, em_df, all = TRUE)
+  wide <- wide[, apply(wide, 2, function(x) !all(is.na(x)))]
 
   # add in old cols
   wide$ID <- paste0(wide$scenario, "-", wide$iteration)
