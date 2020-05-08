@@ -7,7 +7,8 @@
 get_results_all(
   directory = getwd(),
   overwrite_files = FALSE,
-  user_scenarios = NULL
+  user_scenarios = NULL,
+  type = c("long", "wide")
 )
 }
 \arguments{
@@ -20,6 +21,10 @@ overwritten, useful for testing purposes or if new iterations are run.}
 \item{user_scenarios}{A character vector of scenarios that should be read
 in. Default is \code{NULL}, which indicates find all scenario folders in
 \code{directory}.}
+
+\item{type}{A character string specifying if you want the results to be
+written to the disk and returned as a long or wide data frame, where the
+default is \code{"long"}.}
 }
 \value{
 Returns a list of 3 dataframes: scalar, ts, and dq.

@@ -42,7 +42,7 @@ calculate_re <- function(dat, add = TRUE, EM = "em") {
   # Check if wide or long data
   if ("model_run" %in% colnames(dat)) {
     stopifnot(length(EM) == 1)
-    dat <- convert_to_wide(dat[dat$model_run == EM, ])
+    dat <- convert_to_wide(dat[dat$model_run %in% c("om", EM), ])
   }
   both <- intersect(
     gsub("_em", "", grep("_em", names(dat), value = TRUE)),

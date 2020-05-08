@@ -35,6 +35,9 @@ id_scenarios <- function(directory) {
 #' @param user_scenarios A character vector of scenarios that should be read
 #'   in. Default is \code{NULL}, which indicates find all scenario folders in
 #'   \code{directory}.
+#' @param type A character string specifying if you want the results to be
+#'   written to the disk and returned as a long or wide data frame, where the
+#'   default is \code{"long"}.
 #' @export
 #' @return Returns a list of 3 dataframes: scalar, ts, and dq.
 #' Creates two .csv files in the current working directory:
@@ -42,10 +45,12 @@ id_scenarios <- function(directory) {
 #' @author Cole Monnahan, Merrill Rudd
 #' @family get-results
 get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
-  user_scenarios = NULL) {
+  user_scenarios = NULL, type = c("long", "wide")) {
 
     old_wd <- getwd()
     on.exit(setwd(old_wd))
+
+  type <- match.arg(type, several.ok = FALSE)
 
     ## Choose whether to do all scenarios or the vector passed by user
     if (is.null(user_scenarios)) {
@@ -98,6 +103,11 @@ get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
   scalar.all <- add_colnames(scalar.list, bind = TRUE)
   ts.all <- add_colnames(ts.list, bind = TRUE)
   dq.all <- add_colnames(dq.list, bind = TRUE)
+  if (type == "wide") {
+    scalar.all <- convert_to_wide(scalar.all)
+    ts.all <- convert_to_wide(ts.all)
+    dq.all <- convert_to_wide(dq.all)
+  }
   if (file.exists("ss3sim_scalar.csv")) {
     if (overwrite_files) write.csv(scalar.all, file = "ss3sim_scalar.csv", row.names = FALSE)
     else {
@@ -192,7 +202,7 @@ get_results_scenario <- function(scenario, directory = getwd(),
     reps.dirs <- list.files(pattern = "[0-9]+$")
     reps.dirs <- as.character(sort(as.numeric(reps.dirs)))
     if (length(reps.dirs) == 0) {
-      stop("Error:No iterations for scenario", scenario)
+      stop("Error:No iterations for scenario ", scenario)
     }
     message("Starting ", scenario, " with ", length(reps.dirs), " iterations")
     ## Get the number of columns for this scenario
