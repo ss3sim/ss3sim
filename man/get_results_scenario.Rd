@@ -42,7 +42,7 @@ run_ss3sim(iterations = 1:2, scenarios =
   bias_adjust = FALSE)
 get_results_scenario(c("D0-F0-cod"), overwrite_files = TRUE)
 
-#clean up
+# clean up
 unlink("D0-F0-cod", recursive = TRUE)
 }
 }
@@ -54,6 +54,6 @@ Other get-results:
 \code{\link{get_results_timeseries}()}
 }
 \author{
-Cole Monnahan
+Cole Monnahan and Kathryn Doering
 }
 \concept{get-results}

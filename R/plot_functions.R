@@ -6,10 +6,12 @@
 #' @template plot-functions-x
 #' @template plot-functions-color
 #' @examples
-#' scalar_dat$depletion <- with(scalar_dat,
-#'   (depletion_om - depletion_em) / depletion_om)
-#' plot_scalar_points(scalar_dat, x = "E", y = "depletion", horiz = 'D',
+#' data("scalar_dat", package = "ss3sim")
+#' re <- calculate_re(scalar_dat)
+#' \dontrun{
+#' plot_scalar_points(re, x = "E", y = "depletion_re", horiz = 'D',
 #'   color = "max_grad", relative.error = TRUE)
+#' }
 plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL, vert=NULL,
   vert2=NULL, color=NULL, relative.error=FALSE, axes.free=TRUE, print=TRUE) {
     ## Verify the inputs are correct, throws informative error if not
@@ -19,7 +21,8 @@ plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL, vert=NULL,
     ## Build up the ggplot object
     g <- ggplot(data=data)
     if(relative.error){
-        g <- g+coord_cartesian(ylim=c(-1,1))+ylab(paste("relative error for:", y))
+        g <- g+coord_cartesian(ylim=c(-1,1))+
+          ylab(paste("relative error for:", gsub("_re", "", y)))
         g <- g+geom_hline(yintercept=0, col="red")
     }
     ## Use helper function to build formula for facet_grid
@@ -46,10 +49,12 @@ plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' @template plot-functions-x
 #' @param fill A string. Color for filling the boxplots
 #' @examples
-#' scalar_dat$depletion <- with(scalar_dat,
-#'   (depletion_om - depletion_em) / depletion_om)
-#' plot_scalar_boxplot(scalar_dat, x = "E", y = "depletion", horiz = "D",
+#' data("scalar_dat", package = "ss3sim")
+#' re <- calculate_re(scalar_dat)
+#' \dontrun{
+#' plot_scalar_boxplot(re, x = "E", y = "depletion_re", horiz = "D",
 #'   relative.error = TRUE)
+#' }
 plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
   vert=NULL, vert2=NULL, fill = NA, relative.error=FALSE, axes.free=TRUE, print=TRUE) {
     ## Verify the inputs are correct, throws informative error if not
@@ -59,7 +64,8 @@ plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
     ## Build up the ggplot object
     g <- ggplot(data=data)
     if(relative.error){
-        g <- g+coord_cartesian(ylim=c(-1,1))+ylab(paste("relative error for:", y))
+        g <- g+coord_cartesian(ylim=c(-1,1))+
+          ylab(paste("relative error for:", gsub("_re", "", y)))
         g <- g+geom_hline(yintercept=0, col="red")
     }
     ## Use helper function to build formula for facet_grid
@@ -78,11 +84,13 @@ plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
 #' @export
 #' @import ggplot2
 #' @examples
-#' \dontrun{
-#' ts_dat$SpawnBio <- with(ts_dat, (SpawnBio_om-SpawnBio_em)/SpawnBio_om)
+#' data("scalar_dat", "ts_dat", package = "ss3sim")
 #' # Merge in max_grad, a performance metric, to use for color
-#' ts_dat <- merge(scalar_dat[, c("ID", "max_grad")], ts_dat)
-#' plot_ts_boxplot(ts_dat, y = "SpawnBio", horiz = "D", vert = "E",
+#' re <- merge(by = "ID",
+#'   calculate_re(ts_dat, add = FALSE),
+#'   calculate_re(scalar_dat, add = FALSE)[, c("ID", "max_grad")])
+#' \dontrun{
+#' plot_ts_boxplot(re, y = "SpawnBio_re", horiz = "D", vert = "E",
 #'   relative.error = TRUE)
 #' }
 plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
@@ -95,7 +103,8 @@ plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
     ## Build up the ggplot object
     g <- ggplot(data=data, aes_string(x="year"))+ xlab("Year")
     if(relative.error){
-        g <- g+coord_cartesian(ylim=c(-1,1))+ylab(paste("relative error for:", y))
+        g <- g+coord_cartesian(ylim=c(-1,1))+
+          ylab(paste("relative error for:", gsub("_re", "", y)))
         g <- g+geom_hline(yintercept=0, col="red")
     }
     ## Use helper function to build formula for facet_grid
@@ -115,11 +124,15 @@ plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' @import ggplot2
 #' @template plot-functions-color
 #' @examples
-#' ts_dat$SpawnBio <- with(ts_dat, (SpawnBio_om-SpawnBio_em)/SpawnBio_om)
+#' data("scalar_dat", "ts_dat", package = "ss3sim")
 #' # Merge in max_grad, a performance metric, to use for color
-#' ts_dat <- merge(scalar_dat[, c("ID", "max_grad")], ts_dat)
-#' plot_ts_points(ts_dat, y = "SpawnBio", horiz = "D", vert = "E",
+#' re <- merge(by = "ID",
+#'   calculate_re(ts_dat, add = FALSE),
+#'   calculate_re(scalar_dat, add = FALSE)[, c("ID", "max_grad")])
+#' \dontrun{
+#' plot_ts_points(re, y = "SpawnBio_re", horiz = "D", vert = "E",
 #'   relative.error = TRUE, color = "max_grad")
+#' }
 plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
   vert2=NULL, relative.error=FALSE, color=NULL, axes.free=TRUE, print=TRUE) {
     ## Verify the inputs are correct, throws informative error if not
@@ -129,7 +142,8 @@ plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
     ## Build up the ggplot object
     g <- ggplot(data=data, aes_string(x="year"))+ xlab("Year")
     if(relative.error){
-        g <- g+coord_cartesian(ylim=c(-1,1))+ylab(paste("relative error for:", y))
+        g <- g+coord_cartesian(ylim=c(-1,1))+
+          ylab(paste("relative error for:", gsub("_re", "", y)))
         g <- g+geom_hline(yintercept=0, col="red")
     }
     form <- facet_form(horiz, horiz2, vert, vert2)
@@ -155,11 +169,15 @@ plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' @import ggplot2
 #' @template plot-functions-color
 #' @examples
-#' ts_dat$SpawnBio <- with(ts_dat, (SpawnBio_om-SpawnBio_em)/SpawnBio_om)
+#' data("scalar_dat", "ts_dat", package = "ss3sim")
 #' # Merge in max_grad, a performance metric, to use for color
-#' ts_dat <- merge(scalar_dat[, c("ID", "max_grad")], ts_dat)
-#' plot_ts_lines(ts_dat, y = "SpawnBio", horiz = "D", vert = "E",
+#' re <- merge(by = "ID",
+#'   calculate_re(ts_dat, add = FALSE),
+#'   calculate_re(scalar_dat, add = FALSE)[, c("ID", "max_grad")])
+#' \dontrun{
+#' plot_ts_lines(re, y = "SpawnBio_re", horiz = "D", vert = "E",
 #'   relative.error = TRUE, color = "max_grad")
+#' }
 plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
   vert2=NULL, relative.error=FALSE, color=NULL, axes.free=TRUE, print=TRUE) {
     ## Verify the inputs are correct, throws informative error if not
@@ -207,22 +225,22 @@ plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
 #' @return A list containing the ggplot object and the data used to make it
 #' @examples
 #' data("scalar_dat", package = "ss3sim")
-#' obj <- plot_cummean(scalar_dat,
-#'                     "VonBert_K_Fem_GP_1_em",
+#' obj <- plot_cummean(scalar_dat[scalar_dat$model_run == "em", ],
+#'                     "VonBert_K_Fem_GP_1",
 #'                     group = "scenario",
 #'                     use_facet = TRUE)
-#' obj$plot
-#' obj$data
+#' # obj$plot
+#' # obj$data
 #' # group can also be left NULL if only plotting a single scenario.
 #' # it is recommended to set use_facet FALSE in this case.
-#' scen_to_use <- unique(scalar_dat$scenario)[1]
-#' scalar_dat_1_scen <- scalar_dat[scalar_dat$scanario == scen_to_use, ]
-#' obj2 <- plot_cummean(scalar_dat_1_scen,
-#'                      var = "VonBert_K_Fem_GP_1_em",
+#' obj2 <- plot_cummean(scalar_dat[
+#'   scalar_dat$scenario == unique(scalar_dat$scenario)[1] &
+#'   scalar_dat$model_run == "em", ],
+#'                      var = "VonBert_K_Fem_GP_1",
 #'                      group = NULL,
 #'                      use_facet = FALSE)
-#' obj2$plot
-#' obj2$data
+#' # obj2$plot
+#' # obj2$data
 #'
 plot_cummean <- function(data, var, order_var = "iteration", group = NULL,
                          use_facet = FALSE) {

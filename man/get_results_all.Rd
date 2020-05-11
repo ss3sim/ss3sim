@@ -8,7 +8,7 @@ get_results_all(
   directory = getwd(),
   overwrite_files = FALSE,
   user_scenarios = NULL,
-  parallel = FALSE
+  type = c("long", "wide")
 )
 }
 \arguments{
@@ -22,10 +22,12 @@ overwritten, useful for testing purposes or if new iterations are run.}
 in. Default is \code{NULL}, which indicates find all scenario folders in
 \code{directory}.}
 
-\item{parallel}{Should the function be run on multiple cores? You will
-need to set up parallel processing as shown in \code{\link{run_ss3sim}}.}
+\item{type}{A character string specifying if you want the results to be
+written to the disk and returned as a long or wide data frame, where the
+default is \code{"long"}.}
 }
 \value{
+Returns a list of 3 dataframes: scalar, ts, and dq.
 Creates two .csv files in the current working directory:
 \code{ss3sim_ts.csv} and \code{ss3sim_scalar.csv}.
 }

@@ -17,6 +17,14 @@ periods preceding the values.}
 \description{
 Rename SS3-version-specific files
 }
+\details{
+Renaming the files from the name of the exectuable that was used plus the
+relevant extension to ss3 plus the relevant extension allows users to use
+any executable, such as ss_safe.exe. Renaming, particularly of the files
+in the OM folder allows for other functions to expect ss3.par instead of
+random.par. This consistency is not as relevant now that we are using the
+control file instead of the par file for most of the parameter manipulation.
+}
 \author{
 Sean C. Anderson
 }

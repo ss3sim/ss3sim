@@ -66,7 +66,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
         system(paste0(paste0(bin, " "), ss_em_options, admb_options),
           invisible = TRUE, ignore.stdout = ignore.stdout,
                show.output.on.console = show.output.on.console, ...)
-        rename_ss3_files(path = "", ss_bin = ss_bin,
+        rename_ss3_files(path = ".", ss_bin = ss_bin,
           extensions = c("par", "rep", "log", "bar"))
         setwd(wd)
       }
@@ -77,6 +77,14 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
 
 #' Rename SS3-version-specific files
 #'
+#' @details
+#' Renaming the files from the name of the exectuable that was used plus the
+#' relevant extension to ss3 plus the relevant extension allows users to use
+#' any executable, such as ss_safe.exe. Renaming, particularly of the files
+#' in the OM folder allows for other functions to expect ss3.par instead of
+#' random.par. This consistency is not as relevant now that we are using the
+#' control file instead of the par file for most of the parameter manipulation.
+#'
 #' @param path The path to the folder with the files.
 #' @param ss_bin A character value giving the SS binary name
 #' @param extensions A character vector of file extensions to rename without
@@ -84,6 +92,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
 #' @author Sean C. Anderson
 rename_ss3_files <- function(path, ss_bin, extensions) {
   for(i in seq_along(extensions)) {
+    if (!file.exists(file.path(path, paste0(ss_bin, ".", extensions[i])))) next()
     file.rename(from = file.path(path, paste0(ss_bin, ".", extensions[i])),
                 to   = file.path(path, paste0("ss3",  ".", extensions[i])))
   }

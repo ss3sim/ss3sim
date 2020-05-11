@@ -77,11 +77,15 @@ also return it invisibly for saving or printing again later.
 }
 
 \examples{
-ts_dat$SpawnBio <- with(ts_dat, (SpawnBio_om-SpawnBio_em)/SpawnBio_om)
+data("scalar_dat", "ts_dat", package = "ss3sim")
 # Merge in max_grad, a performance metric, to use for color
-ts_dat <- merge(scalar_dat[, c("ID", "max_grad")], ts_dat)
-plot_ts_lines(ts_dat, y = "SpawnBio", horiz = "D", vert = "E",
+re <- merge(by = "ID",
+  calculate_re(ts_dat, add = FALSE),
+  calculate_re(scalar_dat, add = FALSE)[, c("ID", "max_grad")])
+\dontrun{
+plot_ts_lines(re, y = "SpawnBio_re", horiz = "D", vert = "E",
   relative.error = TRUE, color = "max_grad")
+}
 }
 \author{
 Cole Monnahan

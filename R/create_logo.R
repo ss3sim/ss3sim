@@ -21,21 +21,19 @@ create_logo <- function(outfile = NULL) {
   # cols <- RColorBrewer::brewer.pal(8, "Blues")
   cols <- c("#F7FBFF", "#DEEBF7", "#C6DBEF", "#9ECAE1",
     "#6BAED6", "#4292C6", "#2171B5", "#084594")
-
-  ts_dat <- ts_dat[ts_dat$E == "E0" & ts_dat$D == "D0", ]
-  ts_dat$SpawnBio <- (ts_dat$SpawnBio_em - ts_dat$SpawnBio_om) / 
-    ts_dat$SpawnBio_om
-  ts_dat$Recruit_0 <- (ts_dat$Recruit_0_em - ts_dat$Recruit_0_om) / 
-    ts_dat$Recruit_0_om
-  quant_dat <- data.frame(do.call("rbind", 
-    tapply(ts_dat$SpawnBio, ts_dat$year, stats::quantile, 
-    probs = c(0.05,0.25, 0.50, 0.75, 0.95))))
+  
+  ts_dat <- calculate_re(ts_dat, add = FALSE)
+  ts_dat <- ts_dat[ts_dat$E == "E0" & ts_dat$D == "D1", ]
+  quant_dat <- data.frame(do.call("rbind",
+    tapply(ts_dat$SpawnBio_re, ts_dat$year, stats::quantile,
+    probs = c(0.05,0.25, 0.50, 0.75, 0.95), na.rm = TRUE)))
   colnames(quant_dat) <- c("q05", "q25", "q50", "q75", "q95")
+  quant_dat <- na.omit(quant_dat)
   quant_dat$year <- row.names(quant_dat)
 
   plot(1, 1, 
-    xlim = ceiling(stats::quantile(ts_dat$year, probs = c(0.03, 0.32))), 
-    ylim = c(-0.15, 0.2),
+    xlim = ceiling(stats::quantile(type.convert(quant_dat$year), probs = c(0.03, 0.50))),
+    ylim = c(-0.3, 0.3),
     type = "n", axes = FALSE, ann = FALSE, xaxs = "i")
   graphics::polygon(c(quant_dat$year, rev(quant_dat$year)), c(quant_dat$q05, rev(quant_dat$q95)), 
     col = cols[4], border = NA)

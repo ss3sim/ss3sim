@@ -5,16 +5,16 @@
 #' @return A character vector of folders
 #' @author Merrill Rudd
 #' @export
-id_scenarios <- function(directory){
+id_scenarios <- function(directory) {
     ## Get unique scenarios that exist in the folder. Might be other random
     ## stuff in the folder so be careful to extract only scenario folders.
-    all.dirs <- list.dirs(path=directory, full.names=FALSE, recursive=FALSE)
+    all.dirs <- list.dirs(path = directory, full.names = FALSE, recursive = FALSE)
     temp.dirs <- sapply(seq_along(all.dirs), function(i) {
-        x <- unlist(strsplit(all.dirs[i], split="/"))
+        x <- unlist(strsplit(all.dirs[i], split = "/"))
         return(x[length(x)])
     })
     scens <- temp.dirs[grepl("^([A-Z]{1}[0-9]+-)+[a-z-]+$", temp.dirs)]
-    if(length(scens)==0) warning(paste("No scenario folders found in",
+    if (length(scens) == 0) warning(paste("No scenario folders found in",
              directory))
     else return(scens)
 }
@@ -35,170 +35,100 @@ id_scenarios <- function(directory){
 #' @param user_scenarios A character vector of scenarios that should be read
 #'   in. Default is \code{NULL}, which indicates find all scenario folders in
 #'   \code{directory}.
-#' @param parallel Should the function be run on multiple cores? You will
-#'   need to set up parallel processing as shown in \code{\link{run_ss3sim}}.
+#' @param type A character string specifying if you want the results to be
+#'   written to the disk and returned as a long or wide data frame, where the
+#'   default is \code{"long"}.
 #' @export
-#' @return
+#' @return Returns a list of 3 dataframes: scalar, ts, and dq.
 #' Creates two .csv files in the current working directory:
 #' \code{ss3sim_ts.csv} and \code{ss3sim_scalar.csv}.
 #' @author Cole Monnahan, Merrill Rudd
 #' @family get-results
-get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
-  user_scenarios=NULL, parallel=FALSE){
+get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
+  user_scenarios = NULL, type = c("long", "wide")) {
 
     old_wd <- getwd()
     on.exit(setwd(old_wd))
 
-    if(parallel) {
-      cores <- setup_parallel()
-      if(cores == 1) parallel <- FALSE
-    }
+  type <- match.arg(type, several.ok = FALSE)
 
     ## Choose whether to do all scenarios or the vector passed by user
-    if(is.null(user_scenarios)) {
-        scenarios <- id_scenarios(directory=directory)
+    if (is.null(user_scenarios)) {
+        scenarios <- id_scenarios(directory = directory)
     } else {
         temp_scenarios <- dir(path = directory, include.dirs = TRUE)
         scenarios <- user_scenarios[which(user_scenarios %in% temp_scenarios)]
-        if(any(user_scenarios %in% temp_scenarios==FALSE)){
+        if (any(user_scenarios %in% temp_scenarios == FALSE)) {
             warning(paste(user_scenarios[which(user_scenarios %in%
                 temp_scenarios == FALSE)], "not in directory\n"))
         }
     }
 
-    if(length(scenarios)==0)
-        stop(paste("Error: No scenarios found in:",directory))
+    if (length(scenarios) == 0)
+        stop(paste("Error: No scenarios found in:", directory))
     message(paste("Extracting results from", length(scenarios), "scenarios"))
 
-    if(parallel){
-        parallel_scenario <- NULL
-        # ts.list <- scalar.list <- list()
-
-        # to satisfy R CMD check in the foreach() call below
-        foreach <- NULL
-        `%dopar%` <- NULL
-
-        results_all <- foreach(parallel_scenario = scenarios, .verbose = FALSE,
-            .export = c("get_results_scenario",
-            "get_results_scalar", "get_nll_components",
-            "get_results_timeseries"), .combine = rbind) %dopar% {
-            ## If the files already exist just read them in, otherwise get results
-                scalar.file <- file.path(parallel_scenario,paste0("results_scalar_",parallel_scenario,".csv"))
-                ts.file <- file.path(parallel_scenario, paste0("results_ts_",parallel_scenario,".csv"))
-                ## Delete them if this is flagged on
-                if( overwrite_files){
-                    if(file.exists(scalar.file)) file.remove(scalar.file)
-                    if(file.exists(ts.file)) file.remove(ts.file)
-                    get_results_scenario(scenario=parallel_scenario, directory=directory,
-                                         overwrite_files=overwrite_files)
-                }
-                ## Check if still there and skip if already so, otherwise read in
-                ## and save to file
-                if(!file.exists(scalar.file) |  !file.exists(ts.file)){
-                    get_results_scenario(scenario=parallel_scenario, directory=directory,
-                                         overwrite_files=overwrite_files)
-                }
-        }
-        ts.list <- scalar.list <- dq.list <- list()
-        flag.na <- rep(0, length(scenarios))
-        for(i in seq_along(scenarios)){
-            scalar.file <- file.path(scenarios[i],paste0("results_scalar_",scenarios[i],".csv"))
-            ts.file <- file.path(scenarios[i],paste0("results_ts_",scenarios[i],".csv"))
-            dq.file <- file.path(scenarios[i],paste0("results_dq_",scenarios[i],".csv"))
-            scalar.list[[i]] <- tryCatch(read.csv(scalar.file, stringsAsFactors=FALSE), error=function(e) NA)
-            ts.list[[i]] <- tryCatch(read.csv(ts.file, stringsAsFactors=FALSE), error=function(e) NA)
-            dq.list[[i]] <- tryCatch(read.csv(dq.file, stringsAsFactors=FALSE), error=function(e) NA)
-            if(all(is.na(scalar.list[[i]]))){flag.na[i] <- 1}
-        }
-        scalar.list.out <- scalar.list[which(flag.na!=1)]
-        ts.list.out <- ts.list[which(flag.na!=1)]
-        dq.list.out <- dq.list[which(flag.na!=1)]
-        ## Combine all scenarios together and save into big final files
-        scalar.all <- add_colnames(scalar.list.out, bind = TRUE)
-        scalar.all$ID <- paste(scalar.all$scenario, scalar.all$iteration, sep = "-")
-        ts.all <- add_colnames(ts.list.out, bind = TRUE)
-        ts.all$ID <- paste(ts.all$scenario, ts.all$iteration, sep="-")
-        dq.all <- add_colnames(dq.list.out, bind = TRUE)
-        dq.all$ID <- paste(dq.all$scenario, dq.all$iteration, sep="-")
-        if(file.exists("ss3sim_scalar.csv")){
-          if(overwrite_files) write.csv(scalar.all, file="ss3sim_scalar.csv")
-          else {
-            warning("ss3sim_scalar.csv already exists and overwrite_files = FALSE, ",
-                    "so a new file was not written")
-          }
-        } else { # can write either way
-          write.csv(scalar.all, file="ss3sim_scalar.csv")
-        }
-        if(file.exists("ss3sim_ts.csv")) {
-          if(overwrite_files) write.csv(ts.all, file="ss3sim_ts.csv")
-          else {
-            warning("ss3sim_ts.csv already exists and overwrite_files = FALSE, ",
-                    "so a new file was not written")
-          }
-        } else { # can write either way
-          write.csv(ts.all, file="ss3sim_ts.csv")
-        }
-        ## write.csv(dq.all, file="ss3sim_dq.csv")
-        #message("Final result files written to", directory)
-    } else {
     ## Loop through each scenario in folder in serial
-    dq.list <- ts.list <- scalar.list <- list()
-    for(i in seq_along(scenarios)){
-        setwd(directory)
-        scen <- scenarios[i]
-        ## If the files already exist just read them in, otherwise get results
-        scalar.file <- file.path(scen, paste0("results_scalar_", scen, ".csv"))
-        ts.file <- file.path(scen,paste0("results_ts_",scen,".csv"))
-        dq.file <- file.path(scen, paste0("results_dq_",scen,".csv"))
-        ## Delete them if this is flagged on
-        if( overwrite_files){
-            if(file.exists(scalar.file)) file.remove(scalar.file)
-            if(file.exists(ts.file)) file.remove(ts.file)
-            if(file.exists(dq.file)) file.remove(dq.file)
-            get_results_scenario(scenario=scen, directory=directory,
-                                 overwrite_files=overwrite_files)
-        }
-        ## Check if still there and skip if already so, otherwise read in
-        ## and save to file
-        if(!file.exists(scalar.file) | !file.exists(ts.file) | !file.exists(dq.file)){
-            get_results_scenario(scenario=scen, directory=directory,
-                                 overwrite_files=overwrite_files)
-        }
-        scalar.list[[i]] <- tryCatch(suppressWarnings(read.csv(scalar.file, stringsAsFactors=FALSE)), error=function(e) NA)
-        ts.list[[i]] <- tryCatch(suppressWarnings(read.csv(ts.file, stringsAsFactors=FALSE)), error=function(e) NA)
-        dq.list[[i]] <- tryCatch(suppressWarnings(read.csv(dq.file, stringsAsFactors=FALSE)), error=function(e) NA)
-    }
-    scalar.list <- scalar.list[which(!is.na(scalar.list))]
-    ts.list <- ts.list[which(!is.na(ts.list))]
-    dq.list <- dq.list[which(!is.na(dq.list))]
-    ## Combine all scenarios together and save into big final files
-    scalar.all <- add_colnames(scalar.list, bind = TRUE)
-    scalar.all$ID <- paste(scalar.all$scenario, scalar.all$iteration, sep = "-")
-    ts.all <- add_colnames(ts.list, bind = TRUE)
-    ts.all$ID <- paste(ts.all$scenario, ts.all$iteration, sep="-")
-    dq.all <- add_colnames(dq.list, bind = TRUE)
-    dq.all$ID <- paste(dq.all$scenario, dq.all$iteration, sep="-")
-    if(file.exists("ss3sim_scalar.csv")){
-      if(overwrite_files) write.csv(scalar.all, file="ss3sim_scalar.csv")
-      else {
-        warning("ss3sim_scalar.csv already exists and overwrite_files = FALSE, ",
-                   "so a new file was not written")
+  dq.list <- ts.list <- scalar.list <-
+    vector(mode = "list", length = length(scenarios))
+  setwd(directory)
+  for (i in seq_along(scenarios)) {
+      scen <- scenarios[i]
+      ## If the files already exist just read them in, otherwise get results
+      scalar.file <- file.path(scen, paste0("results_scalar_", scen, ".csv"))
+      ts.file <- file.path(scen, paste0("results_ts_", scen, ".csv"))
+      dq.file <- file.path(scen, paste0("results_dq_", scen, ".csv"))
+      ## Delete them if this is flagged on
+      if (overwrite_files) {
+          if (file.exists(scalar.file)) file.remove(scalar.file)
+          if (file.exists(ts.file)) file.remove(ts.file)
+          if (file.exists(dq.file)) file.remove(dq.file)
+          get_results_scenario(scenario = scen, directory = directory,
+                               overwrite_files = overwrite_files)
       }
-    } else { # can write either way
-      write.csv(scalar.all, file="ss3sim_scalar.csv")
-    }
-    if(file.exists("ss3sim_ts.csv")) {
-      if(overwrite_files) write.csv(ts.all, file="ss3sim_ts.csv")
-      else {
-        warning("ss3sim_ts.csv already exists and overwrite_files = FALSE, ",
-                "so a new file was not written")
+      ## Check if still there and skip if already so, otherwise read in
+      ## and save to file
+      if (!file.exists(scalar.file) | !file.exists(ts.file) | !file.exists(dq.file)) {
+          get_results_scenario(scenario = scen, directory = directory,
+                               overwrite_files = overwrite_files)
       }
-    } else { # can write either way
-      write.csv(ts.all, file="ss3sim_ts.csv")
-    }
-    ## write.csv(dq.all, file="ss3sim_dq.csv")
-    #message("Final result files written to ", directory)
+      scalar.list[[i]] <- tryCatch(suppressWarnings(read.csv(scalar.file, stringsAsFactors = FALSE)), error = function(e) NA)
+      ts.list[[i]] <- tryCatch(suppressWarnings(read.csv(ts.file, stringsAsFactors = FALSE)), error = function(e) NA)
+      dq.list[[i]] <- tryCatch(suppressWarnings(read.csv(dq.file, stringsAsFactors = FALSE)), error = function(e) NA)
   }
+  scalar.list <- scalar.list[which(!is.na(scalar.list))]
+  ts.list <- ts.list[which(!is.na(ts.list))]
+  dq.list <- dq.list[which(!is.na(dq.list))]
+  ## Combine all scenarios together and save into big final files
+  scalar.all <- add_colnames(scalar.list, bind = TRUE)
+  ts.all <- add_colnames(ts.list, bind = TRUE)
+  dq.all <- add_colnames(dq.list, bind = TRUE)
+  if (type == "wide") {
+    scalar.all <- convert_to_wide(scalar.all)
+    ts.all <- convert_to_wide(ts.all)
+    dq.all <- convert_to_wide(dq.all)
+  }
+  if (file.exists("ss3sim_scalar.csv")) {
+    if (overwrite_files) write.csv(scalar.all, file = "ss3sim_scalar.csv", row.names = FALSE)
+    else {
+      warning("ss3sim_scalar.csv already exists and overwrite_files = FALSE, ",
+                 "so a new file was not written")
+    }
+  } else { # can write either way
+    write.csv(scalar.all, file = "ss3sim_scalar.csv", row.names = FALSE)
+  }
+  if (file.exists("ss3sim_ts.csv")) {
+    if (overwrite_files) write.csv(ts.all, file = "ss3sim_ts.csv", row.names = FALSE)
+    else {
+      warning("ss3sim_ts.csv already exists and overwrite_files = FALSE, ",
+              "so a new file was not written")
+    }
+  } else { # can write either way
+    write.csv(ts.all, file = "ss3sim_ts.csv", row.names = FALSE)
+  }
+ret <- list(scalar = scalar.all,
+                  ts = ts.all,
+                  dq = dq.all)
 }
 
 #' Extract SS3 simulation results for one scenario.
@@ -220,8 +150,7 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
 #'   any files previously created with this function. This is intended to be
 #'   used if iterations were added since the last time it was called, or any
 #'   changes were made to this function.
-#' @author Cole Monnahan
-#' @importFrom r4ss SS_output
+#' @author Cole Monnahan and Kathryn Doering
 #' @family get-results
 #' @export
 #' @examples
@@ -238,11 +167,11 @@ get_results_all <- function(directory=getwd(), overwrite_files=FALSE,
 #'   bias_adjust = FALSE)
 #' get_results_scenario(c("D0-F0-cod"), overwrite_files = TRUE)
 #'
-#' #clean up
+#' # clean up
 #' unlink("D0-F0-cod", recursive = TRUE)
 #' }
-get_results_scenario <- function(scenario, directory=getwd(),
-                                 overwrite_files=FALSE){
+get_results_scenario <- function(scenario, directory = getwd(),
+                                 overwrite_files = FALSE) {
     ## This function moves the wd around so make sure to reset on exit,
     ## especially in case of an error
     old_wd <- getwd()
@@ -253,158 +182,199 @@ get_results_scenario <- function(scenario, directory=getwd(),
         stop(paste("Scenario", scenario, "does not exist in", directory))
     }
     ## Stop if the files already exist or maybe delete them
-    scalar.file <- paste0("results_scalar_",scenario,".csv")
-    ts.file <- paste0("results_ts_",scenario,".csv")
-    dq.file <- paste0("results_dq_",scenario,".csv")
-    resids.file <- paste0("results_resids_",scenario,".csv")
-    if(file.exists(scalar.file) | file.exists(ts.file) | file.exists(dq.file)){
-        if(overwrite_files) {
+    scalar.file <- paste0("results_scalar_", scenario, ".csv")
+    ts.file <- paste0("results_ts_", scenario, ".csv")
+    dq.file <- paste0("results_dq_", scenario, ".csv")
+    resids.file <- paste0("results_resids_", scenario, ".csv")
+    if (file.exists(scalar.file) | file.exists(ts.file) | file.exists(dq.file)) {
+        if (overwrite_files) {
             ## Delete them and continue
             message("Files deleted for ", scenario)
             file.remove(scalar.file, ts.file, dq.file)
         } else {
             ## Stop the progress
-            stop("Files already exist for ", scenario,"
+            stop("Files already exist for ", scenario, "
               and overwrite_files=FALSE")
         }
     }
 
     ## Loop through each iteration and get results from both models
     reps.dirs <- list.files(pattern = "[0-9]+$")
-    reps.dirs <- sort(as.numeric(reps.dirs))
-    if(length(reps.dirs)==0)
-        stop(paste("Error:No iterations for scenario", scenario))
-    ## Loop through iterations and extract results using r4ss::SS_output
-    resids.list <- list()
+    reps.dirs <- as.character(sort(as.numeric(reps.dirs)))
+    if (length(reps.dirs) == 0) {
+      stop("Error:No iterations for scenario ", scenario)
+    }
     message("Starting ", scenario, " with ", length(reps.dirs), " iterations")
     ## Get the number of columns for this scenario
-    for(rep in reps.dirs){
-        ## Check that the model finished running and if not skip it but
-        ## report that ID
-        ID <- paste0(scenario, "-", rep)
-        if(!file.exists(file.path(rep,"em", "Report.sso")) |
-            file.size(file.path(rep,"em", "Report.sso")) == 0){
-            message("Missing Report.sso file for: ", ID, "; skipping...")
-        } else {
-            forecastTF <- ifelse(file.size(
-              file.path(rep, "em", "Forecast-report.sso")) %in% c(0, NA),
-              FALSE, TRUE)
-            ## Otherwise read in and write to file
-            report.em <-
-                SS_output(file.path(rep,"em"), covar=FALSE, verbose=FALSE,
-                          compfile="none", forecast=forecastTF, warn=TRUE,
-                          readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
-                          ncols=NULL)
-            report.om <-
-                SS_output(file.path(rep,"om"), covar=FALSE, verbose=FALSE,
-                          compfile="none", forecast=FALSE, warn=TRUE,
-                          readwt=FALSE, printstats=FALSE, NoCompOK=TRUE,
-                          ncols=NULL)
+    get_results_scen_list <- lapply(reps.dirs, get_results_iter)
+    # use this function to turn to bind the list components into 1 df
 
-            ## Get scalars from the two models
-            scalar.om <- get_results_scalar(report.om)
-            names(scalar.om) <- paste0(names(scalar.om),"_om")
-            scalar.em <- get_results_scalar(report.em)
-            names(scalar.em) <- paste0(names(scalar.em),"_em")
-            ## Get timeseires from the two
-            timeseries.om <- get_results_timeseries(report.om)
-            names(timeseries.om) <- paste0(names(timeseries.om),"_om")
-            timeseries.em <- get_results_timeseries(report.em)
-            names(timeseries.em) <- paste0(names(timeseries.em),"_em")
-            ## Get derived quantities information
-            derived.om <- get_results_derived(report.om)
-            names(derived.om) <- paste0(names(derived.om), "_om")
-            derived.em <- get_results_derived(report.em)
-            names(derived.em) <- paste0(names(derived.em), "_em")
+    ## Combine them together
+    scen_dfs <- lapply(c("scalar", "timeseries", "derived"), make_df,
+                          list_df = get_results_scen_list)
+    names(scen_dfs) <- c("scalar", "ts", "dq")
+    scalar <- scen_dfs[["scalar"]]
+    ts <- scen_dfs[["ts"]]
+    dq <- scen_dfs[["dq"]]
+    scalar$scenario <- ts$scenario <- dq$scenario <- scenario
 
-            ## Combine them together and massage a bit
-            scalar <- cbind(scalar.om, scalar.em)
-            ts <- merge(timeseries.om, timeseries.em,
-              by.x = "Yr_om", by.y = "Yr_em", all = TRUE)
-            dq <- merge(derived.om, derived.em,
-              by.x = "Yr_om", by.y = "Yr_em", all = TRUE)
-            scalar$scenario <- ts$scenario <- dq$scenario <- scenario
-            scalar$iteration <- ts$iteration <- dq$iteration <- rep
+    ## Write them to file in the scenario folder
+    scalar.exists <- file.exists(scalar.file)
+    write.table(x = scalar, file = scalar.file, append = scalar.exists,
+                col.names = !scalar.exists, row.names = FALSE, sep = ",")
+    ts.exists <- file.exists(ts.file)
+    write.table(x = ts, file = ts.file, append = ts.exists,
+                col.names = !ts.exists, row.names = FALSE, sep = ",")
+    dq.exists <- file.exists(dq.file)
+    write.table(x = dq, file = dq.file, append = dq.exists,
+                col.names = !dq.exists, row.names = FALSE, sep = ",")
+    ret <- list(scalar = scalar,
+                ts = ts,
+                dq = dq)
+}
 
-            ## parse the scenarios into columns for plotting later
-            scenario.scalar <-
-                data.frame(do.call(rbind, strsplit(gsub("([0-9]+-)", "\\1 ",
-               as.character(scalar$scenario)), "- ")), stringsAsFactors = FALSE)
-            names(scenario.scalar) <-
-                c(substr(as.vector(as.character(
-                    scenario.scalar[1,-ncol(scenario.scalar)])), 1,1) ,"species")
-            scenario.ts <-
-                data.frame(do.call(rbind, strsplit(gsub("([0-9]+-)", "\\1 ",
-                                                        as.character(ts$scenario)), "- ")),
-                           row.names = row.names(ts), stringsAsFactors = FALSE)
-            names(scenario.ts) <-
-                c(substr(as.vector(as.character(
-                    scenario.ts[1,-ncol(scenario.ts)])), 1,1) ,"species")
-            scenario.dq <-
-                data.frame(do.call(rbind, strsplit(gsub("([0-9]+-)", "\\1 ",
-                                                        as.character(dq$scenario)), "- ")),
-                           row.names = row.names(dq), stringsAsFactors = FALSE)
-            names(scenario.dq) <-
-                c(substr(as.vector(as.character(
-                    scenario.dq[1,-ncol(scenario.dq)])), 1,1) ,"species")
 
-            scalar <- cbind(scalar, scenario.scalar)
-            ts <- cbind(ts, scenario.ts)
-            dq <- cbind(dq, scenario.dq)
+#' Get results for 1 iteration
+#'
+#' @param dir_1_iter The full or relative path to the SS iteration folder.
+#'  Assumed to contain multiple model folders that contain "om" or "em"
+#'  (not case sensitive) somewhere in the model file name. If specified,
+#'  mod_dirs need not be specified.
+#' @param mod_dirs The full or relative path to the SS model folders as a
+#'  vector of characters. If specified, dir_1_iter need not be specified.
+#' @param iter_name Name of the iteration, which will be appended to the
+#'  dataframes . Defaults to NULL, in which case the iter_name will be the
+#'  folder name of dir_1_iter or the folder name 1 level up from the first
+#'  mod_dirs specified
+#' @author Kathryn Doering
+#' @export
+#' @return A list of 3 data frames called scalar, timeseries, and
+#'  derived (for derived quantities). These lists contain information for
+#'  multiple model runs (estimation models and operating models) for 1
+#'  iteration.
+get_results_iter <- function(dir_1_iter = NULL, mod_dirs = NULL,
+                             iter_name = NULL) {
+  # checks
+  if (is.null(dir_1_iter) & is.null(mod_dirs)) {
+    stop("Please specify either dir_1_iter or mod_dirs.")
+  }
+  if (!is.null(dir_1_iter) & !is.null(mod_dirs)) {
+    stop("Please specify only dir_1_iter or mod_dirs, leaving the other NULL.")
+  }
+  if (!is.null(dir_1_iter)) {
+    dir_1_iter <- normalizePath(dir_1_iter)
+  }
+  if (!is.null(mod_dirs)) {
+    mod_dirs <- normalizePath(mod_dirs)
+  }
+  # get the directories if not prespecified.
+  if (!is.null(dir_1_iter)) {
+    mod_dirs <- list.dirs(dir_1_iter, recursive = FALSE)
+    mod_dirs <- grep("[oe]m", mod_dirs, value = TRUE, ignore.case = TRUE)
+  }
+  if (is.null(iter_name)) {
+   iter_name <- basename(dirname(mod_dirs[1]))
+  }
 
-            ## Other calcs
-            ts$year <- ts$Yr_om
-            ts$Yr_om <- NULL
-            ts$Yr_em <- NULL
-            dq$year <- dq$Yr_om
-            dq$Yr_om <- NULL
-            dq$Yr_em <- NULL
-            scalar$max_grad <- scalar$max_grad_em
-            ignore.cols <- which(names(scalar) %in%
-                           c("max_grad_om", "params_on_bound_om",
-                             "max_grad_em","params_stuck_low_om",
-                             "params_stuck_high_om" ))
-            scalar <- scalar[ , -ignore.cols]
+  # call get_results_mod
+  iter_list <- lapply(mod_dirs, get_results_mod)
+  return_iter <- lapply(c("scalar", "timeseries", "derived"), make_df,
+                        list_df = iter_list)
+  names(return_iter) <- c("scalar", "timeseries", "derived")
+  # todo: find the iteration value to set
+  return_iter$scalar$iteration <- return_iter$timeseries$iteration <-
+    return_iter$derived$iteration <- iter_name
+  # return the iteration level dfs as a list
+  return_iter
+}
 
-            ## Also get some meta data and other convergence info like the
-            ## version, runtime, etc. as checks
-            temp <- readLines(con=file.path(rep,"em", "Report.sso"), n=10)
-            scalar$version <- temp[1]
-            scalar$RunTime <- eval(parse(text=gsub(
-              "([0-9]+) hours, ([0-9]+) minutes, ([0-9]+) seconds.", 
-              "\\1*60+\\2+\\3/60", report.em$RunTime)))
-            scalar$hessian <- file.exists(file.path(rep,"em", "admodel.cov"))
-            ## The number of iterations for the run is only in this file for
-            ## some reason.
-            if(!file.exists(file.path(rep,"em", "CumReport.sso"))) {
-                Niterations <- NA
-            } else {
-                cumrep <- readLines(file.path(rep,"em", "CumReport.sso"), n=5)
-                tmp <- grep("N_iter", cumrep)
-                if(length(tmp)==0){
-                    scalar$Niterations <- NA
-                } else {
-                    scalar$Niterations <-
-                        as.numeric(strsplit(cumrep[tmp[1]],split=" ")[[1]][3])
-                }
-            }
-
-            ## Write them to file in the scenario folder
-            scalar.exists <- file.exists(scalar.file)
-            write.table(x=scalar, file=scalar.file, append=scalar.exists,
-                        col.names=!scalar.exists, row.names=FALSE, sep=",")
-            ts.exists <- file.exists(ts.file)
-            write.table(x=ts, file=ts.file, append=ts.exists,
-                        col.names=!ts.exists, row.names=FALSE, sep=",")
-            dq.exists <- file.exists(dq.file)
-            write.table(x=dq, file=dq.file, append=dq.exists,
-                        col.names=!dq.exists, row.names=FALSE, sep=",")
-        }
+#' Get results for 1 model run
+#'
+#' @param dir The full or relative path to the SS model file folder. If not
+#'  specified, uses the working directory.
+#' @param is_EM Is this an estimation model? Defaults to NULL, which will look
+#' for the letters "em" (lower or uppercase) to decide if this is an estimation
+#' model or operating model.
+#' @param is_OM Is this an operating model? Defaults to NULL, which will look
+#' for the letters "om" (lower or uppercase) to decide if this is an estimation
+#' model or operating model.
+#' @author Kathryn Doering
+#' @export
+#' @importFrom r4ss SS_output
+#' @return A list of 3 data frames called scalar, timeseries, and
+#'  derived (for derived quantities). These data frames contain results for 1
+#'  model run.
+get_results_mod <- function(dir = getwd(), is_EM = NULL, is_OM = NULL) {
+  # Input checks:
+  if (!file.exists(file.path(dir, "Report.sso")) |
+     file.size(file.path(dir, "Report.sso")) == 0) {
+    message("Missing Report.sso file for: ", dir, "; skipping...")
+    return(NA)
+  }
+  # figure out if is EM and if forecast report should be read
+  if (is.null(is_EM)) {
+    if (length(grep("em", basename(dir), ignore.case = TRUE)) > 0) {
+      is_EM <- TRUE
+    } else {
+      is_EM <- FALSE
     }
-    ## ## Create df for the residuals
-    ## resids <- do.call(rbind, resids.list)
-    ## write.table(x=resids, file=resids.file, sep=",", row.names=FALSE)
-    ## End of loops for extracting results
+  }
+  if (is.null(is_OM)) {
+    if (length(grep("om", basename(dir), ignore.case = TRUE)) > 0) {
+      is_OM <- TRUE
+    } else {
+      is_OM <- FALSE
+    }
+  }
+  if (is_EM) {
+  forecastTF <- ifelse(
+    file.size(file.path(dir, "Forecast-report.sso")) %in% c(0, NA),
+    FALSE, TRUE)
+  } else {
+    forecastTF <- FALSE
+  }
+  report <- SS_output(file.path(dir), covar = FALSE, verbose = FALSE,
+                      compfile = "none", forecast = forecastTF, warn = TRUE,
+                      readwt = FALSE, printstats = FALSE, NoCompOK = TRUE,
+                      ncols = NULL)
+  ## Get dfs
+  scalar <- get_results_scalar(report)
+  timeseries <- get_results_timeseries(report)
+  derived <- get_results_derived(report)
+  # add additional values
+  scalar$model_run <- timeseries$model_run <- derived$model_run <- basename(dir)
+
+  if (is_OM) {
+    # these values are meaningless in context of an OM.
+    scalar$max_grad <- NA
+    scalar$params_on_bound <- NA
+    scalar$params_stuck_low <- NA
+    scalar$params_stuck_high <- NA
+  }
+  ## Other calcs (TODO: change these at indiv spreadsheet level, if can find
+  # how to get these output from SS_output)
+  scalar$hessian <- file.exists(file.path(dir, "admodel.cov"))
+  ## The number of iterations for the run is only in ss_summary.sso and
+  # CumReport.sso for some reason.
+  if (!file.exists(file.path(dir, "ss_summary.sso"))) {
+    Niterations <- NA
+  } else {
+    sumrep <- readLines(file.path(dir, "ss_summary.sso"), n = 10)
+    tmp <- grep("N_iterations: ", sumrep)
+    if (length(tmp) == 0) {
+      scalar$Niterations <- NA
+    } else {
+      scalar$Niterations <-
+        as.numeric(strsplit(sumrep[tmp[1]], split = "N_iterations: ")[[1]][2])
+    }
+  }
+
+  # list to return
+  results_mod <- list(
+                    scalar = scalar,
+                    timeseries = timeseries,
+                    derived = derived
+                  )
 }
 
 #' Extract time series from a model run.
@@ -416,15 +386,16 @@ get_results_scenario <- function(scenario, directory=getwd(),
 #' @export
 #' @family get-results
 #' @author Cole Monnahan
-get_results_timeseries <- function(report.file){
+get_results_timeseries <- function(report.file) {
     years <- report.file$startyr:(report.file$endyr +
-                                  ifelse(is.na(report.file$nforecastyears) ==
-                                      TRUE, 0,
+                                  ifelse(is.na(report.file$nforecastyears),
+                                         0,
                                          report.file$nforecastyears))
-    xx <- subset(report.file$timeseries,
-                 select=c("Yr","SpawnBio", "Recruit_0", "F:_1"))
-    xx <- xx[xx$Yr %in% years,]
-    names(xx) <- gsub(":_1","", names(xx))
+    F_cols <- grep("^F:_", colnames(report.file$timeseries))
+    other_cols <- which(colnames(report.file$timeseries) %in%
+                          c("Yr", "SpawnBio", "Recruit_0"))
+    xx <- report.file$timeseries[, c(other_cols, F_cols)]
+    xx <- xx[xx$Yr %in% years, ]
     # Get SPR from derived_quants
     spr <- report.file$derived_quants[grep("SPRratio_",
       report.file$derived_quants[,
@@ -438,13 +409,17 @@ get_results_timeseries <- function(report.file){
     getcols <- c(grep("^y", colnames(dev), ignore.case = TRUE),
       grep("dev", colnames(dev), ignore.case = TRUE))
     dev <- dev[dev[, getcols[1]] %in% years, getcols]
+    colnames(dev) <- gsub("dev", "rec_dev", colnames(dev), ignore.case = TRUE)
     ## create final data.frame
     df <- merge(xx, spr[, c("SPRratio", "Yr")], by = "Yr", all.x = TRUE)
     df$SPRratio[is.na(df$SPRratio)] <- 0
     df <- merge(df, dev, by.x = "Yr",
       by.y = colnames(dev)[getcols[1]], all.x = TRUE)
     rownames(df) <- NULL
-    return(invisible(df))
+    # change year name
+    df$year <- df$Yr
+    df$Yr <- NULL
+    df
 }
 
 #' Extract time series from a model run with the associated standard deviation.
@@ -457,10 +432,10 @@ get_results_timeseries <- function(report.file){
 #' @export
 #' @family get-results
 #' @author Kelli Johnson
-get_results_derived <- function(report.file){
-    #todo: Move val-1/std to stddev column for those pars that need it
-    #todo: move time series values to the time series data frame
-    #todo: move the point estimates to the scalar data frame
+get_results_derived <- function(report.file) {
+    # todo: Move val-1/std to stddev column for those pars that need it
+    # todo: move time series values to the time series data frame
+    # todo: move the point estimates to the scalar data frame
     xx <- report.file$derived_quants
     xx <- xx[, c(
       grep("Label", colnames(report.file$derived_quants),
@@ -477,7 +452,10 @@ get_results_derived <- function(report.file){
     final <- reshape(xx, timevar = "name", idvar = "Yr", direction = "wide",
       drop = badname)
     rownames(final) <- NULL
-    invisible(final)
+    # change year name.
+    final$year <- final$Yr
+    final$Yr <- NULL
+    final
 }
 
 #' Extract scalar quantities from a model run.
@@ -488,60 +466,64 @@ get_results_derived <- function(report.file){
 #' @family get-results
 #' @export
 #' @author Cole Monnahan; Merrill Rudd
-get_results_scalar <- function(report.file){
+get_results_scalar <- function(report.file) {
     der <- report.file$derived_quants
     getcol <- grep("label", colnames(der), ignore.case = TRUE)
     SSB_MSY <- der[which(der[, getcol] =="SSB_MSY"), ]$Value
     TotYield_MSY <-  der[which(der[, getcol] =="Dead_Catch_MSY"),]$Value
     SSB_Unfished <-  der[grep("^SSB_unfished", der[, getcol], ignore.case = TRUE), "Value"]
-    F_MSY <- der[grep("Fsdt_MSY|annF_MSY", der[, getcol]), "Value"]
-    F_SPR <- der[grep("Fsdt_SPR|annF_SPR", der[, getcol]), "Value"]
+    F_MSY <- der[grep("Fstd_MSY|annF_MSY", der[, getcol]), "Value"]
+    F_SPR <- der[grep("Fstd_SPR|annF_SPR", der[, getcol]), "Value"]
     Catch_endyear <-
-        utils::tail(report.file$timeseries[report.file$timeseries$Era == "TIME",grep("dead\\(B\\)",
+        utils::tail(report.file$timeseries[report.file$timeseries$Era == "TIME", grep("dead\\(B\\)",
           names(report.file$timeseries))], 1)
-    pars <- data.frame(t(report.file$parameters$Value))
+    pars <- data.frame(t(report.file$parameters$Value), stringsAsFactors = FALSE)
     names(pars) <- report.file$parameters[, grep("Label", colnames(report.file$parameters), ignore.case = TRUE)]
     ## Get the parameters stuck on bounds
     status <- report.file$parameters$Status
-    params_stuck_low <- paste(names(pars)[which(status=="LO")], collapse=";")
-    params_stuck_high <- paste(names(pars)[which(status=="HI")], collapse=";")
-    if(params_stuck_low=="") params_stuck_low <- NA
-    if(params_stuck_high=="") params_stuck_high <- NA
+    params_stuck_low <- paste(names(pars)[which(status == "LO")], collapse = ";")
+    params_stuck_high <- paste(names(pars)[which(status == "HI")], collapse = ";")
+    if (params_stuck_low == "") params_stuck_low <- NA
+    if (params_stuck_high == "") params_stuck_high <- NA
     ## Remove the recruitment devs and efforts as these are in the ts file
-    recdev.index <- grep("MAIN_", toupper(names(pars)), fixed=TRUE)
-    if(length(recdev.index)>0) pars <- pars[,-recdev.index]
-    effort.index <- grep("F_FLEET_", toupper(names(pars)), fixed=TRUE)
-    if(length(effort.index)>0) pars <- pars[,-effort.index]
-    names(pars) <- gsub("\\(","_", names(pars))
-    names(pars) <- gsub("\\)","", names(pars))
-    #get the comps variables
+    recdev.index <- grep("MAIN_", toupper(names(pars)), fixed = TRUE)
+    if (length(recdev.index) > 0) pars <- pars[, -recdev.index]
+    effort.index <- grep("F_FLEET_", toupper(names(pars)), fixed = TRUE)
+    if (length(effort.index) > 0) pars <- pars[, -effort.index]
+    names(pars) <- gsub("\\(", "_", names(pars))
+    names(pars) <- gsub("\\)", "", names(pars))
+    # get the comps variables
     # todo: change this permanently to second option when converted to .15
     if ("Length_Comp_Fit_Summary" %in% names(report.file)) {
       report.file[["Length_comp_Eff_N_tuning_check"]] <-
         report.file[["Length_Comp_Fit_Summary"]]
     }
-    if(nrow(report.file[["Length_comp_Eff_N_tuning_check"]]) > 0) {
-      len_comp_tuning <- data.frame(t(report.file$Length_comp_Eff_N_tuning_check$Curr_Var_Adj))
+    if (nrow(report.file[["Length_comp_Eff_N_tuning_check"]]) > 0) {
+      len_comp_tuning <- data.frame(t(report.file$Length_comp_Eff_N_tuning_check$Curr_Var_Adj),
+                                    stringsAsFactors = FALSE)
       colnames(len_comp_tuning) <-
         paste0("Curr_Var_Adj_lcomp_flt_",
                report.file$Length_comp_Eff_N_tuning_check$Fleet, "_",
                report.file$Length_comp_Eff_N_tuning_check$Fleet_name)
     } else {
-      len_comp_tuning <- data.frame(matrix(nrow = 1, ncol = 0))
+      len_comp_tuning <- data.frame(matrix(nrow = 1, ncol = 0),
+                                    stringsAsFactors = FALSE)
     }
     # todo: change this permanently to second option when converted to .15
     if ("Age_Comp_Fit_Summary" %in% names(report.file)) {
       report.file[["Age_comp_Eff_N_tuning_check"]] <-
         report.file[["Age_Comp_Fit_Summary"]]
     }
-    if(nrow(report.file[["Age_comp_Eff_N_tuning_check"]]) > 0) {
-      age_comp_tuning <- data.frame(t(report.file$Age_comp_Eff_N_tuning_check$Curr_Var_Adj))
+    if (nrow(report.file[["Age_comp_Eff_N_tuning_check"]]) > 0) {
+      age_comp_tuning <- data.frame(t(report.file$Age_comp_Eff_N_tuning_check$Curr_Var_Adj),
+                                    stringsAsFactors = FALSE)
       colnames(age_comp_tuning) <-
         paste0("Curr_Var_Adj_agecomp_flt_",
                report.file$Age_comp_Eff_N_tuning_check$Fleet, "_",
                report.file$Age_comp_Eff_N_tuning_check$Fleet_name)
     } else {
-      age_comp_tuning <- data.frame(matrix(nrow = 1, ncol = 1))
+      age_comp_tuning <- data.frame(matrix(nrow = 1, ncol = 0),
+                                    stringsAsFactors = FALSE)
     }
     max_grad <- report.file$maximum_gradient_component
     depletion <- report.file$current_depletion
@@ -551,38 +533,124 @@ get_results_scalar <- function(report.file){
     ## get the number of params on bounds from the warning.sso file, useful for
     ## checking convergence issues
     warn <- report.file$warnings
-    warn.line <- grep("Number_of_active_parameters", warn, fixed=TRUE)
+    warn.line <- grep("Number_of_active_parameters", warn, fixed = TRUE)
     params_on_bound <-
-        ifelse(length(warn.line)==1,
-          as.numeric(strsplit(warn[warn.line], split=":")[[1]][2]), NA)
+        ifelse(length(warn.line) == 1,
+          as.numeric(strsplit(warn[warn.line], split = ":")[[1]][2]), NA)
     ## Combine into final df and return it
     df <- data.frame(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion
                 , F_MSY, F_SPR, bias,
                 params_on_bound, params_stuck_low, params_stuck_high, pars,
-                Catch_endyear, t(NLL_vec),len_comp_tuning, age_comp_tuning,
-                stringsAsFactors=FALSE)
+                Catch_endyear, t(NLL_vec), len_comp_tuning, age_comp_tuning,
+                stringsAsFactors = FALSE)
+    ## Also get some meta data and other convergence info like the
+    ## version, runtime, etc. as checks
+    df$version <- report.file$SS_version
+    df$RunTime <- eval(parse(text = gsub(
+      "([0-9]+) hours, ([0-9]+) minutes, ([0-9]+) seconds.",
+      "\\1*60+\\2+\\3/60", report.file$RunTime)))
     return(invisible(df))
 }
 
 #' Get negative log likelihood (NLL) values from a report file list
 #'
+#' Names of the available NLL components will depend on the version
+#' of the model. Names are native to the estimation framework and all
+#' available components are extracted.
 #' @template report.file
 #' @author Merrill Rudd
-get_nll_components <- function(report.file){
-    ## Possible likelihood components from SS3.tpl
-    NLL_components <- c("TOTAL", "Catch", "Equil_catch", "Survey", "Discard",
-      "Mean_body_wt", "Length_comp", "Age_comp", "Size_at_age", "SizeFreq",
-      "Morphcomp", "Tag_comp", "Tag_negbin", "Recruitment",
-      "Forecast_Recruitment", "Parm_priors", "Parm_softbounds", "Parm_devs",
-      "Crash_Pen")
-    NLL_names <- paste("NLL", NLL_components, sep="_")
-
-    like_mat <- report.file$likelihoods_used
-    vec <- sapply(NLL_components, function(x)
-      ifelse(length(like_mat[which(rownames(like_mat)==x), 1])==0,
-                NA, like_mat[which(rownames(like_mat)==x), 1]))
-    names(vec) <- NLL_names
+#' @return A vector of named numeric values, where \code{"NLL_"} is
+#' appended to the names in the \code{report.file}.
+get_nll_components <- function(report.file) {
+    vec <- setNames(report.file$likelihoods_used$values,
+      paste0("NLL_", row.names(report.file$likelihoods_used)))
     vec[is.na(vec)] <- NA
 
     return(vec)
+}
+
+#' Make a list of lists with dataframe components into a dataframes
+#'
+#' Bind together list of list components with the same name
+#' @param list_name A name to subset from iter_list
+#' @param list_df A list of dataframes. These need not have the same column
+#'  names, as this function will fill in with NAs.
+#' @author Kathryn Doering
+#' @return A dataframe
+make_df <- function(list_name, list_df) {
+  list_df_comp <- lapply(list_df, function(x) x[[list_name]])
+  all_nms <- unique(unlist(lapply(list_df_comp, names)))
+  # this extra code is needed in case of extra colnames that are not in both
+  # dataframes.
+  df <- do.call(rbind,
+                c(lapply(list_df_comp,
+                         function(x) data.frame(c(x, vapply(setdiff(all_nms, names(x)),
+                                                            function(y) NA, NA)),
+                                                stringsAsFactors = FALSE)),
+                  make.row.names = FALSE))
+  df
+}
+
+#' Convert long-style ss3sim output to wide format
+#'
+#' This function exists for back compatibility. Note that this will only work
+#' if the column model_run has only the strings"om" or "em".
+#' @param lng A long dataframe produced from get_results_all().
+#' @return A wide dataframe (separate columns for em and om results)
+#' @export
+#' @examples \dontrun{
+#'   scalar <-  read.csv("ss3sim_scalar.csv")
+#'   scalar_wide <- convert_to_wide(scalar)
+#'
+#'   ts <- read.csv("ss3sim_ts.csv")
+#'   ts_wide <- convert_to_wide(scalar)
+#' }
+#' @author Kathryn Doering
+convert_to_wide <- function(lng) {
+  em_df <- lng[lng$model_run == "em", ,drop = FALSE]
+  colnames(em_df) <- paste0(colnames(em_df), "_em")
+  which(colnames(em_df) %in% c("iteration_em", "scenario_em"))
+  colnames(em_df)[colnames(em_df) == "iteration_em"] <- "iteration"
+  colnames(em_df)[colnames(em_df) == "scenario_em"] <- "scenario"
+  if("year_em" %in% colnames(em_df)) {
+    colnames(em_df)[colnames(em_df) == "year_em"] <- "year"
+  }
+  colnames(em_df)[colnames(em_df) == "max_grad_em"] <- "max_grad"
+  colnames(em_df)[colnames(em_df) == "version_em"] <- "version"
+  colnames(em_df)[colnames(em_df) == "RunTime_em"] <- "RunTime"
+  colnames(em_df)[colnames(em_df) == "hessian_em"] <- "hessian"
+  colnames(em_df)[colnames(em_df) == "Niterations_em"] <- "Niterations"
+  em_df <- em_df[, setdiff(colnames(em_df), c("X_em", "model_run_em"))]
+
+  om_df <- lng[lng$model_run == "om", ,drop = FALSE]
+  colnames(om_df) <- paste0(colnames(om_df), "_om")
+  colnames(om_df)[colnames(om_df) == "iteration_om"] <- "iteration"
+  colnames(om_df)[colnames(om_df) == "scenario_om"] <- "scenario"
+  if("year_om" %in% colnames(om_df)) {
+    colnames(om_df)[colnames(om_df) == "year_om"] <- "year"
+  }
+  # remove some columns
+  om_df <- om_df[, setdiff(colnames(om_df),
+                           c("max_grad_om", "version_om", "RunTime_om",
+                             "hessian_om", "Niterations_om",
+                             "params_on_bound_om", "params_stuck_low_om",
+                             "params_stuck_high_om", "X_om", "model_run_om"))]
+  # merge back together
+  wide <- merge(om_df, em_df, all = TRUE)
+  wide <- wide[, apply(wide, 2, function(x) !all(is.na(x)))]
+
+  # add in old cols
+  wide$ID <- paste0(wide$scenario, "-", wide$iteration)
+
+  # add code to divide ID into the different codes and species
+  ## parse the scenarios into columns for plotting later
+  # use this old code:
+  new_cols <-
+    data.frame(do.call(rbind, strsplit(gsub("([0-9]+-)", "\\1 ",
+                                            as.character(wide$scenario)), "- ")),
+               stringsAsFactors = FALSE)
+  names(new_cols) <-
+    c(substr(as.vector(as.character(
+      new_cols[1,-ncol(new_cols)])), 1,1) ,"species")
+  wide <- cbind(wide, new_cols)
 }
