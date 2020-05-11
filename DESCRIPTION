@@ -45,6 +45,7 @@ Imports:
     bbmle,
     grDevices,
     graphics,
+    rlang,
     stats,
     utils
 Remotes: github::r4ss/r4ss@development

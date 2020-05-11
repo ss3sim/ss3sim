@@ -2,29 +2,37 @@
 % Please edit documentation in R/plot_functions.R
 \name{facet_form}
 \alias{facet_form}
-\title{A helper function for building a ggplot facet. Used internally by the
-plotting functions.}
+\title{Helper function for building a ggplot facet}
 \usage{
 facet_form(horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL)
 }
 \arguments{
-\item{horiz, horiz2}{A character string denoting which column to use as
+\item{horiz}{A character string denoting which column to use as
 the first (\code{horiz}) and second (\code{horiz2}) level of faceting in
-the horizontal direction. E.g. "M" or "species". A value of NULL (default)
-indicates no faceting.}
+the horizontal direction. E.g., "M" or "species". A value of NULL (default)
+indicates no faceting in the horizontal space.}
 
-\item{vert, vert2}{A character string denoting which column to use as
+\item{horiz2}{A character string denoting which column to use as
+the first (\code{horiz}) and second (\code{horiz2}) level of faceting in
+the horizontal direction. E.g., "M" or "species". A value of NULL (default)
+indicates no faceting in the horizontal space.}
+
+\item{vert}{A character string denoting which column to use as
 the first (\code{vert}) and second (\code{vert2}) level of faceting in
-the vertical direction. E.g. "M" or "species". A value of NULL (default)
-indicates no faceting.}
+the vertical direction. E.g., "M" or "species". A value of NULL (default)
+indicates no faceting in the vertical space.}
+
+\item{vert2}{A character string denoting which column to use as
+the first (\code{vert}) and second (\code{vert2}) level of faceting in
+the vertical direction. E.g., "M" or "species". A value of NULL (default)
+indicates no faceting in the vertical space.}
 }
 \value{
-A formula which can be used in \code{facet_grid}, or NULL if all
-arguments are NULL
+A formula which can be used in \code{facet_grid} or \code{NULL}
+if all arguments are \code{NULL}.
 }
 \description{
-A helper function for building a ggplot facet. Used internally by the
-plotting functions.
+Used internally by the plotting functions to create faceting formulas.
 }
 \author{
 Cole Monnahan

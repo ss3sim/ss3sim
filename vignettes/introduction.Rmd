@@ -9,8 +9,12 @@ output:
     fig_caption: true
 bibliography: refs.bib
 csl: cjfas.csl
+description: >
+  Start here to learn how to use ss3sim.
+  Basic information is provided on key functions and availabl outputs.
+  The most important function is `run_ss3sim`.
 vignette: >
-  %\VignetteIndexEntry{An introduction to ss3sim}
+  %\VignetteIndexEntry{Introduction to ss3sim}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
@@ -26,45 +30,46 @@ ss3sim is an R package to make it relatively quick and easy to run simulations w
   * a series of low-level functions that facilitate manipulating 
     * SS configuration files, 
     * running SS models, and 
-    * combining the output and 
-  * wrapper functions to control simulation experiments, e.g., `run_ss3sim`. 
+    * combining the output;
+  * wrapper functions to control simulation experiments, e.g., `run_ss3sim`; and
+  * information to facilitate using ss3sim in the form of
+    * help files, e.g., `?change_f` for all functions,
+    * vignettes for how to use wrapper functions and best practices for simulations with SS, and
+    * a formal [issue tracker](https://github.com/ss3sim/ss3sim/issues) that documents questions, suggestions, and bug reports.
 
-Much of this vignette is focused on how to effectively use `run_ss3sim`. If you use ss3sim in a publication, please cite the package as indicated by `citation("ss3sim")`. 
+Much of this vignette is focused on how to effectively use `run_ss3sim`.
+
+Please direct any 
 
 ## Installation
 
 ss3sim can be run on OS X, Windows, or Linux.
-The [CRAN version](https://cran.r-project.org/package=ss3sim) of ss3sim mirrors the master branch of the [github repository](https://github.com/ss3sim/ss3sim) that houses the code base. The development version contains the newest features that are not available in the CRAN version and can be installed from using devtools.
+The [CRAN version](https://cran.r-project.org/package=ss3sim) of ss3sim mirrors the master branch of the [github repository](https://github.com/ss3sim/ss3sim) that houses the code base. The development branch contains the newest features that are not available in the CRAN version and can be installed using remotes.
 
 ```{r, install-and-load, eval=FALSE}
 # CRAN version
 install.packages("ss3sim")
-# Github version, which depends on "devtools"
-# install.packages("devtools")
-devtools::install_github("ss3sim/ss3sim", 
-  ref = "development", dependencies = TRUE, build_vignettes = TRUE)
+# Github version, depends on remotes
+# install.packages("remotes")
+remotes::install_github(repo = "ss3sim/ss3sim@development",
+  dependencies = TRUE, upgrade = FALSE, build_vignettes = TRUE)
 # Load the package
 library("ss3sim")
-```
-
-## Stock Synthesis (SS)
-
-ss3sim was originally based on SS 3.24O. In 2019, ss3sim was updated to use SS 3.30, and future efforts will be dedicated to continuing to keep ss3sim up to date with SS. The most recent version of SS that was tested for use with ss3sim is available on github (e.g., see [here](https://github.com/ss3sim/ss3sim/blob/master/inst/bin/Windows64/ss.exe?raw=true) for the Windows version) or can be obtained from the SS repository on [Vlab](https://vlab.ncep.noaa.gov/web/stock-synthesis/document-library/-/document_library/0LmuycloZeIt/view/5042555?_com_liferay_document_library_web_portlet_DLPortlet_INSTANCE_0LmuycloZeIt_redirect=https%3A%2F%2Fvlab.ncep.noaa.gov%3A443%2Fweb%2Fstock-synthesis%2Fdocument-library%3Fp_p_id%3Dcom_liferay_document_library_web_portlet_DLPortlet_INSTANCE_0LmuycloZeIt%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview). ss3sim uses the safe version of SS, which is slightly slower than the optimized version because it checks that vector, matrix, and array bounds are not exceeded. ss3sim requires that `ss.exe` be in your path. This means that your operating system knows where the binary file is located. See [the vignette section on paths](#path) for details. 
-
-ss3sim also relies on the R package [r4ss](https://github.com/r4ss/r4ss) to read and write SS files. r4ss is available on [CRAN](https://cran.r-project.org/package=r4ss) but we exclusively rely on the github version. Feel free to install r4ss directly via `devtools::install_github("r4ss/r4ss")`, though installing ss3sim will do this for you if you don't already have r4ss available in your R library. 
-
-## Help files
-
-A brief, formal summary of the original package is available from @anderson2014a. More up-to-date help can be found using the help files available within the package, e.g., `?functionname`, or by reading the vignettes, e.g., `browseVignettes()`. 
-
-```{r, help, eval=FALSE}
 ?ss3sim
 help(package = "ss3sim")
 browseVignettes("ss3sim")
 ```
 
-Please direct any questions, suggestions, or bug reports to the ss3sim
-[issue tracker](https://github.com/ss3sim/ss3sim/issues). 
+## Stock Synthesis (SS)
+
+ss3sim was originally based on SS 3.24O [@anderson2014a]. In 2019, ss3sim was updated to use SS 3.30, and future efforts will be dedicated to continuing to keep ss3sim up to date with SS. The most recent version of SS that was tested for use with ss3sim is available on github (e.g., see [here](https://github.com/ss3sim/ss3sim/blob/master/inst/bin/Windows64/ss.exe?raw=true) for the Windows version) or can be obtained from the SS repository on [Vlab](https://vlab.ncep.noaa.gov/web/stock-synthesis/document-library/-/document_library/0LmuycloZeIt/view/5042555?_com_liferay_document_library_web_portlet_DLPortlet_INSTANCE_0LmuycloZeIt_redirect=https%3A%2F%2Fvlab.ncep.noaa.gov%3A443%2Fweb%2Fstock-synthesis%2Fdocument-library%3Fp_p_id%3Dcom_liferay_document_library_web_portlet_DLPortlet_INSTANCE_0LmuycloZeIt%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview). ss3sim uses the safe version of SS, which is slightly slower than the optimized version because it checks that vector, matrix, and array bounds are not exceeded. ss3sim requires that `ss` or `ss.exe` be in your path. This means that your operating system knows where the binary file is located. See [the vignette section on paths](#path) for details.
+
+ss3sim also relies on the R package [r4ss](https://github.com/r4ss/r4ss) to read and write SS files. r4ss is available on [CRAN](https://cran.r-project.org/package=r4ss) and [github](https://github.com/r4ss/r4ss). The master branch of ss3sim uses the CRAN version of r4ss, while development versions of ss3sim use the development version of r4ss. Feel free to install r4ss directly via 
+```{r, r4ss, eval=FALSE}
+remotes::install_github("r4ss/r4ss@development",
+  dependencies = TRUE, upgrade = FALSE, build_vignettes = TRUE)`
+```
+Though, installing ss3sim will do this for you if you don't already have r4ss available in your R library.
 
 # Simulation overview
 
@@ -113,7 +118,7 @@ ss3sim relies on a set of plain text files to control the simulation. These plai
 
 7. `R0-spp.txt` (for retrospective cases)
 
-![Illustration of input and output folder and file structure for an ss3sim simulation. Folders are shown in blue, input files in orange, and output files in grey. All input and output files are in plain text format. Case files (orange files at bottom left) combine cases (e.g., M0 for a given natural mortality trajectory) with groups of OMs and EMs (e.g., cod like). Alternatively, a user can skip setting up case files and specify the simulation cases directly in R code (see [the vignette section on using ss3sim_base()](#ss3simbase)).](filestructure.png)
+![Input and output folder and file structure for an ss3sim simulation. Folders are shown in blue, input files in orange, and output files in grey. All input and output files are in plain text format. Case files (orange files at bottom left) combine cases (e.g., M0 for a given natural mortality trajectory) with groups of OMs and EMs (e.g., cod like). Alternatively, a user can skip setting up case files and specify the simulation cases directly in R code (see [the vignette section on using `ss3sim_base()`](#ss3simbase)).](filestructure.png)
 
 After running `create_argfiles()`, look in your working directory for the template input files. (You can use `getwd()` to see your current working directory or `setwd()` to set a different working directory.) Change the case ID number, which defaults to zero, and the species identifier to a three letter identifier. For example, you might use `cod`, `sar`, or `fla` for cod, sardine, or flatfish. An example filename would therefore be `M1-sar.txt` or `lcomp2-fla.txt`. The case `D1` corresponds to the files `index1-spp.txt`, `agecomp1-spp.txt`, and `lcomp0-spp.txt`. The other case types have single argument files.
 
@@ -150,7 +155,7 @@ first line is `function_type; change_tv`.
 
 ## Bias adjustment
 
-Bias adjustment helps assure that the estimated log-normally distributed recruitment deviations are mean-unbiased leading to mean-unbiased estimates of biomass [@methot2011]. The high-level wrapper function `run_ss3sim` allows users to specify whether or not they would like to use the bias adjustment routine built into the package by setting the argument `bias_adjust` to `TRUE` or `FALSE`.
+Bias adjustment helps assure that the estimated log-normally distributed recruitment deviations are mean unbiased leading to mean-unbiased estimates of biomass [@methot2011]. The high-level wrapper function `run_ss3sim` allows users to specify whether or not they would like to use the bias adjustment routine built into the package by setting the argument `bias_adjust` to `TRUE` or `FALSE`.
 
 ## Output file structure
 
@@ -162,13 +167,13 @@ Internally, the function `copy_ss3models` creates a folder structure and copies 
       D0-E0-F0-M0-cod/2/em
       ...
 
-The integer values after the scenario ID represent different iterations; the total number of iterations run are specified by the user. If you are using bias adjustment then there will be some additional folders.
+The integer values after the scenario represent different iterations; the total number of iterations run are specified by the user. T here will be some additional folders if you are using bias adjustment.
 
-Note that the OM and EM folders will be renamed `om` and `em` within each iteration, the OM and EM are checked to make sure they contain the minimal files ([as listed above](#case-parsing)), the filenames will be all lowercase, the data file is renamed `ss3.dat`, the control files are renamed `om.ctl` or `em.ctl`, and the starter and control files are adjusted to reflect these new file names. The functions in this package assume you have set your working directory in R to be the base folder where you will store the scenario folders.
+Note that the supplied OM and EM folders will be renamed `om` and `em` within each iteration. The OM and EM are checked to make sure they contain the minimal files ([as listed above](#case-parsing)), the filenames are lowercase, the data file is named `ss3.dat`, the control files are named `om.ctl` or `em.ctl`, and the starter and control files are adjusted to reflect these file names. The functions in this package assume you have set your working directory in R to be the base folder where you will store the scenario folders.
 
 # An example simulation with ss3sim {#example}
 
-As an example, we will run a 2x2 simulation design in which we test (1) the effect of high and low precision on the index of abundance provided by the survey and (2) the effect of fixing versus estimating natural mortality (*M*). All of the required files for this example are contained within the ss3sim package. To start, we will locate three sets of folders: the folder with the plain-text case files, the folder with the OM, and the folder with the EM.
+As an example, we will run a 2x2 simulation design in which we test (1) the effect of high and low precision on the index of abundance provided by the survey and (2) the effect of fixing versus estimating natural mortality (*M*). All of the required files for this example are contained within the ss3sim package. See the folder `ss3sim/inst/extdata/eg-cases` inside the ss3sim source code for all the case files that are used in this example simulation. To start, we will locate the following three sets of folders: the folder with the plain-text case files, the folder with the OM, and the folder with the EM.
 
 ```{r, locate-folders}
 library(ss3sim)
@@ -178,11 +183,9 @@ om <- file.path(d, "models", "cod-om")
 em <- file.path(d, "models", "cod-em")
 ```
 
-See the folder `ss3sim/inst/extdata/eg-cases` inside the ss3sim source code for all the case files that are used in this example simulation. You can either download the [source code](https://github.com/ss3sim/ss3sim) or find the folder defined in the block of R code above this paragraph.
-
 ## Creating the case files
 
-We will base the simulation around the cod-like species in the papers @ono2014 and @johnson2014, both of which used the ss3sim package. You can refer to these papers for details on how the models were set up. If we were starting from scratch, we would run the function `create_argfiles()`, which would create a default set of configuration files in our R working directory. Instead we will start with the configuration files from those papers.
+We will base the simulation around the cod-like species in the papers @ono2014 and @johnson2014, both of which used the ss3sim package. If we were starting from scratch, we would run the function `create_argfiles()`, which would create a default set of configuration files in our R working directory. Instead we will start with the configuration files from those papers.
 
 To investigate the effect of different levels of precision on the survey index of abundance, we will manipulate the argument `sds_obs` that gets passed to `sample_index`. This argument ultimately refers to the standard error on the log(index) value, as defined in SS. In case 0, we will specify the standard deviation at 0.1 and in case 1 we will increase the standard deviation to 0.4. We can do this by including the line `sds_obs; 0.1` in the file `D0-cod.txt` and the line `sds_obs; 0.4` in the file `D1-cod.txt`. The file `index0-cod.txt` will therefore look like
 
@@ -239,7 +242,16 @@ run_ss3sim(iterations = 1, scenarios =
   em_dir = em)
 ```
 
-And then check the SS files that are created.
+And then check the SS files that are created. A quick test that can be helpful is visualizing the patterns of spawning stock biomass from the OM and the EM using r4ss.
+
+```{r, r4ss1iteration, eval=FALSE}
+r_om <- r4ss::SS_output(file.path("D0-E0-F0-M0-cod", "1", "om"),
+  verbose = FALSE, printstats = FALSE, covar = FALSE)
+r_em <- r4ss::SS_output(file.path("D0-E0-F0-M0-cod", "1", "em"),
+  verbose = FALSE, printstats = FALSE, covar = FALSE)
+r4ss::SSplotComparisons(r4ss::SSsummarize(list(r_om, r_em),
+  legendlabels = c("OM", "EM"), subplots = 1))
+```
 
 ## Self testing: deterministic simulations to check the models for bias {#deterministic}
 
@@ -247,10 +259,10 @@ Self testing is a crucial step of any simulation study.
 One way to accomplish this is to set up an EM that is similar to the OM
 and include minimal error.
 
-We will run some simulations to check our EM for bias when process and observation error are minimized. To do this, we will start by setting up a 100 row (number of years) by 20 column (number of iterations) matrix of recruitment deviations, where all values are set to zero.
+We will run some simulations to check our EM for bias when process and observation error are minimized. To do this, we will start by setting up a 200 row (number of years) by 20 column (number of iterations) matrix of recruitment deviations, where all values are set to zero.
 
 ```{r, }
-recdevs_det <- matrix(0, nrow = 100, ncol = 20)
+recdevs_det <- matrix(0, nrow = 200, ncol = 20)
 ```
 
 Then we will set up case “estimation” files in which the initialized values of the recruitment deviation standard deviations, `SR_sigmaR`, are set to the nominal level of `0.001`. We will name these files `E100-cod.txt` and `E101-cod.txt`. In the case files, the key element is setting `par_name = SR_sigmaR` (the SS parameter name) and `par_int = 0.001` (the initial value). The arguments `par_name` and `par_int` are set up to handle vectors of parameter names and values. In this example, changing `SR_sigmaR` will be the second parameter in the vector. Again, you can look at all the case files in the package folder `/inst/extdata/eg-cases/`. As an example, here is the file `E101-cod`
@@ -270,23 +282,23 @@ To minimize observation error on the survey index, we will create a data case 10
     years;   list(seq(60, 100, by = 2))
     sds_obs; list(0.001)
 
-When we run the simulations, we will pass our deterministic recruitment deviations to the function `run_ss3sim`. Running 20 iterations should be enough to identify whether our models are performing as we expect when `bias_adjust=TRUE`.
+When we run the simulations, we will pass our deterministic recruitment deviations to the function `run_ss3sim`. Running 10 iterations should be enough to identify whether our models are performing as we expect when `bias_adjust=TRUE`.
 
 ```{r, deterministic-runs, eval=FALSE}
-run_ss3sim(iterations = 1:20,
-  scenarios = c("D100-E100-F0-M0-cod", "D100-E101-F0-M0-cod"),
-  case_files = list(F = "F", D = c("index", "lcomp", "agecomp"),
-    E = "E", M = "M"),
+run_ss3sim(iterations = 1:10,
+  scenarios = c("D1-E100-F0-M0-cod", "D1-E101-F0-M0-cod"),
   case_folder = case_folder, om_dir = om, em_dir = em,
-  bias_adjust = TRUE, user_recdevs = recdevs_det)
+  bias_adjust = TRUE, user_recdevs = recdevs_det,
+  case_files = list(F = "F", D = c("index", "lcomp", "agecomp"),
+    E = "E", M = "M"))
 ```
 
-We have written out the scenario names in full for clarity, but ss3sim also contains a convenience function `expand_scenarios`. With this function we could instead write:
+We have written out the scenario names in full for clarity, but ss3sim also contains a convenience function `expand_scenarios`. With this function we could instead write
 
 ```{r, deterministic-runs-expand, eval=FALSE}
-x <- expand_scenarios(list(D = 100, E = 100:101, F = 0, M = 0),
+x <- expand_scenarios(list(D = 1, E = 100:101, F = 0, M = 0),
   species = "cod")
-run_ss3sim(iterations = 1:20, scenarios = x,
+run_ss3sim(iterations = 1:10, scenarios = x,
   case_folder = case_folder, om_dir = om, em_dir = em,
   bias_adjust = TRUE, user_recdevs = recdevs_det,
   case_files = list(F = "F", D = c("index", "lcomp", "agecomp"),
@@ -304,10 +316,10 @@ However, this is not a problem because ADMB is not used to optimize the OM, and 
 
 The package contains a set of normally-distributed recruitment deviations, with a mean of `-0.5` and a standard deviation of `1` (bias-corrected standard-normal deviations). To use the pre-specified deviations remove the argument `user_recdevs` from `run_ss3sim`. Then, process error will be unique for each iteration but consistent across scenarios for a specific iteration to facilitate comparison between scenarios.
 
-We will only run 100 iterations here to save time and keep the package size down, but in a real simulation testing study you may want to run many more iterations, perhaps testing how many iterations are required before the key results stabilize.
+We will only run 10 iterations here to save time and keep the package size down, but in a real simulation testing study you may want to run many more iterations, perhaps testing how many iterations are required before the key results stabilize. See `plot_cummean()` for visualizing the value of additional iterations, where the goal is to flatten the curve towards a relative erorr of zero with the addition of each iteration up to some uknown threshold number of iterations.
 
 ```{r, stochastic-runs, eval=FALSE}
-run_ss3sim(iterations = 1:100, scenarios =
+run_ss3sim(iterations = 1:10, scenarios =
   c("D0-E0-F0-M0-cod",
     "D1-E0-F0-M0-cod",
     "D0-E1-F0-M0-cod",
@@ -322,12 +334,17 @@ run_ss3sim(iterations = 1:100, scenarios =
 
 ### .csv files
 
-The function `get_results_all` reads in a set of scenarios and combines the output into the following two `.csv` files: `ss3sim_scalar.csv` and `ss3sim_ts.csv`. The `scalar` file contains values for which there is a single estimated value (e.g., MSY) and the `ts` file refers to values for which there are time series of estimates available (e.g., biomass for each year). 
+The function `get_results_all` reads in a set of scenarios and combines the output into `.csv` files, e.g., `ss3sim_scalar.csv` and `ss3sim_ts.csv`. The `scalar` file contains values for which there is a single estimated value (e.g., MSY) and the `ts` file refers to values for which there are time series of estimates available (e.g., biomass for each year).
+
+Column names in these files will not always be the same because they are dependent on OM and EM settings. For example, an EM with age-specific natural
+mortality will have multiple natural mortality parameters each with a different name. `get_results_all` can accomodate this by using the parameter name assigned by SS rather than attempting to standardize names.
+
+Originally, ss3sim provided the results using a wide-table format, with invidual columns for each OM and EM parameter along with some summary information for each scenario. In May of 2020 we changed to providing results using a long format. 
 
 ```{r, get-results, eval=FALSE}
-get_results_all(user_scenarios =
-  c("D100-E100-F0-M0-cod",
-    "D100-E101-F0-M0-cod",
+get_results_all(overwrite_files = TRUE, user_scenarios =
+  c("D1-E100-F0-M0-cod",
+    "D1-E101-F0-M0-cod",
     "D0-E0-F0-M0-cod",
     "D1-E0-F0-M0-cod",
     "D0-E1-F0-M0-cod",
@@ -376,31 +393,31 @@ scalar_dat_long <- reshape(scalar_dat_long, sep = " _",
 Use the long-data format to create a multi-panel plot with ggplot. 
 
 ```{r, relative-error-boxplots-det, fig.height=7, fig.width=5, fig.cap="Box plots of the relative error (RE) for deterministic runs. *M* is fixed at the true value from the OM (E100) or estimated (E101). The standard deviation on the survey index observation error is 0.001 (D100)."}
-p <- plot_scalar_boxplot(scalar_dat_long[
+p <- plot_boxplot(scalar_dat_long[
   scalar_dat_long$parameter %in% c("depletion", "SR_BH_steep", "SSB_MSY") &
   scalar_dat_long$E %in% c("E100", "E101"), ], 
   x = "D", y = "RE", re = FALSE,
   vert = "E", horiz = "parameter", print = FALSE)
 print(p)
-# see plot_scalar_points() for another plotting function
+# see plot_points() for another plotting function
 ```
 
 Let's look at the relative error in estimates of spawning biomass. We will colour the time series according to the maximum gradient. Small values of the maximum gradient (approximately 0.001 or less) indicate that model convergence is likely. Larger values (greater than 1) indicate that model convergence is unlikely. Results of individual iterations are jittered around the vertical axis to aid in visualization. The following three blocks of code produce Figures~\ref{fig:plot-sto-ts}, \ref{fig:ssb-ts-plots}, and \ref{fig:relative-error-boxplots-sto}.
 
 ```{r, plot-sto-ts, fig.height=5, fig.width=7, fig.cap="Time series of relative error in spawning stock biomass."}
-p <- plot_ts_lines(ts_dat_sto, y='SpawnBio_re', 
+p <- plot_lines(ts_dat_sto, y='SpawnBio_re', 
   vert = "E", horiz="D", print = FALSE, col = "max_grad")
 print(p)
 ```
 
 ```{r, ssb-ts-plots, fig.height=5, fig.width=7, cache=TRUE, fig.cap="Spawning stock biomass time series."}
-p <- plot_ts_lines(ts_dat_sto, y='SpawnBio_em', 
+p <- plot_lines(ts_dat_sto, y='SpawnBio_em', 
   vert = "E", horiz="D", print = FALSE, col = "max_grad")
 print(p)
 ```
 
 ```{r, relative-error-boxplots-sto, fig.height=7, fig.width=5, cache=TRUE, fig.cap="Box plots of relative error (RE) for stochastic runs. *M* is fixed at the true value from the OM (E0) or estimated (E1). The standard deviation on the survey index observation error is 0.4 (D1) or 0.1 (D0), representing an increase in survey sampling effort."}
-p <- plot_scalar_boxplot(scalar_dat_long[
+p <- plot_boxplot(scalar_dat_long[
   scalar_dat_long$parameter %in% c("depletion", "SR_BH_steep", "SSB_MSY") &
   scalar_dat_long$E %in% c("E0", "E1"), ], 
   x = "D", y = "RE", re = FALSE, 

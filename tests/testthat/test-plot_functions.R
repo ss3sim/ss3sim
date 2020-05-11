@@ -25,6 +25,6 @@ test_that("plot_cummean works", {
   expect_true(length(obj2) == 2)
   expect_s3_class(obj2$plot, "ggplot")
   expect_s3_class(obj2$data, "data.frame")
-  expect_true(all(colnames(obj2$data) == c("iteration","VonBert_K_Fem_GP_1",
-                                           "cummean")))
+  expect_true(all(c("iteration","VonBert_K_Fem_GP_1", "cummean") %in% 
+    colnames(obj2$data)))
 })

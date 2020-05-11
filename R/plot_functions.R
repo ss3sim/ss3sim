@@ -1,302 +1,13 @@
-#' Plot scalar values as points.
+#' Helper function for building a ggplot facet
 #'
-#' @template plot-functions
-#' @export
-#' @import ggplot2
-#' @template plot-functions-x
-#' @template plot-functions-color
-#' @examples
-#' data("scalar_dat", package = "ss3sim")
-#' re <- calculate_re(scalar_dat)
-#' \dontrun{
-#' plot_scalar_points(re, x = "E", y = "depletion_re", horiz = 'D',
-#'   color = "max_grad", relative.error = TRUE)
-#' }
-plot_scalar_points <- function(data, x, y, horiz=NULL, horiz2=NULL, vert=NULL,
-  vert2=NULL, color=NULL, relative.error=FALSE, axes.free=TRUE, print=TRUE) {
-    ## Verify the inputs are correct, throws informative error if not
-    verify_plot_arguments(data = data, x = x, y = y, horiz = horiz,
-      horiz2 = horiz2, vert = vert, vert2 = vert2, color = color,
-      relative.error = relative.error, axes.free = axes.free, print = print)
-    ## Build up the ggplot object
-    g <- ggplot(data=data)
-    if(relative.error){
-        g <- g+coord_cartesian(ylim=c(-1,1))+
-          ylab(paste("relative error for:", gsub("_re", "", y)))
-        g <- g+geom_hline(yintercept=0, col="red")
-    }
-    ## Use helper function to build formula for facet_grid
-    form <- facet_form(horiz, horiz2, vert, vert2)
-    if(is.null(color)){
-        g <- g+geom_jitter(aes_string(x=x, y=y), size=1,
-                           position=position_jitter(height=0))
-    } else {
-        g <- g+geom_jitter(aes_string(x=x, y=y, color=color), size=1,
-                           position=position_jitter(height=0)) +
-                               scale_color_gradient(low="black", high="red")
-    }
-    if(!is.null(form))
-        g <- g+facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))
-    ## Print and return the plot object
-    if(print) print(g)
-    return(invisible(g))
-}
-#' Print scalar values as boxplots.
+#' Used internally by the plotting functions to create faceting formulas.
 #'
-#' @template plot-functions
-#' @export
-#' @import ggplot2
-#' @template plot-functions-x
-#' @param fill A string. Color for filling the boxplots
-#' @examples
-#' data("scalar_dat", package = "ss3sim")
-#' re <- calculate_re(scalar_dat)
-#' \dontrun{
-#' plot_scalar_boxplot(re, x = "E", y = "depletion_re", horiz = "D",
-#'   relative.error = TRUE)
-#' }
-plot_scalar_boxplot <- function(data, x, y, horiz=NULL, horiz2=NULL,
-  vert=NULL, vert2=NULL, fill = NA, relative.error=FALSE, axes.free=TRUE, print=TRUE) {
-    ## Verify the inputs are correct, throws informative error if not
-    verify_plot_arguments(data = data, x = x, y = y, horiz = horiz,
-      horiz2 = horiz2, vert = vert, vert2 = vert2, color = NULL,
-      relative.error = relative.error, axes.free = axes.free, print = print)
-    ## Build up the ggplot object
-    g <- ggplot(data=data)
-    if(relative.error){
-        g <- g+coord_cartesian(ylim=c(-1,1))+
-          ylab(paste("relative error for:", gsub("_re", "", y)))
-        g <- g+geom_hline(yintercept=0, col="red")
-    }
-    ## Use helper function to build formula for facet_grid
-    form <- facet_form(horiz, horiz2, vert, vert2)
-    g <- g+geom_boxplot(aes_string(x=x,y=y), fill = fill, size=.2,
-                        outlier.size=1, outlier.colour=rgb(0,0,0,.5))
-    if(!is.null(form))
-        g <- g + facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))
-        if(print) print(g)
-    return(invisible(g))
-}
-#' Plot timeseries values as boxplots.
-#'
-#' @template plot-functions
-#' @param fill A string. Color for filling the boxplots
-#' @export
-#' @import ggplot2
-#' @examples
-#' data("scalar_dat", "ts_dat", package = "ss3sim")
-#' # Merge in max_grad, a performance metric, to use for color
-#' re <- merge(by = "ID",
-#'   calculate_re(ts_dat, add = FALSE),
-#'   calculate_re(scalar_dat, add = FALSE)[, c("ID", "max_grad")])
-#' \dontrun{
-#' plot_ts_boxplot(re, y = "SpawnBio_re", horiz = "D", vert = "E",
-#'   relative.error = TRUE)
-#' }
-plot_ts_boxplot <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
-                            fill = NA, vert2=NULL, relative.error=FALSE,
-                            axes.free=TRUE, print=TRUE) {
-    ## Verify the inputs are correct, throws informative error if not
-    verify_plot_arguments(data = data, x = NULL, y = y, horiz = horiz,
-      horiz2 = horiz2, vert = vert, vert2 = vert2, color = NULL,
-      relative.error = relative.error, axes.free = axes.free, print = print)
-    ## Build up the ggplot object
-    g <- ggplot(data=data, aes_string(x="year"))+ xlab("Year")
-    if(relative.error){
-        g <- g+coord_cartesian(ylim=c(-1,1))+
-          ylab(paste("relative error for:", gsub("_re", "", y)))
-        g <- g+geom_hline(yintercept=0, col="red")
-    }
-    ## Use helper function to build formula for facet_grid
-    form <- facet_form(horiz, horiz2, vert, vert2)
-    g <- g+geom_boxplot(aes_string(y=y,group="year"), fill = fill,
-                        outlier.colour=rgb(0,0,0,.3),  lwd=.3,
-                        outlier.size=.8, fatten=3)
-    if(!is.null(form))
-        g <- g+ facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))
-        if(print) print(g)
-    return(invisible(g))
-}
-#' Plot timeseries values as points.
-#'
-#' @template plot-functions
-#' @export
-#' @import ggplot2
-#' @template plot-functions-color
-#' @examples
-#' data("scalar_dat", "ts_dat", package = "ss3sim")
-#' # Merge in max_grad, a performance metric, to use for color
-#' re <- merge(by = "ID",
-#'   calculate_re(ts_dat, add = FALSE),
-#'   calculate_re(scalar_dat, add = FALSE)[, c("ID", "max_grad")])
-#' \dontrun{
-#' plot_ts_points(re, y = "SpawnBio_re", horiz = "D", vert = "E",
-#'   relative.error = TRUE, color = "max_grad")
-#' }
-plot_ts_points <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
-  vert2=NULL, relative.error=FALSE, color=NULL, axes.free=TRUE, print=TRUE) {
-    ## Verify the inputs are correct, throws informative error if not
-    verify_plot_arguments(data = data, x = NULL, y = y, horiz = horiz,
-      horiz2 = horiz2, vert = vert, vert2 = vert2, color = color,
-      relative.error = relative.error, axes.free = axes.free, print = print)
-    ## Build up the ggplot object
-    g <- ggplot(data=data, aes_string(x="year"))+ xlab("Year")
-    if(relative.error){
-        g <- g+coord_cartesian(ylim=c(-1,1))+
-          ylab(paste("relative error for:", gsub("_re", "", y)))
-        g <- g+geom_hline(yintercept=0, col="red")
-    }
-    form <- facet_form(horiz, horiz2, vert, vert2)
-    if(is.null(color)){
-        g <- g+geom_jitter(aes_string(y=y,group="year"),
-                           alpha=.5, size=1, position=position_jitter(height=0))+
-                  facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))
-
-    } else {
-        g <- g+geom_jitter(aes_string(y=y,group="year", colour=color),
-                           alpha=.5, size=1,
-                           position=position_jitter(height=0)) +
-               facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))+
-                   scale_color_gradient(low="black", high="red")
-    }
-        if(print) print(g)
-    return(invisible(g))
-}
-#' Plot timeseries values as lines.
-#'
-#' @template plot-functions
-#' @export
-#' @import ggplot2
-#' @template plot-functions-color
-#' @examples
-#' data("scalar_dat", "ts_dat", package = "ss3sim")
-#' # Merge in max_grad, a performance metric, to use for color
-#' re <- merge(by = "ID",
-#'   calculate_re(ts_dat, add = FALSE),
-#'   calculate_re(scalar_dat, add = FALSE)[, c("ID", "max_grad")])
-#' \dontrun{
-#' plot_ts_lines(re, y = "SpawnBio_re", horiz = "D", vert = "E",
-#'   relative.error = TRUE, color = "max_grad")
-#' }
-plot_ts_lines <- function(data, y, horiz=NULL, horiz2=NULL, vert=NULL,
-  vert2=NULL, relative.error=FALSE, color=NULL, axes.free=TRUE, print=TRUE) {
-    ## Verify the inputs are correct, throws informative error if not
-    verify_plot_arguments(data = data, x = NULL, y = y, horiz = horiz,
-      horiz2 = horiz2, vert = vert, vert2 = vert2, color = color,
-      relative.error = relative.error, axes.free = axes.free, print = print)
-    ## Build up the ggplot object
-    g <- ggplot(data=data, aes_string(x="year"))+ xlab("Year")
-    if(relative.error){
-        g <- g+coord_cartesian(ylim=c(-1,1))+ylab(paste("relative error for:", y))
-        g <- g+geom_hline(yintercept=0, col="red")
-    }
-    ## Use helper function to build formula for facet_grid
-    form <- facet_form(horiz, horiz2, vert, vert2)
-    if(is.null(color)){
-        g <- g+geom_line(aes_string(y=y,group="ID"), alpha=.5, lwd=.5)+
-                  facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))
-
-    } else {
-        g <- g+geom_line(aes_string(y=y,group="ID", color=color), alpha=.5, lwd=.5)+
-                  facet_grid(form, scales=ifelse(axes.free, "free", "fixed"))+
-                   scale_color_gradient(low="black", high="red")
-    }
-    if(print) print(g)
-    return(invisible(g))
-}
-
-
-#' Make a cumulative mean plot for a parameter
-#'
-#' @param data A valid data frame containing scalar or timeseries values
-#'  from a \pkg{ss3sim} simulation. That data are generated from
-#'  \code{\link{get_results_all}}.
-#' @param var The column name of the parameter in data of which to plot
-#'  cumulative mean. A string.
-#' @param order_var A column to order the data before calculating the cumulative
-#'  mean
-#' @param group A column in data to group the data together before calculating
-#'  the cumulative mean
-#' @param use_facet Should the group be used to create facets? If TRUE, facets
-#'  are created; If FALSE, grouping will be done by making different color lines
-#'  in the same plot.
-#' @export
-#' @import ggplot2
-#' @return A list containing the ggplot object and the data used to make it
-#' @examples
-#' data("scalar_dat", package = "ss3sim")
-#' obj <- plot_cummean(scalar_dat[scalar_dat$model_run == "em", ],
-#'                     "VonBert_K_Fem_GP_1",
-#'                     group = "scenario",
-#'                     use_facet = TRUE)
-#' # obj$plot
-#' # obj$data
-#' # group can also be left NULL if only plotting a single scenario.
-#' # it is recommended to set use_facet FALSE in this case.
-#' obj2 <- plot_cummean(scalar_dat[
-#'   scalar_dat$scenario == unique(scalar_dat$scenario)[1] &
-#'   scalar_dat$model_run == "em", ],
-#'                      var = "VonBert_K_Fem_GP_1",
-#'                      group = NULL,
-#'                      use_facet = FALSE)
-#' # obj2$plot
-#' # obj2$data
-#'
-plot_cummean <- function(data, var, order_var = "iteration", group = NULL,
-                         use_facet = FALSE) {
-  # Manipulate the data
-  data <- data[, c(order_var, group, var)] # select cols
-  data <- data[order(data[, order_var]), ]   # arrange
-  # group and calculate cumsum
-  if(!is.null(group)){
-  group_vals <- unique(data[, group])
-  } else {
-    group <- "dummy_val"
-    data$dummy_val <- rep("group", times = nrow(data))
-    group_vals <- "group"
-  }
-  #TODO: need to make sure this works with no grouping variable.
-  data_list <- lapply(group_vals, function(val, data, group, var) {
-                  tmp_dat <- data[data[, group] == val, ]
-                  cum_mean_col <- cumsum(tmp_dat[, var])/seq_along(tmp_dat[,var])
-                  tmp_dat$cummean <- cum_mean_col
-                  tmp_dat
-  }, data = data, group = group, var = var)
-  new_data <- do.call("rbind", data_list)
-  if(group == "dummy_val") {
-    new_data <-  new_data[,(colnames(new_data) != "dummy_val")]
-    group <- NULL
-  }
-  g <- ggplot(data = new_data, aes_string(x = order_var, y = "cummean"))
-  if(use_facet) {
-    g <- g +
-           geom_line() +
-           geom_point() +
-           facet_wrap(group)
-  } else {
-    g <- g +
-           geom_line(aes_string(color = group))+
-           geom_point(aes_string(color = group))
-  }
-  return_list <- list(plot = g, data = new_data)
-}
-
-#' A helper function for building a ggplot facet. Used internally by the
-#' plotting functions.
-#'
-#' @param horiz,horiz2 A character string denoting which column to use as
-#' the first (\code{horiz}) and second (\code{horiz2}) level of faceting in
-#' the horizontal direction. E.g. "M" or "species". A value of NULL (default)
-#' indicates no faceting.
-#' @param vert,vert2 A character string denoting which column to use as
-#' the first (\code{vert}) and second (\code{vert2}) level of faceting in
-#' the vertical direction. E.g. "M" or "species". A value of NULL (default)
-#' indicates no faceting.
+#' @inheritParams plot_ss3sim
 #' @author Cole Monnahan
-#' @return A formula which can be used in \code{facet_grid}, or NULL if all
-#' arguments are NULL
-
-facet_form <- function(horiz=NULL, horiz2=NULL, vert=NULL, vert2=NULL) {
+#' @return A formula which can be used in \code{facet_grid} or \code{NULL}
+#' if all arguments are \code{NULL}.
+#'
+facet_form <- function(horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL) {
     h <- !is.null(horiz)
     h2 <- !is.null(horiz2)
     v <- !is.null(vert)
@@ -335,12 +46,14 @@ facet_form <- function(horiz=NULL, horiz2=NULL, vert=NULL, vert2=NULL) {
     return(form)
 }
 
-#' A helper function to check the correct input for the plotting functions.
+#' Helper function for ensuring correct input for the plotting functions
+#'
+#' Used internally by the plotting functions to check that the arguments are
+#' structured appropriately.
 #'
 #' @template plot-functions
 #' @template plot-functions-color
-#' @template plot-functions-x
-#' @return Nothing is returned; an informative error is throw if an
+#' @return Nothing is returned; an informative error is thrown if an
 #' argument is invalid.
 verify_plot_arguments <- function(data, x, y, horiz, horiz2, vert, vert2,
   color, relative.error, axes.free, print) {
@@ -348,12 +61,8 @@ verify_plot_arguments <- function(data, x, y, horiz, horiz2, vert, vert2,
         stop("data must be data.frame")
     else if(nrow(data)<2)
         stop("data has too few rows")
-    ## x is a special case since the timeseries objects don't let the user
-    ## specify it
-    if(!is.null(x)){
-        if(!is.character(x) | !x %in% names(data))
-            stop("x must be character matching column in data")
-    }
+    if(!is.character(x) | !x %in% names(data))
+       stop("x must be character matching column in data")
     if(!is.character(y) | !y %in% names(data))
         stop("y must be character matching column in data")
     if(!is.null(horiz)){
