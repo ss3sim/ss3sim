@@ -366,7 +366,6 @@ data("ts_dat", package = "ss3sim")
   * calculate the relative error (RE)
   * get gradient information from the scalar information and merge it into the time-series data frame
   * separate the deterministic from the stochastic simulation runs
-  * format the results using a long data frame
 
 ```{r, transform-output}
 scalar_dat <- calculate_re(scalar_dat, add = TRUE)
@@ -392,9 +391,9 @@ scalar_dat_long <- reshape(scalar_dat_long, sep = " _",
 
 Use the long-data format to create a multi-panel plot with ggplot. 
 
-```{r, relative-error-boxplots-det, fig.height=7, fig.width=5, fig.cap="Box plots of the relative error (RE) for deterministic runs. *M* is fixed at the true value from the OM (E100) or estimated (E101). The standard deviation on the survey index observation error is 0.001 (D100)."}
+```{r, relative-error-boxplots-det, fig.height=7, fig.width=5, fig.cap="Box plots of the relative error (RE) for deterministic runs. *M* is fixed at the true value from the OM (E100) or estimated (E101)."}
 p <- plot_boxplot(scalar_dat_long[
-  scalar_dat_long$parameter %in% c("depletion", "SR_BH_steep", "SSB_MSY") &
+  scalar_dat_long$parameter %in% c("depletion", "SSB_MSY") &
   scalar_dat_long$E %in% c("E100", "E101"), ], 
   x = "D", y = "RE", re = FALSE,
   vert = "E", horiz = "parameter", print = FALSE)
@@ -418,7 +417,7 @@ print(p)
 
 ```{r, relative-error-boxplots-sto, fig.height=7, fig.width=5, cache=TRUE, fig.cap="Box plots of relative error (RE) for stochastic runs. *M* is fixed at the true value from the OM (E0) or estimated (E1). The standard deviation on the survey index observation error is 0.4 (D1) or 0.1 (D0), representing an increase in survey sampling effort."}
 p <- plot_boxplot(scalar_dat_long[
-  scalar_dat_long$parameter %in% c("depletion", "SR_BH_steep", "SSB_MSY") &
+  scalar_dat_long$parameter %in% c("depletion", "SSB_MSY") &
   scalar_dat_long$E %in% c("E0", "E1"), ], 
   x = "D", y = "RE", re = FALSE, 
   vert = "E", horiz = "parameter", print = FALSE)
@@ -452,7 +451,7 @@ d <- system.file("extdata", package = "ss3sim")
 om <- paste0(d, "/models/cod-om")
 em <- paste0(d, "/models/cod-em")
 
-F0 <- list(years = 1:100, years_alter = 1:100, fvals =
+F0 <- list(years = 1:100, fisheries = 1, fvals =
   c(rep(0, 25), rep(0.114, 75)))
 
 index1 <- list(fleets = 2, years = list(seq(60, 100, by = 2)),
@@ -466,14 +465,12 @@ agecomp1 <- list(fleets = c(1, 2), Nsamp = list(100, 100), years =
   list(25:100, seq(60, 100, by = 2)), agebin_vector = NULL,
   cpar = c(1, 1))
 
-E0 <- list(natM_type = "1Parm", natM_n_breakpoints = NULL,
-  natM_lorenzen = NULL, natM_val = c(NA,-1), par_name =
-  "LnQ_base_3_CPUE", par_int = NA, par_phase = -1, forecast_num = 0)
+E0 <- list(par_name = c("NatM_p_1_Fem_GP_1", "LnQ_base_Fishery(1)"),
+  par_int = c(NA, NA), par_phase = c(-1, -1), forecast_num = 0)
 
 M0 <- list(NatM_p_1_Fem_GP_1 = rep(0, 100))
 
-# todo: add data_params so that this function runs.
-ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-M0-cod",
+ss3sim_base(iterations = 1, scenarios = "D1-E0-F0-M0-cod",
   f_params = F0, index_params = index1, lcomp_params = lcomp1,
   agecomp_params = agecomp1, estim_params = E0, tv_params = M0,
   om_dir = om, em_dir = em)
@@ -481,7 +478,7 @@ ss3sim_base(iterations = 1:20, scenarios = "D1-E0-F0-M0-cod",
 
 # Scenarios, combinations of case IDs
 
-You do not need to stick with the scenario ID scheme laid out by default in ss3sim. You are free to choose your own scheme by adjusting the list of values passed to the `case_files` argument in `run_ss3sim()`. Below is an example where we"ll specify the arguments to the sampling functions via their own case files. We"ll arbitrarily call these cases X, Y, and Z. We will start by copying over some case arguments built into the package. We will copy what was called `index0-cod.txt`, `lcomp0-cod.txt`, and `agecomp0-cod.txt` into `X-cod.txt`, `Y-cod.txt`, and `Z-cod.txt`. Then we’ll set up our custom `case_files` list and call `run_ss3sim()`
+You do not need to stick with the scenario ID scheme laid out by default in ss3sim. You are free to choose your own scheme by adjusting the list of values passed to the `case_files` argument in `run_ss3sim()`. Below is an example where we will specify the arguments to the sampling functions via their own case files. We will arbitrarily call these cases X, Y, and Z. We will start by copying over some case arguments built into the package. We will copy what was called `index0-cod.txt`, `lcomp0-cod.txt`, and `agecomp0-cod.txt` into `X-cod.txt`, `Y-cod.txt`, and `Z-cod.txt`. Then we will set up our custom `case_files` list and call `run_ss3sim()`
 
 ```{r, alternative-case-lists, eval=FALSE}
 case_folder <- system.file("extdata", "eg-cases", package = "ss3sim")
@@ -755,12 +752,12 @@ run_ss3sim(iterations = 1:2, scenarios = "D0-F0-cod",
   parallel = TRUE, parallel_iterations = TRUE)
 ```
 
-If you are running bias adjustment iterations, these will be run first in serial. The rest of the iterations will be run in parallel
+If you are running bias adjustment iterations
 
 ```{r, parallel-iterations2, eval=FALSE}
 run_ss3sim(iterations = 1:2, scenarios = "D0-F0-cod",
   case_folder = case_folder, om_dir = om, em_dir = em,
-  parallel = TRUE, parallel_iterations = TRUE, bias_nsim = 2,
+  parallel = TRUE, parallel_iterations = TRUE,
   bias_adjust = TRUE)
 ```
 
