@@ -3,8 +3,20 @@
 \docType{data}
 \name{ts_dat}
 \alias{ts_dat}
-\title{Example time series data from the ss3sim vignette}
+\title{Example time-series data from the Introduction vignette}
 \description{
-Example time series data from the ss3sim vignette
+An R object read in using \code{read.csv("ss3sim_ts.csv")} after
+processing the results from the Introduction vignette
+using \code{get_results_all()}. The data set is available
+so users do not have to wait for the scenarios to run.
+}
+\examples{
+data("ts_dat", package = "ss3sim")
+
+\dontshow{
+testthat::expect_true("year" \%in\% colnames(ts_dat),
+  label = "the column 'year' of the time-series data set")
+}
+
 }
 \keyword{data}
