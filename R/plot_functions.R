@@ -85,7 +85,7 @@ verify_plot_arguments <- function(data, x, y, horiz, horiz2, vert, vert2,
         if(!is.character(color) | !color %in% names(data))
             stop("color must be character matching column in data")
     }
-    stopifnot(is.logical(relative.error))
+    stopifnot(!is.na(relative.error))
     stopifnot(is.logical(axes.free))
     stopifnot(is.logical(print))
     ## No need to return anything, throws an error if something wrong

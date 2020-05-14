@@ -27,10 +27,11 @@ plot_ss3sim <- function(data, x, y, color = NULL,
   if (x == "year") {
     g <- g + ggplot2::aes(group = .data[["year"]])
   }
-  if (relative.error) {
+  if (relative.error != FALSE) {
+    if (relative.error == TRUE) relative.error <- "black"
     g <- g + ggplot2::coord_cartesian(ylim = c(-1, 1)) +
       ggplot2::ylab(paste("Relative error for:", gsub("_re", "", y))) +
-      ggplot2::geom_hline(yintercept = 0, col = "red")
+      ggplot2::geom_hline(yintercept = 0, col = relative.error, lty = 2)
   }
   form <- facet_form(horiz, horiz2, vert, vert2)
   if (!is.null(form)) {
