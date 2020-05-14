@@ -18,11 +18,10 @@ plot_lines <- function(data, x = "year", y,
   horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL,
   relative.error = FALSE, color = NULL, axes.free = TRUE, print = TRUE) {
 
-  g <- plot_ss3sim(data = data, x = "year", y = y,
+  g <- plot_ss3sim(data = data, x = "year", y = y, color = color,
     relative.error = relative.error, axes.free = axes.free,
     horiz = horiz, horiz2 = horiz2, vert = vert, vert2 = vert2)
-  g <- g + ggplot2::geom_line(ggplot2::aes(group = .data[["ID"]], 
-    color = .data[[color]]),
+  g <- g + ggplot2::geom_line(ggplot2::aes(group = .data[["ID"]]),
     alpha = 0.5, lwd = 0.5) +
     ggplot2::scale_color_gradient(low = "black", high = "red")
   if(print) print(g)
