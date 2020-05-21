@@ -246,13 +246,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                       ctl_file_in  = file.path(sc, i, "om", "om.ctl"),
                       ctl_file_out = file.path(sc, i, "om", "om.ctl"))
 
-      f_params <- add_nulls(f_params, c("years", "fisheries", "fvals"))
-      with(f_params,
-        change_f(years               = years,
-                 fisheries           = fisheries,
-                 fvals               = fvals,
-                 ctl_file_in         = file.path(sc, i, "om", "om.ctl"),
-                 ctl_file_out        = file.path(sc, i, "om", "om.ctl")))
+      do.call(change_f, c(f_params,
+        ctl_file_in         = file.path(sc, i, "om", "om.ctl"),
+        ctl_file_out        = file.path(sc, i, "om", "om.ctl"))
+      )
 
       # Change the data structure in the OM to produce the expected
       # values we want. This sets up the 'dummy' bins before we run

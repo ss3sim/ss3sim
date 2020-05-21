@@ -42,7 +42,10 @@ indicates no faceting in the vertical space.}
 \item{relative.error}{Boolean for whether the y-axis scale should be
 interpreted as relative error. If \code{TRUE}, \code{ylim} is set to
 \code{c(-1, 1)}, the y-axis label is changed automatically, and a
-red, solid line at \code{y=0} is added.}
+black, dashed line at \code{y=0} is added. The argument can also accept a
+color entry if you wish the line to be something other than black. E.g.,
+\code{"red"} will add a red dashed line at zero as well as fix the y-axis
+limits.}
 
 \item{color}{A character string denoting which column to use to map
 color. Not valid for boxplot functions. Useful for looking at EM

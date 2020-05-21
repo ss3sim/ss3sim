@@ -1,78 +1,79 @@
-#' Change the data that is available as output from an SS operating model.
+#' Change the data that is available from a list object
 #'
-#' \code{change_data} alters the data structure for a data list as read in by
-#' \code{\link[r4ss]{SS_readdat}}, for use in preparing the data file for an SS
-#' operating model. Original data is removed and dummy data is added, as
-#' specified, to the SS \code{.dat} file. This causes SS to produce expected
-#' values (OM "truth") when the operating model is run, from which data can be
-#' sampled.  For each data type altered, \code{change_data} will add data for
-#' the fleets and years given; potentially adding many rows of redundant data.
-#' Currently, \code{.dat} files with multiple sexes cannot be manipulated with
-#' \code{change_data}. \code{\link{calculate_data_units}} is used internally in
-#' \code{\link{ss3sim_base}} to create a superset of fleets and years from
-#' sample arguments, and \code{\link{clean_data}} to strip out unused data after
-#' \code{change_data} is called (see examples below). \code{change_data} is
-#' called internally automatically, but can also be used by an \pkg{ss3sim} user
-#' to manipulate data as a case, or to prepare a new OM for use in a simulation.
-#' See the vignette for more details.
+#' Alter the structure of data that is available from a Stock Synthesis (SS)
+#' operating model (OM), which in turn leads to changes
+#' in the output and ability to sample data after running the model.
 #'
 #' @template dat_list
 #' @template outfile
-#' @param fleets A numeric vector of fleets
-#' @param years A numeric vector of years
+#' @param fleets A numeric vector of fleets.
+#' @param years A numeric vector of years.
 #' @param types A vector that can take combinations of the following entries:
 #'   \code{"index"}, \code{"len"}, \code{"age"}, \code{"cal"}, \code{"mla"}.
 #'   \code{types} controls what data structures the function acts on, with
-#'   \code{"index"} changing indices/CPUE, \code{"len"} augmenting the length
-#'   composition data, \code{"age"} augmenting the age composition, \code{"cal"}
-#'   augmenting the conditional age at length, and \code{"mla"} augmenting the
-#'   mean length at age data.
-#' @param age_bins *A numeric vector of age bins to use. If left as \code{NULL}
-#'   then the age bin structure will be taken from the OM.
+#'   \code{"index"} changing indices/CPUE, \code{"len"} augmenting the
+#'   length-composition data, \code{"age"} augmenting the age-composition
+#'   data, \code{"cal"} augmenting the conditional age-at-length (CAAL) data, and
+#'   \code{"mla"} augmenting the mean length-at-age data.
+#' @param age_bins *A numeric vector of age bins to use. If left as \code{NULL},
+#'   the age bin structure will be taken from the OM.
 #' @param len_bins *A numeric vector of length bins to use. If left as
-#'   \code{NULL} then the length bin structure will be taken from the OM.
-#'   For conditional age-at-length (CAAL) data, the last value provided to
+#'   \code{NULL}, the length bin structure will be taken from the OM.
+#'   For CAAL data, the last value provided to
 #'   \code{len_bins} will be used for Lbin_lo and -1 will be used for Lbin_hi
 #'   for the largest length bin category, i.e., row of CAAL data.
 #' @param pop_binwidth *Population length bin width. Note that this value must
-#'   be smaller than the bin width specified in length composition data
+#'   be smaller than the bin width specified in length-composition data
 #'   \code{len_bins} or SS will fail (see notes in the SS manual).
 #' @param pop_minimum_size *Population minimum length bin value.
 #' @param pop_maximum_size *Population maximum length bin value.
-#' @param lcomp_constant *A new robustification constant for length composition
-#'   data to be used. Must be a numeric value, as a proportion. For example 0.1
+#' @param lcomp_constant *The robustification constant for length-composition
+#'   data. Must be a numeric value, as a proportion. For example 0.1
 #'   means 10 percent. See the SS manual for further information. A \code{NULL}
 #'   value indicates no action resulting in using the current value, and a value
-#'   of 0 will throw an error since that leads to an error when zeroes exist in
+#'   of 0 will throw an error because zero leads to an error when zeroes exist in
 #'   the data. Instead use a very small value like \code{1e-07}.
-#' @param tail_compression *A new tail compression value to be used in SS. Must
+#' @param tail_compression *Tail compression value to be used in SS. Must
 #'   be a numeric value, as a proportion. For example 0.1 means 10 percent. See
 #'   the SS manual for further information. A \code{NULL} value indicates no
-#'   action, a negative value indicates to SS to ignore it (not use that
-#'   feature).
+#'   action, a negative value turns the feature off in SS.
 #' @template nsex
 #'
-#' @details The robustification constant is added to both the observed and
-#'   expected proportions of length composition data, before being normalized
-#'   internally. It is designed to help stabilize the model, but is unclear how
-#'   and when to use it for optimal effect. The same value is used for all
-#'   length data.
+#' @details
+#' \code{change_data} is called internally within ss3sim, but it can be used
+#' to manipulate data or to prepare a new OM for use in a simulation.
+#' Original data is removed and dummy data is added to the SS \code{.dat} object.
+#' The dummy data expands the data structure to provide information for all years
+#' and fleets, potentially adding many rows of data.
+#' Catches of zero are added for each fleet to allow for ss3sim
+#' to manipulate catches using the control file rather than the par file.
+#' Each year/fleet combination must exist,
+#' otherwise specified years in the control file will only
+#' be taken from the population for years that are non-zero in the data file.
+#'
+#' Currently, \code{.dat} files with multiple sexes cannot be manipulated with
+#' \code{change_data}.
+#'
+#' The robustification constant is added to both the observed and
+#' expected proportions of length composition data, before being normalized
+#' internally. It is designed to help stabilize the model, but is unclear how
+#' and when to use it for optimal effect. The same value is used for all
+#' length data.
 #'
 #' @return An invisible data list, and a file is written to the disk if an
-#' entry other than \code{NULL} is provided for \code{outfile}.
+#' entry other than the default of \code{NULL} is provided for \code{outfile}.
 #' @family change functions
 #'
 #' @template casefile-footnote
 #'
 #' @importFrom r4ss SS_readdat SS_writedat
 #' @export
-#' @seealso \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
+#' @seealso See \code{\link{clean_data}} for a counter function.
 #' @author Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
 #' fleets <- 1:2
 #' years <- c(5, 10, 15)
-#' types <- c("len", "age")
 #' file_in <- r4ss::SS_readdat(file.path(d, "models", "cod-om", "codOM.dat"),
 #'   version = NULL, verbose = FALSE)
 #'
@@ -95,7 +96,13 @@
 #' out$binwidth
 #' out$maximum_size
 #' out$minimum_size
-change_data <- function(dat_list, outfile = NULL, fleets, years, types,
+#'
+#' \dontshow{
+#' testthat::expect_true(NROW(out$catch) == length(fleets)*100+length(fleets))
+#' }
+#'
+change_data <- function(dat_list, outfile = NULL, fleets, years,
+  types = c("index","len", "age", "cal", "mla", "mwa"),
   age_bins = NULL, len_bins = NULL, pop_binwidth = NULL,
   pop_minimum_size = NULL, pop_maximum_size = NULL,
   lcomp_constant = NULL, tail_compression = NULL,
@@ -107,9 +114,7 @@ change_data <- function(dat_list, outfile = NULL, fleets, years, types,
 
   check_data(dat_list)
   ## Input checks:
-  types <- match.arg(types,
-    choices = c("index","len", "age", "cal", "mla", "mwa"),
-    several.ok = TRUE)
+  types <- match.arg(types, several.ok = TRUE)
   if ((!is.atomic(fleets)) | (!is.atomic(years))) {
     stop("fleets and years input both need to be numeric vectors")
   }
@@ -122,6 +127,12 @@ change_data <- function(dat_list, outfile = NULL, fleets, years, types,
 
   ## TODO: Need to do things like change age matrices?
   ## TODO: Change the data vectors if specified?
+
+  # catch data w/ equilibrium value for each fleet
+  dat_list[["catch"]] <- expand.grid(
+    year = c(-999, dat_list$styr:dat_list$endyr),
+    seas = 1, fleet = fleets, catch = 1, catch_se = 0.01)
+  dat_list[["catch"]][dat_list[["catch"]][, "year"] == -999, "catch"] <- 0
 
   # population bins:
   # change_pop_bin() deals with NULLs internally by not changing values:
