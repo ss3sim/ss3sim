@@ -26,8 +26,14 @@ change_e(
 \item{ctl_file_out}{A string providing the path to the output SS control file. If the value is \code{NULL}, the file will not be written to the disk.}
 
 \item{dat_list}{An SS data list object as read in from
-\code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
-you select option \code{section=2}.}
+\code{\link[r4ss]{SS_readdat}}.
+Be sure to correctly specify which section of the data file you want
+to work with when reading it in using the \code{section} argument.
+Where, \code{section = 1} reads in the input values used to run the model
+and \code{section = 2} reads in the expected values generated give all the
+input to the OM. \code{section = 3} is not used within ss3sim, but this
+section provides bootstrapped data sets that have been sampled internally
+within SS.}
 
 \item{for_file_in}{A string providing the path to the input SS
 \code{forecast.ss} file.}

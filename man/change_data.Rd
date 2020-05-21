@@ -2,14 +2,14 @@
 % Please edit documentation in R/change_data.r
 \name{change_data}
 \alias{change_data}
-\title{Change the data that is available as output from an SS operating model.}
+\title{Change the data that is available from a list object}
 \usage{
 change_data(
   dat_list,
   outfile = NULL,
   fleets,
   years,
-  types,
+  types = c("index", "len", "age", "cal", "mla", "mwa"),
   age_bins = NULL,
   len_bins = NULL,
   pop_binwidth = NULL,
@@ -22,8 +22,14 @@ change_data(
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
-\code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
-you select option \code{section=2}.}
+\code{\link[r4ss]{SS_readdat}}.
+Be sure to correctly specify which section of the data file you want
+to work with when reading it in using the \code{section} argument.
+Where, \code{section = 1} reads in the input values used to run the model
+and \code{section = 2} reads in the expected values generated give all the
+input to the OM. \code{section = 3} is not used within ss3sim, but this
+section provides bootstrapped data sets that have been sampled internally
+within SS.}
 
 \item{outfile}{A character string specifying the file name to use
 when writing the information to the disk. The string must include
@@ -31,47 +37,46 @@ the proper file extension. No file is written using the default value
 of \code{NULL}, which leads to increased speed because writing the 
 file takes time and computing resources.}
 
-\item{fleets}{A numeric vector of fleets}
+\item{fleets}{A numeric vector of fleets.}
 
-\item{years}{A numeric vector of years}
+\item{years}{A numeric vector of years.}
 
 \item{types}{A vector that can take combinations of the following entries:
 \code{"index"}, \code{"len"}, \code{"age"}, \code{"cal"}, \code{"mla"}.
 \code{types} controls what data structures the function acts on, with
-\code{"index"} changing indices/CPUE, \code{"len"} augmenting the length
-composition data, \code{"age"} augmenting the age composition, \code{"cal"}
-augmenting the conditional age at length, and \code{"mla"} augmenting the
-mean length at age data.}
+\code{"index"} changing indices/CPUE, \code{"len"} augmenting the
+length-composition data, \code{"age"} augmenting the age-composition
+data, \code{"cal"} augmenting the conditional age-at-length (CAAL) data, and
+\code{"mla"} augmenting the mean length-at-age data.}
 
-\item{age_bins}{*A numeric vector of age bins to use. If left as \code{NULL}
-then the age bin structure will be taken from the OM.}
+\item{age_bins}{*A numeric vector of age bins to use. If left as \code{NULL},
+the age bin structure will be taken from the OM.}
 
 \item{len_bins}{*A numeric vector of length bins to use. If left as
-\code{NULL} then the length bin structure will be taken from the OM.
-For conditional age-at-length (CAAL) data, the last value provided to
+\code{NULL}, the length bin structure will be taken from the OM.
+For CAAL data, the last value provided to
 \code{len_bins} will be used for Lbin_lo and -1 will be used for Lbin_hi
 for the largest length bin category, i.e., row of CAAL data.}
 
 \item{pop_binwidth}{*Population length bin width. Note that this value must
-be smaller than the bin width specified in length composition data
+be smaller than the bin width specified in length-composition data
 \code{len_bins} or SS will fail (see notes in the SS manual).}
 
 \item{pop_minimum_size}{*Population minimum length bin value.}
 
 \item{pop_maximum_size}{*Population maximum length bin value.}
 
-\item{lcomp_constant}{*A new robustification constant for length composition
-data to be used. Must be a numeric value, as a proportion. For example 0.1
+\item{lcomp_constant}{*The robustification constant for length-composition
+data. Must be a numeric value, as a proportion. For example 0.1
 means 10 percent. See the SS manual for further information. A \code{NULL}
 value indicates no action resulting in using the current value, and a value
-of 0 will throw an error since that leads to an error when zeroes exist in
+of 0 will throw an error because zero leads to an error when zeroes exist in
 the data. Instead use a very small value like \code{1e-07}.}
 
-\item{tail_compression}{*A new tail compression value to be used in SS. Must
+\item{tail_compression}{*Tail compression value to be used in SS. Must
 be a numeric value, as a proportion. For example 0.1 means 10 percent. See
 the SS manual for further information. A \code{NULL} value indicates no
-action, a negative value indicates to SS to ignore it (not use that
-feature).}
+action, a negative value turns the feature off in SS.}
 
 \item{nsex}{An integer value of 1 or 2 specifying the number of sexes in the
 model. If 1, then females are the only included sex. This information can be
@@ -80,31 +85,33 @@ data are structured.}
 }
 \value{
 An invisible data list, and a file is written to the disk if an
-entry other than \code{NULL} is provided for \code{outfile}.
+entry other than the default of \code{NULL} is provided for \code{outfile}.
 }
 \description{
-\code{change_data} alters the data structure for a data list as read in by
-\code{\link[r4ss]{SS_readdat}}, for use in preparing the data file for an SS
-operating model. Original data is removed and dummy data is added, as
-specified, to the SS \code{.dat} file. This causes SS to produce expected
-values (OM "truth") when the operating model is run, from which data can be
-sampled.  For each data type altered, \code{change_data} will add data for
-the fleets and years given; potentially adding many rows of redundant data.
-Currently, \code{.dat} files with multiple sexes cannot be manipulated with
-\code{change_data}. \code{\link{calculate_data_units}} is used internally in
-\code{\link{ss3sim_base}} to create a superset of fleets and years from
-sample arguments, and \code{\link{clean_data}} to strip out unused data after
-\code{change_data} is called (see examples below). \code{change_data} is
-called internally automatically, but can also be used by an \pkg{ss3sim} user
-to manipulate data as a case, or to prepare a new OM for use in a simulation.
-See the vignette for more details.
+Alter the structure of data that is available from a Stock Synthesis (SS)
+operating model (OM), which in turn leads to changes
+in the output and ability to sample data after running the model.
 }
 \details{
+\code{change_data} is called internally within ss3sim, but it can be used
+to manipulate data or to prepare a new OM for use in a simulation.
+Original data is removed and dummy data is added to the SS \code{.dat} object.
+The dummy data expands the data structure to provide information for all years
+and fleets, potentially adding many rows of data.
+Catches of zero are added for each fleet to allow for ss3sim
+to manipulate catches using the control file rather than the par file.
+Each year/fleet combination must exist,
+otherwise specified years in the control file will only
+be taken from the population for years that are non-zero in the data file.
+
+Currently, \code{.dat} files with multiple sexes cannot be manipulated with
+\code{change_data}.
+
 The robustification constant is added to both the observed and
-  expected proportions of length composition data, before being normalized
-  internally. It is designed to help stabilize the model, but is unclear how
-  and when to use it for optimal effect. The same value is used for all
-  length data.
+expected proportions of length composition data, before being normalized
+internally. It is designed to help stabilize the model, but is unclear how
+and when to use it for optimal effect. The same value is used for all
+length data.
 }
 \section{Which arguments to specifiy in case files}{
 
@@ -119,7 +126,6 @@ if specified.
 d <- system.file("extdata", package = "ss3sim")
 fleets <- 1:2
 years <- c(5, 10, 15)
-types <- c("len", "age")
 file_in <- r4ss::SS_readdat(file.path(d, "models", "cod-om", "codOM.dat"),
   version = NULL, verbose = FALSE)
 
@@ -142,9 +148,14 @@ out <- change_data(file_in, outfile = NULL, types = "len",
 out$binwidth
 out$maximum_size
 out$minimum_size
+
+\dontshow{
+testthat::expect_true(NROW(out$catch) == length(fleets)*100+length(fleets))
+}
+
 }
 \seealso{
-\code{\link{sample_lcomp}}, \code{\link{sample_agecomp}}
+See \code{\link{clean_data}} for a counter function.
 
 Other change functions: 
 \code{\link{change_em_binning}()},

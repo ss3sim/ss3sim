@@ -18,11 +18,10 @@ file.copy(file.path(em, "codEM.ctl"), "codEM.ctl", overwrite = TRUE)
 # set up input
 input <- list(years = 1:100,
               fvals = rep(c(0, 0.1052), times = c(25, 75)),
-              fisheries = 1)
+              fleets = 1, ctl_file_in = "codOM.ctl", ctl_file_out = NULL)
 
 test_that("change_f works with F val for each year", {
-  ctl <- change_f(input$years, input$fisheries, input$fvals, ctl_file_in = "codOM.ctl",
-             ctl_file_out = NULL)
+  ctl <- do.call("change_f", input)
   F_det_s_line <- 1 + max(grep(x = ctl,
     "overall start F value|Fleet Yr Seas F_value se phase \\(for detailed setup of F_Method"))
   F_det_e_line <- grep("Q_setup for fleets with cpue or survey data", ctl,
@@ -32,8 +31,7 @@ test_that("change_f works with F val for each year", {
 
 test_that("change_f works with a single F value", {
   input$fvals <- 0.1
-  ctl <- change_f(input$years, input$fisheries, input$fvals, ctl_file_in = "codOM.ctl",
-                  ctl_file_out = NULL)
+  ctl <- do.call("change_f", input)
   F_det_s_line <- 1 + max(grep(x = ctl,
     "overall start F value|Fleet Yr Seas F_value se phase \\(for detailed setup of F_Method"))
   F_det_e_line <- grep("Q_setup for fleets with cpue or survey data", ctl,
@@ -42,40 +40,24 @@ test_that("change_f works with a single F value", {
 })
 
 test_that("change_f gives expected error with invalid input", {
-input$fisheries <- c(1,2)
-expect_error(change_f(input$years,
-                      input$fisheries,
-                      input$fvals,
-                      ctl_file_in = "codOM.ctl",
-                      ctl_file_out = NULL),
-             "The length of variable(s) fisheries is/are invalid", fixed = TRUE)
- input$fisheries <- 1
+ input$fleets <- c(1,2)
+ expect_error(do.call("change_f", input))
+ input$fleets <- 1
  input$fvals <- c(0,0.1)
- expect_error(change_f(input$years,
-                       input$fisheries,
-                       input$fvals,
-                       ctl_file_in = "codOM.ctl",
-                       ctl_file_out = NULL),
-             "The length of variable(s) fvals is/are invalid", fixed = TRUE)
+ expect_error(do.call("change_f", input))
  input$fvals <- 0.1
  input$ses  <- c(0.05, 0.06, 0.07)
- expect_error(change_f(input$years,
-                       input$fisheries,
-                       input$fvals,
-                       ses = input$ses,
-                       ctl_file_in = "codOM.ctl",
-                       ctl_file_out = NULL),
-              "The length of variable(s) ses is/are invalid", fixed = TRUE)
+ expect_error(do.call("change_f", input))
+})
+
+test_that("change_f gives expected error with no Q_setup", {
 ctl <- readLines("codOM.ctl")
 mod_ctl <- ctl
 q_line <- grep("Q_setup", mod_ctl)
 mod_ctl[q_line] <- "#"
 writeLines(mod_ctl, "codOM_q_cmt_missing.ctl")
-expect_error(change_f(input$years,
-                      input$fisheries,
-                      input$fvals,
-                      ctl_file_in = "codOM_q_cmt_missing.ctl",
-                      ctl_file_out = NULL),
+input$ctl_file_in <- "codOM_q_cmt_missing.ctl"
+expect_error(do.call("change_f", input),
             "Q_setup was not found in the ctl_file_in")
 })
 
@@ -94,8 +76,8 @@ test_that("change_f provides correct output w/o detailed F setup", {
   det_e_line <- grep("initial_F_parms", mod_ctl)-1
   mod_ctl <- mod_ctl[-((det_s_line+1):det_e_line)]
   writeLines(mod_ctl, "codOM_no_det.ctl")
-  test_ctl <- change_f(input$years, input$fisheries, input$fvals,
-                       ctl_file_in = "codOM_no_det.ctl", ctl_file_out = NULL)
+  input$ctl_file_in <- "codOM_no_det.ctl"
+  test_ctl <- do.call("change_f", input)
   F_det_s_line <- 1 + max(grep(x = test_ctl,
     "overall start F value|Fleet Yr Seas F_value se phase \\(for detailed setup of F_Method"))
   F_det_e_line <- grep("Q_setup for fleets with cpue or survey data", test_ctl,
@@ -104,7 +86,35 @@ test_that("change_f provides correct output w/o detailed F setup", {
 })
 
 test_that("change_f provides error when F_method is 1 or 3 ", {
-  expect_error(change_f(input$years, input$fisheries, input$fvals,
-                   ctl_file_in = "codEM.ctl", ctl_file_out = NULL),
-               "change_F only works with F_method = 2")
+  input$ctl_file_in <- "codEM.ctl"
+  expect_error(do.call("change_f", input),
+    "change_F only works with F_method = 2")
+})
+
+test_that("change_f works with list-style inputs", {
+  inlist <- list(
+    years = list(1:10, 5:10), fvals = 0.2,
+    fleets = 3:4,
+    ctl_file_in = "codOM.ctl",
+    ctl_file_out = NULL
+  )
+  out <- do.call("change_f", inlist)
+  expect_equal(length(unlist(inlist$years)), type.convert(strsplit(
+    grep("overall start F value", out, value = TRUE), "\\s+")[[1]][3]))
+  expect_equal(length(unlist(inlist$years)), length(strsplit(
+    grep("[3-4] \\d+ 1 0.2", out, value = TRUE), "\\s+")))
+  expect_equal(length(unlist(inlist$years)), length(strsplit(
+    grep("\\d 0.005 1$", out, value = TRUE), "\\s+")),
+    label = "Default levels of fishing error and phase were changed.")
+  inlist$fvals <- list(rep(0.2, 10), rep(0.1, 6))
+  out <- do.call("change_f", inlist)
+  expect_equal(sum(unlist(inlist$fvals) == 0.2), length(strsplit(
+    grep("[3-4] \\d+ 1 0\\.2", out, value = TRUE), "\\s+")))
+  expect_equal(sum(unlist(inlist$fvals) == 0.1), length(strsplit(
+    grep("[3-4] \\d+ 1 0\\.1", out, value = TRUE), "\\s+")))
+  inlist$fleets <- 1
+  expect_error(do.call("change_f", inlist))
+  inlist$fleets <- 1:2
+  inlist$ses <- list(1:9, 5:10)
+  expect_error(do.call("change_f", inlist))
 })

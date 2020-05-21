@@ -2,10 +2,11 @@
 % Please edit documentation in R/change_f.r
 \name{change_f}
 \alias{change_f}
-\title{Alter fishing mortality (\emph{F}) using the SS control file}
+\title{Specify fishing mortality (\emph{F}) using the Stock Synthesis control file}
 \usage{
 change_f(
   years,
+  fleets,
   fisheries,
   fvals,
   seasons = 1,
@@ -15,27 +16,36 @@ change_f(
 )
 }
 \arguments{
-\item{years}{*Vector of integers that will map to each \code{fvals}
-specifying which year the fishing level pertains to.}
+\item{years}{*A list the same length as \code{fleets} giving the years as
+numeric vectors. If no fleet collected samples, keep the value to
+\code{years=NULL}.}
 
-\item{fisheries}{*Vector of integers that will map to each \code{fvals}
-specifying which fleet the fishing level pertains to.
-A single value will be repeated for every value in \code{years} or
-\code{length(years) == length(fisheries)} must be true.}
+\item{fleets}{*A vector of integers specifying which fleets to include.
+The order of the fleets pertains to the input order of other arguments.
+An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 
-\item{fvals}{*Vector of \emph{F} values to be entered into the
-SS control file. A single value will be repeated for every value in \code{years} or
-\code{length(years) == length(fvals)} must be true.}
+\item{fisheries}{A deprecated argument that was replaced by \code{fleets} to
+match the style of other ss3sim functions. Currently, it can still be used
+to allow for back compatability with the specification of which fleet the
+fishing mortality pertains to. A vector the same lengths as \code{years}
+or a single integer value is acceptable.}
 
-\item{seasons}{Vector of seasons to be entered into the
-SS control file. A single value will be repeated for every value in \code{years} or
-\code{length(years) == length(ses)} must be true.
-The default is 1, which will be applied to all fisheries in all years.}
+\item{fvals}{*A list of the same length as \code{fleets} with one
+entry per fishing mortality level (\emph{F}) entry in \code{years}.
+A single value will be repeated for every value in \code{years}. If more than
+one fleet is present, then the single value will be used for all fleets, i.e.,
+there is no way to map a single value to each year specific to the given fleet.
+Instead you would need to provide a list of vectors of repeated values.}
 
-\item{ses}{Vector of fishing level standard errors (ses) to be entered into the
-SS control file. A single value will be repeated for every value in \code{years} or
-\code{length(years) == length(ses)} must be true.
-The default is 0.005, which will be applied to all fisheries in all years.}
+\item{seasons}{A list of seasons to be entered into the
+SS control file for each fleet.
+The structure is the same as \code{fvals}, i.e., a list or a scalar.
+The default is 1, which will be applied to all fleets in all years.}
+
+\item{ses}{A list of fishing level standard errors (ses) to be entered into the
+SS control file for each fleet.
+The structure is the same as \code{fvals}, i.e., a list or a scalar.
+The default is 0.005, which will be applied to all fleets in all years.}
 
 \item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
 
@@ -45,26 +55,42 @@ The default is 0.005, which will be applied to all fisheries in all years.}
 Modified SS control file.
 }
 \description{
-Alter fishing mortality (\emph{F}) for a Stock Synthesis simulation
-via changes to the control file. The argument \code{years} is the only
-argument that must be a vector, where other vectors, e.g., \code{fisheries},
-will be repeated if a single value is provided.
+Replace or input fishing mortality (\emph{F}) for a Stock Synthesis (SS)
+simulation via changes to the control file. \emph{F} for multiple fleets
+and or seasons can be specified using list structures. If fishing only
+occurrs within a single fleet, then vector inputs are acceptable.
 }
 \details{
-Using the control file depends on
-(1) the starter file is set up to read parameters from the control file
-rather than the par file and
-(2) the data file having a dummy catch entry for every year, fishery
-combination that will be specified in the control file.
-\emph{F} values currently in the control file will be removed and
-the newly specified values will replace them.
-Users do not need to specify values for years in which there
-will be zero fishing because SS will be parameterized to assume
-no fishing in missing years.
+The argument \code{years} is the only argument that must be a vector
+or a list of vectors. Other arguments can be specified using a single
+scalar value that will be repeated for all fisheries in all years.
+If the input argument needs to be different for any year or fishery, the
+argument must be a list with vectors for each fishery, where each vector
+is the same length as the vectors within the \code{years} argument. Although,
+both the \code{years} and other input arguments can be specified using a single
+vector if the length of {\code{fleets}} is just one or a vector of values
+is specified for fleets because all of these vectors will just be combined
+into a single data frame. Where it gets complicated is when there are
+mutliple fleet and year combinations, then it is best to just use the list
+structure common to other functions within \pkg{ss3sim}.
 
-The control file is currently read in using \code{readLines} but will
-eventually shift to using code specific to Stock Synthesis to alter
-a structured list.
+\code{change_f} overrides any \emph{F} values that are in the supplied
+control file with the newly specified values, i.e., \code{fvals}.
+Users do not need to specify values for years in which there
+will be zero fishing because SS will automatically set them to zero when
+running the operating model.
+Using the control file rather than the par file to manipulate the
+operating model requires a few other files within the operating
+model folder to be set up in a particular manner. That is,
+(1) the starter file must be set up to read parameters from the control file
+rather than the par file and
+(2) the data file must have a dummy catch entry for every year, fishery
+combination that will be specified in the control file. If a year, fishery
+combination is specified in the control file and not present in the data file,
+then the entry in the control file will be ignored. ss3sim automatically corrects
+for this using \code{\link{change_data}} within \code{\link{ss3sim_base}} by
+specifying a row for every year and fleet combination possible.
+
 If used with \code{\link{run_ss3sim}}, the case file should be named
 \code{F}. A suggested (default) case letter is \code{F}.
 }
@@ -79,9 +105,17 @@ if specified.
 
 \examples{
 d <- system.file(file.path("extdata", "models"), package = "ss3sim")
-change_f(years = 1:50, fisheries = 1, fvals = 0.2,
+# Using original vector-style inputs
+change_f(years = 1:50, fleets = 1, fvals = 0.2,
   ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
   ctl_file_out = file.path(tempdir(), "control_fishing.ss"))
+# Using list-style inputs for when there are multiple fisheries
+change_f(years = list(1:5, 1:10), fleets = 3:4,
+  fvals = list(rep(0.1, 5), rep(0.2, 10)),
+  ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
+  ctl_file_out = file.path(tempdir(), "control_fishing.ss"))
+rm(d)
+
 }
 \seealso{
 Other change functions: 

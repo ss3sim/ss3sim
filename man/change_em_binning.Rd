@@ -17,8 +17,14 @@ change_em_binning(
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from
-\code{\link[r4ss]{SS_readdat}} in the \pkg{r4ss} package. Make sure
-you select option \code{section=2}.}
+\code{\link[r4ss]{SS_readdat}}.
+Be sure to correctly specify which section of the data file you want
+to work with when reading it in using the \code{section} argument.
+Where, \code{section = 1} reads in the input values used to run the model
+and \code{section = 2} reads in the expected values generated give all the
+input to the OM. \code{section = 3} is not used within ss3sim, but this
+section provides bootstrapped data sets that have been sampled internally
+within SS.}
 
 \item{outfile}{A character string specifying the file name to use
 when writing the information to the disk. The string must include
