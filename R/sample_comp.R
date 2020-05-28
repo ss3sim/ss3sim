@@ -39,13 +39,14 @@ sample_comp <- function(data, Nsamp, fleets, years, ESS = NULL, cpar = 1) {
     useESS <- FALSE
   }
 
+  cpar <- unlist(cpar, use.names = FALSE)
   new <- do.call("rbind", lapply(1:Nfleets, function(x) {
     data.frame(
-    "FltSvy" = unlist(fleets[x]),
-    "Nsamp" = unlist(Nsamp[x]),
-    "Yr" = unlist(years[x]),
+    "FltSvy" = unlist(fleets[x], use.names = FALSE),
+    "Nsamp" = unlist(Nsamp[x], use.names = FALSE),
+    "Yr" = unlist(years[x], use.names = FALSE),
     "cpar" = ifelse(length(cpar) > 1, cpar[x], cpar),
-    "ESS" = unlist(ESS[x]))
+    "ESS" = unlist(ESS[x], use.names = FALSE))
   }))
 
   if (length(Nsamp) != Nfleets)
