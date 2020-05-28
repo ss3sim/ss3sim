@@ -59,7 +59,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
         system(paste0("cd ", file.path(sc, it, type), ";", paste0(bin, " "),
            ss_em_options, " ", admb_options), ignore.stdout = ignore.stdout, ...)
         rename_ss3_files(path = file.path(sc, it, type), ss_bin = ss_bin,
-          extensions = c("par", "rep", "log", "bar"))
+          extensions = c("par", "rep", "log", "bar", "cor"))
       } else {
         wd <- getwd()
         setwd(file.path(sc, it, type))
@@ -67,7 +67,7 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
           invisible = TRUE, ignore.stdout = ignore.stdout,
                show.output.on.console = show.output.on.console, ...)
         rename_ss3_files(path = ".", ss_bin = ss_bin,
-          extensions = c("par", "rep", "log", "bar"))
+          extensions = c("par", "rep", "log", "bar", "cor"))
         setwd(wd)
       }
     }
