@@ -35,7 +35,7 @@
 #' @family sampling functions
 #' @seealso \code{\link{sample_agecomp}} for more examples
 
-sample_lcomp <- function(dat_list, outfile, fleets, Nsamp,
+sample_lcomp <- function(dat_list, outfile = NULL, fleets, Nsamp,
   years, cpar = 1, ESS = NULL){
 
     check_data(dat_list)
