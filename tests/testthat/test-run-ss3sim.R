@@ -1,10 +1,6 @@
 context("run_ss3sim and get-results functions work across a range of scenarios")
 
-# Note that these tests are skipped on CRAN since the SS3 executable won't
-# be available (and some of these take a while to run).
-
-# TODO: turn runs of ss3sim into actual expectations
-# also add tests of ss3sim_base in addition to run_ss3sim.
+# Tests are skipped on CRAN because the SS executable is no available.
 
 temp_path <- file.path(tempdir(), "run-ss3sim-test")
 dir.create(temp_path, showWarnings = FALSE)
@@ -13,29 +9,41 @@ setwd(temp_path)
 on.exit(setwd(wd), add = TRUE)
 on.exit(unlink(temp_path, recursive = TRUE), add = TRUE)
 
-d <- system.file("extdata", package = "ss3sim")
-om <- file.path(d, "models", "cod-om")
-em <- file.path(d, "models", "cod-em")
-case_folder <- file.path(d, "eg-cases")
-
-
-
-test_that("A basic run_ss3sim scenario runs and existing iteration skipped", {
+test_that("A basic run_ss3sim scenario runs", {
   skip_on_cran()
-  suppressWarnings(run_ss3sim(iterations = 1, scenarios = "D0-F0-cod",
-    case_folder = case_folder, om_dir = om, em_dir = em))
-  #check ran
-  expect_true("control.ss_new" %in% list.files(file.path("D0-F0-cod","1", "em")))
-  success <- get_success(file.path("D0-F0-cod", "1", "em"))
+
+  #check run_ss3sim and get_results_all
+  df <- data.frame(
+    bias_adjust = TRUE,
+    ce.par_name = "c('NatM_p_1_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
+    ce.par_int = "c(NA, 19.9)",
+    ce.par_phase = "c(-1, 4)",
+    cf.years.1 = "26:100", cf.fval.1 = "rep('0.1052', 75)",
+    si.years.2 = "seq(26,100,1)", si.sds_obs.2 = 0.01,
+    sl.years.1 = "seq(26,100,4)", sl.Nsamp.1 = 200, sl.cpar.1 = NA,
+    sl.years.2 = "seq(26,100,1)", sl.Nsamp.2 = 201, sl.cpar.2 = NA,
+    sa.years.1 = "seq(26,100,4)", sa.Nsamp.1 = 202, sa.cpar.1 = NA,
+    sa.years.2 = "seq(26,100,1)", sa.Nsamp.2 = 203, sa.cpar.2 = NA)
+  scname <- run_ss3sim(iterations = 1, simdf = df)
+  expect_true("control.ss_new" %in% list.files(file.path(scname,"1", "em")))
+  success <- get_success(file.path(scname, "1", "em"))
   expect_equal(success["ran"], c("ran" = 1),
     label = "Sucess vector for the Report file is")
-  expect_equal(success["hess"], c("hess" = 0),
+  expect_equal(success["hess"], c("hess" = 1),
     label = "Sucess vector for the hessian file is")
-  suppressMessages(get_results_all())
+  suppressWarnings(get_results_all(user_scenarios = scname,
+    overwrite_files = TRUE))
   expect_true(file.exists("ss3sim_scalar.csv"))
   expect_true(file.exists("ss3sim_ts.csv"))
   scalar <- read.csv("ss3sim_scalar.csv")
+
   # check OM specs
+  ssom <- r4ss::SS_output(file.path(scname, "1", "om"),
+    verbose = FALSE, printstats = FALSE, covar = FALSE)
+  expect_equal(ssom$startyr, 1)
+  expect_equal(ssom$endyr, 100)
+  expect_equal(ssom$N_estimated_parameters, 1)
+  expect_equal(ssom$parameters[grep("NatM", ssom$parameters$Label), "Value"], 0.2)
   om_line <- which(scalar$model_run == "om")
   expect_equal(scalar[om_line, "depletion"], 0.4242,
     tolerance = 0.0001, label = "OM depletion")
@@ -43,150 +51,98 @@ test_that("A basic run_ss3sim scenario runs and existing iteration skipped", {
     tolerance = 0.0001, label = "OM forecast recruitment in year 101")
   expect_equal(as.numeric(scalar[om_line, "SSB_MSY"]), 1417980000,
     label = "OM SSB at MSY")
+  expect_equal(as.numeric(scalar[om_line, "Catch_endyear"]), 180383000,
+    label = "OM terminal catch")
+
   # check EM specs
+  ssem <- r4ss::SS_output(file.path(scname, "1", "em"),
+    verbose = FALSE, printstats = FALSE, covar = TRUE)
+  expect_equal(ssem$startyr, 26)
+  expect_equal(ssem$endyr, 100)
+  expect_equal(ssem$N_estimated_parameters, 112)
+  expect_equal(ssem$N_forecast_yrs, 1)
+  expect_equal(ssem$Max_phase, 5)
+  expect_equal(ssem$log_det_hessian, 632.866, tolerance = 0.1)
+  expect_equal(ssem$nseasons, 1)
+  expect_equivalent(data.frame(Value = 0.2, Phase = -1, Init = 0.2),
+    ssem$parameters[ssem$parameters$Label == "NatM_p_1_Fem_GP_1", c("Value", "Phase", "Init")])
+  expect_equivalent(data.frame(Phase = 4, Init = 19.9),
+    ssem$parameters[ssem$parameters$Label == "L_at_Amin_Fem_GP_1", c("Phase", "Init")])
+  expect_equal(c(table(ssem$age_comp_fit_table[, c("Fleet", "Nsamp_in")])),
+    c(19, 0, 0, 75))
+  expect_equal(unique(ssem$age_comp_fit_table[, c("Nsamp_in")]), 202:203)
+  expect_equal(unique(ssem$len_comp_fit_table[, c("Nsamp_in")]), 200:201)
   em_line <- which(scalar$model_run == "em")
-  expect_equal(as.numeric(scalar[em_line, "SSB_MSY"]), 1417980000,
+  expect_equal(scalar[em_line, "depletion"],
+    scalar[om_line, "depletion"],
+    tolerance = 0.012, label = "OM depletion")
+  expect_equal(type.convert(scalar[em_line, "SSB_MSY"]),
+    type.convert(scalar[om_line, "SSB_MSY"]),
     scale = 1000000000000000, label = "EM SSB at MSY")
-  expect_equal(as.numeric(scalar[em_line, "Catch_endyear"]), 180383000,
+  expect_equal(type.convert(scalar[em_line, "Catch_endyear"]),
+    type.convert(scalar[om_line, "Catch_endyear"]),
     label = "EM terminal catch")
   expect_equal(scalar[em_line, "SR_LN_R0"], 18.7,
-    tolerance = 0.01, label = "EM terminal year catch")
+    tolerance = 0.001, label = "EM R_0")
   #check provides warning if skippint iteration.
-  expect_warning(run_ss3sim(iterations = 1, scenarios = "D0-F0-cod",
-                            case_folder = case_folder,
-                            om_dir = om,
-                            em_dir = em),
+  expect_warning(run_ss3sim(iterations = 1,
+    simdf = data.frame(df, scenarios = scname)),
     "already exists", all = TRUE, fixed = TRUE)
+  expect_equal(table(ssem$timeseries$Era)["FORE"], c("FORE" = 1),
+    label = "Number of forecast years")
 
-  biasdir <- file.path("D0-F0-cod", "1", "em")
-  expect_warning(calculate_bias(dir = biasdir, "em.ctl"),
-    label = "With no hessian calculate_bias")
+  biasdir <- file.path(scname, "1", "em")
   setwd(biasdir)
   expect_true(file.exists("bias_00"))
-  unlink("bias_00", recursive = TRUE)
-  system(get_bin(), show.output.on.console = FALSE)
+  expect_false(file.exists("bias_01"))
   bias_list <- calculate_bias(getwd(), "em.ctl")
-  expect_equal(bias_list$df$value[5], 0.56, tolerance = 0.01,
+  expect_equal(bias_list$df$value[5], 0.98, tolerance = 0.01,
     label = "Estimated max adjust")
   bias_list <- suppressWarnings(calculate_bias(getwd(), "em.ctl"))
   expect_true(file.exists("bias_01"),
     label = "The bias_01 folder is present after calling bias 2x")
+  unlink(dir("bias_01", pattern = "covar", full.names = TRUE))
+  expect_warning(calculate_bias(dir = "bias_01", "em.ctl"),
+    label = "With no hessian calculate_bias")
   setwd(temp_path)
-  unlink("D0-F0-cod", recursive = TRUE) # clean up
+  unlink(scname, recursive = TRUE) # clean up
   unlink("ss3sim_*", recursive = TRUE)
-
 })
-unlink("D0-F0-cod", recursive = TRUE) # clean up
 
-test_that("run_ss3sim works with multiple scenarios (no parallel)", {
+test_that("run_ss3sim works with multiple scenarios without estimation", {
   skip_on_cran()
-  suppressWarnings(run_ss3sim(iterations = 1, scenarios = c("D0-F0-cod", "D1-F0-cod"),
-             case_folder = case_folder, om_dir = om, em_dir = em))
-  expect_true("control.ss_new" %in% list.files(file.path("D0-F0-cod","1", "em")))
-  expect_true("control.ss_new" %in% list.files(file.path("D1-F0-cod", "1", "em")))
+  df <- data.frame(admb_options = "-maxfn 0",
+    co.par_name = "c('NatM_p_1_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
+    co.par_int = "c(0.20001, 19.0001)",
+    cf.years.1 = "26:100",
+    cf.fval.1 = c("rep('0.1052', 75)", "rep(0.1, 75)"),
+    cd.age_bins = "1:10", cd.len_bins = "seq(10, 190, by=5)",
+    cd.pop_binwidth = 1, cd.pop_minimum_size = 10,
+    cd.pop_maximum_size = 190, cd.lcomp_constant = 1e-10,
+    cb.lbin_method = 2, cb.pop_binwidth = 1,
+    cb.pop_minimum_size = 1, cb.pop_maximum_size = 200,
+    cb.bin_vector = "seq(10,190,by=10)",
+    si.years.2 = "seq(90,100,1)", si.sds_obs.2 = 0.01,
+    sl.years.1 = "seq(90,100,4)", sl.Nsamp.1 = 20, sl.cpar.1 = NA,
+    sl.years.2 = "seq(90,100,1)", sl.Nsamp.2 = 20, sl.cpar.2 = NA,
+    # sm.years.2 = "seq(90,100,1)", sm.Nsamp.2 = 10, sm.cpar.2 = NA,
+    sa.years.1 = "seq(90,100,4)", sa.Nsamp.1 = 20, sa.cpar.1 = NA)
+  scname <- run_ss3sim(iterations = 1:2, simdf = df)
+  ssom <- r4ss::SS_output(file.path(scname[1], "1", "om"),
+    verbose = FALSE, printstats = FALSE, covar = FALSE)
+  expect_equal(ssom$parameters[grep("NatM", ssom$parameters$Label), "Value"], 0.20001)
+  expect_equal(c(4, 4),
+    sapply(lapply(scname, dir, recursive = TRUE, pattern = "control.ss_new"), length))
+
+  ssom <- r4ss::SS_readdat(file.path(scname[1], "1", "om", "ss3.dat"),
+    verbose = FALSE)
+  ssem <- r4ss::SS_readdat(file.path(scname[1], "1", "em", "ss3.dat"),
+    verbose = FALSE)
+  expect_equal(ssom$lbin_vector_pop, seq(10, 191, by = 1))
+  expect_equal(ssem$lbin_vector_pop, seq(1, 201, by = 1))
+  expect_equal(ssem$agebin_vector, seq(1, 10, by = 1))
+  expect_equal(ssem$lbin_vector, seq(10, 190, by = 10))
+  expect_true(all(ssem$len_info$addtocomp == 1e-10))
+  expect_true(all(ssem$len_info$mintailcomp == -1))
+  sapply(scname, unlink, recursive = TRUE)
 })
-unlink("D0-F0-cod", recursive = TRUE) # clean up
-unlink("D1-F0-cod", recursive = TRUE)
-
-test_that("run_ss3sim runs with CAL data", {
-  skip_on_cran()
-  scen <- "F1-D0-cod"
-  run_ss3sim(iterations  = 1,
-             scenarios = scen,
-             case_folder = file.path(d, "eg-cases"),
-             om_dir = om,
-             em_dir = em,
-             case_files = list(F = "F",
-                               D = c("index", "calcomp"))
-  )
-  calcomp_args <- get_args(file.path(case_folder, "calcomp0-cod.txt"))
-  EM_datfile <- r4ss::SS_readdat(file.path(temp_path, scen, "1", "em", "ss3.dat"),
-                                 verbose = FALSE)
-  # check the length comps to make sure CAL consistent
-  lengths <- EM_datfile$lencomp
-  lengths <- lengths[lengths$Yr %in% calcomp_args$years[[1]] &
-                       lengths$FltSvy %in% calcomp_args$fleets, ]
-  expect_true(all(calcomp_args$years[[1]] %in% lengths$Yr))
-  expect_true(all(calcomp_args$fleets %in% lengths$FltSvy))
-  # check the age comps (note that this is not a generalizable test and would
-  # need to be refactored to apply to other cases.
-  for (yr in calcomp_args$years[[1]]) {
-    for (ft in calcomp_args$fleets) {
-      tmp_agecomp <- EM_datfile$agecomp[EM_datfile$agecomp$Yr == yr &
-                                          EM_datfile$agecomp$FltSvy, ]
-      tmp_agecomp <- tmp_agecomp[tmp_agecomp$Lbin_lo != -1, ]
-      expect_equivalent(sum(tmp_agecomp$Nsamp),  calcomp_args$ESS_ages[[1]])
-    }
-  }
-})
-unlink("F1-D0-cod", recursive = TRUE)
-
-test_that("run_ss3sim runs for a complex scenario", {
-  skip_on_cran()
-  scen <- "F1-D0-M0-E0-O0-cod"
-  run_ss3sim(iterations  = 1,
-                          scenarios = scen,
-                          case_folder = file.path(d, "eg-cases"),
-                          om_dir = om,
-                          em_dir = em,
-                          case_files = list(F = "F",
-                                            D = c("index", "lcomp", "agecomp",
-                                                  "calcomp"),
-                                            M = "M", E = "E", O = "O")
-  )
-  # test taht the EM ran successfully (using creation of data.ss_new as a proxy.)
-  # TODO make more detailed expectations for this test.
-  expect_true(file.exists(file.path(temp_path, scen, "1", "em", "data.ss_new")))
-})
-unlink("F1-D0-M0-E0-O0-cod", recursive = TRUE)
-
-# only run this test locally, b/c  only uses an extra feature
-test_that("run_ss3sim runs with data weighting", {
-  skip_on_cran()
-  skip_on_travis()
-  skip_on_appveyor()
-  scen <- "F1-D1-W0-cod"
-  run_ss3sim(iterations  = 1,
-             scenarios = scen,
-             case_folder = file.path(d, "eg-cases"),
-             om_dir = om,
-             em_dir = em,
-             case_files = list(F = "F",
-                               D = c("index", "agecomp", "lcomp"),
-                               W = "W")
-  )
-
-  DW_dat <- r4ss::SS_readdat(file.path("F1-D1-W0-cod", "1", "em", "ss3.dat"), verbose = FALSE)
-
-  DW_ctl <- r4ss::SS_readctl(file.path("F1-D1-W0-cod", "1", "em", "em.ctl"), use_datlist = TRUE,
-                             datlist = DW_dat, verbose = FALSE)
-  expect_true(DW_ctl$DoVar_adjust == 1)
-  expect_true(all(DW_ctl$Variance_adjustment_list$Factor %in% c(4,5)))
-})
-unlink(file.path("F1-D1-W0-cod"), recursive = TRUE)
-
-case_files <- list(F = "F", D = c("index", "lcomp", "agecomp"), E = "E")
-test_that("A basic run_ss3sim scenario with forecasting runs", {
-  skip_on_cran()
-  scen <- "D0-E102-F0-cod"
-  suppressWarnings(run_ss3sim(iterations = 1, scenarios = scen,
-             case_folder = case_folder, case_files = case_files,
-             om_dir = om, em_dir = em))
-  expect_true("control.ss_new" %in% list.files(file.path(scen, "1", "em")))
-  report <- suppressWarnings(r4ss::SS_output(file.path(scen, "1", "em"),
-
-                            covar = FALSE, ncols = 400, NoCompOK = TRUE,
-                            verbose = FALSE, printstats = FALSE))
-  get_results_all()
-  res <- read.csv("ss3sim_scalar.csv", header = TRUE)
-  em_line <- which(res$model_run == "em")
-  expect_equal(res[em_line, "LnQ_base_Survey_2"], 0.7)
-  expect_equal(res[em_line, "SR_sigmaR"], 0.001)
-  expect_equal(table(report$timeseries$Era)["FORE"], c("FORE" = 3),
-    label = "Number of forecast years")
-  unlink("D0-E102-F0-cod", recursive = TRUE) # clean up
-  unlink("ss3sim_*", recursive = TRUE) # clean up
-})
-unlink("D0-E102-F0-cod", recursive = TRUE) # clean up
-
-

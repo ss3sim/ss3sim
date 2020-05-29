@@ -2,16 +2,16 @@
 % Please edit documentation in R/run_ss3sim.r
 \name{run_ss3sim}
 \alias{run_ss3sim}
-\title{Master function to run SS3 simulations}
+\title{Master function to run simulations using Stock Synthesis}
 \usage{
 run_ss3sim(
   iterations,
-  scenarios,
+  simdf = NULL,
+  scenarios = NULL,
   case_folder,
-  om_dir,
-  em_dir,
+  om_dir = NULL,
+  em_dir = NULL,
   case_files = list(F = "F", D = c("index", "lcomp", "agecomp")),
-  user_recdevs = NULL,
   parallel = FALSE,
   parallel_iterations = FALSE,
   ...
@@ -19,7 +19,14 @@ run_ss3sim(
 }
 \arguments{
 \item{iterations}{Which iterations to run. A numeric vector. For example
-\code{1:100}.}
+\code{1:100}. The same number of iterations will be run for each scenario.
+If any iterations already exist, then ss3sim will skip over them.}
+
+\item{simdf}{A data frame of instructions with one row per scenario.
+The data frame replaces the old method of using case files.
+See \code{\link{setup_scenarios_defaults}} for default values that will be
+passed to ss3sim for a generic simulation to get you started. These
+values will be used if \code{simdf} is left at its default value of \code{NULL}.}
 
 \item{scenarios}{Which scenarios to run. A vector of character objects. For
 example \code{c("D0-F0-cod", "D1-F1-cod")}. Also, see
@@ -43,18 +50,6 @@ extend this named list}. This argument is passed to
 how to specify this. The introduction vignette also explains how to specify
 the case files.}
 
-\item{user_recdevs}{An optional matrix of recruitment deviations to replace
-the recruitment deviations built into the package. The columns represent
-run iterations and the rows represent years. \code{user_recdevs} can be a
-matrix of 0s for deterministic model checking. For traditional stochastic
-simulations these would be independent and normally distributed deviations
-with a standard deviation equal to the desired sigma R. Note that these
-recruitment deviations will be used verbatim (after exponentiation).
-\code{user_recdevs} will *not* be multiplied by sigma R and they will *not*
-be log-normal bias corrected. If \code{user_recdevs} are specified as
-anything besides \code{NULL} the package will issue a warning about this.
-Biased recruitment deviations can lead to biased model results.}
-
 \item{parallel}{A logical argument that controls whether the scenarios are
 run in parallel. You will need to register multiple cores first with a
 package such as \pkg{doParallel} and have the \pkg{foreach} package
@@ -70,25 +65,39 @@ but you wanted to run it faster.}
 include \code{bias_adjust}. Also, you can pass
 additional options to the \code{SS3} command through the argument
 \code{admb_options}.}
+
+\item{user_recdevs}{An optional matrix of recruitment deviations to replace
+the recruitment deviations built into the package. The columns represent
+run iterations and the rows represent years. \code{user_recdevs} can be a
+matrix of 0s for deterministic model checking. For traditional stochastic
+simulations these would be independent and normally distributed deviations
+with a standard deviation equal to the desired sigma R. Note that these
+recruitment deviations will be used verbatim (after exponentiation).
+\code{user_recdevs} will *not* be multiplied by sigma R and they will *not*
+be log-normal bias corrected. If \code{user_recdevs} are specified as
+anything besides \code{NULL} the package will issue a warning about this.
+Biased recruitment deviations can lead to biased model results.}
 }
 \value{
-The output will appear in whatever your current \R working directory
-is. There will be folders named after your scenarios. They will
-look like this:
+The output will appear in your current \R working directory
+Folders will be named based on the \code{"scenario"} column
+of \code{simdf} or based on the date-time stamp
+(i.e., mmddhhmmss) generated automatically at the start of the simulation.
+The resulting folders will look like the following if you run
+your simulation at noon on January 01:
 \itemize{
-\item \code{D0-F0-cod/1/om}
-\item \code{D0-F0-cod/1/em}
-\item \code{D0-F0-cod/2/om}
+\item \code{0101120000/1/om}
+\item \code{0101120000/1/em}
+\item \code{0101120000/2/om}
 \item ...
 }
 }
 \description{
 This is the main high-level wrapper function for running \pkg{ss3sim}
-simulations. This function first deals with parsing a scenario ID into case
-arguments, reads the appropriate case files, and then passes these arguments
-on to \code{\link{ss3sim_base}} to run a simulation. Alternatively, you might
-choose to run \code{\link{ss3sim_base}} directly and skip the case-file
-setup.
+simulations. First, this function separates the data frame of simulation
+settings by row for each scenario into a list format. These lists are then
+passed to \code{\link{ss3sim_base}} to run each simulation. Alternatively, you
+can run \code{\link{ss3sim_base}} directly using your own lists.
 }
 \details{
 The operating model folder should contain: \code{forecast.ss},
@@ -102,68 +111,28 @@ the \code{ss.par} and \code{yourmodel.dat} files, which are unnecessary but
 can be included if desired. See the vignette for details on modifying an
 existing \code{SS3} model to run with \pkg{ss3sim}. Alternatively, you might
 consider modifying one of the built-in model configurations.
+
+Note that due to the way that SS is being used as an OM, you may see 
+the following ADMB error may appear in the console:
+Error -- base = 0 in function prevariable& pow(const prevariable& v1, CGNU_DOUBLE u)
+However, this is not a problem because ADMB is not used to optimize the OM,
+and thus, the error can safely be ignored.
 }
 \examples{
  \dontrun{
-# Create a temporary folder for the output and set the working directory:
-temp_path <- file.path(tempdir(), "ss3sim-example")
-dir.create(temp_path, showWarnings = FALSE)
-wd <- getwd()
-setwd(temp_path)
-on.exit(setwd(wd), add = TRUE)
-
-# Find the data in the ss3sim package:
-d <- system.file("extdata", package = "ss3sim")
-om <- file.path(d, "models", "cod-om")
-em <- file.path(d, "models", "cod-em")
-case_folder <- file.path(d, "eg-cases")
-#
- # Without bias adjustment:
- run_ss3sim(iterations = 1, scenarios = "D0-F0-cod",
- case_folder = case_folder, om_dir = om, em_dir = em)
- unlink("D0-F0-cod", recursive = TRUE) # clean up
-
-# An example specifying the case files:
-run_ss3sim(iterations = 1, scenarios = "D0-F0-E0-cod",
-  case_folder = case_folder, om_dir = om, em_dir = em,
-  case_files = list(F = "F", D = c("index", "lcomp",
-      "agecomp"), E = "E"))
-unlink("D0-F0-E0-cod", recursive = TRUE) # clean up
-
-# If try to use bias adjustment, a warning will be triggered and the run will
-# proceed WITHOUT using bias adjustment (and may result in error.)
-# run_ss3sim(iterations = 1, scenarios = "D1-F0-cod",
-#   case_folder = case_folder, om_dir = om, em_dir = em,
-#   bias_adjust = TRUE)
-
-# A run with deterministic process error for model checking:
+# A run with deterministic process error for model checking
+# by passing user_recdevs to ss3sim_base through run_ss3sim:
 recdevs_det <- matrix(0, nrow = 101, ncol = 2)
-run_ss3sim(iterations = 1:2, scenarios = "D0-E100-F0-cod",
-  case_folder = case_folder,
-  case_files = list(F = "F", D = c("index", "lcomp", "agecomp"), E = "E"),
-  om_dir = om, em_dir = em,
+df <- data.frame(setup_scenarios_defaults(),
+  "scenarios" = "determinate")
+run_ss3sim(iterations = 1:2, simdf = df,
   bias_adjust = FALSE, user_recdevs = recdevs_det)
-unlink("D0-E100-F0-cod", recursive = TRUE)
-
-# # An example of a run using parallel processing across 2 cores:
-# require(doParallel)
-# registerDoParallel(cores = 2)
-# require(foreach)
-# getDoParWorkers() # check how many cores are registered
-#
-# # parallel scenarios:
-# run_ss3sim(iterations = 1, scenarios = c("D0-F0-cod",
-#     "D1-F0-cod"), case_folder = case_folder,
-#   om_dir = om, em_dir = em, parallel = TRUE)
-# unlink("D0-F0-cod", recursive = TRUE)
-# unlink("D1-F0-cod", recursive = TRUE)
-#
-# # parallel iterations:
-# run_ss3sim(iterations = 1:2, scenarios = "D0-F0-cod",
-#   case_folder = case_folder, om_dir = om, em_dir = em,
-#   parallel = TRUE, parallel_iterations = TRUE)
-# unlink("D0-F0-cod", recursive = TRUE)
+get_results_all(user_scenarios = "determinate", overwrite = TRUE)
+ts <- read.csv("ss3sim_ts.csv")
+expect_equivalent(unlist(ts$rec_dev[ts$year \%in\% 1:10 & ts$iteration == 2]),
+  recdevs_det[1:10, 2])
 }
+
 }
 \seealso{
 \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},

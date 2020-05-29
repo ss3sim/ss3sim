@@ -85,7 +85,7 @@ profile_fmsy <- function(om_in, results_out,
   }
   for(i in seq(fVector)) {
     change_f(years = 1:simlength,
-      fisheries = as.numeric(row.names(datFile$fleetinfo[datFile$fleetinfo$type == 1, ])),
+      fleets = as.numeric(row.names(datFile$fleetinfo[datFile$fleetinfo$type == 1, ])),
       fvals = rep(fVector[i], simlength),
       ctl_file_in = starter$ctlfile,
       ctl_file_out = starter$ctlfile)

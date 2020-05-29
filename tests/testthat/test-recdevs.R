@@ -1,5 +1,5 @@
-context("Test recdev functions")
-#user recdevs, change_recdevs.
+context("Test user_recdevs, change_rec_devs()")
+#.
 #get_recdevs() is pretty simple, so does not need a test for now.
 
 temp_path <- file.path(tempdir(), "test-recdevs")
@@ -11,18 +11,14 @@ on.exit(unlink(temp_path, recursive = TRUE), add = TRUE)
 
 d <- system.file("extdata", package = "ss3sim")
 om <- file.path(d, "models", "cod-om")
-em <- file.path(d, "models", "cod-em")
-case_folder <- file.path(d, "eg-cases")
 
 # copy control file to temp_path.
 file.copy(file.path(om, "codOM.ctl"), "codOM.ctl", overwrite = TRUE)
 
 test_that("run_ss3sim fails if ncol(user_recdevs) is too small for iterations", {
-  urd <- matrix(data = 0, ncol = 1, nrow = 100)
-  # one too many iterations for user_recdevs:
   expect_error(run_ss3sim(iterations = 2,
-    scenarios = "D0-E0-F0-R0-M0-cod", case_folder = case_folder,
-    om_dir = om, em_dir = em, user_recdevs = urd),
+    simdf = data.frame(setup_scenarios_defaults(),
+      user_recdevs = "matrix(data = 0, ncol = 1, nrow = 100)")),
     "The number of columns in user_recdevs is less than the specified number of iterations")
 })
 test_that("change_rec_devs() works with vector of recdevs", {
