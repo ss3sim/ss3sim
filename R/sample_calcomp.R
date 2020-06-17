@@ -102,8 +102,7 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
                            ESS_ages = NULL,
                            lcomps_sampled = FALSE) {
   #TODO: add in length_stratified
-
-    method <- match.arg(arg = method, choices = c("simple_random"))
+    method <- match.arg(arg = unlist(method), choices = c("simple_random"))
     ## A value of NULL for fleets indicates not to sample and strip out the
     ## CAL data from the file.
     # Divide up age comp into marginal and CAL; we will only be sampling from

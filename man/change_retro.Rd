@@ -16,7 +16,9 @@ change_retro(
 \item{str_file_out}{A string providing the path to the output SS \code{starter.ss} file.}
 
 \item{retro_yr}{*Which retrospective year to enter into the starter file.
-Should be 0 (no retrospective analysis) or a negative value.}
+Should be 0 (no retrospective analysis) or a negative value, which
+leads to the removal of data for the specified number of years.
+Positive values are not allowed.}
 }
 \value{
 A modified SS3 starter file.

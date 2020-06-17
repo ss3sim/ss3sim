@@ -4,7 +4,15 @@
 \alias{sample_lcomp}
 \title{Sample length compositions from a Stock Synthesis data file}
 \usage{
-sample_lcomp(dat_list, outfile, fleets, Nsamp, years, cpar = 1, ESS = NULL)
+sample_lcomp(
+  dat_list,
+  outfile = NULL,
+  fleets,
+  Nsamp,
+  years,
+  cpar = 1,
+  ESS = NULL
+)
 }
 \arguments{
 \item{dat_list}{An SS data list object as read in from

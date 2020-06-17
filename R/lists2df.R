@@ -35,7 +35,7 @@ lists2df <- function(...) {
   }
   do.call("rbind", mapply(data.frame,
     "index" = seq_along(lists[[1]]),
-    ..., SIMPLIFY = FALSE, MoreArgs = list(fix.empty.names = FALSE)))
+    ..., SIMPLIFY = FALSE, MoreArgs = list(fix.empty.names = FALSE, stringsAsFactors = FALSE)))
 }
 
 #' Replicate an object a number of times to return a list
@@ -60,7 +60,7 @@ scalar2list <- function(scalar, length) {
   } else {
     out <- mapply(rep, x = scalar, times = length, SIMPLIFY = FALSE)
   }
-  testthat::expect_equal(length, sapply(out, length),
+  testthat::expect_equivalent(length, sapply(out, length),
     label = "\nscalar2list: specified 'length' is\n")
   return(out)
 }

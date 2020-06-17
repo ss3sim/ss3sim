@@ -14,7 +14,9 @@
 #' @template str_file_in
 #' @template str_file_out
 #' @param retro_yr *Which retrospective year to enter into the starter file.
-#'   Should be 0 (no retrospective analysis) or a negative value.
+#'   Should be 0 (no retrospective analysis) or a negative value, which
+#'   leads to the removal of data for the specified number of years.
+#'   Positive values are not allowed.
 #' @author Sean C. Anderson
 #' @return A modified SS3 starter file.
 #' @template casefile-footnote

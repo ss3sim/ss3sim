@@ -1,42 +1,38 @@
-#' Weight comps in the EM
+#' Weight the composition data in the EM
 #'
-#' Weight age or length composition data in the Estimation model using a
-#' tuning method (MacAllister-Ianelli or Francis) or a different likelhood
-#' (dirichlet multinomial)
-#' @param method  Which method of comp weighting shoudl be use? Options are
+#' Weight age- or length-composition data in the estimation model (EM) using a
+#' tuning method (MacAllister-Ianelli or Francis) or a distribution
+#' (dirichlet multinomial).
+#'
+#' @param method  Options for the weighting method are
 #'  "MI" (for MacAllister-Ianelli), "Francis", or "DM" (for dirichlet
-#'  multinomial). For now, only 1 option can be used
+#'  multinomial). For now, only 1 option can be used.
 #' @param init_run A logical value specifying if the model should be run before
-#'  iterative reweighting. Only relavent to \code{method = c("MI", "Francis")}.
+#'  iterative reweighting. Only relavent to \code{method = c("MI", "Francis")}
+#'  because they require initial estimates that are compared to a theoretical
+#'  distribution external to SS.
 #' @param main_run A logical value specifying if the model should be run to
-#'   weight the comps.
-#'  that run = \code{FALSE} will only work for \code{niters_weighting = 1} and
-#'  \code{method = "MI"} or \code{"Francis"}
+#'  weight the composition data after the appropriate weightings are found.
+#'  If \code{FALSE}, the final values found for the weightings will only
+#'  be put into the control file and not used to generate parameter estimates.
 #' @param niters_weighting The number of times you want to tune the model.
-# #'  @param writedir A directory to write new model runs to other than dir. If
-# #'  NULL, the model runs will occur in the same directory (in multiple subfolders
-# #'  if multiple method are used.)
-# #' @param dirbase A path to the Stock Synthesis files.By default, this is the
-# #'  working directory.
 #' @param iter The iteration. A numeric value. This function assumes model
 #'  files are in a directory relative to the path \code{"scen/iter/EM"} as in
 #'  ss3sim.
 #' @param scen The scenario, named as in ss3sim. This function assumes model
 #'  files are in a directory relative to the path \code{"scen/iter/EM"} as in
 #'  ss3sim.
-#' @param bias_adjust Run bias adjustment first?.
-#' @param hess_always If \code{TRUE} then the Hessian will always be calculated.
-#'  If \code{FALSE} then the Hessian will only be calculated for
+#' @param bias_adjust Run bias adjustment first?
+#' @param hess_always If \code{TRUE}, the Hessian will always be calculated.
+#'  If \code{FALSE}, the Hessian will only be calculated for
 #'  bias-adjustment runs thereby saving time.
 #' @param fleets A vector of numeric values specifying which fleets you want to
 #'  tune.
 #' @param ... Anything else to pass to \code{\link{run_ss3model}}.
 weight_comps <- function(method = c("MI", "Francis", "DM"),
-                         #dirbase = ".",
                          init_run = TRUE,
                          main_run = TRUE,
                          niters_weighting = 1,
-                         #writedir = NULL,
                          iter,
                          scen,
                          bias_adjust = FALSE,

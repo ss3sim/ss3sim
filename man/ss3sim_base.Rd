@@ -9,8 +9,8 @@ ss3sim_base(
   scenarios,
   f_params,
   index_params,
-  lcomp_params,
-  agecomp_params,
+  lcomp_params = NULL,
+  agecomp_params = NULL,
   calcomp_params = NULL,
   wtatage_params = NULL,
   mlacomp_params = NULL,
@@ -77,7 +77,7 @@ for the specified simulations.}
 \item{em_dir}{The directory with the estimation model you want to copy and
 use for the specified simulations.}
 
-\item{retro_params}{A named list containing arguments for
+\item{retro_params}{A named list containing the arguments for
 \code{\link{change_retro}}.}
 
 \item{data_params}{A named list containing arguments for
@@ -163,48 +163,28 @@ example below). For a generic higher-level function, see
 
   # Find the data in the ss3sim package:
   d <- system.file("extdata", package = "ss3sim")
-  case_folder <- file.path(d, "eg-cases")
   om_dir <- file.path(d, "models", "cod-om")
   em_dir <- file.path(d, "models", "cod-em")
-  a <- get_caseargs(folder = file.path(d, "eg-cases"),
-                    case_files = list(F = "F",
-                                      D = c("index", "lcomp", "agecomp"),
-                                      E = "E"),
-                    scenario = "F0-D0-E0-cod")
-  ss3sim_base(iterations = 1,
-              scenarios = "F0-D0-E0-cod",
-              f_params = a$F,
-              index_params = a$index,
-              lcomp_params = a$lcomp,
-              agecomp_params = a$agecomp,
-              tv_params = a$tv_params,
-              estim_params = a$E,
-              om_dir = om_dir,
-              em_dir = em_dir,
-              bias_adjust = TRUE)
-  unlink("F0-D0-E0-cod", recursive = TRUE) # clean up
 
   # Or, create the argument lists directly in R and skip the case file setup:
 
   F0 <- list(years = 1:100,
-             fisheries = 1,
+             fleets = 1,
              fvals = c(rep(0, 25), rep(0.114, 75)))
 
   index1 <- list(fleets = 2, years = list(seq(62, 100, by = 2)),
                  sds_obs = list(0.1))
 
-  lcomp1 <- list(fleets = c(1, 2), Nsamp = list(100, 100),
+  lcomp1 <- list(fleets = c(1, 2), Nsamp = list(50, 100),
                  years = list(26:100, seq(62, 100, by = 2)),
-                 lengthbin_vector = NULL, cpar = c(1, 1))
+                 lengthbin_vector = NULL)
 
-  agecomp1 <- list(fleets = c(1, 2), Nsamp = list(100, 100),
+  agecomp1 <- list(fleets = c(1, 2), Nsamp = list(50, 100),
                    years = list(26:100, seq(62, 100, by = 2)),
-                   agebin_vector = NULL, cpar = c(1, 1))
+                   agebin_vector = NULL)
 
-  E0 <- list(natM_type = NULL, natM_n_breakpoints = NULL, natM_lorenzen = NULL,
-             natM_val = NULL,
-             par_name = c("LnQ_base_Fishery", "NatM_p_1_Fem_GP_1"),
-             par_int = c(NA, NA), par_phase = c(-1, -1), forecast_num = 0)
+  E0 <- list(par_name = c("LnQ_base_Fishery", "NatM_p_1_Fem_GP_1"),
+             par_int = c(NA, NA), par_phase = c(-5, -1), forecast_num = 0)
 
   ss3sim_base(iterations = 1,
               scenarios = "D1-E0-F0-cod", #name as desired

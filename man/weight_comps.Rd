@@ -2,7 +2,7 @@
 % Please edit documentation in R/weight_comps.R
 \name{weight_comps}
 \alias{weight_comps}
-\title{Weight comps in the EM}
+\title{Weight the composition data in the EM}
 \usage{
 weight_comps(
   method = c("MI", "Francis", "DM"),
@@ -18,17 +18,19 @@ weight_comps(
 )
 }
 \arguments{
-\item{method}{Which method of comp weighting shoudl be use? Options are
+\item{method}{Options for the weighting method are
 "MI" (for MacAllister-Ianelli), "Francis", or "DM" (for dirichlet
-multinomial). For now, only 1 option can be used}
+multinomial). For now, only 1 option can be used.}
 
 \item{init_run}{A logical value specifying if the model should be run before
-iterative reweighting. Only relavent to \code{method = c("MI", "Francis")}.}
+iterative reweighting. Only relavent to \code{method = c("MI", "Francis")}
+because they require initial estimates that are compared to a theoretical
+distribution external to SS.}
 
 \item{main_run}{A logical value specifying if the model should be run to
- weight the comps.
-that run = \code{FALSE} will only work for \code{niters_weighting = 1} and
-\code{method = "MI"} or \code{"Francis"}}
+weight the composition data after the appropriate weightings are found.
+If \code{FALSE}, the final values found for the weightings will only
+be put into the control file and not used to generate parameter estimates.}
 
 \item{niters_weighting}{The number of times you want to tune the model.}
 
@@ -40,10 +42,10 @@ ss3sim.}
 files are in a directory relative to the path \code{"scen/iter/EM"} as in
 ss3sim.}
 
-\item{bias_adjust}{Run bias adjustment first?.}
+\item{bias_adjust}{Run bias adjustment first?}
 
-\item{hess_always}{If \code{TRUE} then the Hessian will always be calculated.
-If \code{FALSE} then the Hessian will only be calculated for
+\item{hess_always}{If \code{TRUE}, the Hessian will always be calculated.
+If \code{FALSE}, the Hessian will only be calculated for
 bias-adjustment runs thereby saving time.}
 
 \item{fleets}{A vector of numeric values specifying which fleets you want to
@@ -52,7 +54,7 @@ tune.}
 \item{...}{Anything else to pass to \code{\link{run_ss3model}}.}
 }
 \description{
-Weight age or length composition data in the Estimation model using a
-tuning method (MacAllister-Ianelli or Francis) or a different likelhood
-(dirichlet multinomial)
+Weight age- or length-composition data in the estimation model (EM) using a
+tuning method (MacAllister-Ianelli or Francis) or a distribution
+(dirichlet multinomial).
 }

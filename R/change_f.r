@@ -126,7 +126,7 @@ change_f <- function(years, fleets, fisheries, fvals, seasons = 1, ses = 0.005,
   }
   ctl[locations[1]] <- gsub("^[1-4]\\s*", "2 ", trimws(ctl[locations[1]]))
   ctl <- c(ctl[1:locations[1]],
-    paste(ifelse(max(newdata$F_value) < 4, 4, max(newdata$F_value) * 2),
+    paste(ifelse(max(newdata$F_value) < 4, 4, max(type.convert(newdata$F_value)) * 2),
       " # max F or harvest rate, depends on F_Method"),
     paste(0, 1, NROW(newdata),
       "# overall start F value; overall phase; N detailed inputs to read"),
