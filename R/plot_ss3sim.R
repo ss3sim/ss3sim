@@ -32,6 +32,8 @@ plot_ss3sim <- function(data, x, y, color = NULL,
     g <- g + ggplot2::coord_cartesian(ylim = c(-1, 1)) +
       ggplot2::ylab(paste("Relative error for:", gsub("_re", "", y))) +
       ggplot2::geom_hline(yintercept = 0, col = relative.error, lty = 2)
+  } else {
+    g <- g + ggplot2::ylab(y)
   }
   form <- facet_form(horiz, horiz2, vert, vert2)
   if (!is.null(form)) {
@@ -39,7 +41,8 @@ plot_ss3sim <- function(data, x, y, color = NULL,
       scales = ifelse(axes.free, "free", "fixed"))
   }
   if (!is.null(color)) {
-    g <- g + ggplot2::aes(color = .data[[color]])
+    g <- g + ggplot2::aes(color = .data[[color]]) +
+      ggplot2::labs(col = color)
   }
   invisible(g)
 
