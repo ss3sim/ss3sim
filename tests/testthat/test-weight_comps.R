@@ -90,11 +90,7 @@ test_that("weight_comps works for DM", {
   expect_true(any(comp_info$ParmSelect > 0))
 })
 
-# only run this test locally, b/c  only uses an extra feature
 test_that("run_ss3sim runs with data weighting", {
-  skip_on_cran()
-  skip_on_travis()
-  skip_on_appveyor()
   df <- data.frame(admb_options = "-maxfn 0",
     cf.years.1 = "26:100",
     cf.fval.1 = "rep('0.1052', 75)",
