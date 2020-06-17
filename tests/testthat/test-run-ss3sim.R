@@ -87,7 +87,7 @@ test_that("A basic run_ss3sim scenario runs", {
   #check provides warning if skippint iteration.
   expect_warning(run_ss3sim(iterations = 1,
     simdf = data.frame(df, scenarios = scname)),
-    "already exists", all = TRUE, fixed = TRUE)
+    "already exists")
   expect_equal(table(ssem$timeseries$Era)["FORE"], c("FORE" = 1),
     label = "Number of forecast years")
 
