@@ -96,7 +96,7 @@ setup_scenarios_2list <- function(dataframe) {
       return(workwith)
     }
     out <- split(workwith, mat[1, ])
-    out$fleets <- type.convert(unique(mat[2, !is.na(mat[2, ])]))
+    out$fleets <- type.convert(unique(mat[2, !is.na(mat[2, ])]), as.is = TRUE)
     return(out)
   }
   list2fleets.v <- function(x) {

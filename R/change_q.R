@@ -102,7 +102,7 @@ change_q <- function(string_add = NULL, string_remove = NULL,
     row.names(temp) <- paste0("LnQ_base_", dat_list$fleetnames[add], "(", add, ")")
     ctl_list$Q_parms <- rbind(temp, ctl_list$Q_parms)
     ctl_list$Q_parms <- ctl_list$Q_parms[order(
-      type.convert(gsub("a-zA-Z_\\(\\)", "", row.names(ctl_list$Q_parms)))), ]
+      type.convert(gsub("a-zA-Z_\\(\\)", "", row.names(ctl_list$Q_parms)), as.is = TRUE)), ]
   }
 
   if (!is.null(ctl_file_out)) {

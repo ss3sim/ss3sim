@@ -32,7 +32,7 @@ create_logo <- function(outfile = NULL) {
   quant_dat$year <- row.names(quant_dat)
 
   plot(1, 1, 
-    xlim = ceiling(stats::quantile(type.convert(quant_dat$year), probs = c(0.03, 0.50))),
+    xlim = ceiling(stats::quantile(type.convert(quant_dat$year, as.is = TRUE), probs = c(0.03, 0.50))),
     ylim = c(-0.3, 0.3),
     type = "n", axes = FALSE, ann = FALSE, xaxs = "i")
   graphics::polygon(c(quant_dat$year, rev(quant_dat$year)), c(quant_dat$q05, rev(quant_dat$q95)), 
