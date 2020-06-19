@@ -553,9 +553,9 @@ Note that if the simulation aborts for any reason while `run_ss3sim` is running 
 
 # Putting SS in your path {#path}
 
-Instead of copying the SS binary file (`ss.exe`) to each folder within a simulation and running it, ss3sim relies on a single binary file being available to the operating system regardless of the folder. To accomplish this, SS must be in your system path, which is a list of folders that your operating system looks in whenever you type the name of a program on the command line. This approach saves on storage space since the SS binary is about 2.2 MB and having it located in each folder can be prohibitive in a large-scale simulation testing study.
+Instead of copying the SS binary file (`ss.exe`) to each folder within a simulation and running it, ss3sim relies on a single binary file being available to the operating system regardless of the folder. To accomplish this, SS must be in your system path, which is a list of folders that your operating system looks in whenever you type the name of a program on the command line. This approach saves on storage space because the SS binary is about 6 MB and having it in each folder can be prohibitive in a large-scale simulation study.
 
-The development version on [github](http://www.github.com/ss3sim/ss3sim) installs the executable automatically but it is disallowed for CRAN submissions. In any case, it may be useful to put the binary in your path so that you can manually run models during development and testing (i.e., open command window in folder of OM or EM run and run the binary to see SS output).
+The [development version](https://github.com/ss3sim/ss3sim/tree/development) of the package on github installs the executable automatically, but this behaviour is disallowed on CRAN. In any case, it may be useful to put the binary in your path so you can manually run models during development and testing (i.e., open command window in folder of OM or EM run and run the binary to see SS output). ss3sim will first look to see if the executable is available within the bin folder of the package using `system.file("bin", package = "ss3sim")`. If it is not found, then it will look for the executable in your path. This heirarchy is important for understanding which version of SS is being used.
 
 ## Unix (OS X and Linux)
 
