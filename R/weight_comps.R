@@ -40,14 +40,8 @@ weight_comps <- function(method = c("MI", "Francis", "DM"),
                          fleets,
                          ...) {
 # Input checks
-  if(length(method) > 1) {
-    stop("More than 1 method specified. Please specify method ",
-         "as ONE of the following: 'MI', 'Francis', 'DM'.")
-  }
-  if(!all(method %in% c("MI", "Francis", "DM"))) {
-    stop("Invalid input for parameter method: ", method, ". Please make sure method ",
-         "is one or more of the following: 'MI', 'Francis', 'DM'." )
-  }
+  method <- match.arg(method, several.ok = FALSE)
+
   # need some input check for fleets? maybe check if they are present in
   # age or length comps and exclude if in neither?
   mod_path <- file.path(scen, iter, "em")
