@@ -47,16 +47,7 @@ change_o <- function(change_o_list,
                      par_name = NULL, par_int = NULL, verbose = FALSE) {
   # make par_name and par_int into change_o_list, if passing variable that way.
   if ((!is.null(par_name)) & (!is.null(par_int))){
-    if(length(par_name) != length(par_int)){
-      stop("par_name and par_int did not have the same length. Par_name had value(s): ",
-           paste0(par_name, collapse = ", "), ", while par_int had value(s): ",
-           paste0(par_int, collapse = ", "), ".")
-    }
-    # make into a list
-    if(verbose) {
-      message("Using par_name and par_int instead of change_o_list to pass ",
-            " values into function change_o")
-    }
+    check_eqlength("par_name" = par_name, "par_int" = par_int)
     change_o_list <- lapply(par_int, function(x) x)
     names(change_o_list) <- par_name
   } else if (!(is.null(par_name) & is.null(par_int))){ # check for valid values

@@ -36,26 +36,20 @@
 #' @importFrom r4ss SS_parlines SS_readforecast SS_writeforecast
 #' @export
 #' @examples
-#' \dontrun{
-#'
 #' d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
 #' data.old <- r4ss::SS_readdat(
-#'   system.file("extdata", "models", "cod-om", "codOM.dat",
-#'     package = "ss3sim"),
+#'   dir(d, pattern = ".dat", full.names = TRUE),
 #'   version = NULL, verbose = FALSE)
 #' change_e(
 #'   ctl_file_in = file.path(d, "codOM.ctl"),
 #'   ctl_file_out = file.path(tempdir(), "change_e.ctl"),
 #'   dat_list = data.old,
 #'   for_file_in = file.path(d, "forecast.ss"),
-#'          natM_type = NULL, natM_n_breakpoints = NULL,
-#'          natM_lorenzen = NULL, natM_val = NULL,
 #'          par_name = c("_steep", "SizeSel_P1_Fishery(1)"),
 #'          par_int = c(0.3, 40), par_phase = c(3, 2),
 #'          forecast_num = 0)
 #' # clean up the temporary files
 #' file.remove(file.path(tempdir(), "change_e.ctl"))
-#' }
 
 change_e <- function(ctl_file_in = "em.ctl",
                      ctl_file_out = "em.ctl",
@@ -71,6 +65,9 @@ change_e <- function(ctl_file_in = "em.ctl",
                      natM_n_breakpoints = NULL,
                      natM_lorenzen = NULL,
                      natM_val = NULL) {
+
+  check_eqlength("par_name" = par_name,
+    "par_int" = par_int, "par_phase" = par_phase)
 
   # Work with the out file b/c r4ss sometimes assumes the in and out files
   # will be in the same directory, so now we can specify the out directory
