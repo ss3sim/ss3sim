@@ -1,8 +1,35 @@
+# ss3sim 1.1.0
+
+* Upgrade to SS 3.30.15.03
+* Deprecate case files in favor of simdf, an argument passed to run_ss3sim
+* Use more templates for parameter arguments, e.g., par_int
+* Simplify scenarios, iterations, em/om to dir to increase the usability
+of functions outside of ss3sim
+* Add as.is for all calls to type.convert because of an upgrade within R 4.0
+* Use maxfn 0 to increase speed of tests and run more tests on CRAN check
+* Figures: Use better labels for x and y axes in ggplots; change RE line
+to dashed black; pass coloration of lines in a better way; use plot_ss3sim
+as back-end code for plotting functions; properly use character strings as
+input arguments with calls to data; add cumulative mean figure; allow for fill
+in boxplots; 
+* Results: long-data format for results to allow functions to be used by ssmse;
+remove columns that are not needed; remove row names in summary files; rename
+rec_dev to increase clarity; better grep of management quantities;
+remove parallel capacity
+* Allow for multiple fisheries in change_f and change fisheries to fleets
+* Increase robustness of get_success
+* Break tests into multiple chunks to pass Travis-ci checks
+* Allow weighting of composition data
+* Start EM in first year with non-zero catches
+* Reinstate bias adjustment, but once for every iteration
+
 # ss3sim 1.0.4
+
 * Add create_logo() to generate github logo
 * change [travis configuration](https://towardsdatascience.com/travis-ci-for-r-advanced-guide-719cb2d9e0e5) to use Xenial 
 
 # ss3sim 1.0.3
+
 * Realized broken links are because of case not full path and changed
 all links back to shorter path with lower-case first letter
 * include NOAA disclaimer in README
