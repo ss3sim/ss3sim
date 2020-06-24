@@ -1,14 +1,13 @@
-#' Methods to alter which parameters are estimated in a SS3 \code{.ctl} file.
+#' Methods to alter estimated parameters in an SS model
 #'
-#' @description Takes SS3 \code{.ctl} and \code{forecast.ss} files, along with
+#' @description Takes Stock Synthesis (SS)
+#'   \code{.ctl} and \code{forecast.ss} files, along with
 #'   a list structure which houses the data file as read in by
 #'   \code{\link[r4ss]{SS_readdat}}
 #'   and changes which parameters are estimated, how natural mortality is
 #'   estimated, and if forecasts are performed. The function can be called by
 #'   itself or within \code{\link{run_ss3sim}} to alter an estimation model
 #'   \code{.ctl} file.
-#'   If used with \code{\link{run_ss3sim}} the case file should be named
-#'   \code{E}. A suggested (default) case letter is \code{E} for estimation.
 #'
 #' @template ctl_file_in
 #' @template ctl_file_out
@@ -26,7 +25,9 @@
 #' @param par_phase *A vector of phase values, one for each parameter in
 #'   \code{par_name}.  Values can be \code{NA} if you do not wish to change
 #'   the phase for a given parameter.
-#' @param forecast_num *Number of years to perform forecasts. For those years,
+#'   the phase for a given parameter. Negative values will fix the parameter
+#'   at the INIT value.
+#' @param forecast_num Number of years to perform forecasts. For those years,
 #'   the data will be removed from the \code{dat_list}, enabling SS3 to
 #'   generate forecasts rather than use the data to fit the model.
 #' @template verbose
@@ -34,19 +35,9 @@
 #' @param natM_n_breakpoints Deprecated. Should have value NULL.
 #' @param natM_lorenzen Deprecated. Should have value NULL.
 #' @param natM_val Deprecated. Should have value NULL.
-#' @details Turning parameters on and off is the main function of
-#'   \code{change_e}.  \code{change_e} was not created with the capability of
-#'   adding parameters to a \code{.ctl} file.  The function can only add
-#'   parameters for age specific natural mortality, and only for models with
-#'   one growth morph.  Furthermore, the function is designed to add complexity
-#'   to the natural mortality type and not remove complexity.  Therefore, the
-#'   function will fail if natural mortality in the \code{ctl_file_in} is not
-#'   specified as \code{"1Param"} and \code{natM_type} is anything other than
-#'   \code{NULL} or \code{"1Param"}.
-#' @template casefile-footnote
 #' @family change functions
 #' @return
-#' Altered versions of SS3 \code{.ctl} and \code{forecast.ss} files are written
+#' Altered versions of SS \code{.ctl} and \code{forecast.ss} files are written
 #' to the disk and the altered \code{dat_list} is returned invisibly.
 #'
 #' @author Kelli Johnson

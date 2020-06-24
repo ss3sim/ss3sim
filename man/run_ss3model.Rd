@@ -25,7 +25,7 @@ the model that SS3 should run on.}
 
 \item{type}{Are you running the operating or estimation models?}
 
-\item{admb_options}{Any additional options to pass to the SS3 command.}
+\item{admb_options}{Any additional options to pass to the SS command.}
 
 \item{hess}{Calculate the Hessian on estimation model runs?}
 
@@ -47,8 +47,9 @@ value is set to \code{0.01} seconds, just to be safe.}
 \item{...}{Anything else to pass to \code{system}.}
 }
 \description{
-This function takes care of calling SS3. Importantly, it parses whether the
-user is on Unix or Windows and calls the binary correctly. This lower-level
+Call Stock Synthesis (SS) to generate data or fit model to data.
+The appropriate version of SS is called after determining if the
+user is on Unix or Windows. This lower-level
 function is meant to be called by higher level functions such as
 \code{\link{run_ss3sim}}, \code{\link{ss3sim_base}}, or your own custom
 function.

@@ -47,7 +47,7 @@ An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 numeric vectors. If no fleet collected samples, keep the value to
 \code{years=NULL}.}
 
-\item{Nsamp_lengths}{*A numeric list of the same length as fleets. Either
+\item{Nsamp_lengths}{A numeric list of the same length as fleets. Either
 single values or vectors of the same length as the number of years can be
 passed through. Single values are repeated for all years. If no fleet
 collected samples, specify \code{Nsamp_lengths = NULL}. Specifically, for
@@ -56,7 +56,7 @@ length samples for a given year and fleet across all length bins that can be
 used to then sample the conditional age at length samples.
 \code{Nsamp_lengths} must be greater than or equal to \code{Nsamp_ages}.}
 
-\item{Nsamp_ages}{*A numeric list of the same length as fleets. Either single
+\item{Nsamp_ages}{A numeric list of the same length as fleets. Either single
 values or vectors of the same length as the number of years can be passed
 through. Single values are repeated for all years. If no fleet collected
 samples, specify \code{Nsamp_ages = NULL}. Specifically, for
@@ -120,9 +120,8 @@ This function takes a \code{data.SS_new} file from an OM containing
  (conditional on length) to sample for realistic age proportions. If no fish
  are sampled, for a row of age proportions in conditional age at length data,
  then that row is discarded. A value of NULL for fleets indicates to delete
- the conditional age at length data data (but not the marginal age data). If
- the EM is used with \code{\link{run_ss3sim}}, the case file should be named
-  \code{calcomp}. Only the multinomial distribution is currently implemented,
+ the conditional age at length data data (but not the marginal age data).
+ Only the multinomial distribution is currently implemented,
  so this function cannot be used with the dirichlet distribution.
  Note that this function cannot handle all types of conditional age at length
  sampling. This function requires that there be a row of conditional age at
@@ -145,15 +144,6 @@ This function is only reliable when using multinomial length
  cause difficulties in the sampling code. See the vignette for more
  information.
 }
-\section{Which arguments to specifiy in case files}{
-
-All function argument descriptions that start with an asterisk (*) will be passed
-through the case files to \code{\link{run_ss3sim}}. If one of these arguments
-is not specified in a case file, then a value of \code{NULL} will be passed,
-which may or may not be an appropriate value. Other arguments will be ignored
-if specified.
-}
-
 \seealso{
 Other sampling functions: 
 \code{\link{clean_data}()},

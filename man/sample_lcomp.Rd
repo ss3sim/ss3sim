@@ -78,18 +78,7 @@ data are assumed to represent observed length composition and will overwrite
 the length data in \code{dat_list}, which is returned invisibly. 
 The data file can also be written to the disk, if a file path is provided to
 \code{outfile}, and used as simulated data by an estimation model.
-If used with \code{\link{run_ss3sim}}, the case file should be named
-\code{agecomp}. A suggested (default) case letter is \code{D} for data.
 }
-\section{Which arguments to specifiy in case files}{
-
-All function argument descriptions that start with an asterisk (*) will be passed
-through the case files to \code{\link{run_ss3sim}}. If one of these arguments
-is not specified in a case file, then a value of \code{NULL} will be passed,
-which may or may not be an appropriate value. Other arguments will be ignored
-if specified.
-}
-
 \examples{
 dat_list <- r4ss::SS_readdat(verbose = FALSE,
   file = system.file(file.path("extdata", "models", "cod-om", "codOM.dat"), 

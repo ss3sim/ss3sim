@@ -29,7 +29,7 @@ of \code{NULL}, which leads to increased speed because writing the
 file takes time and computing resources.}
 }
 \value{
-A modified SS3 \code{.dat} file, and that file returned invisibly
+A modified SS \code{.dat} file, and that file returned invisibly
   (for testing) as a vector of character lines.
 }
 \description{
@@ -37,19 +37,8 @@ This function replaces the tail compression value for length composition data
 in a \code{.dat} file that was read in using \code{\link[r4ss]{SS_readdat}}
 with those specified in
 \code{tail_compression}. It then writes a new file with name \code{dat_file_out}
-into the working directory. If used with \code{\link{run_ss3sim}} the case
-file should be named \code{tail_compression}. A suggested case letter is
-\code{T}.
+into the working directory.
 }
-\section{Which arguments to specifiy in case files}{
-
-All function argument descriptions that start with an asterisk (*) will be passed
-through the case files to \code{\link{run_ss3sim}}. If one of these arguments
-is not specified in a case file, then a value of \code{NULL} will be passed,
-which may or may not be an appropriate value. Other arguments will be ignored
-if specified.
-}
-
 \author{
 Cole Monnahan
 }

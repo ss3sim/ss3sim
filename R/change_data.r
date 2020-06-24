@@ -15,25 +15,25 @@
 #'   length-composition data, \code{"age"} augmenting the age-composition
 #'   data, \code{"cal"} augmenting the conditional age-at-length (CAAL) data, and
 #'   \code{"mla"} augmenting the mean length-at-age data.
-#' @param age_bins *A numeric vector of age bins to use. If left as \code{NULL},
+#' @param age_bins A numeric vector of age bins to use. If left as \code{NULL},
 #'   the age bin structure will be taken from the OM.
-#' @param len_bins *A numeric vector of length bins to use. If left as
+#' @param len_bins A numeric vector of length bins to use. If left as
 #'   \code{NULL}, the length bin structure will be taken from the OM.
 #'   For CAAL data, the last value provided to
 #'   \code{len_bins} will be used for Lbin_lo and -1 will be used for Lbin_hi
 #'   for the largest length bin category, i.e., row of CAAL data.
-#' @param pop_binwidth *Population length bin width. Note that this value must
+#' @param pop_binwidth Population length bin width. Note that this value must
 #'   be smaller than the bin width specified in length-composition data
 #'   \code{len_bins} or SS will fail (see notes in the SS manual).
-#' @param pop_minimum_size *Population minimum length bin value.
-#' @param pop_maximum_size *Population maximum length bin value.
-#' @param lcomp_constant *The robustification constant for length-composition
+#' @param pop_minimum_size Population minimum length bin value.
+#' @param pop_maximum_size Population maximum length bin value.
+#' @param lcomp_constant The robustification constant for length-composition
 #'   data. Must be a numeric value, as a proportion. For example 0.1
 #'   means 10 percent. See the SS manual for further information. A \code{NULL}
 #'   value indicates no action resulting in using the current value, and a value
 #'   of 0 will throw an error because zero leads to an error when zeroes exist in
 #'   the data. Instead use a very small value like \code{1e-07}.
-#' @param tail_compression *Tail compression value to be used in SS. Must
+#' @param tail_compression Tail compression value to be used in SS. Must
 #'   be a numeric value, as a proportion. For example 0.1 means 10 percent. See
 #'   the SS manual for further information. A \code{NULL} value indicates no
 #'   action, a negative value turns the feature off in SS.
@@ -64,7 +64,6 @@
 #' entry other than the default of \code{NULL} is provided for \code{outfile}.
 #' @family change functions
 #'
-#' @template casefile-footnote
 #'
 #' @importFrom r4ss SS_readdat SS_writedat
 #' @export

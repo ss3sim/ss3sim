@@ -36,9 +36,6 @@
 #' for this using \code{\link{change_data}} within \code{\link{ss3sim_base}} by
 #' specifying a row for every year and fleet combination possible.
 #'
-#' If used with \code{\link{run_ss3sim}}, the case file should be named
-#' \code{F}. A suggested (default) case letter is \code{F}.
-#'
 #' @author Kelli Faye Johnson
 #'
 #' @template lcomp-agecomp-index
@@ -47,7 +44,7 @@
 #' to allow for back compatability with the specification of which fleet the
 #' fishing mortality pertains to. A vector the same lengths as \code{years}
 #' or a single integer value is acceptable.
-#' @param fvals *A list of the same length as \code{fleets} with one
+#' @param fvals A list of the same length as \code{fleets} with one
 #' entry per fishing mortality level (\emph{F}) entry in \code{years}.
 #' A single value will be repeated for every value in \code{years}. If more than
 #' one fleet is present, then the single value will be used for all fleets, i.e.,
@@ -65,7 +62,6 @@
 #' @template ctl_file_out
 #' @return Modified SS control file.
 #' @family change functions
-#' @template casefile-footnote
 #' @export
 #' @examples
 #' d <- system.file(file.path("extdata", "models"), package = "ss3sim")

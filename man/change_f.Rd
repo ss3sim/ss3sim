@@ -30,7 +30,7 @@ to allow for back compatability with the specification of which fleet the
 fishing mortality pertains to. A vector the same lengths as \code{years}
 or a single integer value is acceptable.}
 
-\item{fvals}{*A list of the same length as \code{fleets} with one
+\item{fvals}{A list of the same length as \code{fleets} with one
 entry per fishing mortality level (\emph{F}) entry in \code{years}.
 A single value will be repeated for every value in \code{years}. If more than
 one fleet is present, then the single value will be used for all fleets, i.e.,
@@ -90,19 +90,7 @@ combination is specified in the control file and not present in the data file,
 then the entry in the control file will be ignored. ss3sim automatically corrects
 for this using \code{\link{change_data}} within \code{\link{ss3sim_base}} by
 specifying a row for every year and fleet combination possible.
-
-If used with \code{\link{run_ss3sim}}, the case file should be named
-\code{F}. A suggested (default) case letter is \code{F}.
 }
-\section{Which arguments to specifiy in case files}{
-
-All function argument descriptions that start with an asterisk (*) will be passed
-through the case files to \code{\link{run_ss3sim}}. If one of these arguments
-is not specified in a case file, then a value of \code{NULL} will be passed,
-which may or may not be an appropriate value. Other arguments will be ignored
-if specified.
-}
-
 \examples{
 d <- system.file(file.path("extdata", "models"), package = "ss3sim")
 # Using original vector-style inputs

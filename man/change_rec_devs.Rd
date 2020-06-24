@@ -34,10 +34,6 @@ be to a \code{ss_new} file so \code{change_rec_devs} can
 properly determine where to place the recruitment deviations
 in the control file.
 }
-\details{
-This function does not need to be specified in a case file if you
-are running an ss3sim simulation using \code{\link{run_ss3sim}}.
-}
 \examples{
 d <- system.file(file.path("extdata", "models"), package = "ss3sim")
 change_rec_devs(recdevs = rlnorm(101),

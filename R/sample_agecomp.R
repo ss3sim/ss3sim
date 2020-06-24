@@ -8,8 +8,6 @@
 #' the age data in \code{dat_list}, which is returned invisibly.
 #' The data file can also be written to the disk, if a file path is provided to
 #' \code{outfile}, and used as simulated data by an estimation model.
-#' If used with \code{\link{run_ss3sim}}, the case file should be named
-#' \code{agecomp}. A suggested (default) case letter is \code{D} for data.
 #'
 #' @author Cole Monnahan and Kotaro Ono
 #'
@@ -25,7 +23,6 @@
 #'   conditional data, set \code{keep_conditional} to \code{TRUE}
 #'   and use \code{\link{sample_calcomp}}.
 #' @template sampling-return
-#' @template casefile-footnote
 #' @importFrom r4ss SS_writedat
 #'
 #' @examples

@@ -4,16 +4,14 @@
 #' in a \code{.dat} file that was read in using \code{\link[r4ss]{SS_readdat}}
 #' with those specified in
 #' \code{lcomp_constant}. It then writes a new file with name \code{outfile}
-#' into the working directory. If used with \code{\link{run_ss3sim}} the case
-#' file should be named \code{lcomp_constant}. A suggested case letter is
-#' \code{C}.
+#' into the working directory.
 #'
 #' @details The robustification constant is added to both the observed and
 #'   expected proportions of length composition data, before being normalized
 #'   internally. It is designed to help stabilize the model, but is unclear how
 #'   and when to use it for optimal effect. The same value is used for all
 #'   length data.
-#' @param lcomp_constant *The new value to be used. Must be a numeric value, as
+#' @param lcomp_constant The new value to be used. Must be a numeric value, as
 #'   a proportion. For example 0.1 means 10 percent. See the SS3 manual for
 #'   further information. A NULL value indicates no action resulting in using
 #'   the current value, and a value of 0 will throw an error since that leads to
@@ -21,9 +19,8 @@
 #'   1e-07.
 #' @template dat_list
 #' @template outfile
-#' @return A modified SS3 \code{.dat} file, and that file returned invisibly
+#' @return A modified SS \code{.dat} file, and that file returned invisibly
 #'   (for testing) as a vector of character lines.
-#' @template casefile-footnote
 #' @author Cole Monnahan
 #' @importFrom r4ss SS_writedat
 

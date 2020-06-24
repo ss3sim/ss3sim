@@ -2,9 +2,7 @@
 #'
 #' A retrospective analysis tests the effect of peeling back the number of
 #' operating model years observable to the estimation model. This function
-#' alters the SS3 starter file to run a retrospective analysis.
-#' If used with \code{\link{run_ss3sim}} the case file should be named
-#' \code{R}. A suggested (default) case letter is \code{R}.
+#' alters the SS starter file to run a retrospective analysis.
 #'
 #' @details Note that the starter file is set up to run a single retrospective
 #'   run. Therefore, if you would like to run retrospective analyses for, say,
@@ -13,13 +11,12 @@
 #'
 #' @template str_file_in
 #' @template str_file_out
-#' @param retro_yr *Which retrospective year to enter into the starter file.
+#' @param retro_yr Which retrospective year to enter into the starter file.
 #'   Should be 0 (no retrospective analysis) or a negative value, which
 #'   leads to the removal of data for the specified number of years.
 #'   Positive values are not allowed.
 #' @author Sean C. Anderson
 #' @return A modified SS3 starter file.
-#' @template casefile-footnote
 #' @family change functions
 #' @importFrom r4ss SS_readstarter SS_writestarter
 #'

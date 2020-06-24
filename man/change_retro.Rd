@@ -15,7 +15,7 @@ change_retro(
 
 \item{str_file_out}{A string providing the path to the output SS \code{starter.ss} file.}
 
-\item{retro_yr}{*Which retrospective year to enter into the starter file.
+\item{retro_yr}{Which retrospective year to enter into the starter file.
 Should be 0 (no retrospective analysis) or a negative value, which
 leads to the removal of data for the specified number of years.
 Positive values are not allowed.}
@@ -26,9 +26,7 @@ A modified SS3 starter file.
 \description{
 A retrospective analysis tests the effect of peeling back the number of
 operating model years observable to the estimation model. This function
-alters the SS3 starter file to run a retrospective analysis.
-If used with \code{\link{run_ss3sim}} the case file should be named
-\code{R}. A suggested (default) case letter is \code{R}.
+alters the SS starter file to run a retrospective analysis.
 }
 \details{
 Note that the starter file is set up to run a single retrospective
@@ -36,15 +34,6 @@ Note that the starter file is set up to run a single retrospective
   0, 1, 2, 3, 4, and 5 years, you will need to use this function to adjust
   the starter file 6 separate times.
 }
-\section{Which arguments to specifiy in case files}{
-
-All function argument descriptions that start with an asterisk (*) will be passed
-through the case files to \code{\link{run_ss3sim}}. If one of these arguments
-is not specified in a case file, then a value of \code{NULL} will be passed,
-which may or may not be an appropriate value. Other arguments will be ignored
-if specified.
-}
-
 \examples{
 # Create a temporary folder for the output:
 temp_path <- file.path(tempdir(), "ss3sim-retro-example")

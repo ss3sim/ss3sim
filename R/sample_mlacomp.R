@@ -26,7 +26,6 @@
 #' @param verbose Logical value whether or not diagnostic information from
 #'   \pkg{r4ss} functions should be printed to the screen. Default is FALSE.
 #' @template sampling-return
-#' @template casefile-footnote
 #' @family sampling functions
 #' @importFrom r4ss SS_writedat SS_parlines
 #' @export

@@ -5,7 +5,7 @@
 #' \code{change_o} is specifically set up to work with an operating model
 #' \code{.ctl} file.
 #'
-#' @param change_o_list *A list of named vectors. Names correspond to parameters
+#' @param change_o_list A list of named vectors. Names correspond to parameters
 #'   in the operating model and the vectors correspond to deviations.
 #'   Alternatively, \code{par_name} and \code{par_init} can be passed to this
 #'   function.
@@ -22,7 +22,6 @@
 #' @family change functions
 #' @return The function creates modified versions of the  \code{.ctl} files. The
 #'   function also returns \code{change_o_list} invisibly.
-#' @template casefile-footnote
 #'
 #' @section Specifying the \code{change_o_list}:
 #'
@@ -33,10 +32,14 @@
 #' \code{.ctl} file.
 #'
 #' @section Passing arguments to \code{change_o} through \code{\link{run_ss3sim}}:
-#' (1) create a case file with an arbitrary letter
-#' not used elsewhere (anything but D, E, F, or R) and (2) include the line
-#' \code{function_type; change_o} in your case file. For example, you might
-#' want to use M for natural mortality, S for selectivity, or G for growth.
+#' (1) add a column called `co.par_name` to the `simdf` that specifies which parameters
+#' you want to change in the OM, each element of this vector needs to be
+#' wrapped in quotations to be later evaluated, e.g., `'c("SR_BH_steep","SR_sigmaR")'`
+#' represents a single entry;
+#' and (2) add an additional column called `co.par_int` to the `simdf` that specifies
+#' INIT values for each parameter in the previous column, e.g., `"c(0.6, 1.0)"`, if
+#' there is more than one value, the vector needs to be wrapped in quotations to be
+#' evaluated later.
 #'
 #' @importFrom r4ss SS_parlines SS_changepars
 #'

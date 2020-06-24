@@ -4,9 +4,7 @@
 #' in a \code{.dat} file that was read in using \code{\link[r4ss]{SS_readdat}}
 #' with those specified in
 #' \code{tail_compression}. It then writes a new file with name \code{dat_file_out}
-#' into the working directory. If used with \code{\link{run_ss3sim}} the case
-#' file should be named \code{tail_compression}. A suggested case letter is
-#' \code{T}.
+#' into the working directory.
 #'
 #' @param tail_compression *The new tail_compression value to be used. Must be a
 #'   numeric value, as a proportion. For example 0.1 means 10 percent. See the
@@ -14,9 +12,8 @@
 #'   negative value indicates to SS3 to ignore it (not use that feature).
 #' @template dat_list
 #' @template outfile
-#' @return A modified SS3 \code{.dat} file, and that file returned invisibly
+#' @return A modified SS \code{.dat} file, and that file returned invisibly
 #'   (for testing) as a vector of character lines.
-#' @template casefile-footnote
 #' @author Cole Monnahan
 #' @importFrom r4ss SS_writedat
 #' @export

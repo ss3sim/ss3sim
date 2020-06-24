@@ -8,11 +8,8 @@
 #' @param recdevs_new A vector of new recruitment deviations.
 #' @template par_file_in
 #' @template par_file_out
-#' @return A modified SS3 \code{.par} file.
+#' @return A modified SS \code{.par} file.
 #' @author Cole Monnahan
-#' @details This function does not need to be specified in a case file if you
-#'   are running and ss3sim simulation through case files with
-#'   \code{\link{run_ss3sim}}.
 #' @export
 #'
 

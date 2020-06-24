@@ -14,13 +14,13 @@
 #' @param lbin_method A numeric value of either \code{NULL, 1, 2, 3} to change
 #'   the lbin_method for the population bin. Only supports either \code{NULL, 1,
 #'   2} at the moment. \code{NULL} means to keep it unchanged.
-#' @param pop_binwidth *Population length bin width. Only necessary for
+#' @param pop_binwidth Population length bin width. Only necessary for
 #' \code{lbin_method=2}. Note that this value must be smaller than the bin
 #' width specified in length composition data \code{len_bins} or SS3 will
 #' fail (see notes in the SS3 manual).
-#' @param pop_minimum_size *Population minimum length bin value. 'Only
+#' @param pop_minimum_size Population minimum length bin value. 'Only
 #' necessary for \code{lbin_method=2}
-#' @param pop_maximum_size *Population maximum length bin value. Only
+#' @param pop_maximum_size Population maximum length bin value. Only
 #' necessary for \code{lbin_method=2}
 #' @importFrom r4ss SS_writedat
 #' @export
@@ -107,7 +107,7 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
           stop("lbin_method method should be either NULL, 1 or 2; 3 is not currently implemented")
   }
   if (is.null(dat_list$lencomp)) {
-    stop("no lcomp data. Verify your case argument files")
+    stop("no lcomp data. Verify your input arguments.")
   }
   if (dat_list$Ngenders > 1) {
     stop("_Ngenders is greater than 1 in the model.change_em_binning only ",

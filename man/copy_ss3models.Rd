@@ -9,9 +9,7 @@ copy_ss3models(model_dir, scenarios, iterations = 1:100, type = c("om", "em"))
 }
 \arguments{
 \item{model_dir}{A directory containing the operating or estimation
-model. Each folder should be named according to a scenario ID. (See
-the vignette \code{vignette("ss3sim-vignette")} or
-\code{\link{get_caseargs}} for details on the scenario ID format.)}
+model. Each folder should be named according to a scenario ID.}
 
 \item{scenarios}{Which scenarios to copy to. Supply a vector of
 character elements.}

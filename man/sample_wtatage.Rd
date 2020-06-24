@@ -44,7 +44,7 @@ age bin. Commonly \code{control.ss_new}}
 numeric vectors. If no fleet collected samples, keep the value to
 \code{years=NULL}.}
 
-\item{fill_fnc}{*A function to fill in missing values (ages and years). The
+\item{fill_fnc}{A function to fill in missing values (ages and years). The
 resulting weight-at-age file will have values for all years and ages.One
 function is \code{fill_across}.}
 
@@ -68,18 +68,7 @@ specified function. These matrices are then written to file for the EM. By
 calling this function, \pkg{ss3sim} will turn on the empirical weight-at-age
 function (set maturity option to 5) automatically. See
 \code{\link{ss3sim_base}} for more details on how that is implemented.
-If used with \code{\link{run_ss3sim}} the case file should be named
-\code{wtatage}.
 }
-\section{Which arguments to specifiy in case files}{
-
-All function argument descriptions that start with an asterisk (*) will be passed
-through the case files to \code{\link{run_ss3sim}}. If one of these arguments
-is not specified in a case file, then a value of \code{NULL} will be passed,
-which may or may not be an appropriate value. Other arguments will be ignored
-if specified.
-}
-
 \seealso{
 \code{\link{fill_across}}
 

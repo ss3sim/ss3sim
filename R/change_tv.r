@@ -5,7 +5,7 @@
 #' \code{change_tv} is specifically set up to work with an operating model
 #' \code{.ctl} file.
 #'
-#' @param change_tv_list *A list of named vectors. Names correspond to parameters
+#' @param change_tv_list A list of named vectors. Names correspond to parameters
 #' in the operating model that currently do not use environmental deviations and
 #' the vectors correspond to deviations. See the section "Specifying the
 #' \code{change_tv_list}" below for help on specifying this argument.
@@ -19,11 +19,10 @@
 #'   \code{.dat} files if ctl_file_out and dat_file_out are not NULL. The function
 #'   also returns a list of the modified \code{.ctl} and \code{.dat} R objects
 #'   invisibly.
-#' @template casefile-footnote
 #' @details
 #' Although there are three ways to implement time-varying parameters within
 #' SS3, \pkg{ss3sim} and \code{change_tv} only use the environmental variable
-#' option. Within SS3, time-varying parameters work on an annual time-step.
+#' option. Within SS, time-varying parameters work on an annual time-step.
 #' Thus, for models with multiple seasons, the time-varying parameters will
 #' remain constant for the entire year.
 #'
@@ -60,12 +59,6 @@
 #'
 #' For catchability (\eqn{q}) the *additive* functional linkage is implemented
 #' on the log scale: \eqn{ln(q'[y]) = ln(q) + link * env[y]}
-#'
-#' @section Passing arguments to \code{change_tv} through \code{\link{run_ss3sim}}:
-#' (1) create a case file with an arbitrary letter
-#' not used elsewhere (anything but D, E, F, or R) and (2) include the line
-#' \code{function_type; change_tv} in your case file. For example, you might
-#' want to use M for natural mortality, S for selectivity, or G for growth.
 #'
 #' @importFrom r4ss SS_readdat SS_writedat
 #'

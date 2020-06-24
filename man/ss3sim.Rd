@@ -6,33 +6,30 @@
 \title{ss3sim: Fisheries stock assessment simulation testing with Stock Synthesis}
 \description{
 The \pkg{ss3sim} \R package is designed to facilitate rapid, reproducible,
-and flexible simulation with the widely-used Stock Synthesis 3 (SS3)
+and flexible simulation with the widely-used Stock Synthesis (SS)
 statistical catch-at-age stock assessment framework.
 }
 \details{
 An \pkg{ss3sim} simulation requires three types of input: (1) a base
-model of the underlying truth (an SS3 operating model), (2) a base
-model of how you will assess that truth (an SS3 estimation model),
+model of the underlying truth (an SS operating model), (2) a base
+model of how you will assess that truth (an SS estimation model),
 (3) and a set of cases that deviate from these base models that you
-want to compare (configuration arguments provided as plain-text
-cases files).
+want to compare.
 
-You can find examples of these SS3 operating and estimation models
-within the package data (\code{inst/extdata/models/}). The package
-data also contains example plain-text control files in the folder
-\code{inst/extdata/cases} and \code{inst/extdata/eg-cases}.
+You can find examples of these SS operating and estimation models
+within the package data (\code{inst/extdata/models/}).
 
 To carry out \pkg{ss3sim} simulations
-with the version from CRAN, you will need to have SS3 installed on
+with the version from CRAN, you will need to have SS installed on
 your computer and the binary needs to be in the path that \R sees. See the
 section "Installing the ss3sim R package" in the vignette
-\code{vignette("ss3sim-vignette")} for instructions on installing SS3. See
-the Appendix A "Putting SS3 in your path" in the vignette for instructions on
-making sure SS3 will work from within \R.
+\code{vignette("ss3sim-vignette")} for instructions on installing SS. See
+the Appendix A "Putting SS in your path" in the vignette for instructions on
+making sure SS will work from within \R.
 
 The main \pkg{ss3sim} functions are divided into three types:
 
-1. \code{change} and \code{sample} functions that manipulate SS3
+1. \code{change} and \code{sample} functions that manipulate SS
 configuration files. These manipulations generate an underlying "truth"
 (operating models) and control our assessment of those models (estimation
 models).
@@ -68,7 +65,7 @@ for length composition data.
 }
 
 2. \code{run} functions that conduct simulations. These functions
-generate a folder structure, call manipulation functions, run SS3
+generate a folder structure, call manipulation functions, run SS
 as needed, and save the output.
 \itemize{
 \item \code{\link{run_ss3sim}}: Main function to run \pkg{ss3sim}

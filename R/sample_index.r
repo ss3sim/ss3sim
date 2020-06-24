@@ -6,13 +6,11 @@
 #' \code{B_y*exp(rnorm(1, 0, sds_obs)-sds_obs^2/2)}. The second term
 #' adjusts the random samples so that their expected value is \code{B_y} (i.e. the
 #' log-normal bias correction).
-#' If used with \code{\link{run_ss3sim}} the case file should be named
-#' \code{index}. A suggested (default) case letter is \code{D} for data.
 #'
 #' @template lcomp-agecomp-index
 #' @template dat_list
 #' @template outfile
-#' @param sds_obs *A list the same length as \code{fleets}. The list should
+#' @param sds_obs A list the same length as \code{fleets}. The list should
 #'   contain either single values or numeric vectors of the same length as the
 #'   number of years which represent the standard deviation of the observation
 #'   error. Single values are repeated for all years.
@@ -20,7 +18,6 @@
 #'   the results. Useful for testing and exploring the function.
 #'
 #' @template sampling-return
-#' @template casefile-footnote
 #' @importFrom r4ss SS_writedat
 #'
 #' @export

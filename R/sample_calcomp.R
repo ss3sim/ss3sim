@@ -15,9 +15,8 @@
 #'  (conditional on length) to sample for realistic age proportions. If no fish
 #'  are sampled, for a row of age proportions in conditional age at length data,
 #'  then that row is discarded. A value of NULL for fleets indicates to delete
-#'  the conditional age at length data data (but not the marginal age data). If
-#'  the EM is used with \code{\link{run_ss3sim}}, the case file should be named
-#'   \code{calcomp}. Only the multinomial distribution is currently implemented,
+#'  the conditional age at length data data (but not the marginal age data).
+#'  Only the multinomial distribution is currently implemented,
 #'  so this function cannot be used with the dirichlet distribution.
 #'  Note that this function cannot handle all types of conditional age at length
 #'  sampling. This function requires that there be a row of conditional age at
@@ -44,7 +43,7 @@
 #'  should not be modified by previous sampling functions to contain sampled
 #'  data.
 #' @template outfile
-#' @param Nsamp_lengths *A numeric list of the same length as fleets. Either
+#' @param Nsamp_lengths A numeric list of the same length as fleets. Either
 #'  single values or vectors of the same length as the number of years can be
 #'  passed through. Single values are repeated for all years. If no fleet
 #'  collected samples, specify \code{Nsamp_lengths = NULL}. Specifically, for
@@ -52,7 +51,7 @@
 #'  length samples for a given year and fleet across all length bins that can be
 #'  used to then sample the conditional age at length samples.
 #'  \code{Nsamp_lengths} must be greater than or equal to \code{Nsamp_ages}.
-#' @param Nsamp_ages *A numeric list of the same length as fleets. Either single
+#' @param Nsamp_ages A numeric list of the same length as fleets. Either single
 #'  values or vectors of the same length as the number of years can be passed
 #'  through. Single values are repeated for all years. If no fleet collected
 #'  samples, specify \code{Nsamp_ages = NULL}. Specifically, for
@@ -91,7 +90,6 @@
 #'  included in \code{dat_list[["lencomp"]]}? If FALSE, expected values are in
 #'  present in \code{datlist[["lencomp"]]}.
 #' @template sampling-return
-#' @template casefile-footnote
 #' @family sampling functions
 #' @export
 

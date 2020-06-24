@@ -77,15 +77,6 @@ Take a \code{data.SS_new} file, read in by \pkg{r4ss} function
   length-at-age values. These values are then written to file for the
   EM.
 }
-\section{Which arguments to specifiy in case files}{
-
-All function argument descriptions that start with an asterisk (*) will be passed
-through the case files to \code{\link{run_ss3sim}}. If one of these arguments
-is not specified in a case file, then a value of \code{NULL} will be passed,
-which may or may not be an appropriate value. Other arguments will be ignored
-if specified.
-}
-
 \examples{
 d <- system.file(file.path("extdata", "models", "cod-om"),
   package = "ss3sim")

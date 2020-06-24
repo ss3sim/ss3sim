@@ -13,7 +13,7 @@ change_tv(
 )
 }
 \arguments{
-\item{change_tv_list}{*A list of named vectors. Names correspond to parameters
+\item{change_tv_list}{A list of named vectors. Names correspond to parameters
 in the operating model that currently do not use environmental deviations and
 the vectors correspond to deviations. See the section "Specifying the
 \code{change_tv_list}" below for help on specifying this argument.}
@@ -41,7 +41,7 @@ and implements time-varying parameters using environmental variables.
 \details{
 Although there are three ways to implement time-varying parameters within
 SS3, \pkg{ss3sim} and \code{change_tv} only use the environmental variable
-option. Within SS3, time-varying parameters work on an annual time-step.
+option. Within SS, time-varying parameters work on an annual time-step.
 Thus, for models with multiple seasons, the time-varying parameters will
 remain constant for the entire year.
 
@@ -59,15 +59,6 @@ preferred option is to transform the environmental variable into an age 0
 pre-recruit survey. See page 55 of the SS3 version 3.24f manual for more
 information.
 }
-\section{Which arguments to specifiy in case files}{
-
-All function argument descriptions that start with an asterisk (*) will be passed
-through the case files to \code{\link{run_ss3sim}}. If one of these arguments
-is not specified in a case file, then a value of \code{NULL} will be passed,
-which may or may not be an appropriate value. Other arguments will be ignored
-if specified.
-}
-
 \section{Specifying the \code{change_tv_list}}{
 
 Parameters will change to vary with time according to the vectors of
@@ -88,14 +79,6 @@ value of one and the par value is specified in the \code{.par} file:
 
 For catchability (\eqn{q}) the *additive* functional linkage is implemented
 on the log scale: \eqn{ln(q'[y]) = ln(q) + link * env[y]}
-}
-
-\section{Passing arguments to \code{change_tv} through \code{\link{run_ss3sim}}}{
-
-(1) create a case file with an arbitrary letter
-not used elsewhere (anything but D, E, F, or R) and (2) include the line
-\code{function_type; change_tv} in your case file. For example, you might
-want to use M for natural mortality, S for selectivity, or G for growth.
 }
 
 \examples{

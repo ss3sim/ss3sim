@@ -7,7 +7,7 @@
 change_lcomp_constant(lcomp_constant, dat_list, outfile = NULL)
 }
 \arguments{
-\item{lcomp_constant}{*The new value to be used. Must be a numeric value, as
+\item{lcomp_constant}{The new value to be used. Must be a numeric value, as
 a proportion. For example 0.1 means 10 percent. See the SS3 manual for
 further information. A NULL value indicates no action resulting in using
 the current value, and a value of 0 will throw an error since that leads to
@@ -31,7 +31,7 @@ of \code{NULL}, which leads to increased speed because writing the
 file takes time and computing resources.}
 }
 \value{
-A modified SS3 \code{.dat} file, and that file returned invisibly
+A modified SS \code{.dat} file, and that file returned invisibly
   (for testing) as a vector of character lines.
 }
 \description{
@@ -39,9 +39,7 @@ This function replaces the robustification value for length composition data
 in a \code{.dat} file that was read in using \code{\link[r4ss]{SS_readdat}}
 with those specified in
 \code{lcomp_constant}. It then writes a new file with name \code{outfile}
-into the working directory. If used with \code{\link{run_ss3sim}} the case
-file should be named \code{lcomp_constant}. A suggested case letter is
-\code{C}.
+into the working directory.
 }
 \details{
 The robustification constant is added to both the observed and
@@ -50,15 +48,6 @@ The robustification constant is added to both the observed and
   and when to use it for optimal effect. The same value is used for all
   length data.
 }
-\section{Which arguments to specifiy in case files}{
-
-All function argument descriptions that start with an asterisk (*) will be passed
-through the case files to \code{\link{run_ss3sim}}. If one of these arguments
-is not specified in a case file, then a value of \code{NULL} will be passed,
-which may or may not be an appropriate value. Other arguments will be ignored
-if specified.
-}
-
 \author{
 Cole Monnahan
 }

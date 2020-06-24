@@ -9,8 +9,6 @@
 #' calling this function, \pkg{ss3sim} will turn on the empirical weight-at-age
 #' function (set maturity option to 5) automatically. See
 #' \code{\link{ss3sim_base}} for more details on how that is implemented.
-#' If used with \code{\link{run_ss3sim}} the case file should be named
-#' \code{wtatage}.
 #'
 #' @author Cole Monnahan, Allan Hicks, Peter Kuriyama
 #'
@@ -20,7 +18,7 @@
 #'   the OM parameters for growth and weight/length relationship. These values
 #'   are used to determine the uncertainty about weight for fish sampled in each
 #'   age bin. Commonly \code{control.ss_new}
-#' @param fill_fnc *A function to fill in missing values (ages and years). The
+#' @param fill_fnc A function to fill in missing values (ages and years). The
 #'   resulting weight-at-age file will have values for all years and ages.One
 #'   function is \code{fill_across}.
 #' @param cv_wtatage A user specified CV for growth. Default is \code{NULL}.
@@ -29,7 +27,6 @@
 #' @template lcomp-agecomp-index
 #' @template dat_list
 #' @template outfile
-#' @template casefile-footnote
 #' @importFrom r4ss SS_parlines
 #' @seealso \code{\link{fill_across}}
 #' @family sampling functions
@@ -62,7 +59,7 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
     ## A value of NULL for fleets signifies to turn this data off in the
     ## EM. So quit early and in ss3sim_base do NOT turn wtatage on using
     ## the maturity function
-    if(is.null(cv_wtatage)) stop('specify cv_wtatage in case file')
+    if(is.null(cv_wtatage)) stop('specify cv_wtatage')
 
     cat('cv_wtatage is', cv_wtatage, '\n')
     if(is.null(fleets)) return(NULL)

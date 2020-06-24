@@ -8,10 +8,9 @@ on.exit(setwd(wd), add = TRUE)
 
 d <- system.file("extdata", package = "ss3sim")
 case_folder <- file.path(d, "eg-cases")
-a <- get_caseargs(folder = case_folder,
-                  case_files = list(F = "F", D = c("index", "lcomp", "agecomp"),
-                                    M = "M", E = "E"),
-                  scenario = "F1-D0-M1-E0-cod")
+a <- list("index" = list("fleets" = 2,
+  "years" = list(seq(76, 100, by = 2)),
+  "sds_obs" = list(0.2)))
 
 exp_vals <- SS_readdat(file.path(d, "example-om", "ss3_expected_values.dat"),
                        version = NULL, verbose = FALSE)

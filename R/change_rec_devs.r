@@ -9,9 +9,6 @@
 #' properly determine where to place the recruitment deviations
 #' in the control file.
 #'
-#' This function does not need to be specified in a case file if you
-#' are running an ss3sim simulation using \code{\link{run_ss3sim}}.
-#'
 #' @param recdevs A vector of recruitment deviations to be entered into
 #' the SS control file. The vector must be the same length as the vector
 #' of recruitment deviations that are commented out in the \code{ss_new}

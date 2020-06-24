@@ -18,18 +18,13 @@ change_rec_devs_par(
 \item{par_file_out}{A string providing the path to the output SS \code{.par} file.}
 }
 \value{
-A modified SS3 \code{.par} file.
+A modified SS \code{.par} file.
 }
 \description{
 This function replaces the recruitment deviations in the
 \code{ss.par} file with those specified in \code{recdevs_new}, as
 well as a comment (for debugging). It then writes a new file with
 name \code{par_file_out} into the working directory.
-}
-\details{
-This function does not need to be specified in a case file if you
-  are running and ss3sim simulation through case files with
-  \code{\link{run_ss3sim}}.
 }
 \author{
 Cole Monnahan

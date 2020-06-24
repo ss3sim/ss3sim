@@ -39,15 +39,15 @@ file takes time and computing resources.}
 the lbin_method for the population bin. Only supports either \code{NULL, 1,
 2} at the moment. \code{NULL} means to keep it unchanged.}
 
-\item{pop_binwidth}{*Population length bin width. Only necessary for
+\item{pop_binwidth}{Population length bin width. Only necessary for
 \code{lbin_method=2}. Note that this value must be smaller than the bin
 width specified in length composition data \code{len_bins} or SS3 will
 fail (see notes in the SS3 manual).}
 
-\item{pop_minimum_size}{*Population minimum length bin value. 'Only
+\item{pop_minimum_size}{Population minimum length bin value. 'Only
 necessary for \code{lbin_method=2}}
 
-\item{pop_maximum_size}{*Population maximum length bin value. Only
+\item{pop_maximum_size}{Population maximum length bin value. Only
 necessary for \code{lbin_method=2}}
 }
 \description{

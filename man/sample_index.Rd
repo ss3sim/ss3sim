@@ -38,7 +38,7 @@ An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 numeric vectors. If no fleet collected samples, keep the value to
 \code{years=NULL}.}
 
-\item{sds_obs}{*A list the same length as \code{fleets}. The list should
+\item{sds_obs}{A list the same length as \code{fleets}. The list should
 contain either single values or numeric vectors of the same length as the
 number of years which represent the standard deviation of the observation
 error. Single values are repeated for all years.}
@@ -57,18 +57,7 @@ from the operating model for year y. Then the sampled value is calculated as:
 \code{B_y*exp(rnorm(1, 0, sds_obs)-sds_obs^2/2)}. The second term
 adjusts the random samples so that their expected value is \code{B_y} (i.e. the
 log-normal bias correction).
-If used with \code{\link{run_ss3sim}} the case file should be named
-\code{index}. A suggested (default) case letter is \code{D} for data.
 }
-\section{Which arguments to specifiy in case files}{
-
-All function argument descriptions that start with an asterisk (*) will be passed
-through the case files to \code{\link{run_ss3sim}}. If one of these arguments
-is not specified in a case file, then a value of \code{NULL} will be passed,
-which may or may not be an appropriate value. Other arguments will be ignored
-if specified.
-}
-
 \examples{
 \dontrun{
 # Find the example data location:

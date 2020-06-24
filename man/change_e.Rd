@@ -2,7 +2,7 @@
 % Please edit documentation in R/change_e.r
 \name{change_e}
 \alias{change_e}
-\title{Methods to alter which parameters are estimated in a SS3 \code{.ctl} file.}
+\title{Methods to alter estimated parameters in an SS model}
 \usage{
 change_e(
   ctl_file_in = "em.ctl",
@@ -53,7 +53,7 @@ initial value for a given parameter.}
 \code{par_name}.  Values can be \code{NA} if you do not wish to change
 the phase for a given parameter.}
 
-\item{forecast_num}{*Number of years to perform forecasts. For those years,
+\item{forecast_num}{Number of years to perform forecasts. For those years,
 the data will be removed from the \code{dat_list}, enabling SS3 to
 generate forecasts rather than use the data to fit the model.}
 
@@ -70,40 +70,19 @@ is \code{FALSE}.}
 \item{natM_val}{Deprecated. Should have value NULL.}
 }
 \value{
-Altered versions of SS3 \code{.ctl} and \code{forecast.ss} files are written
+Altered versions of SS \code{.ctl} and \code{forecast.ss} files are written
 to the disk and the altered \code{dat_list} is returned invisibly.
 }
 \description{
-Takes SS3 \code{.ctl} and \code{forecast.ss} files, along with
+Takes Stock Synthesis (SS)
+  \code{.ctl} and \code{forecast.ss} files, along with
   a list structure which houses the data file as read in by
   \code{\link[r4ss]{SS_readdat}}
   and changes which parameters are estimated, how natural mortality is
   estimated, and if forecasts are performed. The function can be called by
   itself or within \code{\link{run_ss3sim}} to alter an estimation model
   \code{.ctl} file.
-  If used with \code{\link{run_ss3sim}} the case file should be named
-  \code{E}. A suggested (default) case letter is \code{E} for estimation.
 }
-\details{
-Turning parameters on and off is the main function of
-  \code{change_e}.  \code{change_e} was not created with the capability of
-  adding parameters to a \code{.ctl} file.  The function can only add
-  parameters for age specific natural mortality, and only for models with
-  one growth morph.  Furthermore, the function is designed to add complexity
-  to the natural mortality type and not remove complexity.  Therefore, the
-  function will fail if natural mortality in the \code{ctl_file_in} is not
-  specified as \code{"1Param"} and \code{natM_type} is anything other than
-  \code{NULL} or \code{"1Param"}.
-}
-\section{Which arguments to specifiy in case files}{
-
-All function argument descriptions that start with an asterisk (*) will be passed
-through the case files to \code{\link{run_ss3sim}}. If one of these arguments
-is not specified in a case file, then a value of \code{NULL} will be passed,
-which may or may not be an appropriate value. Other arguments will be ignored
-if specified.
-}
-
 \examples{
 \dontrun{
 

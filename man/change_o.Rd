@@ -14,7 +14,7 @@ change_o(
 )
 }
 \arguments{
-\item{change_o_list}{*A list of named vectors. Names correspond to parameters
+\item{change_o_list}{A list of named vectors. Names correspond to parameters
 in the operating model and the vectors correspond to deviations.
 Alternatively, \code{par_name} and \code{par_init} can be passed to this
 function.}
@@ -45,15 +45,6 @@ and implements parameter value changes that are NOT time varying.
 \code{change_o} is specifically set up to work with an operating model
 \code{.ctl} file.
 }
-\section{Which arguments to specifiy in case files}{
-
-All function argument descriptions that start with an asterisk (*) will be passed
-through the case files to \code{\link{run_ss3sim}}. If one of these arguments
-is not specified in a case file, then a value of \code{NULL} will be passed,
-which may or may not be an appropriate value. Other arguments will be ignored
-if specified.
-}
-
 \section{Specifying the \code{change_o_list}}{
 
 
@@ -66,10 +57,14 @@ Parameter names must be unique and match the full parameter name in the
 
 \section{Passing arguments to \code{change_o} through \code{\link{run_ss3sim}}}{
 
-(1) create a case file with an arbitrary letter
-not used elsewhere (anything but D, E, F, or R) and (2) include the line
-\code{function_type; change_o} in your case file. For example, you might
-want to use M for natural mortality, S for selectivity, or G for growth.
+(1) add a column called `co.par_name` to the `simdf` that specifies which parameters
+you want to change in the OM, each element of this vector needs to be
+wrapped in quotations to be later evaluated, e.g., `'c("SR_BH_steep","SR_sigmaR")'`
+represents a single entry;
+and (2) add an additional column called `co.par_int` to the `simdf` that specifies
+INIT values for each parameter in the previous column, e.g., `"c(0.6, 1.0)"`, if
+there is more than one value, the vector needs to be wrapped in quotations to be
+evaluated later.
 }
 
 \seealso{

@@ -1,7 +1,8 @@
 #' Run an operating or estimation model for a specified set of scenario IDs
 #'
-#' This function takes care of calling SS3. Importantly, it parses whether the
-#' user is on Unix or Windows and calls the binary correctly. This lower-level
+#' Call Stock Synthesis (SS) to generate data or fit model to data.
+#' The appropriate version of SS is called after determining if the
+#' user is on Unix or Windows. This lower-level
 #' function is meant to be called by higher level functions such as
 #' \code{\link{run_ss3sim}}, \code{\link{ss3sim_base}}, or your own custom
 #' function.
@@ -17,7 +18,7 @@
 #'   the model that SS3 should run on.
 #' @param type Are you running the operating or estimation models?
 #' @param hess Calculate the Hessian on estimation model runs?
-#' @param admb_options Any additional options to pass to the SS3 command.
+#' @param admb_options Any additional options to pass to the SS command.
 #' @param ignore.stdout Passed to \code{system}. If \code{TRUE} then ADMB
 #'   output is not printed on screen. This will be slightly faster. Set to
 #'   \code{FALSE} to help with debugging.
