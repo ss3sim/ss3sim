@@ -8,7 +8,8 @@ calculate_bias(dir, ctl_file_in)
 }
 \arguments{
 \item{dir}{A character string specifying the path to the folder with the
-results from the preliminary run of the estimation model.}
+results from a stock assessment model run. Paths are passed without a
+terminal slash.}
 
 \item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
 }

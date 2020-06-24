@@ -16,12 +16,7 @@
 #'  If \code{FALSE}, the final values found for the weightings will only
 #'  be put into the control file and not used to generate parameter estimates.
 #' @param niters_weighting The number of times you want to tune the model.
-#' @param iter The iteration. A numeric value. This function assumes model
-#'  files are in a directory relative to the path \code{"scen/iter/EM"} as in
-#'  ss3sim.
-#' @param scen The scenario, named as in ss3sim. This function assumes model
-#'  files are in a directory relative to the path \code{"scen/iter/EM"} as in
-#'  ss3sim.
+#' @template dir
 #' @param bias_adjust Run bias adjustment first?
 #' @param hess_always If \code{TRUE}, the Hessian will always be calculated.
 #'  If \code{FALSE}, the Hessian will only be calculated for
@@ -33,8 +28,7 @@ weight_comps <- function(method = c("MI", "Francis", "DM"),
                          init_run = TRUE,
                          main_run = TRUE,
                          niters_weighting = 1,
-                         iter,
-                         scen,
+                         dir,
                          bias_adjust = FALSE,
                          hess_always = FALSE,
                          fleets,
@@ -44,20 +38,19 @@ weight_comps <- function(method = c("MI", "Francis", "DM"),
 
   # need some input check for fleets? maybe check if they are present in
   # age or length comps and exclude if in neither?
-  mod_path <- file.path(scen, iter, "em")
   # Tuning methods: MI, Francis ----
   if(method == "MI"| method == "Francis") {
     # 1. Initial model run
     if(init_run == TRUE) {
-    run_ss3model(scenarios = scen, iterations = iter, type = "em",
+    run_ss3model(dir = dir,
                  hess = ifelse(bias_adjust, TRUE, hess_always), ...)
-    success <- get_success(dir = mod_path)
+    success <- get_success(dir = dir)
     }
     weights <- vector("list", length = niters_weighting) # list for storing est. weights.
     for(it in seq_along(niters_weighting)) {
       # 2. get the tunings
       suppressWarnings(
-        out <- r4ss::SS_output(mod_path, verbose = FALSE, printstats = FALSE,
+        out <- r4ss::SS_output(dir, verbose = FALSE, printstats = FALSE,
                                hidewarn = TRUE)
       )
       # construct the variance adjustment
@@ -67,11 +60,11 @@ weight_comps <- function(method = c("MI", "Francis", "DM"),
       colnames(var_adj) <- c("Factor", "Fleet", "Value")
       var_adj$Value <- ifelse(var_adj$Value > 1, 1, var_adj$Value)
       var_adj <- var_adj[var_adj$Fleet %in% fleets, ]
-      start <- r4ss::SS_readstarter(file.path(mod_path, "starter.ss"),
+      start <- r4ss::SS_readstarter(file.path(dir, "starter.ss"),
                                     verbose = FALSE)
-      dat <- r4ss::SS_readdat(file.path(mod_path, start$datfile),
+      dat <- r4ss::SS_readdat(file.path(dir, start$datfile),
                               verbose = FALSE)
-      ctl <- r4ss::SS_readctl(file.path(mod_path, start$ctlfile),
+      ctl <- r4ss::SS_readctl(file.path(dir, start$ctlfile),
                               use_datlist = TRUE, datlist = dat,
                               verbose = FALSE)
      if((nrow(var_adj)) > 0) {
@@ -105,16 +98,16 @@ weight_comps <- function(method = c("MI", "Francis", "DM"),
        }
      }
      r4ss::SS_writectl(ctl,
-                       file.path(mod_path, start$ctlfile),
+                       file.path(dir, start$ctlfile),
                        overwrite = TRUE,
                        verbose = FALSE)
       # 4. run SS again with reweighting
       if(main_run == TRUE) {
-        run_ss3model(scenarios = scen, iterations = iter, type = "em",
+        run_ss3model(dir = dir,
                      hess = ifelse(bias_adjust, TRUE, hess_always), ...)
         #TODO:I think this only works if you delete files from old runs or
         # run it in a new directory; think about how to make this a real check.
-        success <- get_success(dir = mod_path)
+        success <- get_success(dir = dir)
       }
        # save the weights from the run to a list
        weights[[it]] <- var_adj
@@ -124,9 +117,9 @@ weight_comps <- function(method = c("MI", "Francis", "DM"),
   #method using parameter estimation (i.e., do not need to iteratively rerun model)
   if("DM" %in% method) {
     # get the r4ss files
-    start <- r4ss::SS_readstarter(file.path(mod_path, "starter.ss"), verbose = FALSE)
-    dat <- r4ss::SS_readdat(file.path(mod_path, start$datfile), verbose = FALSE)
-    ctl <- r4ss::SS_readctl(file.path(mod_path, start$ctlfile),
+    start <- r4ss::SS_readstarter(file.path(dir, "starter.ss"), verbose = FALSE)
+    dat <- r4ss::SS_readdat(file.path(dir, start$datfile), verbose = FALSE)
+    ctl <- r4ss::SS_readctl(file.path(dir, start$ctlfile),
                                       use_datlist = TRUE, datlist = dat,
                             verbose = FALSE)
     # determine which fleets specified by user are included in model
@@ -153,7 +146,7 @@ weight_comps <- function(method = c("MI", "Francis", "DM"),
               "Changing the last_estimation_phase in the starter file to ",
                last_phase+1, ".")
       start[["last_estimation_phase"]] <- last_phase + 1
-      r4ss::SS_writestarter(start, dir = mod_path, verbose = FALSE,
+      r4ss::SS_writestarter(start, dir = dir, verbose = FALSE,
                             overwrite = TRUE)
     }
     ctl[["dirichlet_parms"]] <- data.frame("LO" = rep(-5, times = npars),
@@ -171,16 +164,16 @@ weight_comps <- function(method = c("MI", "Francis", "DM"),
                                            "Block" = 0,
                                            "Block_Fxn" = 0)
     # 3. Run the model once - look for convergence
-    r4ss::SS_writedat(dat, file.path(mod_path, start$datfile), verbose = FALSE,
+    r4ss::SS_writedat(dat, file.path(dir, start$datfile), verbose = FALSE,
                 overwrite = TRUE)
-    r4ss::SS_writectl(ctl, file.path(mod_path, start$ctlfile), verbose = FALSE,
+    r4ss::SS_writectl(ctl, file.path(dir, start$ctlfile), verbose = FALSE,
                 overwrite = TRUE)
     if(main_run == TRUE) {
-    run_ss3model(scenarios = scen, iterations = iter, type = "em",
+    run_ss3model(dir = dir,
                  hess = ifelse(bias_adjust, TRUE, hess_always), ...)
-    success <- get_success(dir = mod_path)
+    success <- get_success(dir = dir)
     suppressWarnings(
-      out <- r4ss::SS_output(mod_path, verbose = FALSE, printstats = FALSE,
+      out <- r4ss::SS_output(dir, verbose = FALSE, printstats = FALSE,
                              hidewarn = TRUE)
     )
     # figure out what to read in for weights? maybe the DM param ests?

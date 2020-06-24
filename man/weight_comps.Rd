@@ -9,8 +9,7 @@ weight_comps(
   init_run = TRUE,
   main_run = TRUE,
   niters_weighting = 1,
-  iter,
-  scen,
+  dir,
   bias_adjust = FALSE,
   hess_always = FALSE,
   fleets,
@@ -34,13 +33,9 @@ be put into the control file and not used to generate parameter estimates.}
 
 \item{niters_weighting}{The number of times you want to tune the model.}
 
-\item{iter}{The iteration. A numeric value. This function assumes model
-files are in a directory relative to the path \code{"scen/iter/EM"} as in
-ss3sim.}
-
-\item{scen}{The scenario, named as in ss3sim. This function assumes model
-files are in a directory relative to the path \code{"scen/iter/EM"} as in
-ss3sim.}
+\item{dir}{A character string specifying the path to the folder with the
+results from a stock assessment model run. Paths are passed without a
+terminal slash.}
 
 \item{bias_adjust}{Run bias adjustment first?}
 

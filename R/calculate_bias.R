@@ -19,8 +19,7 @@
 #' \item Estimate model parameters.
 #' }
 #'
-#' @param dir A character string specifying the path to the folder with the
-#' results from the preliminary run of the estimation model.
+#' @template dir
 #' @template ctl_file_in
 #'
 #' @author Kelli Faye Johnson

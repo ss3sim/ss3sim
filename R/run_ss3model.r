@@ -1,4 +1,4 @@
-#' Run an operating or estimation model for a specified set of scenario IDs
+#' Run an operating or estimation model in a directory
 #'
 #' Call Stock Synthesis (SS) to generate data or fit model to data.
 #' The appropriate version of SS is called after determining if the
@@ -8,15 +8,15 @@
 #' function.
 #'
 #' @details ss3sim requires you to place the SS executable in your
-#' path. See the vignette \code{vignette("ss3sim-vignette")} for details on
-#' this process. The executables themselves can be downloaded from:
-#' \url{https://www.dropbox.com/sh/zg0sec6j20sfyyz/AACQiuk787qW882U2euVKoPna}
-#'#'
-#' @param scenarios Which scenarios to run. Controls which folder contains the
-#'   model that SS3 should run on.
-#' @param iterations Which iterations to run. Controls which folder contains
-#'   the model that SS3 should run on.
-#' @param type Are you running the operating or estimation models?
+#' path. See the vignette \code{vignette("introduction", package = "ss3sim")} for details on
+#' this process. The executables themselves can be downloaded from github
+#' \url{https://github.com/ss3sim/ss3sim/tree/master/inst/bin} or the
+#' SS website
+#' \url{https://vlab.ncep.noaa.gov/web/stock-synthesis/document-library/-/document_library/0LmuycloZeIt/view/5042555}.
+#' If the github version of ss3sim is installed, rather than the CRAN version,
+#' then the executables are automatically downloaded and called from their
+#' stored location rather than from the path variable.
+#' @template dir
 #' @param hess Calculate the Hessian on estimation model runs?
 #' @param admb_options Any additional options to pass to the SS command.
 #' @param ignore.stdout Passed to \code{system}. If \code{TRUE} then ADMB
@@ -36,9 +36,9 @@
 #' @author Sean C. Anderson
 #' @export
 
-run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
-  admb_options = "", hess = FALSE, ignore.stdout =
-  TRUE, admb_pause = 0.05, 
+run_ss3model <- function(dir,
+  admb_options = "", hess = FALSE,
+  ignore.stdout = TRUE, admb_pause = 0.05,
   show.output.on.console = FALSE, ...) {
 
   # Input checking:
@@ -52,26 +52,21 @@ run_ss3model <- function(scenarios, iterations, type = c("om", "em"),
 
   ss_em_options <- ifelse(hess, "", "-nohess")
 
-  for(sc in scenarios) {
-    for(it in iterations) {
-      message(paste0("Running ", toupper(type), " for scenario: ", sc,
-        "; iteration: ", it))
-      if(os == "unix") {
-        system(paste0("cd ", file.path(sc, it, type), ";", paste0(bin, " "),
-           ss_em_options, " ", admb_options), ignore.stdout = ignore.stdout, ...)
-        rename_ss3_files(path = file.path(sc, it, type), ss_bin = ss_bin,
-          extensions = c("par", "rep", "log", "bar", "cor"))
-      } else {
-        wd <- getwd()
-        setwd(file.path(sc, it, type))
-        system(paste(bin, ss_em_options, admb_options),
-          invisible = TRUE, ignore.stdout = ignore.stdout,
-               show.output.on.console = show.output.on.console, ...)
-        rename_ss3_files(path = ".", ss_bin = ss_bin,
-          extensions = c("par", "rep", "log", "bar", "cor"))
-        setwd(wd)
-      }
-    }
+  message("Running SS in ", dir)
+  if(os == "unix") {
+    system(paste0("cd ", dir, ";", paste0(bin, " "),
+       ss_em_options, " ", admb_options), ignore.stdout = ignore.stdout, ...)
+    rename_ss3_files(path = dir, ss_bin = ss_bin,
+      extensions = c("par", "rep", "log", "bar", "cor"))
+  } else {
+    wd <- getwd()
+    on.exit(setwd(wd), add = TRUE)
+    setwd(dir)
+    system(paste(bin, ss_em_options, admb_options),
+      invisible = TRUE, ignore.stdout = ignore.stdout,
+           show.output.on.console = show.output.on.console, ...)
+    rename_ss3_files(path = ".", ss_bin = ss_bin,
+      extensions = c("par", "rep", "log", "bar", "cor"))
   }
   Sys.sleep(admb_pause)
 }

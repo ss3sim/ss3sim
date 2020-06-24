@@ -182,13 +182,16 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # files for consistency
       iteration_existed <- copy_ss3models(model_dir = om_dir, scenarios = sc,
         iterations = i, type = "om")
-      if(iteration_existed) next
+      if (iteration_existed) next
       iteration_existed <- copy_ss3models(model_dir = em_dir, scenarios = sc,
         iterations = i, type = "em")
+      pathom <- file.path(sc, i, "om")
+      pathem <- file.path(sc, i, "em")
 
       # Make fake .dat files to silence SS3/ADMB:
-      fake_dat <- c("om/ss.dat", "em/ss.dat")
-      sapply(fake_dat, function(fi) write("\n", file.path(sc, i, fi)))
+      fake_dat <- file.path(c(pathom, pathem), "ss.dat")
+      sapply(fake_dat,
+        function(fi) write("\n", file.path(fi)))
 
       # Make the OM as specified by the user -----------------------------------
 
@@ -196,7 +199,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(!is.null(tv_params)) {
         # Change time-varying parameters; e.g. M, selectivity, growth...
         wd <- getwd()
-        setwd(file.path(sc, i, "om"))
+        setwd(pathom)
         change_tv(change_tv_list      = tv_params,
                   ctl_file_in         = "om.ctl",
                   ctl_file_out        = "om.ctl")
@@ -281,7 +284,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                   nsex = datfile.orig$Ngenders))
 
       # Run the operating model and copy the dat file over
-      run_ss3model(scenarios = sc, iterations = i, type = "om", ...)
+      run_ss3model(dir = pathom, ...)
       if(!file.exists(file.path(sc, i, "om", "data.ss_new")))
           stop("The data.ss_new not created in the OM run for ",
                      sc, "-",i, ": is something wrong with initial model files?")
@@ -397,7 +400,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       if(!is.null(estim_params)) {
         wd <- getwd()
-        setwd(file.path(sc, i, "em"))
+        setwd(pathem)
         dat_list <- do.call("change_e", c(
                   ctl_file_in          = "em.ctl",
                   ctl_file_out         = "em.ctl",
@@ -442,14 +445,14 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       }
       # Run the EM -------------------------------------------------------------
       # run model 1x as-is, regardless if data weighting used or not.
-      run_ss3model(scenarios = sc, iterations = i, type = "em",
+      run_ss3model(dir = pathem,
                    hess = ifelse(bias_adjust, TRUE, hess_always), ...)
-      success <- get_success(dir = file.path(sc, i, "em"))
+      success <- get_success(dir = pathem)
       if(bias_adjust & all(success > 0)) {
         #run model to do the bias adjustment
-        bias <- calculate_bias(dir = file.path(sc, i, "em"),
+        bias <- calculate_bias(dir = pathem,
                                ctl_file_in = "em.ctl")
-        run_ss3model(scenarios = sc, iterations = i, type = "em",
+        run_ss3model(dir = pathem,
                      hess = ifelse(bias_adjust, TRUE, hess_always), ...)
       }
       if(!is.null(weight_comps_params)) {
@@ -457,7 +460,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         if(bias_adjust & all(success > 0) & weight_comps_params$method == "DM") {
         # model already changed to include the DM parameters, so only need to
         # rerun model again, not call the weight_comps function
-          run_ss3model(scenarios = sc, iterations = i, type = "em",
+          run_ss3model(dir = pathem,
                        hess = ifelse(bias_adjust, TRUE, hess_always), ...)
         }
         # need to do data tuning, fregardless of if bias adjustment was done.
@@ -469,8 +472,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                        main_run = TRUE,
                        bias_adjust = bias_adjust,
                        hess_always = hess_always,
-                       scen = sc,
-                       iter = i)
+                       dir = pathem)
         }
 
 # Write log file ---------------------------------------------------------------

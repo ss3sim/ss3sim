@@ -2,12 +2,10 @@
 % Please edit documentation in R/run_ss3model.r
 \name{run_ss3model}
 \alias{run_ss3model}
-\title{Run an operating or estimation model for a specified set of scenario IDs}
+\title{Run an operating or estimation model in a directory}
 \usage{
 run_ss3model(
-  scenarios,
-  iterations,
-  type = c("om", "em"),
+  dir,
   admb_options = "",
   hess = FALSE,
   ignore.stdout = TRUE,
@@ -17,13 +15,9 @@ run_ss3model(
 )
 }
 \arguments{
-\item{scenarios}{Which scenarios to run. Controls which folder contains the
-model that SS3 should run on.}
-
-\item{iterations}{Which iterations to run. Controls which folder contains
-the model that SS3 should run on.}
-
-\item{type}{Are you running the operating or estimation models?}
+\item{dir}{A character string specifying the path to the folder with the
+results from a stock assessment model run. Paths are passed without a
+terminal slash.}
 
 \item{admb_options}{Any additional options to pass to the SS command.}
 
@@ -56,10 +50,14 @@ function.
 }
 \details{
 ss3sim requires you to place the SS executable in your
-path. See the vignette \code{vignette("ss3sim-vignette")} for details on
-this process. The executables themselves can be downloaded from:
-\url{https://www.dropbox.com/sh/zg0sec6j20sfyyz/AACQiuk787qW882U2euVKoPna}
-#'
+path. See the vignette \code{vignette("introduction", package = "ss3sim")} for details on
+this process. The executables themselves can be downloaded from github
+\url{https://github.com/ss3sim/ss3sim/tree/master/inst/bin} or the
+SS website
+\url{https://vlab.ncep.noaa.gov/web/stock-synthesis/document-library/-/document_library/0LmuycloZeIt/view/5042555}.
+If the github version of ss3sim is installed, rather than the CRAN version,
+then the executables are automatically downloaded and called from their
+stored location rather than from the path variable.
 }
 \seealso{
 \code{\link{ss3sim_base}}, \code{\link{run_ss3sim}}

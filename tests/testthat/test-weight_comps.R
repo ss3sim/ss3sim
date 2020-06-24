@@ -11,18 +11,14 @@ d  <- system.file("extdata", package = "ss3sim")
 em <- file.path(d, "models", "cod-em")
 data <- file.path(d, "testing_em_cod.dat")
 
-# create the scenario folder. note an arbitrary scenario name is used.
-dir.create(file.path(temp_path, "D1-F1-cod"))
-dir.create(file.path(temp_path, "D1-F1-cod", "1"))
-dir.create(file.path(temp_path, "D1-F1-cod", "2"))
-dir.create(file.path(temp_path, "D1-F1-cod", "3"))
-dir.create(file.path(temp_path, "D1-F1-cod", "1", "em"))
-dir.create(file.path(temp_path, "D1-F1-cod", "2", "em"))
-dir.create(file.path(temp_path, "D1-F1-cod", "3", "em"))
+# create the folders.
+dir.create(file.path(temp_path, "1"))
+dir.create(file.path(temp_path, "2"))
+dir.create(file.path(temp_path, "3"))
 
-scen_path_MI <- file.path(temp_path, "D1-F1-cod", "1", "em")
-scen_path_Francis <- file.path(temp_path, "D1-F1-cod", "2", "em")
-scen_path_DM <- file.path(temp_path, "D1-F1-cod", "3", "em")
+scen_path_MI <- file.path(temp_path, "1")
+scen_path_Francis <- file.path(temp_path, "2")
+scen_path_DM <- file.path(temp_path, "3")
 
 file.copy(file.path(em, list.files(em)), scen_path_MI, recursive = TRUE)
 file.copy(file.path(em, list.files(em)), scen_path_Francis, recursive = TRUE)
@@ -47,8 +43,7 @@ test_that("get_last_phase works", {
 test_that("weight_comps works for MI method", {
   skip_on_cran()
   test <- weight_comps(method = "MI",
-               iter = "1",
-               scen = "D1-F1-cod",
+               dir = scen_path_MI,
                niters_weighting = 1,
                fleets = c(1,2))
   # create an expectation that arent dummy ones.
@@ -63,8 +58,7 @@ test_that("weight_comps works for MI method", {
 test_that("weight_comps works for Francis", {
   skip_on_cran()
   test <- weight_comps(method = "Francis",
-               iter = "2",
-               scen = "D1-F1-cod",
+               dir = scen_path_Francis,
                niters_weighting = 1,
                fleets = c(1,2))
   dat <- r4ss::SS_readdat(file.path(scen_path_Francis, "ss3.dat" ), verbose = FALSE)
@@ -77,8 +71,7 @@ test_that("weight_comps works for Francis", {
 test_that("weight_comps works for DM", {
   skip_on_cran()
   test <- weight_comps(method = "DM",
-               iter = "3",
-               scen = "D1-F1-cod",
+               dir = scen_path_DM,
                fleets = c(1,2)
                )
   dat <- r4ss::SS_readdat(file.path(scen_path_DM, "ss3.dat" ), verbose = FALSE)
