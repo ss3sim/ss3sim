@@ -13,18 +13,10 @@
 #' @template ctl_file_out
 #' @template dat_list
 #' @template for_file_in
-#' @param par_name *A vector of values, separated by commas.  Each value
-#'   corresponds to a parameter that you wish to turn on or off in the
-#'   \code{ctl_file_in}. The values will later be turned into character values
-#'   and used to search for specific lines for each parameter in the
-#'   \code{ctl_file_in}, therefore it is best to use full parameter names as
-#'   they are specified in \code{ctl_file_in}.
-#' @param par_int *A vector of initial values, one for each parameter in
-#'   \code{par_name}.  Values can be \code{NA} if you do not wish to change the
-#'   initial value for a given parameter.
-#' @param par_phase *A vector of phase values, one for each parameter in
+#' @template par_name
+#' @template par_int
+#' @param par_phase A vector of phase values, one for each parameter in
 #'   \code{par_name}.  Values can be \code{NA} if you do not wish to change
-#'   the phase for a given parameter.
 #'   the phase for a given parameter. Negative values will fix the parameter
 #'   at the INIT value.
 #' @param forecast_num Number of years to perform forecasts. For those years,

@@ -23,13 +23,15 @@ function.}
 
 \item{ctl_file_out}{A string providing the path to the output SS control file. If the value is \code{NULL}, the file will not be written to the disk.}
 
-\item{par_name}{*A character vector of parameter names to pass in. NULL unless
-want to use instead of \code{change_o_list}.}
+\item{par_name}{A vector of character values corresponding to parameter
+names that you wish to initialize at different values or change the phase
+in which they are estimated. Entries are searched for in
+\code{ctl_file_in}, and therefore, it is best to use full parameter
+names as they are specified in the file.}
 
-\item{par_int}{*A numeric vector of parameter initial values to pass in. NULL
-unless want to use instead of \code{change_o_list}. Must have the same
-length and be in the same order as \code{par_names}, as the names should
-correspond with their initial values.}
+\item{par_int}{A vector of initial values, one for each entry in
+\code{par_name}. Values of \code{NA} leave the INIT value for
+that parameter at the value found in the \code{.ctl} file.}
 
 \item{verbose}{When \code{TRUE} messages will be returned
 from the function. Often useful for debugging. The default

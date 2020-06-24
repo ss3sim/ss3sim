@@ -38,20 +38,20 @@ within SS.}
 \item{for_file_in}{A string providing the path to the input SS
 \code{forecast.ss} file.}
 
-\item{par_name}{*A vector of values, separated by commas.  Each value
-corresponds to a parameter that you wish to turn on or off in the
-\code{ctl_file_in}. The values will later be turned into character values
-and used to search for specific lines for each parameter in the
-\code{ctl_file_in}, therefore it is best to use full parameter names as
-they are specified in \code{ctl_file_in}.}
+\item{par_name}{A vector of character values corresponding to parameter
+names that you wish to initialize at different values or change the phase
+in which they are estimated. Entries are searched for in
+\code{ctl_file_in}, and therefore, it is best to use full parameter
+names as they are specified in the file.}
 
-\item{par_int}{*A vector of initial values, one for each parameter in
-\code{par_name}.  Values can be \code{NA} if you do not wish to change the
-initial value for a given parameter.}
+\item{par_int}{A vector of initial values, one for each entry in
+\code{par_name}. Values of \code{NA} leave the INIT value for
+that parameter at the value found in the \code{.ctl} file.}
 
-\item{par_phase}{*A vector of phase values, one for each parameter in
+\item{par_phase}{A vector of phase values, one for each parameter in
 \code{par_name}.  Values can be \code{NA} if you do not wish to change
-the phase for a given parameter.}
+the phase for a given parameter. Negative values will fix the parameter
+at the INIT value.}
 
 \item{forecast_num}{Number of years to perform forecasts. For those years,
 the data will be removed from the \code{dat_list}, enabling SS3 to
