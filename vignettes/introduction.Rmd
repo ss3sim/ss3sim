@@ -197,8 +197,8 @@ r_om <- r4ss::SS_output(file.path(scname[1], "1", "om"),
   verbose = FALSE, printstats = FALSE, covar = FALSE)
 r_em <- r4ss::SS_output(file.path(scname[1], "1", "em"),
   verbose = FALSE, printstats = FALSE, covar = FALSE)
-r4ss::SSplotComparisons(r4ss::SSsummarize(list(r_om, r_em),
-  legendlabels = c("OM", "EM"), subplots = 1))
+r4ss::SSplotComparisons(r4ss::SSsummarize(list(r_om, r_em)),
+  legendlabels = c("OM", "EM"), subplots = 1)
 ```
 
 Each iteration is unique because of process error included through recruitment deviations. Thus, if you were to plot the OMs from iteration one and two using `r4ss::SSplotComparisons()` there would be clear annual differences. These differences are the direct outcome of normally-distributed recruitment deviations, with a mean of `-0.5` and a standard deviation of `1` (bias-corrected standard-normal deviations), available within ss3sim. Using the same deviations for iteration one of each scenario facilitates comparison across scenarios. If you would like to specify your own deviations, you can pass them using `user_recdevs`.
