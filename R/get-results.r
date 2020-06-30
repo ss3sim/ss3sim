@@ -334,7 +334,7 @@ get_results_mod <- function(dir = getwd(), is_EM = NULL, is_OM = NULL) {
     forecastTF <- FALSE
   }
   report <- SS_output(file.path(dir), covar = FALSE, verbose = FALSE,
-                      compfile = "none", forecast = forecastTF, warn = TRUE,
+                      compfile = "none", forecast = forecastTF, warn = FALSE,
                       readwt = FALSE, printstats = FALSE, NoCompOK = TRUE,
                       ncols = NULL)
   ## Get dfs
@@ -467,69 +467,37 @@ get_results_derived <- function(report.file) {
 #' @export
 #' @author Cole Monnahan; Merrill Rudd
 get_results_scalar <- function(report.file) {
-    der <- report.file$derived_quants
-    getcol <- grep("label", colnames(der), ignore.case = TRUE)
-    SSB_MSY <- der[which(der[, getcol] =="SSB_MSY"), ]$Value
-    TotYield_MSY <-  der[which(der[, getcol] =="Dead_Catch_MSY"),]$Value
-    SSB_Unfished <-  der[grep("^SSB_unfished", der[, getcol], ignore.case = TRUE), "Value"]
-    F_MSY <- der[grep("Fstd_MSY|annF_MSY", der[, getcol]), "Value"]
-    F_SPR <- der[grep("Fstd_SPR|annF_SPR", der[, getcol]), "Value"]
+    der <- t(report.file$derived_quants[
+      # Find MSY and Btarget variables
+      grep("MSY$|Btgt$|SPR$|^[A-Za-z]{3,}_unfished",
+      # Find the column of the derived quantities object
+        report.file$derived_quants[,
+          grep("Label", colnames(report.file$derived_quants))]),
+      # Return the number in a transposed data frame
+      "Value", drop = FALSE])
+    colnames(der) <- gsub("Dead_Catch", "TotYield", colnames(der))
+    colnames(der) <- gsub("_unfished", "_Unfished", colnames(der))
+    colnames(der) <- gsub("annF_|Fstd_", "F_", colnames(der))
     Catch_endyear <-
         utils::tail(report.file$timeseries[report.file$timeseries$Era == "TIME", grep("dead\\(B\\)",
           names(report.file$timeseries))], 1)
-    pars <- data.frame(t(report.file$parameters$Value), stringsAsFactors = FALSE)
-    names(pars) <- report.file$parameters[, grep("Label", colnames(report.file$parameters), ignore.case = TRUE)]
+    pars <- t(report.file$parameters[
+      # Remove Main Recruitment Deviations and fleet_f from older SS output
+      !grepl("main|_fleet_", report.file$parameters$Label, ignore.case = TRUE),
+      # Return the number in a transposed data frame
+      "Value", drop = FALSE])
+    colnames(pars) <- gsub("\\(", "_", colnames(pars))
+    colnames(pars) <- gsub("\\)|\\.$", "", colnames(pars))
     ## Get the parameters stuck on bounds
-    status <- report.file$parameters$Status
-    params_stuck_low <- paste(names(pars)[which(status == "LO")], collapse = ";")
-    params_stuck_high <- paste(names(pars)[which(status == "HI")], collapse = ";")
+    params_stuck_low <- paste(report.file$parameters$Label[
+      grep("LO", report.file$parameters$Status)], collapse = ";")
+    params_stuck_high <- paste(report.file$parameters$Label[
+      grep("HI", report.file$parameters$Status)], collapse = ";")
     if (params_stuck_low == "") params_stuck_low <- NA
     if (params_stuck_high == "") params_stuck_high <- NA
-    ## Remove the recruitment devs and efforts as these are in the ts file
-    recdev.index <- grep("MAIN_", toupper(names(pars)), fixed = TRUE)
-    if (length(recdev.index) > 0) pars <- pars[, -recdev.index]
-    effort.index <- grep("F_FLEET_", toupper(names(pars)), fixed = TRUE)
-    if (length(effort.index) > 0) pars <- pars[, -effort.index]
-    names(pars) <- gsub("\\(", "_", names(pars))
-    names(pars) <- gsub("\\)", "", names(pars))
     # get the comps variables
-    # todo: change this permanently to second option when converted to .15
-    if ("Length_Comp_Fit_Summary" %in% names(report.file)) {
-      report.file[["Length_comp_Eff_N_tuning_check"]] <-
-        report.file[["Length_Comp_Fit_Summary"]]
-    }
-    if (nrow(report.file[["Length_comp_Eff_N_tuning_check"]]) > 0) {
-      len_comp_tuning <- data.frame(t(report.file$Length_comp_Eff_N_tuning_check$Curr_Var_Adj),
-                                    stringsAsFactors = FALSE)
-      colnames(len_comp_tuning) <-
-        paste0("Curr_Var_Adj_lcomp_flt_",
-               report.file$Length_comp_Eff_N_tuning_check$Fleet, "_",
-               report.file$Length_comp_Eff_N_tuning_check$Fleet_name)
-    } else {
-      len_comp_tuning <- data.frame(matrix(nrow = 1, ncol = 0),
-                                    stringsAsFactors = FALSE)
-    }
-    # todo: change this permanently to second option when converted to .15
-    if ("Age_Comp_Fit_Summary" %in% names(report.file)) {
-      report.file[["Age_comp_Eff_N_tuning_check"]] <-
-        report.file[["Age_Comp_Fit_Summary"]]
-    }
-    if (nrow(report.file[["Age_comp_Eff_N_tuning_check"]]) > 0) {
-      age_comp_tuning <- data.frame(t(report.file$Age_comp_Eff_N_tuning_check$Curr_Var_Adj),
-                                    stringsAsFactors = FALSE)
-      colnames(age_comp_tuning) <-
-        paste0("Curr_Var_Adj_agecomp_flt_",
-               report.file$Age_comp_Eff_N_tuning_check$Fleet, "_",
-               report.file$Age_comp_Eff_N_tuning_check$Fleet_name)
-    } else {
-      age_comp_tuning <- data.frame(matrix(nrow = 1, ncol = 0),
-                                    stringsAsFactors = FALSE)
-    }
-    max_grad <- report.file$maximum_gradient_component
-    depletion <- report.file$current_depletion
-    NLL_vec <- get_nll_components(report.file)
-    ## Obtain bias adjustment parameters
-    bias <- report.file$breakpoints_for_bias_adjustment_ramp
+    len_comp_tuning <- get_compfit(report.file, "Length_Comp_Fit_Summary")
+    age_comp_tuning <- get_compfit(report.file, "Age_Comp_Fit_Summary")
     ## get the number of params on bounds from the warning.sso file, useful for
     ## checking convergence issues
     warn <- report.file$warnings
@@ -538,11 +506,15 @@ get_results_scalar <- function(report.file) {
         ifelse(length(warn.line) == 1,
           as.numeric(strsplit(warn[warn.line], split = ":")[[1]][2]), NA)
     ## Combine into final df and return it
-    df <- data.frame(SSB_MSY, TotYield_MSY, SSB_Unfished, max_grad, depletion
-                , F_MSY, F_SPR, bias,
-                params_on_bound, params_stuck_low, params_stuck_high, pars,
-                Catch_endyear, t(NLL_vec), len_comp_tuning, age_comp_tuning,
-                stringsAsFactors = FALSE)
+    df <- data.frame(der,
+      max_grad = report.file$maximum_gradient_component,
+      depletion = report.file$current_depletion,
+      alt_sigma_r = report.file$sigma_R_info[1, "alternative_sigma_R"],
+      report.file$breakpoints_for_bias_adjustment_ramp,
+      params_on_bound, params_stuck_low, params_stuck_high, pars,
+      Catch_endyear, get_nll_components(report.file),
+      len_comp_tuning, age_comp_tuning,
+      stringsAsFactors = FALSE, check.names = FALSE)
     ## Also get some meta data and other convergence info like the
     ## version, runtime, etc. as checks
     df$version <- report.file$SS_version
@@ -562,11 +534,36 @@ get_results_scalar <- function(report.file) {
 #' @return A vector of named numeric values, where \code{"NLL_"} is
 #' appended to the names in the \code{report.file}.
 get_nll_components <- function(report.file) {
-    vec <- setNames(report.file$likelihoods_used$values,
-      paste0("NLL_", row.names(report.file$likelihoods_used)))
+    vec <- t(report.file$likelihoods_used[, "values", drop = FALSE])
+    colnames(vec) <- paste0("NLL_", row.names(report.file$likelihoods_used))
     vec[is.na(vec)] <- NA
 
     return(vec)
+}
+
+#' Get summaries of fits to composition data from report file list
+#' 
+#' Extract the summary of fits to composition data, where the sections
+#' are structured similarly for each type of data in the report file.
+#' 
+#' @template report.file
+#' @param name A character string that matches the element of
+#' \code{report.file} that you wish to extract, e.g.,
+#' \code{"Length_Comp_Fit_Summary"}.
+get_compfit <- function(report.file, name) {
+  if (NROW(report.file[[name]]) > 0) {
+    tuning <- t(report.file[[name]][, "Curr_Var_Adj", drop = FALSE])
+    cname <- switch(name,
+      Length_Comp_Fit_Summary = "Curr_Var_Adj_lcomp_flt_",
+      Age_Comp_Fit_Summary = "Curr_Var_Adj_agecomp_flt_")
+    colnames(tuning) <- paste0(cname,
+           report.file[[name]][, "Fleet"], "_",
+           report.file[[name]][, "Fleet_name"])
+  } else {
+    tuning <- data.frame(matrix(nrow = 1, ncol = 0),
+      stringsAsFactors = FALSE)
+  }
+  return(tuning)
 }
 
 #' Make a list of lists with dataframe components into a dataframes
