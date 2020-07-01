@@ -13,7 +13,7 @@ id_scenarios <- function(directory) {
         x <- unlist(strsplit(all.dirs[i], split = "/"))
         return(x[length(x)])
     })
-    scens <- temp.dirs[grepl("^([A-Z]{1}[0-9]+-)+[a-z-]+$", temp.dirs)]
+    scens <- temp.dirs#[grepl("^([A-Z]{1}[0-9]+-)+[a-z-]+$", temp.dirs)]
     if (length(scens) == 0) warning(paste("No scenario folders found in",
              directory))
     else return(scens)
