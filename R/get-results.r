@@ -176,7 +176,7 @@ get_results_scenario <- function(scenario, directory = getwd(),
     ## especially in case of an error
     old_wd <- getwd()
     on.exit(setwd(old_wd))
-    if(file.exists(normalizePath(directory))) {
+    if(file.exists(normalizePath(directory, mustWork = FALSE))) {
         setwd(directory)
     }
     if (file.exists(file.path(scenario))) {
