@@ -337,7 +337,7 @@ get_results_mod <- function(dir = getwd(), is_EM = NULL, is_OM = NULL) {
     forecastTF <- FALSE
   }
   report <- SS_output(file.path(dir), covar = FALSE, verbose = FALSE,
-                      forecast = forecastTF, warn = FALSE,
+                      compfile = NULL, forecast = forecastTF, warn = FALSE,
                       readwt = FALSE, printstats = FALSE, NoCompOK = TRUE,
                       ncols = NULL)
   ## Get dfs
