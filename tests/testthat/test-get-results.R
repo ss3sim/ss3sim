@@ -9,7 +9,6 @@ on.exit(unlink(temp_path, recursive = TRUE), add = TRUE)
 d <- system.file("extdata", package = "ss3sim")
 om <- file.path(d, "models", "cod-om")
 em <- file.path(d, "models", "cod-em")
-case_folder <- file.path(d, "eg-cases")
 simple <- tail(dir(system.file("extdata", package = "r4ss"),
   full.names = TRUE), 1)
 
