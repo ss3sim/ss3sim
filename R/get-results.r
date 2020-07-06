@@ -10,7 +10,6 @@
 #' @author Merrill Rudd
 #' @export
 id_scenarios <- function(directory) {
-  all.dirs <- list.dirs(path = directory, full.names = FALSE, recursive = FALSE)
   all.dirs <- list.dirs(path = directory, full.names = FALSE, recursive = TRUE)
   seperator <- paste0(.Platform$file.sep, "[0-9]+", .Platform$file.sep)
   scensfull <- grep(seperator, all.dirs, value = TRUE)
