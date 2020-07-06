@@ -9,7 +9,6 @@ on.exit(unlink(temp_path, recursive = TRUE), add = TRUE)
 d <- system.file("extdata", package = "ss3sim")
 om <- file.path(d, "models", "cod-om")
 em <- file.path(d, "models", "cod-em")
-case_folder <- file.path(d, "eg-cases")
 simple <- tail(dir(system.file("extdata", package = "r4ss"),
   full.names = TRUE), 1)
 
@@ -17,6 +16,12 @@ dir.create(file.path("scenario", "1", "om"), recursive = TRUE)
 dir.create(file.path("scenario", "1", "em"), recursive = TRUE)
 ignore <- file.copy(dir(simple, full.names = TRUE), file.path("scenario", "1", "om"))
 ignore <- file.copy(dir(simple, full.names = TRUE), file.path("scenario", "1", "em"))
+
+test_that("id_scenarios() finds correct folder", {
+  expect_true(id_scenarios(getwd()) == "scenario")
+  expect_true(basename(id_scenarios("..")) == "scenario")
+  expect_error(id_scenarios("test"))
+})
 
 test_that("get_results_iter() works", {
   res <- get_results_iter(file.path("scenario", "1"))

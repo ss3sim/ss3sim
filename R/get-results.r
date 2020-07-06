@@ -1,22 +1,23 @@
-#' Identify ss3sim scenarios within a directory
+#' Identify scenarios in \code{directory}
 #'
-#' @param directory The directory which contains scenario folders with
-#'    results.
-#' @return A character vector of folders
+#' Find folders within \code{directory} that contain iterations,
+#' i.e., "1", "2", "3", ..., and thus, allowing for unique scenario names.
+#' @param directory The directory that you want to search for scenarios.
+#'   The search is recursive, and thus, it is in one's best interest to
+#'   provide a shorter path name rather than one high up in the call stack.
+#' @return A character vector of relative paths to directories that contain
+#'   iterations.
 #' @author Merrill Rudd
 #' @export
 id_scenarios <- function(directory) {
-    ## Get unique scenarios that exist in the folder. Might be other random
-    ## stuff in the folder so be careful to extract only scenario folders.
-    all.dirs <- list.dirs(path = directory, full.names = FALSE, recursive = FALSE)
-    temp.dirs <- sapply(seq_along(all.dirs), function(i) {
-        x <- unlist(strsplit(all.dirs[i], split = "/"))
-        return(x[length(x)])
-    })
-    scens <- temp.dirs[grepl("^([A-Z]{1}[0-9]+-)+[a-z-]+$", temp.dirs)]
-    if (length(scens) == 0) warning(paste("No scenario folders found in",
-             directory))
-    else return(scens)
+  all.dirs <- list.dirs(path = directory, full.names = FALSE, recursive = TRUE)
+  seperator <- paste0(.Platform$file.sep, "[0-9]+", .Platform$file.sep)
+  scensfull <- grep(seperator, all.dirs, value = TRUE)
+  scens <- unique(sapply(strsplit(scensfull, seperator), "[[", 1))
+  if (length(scens) == 0) {
+    stop("No scenario folders were found in ", directory)
+  }
+  return(scens)
 }
 
 #' Extract SS3 simulation output
@@ -176,8 +177,11 @@ get_results_scenario <- function(scenario, directory = getwd(),
     ## especially in case of an error
     old_wd <- getwd()
     on.exit(setwd(old_wd))
-    if (file.exists(file.path(directory, scenario))) {
-        setwd(file.path(directory, scenario))
+    if(file.exists(normalizePath(directory, mustWork = FALSE))) {
+        setwd(directory)
+    }
+    if (file.exists(file.path(scenario))) {
+        setwd(file.path(scenario))
     } else {
         stop(paste("Scenario", scenario, "does not exist in", directory))
     }
@@ -334,7 +338,7 @@ get_results_mod <- function(dir = getwd(), is_EM = NULL, is_OM = NULL) {
     forecastTF <- FALSE
   }
   report <- SS_output(file.path(dir), covar = FALSE, verbose = FALSE,
-                      compfile = "none", forecast = forecastTF, warn = FALSE,
+                      compfile = NULL, forecast = forecastTF, warn = FALSE,
                       readwt = FALSE, printstats = FALSE, NoCompOK = TRUE,
                       ncols = NULL)
   ## Get dfs
