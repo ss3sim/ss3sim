@@ -7,14 +7,14 @@
 #' An \pkg{ss3sim} simulation requires three types of input: (1) a base
 #' model of the underlying truth (an SS operating model), (2) a base
 #' model of how you will assess that truth (an SS estimation model),
-#' (3) and a set of cases that deviate from these base models that you
-#' want to compare.
+#' (3) and a data frame specifying how you want to manipulate the
+#' operating and estimation models.
 #'
-#' You can find examples of these SS operating and estimation models
+#' You can find example an operating and estimation model
 #' within the package data (\code{inst/extdata/models/}).
 #'
 #' To carry out \pkg{ss3sim} simulations
-#' with the version from CRAN, you will need to have SS installed on
+#' with the CRAN version of ss3sim, you will need to have SS installed on
 #' your computer and the binary needs to be in the path that \R sees. See the
 #' section "Installing the ss3sim R package" in the vignette
 #' \code{vignette("ss3sim-vignette")} for instructions on installing SS. See
@@ -33,10 +33,10 @@
 #' \item \code{\link{change_tv}}: Adds time-varying features. For
 #' example, time-varying natural mortality, growth, or selectivity.
 #'
-#' \item \code{\link{sample_lcomp}}: Controls how length composition
+#' \item \code{\link{sample_lcomp}}: Controls how length-composition
 #' data are sampled.
 #'
-#' \item \code{\link{sample_agecomp}}: Controls how age composition
+#' \item \code{\link{sample_agecomp}}: Controls how age-composition
 #' data are sampled.
 #'
 #' \item \code{\link{sample_index}}: Controls how the fishery and
