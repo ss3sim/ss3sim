@@ -19,7 +19,8 @@ in boxplots;
 * Results: long-data format for results to allow functions to be used by ssmse;
 remove columns that are not needed; remove row names in summary files; rename
 rec_dev to increase clarity; better grep of management quantities;
-remove parallel capacity
+remove parallel capacity; only read comp file if present by changing CompFile to
+SS_output(); allow for relative directories for SSMSE (a dependency)
 * Allow for multiple fisheries in change_f and change fisheries to fleets
 * Increase robustness of get_success
 * Break tests into multiple chunks to pass Travis-ci checks
