@@ -62,7 +62,7 @@ sample_comp <- function(data, Nsamp, fleets, years, ESS = NULL, cpar = 1) {
     by = c("Yr", "FltSvy"), suffixes = c(".x", ".y"))
   cols <- (which(colnames(all) == "Nsamp.x") + 1):
     (grep("\\.y", colnames(all))[1] - 1)
-  for (i in 1:nrow(all)) {
+  for (i in seq_len(nrow(all))) {
     if (is.na(all[i, "cpar"])) { # Multinomial sampling
       all[i, cols] <- rmultinom(1,
         size = all[i, "Nsamp.y"],

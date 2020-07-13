@@ -277,26 +277,26 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
 
     # wtatage.final[[1]] <- fecund
     # wtatage.final[[1]]$yr <- -1 * wtatage.final[[1]]$yr
-    if(!is.null(outfile)) write.table(unsampled.wtatage[[1]], file=outfile, append=TRUE, row.names=F, col.names=F)
+    if(!is.null(outfile)) write.table(unsampled.wtatage[[1]], file=outfile, append=TRUE, row.names=FALSE, col.names=FALSE)
 
     if(!is.null(outfile)) cat("\n#Fleet -1\n",file=outfile,append=TRUE)
     # wtatage.final[[2]] <- fltNeg1
     wtatage.final[[2]] <- unsampled.wtatage[[2]]
     # wtatage.final[[2]]$yr <- -1 * wtatage.final[[2]]$yr
-    if(!is.null(outfile))     write.table(unsampled.wtatage[[2]], file=outfile, append=TRUE, row.names=F, col.names=F)
+    if(!is.null(outfile))     write.table(unsampled.wtatage[[2]], file=outfile, append=TRUE, row.names=FALSE, col.names=FALSE)
 
     if(!is.null(outfile)) cat("\n#Fleet 0\n",file=outfile,append=TRUE)
     # wtatage.final[[3]] <- fltZero
     wtatage.final[[3]] <- unsampled.wtatage[[3]]
     # wtatage.final[[3]]$yr <- -1 * wtatage.final[[3]]$yr
-    if(!is.null(outfile)) write.table(unsampled.wtatage[[3]], file=outfile, append=TRUE, row.names=F, col.names=F)
+    if(!is.null(outfile)) write.table(unsampled.wtatage[[3]], file=outfile, append=TRUE, row.names=FALSE, col.names=FALSE)
 
     #loop through fleets
     for(i in fleets) {
         if(!is.null(outfile))     cat("\n#Fleet",i,"\n",file=outfile,append=TRUE)
         wtatage.final[[i+3]] <- wtatage.complete[[i]]
         wtatage.final[[i+3]]$yr <- -1 * wtatage.final[[i+3]]$yr
-        if(!is.null(outfile))    write.table(wtatage.final[[i+3]], file=outfile, append=TRUE, row.names=F, col.names=F)
+        if(!is.null(outfile))    write.table(wtatage.final[[i+3]], file=outfile, append=TRUE, row.names=FALSE, col.names=FALSE)
     }
     endline <- data.frame(t(c(-9999, 1, 1, 1, 1, rep(0, dat_list$Nages))))
     if(!is.null(outfile)) write.table(endline, file = outfile, append = TRUE,

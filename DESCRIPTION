@@ -37,7 +37,7 @@ Suggests:
     testthat
 VignetteBuilder: knitr
 Depends:
-    R (>= 3.3)
+    R (>= 3.5)
 Imports:
     foreach,
     r4ss (>= 1.35.0),
