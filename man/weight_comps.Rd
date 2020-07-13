@@ -18,11 +18,11 @@ weight_comps(
 }
 \arguments{
 \item{method}{Options for the weighting method are
-"MI" (for MacAllister-Ianelli), "Francis", or "DM" (for dirichlet
+"MI" (for MacAllister-Ianelli), "Francis", or "DM" (for Dirichlet
 multinomial). For now, only 1 option can be used.}
 
 \item{init_run}{A logical value specifying if the model should be run before
-iterative reweighting. Only relavent to \code{method = c("MI", "Francis")}
+iterative re-weighting. Only relevant to \code{method = c("MI", "Francis")}
 because they require initial estimates that are compared to a theoretical
 distribution external to SS.}
 
@@ -51,5 +51,5 @@ tune.}
 \description{
 Weight age- or length-composition data in the estimation model (EM) using a
 tuning method (MacAllister-Ianelli or Francis) or a distribution
-(dirichlet multinomial).
+(Dirichlet multinomial).
 }

@@ -16,7 +16,7 @@ to dashed black; pass coloration of lines in a better way; use plot_ss3sim
 as back-end code for plotting functions; properly use character strings as
 input arguments with calls to data; add cumulative mean figure; allow for fill
 in boxplots; 
-* Results: long-data format for results to allow functions to be used by ssmse;
+* Results: long-data format for results to allow functions to be used by SSMSE;
 remove columns that are not needed; remove row names in summary files; rename
 rec_dev to increase clarity; better grep of management quantities;
 remove parallel capacity; only read comp file if present by changing CompFile to
@@ -46,7 +46,7 @@ using ../doc/introduction.html
 
 # ss3sim 1.0.1
 
-* fixed broken links in Readme.md and inst/doc/introduction.html
+* fixed broken links in README.md and inst/doc/introduction.html
 * confirmed that the links in inst/doc/making-models.html are working
 
 # ss3sim 1.0.0
@@ -60,7 +60,7 @@ not run their model long enough to reach equilibrium
 * Remove reliance on tidyverse packages
 * Change to 'iteration' instead of 'replicate'
 * Update the license to 2019
-* Change readme from Rmd to md file
+* Change README from Rmd to md file
 * Deleted the vignette on making functions and updated remaining vignettes
 * Remove bias adjustment capability and sampling of conditional age-at-length
 data; both will eventually be added back to the package with better code
@@ -212,7 +212,7 @@ option to specify safe or optimized
 * Added dimension check of `user_recdevs` to ensure recruitment deviations are
   supplied for all iterations (#130).
 
-* Vignette now uses a custom Solarized colour theme.
+* Vignette now uses a custom Solarized color theme.
 
 ## Bug fixes
 

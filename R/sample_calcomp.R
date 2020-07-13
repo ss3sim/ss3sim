@@ -17,7 +17,7 @@
 #'  then that row is discarded. A value of NULL for fleets indicates to delete
 #'  the conditional age at length data data (but not the marginal age data).
 #'  Only the multinomial distribution is currently implemented,
-#'  so this function cannot be used with the dirichlet distribution.
+#'  so this function cannot be used with the Dirichlet distribution.
 #'  Note that this function cannot handle all types of conditional age at length
 #'  sampling. This function requires that there be a row of conditional age at
 #'  length data for each length data bin (for each year and fleet that sampling

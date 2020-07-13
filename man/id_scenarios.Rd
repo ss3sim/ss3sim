@@ -2,19 +2,22 @@
 % Please edit documentation in R/get-results.r
 \name{id_scenarios}
 \alias{id_scenarios}
-\title{Identify ss3sim scenarios within a directory}
+\title{Identify scenarios in \code{directory}}
 \usage{
 id_scenarios(directory)
 }
 \arguments{
-\item{directory}{The directory which contains scenario folders with
-results.}
+\item{directory}{The directory that you want to search for scenarios.
+The search is recursive, and thus, it is in one's best interest to
+provide a shorter path name rather than one high up in the call stack.}
 }
 \value{
-A character vector of folders
+A character vector of relative paths to directories that contain
+  iterations.
 }
 \description{
-Identify ss3sim scenarios within a directory
+Find folders within \code{directory} that contain iterations,
+i.e., "1", "2", "3", ..., and thus, allowing for unique scenario names.
 }
 \author{
 Merrill Rudd

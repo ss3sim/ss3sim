@@ -16,7 +16,7 @@ standardize_sampling_args(
 \item{fleets}{Fleet numbers as a vector}
 
 \item{years}{Number of years as a list. The number of list components should
-be one or the same length as fleets. Within the list compoenents should be
+be one or the same length as fleets. Within the list components should be
 a vector of years to correspond with each fleet.}
 
 \item{other_input}{Some other input to interpret. The number of list

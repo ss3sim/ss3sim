@@ -21,7 +21,7 @@ While these model setups are generic and cover a wide range of life-history type
 ss3sim is not designed for testing properties of specific SS models, but rather properties of assessment models in general. Currently, there are many features of SS that cannot be manipulated by ss3sim. For example, seasons, hermaphrodism, multiple areas, movement, growth morphs, and platoons. All features that have been removed from the cod-like species if they were present in the original assessment.
 It is possible to create new models that will work within the ss3sim framework, but this task will be complicated and likely require extensive knowledge of SS3 and R. This process is described in more detail in Sections \ref{sec:om-setup} and \ref{sec:em-setup}. We recommend adapting the current built-in models to match your desired model setup because the configuration of this model has already been tested within ss3sim and is easily adaptable.
 
-For example, youcan modify the cod OM and EM files to have a different
+For example, you can modify the cod OM and EM files to have a different
 maturity before exploring sampling schemes using the
 `sample_index`, `sample_lcomp`, and `sample_agecomp`
 functions. The following steps provide a basic guideline for how to accomplish this:

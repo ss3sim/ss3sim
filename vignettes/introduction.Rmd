@@ -182,7 +182,7 @@ df[, "scenarios"] <- c("D0-E0-F0-cod", "D1-E0-F0-cod",
   "D0-E1-F0-cod", "D1-E1-F0-cod")
 ```
 
-We will run just a few iterations to save time and keep the package size down, but in a real simulation testing study you will want to run many more iterations, perhaps testing how many iterations are required before the key results stabilize. See `plot_cummean()` for visualizing the value of additional iterations, where the goal is to flatten the curve towards a relative erorr of zero with the addition of each iteration up to some uknown threshold number of iterations.
+We will run just a few iterations to save time and keep the package size down, but in a real simulation testing study you will want to run many more iterations, perhaps testing how many iterations are required before the key results stabilize. See `plot_cummean()` for visualizing the value of additional iterations, where the goal is to flatten the curve towards a relative error of zero with the addition of each iteration up to some unknown threshold number of iterations.
 Additionally, we set `bias_adjust` to `FALSE` such that the maximum bias adjustment will be that from the EM control file rather than a calculated value.
 
 ```{r, case-file-checks, eval=FALSE}
@@ -211,7 +211,7 @@ and include minimal error.
 
 We will run some simulations to check our EM for bias when process and observation error are minimized. To do this, we will start by setting up a 200 row (number of years) by 20 column (number of iterations) matrix of recruitment deviations, where all values are set to zero.
 
-Then we will set up OM and EM files with the standar deviation of recruitment variability, `SR_sigmaR`, set to `0.001`. To do this, the data frame that controls the scenarios must specify `par_name = SR_sigmaR` (the SS parameter name) and `par_int = 0.001` (the initial value) for both `change_o` and `change_e` for the OM and EM, respectively.
+Then we will set up OM and EM files with the standard deviation of recruitment variability, `SR_sigmaR`, set to `0.001`. To do this, the data frame that controls the scenarios must specify `par_name = SR_sigmaR` (the SS parameter name) and `par_int = 0.001` (the initial value) for both `change_o` and `change_e` for the OM and EM, respectively.
 To minimize observation error on the survey index, we will create a standard deviation on the survey observation error of 0.001. Finally, we will fix $M$ at the true value and estimate it in phase 3 as we did before.
 
 ```{r, df_deterministic}
@@ -244,9 +244,9 @@ scname_det <- run_ss3sim(iterations = iterations, simdf = df)
 The function `get_results_all` reads in a set of scenarios and combines the output into `.csv` files, e.g., `ss3sim_scalar.csv` and `ss3sim_ts.csv`. The `scalar` file contains values for which there is a single estimated value (e.g., MSY) and the `ts` file refers to values for which there are time series of estimates available (e.g., biomass for each year).
 
 Column names in these files will not always be the same because they are dependent on OM and EM settings. For example, an EM with age-specific natural
-mortality will have multiple natural mortality parameters each with a different name. `get_results_all` can accomodate this by using the parameter name assigned by SS rather than attempting to standardize names.
+mortality will have multiple natural mortality parameters each with a different name. `get_results_all` can accommodate this by using the parameter name assigned by SS rather than attempting to standardize names.
 
-Originally, ss3sim provided the results using a wide-table format, with invidual columns for each OM and EM parameter along with some summary information for each scenario. In May of 2020 we changed to providing results using a long format.
+Originally, ss3sim provided the results using a wide-table format, with individual columns for each OM and EM parameter along with some summary information for each scenario. In May of 2020 we changed to providing results using a long format.
 
 ```{r, get-results, eval=FALSE}
 get_results_all(overwrite_files = TRUE,
@@ -303,7 +303,7 @@ print(p)
 # see plot_points() for another plotting function
 ```
 
-Let's look at the relative error in estimates of spawning biomass. We will colour the time series according to the maximum gradient. Small values of the maximum gradient (approximately 0.001 or less) indicate that model convergence is likely. Larger values (greater than 1) indicate that model convergence is unlikely. Results of individual iterations are jittered around the vertical axis to aid in visualization. The following three blocks of code produce Figures~\ref{fig:plot-sto-ts}, \ref{fig:ssb-ts-plots}, and \ref{fig:relative-error-boxplots-sto}.
+Let's look at the relative error in estimates of spawning biomass. We will color the time series according to the maximum gradient. Small values of the maximum gradient (approximately 0.001 or less) indicate that model convergence is likely. Larger values (greater than 1) indicate that model convergence is unlikely. Results of individual iterations are jittered around the vertical axis to aid in visualization. The following three blocks of code produce Figures~\ref{fig:plot-sto-ts}, \ref{fig:ssb-ts-plots}, and \ref{fig:relative-error-boxplots-sto}.
 
 ```{r, plot-sto-ts, fig.height=5, fig.width=7, fig.cap="Time series of relative error in spawning stock biomass."}
 p <- plot_lines(ts_dat_sto, y = "SpawnBio_re",
@@ -555,7 +555,7 @@ Note that if the simulation aborts for any reason while `run_ss3sim` is running 
 
 Instead of copying the SS binary file (`ss.exe`) to each folder within a simulation and running it, ss3sim relies on a single binary file being available to the operating system regardless of the folder. To accomplish this, SS must be in your system path, which is a list of folders that your operating system looks in whenever you type the name of a program on the command line. This approach saves on storage space because the SS binary is about 6 MB and having it in each folder can be prohibitive in a large-scale simulation study.
 
-The [development version](https://github.com/ss3sim/ss3sim/tree/development) of the package on github installs the executable automatically, but this behaviour is disallowed on CRAN. In any case, it may be useful to put the binary in your path so you can manually run models during development and testing (i.e., open command window in folder of OM or EM run and run the binary to see SS output). ss3sim will first look to see if the executable is available within the bin folder of the package using `system.file("bin", package = "ss3sim")`. If it is not found, then it will look for the executable in your path. This heirarchy is important for understanding which version of SS is being used.
+The [development version](https://github.com/ss3sim/ss3sim/tree/development) of the package on github installs the executable automatically, but this behavior is disallowed on CRAN. In any case, it may be useful to put the binary in your path so you can manually run models during development and testing (i.e., open command window in folder of OM or EM run and run the binary to see SS output). ss3sim will first look to see if the executable is available within the bin folder of the package using `system.file("bin", package = "ss3sim")`. If it is not found, then it will look for the executable in your path. This hierarchy is important for understanding which version of SS is being used.
 
 ## Unix (OS X and Linux)
 

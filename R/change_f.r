@@ -3,7 +3,7 @@
 #' Replace or input fishing mortality (\emph{F}) for a Stock Synthesis (SS)
 #' simulation via changes to the control file. \emph{F} for multiple fleets
 #' and or seasons can be specified using list structures. If fishing only
-#' occurrs within a single fleet, then vector inputs are acceptable.
+#' occurs within a single fleet, then vector inputs are acceptable.
 #'
 #' @details
 #' The argument \code{years} is the only argument that must be a vector
@@ -41,7 +41,7 @@
 #' @template lcomp-agecomp-index
 #' @param fisheries A deprecated argument that was replaced by \code{fleets} to
 #' match the style of other ss3sim functions. Currently, it can still be used
-#' to allow for back compatability with the specification of which fleet the
+#' to allow for back compatibility with the specification of which fleet the
 #' fishing mortality pertains to. A vector the same lengths as \code{years}
 #' or a single integer value is acceptable.
 #' @param fvals A list of the same length as \code{fleets} with one
