@@ -76,11 +76,11 @@ test_that("A basic run_ss3sim scenario runs", {
   expect_equal(scalar[em_line, "depletion"],
     scalar[om_line, "depletion"],
     tolerance = 0.012, label = "OM depletion")
-  expect_equal(type.convert(scalar[em_line, "SSB_MSY"]),
-    type.convert(scalar[om_line, "SSB_MSY"]),
+  expect_equal(type.convert(scalar[em_line, "SSB_MSY"], as.is = TRUE),
+    type.convert(scalar[om_line, "SSB_MSY"], as.is = TRUE),
     scale = 1000000000000000, label = "EM SSB at MSY")
-  expect_equal(type.convert(scalar[em_line, "Catch_endyear"]),
-    type.convert(scalar[om_line, "Catch_endyear"]),
+  expect_equal(type.convert(scalar[em_line, "Catch_endyear"], as.is = TRUE),
+    type.convert(scalar[om_line, "Catch_endyear"], as.is = TRUE),
     label = "EM terminal catch")
   expect_equal(scalar[em_line, "SR_LN_R0"], 18.7,
     tolerance = 0.001, label = "EM R_0")
