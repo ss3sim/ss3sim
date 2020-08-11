@@ -1,3 +1,7 @@
+# ss3sim 1.1.1
+
+* Allow for custom name of results files
+
 # ss3sim 1.1.0
 
 * Upgrade to SS 3.30.15.03
