@@ -113,25 +113,25 @@ get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
     ts.all <- convert_to_wide(ts.all)
     dq.all <- convert_to_wide(dq.all)
   }
-  scalar_filename <- paste0(filename_prefix, "_scalar.csv")
-  ts_filename <- paste0(filename_prefix, "_ts.csv")
-  if (file.exists(scalar_filename)) {
-    if (overwrite_files) write.csv(scalar.all, file = scalar_filename, row.names = FALSE)
+  scalar.file.all <- paste0(filename_prefix, "_scalar.csv")
+  ts.file.all <- paste0(filename_prefix, "_ts.csv")
+  if (file.exists(scalar.file.all)) {
+    if (overwrite_files) write.csv(scalar.all, file = scalar.file.all, row.names = FALSE)
     else {
-      warning(scalar_filename, " already exists and overwrite_files = FALSE, ",
+      warning(scalar.file.all, " already exists and overwrite_files = FALSE, ",
                  "so a new file was not written")
     }
   } else { # can write either way
-    write.csv(scalar.all, file = scalar_filename, row.names = FALSE)
+    write.csv(scalar.all, file = scalar.file.all, row.names = FALSE)
   }
-  if (file.exists(ts_filename)) {
-    if (overwrite_files) write.csv(ts.all, file = ts_filename, row.names = FALSE)
+  if (file.exists(ts.file.all)) {
+    if (overwrite_files) write.csv(ts.all, file = ts.file.all, row.names = FALSE)
     else {
-      warning(ts_filename, " already exists and overwrite_files = FALSE, ",
+      warning(ts.file.all, " already exists and overwrite_files = FALSE, ",
               "so a new file was not written")
     }
   } else { # can write either way
-    write.csv(ts.all, file = ts_filename, row.names = FALSE)
+    write.csv(ts.all, file = ts.file.all, row.names = FALSE)
   }
 ret <- list(scalar = scalar.all,
                   ts = ts.all,
