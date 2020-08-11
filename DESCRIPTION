@@ -49,5 +49,5 @@ Imports:
     stats,
     utils
 Remotes: github::r4ss/r4ss@development
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Encoding: UTF-8
