@@ -38,15 +38,19 @@ id_scenarios <- function(directory) {
 #'   \code{directory}.
 #' @param type A character string specifying if you want the results to be
 #'   written to the disk and returned as a long or wide data frame, where the
-#'   default is \code{"long"}.
+#'   default is \code{"long"}
+#' @param filename_prefix A character string specifying a prefix to append to
+#'   the filename. Defaults to "ss3sim".
 #' @export
 #' @return Returns a list of 3 dataframes: scalar, ts, and dq.
-#' Creates two .csv files in the current working directory:
+#' Creates two .csv files in the current working directory,
+#' where the names of those files are based on \code{filename_prefix}
+#' and the default leads to the following:
 #' \code{ss3sim_ts.csv} and \code{ss3sim_scalar.csv}.
-#' @author Cole Monnahan, Merrill Rudd
+#' @author Cole Monnahan, Merrill Rudd, Kathryn Doering
 #' @family get-results
 get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
-  user_scenarios = NULL, type = c("long", "wide")) {
+  user_scenarios = NULL, type = c("long", "wide"), filename_prefix = "ss3sim") {
 
     old_wd <- getwd()
     on.exit(setwd(old_wd))
@@ -109,23 +113,19 @@ get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
     ts.all <- convert_to_wide(ts.all)
     dq.all <- convert_to_wide(dq.all)
   }
-  if (file.exists("ss3sim_scalar.csv")) {
-    if (overwrite_files) write.csv(scalar.all, file = "ss3sim_scalar.csv", row.names = FALSE)
-    else {
-      warning("ss3sim_scalar.csv already exists and overwrite_files = FALSE, ",
-                 "so a new file was not written")
-    }
+  scalar.file.all <- paste0(filename_prefix, "_scalar.csv")
+  ts.file.all <- paste0(filename_prefix, "_ts.csv")
+  if (file.exists(scalar.file.all) & !overwrite_files) {
+    warning(scalar.file.all, " already exists and overwrite_files = FALSE, ",
+      "so a new file was not written.")
   } else { # can write either way
-    write.csv(scalar.all, file = "ss3sim_scalar.csv", row.names = FALSE)
+    write.csv(scalar.all, file = scalar.file.all, row.names = FALSE)
   }
-  if (file.exists("ss3sim_ts.csv")) {
-    if (overwrite_files) write.csv(ts.all, file = "ss3sim_ts.csv", row.names = FALSE)
-    else {
-      warning("ss3sim_ts.csv already exists and overwrite_files = FALSE, ",
-              "so a new file was not written")
-    }
+  if (file.exists(ts.file.all) & !overwrite_files) {
+    warning(ts.file.all, " already exists and overwrite_files = FALSE, ",
+      "so a new file was not written.")
   } else { # can write either way
-    write.csv(ts.all, file = "ss3sim_ts.csv", row.names = FALSE)
+    write.csv(ts.all, file = ts.file.all, row.names = FALSE)
   }
 ret <- list(scalar = scalar.all,
                   ts = ts.all,
