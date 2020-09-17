@@ -35,10 +35,7 @@
 change_q <- function(string_add = NULL, string_remove = NULL,
   ctl_list, dat_list, ctl_file_in = NULL, dat_file_in = NULL, ctl_file_out = NULL,
   overwrite = FALSE, verbose = FALSE) {
-  
-  if(is.null(string_add) & is.null(string_remove)) {
-    stop("Either string_add or string_remove must have an entry.")
-  }
+
   if(!is.null(dat_file_in)) {
     dat_list <- r4ss::SS_readdat(verbose = FALSE, echoall = FALSE,
       file = dat_file_in)
