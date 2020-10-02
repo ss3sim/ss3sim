@@ -1,5 +1,5 @@
 #' Set up scenarios for a simulation with ss3sim
-#' 
+#'
 #' Set up scenarios with default arguments for a simulation with ss3sim.
 #' The data frame passed by the user will likely be a truncated version
 #' of all of the information needed to run a simulation, and therefore,
@@ -41,7 +41,8 @@ setup_scenarios_fillmissing <- function(dataframe) {
     om = system.file("extdata", "models", "cod-om", package = "ss3sim"),
     # todo: make this NULL such that the EM is created from the OM internally
     # within ss3sim, e.g., in the run_ss3sim function
-    em = system.file("extdata", "models", "cod-em", package = "ss3sim")
+    em = system.file("extdata", "models", "cod-em", package = "ss3sim"),
+    stringsAsFactors = FALSE
   )
 
   missingcols <- !colnames(musthavecols) %in% colnames(dataframe)
@@ -74,7 +75,7 @@ setup_scenarios_defaults <- function() {
     sa.years.1 = '26:100',
     sa.Nsamp.2 = 100,
     sa.years.2 = 'seq(62, 100, by = 2)',
-    sa.cpar = NA
+    sa.cpar = NA, stringsAsFactors = FALSE
   )
 }
 
