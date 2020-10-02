@@ -13,25 +13,26 @@
 #'
 #' @author Kelli Faye Johnson
 #' @export
-#' 
+#'
 setup_scenarios <- function(input = NULL) {
   if (is.null(input)) {
     input <- setup_scenarios_defaults()
   }
   info <- setup_scenarios_2list(setup_scenarios_fillmissing(input))
   info <- lapply(info, setup_scenarios_list_names)
+  info <- lapply(info, setup_scenarios_rm_NAs)
   return(info)
 }
 
 #' Add missing arguments needed to run scenarios
-#' 
+#'
 #' Add columns for missing arguments that are needed to run scenarios
 #' and that can be set to some default value. E.g., the operating model
 #' can be the default operating model in the package but users must set
 #' the number of age-composition samples that they want because users
 #' might not want to sample any ages so we don't want to set everything
 #' to a default value.
-#' 
+#'
 #' @param dataframe A data frame input by the user specifying the scenario
 #' structure for the simulation.
 #' @return A data frame with potentially more columns than what was provided.
@@ -49,7 +50,7 @@ setup_scenarios_fillmissing <- function(dataframe) {
 }
 
 #' Set up a generic scenario
-#' 
+#'
 #' Create a data frame of scenario inputs for a generic simulation that will
 #' run within ss3sim. Users can add more arguments, but the scenario will run
 #' without changing the returned value.
@@ -150,4 +151,34 @@ setup_scenarios_name <- function(check = FALSE) {
     }
   }
   return(dt)
+}
+
+setup_scenarios_rm_NAs <- function(scen_params) {
+  # remove nas ONLY for year , sd, or sample size
+  scen_params_rm_NAs <- lapply(scen_params, function(x) {
+    rm_NA_vals <- "(^years$)|(^Nsamp)|(^sds_obs$)"
+    names_to_check <- grep(rm_NA_vals, names(x), value = TRUE)
+    for (i in names_to_check) {
+      if (any(is.na(unlist(x[[i]])))) {
+        list_components <- names(x[[i]])
+        for (j in list_components) {
+          if (any(is.na(x[[i]][[j]]))) {
+            tmp_splitname <- unlist(strsplit(j, "\\."))
+            tmp_fleet <- grep("^\\d+$", tmp_splitname, value = TRUE)
+            if (length(tmp_fleet) != 1) {
+              stop("ss3sim could not parse fleets to remove NA values.")
+            }
+            to_rm <- -which(x[["fleets"]] == tmp_fleet)
+            x[["fleets"]] <- x[["fleets"]][to_rm]
+            # get rid of years values and the original NA values
+            yrs_component_name <- paste0(tmp_splitname[1], ".years.", tmp_fleet)
+            x[["years"]][[yrs_component_name]] <- NULL
+            x[[i]][[j]] <- NULL
+          }
+        }
+      }
+    }
+    x
+  })
+  scen_params_rm_NAs
 }
