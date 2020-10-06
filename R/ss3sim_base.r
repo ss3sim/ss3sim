@@ -275,7 +275,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ctl_file_in = file.path(sc,i, "om", "om.ctl"),
       ctl_list = NULL, dat_list = datfile.modified,
       ctl_file_out = file.path(sc,i, "om", "om.ctl"))
-
+      datfile.modified <- change_catch(dat_list = datfile.modified,
+                                       f_params = f_params)
       # Note some are data_args and some are data_params:
       do.call("change_data", c(
                   dat_list         = list(datfile.modified),

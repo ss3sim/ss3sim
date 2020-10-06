@@ -127,12 +127,6 @@ change_data <- function(dat_list, outfile = NULL, fleets, years,
   ## TODO: Need to do things like change age matrices?
   ## TODO: Change the data vectors if specified?
 
-  # catch data w/ equilibrium value for each fleet
-  dat_list[["catch"]] <- expand.grid(
-    year = c(-999, dat_list$styr:dat_list$endyr),
-    seas = 1, fleet = fleets, catch = 1, catch_se = 0.01)
-  dat_list[["catch"]][dat_list[["catch"]][, "year"] == -999, "catch"] <- 0
-
   # population bins:
   # change_pop_bin() deals with NULLs internally by not changing values:
   dat_list <- change_pop_bin(dat_list, binwidth = pop_binwidth,
