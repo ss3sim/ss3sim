@@ -140,10 +140,6 @@ out$binwidth
 out$maximum_size
 out$minimum_size
 
-\dontshow{
-testthat::expect_true(NROW(out$catch) == length(fleets)*100+length(fleets))
-}
-
 }
 \seealso{
 See \code{\link{clean_data}} for a counter function.
