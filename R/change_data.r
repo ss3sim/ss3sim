@@ -96,10 +96,6 @@
 #' out$maximum_size
 #' out$minimum_size
 #'
-#' \dontshow{
-#' testthat::expect_true(NROW(out$catch) == length(fleets)*100+length(fleets))
-#' }
-#'
 change_data <- function(dat_list, outfile = NULL, fleets, years,
   types = c("index","len", "age", "cal", "mla", "mwa"),
   age_bins = NULL, len_bins = NULL, pop_binwidth = NULL,
