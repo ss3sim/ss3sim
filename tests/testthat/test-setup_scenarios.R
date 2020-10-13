@@ -34,4 +34,23 @@ test_that("setup_scenarios work with multiple rows, NAs", {
   expect_null(scenario_list[[2]]$lcomp_params$Nsamp$sl.Nsamp.2)
   expect_null(scenario_list[[2]]$lcomp_params$years$sl.years.2)
   expect_equal(scenario_list[[2]]$lcomp_params$fleets, 1)
+  expect_true(all(mapply(length, scenario_list[[2]]$lcomp_params) == 1))
+  expect_true(scenario_list[[2]]$lcomp_params$cpar == "NULL")
+  expect_true(scenario_list[[2]]$agecomp_params$cpar == "NULL")
+  df[2, "sl.Nsamp.2"] <- 20
+  scenario_list <- setup_scenarios(df)
+  expect_equal(scenario_list[[2]]$lcomp_params$fleets, 1,
+    label = "sl.years.2 = NA wasn't enough to remove fleet 2.")
+})
+
+test_that("Catches are removed from third fleet", {
+  df <- setup_scenarios_defaults()
+  df <- rbind(df, df)
+  df[1, "cf.years.3"] <- df[1, "cf.years.1"]
+  df[2, "cf.years.3"] <- NA
+  scenario_list <- setup_scenarios(df)
+  expect_equal(scenario_list[[1]]$f_params$fleets, c(1, 3),
+    label = "Fleet 3 catches were not added in 1st scenario.")
+  expect_equal(scenario_list[[2]]$f_params$fleets, 1,
+    label = "Fleet 3 catches were not removed in 2nd scenario.")
 })

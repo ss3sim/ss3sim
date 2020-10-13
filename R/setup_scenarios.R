@@ -155,32 +155,54 @@ setup_scenarios_name <- function(check = FALSE) {
   return(dt)
 }
 
+#' Remove Fleets with NA Input Arguments
+#'
+#' Remove fleets from the settings list for a given scenario that have one
+#' input argument as NA suggesting that sampling shouldn't happen for that
+#' fleet. NAs from the data frame are moved to a list form with one object
+#' per scenario, and this function removes those NA fleets from the list.
+#'
+#' @param scen_params A list of parameters for at least one scenario, where
+#' each scenario will be a list object of the main list to allow for the
+#' use of \code{\link{lapply}}.
 setup_scenarios_rm_NAs <- function(scen_params) {
-  # remove nas ONLY for year , sd, or sample size
+  #### For each scenario list, remove NAs in all "fleet" list elements
   scen_params_rm_NAs <- lapply(scen_params, function(x) {
-    rm_NA_vals <- "(^years$)|(^Nsamp)|(^sds_obs$)"
-    names_to_check <- grep(rm_NA_vals, names(x), value = TRUE)
+    names_to_check <- setup_scenarios_findfleetlists(x)
+    if (is.null(names_to_check)) return(x)
     for (i in names_to_check) {
-      if (any(is.na(unlist(x[[i]])))) {
-        list_components <- names(x[[i]])
-        for (j in list_components) {
-          if (any(is.na(x[[i]][[j]]))) {
-            tmp_splitname <- unlist(strsplit(j, "\\."))
-            tmp_fleet <- grep("^\\d+$", tmp_splitname, value = TRUE)
-            if (length(tmp_fleet) != 1) {
-              stop("ss3sim could not parse fleets to remove NA values.")
-            }
-            to_rm <- -which(x[["fleets"]] == tmp_fleet)
-            x[["fleets"]] <- x[["fleets"]][to_rm]
-            # get rid of years values and the original NA values
-            yrs_component_name <- paste0(tmp_splitname[1], ".years.", tmp_fleet)
-            x[["years"]][[yrs_component_name]] <- NULL
-            x[[i]][[j]] <- NULL
-          }
-        }
+      res <- setup_scenarios_anyNA(x[[i]])
+      if (all(!res)) {next}
+      splitname <- strsplit(names(res)[res], "\\.")
+      fleet <- unique(unlist(lapply(splitname, "[[", 3)))
+      x[["fleets"]] <- x[["fleets"]][-which(x[["fleets"]] %in% fleet)]
+      if (length(x[["fleets"]]) == 0) {
+        return(list(fleets = NULL))
       }
+      x <- setup_scenarios_keepfleetobj(x, x[["fleets"]])
     }
-    x
+    return(x)
   })
-  scen_params_rm_NAs
+  #### Return list of one list per scenario
+  return(scen_params_rm_NAs)
+}
+
+setup_scenarios_findfleetlists <- function(x, pattern = "\\.[0-9]+$") {
+  out <- vapply(lapply(x, names), FUN.VALUE = logical(1),
+    FUN = function(y, pat = pattern) any(grepl(pattern = pattern, x = y)))
+  return(names(out)[out])
+}
+
+setup_scenarios_anyNA <- function(xlist) {
+  out <- lapply(xlist, function(x) all(is.na(x)) & length(is.na(x)) != 0)
+  return(unlist(out))
+}
+
+setup_scenarios_keepfleetobj <- function(xlist, keepf) {
+  out <- lapply(xlist, function(x, pat = keepf) {
+    test <- grepl(pattern = paste0(pat, collapse = "|"), names(x))
+    if (all(!test)) return(x)
+    return(x[test])
+  })
+  return(out)
 }
