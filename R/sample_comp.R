@@ -26,7 +26,12 @@ sample_comp <- function(data, Nsamp, fleets, years, ESS = NULL, cpar = 1) {
   #### Perform input checks
   if (is.null(fleets)) return(data[0, ])
   if (is.null(Nsamp)) return(data[0, ])
-  if (is.null(cpar)) cpar <- NA
+  cpar <- switch(class(cpar),
+    list = ifelse(mapply(is.null, cpar), NA, unlist(cpar,recursive = FALSE)),
+    numeric = cpar,
+    logical = NA,
+    vector = cpar,
+    NULL = NA)
   Nfleets <- length(fleets)
   if (length(Nsamp) == 1 & Nfleets > 1) Nsamp <- rep(Nsamp, Nfleets)
   if (length(years) == 1 & Nfleets > 1) years <- rep(years, Nfleets)
