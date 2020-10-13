@@ -20,10 +20,10 @@ test_that("A basic run_ss3sim scenario runs", {
     ce.par_phase = "c(-1, 4)",
     cf.years.1 = "26:100", cf.fval.1 = "rep('0.1052', 75)",
     si.years.2 = "seq(26,100,1)", si.sds_obs.2 = 0.01,
-    sl.years.1 = "seq(26,100,4)", sl.Nsamp.1 = 200, sl.cpar.1 = NA,
-    sl.years.2 = "seq(26,100,1)", sl.Nsamp.2 = 201, sl.cpar.2 = NA,
-    sa.years.1 = "seq(26,100,4)", sa.Nsamp.1 = 202, sa.cpar.1 = NA,
-    sa.years.2 = "seq(26,100,1)", sa.Nsamp.2 = 203, sa.cpar.2 = NA)
+    sl.years.1 = "seq(26,100,4)", sl.Nsamp.1 = 200, sl.cpar.1 = "NULL",
+    sl.years.2 = "seq(26,100,1)", sl.Nsamp.2 = 201, sl.cpar.2 = "NULL",
+    sa.years.1 = "seq(26,100,4)", sa.Nsamp.1 = 202, sa.cpar.1 = "NULL",
+    sa.years.2 = "seq(26,100,1)", sa.Nsamp.2 = 203, sa.cpar.2 = "NULL")
   scname <- run_ss3sim(iterations = 1, simdf = df)
   expect_true("control.ss_new" %in% list.files(file.path(scname,"1", "em")))
   success <- get_success(file.path(scname, "1", "em"))
@@ -123,10 +123,10 @@ test_that("run_ss3sim works with multiple scenarios without estimation", {
     cb.pop_minimum_size = 1, cb.pop_maximum_size = 200,
     cb.bin_vector = "seq(10,190,by=10)",
     si.years.2 = "seq(90,100,1)", si.sds_obs.2 = 0.01,
-    sl.years.1 = "seq(90,100,4)", sl.Nsamp.1 = 20, sl.cpar.1 = NA,
-    sl.years.2 = "seq(90,100,1)", sl.Nsamp.2 = 20, sl.cpar.2 = NA,
-    # sm.years.2 = "seq(90,100,1)", sm.Nsamp.2 = 10, sm.cpar.2 = NA,
-    sa.years.1 = "seq(90,100,4)", sa.Nsamp.1 = 20, sa.cpar.1 = NA)
+    sl.years.1 = "seq(90,100,4)", sl.Nsamp.1 = 20, sl.cpar.1 = "NULL",
+    sl.years.2 = "seq(90,100,1)", sl.Nsamp.2 = 20, sl.cpar.2 = "NULL",
+    # sm.years.2 = "seq(90,100,1)", sm.Nsamp.2 = 10, sm.cpar.2 = "NULL",
+    sa.years.1 = "seq(90,100,4)", sa.Nsamp.1 = 20, sa.cpar.1 = "NULL")
   scname <- run_ss3sim(iterations = 1:2, simdf = df)
   ssom <- r4ss::SS_output(file.path(scname[1], "1", "om"),
     verbose = FALSE, printstats = FALSE, covar = FALSE)

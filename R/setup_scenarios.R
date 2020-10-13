@@ -70,12 +70,13 @@ setup_scenarios_defaults <- function() {
     sl.years.1 = '26:100',
     sl.Nsamp.2 = 100,
     sl.years.2 = 'seq(62, 100, by = 2)',
-    sl.cpar = NA,
+    sl.cpar = "NULL",
     sa.Nsamp.1 = 50,
     sa.years.1 = '26:100',
     sa.Nsamp.2 = 100,
     sa.years.2 = 'seq(62, 100, by = 2)',
-    sa.cpar = NA, stringsAsFactors = FALSE
+    sa.cpar = "NULL",
+    stringsAsFactors = FALSE
   )
 }
 

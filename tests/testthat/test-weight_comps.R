@@ -88,9 +88,9 @@ test_that("run_ss3sim runs with data weighting", {
     cf.years.1 = "26:100",
     cf.fval.1 = "rep('0.1052', 75)",
     si.years.2 = "seq(90,100,1)", si.sds_obs.2 = 0.01,
-    sl.years.1 = "seq(90,100,4)", sl.Nsamp.1 = 20, sl.cpar.1 = NA,
-    sl.years.2 = "seq(90,100,4)", sl.Nsamp.2 = 20, sl.cpar.2 = NA,
-    sa.years.1 = "seq(90,100,4)", sa.Nsamp.1 = 20, sa.cpar.1 = NA,
+    sl.years.1 = "seq(90,100,4)", sl.Nsamp.1 = 20, sl.cpar.1 = "NULL",
+    sl.years.2 = "seq(90,100,4)", sl.Nsamp.2 = 20, sl.cpar.2 = "NULL",
+    sa.years.1 = "seq(90,100,4)", sa.Nsamp.1 = 20, sa.cpar.1 = "NULL",
     wc.niters_weighting = 1, wc.method = "MI", wc.fleets = "1:2")
   scname <- run_ss3sim(iterations = 1, simdf = df)
   DW_dat <- r4ss::SS_readdat(file.path(scname, "1", "em", "ss3.dat"), verbose = FALSE)
