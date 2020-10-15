@@ -405,9 +405,16 @@ get_results_timeseries <- function(report.file) {
       report.file$derived_quants[,
       grep("label", colnames(report.file$derived_quants),
       ignore.case = TRUE)]), ]
-    spr$Yr <- sapply(strsplit(
-      spr[, grep("label", colnames(spr), ignore.case = TRUE)], "_"), "[", 2)
-    colnames(spr)[which(colnames(spr) == "Value")] <- "SPRratio"
+    if(isTRUE(nrow(spr) > 0)) {
+      spr$Yr <- unlist(lapply(strsplit(
+        spr[, grep("label", colnames(spr), ignore.case = TRUE)], "_"), "[", 2))
+      colnames(spr)[which(colnames(spr) == "Value")] <- "SPRratio"
+      df <- merge(xx, spr[, c("SPRratio", "Yr")], by = "Yr", all.x = TRUE)
+      df$SPRratio[is.na(df$SPRratio)] <- 0
+    } else {
+      df <- xx
+      df$SPRratio <- NA
+    }
     # Get recruitment deviations
     dev <- report.file$recruit
     getcols <- c(grep("^y", colnames(dev), ignore.case = TRUE),
@@ -415,8 +422,6 @@ get_results_timeseries <- function(report.file) {
     dev <- dev[dev[, getcols[1]] %in% years, getcols]
     colnames(dev) <- gsub("dev", "rec_dev", colnames(dev), ignore.case = TRUE)
     ## create final data.frame
-    df <- merge(xx, spr[, c("SPRratio", "Yr")], by = "Yr", all.x = TRUE)
-    df$SPRratio[is.na(df$SPRratio)] <- 0
     df <- merge(df, dev, by.x = "Yr",
       by.y = colnames(dev)[getcols[1]], all.x = TRUE)
     rownames(df) <- NULL
