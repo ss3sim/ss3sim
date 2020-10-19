@@ -55,25 +55,42 @@ test_that("Catches are removed from third fleet", {
     label = "Fleet 3 catches were not removed in 2nd scenario.")
 })
 
-test_that("setup_scenarios works witout specifying fleet for some quantities", {
-  # first df
-  df <- setup_scenarios_defaults()
-  df[, "sl.years.2"] <- NULL
-  df[, "sl.Nsamp.2"] <- NULL
-  df[, "sl.years"] <- df[, "sl.years.1"]
-  df[, "sl.Nsamp"] <- df[, "sl.Nsamp.1"]
-  df[, "sl.years.1"] <- NULL
-  df[, "sl.Nsamp.1"] <- NULL
-  # second df
-  df_2 <- setup_scenarios_defaults()
-  df_2[, "sl.years.2"] <- df_2[, "sl.years.1"]
-  df_2[, "sl.Nsamp.2"] <- df_2[, "sl.Nsamp.1"]
+test_that("setup_scenarios works without specifying fleet for years then Nsamp", {
+  dat_list <- exp_vals <- SS_readdat(file.path(
+    system.file("extdata", package = "ss3sim"), "example-om", "ss3_expected_values.dat"),
+                       version = NULL, verbose = FALSE)
 
+  df <- setup_scenarios_defaults()
+  df[, "sl.Nsamp.2"] <- NULL
+  df[, "sl.Nsamp"] <- df[, "sl.Nsamp.1"]
+  df[, "sl.Nsamp.1"] <- NULL
+  df_2 <- setup_scenarios_defaults()
+  df_2[, "sl.Nsamp.2"] <- df_2[, "sl.Nsamp.1"]
   scenario_list <- setup_scenarios(df)
   scenario_list_2 <- setup_scenarios(df_2)
-  # I think these should be equivalent...
-  expect_equivalent(scenario_list[[1]]$lcomp_params,
-                    scenario_list_2[[1]]$lcomp_params)
+
+  set.seed(2)
+  test <- do.call("sample_comp",
+    c(data=list(dat_list$lencomp), scenario_list[[1]]$lcomp_params))
+  set.seed(2)
+  test_2 <- do.call("sample_comp",
+    c(data=list(dat_list$lencomp), scenario_list_2[[1]]$lcomp_params))
+  expect_equivalent(test, test_2)
+
+  df <- setup_scenarios_defaults()
+  df[, "sl.years.2"] <- NULL
+  df[, "sl.years"] <- df[, "sl.years.1"]
+  df[, "sl.years.1"] <- NULL
+  df_2 <- setup_scenarios_defaults()
+  df_2[, "sl.years.2"] <- df_2[, "sl.years.1"]
+  scenario_list <- setup_scenarios(df)
+  scenario_list_2 <- setup_scenarios(df_2)
+
+  set.seed(2)
+  test <- do.call("sample_comp",
+    c(data=list(dat_list$lencomp), scenario_list[[1]]$lcomp_params))
+  set.seed(2)
+  test_2 <- do.call("sample_comp",
+    c(data=list(dat_list$lencomp), scenario_list_2[[1]]$lcomp_params))
+  expect_equivalent(test, test_2)
 })
-
-
