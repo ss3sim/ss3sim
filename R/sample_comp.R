@@ -42,6 +42,10 @@ sample_comp <- function(data, Nsamp, fleets, years, ESS = NULL, cpar = 1) {
   if (is.null(ESS)) {
     ESS <- Nsamp
     useESS <- FALSE
+  } else {
+    if (length(ESS) != length(fleets) & length(ESS) == 1) {
+      ESS <- rep(ESS, length(fleets))
+    }
   }
 
   cpar <- unlist(cpar, use.names = FALSE)
