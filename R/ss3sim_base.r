@@ -448,7 +448,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                        main_run    = FALSE,
                        bias_adjust = bias_adjust,
                        hess_always = hess_always,
-                       scen = sc,
+                       dir = pathem,
                        iter = i)
         }
       }
