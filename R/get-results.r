@@ -397,9 +397,14 @@ get_results_timeseries <- function(report.file) {
                                          report.file$nforecastyears))
     F_cols <- grep("^F:_", colnames(report.file$timeseries))
     catch_cols <- grep("^retain\\([B|N]\\):_", colnames(report.file$timeseries))
+    dead_cols <- grep("^dead\\([B|N]\\):_", colnames(report.file$timeseries))
     other_cols <- which(colnames(report.file$timeseries) %in%
                           c("Yr", "SpawnBio", "Recruit_0"))
-    xx <- report.file$timeseries[, c(other_cols, catch_cols, F_cols)]
+    xx <- report.file$timeseries[, c(other_cols, catch_cols, dead_cols, F_cols)]
+    # remove paraentheses from column names because they make the names
+    # non-synatic
+    colnames(xx) <- gsub("\\(|\\)", "", colnames(xx))
+    colnames(xx) <- gsub("\\:", "", colnames(xx))
     xx <- xx[xx$Yr %in% years, ]
     # Get SPR from derived_quants
     spr <- report.file$derived_quants[grep("SPRratio_",
