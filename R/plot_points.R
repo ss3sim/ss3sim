@@ -15,6 +15,16 @@
 #'
 #' @template plot-functions
 #' @template plot-functions-color
+#' @param jitter.height,jitter.width Parameters for
+#' \code{\link[ggplot2]{position_jitter}()} that specify the vertical and horizontal
+#' spread added to points. Where, added values are both positive and negative,
+#' so the total spread is twice the value specified here.
+#' If \code{NULL}, the spread will be 40% of the resolution of the data;
+#' this means the jitter values will occupy 80% of the implied bins.
+#' Categorical data is aligned on the integers,
+#' so a width or height of 0.5 will spread the data so it's not possible
+#' to see the distinction between the categories.
+#' The default within ss3sim is to not jitter, i.e., a spread of 0.0.
 #' @export
 #' @examples
 #' # Plot scalar values
@@ -38,13 +48,14 @@
 #'
 plot_points <- function(data, x, y,
   horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL,
+  jitter.height = 0, jitter.width = 0,
   color = NULL, relative.error = FALSE, axes.free = TRUE, print = TRUE) {
 
     g <- plot_ss3sim(data = data, x = x, y = y, color = color,
       relative.error = relative.error, axes.free = axes.free,
       horiz = horiz, horiz2 = horiz2, vert = vert, vert2 = vert2)
     g <- g + ggplot2::geom_jitter(size = 1,
-      position = ggplot2::position_jitter(height = 0)) +
+      position = ggplot2::position_jitter(height = jitter.height, width = jitter.width)) +
       ggplot2::scale_color_gradient(low = "black", high = "red")
     if (print) print(g)
     invisible(g)

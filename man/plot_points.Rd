@@ -12,6 +12,8 @@ plot_points(
   horiz2 = NULL,
   vert = NULL,
   vert2 = NULL,
+  jitter.height = 0,
+  jitter.width = 0,
   color = NULL,
   relative.error = FALSE,
   axes.free = TRUE,
@@ -38,6 +40,18 @@ indicates no faceting in the horizontal space.}
 the first (\code{vert}) and second (\code{vert2}) level of faceting in
 the vertical direction. E.g., "M" or "species". A value of NULL (default)
 indicates no faceting in the vertical space.}
+
+\item{jitter.height, jitter.width}{Parameters for
+\code{\link[ggplot2]{position_jitter}()} that specify the vertical and horizontal
+Amount of vertical and horizontal jitter spread added to points.
+Where, added values are both positive and negative,
+so the total spread is twice the value specified here.
+If \code{NULL}, the spread will be 40% of the resolution of the data;
+this means the jitter values will occupy 80% of the implied bins.
+Categorical data is aligned on the integers,
+so a width or height of 0.5 will spread the data so it's not possible
+to see the distinction between the categories.
+The default within ss3sim is to not jitter, i.e., a spread of 0.0.}
 
 \item{color}{A character string denoting which column to use to map
 color. Not valid for boxplot functions. Useful for looking at EM

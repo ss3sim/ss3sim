@@ -1,3 +1,7 @@
+# ss3sim 1.1.2
+
+* Control height and width of jittering in plot_points with jitter.height and jitter.width.
+
 # ss3sim 1.1.1
 
 * Allow for custom name of results files
