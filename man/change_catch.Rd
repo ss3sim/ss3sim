@@ -2,7 +2,7 @@
 % Please edit documentation in R/change_catch.R
 \name{change_catch}
 \alias{change_catch}
-\title{Change catch in the datafile.}
+\title{Change catch in the datafile}
 \usage{
 change_catch(dat_list, f_params)
 }
@@ -15,7 +15,8 @@ change_catch(dat_list, f_params)
 a modified data file as a list in R.
 }
 \description{
-Change catch in the datafile.
+Change catch in the datafile so at least all combinations of fleet, seas, yr,
+needed for catch are available
 }
 \author{
 Kathryn Doering
