@@ -1,3 +1,14 @@
+# ss3sim 1.1.3
+
+* Drop fleets from sampling regimes using NA in the scenario data frame.
+* Upgrade to SS 3.30.16
+* Start allowing for seasons in data (F right now)
+* Fixed bug in how q was being checked
+* Partition change_catch from change_data
+* Allow for fleet specific cpar and ESS values
+* Allow for no SPR in results file
+* Fix bad param argument in weight_comps with DM
+
 # ss3sim 1.1.2
 
 * Control height and width of jittering in plot_points with jitter.height and jitter.width.

@@ -1,7 +1,7 @@
 Package: ss3sim
 Type: Package
 Title: Fisheries Stock Assessment Simulation Testing with Stock Synthesis
-Version: 1.1.2
+Version: 1.1.3
 Authors@R: c(person(c("Kelli", "F."), "Johnson", 
     email = "kelli.johnson@noaa.gov",
     role = c("aut", "cre")),
