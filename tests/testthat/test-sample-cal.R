@@ -13,10 +13,10 @@ test_that("run_ss3sim runs with CAL data", {
     cf.years.1 = "26:100",
     cf.fval.1 = "rep('0.1052', 75)",
     si.years.2 = "seq(50,100,1)", si.sds_obs.2 = 0.01,
-    sl.years.1 = "seq(50,100,4)", sl.Nsamp.1 = 20, sl.cpar.1 = NA,
-    sa.years.1 = "seq(50,100,4)", sa.Nsamp.1 = 20, sa.cpar.1 = NA,
-    sa.years.2 = "seq(50,100,1)", sa.Nsamp.2 = 20, sa.cpar.2 = NA,
-    sc.years.2 = "seq(50,100,1)", 
+    sl.years.1 = "seq(50,100,4)", sl.Nsamp.1 = 20, sl.cpar.1 = "NULL",
+    sa.years.1 = "seq(50,100,4)", sa.Nsamp.1 = 20, sa.cpar.1 = "NULL",
+    sa.years.2 = "seq(50,100,1)", sa.Nsamp.2 = 20, sa.cpar.2 = "NULL",
+    sc.years.2 = "seq(50,100,1)",
     sc.Nsamp_lengths.2 = 20, sc.Nsamp_ages.2 = 20,
     sc.ESS_lengths.2 = 20, sc.ESS_ages.2 = 20, sc.method = "simple_random")
   scname <- run_ss3sim(iterations  = 1, simdf = df)

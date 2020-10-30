@@ -275,7 +275,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ctl_file_in = file.path(sc,i, "om", "om.ctl"),
       ctl_list = NULL, dat_list = datfile.modified,
       ctl_file_out = file.path(sc,i, "om", "om.ctl"))
-
+      datfile.modified <- change_catch(dat_list = datfile.modified,
+                                       f_params = f_params)
       # Note some are data_args and some are data_params:
       do.call("change_data", c(
                   dat_list         = list(datfile.modified),
@@ -290,6 +291,14 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                      sc, "-",i, ": is something wrong with initial model files?")
       expdata <- r4ss::SS_readdat(file.path(sc, i, "om", "data.ss_new"),
         section = 2, verbose = FALSE)
+      # check that there is some catch to ensure the OM data data generation
+      # did not fail.
+      if(all(expdata[["catch"]][,"catch"] == 0)) {
+        stop("Stock Synthesis failed to generate catch for the OM (i.e., all ",
+             "catch is 0.) This may occur due to not sampling at least 1 type ",
+             "of composition data for the fishery. If failing inexplicably, ",
+             "please contact the ss3sim developers.")
+      }
       #TODO: rather than write expdata to file: dat_list <- expdata; rm(expdata)
       r4ss::SS_writedat(expdata, file.path(sc, i, "em", "ss3.dat"),
         overwrite = TRUE, verbose = FALSE)
@@ -439,7 +448,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                        main_run    = FALSE,
                        bias_adjust = bias_adjust,
                        hess_always = hess_always,
-                       scen = sc,
+                       dir = pathem,
                        iter = i)
         }
       }
