@@ -440,7 +440,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           weight_comps(method = weight_comps_params$method,
                        fleets = weight_comps_params$fleets,
                        init_run = FALSE, # although not really needed for DM
-                       main_run    = FALSE,
+                       niters_weighting = 0,
                        bias_adjust = bias_adjust,
                        hess_always = hess_always,
                        dir = pathem,
@@ -460,24 +460,17 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                      hess = ifelse(bias_adjust, TRUE, hess_always), ...)
       }
       if(!is.null(weight_comps_params)) {
-        # do the DM (only 1 run needed, and only needed if bias adj. done.)
-        if(bias_adjust & all(success > 0) & weight_comps_params$method == "DM") {
-        # model already changed to include the DM parameters, so only need to
-        # rerun model again, not call the weight_comps function
-          run_ss3model(dir = pathem,
-                       hess = ifelse(bias_adjust, TRUE, hess_always), ...)
-        }
         # need to do data tuning, fregardless of if bias adjustment was done.
         if(weight_comps_params$method %in% c("MI", "Francis")) {
           weight_comps(method = weight_comps_params$method,
                        fleets = weight_comps_params$fleets,
                        niters_weighting = weight_comps_params$niters_weighting,
                        init_run = FALSE,
-                       main_run = TRUE,
                        bias_adjust = bias_adjust,
                        hess_always = hess_always,
                        dir = pathem)
         }
+      }
 
 # Write log file ---------------------------------------------------------------
 # TODO pull the log file writing into a separate function and update
@@ -532,6 +525,5 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       Sys.sleep(sleep)
 
     } # end iterations
-  } # end scenarios
 return(scenarios)
 }
