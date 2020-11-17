@@ -188,11 +188,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       pathom <- file.path(sc, i, "om")
       pathem <- file.path(sc, i, "em")
 
-      # Make fake .dat files to silence SS3/ADMB:
-      fake_dat <- file.path(c(pathom, pathem), "ss.dat")
-      sapply(fake_dat,
-        function(fi) write("\n", file.path(fi)))
-
       # Make the OM as specified by the user -----------------------------------
 
       # Change the control file if using time varying
@@ -533,7 +528,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         sink()
       }
 
-      file.remove(file.path(sc, i, fake_dat))
       #  Pause to reduce average CPUE use?
       Sys.sleep(sleep)
 
