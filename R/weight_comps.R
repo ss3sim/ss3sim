@@ -39,7 +39,7 @@ weight_comps <- function(method = c("MI", "Francis", "DM"),
     extras <- "-nohess"
   }
 
-  bin <- get_bin(bin_name = "ss")
+  bin <- normalizePath(get_bin(bin_name = "ss"))
   out <- r4ss::SS_tune_comps(replist = NULL, fleets = fleets, option = method,
                       init_run = init_run, niters_tuning = niters_weighting,
                       dir = dir, model = bin, extras = extras,
