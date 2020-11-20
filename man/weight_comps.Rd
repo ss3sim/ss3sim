@@ -6,8 +6,7 @@
 \usage{
 weight_comps(
   method = c("MI", "Francis", "DM"),
-  init_run = TRUE,
-  main_run = TRUE,
+  init_run = FALSE,
   niters_weighting = 1,
   dir,
   bias_adjust = FALSE,
@@ -26,11 +25,6 @@ iterative re-weighting. Only relevant to \code{method = c("MI", "Francis")}
 because they require initial estimates that are compared to a theoretical
 distribution external to SS.}
 
-\item{main_run}{A logical value specifying if the model should be run to
-weight the composition data after the appropriate weightings are found.
-If \code{FALSE}, the final values found for the weightings will only
-be put into the control file and not used to generate parameter estimates.}
-
 \item{niters_weighting}{The number of times you want to tune the model.}
 
 \item{dir}{A character string specifying the path to the folder with the
@@ -47,9 +41,15 @@ bias-adjustment runs thereby saving time.}
 tune.}
 
 \item{...}{Anything else to pass to \code{\link{run_ss3model}}.}
+
+\item{main_run}{A logical value specifying if the model should be run to
+weight the composition data after the appropriate weightings are found.
+If \code{FALSE}, the final values found for the weightings will only
+be put into the control file and not used to generate parameter estimates.}
 }
 \description{
 Weight age- or length-composition data in the estimation model (EM) using a
 tuning method (MacAllister-Ianelli or Francis) or a distribution
-(Dirichlet multinomial).
+(Dirichlet multinomial). This is essentially a wrapper around
+r4ss::SS_tune_comps
 }

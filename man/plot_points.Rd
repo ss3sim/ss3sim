@@ -43,8 +43,7 @@ indicates no faceting in the vertical space.}
 
 \item{jitter.height, jitter.width}{Parameters for
 \code{\link[ggplot2]{position_jitter}()} that specify the vertical and horizontal
-Amount of vertical and horizontal jitter spread added to points.
-Where, added values are both positive and negative,
+spread added to points. Where, added values are both positive and negative,
 so the total spread is twice the value specified here.
 If \code{NULL}, the spread will be 40% of the resolution of the data;
 this means the jitter values will occupy 80% of the implied bins.
