@@ -49,6 +49,6 @@ Imports:
     rlang,
     stats,
     utils
-Remotes: github::r4ss/r4ss@development
+Remotes: github::r4ss/r4ss@master
 RoxygenNote: 7.1.1
 Encoding: UTF-8
