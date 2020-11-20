@@ -32,7 +32,6 @@ test_that("Non existent fleets generate errors", {
 test_that("All q's are removed", {
   newctl <- change_q(string_remove = c("Fishery", 2),
     ctl_list = ctl, dat_list = dat, ctl_file_out = NULL)
-  expect_true(all(newctl$Q_setup == 0))
   expect_equal(NROW(newctl$Q_options), 0)
   expect_equal(NROW(newctl$Q_options), NROW(newctl$Q_parms))
 })
@@ -40,8 +39,6 @@ test_that("All q's are removed", {
 test_that("Character removal of fleet name works", {
   newctl <- change_q(string_remove = c("Survey"),
     ctl_list = ctl, dat_list = dat, ctl_file_out = NULL)
-  expect_true(all(
-    newctl$Q_setup[row.names(newctl$Q_setup) == "2 Survey", ] == 0))
   expect_equal(length(grep("\\(2\\)", row.names(newctl$Q_parms))), 0)
 })
 
