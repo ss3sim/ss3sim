@@ -44,8 +44,11 @@ setup_scenarios_fillmissing <- function(dataframe) {
     em_dir = system.file("extdata", "models", "cod-em", package = "ss3sim"),
     stringsAsFactors = FALSE
   )
-
-  missingcols <- !colnames(musthavecols) %in% colnames(dataframe)
+  # use pmatch to allow partial matching in the dataframe
+  present_cols <- colnames(musthavecols)[na.omit(pmatch(colnames(dataframe),
+                                                        colnames(musthavecols),
+                                                        duplicates.ok = FALSE))]
+  missingcols <- !colnames(musthavecols) %in% present_cols
   dataframe <- cbind(musthavecols[, missingcols], dataframe)
   return(dataframe)
 }
