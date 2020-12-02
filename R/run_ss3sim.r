@@ -186,6 +186,6 @@ run_ss3sim <- function(iterations, simdf = NULL,
   }
 
   message("Completed iterations: ", paste(iterations, collapse = ", "),
-    " for scenarios: ", paste(scenarios, collapse = ", "))
+    " for scenarios: ", paste(unlist(ignore), collapse = ", "))
   return(unlist(ignore))
 }
