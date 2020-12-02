@@ -13,7 +13,7 @@
 #'   \code{ss3.dat} file.
 #' @param lbin_method A numeric value of either \code{NULL, 1, 2, 3} to change
 #'   the lbin_method for the population bin. Only supports either \code{NULL, 1,
-#'   2} at the moment. \code{NULL} means to keep it unchanged.
+#'   2} at the moment. \code{NULL} means to not rebin.
 #' @param pop_binwidth Population length bin width. Only necessary for
 #' \code{lbin_method=2}. Note that this value must be smaller than the bin
 #' width specified in length composition data \code{len_bins} or SS3 will
@@ -80,7 +80,8 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
                               pop_maximum_size=NULL) {
   ## If lbin_method is NULL then don't do anything
   if (is.null(lbin_method)){
-    return(NULL)
+    warning("lbin_method must be supplied for em rebinning to run. Skipping rebinning.")
+    return(dat_list)
   }
   # error checking
   if (!is.numeric(bin_vector)) {
