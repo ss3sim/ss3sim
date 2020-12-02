@@ -4,14 +4,12 @@
 #'   originally read in using \code{\link[r4ss]{SS_readdat}}.
 #' @template dat_list
 get_ss_ver_dl <- function(dat_list){
-  if(exists("SSversion", where = dat_list)){
-    version <- dat_list$SSversion
-  } else if(exists("ReadVersion", where = dat_list)){
-    version <- dat_list$ReadVersion
-  } else {
-    stop("SS datafile version not found.") # Change to be more informative?
+  version <- dat_list[["SSversion"]]
+  if(is.null(version)) {
+    version <- dat_list[["ReadVersion"]]
   }
-  return(version)
+  if(is.null(version)) stop("SS datafile version not found")
+  version
 }
 
 #' Get the ss version (either 3.24 or 3.30) from an ss file
