@@ -49,7 +49,7 @@ setup_scenarios_fillmissing <- function(dataframe) {
                                                         colnames(musthavecols),
                                                         duplicates.ok = FALSE))]
   missingcols <- !colnames(musthavecols) %in% present_cols
-  dataframe <- cbind(musthavecols[, missingcols], dataframe)
+  dataframe <- cbind(musthavecols[, missingcols, drop = FALSE], dataframe)
   return(dataframe)
 }
 
