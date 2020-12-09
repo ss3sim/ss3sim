@@ -184,11 +184,6 @@ test_that("change_em_binning exits on error with cond. age at length", {
 })
 
 
-test_that("change_EM_binning returns NULL if lbin method is NULL", {
- expect_null(change_em_binning(dat_list = datalist, bin_vector = 2:10,
-                               lbin_method = NULL))
-})
-
 test_that("change_EM_binning stops on error when expected", {
   expect_error(change_em_binning(dat_list = datalist, bin_vector = c("a", "b"),
                                  lbin_method = 1),
