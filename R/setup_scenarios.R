@@ -38,15 +38,18 @@ setup_scenarios <- function(input = NULL) {
 #' @return A data frame with potentially more columns than what was provided.
 setup_scenarios_fillmissing <- function(dataframe) {
   musthavecols <- data.frame(
-    om = system.file("extdata", "models", "cod-om", package = "ss3sim"),
+    om_dir = system.file("extdata", "models", "cod-om", package = "ss3sim"),
     # todo: make this NULL such that the EM is created from the OM internally
     # within ss3sim, e.g., in the run_ss3sim function
-    em = system.file("extdata", "models", "cod-em", package = "ss3sim"),
+    em_dir = system.file("extdata", "models", "cod-em", package = "ss3sim"),
     stringsAsFactors = FALSE
   )
-
-  missingcols <- !colnames(musthavecols) %in% colnames(dataframe)
-  dataframe <- cbind(musthavecols[, missingcols], dataframe)
+  # use pmatch to allow partial matching in the dataframe
+  present_cols <- colnames(musthavecols)[na.omit(pmatch(colnames(dataframe),
+                                                        colnames(musthavecols),
+                                                        duplicates.ok = FALSE))]
+  missingcols <- !colnames(musthavecols) %in% present_cols
+  dataframe <- cbind(musthavecols[, missingcols, drop = FALSE], dataframe)
   return(dataframe)
 }
 

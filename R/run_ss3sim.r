@@ -147,6 +147,11 @@ run_ss3sim <- function(iterations, simdf = NULL,
         weight_comps_params = w)
     })
   } else {
+    if(!is.null(om_dir) | !is.null(em_dir)) {
+      stop("The variables om_dir and em_dir should be passed as columns ",
+      "within the simdf, not as separate argument. Please specify om_dir and/or",
+      "em_dir within simdf and leave om_dir and em_dir as arguments NULL.")
+    }
     arg_list <- setup_scenarios(simdf)
   }
   # Note that inside a foreach loop you pop out of your current
@@ -181,6 +186,6 @@ run_ss3sim <- function(iterations, simdf = NULL,
   }
 
   message("Completed iterations: ", paste(iterations, collapse = ", "),
-    " for scenarios: ", paste(scenarios, collapse = ", "))
+    " for scenarios: ", paste(unlist(ignore), collapse = ", "))
   return(unlist(ignore))
 }

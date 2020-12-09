@@ -393,13 +393,12 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       }
 
 	    ## Now change the binning structure in the EM ss3.dat file as needed
-      if (!is.null(em_binning_params$lbin_method)) {
+      if (!is.null(em_binning_params)) {
           dat_list <- do.call("change_em_binning", c(
               dat_list         = list(dat_list),
               outfile          = NULL,
               em_binning_params))
       }
-
       # Manipulate EM control file to adjust what gets estimated
 
       if(!is.null(estim_params)) {
