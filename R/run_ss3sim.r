@@ -14,23 +14,6 @@
 #'   See \code{\link{setup_scenarios_defaults}} for default values that will be
 #'   passed to ss3sim for a generic simulation to get you started. These
 #'   values will be used if \code{simdf} is left at its default value of \code{NULL}.
-#' @param scenarios Which scenarios to run. A vector of character objects. For
-#'   example \code{c("D0-F0-cod", "D1-F1-cod")}. Also, see
-#'   \code{\link{expand_scenarios}} for a shortcut to specifying the scenarios.
-#'   See \code{\link{get_caseargs}} and the vignette for details on specifying
-#'   the scenarios.
-#' @param case_folder The folder containing the plain-text case files.
-#' @param om_dir The folder containing the SS3 operating model
-#'   configuration files.
-#' @param em_dir The folder containing the SS3 estimation model
-#'   configuration files.
-#' @param case_files A named list that relates the case IDs to the files to
-#'   return. \bold{The default list specifies only the required fishing
-#'   mortality and data scenarios. To specify other cases you will need to
-#'   extend this named list}. This argument is passed to
-#'   \code{\link{get_caseargs}}. See that function for details and examples of
-#'   how to specify this. The introduction vignette also explains how to specify
-#'   the case files.
 #' @param parallel A logical argument that controls whether the scenarios are
 #'   run in parallel. You will need to register multiple cores first with a
 #'   package such as \pkg{doParallel} and have the \pkg{foreach} package
@@ -40,6 +23,20 @@
 #'   \code{parallel_iterations = TRUE} then the iterations will be run in
 #'   parallel. This would be useful if you were only running one scenario
 #'   but you wanted to run it faster.
+#' @param scenarios \emph{Deprecated}. Which scenarios to run. A vector of character objects. For
+#'   example \code{c("D0-F0-cod", "D1-F1-cod")}. (The scenarios should be specified in simdf)
+#' @param case_folder \emph{Deprecated}. The folder containing the plain-text case files.
+#' @param om_dir \emph{Deprecated}. The folder containing the SS3 operating model
+#'   configuration files. (Specify the om_dir within simdf)
+#' @param em_dir \emph{Deprecated}. The folder containing the SS3 estimation model
+#'   configuration files. (Specify the em_dir within simdf)
+#' @param case_files \empf{deprecated}. A named list that relates the case IDs to the files to
+#'   return. \bold{The default list specifies only the required fishing
+#'   mortality and data scenarios. To specify other cases you will need to
+#'   extend this named list}. This argument is passed to
+#'   \code{\link{get_caseargs}}. See that function for details and examples of
+#'   how to specify this. The introduction vignette also explains how to specify
+#'   the case files.
 #' @param ... Anything else to pass to \code{\link{ss3sim_base}}. This could
 #'   include \code{bias_adjust}. Also, you can pass
 #'   additional options to the \code{SS3} command through the argument
@@ -58,8 +55,8 @@
 #' can be included if desired. See the vignette for details on modifying an
 #' existing \code{SS3} model to run with \pkg{ss3sim}. Alternatively, you might
 #' consider modifying one of the built-in model configurations.
-#' 
-#' Note that due to the way that SS is being used as an OM, you may see 
+#'
+#' Note that due to the way that SS is being used as an OM, you may see
 #' the following ADMB error may appear in the console:
 #' Error -- base = 0 in function prevariable& pow(const prevariable& v1, CGNU_DOUBLE u)
 #' However, this is not a problem because ADMB is not used to optimize the OM,
@@ -86,11 +83,9 @@
 # \figure{filestructure.png}{An illustration of the input and output file
 # structure for an ss3sim simulation.}
 #'
-#' @seealso \code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
-#' \code{\link{get_caseargs}},
-#' \code{\link{expand_scenarios}}
+#' @seealso \code{\link{ss3sim_base}}, \code{\link{run_ss3model}}
 #' @export
-#'
+#' @import lifecycle
 #' @examples
 #'  \dontrun{
 #' # A run with deterministic process error for model checking
@@ -106,54 +101,47 @@
 #'   recdevs_det[1:10, 2])
 #' }
 #'
-run_ss3sim <- function(iterations, simdf = NULL,
-  scenarios = NULL, case_folder, om_dir = NULL, em_dir = NULL,
-  case_files = list(F = "F", D = c("index", "lcomp", "agecomp")),
-  parallel = FALSE, parallel_iterations = FALSE,
-  ...) {
+run_ss3sim <- function(iterations, simdf = NULL, parallel = FALSE,
+                       parallel_iterations = FALSE,
+                       scenarios = deprecated(), case_folder = deprecated(),
+                       om_dir = deprecated(), em_dir = deprecated(),
+                       case_files = deprecated(),
+                       ...) {
+  #TODO: figure out how to do this in a for loop or lapply statment instead of for
+  # each argument. Tricky problem b/c of evalutating expressions and when.
+  depr_args <- c("scenarios", "case_folder", "om_dir", "em_dir", "case_files")
+    if(lifecycle::is_present(scenarios)) {
+      lifecycle::deprecate_stop(when = "1.1.4",
+                                what = paste0("ss3sim::run_ss3sim(",
+                                              "scenarios", " = )"))
+    }
+    if(lifecycle::is_present(case_folder)) {
+      lifecycle::deprecate_stop(when = "1.1.4",
+                                what = paste0("ss3sim::run_ss3sim(",
+                                              "case_folder", " = )"))
+    }
+  if(lifecycle::is_present(om_dir)) {
+    lifecycle::deprecate_stop(when = "1.1.4",
+                              what = paste0("ss3sim::run_ss3sim(",
+                                            "om_dirr", " = )"))
+  }
+  if(lifecycle::is_present(em_dir)) {
+    lifecycle::deprecate_stop(when = "1.1.4",
+                              what = paste0("ss3sim::run_ss3sim(",
+                                            "em_dir", " = )"))
+  }
+  if(lifecycle::is_present(case_files)) {
+    lifecycle::deprecate_stop(when = "1.1.4",
+                              what = paste0("ss3sim::run_ss3sim(",
+                                            "case_files", " = )"))
+  }
 
-  if (!rlang::is_missing(case_folder)) {
-    warning("The use of cases is deprecated, please use simdf to",
-      "\nspecify the simulation parameters instead.")
-  } else {case_folder <- NULL}
+
   if(parallel) {
     cores <- setup_parallel()
     if(cores == 1) parallel <- FALSE
   }
-
-  # Get arguments for each scenario:
-  if (!is.null(case_folder)) {
-    arg_list <- lapply(scenarios, function(scenario) {
-      a <- get_caseargs(folder = case_folder, scenario = scenario,
-                        case_files = case_files)
-      w <- get_weight_comps_args(a) # get the weight_comps args
-      list(
-        scenarios         = scenario,
-        em_dir            = em_dir,
-        om_dir            = om_dir,
-        tv_params         = a$tv_params,
-        operat_params     = a$O,
-        f_params          = a$F,
-        index_params      = a$index,
-        data_params       = a$data,
-        lcomp_params      = a$lcomp,
-        agecomp_params    = a$agecomp,
-        calcomp_params    = a$calcomp,
-        wtatage_params    = a$wtatage,
-        mlacomp_params    = a$mlacomp,
-        em_binning_params = a$em_binning,
-        retro_params      = a$retro,
-        estim_params      = a$E,
-        weight_comps_params = w)
-    })
-  } else {
-    if(!is.null(om_dir) | !is.null(em_dir)) {
-      stop("The variables om_dir and em_dir should be passed as columns ",
-      "within the simdf, not as separate argument. Please specify om_dir and/or",
-      "em_dir within simdf and leave om_dir and em_dir as arguments NULL.")
-    }
-    arg_list <- setup_scenarios(simdf)
-  }
+  arg_list <- setup_scenarios(simdf)
   # Note that inside a foreach loop you pop out of your current
   # environment until you go back into an exported function
   # therefore we need to add subst_r to the .export list
