@@ -30,7 +30,7 @@
 #'   configuration files. (Specify the om_dir within simdf)
 #' @param em_dir \emph{Deprecated}. The folder containing the SS3 estimation model
 #'   configuration files. (Specify the em_dir within simdf)
-#' @param case_files \empf{deprecated}. A named list that relates the case IDs to the files to
+#' @param case_files \emph{Deprecated}. A named list that relates the case IDs to the files to
 #'   return. \bold{The default list specifies only the required fishing
 #'   mortality and data scenarios. To specify other cases you will need to
 #'   extend this named list}. This argument is passed to
