@@ -46,3 +46,12 @@ case_fishing <- function(...) {
 case_deparse <- function(...) {
   lifecycle::deprecate_stop(when = "1.1.4", what = "case_deparse()")
 }
+
+# deprecate function in expand_scenarios
+#' @section `expand_scenarios()`
+#' Casefiles have been deprecated in favor of using a dataframe.
+#' @rdname ss3sim-deprecated
+expand_scenarios <- function(...) {
+  lifecycle::deprecate_stop(when = "1.1.4", what = "expand_scenarios()")
+}
+
