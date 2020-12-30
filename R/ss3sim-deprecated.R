@@ -6,3 +6,43 @@
 #' @name ss3sim-deprecated
 #' @keywords internal
 NULL
+# functions from case-write.R
+
+#' @section `case_comp()`
+#' Casefiles have been deprecated in favor of using a dataframe.
+#' @rdname ss3sim-deprecated
+#' @export
+case_comp <- function(...) {
+  lifecycle::deprecate_stop(when = "1.1.4", what = "case_comp()")
+}
+
+#' @section `case_index()`
+#' Casefiles have been deprecated in favor of using a dataframe.
+#' @rdname ss3sim-deprecated
+#' @export
+case_index <- function(...) {
+  lifecycle::deprecate_stop(when = "1.1.4", what = "case_index()")
+}
+
+#' @section `case_tv()`
+#' Casefiles have been deprecated in favor of using a dataframe.
+#' @rdname ss3sim-deprecated
+#' @export
+case_tv <- function(...) {
+  lifecycle::deprecate_stop(when = "1.1.4", what = "case_tv()")
+}
+
+#' @section `case_fishing()`
+#' Casefiles have been deprecated in favor of using a dataframe.
+#' @rdname ss3sim-deprecated
+#' @export
+case_fishing <- function(...) {
+  lifecycle::deprecate_stop(when = "1.1.4", what = "case_fishing()")
+}
+
+#' @section `case_deparse()`
+#' Casefiles have been deprecated in favor of using a dataframe.
+#' @rdname ss3sim-deprecated
+case_deparse <- function(...) {
+  lifecycle::deprecate_stop(when = "1.1.4", what = "case_deparse()")
+}
