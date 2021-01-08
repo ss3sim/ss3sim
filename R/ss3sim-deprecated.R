@@ -83,3 +83,10 @@ get_caseargs <- function(...) {
 get_weight_comps_args <- function(...) {
   lifecycle::deprecate_stop(when = "1.1.4", what = "get_weight_comps_args()")
 }
+
+#' @section `create_argfiles()`:
+#' Casefiles have been deprecated in favor of using a dataframe.
+#' @rdname ss3sim-deprecated
+create_argfiles <- function(...) {
+  lifecycle::deprecate_stop(when = "1.1.4", what = "create_argfiles()")
+}
