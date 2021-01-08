@@ -1,5 +1,0 @@
-# A sample case file for arbitrary growth change_tv() arguments
-# Note: could convert this case to an o case because not time varying needed.
-function_type; change_tv
-param; VonBert_K_Fem_GP_1
-dev; rep(0, 100)
