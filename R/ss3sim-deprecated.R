@@ -55,3 +55,32 @@ expand_scenarios <- function(...) {
   lifecycle::deprecate_stop(when = "1.1.4", what = "expand_scenarios()")
 }
 
+# deprecated functions in expand_scenarios case_parsing
+#' @section `get_args()`
+#' Casefiles have been deprecated in favor of using a dataframe.
+#' @rdname ss3sim-deprecated
+get_args <- function(...) {
+  lifecycle::deprecate_stop(when = "1.1.4", what = "get_args()")
+}
+
+#' @section `get_caseval()`
+#' Casefiles have been deprecated in favor of using a dataframe.
+#' @rdname ss3sim-deprecated
+get_caseval <- function(...) {
+  lifecycle::deprecate_stop(when = "1.1.4", what = "get_caseval()")
+}
+
+#' @section `get_caseargs()`
+#' Casefiles have been deprecated in favor of using a dataframe.
+#' @rdname ss3sim-deprecated
+get_caseargs <- function(...) {
+  lifecycle::deprecate_stop(when = "1.1.4", what = "get_caseargs()")
+}
+
+#' @section `get_weight_comps_args()`
+#' Casefiles have been deprecated in favor of using a dataframe.
+#' @rdname ss3sim-deprecated
+get_weight_comps_args <- function(...) {
+  lifecycle::deprecate_stop(when = "1.1.4", what = "get_weight_comps_args()")
+}
+

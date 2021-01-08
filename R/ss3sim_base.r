@@ -109,7 +109,7 @@
 #'   om_dir <- file.path(d, "models", "cod-om")
 #'   em_dir <- file.path(d, "models", "cod-em")
 #'
-#'   # Or, create the argument lists directly in R and skip the case file setup:
+#'   # Or, create the argument lists directly in R:
 #'
 #'   F0 <- list(years = 1:100,
 #'              fleets = 1,
