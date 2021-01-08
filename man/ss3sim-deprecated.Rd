@@ -12,6 +12,7 @@
 \alias{get_caseval}
 \alias{get_caseargs}
 \alias{get_weight_comps_args}
+\alias{create_argfiles}
 \title{Deprecated functions in package \pkg{ss3sim}}
 \usage{
 case_comp(...)
@@ -33,6 +34,8 @@ get_caseval(...)
 get_caseargs(...)
 
 get_weight_comps_args(...)
+
+create_argfiles(...)
 }
 \description{
 The functions listed below are deprecated and will be
@@ -86,6 +89,11 @@ Casefiles have been deprecated in favor of using a dataframe.
 }
 
 \section{`get_weight_comps_args()`}{
+
+Casefiles have been deprecated in favor of using a dataframe.
+}
+
+\section{`create_argfiles()`}{
 
 Casefiles have been deprecated in favor of using a dataframe.
 }

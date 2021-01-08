@@ -43,13 +43,13 @@ of parameters for the OM and EM.}
 A mandatory case.}
 
 \item{index_params}{A named list containing arguments for
-\code{\link{sample_index}}. A mandatory case.}
+\code{\link{sample_index}}. A mandatory input.}
 
 \item{lcomp_params}{A named list containing arguments for
-\code{\link{sample_lcomp}}. A mandatory case.}
+\code{\link{sample_lcomp}}. A mandatory input.}
 
 \item{agecomp_params}{A named list containing arguments for
-\code{\link{sample_agecomp}}. A mandatory case.}
+\code{\link{sample_agecomp}}. A mandatory input.}
 
 \item{calcomp_params}{A named list containing arguments for
 \code{\link{sample_calcomp}}, for conditional age-at-length data.}
