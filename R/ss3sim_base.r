@@ -15,11 +15,11 @@
 #' @param f_params A named list containing arguments for \code{\link{change_f}}.
 #'   A mandatory case.
 #' @param index_params A named list containing arguments for
-#'   \code{\link{sample_index}}. A mandatory case.
+#'   \code{\link{sample_index}}. A mandatory input.
 #' @param lcomp_params A named list containing arguments for
-#'   \code{\link{sample_lcomp}}. A mandatory case.
+#'   \code{\link{sample_lcomp}}. A mandatory input.
 #' @param agecomp_params A named list containing arguments for
-#'   \code{\link{sample_agecomp}}. A mandatory case.
+#'   \code{\link{sample_agecomp}}. A mandatory input.
 #' @param calcomp_params A named list containing arguments for
 #'   \code{\link{sample_calcomp}}, for conditional age-at-length data.
 #' @param wtatage_params A named list containing arguments for

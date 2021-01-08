@@ -154,23 +154,6 @@ ret <- list(scalar = scalar.all,
 #' @author Cole Monnahan and Kathryn Doering
 #' @family get-results
 #' @export
-#' @examples
-#' \dontrun{
-#' d <- system.file("extdata", package = "ss3sim")
-#' case_folder <- file.path(d, "eg-cases")
-#' om <- file.path(d, "models", "cod-om")
-#' em <- file.path(d, "models", "cod-em")
-#' run_ss3sim(iterations = 1:2, scenarios =
-#'   c("D0-F0-cod"),
-#'   case_folder = case_folder, om_dir = om, em_dir = em,
-#'   case_files = list(F = "F",
-#'                     D = c("index", "lcomp", "agecomp")),
-#'   bias_adjust = FALSE)
-#' get_results_scenario(c("D0-F0-cod"), overwrite_files = TRUE)
-#'
-#' # clean up
-#' unlink("D0-F0-cod", recursive = TRUE)
-#' }
 get_results_scenario <- function(scenario, directory = getwd(),
                                  overwrite_files = FALSE) {
     ## This function moves the wd around so make sure to reset on exit,
@@ -557,10 +540,10 @@ get_nll_components <- function(report.file) {
 }
 
 #' Get summaries of fits to composition data from report file list
-#' 
+#'
 #' Extract the summary of fits to composition data, where the sections
 #' are structured similarly for each type of data in the report file.
-#' 
+#'
 #' @template report.file
 #' @param name A character string that matches the element of
 #' \code{report.file} that you wish to extract, e.g.,
