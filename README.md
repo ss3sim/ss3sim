@@ -5,7 +5,7 @@ master: [![R-CMD-check](https://github.com/ss3sim/ss3sim/workflows/R-CMD-check/b
 
 development: [![R-CMD-check](https://github.com/ss3sim/ss3sim/workflows/R-CMD-check/badge.svg?branch=development)](https://github.com/ss3sim/ss3sim/actions?query=workflow%3AR-CMD-check)
 
-ss3sim is an R package that facilitates flexible, rapid, and reproducible fisheries stock assessment simulation testing with the widely-used [Stock Synthesis](https://vlab.ncep.noaa.gov/web/stock-synthesis) (SS) statistical age-structured stock assessment framework.
+ss3sim is an R package that facilitates flexible, rapid, and reproducible fisheries stock assessment simulation testing with the widely-used [Stock Synthesis](https://vlab.ncep.noaa.gov/web/stock-synthesis) (SS) statistical age-structured stock assessment framework. To learn more, read on or check out the [vignettes](http://ss3sim.github.io/ss3sim/).
 
 Contents
 --------
