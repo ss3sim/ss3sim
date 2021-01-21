@@ -14,7 +14,6 @@ Contents
 -   [The ss3sim simulation setup](#the-ss3sim-simulation-setup)
 -   [How ss3sim works](#how-ss3sim-works)
 -   [Example output from an ss3sim simulation](#example-output-from-an-ss3sim-simulation)
--   [Papers published using ss3sim](#papers-published-using-ss3sim)
 -   [Citing ss3sim](#citing-ss3sim)
 
 <!-- end toc -->
@@ -89,6 +88,10 @@ If you use ss3sim in a publication, please cite ss3sim as shown by
 citation("ss3sim")
 toBibtex(citation("ss3sim"))
 ```
+
+and add your publication to the
+[list of publications](https://github.com/ss3sim/ss3sim/wiki/manuscripts)
+in the [wiki](https://github.com/ss3sim/ss3sim/wiki).
 
 Disclaimer
 ----------
