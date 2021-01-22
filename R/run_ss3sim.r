@@ -107,8 +107,7 @@ run_ss3sim <- function(iterations, simdf = NULL, parallel = FALSE,
                        om_dir = deprecated(), em_dir = deprecated(),
                        case_files = deprecated(),
                        ...) {
-  #TODO: figure out how to do this in a for loop or lapply statment instead of for
-  # each argument. Tricky problem b/c of evalutating expressions and when.
+
   depr_args <- c("scenarios", "case_folder", "om_dir", "em_dir", "case_files")
     if(lifecycle::is_present(scenarios)) {
       lifecycle::deprecate_stop(when = "1.1.4",
