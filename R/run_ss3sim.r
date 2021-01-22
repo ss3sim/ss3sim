@@ -122,7 +122,7 @@ run_ss3sim <- function(iterations, simdf = NULL, parallel = FALSE,
   if(lifecycle::is_present(om_dir)) {
     lifecycle::deprecate_stop(when = "1.1.4",
                               what = paste0("ss3sim::run_ss3sim(",
-                                            "om_dirr", " = )"))
+                                            "om_dir", " = )"))
   }
   if(lifecycle::is_present(em_dir)) {
     lifecycle::deprecate_stop(when = "1.1.4",
