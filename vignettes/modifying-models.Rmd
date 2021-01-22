@@ -26,7 +26,7 @@ maturity before exploring sampling schemes using the
 `sample_index`, `sample_lcomp`, and `sample_agecomp`
 functions. The following steps provide a basic guideline for how to accomplish this:
 
-- Create case-argument files or list structures for your simulation and verify they run with the original cod model using the function `run_ss3sim` or `ss3sim_base`, respectively. It is probably best to do a shorter deterministic run ([see the section on deterministic runs](introduction.html#deterministic)) rather than a run with process error. After running, read in the data and do visual checks for proper functionality.
+- Create a simulation dataframe or list and verify these simulations run with the original cod model using the function `run_ss3sim` or `ss3sim_base`, respectively. It is probably best to do a shorter deterministic run ([see the section on deterministic runs](introduction.html#deterministic)) rather than a run with process error. After running, read in the data and do visual checks for proper functionality.
 - Locate the cod model OM and EM files using `system.file(file.path("extdata", "models"), package = "ss3sim")`.
 - Copy the OM and EM folders and rename them as desired.
 - Make a single change to either the `.dat` or `.ctl` files for the new model and run them manually with SS via the command line or a `system` call within R if there is any question if they might break the model.

@@ -177,7 +177,7 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
            "age_info table negative for any fleet with CAL",
            "data and rerun ss3sim. This should be done in the skeleton OM data ",
            "file or, if using mla, can be done by specifying the tail ",
-           "compression in a case file")
+           "compression in a simdf")
     }
     # check that the sample size for lengths are always greater than ages.
    Msamp_check <-  mapply(function(l, a) {

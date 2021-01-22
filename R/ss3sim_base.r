@@ -71,9 +71,9 @@
 #' is. There will be folders named after your scenarios. They will
 #' look like this:
 #' \itemize{
-#' \item \code{D0-F0-cod/1/om}
-#' \item \code{D0-F0-cod/1/em}
-#' \item \code{D0-F0-cod/2/om}
+#' \item \code{scen-cod/1/om}
+#' \item \code{scen-cod/1/em}
+#' \item \code{scen-cod/2/om}
 #' \item ...
 #' }
 #'
