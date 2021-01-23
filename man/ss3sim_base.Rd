@@ -84,7 +84,7 @@ use for the specified simulations.}
 \code{\link{change_data}}.}
 
 \item{weight_comps_params}{A named list containing arguments for
-\code{\link{weight_comps}}.}
+\code{\link[r4ss]{SS_tune_comps}}.}
 
 \item{user_recdevs}{An optional matrix of recruitment deviations to replace
 the recruitment deviations built into the package. The columns represent

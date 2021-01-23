@@ -35,7 +35,7 @@
 #' @param data_params A named list containing arguments for
 #'   \code{\link{change_data}}.
 #' @param weight_comps_params A named list containing arguments for
-#'   \code{\link{weight_comps}}.
+#'   \code{\link[r4ss]{SS_tune_comps}}.
 #' @param om_dir The directory with the operating model you want to copy and use
 #'   for the specified simulations.
 #' @param em_dir The directory with the estimation model you want to copy and
@@ -436,14 +436,13 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(!is.null(weight_comps_params)) {
         if(weight_comps_params$method == "DM") {
            # convert model so it can be used
-          weight_comps(method = weight_comps_params$method,
-                       fleets = weight_comps_params$fleets,
-                       init_run = FALSE, # although not really needed for DM
-                       niters_weighting = 0,
-                       bias_adjust = bias_adjust,
-                       hess_always = hess_always,
-                       dir = pathem,
-                       iter = i)
+           out <- r4ss::SS_tune_comps(
+             option = weight_comps_params[["method"]],
+             fleets = weight_comps_params[["fleets"]],
+             dir = pathem,
+             model = get_bin(bin_name = "ss"),
+             extras = ifelse(hess_always | bias_adjust, "", "-nohess"),
+             verbose = FALSE)
         }
       }
       # Run the EM -------------------------------------------------------------
@@ -459,15 +458,20 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                      hess = ifelse(bias_adjust, TRUE, hess_always), ...)
       }
       if(!is.null(weight_comps_params)) {
-        # need to do data tuning, fregardless of if bias adjustment was done.
+        # need to do data tuning, regardless of if bias adjustment was done.
         if(weight_comps_params$method %in% c("MI", "Francis")) {
-          weight_comps(method = weight_comps_params$method,
-                       fleets = weight_comps_params$fleets,
-                       niters_weighting = weight_comps_params$niters_weighting,
-                       init_run = FALSE,
-                       bias_adjust = bias_adjust,
-                       hess_always = hess_always,
-                       dir = pathem)
+          replist <- r4ss::SS_output(pathem, verbose = FALSE, hidewarn = TRUE,
+            printstats = FALSE, covar = hess_always | bias_adjust)
+          out <- r4ss::SS_tune_comps(
+            replist = replist,
+            option = weight_comps_params[["method"]],,
+            fleets = weight_comps_params[["fleets"]],
+            niters_tuning = weight_comps_params[["niters_weighting"]],
+            extras = ifelse(hess_always | bias_adjust, "", "-nohess"),
+            systemcmd = TRUE,
+            model = get_bin(bin_name = "ss"),
+            verbose = FALSE,
+            dir = pathem)
         }
       }
 

@@ -54,10 +54,17 @@ test_that("weight_comps works for MI method", {
   skip_on_cran()
   run_ss3model(dir = scen_path_MI,
                hess = FALSE)
-  test <- weight_comps(method = "MI",
+  replist <- r4ss::SS_output(scen_path_MI, verbose = FALSE,
+    printstats = FALSE, hidewarn = TRUE, covar = FALSE, warn = FALSE)
+  test <- r4ss::SS_tune_comps(option = "MI",
+               replist = replist,
                dir = scen_path_MI,
                niters_weighting = 1,
                init_run = FALSE,
+               extras = "-nohess",
+               systemcmd = TRUE,
+               model = get_bin(bin_name = "ss"),
+               verbose = FALSE,
                fleets = c(1,2))
   # create an expectation that arent dummy ones.
   dat <- r4ss::SS_readdat(file.path(scen_path_MI, "ss3.dat" ), verbose = FALSE)
@@ -72,10 +79,17 @@ test_that("weight_comps works for Francis", {
   skip_on_cran()
   run_ss3model(dir = scen_path_Francis,
                hess = FALSE)
-  test <- weight_comps(method = "Francis",
+  replist <- r4ss::SS_output(scen_path_Francis, verbose = FALSE,
+    printstats = FALSE, hidewarn = TRUE, covar = FALSE, warn = FALSE)
+  test <- r4ss::SS_tune_comps(option = "Francis",
+               replist = replist,
                dir = scen_path_Francis,
                niters_weighting = 1,
                init_run = FALSE,
+               extras = "-nohess",
+               systemcmd = TRUE,
+               model = get_bin(bin_name = "ss"),
+               verbose = FALSE,
                fleets = c(1,2))
   dat <- r4ss::SS_readdat(file.path(scen_path_Francis, "ss3.dat" ), verbose = FALSE)
   ctl <- r4ss::SS_readctl(file.path(scen_path_Francis, "codEM.ctl"), verbose = FALSE,
@@ -87,10 +101,17 @@ test_that("weight_comps works for Francis", {
 
 test_that("weight_comps works for DM", {
   skip_on_cran()
-  test <- weight_comps(method = "DM",
+  run_ss3model(dir = scen_path_DM, hess = FALSE)
+  replist <- r4ss::SS_output(scen_path_Francis, verbose = FALSE,
+    printstats = FALSE, hidewarn = TRUE, covar = FALSE, warn = FALSE)
+  test <- r4ss::SS_tune_comps(option = "DM",
+               replist = replist,
                dir = scen_path_DM,
-               init_run = FALSE,
                niters_weighting = 0,
+               extras = "-nohess",
+               systemcmd = TRUE,
+               model = get_bin(bin_name = "ss"),
+               verbose = FALSE,
                fleets = c(1,2)
                )
   dat <- r4ss::SS_readdat(file.path(scen_path_DM, "ss3.dat" ), verbose = FALSE)
