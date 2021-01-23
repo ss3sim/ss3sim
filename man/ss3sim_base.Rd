@@ -176,12 +176,10 @@ example below). For a generic higher-level function, see
                  sds_obs = list(0.1))
 
   lcomp1 <- list(fleets = c(1, 2), Nsamp = list(50, 100),
-                 years = list(26:100, seq(62, 100, by = 2)),
-                 lengthbin_vector = NULL)
+                 years = list(26:100, seq(62, 100, by = 2)))
 
   agecomp1 <- list(fleets = c(1, 2), Nsamp = list(50, 100),
-                   years = list(26:100, seq(62, 100, by = 2)),
-                   agebin_vector = NULL)
+                   years = list(26:100, seq(62, 100, by = 2)))
 
   E0 <- list(par_name = c("LnQ_base_Fishery", "NatM_p_1_Fem_GP_1"),
              par_int = c(NA, NA), par_phase = c(-5, -1), forecast_num = 0)

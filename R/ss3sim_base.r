@@ -119,12 +119,10 @@
 #'                  sds_obs = list(0.1))
 #'
 #'   lcomp1 <- list(fleets = c(1, 2), Nsamp = list(50, 100),
-#'                  years = list(26:100, seq(62, 100, by = 2)),
-#'                  lengthbin_vector = NULL)
+#'                  years = list(26:100, seq(62, 100, by = 2)))
 #'
 #'   agecomp1 <- list(fleets = c(1, 2), Nsamp = list(50, 100),
-#'                    years = list(26:100, seq(62, 100, by = 2)),
-#'                    agebin_vector = NULL)
+#'                    years = list(26:100, seq(62, 100, by = 2)))
 #'
 #'   E0 <- list(par_name = c("LnQ_base_Fishery", "NatM_p_1_Fem_GP_1"),
 #'              par_int = c(NA, NA), par_phase = c(-5, -1), forecast_num = 0)
@@ -138,7 +136,11 @@
 #'               estim_params = E0,
 #'               om_dir = om_dir,
 #'               em_dir = em_dir)
+#'   replist <- r4ss::SS_output(file.path("D1-E0-F0-cod", 1, "em"),
+#'     verbose = FALSE, printstats = FALSE, covar = FALSE)
+#'   testthat::expect_equivalent(replist[["cpue"]][, "Yr"], index1[["years"]][[1]])
 #'
+#'   test <- replist
 #'   unlink("D1-E0-F0-cod", recursive = TRUE) # clean up
 #' }
 
@@ -245,20 +247,24 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # with error.
 
       ## This returns a superset of all years/fleets/data types needed to
-      ## do sampling.
+      ## do non-catch and -index sampling.
       data_args <- calculate_data_units(
-                                        # why no specification of index_params here? Need?
                                         lcomp_params    = lcomp_params,
                                         agecomp_params  = agecomp_params,
                                         calcomp_params  = calcomp_params,
                                         mlacomp_params  = mlacomp_params,
                                         wtatage_params  = wtatage_params)
 
-      # Start by clearing out the old data. Important so that extra data
-      # doesn't trip up change_data:
-      datfile.modified <- clean_data(dat_list = datfile.orig,
-        index_params = index_params, verbose = FALSE) # why only index_params called here?
-
+      ## OM: index
+      datfile.modified <- datfile.orig
+      datfile.modified[["CPUE"]] <- expand.grid(
+        year = unlist(index_params[["years"]]),
+        Seas = 1,
+        index = index_params[["fleets"]],
+        obs = 1,
+        se_log = 0.1
+      )
+      datfile.modified[["N_cpue"]] <- nrow(datfile.modified$CPUE)
       # check qs are correct.
     ctlom <- r4ss::SS_readctl(file = file.path(sc,i, "om", "om.ctl"),
       use_datlist = TRUE, datlist = datfile.orig,
@@ -270,6 +276,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ctl_file_in = file.path(sc,i, "om", "om.ctl"),
       ctl_list = NULL, dat_list = datfile.modified,
       ctl_file_out = file.path(sc,i, "om", "om.ctl"))
+
       datfile.modified <- change_catch(dat_list = datfile.modified,
                                        f_params = f_params)
       # Note some are data_args and some are data_params:
@@ -375,7 +382,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       ## End of manipulating the data file (except for rebinning), so clean it
       dat_list <- clean_data(dat_list      = dat_list,
-                            index_params   = index_params,
                             lcomp_params   = lcomp_params,
                             agecomp_params = agecomp_params,
                             calcomp_params = calcomp_params,

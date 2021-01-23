@@ -30,11 +30,8 @@ test_that("change_data is working with only types inputs", {
   yr_input <- seq(35, 100, by = 5)
   flt_input <- 2
   changed_dat <- change_data(dat, fleets =  flt_input, years = yr_input,
-                             types = c("index", "len", "age", "mla"),
+                             types = c("len", "age", "mla"),
     outfile = NULL)
-  expect_equal(changed_dat$CPUE$year,  yr_input)
-  expect_equal(sort(unique(changed_dat$CPUE$index)), flt_input)
-  expect_equal(changed_dat$N_cpue, length(yr_input))
   expect_equal(changed_dat$lencomp$Yr, yr_input)
   expect_equal(sort(unique(changed_dat$lencomp$Flt)), flt_input)
   expect_equal(nrow(changed_dat$lencomp), changed_dat$N_lencomp)
@@ -49,7 +46,7 @@ test_that("change_data works with conditional length at age", {
   yr_input <- seq(35, 100, by = 5)
   flt_input <- 2
   output <- change_data(dat, fleets =  flt_input, years = yr_input,
-                           types = c("index", "len", "age", "cal"),
+                           types = c("len", "age", "cal"),
                            outfile = NULL)
   yrs_out <- unique(output$agecomp$Yr)
   yrs_out <- yrs_out[order(yrs_out)]
@@ -61,15 +58,15 @@ test_that("change_data() exits on error when incorrect input given",{
   yr_input <- seq(100, 125, by = 5)
   flt_input <- 5
   expect_error(change_data(dat, fleets =  2, years = yr_input,
-                             types = "index",
+                             types = "len",
                              outfile = NULL),
                "Some years specified in years are not within the model years of dat_list")
   expect_error(change_data(dat, fleets =  flt_input, years = seq(5, 25, by = 5),
-                           types = "index",
+                           types = "len",
                            outfile = NULL),
                "Some fleets specified in fleets are not included in dat_list")
   expect_error(change_data(dat, fleets = list(2), years = list(5,10,15),
-                           types = "index", outfile = NULL), "fleets and years input both need to be numeric vectors")
+                           types = "len", outfile = NULL), "fleets and years input both need to be numeric vectors")
 })
 
 #TODO: add tests()
