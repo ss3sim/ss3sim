@@ -7,13 +7,13 @@
 run_ss3sim(
   iterations,
   simdf = NULL,
-  scenarios = NULL,
-  case_folder,
-  om_dir = NULL,
-  em_dir = NULL,
-  case_files = list(F = "F", D = c("index", "lcomp", "agecomp")),
   parallel = FALSE,
   parallel_iterations = FALSE,
+  scenarios = deprecated(),
+  case_folder = deprecated(),
+  om_dir = deprecated(),
+  em_dir = deprecated(),
+  case_files = deprecated(),
   ...
 )
 }
@@ -28,28 +28,6 @@ See \code{\link{setup_scenarios_defaults}} for default values that will be
 passed to ss3sim for a generic simulation to get you started. These
 values will be used if \code{simdf} is left at its default value of \code{NULL}.}
 
-\item{scenarios}{Which scenarios to run. A vector of character objects. For
-example \code{c("D0-F0-cod", "D1-F1-cod")}. Also, see
-\code{\link{expand_scenarios}} for a shortcut to specifying the scenarios.
-See \code{\link{get_caseargs}} and the vignette for details on specifying
-the scenarios.}
-
-\item{case_folder}{The folder containing the plain-text case files.}
-
-\item{om_dir}{The folder containing the SS3 operating model
-configuration files.}
-
-\item{em_dir}{The folder containing the SS3 estimation model
-configuration files.}
-
-\item{case_files}{A named list that relates the case IDs to the files to
-return. \bold{The default list specifies only the required fishing
-mortality and data scenarios. To specify other cases you will need to
-extend this named list}. This argument is passed to
-\code{\link{get_caseargs}}. See that function for details and examples of
-how to specify this. The introduction vignette also explains how to specify
-the case files.}
-
 \item{parallel}{A logical argument that controls whether the scenarios are
 run in parallel. You will need to register multiple cores first with a
 package such as \pkg{doParallel} and have the \pkg{foreach} package
@@ -60,6 +38,25 @@ run scenarios in parallel. If you set \code{parallel = TRUE} and
 \code{parallel_iterations = TRUE} then the iterations will be run in
 parallel. This would be useful if you were only running one scenario
 but you wanted to run it faster.}
+
+\item{scenarios}{\emph{Deprecated}. Which scenarios to run. A vector of character objects. For
+example \code{c("D0-F0-cod", "D1-F1-cod")}. (The scenarios should be specified in simdf)}
+
+\item{case_folder}{\emph{Deprecated}. The folder containing the plain-text case files.}
+
+\item{om_dir}{\emph{Deprecated}. The folder containing the SS3 operating model
+configuration files. (Specify the om_dir within simdf)}
+
+\item{em_dir}{\emph{Deprecated}. The folder containing the SS3 estimation model
+configuration files. (Specify the em_dir within simdf)}
+
+\item{case_files}{\emph{Deprecated}. A named list that relates the case IDs to the files to
+return. \bold{The default list specifies only the required fishing
+mortality and data scenarios. To specify other cases you will need to
+extend this named list}. This argument is passed to
+\code{\link{get_caseargs}}. See that function for details and examples of
+how to specify this. The introduction vignette also explains how to specify
+the case files.}
 
 \item{...}{Anything else to pass to \code{\link{ss3sim_base}}. This could
 include \code{bias_adjust}. Also, you can pass
@@ -100,7 +97,7 @@ can be included if desired. See the vignette for details on modifying an
 existing \code{SS3} model to run with \pkg{ss3sim}. Alternatively, you might
 consider modifying one of the built-in model configurations.
 
-Note that due to the way that SS is being used as an OM, you may see 
+Note that due to the way that SS is being used as an OM, you may see
 the following ADMB error may appear in the console:
 Error -- base = 0 in function prevariable& pow(const prevariable& v1, CGNU_DOUBLE u)
 However, this is not a problem because ADMB is not used to optimize the OM,
@@ -123,9 +120,7 @@ expect_equivalent(unlist(ts$rec_dev[ts$year \%in\% 1:10 & ts$iteration == 2]),
 
 }
 \seealso{
-\code{\link{ss3sim_base}}, \code{\link{run_ss3model}},
-\code{\link{get_caseargs}},
-\code{\link{expand_scenarios}}
+\code{\link{ss3sim_base}}, \code{\link{run_ss3model}}
 }
 \author{
 Sean C. Anderson

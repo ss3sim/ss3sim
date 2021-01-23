@@ -116,8 +116,6 @@ setup_scenarios_2list <- function(dataframe) {
   return(listout)
 }
 
-# Need to find a way to name the elements of the case file list so that it
-# matches the names that I created here.
 setup_scenarios_list_names <- function(x) {
 
   names(x) <- gsub("^([eo])m$", "\\1m_dir", names(x))

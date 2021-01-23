@@ -41,11 +41,6 @@ bias-adjustment runs thereby saving time.}
 tune.}
 
 \item{...}{Anything else to pass to \code{\link{run_ss3model}}.}
-
-\item{main_run}{A logical value specifying if the model should be run to
-weight the composition data after the appropriate weightings are found.
-If \code{FALSE}, the final values found for the weightings will only
-be put into the control file and not used to generate parameter estimates.}
 }
 \description{
 Weight age- or length-composition data in the estimation model (EM) using a

@@ -1,5 +1,0 @@
-# A sample case file for weight_comps() arguments
-function_type; weight_comps
-method; "MI"
-niters_weighting; 1
-fleets; 1

@@ -43,13 +43,13 @@ of parameters for the OM and EM.}
 A mandatory case.}
 
 \item{index_params}{A named list containing arguments for
-\code{\link{sample_index}}. A mandatory case.}
+\code{\link{sample_index}}. A mandatory input.}
 
 \item{lcomp_params}{A named list containing arguments for
-\code{\link{sample_lcomp}}. A mandatory case.}
+\code{\link{sample_lcomp}}. A mandatory input.}
 
 \item{agecomp_params}{A named list containing arguments for
-\code{\link{sample_agecomp}}. A mandatory case.}
+\code{\link{sample_agecomp}}. A mandatory input.}
 
 \item{calcomp_params}{A named list containing arguments for
 \code{\link{sample_calcomp}}, for conditional age-at-length data.}
@@ -166,7 +166,7 @@ example below). For a generic higher-level function, see
   om_dir <- file.path(d, "models", "cod-om")
   em_dir <- file.path(d, "models", "cod-em")
 
-  # Or, create the argument lists directly in R and skip the case file setup:
+  # Or, create the argument lists directly in R:
 
   F0 <- list(years = 1:100,
              fleets = 1,

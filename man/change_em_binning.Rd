@@ -37,7 +37,7 @@ file takes time and computing resources.}
 
 \item{lbin_method}{A numeric value of either \code{NULL, 1, 2, 3} to change
 the lbin_method for the population bin. Only supports either \code{NULL, 1,
-2} at the moment. \code{NULL} means to keep it unchanged.}
+2} at the moment. \code{NULL} means to not rebin.}
 
 \item{pop_binwidth}{Population length bin width. Only necessary for
 \code{lbin_method=2}. Note that this value must be smaller than the bin

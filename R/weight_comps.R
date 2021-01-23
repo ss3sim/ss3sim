@@ -12,10 +12,6 @@
 #'  iterative re-weighting. Only relevant to \code{method = c("MI", "Francis")}
 #'  because they require initial estimates that are compared to a theoretical
 #'  distribution external to SS.
-#' @param main_run A logical value specifying if the model should be run to
-#'  weight the composition data after the appropriate weightings are found.
-#'  If \code{FALSE}, the final values found for the weightings will only
-#'  be put into the control file and not used to generate parameter estimates.
 #' @param niters_weighting The number of times you want to tune the model.
 #' @template dir
 #' @param bias_adjust Run bias adjustment first?

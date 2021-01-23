@@ -1,7 +1,7 @@
 Package: ss3sim
 Type: Package
 Title: Fisheries Stock Assessment Simulation Testing with Stock Synthesis
-Version: 1.1.3
+Version: 1.1.4
 Authors@R: c(person(c("Kelli", "F."), "Johnson", 
     email = "kelli.johnson@noaa.gov",
     role = c("aut", "cre")),
@@ -48,7 +48,8 @@ Imports:
     graphics,
     rlang,
     stats,
-    utils
+    utils, 
+    lifecycle
 Remotes: github::r4ss/r4ss@development
 RoxygenNote: 7.1.1
 Encoding: UTF-8

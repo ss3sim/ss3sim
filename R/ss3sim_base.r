@@ -15,11 +15,11 @@
 #' @param f_params A named list containing arguments for \code{\link{change_f}}.
 #'   A mandatory case.
 #' @param index_params A named list containing arguments for
-#'   \code{\link{sample_index}}. A mandatory case.
+#'   \code{\link{sample_index}}. A mandatory input.
 #' @param lcomp_params A named list containing arguments for
-#'   \code{\link{sample_lcomp}}. A mandatory case.
+#'   \code{\link{sample_lcomp}}. A mandatory input.
 #' @param agecomp_params A named list containing arguments for
-#'   \code{\link{sample_agecomp}}. A mandatory case.
+#'   \code{\link{sample_agecomp}}. A mandatory input.
 #' @param calcomp_params A named list containing arguments for
 #'   \code{\link{sample_calcomp}}, for conditional age-at-length data.
 #' @param wtatage_params A named list containing arguments for
@@ -71,9 +71,9 @@
 #' is. There will be folders named after your scenarios. They will
 #' look like this:
 #' \itemize{
-#' \item \code{D0-F0-cod/1/om}
-#' \item \code{D0-F0-cod/1/em}
-#' \item \code{D0-F0-cod/2/om}
+#' \item \code{scen-cod/1/om}
+#' \item \code{scen-cod/1/em}
+#' \item \code{scen-cod/2/om}
 #' \item ...
 #' }
 #'
@@ -109,7 +109,7 @@
 #'   om_dir <- file.path(d, "models", "cod-om")
 #'   em_dir <- file.path(d, "models", "cod-em")
 #'
-#'   # Or, create the argument lists directly in R and skip the case file setup:
+#'   # Or, create the argument lists directly in R:
 #'
 #'   F0 <- list(years = 1:100,
 #'              fleets = 1,
