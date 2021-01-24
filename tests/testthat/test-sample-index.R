@@ -21,6 +21,9 @@ sampled_index <- with(a$index,
                                    outfile         = NULL,
                                    fleets          = fleets,
                                    years           = years,
+                                   seas = list(unique(
+                                     exp_vals[["CPUE"]][, "seas"]
+                                   )),
                                    sds_obs         = sds_obs))
 # check SD filled in correctly
 expect_equal(sampled_index$CPUE$se_log,

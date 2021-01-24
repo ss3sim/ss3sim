@@ -69,6 +69,7 @@ setup_scenarios_defaults <- function() {
     cf.fvals.1 = 'rep(0.1052, 75)',
     si.years.2 = 'seq(62, 100, by = 2)',
     si.sds_obs.2 = 0.1,
+    si.seas.2 = 1,
     sl.Nsamp.1 = 50,
     sl.years.1 = '26:100',
     sl.Nsamp.2 = 100,
@@ -103,6 +104,19 @@ setup_scenarios_2list <- function(dataframe) {
     }
     out <- split(workwith, mat[1, ])
     out$fleets <- type.convert(unique(mat[2, !is.na(mat[2, ])]), as.is = TRUE)
+    ## Ensure short variables are the right length
+    # search for index right now only, but later can do this for all fleet vars
+    if (any(grepl("sds_obs", names(out)))) {
+      # Set season if we need to
+      if (!"seas" %in% names(out)) {
+        out[["seas"]] <- list(1)
+      }
+      # Add more names here to grep if you want to fix them
+      loopover <- grep(value = TRUE, "seas|Nsamp|sds_obs", names(out))
+      out[loopover] <- mapply(standardize_sampling_args, SIMPLIFY = FALSE,
+        MoreArgs = list(fleets = out[["fleets"]], years = out[["years"]]),
+        other_input = out[loopover])
+    }
     return(out)
   }
   list2fleets.v <- function(x) {

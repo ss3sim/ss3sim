@@ -257,14 +257,14 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       ## OM: index
       datfile.modified <- datfile.orig
-      datfile.modified[["CPUE"]] <- expand.grid(
-        year = unlist(index_params[["years"]]),
-        Seas = 1,
-        index = index_params[["fleets"]],
-        obs = 1,
-        se_log = 0.1
+      datfile.modified[["CPUE"]] <- do.call("rbind",
+        mapply(data.frame, SIMPLIFY = FALSE,
+          year = index_params[["years"]],
+          seas = index_params[["seas"]],
+          index = as.list(index_params[["fleets"]]),
+          MoreArgs = list(obs = 1, se_log = 0.1)
+        )
       )
-      datfile.modified[["N_cpue"]] <- nrow(datfile.modified$CPUE)
       # check qs are correct.
     ctlom <- r4ss::SS_readctl(file = file.path(sc,i, "om", "om.ctl"),
       use_datlist = TRUE, datlist = datfile.orig,

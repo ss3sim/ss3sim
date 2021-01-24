@@ -193,7 +193,11 @@ example below). For a generic higher-level function, see
               estim_params = E0,
               om_dir = om_dir,
               em_dir = em_dir)
+  replist <- r4ss::SS_output(file.path("D1-E0-F0-cod", 1, "em"),
+    verbose = FALSE, printstats = FALSE, covar = FALSE)
+  testthat::expect_equivalent(replist[["cpue"]][, "Yr"], index1[["years"]][[1]])
 
+  test <- replist
   unlink("D1-E0-F0-cod", recursive = TRUE) # clean up
 }
 }
