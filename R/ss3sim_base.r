@@ -16,6 +16,8 @@
 #'   A mandatory case.
 #' @param index_params A named list containing arguments for
 #'   \code{\link{sample_index}}. A mandatory input.
+#' @param discard_params A named list containing arguments for
+#'   \code{\link{sample_discard}}.
 #' @param lcomp_params A named list containing arguments for
 #'   \code{\link{sample_lcomp}}. A mandatory input.
 #' @param agecomp_params A named list containing arguments for
@@ -32,8 +34,7 @@
 #'   \code{\link{change_e}}.
 #' @param em_binning_params A named list containing arguments for
 #'   \code{\link{change_em_binning}}.
-#' @param data_params A named list containing arguments for
-#'   \code{\link{change_data}}.
+#' @param data_params A named list containing arguments for changing data.
 #' @param weight_comps_params A named list containing arguments for
 #'   \code{\link[r4ss]{SS_tune_comps}}.
 #' @param om_dir The directory with the operating model you want to copy and use
@@ -145,7 +146,8 @@
 #' }
 
 ss3sim_base <- function(iterations, scenarios, f_params,
-  index_params, lcomp_params = NULL, agecomp_params = NULL, calcomp_params = NULL,
+  index_params, discard_params = NULL,
+  lcomp_params = NULL, agecomp_params = NULL, calcomp_params = NULL,
   wtatage_params = NULL, mlacomp_params = NULL, em_binning_params = NULL,
   estim_params = NULL, tv_params = NULL, operat_params = NULL, om_dir, em_dir,
   retro_params = NULL, data_params = NULL, weight_comps_params = NULL,
@@ -179,6 +181,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     stop("Simulations must have age or length data and both are NULL.")
   }
     for(i in iterations) {
+      # todo: fix spacing, organize comments
 
       # Create folders, copy models, check for necessary files, rename
       # files for consistency
@@ -236,7 +239,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                       ctl_file_in  = file.path(sc, i, "om", "om.ctl"),
                       ctl_file_out = file.path(sc, i, "om", "om.ctl"))
 
-      do.call(change_f, c(f_params,
+      catchctl <- do.call(change_f, c(f_params,
         ctl_file_in         = file.path(sc, i, "om", "om.ctl"),
         ctl_file_out        = file.path(sc, i, "om", "om.ctl"))
       )
@@ -248,6 +251,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       ## This returns a superset of all years/fleets/data types needed to
       ## do non-catch and -index sampling.
+      # todo: think aboout removing calculate_data_units
+      # todo: think about how to remove data types that aren't used, should we?
       data_args <- calculate_data_units(
                                         lcomp_params    = lcomp_params,
                                         agecomp_params  = agecomp_params,
@@ -255,16 +260,28 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                                         mlacomp_params  = mlacomp_params,
                                         wtatage_params  = wtatage_params)
 
-      ## OM: index
-      datfile.modified <- datfile.orig
-      datfile.modified[["CPUE"]] <- do.call("rbind",
+    datfile.modified <- datfile.orig
+    ## OM: index
+    datfile.modified[["CPUE"]] <- do.call("rbind",
+      mapply(data.frame, SIMPLIFY = FALSE,
+        year = index_params[["years"]],
+        seas = index_params[["seas"]],
+        index = as.list(index_params[["fleets"]]),
+        MoreArgs = list(obs = 1, se_log = 0.1)
+      )
+    )
+    ## OM: discard
+    if (!is.null(discard_params)) {
+      datfile.modified[["discard_data"]] <- do.call("rbind",
         mapply(data.frame, SIMPLIFY = FALSE,
-          year = index_params[["years"]],
-          seas = index_params[["seas"]],
-          index = as.list(index_params[["fleets"]]),
-          MoreArgs = list(obs = 1, se_log = 0.1)
+          Yr = discard_params[["years"]],
+          Seas = discard_params[["seas"]],
+          Flt = as.list(discard_params[["fleets"]]),
+          MoreArgs = list(Discard = 1, Std_in = 0.1)
         )
       )
+    }
+
       # check qs are correct.
     ctlom <- r4ss::SS_readctl(file = file.path(sc,i, "om", "om.ctl"),
       use_datlist = TRUE, datlist = datfile.orig,
@@ -277,14 +294,86 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ctl_list = NULL, dat_list = datfile.modified,
       ctl_file_out = file.path(sc,i, "om", "om.ctl"))
 
+      ## OM: change bins
+      # todo: do this for mean size at age
+      datfile.modified <- change_pop_bin(datfile.modified,
+        binwidth = data_params[["pop_binwidth"]],
+        minimum_size = data_params[["pop_minimum_size"]],
+        maximum_size = data_params[["pop_maximum_size"]])
+      if (!is.null(data_params[["age_bins"]])) {
+        datfile.modified[["agecomp"]] <- change_dat_bin(datfile.modified[["agecomp"]],
+          bins = setup_bins(data_params[["age_bins"]],
+            nsex = datfile.modified[["Ngenders"]],
+            leader = "a")
+        )
+        datfile.modified[["agebin_vector"]] <- data_params[["age_bins"]]
+        datfile.modified[["N_agebins"]] <- length(datfile.modified[["agebin_vector"]])
+      }
+      if (!is.null(data_params[["len_bins"]])) {
+        datfile.modified[["lencomp"]] <- change_dat_bin(datfile.modified[["lencomp"]],
+          bins = setup_bins(data_params[["len_bins"]],
+            nsex = datfile.modified[["Ngenders"]],
+            leader = "l")
+        )
+        datfile.modified[["lbin_vector"]] <- data_params[["len_bins"]]
+        datfile.modified[["N_lbins"]] <- length(datfile.modified[["lbin_vector"]])
+      }
+
       datfile.modified <- change_catch(dat_list = datfile.modified,
                                        f_params = f_params)
-      # Note some are data_args and some are data_params:
-      do.call("change_data", c(
-                  dat_list         = list(datfile.modified),
-                  outfile          = file.path(sc, i, "om", "ss3.dat"),
-                  data_args, data_params,
-                  nsex = datfile.orig$Ngenders))
+
+      ## OM: composition data
+      if (!is.null(agecomp_params)) {
+        datfile.modified <- change_comp(dat_list = datfile.modified,
+          type = "age",
+          bins = if (is.null(data_params$age_bins)) {
+            datfile.modified[["agebin_vector"]]
+          } else {data_params$age_bins},
+          #todo: fix that this needs to be a list of the list maybe same with length
+          paramlist = list(agecomp_params),
+          nsex = datfile.modified[["Ngenders"]])
+      }
+      if (!is.null(lcomp_params)) {
+        datfile.modified <- change_comp(dat_list = datfile.modified,
+          type = "len",
+          bins = if (is.null(data_params$len_bins)) {
+            datfile.modified[["lbin_vector"]]
+          } else {data_params$len_bins},
+          paramlist = list(lcomp_params),
+          nsex = datfile.modified[["Ngenders"]])
+      }
+      datfile.modified <- change_lcomp_constant(
+        lcomp_constant = data_params[["lcomp_constant"]],
+        dat_list = datfile.modified)
+      datfile.modified <- change_tail_compression(
+        tail_compression = data_params[["tail_compression"]],
+        dat_list = datfile.modified)
+      if (!is.null(calcomp_params)) {
+        params <- mapply(standardize_sampling_args,
+          other_input = calcomp_params[grep("Nsamp|Part|Age|years", names(calcomp_params))],
+          MoreArgs = list(
+            fleets = calcomp_params$fleets,
+            years = calcomp_params$years), USE.NAMES = FALSE)
+        params$fleets <- calcomp_params$fleets
+        datfile.modified <- change_comp(dat_list = datfile.modified,
+          type = "cal",
+          paramlist = list(lcomp= params, agecomp = params),
+          nsex = datfile.modified[["Ngenders"]])
+      }
+      if (!is.null(mlacomp_params)) {
+        # todo: fix this to use comp function
+        # dummy_dat <- as.data.frame(do.call(lapply(fleets, function(fleet)
+        #     data.frame("Yr"   = years, "Seas" = 1, "Flt"  = fleet, "Gender" = 0,
+        #                "Part"   = 0, "AgeErr"=1, "Nsamp" = 10, stringsAsFactors = FALSE))))
+        # dummy_df <- data.frame(matrix(1, nrow=nrow(dummy_dat), ncol=length(age_bins)*2))
+        # names(dummy_df) <- c(paste0("a", c(age_bins)), paste0("N", c(age_bins)))
+        # datfile.modified$MeanSize_at_Age_obs <- cbind(dummy_dat, dummy_df)
+        # datfile.modified$N_MeanSize_at_Age_obs <- NROW(datfile.modified$MeanSize_at_Age_obs)
+      }
+      r4ss::SS_writedat(datlist = datfile.modified,
+        outfile = file.path(sc, i, "om", "ss3.dat"),
+        version = datfile.modified$ReadVersion,
+        overwrite = TRUE, verbose = FALSE)
 
       # Run the operating model and copy the dat file over
       run_ss3model(dir = pathom, ...)
@@ -312,6 +401,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                              version = NULL, verbose = FALSE)
       ## Survey biomass index
       dat_list <- do.call("sample_index", c(dat_list = list(dat_list), index_params))
+      ## Discards
+      if (!is.null(discard_params)) {
+        dat_list <- do.call("sample_discard", c(dat_list = list(dat_list), discard_params))
+      }
 
       ## Add error in the length comp data
       if(!is.null(lcomp_params$fleets)){
@@ -512,7 +605,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         print(data_params)
         cat("\n\n# change_em_lbin_params arguments\n")
         print(em_binning_params)
-        cat("\n\n# change_data arguments\n")
+        cat("\n\n# changing the data arguments\n")
         print(agecomp_params)
         cat("\n\n# chante_retro arguments\n")
         print(retro_params)

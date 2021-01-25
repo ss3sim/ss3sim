@@ -9,6 +9,7 @@ ss3sim_base(
   scenarios,
   f_params,
   index_params,
+  discard_params = NULL,
   lcomp_params = NULL,
   agecomp_params = NULL,
   calcomp_params = NULL,
@@ -45,6 +46,9 @@ A mandatory case.}
 \item{index_params}{A named list containing arguments for
 \code{\link{sample_index}}. A mandatory input.}
 
+\item{discard_params}{A named list containing arguments for
+\code{\link{sample_discard}}.}
+
 \item{lcomp_params}{A named list containing arguments for
 \code{\link{sample_lcomp}}. A mandatory input.}
 
@@ -80,8 +84,7 @@ use for the specified simulations.}
 \item{retro_params}{A named list containing the arguments for
 \code{\link{change_retro}}.}
 
-\item{data_params}{A named list containing arguments for
-\code{\link{change_data}}.}
+\item{data_params}{A named list containing arguments for changing data.}
 
 \item{weight_comps_params}{A named list containing arguments for
 \code{\link[r4ss]{SS_tune_comps}}.}

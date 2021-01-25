@@ -88,8 +88,8 @@ rather than the par file and
 combination that will be specified in the control file. If a year, fishery
 combination is specified in the control file and not present in the data file,
 then the entry in the control file will be ignored. ss3sim automatically corrects
-for this using \code{\link{change_data}} within \code{\link{ss3sim_base}} by
-specifying a row for every year and fleet combination possible.
+for this using \code{\link{ss3sim_base}} by
+specifying a row for every year and fleet using \code{\link{change_catch}}.
 }
 \examples{
 d <- system.file(file.path("extdata", "models"), package = "ss3sim")

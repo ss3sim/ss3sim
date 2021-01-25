@@ -136,6 +136,7 @@ setup_scenarios_list_names <- function(x) {
 
   names(x) <- gsub("^cf$", "f_params", names(x))
   names(x) <- gsub("^si$", "index_params", names(x))
+  names(x) <- gsub("^sd$", "discard_params", names(x))
 
   names(x) <- gsub("^sa$", "agecomp_params", names(x))
   names(x) <- gsub("^sc$", "calcomp_params", names(x))

@@ -148,6 +148,7 @@ This function is only reliable when using multinomial length
 Other sampling functions: 
 \code{\link{clean_data}()},
 \code{\link{sample_agecomp}()},
+\code{\link{sample_discard}()},
 \code{\link{sample_index}()},
 \code{\link{sample_lcomp}()},
 \code{\link{sample_mlacomp}()},

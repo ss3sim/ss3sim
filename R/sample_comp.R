@@ -4,6 +4,7 @@
 #' composition data, creating a data frame that mimics
 #' observed composition data.
 #'
+#' @details
 #' Sample size, i.e., 'Nsamp', is used as a measure of precision,
 #' where higher sample sizes lead to simulated samples that more accurately
 #' represent the truth provided in \code{data}.
@@ -17,11 +18,20 @@
 #' @template Nsamp
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
+#' @template sampledots
+#' @importFrom magrittr %>%
 #'
 #' @author Kelli Faye Johnson
 #' @return A data frame of observed composition data.
 #'
-sample_comp <- function(data, Nsamp, fleets, years, ESS = NULL, cpar = 1) {
+sample_comp <- function(
+  data,
+  Nsamp,
+  fleets,
+  years,
+  ESS = NULL,
+  cpar = 1,
+  ...) {
 
   #### Perform input checks
   if (is.null(fleets)) return(data[0, ])
@@ -32,62 +42,55 @@ sample_comp <- function(data, Nsamp, fleets, years, ESS = NULL, cpar = 1) {
     logical = NA,
     vector = cpar,
     NULL = NA)
-  Nfleets <- length(fleets)
-  if (length(Nsamp) == 1 & Nfleets > 1) Nsamp <- rep(Nsamp, Nfleets)
-  if (length(years) == 1 & Nfleets > 1) years <- rep(years, Nfleets)
-  if (length(years) != Nfleets) stop("Need >=1 year per fleet in years")
 
-  # Use input sample size if ESS=NULL unless using Dirichlet
-  useESS <- TRUE
+  # ESS can be (1) user input, (2) NULL -> Nsamp, (3) Dirichlet calculated ESS
+  useESS <- ifelse(is.null(ESS), FALSE, TRUE)
   if (is.null(ESS)) {
     ESS <- Nsamp
-    useESS <- FALSE
-  } else {
-    if (length(ESS) != length(fleets) & length(ESS) == 1) {
-      ESS <- rep(ESS, length(fleets))
-    }
   }
 
-  cpar <- unlist(cpar, use.names = FALSE)
-  new <- do.call("rbind", lapply(1:Nfleets, function(x) {
-    data.frame(
-    "FltSvy" = unlist(fleets[x], use.names = FALSE),
-    "Nsamp" = unlist(Nsamp[x], use.names = FALSE),
-    "Yr" = unlist(years[x], use.names = FALSE),
-    "cpar" = ifelse(length(cpar) > 1, cpar[x], cpar),
-    "ESS" = unlist(ESS[x], use.names = FALSE))
-  }))
+  # Check for bad inputs
+  lapply(list(years, fleets, Nsamp, ESS, cpar, ...),
+    function(x, fleetN = length(fleets)) {
+    if (!length(x) %in% c(1, fleetN)) stop(call. = FALSE,
+      "Bad input to ss3sim sampling function.\n",
+      "There is only ", fleetN, " fleets, yet your input was a ",
+      class(x), " with a length of ", length(x), ". See below:\n", x)
+  })
 
-  if (length(Nsamp) != Nfleets)
-    stop("Nsamp needs to be the same length as fleets")
-  if (length(ESS) != Nfleets)
-    stop("ESS needs to be the same length as fleets")
-  if (class(years) != "list" | length(years) != Nfleets)
-    stop("years needs to be a list of same length as fleets")
+  # Repeat short inputs
+  new <- dplyr::bind_cols(tibble::tibble(FltSvy = fleets), tibble::tibble(Yr = years,
+    newN = Nsamp, ESS = ESS, cpar = cpar, ...)) %>% dplyr::rowwise() %>%
+    tidyr::unnest(dplyr::everything()) %>% dplyr::bind_rows()
 
-  #### Resample the data
-  # Loop through each row; resample depending on Nsamp and cpar
-  all <- merge(data, new, sort = FALSE,
-    by = c("Yr", "FltSvy"), suffixes = c(".x", ".y"))
-  cols <- (which(colnames(all) == "Nsamp.x") + 1):
-    (grep("\\.y", colnames(all))[1] - 1)
-  for (i in seq_len(nrow(all))) {
-    if (is.na(all[i, "cpar"])) { # Multinomial sampling
-      all[i, cols] <- rmultinom(1,
-        size = all[i, "Nsamp.y"],
-        prob = all[i, cols] / sum(all[i, cols]))
-    } else { # Dirichlet sampling
-      lambda <- all[i, "Nsamp.y"]/all[i, "cpar"]^2 - 1
-      if (lambda < 0) stop("Invalid lambda Dirichlet parameter of ", lambda)
-      all[i, cols] <- gtools::rdirichlet(1,
-        unlist((all[i, cols] / sum(all[i, cols])) * lambda))
-      # replace Nsamp with effective sample size
-      all[i, "Nsamp.y"] <- all[i, "Nsamp.y"]/all[i, "cpar"]^2
-    }
-  }
-  all <- all[, !colnames(all) == "Nsamp.x"]
-  colnames(all) <- gsub("Nsamp\\.y", "Nsamp", colnames(all))
-  if (useESS) all[, "Nsamp"] <- all[, "ESS"]
-  all <- all[, colnames(data)]
-  return(all)
+  #### Multinomial or DM sampling based on case_when with cpar
+  # Results are slightly different because of some seed thing with dplyr
+  # sample_dm or sample_mn will give same values if used in loop
+  # or force seed in the function
+  all <- dplyr::inner_join(data, new,
+    by = na.omit(colnames(new)[match(colnames(data), colnames(new))])) %>%
+  dplyr::rowwise() %>%
+  dplyr::mutate(
+    comp = dplyr::case_when(
+      is.na(.data[["cpar"]]) ~ list(sample_mn(
+        data = dplyr::c_across(dplyr::matches("[0-9]+")),
+        n = .data[["newN"]]
+      )),
+      is.numeric(.data[["cpar"]]) ~ list(sample_dm(
+        data = dplyr::c_across(matches("[0-9]+")),
+        n = .data[["newN"]], par = .data[["cpar"]]
+      ))
+      ),
+    ncalc = dplyr::case_when(
+      is.na(.data[["cpar"]]) ~ .data[["newN"]],
+      is.numeric(.data[["cpar"]]) ~ .data[["newN"]]/.data[["cpar"]]^2
+    )
+  ) %>%
+  dplyr::select(
+    1:(dplyr::matches("Nsamp") - 1),
+    Nsamp = .data[[ifelse(useESS, "ESS", "ncalc")]],
+    .data[["comp"]]) %>% tidyr::unnest_wider(.data[["comp"]], names_sep = "") %>%
+  `colnames<-`(colnames(data))
+
+  return(data.frame(all))
 }
