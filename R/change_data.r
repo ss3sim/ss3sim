@@ -9,10 +9,10 @@
 #' @param fleets A numeric vector of fleets.
 #' @param years A numeric vector of years.
 #' @param types A vector that can take combinations of the following entries:
-#'   \code{"index"}, \code{"len"}, \code{"age"}, \code{"cal"}, \code{"mla"}.
+#'   \code{"len"}, \code{"age"}, \code{"cal"}, \code{"mla"}.
 #'   \code{types} controls what data structures the function acts on, with
-#'   \code{"index"} changing indices/CPUE, \code{"len"} augmenting the
-#'   length-composition data, \code{"age"} augmenting the age-composition
+#'   \code{"len"} augmenting the length-composition data,
+#'   \code{"age"} augmenting the age-composition
 #'   data, \code{"cal"} augmenting the conditional age-at-length (CAAL) data, and
 #'   \code{"mla"} augmenting the mean length-at-age data.
 #' @param age_bins A numeric vector of age bins to use. If left as \code{NULL},
@@ -45,11 +45,6 @@
 #' Original data is removed and dummy data is added to the SS \code{.dat} object.
 #' The dummy data expands the data structure to provide information for all years
 #' and fleets, potentially adding many rows of data.
-#' Catches of zero are added for each fleet to allow for ss3sim
-#' to manipulate catches using the control file rather than the par file.
-#' Each year/fleet combination must exist,
-#' otherwise specified years in the control file will only
-#' be taken from the population for years that are non-zero in the data file.
 #'
 #' Currently, \code{.dat} files with multiple sexes cannot be manipulated with
 #' \code{change_data}.
@@ -97,7 +92,7 @@
 #' out$minimum_size
 #'
 change_data <- function(dat_list, outfile = NULL, fleets, years,
-  types = c("index","len", "age", "cal", "mla", "mwa"),
+  types = c("len", "age", "cal", "mla", "mwa"),
   age_bins = NULL, len_bins = NULL, pop_binwidth = NULL,
   pop_minimum_size = NULL, pop_maximum_size = NULL,
   lcomp_constant = NULL, tail_compression = NULL,
@@ -133,10 +128,6 @@ change_data <- function(dat_list, outfile = NULL, fleets, years,
   if(is.null(age_bins)) age_bins <- dat_list$agebin_vector
 
   ## Now modify each data type in turn
-  if ("index" %in% types) {
-    dat_list$CPUE <- make_dummy_dat_index(fleets = fleets, years = years)
-    dat_list$N_cpue <- nrow(dat_list$CPUE)
-  }
   if ("len" %in% types) {
     dat_list$lencomp <- make_dummy_dat_lencomp(fleets = fleets, years = years,
                           len_bins = len_bins, nsex = nsex)

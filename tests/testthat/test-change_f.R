@@ -99,8 +99,12 @@ test_that("change_f works with list-style inputs", {
     ctl_file_out = NULL
   )
   out <- do.call("change_f", inlist)
-  expect_equal(length(unlist(inlist$years)), type.convert(strsplit(
-    grep("overall start F value", out, value = TRUE), "\\s+")[[1]][3]))
+  expect_equal(
+    length(unlist(inlist$years)),
+    type.convert(strsplit(grep("overall start F value",
+      out, value = TRUE), "\\s+")[[1]][3],
+      as.is = TRUE)
+  )
   expect_equal(length(unlist(inlist$years)), length(strsplit(
     grep("[3-4] \\d+ 1 0.2", out, value = TRUE), "\\s+")))
   expect_equal(length(unlist(inlist$years)), length(strsplit(

@@ -35,7 +35,7 @@
 #' @param data_params A named list containing arguments for
 #'   \code{\link{change_data}}.
 #' @param weight_comps_params A named list containing arguments for
-#'   \code{\link{weight_comps}}.
+#'   \code{\link[r4ss]{SS_tune_comps}}.
 #' @param om_dir The directory with the operating model you want to copy and use
 #'   for the specified simulations.
 #' @param em_dir The directory with the estimation model you want to copy and
@@ -119,12 +119,10 @@
 #'                  sds_obs = list(0.1))
 #'
 #'   lcomp1 <- list(fleets = c(1, 2), Nsamp = list(50, 100),
-#'                  years = list(26:100, seq(62, 100, by = 2)),
-#'                  lengthbin_vector = NULL)
+#'                  years = list(26:100, seq(62, 100, by = 2)))
 #'
 #'   agecomp1 <- list(fleets = c(1, 2), Nsamp = list(50, 100),
-#'                    years = list(26:100, seq(62, 100, by = 2)),
-#'                    agebin_vector = NULL)
+#'                    years = list(26:100, seq(62, 100, by = 2)))
 #'
 #'   E0 <- list(par_name = c("LnQ_base_Fishery", "NatM_p_1_Fem_GP_1"),
 #'              par_int = c(NA, NA), par_phase = c(-5, -1), forecast_num = 0)
@@ -138,7 +136,11 @@
 #'               estim_params = E0,
 #'               om_dir = om_dir,
 #'               em_dir = em_dir)
+#'   replist <- r4ss::SS_output(file.path("D1-E0-F0-cod", 1, "em"),
+#'     verbose = FALSE, printstats = FALSE, covar = FALSE)
+#'   testthat::expect_equivalent(replist[["cpue"]][, "Yr"], index1[["years"]][[1]])
 #'
+#'   test <- replist
 #'   unlink("D1-E0-F0-cod", recursive = TRUE) # clean up
 #' }
 
@@ -245,20 +247,24 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # with error.
 
       ## This returns a superset of all years/fleets/data types needed to
-      ## do sampling.
+      ## do non-catch and -index sampling.
       data_args <- calculate_data_units(
-                                        # why no specification of index_params here? Need?
                                         lcomp_params    = lcomp_params,
                                         agecomp_params  = agecomp_params,
                                         calcomp_params  = calcomp_params,
                                         mlacomp_params  = mlacomp_params,
                                         wtatage_params  = wtatage_params)
 
-      # Start by clearing out the old data. Important so that extra data
-      # doesn't trip up change_data:
-      datfile.modified <- clean_data(dat_list = datfile.orig,
-        index_params = index_params, verbose = FALSE) # why only index_params called here?
-
+      ## OM: index
+      datfile.modified <- datfile.orig
+      datfile.modified[["CPUE"]] <- do.call("rbind",
+        mapply(data.frame, SIMPLIFY = FALSE,
+          year = index_params[["years"]],
+          seas = index_params[["seas"]],
+          index = as.list(index_params[["fleets"]]),
+          MoreArgs = list(obs = 1, se_log = 0.1)
+        )
+      )
       # check qs are correct.
     ctlom <- r4ss::SS_readctl(file = file.path(sc,i, "om", "om.ctl"),
       use_datlist = TRUE, datlist = datfile.orig,
@@ -270,6 +276,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ctl_file_in = file.path(sc,i, "om", "om.ctl"),
       ctl_list = NULL, dat_list = datfile.modified,
       ctl_file_out = file.path(sc,i, "om", "om.ctl"))
+
       datfile.modified <- change_catch(dat_list = datfile.modified,
                                        f_params = f_params)
       # Note some are data_args and some are data_params:
@@ -375,7 +382,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       ## End of manipulating the data file (except for rebinning), so clean it
       dat_list <- clean_data(dat_list      = dat_list,
-                            index_params   = index_params,
                             lcomp_params   = lcomp_params,
                             agecomp_params = agecomp_params,
                             calcomp_params = calcomp_params,
@@ -436,14 +442,13 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if(!is.null(weight_comps_params)) {
         if(weight_comps_params$method == "DM") {
            # convert model so it can be used
-          weight_comps(method = weight_comps_params$method,
-                       fleets = weight_comps_params$fleets,
-                       init_run = FALSE, # although not really needed for DM
-                       niters_weighting = 0,
-                       bias_adjust = bias_adjust,
-                       hess_always = hess_always,
-                       dir = pathem,
-                       iter = i)
+           out <- r4ss::SS_tune_comps(
+             option = weight_comps_params[["method"]],
+             fleets = weight_comps_params[["fleets"]],
+             dir = pathem,
+             model = get_bin(bin_name = "ss"),
+             extras = ifelse(hess_always | bias_adjust, "", "-nohess"),
+             verbose = FALSE)
         }
       }
       # Run the EM -------------------------------------------------------------
@@ -459,15 +464,20 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                      hess = ifelse(bias_adjust, TRUE, hess_always), ...)
       }
       if(!is.null(weight_comps_params)) {
-        # need to do data tuning, fregardless of if bias adjustment was done.
+        # need to do data tuning, regardless of if bias adjustment was done.
         if(weight_comps_params$method %in% c("MI", "Francis")) {
-          weight_comps(method = weight_comps_params$method,
-                       fleets = weight_comps_params$fleets,
-                       niters_weighting = weight_comps_params$niters_weighting,
-                       init_run = FALSE,
-                       bias_adjust = bias_adjust,
-                       hess_always = hess_always,
-                       dir = pathem)
+          replist <- r4ss::SS_output(pathem, verbose = FALSE, hidewarn = TRUE,
+            printstats = FALSE, covar = hess_always | bias_adjust)
+          out <- r4ss::SS_tune_comps(
+            replist = replist,
+            option = weight_comps_params[["method"]],,
+            fleets = weight_comps_params[["fleets"]],
+            niters_tuning = weight_comps_params[["niters_weighting"]],
+            extras = ifelse(hess_always | bias_adjust, "", "-nohess"),
+            systemcmd = TRUE,
+            model = get_bin(bin_name = "ss"),
+            verbose = FALSE,
+            dir = pathem)
         }
       }
 

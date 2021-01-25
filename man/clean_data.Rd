@@ -7,7 +7,6 @@ is not specified}
 \usage{
 clean_data(
   dat_list,
-  index_params = NULL,
   lcomp_params = NULL,
   agecomp_params = NULL,
   calcomp_params = NULL,
@@ -25,9 +24,6 @@ and \code{section = 2} reads in the expected values generated give all the
 input to the OM. \code{section = 3} is not used within ss3sim, but this
 section provides bootstrapped data sets that have been sampled internally
 within SS.}
-
-\item{index_params}{Named lists containing the arguments for
-\code{sample_index}.}
 
 \item{lcomp_params}{Named lists containing the arguments for
 \code{\link{sample_lcomp}}.}

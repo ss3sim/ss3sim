@@ -9,7 +9,7 @@ change_data(
   outfile = NULL,
   fleets,
   years,
-  types = c("index", "len", "age", "cal", "mla", "mwa"),
+  types = c("len", "age", "cal", "mla", "mwa"),
   age_bins = NULL,
   len_bins = NULL,
   pop_binwidth = NULL,
@@ -42,10 +42,10 @@ file takes time and computing resources.}
 \item{years}{A numeric vector of years.}
 
 \item{types}{A vector that can take combinations of the following entries:
-\code{"index"}, \code{"len"}, \code{"age"}, \code{"cal"}, \code{"mla"}.
+\code{"len"}, \code{"age"}, \code{"cal"}, \code{"mla"}.
 \code{types} controls what data structures the function acts on, with
-\code{"index"} changing indices/CPUE, \code{"len"} augmenting the
-length-composition data, \code{"age"} augmenting the age-composition
+\code{"len"} augmenting the length-composition data,
+\code{"age"} augmenting the age-composition
 data, \code{"cal"} augmenting the conditional age-at-length (CAAL) data, and
 \code{"mla"} augmenting the mean length-at-age data.}
 
@@ -98,11 +98,6 @@ to manipulate data or to prepare a new OM for use in a simulation.
 Original data is removed and dummy data is added to the SS \code{.dat} object.
 The dummy data expands the data structure to provide information for all years
 and fleets, potentially adding many rows of data.
-Catches of zero are added for each fleet to allow for ss3sim
-to manipulate catches using the control file rather than the par file.
-Each year/fleet combination must exist,
-otherwise specified years in the control file will only
-be taken from the population for years that are non-zero in the data file.
 
 Currently, \code{.dat} files with multiple sexes cannot be manipulated with
 \code{change_data}.

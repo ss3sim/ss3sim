@@ -1,13 +1,3 @@
-make_dummy_dat_index <- function(fleets, years) {
-    dummy_dat_list <- lapply(fleets, function(fleet) {
-        data.frame("year"   = years, "Seas" = 1, "index"  = fleet,
-                   "obs" = 1, "se_log" = .1,
-                   stringsAsFactors = FALSE)})
-    dummy_dat <- as.data.frame(do.call('rbind', dummy_dat_list))
-    dummy_dat
-}
-
-
 make_dummy_dat_lencomp <- function(fleets, years, len_bins, nsex = 1) {
     dummy_dat_list <- lapply(fleets, function(fleet) {
         data.frame("Yr"   = years, "Seas" = 1, "Flt"  = fleet,
