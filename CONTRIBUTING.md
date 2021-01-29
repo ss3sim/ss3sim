@@ -1,0 +1,5 @@
+# Contributing to ss3sim
+
+Thank you for your interest in contributing to ss3sim! We strive to follow the [NMFS Fisheries Toolbox Contribution Guide](https://github.com/nmfs-fish-tools/Resources/blob/master/CONTRIBUTING.md). We also have included ss3sim-specific code contribution information in the [Developers page of the ss3sim wiki](https://github.com/ss3sim/ss3sim/wiki/developers). Note that these are guidelines, not rules, and we are open to collaborations in other ways that may work better for you. Please feel free to reach out to us by opening an issue in this repository or by emailing the developers at nmfs.stock.synthsis@noaa.gov.
+
+This project and everyone participating in it is governed by the [NMFS Fisheries Toolbox Code of Conduct](https://github.com/nmfs-fish-tools/Resources/blob/master/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [fisheries.toolbox@noaa.gov](mailto:fisheries.toolbox@noaa.gov). Note that the maintainers of ss3sim do not have access to this email account, so unacceptable behavior of maintainers can also be reported here.

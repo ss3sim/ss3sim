@@ -16,6 +16,8 @@ Contents
 -   [Example output from an ss3sim simulation](#example-output-from-an-ss3sim-simulation)
 -   [Papers published using ss3sim](#papers-published-using-ss3sim)
 -   [Citing ss3sim](#citing-ss3sim)
+-   [Contributing to ss3sim](#contributing-to-ss3sim)
+-   [Code of conduct](#code-of-conduct)
 
 <!-- end toc -->
 Installing the ss3sim R package
@@ -89,6 +91,17 @@ If you use ss3sim in a publication, please cite ss3sim as shown by
 citation("ss3sim")
 toBibtex(citation("ss3sim"))
 ```
+
+Contributing to ss3sim
+----------------------
+
+Interested in contributing to ss3sim? We recognize contributions come in many forms, including but not limited to code, reporting issues, creating examples and/or documentation. Please see the [CONTRIBUTING guide](CONTRIBUTING).
+
+Code of conduct
+---------------
+
+This project and everyone participating in it is governed by the [NMFS Fisheries Toolbox Code of Conduct](https://github.com/nmfs-fish-tools/Resources/blob/master/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [fisheries.toolbox@noaa.gov](mailto:fisheries.toolbox@noaa.gov). Note that the maintainers of ss3sim do not have access to this email account, so unacceptable behavior of maintainers can also be reported here.
+
 
 Disclaimer
 ----------
