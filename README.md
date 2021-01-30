@@ -16,6 +16,8 @@ Contents
 -   [Example output from an ss3sim simulation](#example-output-from-an-ss3sim-simulation)
 -   [Papers published using ss3sim](#papers-published-using-ss3sim)
 -   [Citing ss3sim](#citing-ss3sim)
+-   [Contributing to ss3sim](#contributing-to-ss3sim)
+-   [Code of conduct](#code-of-conduct)
 
 <!-- end toc -->
 Installing the ss3sim R package
@@ -89,6 +91,29 @@ If you use ss3sim in a publication, please cite ss3sim as shown by
 citation("ss3sim")
 toBibtex(citation("ss3sim"))
 ```
+
+Contributing to ss3sim
+----------------------
+
+Interested in contributing to ss3sim? We recognize contributions come in many forms, including but not limited to code, reporting issues, creating examples and/or documentation.
+
+We strive to follow the [NMFS Fisheries Toolbox Contribution Guide](https://github.com/nmfs-fish-tools/Resources/blob/master/CONTRIBUTING.md). We also have included ss3sim-specific code contribution information in the [Developers page of the ss3sim wiki](https://github.com/ss3sim/ss3sim/wiki/developers). Note that these are guidelines, not rules, and we are open to collaborations in other ways that may work better for you. Please feel free to reach out to us by opening an issue in this repository or by emailing the maintainer (call `maintainer("ss3sim")` in R to view the current maintainer's name and email address). 
+
+Note that by contribuiting, you are expect to uphold the [code of conduct](#code-of-conduct).
+
+Code of conduct
+---------------
+
+This project and everyone participating in it is governed by the [NMFS Fisheries Toolbox Code of Conduct](https://github.com/nmfs-fish-tools/Resources/blob/master/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [fisheries.toolbox@noaa.gov](mailto:fisheries.toolbox@noaa.gov). Note that the maintainers of ss3sim do not have access to this email account, so unacceptable behavior of maintainers can also be reported here.
+
+The NFMS Fisheries Toolbox Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4,
+available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.html
+
+[homepage]: https://www.contributor-covenant.org
+
+For answers to common questions about this code of conduct, see
+https://www.contributor-covenant.org/faq
+
 
 Disclaimer
 ----------
