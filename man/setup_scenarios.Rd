@@ -2,23 +2,34 @@
 % Please edit documentation in R/setup_scenarios.R
 \name{setup_scenarios}
 \alias{setup_scenarios}
-\title{Set up scenarios for a simulation with ss3sim}
+\title{Get scenario information from a data frame of specifications}
 \usage{
-setup_scenarios(input = NULL)
+setup_scenarios(df = "default", returntype = c("list", "dataframe"))
 }
 \arguments{
-\item{input}{A data frame with one row per scenario. If \code{NULL},
-which is the default, then a generic scenario will be run with minimal
-data to check that everything is working.}
+\item{df}{A data frame with scenarios in the rows and
+information for function arguments in the columns.
+See [setup_scenarios_defaults] for how to set up the data frame.
+This data frame is used by default if you do not supply anything
+to `df`.}
+
+\item{returntype}{The class of object that you want to return.
+ss3sim was a big fan of lists of lists until the [tidyverse] packages
+were included. Now, data frames of list columns are preferred.
+Eventually, `list` will be downgraded from the default and data frames
+will be the only option as a return.}
+}
+\value{
+Either a long data frame or a list is returned.
+See the input argument `returntype` for more information.
 }
 \description{
-Set up scenarios with default arguments for a simulation with ss3sim.
-The data frame passed by the user will likely be a truncated version
-of all of the information needed to run a simulation, and therefore,
-additional arguments will be added at their default values. The resulting
-data frame is then turned into a list and passed to \code{\link{ss3sim_base}}
-within \code{\link{run_ss3sim}}.
+Get scenario information from a data frame of specifications
+}
+\examples{
+defaultscenarios <- setup_scenarios()
+
 }
 \author{
-Kelli Faye Johnson
+Kelli F. Johnson
 }

@@ -172,6 +172,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   sc <- scenarios
 
   if(!is.null(user_recdevs)) {
+    stopifnot(class(user_recdevs) %in% c("matrix", "data.frame", "array"))
     if(ncol(user_recdevs) < max(iterations)) {
       stop("The number of columns in user_recdevs is less than the ",
         "specified number of iterations.")
@@ -262,16 +263,30 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
     datfile.modified <- datfile.orig
     ## OM: index
-    datfile.modified[["CPUE"]] <- do.call("rbind",
-      mapply(data.frame, SIMPLIFY = FALSE,
-        year = index_params[["years"]],
-        seas = index_params[["seas"]],
-        index = as.list(index_params[["fleets"]]),
-        MoreArgs = list(obs = 1, se_log = 0.1)
+    # todo: find a better way to check if seas exists
+    # maybe warn users that this default is being set for index & discard
+    if (!is.null(index_params)) {
+      if (!any(grepl("seas", names(index_params), ignore.case = TRUE))) {
+        index_params[["seas"]] <- standardize_sampling_args(
+          index_params[["fleets"]], index_params[["years"]],
+          other_input = list(1))
+      }
+      datfile.modified[["CPUE"]] <- do.call("rbind",
+        mapply(data.frame, SIMPLIFY = FALSE,
+          year = index_params[["years"]],
+          seas = index_params[["seas"]],
+          index = as.list(index_params[["fleets"]]),
+          MoreArgs = list(obs = 1, se_log = 0.1)
+        )
       )
-    )
+    }
     ## OM: discard
     if (!is.null(discard_params)) {
+      if (!any(grepl("seas", names(discard_params), ignore.case = TRUE))) {
+        discard_params[["seas"]] <- standardize_sampling_args(
+          index_params[["fleets"]], index_params[["years"]],
+          other_input = list(1))
+      }
       datfile.modified[["discard_data"]] <- do.call("rbind",
         mapply(data.frame, SIMPLIFY = FALSE,
           Yr = discard_params[["years"]],
@@ -296,7 +311,19 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       ## OM: change bins
       # todo: do this for mean size at age
-      datfile.modified <- change_pop_bin(datfile.modified,
+    fixlist <- function(local) {
+      out <- setNames(
+        unlist(local, recursive = FALSE, use.names = FALSE),
+          names(local))
+      if(class(out) == "numeric") {
+        return(local)
+      } else {
+        return(out)
+      }
+    }
+      data_params <- fixlist(data_params)
+      datfile.modified <- change_pop_bin(
+        dat_list = datfile.modified,
         binwidth = data_params[["pop_binwidth"]],
         minimum_size = data_params[["pop_minimum_size"]],
         maximum_size = data_params[["pop_maximum_size"]])
@@ -329,8 +356,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           bins = if (is.null(data_params$age_bins)) {
             datfile.modified[["agebin_vector"]]
           } else {data_params$age_bins},
-          #todo: fix that this needs to be a list of the list maybe same with length
-          paramlist = list(agecomp_params),
+          paramlist = agecomp_params,
           nsex = datfile.modified[["Ngenders"]])
       }
       if (!is.null(lcomp_params)) {
@@ -339,7 +365,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           bins = if (is.null(data_params$len_bins)) {
             datfile.modified[["lbin_vector"]]
           } else {data_params$len_bins},
-          paramlist = list(lcomp_params),
+          paramlist = lcomp_params,
           nsex = datfile.modified[["Ngenders"]])
       }
       datfile.modified <- change_lcomp_constant(
@@ -350,14 +376,15 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         dat_list = datfile.modified)
       if (!is.null(calcomp_params)) {
         params <- mapply(standardize_sampling_args,
-          other_input = calcomp_params[grep("Nsamp|Part|Age|years", names(calcomp_params))],
+          other_input = calcomp_params[grep("Gender|Part|Age|years", names(calcomp_params))],
           MoreArgs = list(
             fleets = calcomp_params$fleets,
-            years = calcomp_params$years), USE.NAMES = FALSE)
+            years = calcomp_params$years),
+          SIMPLIFY = FALSE, USE.NAMES = TRUE)
         params$fleets <- calcomp_params$fleets
         datfile.modified <- change_comp(dat_list = datfile.modified,
           type = "cal",
-          paramlist = list(lcomp= params, agecomp = params),
+          paramlist = params,
           nsex = datfile.modified[["Ngenders"]])
       }
       if (!is.null(mlacomp_params)) {
@@ -400,7 +427,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       dat_list <- SS_readdat(file.path(sc, i, "em", "ss3.dat"),
                              version = NULL, verbose = FALSE)
       ## Survey biomass index
-      dat_list <- do.call("sample_index", c(dat_list = list(dat_list), index_params))
+      dat_list <- do.call("sample_index",
+        c(dat_list = list(dat_list), index_params))
       ## Discards
       if (!is.null(discard_params)) {
         dat_list <- do.call("sample_discard", c(dat_list = list(dat_list), discard_params))
@@ -493,6 +521,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
 	    ## Now change the binning structure in the EM ss3.dat file as needed
       if (!is.null(em_binning_params)) {
+        em_binning_params <- fixlist(em_binning_params)
           dat_list <- do.call("change_em_binning", c(
               dat_list         = list(dat_list),
               outfile          = NULL,
@@ -533,6 +562,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         version = ss_version, overwrite = TRUE, verbose = FALSE)
       # Add dirichlet multinomial parameters if using
       if(!is.null(weight_comps_params)) {
+        weight_comps_params <- purrr::modify_depth(weight_comps_params,1,unlist)
         if(weight_comps_params$method == "DM") {
            # convert model so it can be used
            out <- r4ss::SS_tune_comps(

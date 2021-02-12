@@ -120,5 +120,12 @@ test_that("change_f works with list-style inputs", {
   expect_error(do.call("change_f", inlist))
   inlist$fleets <- 1:2
   inlist$ses <- list(1:9, 5:10)
-  expect_error(do.call("change_f", inlist))
+  # Capture error message but don't print warning b/c it messes up
+  # how the tests are printed to the screen.
+  expect_equal(expected = "error", tryCatch({
+    suppressMessages(utils::capture.output(
+      do.call("change_f", inlist), type = "output"))
+  },
+      error = function(x) return("error")
+  ))
 })

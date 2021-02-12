@@ -46,7 +46,9 @@ change_o <- function(change_o_list,
                      ctl_file_in = "control.ss_new", ctl_file_out = "om.ctl",
                      par_name = NULL, par_int = NULL, verbose = FALSE) {
   # make par_name and par_int into change_o_list, if passing variable that way.
-  if ((!is.null(par_name)) & (!is.null(par_int))){
+  if ((!is.null(par_name)) & (!is.null(par_int))) {
+    if (is.list(par_name)) par_name <- unlist(par_name)
+    if (is.list(par_int)) par_int <- unlist(par_int)
     check_eqlength("par_name" = par_name, "par_int" = par_int)
     change_o_list <- lapply(par_int, function(x) x)
     names(change_o_list) <- par_name

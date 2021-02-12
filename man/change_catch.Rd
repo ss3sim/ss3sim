@@ -9,7 +9,9 @@ change_catch(dat_list, f_params)
 \arguments{
 \item{dat_list}{A data file as read in using `r4ss::SS_readdat()`}
 
-\item{f_params}{A list of parameters related to fishing mortality}
+\item{f_params}{A list of parameters related to fishing mortality.
+The start and end year of the model will be based on
+the years with specified catch.}
 }
 \value{
 a modified data file as a list in R.

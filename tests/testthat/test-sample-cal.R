@@ -24,9 +24,10 @@ test_that("run_ss3sim runs with CAL data", {
   EM_datfile <- r4ss::SS_readdat(file.path(scname, "1", "em", "ss3.dat"),
                                  verbose = FALSE)
   # check the length comps to make sure CAL consistent
-  NROW(EM_datfile$agecomp[EM_datfile$agecomp$Lbin_lo > -1, ])
+  expect_true(552 ==
+    NROW(EM_datfile$agecomp[EM_datfile$agecomp$Lbin_lo > -1, ]))
   expect_equivalent(c(13, 51), c(table(EM_datfile$lencomp$FltSvy)))
   expect_true(all(aggregate(Nsamp ~ Yr, 
-    data = EM_datfile$agecomp[EM_datfile$agecomp$Lbin_lo != -1, ], 
+    data = EM_datfile$agecomp[EM_datfile$agecomp$Lbin_lo != -1, ],
     FUN = sum)$Nsamp == 20))
 })

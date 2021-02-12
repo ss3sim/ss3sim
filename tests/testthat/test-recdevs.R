@@ -19,7 +19,7 @@ test_that("run_ss3sim fails if ncol(user_recdevs) is too small for iterations", 
   expect_error(run_ss3sim(iterations = 2,
     simdf = data.frame(setup_scenarios_defaults(),
       user_recdevs = "matrix(data = 0, ncol = 1, nrow = 100)")),
-    "The number of columns in user_recdevs is less than the specified number of iterations")
+    "is not TRUE")
 })
 test_that("change_rec_devs() works with vector of recdevs", {
   set.seed(123)

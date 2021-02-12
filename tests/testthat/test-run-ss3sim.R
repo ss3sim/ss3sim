@@ -131,8 +131,11 @@ test_that("run_ss3sim works with multiple scenarios without estimation", {
   ssom <- r4ss::SS_output(file.path(scname[1], "1", "om"),
     verbose = FALSE, printstats = FALSE, covar = FALSE)
   expect_equal(ssom$parameters[grep("NatM", ssom$parameters$Label), "Value"], 0.20001)
-  expect_equal(c(4, 4),
-    sapply(lapply(scname, dir, recursive = TRUE, pattern = "control.ss_new"), length))
+  expect_equivalent(
+    c(4, 4),
+    vapply(lapply(scname, dir, recursive = TRUE, pattern = "control.ss_new"),
+      FUN.VALUE = 1L, length)
+  )
 
   ssom <- r4ss::SS_readdat(file.path(scname[1], "1", "om", "ss3.dat"),
     verbose = FALSE)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/change_comp.R
 \name{change_comp}
 \alias{change_comp}
-\title{Change composition data to dummy data}
+\title{Change composition data to dummy data for running the operating model}
 \usage{
 change_comp(dat_list, type = c("len", "age", "cal"), paramlist, nsex = 1, bins)
 }
@@ -34,7 +34,8 @@ need to be named because they will be renamed with their value and a
 leading character based on what type of data they are.}
 }
 \description{
-Change composition data to dummy data
+Change an SS data list object to include rows of data that are desired
+to sample from in an operating model (OM).
 }
 \examples{
 # todo: remove this example when testing is complete
