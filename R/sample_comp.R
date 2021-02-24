@@ -62,6 +62,9 @@ sample_comp <- function(
   new <- dplyr::bind_cols(tibble::tibble(FltSvy = fleets), tibble::tibble(Yr = years,
     newN = Nsamp, ESS = ESS, cpar = cpar, ...)) %>% dplyr::rowwise() %>%
     tidyr::unnest(dplyr::everything()) %>% dplyr::bind_rows()
+  colnames(new) <- gsub("part", "Part", colnames(new))
+  colnames(new) <- gsub("seas", "Seas", colnames(new))
+  # todo: make the rename above more generic
 
   #### Multinomial or DM sampling based on case_when with cpar
   # Results are slightly different because of some seed thing with dplyr
