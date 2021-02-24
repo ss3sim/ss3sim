@@ -163,7 +163,8 @@ setup_scenarios <-function (
   tidyr::unnest(data) %>% dplyr::ungroup() %>%
   tidyr::unite(col = "label", type, arg, fleet,
     sep = ".", na.rm = TRUE, remove = FALSE) %>%
-  dplyr::mutate(type = purrr::map_chr(type, ~setup_scenarios_lookup()[.x]))
+  dplyr::mutate(type = purrr::map_chr(type, ~setup_scenarios_lookup()[.x])) %>%
+  dplyr::arrange(type, arg, as.numeric(fleet))
   if (returntype == "dataframe") {
     return(scenarios)
   }
