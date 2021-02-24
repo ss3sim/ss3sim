@@ -12,12 +12,15 @@ change_comp(dat_list, type = c("len", "age", "cal"), paramlist, nsex = 1, bins)
 Be sure to correctly specify which section of the data file you want
 to work with when reading it in using the \code{section} argument.
 Where, \code{section = 1} reads in the input values used to run the model
-and \code{section = 2} reads in the expected values generated give all the
+and \code{section = 2} reads in the expected values generated given all the
 input to the OM. \code{section = 3} is not used within ss3sim, but this
 section provides bootstrapped data sets that have been sampled internally
 within SS.}
 
-\item{type}{The sample type you want. See the default argument for the available types.}
+\item{type}{The sample type you want.
+See the function call for available types,
+e.g., \code{formals(change_comp)$type};
+the first value will be used as the default if user input is not provided.}
 
 \item{paramlist}{A list of parameter values derived from the data frame used to set up
 your similation. For example, \code{setup_scenarios(setup_scenarios_defaults())[[1]]}
@@ -34,8 +37,12 @@ need to be named because they will be renamed with their value and a
 leading character based on what type of data they are.}
 }
 \description{
-Change an SS data list object to include rows of data that are desired
-to sample from in an operating model (OM).
+Change the composition data in a Stock Synthesis data list object or file
+to include rows of data that are desired. Typically, this will be an
+operating model (OM) because only dummy-data observations are used here,
+i.e., all compositions are set to a value of one. Creating these dummy
+observations is helpful before running your OM because it will facilitate
+the creation of observed values for each desired combination.
 }
 \examples{
 # todo: remove this example when testing is complete

@@ -1,9 +1,17 @@
 #' Change composition data to dummy data for running the operating model
 #'
-#' Change an SS data list object to include rows of data that are desired
-#' to sample from in an operating model (OM).
+#' Change the composition data in a Stock Synthesis data list object or file
+#' to include rows of data that are desired. Typically, this will be an
+#' operating model (OM) because only dummy-data observations are used here,
+#' i.e., all compositions are set to a value of one. Creating these dummy
+#' observations is helpful before running your OM because it will facilitate
+#' the creation of observed values for each desired combination.
+#'
 #' @template dat_list
-#' @param type The sample type you want. See the default argument for the available types.
+#' @param type The sample type you want.
+#' See the function call for available types,
+#' e.g., \code{formals(change_comp)$type};
+#' the first value will be used as the default if user input is not provided.
 #' @param paramlist A list of parameter values derived from the data frame used to set up
 #' your similation. For example, \code{setup_scenarios(setup_scenarios_defaults())[[1]]}
 #' will give you defaults that you can extract from. Typically,
