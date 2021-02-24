@@ -10,7 +10,7 @@ change_f(
   fisheries,
   fvals,
   seasons = 1,
-  ses = 0.005,
+  ses = 1e-05,
   ctl_file_in,
   ctl_file_out = "control_fishing.ss"
 )

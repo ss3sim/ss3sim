@@ -426,6 +426,9 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       # todo: use expdata rather than reading in the file again
       dat_list <- SS_readdat(file.path(sc, i, "em", "ss3.dat"),
                              version = NULL, verbose = FALSE)
+
+      ## Sample catches
+      dat_list <- sample_catch(dat_list = dat_list)
       ## Survey biomass index
       dat_list <- do.call("sample_index",
         c(dat_list = list(dat_list), index_params))

@@ -143,6 +143,7 @@ par(op)
 Other sampling functions: 
 \code{\link{clean_data}()},
 \code{\link{sample_calcomp}()},
+\code{\link{sample_catch}()},
 \code{\link{sample_discard}()},
 \code{\link{sample_index}()},
 \code{\link{sample_lcomp}()},
