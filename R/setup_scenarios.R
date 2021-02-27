@@ -181,6 +181,9 @@ setup_scenarios <-function (
         .x = data, ~{
           xxx <- base::split(.x$value,.x$arg)
           if (length(xxx) == 0) {
+            if (.x[["label"]] == "user_recdevs") {
+              return(.x[["value"]][[1]])
+            }
             return(stats::setNames(unlist(.x$value), NULL))
           }
           if (!is.null(xxx[["fleets"]])) {
