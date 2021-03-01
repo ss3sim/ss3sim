@@ -165,6 +165,17 @@ setup_scenarios <-function (
     sep = ".", na.rm = TRUE, remove = FALSE) %>%
   dplyr::mutate(type = purrr::map_chr(type, ~setup_scenarios_lookup()[.x])) %>%
   dplyr::arrange(type, arg, as.numeric(fleet))
+  # check for NA or NULL values
+  labs_with_null_or_nas <- scenarios$label[unlist(lapply(scenarios$value,
+                                function(x) isTRUE(is.null(x)) |
+                                  isTRUE(any(is.na(x)))))]
+  if(isTRUE(length(labs_with_null_or_nas) > 0)) {
+    warning("The following dataframe columns contain NULL or NA values, ",
+            "which could cause ss3sim to behave unexpectedly. Please specify",
+            " these values, unless NULL or NA are valid inputs for the column",
+            " (e.g., cpar for lcomp or agecomp can be NULL.)\nColumns: ",
+            paste0(labs_with_null_or_nas, collapse = ", ") )
+  }
   if (returntype == "dataframe") {
     return(scenarios)
   }
