@@ -270,12 +270,15 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       verbose = FALSE, echoall = FALSE)
     qtasks <- check_q(ctl_list = ctlom, Nfleets = datfile.orig$Nfleets,
       desiredfleets = index_params$fleets)
-    ctlom <- change_q(string_add = qtasks$add, string_remove = qtasks$remove,
-      overwrite = TRUE,
-      ctl_file_in = file.path(sc,i, "om", "om.ctl"),
-      ctl_list = NULL, dat_list = datfile.modified,
-      ctl_file_out = file.path(sc,i, "om", "om.ctl"))
+    if(sum(is.null(qtasks$add), is.null(qtasks$remove)) != 2){
+      ctlom <- change_q(string_add = qtasks$add, string_remove = qtasks$remove,
+        overwrite = TRUE,
+        ctl_file_in = file.path(sc,i, "om", "om.ctl"),
+        ctl_list = NULL, dat_list = datfile.modified,
+        ctl_file_out = file.path(sc,i, "om", "om.ctl"))
+    }
 
+  
       # Note some are data_args and some are data_params:
       do.call("change_data", c(
                   dat_list         = list(datfile.modified),
@@ -416,11 +419,14 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       verbose = FALSE, echoall = FALSE)
     qtasks <- check_q(ctl_list = ctlem, Nfleets = datfile.orig$Nfleets,
       desiredfleets = index_params$fleets)
-    ctl_list <- change_q(string_add = qtasks$add, string_remove = qtasks$remove,
-      overwrite = TRUE,
-      ctl_file_in = file.path(sc,i, "em", "em.ctl"),
-      ctl_list = NULL, dat_list = datfile.modified,
-      ctl_file_out = NULL)
+    ctl_list <- ctlem
+    if(sum(is.null(qtasks$add), is.null(qtasks$remove)) != 2){
+      ctl_list <- change_q(string_add = qtasks$add, string_remove = qtasks$remove,
+        overwrite = TRUE,
+        ctl_file_in = file.path(sc,i, "em", "em.ctl"),
+        ctl_list = NULL, dat_list = datfile.modified,
+        ctl_file_out = NULL)
+    }
       ss_version <- get_ss_ver_dl(dat_list)
       newlists <- change_year(dat_list, ctl_list)
       SS_writedat(datlist = newlists$dat_list,
