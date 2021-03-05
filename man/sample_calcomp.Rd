@@ -15,7 +15,8 @@ sample_calcomp(
   method = "simple_random",
   ESS_lengths = NULL,
   ESS_ages = NULL,
-  lcomps_sampled = FALSE
+  lcomps_sampled = FALSE,
+  ...
 )
 }
 \arguments{
@@ -98,6 +99,12 @@ value will be apportioned among the conditional age at length bins as the
 \item{lcomps_sampled}{Have marginal length comps already been sampled and are
 included in \code{dat_list[["lencomp"]]}? If FALSE, expected values are in
 present in \code{datlist[["lencomp"]]}.}
+
+\item{...}{Any argument you want to be a column in the new data frame of composition
+data. All extra arguments should be named columns in \code{data}.
+Each argument needs to be a list of length \code{length(fleets)}. Or, you can use a
+single value that will be repeated for each combination of fleet, year, ...
+in your data.}
 }
 \value{
 A modified \code{.dat} file if \code{!is.null(outfile)}. A list object
