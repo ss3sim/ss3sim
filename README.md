@@ -5,7 +5,7 @@ master: [![R-CMD-check](https://github.com/ss3sim/ss3sim/workflows/R-CMD-check/b
 
 development: [![R-CMD-check](https://github.com/ss3sim/ss3sim/workflows/R-CMD-check/badge.svg?branch=development)](https://github.com/ss3sim/ss3sim/actions?query=workflow%3AR-CMD-check)
 
-ss3sim is an R package that facilitates flexible, rapid, and reproducible fisheries stock assessment simulation testing with the widely-used [Stock Synthesis](https://vlab.ncep.noaa.gov/web/stock-synthesis) (SS) statistical age-structured stock assessment framework. To learn more, read on or check out the [vignettes](http://ss3sim.github.io/ss3sim/).
+ss3sim is an R package that facilitates flexible, rapid, and reproducible fisheries stock assessment simulation testing with the widely-used [Stock Synthesis](https://vlab.ncep.noaa.gov/web/stock-synthesis) (SS) statistical age-structured stock assessment framework. To learn more, read on or check out the [vignettes](https://ss3sim.github.io/ss3sim/).
 
 Contents
 --------
@@ -14,7 +14,6 @@ Contents
 -   [The ss3sim simulation setup](#the-ss3sim-simulation-setup)
 -   [How ss3sim works](#how-ss3sim-works)
 -   [Example output from an ss3sim simulation](#example-output-from-an-ss3sim-simulation)
--   [Papers published using ss3sim](#papers-published-using-ss3sim)
 -   [Citing ss3sim](#citing-ss3sim)
 -   [Contributing to ss3sim](#contributing-to-ss3sim)
 -   [Code of conduct](#code-of-conduct)
@@ -38,7 +37,7 @@ devtools::install_github("ss3sim/ss3sim",
 library(ss3sim)
 ```
 
-We suggest using the GitHub version because it comes with the SS executable/binary. If you are using the CRAN version, you'll need to install the binary and place it in your system path. See the Introduction vignette with `vignette("introduction", "ss3sim")` for more details on how to get the latest version of SS and place it in your path.
+We suggest using the GitHub version because it comes with the SS executable/binary. If you are using the CRAN version, you'll need to install the binary and place it in your system path. See the [Path section of the Introduction vignette](https://ss3sim.github.io/ss3sim/vignettes/introduction.html#path) for more details on how to get the latest version of SS and place it in your path.
 
 You can read the help files and access the vignettes for reproducible examples of ss3sim simulations with
 
