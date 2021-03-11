@@ -559,15 +559,15 @@ The [development version](https://github.com/ss3sim/ss3sim/tree/development) of 
 
 ## Unix (OS X and Linux)
 
-To check if SS is in your path, open a Terminal window and type `which ss` and hit enter. If you get nothing returned, then SS is not in your path. The easiest way to fix this is to move the SS binary to a folder that"s already in your path. To find existing path folders type `echo $PATH` in the terminal and hit enter. Now move the SS binary to one of these folders. For example, in a Terminal window type:
+To check if SS is in your path, open a Terminal window and type `which ss` and hit enter. If you get nothing returned, then SS is not in your path. The easiest way to fix this is to move the SS binary to a folder that is already in your path. To find existing path folders type `echo $PATH` in the terminal and hit enter. Now move the SS binary to one of these folders. For example, to copy SS from the ~/Downloads folder to the /usr/bin folder, in a Terminal window type:
 
-    sudo cp ~/Downloads/SS/usr/bin/
+    sudo cp ~/Downloads/ss /usr/bin/
 
 You will need to use `sudo` and enter your password after to have permission to move a file to a folder like `/usr/bin/`.
 
-Also note that you may need to add executable permissions to the SS binary after downloading it. You can do that by switching to the folder where you placed the binary (`cd /usr/bin/` if you followed the instructions above), and running the command
+Also note that you may need to add executable permissions to the SS binary after downloading it in order to run SS. You can do that by switching to the folder where you placed the binary (`cd /usr/bin/` if you followed the instructions above), and running the command
 
-    sudo chmod +x ss
+    sudo chmod a+x ss
 
 Check that SS is now executable and in your path
 
@@ -577,7 +577,7 @@ If you followed the instructions above, you will see the following line returned
 
     /usr/bin/ss
 
-If you have previously modified your path to add a non-standard location for the SS binary, you may need to also tell R about the new path. The path that R sees may not include additional paths that you have added through a configuration file like `.bash_profile`. If needed, you can add to the path that R sees by including a line like this in your `.Rprofile` file. (This is an invisible file in your home directory.)
+If you have previously modified your path to add a non-standard location for the SS binary, you may need to also tell R about the new path. The path that R sees may not include additional paths that you have added through a configuration file like `.bash_profile`. If needed, you can add to the path that R sees by including a line like this in your `.Rprofile` file (an invisible file in your home directory):
 
     Sys.setenv(PATH=paste(Sys.getenv("PATH"),"/my/folder",sep=":"))
 
