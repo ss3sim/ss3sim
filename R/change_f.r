@@ -102,6 +102,15 @@ change_f <- function(years, fleets, fisheries, fvals, seasons = 1, ses = 0.005,
   newdata[, "index"] <- fleets[newdata$index]
   names(newdata) <- gsub("index", "Fleet", names(newdata))
   ctl <- readLines(ctl_file_in)
+  
+  #Flag for initF
+  doinitf <- FALSE
+  #Pull InitF value
+  if(length(grep("InitF", ctl)) == 1){
+    doinitf <- TRUE
+    initf <- ctl[grep("InitF", ctl, ignore.case = TRUE)]
+  }
+
   locations <- grep("F_Method", ctl, ignore.case = TRUE)
   if (length(locations) < 2) {
     # todo: use r4ss::SS_readctl to pass a control list rather than readLines
@@ -121,15 +130,31 @@ change_f <- function(years, fleets, fisheries, fvals, seasons = 1, ses = 0.005,
     stop("Q_setup was not found in the ctl_file_in")
   }
   ctl[locations[1]] <- gsub("^[1-4]\\s*", "2 ", trimws(ctl[locations[1]]))
-  ctl <- c(ctl[1:locations[1]],
-    paste(ifelse(max(newdata$F_value) < 4, 4,
-      max(type.convert(newdata$F_value, as.is = TRUE)) * 2),
-      " # max F or harvest rate, depends on F_Method"),
-    paste(0, 1, NROW(newdata),
-      "# overall start F value; overall phase; N detailed inputs to read"),
-    apply(newdata, 1, paste, collapse = " "),
-    ctl[location_terminal:length(ctl)])
 
+  if(doinitf == TRUE){
+    ctl <- c(ctl[1:locations[1]],
+      paste(ifelse(max(newdata$F_value) < 4, 4,
+        max(type.convert(newdata$F_value, as.is = TRUE)) * 2),
+        " # max F or harvest rate, depends on F_Method"),
+      paste(0, 1, NROW(newdata),
+        "# overall start F value; overall phase; N detailed inputs to read"),
+      apply(newdata, 1, paste, collapse = " "),
+      #Add InitF
+      initf, 
+      ctl[(location_terminal + 1):length(ctl)])
+  }
+  
+  if(doinitf == FALSE){
+    ctl <- c(ctl[1:locations[1]],
+      paste(ifelse(max(newdata$F_value) < 4, 4,
+        max(type.convert(newdata$F_value, as.is = TRUE)) * 2),
+        " # max F or harvest rate, depends on F_Method"),
+      paste(0, 1, NROW(newdata),
+        "# overall start F value; overall phase; N detailed inputs to read"),
+      apply(newdata, 1, paste, collapse = " "),
+      ctl[location_terminal:length(ctl)])
+  }
+   
   # Write new control file
   if (!is.null(ctl_file_out)) {
     writeLines(ctl, con = ctl_file_out)

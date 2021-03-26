@@ -37,6 +37,8 @@
 #'   be a numeric value, as a proportion. For example 0.1 means 10 percent. See
 #'   the SS manual for further information. A \code{NULL} value indicates no
 #'   action, a negative value turns the feature off in SS.
+#' @param initf_flag Add nonzero catch value to -999 year in data file if TRUE. 
+#'
 #' @template nsex
 #'
 #' @details
@@ -96,7 +98,7 @@ change_data <- function(dat_list, outfile = NULL, fleets, years,
   age_bins = NULL, len_bins = NULL, pop_binwidth = NULL,
   pop_minimum_size = NULL, pop_maximum_size = NULL,
   lcomp_constant = NULL, tail_compression = NULL,
-  nsex = 1) {
+  nsex = 1, initf_flag = FALSE) {
 
   # TODO: pop length bins must not be wider than the length data bins, but the
   # boundaries of the bins do not need to align (from SS manual)
@@ -171,6 +173,14 @@ change_data <- function(dat_list, outfile = NULL, fleets, years,
     dat_list$MeanSize_at_Age_obs <- make_dummy_dat_mlacomp(fleets = fleets,
                                       years = years, age_bins = age_bins)
     dat_list$N_MeanSize_at_Age_obs <- nrow(dat_list$MeanSize_at_Age_obs)
+  }
+
+  #Add nonzero catch value to data file if initf_flag == TRUE
+  if(initf_flag){
+    initf_catch <- dat_list$catch
+    initf_catch[which(initf_catch$year == -999 & initf_catch$fleet == 1), 
+      'catch'] <- 100
+    dat_list$catch <- initf_catch
   }
 
   if(!is.null(lcomp_constant)) {
