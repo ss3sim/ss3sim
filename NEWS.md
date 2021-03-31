@@ -1,3 +1,8 @@
+# ss3sim 1.1.6
+* deprecate change_f_par which was not being used by any downstream code.
+Feel free to contact the package maintainers if you wish to reinstate this function,
+but ss3sim uses the control file instead of the par file as in the orginal ss3sim.
+
 # ss3sim 1.1.3
 
 * Drop fleets from sampling regimes using NA in the scenario data frame.

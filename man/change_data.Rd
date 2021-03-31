@@ -142,7 +142,6 @@ See \code{\link{clean_data}} for a counter function.
 Other change functions: 
 \code{\link{change_em_binning}()},
 \code{\link{change_e}()},
-\code{\link{change_f_par}()},
 \code{\link{change_f}()},
 \code{\link{change_o}()},
 \code{\link{change_retro}()},
