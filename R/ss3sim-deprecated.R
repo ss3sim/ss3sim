@@ -3,6 +3,7 @@
 #' removed from the package in the near future.
 #' When possible, alternative functions with similar functionality are
 #' available at \code{help("ss3sim-deprecated")}.
+#' @md
 #' @name ss3sim-deprecated
 #' @keywords internal
 NULL
