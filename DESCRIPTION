@@ -48,8 +48,10 @@ Imports:
     grDevices,
     graphics,
     magrittr,
+    purrr,
     rlang,
     stats,
+    tibble,
     tidyr,
     utils, 
     lifecycle

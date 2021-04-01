@@ -16,6 +16,7 @@
 #' @template dat_list
 #' @template outfile
 #' @template Nsamp
+#' @template sampledots
 #' @template sampling-return
 #' @importFrom r4ss SS_writedat
 #'
@@ -27,18 +28,21 @@
 #' ex1 <- sample_lcomp(dat_list=dat_list, outfile = NULL, 
 #'   fleets = 1:2, Nsamp = list(100, 50), 
 #'   years=list(seq(26, 100, by = 2), 80:100))
+#' \dontshow{
+#' testthat::expect_equal(dim(ex1[["lencomp"]]), c(59, 51))
+#' }
 #'
 #' @export
 #' @family sampling functions
 #' @seealso \code{\link{sample_agecomp}} for more examples
 
 sample_lcomp <- function(dat_list, outfile = NULL, fleets, Nsamp,
-  years, cpar = 1, ESS = NULL){
+  years, cpar = 1, ESS = NULL, ...){
 
     check_data(dat_list)
     dat_list$lencomp <- sample_comp(dat_list$lencomp,
       Nsamp = Nsamp, fleets = fleets, years = years,
-      cpar = cpar, ESS = ESS)
+      cpar = cpar, ESS = ESS, ...)
     dat_list$N_lencomp <- nrow(dat_list$lencomp)
 
     ## Write the modified file

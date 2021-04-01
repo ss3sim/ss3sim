@@ -4,7 +4,7 @@
 \alias{sample_comp}
 \title{Sample composition data from expected values}
 \usage{
-sample_comp(data, Nsamp, fleets, years, ESS = NULL, cpar = 1)
+sample_comp(data, Nsamp, fleets, years, ESS = NULL, cpar = 1, ...)
 }
 \arguments{
 \item{data}{A data frame with informational columns followed by
@@ -47,6 +47,12 @@ same standard deviation as a multinomial of the given \code{Nsamp},
 \code{2} indicates twice, etc. Values greater than one indicate
 overdispersion, and less underdispersion. \code{NULL} or \code{NA}
 for a given fleet will lead to no dispersion.}
+
+\item{...}{Any argument you want to be a column in the new data frame of composition
+data. All extra arguments should be named columns in \code{data}.
+Each argument needs to be a list of length \code{length(fleets)}. Or, you can use a
+single value that will be repeated for each combination of fleet, year, ...
+in your data.}
 }
 \value{
 A data frame of observed composition data.

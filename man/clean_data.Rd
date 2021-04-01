@@ -20,7 +20,7 @@ clean_data(
 Be sure to correctly specify which section of the data file you want
 to work with when reading it in using the \code{section} argument.
 Where, \code{section = 1} reads in the input values used to run the model
-and \code{section = 2} reads in the expected values generated give all the
+and \code{section = 2} reads in the expected values generated given all the
 input to the OM. \code{section = 3} is not used within ss3sim, but this
 section provides bootstrapped data sets that have been sampled internally
 within SS.}
@@ -45,18 +45,19 @@ An invisible cleaned data list as an object.
 }
 \description{
 This prepares a \code{.dat} file to be used by an EM, whereas before it may
-have had leftover data from sampling purposes. See examples in
-\code{\link{change_data}}.
+have had leftover data from sampling purposes.
 }
 \note{
 This function does not write the result to file.
 }
 \seealso{
-calculate_data_units, change_data
+calculate_data_units
 
 Other sampling functions: 
 \code{\link{sample_agecomp}()},
 \code{\link{sample_calcomp}()},
+\code{\link{sample_catch}()},
+\code{\link{sample_discard}()},
 \code{\link{sample_index}()},
 \code{\link{sample_lcomp}()},
 \code{\link{sample_mlacomp}()},

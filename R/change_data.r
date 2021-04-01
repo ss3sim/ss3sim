@@ -64,32 +64,6 @@
 #' @export
 #' @seealso See \code{\link{clean_data}} for a counter function.
 #' @author Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson
-#' @examples
-#' d <- system.file("extdata", package = "ss3sim")
-#' fleets <- 1:2
-#' years <- c(5, 10, 15)
-#' file_in <- r4ss::SS_readdat(file.path(d, "models", "cod-om", "codOM.dat"),
-#'   version = NULL, verbose = FALSE)
-#'
-#' # Basic test with just length data, default bins:
-#' out <- change_data(file_in, outfile = NULL, types = "len",
-#'   years = years, fleets = fleets)
-#' print(out$lbin_vector)
-#' print(out$lencomp)
-#'
-#' # Change the length bins:
-#' out <- change_data(file_in, outfile = NULL, types = "len",
-#'   years = years, fleets = fleets, len_bins = 3:6)
-#' out$lbin_vector
-#' out$lencomp
-#'
-#' # Change the population length bins:
-#' out <- change_data(file_in, outfile = NULL, types = "len",
-#'   years = years, fleets = fleets, pop_binwidth = 1, pop_minimum_size = 5,
-#'   pop_maximum_size = 210)
-#' out$binwidth
-#' out$maximum_size
-#' out$minimum_size
 #'
 change_data <- function(dat_list, outfile = NULL, fleets, years,
   types = c("len", "age", "cal", "mla", "mwa"),

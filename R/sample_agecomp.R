@@ -22,6 +22,7 @@
 #'   and not on the conditional age-at-length data. To sample the
 #'   conditional data, set \code{keep_conditional} to \code{TRUE}
 #'   and use \code{\link{sample_calcomp}}.
+#' @template sampledots
 #' @template sampling-return
 #' @importFrom r4ss SS_writedat
 #'
@@ -72,7 +73,7 @@
 #' @family sampling functions
 #' @export
 sample_agecomp <- function(dat_list, outfile = NULL, fleets, Nsamp,
-  years, cpar = 1, ESS = NULL, keep_conditional = TRUE) {
+  years, cpar = 1, ESS = NULL, keep_conditional = TRUE, ...) {
 
     check_data(dat_list)
     agecomp <- dat_list$agecomp
@@ -86,7 +87,7 @@ sample_agecomp <- function(dat_list, outfile = NULL, fleets, Nsamp,
       sample_comp(
         data = dat_list$agecomp[dat_list$agecomp$Lbin_lo < 0, ],
         Nsamp = Nsamp, fleets = fleets, years = years,
-      cpar = cpar, ESS = ESS),
+      cpar = cpar, ESS = ESS, ...),
       conditional_data)
     dat_list$N_agecomp <- nrow(dat_list$agecomp)
 

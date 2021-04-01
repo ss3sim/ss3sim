@@ -66,6 +66,9 @@ change_e <- function(ctl_file_in = "em.ctl",
                      natM_lorenzen = NULL,
                      natM_val = NULL) {
 
+  if (is.list(par_name)) par_name <- unlist(par_name)
+  if (is.list(par_int)) par_int <- unlist(par_int)
+  if (is.list(par_phase)) par_phase <- unlist(par_phase)
   check_eqlength("par_name" = par_name,
     "par_int" = par_int, "par_phase" = par_phase)
 

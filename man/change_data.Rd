@@ -26,7 +26,7 @@ change_data(
 Be sure to correctly specify which section of the data file you want
 to work with when reading it in using the \code{section} argument.
 Where, \code{section = 1} reads in the input values used to run the model
-and \code{section = 2} reads in the expected values generated give all the
+and \code{section = 2} reads in the expected values generated given all the
 input to the OM. \code{section = 3} is not used within ss3sim, but this
 section provides bootstrapped data sets that have been sampled internally
 within SS.}
@@ -107,34 +107,6 @@ expected proportions of length composition data, before being normalized
 internally. It is designed to help stabilize the model, but is unclear how
 and when to use it for optimal effect. The same value is used for all
 length data.
-}
-\examples{
-d <- system.file("extdata", package = "ss3sim")
-fleets <- 1:2
-years <- c(5, 10, 15)
-file_in <- r4ss::SS_readdat(file.path(d, "models", "cod-om", "codOM.dat"),
-  version = NULL, verbose = FALSE)
-
-# Basic test with just length data, default bins:
-out <- change_data(file_in, outfile = NULL, types = "len",
-  years = years, fleets = fleets)
-print(out$lbin_vector)
-print(out$lencomp)
-
-# Change the length bins:
-out <- change_data(file_in, outfile = NULL, types = "len",
-  years = years, fleets = fleets, len_bins = 3:6)
-out$lbin_vector
-out$lencomp
-
-# Change the population length bins:
-out <- change_data(file_in, outfile = NULL, types = "len",
-  years = years, fleets = fleets, pop_binwidth = 1, pop_minimum_size = 5,
-  pop_maximum_size = 210)
-out$binwidth
-out$maximum_size
-out$minimum_size
-
 }
 \seealso{
 See \code{\link{clean_data}} for a counter function.

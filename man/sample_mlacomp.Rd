@@ -21,7 +21,7 @@ sample_mlacomp(
 Be sure to correctly specify which section of the data file you want
 to work with when reading it in using the \code{section} argument.
 Where, \code{section = 1} reads in the input values used to run the model
-and \code{section = 2} reads in the expected values generated give all the
+and \code{section = 2} reads in the expected values generated given all the
 input to the OM. \code{section = 3} is not used within ss3sim, but this
 section provides bootstrapped data sets that have been sampled internally
 within SS.}
@@ -77,26 +77,13 @@ Take a \code{data.SS_new} file, read in by \pkg{r4ss} function
   length-at-age values. These values are then written to file for the
   EM.
 }
-\examples{
-d <- system.file(file.path("extdata", "models", "cod-om"),
-  package = "ss3sim")
-dat_in <- file.path(d, "codOM.dat")
-dat_list <- r4ss::SS_readdat(dat_in, version = NULL, verbose = FALSE)
-dat_list <- change_data(dat_list, outfile = NULL,
-  fleets = 1, years = seq(dat_list$styr, dat_list$styr + 5),
-  types = c("age", "mla"))
-ctl_file_in <- file.path(d, "codOM.ctl")
-
-out <- sample_mlacomp(dat_list, outfile = NULL, ctl_file_in = ctl_file_in,
-  fleets = 1, Nsamp = 30, years = list(dat_list$styr + 5),
-  verbose = FALSE, mean_outfile = NULL)
-
-}
 \seealso{
 Other sampling functions: 
 \code{\link{clean_data}()},
 \code{\link{sample_agecomp}()},
 \code{\link{sample_calcomp}()},
+\code{\link{sample_catch}()},
+\code{\link{sample_discard}()},
 \code{\link{sample_index}()},
 \code{\link{sample_lcomp}()},
 \code{\link{sample_wtatage}()}

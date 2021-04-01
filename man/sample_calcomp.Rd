@@ -15,7 +15,8 @@ sample_calcomp(
   method = "simple_random",
   ESS_lengths = NULL,
   ESS_ages = NULL,
-  lcomps_sampled = FALSE
+  lcomps_sampled = FALSE,
+  ...
 )
 }
 \arguments{
@@ -24,7 +25,7 @@ sample_calcomp(
 Be sure to correctly specify which section of the data file you want
 to work with when reading it in using the \code{section} argument.
 Where, \code{section = 1} reads in the input values used to run the model
-and \code{section = 2} reads in the expected values generated give all the
+and \code{section = 2} reads in the expected values generated given all the
 input to the OM. \code{section = 3} is not used within ss3sim, but this
 section provides bootstrapped data sets that have been sampled internally
 within SS.}
@@ -98,6 +99,12 @@ value will be apportioned among the conditional age at length bins as the
 \item{lcomps_sampled}{Have marginal length comps already been sampled and are
 included in \code{dat_list[["lencomp"]]}? If FALSE, expected values are in
 present in \code{datlist[["lencomp"]]}.}
+
+\item{...}{Any argument you want to be a column in the new data frame of composition
+data. All extra arguments should be named columns in \code{data}.
+Each argument needs to be a list of length \code{length(fleets)}. Or, you can use a
+single value that will be repeated for each combination of fleet, year, ...
+in your data.}
 }
 \value{
 A modified \code{.dat} file if \code{!is.null(outfile)}. A list object
@@ -148,6 +155,8 @@ This function is only reliable when using multinomial length
 Other sampling functions: 
 \code{\link{clean_data}()},
 \code{\link{sample_agecomp}()},
+\code{\link{sample_catch}()},
+\code{\link{sample_discard}()},
 \code{\link{sample_index}()},
 \code{\link{sample_lcomp}()},
 \code{\link{sample_mlacomp}()},

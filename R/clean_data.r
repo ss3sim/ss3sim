@@ -2,8 +2,7 @@
 #' is not specified
 #'
 #' This prepares a \code{.dat} file to be used by an EM, whereas before it may
-#' have had leftover data from sampling purposes. See examples in
-#' \code{\link{change_data}}.
+#' have had leftover data from sampling purposes.
 #'
 #' @author Cole Monnahan
 #' @param lcomp_params Named lists containing the arguments for
@@ -17,7 +16,7 @@
 #' @param verbose When \code{TRUE} it will print a message when rows are
 #' deleted.
 #' @template dat_list
-#' @seealso calculate_data_units, change_data
+#' @seealso calculate_data_units
 #' @family sampling functions
 #' @return An invisible cleaned data list as an object.
 #' @note This function does not write the result to file.

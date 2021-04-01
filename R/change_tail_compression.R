@@ -21,7 +21,7 @@
 change_tail_compression <- function(tail_compression, dat_list,
   outfile = NULL) {
 
-  if(is.null(tail_compression)) return(invisible(NULL))
+  if(is.null(tail_compression)) return(invisible(dat_list))
   stopifnot(is.numeric(tail_compression))
 
   # The data sections are repeated in the data.ss_new files, so only use first one

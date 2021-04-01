@@ -74,7 +74,10 @@ change_q <- function(string_add = NULL, string_remove = NULL,
       ctl_list$Q_parms <- NULL
     } else {
       ctl_list$Q_parms <- ctl_list$Q_parms[
-        !grepl(paste0(remove, "\\)$", collapse = "|"), row.names(ctl_list$Q_parms)), ]
+        !grepl(
+          paste0("\\(", remove, "\\)$", collapse = "|"),
+          row.names(ctl_list$Q_parms)
+        ), ]
     }
   }
 

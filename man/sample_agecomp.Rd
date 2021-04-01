@@ -12,7 +12,8 @@ sample_agecomp(
   years,
   cpar = 1,
   ESS = NULL,
-  keep_conditional = TRUE
+  keep_conditional = TRUE,
+  ...
 )
 }
 \arguments{
@@ -21,7 +22,7 @@ sample_agecomp(
 Be sure to correctly specify which section of the data file you want
 to work with when reading it in using the \code{section} argument.
 Where, \code{section = 1} reads in the input values used to run the model
-and \code{section = 2} reads in the expected values generated give all the
+and \code{section = 2} reads in the expected values generated given all the
 input to the OM. \code{section = 3} is not used within ss3sim, but this
 section provides bootstrapped data sets that have been sampled internally
 within SS.}
@@ -72,6 +73,12 @@ should be kept or removed entirely from the data file.
 and not on the conditional age-at-length data. To sample the
 conditional data, set \code{keep_conditional} to \code{TRUE}
 and use \code{\link{sample_calcomp}}.}
+
+\item{...}{Any argument you want to be a column in the new data frame of composition
+data. All extra arguments should be named columns in \code{data}.
+Each argument needs to be a list of length \code{length(fleets)}. Or, you can use a
+single value that will be repeated for each combination of fleet, year, ...
+in your data.}
 }
 \value{
 A modified \code{.dat} file if \code{!is.null(outfile)}. A list object
@@ -136,6 +143,8 @@ par(op)
 Other sampling functions: 
 \code{\link{clean_data}()},
 \code{\link{sample_calcomp}()},
+\code{\link{sample_catch}()},
+\code{\link{sample_discard}()},
 \code{\link{sample_index}()},
 \code{\link{sample_lcomp}()},
 \code{\link{sample_mlacomp}()},
