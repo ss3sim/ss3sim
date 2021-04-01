@@ -76,7 +76,7 @@
 #'   ctl_file_out = file.path(tempdir(), "control_fishing.ss"))
 #' rm(d)
 #'
-change_f <- function(years, fleets, fisheries, fvals, seasons = 1, ses = 0.00001,
+change_f <- function(years, fleets, fisheries, fvals, seasons = 1, ses = 0.005,
   ctl_file_in, ctl_file_out = "control_fishing.ss") {
 
   if (!rlang::is_missing(fisheries)) {
