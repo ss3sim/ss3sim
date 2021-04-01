@@ -1,7 +1,12 @@
 # ss3sim 1.1.6
-* deprecate change_f_par which was not being used by any downstream code.
+* Deprecate change_f_par which was not being used by any downstream code.
 Feel free to contact the package maintainers if you wish to reinstate this function,
 but ss3sim uses the control file instead of the par file as in the orginal ss3sim.
+* Move Anderson et al. (2014) to a dedicated repository ss3sim/ss3sim_andersonetal
+
+# ss3sim 1.1.5
+
+# ss3sim 1.1.4
 
 # ss3sim 1.1.3
 
