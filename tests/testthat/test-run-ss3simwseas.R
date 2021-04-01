@@ -22,7 +22,7 @@ test_that("A season-specific data file looks right.", {
   df <- data.frame(
     bias_adjust = FALSE,
     ce.par_name = "c('NatM_p_1_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
-    ce.par_int = "c(NA, 19.9)",
+    ce.par_int = "c(0.2, 19.9)",
     ce.par_phase = "c(-1, -4)",
     cf.years.1 = "26:100", cf.fval.1 = "rep('0.1052', 75)",
     si.years.2 = "seq(26,100,1)", si.sds_obs.2 = 0.01,
@@ -51,7 +51,7 @@ test_that("Specifying season and part works.", {
   df <- data.frame(
     bias_adjust = FALSE,
     ce.par_name = "c('NatM_p_1_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
-    ce.par_int = "c(NA, 19.9)",
+    ce.par_int = "c(0.2, 19.9)",
     ce.par_phase = "c(-1, -4)",
     cf.years.1 = "26:100", cf.fval.1 = "rep('0.1052', 75)",
     si.years.2 = "seq(26,100,1)", si.sds_obs.2 = 0.01,
@@ -86,7 +86,7 @@ test_that("Repeat some years for each part.", {
   df <- data.frame(
     bias_adjust = FALSE,
     ce.par_name = "c('NatM_p_1_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
-    ce.par_int = "c(NA, 19.9)",
+    ce.par_int = "c(0.2, 19.9)",
     ce.par_phase = "c(-1, -4)",
     cf.years.1 = "26:100", cf.fval.1 = "rep('0.1052', 75)",
     si.years.2 = "seq(26,100,1)", si.sds_obs.2 = 0.01,
@@ -124,7 +124,7 @@ test_that("Survey with all months runs", {
   df <- data.frame(
     bias_adjust = FALSE,
     ce.par_name = "c('NatM_p_1_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
-    ce.par_int = "c(NA, 19.9)",
+    ce.par_int = "c(0.2, 19.9)",
     ce.par_phase = "c(-1, 4)",
     cf.years.1 = "26:100", cf.fval.1 = "rep('0.1052', 75)",
     si.years.2 = "seq(26,100,1)", si.sds_obs.2 = 0.01,
@@ -157,8 +157,8 @@ test_that("Survey with all months runs", {
   # check OM specs
   ssem <- r4ss::SS_output(file.path(scname, "1", "em"),
     verbose = FALSE, printstats = FALSE, covar = FALSE)
-  expect_equal(ssem[["derived_quants"]]["SSB_unfished", "Value"], 4025680000)
-  expect_equal(ssem[["cpue"]][ssem[["cpue"]][, "Yr"] == 99, "Exp"], 1622760000)
+  expect_equal(ssem[["derived_quants"]]["SSB_unfished", "Value"], 407724e4)
+  expect_equal(ssem[["cpue"]][ssem[["cpue"]][, "Yr"] == 99, "Exp"], 16175e5)
 
   setwd(temp_path)
   unlink(scname, recursive = TRUE) # clean up

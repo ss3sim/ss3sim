@@ -170,11 +170,13 @@ setup_scenarios <-function (
                                 function(x) isTRUE(is.null(x)) |
                                   isTRUE(any(is.na(x)))))]
   if(isTRUE(length(labs_with_null_or_nas) > 0)) {
-    warning("The following dataframe columns contain NULL or NA values, ",
+    if (!all(grepl("cpar", labs_with_null_or_nas))) {
+      warning("The following dataframe columns contain NULL or NA values, ",
             "which could cause ss3sim to behave unexpectedly. Please specify",
             " these values, unless NULL or NA are valid inputs for the column",
             " (e.g., cpar for lcomp or agecomp can be NULL.)\nColumns: ",
-            paste0(labs_with_null_or_nas, collapse = ", ") )
+            paste0(labs_with_null_or_nas, collapse = ", "))
+    }
   }
   if (returntype == "dataframe") {
     return(scenarios)

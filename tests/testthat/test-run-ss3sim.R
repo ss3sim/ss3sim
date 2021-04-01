@@ -16,7 +16,7 @@ test_that("A basic run_ss3sim scenario runs", {
   df <- data.frame(
     bias_adjust = TRUE,
     ce.par_name = "c('NatM_p_1_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
-    ce.par_int = "c(NA, 19.9)",
+    ce.par_int = "c(0.2, 19.9)",
     ce.par_phase = "c(-1, 4)",
     cf.years.1 = "26:100", cf.fval.1 = "rep('0.1052', 75)",
     si.years.2 = "seq(26,100,1)", si.sds_obs.2 = 0.01,
@@ -79,9 +79,11 @@ test_that("A basic run_ss3sim scenario runs", {
   expect_equal(type.convert(scalar[em_line, "SSB_MSY"], as.is = TRUE),
     type.convert(scalar[om_line, "SSB_MSY"], as.is = TRUE),
     scale = 1000000000000000, label = "EM SSB at MSY")
-  expect_equal(type.convert(scalar[em_line, "Catch_endyear"], as.is = TRUE),
-    type.convert(scalar[om_line, "Catch_endyear"], as.is = TRUE),
-    label = "EM terminal catch")
+  expect_true(1 >
+    abs((type.convert(scalar[em_line, "Catch_endyear"], as.is = TRUE) -
+         type.convert(scalar[om_line, "Catch_endyear"], as.is = TRUE)) /
+         type.convert(scalar[em_line, "Catch_endyear"], as.is = TRUE)) * 100,
+    label = "EM terminal catch has less than 1 percent error")
   expect_equal(scalar[em_line, "SR_LN_R0"], 18.7,
     tolerance = 0.001, label = "EM R_0")
   #check provides warning if skippint iteration.
