@@ -3,6 +3,7 @@
 Feel free to contact the package maintainers if you wish to reinstate this function,
 but ss3sim uses the control file instead of the par file as in the orginal ss3sim.
 * Move Anderson et al. (2014) to a dedicated repository ss3sim/ss3sim_andersonetal
+* Allow for seas and partition in sampling
 
 # ss3sim 1.1.5
 
