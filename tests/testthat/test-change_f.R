@@ -108,7 +108,7 @@ test_that("change_f works with list-style inputs", {
   expect_equal(length(unlist(inlist$years)), length(strsplit(
     grep("[3-4] \\d+ 1 0.2", out, value = TRUE), "\\s+")))
   expect_equal(length(unlist(inlist$years)), length(strsplit(
-    grep("\\d 0.005 1$", out, value = TRUE), "\\s+")),
+    grep("[e0-9-]+05 1$", out, value = TRUE), "\\s+")),
     label = "Default levels of fishing error and phase were changed.")
   inlist$fvals <- list(rep(0.2, 10), rep(0.1, 6))
   out <- do.call("change_f", inlist)
