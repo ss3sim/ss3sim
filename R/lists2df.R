@@ -31,7 +31,7 @@ lists2df <- function(...) {
   lvecs <- do.call("rbind", rapply(lists, length, how = "list"))
   if (all(sapply(apply(lvecs, 2, unique), length) != 1)) {
     stop("Vectors within each list are not the same length for each",
-      "ith element of the input lists.")
+      " ith element of the input lists.")
   }
   do.call("rbind", mapply(data.frame,
     "index" = seq_along(lists[[1]]),
