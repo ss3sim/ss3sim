@@ -55,6 +55,6 @@ Imports:
     tidyr,
     utils, 
     lifecycle
-Remotes: github::r4ss/r4ss@development
+Remotes: github::r4ss/r4ss@main
 RoxygenNote: 7.1.1
 Encoding: UTF-8
