@@ -2,23 +2,33 @@
 % Please edit documentation in R/change_catch.R
 \name{change_catch}
 \alias{change_catch}
-\title{Change catch in the datafile}
+\title{Change catch in the Stock Synthesis (SS) data list}
 \usage{
-change_catch(dat_list, f_params)
+change_catch(dat_list, ctl_list)
 }
 \arguments{
-\item{dat_list}{A data file as read in using `r4ss::SS_readdat()`}
+\item{dat_list}{A data file read in using \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}}.}
 
-\item{f_params}{A list of parameters related to fishing mortality.
-The start and end year of the model will be based on
-the years with specified catch.}
+\item{ctl_list}{A control file read in using \code{\link[r4ss:SS_readctl]{r4ss::SS_readctl()}}.
+The start and end year of the resulting data list will be based on years
+with positive fishing mortality values, and
+equilibrium catches will be non-zero only if
+there is a equilibrium fishing mortality parameter for that fleet and season
+combination.}
 }
 \value{
-a modified data file as a list in R.
+A modified SS data file as a list in R.
 }
 \description{
-Change catch in the datafile so at least all combinations of fleet, seas, yr,
-needed for catch are available
+Change catch in the data so at least all combinations of fleet, seas, yr,
+needed for catch are available. Equilbrium years are generated if there are
+equilibrium parameters in the control list.
+}
+\seealso{
+\link{change_f} changes the fishing mortality (\emph{F}) parameters
+using the control file, but these \emph{F} values will only be implemented
+for years with corresponding entries in the SS data file.
+Thus, \link{change_catch} must be implemented after \link{change_f}.
 }
 \author{
 Kathryn Doering

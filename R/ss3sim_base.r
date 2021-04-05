@@ -240,10 +240,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                       ctl_file_in  = file.path(sc, i, "om", "om.ctl"),
                       ctl_file_out = file.path(sc, i, "om", "om.ctl"))
 
-      catchctl <- do.call(change_f, c(f_params,
-        ctl_file_in         = file.path(sc, i, "om", "om.ctl"),
-        ctl_file_out        = file.path(sc, i, "om", "om.ctl"))
-      )
+      ctlom <- r4ss::SS_readctl(file = file.path(sc,i, "om", "om.ctl"),
+        use_datlist = TRUE, datlist = datfile.orig,
+        verbose = FALSE, echoall = FALSE)
+      ctlom <- do.call(change_f, c(f_params, ctl_list = list(ctlom)))
 
       # Change the data structure in the OM to produce the expected
       # values we want. This sets up the 'dummy' bins before we run
@@ -298,15 +298,11 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     }
 
       # check qs are correct.
-    ctlom <- r4ss::SS_readctl(file = file.path(sc,i, "om", "om.ctl"),
-      use_datlist = TRUE, datlist = datfile.orig,
-      verbose = FALSE, echoall = FALSE)
     qtasks <- check_q(ctl_list = ctlom, Nfleets = datfile.orig$Nfleets,
       desiredfleets = index_params$fleets)
     ctlom <- change_q(string_add = qtasks$add, string_remove = qtasks$remove,
       overwrite = TRUE,
-      ctl_file_in = file.path(sc,i, "om", "om.ctl"),
-      ctl_list = NULL, dat_list = datfile.modified,
+      ctl_list = ctlom, dat_list = datfile.modified,
       ctl_file_out = file.path(sc,i, "om", "om.ctl"))
 
       ## OM: change bins
@@ -347,7 +343,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       }
 
       datfile.modified <- change_catch(dat_list = datfile.modified,
-                                       f_params = f_params)
+                                       ctl_list = ctlom)
 
       ## OM: composition data
       if (!is.null(agecomp_params)) {

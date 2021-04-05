@@ -1,29 +1,77 @@
-#' Change catch in the datafile
+#' Change catch in the Stock Synthesis (SS) data list
 #'
-#' Change catch in the datafile so at least all combinations of fleet, seas, yr,
-#' needed for catch are available
-#' @param dat_list A data file as read in using `r4ss::SS_readdat()`
-#' @param f_params A list of parameters related to fishing mortality.
-#' The start and end year of the model will be based on
-#' the years with specified catch.
-#' @return a modified data file as a list in R.
+#' Change catch in the data so at least all combinations of fleet, seas, yr,
+#' needed for catch are available. Equilbrium years are generated if there are
+#' equilibrium parameters in the control list.
+#'
+#' @param dat_list A data file read in using [r4ss::SS_readdat()].
+#' @param ctl_list A control file read in using [r4ss::SS_readctl()].
+#' The start and end year of the resulting data list will be based on years
+#' with positive fishing mortality values, and
+#' equilibrium catches will be non-zero only if
+#' there is a equilibrium fishing mortality parameter for that fleet and season
+#' combination.
+#' @return A modified SS data file as a list in R.
+#' @seealso [change_f] changes the fishing mortality (*F*) parameters
+#' using the control file, but these *F* values will only be implemented
+#' for years with corresponding entries in the SS data file.
+#' Thus, [change_catch] must be implemented after [change_f].
+#'
 #' @author Kathryn Doering
+#' @md
 #'
-change_catch <- function(dat_list, f_params) {
-  # Note: would need to modify if did not want catch every year, potentially.
-  min <- min(unlist(f_params[["years"]]))
-  max <- max(unlist(f_params[["years"]]))
+change_catch <- function(
+  dat_list,
+  ctl_list
+) {
+
+  #### Pull out F values from control file
+  newvals <- ctl_list[["F_setup2"]]
+  colnames(newvals) <- tolower(colnames(newvals))
+  colnames(newvals) <- gsub(
+    pattern = "y[a-z]+",
+    replacement = "year",
+    x = colnames(newvals)
+  )
+  newvals <- newvals[, c("year", "seas", "fleet")]
+  newvals[, "catch"] <- 1
+  newvals[, "catch_se"] <- 0.01
+  rownames(newvals) <- NULL
+
+  # Find equilibrium values
+  if (!is.null(ctl_list[["init_F"]])) {
+    equil <- as.data.frame(do.call("rbind", strsplit(
+      x = gsub("InitF_|Flt[0-9]+$", "", rownames(ctl_list[["init_F"]])),
+      split = "seas_|_flt_")
+    )[, -1])
+    colnames(equil) <- c("seas", "fleet")
+    equil[, "year"] <- -999
+    equil[, "catch"] <- 1
+    equil[, "catch_se"] <- 0.01
+    newvals <- rbind(
+      newvals,
+      equil[, c("year", "seas", "fleet", "catch", "catch_se")]
+    )
+  }
+
+  #### Find min and max year for data file
+  min <- min(newvals[newvals[["year"]] >= 0, "year"])
+  max <- max(newvals[["year"]])
   dat_list[["styr"]] <- ifelse(
-    min < dat_list[["styr"]],
-    min,
-    dat_list[["styr"]])
+    test = min < dat_list[["styr"]],
+    yes = min,
+    no = dat_list[["styr"]]
+  )
   dat_list[["endyr"]] <- ifelse(
-    max > dat_list[["endyr"]],
-    max,
-    dat_list[["endyr"]])
-  dat_list[["catch"]] <- expand.grid(
-    year = c(-999, dat_list$styr:dat_list$endyr),
-    seas = seq_len(dat_list$nseas), fleet = f_params$fleets, catch = 1, catch_se = 0.01)
-  dat_list[["catch"]][dat_list[["catch"]][, "year"] == -999, "catch"] <- 0
+    test = max > dat_list[["endyr"]],
+    yes = max,
+    no = dat_list[["endyr"]]
+  )
+
+  #### Insert dummy catch data
+  dat_list[["catch"]] <- newvals[
+    order(newvals[["fleet"]], newvals[["year"]], newvals[["seas"]]),
+    ]
+
   return(dat_list)
 }

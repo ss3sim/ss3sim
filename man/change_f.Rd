@@ -4,16 +4,7 @@
 \alias{change_f}
 \title{Specify fishing mortality (\emph{F}) using the Stock Synthesis control file}
 \usage{
-change_f(
-  years,
-  fleets,
-  fisheries,
-  fvals,
-  seasons = 1,
-  ses = 1e-05,
-  ctl_file_in,
-  ctl_file_out = "control_fishing.ss"
-)
+change_f(years, fleets, fvals, seasons = 1, ses = 0.005, ctl_list)
 }
 \arguments{
 \item{years}{*A list the same length as \code{fleets} giving the years as
@@ -23,12 +14,6 @@ numeric vectors. If no fleet collected samples, keep the value to
 \item{fleets}{*A vector of integers specifying which fleets to include.
 The order of the fleets pertains to the input order of other arguments.
 An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
-
-\item{fisheries}{A deprecated argument that was replaced by \code{fleets} to
-match the style of other ss3sim functions. Currently, it can still be used
-to allow for back compatibility with the specification of which fleet the
-fishing mortality pertains to. A vector the same lengths as \code{years}
-or a single integer value is acceptable.}
 
 \item{fvals}{A list of the same length as \code{fleets} with one
 entry per fishing mortality level (\emph{F}) entry in \code{years}.
@@ -47,18 +32,20 @@ SS control file for each fleet.
 The structure is the same as \code{fvals}, i.e., a list or a scalar.
 The default is 0.005, which will be applied to all fleets in all years.}
 
-\item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
-
-\item{ctl_file_out}{A string providing the path to the output SS control file. If the value is \code{NULL}, the file will not be written to the disk.}
+\item{ctl_list}{A control file read in by \code{\link[r4ss]{SS_readctl}}.}
 }
 \value{
-Modified SS control file.
+Modified SS control file list.
 }
 \description{
-Replace or input fishing mortality (\emph{F}) for a Stock Synthesis (SS)
-simulation via changes to the control file. \emph{F} for multiple fleets
-and or seasons can be specified using list structures. If fishing only
-occurs within a single fleet, then vector inputs are acceptable.
+Replace or input a time series of fishing mortality (\emph{F}) values into
+a Stock Synthesis (SS) control file. In SS, inserting \emph{Fs} in this
+manner relies on the assumption that fishing mortality operates continously
+throughout the year and the process operates jointly with natural mortality
+(Baranov 1918; (Branch 2009)[https://cdnsciencepub.com/doi/10.1139/F08-196]).
+The documentation for SS also describes this process as
+\emph{F} method == 2, where \emph{F} is continuous and modelled using
+full parameters.
 }
 \details{
 The argument \code{years} is the only argument that must be a vector
@@ -92,20 +79,25 @@ for this using \code{\link{ss3sim_base}} by
 specifying a row for every year and fleet using \code{\link{change_catch}}.
 }
 \examples{
-d <- system.file(file.path("extdata", "models"), package = "ss3sim")
+dat <- r4ss::SS_readdat(
+  system.file("extdata","models", "cod-om", "codOM.dat", package = "ss3sim"),
+  verbose = FALSE)
+ctl <- r4ss::SS_readctl(
+  system.file("extdata","models", "cod-om", "codOM.ctl", package = "ss3sim"),
+  verbose = FALSE, use_datlist = TRUE, datlist = dat)
 # Using original vector-style inputs
-change_f(years = 1:50, fleets = 1, fvals = 0.2,
-  ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
-  ctl_file_out = file.path(tempdir(), "control_fishing.ss"))
+newctl <- change_f(years = 1:50, fleets = 1, fvals = 0.2, ctl_list = ctl)
 # Using list-style inputs for when there are multiple fisheries
-change_f(years = list(1:5, 1:10), fleets = 3:4,
-  fvals = list(rep(0.1, 5), rep(0.2, 10)),
-  ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
-  ctl_file_out = file.path(tempdir(), "control_fishing.ss"))
-rm(d)
+newctl <- change_f(years = list(1:5, 1:10), fleets = 3:4,
+  fvals = list(rep(0.1, 5), rep(0.2, 10)), ctl_list = ctl)
+rm(dat, ctl, newctl)
 
 }
 \seealso{
+See \code{\link[r4ss]{SS_readctl}} and \code{\link[r4ss]{SS_writectl}}
+for how to supply \code{ctl_list} and how to write the file back to the disk
+once you are done manipulating the list object.
+
 Other change functions: 
 \code{\link{change_data}()},
 \code{\link{change_em_binning}()},
