@@ -48,6 +48,21 @@ sample_comp <- function(
   if (is.null(ESS)) {
     ESS <- Nsamp
   }
+  if(useESS) { # in case there are NA values.
+   ESS <-  mapply(function(ess,nsamp) {
+    if(any(is.na(ess))) {
+      if(length(ess != nsamp) & length(nsamp == 1)) {
+        nsamp <- rep(nsamp, length.out = length(ess))
+      }
+      new_ess <- mapply(function(e, n) ifelse(is.na(e), n, e),
+                        e = ess, n = nsamp, SIMPLIFY = FALSE)
+      new_ess <- unlist(new_ess)
+    } else {
+      new_ess <- ess
+    }
+    new_ess
+    }, ess = ESS, nsamp = Nsamp, SIMPLIFY = FALSE)
+  }
 
   # Check for bad inputs
   lapply(list(years, fleets, Nsamp, ESS, cpar, ...),

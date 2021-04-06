@@ -15,6 +15,7 @@
 change_dat_bin <- function(object, bins) {
   alt <- setNames(rep(1, length(bins)), bins)
   out <- object %>% dplyr::select(-dplyr::matches("^[abflm][0-9]+$")) %>%
+    dplyr::select(-dplyr::matches("^Ess", ignore.case = TRUE)) %>%
     tibble::add_column(!!! alt) %>% data.frame()
   return(out)
 }
