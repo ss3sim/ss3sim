@@ -42,13 +42,13 @@ Much of this vignette is focused on how to effectively use `run_ss3sim`.
 ## Installation
 
 ss3sim can be run on OS X, Windows, or Linux.
-The [CRAN version](https://cran.r-project.org/package=ss3sim) of ss3sim mirrors the master branch of the [github repository](https://github.com/ss3sim/ss3sim) that houses the code base. The development branch contains the newest features that are not available in the CRAN version and can be installed using the R package remotes.
+The [CRAN version](https://cran.r-project.org/package=ss3sim) is also available through the [ss3sim github releases](https://github.com/ss3sim/ss3sim/releases). The github main branch contains the newest features that are not available in the CRAN version and can be installed using the R package remotes.
 
 ```{r, install, eval=FALSE}
 # CRAN version
 install.packages("ss3sim")
 # install.packages("remotes")
-remotes::install_github(repo = "ss3sim/ss3sim@development",
+remotes::install_github(repo = "ss3sim/ss3sim@main",
   dependencies = TRUE, upgrade = FALSE, build_vignettes = TRUE)
 ```
 
@@ -65,14 +65,14 @@ browseVignettes("ss3sim")
 
 ## Stock Synthesis (SS)
 
-ss3sim was originally based on SS 3.24O [@anderson2014a]. In 2019, ss3sim was updated to use SS 3.30, and future efforts will be dedicated to continuing to keep ss3sim up to date with SS. Compiled executables for the most recent version of SS tested for use with ss3sim are available on github (e.g., see [here](https://github.com/ss3sim/ss3sim/blob/master/inst/bin/Windows64/ss.exe?raw=true) for the Windows version) or can be obtained from the SS repository on [Vlab](https://vlab.ncep.noaa.gov/web/stock-synthesis/document-library/-/document_library/0LmuycloZeIt/view/5042555?_com_liferay_document_library_web_portlet_DLPortlet_INSTANCE_0LmuycloZeIt_redirect=https%3A%2F%2Fvlab.ncep.noaa.gov%3A443%2Fweb%2Fstock-synthesis%2Fdocument-library%3Fp_p_id%3Dcom_liferay_document_library_web_portlet_DLPortlet_INSTANCE_0LmuycloZeIt%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview). ss3sim uses the safe version of SS, which is slightly slower than the optimized version because it checks that vector, matrix, and array bounds are not exceeded. ss3sim requires that `ss` or `ss.exe` be in your path. This means that your operating system knows where the binary file is located. See [the section on paths](#path) for details.
+ss3sim was originally based on SS 3.24O [@anderson2014a]. In 2019, ss3sim was updated to use SS 3.30, and future efforts will be dedicated to continuing to keep ss3sim up to date with SS. Compiled executables for the most recent version of SS tested for use with ss3sim are available on github (e.g., see [here](https://github.com/ss3sim/ss3sim/blob/master/inst/bin/Windows64/ss.exe?raw=true) for the Windows version) or can be obtained from the SS repository on [Vlab](https://vlab.ncep.noaa.gov/web/stock-synthesis/document-library/-/document_library/0LmuycloZeIt/view/5042555). ss3sim uses the safe version of SS, which is slightly slower than the optimized version because it checks that vector, matrix, and array bounds are not exceeded. ss3sim requires that `ss` or `ss.exe` be in your path. This means that your operating system knows where the binary file is located. See [the section on paths](#path) for details.
 
-ss3sim also relies on the R package [r4ss](https://github.com/r4ss/r4ss) to read and write SS files. r4ss is available on [CRAN](https://cran.r-project.org/package=r4ss) and [github](https://github.com/r4ss/r4ss). The master branch of ss3sim uses the CRAN version of r4ss, while other branches use the development version of r4ss. Feel free to install r4ss directly via
+ss3sim also relies on the R package [r4ss](https://github.com/r4ss/r4ss) to read and write SS files. r4ss is available on [CRAN](https://cran.r-project.org/package=r4ss) and [github](https://github.com/r4ss/r4ss). Feel free to install r4ss directly via
 ```{r, r4ss, eval=FALSE}
-remotes::install_github("r4ss/r4ss@development",
+remotes::install_github("r4ss/r4ss@main",
   dependencies = TRUE, upgrade = FALSE, build_vignettes = TRUE)`
 ```
-Though, installing ss3sim will do the previous for you if you don't already have r4ss available in your R library.
+Though, installing ss3sim will also install r4ss if you don't already have r4ss available in your R library.
 
 # Simulation overview
 
@@ -555,7 +555,7 @@ Note that if the simulation aborts for any reason while `run_ss3sim` is running 
 
 Instead of copying the SS binary file (`ss.exe`) to each folder within a simulation and running it, ss3sim relies on a single binary file being available to the operating system regardless of the folder. To accomplish this, SS must be in your system path, which is a list of folders that your operating system looks in whenever you type the name of a program on the command line. This approach saves on storage space because the SS binary is about 6 MB and having it in each folder can be prohibitive in a large-scale simulation study.
 
-The [development version](https://github.com/ss3sim/ss3sim/tree/development) of the package on github installs the executable automatically, but this behavior is disallowed on CRAN. In any case, it may be useful to put the binary in your path so you can manually run models during development and testing (i.e., open command window in folder of OM or EM run and run the binary to see SS output). ss3sim will first look to see if the executable is available within the bin folder of the package using `system.file("bin", package = "ss3sim")`. If it is not found, then it will look for the executable in your path. This hierarchy is important for understanding which version of SS is being used.
+The [development version](https://github.com/ss3sim/ss3sim/tree/main) of the package on github installs the executable automatically, but this behavior is not allowed on CRAN. In any case, it may be useful to put the binary in your path so you can manually run models during development and testing (i.e., open command window in folder of OM or EM run and run the binary to see SS output). ss3sim will first look to see if the executable is available within the bin folder of the package using `system.file("bin", package = "ss3sim")`. If it is not found, then it will look for the executable in your path. This hierarchy is important for understanding which version of SS is being used.
 
 ## Unix (OS X and Linux)
 

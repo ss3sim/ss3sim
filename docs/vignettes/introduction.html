@@ -11,10 +11,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2021-01-11" />
+<meta name="date" content="2021-04-09" />
 
 <title>An introduction to ss3sim</title>
 
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -103,6 +112,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 })();
 </script>
+
 
 
 
@@ -299,7 +309,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">An introduction to ss3sim</h1>
-<h4 class="date">2021-01-11</h4>
+<h4 class="date">2021-04-09</h4>
 
 
 <div id="TOC">
@@ -362,11 +372,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>Much of this vignette is focused on how to effectively use <code>run_ss3sim</code>.</p>
 <div id="installation" class="section level2">
 <h2><span class="header-section-number">1.1</span> Installation</h2>
-<p>ss3sim can be run on OS X, Windows, or Linux. The <a href="https://cran.r-project.org/package=ss3sim">CRAN version</a> of ss3sim mirrors the master branch of the <a href="https://github.com/ss3sim/ss3sim">github repository</a> that houses the code base. The development branch contains the newest features that are not available in the CRAN version and can be installed using the R package remotes.</p>
+<p>ss3sim can be run on OS X, Windows, or Linux. The <a href="https://cran.r-project.org/package=ss3sim">CRAN version</a> is also available through the <a href="https://github.com/ss3sim/ss3sim/releases">ss3sim github releases</a>. The github main branch contains the newest features that are not available in the CRAN version and can be installed using the R package remotes.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># CRAN version</span></a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="kw">install.packages</span>(<span class="st">&quot;ss3sim&quot;</span>)</a>
 <a class="sourceLine" id="cb1-3" title="3"><span class="co"># install.packages(&quot;remotes&quot;)</span></a>
-<a class="sourceLine" id="cb1-4" title="4">remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="dt">repo =</span> <span class="st">&quot;ss3sim/ss3sim@development&quot;</span>,</a>
+<a class="sourceLine" id="cb1-4" title="4">remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="dt">repo =</span> <span class="st">&quot;ss3sim/ss3sim@main&quot;</span>,</a>
 <a class="sourceLine" id="cb1-5" title="5">  <span class="dt">dependencies =</span> <span class="ot">TRUE</span>, <span class="dt">upgrade =</span> <span class="ot">FALSE</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># Load the package</span></a>
 <a class="sourceLine" id="cb2-2" title="2"><span class="kw">library</span>(<span class="st">&quot;ss3sim&quot;</span>)</a></code></pre></div>
@@ -376,11 +386,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="stock-synthesis-ss" class="section level2">
 <h2><span class="header-section-number">1.2</span> Stock Synthesis (SS)</h2>
-<p>ss3sim was originally based on SS 3.24O <span class="citation">(Anderson et al. 2014)</span>. In 2019, ss3sim was updated to use SS 3.30, and future efforts will be dedicated to continuing to keep ss3sim up to date with SS. Compiled executables for the most recent version of SS tested for use with ss3sim are available on github (e.g., see <a href="https://github.com/ss3sim/ss3sim/blob/master/inst/bin/Windows64/ss.exe?raw=true">here</a> for the Windows version) or can be obtained from the SS repository on <a href="https://vlab.ncep.noaa.gov/web/stock-synthesis/document-library/-/document_library/0LmuycloZeIt/view/5042555?_com_liferay_document_library_web_portlet_DLPortlet_INSTANCE_0LmuycloZeIt_redirect=https%3A%2F%2Fvlab.ncep.noaa.gov%3A443%2Fweb%2Fstock-synthesis%2Fdocument-library%3Fp_p_id%3Dcom_liferay_document_library_web_portlet_DLPortlet_INSTANCE_0LmuycloZeIt%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview">Vlab</a>. ss3sim uses the safe version of SS, which is slightly slower than the optimized version because it checks that vector, matrix, and array bounds are not exceeded. ss3sim requires that <code>ss</code> or <code>ss.exe</code> be in your path. This means that your operating system knows where the binary file is located. See <a href="#path">the section on paths</a> for details.</p>
-<p>ss3sim also relies on the R package <a href="https://github.com/r4ss/r4ss">r4ss</a> to read and write SS files. r4ss is available on <a href="https://cran.r-project.org/package=r4ss">CRAN</a> and <a href="https://github.com/r4ss/r4ss">github</a>. The master branch of ss3sim uses the CRAN version of r4ss, while other branches use the development version of r4ss. Feel free to install r4ss directly via</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;r4ss/r4ss@development&quot;</span>,</a>
+<p>ss3sim was originally based on SS 3.24O <span class="citation">(Anderson et al. 2014)</span>. In 2019, ss3sim was updated to use SS 3.30, and future efforts will be dedicated to continuing to keep ss3sim up to date with SS. Compiled executables for the most recent version of SS tested for use with ss3sim are available on github (e.g., see <a href="https://github.com/ss3sim/ss3sim/blob/master/inst/bin/Windows64/ss.exe?raw=true">here</a> for the Windows version) or can be obtained from the SS repository on <a href="https://vlab.ncep.noaa.gov/web/stock-synthesis/document-library/-/document_library/0LmuycloZeIt/view/5042555">Vlab</a>. ss3sim uses the safe version of SS, which is slightly slower than the optimized version because it checks that vector, matrix, and array bounds are not exceeded. ss3sim requires that <code>ss</code> or <code>ss.exe</code> be in your path. This means that your operating system knows where the binary file is located. See <a href="#path">the section on paths</a> for details.</p>
+<p>ss3sim also relies on the R package <a href="https://github.com/r4ss/r4ss">r4ss</a> to read and write SS files. r4ss is available on <a href="https://cran.r-project.org/package=r4ss">CRAN</a> and <a href="https://github.com/r4ss/r4ss">github</a>. Feel free to install r4ss directly via</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;r4ss/r4ss@main&quot;</span>,</a>
 <a class="sourceLine" id="cb4-2" title="2">  <span class="dt">dependencies =</span> <span class="ot">TRUE</span>, <span class="dt">upgrade =</span> <span class="ot">FALSE</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)<span class="st">`</span></a></code></pre></div>
-<p>Though, installing ss3sim will do the previous for you if you don’t already have r4ss available in your R library.</p>
+<p>Though, installing ss3sim will also install r4ss if you don’t already have r4ss available in your R library.</p>
 </div>
 </div>
 <div id="simulation-overview" class="section level1">
@@ -632,9 +642,7 @@ forecast.ss</code></pre>
 <a class="sourceLine" id="cb17-3" title="3"><span class="st">  </span>scalar_dat_long<span class="op">$</span>E <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;E100&quot;</span>, <span class="st">&quot;E101&quot;</span>), ],</a>
 <a class="sourceLine" id="cb17-4" title="4">  <span class="dt">x =</span> <span class="st">&quot;D&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;RE&quot;</span>, <span class="dt">re =</span> <span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb17-5" title="5">  <span class="dt">vert =</span> <span class="st">&quot;E&quot;</span>, <span class="dt">horiz =</span> <span class="st">&quot;parameter&quot;</span>, <span class="dt">print =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb17-6" title="6"><span class="co">#&gt; Warning: replacing previous import &#39;vctrs::data_frame&#39; by &#39;tibble::data_frame&#39;</span></a>
-<a class="sourceLine" id="cb17-7" title="7"><span class="co">#&gt; when loading &#39;dplyr&#39;</span></a>
-<a class="sourceLine" id="cb17-8" title="8"><span class="kw">print</span>(p)</a></code></pre></div>
+<a class="sourceLine" id="cb17-6" title="6"><span class="kw">print</span>(p)</a></code></pre></div>
 <div class="figure">
 <img src="data:image/png;base64,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" alt="Box plots of the relative error (RE) for deterministic runs. M is fixed at the true value from the OM (E100) or estimated (E101)." />
 <p class="caption">Box plots of the relative error (RE) for deterministic runs. <em>M</em> is fixed at the true value from the OM (E100) or estimated (E101).</p>
@@ -688,7 +696,7 @@ forecast.ss</code></pre>
 <a class="sourceLine" id="cb22-14" title="14"><span class="co">#&gt; ss3sm_&gt; ##D   om_dir &lt;- file.path(d, &quot;models&quot;, &quot;cod-om&quot;)</span></a>
 <a class="sourceLine" id="cb22-15" title="15"><span class="co">#&gt; ss3sm_&gt; ##D   em_dir &lt;- file.path(d, &quot;models&quot;, &quot;cod-em&quot;)</span></a>
 <a class="sourceLine" id="cb22-16" title="16"><span class="co">#&gt; ss3sm_&gt; ##D </span></a>
-<a class="sourceLine" id="cb22-17" title="17"><span class="co">#&gt; ss3sm_&gt; ##D   # Or, create the argument lists directly in R and skip the case file setup:</span></a>
+<a class="sourceLine" id="cb22-17" title="17"><span class="co">#&gt; ss3sm_&gt; ##D   # Or, create the argument lists directly in R:</span></a>
 <a class="sourceLine" id="cb22-18" title="18"><span class="co">#&gt; ss3sm_&gt; ##D </span></a>
 <a class="sourceLine" id="cb22-19" title="19"><span class="co">#&gt; ss3sm_&gt; ##D   F0 &lt;- list(years = 1:100,</span></a>
 <a class="sourceLine" id="cb22-20" title="20"><span class="co">#&gt; ss3sm_&gt; ##D              fleets = 1,</span></a>
@@ -698,31 +706,33 @@ forecast.ss</code></pre>
 <a class="sourceLine" id="cb22-24" title="24"><span class="co">#&gt; ss3sm_&gt; ##D                  sds_obs = list(0.1))</span></a>
 <a class="sourceLine" id="cb22-25" title="25"><span class="co">#&gt; ss3sm_&gt; ##D </span></a>
 <a class="sourceLine" id="cb22-26" title="26"><span class="co">#&gt; ss3sm_&gt; ##D   lcomp1 &lt;- list(fleets = c(1, 2), Nsamp = list(50, 100),</span></a>
-<a class="sourceLine" id="cb22-27" title="27"><span class="co">#&gt; ss3sm_&gt; ##D                  years = list(26:100, seq(62, 100, by = 2)),</span></a>
-<a class="sourceLine" id="cb22-28" title="28"><span class="co">#&gt; ss3sm_&gt; ##D                  lengthbin_vector = NULL)</span></a>
-<a class="sourceLine" id="cb22-29" title="29"><span class="co">#&gt; ss3sm_&gt; ##D </span></a>
-<a class="sourceLine" id="cb22-30" title="30"><span class="co">#&gt; ss3sm_&gt; ##D   agecomp1 &lt;- list(fleets = c(1, 2), Nsamp = list(50, 100),</span></a>
-<a class="sourceLine" id="cb22-31" title="31"><span class="co">#&gt; ss3sm_&gt; ##D                    years = list(26:100, seq(62, 100, by = 2)),</span></a>
-<a class="sourceLine" id="cb22-32" title="32"><span class="co">#&gt; ss3sm_&gt; ##D                    agebin_vector = NULL)</span></a>
-<a class="sourceLine" id="cb22-33" title="33"><span class="co">#&gt; ss3sm_&gt; ##D </span></a>
-<a class="sourceLine" id="cb22-34" title="34"><span class="co">#&gt; ss3sm_&gt; ##D   E0 &lt;- list(par_name = c(&quot;LnQ_base_Fishery&quot;, &quot;NatM_p_1_Fem_GP_1&quot;),</span></a>
-<a class="sourceLine" id="cb22-35" title="35"><span class="co">#&gt; ss3sm_&gt; ##D              par_int = c(NA, NA), par_phase = c(-5, -1), forecast_num = 0)</span></a>
-<a class="sourceLine" id="cb22-36" title="36"><span class="co">#&gt; ss3sm_&gt; ##D </span></a>
-<a class="sourceLine" id="cb22-37" title="37"><span class="co">#&gt; ss3sm_&gt; ##D   ss3sim_base(iterations = 1,</span></a>
-<a class="sourceLine" id="cb22-38" title="38"><span class="co">#&gt; ss3sm_&gt; ##D               scenarios = &quot;D1-E0-F0-cod&quot;, #name as desired</span></a>
-<a class="sourceLine" id="cb22-39" title="39"><span class="co">#&gt; ss3sm_&gt; ##D               f_params = F0,</span></a>
-<a class="sourceLine" id="cb22-40" title="40"><span class="co">#&gt; ss3sm_&gt; ##D               index_params = index1,</span></a>
-<a class="sourceLine" id="cb22-41" title="41"><span class="co">#&gt; ss3sm_&gt; ##D               lcomp_params = lcomp1,</span></a>
-<a class="sourceLine" id="cb22-42" title="42"><span class="co">#&gt; ss3sm_&gt; ##D               agecomp_params = agecomp1,</span></a>
-<a class="sourceLine" id="cb22-43" title="43"><span class="co">#&gt; ss3sm_&gt; ##D               estim_params = E0,</span></a>
-<a class="sourceLine" id="cb22-44" title="44"><span class="co">#&gt; ss3sm_&gt; ##D               om_dir = om_dir,</span></a>
-<a class="sourceLine" id="cb22-45" title="45"><span class="co">#&gt; ss3sm_&gt; ##D               em_dir = em_dir)</span></a>
-<a class="sourceLine" id="cb22-46" title="46"><span class="co">#&gt; ss3sm_&gt; ##D </span></a>
-<a class="sourceLine" id="cb22-47" title="47"><span class="co">#&gt; ss3sm_&gt; ##D   unlink(&quot;D1-E0-F0-cod&quot;, recursive = TRUE) # clean up</span></a>
-<a class="sourceLine" id="cb22-48" title="48"><span class="co">#&gt; ss3sm_&gt; ## End(Not run)</span></a>
-<a class="sourceLine" id="cb22-49" title="49"><span class="co">#&gt; ss3sm_&gt; </span></a>
-<a class="sourceLine" id="cb22-50" title="50"><span class="co">#&gt; ss3sm_&gt; </span></a>
-<a class="sourceLine" id="cb22-51" title="51"><span class="co">#&gt; ss3sm_&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb22-27" title="27"><span class="co">#&gt; ss3sm_&gt; ##D                  years = list(26:100, seq(62, 100, by = 2)))</span></a>
+<a class="sourceLine" id="cb22-28" title="28"><span class="co">#&gt; ss3sm_&gt; ##D </span></a>
+<a class="sourceLine" id="cb22-29" title="29"><span class="co">#&gt; ss3sm_&gt; ##D   agecomp1 &lt;- list(fleets = c(1, 2), Nsamp = list(50, 100),</span></a>
+<a class="sourceLine" id="cb22-30" title="30"><span class="co">#&gt; ss3sm_&gt; ##D                    years = list(26:100, seq(62, 100, by = 2)))</span></a>
+<a class="sourceLine" id="cb22-31" title="31"><span class="co">#&gt; ss3sm_&gt; ##D </span></a>
+<a class="sourceLine" id="cb22-32" title="32"><span class="co">#&gt; ss3sm_&gt; ##D   E0 &lt;- list(par_name = c(&quot;LnQ_base_Fishery&quot;, &quot;NatM_p_1_Fem_GP_1&quot;),</span></a>
+<a class="sourceLine" id="cb22-33" title="33"><span class="co">#&gt; ss3sm_&gt; ##D              par_int = c(NA, NA), par_phase = c(-5, -1), forecast_num = 0)</span></a>
+<a class="sourceLine" id="cb22-34" title="34"><span class="co">#&gt; ss3sm_&gt; ##D </span></a>
+<a class="sourceLine" id="cb22-35" title="35"><span class="co">#&gt; ss3sm_&gt; ##D   ss3sim_base(iterations = 1,</span></a>
+<a class="sourceLine" id="cb22-36" title="36"><span class="co">#&gt; ss3sm_&gt; ##D               scenarios = &quot;D1-E0-F0-cod&quot;, #name as desired</span></a>
+<a class="sourceLine" id="cb22-37" title="37"><span class="co">#&gt; ss3sm_&gt; ##D               f_params = F0,</span></a>
+<a class="sourceLine" id="cb22-38" title="38"><span class="co">#&gt; ss3sm_&gt; ##D               index_params = index1,</span></a>
+<a class="sourceLine" id="cb22-39" title="39"><span class="co">#&gt; ss3sm_&gt; ##D               lcomp_params = lcomp1,</span></a>
+<a class="sourceLine" id="cb22-40" title="40"><span class="co">#&gt; ss3sm_&gt; ##D               agecomp_params = agecomp1,</span></a>
+<a class="sourceLine" id="cb22-41" title="41"><span class="co">#&gt; ss3sm_&gt; ##D               estim_params = E0,</span></a>
+<a class="sourceLine" id="cb22-42" title="42"><span class="co">#&gt; ss3sm_&gt; ##D               om_dir = om_dir,</span></a>
+<a class="sourceLine" id="cb22-43" title="43"><span class="co">#&gt; ss3sm_&gt; ##D               em_dir = em_dir)</span></a>
+<a class="sourceLine" id="cb22-44" title="44"><span class="co">#&gt; ss3sm_&gt; ##D   replist &lt;- r4ss::SS_output(file.path(&quot;D1-E0-F0-cod&quot;, 1, &quot;em&quot;),</span></a>
+<a class="sourceLine" id="cb22-45" title="45"><span class="co">#&gt; ss3sm_&gt; ##D     verbose = FALSE, printstats = FALSE, covar = FALSE)</span></a>
+<a class="sourceLine" id="cb22-46" title="46"><span class="co">#&gt; ss3sm_&gt; ##D   testthat::expect_equivalent(replist[[&quot;cpue&quot;]][, &quot;Yr&quot;], index1[[&quot;years&quot;]][[1]])</span></a>
+<a class="sourceLine" id="cb22-47" title="47"><span class="co">#&gt; ss3sm_&gt; ##D </span></a>
+<a class="sourceLine" id="cb22-48" title="48"><span class="co">#&gt; ss3sm_&gt; ##D   test &lt;- replist</span></a>
+<a class="sourceLine" id="cb22-49" title="49"><span class="co">#&gt; ss3sm_&gt; ##D   unlink(&quot;D1-E0-F0-cod&quot;, recursive = TRUE) # clean up</span></a>
+<a class="sourceLine" id="cb22-50" title="50"><span class="co">#&gt; ss3sm_&gt; ## End(Not run)</span></a>
+<a class="sourceLine" id="cb22-51" title="51"><span class="co">#&gt; ss3sm_&gt; </span></a>
+<a class="sourceLine" id="cb22-52" title="52"><span class="co">#&gt; ss3sm_&gt; </span></a>
+<a class="sourceLine" id="cb22-53" title="53"><span class="co">#&gt; ss3sm_&gt;</span></a></code></pre></div>
 <div id="time-varying" class="section level2">
 <h2><span class="header-section-number">4.1</span> Time-varying parameters in the OM</h2>
 <p>The ss3sim package includes the capability for inducing time-varying changes in the OM using the <code>change_tv</code> function. The package currently does not have built-in functions to turn on/off the estimation of time-varying parameters. However, it is possible to create versions of an EM with and without time-varying estimation of a parameter and specify each EM in <code>simdf</code> using the <code>em</code> column. This approach would allow for testing of differences between estimating a single, constant parameter versus time-varying estimation of the same parameter.</p>
@@ -869,19 +879,19 @@ par_y = par + link * env_y.
 <div id="path" class="section level1">
 <h1><span class="header-section-number">10</span> Putting SS in your path</h1>
 <p>Instead of copying the SS binary file (<code>ss.exe</code>) to each folder within a simulation and running it, ss3sim relies on a single binary file being available to the operating system regardless of the folder. To accomplish this, SS must be in your system path, which is a list of folders that your operating system looks in whenever you type the name of a program on the command line. This approach saves on storage space because the SS binary is about 6 MB and having it in each folder can be prohibitive in a large-scale simulation study.</p>
-<p>The <a href="https://github.com/ss3sim/ss3sim/tree/development">development version</a> of the package on github installs the executable automatically, but this behavior is disallowed on CRAN. In any case, it may be useful to put the binary in your path so you can manually run models during development and testing (i.e., open command window in folder of OM or EM run and run the binary to see SS output). ss3sim will first look to see if the executable is available within the bin folder of the package using <code>system.file(&quot;bin&quot;, package = &quot;ss3sim&quot;)</code>. If it is not found, then it will look for the executable in your path. This hierarchy is important for understanding which version of SS is being used.</p>
+<p>The <a href="https://github.com/ss3sim/ss3sim/tree/main">development version</a> of the package on github installs the executable automatically, but this behavior is not allowed on CRAN. In any case, it may be useful to put the binary in your path so you can manually run models during development and testing (i.e., open command window in folder of OM or EM run and run the binary to see SS output). ss3sim will first look to see if the executable is available within the bin folder of the package using <code>system.file(&quot;bin&quot;, package = &quot;ss3sim&quot;)</code>. If it is not found, then it will look for the executable in your path. This hierarchy is important for understanding which version of SS is being used.</p>
 <div id="unix-os-x-and-linux" class="section level2">
 <h2><span class="header-section-number">10.1</span> Unix (OS X and Linux)</h2>
-<p>To check if SS is in your path, open a Terminal window and type <code>which ss</code> and hit enter. If you get nothing returned, then SS is not in your path. The easiest way to fix this is to move the SS binary to a folder that&quot;s already in your path. To find existing path folders type <code>echo $PATH</code> in the terminal and hit enter. Now move the SS binary to one of these folders. For example, in a Terminal window type:</p>
-<pre><code>sudo cp ~/Downloads/SS/usr/bin/</code></pre>
+<p>To check if SS is in your path, open a Terminal window and type <code>which ss</code> and hit enter. If you get nothing returned, then SS is not in your path. The easiest way to fix this is to move the SS binary to a folder that is already in your path. To find existing path folders type <code>echo $PATH</code> in the terminal and hit enter. Now move the SS binary to one of these folders. For example, to copy SS from the ~/Downloads folder to the /usr/bin folder, in a Terminal window type:</p>
+<pre><code>sudo cp ~/Downloads/ss /usr/bin/</code></pre>
 <p>You will need to use <code>sudo</code> and enter your password after to have permission to move a file to a folder like <code>/usr/bin/</code>.</p>
-<p>Also note that you may need to add executable permissions to the SS binary after downloading it. You can do that by switching to the folder where you placed the binary (<code>cd /usr/bin/</code> if you followed the instructions above), and running the command</p>
-<pre><code>sudo chmod +x ss</code></pre>
+<p>Also note that you may need to add executable permissions to the SS binary after downloading it in order to run SS. You can do that by switching to the folder where you placed the binary (<code>cd /usr/bin/</code> if you followed the instructions above), and running the command</p>
+<pre><code>sudo chmod a+x ss</code></pre>
 <p>Check that SS is now executable and in your path</p>
 <pre><code>which ss</code></pre>
 <p>If you followed the instructions above, you will see the following line returned</p>
 <pre><code>/usr/bin/ss</code></pre>
-<p>If you have previously modified your path to add a non-standard location for the SS binary, you may need to also tell R about the new path. The path that R sees may not include additional paths that you have added through a configuration file like <code>.bash_profile</code>. If needed, you can add to the path that R sees by including a line like this in your <code>.Rprofile</code> file. (This is an invisible file in your home directory.)</p>
+<p>If you have previously modified your path to add a non-standard location for the SS binary, you may need to also tell R about the new path. The path that R sees may not include additional paths that you have added through a configuration file like <code>.bash_profile</code>. If needed, you can add to the path that R sees by including a line like this in your <code>.Rprofile</code> file (an invisible file in your home directory):</p>
 <pre><code>Sys.setenv(PATH=paste(Sys.getenv(&quot;PATH&quot;),&quot;/my/folder&quot;,sep=&quot;:&quot;))</code></pre>
 </div>
 <div id="windows" class="section level2">
