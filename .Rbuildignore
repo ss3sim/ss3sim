@@ -1,5 +1,6 @@
 ^Meta$
 ^doc$
+^docs$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^doc/Makefile$
