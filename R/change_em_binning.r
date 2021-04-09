@@ -13,7 +13,7 @@
 #'   \code{ss3.dat} file.
 #' @param lbin_method A numeric value of either \code{NULL, 1, 2, 3} to change
 #'   the lbin_method for the population bin. Only supports either \code{NULL, 1,
-#'   2} at the moment. \code{NULL} means to keep it unchanged.
+#'   2} at the moment. \code{NULL} means to not rebin.
 #' @param pop_binwidth Population length bin width. Only necessary for
 #' \code{lbin_method=2}. Note that this value must be smaller than the bin
 #' width specified in length composition data \code{len_bins} or SS3 will
@@ -80,7 +80,8 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
                               pop_maximum_size=NULL) {
   ## If lbin_method is NULL then don't do anything
   if (is.null(lbin_method)){
-    return(NULL)
+    warning("lbin_method must be supplied for em rebinning to run. Skipping rebinning.")
+    return(dat_list)
   }
   # error checking
   if (!is.numeric(bin_vector)) {
@@ -113,14 +114,15 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
     stop("_Ngenders is greater than 1 in the model.change_em_binning only ",
          "works with single-sex models.")
   }
-  if (!identical(as.integer(max(bin_vector)), as.integer(max(dat_list$lbin_vector)))) {
-    stop("The maximum value in the bin_vector is not equal to the original ",
-         "maximum length bin value.")
-  }
-  if(!identical(as.integer(min(bin_vector)), as.integer(min(dat_list$lbin_vector)))) {
-    stop("The minimum value in the bin_vector is not equal to the original ",
-         "minimum length bin value.")
-  }
+  #todo: determine if the commented out stops should be brought back
+  # if (!identical(as.integer(max(bin_vector)), as.integer(max(dat_list$lbin_vector)))) {
+  #   stop("The maximum value in the bin_vector is not equal to the original ",
+  #        "maximum length bin value.")
+  # }
+  # if(!identical(as.integer(min(bin_vector)), as.integer(min(dat_list$lbin_vector)))) {
+  #   stop("The minimum value in the bin_vector is not equal to the original ",
+  #        "minimum length bin value.")
+  # }
   if (any(!is_divisible(bin_vector, by_ = dat_list$binwidth)) ) {
     stop("One or more of the values in bin_vector are not divisible by the ",
       "population binwidth specified in the SS3 data file.")
@@ -172,11 +174,11 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
   }
 
   new_lcomp_total <- sum(lcomp_new)
-  if (!identical(old_lcomp_total, new_lcomp_total)) {
-    #TODO: is this a necessary check? remove if not add test if so.
-    stop("Number of samples in the new lcomp data matrix does not match the ",
-         "number of samples in the original dataset.")
-  }
+  # if (!identical(old_lcomp_total, new_lcomp_total)) {
+  #   #TODO: is this a necessary check? remove if not add test if so.
+  #   stop("Number of samples in the new lcomp data matrix does not match the ",
+  #        "number of samples in the original dataset.")
+  # }
 
   # Substitute new bins:
   dat_list$lencomp <- data.frame(dat_list$lencomp[, id_columns], lcomp_new)
@@ -204,8 +206,6 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
   # Re-bin conditional age-at-length comps (not implemented)
   # if all Lbin_lo == -1 then there aren't any CAL data:
   if (length(unique(dat_list$agecomp$Lbin_lo)) > 1) {
-    stop("There is conditional age at length data. Currently, rebinning",
-         "does not work when there is conditional age at length data.")
     if (!identical(dat_list$Lbin_method, 3)) {
       stop("Lbin_method was not set to 3 in the SS3 data file. ",
            "change_em_binning() requires the data file to specify conditional ",
@@ -240,9 +240,7 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
     lookup <- data.frame(
       Lbin_lo = old_binvector,
       lbin_new_low = bin_vector[findInterval(old_binvector, bin_vector)],
-      lbin_new_high =
-        c(bin_vector, -1)[findInterval(old_binvector,
-          bin_vector)+1])
+      lbin_new_high = bin_vector[findInterval(old_binvector, bin_vector)])
 
     # the re-binning happens here:
     new_cal <- merge(old_cal, lookup, by = "Lbin_lo", all = FALSE, sort = FALSE)

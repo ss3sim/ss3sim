@@ -1,3 +1,29 @@
+# ss3sim 1.1.6
+* Deprecate change_f_par which was not being used by any downstream code.
+Feel free to contact the package maintainers if you wish to reinstate this function,
+but ss3sim uses the control file instead of the par file as in the orginal ss3sim.
+* Move Anderson et al. (2014) to a dedicated repository ss3sim/ss3sim_andersonetal
+* Allow for seas and partition in sampling
+
+# ss3sim 1.1.5
+
+# ss3sim 1.1.4
+
+# ss3sim 1.1.3
+
+* Drop fleets from sampling regimes using NA in the scenario data frame.
+* Upgrade to SS 3.30.16
+* Start allowing for seasons in data (F right now)
+* Fixed bug in how q was being checked
+* Partition change_catch from change_data
+* Allow for fleet specific cpar and ESS values
+* Allow for no SPR in results file
+* Fix bad param argument in weight_comps with DM
+
+# ss3sim 1.1.2
+
+* Control height and width of jittering in plot_points with jitter.height and jitter.width.
+
 # ss3sim 1.1.1
 
 * Allow for custom name of results files

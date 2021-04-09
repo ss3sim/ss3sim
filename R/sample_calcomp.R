@@ -89,7 +89,9 @@
 #' @param lcomps_sampled Have marginal length comps already been sampled and are
 #'  included in \code{dat_list[["lencomp"]]}? If FALSE, expected values are in
 #'  present in \code{datlist[["lencomp"]]}.
+#' @template sampledots
 #' @template sampling-return
+#' @importFrom magrittr %>%
 #' @family sampling functions
 #' @export
 
@@ -98,7 +100,7 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
                            Nsamp_lengths, Nsamp_ages,
                            method = "simple_random", ESS_lengths = NULL,
                            ESS_ages = NULL,
-                           lcomps_sampled = FALSE) {
+                           lcomps_sampled = FALSE, ...) {
   #TODO: add in length_stratified
     method <- match.arg(arg = unlist(method), choices = c("simple_random"))
     ## A value of NULL for fleets indicates not to sample and strip out the
@@ -107,7 +109,6 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
     # cal in this function, but want to retain the marginal age comps.
     agecomp.age <- dat_list$agecomp[dat_list$agecomp$Lbin_lo== -1,] # marginal
     agecomp.cal <- dat_list$agecomp[dat_list$agecomp$Lbin_lo != -1,] # CAL
-    lbin_vector <- dat_list$lbin_vector # This is the vector of data length bins
     newfile <- dat_list
     if(is.null(fleets)){
       newfile$agecomp <- agecomp.age # only leave in maraginal age comps
@@ -150,6 +151,26 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
       lencomp_marginal <- NULL
     }
 
+    #create dataframe of sampling arguments
+    useESS_lengths <- ifelse(is.null(ESS_lengths), FALSE, TRUE)
+    if (is.null(ESS_lengths)) {
+      ESS_lengths <- Nsamp_lengths
+    }
+    useESS_ages <- ifelse(is.null(ESS_ages), FALSE, TRUE)
+    if (is.null(ESS_ages)) {
+      ESS_ages <- Nsamp_ages
+    }
+    new <- dplyr::bind_cols(tibble::tibble(FltSvy = fleets),
+      tibble::tibble(Yr = years, Nsamp_lengths = Nsamp_lengths,
+                     Nsamp_ages = Nsamp_ages, ESS_lengths = ESS_lengths,
+                     ESS_ages = ESS_ages, ...)) %>%
+      dplyr::rowwise() %>%
+      tidyr::unnest(dplyr::everything()) %>% dplyr::bind_rows()
+    colnames(new) <- gsub("part", "Part", colnames(new))
+    colnames(new) <- gsub("seas", "Seas", colnames(new))
+    # will use this later
+    new <- dplyr::mutate(new, ESS_ages_mult = ESS_ages/Nsamp_ages)
+
 
     ## If not, do additional argument checks
     if(nrow(agecomp.cal)==0) { #TODO: maybe turn this into a warning instead?
@@ -177,7 +198,7 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
            "age_info table negative for any fleet with CAL",
            "data and rerun ss3sim. This should be done in the skeleton OM data ",
            "file or, if using mla, can be done by specifying the tail ",
-           "compression in a case file")
+           "compression in a simdf")
     }
     # check that the sample size for lengths are always greater than ages.
    Msamp_check <-  mapply(function(l, a) {
@@ -229,166 +250,103 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
     CAL_lencomp <- sample_comp(exp_vals_list[["lencomp"]],
                                Nsamp = Nsamp_lengths,
                                fleets = fleets,
-                               years = years)
-    ## The general approach here is to loop through each fl/yr combination
-    ## (for which there will be a row for each length bin) and then
-    ## recombine them later.
-    newcomp.list <- list() # temp storage for the new rows
-    k <- 1                 # each k is a new row of data, to be rbind'ed later
-    ## Loop through each fleet
-    for(i in seq_along(fleets)){
-        fl <- fleets[i]
-        if(length(Nsamp_ages[[i]]) == 1) {
-          Nsamp_ages[[i]] <- rep(Nsamp_ages[[i]], length(years[[i]]))
+                               years = years, ESS = ESS_lengths, ...)
+# Loop through each line of CAL_lencomp for each line of the sampled length
+# data (CAL_lencomp).
+    newcomp_list <- vector(mode = "list", length = nrow(CAL_lencomp))
+    for(r in seq_len(nrow(CAL_lencomp))) {
+      tmp_CAL_lencomp <- CAL_lencomp[r, , drop = FALSE]
+      # for this line, subset the expected values of CAL that match it.
+      newcomp <- agecomp.cal[
+        agecomp.cal$Yr == tmp_CAL_lencomp$Yr &
+        agecomp.cal$Seas == tmp_CAL_lencomp$Seas &
+        agecomp.cal$FltSvy == tmp_CAL_lencomp$FltSvy &
+        agecomp.cal$Gender == tmp_CAL_lencomp$Gender &
+        agecomp.cal$Part == tmp_CAL_lencomp$Part, ]
+      # get the sample size to use
+      tmp_nsamp_ages <- dplyr::left_join(tmp_CAL_lencomp, new)
+      tmp_nsamp_ages <- tmp_nsamp_ages[1, "Nsamp_ages"]
+      # check that all necessary values are available
+      if(nrow(newcomp) != length(dat_list$lbin_vector)) {
+        stop("The number of conditional age at length data rows for ",
+             "fleet ", fl, " and year ", yr, " is not the same as the number",
+             " of length bins. For each fleet and year, please make sure ",
+             "there is row where Lbin_lo and Lbin_hi are equal to each of ",
+             "the values in lbin_vector: ",
+             paste0(dat_list$lbin_vector, collapse = ", "), ". Note that Lbin_lo and",
+             " Lbin_hi if conditional age at length data should always have",
+             " the same values in order for sample_calcomp() to work.")
+      }
+      # extract those expected conditional vals removing the metadata
+      prob.len <- as.numeric(tmp_CAL_lencomp[, -(1:6)])
+      # finally, use this information to determine number of samples for each bin of CAl,
+      if(any(prob.len > 1)) {
+        ## This code creates a vector of empirical samples of
+        ## length, such that each length bin is repeated equal to
+        ## the number of observed fish in that bin
+        prob.len.inits <- unlist(mapply(function(ind, vec)
+          rep(ind, vec[ind]),
+          ind = seq_along(prob.len),
+          MoreArgs = list(vec = prob.len),
+          SIMPLIFY = FALSE))
+        ## Now resample from it, ensuring that the sample size doesn't exceed
+        temp <- sample(x=prob.len.ints, size=tmp_nsamp_ages,
+                       replace=FALSE)
+        Nsamp.ages.per.lbin <- unlist(mapply(function(ind, samples)
+          sum(samples == ind),
+          ind = seq_along(prob.len),
+          MoreArgs = list(samples = temp),
+          SIMPLIFY = FALSE))
+      } else {
+        Nsamp.ages.per.lbin <- rmultinom(n=1,
+                                         size=tmp_nsamp_ages,
+                                         prob=prob.len)
+      }
+      #extract expected conditional
+      if(any(is.na(Nsamp.ages.per.lbin))) {
+        stop("Invalid age sample size for a length bin in calcomp")
+      }
+      # then sample each row of CAL one at a time.
+      # Sample conditional age at length. Loop through each
+      # length bin and sample # fish in each age bin, given expected
+      # conditional age-at-length
+      newcomp$Nsamp <- Nsamp.ages.per.lbin
+      for(ll in seq_len(nrow(newcomp))) {
+        N.temp <- newcomp$Nsamp[ll]
+        if(N.temp>0){
+          cal.temp <-
+            rmultinom(n=1,
+                      size=Nsamp.ages.per.lbin[ll],
+                      prob=as.numeric(newcomp[ll,-(1:9)]))
+        } else {
+          cal.temp <- -1 # placeholders
         }
-        if(length(Nsamp_lengths[[i]]) == 1 ) {
-          Nsamp_lengths[[i]] <- rep(Nsamp_lengths[[i]], length(years[[i]]))
-        }
-        agecomp.cal.fl <- agecomp.cal[agecomp.cal$FltSvy == fl &
-                                      agecomp.cal$Yr %in% years[[i]], ]
-        ## Only loop through the subset of years for this fleet
-        for(yr in years[[i]]) {
-            newcomp <- agecomp.cal.fl[agecomp.cal.fl$Yr==yr, ]
-            #Note that the below check may be redundant...
-            if(nrow(newcomp) != length(lbin_vector)) {
-                stop("The number of conditional age at length data rows for ",
-                "fleet ", fl, " and year ", yr, " is not the same as the number",
-                " of length bins. For each fleet and year, please make sure ",
-                "there is row where Lbin_lo and Lbin_hi are equal to each of ",
-                "the values in lbin_vector: ",
-                paste0(lbin_vector, collapse = ", "), ". Note that Lbin_lo and",
-                " Lbin_hi if conditional age at length data should always have",
-                " the same values in order for sample_calcomp() to work.")
-            }
-            if(NROW(newcomp) == 0) {
-              stop("no age data found for fleet ", fl, "and yr ", yr)
-            }
-            ## Get the sample sizes of the length and age comps.
-            ## Probability distribution for length comps
-            prob.len <- as.numeric(
-              CAL_lencomp[CAL_lencomp$Yr==yr & CAL_lencomp$FltSvy==fl, -(1:6)])
-            ## From observed length distribution, sample which fish to age.
-            yr.ind <- which(years[[i]]==yr)
-            Nsamp.len <- Nsamp_lengths[[i]][yr.ind]
-            if(any(prob.len>1)){
-                ## This code creates a vector of empirical samples of
-                ## length, such that each length bin is repeated equal to
-                ## the number of observed fish in that bin
-                prob.len.ints <- unlist(sapply(seq_along(prob.len),
-                                               function(i) rep(i, prob.len[i])))
-                ## Now resample from it, garuanteeing that the sample size
-                ## doesn't exceed
-                temp <- sample(x=prob.len.ints, size=Nsamp_ages[[i]][yr.ind],
-                               replace=FALSE)
-                Nsamp.ages.per.lbin <- sapply(seq_along(prob.len),
-                                              function(i) sum(temp==i))
-                ## Note: If you're ageing all fish this isn't needed, but holds.
-            } else {
-                ## (2) case of Dirichlet.
-                Nsamp.ages.per.lbin <- rmultinom(n=1,
-                                                 size=Nsamp_ages[[i]][yr.ind] ,
-                                                 prob=prob.len)
-            }
-            ## Nsamp.ages.per.lbin is the column of sample sizes in the
-            ## CAAL matrix, which gives the sample size to draw CAAL
-            ## samples below.
-        if(any(is.na(Nsamp.ages.per.lbin))) {
-            stop("Invalid age sample size for a length bin in calcomp")
-        }
-        ## Sample conditional age at length. Loop through each
-        ## length bin and sample # fish in each age bin, given expected
-        ## conditional age-at-length
-        newcomp$Nsamp <- Nsamp.ages.per.lbin
-        for(ll in seq_len(nrow(newcomp))) {
-            N.temp <- newcomp$Nsamp[ll]
-            if(N.temp>0){
-                cal.temp <-
-                    rmultinom(n=1,
-                              size=Nsamp.ages.per.lbin[ll],
-                              prob=as.numeric(newcomp[ll,-(1:9)]))
-            } else {
-                cal.temp <- -1 # placeholders
-            }
-            newcomp[ll,-(1:9)] <- cal.temp
-        }
-        newcomp <- newcomp[newcomp$Nsamp>0,] # get rid of placeholders
-        newcomp.list[[k]] <- newcomp
-        k <- k+1
+        newcomp[ll,-(1:9)] <- cal.temp
+      }
+      newcomp <- newcomp[newcomp$Nsamp>0,] # get rid of placeholders
+      #replace the Nsamp with ESS_ages, if applicable
+      if("ESS_ages" %in% colnames(new)) {
+        tmp_metadat <- dplyr::left_join(tmp_CAL_lencomp, new)
+        tmp_mult <- tmp_metadat[1, "ESS_ages_mult"]
+        newcomp[["Nsamp"]]  <- newcomp[["Nsamp"]] * tmp_mult
+      }
+      newcomp_list[[r]] <- newcomp
     }
-}
-
     ## Combine back together into final data frame with the different data
     ## types
-    newcomp.final <- do.call(rbind, newcomp.list)
+    newcomp.final <- do.call(rbind, newcomp_list)
 
-    # Effective sample sizes ----
-    # length
-    if(!is.null(ESS_lengths)) {
-        #match up with each year and fleet
-      for(flt in seq_along(fleets)) {
-        tmp_yrs <- years[[flt]]
-        tmp_ess <- ESS_lengths[[flt]]
-        for(yr in seq_along(tmp_yrs)) {
-          CAL_lencomp[CAL_lencomp$FltSvy == flt &
-                      CAL_lencomp$Yr == tmp_yrs[yr], "Nsamp"] <-
-            tmp_ess[yr]
-          }
-        }
-      }
-    #}
-    # ages?
-    # maybe it would be better to have 2 parameters for this?
-    # ESS_ages_proportion Which will divide it up
-    # ESS_ages_all_equal which sets all age bins the same (e.g., 1)
-    # TODO: implment adding in effective sample size for ages.Think more about
-    # the most user friendly way to do this. will start by just implementing a
-    # ESS_ages which divides up the same as Nsamp_ages. Can modify this to be
-    # more flexible in the future.
-    if(!is.null(ESS_ages)) {
-      if(length(unlist(ESS_ages)) == 1) {
-        dat_combos <- unique(newcomp.final[, c("Yr", "FltSvy")])
-        for(dc in seq_len(nrow(dat_combos))) {
-          tmp_combo <- dat_combos[dc, ]
-          tmp_total_Nsamp <-
-            sum(newcomp.final[newcomp.final$FltSvy == tmp_combo$FltSvy&
-                              newcomp.final$Yr == tmp_combo$Yr, "Nsamp"])
-          tmp_frac <- newcomp.final[
-                       newcomp.final$FltSvy == tmp_combo$FltSvy&
-                       newcomp.final$Yr == tmp_combo$Yr, "Nsamp"]/tmp_total_Nsamp
-          # replace Nsamp
-          newcomp.final[
-            newcomp.final$FltSvy == tmp_combo$FltSvy&
-              newcomp.final$Yr == tmp_combo$Yr, "Nsamp"] <- tmp_frac * unlist(ESS_ages)
-        }
-      } else {
-        #match up with each year and fleet
-        for(flt in seq_along(fleets)) {
-          tmp_yrs <- years[[flt]]
-          tmp_ess <- ESS_ages[[flt]]
-          if(length(tmp_ess) == 1) tmp_ess <- rep(tmp_ess, times = length(tmp_yrs))
-          if(length(tmp_ess) != length(tmp_yrs)) {
-            stop("Dimensions of ESS_ages is not compatible with other",
-                 " arguments. For fleet ", fleets[flt], " years had length ",
-                 length(tmp_yrs), " and there were ", length(tmp_ess), "values ",
-                 "in ESS_ages for the fleet, but it should have 1 or ", length(tmp_yrs),
-                 "values.")
-          }
-          for(yr in seq_along(tmp_yrs)) {
-           tmp_total_Nsamp <-  sum(newcomp.final[newcomp.final$FltSvy == flt &
-                                 newcomp.final$Yr == tmp_yrs[yr], "Nsamp"])
-           tmp_frac <- newcomp.final[
-                         newcomp.final$FltSvy == flt &
-                         newcomp.final$Yr == tmp_yrs[yr], "Nsamp"] /
-                         tmp_total_Nsamp
-           # replace Nsamp
-           newcomp.final[newcomp.final$FltSvy == flt &
-                         newcomp.final$Yr == tmp_yrs[yr], "Nsamp"] <-
-             tmp_frac * tmp_ess[yr]
-          }
-        }
+    # Effective sample sizes for length ----
+    # Rewrite to loop through each row of CAL_lencomp and add in the right ESS Val
+    if("ESS_lengths" %in% colnames(new)) {
+      for(r in seq_len(nrow(CAL_lencomp))) {
+        tmp_lencomp <- CAL_lencomp[r, ]
+        tmp_ESS_lengths <- dplyr::left_join(tmp_lencomp, new)
+        CAL_lencomp[r,"Nsamp"] <- tmp_ESS_lengths[1,"ESS_lengths"]
       }
     }
-    # add the new length comp
+
+    # add the new length comp ----
     if(!is.null(lencomp_marginal)) {
       newfile[["lencomp"]] <- rbind(CAL_lencomp, lencomp_marginal)
     } else {

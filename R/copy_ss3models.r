@@ -43,7 +43,7 @@ copy_ss3models <- function(model_dir, scenarios,
         stop("The value passed to the argument type must be either om or em.")
     for(sc in scenarios) {
         for(it in iterations) {
-            from <- file.path(model_dir)
+            from <- normalizePath(model_dir, mustWork = TRUE)
             to <- file.path(sc, it)
             dir.create(to, showWarnings = FALSE, recursive = TRUE)
             if(file.exists(file.path(to, type))){
@@ -51,7 +51,7 @@ copy_ss3models <- function(model_dir, scenarios,
                 iteration_exists <- TRUE
             } else {
                 file.copy(from, to, recursive = TRUE)
-                orig_model_folder <- rev(strsplit(from, "/")[[1]])[1]
+                orig_model_folder <- basename(from)
                 file.rename(file.path(to, orig_model_folder), file.path(to, type))
                 ## sanity check and rename for consistency:
                 verify_input(model_dir = file.path(to, type), type = type)

@@ -1,9 +1,0 @@
-#description: *Deterministic* fixed M, no qSurvey, fixed steepness
-natM_type;          NULL
-natM_n_breakpoints; NULL
-natM_lorenzen;      NULL
-natM_val;           NULL
-par_name;           c("LnQ_base_Fishery(1)","SR_sigmaR,NatM_p_1_Fem_GP_1")
-par_int;            c(NA,0.001,NA)
-par_phase;          c(-1,-1,-1)
-forecast_num;       0

@@ -21,7 +21,7 @@ change_em_binning(
 Be sure to correctly specify which section of the data file you want
 to work with when reading it in using the \code{section} argument.
 Where, \code{section = 1} reads in the input values used to run the model
-and \code{section = 2} reads in the expected values generated give all the
+and \code{section = 2} reads in the expected values generated given all the
 input to the OM. \code{section = 3} is not used within ss3sim, but this
 section provides bootstrapped data sets that have been sampled internally
 within SS.}
@@ -37,7 +37,7 @@ file takes time and computing resources.}
 
 \item{lbin_method}{A numeric value of either \code{NULL, 1, 2, 3} to change
 the lbin_method for the population bin. Only supports either \code{NULL, 1,
-2} at the moment. \code{NULL} means to keep it unchanged.}
+2} at the moment. \code{NULL} means to not rebin.}
 
 \item{pop_binwidth}{Population length bin width. Only necessary for
 \code{lbin_method=2}. Note that this value must be smaller than the bin
@@ -109,7 +109,6 @@ head(l2$lencomp)
 Other change functions: 
 \code{\link{change_data}()},
 \code{\link{change_e}()},
-\code{\link{change_f_par}()},
 \code{\link{change_f}()},
 \code{\link{change_o}()},
 \code{\link{change_retro}()},

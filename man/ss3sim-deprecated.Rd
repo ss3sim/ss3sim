@@ -2,11 +2,116 @@
 % Please edit documentation in R/ss3sim-deprecated.R
 \name{ss3sim-deprecated}
 \alias{ss3sim-deprecated}
+\alias{case_comp}
+\alias{case_index}
+\alias{case_tv}
+\alias{case_fishing}
+\alias{case_deparse}
+\alias{expand_scenarios}
+\alias{get_args}
+\alias{get_caseval}
+\alias{get_caseargs}
+\alias{get_weight_comps_args}
+\alias{create_argfiles}
+\alias{change_f_par}
 \title{Deprecated functions in package \pkg{ss3sim}}
+\usage{
+case_comp(...)
+
+case_index(...)
+
+case_tv(...)
+
+case_fishing(...)
+
+case_deparse(...)
+
+expand_scenarios(...)
+
+get_args(...)
+
+get_caseval(...)
+
+get_caseargs(...)
+
+get_weight_comps_args(...)
+
+create_argfiles(...)
+
+change_f_par(...)
+}
 \description{
 The functions listed below are deprecated and will be
 removed from the package in the near future.
 When possible, alternative functions with similar functionality are
-available at \code{help("-deprecated")}.
+available at \code{help("ss3sim-deprecated")}.
 }
+\section{`case_comp()`}{
+
+Casefiles have been deprecated in favor of using a dataframe.
+}
+
+\section{`case_index()`}{
+
+Casefiles have been deprecated in favor of using a dataframe.
+}
+
+\section{`case_tv()`}{
+
+Casefiles have been deprecated in favor of using a dataframe.
+}
+
+\section{`case_fishing()`}{
+
+Casefiles have been deprecated in favor of using a dataframe.
+}
+
+\section{`case_deparse()`}{
+
+Casefiles have been deprecated in favor of using a dataframe.
+}
+
+\section{`expand_scenarios()`}{
+
+Casefiles have been deprecated in favor of using a dataframe.
+}
+
+\section{`get_args()`}{
+
+Casefiles have been deprecated in favor of using a dataframe.
+}
+
+\section{`get_caseval()`}{
+
+Casefiles have been deprecated in favor of using a dataframe.
+}
+
+\section{`get_caseargs()`}{
+
+Casefiles have been deprecated in favor of using a dataframe.
+}
+
+\section{`get_weight_comps_args()`}{
+
+Casefiles have been deprecated in favor of using a dataframe.
+}
+
+\section{`create_argfiles()`}{
+
+Casefiles have been deprecated in favor of using a dataframe.
+}
+
+\section{`change_f_par()`}{
+
+Early versions of ss3sim used the par file to control parameter values.
+It was easier to maintain ss3sim and implement features using the control
+file as more functionality was included in r4ss to read and write the
+control file compared to the par file. Thus, ss3sim will use the control
+file as much as possible going forward. Functions were being maintained
+for both the control and par files with _par added after the function
+name for those pertaining to the par file. Starting with ss3sim version
+1.1.6, this dual functionality was deprecated and only control file
+manuipulation will be supported going forward.
+}
+
 \keyword{internal}

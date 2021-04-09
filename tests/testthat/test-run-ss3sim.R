@@ -16,14 +16,14 @@ test_that("A basic run_ss3sim scenario runs", {
   df <- data.frame(
     bias_adjust = TRUE,
     ce.par_name = "c('NatM_p_1_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
-    ce.par_int = "c(NA, 19.9)",
+    ce.par_int = "c(0.2, 19.9)",
     ce.par_phase = "c(-1, 4)",
     cf.years.1 = "26:100", cf.fval.1 = "rep('0.1052', 75)",
     si.years.2 = "seq(26,100,1)", si.sds_obs.2 = 0.01,
-    sl.years.1 = "seq(26,100,4)", sl.Nsamp.1 = 200, sl.cpar.1 = NA,
-    sl.years.2 = "seq(26,100,1)", sl.Nsamp.2 = 201, sl.cpar.2 = NA,
-    sa.years.1 = "seq(26,100,4)", sa.Nsamp.1 = 202, sa.cpar.1 = NA,
-    sa.years.2 = "seq(26,100,1)", sa.Nsamp.2 = 203, sa.cpar.2 = NA)
+    sl.years.1 = "seq(26,100,4)", sl.Nsamp.1 = 200, sl.cpar.1 = "NULL",
+    sl.years.2 = "seq(26,100,1)", sl.Nsamp.2 = 201, sl.cpar.2 = "NULL",
+    sa.years.1 = "seq(26,100,4)", sa.Nsamp.1 = 202, sa.cpar.1 = "NULL",
+    sa.years.2 = "seq(26,100,1)", sa.Nsamp.2 = 203, sa.cpar.2 = "NULL")
   scname <- run_ss3sim(iterations = 1, simdf = df)
   expect_true("control.ss_new" %in% list.files(file.path(scname,"1", "em")))
   success <- get_success(file.path(scname, "1", "em"))
@@ -79,9 +79,11 @@ test_that("A basic run_ss3sim scenario runs", {
   expect_equal(type.convert(scalar[em_line, "SSB_MSY"], as.is = TRUE),
     type.convert(scalar[om_line, "SSB_MSY"], as.is = TRUE),
     scale = 1000000000000000, label = "EM SSB at MSY")
-  expect_equal(type.convert(scalar[em_line, "Catch_endyear"], as.is = TRUE),
-    type.convert(scalar[om_line, "Catch_endyear"], as.is = TRUE),
-    label = "EM terminal catch")
+  expect_true(1 >
+    abs((type.convert(scalar[em_line, "Catch_endyear"], as.is = TRUE) -
+         type.convert(scalar[om_line, "Catch_endyear"], as.is = TRUE)) /
+         type.convert(scalar[em_line, "Catch_endyear"], as.is = TRUE)) * 100,
+    label = "EM terminal catch has less than 1 percent error")
   expect_equal(scalar[em_line, "SR_LN_R0"], 18.7,
     tolerance = 0.001, label = "EM R_0")
   #check provides warning if skippint iteration.
@@ -123,16 +125,19 @@ test_that("run_ss3sim works with multiple scenarios without estimation", {
     cb.pop_minimum_size = 1, cb.pop_maximum_size = 200,
     cb.bin_vector = "seq(10,190,by=10)",
     si.years.2 = "seq(90,100,1)", si.sds_obs.2 = 0.01,
-    sl.years.1 = "seq(90,100,4)", sl.Nsamp.1 = 20, sl.cpar.1 = NA,
-    sl.years.2 = "seq(90,100,1)", sl.Nsamp.2 = 20, sl.cpar.2 = NA,
-    # sm.years.2 = "seq(90,100,1)", sm.Nsamp.2 = 10, sm.cpar.2 = NA,
-    sa.years.1 = "seq(90,100,4)", sa.Nsamp.1 = 20, sa.cpar.1 = NA)
+    sl.years.1 = "seq(90,100,4)", sl.Nsamp.1 = 20, sl.cpar.1 = "NULL",
+    sl.years.2 = "seq(90,100,1)", sl.Nsamp.2 = 20, sl.cpar.2 = "NULL",
+    # sm.years.2 = "seq(90,100,1)", sm.Nsamp.2 = 10, sm.cpar.2 = "NULL",
+    sa.years.1 = "seq(90,100,4)", sa.Nsamp.1 = 20, sa.cpar.1 = "NULL")
   scname <- run_ss3sim(iterations = 1:2, simdf = df)
   ssom <- r4ss::SS_output(file.path(scname[1], "1", "om"),
     verbose = FALSE, printstats = FALSE, covar = FALSE)
   expect_equal(ssom$parameters[grep("NatM", ssom$parameters$Label), "Value"], 0.20001)
-  expect_equal(c(4, 4),
-    sapply(lapply(scname, dir, recursive = TRUE, pattern = "control.ss_new"), length))
+  expect_equivalent(
+    c(4, 4),
+    vapply(lapply(scname, dir, recursive = TRUE, pattern = "control.ss_new"),
+      FUN.VALUE = 1L, length)
+  )
 
   ssom <- r4ss::SS_readdat(file.path(scname[1], "1", "om", "ss3.dat"),
     verbose = FALSE)

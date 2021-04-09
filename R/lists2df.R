@@ -31,7 +31,7 @@ lists2df <- function(...) {
   lvecs <- do.call("rbind", rapply(lists, length, how = "list"))
   if (all(sapply(apply(lvecs, 2, unique), length) != 1)) {
     stop("Vectors within each list are not the same length for each",
-      "ith element of the input lists.")
+      " ith element of the input lists.")
   }
   do.call("rbind", mapply(data.frame,
     "index" = seq_along(lists[[1]]),
@@ -53,13 +53,35 @@ lists2df <- function(...) {
 #' @return A list of the same length as \code{length}. If, \code{scalar} is not
 #' a list but a vector, then it will be returned as a list.
 scalar2list <- function(scalar, length) {
-  if (length(unlist(scalar)) != 1) {
+  if (all(mapply(length, scalar) == 1) && length(scalar) == length(length)) {
+    out <- mapply(rep, x = scalar, times = length, SIMPLIFY = FALSE)
+  }
+  if (length(unlist(scalar)) != 1 && length(length) == 1) {
     if (is.list(scalar)) {
       out <- scalar
     } else {out <- list(scalar)}
-  } else {
-    out <- mapply(rep, x = scalar, times = length, SIMPLIFY = FALSE)
   }
+  if (length(unlist(scalar)) == 1 && length(length) > 1) {
+    out <- lapply(length, function(x) rep(scalar, length = x))
+    nm <-deparse(substitute(scalar))
+    names(out) <- gsub("(.+)\\..+\\.(.+)", 
+      paste0("\\1\\.", nm, "\\.\\2"), names(out))
+  }
+  if (length(scalar) == length(length) &&
+    all(mapply(length, scalar) == length)) {
+    # Good to go
+    out <- scalar
+  }
+  if (!exists("out")) {
+    message("Sorry, scalar2list did not work properly.",
+      "\nSee the data structures below.")
+    message("scalar is")
+    utils::capture.output(type = "message", scalar)
+    message("length is")
+    utils::capture.output(type = "message", length)
+    stop("scalar2list was terminated.", call. = FALSE)
+  }
+
   testthat::expect_equivalent(length, sapply(out, length),
     label = "\nscalar2list: specified 'length' is\n")
   return(out)

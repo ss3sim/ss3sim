@@ -26,7 +26,7 @@
 
 change_lcomp_constant <- function(lcomp_constant, dat_list, outfile = NULL){
 
-  if(is.null(lcomp_constant)) return(invisible(NULL))
+  if(is.null(lcomp_constant)) return(invisible(dat_list))
   stopifnot(is.numeric(lcomp_constant))
   if(lcomp_constant <= 0) stop("lcomp_constant must be greater than 0")
 

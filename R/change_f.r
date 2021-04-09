@@ -1,9 +1,13 @@
 #' Specify fishing mortality (\emph{F}) using the Stock Synthesis control file
 #'
-#' Replace or input fishing mortality (\emph{F}) for a Stock Synthesis (SS)
-#' simulation via changes to the control file. \emph{F} for multiple fleets
-#' and or seasons can be specified using list structures. If fishing only
-#' occurs within a single fleet, then vector inputs are acceptable.
+#' Replace or input a time series of fishing mortality (\emph{F}) values into
+#' a Stock Synthesis (SS) control file. In SS, inserting \emph{Fs} in this
+#' manner relies on the assumption that fishing mortality operates continously
+#' throughout the year and the process operates jointly with natural mortality
+#' (Baranov 1918; (Branch 2009)[https://cdnsciencepub.com/doi/10.1139/F08-196]).
+#' The documentation for SS also describes this process as
+#' \emph{F} method == 2, where \emph{F} is continuous and modelled using
+#' full parameters.
 #'
 #' @details
 #' The argument \code{years} is the only argument that must be a vector
@@ -33,17 +37,12 @@
 #' combination that will be specified in the control file. If a year, fishery
 #' combination is specified in the control file and not present in the data file,
 #' then the entry in the control file will be ignored. ss3sim automatically corrects
-#' for this using \code{\link{change_data}} within \code{\link{ss3sim_base}} by
-#' specifying a row for every year and fleet combination possible.
+#' for this using \code{\link{ss3sim_base}} by
+#' specifying a row for every year and fleet using \code{\link{change_catch}}.
 #'
 #' @author Kelli Faye Johnson
 #'
 #' @template lcomp-agecomp-index
-#' @param fisheries A deprecated argument that was replaced by \code{fleets} to
-#' match the style of other ss3sim functions. Currently, it can still be used
-#' to allow for back compatibility with the specification of which fleet the
-#' fishing mortality pertains to. A vector the same lengths as \code{years}
-#' or a single integer value is acceptable.
 #' @param fvals A list of the same length as \code{fleets} with one
 #' entry per fishing mortality level (\emph{F}) entry in \code{years}.
 #' A single value will be repeated for every value in \code{years}. If more than
@@ -58,31 +57,37 @@
 #' SS control file for each fleet.
 #' The structure is the same as \code{fvals}, i.e., a list or a scalar.
 #' The default is 0.005, which will be applied to all fleets in all years.
-#' @template ctl_file_in
-#' @template ctl_file_out
-#' @return Modified SS control file.
+#' @template ctl_list
+#' @return Modified SS control file list.
+#' @seealso See \code{\link[r4ss]{SS_readctl}} and \code{\link[r4ss]{SS_writectl}}
+#' for how to supply \code{ctl_list} and how to write the file back to the disk
+#' once you are done manipulating the list object.
 #' @family change functions
 #' @export
 #' @examples
-#' d <- system.file(file.path("extdata", "models"), package = "ss3sim")
+#' dat <- r4ss::SS_readdat(
+#'   system.file("extdata","models", "cod-om", "codOM.dat", package = "ss3sim"),
+#'   verbose = FALSE)
+#' ctl <- r4ss::SS_readctl(
+#'   system.file("extdata","models", "cod-om", "codOM.ctl", package = "ss3sim"),
+#'   verbose = FALSE, use_datlist = TRUE, datlist = dat)
 #' # Using original vector-style inputs
-#' change_f(years = 1:50, fleets = 1, fvals = 0.2,
-#'   ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
-#'   ctl_file_out = file.path(tempdir(), "control_fishing.ss"))
+#' newctl <- change_f(years = 1:50, fleets = 1, fvals = 0.2, ctl_list = ctl)
 #' # Using list-style inputs for when there are multiple fisheries
-#' change_f(years = list(1:5, 1:10), fleets = 3:4,
-#'   fvals = list(rep(0.1, 5), rep(0.2, 10)),
-#'   ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
-#'   ctl_file_out = file.path(tempdir(), "control_fishing.ss"))
-#' rm(d)
+#' newctl <- change_f(years = list(1:5, 1:10), fleets = 3:4,
+#'   fvals = list(rep(0.1, 5), rep(0.2, 10)), ctl_list = ctl)
+#' rm(dat, ctl, newctl)
 #'
-change_f <- function(years, fleets, fisheries, fvals, seasons = 1, ses = 0.005,
-  ctl_file_in, ctl_file_out = "control_fishing.ss") {
+change_f <- function(
+  years,
+  fleets,
+  fvals,
+  seasons = 1,
+  ses = 0.005,
+  ctl_list
+) {
 
-  if (!rlang::is_missing(fisheries)) {
-    warning("fisheries in change_f is deprecated, use fleets argument instead")
-    fleets <- fisheries
-  }
+  #### Input checks
   if (is.list(years)) {
     times <- sapply(years, length)
   } else {
@@ -93,6 +98,10 @@ change_f <- function(years, fleets, fisheries, fvals, seasons = 1, ses = 0.005,
   fvals <- scalar2list(fvals, length = times)
   ses <- scalar2list(ses, length = times)
   seasons <- scalar2list(seasons, length = times)
+  stopifnot(ctl_list[["F_Method"]] == 2)
+
+  #### Create data frame for SS
+  # Fleet Yr Seas F_value se phase
   newdata <- lists2df(
     "Yr" = years,
     "Seas" =  seasons,
@@ -101,39 +110,35 @@ change_f <- function(years, fleets, fisheries, fvals, seasons = 1, ses = 0.005,
     "phase" = scalar2list(1, length = times))
   newdata[, "index"] <- fleets[newdata$index]
   names(newdata) <- gsub("index", "Fleet", names(newdata))
-  ctl <- readLines(ctl_file_in)
-  locations <- grep("F_Method", ctl, ignore.case = TRUE)
-  if (length(locations) < 2) {
-    # todo: use r4ss::SS_readctl to pass a control list rather than readLines
-    stop("Phrase 'F_Method' should be found at least 2 times in the control ",
-         "file, but was found ", length(locations), " times. Please make sure ",
-         "a control file with standard SS comments is being used.")
-  }
-  # Check that F method = 2 b/c will not work with ctl files with Fmethod = 1 or 3.
-  F_method <- as.numeric(trimws(strsplit(ctl[locations[1]], "#", fixed = TRUE)[[1]][1]))
-  if(F_method != 2) {
-    stop("change_F only works with F_method = 2, not 1 or 3. The F_method ",
-         "found is ", F_method)
-  }
-  locations <- locations[c(1, length(locations))]
-  location_terminal <- grep("Q_setup", ctl, ignore.case = FALSE)
-  if (length(location_terminal) == 0) {
-    stop("Q_setup was not found in the ctl_file_in")
-  }
-  ctl[locations[1]] <- gsub("^[1-4]\\s*", "2 ", trimws(ctl[locations[1]]))
-  ctl <- c(ctl[1:locations[1]],
-    paste(ifelse(max(newdata$F_value) < 4, 4,
-      max(type.convert(newdata$F_value, as.is = TRUE)) * 2),
-      " # max F or harvest rate, depends on F_Method"),
-    paste(0, 1, NROW(newdata),
-      "# overall start F value; overall phase; N detailed inputs to read"),
-    apply(newdata, 1, paste, collapse = " "),
-    ctl[location_terminal:length(ctl)])
 
-  # Write new control file
-  if (!is.null(ctl_file_out)) {
-    writeLines(ctl, con = ctl_file_out)
-    close(file(ctl_file_out))
+  #### Change control list
+  nonequilibrium <- newdata[newdata[["Yr"]] != -999, ]
+  ctl_list[["maxF"]] <- ifelse(
+    test = max(newdata[["F_value"]]) < 4,
+    yes = 4,
+    no = max(type.convert(newdata[["F_value"]], as.is = TRUE)) * 2
+  )
+  ctl_list[["F_setup"]][1] <- 0 # Initial F value
+  ctl_list[["F_setup"]][2] <- 1 # F phase
+  ctl_list[["F_setup"]][3] <- NROW(nonequilibrium) # N F values to read
+  ctl_list[["F_setup2"]] <- nonequilibrium
+  if (any(newdata[["Yr"]] == -999)) {
+    equilibrium <- newdata[newdata[["Yr"]] == -999 & newdata[["F_value"]] > 0, ]
+    equilibrium <- equilibrium[order(equilibrium[["Seas"]], equilibrium[["Fleet"]]), ]
+    #_ LO HI INIT PRIOR PR_SD  PR_type PHASE
+    ctl_list[["init_F"]] <- data.frame(
+      LO = 0,
+      HI = ctl_list[["maxF"]],
+      INIT = equilibrium[["F_value"]],
+      PRIOR = 0, PR_SD = 99, PR_TYPE = 0, PHASE = 1
+    )
+    rownames(ctl_list[["init_F"]]) <- paste0(
+      "InitF_seas_",
+      equilibrium[["Seas"]],
+      "_flt_",
+      equilibrium[["Fleet"]]
+      )
   }
-  invisible(ctl)
+
+  return(invisible(ctl_list))
 }

@@ -84,11 +84,13 @@ profile_fmsy <- function(om_in, results_out,
     stop("profile_fmsy is not meant to work with more than one fishery")
   }
   for(i in seq(fVector)) {
-    change_f(years = 1:simlength,
+    ctl <- r4ss::SS_readctl(starter$ctlfile,
+      use_datlist = TRUE, datlist = datFile, verbose = FALSE)
+    ctl <- change_f(years = 1:simlength,
       fleets = as.numeric(row.names(datFile$fleetinfo[datFile$fleetinfo$type == 1, ])),
       fvals = rep(fVector[i], simlength),
-      ctl_file_in = starter$ctlfile,
-      ctl_file_out = starter$ctlfile)
+      ctl_list = ctl)
+    SS_writectl(ctllist = ctl, outfile = starter$ctlfile, overwrite = TRUE, verbose = FALSE)
     system(paste(ss_bin, "-nohess"), show.output.on.console = FALSE,
            ignore.stdout=TRUE)
     allcatch <- r4ss::SS_readdat("data.ss_new",

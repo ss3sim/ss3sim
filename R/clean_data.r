@@ -2,12 +2,9 @@
 #' is not specified
 #'
 #' This prepares a \code{.dat} file to be used by an EM, whereas before it may
-#' have had leftover data from sampling purposes. See examples in
-#' \code{\link{change_data}}.
+#' have had leftover data from sampling purposes.
 #'
 #' @author Cole Monnahan
-#' @param index_params Named lists containing the arguments for
-#'   \code{sample_index}.
 #' @param lcomp_params Named lists containing the arguments for
 #'   \code{\link{sample_lcomp}}.
 #' @param agecomp_params Named lists containing the arguments for
@@ -19,11 +16,11 @@
 #' @param verbose When \code{TRUE} it will print a message when rows are
 #' deleted.
 #' @template dat_list
-#' @seealso calculate_data_units, change_data
+#' @seealso calculate_data_units
 #' @family sampling functions
 #' @return An invisible cleaned data list as an object.
 #' @note This function does not write the result to file.
-clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
+clean_data <- function(dat_list, lcomp_params=NULL,
                        agecomp_params=NULL, calcomp_params=NULL,
                        mlacomp_params=NULL, verbose=FALSE ){
     ## sampling functions should themselves remove data for most cases, but
@@ -42,29 +39,11 @@ clean_data <- function(dat_list, index_params=NULL, lcomp_params=NULL,
     # checks for years and fleets in params. check structure and range so that
     # function does not fail later with uninformative message or pass when it
     # shouldn't.
-    all_params <- list(index_params = index_params,
-                       lcomp_params = lcomp_params,
+    all_params <- list(lcomp_params = lcomp_params,
                        agecomp_params = agecomp_params,
                        calcomp_params = calcomp_params,
                        mlacomp_parms = mlacomp_params)
     check_data_str_range(all_params, dat_list)
-    # check that index_params specified
-    if(is.null(index_params$fleets)) {
-      stop("Indices are currently mandatory: index_params is NULL")
-    }
-    #this stop message can be removed once conditional age at length implemented
-
-    ## CPUE
-    a <- dat_list$CPUE
-    dat_list$CPUE <- do.call(rbind,
-     lapply(seq_along(index_params$fleets), function(i)
-            a[a$index == index_params$fleets[i] &
-              a$year %in% index_params$years[[i]],]))
-    dat_list$N_cpue <- NROW(dat_list$CPUE)
-
-    index.N.removed <- NROW(a)-NROW(dat_list$CPUE)
-    if(index.N.removed !=0  & verbose)
-        message(index.N.removed, " lines of CPUE data removed")
 
     ## Length composition data and length composition from CAL comps
     a <- dat_list$lencomp

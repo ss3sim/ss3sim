@@ -1,7 +1,7 @@
 Package: ss3sim
 Type: Package
 Title: Fisheries Stock Assessment Simulation Testing with Stock Synthesis
-Version: 1.1.1
+Version: 1.1.6
 Authors@R: c(person(c("Kelli", "F."), "Johnson", 
     email = "kelli.johnson@noaa.gov",
     role = c("aut", "cre")),
@@ -39,6 +39,7 @@ VignetteBuilder: knitr
 Depends:
     R (>= 3.5)
 Imports:
+    dplyr,
     foreach,
     r4ss (>= 1.38.0),
     gtools,
@@ -46,9 +47,14 @@ Imports:
     bbmle,
     grDevices,
     graphics,
+    magrittr,
+    purrr,
     rlang,
     stats,
-    utils
-Remotes: github::r4ss/r4ss@v1.38.0
+    tibble,
+    tidyr,
+    utils, 
+    lifecycle
+Remotes: github::r4ss/r4ss@main
 RoxygenNote: 7.1.1
 Encoding: UTF-8

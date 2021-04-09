@@ -11,7 +11,8 @@ sample_lcomp(
   Nsamp,
   years,
   cpar = 1,
-  ESS = NULL
+  ESS = NULL,
+  ...
 )
 }
 \arguments{
@@ -20,7 +21,7 @@ sample_lcomp(
 Be sure to correctly specify which section of the data file you want
 to work with when reading it in using the \code{section} argument.
 Where, \code{section = 1} reads in the input values used to run the model
-and \code{section = 2} reads in the expected values generated give all the
+and \code{section = 2} reads in the expected values generated given all the
 input to the OM. \code{section = 3} is not used within ss3sim, but this
 section provides bootstrapped data sets that have been sampled internally
 within SS.}
@@ -64,6 +65,12 @@ At least one value must be provided for each fleet or a vector of
 year-specific values can be used for any given fleet.
 The argument accepts a list with entries,
 either a single integer or a vector of integers, for each fleet.}
+
+\item{...}{Any argument you want to be a column in the new data frame of composition
+data. All extra arguments should be named columns in \code{data}.
+Each argument needs to be a list of length \code{length(fleets)}. Or, you can use a
+single value that will be repeated for each combination of fleet, year, ...
+in your data.}
 }
 \value{
 A modified \code{.dat} file if \code{!is.null(outfile)}. A list object
@@ -87,6 +94,9 @@ dat_list <- r4ss::SS_readdat(verbose = FALSE,
 ex1 <- sample_lcomp(dat_list=dat_list, outfile = NULL, 
   fleets = 1:2, Nsamp = list(100, 50), 
   years=list(seq(26, 100, by = 2), 80:100))
+\dontshow{
+testthat::expect_equal(dim(ex1[["lencomp"]]), c(59, 51))
+}
 
 }
 \seealso{
@@ -96,6 +106,8 @@ Other sampling functions:
 \code{\link{clean_data}()},
 \code{\link{sample_agecomp}()},
 \code{\link{sample_calcomp}()},
+\code{\link{sample_catch}()},
+\code{\link{sample_discard}()},
 \code{\link{sample_index}()},
 \code{\link{sample_mlacomp}()},
 \code{\link{sample_wtatage}()}

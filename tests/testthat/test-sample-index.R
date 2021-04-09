@@ -7,7 +7,6 @@ setwd(temp_path)
 on.exit(setwd(wd), add = TRUE)
 
 d <- system.file("extdata", package = "ss3sim")
-case_folder <- file.path(d, "eg-cases")
 a <- list("index" = list("fleets" = 2,
   "years" = list(seq(76, 100, by = 2)),
   "sds_obs" = list(0.2)))
@@ -22,6 +21,9 @@ sampled_index <- with(a$index,
                                    outfile         = NULL,
                                    fleets          = fleets,
                                    years           = years,
+                                   seas = list(unique(
+                                     exp_vals[["CPUE"]][, "seas"]
+                                   )),
                                    sds_obs         = sds_obs))
 # check SD filled in correctly
 expect_equal(sampled_index$CPUE$se_log,

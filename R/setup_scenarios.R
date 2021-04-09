@@ -1,55 +1,264 @@
-#' Set up scenarios for a simulation with ss3sim
-#' 
-#' Set up scenarios with default arguments for a simulation with ss3sim.
-#' The data frame passed by the user will likely be a truncated version
-#' of all of the information needed to run a simulation, and therefore,
-#' additional arguments will be added at their default values. The resulting
-#' data frame is then turned into a list and passed to \code{\link{ss3sim_base}}
-#' within \code{\link{run_ss3sim}}.
+#' Set up fleet-specific information
 #'
-#' @param input A data frame with one row per scenario. If \code{NULL},
-#' which is the default, then a generic scenario will be run with minimal
-#' data to check that everything is working.
+#' Sometimes, users will want to pass a single input instead of fleet-specific
+#' information to make things easier to keep track of for the user.
+#' `get_fleet` copies this single object over to all fleets
+#' for a given sampling type.
 #'
-#' @author Kelli Faye Johnson
+#' @details
+#' In the data frame that stores scenario-specific information by row,
+#' columns are fleet-specific with the fleet denoted after the last full stop.
+#' If this terminal full stop followed by a numerical value is not supplied,
+#' then the value will be copied for all fleets.
+#' For example, `sa.Nsamp.1` specifies the sample size for age-composition data
+#' for fleet number one. Whereas, `sa.Nsamp` specifies the input sample-size
+#' for all fleets.
+#'
+#' A todo list for future features is as follows:
+#' * remove fleets that have NA
+#' * allow for arguments rather than hardwiring arg and fleet
+#' * see if sa.Nsamp and sa.Nsamp.1 can be in the same data frame and just
+#' fill in the value for fleets that aren't specified; would need to fill
+#' up and down I think within a group to make it work.
+#' * accomodate -999 in sample function cpar arguments
+#' * create add_args to fill in missing arguments across fleets
+#' * implement add_args before expand fleet such that the new
+#' arg would be expanded for all fleets but I only have to specify
+#' the default one time
+#' * fix .data[[""]] to pass CRAN
+#' x <- enquo(x)
+#' y <- enquo(y)
+#' ggplot(data) + geom_point(aes(!!x, !!y))
+#'
+#' @param data A data frame of scenario information that was passed to
+#' [setup_scenarios] and as subsequently been passed to this function as a
+#' long data frame rather than a wide data frame.
+#'
+#' @author Kelli F. Johnson
 #' @export
-#' 
-setup_scenarios <- function(input = NULL) {
-  if (is.null(input)) {
-    input <- setup_scenarios_defaults()
+#' @return An augmented data frame is returned in the same form as the
+#' input data. The new rows correspond to parsing input arguments out
+#' across all fleets that are sampled when a single input value is provided.
+setup_scenarios_fleet <- function(data) {
+
+  #### Set up
+  # Create a FULL data set with missing values by
+  # expanding and nesting arg and fleet for sampling args
+  # Use lookup to see if they are from the beginning section
+  potentiallabels <- setup_scenarios_lookup()
+  fleetspecificlabels <- names(potentiallabels)[
+    1:which(potentiallabels=="wtatage_params")
+    ]
+  beginlabel <- gsub("(.{2})\\..+", "\\1", data[["label"]])
+  if (all(is.na(data$arg))) return(data)
+  if (all(is.na(match(beginlabel, fleetspecificlabels)))) return(data)
+
+  # Remove fleets that have an NA, which means they weren't sampled
+  removedfleets <- data %>% dplyr::filter(is.na(value)) %>% dplyr::pull(fleet)
+  data <- data %>% dplyr::filter(!fleet %in% removedfleets)
+
+  #### Make data
+  # Create a full data set providing one argument for each fleet
+  newdata <- dplyr::full_join(by = c("arg", "fleet"),
+    data,
+    tidyr::expand(data,
+      arg,
+      tidyr::nesting(fleet)
+    ) %>%
+    # Remove the rows that aren't fleet-specific
+    tidyr::drop_na(fleet)
+  ) %>% 
+  # Arrange and group so fill up works
+  dplyr::arrange(arg, fleet) %>% dplyr::group_by(arg) %>%
+  tidyr::fill(value, .direction = "up") %>% 
+  dplyr::ungroup() %>% tidyr::drop_na(fleet)
+
+  # If no new data then return the old data
+  if (NROW(newdata) == 0) {
+    return(data)
+  } else {
+    # Make the full data set to return, including new fleet variable
+    return(
+      dplyr::nest_join(by = colnames(newdata),
+        newdata,
+        data) %>%
+      dplyr::select(-data) %>%
+      dplyr::full_join(by = c("label", "arg", "value"),
+        tibble::tibble(
+          label = paste(beginlabel[1], "fleets", sep = "."),
+          arg = "fleets",
+          value = list(type.convert(as.is = TRUE,
+            data %>% tidyr::drop_na(fleet) %>% 
+            dplyr::distinct(fleet) %>% dplyr::pull(fleet)))
+        )
+      )
+    )
   }
-  info <- setup_scenarios_2list(setup_scenarios_fillmissing(input))
-  info <- lapply(info, setup_scenarios_list_names)
-  return(info)
 }
 
-#' Add missing arguments needed to run scenarios
-#' 
-#' Add columns for missing arguments that are needed to run scenarios
-#' and that can be set to some default value. E.g., the operating model
-#' can be the default operating model in the package but users must set
-#' the number of age-composition samples that they want because users
-#' might not want to sample any ages so we don't want to set everything
-#' to a default value.
-#' 
-#' @param dataframe A data frame input by the user specifying the scenario
-#' structure for the simulation.
-#' @return A data frame with potentially more columns than what was provided.
-setup_scenarios_fillmissing <- function(dataframe) {
-  musthavecols <- data.frame(
-    om = system.file("extdata", "models", "cod-om", package = "ss3sim"),
-    # todo: make this NULL such that the EM is created from the OM internally
-    # within ss3sim, e.g., in the run_ss3sim function
-    em = system.file("extdata", "models", "cod-em", package = "ss3sim")
-  )
+#' Get scenario information from a data frame of specifications
+#'
+#' @param df A data frame with scenarios in the rows and
+#' information for function arguments in the columns.
+#' See [setup_scenarios_defaults] for how to set up the data frame.
+#' This data frame is used by default if you do not supply anything
+#' to `df`.
+#' @param returntype The class of object that you want to return.
+#' ss3sim was a big fan of lists of lists until the [tidyverse] packages
+#' were included. Now, data frames of list columns are preferred.
+#' Eventually, `list` will be downgraded from the default and data frames
+#' will be the only option as a return.
+#'
+#' @author Kelli F. Johnson
+#' @export
+#' @return Either a long data frame or a list is returned.
+#' See the input argument `returntype` for more information.
+#' @examples
+#' defaultscenarios <- setup_scenarios()
+#'
+setup_scenarios <-function (
+  df = "default",
+  returntype = c("list", "dataframe")) {
 
-  missingcols <- !colnames(musthavecols) %in% colnames(dataframe)
-  dataframe <- cbind(musthavecols[, missingcols], dataframe)
-  return(dataframe)
+  returntype <- match.arg(returntype)
+  if (is.character(df) && df == "default") {
+    df <- setup_scenarios_defaults()
+  }
+
+  if (all(!grepl("^om_*", names(df)))) {
+    df[["om_dir"]] <- setup_om_dir()
+  }
+  if (all(!grepl("^em_*", names(df)))) {
+    df[["em_dir"]] <- setup_em_dir()
+  }
+
+  scenarios <- df %>%
+  # Use rownames to track scenarios
+  tibble::rownames_to_column() %>%
+  # evaluate all arguments, e.g., '1:4' to 1,2,3,4
+  dplyr::mutate(dplyr::across(dplyr::everything(),
+    ~purrr::map(.x, text2obj))) %>%
+  # wide to long by scenario
+  tidyr::pivot_longer(
+    !rowname,
+    names_to = "label",
+    values_to = "value") %>%
+  # change NULL to -999 b/c NULL has a zero length
+  # dplyr::mutate(
+  #   value = map(value, ~replace_x(.x, -999))
+  # ) %>%
+  # Split name into columns
+  tidyr::separate(
+    col = .data[["label"]],
+    into = c("type", "arg", "fleet"),
+    sep = "\\.",
+    fill = "right",
+    remove = FALSE) %>%
+  # Create one row per data type for each scenario
+  dplyr::group_by(rowname, type) %>%
+  tidyr::nest() %>%
+  # Duplicate info by fleet
+  dplyr::mutate(data = purrr::map(data, setup_scenarios_fleet)) %>%
+  # Bring everything back together as a list of lists
+  tidyr::unnest(data) %>% dplyr::ungroup() %>%
+  tidyr::unite(col = "label", type, arg, fleet,
+    sep = ".", na.rm = TRUE, remove = FALSE) %>%
+  dplyr::mutate(type = purrr::map_chr(type, ~setup_scenarios_lookup()[.x])) %>%
+  dplyr::arrange(type, arg, as.numeric(fleet))
+  # check for NA or NULL values
+  labs_with_null_or_nas <- scenarios$label[unlist(lapply(scenarios$value,
+                                function(x) isTRUE(is.null(x)) |
+                                  isTRUE(any(is.na(x)))))]
+  if(isTRUE(length(labs_with_null_or_nas) > 0)) {
+    if (!all(grepl("cpar", labs_with_null_or_nas))) {
+      warning("The following dataframe columns contain NULL or NA values, ",
+            "which could cause ss3sim to behave unexpectedly. Please specify",
+            " these values, unless NULL or NA are valid inputs for the column",
+            " (e.g., cpar for lcomp or agecomp can be NULL.)\nColumns: ",
+            paste0(labs_with_null_or_nas, collapse = ", "))
+    }
+  }
+  if (returntype == "dataframe") {
+    return(scenarios)
+  }
+
+  # Very convoluted way to make a list of lists b/c I am not familiar
+  # with dplyr and purrr, this is ugly and will eventually be removed
+  # after time to just use tibbles that can be more easily accessed.
+  if (returntype == "list") {
+    out <- scenarios %>% dplyr::ungroup() %>%
+      dplyr::mutate(value = purrr::map(value, ~replace_x(.x))) %>%
+      dplyr::mutate(value = stats::setNames(value, label)) %>%
+      dplyr::group_by(rowname, type) %>% tidyr::nest() %>%
+      dplyr::summarize(value = purrr::map(
+        .x = data, ~{
+          xxx <- base::split(.x$value,.x$arg)
+          if (length(xxx) == 0) {
+            if (.x[["label"]] == "user_recdevs") {
+              return(.x[["value"]][[1]])
+            }
+            return(stats::setNames(unlist(.x$value), NULL))
+          }
+          if (!is.null(xxx[["fleets"]])) {
+            xxx[["fleets"]] <- stats::setNames(
+              stats::na.omit(unlist(xxx[["fleets"]])),
+              NULL)
+          }
+          return(xxx)
+        }
+        )
+      ) %>% dplyr::ungroup() %>%
+      dplyr::mutate(value = stats::setNames(value, type)) %>% 
+      dplyr::select(-type) %>%
+      dplyr::group_by(rowname) %>% tidyr::nest() %>%
+      dplyr::summarize(out = purrr::lmap(data, ~do.call(as.list, .x)))
+    return(stats::setNames(out$out, out$rowname))
+  }
+}
+
+#' Create a named vector to look up full names for types of arguments
+setup_scenarios_lookup <- function() {
+  lookuptable <- data.frame(
+    # This first section could have fleet specific parameters
+    # DO NOT change the first or the last, insert new ones between
+    # agecomp_params and wtatage_params, preferably in alphabetical order
+    c("sa", "agecomp_params"),
+    c("sc", "calcomp_params"),
+    c("sd", "discard_params"),
+    c("cf", "f_params"),
+    c("si", "index_params"),
+    c("sl", "lcomp_params"),
+    c("sm", "mlacomp_params"),
+    c("sw", "wtatage_params"),
+    # This is the second section that will not be fleet-specific
+    c("wc", "weight_comps_params"),
+    # todo(feature): weight the index
+    c("wi", "weight_index"),
+    c("em", "em_dir"),
+    c("om", "em_dir"),
+    c("em_dir", "em_dir"),
+    c("em_dir", "em_dir"),
+    c("cb", "em_binning_params"),
+    c("cd", "data_params"),
+    c("ce", "estim_params"),
+    c("co", "operat_params"),
+    c("ct", "tv_params"),
+    c("cr", "retro_params"),
+    c("admb_options", "admb_options")
+  )
+  extraargs <- names(formals(ss3sim_base))
+  names(extraargs) <- extraargs
+  out <- lookuptable[2, ]
+  names(out) <- lookuptable[1, ]
+  out <- unlist(c(
+    out, extraargs[!extraargs %in% c(lookuptable[2,], "...")]
+  ))
+
+  return(out)
 }
 
 #' Set up a generic scenario
-#' 
+#'
 #' Create a data frame of scenario inputs for a generic simulation that will
 #' run within ss3sim. Users can add more arguments, but the scenario will run
 #' without changing the returned value.
@@ -64,81 +273,36 @@ setup_scenarios_defaults <- function() {
     cf.fvals.1 = 'rep(0.1052, 75)',
     si.years.2 = 'seq(62, 100, by = 2)',
     si.sds_obs.2 = 0.1,
+    si.seas.2 = 1,
     sl.Nsamp.1 = 50,
     sl.years.1 = '26:100',
     sl.Nsamp.2 = 100,
     sl.years.2 = 'seq(62, 100, by = 2)',
-    sl.cpar = NA,
+    sl.cpar = "NULL",
     sa.Nsamp.1 = 50,
     sa.years.1 = '26:100',
     sa.Nsamp.2 = 100,
     sa.years.2 = 'seq(62, 100, by = 2)',
-    sa.cpar = NA
+    sa.cpar = "NULL",
+    stringsAsFactors = FALSE
   )
 }
 
-setup_scenarios_2list <- function(dataframe) {
-  text2obj <- function(x) {
-    if (is.character(x)) {
-      tryCatch(eval(parse(text = x)), error = function(e) as.character(x))
-    } else {x}
-  }
-  text2obj.v <- function(x) {
-    mapply(text2obj, x)
-  }
-  list2fleets <- function(get, data) {
-    workwith <- data[get]
-    workwith <- workwith[order(names(workwith))]
-    mat <- sapply(strsplit(names(workwith), "\\."), "[", 2:3)
-    if (all(is.na(mat))) return(data[[get]])
-    if (NROW(mat) == 2 & all(is.na(mat[2, ]))) {
-      names(workwith) <- mat[1, ]
-      return(workwith)
-    }
-    out <- split(workwith, mat[1, ])
-    out$fleets <- type.convert(unique(mat[2, !is.na(mat[2, ])]), as.is = TRUE)
-    return(out)
-  }
-  list2fleets.v <- function(x) {
-    lnamessep <- strsplit(names(x), "\\.")
-    lnamesdf <- sapply(lnamessep, "[",
-      1:max(sapply(lnamessep, length)))
-    tapply(seq_along(x), lnamesdf[1, ], list2fleets, data = x)
-  }
-  listin <- apply(dataframe, 1, text2obj.v)
-  listout <- lapply(listin, list2fleets.v)
-  return(listout)
-}
-
-# Need to find a way to name the elements of the case file list so that it
-# matches the names that I created here.
-setup_scenarios_list_names <- function(x) {
-
-  names(x) <- gsub("^([eo])m$", "\\1m_dir", names(x))
-
-  names(x) <- gsub("^cf$", "f_params", names(x))
-  names(x) <- gsub("^si$", "index_params", names(x))
-
-  names(x) <- gsub("^sa$", "agecomp_params", names(x))
-  names(x) <- gsub("^sc$", "calcomp_params", names(x))
-  names(x) <- gsub("^sl$", "lcomp_params", names(x))
-  names(x) <- gsub("^sm$", "mlacomp_params", names(x))
-  names(x) <- gsub("^sw$", "wtatage_params", names(x))
-
-  names(x) <- gsub("^wc$", "weight_comps_params", names(x))
-  # todo(feature): weight the index
-  names(x) <- gsub("^wi$", "weight_index", names(x))
-
-  names(x) <- gsub("^cb$", "em_binning_params", names(x))
-  names(x) <- gsub("^cd$", "data_params", names(x))
-  names(x) <- gsub("^ce$", "estim_params", names(x))
-  names(x) <- gsub("^co$", "operat_params", names(x))
-  names(x) <- gsub("^ct$", "tv_params", names(x))
-  names(x) <- gsub("^cr$", "retro_params", names(x))
-
-  return(x)
-}
-
+#' Create a name for an unnamed scenario
+#'
+#' Create a name for an unnamed scenario based on [Sys.time].
+#'
+#' @param check A logical that enables checking for a unique name.
+#' If `check = TRUE` then the function enters a loop and will generate
+#' a names until it finds one that doesn't already exist.
+#' This could be helpful when running scenarios in parallel.
+#'
+#' @return A single character value is returned.
+#' The object starts with the letter `s` and is followed by [Sys.time]
+#' Where, the date/time portion is `%m%d%H%M%S`, better known as
+#' a two-digit month, e.g., 01; a two-digit number for the day of the month;
+#' and finally a two-digit hour, then minute, then second.
+#'
 setup_scenarios_name <- function(check = FALSE) {
   makename <- function() {
     format(Sys.time(), "s%m%d%H%M%S")
@@ -150,4 +314,28 @@ setup_scenarios_name <- function(check = FALSE) {
     }
   }
   return(dt)
+}
+
+text2obj <- function(x) {
+  if (is.character(x)) {
+    tryCatch(eval(parse(text = x)), error = function(e) as.character(x))
+  } else {x}
+}
+
+setup_em_dir <- function() {
+  stats::setNames(
+    system.file("extdata", "models", "cod-em",
+      package = "ss3sim"
+    ),
+    "em_dir"
+  )
+}
+
+setup_om_dir <- function() {
+  stats::setNames(
+    system.file("extdata", "models", "cod-om",
+      package = "ss3sim"
+    ),
+    "om_dir"
+  )
 }

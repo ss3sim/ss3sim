@@ -154,23 +154,6 @@ ret <- list(scalar = scalar.all,
 #' @author Cole Monnahan and Kathryn Doering
 #' @family get-results
 #' @export
-#' @examples
-#' \dontrun{
-#' d <- system.file("extdata", package = "ss3sim")
-#' case_folder <- file.path(d, "eg-cases")
-#' om <- file.path(d, "models", "cod-om")
-#' em <- file.path(d, "models", "cod-em")
-#' run_ss3sim(iterations = 1:2, scenarios =
-#'   c("D0-F0-cod"),
-#'   case_folder = case_folder, om_dir = om, em_dir = em,
-#'   case_files = list(F = "F",
-#'                     D = c("index", "lcomp", "agecomp")),
-#'   bias_adjust = FALSE)
-#' get_results_scenario(c("D0-F0-cod"), overwrite_files = TRUE)
-#'
-#' # clean up
-#' unlink("D0-F0-cod", recursive = TRUE)
-#' }
 get_results_scenario <- function(scenario, directory = getwd(),
                                  overwrite_files = FALSE) {
     ## This function moves the wd around so make sure to reset on exit,
@@ -396,18 +379,31 @@ get_results_timeseries <- function(report.file) {
                                          0,
                                          report.file$nforecastyears))
     F_cols <- grep("^F:_", colnames(report.file$timeseries))
+    catch_cols <- grep("^retain\\([B|N]\\):_", colnames(report.file$timeseries))
+    dead_cols <- grep("^dead\\([B|N]\\):_", colnames(report.file$timeseries))
     other_cols <- which(colnames(report.file$timeseries) %in%
                           c("Yr", "SpawnBio", "Recruit_0"))
-    xx <- report.file$timeseries[, c(other_cols, F_cols)]
+    xx <- report.file$timeseries[, c(other_cols, catch_cols, dead_cols, F_cols)]
+    # remove paraentheses from column names because they make the names
+    # non-synatic
+    colnames(xx) <- gsub("\\(|\\)", "", colnames(xx))
+    colnames(xx) <- gsub("\\:", "", colnames(xx))
     xx <- xx[xx$Yr %in% years, ]
     # Get SPR from derived_quants
     spr <- report.file$derived_quants[grep("SPRratio_",
       report.file$derived_quants[,
       grep("label", colnames(report.file$derived_quants),
       ignore.case = TRUE)]), ]
-    spr$Yr <- sapply(strsplit(
-      spr[, grep("label", colnames(spr), ignore.case = TRUE)], "_"), "[", 2)
-    colnames(spr)[which(colnames(spr) == "Value")] <- "SPRratio"
+    if(isTRUE(nrow(spr) > 0)) {
+      spr$Yr <- unlist(lapply(strsplit(
+        spr[, grep("label", colnames(spr), ignore.case = TRUE)], "_"), "[", 2))
+      colnames(spr)[which(colnames(spr) == "Value")] <- "SPRratio"
+      df <- merge(xx, spr[, c("SPRratio", "Yr")], by = "Yr", all.x = TRUE)
+      df$SPRratio[is.na(df$SPRratio)] <- 0
+    } else {
+      df <- xx
+      df$SPRratio <- NA
+    }
     # Get recruitment deviations
     dev <- report.file$recruit
     getcols <- c(grep("^y", colnames(dev), ignore.case = TRUE),
@@ -415,8 +411,6 @@ get_results_timeseries <- function(report.file) {
     dev <- dev[dev[, getcols[1]] %in% years, getcols]
     colnames(dev) <- gsub("dev", "rec_dev", colnames(dev), ignore.case = TRUE)
     ## create final data.frame
-    df <- merge(xx, spr[, c("SPRratio", "Yr")], by = "Yr", all.x = TRUE)
-    df$SPRratio[is.na(df$SPRratio)] <- 0
     df <- merge(df, dev, by.x = "Yr",
       by.y = colnames(dev)[getcols[1]], all.x = TRUE)
     rownames(df) <- NULL
@@ -546,10 +540,10 @@ get_nll_components <- function(report.file) {
 }
 
 #' Get summaries of fits to composition data from report file list
-#' 
+#'
 #' Extract the summary of fits to composition data, where the sections
 #' are structured similarly for each type of data in the report file.
-#' 
+#'
 #' @template report.file
 #' @param name A character string that matches the element of
 #' \code{report.file} that you wish to extract, e.g.,

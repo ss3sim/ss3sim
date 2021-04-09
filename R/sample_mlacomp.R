@@ -30,20 +30,6 @@
 #' @importFrom r4ss SS_writedat SS_parlines
 #' @export
 #'
-#' @examples
-#' d <- system.file(file.path("extdata", "models", "cod-om"),
-#'   package = "ss3sim")
-#' dat_in <- file.path(d, "codOM.dat")
-#' dat_list <- r4ss::SS_readdat(dat_in, version = NULL, verbose = FALSE)
-#' dat_list <- change_data(dat_list, outfile = NULL,
-#'   fleets = 1, years = seq(dat_list$styr, dat_list$styr + 5),
-#'   types = c("age", "mla"))
-#' ctl_file_in <- file.path(d, "codOM.ctl")
-#'
-#' out <- sample_mlacomp(dat_list, outfile = NULL, ctl_file_in = ctl_file_in,
-#'   fleets = 1, Nsamp = 30, years = list(dat_list$styr + 5),
-#'   verbose = FALSE, mean_outfile = NULL)
-#'
 sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
                            years, mean_outfile = NULL,
                            verbose = TRUE){

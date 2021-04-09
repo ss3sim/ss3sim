@@ -35,10 +35,7 @@
 change_q <- function(string_add = NULL, string_remove = NULL,
   ctl_list, dat_list, ctl_file_in = NULL, dat_file_in = NULL, ctl_file_out = NULL,
   overwrite = FALSE, verbose = FALSE) {
-  
-  if(is.null(string_add) & is.null(string_remove)) {
-    stop("Either string_add or string_remove must have an entry.")
-  }
+
   if(!is.null(dat_file_in)) {
     dat_list <- r4ss::SS_readdat(verbose = FALSE, echoall = FALSE,
       file = dat_file_in)
@@ -71,24 +68,23 @@ change_q <- function(string_add = NULL, string_remove = NULL,
   }
 
   if(!is.null(string_remove) & length(remove) > 0) {
-    ctl_list$Q_setup[remove, ] <- 0
     ctl_list$Q_options <- ctl_list$Q_options[!ctl_list$Q_options$fleet %in% remove, ]
     if(NROW(ctl_list[["Q_options"]]) == 0) {
       ctl_list$Q_options <- NULL
       ctl_list$Q_parms <- NULL
     } else {
       ctl_list$Q_parms <- ctl_list$Q_parms[
-        !grepl(paste0(remove, "\\)$", collapse = "|"), row.names(ctl_list$Q_parms)), ]
+        !grepl(
+          paste0("\\(", remove, "\\)$", collapse = "|"),
+          row.names(ctl_list$Q_parms)
+        ), ]
     }
   }
 
   if(!is.null(string_add) & length(add) > 0) {
-    ctl_list$Q_setup[add, ] <- 0
-    ctl_list$Q_setup[add, "Q_type"] <- 2
     # todo: add ability to estimate extra SE
-    # ctl_list$Q_setup[add, "extra_se"] <- 1
     ctl_list$Q_options <- rbind(
-      data.frame("fleet" = add, "link" = 1, "link_info" = 1, 
+      data.frame("fleet" = add, "link" = 1, "link_info" = 1,
         "extra_se" = 0, "biasadj" = 0, "float" = 1),
       ctl_list$Q_options)
     ctl_list$Q_options <- ctl_list$Q_options[order(ctl_list$Q_options$fleet), ]
@@ -141,10 +137,12 @@ change_q <- function(string_add = NULL, string_remove = NULL,
 #' stopifnot(check_q(ctl, dat$Nfleets, desiredfleets = 2:3)$remove == 1)
 #'
 check_q <- function(ctl_list, Nfleets, desiredfleets) {
-  remove <- seq(Nfleets)[which(!ifelse(seq(Nfleets) %in% desiredfleets,
-    ctl_list$Q_setup$Q_type == 2, ctl_list$Q_setup$Q_type ==  0))]
-  add <- desiredfleets[which(!ifelse(desiredfleets %in% seq(Nfleets),
-    ctl_list$Q_setup$Q_type == 2, ctl_list$Q_setup$Q_type ==  0))]
+  #figure out which are needed and which are not
+  no_q <- seq(Nfleets)[!seq(Nfleets) %in% desiredfleets]
+  yes_q <- seq(Nfleets)[seq(Nfleets) %in% desiredfleets]
+  # figure out which need to be removed
+  remove <- ctl_list$Q_options$fleet[ctl_list$Q_options$fleet %in% no_q]
+  add <- yes_q[!(yes_q %in% ctl_list$Q_options$fleet)]
   if(length(add) == 0) add <- NULL
   if(length(remove) == 0) remove <- NULL
   return(list("add" = add, "remove" = remove))

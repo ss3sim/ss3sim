@@ -10,7 +10,8 @@ sample_index(
   fleets,
   years,
   sds_obs,
-  make_plot = FALSE
+  make_plot = lifecycle::deprecated(),
+  seas = list(1)
 )
 }
 \arguments{
@@ -19,7 +20,7 @@ sample_index(
 Be sure to correctly specify which section of the data file you want
 to work with when reading it in using the \code{section} argument.
 Where, \code{section = 1} reads in the input values used to run the model
-and \code{section = 2} reads in the expected values generated give all the
+and \code{section = 2} reads in the expected values generated given all the
 input to the OM. \code{section = 3} is not used within ss3sim, but this
 section provides bootstrapped data sets that have been sampled internally
 within SS.}
@@ -43,8 +44,16 @@ contain either single values or numeric vectors of the same length as the
 number of years which represent the standard deviation of the observation
 error. Single values are repeated for all years.}
 
-\item{make_plot}{A logical switch for whether to make a crude plot showing
+\item{make_plot}{Deprecated with ss3sim version 1.1.5.
+A logical switch for whether to make a crude plot showing
 the results. Useful for testing and exploring the function.}
+
+\item{seas}{A list the same length as \code{fleets}. The list should contain
+either single numeric values or numeric vectors, where the length of each
+vector matches the length of each vector present in \code{years}.
+Single values are repeated for all years.
+This parameter operates the same as \code{sds_obs} but it specifies the
+season rather than the standard deviation of the observations.}
 }
 \value{
 A modified \code{.dat} file if \code{!is.null(outfile)}. A list object
@@ -52,51 +61,73 @@ containing the modified \code{.dat} file is returned invisibly.
 }
 \description{
 This function creates an index of abundance sampled from the expected
-available biomass for given fleets in given years. Let \code{B_y} be the biomass
+available biomass for specified fleets in specified years. Let \code{B_y} be the biomass
 from the operating model for year y. Then the sampled value is calculated as:
 \code{B_y*exp(rnorm(1, 0, sds_obs)-sds_obs^2/2)}. The second term
-adjusts the random samples so that their expected value is \code{B_y} (i.e. the
-log-normal bias correction).
+adjusts the random samples so that their expected value is \code{B_y}
+(i.e., the log-normal bias correction).
 }
 \examples{
-\dontrun{
 # Find the example data location:
-d <- system.file("extdata", package = "ss3sim")
-f_in <- file.path(d, "example-om", "ss3_expected_values.dat")
-dat_list <- r4ss::SS_readdat(f_in, version = NULL, verbose = FALSE)
-# Note the initial expected values for the index data:
-dat_list$CPUE # Only has expected values for fleet 2 in every other year from
-# 76 to 100, so can only sample from fleet 2 during every other year between
-# 76 and 100
+set.seed(3)
+dat_list <- r4ss::SS_readdat(
+  file = file.path(
+    system.file("extdata", "example-om", package = "ss3sim"),
+    "ss3_expected_values.dat"
+    ),
+  version = NULL, verbose = FALSE
+)
+# Look at expected values for the index data
+# fleet 2, every other year from 76 to 100
+# dat_list$CPUE
 sam_yrs <- seq(76, 100, by = 2)
 ex1 <- sample_index(dat_list,
-                   outfile = NULL,
-                   fleets = 2,
-                   years = list(sam_yrs),
-                   sds_obs=list(seq(.001, .1,
-                     length.out = length(sam_yrs))))
+ outfile = NULL,
+ fleets = 2,
+ seas = list(unique(
+   dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "seas"]
+ )),
+ years = list(sam_yrs),
+ sds_obs = list(seq(0.001, 0.1, length.out = length(sam_yrs)))
+)
+\dontshow{
+testthat::expect_equivalent(
+  ex1[["CPUE"]][1:2, "obs"],
+  c(1472202421, 1554321845))
+}
+\dontrun{
 ex1$CPUE
 # could sample from less years, but not more:
 ex2 <- sample_index(dat_list,
-                    outfile = NULL,
-                    fleets = 2,
-                    years = list(sam_yrs[c(-1, -2)]),
-                    sds_obs=list(seq(.001, .1,
-                      length.out = length(sam_yrs[c(-1, -2)]))))
+ outfile = NULL,
+ fleets = 2,
+ seas = list(unique(
+   dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "seas"]
+ )),
+ years = list(sam_yrs[c(-1, -2)]),
+ sds_obs = list(seq(0.001, 0.1, length.out = length(sam_yrs) - 2))
+)
 ex2$CPUE
-# Also, sd can be fixed across years:
+# sd can be fixed across years:
 ex3 <- sample_index(dat_list,
-                    outfile = NULL,
-                    fleets = 2,
-                    years = list(sam_yrs),
-                    sds_obs=list(0.01))
+ outfile = NULL,
+ fleets = 2,
+ seas = list(unique(
+   dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "seas"]
+ )),
+ years = list(sam_yrs),
+ sds_obs = list(0.01)
+)
 ex3$CPUE
 # If fleet 1 also had expected values in the index that you wanted to sample:
-# ex4 <- sample_index(dat_list,
-#                     outfile = NULL,
-#                     fleets = c(1,2),
-#                     years = list(sam_yrs, sam_yrs),
-#                     sds_obs=list(0.01, 0.01))
+testthat::expect_error(
+  ex4 <- sample_index(dat_list,
+    outfile = NULL,
+    fleets = c(1, 2),
+    years = list(sam_yrs, sam_yrs),
+    sds_obs=list(0.01, 0.01)
+  )
+)
 }
 }
 \seealso{
@@ -104,6 +135,8 @@ Other sampling functions:
 \code{\link{clean_data}()},
 \code{\link{sample_agecomp}()},
 \code{\link{sample_calcomp}()},
+\code{\link{sample_catch}()},
+\code{\link{sample_discard}()},
 \code{\link{sample_lcomp}()},
 \code{\link{sample_mlacomp}()},
 \code{\link{sample_wtatage}()}

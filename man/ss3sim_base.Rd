@@ -9,6 +9,7 @@ ss3sim_base(
   scenarios,
   f_params,
   index_params,
+  discard_params = NULL,
   lcomp_params = NULL,
   agecomp_params = NULL,
   calcomp_params = NULL,
@@ -43,13 +44,16 @@ of parameters for the OM and EM.}
 A mandatory case.}
 
 \item{index_params}{A named list containing arguments for
-\code{\link{sample_index}}. A mandatory case.}
+\code{\link{sample_index}}. A mandatory input.}
+
+\item{discard_params}{A named list containing arguments for
+\code{\link{sample_discard}}.}
 
 \item{lcomp_params}{A named list containing arguments for
-\code{\link{sample_lcomp}}. A mandatory case.}
+\code{\link{sample_lcomp}}. A mandatory input.}
 
 \item{agecomp_params}{A named list containing arguments for
-\code{\link{sample_agecomp}}. A mandatory case.}
+\code{\link{sample_agecomp}}. A mandatory input.}
 
 \item{calcomp_params}{A named list containing arguments for
 \code{\link{sample_calcomp}}, for conditional age-at-length data.}
@@ -80,11 +84,10 @@ use for the specified simulations.}
 \item{retro_params}{A named list containing the arguments for
 \code{\link{change_retro}}.}
 
-\item{data_params}{A named list containing arguments for
-\code{\link{change_data}}.}
+\item{data_params}{A named list containing arguments for changing data.}
 
 \item{weight_comps_params}{A named list containing arguments for
-\code{\link{weight_comps}}.}
+\code{\link[r4ss]{SS_tune_comps}}.}
 
 \item{user_recdevs}{An optional matrix of recruitment deviations to replace
 the recruitment deviations built into the package. The columns represent
@@ -131,9 +134,9 @@ The output will appear in whatever your current \R working directory
 is. There will be folders named after your scenarios. They will
 look like this:
 \itemize{
-\item \code{D0-F0-cod/1/om}
-\item \code{D0-F0-cod/1/em}
-\item \code{D0-F0-cod/2/om}
+\item \code{scen-cod/1/om}
+\item \code{scen-cod/1/em}
+\item \code{scen-cod/2/om}
 \item ...
 }
 }
@@ -166,7 +169,7 @@ example below). For a generic higher-level function, see
   om_dir <- file.path(d, "models", "cod-om")
   em_dir <- file.path(d, "models", "cod-em")
 
-  # Or, create the argument lists directly in R and skip the case file setup:
+  # Or, create the argument lists directly in R:
 
   F0 <- list(years = 1:100,
              fleets = 1,
@@ -176,12 +179,10 @@ example below). For a generic higher-level function, see
                  sds_obs = list(0.1))
 
   lcomp1 <- list(fleets = c(1, 2), Nsamp = list(50, 100),
-                 years = list(26:100, seq(62, 100, by = 2)),
-                 lengthbin_vector = NULL)
+                 years = list(26:100, seq(62, 100, by = 2)))
 
   agecomp1 <- list(fleets = c(1, 2), Nsamp = list(50, 100),
-                   years = list(26:100, seq(62, 100, by = 2)),
-                   agebin_vector = NULL)
+                   years = list(26:100, seq(62, 100, by = 2)))
 
   E0 <- list(par_name = c("LnQ_base_Fishery", "NatM_p_1_Fem_GP_1"),
              par_int = c(NA, NA), par_phase = c(-5, -1), forecast_num = 0)
@@ -195,7 +196,11 @@ example below). For a generic higher-level function, see
               estim_params = E0,
               om_dir = om_dir,
               em_dir = em_dir)
+  replist <- r4ss::SS_output(file.path("D1-E0-F0-cod", 1, "em"),
+    verbose = FALSE, printstats = FALSE, covar = FALSE)
+  testthat::expect_equivalent(replist[["cpue"]][, "Yr"], index1[["years"]][[1]])
 
+  test <- replist
   unlink("D1-E0-F0-cod", recursive = TRUE) # clean up
 }
 }

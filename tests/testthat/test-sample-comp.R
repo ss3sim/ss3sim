@@ -52,7 +52,7 @@ test_that("sample_lcomp gives errors as expected", {
                           years            = rep(lcomp$years, 3),
                           cpar             = lcomp$cpar,
                           ESS              = NULL),
-               "Need >=1 year per fleet in years")
+               "Bad input to ss3sim sampling function")
   expect_error(new_dat <- sample_lcomp(dat_list = exp_dat,
                                        outfile          = NULL,
                                        fleets           = lcomp$fleets,
@@ -60,7 +60,7 @@ test_that("sample_lcomp gives errors as expected", {
                                        years            = lcomp$years,
                                        cpar             = lcomp$cpar,
                                        ESS              = NULL),
-               "Nsamp needs to be the same length as fleets")
+               "Bad input to ss3sim sampling function")
   expect_error(new_dat <- sample_lcomp(dat_list = exp_dat,
                                        outfile          = NULL,
                                        fleets           = lcomp$fleets,
@@ -68,8 +68,31 @@ test_that("sample_lcomp gives errors as expected", {
                                        years            = c(50,51),
                                        cpar             = lcomp$cpar,
                                        ESS              = NULL),
-               "Need >=1 year per fleet in years")
+               "Bad input to ss3sim sampling function")
 
+})
+
+test_that("sample_lcomp runs when 1 fleet uses ESS and one does not", {
+ # need to duplicate exp_data to mock having a second fleet
+  flt_2_lencomp <- exp_dat$lencomp
+  flt_2_lencomp$FltSvy <- 2
+  flt_2_lencomp <- rbind(exp_dat$lencomp, flt_2_lencomp)
+  tmp_ESS <- list(sl.ESS.1 = 70,
+                  sl.ESS.2 = NA)
+  tmp_Nsamp <- list(100, 75)
+  set.seed(123)
+  samples <- sample_comp(data = flt_2_lencomp,
+               fleets           = c(1,2),
+               Nsamp            = tmp_Nsamp,
+               years            = list(c(60,62), c(90, 92)),
+               cpar             = lcomp$cpar,
+               ESS              = tmp_ESS)
+ expect_true(sum(samples[samples$Yr == 60 & samples$FltSvy == 1, 7:ncol(samples)]) == tmp_Nsamp[[1]])
+ expect_true(sum(samples[samples$Yr == 92 & samples$FltSvy == 2, 7:ncol(samples)]) == tmp_Nsamp[[2]])
+ expect_true(samples[samples$Yr == 60 & samples$FltSvy == 1, "Nsamp"] == tmp_ESS[[1]])
+ expect_true(samples[samples$Yr == 92 & samples$FltSvy == 2, "Nsamp"] == tmp_Nsamp[[2]])
+ expect_true(!any(is.na(samples$Nsamp)))
+ expect_true(nrow(samples) == 4)
 })
 
 test_that("sample_agecomp runs and changes values" ,{
@@ -97,6 +120,34 @@ test_that("sample_agecomp runs and changes values" ,{
   expect_equal(dim(exp_dat$agecomp), dim(new_dat_d$agecomp))
   expect_false(any(exp_dat$agecomp[ ,10:ncol(exp_dat$agecomp)] ==
                      new_dat_d$agecomp[ ,10:ncol(new_dat_d$agecomp)]))
+  # Multiple fleets with fleet 2 first, which is not typical
+  exp_dat[["agecomp"]][1:10, "FltSvy"] <- 2
+  new_dat_d <- sample_agecomp(dat_list = exp_dat,
+    outfile    = NULL,
+    fleets     = 2:1,
+    Nsamp      = list(100, 10),
+    years      = list(60:78, 80:100),
+    cpar       = 2,
+    ESS        = NULL)
+  expect_equivalent(
+    new_dat_d[["agecomp"]] %>% dplyr::group_by(.data[["FltSvy"]]) %>%
+    dplyr::summarize(dplyr::n()),
+    tibble::tibble(1:2, 11:10))
+  # Added column that is not standard, e.g., Part
+  exp_dat[["agecomp"]][1:10, "Part"] <- 1
+  new_dat_d <- sample_agecomp(dat_list = exp_dat,
+    outfile    = NULL,
+    fleets     = 2:1,
+    Nsamp      = list(100, 10),
+    years      = list(60:78, 80:100),
+    cpar       = 2,
+    ESS        = NULL,
+    Part = list(1, 0)
+    )
+  expect_equivalent(
+    new_dat_d[["agecomp"]] %>% dplyr::group_by(.data[["Part"]]) %>%
+    dplyr::summarize(dplyr::n()),
+    tibble::tibble(0:1, 11:10))
 })
 
 test_that("sample_comp produces less variable results with higher Nsamp" ,{

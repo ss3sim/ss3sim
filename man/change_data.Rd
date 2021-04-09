@@ -9,7 +9,7 @@ change_data(
   outfile = NULL,
   fleets,
   years,
-  types = c("index", "len", "age", "cal", "mla", "mwa"),
+  types = c("len", "age", "cal", "mla", "mwa"),
   age_bins = NULL,
   len_bins = NULL,
   pop_binwidth = NULL,
@@ -26,7 +26,7 @@ change_data(
 Be sure to correctly specify which section of the data file you want
 to work with when reading it in using the \code{section} argument.
 Where, \code{section = 1} reads in the input values used to run the model
-and \code{section = 2} reads in the expected values generated give all the
+and \code{section = 2} reads in the expected values generated given all the
 input to the OM. \code{section = 3} is not used within ss3sim, but this
 section provides bootstrapped data sets that have been sampled internally
 within SS.}
@@ -42,10 +42,10 @@ file takes time and computing resources.}
 \item{years}{A numeric vector of years.}
 
 \item{types}{A vector that can take combinations of the following entries:
-\code{"index"}, \code{"len"}, \code{"age"}, \code{"cal"}, \code{"mla"}.
+\code{"len"}, \code{"age"}, \code{"cal"}, \code{"mla"}.
 \code{types} controls what data structures the function acts on, with
-\code{"index"} changing indices/CPUE, \code{"len"} augmenting the
-length-composition data, \code{"age"} augmenting the age-composition
+\code{"len"} augmenting the length-composition data,
+\code{"age"} augmenting the age-composition
 data, \code{"cal"} augmenting the conditional age-at-length (CAAL) data, and
 \code{"mla"} augmenting the mean length-at-age data.}
 
@@ -98,11 +98,6 @@ to manipulate data or to prepare a new OM for use in a simulation.
 Original data is removed and dummy data is added to the SS \code{.dat} object.
 The dummy data expands the data structure to provide information for all years
 and fleets, potentially adding many rows of data.
-Catches of zero are added for each fleet to allow for ss3sim
-to manipulate catches using the control file rather than the par file.
-Each year/fleet combination must exist,
-otherwise specified years in the control file will only
-be taken from the population for years that are non-zero in the data file.
 
 Currently, \code{.dat} files with multiple sexes cannot be manipulated with
 \code{change_data}.
@@ -113,45 +108,12 @@ internally. It is designed to help stabilize the model, but is unclear how
 and when to use it for optimal effect. The same value is used for all
 length data.
 }
-\examples{
-d <- system.file("extdata", package = "ss3sim")
-fleets <- 1:2
-years <- c(5, 10, 15)
-file_in <- r4ss::SS_readdat(file.path(d, "models", "cod-om", "codOM.dat"),
-  version = NULL, verbose = FALSE)
-
-# Basic test with just length data, default bins:
-out <- change_data(file_in, outfile = NULL, types = "len",
-  years = years, fleets = fleets)
-print(out$lbin_vector)
-print(out$lencomp)
-
-# Change the length bins:
-out <- change_data(file_in, outfile = NULL, types = "len",
-  years = years, fleets = fleets, len_bins = 3:6)
-out$lbin_vector
-out$lencomp
-
-# Change the population length bins:
-out <- change_data(file_in, outfile = NULL, types = "len",
-  years = years, fleets = fleets, pop_binwidth = 1, pop_minimum_size = 5,
-  pop_maximum_size = 210)
-out$binwidth
-out$maximum_size
-out$minimum_size
-
-\dontshow{
-testthat::expect_true(NROW(out$catch) == length(fleets)*100+length(fleets))
-}
-
-}
 \seealso{
 See \code{\link{clean_data}} for a counter function.
 
 Other change functions: 
 \code{\link{change_em_binning}()},
 \code{\link{change_e}()},
-\code{\link{change_f_par}()},
 \code{\link{change_f}()},
 \code{\link{change_o}()},
 \code{\link{change_retro}()},

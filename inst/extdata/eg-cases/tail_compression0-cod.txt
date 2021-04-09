@@ -1,2 +1,0 @@
-## Tail compression base case for cod
-tail_compression; -0.001
