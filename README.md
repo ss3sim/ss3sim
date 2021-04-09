@@ -2,33 +2,23 @@ ss3sim
 ======
 
 -   [Badges](#badges)
--   [Overview](#overview)
 -   [Installation](#installation)
--   [The ss3sim simulation setup](#the-ss3sim-simulation-setup)
--   [How ss3sim works](#how-ss3sim-works)
--   [Example output from an ss3sim simulation](#example-output-from-an-ss3sim-simulation)
--   [Citing ss3sim](#citing-ss3sim)
-<!-- end toc -->
-
-Badges
-------
-
-master: [![R-CMD-check](https://github.com/ss3sim/ss3sim/workflows/R-CMD-check/badge.svg)](https://github.com/ss3sim/ss3sim/actions?query=workflow%3AR-CMD-check) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ss3sim)](https://cran.r-project.org/package=ss3sim)
-
-development: [![R-CMD-check](https://github.com/ss3sim/ss3sim/workflows/R-CMD-check/badge.svg?branch=development)](https://github.com/ss3sim/ss3sim/actions?query=workflow%3AR-CMD-check)
-
-ss3sim is an R package that facilitates flexible, rapid, and reproducible fisheries stock assessment simulation testing with the widely-used [Stock Synthesis](https://vlab.ncep.noaa.gov/web/stock-synthesis) (SS) statistical age-structured stock assessment framework. To learn more, read on or check out the [vignettes](https://ss3sim.github.io/ss3sim/).
-
-Contents
---------
-
--   [Installing the ss3sim R package](#installing-the-ss3sim-r-package)
 -   [The ss3sim simulation setup](#the-ss3sim-simulation-setup)
 -   [How ss3sim works](#how-ss3sim-works)
 -   [Example output from an ss3sim simulation](#example-output-from-an-ss3sim-simulation)
 -   [Citing ss3sim](#citing-ss3sim)
 -   [Contributing to ss3sim](#contributing-to-ss3sim)
 -   [Code of conduct](#code-of-conduct)
+
+<!-- end toc -->
+
+Badges
+------
+
+main: [![R-CMD-check](https://github.com/ss3sim/ss3sim/workflows/R-CMD-check/badge.svg)](https://github.com/ss3sim/ss3sim/actions?query=workflow%3AR-CMD-check) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ss3sim)](https://cran.r-project.org/package=ss3sim)
+
+ss3sim is an R package that facilitates flexible, rapid, and reproducible fisheries stock assessment simulation testing with the widely-used [Stock Synthesis](https://vlab.ncep.noaa.gov/web/stock-synthesis) (SS) statistical age-structured stock assessment framework. To learn more, read on or check out the [vignettes](https://ss3sim.github.io/ss3sim/).
+
 
 Installation
 ------------
@@ -44,9 +34,11 @@ Or, install the development version from GitHub:
 ``` r
 # install.packages("devtools")
 devtools::install_github("ss3sim/ss3sim", 
-  ref = "development", build_vignettes = TRUE, dependencies = TRUE)
+  ref = "main", build_vignettes = TRUE, dependencies = TRUE)
 library(ss3sim)
 ```
+
+A note: As of April 9, 2021, use of parallel master and development branches in the github ss3sim repository has ended. The default branch is now called main, and feature branches will be used for new development. Once tested, feature branches should be merged into main. See issue #305 for more details.
 
 We suggest using the GitHub version because it comes with the SS executable/binary. If you are using the CRAN version, you will need to install the binary and place it in your system path. See the [Introduction vignette](http://ss3sim.github.io/ss3sim/vignettes/introduction.html) for more details on how to get the latest version of SS and [place it in your path](http://ss3sim.github.io/ss3sim/vignettes/introduction.html#path).
 
