@@ -106,7 +106,7 @@ Interested in contributing to ss3sim? We recognize contributions come in many fo
 
 We strive to follow the [NMFS Fisheries Toolbox Contribution Guide](https://github.com/nmfs-fish-tools/Resources/blob/master/CONTRIBUTING.md). We also have included ss3sim-specific code contribution information in the [Developers page of the ss3sim wiki](https://github.com/ss3sim/ss3sim/wiki/developers). Note that these are guidelines, not rules, and we are open to collaborations in other ways that may work better for you. Please feel free to reach out to us by opening an issue in this repository or by emailing the maintainer (call `maintainer("ss3sim")` in R to view the current maintainer's name and email address). 
 
-Note that by contribuiting, you are expect to uphold the [code of conduct](#code-of-conduct).
+Note that contributors are expected to uphold the [code of conduct](#code-of-conduct).
 
 Code of conduct
 ---------------
