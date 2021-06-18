@@ -389,7 +389,7 @@ get_results_timeseries <- function(report.file) {
     catch_cols <- grep("^retain\\([B|N]\\):_", colnames(report.file$timeseries))
     dead_cols <- grep("^dead\\([B|N]\\):_", colnames(report.file$timeseries))
     other_cols <- which(colnames(report.file$timeseries) %in%
-                          c("Yr", "SpawnBio", "Recruit_0"))
+                          c("Yr", "Seas", "SpawnBio", "Recruit_0"))
     xx <- report.file$timeseries[, c(other_cols, catch_cols, dead_cols, F_cols)]
     # remove paraentheses from column names because they make the names
     # non-synatic
@@ -405,7 +405,8 @@ get_results_timeseries <- function(report.file) {
       spr$Yr <- unlist(lapply(strsplit(
         spr[, grep("label", colnames(spr), ignore.case = TRUE)], "_"), "[", 2))
       colnames(spr)[which(colnames(spr) == "Value")] <- "SPRratio"
-      df <- merge(xx, spr[, c("SPRratio", "Yr")], by = "Yr", all.x = TRUE)
+      spr[["Seas"]] <- 1 # need to add seasonal column; just assign to first? Or should be NA?
+      df <- merge(xx, spr[, c("SPRratio", "Yr", "Seas")], by = c("Yr", "Seas"), all.x = TRUE)
       df$SPRratio[is.na(df$SPRratio)] <- 0
     } else {
       df <- xx
@@ -417,9 +418,10 @@ get_results_timeseries <- function(report.file) {
       grep("dev", colnames(dev), ignore.case = TRUE))
     dev <- dev[dev[, getcols[1]] %in% years, getcols]
     colnames(dev) <- gsub("dev", "rec_dev", colnames(dev), ignore.case = TRUE)
+    dev[["Seas"]] <- 1 # Add Seas; just assign to 1? or should be NA?
     ## create final data.frame
-    df <- merge(df, dev, by.x = "Yr",
-      by.y = colnames(dev)[getcols[1]], all.x = TRUE)
+    df <- merge(df, dev, by.x = c("Yr", "Seas"),
+      by.y = c(colnames(dev)[getcols[1]], "Seas"), all.x = TRUE, all.y = TRUE)
     rownames(df) <- NULL
     # change year name
     df$year <- df$Yr
