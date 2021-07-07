@@ -269,7 +269,7 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
       # check that all necessary values are available
       if(nrow(newcomp) != length(dat_list$lbin_vector)) {
         stop("The number of conditional age at length data rows for ",
-             "fleet ", fl, " and year ", yr, " is not the same as the number",
+             "fleet ", tmp_CAL_lencomp$FltSvy, " and year ", tmp_CAL_lencomp$Yr, " is not the same as the number",
              " of length bins. For each fleet and year, please make sure ",
              "there is row where Lbin_lo and Lbin_hi are equal to each of ",
              "the values in lbin_vector: ",
@@ -290,7 +290,7 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
           MoreArgs = list(vec = prob.len),
           SIMPLIFY = FALSE))
         ## Now resample from it, ensuring that the sample size doesn't exceed
-        temp <- sample(x=prob.len.ints, size=tmp_nsamp_ages,
+        temp <- sample(x=prob.len.inits, size=tmp_nsamp_ages,
                        replace=FALSE)
         Nsamp.ages.per.lbin <- unlist(mapply(function(ind, samples)
           sum(samples == ind),
