@@ -42,7 +42,7 @@ A note: As of April 9, 2021, use of parallel master and development branches in 
 
 We suggest using the GitHub version because it comes with the SS executable/binary. If you are using the CRAN version, you will need to install the binary and place it in your system path. See the [Introduction vignette](http://ss3sim.github.io/ss3sim/vignettes/introduction.html) for more details on how to get the latest version of SS and [place it in your path](http://ss3sim.github.io/ss3sim/vignettes/introduction.html#path).
 
-You can read the help files and access the [vignettes](http://ss3sim.github.io/ss3sim/vignettes) for reproducible examples of ss3sim simulations with
+You can read the help files and access the [vignettes](http://ss3sim.github.io/ss3sim/) for reproducible examples of ss3sim simulations with
 
 ``` r
 ?ss3sim
