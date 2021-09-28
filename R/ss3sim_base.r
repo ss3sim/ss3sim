@@ -153,7 +153,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   retro_params = NULL, data_params = NULL, weight_comps_params = NULL,
   user_recdevs = NULL, user_recdevs_warn = TRUE,
   bias_adjust = FALSE, hess_always = FALSE,
-  print_logfile = TRUE, sleep = 0, seed = 21,
+  print_logfile = TRUE, sleep = 0, seed = 21, skip_em=FALSE, 
   ...) {
 
   # In case ss3sim_base is stopped before finishing:
@@ -510,99 +510,100 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       # Make EM as specified by user -------------------------------------------
 
-      ## Manipulate EM starter file for a possible retrospective analysis
-      if(!is.null(retro_params)) {
-        do.call("change_retro", c(
-          str_file_in = file.path(sc, i, "em", "starter.ss"),
-          str_file_out = file.path(sc, i, "em", "starter.ss"),
-          retro_params))
-      }
+			if (skip_em == FALSE) {
+				## Manipulate EM starter file for a possible retrospective analysis
+				if(!is.null(retro_params)) {
+					do.call("change_retro", c(
+						str_file_in = file.path(sc, i, "em", "starter.ss"),
+						str_file_out = file.path(sc, i, "em", "starter.ss"),
+						retro_params))
+				}
 
-	    ## Now change the binning structure in the EM ss3.dat file as needed
-      if (!is.null(em_binning_params)) {
-        em_binning_params <- fixlist(em_binning_params)
-          dat_list <- do.call("change_em_binning", c(
-              dat_list         = list(dat_list),
-              outfile          = NULL,
-              em_binning_params))
-      }
-      # Manipulate EM control file to adjust what gets estimated
+				## Now change the binning structure in the EM ss3.dat file as needed
+				if (!is.null(em_binning_params)) {
+					em_binning_params <- fixlist(em_binning_params)
+						dat_list <- do.call("change_em_binning", c(
+								dat_list         = list(dat_list),
+								outfile          = NULL,
+								em_binning_params))
+				}
+				# Manipulate EM control file to adjust what gets estimated
 
-      if(!is.null(estim_params)) {
-        wd <- getwd()
-        setwd(pathem)
-        dat_list <- do.call("change_e", c(
-                  ctl_file_in          = "em.ctl",
-                  ctl_file_out         = "em.ctl",
-                  dat_list             = list(dat_list),
-                  for_file_in          = "forecast.ss",
-                  estim_params))
-        setwd(wd)
-      }
+				if(!is.null(estim_params)) {
+					wd <- getwd()
+					setwd(pathem)
+					dat_list <- do.call("change_e", c(
+										ctl_file_in          = "em.ctl",
+										ctl_file_out         = "em.ctl",
+										dat_list             = list(dat_list),
+										for_file_in          = "forecast.ss",
+										estim_params))
+					setwd(wd)
+				}
 
-# check q EM values are correct.
-    ctlem <- r4ss::SS_readctl(file = file.path(sc,i, "em", "em.ctl"),
-      use_datlist = TRUE, datlist = datfile.orig,
-      verbose = FALSE, echoall = FALSE)
-    qtasks <- check_q(ctl_list = ctlem, Nfleets = datfile.orig$Nfleets,
-      desiredfleets = index_params$fleets)
-    ctl_list <- change_q(string_add = qtasks$add, string_remove = qtasks$remove,
-      overwrite = TRUE,
-      ctl_file_in = file.path(sc,i, "em", "em.ctl"),
-      ctl_list = NULL, dat_list = datfile.modified,
-      ctl_file_out = NULL)
-      ss_version <- get_ss_ver_dl(dat_list)
-      newlists <- change_year(dat_list, ctl_list)
-      SS_writedat(datlist = newlists$dat_list,
-        outfile = file.path(sc, i, "em", "ss3.dat"),
-        version = ss_version, overwrite = TRUE, verbose = FALSE)
-      SS_writectl(ctllist = newlists$ctl_list,
-        outfile = file.path(sc, i, "em", "em.ctl"),
-        version = ss_version, overwrite = TRUE, verbose = FALSE)
-      # Add dirichlet multinomial parameters if using
-      if(!is.null(weight_comps_params)) {
-        weight_comps_params <- purrr::modify_depth(weight_comps_params,1,unlist)
-        if(weight_comps_params$method == "DM") {
-           # convert model so it can be used
-           out <- r4ss::SS_tune_comps(
-             option = weight_comps_params[["method"]],
-             fleets = weight_comps_params[["fleets"]],
-             dir = pathem,
-             model = get_bin(bin_name = "ss"),
-             extras = ifelse(hess_always | bias_adjust, "", "-nohess"),
-             verbose = FALSE)
-        }
-      }
-      # Run the EM -------------------------------------------------------------
-      # run model 1x as-is, regardless if data weighting used or not.
-      run_ss3model(dir = pathem,
-                   hess = ifelse(bias_adjust, TRUE, hess_always), ...)
-      success <- get_success(dir = pathem)
-      if(bias_adjust & all(success > 0)) {
-        #run model to do the bias adjustment
-        bias <- calculate_bias(dir = pathem,
-                               ctl_file_in = "em.ctl")
-        run_ss3model(dir = pathem,
-                     hess = ifelse(bias_adjust, TRUE, hess_always), ...)
-      }
-      if(!is.null(weight_comps_params)) {
-        # need to do data tuning, regardless of if bias adjustment was done.
-        if(weight_comps_params$method %in% c("MI", "Francis")) {
-          replist <- r4ss::SS_output(pathem, verbose = FALSE, hidewarn = TRUE,
-            printstats = FALSE, covar = hess_always | bias_adjust)
-          out <- r4ss::SS_tune_comps(
-            replist = replist,
-            option = weight_comps_params[["method"]],,
-            fleets = weight_comps_params[["fleets"]],
-            niters_tuning = weight_comps_params[["niters_weighting"]],
-            extras = ifelse(hess_always | bias_adjust, "", "-nohess"),
-            systemcmd = TRUE,
-            model = get_bin(bin_name = "ss"),
-            verbose = FALSE,
-            dir = pathem)
-        }
-      }
-
+	# check q EM values are correct.
+			ctlem <- r4ss::SS_readctl(file = file.path(sc,i, "em", "em.ctl"),
+				use_datlist = TRUE, datlist = datfile.orig,
+				verbose = FALSE, echoall = FALSE)
+			qtasks <- check_q(ctl_list = ctlem, Nfleets = datfile.orig$Nfleets,
+				desiredfleets = index_params$fleets)
+			ctl_list <- change_q(string_add = qtasks$add, string_remove = qtasks$remove,
+				overwrite = TRUE,
+				ctl_file_in = file.path(sc,i, "em", "em.ctl"),
+				ctl_list = NULL, dat_list = datfile.modified,
+				ctl_file_out = NULL)
+				ss_version <- get_ss_ver_dl(dat_list)
+				newlists <- change_year(dat_list, ctl_list)
+				SS_writedat(datlist = newlists$dat_list,
+					outfile = file.path(sc, i, "em", "ss3.dat"),
+					version = ss_version, overwrite = TRUE, verbose = FALSE)
+				SS_writectl(ctllist = newlists$ctl_list,
+					outfile = file.path(sc, i, "em", "em.ctl"),
+					version = ss_version, overwrite = TRUE, verbose = FALSE)
+				# Add dirichlet multinomial parameters if using
+				if(!is.null(weight_comps_params)) {
+					weight_comps_params <- purrr::modify_depth(weight_comps_params,1,unlist)
+					if(weight_comps_params$method == "DM") {
+						 # convert model so it can be used
+						 out <- r4ss::SS_tune_comps(
+							 option = weight_comps_params[["method"]],
+							 fleets = weight_comps_params[["fleets"]],
+							 dir = pathem,
+							 model = get_bin(bin_name = "ss"),
+							 extras = ifelse(hess_always | bias_adjust, "", "-nohess"),
+							 verbose = FALSE)
+					}
+				}
+				# Run the EM -------------------------------------------------------------
+				# run model 1x as-is, regardless if data weighting used or not.
+				run_ss3model(dir = pathem,
+										 hess = ifelse(bias_adjust, TRUE, hess_always), ...)
+				success <- get_success(dir = pathem)
+				if(bias_adjust & all(success > 0)) {
+					#run model to do the bias adjustment
+					bias <- calculate_bias(dir = pathem,
+																 ctl_file_in = "em.ctl")
+					run_ss3model(dir = pathem,
+											 hess = ifelse(bias_adjust, TRUE, hess_always), ...)
+				}
+				if(!is.null(weight_comps_params)) {
+					# need to do data tuning, regardless of if bias adjustment was done.
+					if(weight_comps_params$method %in% c("MI", "Francis")) {
+						replist <- r4ss::SS_output(pathem, verbose = FALSE, hidewarn = TRUE,
+							printstats = FALSE, covar = hess_always | bias_adjust)
+						out <- r4ss::SS_tune_comps(
+							replist = replist,
+							option = weight_comps_params[["method"]],,
+							fleets = weight_comps_params[["fleets"]],
+							niters_tuning = weight_comps_params[["niters_weighting"]],
+							extras = ifelse(hess_always | bias_adjust, "", "-nohess"),
+							systemcmd = TRUE,
+							model = get_bin(bin_name = "ss"),
+							verbose = FALSE,
+							dir = pathem)
+					}
+				}
+			}
 # Write log file ---------------------------------------------------------------
 # TODO pull the log file writing into a separate function and update
 # for current arguments
