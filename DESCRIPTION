@@ -57,4 +57,5 @@ Imports:
     lifecycle
 Remotes: github::r4ss/r4ss@main
 RoxygenNote: 7.1.1
+Roxygen: list(markdown = TRUE)
 Encoding: UTF-8

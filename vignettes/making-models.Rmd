@@ -13,25 +13,51 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-In some cases you may wish to adapt your own SS model to work with the ss3sim package.
+In some cases you may wish to adapt your own SS model to work with ss3sim.
 This is possible but may be difficult.
 The functions in ss3sim were developed to work with the existing model setups, and
 a model with a different structure may cause errors in these functions.
 This stems from the high flexibility of SS,
 allowing for more complex model setups than those used while developing ss3sim.
-
-For instance,
-`sample_index()` does not currently have the capability to handle more than one season.
 Given the many options available in SS,
 it is extremely difficult to write auxiliary functions that will interact reliably with all combinations of these options.
 For this reason,
 we recommend that users strongly consider trying to [modify an existing model rather than creating a new one](modifying-models.html).
 
+For those users who choose to create a new ss3sim model setup,
+we outline the steps to take an existing SS model and modify it to work with the ss3sim package.
+
+# Overall file structure
+
+[OM](#om-setup) folders should have the following files:
+
+```
+yourOMmodel.ctl
+yourOMmodel.dat
+starter.ss
+forecast.ss
+```
+
+[EM](#em-setup) folders should have the following files:
+
+```
+yourEMmodel.ctl
+starter.ss
+forecast.ss
+```
+
+The names of the `.ctl` and `.dat` files are not important.
+The wrapper functions within ss3sim will rename the files when copying them to appropriate folders.
+These files should be derived from `.ss_new` files but have the file extensions as shown above.
+It is important to use `.ss_new` files so the files have consistent formatting.
+Many of the functions in this package and r4ss depend on that formatting.
+
+# Setting up a new operating model {#om-setup}
+
 The main purpose of the operating model (OM) is to generate data files that can be read into the estimation model (EM).
 The user needs to setup the OM `.dat` file to conform to the structure needed by the EM.
-Two key examples are with survey and age- and length-composition data.
-With age- and length-composition data,
-the OM `.dat` file will determine which years and bins are available to the sampling functions
+Two key examples are with age- and length-composition data.
+The OM `.dat` file will determine which years and bins are available to the sampling functions
 `sample_agecomp()` and
 `sample_lcomp()`.
 If dynamic binning is desired,
@@ -41,20 +67,20 @@ Specifically,
 the user must specify small enough OM bins for the data,
 but not smaller than the population bins so that they can easily be re-binned.
 
-For those users who choose to create a new ss3sim model setup,
-we outline the steps to take an existing SS model and modify it to work with the ss3sim package.
-First,
-we cover setting up an [OM](#om-setup) and then and [EM](#em-setup).
-
-# Setting up a new operating model {#om-setup}
-
 The first step to setting up an OM is to run the assessment model to make sure the model runs and estimates parameters as desired.
 We recommend opening a command window inside your OM and EM folders to test if the model still runs at many points along the process.
 After turning parameter estimation off in the starter file (see below),
-the model can be checked by running `ss3 -nohess` to make sure
+the model can be checked by running `ss -nohess` to make sure
 the input files are read in properly and
 the model writes the new input files.
+The previous will only work if you have placed the executable in your path
+([see the Introduction vignette](introduction.html)).
 Use the `.ss_new` files produced as a starting point to ensure that your SS input files are properly formatted.
+
+To obtain `.ss_new` files, open a command window in the OM folder and type `ss` to run the model.
+Once the model is finished running, it will generate a number of files, including `.ss_new` files.
+Remove the `.ss_new` file extension from the files needed and add the appropriate file extension.
+Then, move the generated data file to the EM folder and repeat the process for the EM.
 
 Note that there may be an error message in the command window indicating that ADMB cannot find the data file.
 ADMB expects a certain name and SS uses a name stored in the starter file.
