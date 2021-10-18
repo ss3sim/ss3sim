@@ -69,9 +69,10 @@ get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
         }
     }
 
-    if (length(scenarios) == 0)
-        stop(paste("Error: No scenarios found in:", directory))
-    message(paste("Extracting results from", length(scenarios), "scenarios"))
+    if (length(scenarios) == 0) {
+        stop("No scenarios found in:", directory)
+    }
+    message("Extracting results from", length(scenarios), "scenarios")
 
     ## Loop through each scenario in folder in serial
   dq.list <- ts.list <- scalar.list <-
@@ -196,7 +197,8 @@ get_results_scenario <- function(scenario, directory = getwd(),
     reps.dirs <- list.files(pattern = "[0-9]+$")
     reps.dirs <- as.character(sort(as.numeric(reps.dirs)))
     if (length(reps.dirs) == 0) {
-      stop("Error:No iterations for scenario ", scenario)
+      warning("No iterations for scenario ", scenario)
+      return(vector(mode = "list", length = length(3)))
     }
     message("Starting ", scenario, " with ", length(reps.dirs), " iterations")
     ## Get the number of columns for this scenario
