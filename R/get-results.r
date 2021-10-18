@@ -197,7 +197,6 @@ get_results_scenario <- function(scenario, directory = getwd(),
     reps.dirs <- list.files(pattern = "[0-9]+$")
     reps.dirs <- as.character(sort(as.numeric(reps.dirs)))
     if (length(reps.dirs) == 0) {
-      warning("No iterations for scenario ", scenario)
       return(vector(mode = "list", length = length(3)))
     }
     message("Starting ", scenario, " with ", length(reps.dirs), " iterations")
