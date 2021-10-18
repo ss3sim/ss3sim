@@ -45,8 +45,8 @@ indicates no faceting in the vertical space.}
 \code{\link[ggplot2]{position_jitter}()} that specify the vertical and horizontal
 spread added to points. Where, added values are both positive and negative,
 so the total spread is twice the value specified here.
-If \code{NULL}, the spread will be 40% of the resolution of the data;
-this means the jitter values will occupy 80% of the implied bins.
+If \code{NULL}, the spread will be 40\% of the resolution of the data;
+this means the jitter values will occupy 80\% of the implied bins.
 Categorical data is aligned on the integers,
 so a width or height of 0.5 will spread the data so it's not possible
 to see the distinction between the categories.
@@ -77,8 +77,8 @@ the relationship between two continuous variables.
 }
 \details{
 Points are placed on the figure using the width setting in
-\code{\link[ggplot2]{position_jitter}} that defaults to 40% resolution of
-the data, meaning that the jitter values will occupy 80% of the implied bins.
+\code{\link[ggplot2]{position_jitter}} that defaults to 40\% resolution of
+the data, meaning that the jitter values will occupy 80\% of the implied bins.
 The previous information was found in the documentation for
 \code{\link[ggplot2]{position_jitter}}.
 

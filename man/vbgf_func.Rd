@@ -20,7 +20,7 @@ length-at-age}
 }
 \value{
 a vector of lengths predicted which correspond to the input ages
-  vector.
+vector.
 }
 \description{
 External estimation procedure for von Bertalanffy growth.

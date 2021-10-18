@@ -10,6 +10,6 @@ get_bin_info(dat)
 \item{dat}{A list of sample arguments from all sampling functions}
 }
 \description{
-This function organizes arguments for other functions needed by 
+This function organizes arguments for other functions needed by
 \code{change_bin}.
 }

@@ -13,7 +13,7 @@ provide a shorter path name rather than one high up in the call stack.}
 }
 \value{
 A character vector of relative paths to directories that contain
-  iterations.
+iterations.
 }
 \description{
 Find folders within \code{directory} that contain iterations,

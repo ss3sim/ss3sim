@@ -8,7 +8,7 @@ setup_scenarios_fleet(data)
 }
 \arguments{
 \item{data}{A data frame of scenario information that was passed to
-[setup_scenarios] and as subsequently been passed to this function as a
+\link{setup_scenarios} and as subsequently been passed to this function as a
 long data frame rather than a wide data frame.}
 }
 \value{
@@ -19,7 +19,7 @@ across all fleets that are sampled when a single input value is provided.
 \description{
 Sometimes, users will want to pass a single input instead of fleet-specific
 information to make things easier to keep track of for the user.
-`get_fleet` copies this single object over to all fleets
+\code{get_fleet} copies this single object over to all fleets
 for a given sampling type.
 }
 \details{
@@ -27,25 +27,27 @@ In the data frame that stores scenario-specific information by row,
 columns are fleet-specific with the fleet denoted after the last full stop.
 If this terminal full stop followed by a numerical value is not supplied,
 then the value will be copied for all fleets.
-For example, `sa.Nsamp.1` specifies the sample size for age-composition data
-for fleet number one. Whereas, `sa.Nsamp` specifies the input sample-size
+For example, \code{sa.Nsamp.1} specifies the sample size for age-composition data
+for fleet number one. Whereas, \code{sa.Nsamp} specifies the input sample-size
 for all fleets.
 
 A todo list for future features is as follows:
-* remove fleets that have NA
-* allow for arguments rather than hardwiring arg and fleet
-* see if sa.Nsamp and sa.Nsamp.1 can be in the same data frame and just
+\itemize{
+\item remove fleets that have NA
+\item allow for arguments rather than hardwiring arg and fleet
+\item see if sa.Nsamp and sa.Nsamp.1 can be in the same data frame and just
 fill in the value for fleets that aren't specified; would need to fill
 up and down I think within a group to make it work.
-* accomodate -999 in sample function cpar arguments
-* create add_args to fill in missing arguments across fleets
-* implement add_args before expand fleet such that the new
+\item accomodate -999 in sample function cpar arguments
+\item create add_args to fill in missing arguments across fleets
+\item implement add_args before expand fleet such that the new
 arg would be expanded for all fleets but I only have to specify
 the default one time
-* fix .data[[""]] to pass CRAN
+\item fix .data[\link{""}] to pass CRAN
 x <- enquo(x)
 y <- enquo(y)
 ggplot(data) + geom_point(aes(!!x, !!y))
+}
 }
 \author{
 Kelli F. Johnson

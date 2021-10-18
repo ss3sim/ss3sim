@@ -28,9 +28,9 @@ the vectors correspond to deviations. See the section "Specifying the
 }
 \value{
 The function creates modified versions of the  \code{.ctl} and
-  \code{.dat} files if ctl_file_out and dat_file_out are not NULL. The function
-  also returns a list of the modified \code{.ctl} and \code{.dat} R objects
-  invisibly.
+\code{.dat} files if ctl_file_out and dat_file_out are not NULL. The function
+also returns a list of the modified \code{.ctl} and \code{.dat} R objects
+invisibly.
 }
 \description{
 \code{change_tv} takes SS3 \code{.ctl}, \code{.par}, and \code{.dat} files
@@ -72,12 +72,12 @@ Parameter names must be unique and match the full parameter name in the
 "R0", or "steep", and only one stock recruit parameter can be time-varying
 per model.
 
-This feature will include an *additive* functional linkage between
+This feature will include an \emph{additive} functional linkage between
 environmental data and the parameter where the link parameter is fixed at a
 value of one and the par value is specified in the \code{.par} file:
 \eqn{par'[y] = par + link * env[y]}.
 
-For catchability (\eqn{q}) the *additive* functional linkage is implemented
+For catchability (\eqn{q}) the \emph{additive} functional linkage is implemented
 on the log scale: \eqn{ln(q'[y]) = ln(q) + link * env[y]}
 }
 

@@ -12,7 +12,7 @@ results from the run of the SS model.}
 }
 \value{
 A named vector with two values, \code{ran} and \code{hess},
-(1) a zero or one for the presence of the \code{Report.sso} file and 
+(1) a zero or one for the presence of the \code{Report.sso} file and
 (2) a zero or one for the presence of a positive definite hessian matrix.
 }
 \description{

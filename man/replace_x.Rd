@@ -54,5 +54,5 @@ purrr::modify_depth(2, replace_x)
 
 }
 \author{
-Amanda from [stack overflow](https://stackoverflow.com/questions/22870198/is-there-a-more-efficient-way-to-replace-null-with-na-in-a-list)
+Amanda from \href{https://stackoverflow.com/questions/22870198/is-there-a-more-efficient-way-to-replace-null-with-na-in-a-list}{stack overflow}
 }

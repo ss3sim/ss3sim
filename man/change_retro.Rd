@@ -30,9 +30,9 @@ alters the SS starter file to run a retrospective analysis.
 }
 \details{
 Note that the starter file is set up to run a single retrospective
-  run. Therefore, if you would like to run retrospective analyses for, say,
-  0, 1, 2, 3, 4, and 5 years, you will need to use this function to adjust
-  the starter file 6 separate times.
+run. Therefore, if you would like to run retrospective analyses for, say,
+0, 1, 2, 3, 4, and 5 years, you will need to use this function to adjust
+the starter file 6 separate times.
 }
 \examples{
 # Create a temporary folder for the output:

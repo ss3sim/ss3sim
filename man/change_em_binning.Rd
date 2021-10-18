@@ -29,7 +29,7 @@ within SS.}
 \item{outfile}{A character string specifying the file name to use
 when writing the information to the disk. The string must include
 the proper file extension. No file is written using the default value
-of \code{NULL}, which leads to increased speed because writing the 
+of \code{NULL}, which leads to increased speed because writing the
 file takes time and computing resources.}
 
 \item{bin_vector}{A numeric vector of new length bins to substitute into the
@@ -37,7 +37,7 @@ file takes time and computing resources.}
 
 \item{lbin_method}{A numeric value of either \code{NULL, 1, 2, 3} to change
 the lbin_method for the population bin. Only supports either \code{NULL, 1,
-2} at the moment. \code{NULL} means to not rebin.}
+  2} at the moment. \code{NULL} means to not rebin.}
 
 \item{pop_binwidth}{Population length bin width. Only necessary for
 \code{lbin_method=2}. Note that this value must be smaller than the bin
@@ -116,7 +116,7 @@ Other change functions:
 }
 \author{
 Kotaro Ono (length-composition rebinning), Sean Anderson
-  (conditional age-at-length rebinning)
+(conditional age-at-length rebinning)
 }
 \concept{change functions}
 \concept{sample functions}

@@ -13,7 +13,7 @@ A full directory can be specified with the the prefix of the file name but
 leaving off the '.ctl' portion.}
 }
 \description{
-Use the name of the operating model to open the ctl file and obtain the 
+Use the name of the operating model to open the ctl file and obtain the
 INIT value for sigmaR (recruitment deviations sigma)
 }
 \author{

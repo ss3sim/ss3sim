@@ -2,7 +2,7 @@
 % Please edit documentation in R/ss3sim_base.r
 \name{ss3sim_base}
 \alias{ss3sim_base}
-\title{Base wrapper function to run an ss3sim simulation}
+\title{High-level wrapper to run a simulation}
 \usage{
 ss3sim_base(
   iterations,
@@ -96,7 +96,7 @@ matrix of 0s for deterministic model checking. For traditional stochastic
 simulations these would be independent and normally distributed deviations
 with a standard deviation equal to the desired sigma R. Note that these
 recruitment deviations will be used verbatim (after exponentiation).
-\code{user_recdevs} will *not* be multiplied by sigma R and they will *not*
+\code{user_recdevs} will \emph{not} be multiplied by sigma R and they will \emph{not}
 be log-normal bias corrected. If \code{user_recdevs} are specified as
 anything besides \code{NULL} the package will issue a warning about this.
 Biased recruitment deviations can lead to biased model results.}
@@ -105,7 +105,15 @@ Biased recruitment deviations can lead to biased model results.}
 warning regarding biased recruitment deviations off when \code{user_recdevs}
 are specified.}
 
-\item{bias_adjust}{Run bias adjustment first?.}
+\item{bias_adjust}{A logical argument specifying bias adjustment is conducted.
+Bias adjustment helps assure that the estimated recruitment deviations,
+which are assumed to be log-normally distributed,
+are mean unbiased leading to mean-unbiased estimates of biomass \link{@methot2011}.
+Bias adjustment should always be performed when
+using maximum likelihood estimation when running simulations for publication or management.
+The argument allows users to turn bias adjustment off because
+it involves running the EM multiple times with the hessian and
+is not needed when initially exploring your simulation structure.}
 
 \item{hess_always}{If \code{TRUE} then the Hessian will always be calculated.
 If \code{FALSE} then the Hessian will only be calculated for
@@ -141,11 +149,14 @@ look like this:
 }
 }
 \description{
-This function is a wrapper function that can call \code{\link{run_ss3model}}
-for the operating model, sample the output (add recruitment deviations,
-survey the data, etc.), and run the estimation model. \code{ss3sim_base} is
-the main internal function for \pkg{ss3sim}. It is intended to be used
-through \code{\link{run_ss3sim}}, but can also be used directly.
+A wrapper function that
+\itemize{
+\item calls \code{\link{run_ss3model}} to run the operating model,
+\item samples the output (add recruitment deviations, survey the data, etc.), and
+\item runs the estimation model.
+This is the main workhorse of ss3sim and
+is typically not called by the user but called from \link{run_ss3sim}.
+}
 }
 \details{
 This function is written to be flexible. You can specify the fishing
@@ -153,6 +164,10 @@ mortality, survey index, length composition, age composition, and
 time-varying parameters in the function call as list objects (see the
 example below). For a generic higher-level function, see
 \code{\link{run_ss3sim}}.
+
+The steps carried out within \code{ss3sim_base}:
+
+\figure{simsteps.png}
 }
 \examples{
 \dontrun{
@@ -209,5 +224,5 @@ example below). For a generic higher-level function, see
 }
 \author{
 Sean Anderson with contributions from many others as listed in
-  the DESCRIPTION file.
+the DESCRIPTION file.
 }

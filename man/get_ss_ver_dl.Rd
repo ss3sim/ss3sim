@@ -18,6 +18,9 @@ section provides bootstrapped data sets that have been sampled internally
 within SS.}
 }
 \description{
-# Get the SS version from a list \code{dat_list} that was a
-  originally read in using \code{\link[r4ss]{SS_readdat}}.
+Get the ss version (either 3.24 or 3.30) from a \code{dat_list} list.
 }
+\section{Get the SS version from a list FZpDocpXc6FlAeB1hrEfQmlLmZWQYGpr-1- that was a}{
+originally read in using \code{\link[r4ss]{SS_readdat}}.
+}
+
