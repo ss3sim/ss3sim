@@ -11,9 +11,9 @@ get_bin(bin_name = "ss")
 }
 \value{
 The path to an SS3 binary. If using the GitHub version of the
-  package, this will be an internal binary. Otherwise, this function
-  will search for a version of the binary in your path. See the
-  ss3sim vignette.
+package, this will be an internal binary. Otherwise, this function
+will search for a version of the binary in your path. See the
+ss3sim vignette.
 }
 \description{
 Get SS3 binary/executable location in package

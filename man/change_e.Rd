@@ -75,13 +75,13 @@ to the disk and the altered \code{dat_list} is returned invisibly.
 }
 \description{
 Takes Stock Synthesis (SS)
-  \code{.ctl} and \code{forecast.ss} files, along with
-  a list structure which houses the data file as read in by
-  \code{\link[r4ss]{SS_readdat}}
-  and changes which parameters are estimated, how natural mortality is
-  estimated, and if forecasts are performed. The function can be called by
-  itself or within \code{\link{run_ss3sim}} to alter an estimation model
-  \code{.ctl} file.
+\code{.ctl} and \code{forecast.ss} files, along with
+a list structure which houses the data file as read in by
+\code{\link[r4ss]{SS_readdat}}
+and changes which parameters are estimated, how natural mortality is
+estimated, and if forecasts are performed. The function can be called by
+itself or within \code{\link{run_ss3sim}} to alter an estimation model
+\code{.ctl} file.
 }
 \examples{
 d <- system.file("extdata", "models", "cod-om", package = "ss3sim")

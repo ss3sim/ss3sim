@@ -83,7 +83,18 @@
 # \figure{filestructure.png}{An illustration of the input and output file
 # structure for an ss3sim simulation.}
 #'
-#' @seealso \code{\link{ss3sim_base}}, \code{\link{run_ss3model}}
+#' @seealso
+#' [ss3sim_base()] can be called directly by passing lists of arguments,
+#' rather than using the data frame approach with `run_ss3sim`.
+#' The lists correspond to each function called by [ss3sim_base()].
+#' Each element is itself a list of arguments for the given function.
+#' Either way allows users to pass arguments to each of the
+#' `change_*()` or `sample_*()` functions.
+#' Note that if you do not include an argument,
+#' then [ss3sim_base()] will assume the value of that argument is `NULL`.
+#'
+#' [run_ss3model()] is called by [ss3sim_base()].
+#'
 #' @export
 #' @import lifecycle
 #' @examples

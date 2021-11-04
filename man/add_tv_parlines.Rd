@@ -18,7 +18,7 @@ add_tv_parlines(string, tab, ctl_string, ss3.ctl)
 }
 \value{
 A modified version of ss3.ctl (a vector of strings), containing the
-  new parameter line
+new parameter line
 }
 \description{
 Add short time varying parameter lines. At time of writing, this method will

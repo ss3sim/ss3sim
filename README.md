@@ -42,7 +42,7 @@ A note: As of April 9, 2021, use of parallel master and development branches in 
 
 We suggest using the GitHub version because it comes with the SS executable/binary. If you are using the CRAN version, you will need to install the binary and place it in your system path. See the [Introduction vignette](http://ss3sim.github.io/ss3sim/vignettes/introduction.html) for more details on how to get the latest version of SS and [place it in your path](http://ss3sim.github.io/ss3sim/vignettes/introduction.html#path).
 
-You can read the help files and access the [vignettes](http://ss3sim.github.io/ss3sim/vignettes) for reproducible examples of ss3sim simulations with
+You can read the help files and access the [vignettes](http://ss3sim.github.io/ss3sim/) for reproducible examples of ss3sim simulations with
 
 ``` r
 ?ss3sim
@@ -126,3 +126,7 @@ Disclaimer
 ----------
 
 "The United States Department of Commerce (DOC) GitHub project code is provided on an 'as is' basis and the user assumes responsibility for its use. DOC has relinquished control of the information and no longer has responsibility to protect the integrity, confidentiality, or availability of the information. Any claims against the Department of Commerce stemming from the use of its GitHub project will be governed by all applicable Federal law. Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation or favoring by the Department of Commerce. The Department of Commerce seal and logo, or the seal and logo of a DOC bureau, shall not be used in any manner to imply endorsement of any commercial product or activity by DOC or the United States Government."
+
+<img src="https://raw.githubusercontent.com/nmfs-general-modeling-tools/nmfspalette/main/man/figures/noaa-fisheries-rgb-2line-horizontal-small.png" height="75" alt="NOAA Fisheries">
+
+[U.S. Department of Commerce](https://www.commerce.gov/) | [National Oceanographic and Atmospheric Administration](https://www.noaa.gov) | [NOAA Fisheries](https://www.fisheries.noaa.gov/)

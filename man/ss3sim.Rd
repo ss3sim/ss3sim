@@ -28,13 +28,14 @@ the Appendix A "Putting SS in your path" in the vignette for instructions on
 making sure SS will work from within \R.
 
 The main \pkg{ss3sim} functions are divided into three types:
-
-1. \code{change} and \code{sample} functions that manipulate SS
+\enumerate{
+\item \code{change} and \code{sample} functions that manipulate SS
 configuration files. These manipulations generate an underlying "truth"
 (operating models) and control our assessment of those models (estimation
 models).
 \itemize{
 \item \code{\link{change_f}}: Controls fishing mortality.
+}
 
 \item \code{\link{change_tv}}: Adds time-varying features. For
 example, time-varying natural mortality, growth, or selectivity.
@@ -63,22 +64,24 @@ for length composition data.
 \item \code{\link{change_tail_compression}}: Replace tail compression value
 for length composition data.
 }
-
-2. \code{run} functions that conduct simulations. These functions
+\enumerate{
+\item \code{run} functions that conduct simulations. These functions
 generate a folder structure, call manipulation functions, run SS
 as needed, and save the output.
 \itemize{
 \item \code{\link{run_ss3sim}}: Main function to run \pkg{ss3sim}
 simulations.
+}
 
 \item \code{\link{ss3sim_base}}: Underlying base simulation
 function. Can also be called directly.
 }
-
-3. \code{get} functions for synthesizing the output.
+\enumerate{
+\item \code{get} functions for synthesizing the output.
 \itemize{
 \item \code{\link{get_results_scenario}}: Extract the results for a
 single scenario.
+}
 
 \item \code{\link{get_results_all}}: Extract results from a series
 of scenarios.

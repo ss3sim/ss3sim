@@ -120,7 +120,16 @@ expect_equivalent(unlist(ts$rec_dev[ts$year \%in\% 1:10 & ts$iteration == 2]),
 
 }
 \seealso{
-\code{\link{ss3sim_base}}, \code{\link{run_ss3model}}
+\code{\link[=ss3sim_base]{ss3sim_base()}} can be called directly by passing lists of arguments,
+rather than using the data frame approach with \code{run_ss3sim}.
+The lists correspond to each function called by \code{\link[=ss3sim_base]{ss3sim_base()}}.
+Each element is itself a list of arguments for the given function.
+Either way allows users to pass arguments to each of the
+\verb{change_*()} or \verb{sample_*()} functions.
+Note that if you do not include an argument,
+then \code{\link[=ss3sim_base]{ss3sim_base()}} will assume the value of that argument is \code{NULL}.
+
+\code{\link[=run_ss3model]{run_ss3model()}} is called by \code{\link[=ss3sim_base]{ss3sim_base()}}.
 }
 \author{
 Sean C. Anderson

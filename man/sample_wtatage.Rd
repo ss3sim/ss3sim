@@ -2,7 +2,7 @@
 % Please edit documentation in R/sample_wtatage.R
 \name{sample_wtatage}
 \alias{sample_wtatage}
-\title{Sample empirical weight-at-age data and write to file for use by the EM}
+\title{Sample empirical weight-at-age data}
 \usage{
 sample_wtatage(
   wta_file_in,
@@ -22,7 +22,7 @@ age-0 weight-at-age. This is typically \code{wtatage.ss_new}.}
 \item{outfile}{A character string specifying the file name to use
 when writing the information to the disk. The string must include
 the proper file extension. No file is written using the default value
-of \code{NULL}, which leads to increased speed because writing the 
+of \code{NULL}, which leads to increased speed because writing the
 file takes time and computing resources.}
 
 \item{dat_list}{An SS data list object as read in from
@@ -52,25 +52,40 @@ function is \code{fill_across}.}
 The order of the fleets pertains to the input order of other arguments.
 An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 
-\item{cv_wtatage}{A user specified CV for growth. Default is \code{NULL}.}
+\item{cv_wtatage}{A user specified coefficient of variation (CV) for growth.
+Default is \code{NULL}.}
 }
 \value{
 A modified \code{.wtatage.ss} file if \code{!is.null(outfile)}. A list
-  object containing the modified \code{.wtatage.ss} file is returned invisibly.
+object containing the modified \code{.wtatage.ss} file is returned invisibly.
 }
 \description{
-Take a \code{data.SS_new} file containing expected values and sample from
-true ages to get realistic proportions for the number of fish in each age
-bin, then use the mean size-at-age and CV for growth to generate random
-samples of size, which are then converted to weight and averaged to get mean
-weight-at-age values. Missing ages and years are filled according to a
-specified function. These matrices are then written to file for the EM. By
-calling this function, \pkg{ss3sim} will turn on the empirical weight-at-age
-function (set maturity option to 5) automatically. See
-\code{\link{ss3sim_base}} for more details on how that is implemented.
+In Stock Synthesis, empirical weight-at-age data can be used to
+read empirical body weight for the population from each fleet.
+This data removes the use of growth parameters from the EM because
+weights are assigned to each age internally rather than from the growth parameters,
+from which spawning biomass/fecundity can be determined.
+These values are not data in the sense they have a likelihood but are generated from samples.
+Sampling empirical weight-at-age data from the expected values takes many steps.
+}
+\details{
+The steps for sampling empirical weight-at-age are as follows:
+\itemize{
+\item Sample from the expected ages to get realistic proportions for
+the number of fish in each age bin.
+\item Use the mean size-at-age and coefficient of variation for growth to
+generate random samples of size,
+which are then converted to weight and averaged to get mean weight-at-age values.
+\item Fill in missing ages and years.
+\item Write the information to the appropriate files.
+\item Turn on weight-at-age data in Stock Synthesis by setting the maturity option to 5.
+}
 }
 \seealso{
-\code{\link{fill_across}}
+\itemize{
+\item \code{\link[=fill_across]{fill_across()}}
+\item \code{\link[=ss3sim_base]{ss3sim_base()}}
+}
 
 Other sampling functions: 
 \code{\link{clean_data}()},

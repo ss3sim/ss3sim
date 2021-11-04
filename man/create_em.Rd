@@ -11,7 +11,7 @@ create_em(
 }
 \arguments{
 \item{dir_in}{A file path to a directory that contains the following files:
-\code{forecast.ss}, \code{starter.ss}, and a control file 
+\code{forecast.ss}, \code{starter.ss}, and a control file
 (e.g., \code{xxxOM.ctl}). The default is to get the codOM within the
 \code{ss3sim} package.}
 

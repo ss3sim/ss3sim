@@ -1,10 +1,11 @@
-#' Base wrapper function to run an ss3sim simulation
+#' High-level wrapper to run a simulation
 #'
-#' This function is a wrapper function that can call \code{\link{run_ss3model}}
-#' for the operating model, sample the output (add recruitment deviations,
-#' survey the data, etc.), and run the estimation model. \code{ss3sim_base} is
-#' the main internal function for \pkg{ss3sim}. It is intended to be used
-#' through \code{\link{run_ss3sim}}, but can also be used directly.
+#' A wrapper function that
+#' * calls \code{\link{run_ss3model}} to run the operating model,
+#' * samples the output (add recruitment deviations, survey the data, etc.), and
+#' * runs the estimation model.
+#' This is the main workhorse of ss3sim and
+#' is typically not called by the user but called from [run_ss3sim].
 #'
 #' @param iterations Which iterations to run. A numeric vector.
 #' @param scenarios A name to use as the folder name for the unique combination
@@ -45,7 +46,15 @@
 #' @param user_recdevs_warn A logical argument allowing users to turn the
 #'   warning regarding biased recruitment deviations off when \code{user_recdevs}
 #'   are specified.
-#' @param bias_adjust Run bias adjustment first?.
+#' @param bias_adjust A logical argument specifying bias adjustment is conducted.
+#'   Bias adjustment helps assure that the estimated recruitment deviations,
+#'   which are assumed to be log-normally distributed,
+#'   are mean unbiased leading to mean-unbiased estimates of biomass [@methot2011].
+#'   Bias adjustment should always be performed when
+#'   using maximum likelihood estimation when running simulations for publication or management.
+#'   The argument allows users to turn bias adjustment off because
+#'   it involves running the EM multiple times with the hessian and
+#'   is not needed when initially exploring your simulation structure.
 #' @param hess_always If \code{TRUE} then the Hessian will always be calculated.
 #'   If \code{FALSE} then the Hessian will only be calculated for
 #'   bias-adjustment runs thereby saving time.
@@ -91,9 +100,9 @@
 #' example below). For a generic higher-level function, see
 #' \code{\link{run_ss3sim}}.
 #'
-# The steps carried out within \code{ss3sim_base}:
-#
-# \figure{simsteps.png}
+#' The steps carried out within \code{ss3sim_base}:
+#'
+#' \figure{simsteps.png}
 #'
 #' @examples
 #' \dontrun{

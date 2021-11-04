@@ -22,8 +22,8 @@ Function that extracts results from all iterations inside a supplied
 scenario folder. The function writes 3 .csv files to the scenario
 folder: (1) scalar metrics with one value per iteration (e.g. \eqn{R_0},
 \eqn{h}), (2) a timeseries data ('ts') which contains multiple values per
-iteration (e.g.  \eqn{SSB_y} for a range of years \eqn{y}), and (3) [currently
-disabled and not tested] residuals on the log scale from the surveys
+iteration (e.g.  \eqn{SSB_y} for a range of years \eqn{y}), and (3) \link[=currently
+disabled and not tested]{currently disabled and not tested} residuals on the log scale from the surveys
 across all iterations. The function \code{get_results_all} loops through
 these .csv files and combines them together into a single "final"
 dataframe.

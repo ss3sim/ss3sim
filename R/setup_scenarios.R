@@ -115,7 +115,7 @@ setup_scenarios_fleet <- function(data) {
 #' @examples
 #' defaultscenarios <- setup_scenarios()
 #'
-setup_scenarios <-function (
+setup_scenarios <- function (
   df = "default",
   returntype = c("list", "dataframe")) {
 
@@ -235,7 +235,6 @@ setup_scenarios_lookup <- function() {
     c("em", "em_dir"),
     c("om", "em_dir"),
     c("em_dir", "em_dir"),
-    c("em_dir", "em_dir"),
     c("cb", "em_binning_params"),
     c("cd", "data_params"),
     c("ce", "estim_params"),
@@ -261,11 +260,17 @@ setup_scenarios_lookup <- function() {
 #' run within ss3sim. Users can add more arguments, but the scenario will run
 #' without changing the returned value.
 #'
+#' @param nscenarios The number of rows you want returned in the data frame.
+#' This argument removes the need for users to call [base::rbind] repeatedly
+#' on the output when you want to have more than one scenario.
+#' All rows will be identical with the default settings.
+#' The default is a single row.
 #' @author Kelli Faye Johnson
 #' @export
 #' @return A data frame with the minimal information needed to run a scenario.
+#' The number of rows of the data frame depends on `nscenarios`.
 #'
-setup_scenarios_defaults <- function() {
+setup_scenarios_defaults <- function(nscenarios = 1) {
   data.frame(
     cf.years.1 = '26:100',
     cf.fvals.1 = 'rep(0.1052, 75)',
@@ -283,7 +288,8 @@ setup_scenarios_defaults <- function() {
     sa.years.2 = 'seq(62, 100, by = 2)',
     sa.cpar = "NULL",
     stringsAsFactors = FALSE
-  )
+  ) %>%
+  dplyr::slice(rep(1:dplyr::n(), each = nscenarios))
 }
 
 #' Create a name for an unnamed scenario

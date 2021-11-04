@@ -20,8 +20,8 @@ model or operating model.}
 }
 \value{
 A list of 3 data frames called scalar, timeseries, and
- derived (for derived quantities). These data frames contain results for 1
- model run.
+derived (for derived quantities). These data frames contain results for 1
+model run.
 }
 \description{
 Get results for 1 model run

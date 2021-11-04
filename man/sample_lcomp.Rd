@@ -29,7 +29,7 @@ within SS.}
 \item{outfile}{A character string specifying the file name to use
 when writing the information to the disk. The string must include
 the proper file extension. No file is written using the default value
-of \code{NULL}, which leads to increased speed because writing the 
+of \code{NULL}, which leads to increased speed because writing the
 file takes time and computing resources.}
 
 \item{fleets}{*A vector of integers specifying which fleets to include.
@@ -79,10 +79,10 @@ containing the modified \code{.dat} file is returned invisibly.
 \description{
 Extract length-composition data from a \code{.ss_new} data file and sample
 the data. It is assumed that the composition data will be expected values
-as written by Stock Synthesis in the second section of the data file, but 
+as written by Stock Synthesis in the second section of the data file, but
 one can also sample input data. The resulting length-composition
 data are assumed to represent observed length composition and will overwrite
-the length data in \code{dat_list}, which is returned invisibly. 
+the length data in \code{dat_list}, which is returned invisibly.
 The data file can also be written to the disk, if a file path is provided to
 \code{outfile}, and used as simulated data by an estimation model.
 }

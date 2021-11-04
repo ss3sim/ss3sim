@@ -42,7 +42,7 @@ Replace or input a time series of fishing mortality (\emph{F}) values into
 a Stock Synthesis (SS) control file. In SS, inserting \emph{Fs} in this
 manner relies on the assumption that fishing mortality operates continously
 throughout the year and the process operates jointly with natural mortality
-(Baranov 1918; (Branch 2009)[https://cdnsciencepub.com/doi/10.1139/F08-196]).
+(Baranov 1918; (Branch 2009)\link{https://cdnsciencepub.com/doi/10.1139/F08-196}).
 The documentation for SS also describes this process as
 \emph{F} method == 2, where \emph{F} is continuous and modelled using
 full parameters.

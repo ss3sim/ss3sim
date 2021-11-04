@@ -140,17 +140,20 @@ ret <- list(scalar = scalar.all,
                   dq = dq.all)
 }
 
-#' Extract SS3 simulation results for one scenario.
+#' Extract SS3 simulation results for one scenario
 #'
-#' Function that extracts results from all iterations inside a supplied
-#' scenario folder. The function writes 3 .csv files to the scenario
-#' folder: (1) scalar metrics with one value per iteration (e.g. \eqn{R_0},
-#' \eqn{h}), (2) a timeseries data ('ts') which contains multiple values per
-#' iteration (e.g.  \eqn{SSB_y} for a range of years \eqn{y}), and (3) [currently
-#' disabled and not tested] residuals on the log scale from the surveys
-#' across all iterations. The function \code{get_results_all} loops through
-#' these .csv files and combines them together into a single "final"
-#' dataframe.
+#' Extract results from all iterations inside a supplied scenario folder.
+#' The function writes the following .csv files to the scenario folder
+#' 1. scalar metrics with one value per iteration
+#'    (e.g. \eqn{R_0}, \eqn{h}),
+#' 1. a timeseries data ('ts') which contains multiple values per iteration
+#'    (e.g.  \eqn{SSB_y} for a range of years \eqn{y}), and
+#' 1. residuals on the log scale from the surveys across all iterations;
+#'    this functionality is currently disabled and not tested.
+#'
+#' @seealso
+#' [get_results_all()] loops through these .csv files and
+#' combines them together into a single "final" dataframe.
 #'
 #' @param scenario A single character giving the scenario from which to
 #'   extract results.

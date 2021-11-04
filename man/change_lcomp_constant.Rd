@@ -27,12 +27,12 @@ within SS.}
 \item{outfile}{A character string specifying the file name to use
 when writing the information to the disk. The string must include
 the proper file extension. No file is written using the default value
-of \code{NULL}, which leads to increased speed because writing the 
+of \code{NULL}, which leads to increased speed because writing the
 file takes time and computing resources.}
 }
 \value{
 A modified SS \code{.dat} file, and that file returned invisibly
-  (for testing) as a vector of character lines.
+(for testing) as a vector of character lines.
 }
 \description{
 This function replaces the robustification value for length composition data
@@ -43,10 +43,10 @@ into the working directory.
 }
 \details{
 The robustification constant is added to both the observed and
-  expected proportions of length composition data, before being normalized
-  internally. It is designed to help stabilize the model, but is unclear how
-  and when to use it for optimal effect. The same value is used for all
-  length data.
+expected proportions of length composition data, before being normalized
+internally. It is designed to help stabilize the model, but is unclear how
+and when to use it for optimal effect. The same value is used for all
+length data.
 }
 \author{
 Cole Monnahan

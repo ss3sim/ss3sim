@@ -9,19 +9,12 @@
 #'
 #' @author Peter Kuriyama and Allan Hicks
 #'
-#' @seealso \code{\link{sample_lcomp}}, \code{\link{sample_agecomp}},
-#'   \code{\link{fill_across}}
+#' @seealso
+#' * [sample_lcomp()]
+#' * [sample_agecomp()]
+#' * [sample_wtatage()]
 #' @export
-
-#For Debugging
-# mat1 <- wtatage.new.list[[1]]
-# mat <- wtatage.new.list[[1]]
-# mat <- mat[seq(1, 99, 3), ]
-# mat1 <- mat
-
-# minYear <- datfile$styr
-# maxYear <- datfile$endyr
-
+#'
 fill_across <- function(mat, minYear, maxYear) {
   ##Initial Checks
   mat$yr <- abs(mat$yr)
@@ -134,54 +127,3 @@ fill_across <- function(mat, minYear, maxYear) {
 
   return(temp.df)
 }
-
-
-# tt <- fill_across(mat = mat1, minYear = minYear, maxYear = maxYear)
-# # mat1 <- temp.df
-# # mat2 <- as.data.frame(matrix(nrow = length(seq(minYear, maxYear)), ncol = ncol(mat) ))
-# # mat2[mat$yr, ] <- mat
-# # names(mat2) <- names(mat1)
-
-# write.csv(mat1, file = 'mat1.csv')
-# write.csv(tt, file = 'temp_df.csv')
-# write.csv(mat2, file = 'mat2.csv')
-
-
-# #Used For Testing
-# setwd('/Users/peterkuriyama/School/Research/capam_growth/Empirical/test')
-# test.dat <- read.csv('preFillMat.csv')
-# load('test_list.Rdata')
-# test.list <- temp.list
-
-# mat <- test.list[[1]]
-# minYear <- 1
-# maxYear <- 100
-# fill_across(test.list[[2]], 1, 100)
-
-# #Test values in last row
-# mat <- test.list[[1]]
-# mat <- rbind(mat, mat[3, ])
-# mat[4, 'yr'] <- 100
-# mat[4, 'age0'] <- .555555
-
-# fill_across(mat, 1, 100)
-
-# #Test values in first row
-# mat <- test.list[[1]]
-# mat <- rbind(mat, mat[3, ])
-# mat[4, 'yr'] <- 1
-# mat[4, 'age0'] <- .555555
-
-# mat <- mat[order(mat$yr), ]
-
-# order(mat['yr', ])
-
-
-# mat <- test.dat
-# mat$X <- NULL
-
-# minYear <- 1
-# maxYear <- 100
-
-# xx <- fill_across(mat=mat, minYear = 1, maxYear = 100)
-# write.csv(xx, file = 'check_fill_across.csv')

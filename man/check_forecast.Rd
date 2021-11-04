@@ -17,10 +17,10 @@ A list object as returned by \code{\link[r4ss]{SS_readforecast}}
 Ensure that the \code{forecast.ss} file is configured for use
 in ss3sim.
 \itemize{
-  \item fish at F_{MSY}
-  \item use relative benchmark years (i.e., \code{Bmark_years})
-  \item use relative years for fishing specifications 
-  (i.e., \code{Fcast_years})
+\item fish at F_{MSY}
+\item use relative benchmark years (i.e., \code{Bmark_years})
+\item use relative years for fishing specifications
+(i.e., \code{Fcast_years})
 }
 }
 \author{

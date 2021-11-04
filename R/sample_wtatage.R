@@ -1,14 +1,23 @@
-#' Sample empirical weight-at-age data and write to file for use by the EM
+#' Sample empirical weight-at-age data
 #'
-#' Take a \code{data.SS_new} file containing expected values and sample from
-#' true ages to get realistic proportions for the number of fish in each age
-#' bin, then use the mean size-at-age and CV for growth to generate random
-#' samples of size, which are then converted to weight and averaged to get mean
-#' weight-at-age values. Missing ages and years are filled according to a
-#' specified function. These matrices are then written to file for the EM. By
-#' calling this function, \pkg{ss3sim} will turn on the empirical weight-at-age
-#' function (set maturity option to 5) automatically. See
-#' \code{\link{ss3sim_base}} for more details on how that is implemented.
+#' In Stock Synthesis, empirical weight-at-age data can be used to
+#' read empirical body weight for the population from each fleet.
+#' This data removes the use of growth parameters from the EM because
+#' weights are assigned to each age internally rather than from the growth parameters,
+#' from which spawning biomass/fecundity can be determined.
+#' These values are not data in the sense they have a likelihood but are generated from samples.
+#' Sampling empirical weight-at-age data from the expected values takes many steps.
+#'
+#' @details
+#' The steps for sampling empirical weight-at-age are as follows:
+#' * Sample from the expected ages to get realistic proportions for
+#'   the number of fish in each age bin.
+#' * Use the mean size-at-age and coefficient of variation for growth to
+#'   generate random samples of size,
+#'   which are then converted to weight and averaged to get mean weight-at-age values.
+#' * Fill in missing ages and years.
+#' * Write the information to the appropriate files.
+#' * Turn on weight-at-age data in Stock Synthesis by setting the maturity option to 5.
 #'
 #' @author Cole Monnahan, Allan Hicks, Peter Kuriyama
 #'
@@ -21,14 +30,17 @@
 #' @param fill_fnc A function to fill in missing values (ages and years). The
 #'   resulting weight-at-age file will have values for all years and ages.One
 #'   function is \code{fill_across}.
-#' @param cv_wtatage A user specified CV for growth. Default is \code{NULL}.
+#' @param cv_wtatage A user specified coefficient of variation (CV) for growth.
+#'   Default is `NULL`.
 #' @return A modified \code{.wtatage.ss} file if \code{!is.null(outfile)}. A list
 #'   object containing the modified \code{.wtatage.ss} file is returned invisibly.
 #' @template lcomp-agecomp-index
 #' @template dat_list
 #' @template outfile
 #' @importFrom r4ss SS_parlines
-#' @seealso \code{\link{fill_across}}
+#' @seealso
+#' * [fill_across()]
+#' * [ss3sim_base()]
 #' @family sampling functions
 #' @export
 #

@@ -10,6 +10,9 @@ get_ss_ver_file(file)
 \item{file}{Input SS3 control file, either a starter, control, or data SS file.}
 }
 \description{
-# Get the SS version from the top line in an SS file.
+Get the ss version (either 3.24 or 3.30) from an ss file
+}
+\section{Get the SS version from the top line in an SS file.}{
 as done in \code{\link[r4ss]{SS_readdat}}.
 }
+

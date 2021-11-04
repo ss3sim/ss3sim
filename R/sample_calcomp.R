@@ -1,47 +1,97 @@
-#' Sample conditional age-at-length (CAL) data
+#' Sample conditional age-at-length data
 #'
-#' Samples conditional age-at-length (CAL) data from expected values of length
-#' proportions and expected values of age proportions (conditional on length)
+#' Sample conditional age-at-length (CAAL) data from
+#' expected values of length proportions and
+#' expected values of age proportions (conditional on length)
 #' from the operating model (OM) and writes the samples to file for use by the
 #' estimation model (EM).
 #'
-#' @details This function takes a \code{data.SS_new} file from an OM containing
-#'  expected values of length proportions and age proportions, conditional on
-#'  length. First, sample from true length proportions, using the length comp
-#'  sample sizes, to get realistic sample sizes for age bins given their lengths.
-#'  Note that the overall total sample size for all CAL bins is specified by
-#'  the user for the given fleet and year in \code{Nsamp_ages}. Next,
-#'  use these sample sizes and the expected values of age proportions
-#'  (conditional on length) to sample for realistic age proportions. If no fish
-#'  are sampled, for a row of age proportions in conditional age at length data,
-#'  then that row is discarded. A value of NULL for fleets indicates to delete
-#'  the conditional age at length data data (but not the marginal age data).
-#'  Only the multinomial distribution is currently implemented,
-#'  so this function cannot be used with the Dirichlet distribution.
-#'  Note that this function cannot handle all types of conditional age at length
-#'  sampling. This function requires that there be a row of conditional age at
-#'  length data for each length data bin (for each year and fleet that sampling
-#'  is specified to be performed), where Lbin_lo and Lbin_hi are the
-#'  same value.
-#'  Note also that this sampling procedure represents simple random sampling for
-#'  conditional age at length, where 1) lengths are sampled randomly, 2) fish
-#'  are lengthed and placed into bins, and 3) a subset of lengthed fish are
-#'  aged, where a constant proportion from each length bin are selected for
-#'  aging. This does NOT represent length stratified sampling where a subset of
-#'  lengthed fish are aged, and a constant number from each length bin is
-#'  selected for aging, although these data could also be put into a Stock
-#'  Synthesis model as "Conditional Age at Length."
-#' @note This function is only reliable when using multinomial length
-#'  compositions for the fleet(s) with conditional age at length sampling. The
-#'  real-valued length compositions resulting from the Dirichlet distribution
-#'  cause difficulties in the sampling code. See the vignette for more
-#'  information.
+#' @details
+#' There are many steps needed to sample CAAL data because
+#' ages are not independent from lengths.
+#' The data is located in the `.dat` file alongside age compositions.
+#' CAAL have the added complexity of one line per length bin.
+#' Thus, each row represents the observed age distribution for
+#' a length bin conditioned on the fish lengths that were observed in the length compositions.
+#' The age distribution will be truncated for older or younger fish.
+#' Often, many rows will be empty because no fish of that length bin were observed.
+#' These empty rows are not needed in the .dat file.
+#'
+#' The sampling process includes the following steps:
+#'
+#' 1. Lengths are sampled based on the desired number of lengths, $N$.
+#'    $N$ is the maximum amount that could be aged.
+#' 2. Those lengths are binned to create a length distribution, i.e.,
+#'    numbers of fish in each length bin.
+#' 3. Ages are sampled from fish that contributed to the length distribution.
+#'    Several strategies are possible for sampling ages from those fish
+#'
+#'   1. age all fish,
+#'   2. _take random subset of fish independent of length bin_, or
+#'   3. take a fixed number of fish from each length bin.
+#'
+#' ss3sim can currently only handle randomly sampling ages from lengthed fish.
+#' Future versions could include the last option;
+#' please contact the developers if you are interested in helping facilitate this.
+#'
+#' Note that the overall total sample size for all CAAL bins is specified by
+#' the user for the given fleet and year in \code{Nsamp_ages}.
+#' These sample sizes and the expected values of age proportions
+#' (conditional on length) are used to sample for realistic age proportions.
+#' If all fish are aged,
+#' then no resampling is performed.
+#' If no fish are aged for a row of age proportions in conditional age at length data,
+#' then that row is discarded.
+#' If all fish are not aged,
+#' then a new sample size must be drawn.
+#' This new sample size must be less than or equal to the number of fish that were sampled for their length.
+#' This new sample size is used to draw ages randomly from the expected values.
+#' If we consider all rows for a fleet and year (one for each length bin),
+#' then the sum of those will be the sample size for the CAAL data.
+#' However, if the CAAL sample size is less than the length sample size,
+#" we need to be careful to not age more fish in a length bin than were in that length bin in the first place.
+#' We accomplish this in the code by
+#' doing sampling without replacement for vectors of length bins equal to the number of fish in them.
+#' This ensures realistic sampling.
+#' If the option (3) above were implemented,
+#' a different strategy would need to be implemented.
+#' For instance,
+#' if the user wants 10 fish from each length bin but only 5 fish were observed,
+#' what to do?
+#' A value of NULL for fleets indicates to delete the CAAL data but
+#' not the marginal age data.
+#'
+#' When Dirichlet sampling is used for length compositions,
+#' the number of fish observed will be real-valued and not whole fish.
+#' One cannot simply multiply by the length composition sample size to get whole numbers because
+#' they are real and
+#' rounding or truncating would be unsatisfactory.
+#' Currently, the function simply draws a multinomial sample from the length compositions of specified size (`Nsamp`).
+#' However, this does not guarantee that fewer fish are aged than lengthed.
+#' If you are specifying a small number of fish to age relative to length,
+#' then this might be alright.
+#' However, *we discourage the use of Dirichlet length samples when using CAAL data* as currently implemented.
+#'
+#' Note that this function cannot handle all types of CAAL sampling.
+#' This function requires that there be a row of CAAL data
+#' for each length data bin (for each year and fleet that sampling is specified to be performed),
+#' where Lbin_lo and Lbin_hi are the same value.
+#' Note also that this sampling procedure represents simple random sampling for CAAL, where
+#' (1) lengths are sampled randomly,
+#' (2) fish are lengthed and placed into bins, and
+#' (3) a subset of lengthed fish are aged,
+#'     where a constant proportion from each length bin are selected for aging.
+#' This does not represent length stratified sampling where a subset of
+#' lengthed fish are aged, and a constant number from each length bin is
+#' selected for aging, although these data could also be put into a Stock
+#' Synthesis model as CAAL.
+#'
 #' @author Cole Monnahan, Kotaro Ono
 #' @template lcomp-agecomp-index
 #' @template dat_list
 #' @param exp_vals_list This is a data list containing all expected values. It
-#'  should not be modified by previous sampling functions to contain sampled
-#'  data.
+#'   should not be modified by previous sampling functions to contain sampled
+#'   data.
 #' @template outfile
 #' @param Nsamp_lengths A numeric list of the same length as fleets. Either
 #'  single values or vectors of the same length as the number of years can be

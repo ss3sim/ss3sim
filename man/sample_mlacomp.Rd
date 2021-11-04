@@ -2,7 +2,7 @@
 % Please edit documentation in R/sample_mlacomp.R
 \name{sample_mlacomp}
 \alias{sample_mlacomp}
-\title{[BETA VERSION] Sample mean length (size-)-at-age data and write to file for use by the EM.}
+\title{\link{BETA VERSION} Sample mean length (size-)-at-age data and write to file for use by the EM.}
 \usage{
 sample_mlacomp(
   dat_list,
@@ -29,7 +29,7 @@ within SS.}
 \item{outfile}{A character string specifying the file name to use
 when writing the information to the disk. The string must include
 the proper file extension. No file is written using the default value
-of \code{NULL}, which leads to increased speed because writing the 
+of \code{NULL}, which leads to increased speed because writing the
 file takes time and computing resources.}
 
 \item{ctl_file_in}{A path to the control file, output from an OM, containing
@@ -65,17 +65,17 @@ A modified \code{.dat} file if \code{!is.null(outfile)}. A list object
 containing the modified \code{.dat} file is returned invisibly.
 }
 \description{
-[BETA VERSION] Sample mean length (size-)-at-age data and write to file for use by the EM.
+\link{BETA VERSION} Sample mean length (size-)-at-age data and write to file for use by the EM.
 }
 \details{
-**This function is in beta and untested. Use with caution.**
+\strong{This function is in beta and untested. Use with caution.}
 Take a \code{data.SS_new} file, read in by \pkg{r4ss} function
-  \code{\link[r4ss]{SS_readdat}} containing observed values, and
-  sample from the observed ages to get realistic proportions for the number
-  of fish in each age bin, then use the mean size-at-age and CV for growth to
-  generate random samples of size, which are then averaged to get mean
-  length-at-age values. These values are then written to file for the
-  EM.
+\code{\link[r4ss]{SS_readdat}} containing observed values, and
+sample from the observed ages to get realistic proportions for the number
+of fish in each age bin, then use the mean size-at-age and CV for growth to
+generate random samples of size, which are then averaged to get mean
+length-at-age values. These values are then written to file for the
+EM.
 }
 \seealso{
 Other sampling functions: 

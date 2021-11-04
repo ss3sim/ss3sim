@@ -22,9 +22,9 @@ mod_dirs specified}
 }
 \value{
 A list of 3 data frames called scalar, timeseries, and
- derived (for derived quantities). These lists contain information for
- multiple model runs (estimation models and operating models) for 1
- iteration.
+derived (for derived quantities). These lists contain information for
+multiple model runs (estimation models and operating models) for 1
+iteration.
 }
 \description{
 Get results for 1 iteration
