@@ -33,8 +33,11 @@ Or, install the development version from GitHub:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("ss3sim/ss3sim", 
-  ref = "main", build_vignettes = TRUE, dependencies = TRUE)
+devtools::install_github(
+  "ss3sim/ss3sim",
+  ref = "main",
+  build_vignettes = TRUE, dependencies = TRUE
+)
 library(ss3sim)
 ```
 
