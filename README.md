@@ -17,7 +17,7 @@ Badges
 
 main: [![R-CMD-check](https://github.com/ss3sim/ss3sim/workflows/R-CMD-check/badge.svg)](https://github.com/ss3sim/ss3sim/actions?query=workflow%3AR-CMD-check) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ss3sim)](https://cran.r-project.org/package=ss3sim)
 
-ss3sim is an R package that facilitates flexible, rapid, and reproducible fisheries stock assessment simulation testing with the widely-used [Stock Synthesis](https://vlab.noaa.gov/web/stock-synthesis) (SS) statistical age-structured stock assessment framework. To learn more, read on or check out the [vignettes](https://ss3sim.github.io/ss3sim/).
+ss3sim is an R package that simplifies the steps needed to generate beautiful simulation output from the widely-used [Stock Synthesis](https://vlab.noaa.gov/web/stock-synthesis) (SS3) statistical age-structured stock assessment framework. To learn more, read on or check out the [vignettes](https://ss3sim.github.io/ss3sim/).
 
 
 Installation
@@ -41,9 +41,9 @@ devtools::install_github(
 library(ss3sim)
 ```
 
-A note: As of April 9, 2021, use of parallel master and development branches in the github ss3sim repository has ended. The default branch is now called main, and feature branches will be used for new development. Once tested, feature branches should be merged into main. See issue #305 for more details.
+A note: As of April 9, 2021, use of parallel master and development branches in the GitHub ss3sim repository has ended. The default branch is now called main, and feature branches will be used for new development. Once tested, feature branches should be merged into main. See issue #305 for more details.
 
-We suggest using the GitHub version because it comes with the SS executable/binary. If you are using the CRAN version, you will need to install the binary and place it in your system path. See the [Introduction vignette](http://ss3sim.github.io/ss3sim/vignettes/introduction.html) for more details on how to get the latest version of SS and [place it in your path](http://ss3sim.github.io/ss3sim/vignettes/introduction.html#path).
+We suggest using the GitHub version because it comes with the SS3 executable/binary. If you are using the CRAN version, you will need to install the binary and place it in your system path. See the [Introduction vignette](https://ss3sim.github.io/ss3sim/articles/introduction.html) for more details on how to get the latest version of SS3 and [place it in your path](https://ss3sim.github.io/ss3sim/articles/introduction.html#installing-stock-synthesis).
 
 You can read the help files and access the [vignettes](http://ss3sim.github.io/ss3sim/) for reproducible examples of ss3sim simulations with
 
@@ -58,11 +58,11 @@ The ss3sim simulation setup
 
 An ss3sim simulation requires three types of input:
 
-1.  a base model of the underlying truth (an SS operating model; OM),
-2.  a base model of how you will assess that truth (an SS estimation model; EM), and
+1.  a base model of the underlying truth (an SS3 operating model; OM),
+2.  a base model of how you will assess that truth (an SS3 estimation model; EM), and
 3.  a data frame specifying how you want to manipulate (1) and (2) from their base-model configurations.
 
-You can find examples of an SS OM and EM [within the package data](https://github.com/ss3sim/ss3sim/tree/master/inst/extdata/models). An example data frame for (3) is also available within the package via `ss3sim::setup_scenarios_defaults()`. Adding columns to this default scenario data frame will enable the manipulation of additional components of the OM, sampling procedure, and the EM. Adding rows to this default scenario data frame will lead to more scenarios, where a scenario is the result of the combination of specifications in that row, i.e., how you manipulate the OM and the EM. There will be many folders inside each scenario folder, where each of these folders are iterations. Iterations within a scenario differ only by the seed used within R to define the randomness of that iteration.
+You can find examples of an SS3 OM and EM [within the package data](https://github.com/ss3sim/ss3sim/tree/master/inst/extdata/models). An example data frame for (3) is also available within the package via `ss3sim::setup_scenarios_defaults()`. Adding columns to this default scenario data frame will enable the manipulation of additional components of the OM, sampling procedure, and the EM. Adding rows to this default scenario data frame will lead to more scenarios, where a scenario is the result of the combination of specifications in that row, i.e., how you manipulate the OM and the EM. There will be many folders inside each scenario folder, where each of these folders are iterations. Iterations within a scenario differ only by the seed used within R to define the randomness of that iteration.
 
 ![An illustration of the input and output file and folder structure.](https://raw.githubusercontent.com/ss3sim/ss3sim/f763cfb462a9e68db670155070cd554812a65160/man/figures/filestructure.png)
 
@@ -71,13 +71,13 @@ An illustration of the input and output file and folder structure.
 How ss3sim works
 ----------------
 
-ss3sim works by converting simulation arguments (e.g., a given natural mortality trajectory) into manipulations of SS configuration files. It takes care of running the operating and estimation models as well as making these manipulations at the appropriate stage in the simulation.
+ss3sim works by converting simulation arguments (e.g., a given natural mortality trajectory) into manipulations of SS3 configuration files. It takes care of running the operating and estimation models as well as making these manipulations at the appropriate stage in the simulation.
 
 ss3sim functions are divided into three types:
 
-1.  `change` and `sample` functions that manipulate SS configuration files. These manipulations generate an underlying "truth" (operating models) and control our assessment of those models (estimation models).
+1.  `change` and `sample` functions that manipulate SS3 configuration files. These manipulations generate an underlying "truth" (operating models) and control our assessment of those models (estimation models).
 
-2.  `run` functions that conduct simulations. These functions generate a folder structure, call manipulation functions, run SS as needed, and save the output.
+2.  `run` functions that conduct simulations. These functions generate a folder structure, call manipulation functions, run SS3 as needed, and save the output.
 
 3.  `get` functions for synthesizing the output.
 
