@@ -18,24 +18,22 @@
 #' @param type One of "om" or "em" for operating or estimating model.
 #' @export
 #'
-#' @importFrom r4ss SS_readstarter SS_writestarter
-#'
 #' @examples
 #' # Create a temporary folder for the output:
 #' temp_path <- file.path(tempdir(), "ss3sim-verify-example")
 #' dir.create(temp_path, showWarnings = FALSE)
 #'
-#' d <- system.file("extdata", package = "ss3sim")
+#' d <- system.file("extdata", "models", package = "ss3sim")
 #'
-#' om <- paste0(d, "/models/cod-om")
-#' em <- paste0(d, "/models/cod-em")
+#' om <- file.path(d, "cod-om")
+#' em <- file.path(d, "cod-em")
 #'
 #' file.copy(om, temp_path, recursive = TRUE)
 #' file.copy(em, temp_path, recursive = TRUE)
 #'
 #' # Verify the correct files exist and change file names:
-#' verify_input(model_dir = paste0(temp_path, "/cod-om"), type = "om")
-#' verify_input(model_dir = paste0(temp_path, "/cod-em"), type = "em")
+#' verify_input(model_dir = file.path(temp_path, "cod-om"), type = "om")
+#' verify_input(model_dir = file.path(temp_path, "cod-em"), type = "em")
 #' unlink(temp_path, recursive = TRUE)
 
 verify_input <- function(model_dir, type = c("om", "em")) {
