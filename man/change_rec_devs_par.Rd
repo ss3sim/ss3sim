@@ -18,7 +18,7 @@ change_rec_devs_par(
 \item{par_file_out}{A string providing the path to the output SS \code{.par} file.}
 }
 \value{
-A modified SS \code{.par} file.
+A modified Stock Synthesis \code{.par} file.
 }
 \description{
 This function replaces the recruitment deviations in the

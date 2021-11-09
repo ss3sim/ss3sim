@@ -46,7 +46,7 @@ numeric vectors. If no fleet collected samples, keep the value to
 
 \item{fill_fnc}{A function to fill in missing values (ages and years). The
 resulting weight-at-age file will have values for all years and ages.One
-function is \code{fill_across}.}
+function is \code{\link[=fill_across]{fill_across()}}.}
 
 \item{fleets}{*A vector of integers specifying which fleets to include.
 The order of the fleets pertains to the input order of other arguments.

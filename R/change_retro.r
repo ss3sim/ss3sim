@@ -2,7 +2,7 @@
 #'
 #' A retrospective analysis tests the effect of peeling back the number of
 #' operating model years observable to the estimation model. This function
-#' alters the SS starter file to run a retrospective analysis.
+#' alters the Stock Synthesis starter file to run a retrospective analysis.
 #'
 #' @details Note that the starter file is set up to run a single retrospective
 #'   run. Therefore, if you would like to run retrospective analyses for, say,
@@ -16,9 +16,8 @@
 #'   leads to the removal of data for the specified number of years.
 #'   Positive values are not allowed.
 #' @author Sean C. Anderson
-#' @return A modified SS3 starter file.
+#' @return A modified Stock Synthesis starter file.
 #' @family change functions
-#' @importFrom r4ss SS_readstarter SS_writestarter
 #'
 #' @examples
 #' # Create a temporary folder for the output:
@@ -47,11 +46,11 @@ change_retro <- function(str_file_in = "starter.ss", str_file_out =
   if(abs(retro_yr - round(retro_yr)) > .Machine$double.eps^0.5)
     stop("retro_yr should be a whole number or integer")
 
-  starter <- SS_readstarter(file = str_file_in, verbose = FALSE)
+  starter <- r4ss::SS_readstarter(file = str_file_in, verbose = FALSE)
 
   starter$retro_yr <- retro_yr
 
-  SS_writestarter(mylist = starter,
+  r4ss::SS_writestarter(mylist = starter,
     dir = dirname(str_file_out), file = basename(str_file_out),
     verbose = FALSE, warn = FALSE, overwrite = TRUE)
 }

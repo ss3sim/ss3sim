@@ -2,7 +2,7 @@
 % Please edit documentation in R/change_catch.R
 \name{change_catch}
 \alias{change_catch}
-\title{Change catch in the Stock Synthesis (SS) data list}
+\title{Change catch in the Stock Synthesis data list}
 \usage{
 change_catch(dat_list, ctl_list)
 }
@@ -17,18 +17,20 @@ there is a equilibrium fishing mortality parameter for that fleet and season
 combination.}
 }
 \value{
-A modified SS data file as a list in R.
+A modified Stock Synthesis data file as a list in R.
 }
 \description{
-Change catch in the data so at least all combinations of fleet, seas, yr,
-needed for catch are available. Equilbrium years are generated if there are
-equilibrium parameters in the control list.
+Change catch in the data so at least all combinations of
+fleet, season, and year,
+needed for catch are available.
+Equilibrium years are generated if
+there are equilibrium parameters in the control list.
 }
 \seealso{
-\link{change_f} changes the fishing mortality (\emph{F}) parameters
-using the control file, but these \emph{F} values will only be implemented
-for years with corresponding entries in the SS data file.
-Thus, \link{change_catch} must be implemented after \link{change_f}.
+\code{\link[=change_f]{change_f()}} changes the fishing mortality, \eqn{F}, parameters
+using the control file, but these \eqn{F} values will only be implemented
+for years with corresponding entries in the Stock Synthesis data file.
+Thus, this function must be implemented after \code{\link[=change_f]{change_f()}}.
 }
 \author{
 Kathryn Doering

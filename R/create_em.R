@@ -7,12 +7,11 @@
 #' OM takes input fishing mortality values rather than absolute catches.
 #' 
 #' @param dir_in A file path to a directory that contains the following files:
-#' \code{forecast.ss}, \code{starter.ss}, and a control file 
-#' (e.g., \code{xxxOM.ctl}). The default is to get the codOM within the
-#' \code{ss3sim} package.
+#' `forecast.ss`, `starter.ss`, and a control file 
+#' (e.g., `xxxOM.ctl`). The default is to get the codOM within \pkg{ss3sim}.
 #' @param dir_out A file path to a directory where the new files will be saved.
 #' The default is to save the files in your current working directory in a
-#' folder called \code{new-em}.
+#' folder called `new-em`.
 #'
 #' @export
 #' @author Kelli Faye Johnson

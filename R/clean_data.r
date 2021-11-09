@@ -1,22 +1,21 @@
-#' Given sampling arguments remove ("clean") all data in a .dat file that
-#' is not specified
+#' Given sampling arguments, remove unneeded data from a .dat file
 #'
-#' This prepares a \code{.dat} file to be used by an EM, whereas before it may
-#' have had leftover data from sampling purposes.
+#' This prepares a `.dat` file to be used by an estimation method,
+#' whereas before it may have had leftover data from sampling purposes.
 #'
 #' @author Cole Monnahan
 #' @param lcomp_params Named lists containing the arguments for
-#'   \code{\link{sample_lcomp}}.
+#'   [sample_lcomp()].
 #' @param agecomp_params Named lists containing the arguments for
-#'   \code{\link{sample_agecomp}}.
+#'   [sample_agecomp()].
 #' @param calcomp_params Named lists containing the arguments for
-#'   \code{\link{sample_calcomp}}.
+#'   [sample_calcomp()].
 #' @param mlacomp_params Named lists containing the arguments for
-#'   \code{\link{sample_mlacomp}}.
-#' @param verbose When \code{TRUE} it will print a message when rows are
+#'   [sample_mlacomp()].
+#' @param verbose When `TRUE` it will print a message when rows are
 #' deleted.
 #' @template dat_list
-#' @seealso calculate_data_units
+#' @seealso [calculate_data_units()]
 #' @family sampling functions
 #' @return An invisible cleaned data list as an object.
 #' @note This function does not write the result to file.
@@ -175,7 +174,7 @@ clean_data <- function(dat_list, lcomp_params=NULL,
 #'
 #' @param all_params A named list of the parameters containing at a minimum
 #'   year and fleet values
-#' @param dat_list An SS data list object as read in by \code{\link[r4ss]{SS_readdat}}.
+#' @param dat_list An Stock Synthesis data list object as read in by [r4ss::SS_readdat()].
 #'
 check_data_str_range <- function(all_params, dat_list) {
   str_err <- lapply(all_params, FUN = function(params){

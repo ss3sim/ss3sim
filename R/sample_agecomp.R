@@ -1,13 +1,13 @@
 #' Sample age compositions from a Stock Synthesis data file
 #'
-#' Extract age-composition data from a \code{.ss_new} data file and sample
+#' Extract age-composition data from a `.ss_new` data file and sample
 #' the data. It is assumed that the composition data will be expected values
 #' as written by Stock Synthesis in the second section of the data file, but
 #' one can also sample input data. The resulting age-composition
 #' data are assumed to represent observed age composition and will overwrite
-#' the age data in \code{dat_list}, which is returned invisibly.
+#' the age data in `dat_list`, which is returned invisibly.
 #' The data file can also be written to the disk, if a file path is provided to
-#' \code{outfile}, and used as simulated data by an estimation model.
+#' `outfile`, and used as simulated data by an estimation model.
 #'
 #' @author Cole Monnahan and Kotaro Ono
 #'
@@ -18,13 +18,12 @@
 #' @template Nsamp
 #' @param keep_conditional A logical if conditional age-at-length data
 #'   should be kept or removed entirely from the data file.
-#'   \code{sample_agecomp} only works on the age-composition data
+#'   `sample_agecomp` only works on the age-composition data
 #'   and not on the conditional age-at-length data. To sample the
-#'   conditional data, set \code{keep_conditional} to \code{TRUE}
-#'   and use \code{\link{sample_calcomp}}.
+#'   conditional data, set `keep_conditional` to `TRUE`
+#'   and use [sample_calcomp()].
 #' @template sampledots
 #' @template sampling-return
-#' @importFrom r4ss SS_writedat
 #'
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
@@ -93,7 +92,7 @@ sample_agecomp <- function(dat_list, outfile = NULL, fleets, Nsamp,
 
     ## Write the modified file
     if (!is.null(outfile)){
-      SS_writedat(datlist = dat_list, outfile = outfile, overwrite = TRUE,
+      r4ss::SS_writedat(datlist = dat_list, outfile = outfile, overwrite = TRUE,
                   version = get_ss_ver_dl(dat_list),
                   verbose = FALSE)
     }

@@ -22,22 +22,21 @@
 #' @author Cole Monnahan, Allan Hicks, Peter Kuriyama
 #'
 #' @param wta_file_in The file to read weight-at-age from. Specifically to get the
-#'   age-0 weight-at-age. This is typically \code{wtatage.ss_new}.
+#'   age-0 weight-at-age. This is typically `wtatage.ss_new`.
 #' @param ctl_file_in A path to the control file, output from an OM, containing
 #'   the OM parameters for growth and weight/length relationship. These values
 #'   are used to determine the uncertainty about weight for fish sampled in each
-#'   age bin. Commonly \code{control.ss_new}
+#'   age bin. Commonly `control.ss_new`
 #' @param fill_fnc A function to fill in missing values (ages and years). The
 #'   resulting weight-at-age file will have values for all years and ages.One
-#'   function is \code{fill_across}.
+#'   function is [fill_across()].
 #' @param cv_wtatage A user specified coefficient of variation (CV) for growth.
 #'   Default is `NULL`.
-#' @return A modified \code{.wtatage.ss} file if \code{!is.null(outfile)}. A list
-#'   object containing the modified \code{.wtatage.ss} file is returned invisibly.
+#' @return A modified `.wtatage.ss` file if `!is.null(outfile)`. A list
+#'   object containing the modified `.wtatage.ss` file is returned invisibly.
 #' @template lcomp-agecomp-index
 #' @template dat_list
 #' @template outfile
-#' @importFrom r4ss SS_parlines
 #' @seealso
 #' * [fill_across()]
 #' * [ss3sim_base()]
@@ -89,11 +88,11 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
     if(is.null(mlacomp)) stop("No mean length-at-age data found in dat_list")
     ## Read in the control file
     ss_version <- get_ss_ver_file(ctl_file_in)
-    ctl <-SS_parlines(ctl_file_in, version = ss_version)
+    ctl <- r4ss::SS_parlines(ctl_file_in, version = ss_version)
     ## Read in the file and grab the expected values
     wta_file_in <- readLines(wta_file_in)
 
-    ## Remove double spaces, which SS3 writes in the 7th column
+    ## Remove double spaces, which Stock Synthesis writes in the 7th column
     wta_file_in <- gsub("  ", replacement=" ", x=wta_file_in)
     xx <- grep(x=wta_file_in, "#yr seas gender growpattern birthseas fleet")
     if(length(xx)!=1) stop("Failed to read in wtatage file")

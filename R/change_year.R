@@ -25,11 +25,11 @@ change_year <- function(dat_list, ctl_list) {
 #' 
 #' @template dat_list
 #' @param firstyear An integer value specifying the year in which you want to start
-#' fitting your data. The default is \code{NULL}, which will look to the first year
-#' with a non-zero catch in \code{dat_list} and use that as the first year.
+#' fitting your data. The default is `NULL`, which will look to the first year
+#' with a non-zero catch in `dat_list` and use that as the first year.
 #' 
 #' @return
-#' A \code{\link[r4ss]{SS_readdat}} list with an augmented start year.
+#' A [r4ss::SS_readdat()] list with an augmented start year.
 #' @author Kelli Faye Johnson
 #' 
 change_startyear <- function(dat_list, firstyear = NULL) {
@@ -50,7 +50,7 @@ change_startyear <- function(dat_list, firstyear = NULL) {
 #' start the main period of recruitment.
 #' 
 #' @return
-#' A \code{\link[r4ss]{SS_readctl}} list with an augmented start year of
+#' A [r4ss::SS_readctl()] list with an augmented start year of
 #' the recruitment deviations in the main period.
 #' @author Kelli Faye Johnson
 #' 

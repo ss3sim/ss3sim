@@ -2,15 +2,15 @@
 % Please edit documentation in R/change_tail_compression.R
 \name{change_tail_compression}
 \alias{change_tail_compression}
-\title{Replace tail compression value for length composition data.}
+\title{Replace tail compression value for length composition data}
 \usage{
 change_tail_compression(tail_compression, dat_list, outfile = NULL)
 }
 \arguments{
 \item{tail_compression}{*The new tail_compression value to be used. Must be a
 numeric value, as a proportion. For example 0.1 means 10 percent. See the
-SS3 manual for further information. A NULL value indicates no action, a
-negative value indicates to SS3 to ignore it (not use that feature).}
+Stock Synthesis manual for further information. A NULL value indicates no action, a
+negative value indicates to Stock Synthesis to ignore it (not use that feature).}
 
 \item{dat_list}{An SS data list object as read in from
 \code{\link[r4ss]{SS_readdat}}.
@@ -29,12 +29,11 @@ of \code{NULL}, which leads to increased speed because writing the
 file takes time and computing resources.}
 }
 \value{
-A modified SS \code{.dat} file, and that file returned invisibly
-(for testing) as a vector of character lines.
+A modified Stock Synthesis \code{.dat} file is returned invisibly.
 }
 \description{
-This function replaces the tail compression value for length composition data
-in a \code{.dat} file that was read in using \code{\link[r4ss]{SS_readdat}}
+This function replaces the tail compression value for length-composition data
+in a \code{.dat} file that was read in using \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}}
 with those specified in
 \code{tail_compression}. It then writes a new file with name \code{dat_file_out}
 into the working directory.

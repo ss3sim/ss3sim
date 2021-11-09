@@ -1,20 +1,23 @@
 #' Replace recruitment deviations
 #'
 #' This function replaces the recruitment deviations in the
-#' \code{ss.par} file with those specified in \code{recdevs_new}, as
+#' `ss.par` file with those specified in `recdevs_new`, as
 #' well as a comment (for debugging). It then writes a new file with
-#' name \code{par_file_out} into the working directory.
+#' name `par_file_out` into the working directory.
 #'
 #' @param recdevs_new A vector of new recruitment deviations.
 #' @template par_file_in
 #' @template par_file_out
-#' @return A modified SS \code{.par} file.
+#' @return A modified Stock Synthesis `.par` file.
 #' @author Cole Monnahan
 #' @export
 #'
 
-change_rec_devs_par <- function(recdevs_new, par_file_in = "ss.par",
-  par_file_out="ss.par"){
+change_rec_devs_par <- function(
+  recdevs_new,
+  par_file_in = "ss.par",
+  par_file_out="ss.par"
+){
   ## This is the pattern on the line before the vector of current recdevs
   pattern <- "# recdev1"
 

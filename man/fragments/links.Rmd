@@ -17,6 +17,7 @@ missionstatement <- "simplify the steps needed to generate beautiful simulation 
 [ss]: https://github.com/nmfs-stock-synthesis/stock-synthesis "Stock Synthesis (SS3) github repository"
 [ss-gettingstarted]: https://nmfs-stock-synthesis.github.io/ss-documentation/Getting_Started_SS.html "Stock Synthesis Getting Started documentation"
 [ss-githubactions]: https://github.com/nmfs-stock-synthesis/stock-synthesis/actions "Stock Synthesis GitHub actions"
+[ss-manual]: https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html "Stock Synthesis manual"
 [ss3sim]: https://ss3sim.github.io/ss3sim/ "ss3sim website hosted on GitHub"
 [ss3sim-bin]: https://github.com/ss3sim/ss3sim/tree/main/inst/bin "Stock Synthesis executables on GitHub in ss3sim"
 [ss3sim-cran]: https://cran.r-project.org/package=ss3sim "ss3sim on CRAN"

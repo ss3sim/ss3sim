@@ -12,7 +12,7 @@ csl: cjfas.csl
 description: >
   Start here to learn how to use ss3sim.
   Basic information is provided on
-  key functions, e.g., `run_ss3sim`, and available outputs.
+  key functions, e.g., [run_ss3sim()], and available outputs.
 vignette: >
   %\VignetteIndexEntry{Introduction to ss3sim}
   %\VignetteEngine{knitr::rmarkdown}
@@ -40,7 +40,7 @@ ss3sim consists of
   running Stock Synthesis models, and
   combining the output
 * a few high-level wrapper functions that control simulation experiments,
-  e.g., `run_ss3sim`
+  e.g., [run_ss3sim()]
 * documentation for the user, e.g.,
   `?change_f`,
   vignettes,

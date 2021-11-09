@@ -11,16 +11,16 @@ sample_lognormal(obs, sd)
 log-normal error.}
 
 \item{sd}{A vector of standard deviations to use in
-\code{\link[stats]{rnorm}}.}
+\code{\link[stats:Normal]{stats::rnorm()}}.}
 }
 \description{
 Sample a standard normal in log-space and apply the error to observations.
 }
 \details{
 Newly sampled values are calculated
-\code{obs*exp(rnorm(1, 0, sd)-sd^2/2)}.
+\eqn{obs*exp(rnorm(1, 0, sd)-sd^2/2)}.
 The second term adjusts the random samples so that their expected value is
-\code{obs} (i.e. the log-normal bias correction).
+\code{obs}, i.e., the log-normal bias correction.
 }
 \author{
 Cole Monnahan

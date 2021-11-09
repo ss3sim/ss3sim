@@ -1,28 +1,27 @@
-#' Change population and observed length composition bins in an SS estimation
-#' model
+#' Change population and observed length-composition bins
 #'
-#' \code{change_em_binning} alters the bin structure for the population and
-#' length composition data in an SS estimation model. It is done by taking the
-#' original length composition info from the EM \code{ss3.dat} then changing
+#' `change_em_binning()` alters the bin structure for the population and
+#' length-composition data in a Stock Synthesis estimation model (EM).
+#' The original length-composition data from the EM `.dat` is changed
 #' according to the user's specification. If the data file also contains
-#' conditional age-at-length data then these data will be re-binned as well.
+#' conditional age-at-length data, then these data will be re-binned as well.
 #'
 #' @template dat_list
 #' @template outfile
 #' @param bin_vector A numeric vector of new length bins to substitute into the
-#'   \code{ss3.dat} file.
-#' @param lbin_method A numeric value of either \code{NULL, 1, 2, 3} to change
-#'   the lbin_method for the population bin. Only supports either \code{NULL, 1,
-#'   2} at the moment. \code{NULL} means to not rebin.
-#' @param pop_binwidth Population length bin width. Only necessary for
-#' \code{lbin_method=2}. Note that this value must be smaller than the bin
-#' width specified in length composition data \code{len_bins} or SS3 will
-#' fail (see notes in the SS3 manual).
-#' @param pop_minimum_size Population minimum length bin value. 'Only
-#' necessary for \code{lbin_method=2}
-#' @param pop_maximum_size Population maximum length bin value. Only
-#' necessary for \code{lbin_method=2}
-#' @importFrom r4ss SS_writedat
+#'   `*.dat` file.
+#' @param lbin_method A numeric value of either `NULL, 1, 2, 3` to change
+#'   the lbin_method for the population bin.
+#'   `NULL` means to not re-bin.
+#' @param pop_binwidth Population length bin width.
+#'   Only necessary for `lbin_method = 2`.
+#'   Note that this value must be smaller than the bin width
+#'   specified in length-composition data `len_bins` or
+#'   Stock Synthesis will fail (see notes in the Stock Synthesis manual).
+#' @param pop_minimum_size Population minimum length bin value.
+#'   Only necessary for `lbin_method = 2`.
+#' @param pop_maximum_size Population maximum length bin value.
+#'   Only necessary for `lbin_method = 2`.
 #' @export
 #' @family sample functions
 #' @family change functions
@@ -90,7 +89,7 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
 
   if (length(bin_vector) > length(dat_list$lbin_vector)) {
     stop("The specified bin_vector is longer than the original ",
-         "lbin_vector in the SS3 data file and therefore can't be re-binned.")
+         "lbin_vector in the Stock Synthesis data file and therefore can't be re-binned.")
   }
 
   if (length(bin_vector) == 1) {
@@ -125,7 +124,7 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
   # }
   if (any(!is_divisible(bin_vector, by_ = dat_list$binwidth)) ) {
     stop("One or more of the values in bin_vector are not divisible by the ",
-      "population binwidth specified in the SS3 data file.")
+      "population binwidth specified in the Stock Synthesis data file.")
   }
 
   # Find ID columns and data columns to replace:
@@ -207,9 +206,9 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
   # if all Lbin_lo == -1 then there aren't any CAL data:
   if (length(unique(dat_list$agecomp$Lbin_lo)) > 1) {
     if (!identical(dat_list$Lbin_method, 3)) {
-      stop("Lbin_method was not set to 3 in the SS3 data file. ",
+      stop("Lbin_method was not set to 3 in the Stock Synthesis data file. ",
            "change_em_binning() requires the data file to specify conditional ",
-           "age-at-length data with Lbin_method == 3. See the SS3 manual. Note ",
+           "age-at-length data with Lbin_method == 3. See the Stock Synthesis manual. Note ",
            "the capital L in Lbin_method.")
       }
 
@@ -219,7 +218,7 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
       if (!all(bin_vector %in% population_bins)) {
         stop("One or more of bin_vector is not contained in the ",
              "population bins (and lbin_method = 2). This is required in ",
-             "SS for conditional age-at-length composition data.")
+             "Stock Synthesis for conditional-age-at-length data.")
       }
     }
 
@@ -276,8 +275,13 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
 
   if (!is.null(outfile)) {
     SS_version <- get_ss_ver_dl(dat_list)
-    SS_writedat(datlist = dat_list, outfile = outfile, overwrite = TRUE,
-      version = SS_version, verbose = FALSE)
+    r4ss::SS_writedat(
+      datlist = dat_list,
+      outfile = outfile,
+      overwrite = TRUE,
+      version = SS_version,
+      verbose = FALSE
+    )
   }
   invisible(dat_list)
 }

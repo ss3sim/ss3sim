@@ -22,7 +22,7 @@ of the test. Nothing is returned if the stop function is invoked.
 Calculate the length of all input arguments to see if they
 are equal. Entries that are \code{NULL}, and thus, have
 a length of zero are ignored. An optional trigger to
-\code{stop} is provided with a tailored error message.
+\code{\link[=stop]{stop()}} is provided with a tailored error message.
 }
 \examples{
 \dontshow{

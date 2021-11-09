@@ -33,11 +33,11 @@ OM and EM INIT values is ignored. Default is \code{""}.
 \item{verbose}{Detailed output to command line. Default is \code{FALSE}.}
 
 \item{estimate}{A logical for which changed parameters are to be estimated.
-Used by \code{\link[r4ss]{SS_changepars}}, where in \pkg{r4ss} the default
+Used by \code{\link[r4ss:SS_changepars]{r4ss::SS_changepars()}}, where in \pkg{r4ss} the default
 is \code{FALSE}, which turns all parameter estimation off. Here the default
 is \code{NULL}, which will leave parameter phases unchanged.}
 
-\item{...}{Any other arguments to pass to \code{\link[r4ss]{SS_changepars}}.}
+\item{...}{Any other arguments to pass to \code{\link[r4ss:SS_changepars]{r4ss::SS_changepars()}}.}
 }
 \description{
 Function to standardize the bounds of the control file in the estimation
@@ -63,7 +63,7 @@ EM.ctl <- system.file("extdata", "models", "cod-em", "codEM.ctl",
 file.copy(OM.ctl, "om.ctl")
 file.copy(EM.ctl, "em.ctl")
 
-## Use SS_parlines to get the proper names for parameters for the data frame
+## Use r4ss::SS_parlines to get the proper names for parameters for the data frame
 em.pars <- r4ss::SS_parlines(ctlfile = "em.ctl")
 
 ## Set percentages to make lower and upper bounds

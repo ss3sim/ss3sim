@@ -1,6 +1,6 @@
-#' Identify scenarios in \code{directory}
+#' Identify scenarios in `directory`
 #'
-#' Find folders within \code{directory} that contain iterations,
+#' Find folders within `directory` that contain iterations,
 #' i.e., "1", "2", "3", ..., and thus, allowing for unique scenario names.
 #' @param directory The directory that you want to search for scenarios.
 #'   The search is recursive, and thus, it is in one's best interest to
@@ -20,9 +20,9 @@ id_scenarios <- function(directory) {
   return(scens)
 }
 
-#' Extract SS3 simulation output
+#' Extract Stock Synthesis simulation output
 #'
-#' This high level function extracts results from SS3 model runs. Give it a
+#' This high level function extracts results from Stock Synthesis model runs. Give it a
 #' directory which contains directories for different "scenario" runs, within
 #' which are iterations. It writes two data.frames to file:
 #' one for single scalar values (e.g., MSY) and a second
@@ -34,19 +34,19 @@ id_scenarios <- function(directory) {
 #' @param overwrite_files A switch to determine if existing files should be
 #'   overwritten, useful for testing purposes or if new iterations are run.
 #' @param user_scenarios A character vector of scenarios that should be read
-#'   in. Default is \code{NULL}, which indicates find all scenario folders in
-#'   \code{directory}.
+#'   in. Default is `NULL`, which indicates find all scenario folders in
+#'   `directory`.
 #' @param type A character string specifying if you want the results to be
 #'   written to the disk and returned as a long or wide data frame, where the
-#'   default is \code{"long"}
+#'   default is `"long"`.
 #' @param filename_prefix A character string specifying a prefix to append to
 #'   the filename. Defaults to "ss3sim".
 #' @export
 #' @return Returns a list of 3 dataframes: scalar, ts, and dq.
 #' Creates two .csv files in the current working directory,
-#' where the names of those files are based on \code{filename_prefix}
+#' where the names of those files are based on `filename_prefix`
 #' and the default leads to the following:
-#' \code{ss3sim_ts.csv} and \code{ss3sim_scalar.csv}.
+#' `ss3sim_ts.csv` and `ss3sim_scalar.csv`.
 #' @author Cole Monnahan, Merrill Rudd, Kathryn Doering
 #' @family get-results
 get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
@@ -140,7 +140,7 @@ ret <- list(scalar = scalar.all,
                   dq = dq.all)
 }
 
-#' Extract SS3 simulation results for one scenario
+#' Extract Stock Synthesis simulation results for one scenario
 #'
 #' Extract results from all iterations inside a supplied scenario folder.
 #' The function writes the following .csv files to the scenario folder
@@ -158,7 +158,7 @@ ret <- list(scalar = scalar.all,
 #' @param scenario A single character giving the scenario from which to
 #'   extract results.
 #' @param directory The directory which contains the scenario folder.
-#' @param overwrite_files A boolean (default is \code{FALSE}) for whether to delete
+#' @param overwrite_files A boolean (default is `FALSE`) for whether to delete
 #'   any files previously created with this function. This is intended to be
 #'   used if iterations were added since the last time it was called, or any
 #'   changes were made to this function.
@@ -234,11 +234,11 @@ get_results_scenario <- function(scenario, directory = getwd(),
 
 #' Get results for 1 iteration
 #'
-#' @param dir_1_iter The full or relative path to the SS iteration folder.
+#' @param dir_1_iter The full or relative path to the Stock Synthesis iteration folder.
 #'  Assumed to contain multiple model folders that contain "om" or "em"
 #'  (not case sensitive) somewhere in the model file name. If specified,
 #'  mod_dirs need not be specified.
-#' @param mod_dirs The full or relative path to the SS model folders as a
+#' @param mod_dirs The full or relative path to the Stock Synthesis model folders as a
 #'  vector of characters. If specified, dir_1_iter need not be specified.
 #' @param iter_name Name of the iteration, which will be appended to the
 #'  dataframes . Defaults to NULL, in which case the iter_name will be the
@@ -288,7 +288,7 @@ get_results_iter <- function(dir_1_iter = NULL, mod_dirs = NULL,
 
 #' Get results for 1 model run
 #'
-#' @param dir The full or relative path to the SS model file folder. If not
+#' @param dir The full or relative path to the Stock Synthesis model file folder. If not
 #'  specified, uses the working directory.
 #' @param is_EM Is this an estimation model? Defaults to NULL, which will look
 #' for the letters "em" (lower or uppercase) to decide if this is an estimation
@@ -298,7 +298,6 @@ get_results_iter <- function(dir_1_iter = NULL, mod_dirs = NULL,
 #' model or operating model.
 #' @author Kathryn Doering
 #' @export
-#' @importFrom r4ss SS_output
 #' @return A list of 3 data frames called scalar, timeseries, and
 #'  derived (for derived quantities). These data frames contain results for 1
 #'  model run.
@@ -331,7 +330,7 @@ get_results_mod <- function(dir = getwd(), is_EM = NULL, is_OM = NULL) {
   } else {
     forecastTF <- FALSE
   }
-  report <- SS_output(file.path(dir), covar = FALSE, verbose = FALSE,
+  report <- r4ss::SS_output(file.path(dir), covar = FALSE, verbose = FALSE,
                       compfile = NULL, forecast = forecastTF, warn = FALSE,
                       readwt = FALSE, printstats = FALSE, NoCompOK = TRUE,
                       ncols = NULL)
@@ -350,7 +349,7 @@ get_results_mod <- function(dir = getwd(), is_EM = NULL, is_OM = NULL) {
     scalar$params_stuck_high <- NA
   }
   ## Other calcs (TODO: change these at indiv spreadsheet level, if can find
-  # how to get these output from SS_output)
+  # how to get these output from r4ss::SS_output)
   scalar$hessian <- file.exists(file.path(dir, "admodel.cov"))
   ## The number of iterations for the run is only in ss_summary.sso and
   # CumReport.sso for some reason.
@@ -377,7 +376,7 @@ get_results_mod <- function(dir = getwd(), is_EM = NULL, is_OM = NULL) {
 
 #' Extract time series from a model run.
 #'
-#' Extract time series from an \code{\link[r4ss]{SS_output}} list from a model run.
+#' Extract time series from an [r4ss::SS_output()] list from a model run.
 #' Returns a data.frame of the results for SSB, recruitment and effort by year.
 #'
 #' @template report.file
@@ -395,7 +394,7 @@ get_results_timeseries <- function(report.file) {
     other_cols <- which(colnames(report.file$timeseries) %in%
                           c("Yr", "Seas", "SpawnBio", "Recruit_0"))
     xx <- report.file$timeseries[, c(other_cols, catch_cols, dead_cols, F_cols)]
-    # remove paraentheses from column names because they make the names
+    # remove parentheses from column names because they make the names
     # non-synatic
     colnames(xx) <- gsub("\\(|\\)", "", colnames(xx))
     colnames(xx) <- gsub("\\:", "", colnames(xx))
@@ -435,8 +434,8 @@ get_results_timeseries <- function(report.file) {
 
 #' Extract time series from a model run with the associated standard deviation.
 #'
-#' Extract time series from an \code{\link[r4ss]{SS_output}} list from a model run.
-#' Returns a data.frame of the results for SSB, recruitment,
+#' Extract time series from an [r4ss::SS_output()] list from a model run.
+#' Returns a data.frame of the results for spawning stock biomass (SSB), recruitment,
 #' forecasts, and effort by year.
 #'
 #' @template report.file
@@ -471,7 +470,7 @@ get_results_derived <- function(report.file) {
 
 #' Extract scalar quantities from a model run.
 #'
-#' Extract scalar quantities from an \code{\link[r4ss]{SS_output}} list from a model run.
+#' Extract scalar quantities from an [r4ss::SS_output()] list from a model run.
 #' Returns a data.frame of the results (a single row) which can be rbinded later.
 #' @template report.file
 #' @family get-results
@@ -493,7 +492,7 @@ get_results_scalar <- function(report.file) {
         utils::tail(report.file$timeseries[report.file$timeseries$Era == "TIME", grep("dead\\(B\\)",
           names(report.file$timeseries))], 1)
     pars <- t(report.file$parameters[
-      # Remove Main Recruitment Deviations and fleet_f from older SS output
+      # Remove Main Recruitment Deviations and fleet_f from older Stock Synthesis output
       !grepl("main|_fleet_", report.file$parameters$Label, ignore.case = TRUE),
       # Return the number in a transposed data frame
       "Value", drop = FALSE])
@@ -542,8 +541,8 @@ get_results_scalar <- function(report.file) {
 #' available components are extracted.
 #' @template report.file
 #' @author Merrill Rudd
-#' @return A vector of named numeric values, where \code{"NLL_"} is
-#' appended to the names in the \code{report.file}.
+#' @return A vector of named numeric values, where `"NLL_"` is
+#' appended to the names in the `report.file`.
 get_nll_components <- function(report.file) {
     vec <- t(report.file$likelihoods_used[, "values", drop = FALSE])
     colnames(vec) <- paste0("NLL_", row.names(report.file$likelihoods_used))
@@ -559,8 +558,8 @@ get_nll_components <- function(report.file) {
 #'
 #' @template report.file
 #' @param name A character string that matches the element of
-#' \code{report.file} that you wish to extract, e.g.,
-#' \code{"Length_Comp_Fit_Summary"}.
+#' `report.file` that you wish to extract, e.g.,
+#' `"Length_Comp_Fit_Summary"`.
 get_compfit <- function(report.file, name) {
   if (NROW(report.file[[name]]) > 0) {
     tuning <- t(report.file[[name]][, "Curr_Var_Adj", drop = FALSE])

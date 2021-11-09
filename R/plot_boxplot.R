@@ -1,6 +1,6 @@
 #' Plot results of a simulation as boxplots
 #'
-#' Generate boxplots using \code{\link[ggplot2]{ggplot}} to visualize
+#' Generate boxplots using [ggplot2::ggplot()] to visualize
 #' outliers and central tendencies.
 #' 
 #' @details
@@ -9,14 +9,14 @@
 #' quantiles (i.e., 25th and 75th percentiles). The upper and lower
 #' whiskers are 1.5*inner-quartile range, i.e., the distance between the first
 #' and third quartiles. Outliers are those points that lie beyond the whiskers.
-#' These explanations are detailed in \code{\link[ggplot2]{geom_boxplot}}.
+#' These explanations are detailed in [ggplot2::geom_boxplot()].
 #' 
-#' Values of \code{NA} are removed prior to plotting such that the typical
-#' error message from \code{ggplot} is not printed to the screen.
+#' Values of `NA` are removed prior to plotting such that the typical
+#' error message from [ggplot2::ggplot()] is not printed to the screen.
 #'
 #' @template plot-functions
 #' @param fill A character string that represents a single color that will
-#' be used to fill the boxplots. The default value of \code{NA} leads to
+#' be used to fill the boxplots. The default value of `NA` leads to
 #' unfilled boxplots.
 #' @export
 #' @examples

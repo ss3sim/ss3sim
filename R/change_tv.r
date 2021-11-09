@@ -1,66 +1,65 @@
-#' Methods to include time-varying parameters in an SS3 operating model
+#' Methods to include time-varying parameters in a Stock Synthesis operating model
 #'
-#' \code{change_tv} takes SS3 \code{.ctl}, \code{.par}, and \code{.dat} files
+#' `change_tv` takes Stock Synthesis `.ctl`, `.par`, and `.dat` files
 #' and implements time-varying parameters using environmental variables.
-#' \code{change_tv} is specifically set up to work with an operating model
-#' \code{.ctl} file.
+#' `change_tv` is specifically set up to work with an operating model
+#' `.ctl` file.
 #'
 #' @param change_tv_list A list of named vectors. Names correspond to parameters
 #' in the operating model that currently do not use environmental deviations and
-#' the vectors correspond to deviations. See the section "Specifying the
-#' \code{change_tv_list}" below for help on specifying this argument.
+#' the vectors correspond to deviations. See the section
+#' "Specifying the `change_tv_list`" for help on specifying this argument.
 #' @template ctl_file_in
 #' @template ctl_file_out
 #' @template dat_file_in
 #' @template dat_file_out
 #' @author Kotaro Ono, Carey McGilliard, Kelli Johnson, and Kathryn Doering
 #' @family change functions
-#' @return The function creates modified versions of the  \code{.ctl} and
-#'   \code{.dat} files if ctl_file_out and dat_file_out are not NULL. The function
-#'   also returns a list of the modified \code{.ctl} and \code{.dat} R objects
+#' @return The function creates modified versions of the  `.ctl` and
+#'   `.dat` files if ctl_file_out and dat_file_out are not NULL. The function
+#'   also returns a list of the modified `.ctl` and `.dat` R objects
 #'   invisibly.
 #' @details
 #' Although there are three ways to implement time-varying parameters within
-#' SS3, \pkg{ss3sim} and \code{change_tv} only use the environmental variable
-#' option. Within SS, time-varying parameters work on an annual time-step.
+#' Stock Synthesis, \pkg{ss3sim} and `change_tv` only use the environmental variable
+#' option.
+#' Within Stock Synthesis, time-varying parameters work on an annual time-step.
 #' Thus, for models with multiple seasons, the time-varying parameters will
 #' remain constant for the entire year.
 #'
-#' The \code{ctl_file_in} argument needs to be a \code{.ss_new} file because
-#' the documentation in \code{.ss_new} files are automated and standardized.
+#' The `ctl_file_in` argument needs to be a `.ss_new` file because
+#' the documentation in `.ss_new` files are automated and standardized.
 #' This function takes advantage of the standard documentation the
-#' \code{.ss_new} files to determine which lines to manipulate and where to
-#' add code in the \code{.ctl}, \code{.par}, and \code{.dat} files, code that
+#' `.ss_new` files to determine which lines to manipulate and where to
+#' add code in the `.ctl`, `.par`, and `.dat` files, code that
 #' is necessary to implement time-varying parameters.
 #'
 #' \pkg{ss3sim} uses annual recruitment deviations and may not work with a
 #' model that ties recruitment deviations to environmental covariates. If you
 #' need to compare the environment to annual recruitment deviations, the
 #' preferred option is to transform the environmental variable into an age 0
-#' pre-recruit survey. See page 55 of the SS3 version 3.24f manual for more
+#' pre-recruit survey. See page 55 of the Stock Synthesis version 3.24f manual for more
 #' information.
 #'
-#' @section Specifying the \code{change_tv_list}:
+#' @section Specifying the `change_tv_list`:
 #' Parameters will change to vary with time according to the vectors of
-#' deviations passed to \code{change_tv_list}. Vectors of deviations, also
-#' referred to as environmental data, must have a length equal to \code{
-#' endyr-startyr+1}, where \code{endyr} and \code{startyr} are specified the
-#' \code{.dat} file. Specify years without deviations as zero.
+#' deviations passed to `change_tv_list`. Vectors of deviations, also
+#' referred to as environmental data, must have a length equal to
+#' `endyr-startyr+1`, where `endyr` and `startyr` are specified the
+#' `.dat` file. Specify years without deviations as zero.
 #'
 #' Parameter names must be unique and match the full parameter name in the
-#' \code{.ctl} file. Names for stock recruit parameters must contain "devs",
+#' `.ctl` file. Names for stock recruit parameters must contain "devs",
 #' "R0", or "steep", and only one stock recruit parameter can be time-varying
 #' per model.
 #'
 #' This feature will include an *additive* functional linkage between
 #' environmental data and the parameter where the link parameter is fixed at a
-#' value of one and the par value is specified in the \code{.par} file:
+#' value of one and the par value is specified in the `.par` file:
 #' \eqn{par'[y] = par + link * env[y]}.
 #'
 #' For catchability (\eqn{q}) the *additive* functional linkage is implemented
 #' on the log scale: \eqn{ln(q'[y]) = ln(q) + link * env[y]}
-#'
-#' @importFrom r4ss SS_readdat SS_writedat
 #'
 #' @export
 #'
@@ -96,8 +95,8 @@ change_tv <- function(change_tv_list,
   dat_file_in = "ss3.dat", dat_file_out = "ss3.dat") {
   # read in necessary ss files.
   ss3.ctl <- readLines(con = ctl_file_in)
-  ss3.dat <- SS_readdat(dat_file_in, verbose = FALSE)
-  ss3.ctl.parlines <- SS_parlines(ctl_file_in, verbose = FALSE)
+  ss3.dat <- r4ss::SS_readdat(dat_file_in, verbose = FALSE)
+  ss3.ctl.parlines <- r4ss::SS_parlines(ctl_file_in, verbose = FALSE)
 
   # Function requires that the directories associated with the out files are all
   #   the same, so check this.
@@ -186,7 +185,7 @@ change_tv <- function(change_tv_list,
                           "operating model .ctl file. Check that the parameter",
                           " is spelled correctly and in the correct case. ",
                           "Have you standardized your .ctl file by running it ",
-                          "through SS and used the control.ss_new file?")
+                          "through Stock Synthesis and used the control.ss_new file?")
                   }
                                if(val < divider.a) temp <- "mg"
                                if(val > divider.a & val < divider.b) temp <- "sr"
@@ -234,7 +233,7 @@ for(i in seq_along(temp.data)) {
     ss3.dat.tbl <- rbind(ss3.dat.tbl, dat)
 }
 
-  # Set time varying autogeneration setting to all 1's to make sure SS will not
+  # Set time varying autogeneration setting to all 1's to make sure Stock Synthesis will not
   # autogenerate them.
   autogen_line <- grep("# autogen: ", ss3.ctl)
   ss3.ctl[grep("# autogen: ", ss3.ctl)] <- paste0("1 1 1 1 1 # autogen: 1st ",
@@ -251,7 +250,7 @@ for(i in seq_along(temp.data)) {
     if(is.null(tmp_line)& (n != "SR parameters")){
       stop("ss3sim could not find the ctl file location where time varying ",
            "short parameter lines should be specified for", n, ". Please make",
-          "sure you are using a standardized ctl file generated from SS ",
+          "sure you are using a standardized ctl file generated from Stock Synthesis ",
           "(i.e., was a control.ss_new file")
     }
   }
@@ -268,7 +267,7 @@ for(i in seq_along(temp.data)) {
       #TODO:  make it so it is not necessary to run the model file through
       # 3.30.14 or greater if want to use SR params?
       stop("ss3sim could not find the place where stock recruitment time varying",
-           "parameters should be added. Please run your OM model through SS ",
+           "parameters should be added. Please run your OM model through Stock Synthesis ",
            " version >= 3.30.14 to get the necessary line for ss3sim to search",
            "for: `#_no timevary SR parameters` in the control.ss_new file.")
     }
@@ -289,7 +288,7 @@ for(i in seq_along(temp.data)) {
   # SS_read/writectl instead can be useful in this regard.
   if(!is.null(ctl_file_out)) writeLines(ss3.ctl, ctl_file_out)
   if(!is.null(dat_file_out)) {
-  SS_writedat(ss3.dat, dat_file_out, overwrite = TRUE, verbose = FALSE)
+  r4ss::SS_writedat(ss3.dat, dat_file_out, overwrite = TRUE, verbose = FALSE)
   }
   invisible(list(ctl_out = ss3.ctl, dat_out = ss3.dat))
 }
@@ -297,9 +296,9 @@ for(i in seq_along(temp.data)) {
 #' Add short time varying parameter lines. At time of writing, this method will
 #' work for MG, selectivity, and catchability time varying, but not for SR
 #' @param string The code representing the section the parameter is from.
-#' @param tab As created in \code{change_tv()}
+#' @param tab As created in [change_tv()].
 #' @param ctl_string The code as called in the .ss_new comment for time varying.
-#' @param ss3.ctl A ss control file that has been read in using \code{readLines()}.
+#' @param ss3.ctl A ss control file that has been read in using [readLines()].
 #' @return A modified version of ss3.ctl (a vector of strings), containing the
 #'   new parameter line
 add_tv_parlines <- function(string, tab, ctl_string, ss3.ctl) {

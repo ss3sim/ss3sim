@@ -40,40 +40,40 @@ ss3sim_base(
 \item{scenarios}{A name to use as the folder name for the unique combination
 of parameters for the OM and EM.}
 
-\item{f_params}{A named list containing arguments for \code{\link{change_f}}.
+\item{f_params}{A named list containing arguments for \code{\link[=change_f]{change_f()}}.
 A mandatory case.}
 
 \item{index_params}{A named list containing arguments for
-\code{\link{sample_index}}. A mandatory input.}
+\code{\link[=sample_index]{sample_index()}}. A mandatory input.}
 
 \item{discard_params}{A named list containing arguments for
-\code{\link{sample_discard}}.}
+\code{\link[=sample_discard]{sample_discard()}}.}
 
 \item{lcomp_params}{A named list containing arguments for
-\code{\link{sample_lcomp}}. A mandatory input.}
+\code{\link[=sample_lcomp]{sample_lcomp()}}. A mandatory input.}
 
 \item{agecomp_params}{A named list containing arguments for
-\code{\link{sample_agecomp}}. A mandatory input.}
+\code{\link[=sample_agecomp]{sample_agecomp()}}. A mandatory input.}
 
 \item{calcomp_params}{A named list containing arguments for
-\code{\link{sample_calcomp}}, for conditional age-at-length data.}
+\code{\link[=sample_calcomp]{sample_calcomp()}}, for conditional age-at-length data.}
 
 \item{wtatage_params}{A named list containing arguments for
-\code{\link{sample_wtatage}}, for empirical weight-at-age data.}
+\code{\link[=sample_wtatage]{sample_wtatage()}}, for empirical weight-at-age data.}
 
 \item{mlacomp_params}{A named list containing arguments for
-\code{\link{sample_mlacomp}}, for mean length-at-age data.}
+\code{\link[=sample_mlacomp]{sample_mlacomp()}}, for mean length-at-age data.}
 
 \item{em_binning_params}{A named list containing arguments for
-\code{\link{change_em_binning}}.}
+\code{\link[=change_em_binning]{change_em_binning()}}.}
 
 \item{estim_params}{A named list containing arguments for
-\code{\link{change_e}}.}
+\code{\link[=change_e]{change_e()}}.}
 
 \item{tv_params}{A named list containing arguments for
-\code{\link{change_tv}} (time-varying).}
+\code{\link[=change_tv]{change_tv()}} (time-varying).}
 
-\item{operat_params}{A named list containing arguments for \code{\link{change_o}}.}
+\item{operat_params}{A named list containing arguments for \code{\link[=change_o]{change_o()}}.}
 
 \item{om_dir}{The directory with the operating model you want to copy and use
 for the specified simulations.}
@@ -82,12 +82,12 @@ for the specified simulations.}
 use for the specified simulations.}
 
 \item{retro_params}{A named list containing the arguments for
-\code{\link{change_retro}}.}
+\code{\link[=change_retro]{change_retro()}}.}
 
 \item{data_params}{A named list containing arguments for changing data.}
 
 \item{weight_comps_params}{A named list containing arguments for
-\code{\link[r4ss]{SS_tune_comps}}.}
+\code{\link[r4ss:SS_tune_comps]{r4ss::SS_tune_comps()}}.}
 
 \item{user_recdevs}{An optional matrix of recruitment deviations to replace
 the recruitment deviations built into the package. The columns represent
@@ -108,7 +108,8 @@ are specified.}
 \item{bias_adjust}{A logical argument specifying bias adjustment is conducted.
 Bias adjustment helps assure that the estimated recruitment deviations,
 which are assumed to be log-normally distributed,
-are mean unbiased leading to mean-unbiased estimates of biomass \link{@methot2011}.
+are mean unbiased leading to mean-unbiased estimates of biomass
+\href{https://cdnsciencepub.com/doi/abs/10.1139/f2011-092}{Methot and Taylor, 2011}.
 Bias adjustment should always be performed when
 using maximum likelihood estimation when running simulations for publication or management.
 The argument allows users to turn bias adjustment off because
@@ -125,17 +126,17 @@ bias-adjustment runs thereby saving time.}
 if you want to reduce average CPU time -- perhaps because you're working on
 a shared server.}
 
-\item{seed}{The seed value to pass to \code{\link{get_recdevs}} when
+\item{seed}{The seed value to pass to \code{\link[=get_recdevs]{get_recdevs()}} when
 generating recruitment deviations. The generated recruitment deviations
 depend on the iteration value, but also on the value of \code{seed}. A
 given combination of iteration, number of years, and \code{seed} value will
 result in the same recruitment deviations.}
 
-\item{...}{Anything extra to pass to \code{\link{run_ss3model}}. For
-example, you may want to pass additional options to \code{SS3} through
+\item{...}{Anything extra to pass to \code{\link[=run_ss3model]{run_ss3model()}}. For
+example, you may want to pass additional options to Stock Synthesis through
 the argument \code{admb_options}. Anything that doesn't match a named
-argument in \code{\link{run_ss3model}} will be passed to the
-\code{\link{system}} call that runs \code{SS3}.}
+argument in \code{\link[=run_ss3model]{run_ss3model()}} will be passed to the
+\code{\link[=system]{system()}} call that runs Stock Synthesis.}
 }
 \value{
 The output will appear in whatever your current \R working directory
@@ -151,11 +152,11 @@ look like this:
 \description{
 A wrapper function that
 \itemize{
-\item calls \code{\link{run_ss3model}} to run the operating model,
+\item calls \code{\link[=run_ss3model]{run_ss3model()}} to run the operating model,
 \item samples the output (add recruitment deviations, survey the data, etc.), and
 \item runs the estimation model.
 This is the main workhorse of ss3sim and
-is typically not called by the user but called from \link{run_ss3sim}.
+is typically not called by the user but called from \code{\link[=run_ss3sim]{run_ss3sim()}}.
 }
 }
 \details{
@@ -163,7 +164,7 @@ This function is written to be flexible. You can specify the fishing
 mortality, survey index, length composition, age composition, and
 time-varying parameters in the function call as list objects (see the
 example below). For a generic higher-level function, see
-\code{\link{run_ss3sim}}.
+\code{\link[=run_ss3sim]{run_ss3sim()}}.
 
 The steps carried out within \code{ss3sim_base}:
 
@@ -220,7 +221,7 @@ The steps carried out within \code{ss3sim_base}:
 }
 }
 \seealso{
-\code{\link{run_ss3sim}}
+\code{\link[=run_ss3sim]{run_ss3sim()}}
 }
 \author{
 Sean Anderson with contributions from many others as listed in

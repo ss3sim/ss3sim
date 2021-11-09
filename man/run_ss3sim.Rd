@@ -24,7 +24,7 @@ If any iterations already exist, then ss3sim will skip over them.}
 
 \item{simdf}{A data frame of instructions with one row per scenario.
 The data frame replaces the old method of using case files.
-See \code{\link{setup_scenarios_defaults}} for default values that will be
+See \code{\link[=setup_scenarios_defaults]{setup_scenarios_defaults()}} for default values that will be
 passed to ss3sim for a generic simulation to get you started. These
 values will be used if \code{simdf} is left at its default value of \code{NULL}.}
 
@@ -40,27 +40,30 @@ parallel. This would be useful if you were only running one scenario
 but you wanted to run it faster.}
 
 \item{scenarios}{\emph{Deprecated}. Which scenarios to run. A vector of character objects. For
-example \code{c("D0-F0-cod", "D1-F1-cod")}. (The scenarios should be specified in simdf)}
+example \code{c("D0-F0-cod", "D1-F1-cod")}.
+The scenarios should be specified in \code{simdf}.}
 
 \item{case_folder}{\emph{Deprecated}. The folder containing the plain-text case files.}
 
-\item{om_dir}{\emph{Deprecated}. The folder containing the SS3 operating model
-configuration files. (Specify the om_dir within simdf)}
+\item{om_dir}{\emph{Deprecated}. The folder containing the Stock Synthesis operating model
+configuration files.
+Specify the om_dir within \code{simdf}.}
 
-\item{em_dir}{\emph{Deprecated}. The folder containing the SS3 estimation model
-configuration files. (Specify the em_dir within simdf)}
+\item{em_dir}{\emph{Deprecated}. The folder containing the Stock Synthesis estimation model
+configuration files.
+Specify the om_dir within \code{simdf}.}
 
 \item{case_files}{\emph{Deprecated}. A named list that relates the case IDs to the files to
 return. \bold{The default list specifies only the required fishing
 mortality and data scenarios. To specify other cases you will need to
 extend this named list}. This argument is passed to
-\code{\link{get_caseargs}}. See that function for details and examples of
+\code{\link[=get_caseargs]{get_caseargs()}}. See that function for details and examples of
 how to specify this. The introduction vignette also explains how to specify
 the case files.}
 
-\item{...}{Anything else to pass to \code{\link{ss3sim_base}}. This could
+\item{...}{Anything else to pass to \code{\link[=ss3sim_base]{ss3sim_base()}}. This could
 include \code{bias_adjust}. Also, you can pass
-additional options to the \code{SS3} command through the argument
+additional options to the executable through the argument
 \code{admb_options}.}
 }
 \value{
@@ -81,23 +84,23 @@ your simulation at noon on January 01:
 This is the main high-level wrapper function for running \pkg{ss3sim}
 simulations. First, this function separates the data frame of simulation
 settings by row for each scenario into a list format. These lists are then
-passed to \code{\link{ss3sim_base}} to run each simulation. Alternatively, you
-can run \code{\link{ss3sim_base}} directly using your own lists.
+passed to \code{\link[=ss3sim_base]{ss3sim_base()}} to run each simulation. Alternatively, you
+can run \code{\link[=ss3sim_base]{ss3sim_base()}} directly using your own lists.
 }
 \details{
 The operating model folder should contain: \code{forecast.ss},
 \code{yourmodel.ctl}, \code{yourmodel.dat}, \code{ss.par}, and
 \code{starter.ss}. The files should be the versions that are returned from an
-SS run as \code{.ss_new} files. This is important because it creates
+Stock Synthesis run as \code{.ss_new} files. This is important because it creates
 consistent formatting which many of the functions in this package depend on.
 Rename the \code{.ss_new} files as listed above (and in all lowercase). The
 estimation model folder should contain all the same files listed above except
 the \code{ss.par} and \code{yourmodel.dat} files, which are unnecessary but
 can be included if desired. See the vignette for details on modifying an
-existing \code{SS3} model to run with \pkg{ss3sim}. Alternatively, you might
+existing Stock Synthesis model to run with \pkg{ss3sim}. Alternatively, you might
 consider modifying one of the built-in model configurations.
 
-Note that due to the way that SS is being used as an OM, you may see
+Note that due to the way that Stock Synthesis is being used as an OM, you may see
 the following ADMB error may appear in the console:
 Error -- base = 0 in function prevariable& pow(const prevariable& v1, CGNU_DOUBLE u)
 However, this is not a problem because ADMB is not used to optimize the OM,

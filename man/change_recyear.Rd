@@ -13,7 +13,7 @@ change_recyear(ctl_list, main)
 start the main period of recruitment.}
 }
 \value{
-A \code{\link[r4ss]{SS_readctl}} list with an augmented start year of
+A \code{\link[r4ss:SS_readctl]{r4ss::SS_readctl()}} list with an augmented start year of
 the recruitment deviations in the main period.
 }
 \description{

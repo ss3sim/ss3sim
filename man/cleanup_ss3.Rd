@@ -2,7 +2,7 @@
 % Please edit documentation in R/cleanup_ss3.r
 \name{cleanup_ss3}
 \alias{cleanup_ss3}
-\title{Clean up after an SS3 run}
+\title{Clean up after a Stock Synthesis run}
 \usage{
 cleanup_ss3(
   dir_name,

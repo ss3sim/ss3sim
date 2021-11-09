@@ -11,9 +11,14 @@ on.exit(setwd(wd), add = TRUE)
 on.exit(unlink(temp_path, recursive = TRUE), add = TRUE)
 
 dat <- r4ss::SS_readdat(
-  dir(pattern = "codOM.dat", recursive = TRUE,
-    system.file("extdata", package = "ss3sim"), full.names = TRUE),
-  verbose = FALSE)
+  dir(
+    path = system.file("extdata", "models", "cod-om", package = "ss3sim"),
+    pattern = "codOM.dat",
+    full.names = TRUE,
+    recursive = TRUE
+  ),
+  verbose = FALSE
+)
 
 # This section was developed when
 # Seas, Gender, and Part were added to the sampling schemes

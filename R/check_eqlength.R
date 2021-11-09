@@ -1,17 +1,17 @@
 #' Check if input arguments have the same length
 #' 
 #' Calculate the length of all input arguments to see if they
-#' are equal. Entries that are \code{NULL}, and thus, have
+#' are equal. Entries that are `NULL`, and thus, have
 #' a length of zero are ignored. An optional trigger to
-#' \code{stop} is provided with a tailored error message.
+#' [stop()] is provided with a tailored error message.
 #' 
 #' @param ... Input arguments of unknown length.
 #' @param keepgoing A logical value specifying if the function
 #' should continue or terminate upon finding input arguments of
-#' non-equal length. The default, \code{FALSE}, produces an
+#' non-equal length. The default, `FALSE`, produces an
 #' error and terminates the function.
 #' @author Kelli Faye Johnson
-#' @return \code{TRUE} or \code{FALSE} depending on the result
+#' @return `TRUE` or `FALSE` depending on the result
 #' of the test. Nothing is returned if the stop function is invoked.
 #' @examples
 #' \dontshow{

@@ -7,7 +7,7 @@
 #' @details
 #' Sample size, i.e., 'Nsamp', is used as a measure of precision,
 #' where higher sample sizes lead to simulated samples that more accurately
-#' represent the truth provided in \code{data}.
+#' represent the truth provided in `data`.
 #'
 #' @param data A data frame with informational columns followed by
 #' columns of compositional data.

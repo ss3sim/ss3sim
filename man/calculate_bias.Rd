@@ -23,7 +23,7 @@ This process involves running the estimation method with the hessian
 both before this function and then running the estimation method again with
 the new values. Estimation files in the original folder will be deleted to
 ensure that convergence afterwards is not based on the input run.
-These files are permanently archived in the \code{bias_[0-9]{2}} folder
+These files are permanently archived in the \verb{bias_[0-9]\{2\}} folder
 within the directory. Only the three middle steps listed below are performed
 using \code{calculate_bias}, and the rest of the steps must be performed
 externally.

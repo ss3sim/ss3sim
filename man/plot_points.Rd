@@ -42,7 +42,7 @@ the vertical direction. E.g., "M" or "species". A value of NULL (default)
 indicates no faceting in the vertical space.}
 
 \item{jitter.height, jitter.width}{Parameters for
-\code{\link[ggplot2]{position_jitter}()} that specify the vertical and horizontal
+\code{\link[ggplot2:position_jitter]{ggplot2::position_jitter()}} that specify the vertical and horizontal
 spread added to points. Where, added values are both positive and negative,
 so the total spread is twice the value specified here.
 If \code{NULL}, the spread will be 40\% of the resolution of the data;
@@ -72,18 +72,18 @@ in \code{facet_grid}.}
 \item{print}{A logical for whether the plot is printed or not.}
 }
 \description{
-Generate a scatterplot using \code{\link[ggplot2]{ggplot}} to visualize
+Generate a scatterplot using \link[ggplot2:ggplot]{ggplot2::ggplot} to visualize
 the relationship between two continuous variables.
 }
 \details{
 Points are placed on the figure using the width setting in
-\code{\link[ggplot2]{position_jitter}} that defaults to 40\% resolution of
+\code{\link[ggplot2:position_jitter]{ggplot2::position_jitter()}} that defaults to 40\% resolution of
 the data, meaning that the jitter values will occupy 80\% of the implied bins.
 The previous information was found in the documentation for
-\code{\link[ggplot2]{position_jitter}}.
+\code{\link[ggplot2:position_jitter]{ggplot2::position_jitter()}}.
 
 Values of \code{NA} are removed prior to plotting such that the typical
-error message from \code{ggplot} is not printed to the screen.
+error message from \pkg{ggplot2} is not printed to the screen.
 
 The \pkg{ss3sim} plotting functions are simply
 wrappers for \pkg{ggplot2} code, specific to the output from

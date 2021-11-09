@@ -4,8 +4,8 @@
 #'
 #' @inheritParams plot_ss3sim
 #' @author Cole Monnahan
-#' @return A formula which can be used in \code{facet_grid} or \code{NULL}
-#' if all arguments are \code{NULL}.
+#' @return A formula which can be used in [ggplot2::facet_grid()] or `NULL`
+#' if all arguments are `NULL`.
 #'
 facet_form <- function(horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL) {
     h <- !is.null(horiz)

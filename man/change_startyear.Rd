@@ -22,7 +22,7 @@ fitting your data. The default is \code{NULL}, which will look to the first year
 with a non-zero catch in \code{dat_list} and use that as the first year.}
 }
 \value{
-A \code{\link[r4ss]{SS_readdat}} list with an augmented start year.
+A \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}} list with an augmented start year.
 }
 \description{
 Change start year of the data file

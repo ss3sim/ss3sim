@@ -2,7 +2,7 @@
 % Please edit documentation in R/change_f.r
 \name{change_f}
 \alias{change_f}
-\title{Specify fishing mortality (\emph{F}) using the Stock Synthesis control file}
+\title{Specify fishing mortality, \eqn{F}, using the Stock Synthesis control file}
 \usage{
 change_f(years, fleets, fvals, seasons = 1, ses = 0.005, ctl_list)
 }
@@ -16,35 +16,36 @@ The order of the fleets pertains to the input order of other arguments.
 An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 
 \item{fvals}{A list of the same length as \code{fleets} with one
-entry per fishing mortality level (\emph{F}) entry in \code{years}.
+entry per fishing mortality level, \eqn{F}, entry in \code{years}.
 A single value will be repeated for every value in \code{years}. If more than
 one fleet is present, then the single value will be used for all fleets, i.e.,
 there is no way to map a single value to each year specific to the given fleet.
 Instead you would need to provide a list of vectors of repeated values.}
 
 \item{seasons}{A list of seasons to be entered into the
-SS control file for each fleet.
+Stock Synthesis control file for each fleet.
 The structure is the same as \code{fvals}, i.e., a list or a scalar.
 The default is 1, which will be applied to all fleets in all years.}
 
 \item{ses}{A list of fishing level standard errors (ses) to be entered into the
-SS control file for each fleet.
+Stock Synthesis control file for each fleet.
 The structure is the same as \code{fvals}, i.e., a list or a scalar.
 The default is 0.005, which will be applied to all fleets in all years.}
 
 \item{ctl_list}{A control file read in by \code{\link[r4ss]{SS_readctl}}.}
 }
 \value{
-Modified SS control file list.
+Modified Stock Synthesis control file list.
 }
 \description{
-Replace or input a time series of fishing mortality (\emph{F}) values into
-a Stock Synthesis (SS) control file. In SS, inserting \emph{Fs} in this
-manner relies on the assumption that fishing mortality operates continously
-throughout the year and the process operates jointly with natural mortality
-(Baranov 1918; (Branch 2009)\link{https://cdnsciencepub.com/doi/10.1139/F08-196}).
-The documentation for SS also describes this process as
-\emph{F} method == 2, where \emph{F} is continuous and modelled using
+Replace or input a time series of fishing mortality, \eqn{F}, values into
+a Stock Synthesis control file.
+In Stock Synthesis, inserting \eqn{F} values in this manner,
+relies on the assumption that \eqn{F} operates continuously throughout the year and
+and the process operates jointly with natural mortality
+(Baranov 1918; \href{https://cdnsciencepub.com/doi/10.1139/F08-196}{Branch 2009}).
+The documentation for Stock Synthesis also describes this process as
+\eqn{F} method == 2, where \eqn{F} is continuous and modeled using
 full parameters.
 }
 \details{
@@ -55,16 +56,16 @@ If the input argument needs to be different for any year or fishery, the
 argument must be a list with vectors for each fishery, where each vector
 is the same length as the vectors within the \code{years} argument. Although,
 both the \code{years} and other input arguments can be specified using a single
-vector if the length of {\code{fleets}} is just one or a vector of values
+vector if the length of \code{fleets} is just one or a vector of values
 is specified for fleets because all of these vectors will just be combined
 into a single data frame. Where it gets complicated is when there are
-mutliple fleet and year combinations, then it is best to just use the list
+multiple fleet and year combinations, then it is best to just use the list
 structure common to other functions within \pkg{ss3sim}.
 
-\code{change_f} overrides any \emph{F} values that are in the supplied
+\code{\link[=change_f]{change_f()}} overrides any \eqn{F} values that are in the supplied
 control file with the newly specified values, i.e., \code{fvals}.
 Users do not need to specify values for years in which there
-will be zero fishing because SS will automatically set them to zero when
+will be zero fishing because Stock Synthesis will automatically set them to zero when
 running the operating model.
 Using the control file rather than the par file to manipulate the
 operating model requires a few other files within the operating
@@ -75,8 +76,8 @@ rather than the par file and
 combination that will be specified in the control file. If a year, fishery
 combination is specified in the control file and not present in the data file,
 then the entry in the control file will be ignored. ss3sim automatically corrects
-for this using \code{\link{ss3sim_base}} by
-specifying a row for every year and fleet using \code{\link{change_catch}}.
+for this using \code{\link[=ss3sim_base]{ss3sim_base()}} by
+specifying a row for every year and fleet using \code{\link[=change_catch]{change_catch()}}.
 }
 \examples{
 dat <- r4ss::SS_readdat(
@@ -94,7 +95,7 @@ rm(dat, ctl, newctl)
 
 }
 \seealso{
-See \code{\link[r4ss]{SS_readctl}} and \code{\link[r4ss]{SS_writectl}}
+See \code{\link[r4ss:SS_readctl]{r4ss::SS_readctl()}} and \code{\link[r4ss:SS_writectl]{r4ss::SS_writectl()}}
 for how to supply \code{ctl_list} and how to write the file back to the disk
 once you are done manipulating the list object.
 

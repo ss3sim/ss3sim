@@ -21,12 +21,12 @@ leads to the removal of data for the specified number of years.
 Positive values are not allowed.}
 }
 \value{
-A modified SS3 starter file.
+A modified Stock Synthesis starter file.
 }
 \description{
 A retrospective analysis tests the effect of peeling back the number of
 operating model years observable to the estimation model. This function
-alters the SS starter file to run a retrospective analysis.
+alters the Stock Synthesis starter file to run a retrospective analysis.
 }
 \details{
 Note that the starter file is set up to run a single retrospective

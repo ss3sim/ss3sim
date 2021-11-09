@@ -7,7 +7,7 @@
 #' @param iteration The iteration number. This is used as an ID to set the
 #'   random number seed.
 #' @param n The length of the vector returned.
-#' @param seed An integer value to pass to \code{\link{set.seed}}.
+#' @param seed An integer value to pass to [set.seed()].
 #' @return A vector of standard normal recruitment deviations.
 #' @examples
 #' get_recdevs(1, 10)

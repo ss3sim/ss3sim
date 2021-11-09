@@ -1,7 +1,7 @@
 #' Determine Fmsy for a given operating model
 #'
-#' Runs an operating model over a range of fishing mortality (F) levels to
-#' determine the F at maximum sustainable yield (Fmsy).
+#' Runs an operating model over a range of fishing mortality, \eqn{F}, levels to
+#' determine the F at maximum sustainable yield, \eqn{F_{MSY}}.
 #'
 #' @param om_in A full or relative path to a directory that contains an
 #'   \pkg{ss3sim} operating model.
@@ -9,11 +9,9 @@
 #' will be saved. The directory will be created if it doesn't already exist.
 #' @param start Lower fishing mortality levels that will be explored.
 #' @param end Upper fishing mortality levels that will be explored.
-#' @param by_val Interval at which F will be incremented between \code{start}
-#'   and \code{end}.
+#' @param by_val Interval at which F will be incremented between `start`
+#'   and `end`.
 #' @template verbose
-#' @importFrom r4ss SS_readdat SS_readforecast SS_changepars
-#' @importFrom stats sd
 #' @return Creates a plot and a table with catches and F values.
 #' Also, invisibly returns a table of F and catch as a data frame.
 #' @export
@@ -22,7 +20,7 @@
 #' extracting the catch in the last year. This assumes the length of the
 #' model is long enough to reach an equilibrium catch. The user is
 #' responsible for ensuring this fact. If the function is run with
-#' \code{verbose = TRUE}, which is not the default, users will be provided
+#' `verbose = TRUE`, which is not the default, users will be provided
 #' with coefficient of variations of the catches in the terminal years of
 #' the model. Here, terminal is defined as half as many years as there are
 #' ages in the population dynamics of your model.
@@ -32,9 +30,9 @@
 #' screen for each model that is ran. For the default cod model provided within
 #' the package, the CV is less than 1e-04 for all F levels explored.
 #'
-#' Ensure that the argument \code{om_in} leads to an operating model that is
-#' configured for use within \pkg{ss3sim}. For example, the F type must
-#' allow for an input vector of Fs rather than catches, along with other
+#' Ensure that the argument `om_in` leads to an operating model that is
+#' configured for use within \pkg{ss3sim}. For example, the \eqn{F} type must
+#' allow for an input vector of \eqn{Fs} rather than catches, along with other
 #' specifications.
 #'
 #' @examples
@@ -70,7 +68,7 @@ profile_fmsy <- function(om_in, results_out,
   simlength <- datFile$endyr-datFile$styr+1
   forecast <- r4ss::SS_readforecast(file = "forecast.ss", verbose = FALSE)
   ## remove recdevs
-  change_rec_devs(setNames(
+  change_rec_devs(stats::setNames(
     rep(0, simlength + forecast$Nforecastyrs),
     datFile$styr:(simlength + forecast$Nforecastyrs)),
     ctl_file_in = starter$ctlfile,
@@ -96,7 +94,7 @@ profile_fmsy <- function(om_in, results_out,
     allcatch <- r4ss::SS_readdat("data.ss_new",
       verbose = FALSE, version = NULL, section = 2)$catch$catch
     endcatch <- utils::tail(allcatch, ceiling(datFile$Nages * 0.5))
-	  CVs[i] <- round(sd(endcatch) / mean(endcatch), 5)
+	  CVs[i] <- round(stats::sd(endcatch) / mean(endcatch), 5)
     fEqCatch[i] <- allcatch[simlength]
   }
   if (verbose) message("The CVs of the catch in the last ",

@@ -2,8 +2,7 @@
 % Please edit documentation in R/clean_data.r
 \name{clean_data}
 \alias{clean_data}
-\title{Given sampling arguments remove ("clean") all data in a .dat file that
-is not specified}
+\title{Given sampling arguments, remove unneeded data from a .dat file}
 \usage{
 clean_data(
   dat_list,
@@ -26,16 +25,16 @@ section provides bootstrapped data sets that have been sampled internally
 within SS.}
 
 \item{lcomp_params}{Named lists containing the arguments for
-\code{\link{sample_lcomp}}.}
+\code{\link[=sample_lcomp]{sample_lcomp()}}.}
 
 \item{agecomp_params}{Named lists containing the arguments for
-\code{\link{sample_agecomp}}.}
+\code{\link[=sample_agecomp]{sample_agecomp()}}.}
 
 \item{calcomp_params}{Named lists containing the arguments for
-\code{\link{sample_calcomp}}.}
+\code{\link[=sample_calcomp]{sample_calcomp()}}.}
 
 \item{mlacomp_params}{Named lists containing the arguments for
-\code{\link{sample_mlacomp}}.}
+\code{\link[=sample_mlacomp]{sample_mlacomp()}}.}
 
 \item{verbose}{When \code{TRUE} it will print a message when rows are
 deleted.}
@@ -44,14 +43,14 @@ deleted.}
 An invisible cleaned data list as an object.
 }
 \description{
-This prepares a \code{.dat} file to be used by an EM, whereas before it may
-have had leftover data from sampling purposes.
+This prepares a \code{.dat} file to be used by an estimation method,
+whereas before it may have had leftover data from sampling purposes.
 }
 \note{
 This function does not write the result to file.
 }
 \seealso{
-calculate_data_units
+\code{\link[=calculate_data_units]{calculate_data_units()}}
 
 Other sampling functions: 
 \code{\link{sample_agecomp}()},

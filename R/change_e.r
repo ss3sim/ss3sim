@@ -1,13 +1,13 @@
-#' Methods to alter estimated parameters in an SS model
+#' Methods to alter the parameters estimated in a Stock Synthesis model
 #'
-#' @description Takes Stock Synthesis (SS)
-#'   \code{.ctl} and \code{forecast.ss} files, along with
+#' @description Takes Stock Synthesis
+#'   `.ctl` and `forecast.ss` files, along with
 #'   a list structure which houses the data file as read in by
-#'   \code{\link[r4ss]{SS_readdat}}
+#'   [r4ss::SS_readdat()]
 #'   and changes which parameters are estimated, how natural mortality is
 #'   estimated, and if forecasts are performed. The function can be called by
-#'   itself or within \code{\link{run_ss3sim}} to alter an estimation model
-#'   \code{.ctl} file.
+#'   itself or within [run_ss3sim()] to alter an estimation model
+#'   `.ctl` file.
 #'
 #' @template ctl_file_in
 #' @template ctl_file_out
@@ -16,11 +16,11 @@
 #' @template par_name
 #' @template par_int
 #' @param par_phase A vector of phase values, one for each parameter in
-#'   \code{par_name}.  Values can be \code{NA} if you do not wish to change
+#'   `par_name`.  Values can be `NA` if you do not wish to change
 #'   the phase for a given parameter. Negative values will fix the parameter
 #'   at the INIT value.
 #' @param forecast_num Number of years to perform forecasts. For those years,
-#'   the data will be removed from the \code{dat_list}, enabling SS3 to
+#'   the data will be removed from the `dat_list`, enabling Stock Synthesis to
 #'   generate forecasts rather than use the data to fit the model.
 #' @template verbose
 #' @param natM_type Deprecated. Should have value NULL.
@@ -29,11 +29,10 @@
 #' @param natM_val Deprecated. Should have value NULL.
 #' @family change functions
 #' @return
-#' Altered versions of SS \code{.ctl} and \code{forecast.ss} files are written
-#' to the disk and the altered \code{dat_list} is returned invisibly.
+#' Altered versions of Stock Synthesis `.ctl` and `forecast.ss` files are written
+#' to the disk and the altered `dat_list` is returned invisibly.
 #'
-#' @author Kelli Johnson
-#' @importFrom r4ss SS_parlines SS_readforecast SS_writeforecast
+#' @author Kelli F. Johnson
 #' @export
 #' @examples
 #' d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
@@ -101,7 +100,7 @@ change_e <- function(ctl_file_in = "em.ctl",
     }
     data <- read.csv(dir(pattern = "vbgf"), header = TRUE)
   #Get start values
-    pars <- SS_parlines(ctl_file_out, version = ss_version, verbose = FALSE)
+    pars <- r4ss::SS_parlines(ctl_file_out, version = ss_version, verbose = FALSE)
     change_e_vbgf <- try(
       sample_fit_vbgf(length.data = data,
         start.L1 = with(pars, INIT[Label == "L_at_Amin_Fem_GP_1"]),
@@ -134,9 +133,9 @@ if(!is.null(par_name)) {
   par_name <- unlist(strsplit(par_name, split = ","))
   par_name_q <- grep("LnQ_", par_name, value = TRUE)
   if (length(par_name_q) > 0) {
-    parsinmodel <- SS_parlines(ctlfile = ctl_file_out, dir = NULL,
+    parsinmodel <- r4ss::SS_parlines(ctlfile = ctl_file_out, dir = NULL,
       version = ss_version, verbose = verbose, active = FALSE)
-    defaultq <- SS_parlines(dir = NULL,
+    defaultq <- r4ss::SS_parlines(dir = NULL,
       ctlfile = dir(pattern = "\\.ctl",
         path = system.file("extdata", "models", "cod-em", package = "ss3sim"),
         full.names = TRUE),
@@ -148,7 +147,7 @@ if(!is.null(par_name)) {
 
   phasenochange <- is.na(par_phase)
   if(any(phasenochange)) {
-    SS_changepars(dir = dirname(ctl_file_out),
+    r4ss::SS_changepars(dir = dirname(ctl_file_out),
       ctlfile = basename(ctl_file_out),
       newctlfile = basename(ctl_file_out),
       linenums = NULL, strings = par_name[phasenochange],
@@ -192,12 +191,12 @@ if(!is.null(par_name)) {
  }
    endyr_orig <- dat_list$endyr
    dat_list$endyr <- dat_list$endyr - forecast_num
-   ss3.for <- SS_readforecast(file = for_file_in, Nfleets = dat_list$Nfleet,
+   ss3.for <- r4ss::SS_readforecast(file = for_file_in, Nfleets = dat_list$Nfleet,
      Nareas = dat_list$N_areas, version = ss_version, verbose = verbose,
      nseas = dat_list$nseas, readAll = TRUE)
    ss3.for <- check_forecast(ss3.for)
    ss3.for$Nforecastyrs <- forecast_num
-   SS_writeforecast(ss3.for, file = "forecast.ss", overwrite = TRUE,
+   r4ss::SS_writeforecast(ss3.for, file = "forecast.ss", overwrite = TRUE,
      verbose = verbose)
  }
 if(!is.null(dat_list)) invisible(dat_list)

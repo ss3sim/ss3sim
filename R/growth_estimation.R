@@ -10,7 +10,6 @@
 #' @param a3 youngest age which is well sampled in the data
 #' @return a vector of lengths predicted which correspond to the input ages
 #'   vector.
-#' @importFrom bbmle mle2
 vbgf_func <- function(L1, L.inf, k, ages, a3){
   predLength <- L.inf + (L1 - L.inf) * exp(-k * (ages - a3))
   predLength
@@ -76,7 +75,7 @@ sample_fit_vbgf <- function(length.data, start.L1, start.L2, start.k,
   }
 
   #Fit using MLE
-  mod <- mle2(get_vbgf_loglik,
+  mod <- bbmle::mle2(get_vbgf_loglik,
     start = list(logL1 = transformed[1], logLinf = transformed[2],
       logk = transformed[3], logcv.old = transformed[4],
       logcv.young=transformed[5]))

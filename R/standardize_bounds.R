@@ -3,30 +3,29 @@
 #' Function to standardize the bounds of the control file in the estimation
 #' model. This function first checks to ensure the initial values in the
 #' estimation model control file are set to the true values of the
-#' \code{om_ctl_file} and if not sets them for every parameter. Next, the
-#' function adjusts the LO and HI values in the \code{em_ctl_file} to
+#' `om_ctl_file` and if not sets them for every parameter. Next, the
+#' function adjusts the LO and HI values in the `em_ctl_file` to
 #' be a fixed percentage of the initial value for every parameter.
 #'
 #' @author Christine Stawitz
 #'
-#' @param percent_df A \code{data.frame} with nine rows and three columns.
+#' @param percent_df A `data.frame` with nine rows and three columns.
 #'   The first column is the parameter.
 #'   The second column is the percent of the initial parameter value LO is set to.
 #'   The third column is the percent of the initial parameter value HI is set to.
 #' @param dir A path to the directory containing the model files.
 #' @param om_ctl_file A string with the name of the operating model
 #'   control file. If it is not given the part of the function which matches the
-#'   OM and EM INIT values is ignored. Default is \code{""}.
-#'   \code{om_ctl_file} must be located in \code{dir}.
+#'   OM and EM INIT values is ignored. Default is `""`.
+#'   `om_ctl_file` must be located in `dir`.
 #' @param em_ctl_file A string with the name of the estimation model
-#'   control file. \code{em_ctl_file} must be located in \code{dir}.
-#' @param verbose Detailed output to command line. Default is \code{FALSE}.
+#'   control file. `em_ctl_file` must be located in `dir`.
+#' @param verbose Detailed output to command line. Default is `FALSE`.
 #' @param estimate A logical for which changed parameters are to be estimated.
-#'   Used by \code{\link[r4ss]{SS_changepars}}, where in \pkg{r4ss} the default
-#'   is \code{FALSE}, which turns all parameter estimation off. Here the default
-#'   is \code{NULL}, which will leave parameter phases unchanged.
-#' @param ... Any other arguments to pass to \code{\link[r4ss]{SS_changepars}}.
-#' @importFrom r4ss SS_parlines SS_changepars
+#'   Used by [r4ss::SS_changepars()], where in \pkg{r4ss} the default
+#'   is `FALSE`, which turns all parameter estimation off. Here the default
+#'   is `NULL`, which will leave parameter phases unchanged.
+#' @param ... Any other arguments to pass to [r4ss::SS_changepars()].
 #' @export
 #' @examples
 #' \dontrun{
@@ -44,7 +43,7 @@
 #' file.copy(OM.ctl, "om.ctl")
 #' file.copy(EM.ctl, "em.ctl")
 #'
-#' ## Use SS_parlines to get the proper names for parameters for the data frame
+#' ## Use r4ss::SS_parlines to get the proper names for parameters for the data frame
 #' em.pars <- r4ss::SS_parlines(ctlfile = "em.ctl")
 #'
 #' ## Set percentages to make lower and upper bounds
@@ -75,16 +74,16 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
     stop(paste("In percent_df, the first column is currently named",
       colnames(percent_df)[1], "rename as 'Label'"))
   }
-  # Get the SS version, and assume it is the same for em and om.
+  # Get the Stock Synthesis version, and assume it is the same for em and om.
   ss_version <- get_ss_ver_file(file.path(dir, em_ctl_file))
   #Read in EM values
-  em_pars <- SS_parlines(ctlfile = file.path(dir, em_ctl_file),
+  em_pars <- r4ss::SS_parlines(ctlfile = file.path(dir, em_ctl_file),
                          version = ss_version, verbose = verbose)
  #If an OM is passed
   if(nchar(om_ctl_file)>0){
 
     #Read in OM true value
-    om_pars <- SS_parlines(ctlfile = file.path(dir, om_ctl_file),
+    om_pars <- r4ss::SS_parlines(ctlfile = file.path(dir, om_ctl_file),
                            version = ss_version, verbose = verbose)
 
     #Restrict the parameters which have their initial values
@@ -114,13 +113,13 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
                             drop = FALSE]
     if (NROW(changeinits) > 0) {
       # TODO: eventually remove capture.output when r4ss uses verbose to capture
-      # the output from SS_changepars
-      print.verbose <- SS_changepars(dir = dir, ctlfile = em_ctl_file,
+      # the output from r4ss::SS_changepars
+      print.verbose <- r4ss::SS_changepars(dir = dir, ctlfile = em_ctl_file,
           newctlfile = em_ctl_file, strings = changeinits[, 1],
           newvals = changeinits[, 2], verbose = verbose, repeat.vals = FALSE)
       if (verbose) message(paste(print.verbose, collapse = "\n"))
 
-    om_pars<-SS_parlines(ctlfile = file.path(dir,om_ctl_file),
+    om_pars<- r4ss::SS_parlines(ctlfile = file.path(dir,om_ctl_file),
                          version = ss_version, verbose = verbose)
 
    #Restrict the parameters which have their initial values
@@ -140,7 +139,7 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
       if(any(whichunequal)){
         inits_to_change <- em_pars[which(whichunequal), "Label"]
 
-        SS_changepars(dir=dir, ctlfile=em_ctl_file,newctlfile = em_ctl_file,
+        r4ss::SS_changepars(dir=dir, ctlfile=em_ctl_file,newctlfile = em_ctl_file,
                     strings = inits_to_change,
           newvals = om_pars[which(whichunequal),"INIT"],
                     verbose = verbose)
@@ -192,7 +191,7 @@ standardize_bounds <- function(percent_df, dir, em_ctl_file, om_ctl_file = "",
     newhis[grep("CV", percent_df$Label, ignore.case = TRUE)] <-
       percent_df[grep("CV", percent_df$Label, ignore.case = TRUE), 3]
 
-    SS_changepars(dir=dir,ctlfile=em_ctl_file,newctlfile=em_ctl_file,
+    r4ss::SS_changepars(dir=dir,ctlfile=em_ctl_file,newctlfile=em_ctl_file,
       linenums = em_pars[indexem, "Linenum"],
       newlos=newlos,newhis=newhis, verbose = verbose, estimate = estimate, ...)
 

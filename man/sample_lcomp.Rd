@@ -100,7 +100,7 @@ testthat::expect_equal(dim(ex1[["lencomp"]]), c(59, 51))
 
 }
 \seealso{
-\code{\link{sample_agecomp}} for more examples
+\code{\link[=sample_agecomp]{sample_agecomp()}} for more examples.
 
 Other sampling functions: 
 \code{\link{clean_data}()},

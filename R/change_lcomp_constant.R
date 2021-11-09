@@ -1,10 +1,9 @@
-#' Set the robustification constant for length composition data.
+#' Set the robustification constant for length-composition data
 #'
-#' This function replaces the robustification value for length composition data
-#' in a \code{.dat} file that was read in using \code{\link[r4ss]{SS_readdat}}
-#' with those specified in
-#' \code{lcomp_constant}. It then writes a new file with name \code{outfile}
-#' into the working directory.
+#' This function replaces the robustification value for length-composition data
+#' in a `.dat` file that was read in using [r4ss::SS_readdat()]
+#' with those specified in `lcomp_constant`.
+#' It then writes a new file with name `outfile` into the working directory.
 #'
 #' @details The robustification constant is added to both the observed and
 #'   expected proportions of length composition data, before being normalized
@@ -12,17 +11,16 @@
 #'   and when to use it for optimal effect. The same value is used for all
 #'   length data.
 #' @param lcomp_constant The new value to be used. Must be a numeric value, as
-#'   a proportion. For example 0.1 means 10 percent. See the SS3 manual for
+#'   a proportion. For example 0.1 means 10 percent. See the Stock Synthesis manual for
 #'   further information. A NULL value indicates no action resulting in using
 #'   the current value, and a value of 0 will throw an error since that leads to
 #'   an error when zeroes exist in the data. Instead use a very small value like
 #'   1e-07.
 #' @template dat_list
 #' @template outfile
-#' @return A modified SS \code{.dat} file, and that file returned invisibly
+#' @return A modified Stock Synthesis `.dat` file, and that file returned invisibly
 #'   (for testing) as a vector of character lines.
 #' @author Cole Monnahan
-#' @importFrom r4ss SS_writedat
 
 change_lcomp_constant <- function(lcomp_constant, dat_list, outfile = NULL){
 
@@ -35,7 +33,7 @@ change_lcomp_constant <- function(lcomp_constant, dat_list, outfile = NULL){
 
   if (!is.null(outfile)) {
     ss_version <- get_ss_ver_dl(dat_list)
-    SS_writedat(dat_list, outfile, overwrite = TRUE,
+    r4ss::SS_writedat(dat_list, outfile, overwrite = TRUE,
                              version = ss_version, verbose = FALSE)
   }
 

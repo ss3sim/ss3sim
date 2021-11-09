@@ -1,7 +1,7 @@
 #' Get the parameter values for change_bin
 #'
 #' This function organizes arguments for other functions needed by 
-#' \code{change_bin}.
+#' `change_bin`.
 #'
 #' @param dat A list of sample arguments from all sampling functions
 get_bin_info <- function(dat) {

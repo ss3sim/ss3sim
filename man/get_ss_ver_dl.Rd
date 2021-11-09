@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_ss_version.R
 \name{get_ss_ver_dl}
 \alias{get_ss_ver_dl}
-\title{Get the ss version (either 3.24 or 3.30) from a \code{dat_list} list.}
+\title{Get the Stock Synthesis version (either 3.24 or 3.30) from a list object}
 \usage{
 get_ss_ver_dl(dat_list)
 }
@@ -18,9 +18,6 @@ section provides bootstrapped data sets that have been sampled internally
 within SS.}
 }
 \description{
-Get the ss version (either 3.24 or 3.30) from a \code{dat_list} list.
+Get the Stock Synthesis version from a data list, \code{dat_list},
+that was a originally read in using \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}}.
 }
-\section{Get the SS version from a list FZpDocpXc6FlAeB1hrEfQmlLmZWQYGpr-1- that was a}{
-originally read in using \code{\link[r4ss]{SS_readdat}}.
-}
-

@@ -1,6 +1,6 @@
-#' Base plot for \code{ss3sim} data
+#' Base plot for `ss3sim` data
 #'
-#' Use \code{\link[ggplot2]{ggplot}} to plot data from \code{ss3sim}
+#' Use [ggplot2::ggplot] to plot data from `ss3sim`
 #' simulation.
 #' @template plot-functions
 #' @template plot-functions-color

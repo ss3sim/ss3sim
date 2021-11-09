@@ -2,7 +2,7 @@
 % Please edit documentation in R/change_e.r
 \name{change_e}
 \alias{change_e}
-\title{Methods to alter estimated parameters in an SS model}
+\title{Methods to alter the parameters estimated in a Stock Synthesis model}
 \usage{
 change_e(
   ctl_file_in = "em.ctl",
@@ -54,7 +54,7 @@ the phase for a given parameter. Negative values will fix the parameter
 at the INIT value.}
 
 \item{forecast_num}{Number of years to perform forecasts. For those years,
-the data will be removed from the \code{dat_list}, enabling SS3 to
+the data will be removed from the \code{dat_list}, enabling Stock Synthesis to
 generate forecasts rather than use the data to fit the model.}
 
 \item{verbose}{When \code{TRUE} messages will be returned
@@ -70,17 +70,17 @@ is \code{FALSE}.}
 \item{natM_val}{Deprecated. Should have value NULL.}
 }
 \value{
-Altered versions of SS \code{.ctl} and \code{forecast.ss} files are written
+Altered versions of Stock Synthesis \code{.ctl} and \code{forecast.ss} files are written
 to the disk and the altered \code{dat_list} is returned invisibly.
 }
 \description{
-Takes Stock Synthesis (SS)
+Takes Stock Synthesis
 \code{.ctl} and \code{forecast.ss} files, along with
 a list structure which houses the data file as read in by
-\code{\link[r4ss]{SS_readdat}}
+\code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}}
 and changes which parameters are estimated, how natural mortality is
 estimated, and if forecasts are performed. The function can be called by
-itself or within \code{\link{run_ss3sim}} to alter an estimation model
+itself or within \code{\link[=run_ss3sim]{run_ss3sim()}} to alter an estimation model
 \code{.ctl} file.
 }
 \examples{
@@ -109,6 +109,6 @@ Other change functions:
 \code{\link{change_tv}()}
 }
 \author{
-Kelli Johnson
+Kelli F. Johnson
 }
 \concept{change functions}

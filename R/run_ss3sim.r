@@ -3,60 +3,63 @@
 #' This is the main high-level wrapper function for running \pkg{ss3sim}
 #' simulations. First, this function separates the data frame of simulation
 #' settings by row for each scenario into a list format. These lists are then
-#' passed to \code{\link{ss3sim_base}} to run each simulation. Alternatively, you
-#' can run \code{\link{ss3sim_base}} directly using your own lists.
+#' passed to [ss3sim_base()] to run each simulation. Alternatively, you
+#' can run [ss3sim_base()] directly using your own lists.
 #'
 #' @param iterations Which iterations to run. A numeric vector. For example
-#'   \code{1:100}. The same number of iterations will be run for each scenario.
+#'   `1:100`. The same number of iterations will be run for each scenario.
 #'   If any iterations already exist, then ss3sim will skip over them.
 #' @param simdf A data frame of instructions with one row per scenario.
 #'   The data frame replaces the old method of using case files.
-#'   See \code{\link{setup_scenarios_defaults}} for default values that will be
+#'   See [setup_scenarios_defaults()] for default values that will be
 #'   passed to ss3sim for a generic simulation to get you started. These
-#'   values will be used if \code{simdf} is left at its default value of \code{NULL}.
+#'   values will be used if `simdf` is left at its default value of `NULL`.
 #' @param parallel A logical argument that controls whether the scenarios are
 #'   run in parallel. You will need to register multiple cores first with a
 #'   package such as \pkg{doParallel} and have the \pkg{foreach} package
 #'   installed. See the example below.
-#' @param parallel_iterations Logical. By default \code{parallel = TRUE} will
-#'   run scenarios in parallel. If you set \code{parallel = TRUE} and
-#'   \code{parallel_iterations = TRUE} then the iterations will be run in
+#' @param parallel_iterations Logical. By default `parallel = TRUE` will
+#'   run scenarios in parallel. If you set `parallel = TRUE` and
+#'   `parallel_iterations = TRUE` then the iterations will be run in
 #'   parallel. This would be useful if you were only running one scenario
 #'   but you wanted to run it faster.
 #' @param scenarios \emph{Deprecated}. Which scenarios to run. A vector of character objects. For
-#'   example \code{c("D0-F0-cod", "D1-F1-cod")}. (The scenarios should be specified in simdf)
+#'   example `c("D0-F0-cod", "D1-F1-cod")`.
+#'   The scenarios should be specified in `simdf`.
 #' @param case_folder \emph{Deprecated}. The folder containing the plain-text case files.
-#' @param om_dir \emph{Deprecated}. The folder containing the SS3 operating model
-#'   configuration files. (Specify the om_dir within simdf)
-#' @param em_dir \emph{Deprecated}. The folder containing the SS3 estimation model
-#'   configuration files. (Specify the em_dir within simdf)
+#' @param om_dir \emph{Deprecated}. The folder containing the Stock Synthesis operating model
+#'   configuration files.
+#'   Specify the om_dir within `simdf`.
+#' @param em_dir \emph{Deprecated}. The folder containing the Stock Synthesis estimation model
+#'   configuration files.
+#'   Specify the om_dir within `simdf`.
 #' @param case_files \emph{Deprecated}. A named list that relates the case IDs to the files to
 #'   return. \bold{The default list specifies only the required fishing
 #'   mortality and data scenarios. To specify other cases you will need to
 #'   extend this named list}. This argument is passed to
-#'   \code{\link{get_caseargs}}. See that function for details and examples of
+#'   [get_caseargs()]. See that function for details and examples of
 #'   how to specify this. The introduction vignette also explains how to specify
 #'   the case files.
-#' @param ... Anything else to pass to \code{\link{ss3sim_base}}. This could
-#'   include \code{bias_adjust}. Also, you can pass
-#'   additional options to the \code{SS3} command through the argument
-#'   \code{admb_options}.
+#' @param ... Anything else to pass to [ss3sim_base()]. This could
+#'   include `bias_adjust`. Also, you can pass
+#'   additional options to the executable through the argument
+#'   `admb_options`.
 
 #' @author Sean C. Anderson
 #'
-#' @details The operating model folder should contain: \code{forecast.ss},
-#' \code{yourmodel.ctl}, \code{yourmodel.dat}, \code{ss.par}, and
-#' \code{starter.ss}. The files should be the versions that are returned from an
-#' SS run as \code{.ss_new} files. This is important because it creates
+#' @details The operating model folder should contain: `forecast.ss`,
+#' `yourmodel.ctl`, `yourmodel.dat`, `ss.par`, and
+#' `starter.ss`. The files should be the versions that are returned from an
+#' Stock Synthesis run as `.ss_new` files. This is important because it creates
 #' consistent formatting which many of the functions in this package depend on.
-#' Rename the \code{.ss_new} files as listed above (and in all lowercase). The
+#' Rename the `.ss_new` files as listed above (and in all lowercase). The
 #' estimation model folder should contain all the same files listed above except
-#' the \code{ss.par} and \code{yourmodel.dat} files, which are unnecessary but
+#' the `ss.par` and `yourmodel.dat` files, which are unnecessary but
 #' can be included if desired. See the vignette for details on modifying an
-#' existing \code{SS3} model to run with \pkg{ss3sim}. Alternatively, you might
+#' existing Stock Synthesis model to run with \pkg{ss3sim}. Alternatively, you might
 #' consider modifying one of the built-in model configurations.
 #'
-#' Note that due to the way that SS is being used as an OM, you may see
+#' Note that due to the way that Stock Synthesis is being used as an OM, you may see
 #' the following ADMB error may appear in the console:
 #' Error -- base = 0 in function prevariable& pow(const prevariable& v1, CGNU_DOUBLE u)
 #' However, this is not a problem because ADMB is not used to optimize the OM,
@@ -66,17 +69,15 @@
 #'
 #' @return
 #' The output will appear in your current \R working directory
-#' Folders will be named based on the \code{"scenario"} column
-#' of \code{simdf} or based on the date-time stamp
+#' Folders will be named based on the `"scenario"` column
+#' of `simdf` or based on the date-time stamp
 #' (i.e., mmddhhmmss) generated automatically at the start of the simulation.
 #' The resulting folders will look like the following if you run
 #' your simulation at noon on January 01:
-#' \itemize{
-#' \item \code{0101120000/1/om}
-#' \item \code{0101120000/1/em}
-#' \item \code{0101120000/2/om}
-#' \item ...
-#' }
+#' * `0101120000/1/om`
+#' * `0101120000/1/em`
+#' * `0101120000/2/om`
+#' * ...
 #'
 # An illustration of the input and output file structure
 # of an \pkg{ss3sim} simulation:
