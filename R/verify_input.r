@@ -40,10 +40,7 @@
 
 verify_input <- function(model_dir, type = c("om", "em")) {
 
-  if (type != "om" & type != "em") {
-    stop(paste("Misspecification of \"type\", read as:", type,
-        "-should be either \"om\" or \"em\""))
-  }
+  type <- match.arg(type)
 
   type <- type[1]
   ctl_name <- paste0(type, ".ctl")
