@@ -24,7 +24,7 @@ Authors@R: c(person(c("Kelli", "F."), "Johnson",
     person("Juan", "Valero", role = "ctb"),
     person("Athol", "Whitten", role = "ctb"))
 Description: Develops a framework for fisheries stock assessment simulation
-    testing with Stock Synthesis (SS) as described in Anderson et al.
+    testing with Stock Synthesis (SS3) as described in Anderson et al.
     (2014) <doi:10.1371/journal.pone.0092725>.
 License: MIT + file LICENSE
 URL: https://github.com/ss3sim/ss3sim
