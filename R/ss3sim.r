@@ -94,8 +94,4 @@
 #'
 #' @docType package
 #' @name ss3sim
-#' @importFrom grDevices dev.off pdf rgb
-#' @importFrom graphics abline legend mtext par plot
-#' @importFrom stats as.formula na.omit reshape rmultinom rnorm
-#' @importFrom utils read.csv read.table write.csv write.table
 NULL

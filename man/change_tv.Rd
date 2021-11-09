@@ -99,7 +99,7 @@ setwd("cod-om")
 
 change_tv(change_tv_list =
             list("NatM_p_1_Fem_GP_1" = c(rep(0, 20), rep(.1, 80)),
-                 "SR_BH_steep"=rnorm(100, 0, 0.05)),
+                 "SR_BH_steep" = stats::rnorm(100, 0, 0.05)),
           ctl_file_in  = "codOM.ctl",
           ctl_file_out = "example.ctl",
           dat_file_in  = "codOM.dat",

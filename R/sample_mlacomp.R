@@ -171,7 +171,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
         age.samples <- sapply(seq_along(age.means), function(x) sum(temp == x))
       } else {
         # in the case of overdispersed age comp data
-        age.samples <- rmultinom(n = 1, size = as.integer(age.Nsamp),
+        age.samples <- stats::rmultinom(n = 1, size = as.integer(age.Nsamp),
                                  prob = age.means)
       }
       if (any(is.na(age.samples))) {
@@ -181,7 +181,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
       # apply sampling across columns (ages) to get sample of lengths
       lengths.list <-
         lapply(seq_along(means.log), function(kk) {
-          exp(rnorm(n = age.samples[kk], mean = means.log[kk],
+          exp(stats::rnorm(n = age.samples[kk], mean = means.log[kk],
           sd = sds.log[kk]))
           })
 
@@ -206,7 +206,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
     }
   } # end sampling
   if (!is.null(mean_outfile)) {
-    write.csv(do.call("rbind", forexport), mean_outfile, row.names = FALSE)
+    utils::write.csv(do.call("rbind", forexport), mean_outfile, row.names = FALSE)
   }
   ## Combine new rows together into one data.frame
   mlacomp.new <- do.call(rbind, mlacomp.new.list)

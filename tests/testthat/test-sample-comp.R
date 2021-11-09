@@ -4,7 +4,7 @@ d <- system.file("extdata", package = "ss3sim")
 exp_dat_path <- file.path(d, "example-om", "ss3_exp_vals_comps.dat")
 
 #values to use in tests
-exp_dat <- SS_readdat(exp_dat_path, verbose  = FALSE)
+exp_dat <- r4ss::SS_readdat(exp_dat_path, verbose  = FALSE)
 # Note: these variable should already be in the exp_dat.
 lcomp <- list(fleets = unique(exp_dat$lencomp$FltSvy)[1],
               Nsamp = list(100),

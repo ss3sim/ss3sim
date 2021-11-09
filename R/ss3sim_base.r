@@ -75,7 +75,6 @@
 #' [system()] call that runs Stock Synthesis.
 #' @author Sean Anderson with contributions from many others as listed in
 #'   the DESCRIPTION file.
-#' @import r4ss
 #' @return
 #' The output will appear in whatever your current \R working directory
 #' is. There will be folders named after your scenarios. They will

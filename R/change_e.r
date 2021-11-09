@@ -98,7 +98,7 @@ change_e <- function(ctl_file_in = "em.ctl",
            getwd(), ". Please make sure the correct data is available for the ",
            "external estimator.")
     }
-    data <- read.csv(dir(pattern = "vbgf"), header = TRUE)
+    data <- utils::read.csv(dir(pattern = "vbgf"), header = TRUE)
   #Get start values
     pars <- r4ss::SS_parlines(ctl_file_out, version = ss_version, verbose = FALSE)
     change_e_vbgf <- try(
@@ -157,7 +157,7 @@ if(!is.null(par_name)) {
   }
   phaseneg <- which(par_phase < 0)
   if(length(phaseneg) > 0) {
-    SS_changepars(dir = dirname(ctl_file_out),
+    r4ss::SS_changepars(dir = dirname(ctl_file_out),
       ctlfile = basename(ctl_file_out),
       newctlfile = basename(ctl_file_out),
       linenums = NULL, strings = par_name[phaseneg],
@@ -168,7 +168,7 @@ if(!is.null(par_name)) {
   }
   pasepos <- which(par_phase >= 0)
   if(length(pasepos) > 0) {
-    SS_changepars(dir = dirname(ctl_file_out),
+    r4ss::SS_changepars(dir = dirname(ctl_file_out),
       ctlfile = basename(ctl_file_out),
       newctlfile = basename(ctl_file_out),
       linenums = NULL, strings = par_name[pasepos],

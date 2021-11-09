@@ -98,9 +98,9 @@ get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
           get_results_scenario(scenario = scen, directory = directory,
                                overwrite_files = overwrite_files)
       }
-      scalar.list[[i]] <- tryCatch(suppressWarnings(read.csv(scalar.file, stringsAsFactors = FALSE)), error = function(e) NA)
-      ts.list[[i]] <- tryCatch(suppressWarnings(read.csv(ts.file, stringsAsFactors = FALSE)), error = function(e) NA)
-      dq.list[[i]] <- tryCatch(suppressWarnings(read.csv(dq.file, stringsAsFactors = FALSE)), error = function(e) NA)
+      scalar.list[[i]] <- tryCatch(suppressWarnings(utils::read.csv(scalar.file, stringsAsFactors = FALSE)), error = function(e) NA)
+      ts.list[[i]] <- tryCatch(suppressWarnings(utils::read.csv(ts.file, stringsAsFactors = FALSE)), error = function(e) NA)
+      dq.list[[i]] <- tryCatch(suppressWarnings(utils::read.csv(dq.file, stringsAsFactors = FALSE)), error = function(e) NA)
   }
   scalar.list <- scalar.list[which(!is.na(scalar.list))]
   ts.list <- ts.list[which(!is.na(ts.list))]
@@ -121,19 +121,19 @@ get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
     warning(scalar.file.all, " already exists and overwrite_files = FALSE, ",
       "so a new file was not written.")
   } else { # can write either way
-    write.csv(scalar.all, file = scalar.file.all, row.names = FALSE)
+    utils::write.csv(scalar.all, file = scalar.file.all, row.names = FALSE)
   }
   if (file.exists(ts.file.all) & !overwrite_files) {
     warning(ts.file.all, " already exists and overwrite_files = FALSE, ",
       "so a new file was not written.")
   } else { # can write either way
-    write.csv(ts.all, file = ts.file.all, row.names = FALSE)
+    utils::write.csv(ts.all, file = ts.file.all, row.names = FALSE)
   }
   if (file.exists(dq.file.all) & !overwrite_files) {
     warning(dq.file.all, " already exists and overwrite_files = FALSE, ",
             "so a new file was not written.")
   } else { # can write either way
-    write.csv(dq.all, file = dq.file.all, row.names = FALSE)
+    utils::write.csv(dq.all, file = dq.file.all, row.names = FALSE)
   }
 ret <- list(scalar = scalar.all,
                   ts = ts.all,
@@ -218,13 +218,13 @@ get_results_scenario <- function(scenario, directory = getwd(),
 
     ## Write them to file in the scenario folder
     scalar.exists <- file.exists(scalar.file)
-    write.table(x = scalar, file = scalar.file, append = scalar.exists,
+    utils::write.table(x = scalar, file = scalar.file, append = scalar.exists,
                 col.names = !scalar.exists, row.names = FALSE, sep = ",")
     ts.exists <- file.exists(ts.file)
-    write.table(x = ts, file = ts.file, append = ts.exists,
+    utils::write.table(x = ts, file = ts.file, append = ts.exists,
                 col.names = !ts.exists, row.names = FALSE, sep = ",")
     dq.exists <- file.exists(dq.file)
-    write.table(x = dq, file = dq.file, append = dq.exists,
+    utils::write.table(x = dq, file = dq.file, append = dq.exists,
                 col.names = !dq.exists, row.names = FALSE, sep = ",")
     ret <- list(scalar = scalar,
                 ts = ts,
@@ -459,7 +459,7 @@ get_results_derived <- function(report.file) {
     if (all(xx$StdDev == 0)) xx <- xx[, -which(colnames(xx) == "StdDev")]
     xx <- xx[grep("[0-9]", xx$Yr), ]
     xx$name <- gsub("\\(|\\)", "", xx$name)
-    final <- reshape(xx, timevar = "name", idvar = "Yr", direction = "wide",
+    final <- stats::reshape(xx, timevar = "name", idvar = "Yr", direction = "wide",
       drop = badname)
     rownames(final) <- NULL
     # change year name.
@@ -606,10 +606,10 @@ make_df <- function(list_name, list_df) {
 #' @return A wide dataframe (separate columns for em and om results)
 #' @export
 #' @examples \dontrun{
-#'   scalar <-  read.csv("ss3sim_scalar.csv")
+#'   scalar <- utils::read.csv("ss3sim_scalar.csv")
 #'   scalar_wide <- convert_to_wide(scalar)
 #'
-#'   ts <- read.csv("ss3sim_ts.csv")
+#'   ts <- utils::read.csv("ss3sim_ts.csv")
 #'   ts_wide <- convert_to_wide(scalar)
 #' }
 #' @author Kathryn Doering

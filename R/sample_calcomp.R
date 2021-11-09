@@ -141,7 +141,6 @@
 #'  present in `datlist[["lencomp"]]`.
 #' @template sampledots
 #' @template sampling-return
-#' @importFrom magrittr %>%
 #' @family sampling functions
 #' @export
 
@@ -163,7 +162,7 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
     if(is.null(fleets)){
       newfile$agecomp <- agecomp.age # only leave in maraginal age comps
       if(!is.null(outfile)){
-        SS_writedat(datlist = newfile, outfile = outfile, version = ss_version,
+        r4ss::SS_writedat(datlist = newfile, outfile = outfile, version = ss_version,
                     overwrite = TRUE, verbose=FALSE)
       }
       return(invisible(newfile))
@@ -348,7 +347,7 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
           MoreArgs = list(samples = temp),
           SIMPLIFY = FALSE))
       } else {
-        Nsamp.ages.per.lbin <- rmultinom(n=1,
+        Nsamp.ages.per.lbin <- stats::rmultinom(n=1,
                                          size=tmp_nsamp_ages,
                                          prob=prob.len)
       }
@@ -365,7 +364,7 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
         N.temp <- newcomp$Nsamp[ll]
         if(N.temp>0){
           cal.temp <-
-            rmultinom(n=1,
+            stats::rmultinom(n=1,
                       size=Nsamp.ages.per.lbin[ll],
                       prob=as.numeric(newcomp[ll,-(1:9)]))
         } else {

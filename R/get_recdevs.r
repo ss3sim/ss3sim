@@ -19,5 +19,5 @@ get_recdevs <- function(iteration, n, seed = 21) {
   set.seed(seed)
   x <- sample(1:1e6)[iteration]
   set.seed(x)
-  rnorm(n, 0, 1)
+  stats::rnorm(n, 0, 1)
 }

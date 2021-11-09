@@ -23,7 +23,6 @@
 #' @param bins A vector of bins for the composition data. The bins do not
 #' need to be named because they will be renamed with their value and a
 #' leading character based on what type of data they are.
-#' @importFrom magrittr %>%
 #' @examples
 #' # todo: remove this example when testing is complete
 #' \dontrun{

@@ -63,7 +63,7 @@ containing the modified \code{.dat} file is returned invisibly.
 This function creates an index of abundance sampled from the expected
 available biomass for specified fleets in specified years. Let \eqn{B_y} be the biomass
 from the operating model for year y. Then the sampled value is calculated as:
-\eqn{B_y*exp(rnorm(1, 0, sds_obs)-sds_obs^2/2)}. The second term
+\eqn{B_y*exp(stats::rnorm(1, 0, sds_obs)-sds_obs^2/2)}. The second term
 adjusts the random samples so that their expected value is \eqn{B_y}, i.e.,
 the log-normal bias correction.
 }

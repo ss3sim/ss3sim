@@ -4,7 +4,7 @@
 #'
 #' @details
 #' Newly sampled values are calculated
-#' \eqn{obs*exp(rnorm(1, 0, sd)-sd^2/2)}.
+#' \eqn{obs*exp(stats::rnorm(1, 0, sd)-sd^2/2)}.
 #' The second term adjusts the random samples so that their expected value is
 #' `obs`, i.e., the log-normal bias correction.
 #'
@@ -15,5 +15,5 @@
 #' @author Cole Monnahan
 #'
 sample_lognormal <- function(obs, sd) {
-  obs * exp(rnorm(n = 1, mean = 0, sd = sd) - sd^2/2)
+  obs * exp(stats::rnorm(n = 1, mean = 0, sd = sd) - sd^2/2)
 }

@@ -18,7 +18,7 @@ Sample a standard normal in log-space and apply the error to observations.
 }
 \details{
 Newly sampled values are calculated
-\eqn{obs*exp(rnorm(1, 0, sd)-sd^2/2)}.
+\eqn{obs*exp(stats::rnorm(1, 0, sd)-sd^2/2)}.
 The second term adjusts the random samples so that their expected value is
 \code{obs}, i.e., the log-normal bias correction.
 }

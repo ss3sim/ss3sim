@@ -18,10 +18,10 @@ if the column model_run has only the strings"om" or "em".
 }
 \examples{
 \dontrun{
-  scalar <-  read.csv("ss3sim_scalar.csv")
+  scalar <- utils::read.csv("ss3sim_scalar.csv")
   scalar_wide <- convert_to_wide(scalar)
 
-  ts <- read.csv("ss3sim_ts.csv")
+  ts <- utils::read.csv("ss3sim_ts.csv")
   ts_wide <- convert_to_wide(scalar)
 }
 }

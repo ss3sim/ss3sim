@@ -108,7 +108,7 @@
 #' run_ss3sim(iterations = 1:2, simdf = df,
 #'   bias_adjust = FALSE, user_recdevs = recdevs_det)
 #' get_results_all(user_scenarios = "determinate", overwrite = TRUE)
-#' ts <- read.csv("ss3sim_ts.csv")
+#' ts <- utils::read.csv("ss3sim_ts.csv")
 #' expect_equivalent(unlist(ts$rec_dev[ts$year %in% 1:10 & ts$iteration == 2]),
 #'   recdevs_det[1:10, 2])
 #' }

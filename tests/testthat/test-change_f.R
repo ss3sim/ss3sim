@@ -34,7 +34,7 @@ test_that("change_f gives expected error with invalid input", {
 })
 
 test_that("change_f provides error when F_method is 1 or 3 ", {
-  input$ctl_list <- SS_readctl(file.path(em, "codEM.ctl"), verbose = FALSE,
+  input$ctl_list <- r4ss::SS_readctl(file.path(em, "codEM.ctl"), verbose = FALSE,
     use_datlist = TRUE, datlist = dat_list)
   expect_error(do.call("change_f", input),
     "== 2 is not TRUE")

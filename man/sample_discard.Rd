@@ -58,7 +58,7 @@ containing the modified \code{.dat} file is returned invisibly.
 This function creates an index of discards sampled from the expected
 available discards for specified fleets in specified years. Let \eqn{D_y} be the discard
 from the operating model for year y. Then the sampled value is calculated as:
-\eqn{D_y*exp(rnorm(1, 0, sds_obs)-sds_obs^2/2)}. The second term
+\eqn{D_y*exp(stats::rnorm(1, 0, sds_obs)-sds_obs^2/2)}. The second term
 adjusts the random samples so that their expected value is \eqn{D_y}, i.e.,
 the log-normal bias correction.
 }

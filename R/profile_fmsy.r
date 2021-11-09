@@ -88,7 +88,7 @@ profile_fmsy <- function(om_in, results_out,
       fleets = as.numeric(row.names(datFile$fleetinfo[datFile$fleetinfo$type == 1, ])),
       fvals = rep(fVector[i], simlength),
       ctl_list = ctl)
-    SS_writectl(ctllist = ctl, outfile = starter$ctlfile, overwrite = TRUE, verbose = FALSE)
+    r4ss::SS_writectl(ctllist = ctl, outfile = starter$ctlfile, overwrite = TRUE, verbose = FALSE)
     system(paste(ss_bin, "-nohess"), show.output.on.console = FALSE,
            ignore.stdout=TRUE)
     allcatch <- r4ss::SS_readdat("data.ss_new",
@@ -103,21 +103,26 @@ profile_fmsy <- function(om_in, results_out,
     " might not be reaching equilibrium and\n",
     "should be ran for more than ", simlength, " years.")
 
-  pdf("Fmsy.pdf")
-      plot(fVector, fEqCatch, type = "b",
-           xlab = "Fishing mortality rate", ylab = "Yield at equilibrium")
-      maxFVal <- which.max(fEqCatch)
+  grDevices::pdf("Fmsy.pdf")
+    graphics::plot(
+      x = fVector,
+      y = fEqCatch,
+      type = "b",
+      xlab = "Fishing mortality rate",
+      ylab = "Yield at equilibrium"
+    )
+    maxFVal <- which.max(fEqCatch)
 	  Fmsy <- fVector[maxFVal]
       graphics::points(x = Fmsy, y = max(fEqCatch),
         col = "red", pch = 19)
-      mtext(text = paste(" OM = ", om_in, "\n",
+      graphics::mtext(text = paste(" OM = ", om_in, "\n",
 	                     "Fishing mortality at maximum yield (Fmsy) = ",
                        Fmsy, "\n",
                        "Landings at Fmsy = ", max(fEqCatch), "(mt)"),
                side = 1, line = -1, las = 1, adj = 0)
-  dev.off()
+  grDevices::dev.off()
   FmsyTable <- data.frame(fValues = fVector,
                           eqCatch = fEqCatch)
-  write.table(FmsyTable, "Fmsy.txt")
+  utils::write.table(FmsyTable, "Fmsy.txt")
   invisible(FmsyTable)
 }

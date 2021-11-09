@@ -80,7 +80,7 @@
 #'
 #' change_tv(change_tv_list =
 #'             list("NatM_p_1_Fem_GP_1" = c(rep(0, 20), rep(.1, 80)),
-#'                  "SR_BH_steep"=rnorm(100, 0, 0.05)),
+#'                  "SR_BH_steep" = stats::rnorm(100, 0, 0.05)),
 #'           ctl_file_in  = "codOM.ctl",
 #'           ctl_file_out = "example.ctl",
 #'           dat_file_in  = "codOM.dat",
@@ -285,7 +285,7 @@ for(i in seq_along(temp.data)) {
   # Write out manipulated files.
   # TODO: may want to make the ctl file have more standard commenting if not
   # going to run the OM except for once at the end... eventually, perhaps using
-  # SS_read/writectl instead can be useful in this regard.
+  # r4ss::SS_read/writectl instead can be useful in this regard.
   if(!is.null(ctl_file_out)) writeLines(ss3.ctl, ctl_file_out)
   if(!is.null(dat_file_out)) {
   r4ss::SS_writedat(ss3.dat, dat_file_out, overwrite = TRUE, verbose = FALSE)

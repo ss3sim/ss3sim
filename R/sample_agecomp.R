@@ -46,19 +46,19 @@
 #'
 #' ## Run three  cases showing Multinomial, Dirichlet(1), and over-dispersed
 #' ## Dirichlet for different levels of sample sizes
-#' op <- par(mfrow = c(1, 3))
+#' op <- graphics::par(mfrow = c(1, 3))
 #' set.seed(1)
 #' true <- prop.table(dat_list$agecomp[
 #'   dat_list$agecomp$FltSvy == 1 & dat_list$agecomp$Yr == 50, -(1:9)])
 #' cpars <- c(NA, 1, 4)
 #' for (samplesize in c(30, 100, 1000)) {
-#'   if (samplesize > 30) par(mar = c(5.1, 1, 4.1, 2.1))
-#'   plot(dat_list$agebin_vector, true, type = "b", ylim = c(0, 1),
+#'   if (samplesize > 30) graphics::par(mar = c(5.1, 1, 4.1, 2.1))
+#'   graphics::plot(dat_list$agebin_vector, true, type = "b", ylim = c(0, 1),
 #'     col = 4, lwd = 2, xlab = "Age",
 #'     ylab = ifelse(samplesize == 30, "Proportion", ""),
 #'     main = paste("Sample size =", samplesize))
 #'   if (samplesize == 30) {
-#'     legend("topright", lty = 1, col = 1:4, bty = "n",
+#'     graphics::legend("topright", lty = 1, col = 1:4, bty = "n",
 #'       legend = c("Multinomial", "Dirichlet(1)", "Dirichlet(4)", "Truth"))
 #'   }
 #'   for (i in seq_along(cpars)) {
@@ -68,7 +68,7 @@
 #'       col = i, type = "b")
 #'   }
 #' }
-#' par(op)
+#' graphics::par(op)
 #' @family sampling functions
 #' @export
 sample_agecomp <- function(dat_list, outfile = NULL, fleets, Nsamp,

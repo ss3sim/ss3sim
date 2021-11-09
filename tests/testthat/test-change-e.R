@@ -40,7 +40,7 @@ test_that("change_e works as expected", {
                             par_int = c(0.3, 40),
                             par_phase = c(3, 2),
                             forecast_num = 0))
- new_ctl <- suppressWarnings(SS_parlines("change_e.ctl"))
+ new_ctl <- suppressWarnings(r4ss::SS_parlines("change_e.ctl"))
  steep_line <- which(new_ctl$Label == "SR_BH_steep")
  sel_line <- which(new_ctl$Label == "SizeSel_P1_Fishery(1)")
  expect_equal(new_ctl[steep_line, "INIT"], 0.3)
