@@ -49,7 +49,8 @@
 #' @param bias_adjust A logical argument specifying bias adjustment is conducted.
 #'   Bias adjustment helps assure that the estimated recruitment deviations,
 #'   which are assumed to be log-normally distributed,
-#'   are mean unbiased leading to mean-unbiased estimates of biomass [@methot2011].
+#'   are mean unbiased leading to mean-unbiased estimates of biomass
+#'   [Methot and Taylor, 2011](https://cdnsciencepub.com/doi/abs/10.1139/f2011-092).
 #'   Bias adjustment should always be performed when
 #'   using maximum likelihood estimation when running simulations for publication or management.
 #'   The argument allows users to turn bias adjustment off because
