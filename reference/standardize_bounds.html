@@ -193,13 +193,13 @@ OM and EM INIT values is ignored. Default is <code>""</code>.
     <tr>
       <th>estimate</th>
       <td><p>A logical for which changed parameters are to be estimated.
-Used by <code><a href='https://rdrr.io/pkg/r4ss/man/SS_changepars.html'>SS_changepars</a></code>, where in <span class="pkg">r4ss</span> the default
+Used by <code><a href='https://rdrr.io/pkg/r4ss/man/SS_changepars.html'>r4ss::SS_changepars()</a></code>, where in <span class="pkg">r4ss</span> the default
 is <code>FALSE</code>, which turns all parameter estimation off. Here the default
 is <code>NULL</code>, which will leave parameter phases unchanged.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Any other arguments to pass to <code><a href='https://rdrr.io/pkg/r4ss/man/SS_changepars.html'>SS_changepars</a></code>.</p></td>
+      <td><p>Any other arguments to pass to <code><a href='https://rdrr.io/pkg/r4ss/man/SS_changepars.html'>r4ss::SS_changepars()</a></code>.</p></td>
     </tr>
     </table>
 
@@ -223,7 +223,7 @@ is <code>NULL</code>, which will leave parameter phases unchanged.</p></td>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.copy</a></span><span class='op'>(</span><span class='va'>OM.ctl</span>, <span class='st'>"om.ctl"</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.copy</a></span><span class='op'>(</span><span class='va'>EM.ctl</span>, <span class='st'>"em.ctl"</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## Use SS_parlines to get the proper names for parameters for the data frame</span></span>
+<span class='r-in'><span class='co'>## Use r4ss::SS_parlines to get the proper names for parameters for the data frame</span></span>
 <span class='r-in'><span class='va'>em.pars</span> <span class='op'>&lt;-</span> <span class='fu'>r4ss</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/r4ss/man/SS_parlines.html'>SS_parlines</a></span><span class='op'>(</span>ctlfile <span class='op'>=</span> <span class='st'>"em.ctl"</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Set percentages to make lower and upper bounds</span></span>
@@ -254,7 +254,7 @@ is <code>NULL</code>, which will leave parameter phases unchanged.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

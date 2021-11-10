@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Given sampling arguments remove ("clean") all data in a .dat file that
-is not specified — clean_data • ss3sim</title>
+<title>Given sampling arguments, remove unneeded data from a .dat file — clean_data • ss3sim</title>
 
 
 <!-- jquery -->
@@ -42,10 +41,9 @@ is not specified — clean_data • ss3sim</title>
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Given sampling arguments remove ("clean") all data in a .dat file that
-is not specified — clean_data" />
-<meta property="og:description" content="This prepares a .dat file to be used by an EM, whereas before it may
-have had leftover data from sampling purposes." />
+<meta property="og:title" content="Given sampling arguments, remove unneeded data from a .dat file — clean_data" />
+<meta property="og:description" content="This prepares a .dat file to be used by an estimation method,
+whereas before it may have had leftover data from sampling purposes." />
 
 
 
@@ -134,15 +132,14 @@ have had leftover data from sampling purposes." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Given sampling arguments remove ("clean") all data in a .dat file that
-is not specified</h1>
+    <h1>Given sampling arguments, remove unneeded data from a .dat file</h1>
     <small class="dont-index">Source: <a href='https://github.com/ss3sim/ss3sim/blob/master/R/clean_data.r'><code>R/clean_data.r</code></a></small>
     <div class="hidden name"><code>clean_data.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This prepares a <code>.dat</code> file to be used by an EM, whereas before it may
-have had leftover data from sampling purposes.</p>
+    <p>This prepares a <code>.dat</code> file to be used by an estimation method,
+whereas before it may have had leftover data from sampling purposes.</p>
     </div>
 
     <pre class="usage"><span class='fu'>clean_data</span><span class='op'>(</span>
@@ -172,22 +169,22 @@ within SS.</p></td>
     <tr>
       <th>lcomp_params</th>
       <td><p>Named lists containing the arguments for
-<code><a href='sample_lcomp.html'>sample_lcomp</a></code>.</p></td>
+<code><a href='sample_lcomp.html'>sample_lcomp()</a></code>.</p></td>
     </tr>
     <tr>
       <th>agecomp_params</th>
       <td><p>Named lists containing the arguments for
-<code><a href='sample_agecomp.html'>sample_agecomp</a></code>.</p></td>
+<code><a href='sample_agecomp.html'>sample_agecomp()</a></code>.</p></td>
     </tr>
     <tr>
       <th>calcomp_params</th>
       <td><p>Named lists containing the arguments for
-<code><a href='sample_calcomp.html'>sample_calcomp</a></code>.</p></td>
+<code><a href='sample_calcomp.html'>sample_calcomp()</a></code>.</p></td>
     </tr>
     <tr>
       <th>mlacomp_params</th>
       <td><p>Named lists containing the arguments for
-<code><a href='sample_mlacomp.html'>sample_mlacomp</a></code>.</p></td>
+<code><a href='sample_mlacomp.html'>sample_mlacomp()</a></code>.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -204,7 +201,7 @@ deleted.</p></td>
     <p>This function does not write the result to file.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>calculate_data_units</p>
+    <div class='dont-index'><p><code><a href='calculate_data_units.html'>calculate_data_units()</a></code></p>
 <p>Other sampling functions: 
 <code><a href='sample_agecomp.html'>sample_agecomp</a>()</code>,
 <code><a href='sample_calcomp.html'>sample_calcomp</a>()</code>,
@@ -229,7 +226,7 @@ deleted.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

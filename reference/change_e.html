@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Methods to alter estimated parameters in an SS model — change_e • ss3sim</title>
+<title>Methods to alter the parameters estimated in a Stock Synthesis model — change_e • ss3sim</title>
 
 
 <!-- jquery -->
@@ -41,14 +41,14 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Methods to alter estimated parameters in an SS model — change_e" />
-<meta property="og:description" content="Takes Stock Synthesis (SS)
+<meta property="og:title" content="Methods to alter the parameters estimated in a Stock Synthesis model — change_e" />
+<meta property="og:description" content="Takes Stock Synthesis
 .ctl and forecast.ss files, along with
 a list structure which houses the data file as read in by
-SS_readdat
+r4ss::SS_readdat()
 and changes which parameters are estimated, how natural mortality is
 estimated, and if forecasts are performed. The function can be called by
-itself or within run_ss3sim to alter an estimation model
+itself or within run_ss3sim() to alter an estimation model
 .ctl file." />
 
 
@@ -138,19 +138,19 @@ itself or within run_ss3sim to alter an estimation model
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Methods to alter estimated parameters in an SS model</h1>
+    <h1>Methods to alter the parameters estimated in a Stock Synthesis model</h1>
     <small class="dont-index">Source: <a href='https://github.com/ss3sim/ss3sim/blob/master/R/change_e.r'><code>R/change_e.r</code></a></small>
     <div class="hidden name"><code>change_e.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Takes Stock Synthesis (SS)
+    <p>Takes Stock Synthesis
 <code>.ctl</code> and <code>forecast.ss</code> files, along with
 a list structure which houses the data file as read in by
-<code><a href='https://rdrr.io/pkg/r4ss/man/SS_readdat.html'>SS_readdat</a></code>
+<code><a href='https://rdrr.io/pkg/r4ss/man/SS_readdat.html'>r4ss::SS_readdat()</a></code>
 and changes which parameters are estimated, how natural mortality is
 estimated, and if forecasts are performed. The function can be called by
-itself or within <code><a href='run_ss3sim.html'>run_ss3sim</a></code> to alter an estimation model
+itself or within <code><a href='run_ss3sim.html'>run_ss3sim()</a></code> to alter an estimation model
 <code>.ctl</code> file.</p>
     </div>
 
@@ -222,7 +222,7 @@ at the INIT value.</p></td>
     <tr>
       <th>forecast_num</th>
       <td><p>Number of years to perform forecasts. For those years,
-the data will be removed from the <code>dat_list</code>, enabling SS3 to
+the data will be removed from the <code>dat_list</code>, enabling Stock Synthesis to
 generate forecasts rather than use the data to fit the model.</p></td>
     </tr>
     <tr>
@@ -251,7 +251,7 @@ is <code>FALSE</code>.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Altered versions of SS <code>.ctl</code> and <code>forecast.ss</code> files are written
+    <p>Altered versions of Stock Synthesis <code>.ctl</code> and <code>forecast.ss</code> files are written
 to the disk and the altered <code>dat_list</code> is returned invisibly.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -264,7 +264,7 @@ to the disk and the altered <code>dat_list</code> is returned invisibly.</p>
 <code><a href='change_tv.html'>change_tv</a>()</code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-    <p>Kelli Johnson</p>
+    <p>Kelli F. Johnson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"models"</span>, <span class='st'>"cod-om"</span>, package <span class='op'>=</span> <span class='st'>"ss3sim"</span><span class='op'>)</span></span>
@@ -294,7 +294,7 @@ to the disk and the altered <code>dat_list</code> is returned invisibly.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

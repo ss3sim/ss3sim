@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add or remove a q in an SS control file — change_q • ss3sim</title>
+<title>Add or remove catchability parameters in a Stock Synthesis control file — change_q • ss3sim</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,14 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Add or remove a q in an SS control file — change_q" />
-<meta property="og:description" content="This function adds or removes a q setup line in an SS control file." />
+<meta property="og:title" content="Add or remove catchability parameters in a Stock Synthesis control file — change_q" />
+<meta property="og:description" content="Catchability, \(q\), is the proportionality parameter between
+fishing effort and population abundance.
+That is, when \(q=1\),
+a survey of the population is thought to encompass the entire population.
+Removing or adding a catch-per-unit effort time series
+can require changes to the control file because
+each catch-per-unit-effort time series requires set up and parameter lines." />
 
 
 
@@ -131,13 +137,19 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add or remove a q in an SS control file</h1>
+    <h1>Add or remove catchability parameters in a Stock Synthesis control file</h1>
     <small class="dont-index">Source: <a href='https://github.com/ss3sim/ss3sim/blob/master/R/change_q.R'><code>R/change_q.R</code></a></small>
     <div class="hidden name"><code>change_q.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function adds or removes a q setup line in an SS control file.</p>
+    <p>Catchability, \(q\), is the proportionality parameter between
+fishing effort and population abundance.
+That is, when \(q=1\),
+a survey of the population is thought to encompass the entire population.
+Removing or adding a catch-per-unit effort time series
+can require changes to the control file because
+each catch-per-unit-effort time series requires set up and parameter lines.</p>
     </div>
 
     <pre class="usage"><span class='fu'>change_q</span><span class='op'>(</span>
@@ -211,27 +223,26 @@ is <code>FALSE</code>.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A modified SS control file list with the same structure as that read
-in by <code><a href='https://rdrr.io/pkg/r4ss/man/SS_readctl.html'>SS_readctl</a></code>.</p>
+    <p>A modified Stock Synthesis control file list with
+the same structure returned by <code><a href='https://rdrr.io/pkg/r4ss/man/SS_readctl.html'>r4ss::SS_readctl()</a></code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Parameters that are added are simple versions of the structures available
-within Stock Synthesis. For example, the current functionality of
-<code>change_q</code> does not allow for modeling an additional parameter for
-added variance for the given survey of interest. Though it will remove
-that parameter if present for a given fleet that no longer has survey data.
-Additionally, the float term is not used and is instead set to zero.</p>
-<p><code>change_q</code> can add and remove parameters in the control file
-simultaneously, and thus, it is not necessary to call the function twice
-when wanting to perform both operations. A helper function,
-<code><a href='check_q.html'>check_q</a></code> is a available to determine which fleets one should
-remove and add.</p>
+    <p>In Stock Synthesis, environmental time series can also be modeled as
+catch-per-unit-effort time series.
+Readers interested in the complete range of functionality should see the
+<a href='https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html#catchability'>section of the Stock Synthesis user manual on catchability</a>.
+<code>code{change_q} has limited functionality relative to what is available in Stock Synthesis. For example, </code>change_q` cannot add a parameter to estimate additional variance.
+Though it will remove additional variance parameters for
+fleets that no longer have survey data.
+Additionally, the float term is not used within ss3sim and is set to zero.</p>
+<p>This function can add and remove parameters in the control file simultaneously.
+Thus, it is not necessary to call it twice to perform both operations.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>change_q</code></p></div>
+    <div class='dont-index'><p><code><a href='check_q.html'>check_q()</a></code> can determine which fleets should removed or added.</p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-    <p>Kelli Faye Johnson</p>
+    <p>Kelli F. Johnson</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -244,7 +255,7 @@ remove and add.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

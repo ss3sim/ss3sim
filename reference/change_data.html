@@ -42,7 +42,7 @@
   
 
 <meta property="og:title" content="Change the data that is available from a list object — change_data" />
-<meta property="og:description" content="Alter the structure of data that is available from a Stock Synthesis (SS)
+<meta property="og:description" content="Alter the structure of data that is available from a Stock Synthesis
 operating model (OM), which in turn leads to changes
 in the output and ability to sample data after running the model." />
 
@@ -139,7 +139,7 @@ in the output and ability to sample data after running the model." />
     </div>
 
     <div class="ref-description">
-    <p>Alter the structure of data that is available from a Stock Synthesis (SS)
+    <p>Alter the structure of data that is available from a Stock Synthesis
 operating model (OM), which in turn leads to changes
 in the output and ability to sample data after running the model.</p>
     </div>
@@ -197,8 +197,8 @@ file takes time and computing resources.</p></td>
 <code>"len"</code>, <code>"age"</code>, <code>"cal"</code>, <code>"mla"</code>.
 <code>types</code> controls what data structures the function acts on, with
 <code>"len"</code> augmenting the length-composition data,
-<code>"age"</code> augmenting the age-composition
-data, <code>"cal"</code> augmenting the conditional age-at-length (CAAL) data, and
+<code>"age"</code> augmenting the age-composition data,
+<code>"cal"</code> augmenting the conditional age-at-length data, and
 <code>"mla"</code> augmenting the mean length-at-age data.</p></td>
     </tr>
     <tr>
@@ -210,15 +210,18 @@ the age bin structure will be taken from the OM.</p></td>
       <th>len_bins</th>
       <td><p>A numeric vector of length bins to use. If left as
 <code>NULL</code>, the length bin structure will be taken from the OM.
-For CAAL data, the last value provided to
-<code>len_bins</code> will be used for Lbin_lo and -1 will be used for Lbin_hi
-for the largest length bin category, i.e., row of CAAL data.</p></td>
+For conditional age-at-length data,
+the last value provided to <code>len_bins</code> will be used for Lbin_lo and
+-1 will be used for Lbin_hi for the largest length bin category, i.e.,
+row of conditional age-at-length data.</p></td>
     </tr>
     <tr>
       <th>pop_binwidth</th>
       <td><p>Population length bin width. Note that this value must
 be smaller than the bin width specified in length-composition data
-<code>len_bins</code> or SS will fail (see notes in the SS manual).</p></td>
+<code>len_bins</code> or Stock Synthesis will fail,
+see notes in the
+<a href='https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html'>Stock Synthesis manual</a>.</p></td>
     </tr>
     <tr>
       <th>pop_minimum_size</th>
@@ -230,19 +233,24 @@ be smaller than the bin width specified in length-composition data
     </tr>
     <tr>
       <th>lcomp_constant</th>
-      <td><p>The robustification constant for length-composition
-data. Must be a numeric value, as a proportion. For example 0.1
-means 10 percent. See the SS manual for further information. A <code>NULL</code>
-value indicates no action resulting in using the current value, and a value
-of 0 will throw an error because zero leads to an error when zeroes exist in
-the data. Instead use a very small value like <code>1e-07</code>.</p></td>
+      <td><p>The robustification constant for length-composition data.
+Must be a numeric value, as a proportion.
+For example, 0.1 means 10 percent.
+See the notes in the
+<a href='https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html'>Stock Synthesis manual</a>.
+A <code>NULL</code> value indicates no action resulting in using the current value, and
+a value of 0 will throw an error because
+zero leads to an error when zeroes exist in the data.
+Instead use a very small value like 1e-07.</p></td>
     </tr>
     <tr>
       <th>tail_compression</th>
-      <td><p>Tail compression value to be used in SS. Must
-be a numeric value, as a proportion. For example 0.1 means 10 percent. See
-the SS manual for further information. A <code>NULL</code> value indicates no
-action, a negative value turns the feature off in SS.</p></td>
+      <td><p>Tail compression value to be used in Stock Synthesis. Must
+be a numeric value, as a proportion. For example 0.1 means 10 percent.
+See the notes in the
+<a href='https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html'>Stock Synthesis manual</a>.
+A <code>NULL</code> value indicates no action,
+a negative value turns the feature off in Stock Synthesis.</p></td>
     </tr>
     <tr>
       <th>nsex</th>
@@ -259,13 +267,12 @@ data are structured.</p></td>
 entry other than the default of <code>NULL</code> is provided for <code>outfile</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>change_data</code> is called internally within ss3sim, but it can be used
+    <p><code>change_data()</code> is called internally within ss3sim, but it can be used
 to manipulate data or to prepare a new OM for use in a simulation.
-Original data is removed and dummy data is added to the SS <code>.dat</code> object.
+Original data is removed and dummy data is added to the Stock Synthesis <code>.dat</code> object.
 The dummy data expands the data structure to provide information for all years
 and fleets, potentially adding many rows of data.</p>
-<p>Currently, <code>.dat</code> files with multiple sexes cannot be manipulated with
-<code>change_data</code>.</p>
+<p>Currently, <code>.dat</code> files with multiple sexes cannot be manipulated with <code>change_data()</code>.</p>
 <p>The robustification constant is added to both the observed and
 expected proportions of length composition data, before being normalized
 internally. It is designed to help stabilize the model, but is unclear how
@@ -273,7 +280,7 @@ and when to use it for optimal effect. The same value is used for all
 length data.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>See <code><a href='clean_data.html'>clean_data</a></code> for a counter function.</p>
+    <div class='dont-index'><p>See <code><a href='clean_data.html'>clean_data()</a></code> for a counter function.</p>
 <p>Other change functions: 
 <code><a href='change_em_binning.html'>change_em_binning</a>()</code>,
 <code><a href='change_e.html'>change_e</a>()</code>,
@@ -283,7 +290,7 @@ length data.</p>
 <code><a href='change_tv.html'>change_tv</a>()</code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-    <p>Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson</p>
+    <p>Cole Monnahan, Ian G. Taylor, Sean Anderson, Kelli F. Johnson</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -296,7 +303,7 @@ length data.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

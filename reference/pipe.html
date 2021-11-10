@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Set up a generic scenario — setup_scenarios_defaults • ss3sim</title>
+<title>Pipe operator — %&gt;% • ss3sim</title>
 
 
 <!-- jquery -->
@@ -41,10 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Set up a generic scenario — setup_scenarios_defaults" />
-<meta property="og:description" content="Create a data frame of scenario inputs for a generic simulation that will
-run within ss3sim. Users can add more arguments, but the scenario will run
-without changing the returned value." />
+<meta property="og:title" content="Pipe operator — %&gt;%" />
+<meta property="og:description" content="See magrittr::%&amp;gt;% for details." />
 
 
 
@@ -133,39 +131,33 @@ without changing the returned value." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Set up a generic scenario</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ss3sim/ss3sim/blob/master/R/setup_scenarios.R'><code>R/setup_scenarios.R</code></a></small>
-    <div class="hidden name"><code>setup_scenarios_defaults.Rd</code></div>
+    <h1>Pipe operator</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ss3sim/ss3sim/blob/master/R/utils-pipe.R'><code>R/utils-pipe.R</code></a></small>
+    <div class="hidden name"><code>pipe.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create a data frame of scenario inputs for a generic simulation that will
-run within ss3sim. Users can add more arguments, but the scenario will run
-without changing the returned value.</p>
+    <p>See <code>magrittr::%&gt;%</code> for details.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>setup_scenarios_defaults</span><span class='op'>(</span>nscenarios <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='va'>lhs</span> <span class='op'>%&gt;%</span> <span class='va'>rhs</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>nscenarios</th>
-      <td><p>The number of rows you want returned in the data frame.
-This argument removes the need for users to call <code><a href='https://rdrr.io/r/base/cbind.html'>base::rbind()</a></code> repeatedly
-on the output when you want to have more than one scenario.
-All rows will be identical with the default settings.
-The default is a single row.</p></td>
+      <th>lhs</th>
+      <td><p>A value or the magrittr placeholder.</p></td>
+    </tr>
+    <tr>
+      <th>rhs</th>
+      <td><p>A function call using the magrittr semantics.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data frame with the minimal information needed to run a scenario.
-The number of rows of the data frame depends on <code>nscenarios</code>.</p>
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
-
-    <p>Kelli Faye Johnson</p>
+    <p>The result of calling <code>rhs(lhs)</code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

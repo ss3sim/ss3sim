@@ -42,7 +42,7 @@
   
 
 <meta property="og:title" content="Plot results of a simulation as a scatterplot — plot_points" />
-<meta property="og:description" content="Generate a scatterplot using ggplot to visualize
+<meta property="og:description" content="Generate a scatterplot using ggplot2::ggplot to visualize
 the relationship between two continuous variables." />
 
 
@@ -138,7 +138,7 @@ the relationship between two continuous variables." />
     </div>
 
     <div class="ref-description">
-    <p>Generate a scatterplot using <code><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></code> to visualize
+    <p>Generate a scatterplot using <a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot2::ggplot</a> to visualize
 the relationship between two continuous variables.</p>
     </div>
 
@@ -194,7 +194,7 @@ indicates no faceting in the vertical space.</p></td>
     <tr>
       <th>jitter.height, jitter.width</th>
       <td><p>Parameters for
-<code><a href='https://ggplot2.tidyverse.org/reference/position_jitter.html'>position_jitter</a>()</code> that specify the vertical and horizontal
+<code><a href='https://ggplot2.tidyverse.org/reference/position_jitter.html'>ggplot2::position_jitter()</a></code> that specify the vertical and horizontal
 spread added to points. Where, added values are both positive and negative,
 so the total spread is twice the value specified here.
 If <code>NULL</code>, the spread will be 40% of the resolution of the data;
@@ -236,12 +236,12 @@ in <code>facet_grid</code>.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Points are placed on the figure using the width setting in
-<code><a href='https://ggplot2.tidyverse.org/reference/position_jitter.html'>position_jitter</a></code> that defaults to 40% resolution of
+<code><a href='https://ggplot2.tidyverse.org/reference/position_jitter.html'>ggplot2::position_jitter()</a></code> that defaults to 40% resolution of
 the data, meaning that the jitter values will occupy 80% of the implied bins.
 The previous information was found in the documentation for
-<code><a href='https://ggplot2.tidyverse.org/reference/position_jitter.html'>position_jitter</a></code>.</p>
+<code><a href='https://ggplot2.tidyverse.org/reference/position_jitter.html'>ggplot2::position_jitter()</a></code>.</p>
 <p>Values of <code>NA</code> are removed prior to plotting such that the typical
-error message from <code>ggplot</code> is not printed to the screen.</p>
+error message from <span class="pkg">ggplot2</span> is not printed to the screen.</p>
 <p>The <span class="pkg">ss3sim</span> plotting functions are simply
 wrappers for <span class="pkg">ggplot2</span> code, specific to the output from
 <span class="pkg">ss3sim</span> <code><a href='get_results_all.html'>get_results_all()</a></code> objects. They are
@@ -302,7 +302,7 @@ theme or change an axis label before printing it.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

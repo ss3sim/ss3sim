@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Methods to include time-varying parameters in an SS3 operating model — change_tv • ss3sim</title>
+<title>Methods to include time-varying parameters in a Stock Synthesis operating model — change_tv • ss3sim</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Methods to include time-varying parameters in an SS3 operating model — change_tv" />
-<meta property="og:description" content="change_tv takes SS3 .ctl, .par, and .dat files
+<meta property="og:title" content="Methods to include time-varying parameters in a Stock Synthesis operating model — change_tv" />
+<meta property="og:description" content="change_tv takes Stock Synthesis .ctl, .par, and .dat files
 and implements time-varying parameters using environmental variables.
 change_tv is specifically set up to work with an operating model
 .ctl file." />
@@ -134,13 +134,13 @@ change_tv is specifically set up to work with an operating model
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Methods to include time-varying parameters in an SS3 operating model</h1>
+    <h1>Methods to include time-varying parameters in a Stock Synthesis operating model</h1>
     <small class="dont-index">Source: <a href='https://github.com/ss3sim/ss3sim/blob/master/R/change_tv.r'><code>R/change_tv.r</code></a></small>
     <div class="hidden name"><code>change_tv.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>change_tv</code> takes SS3 <code>.ctl</code>, <code>.par</code>, and <code>.dat</code> files
+    <p><code>change_tv</code> takes Stock Synthesis <code>.ctl</code>, <code>.par</code>, and <code>.dat</code> files
 and implements time-varying parameters using environmental variables.
 <code>change_tv</code> is specifically set up to work with an operating model
 <code>.ctl</code> file.</p>
@@ -161,8 +161,8 @@ and implements time-varying parameters using environmental variables.
       <th>change_tv_list</th>
       <td><p>A list of named vectors. Names correspond to parameters
 in the operating model that currently do not use environmental deviations and
-the vectors correspond to deviations. See the section "Specifying the
-<code>change_tv_list</code>" below for help on specifying this argument.</p></td>
+the vectors correspond to deviations. See the section
+"Specifying the <code>change_tv_list</code>" for help on specifying this argument.</p></td>
     </tr>
     <tr>
       <th>ctl_file_in</th>
@@ -191,8 +191,9 @@ invisibly.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Although there are three ways to implement time-varying parameters within
-SS3, <span class="pkg">ss3sim</span> and <code>change_tv</code> only use the environmental variable
-option. Within SS, time-varying parameters work on an annual time-step.
+Stock Synthesis, <span class="pkg">ss3sim</span> and <code>change_tv</code> only use the environmental variable
+option.
+Within Stock Synthesis, time-varying parameters work on an annual time-step.
 Thus, for models with multiple seasons, the time-varying parameters will
 remain constant for the entire year.</p>
 <p>The <code>ctl_file_in</code> argument needs to be a <code>.ss_new</code> file because
@@ -205,7 +206,7 @@ is necessary to implement time-varying parameters.</p>
 model that ties recruitment deviations to environmental covariates. If you
 need to compare the environment to annual recruitment deviations, the
 preferred option is to transform the environmental variable into an age 0
-pre-recruit survey. See page 55 of the SS3 version 3.24f manual for more
+pre-recruit survey. See page 55 of the Stock Synthesis version 3.24f manual for more
 information.</p>
     <h2 class="hasAnchor" id="specifying-the-change-tv-list"><a class="anchor" href="#specifying-the-change-tv-list"></a>Specifying the <code>change_tv_list</code></h2>
 
@@ -213,8 +214,8 @@ information.</p>
 
 <p>Parameters will change to vary with time according to the vectors of
 deviations passed to <code>change_tv_list</code>. Vectors of deviations, also
-referred to as environmental data, must have a length equal to <code>
-endyr-startyr+1</code>, where <code>endyr</code> and <code>startyr</code> are specified the
+referred to as environmental data, must have a length equal to
+<code>endyr-startyr+1</code>, where <code>endyr</code> and <code>startyr</code> are specified the
 <code>.dat</code> file. Specify years without deviations as zero.</p>
 <p>Parameter names must be unique and match the full parameter name in the
 <code>.ctl</code> file. Names for stock recruit parameters must contain "devs",
@@ -256,7 +257,7 @@ on the log scale: \(ln(q'[y]) = ln(q) + link * env[y]\)</p>
 <span class='r-in'></span>
 <span class='r-in'><span class='fu'>change_tv</span><span class='op'>(</span>change_tv_list <span class='op'>=</span></span>
 <span class='r-in'>            <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"NatM_p_1_Fem_GP_1"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>20</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>.1</span>, <span class='fl'>80</span><span class='op'>)</span><span class='op'>)</span>,</span>
-<span class='r-in'>                 <span class='st'>"SR_BH_steep"</span><span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>0</span>, <span class='fl'>0.05</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>                 <span class='st'>"SR_BH_steep"</span> <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>0</span>, <span class='fl'>0.05</span><span class='op'>)</span><span class='op'>)</span>,</span>
 <span class='r-in'>          ctl_file_in  <span class='op'>=</span> <span class='st'>"codOM.ctl"</span>,</span>
 <span class='r-in'>          ctl_file_out <span class='op'>=</span> <span class='st'>"example.ctl"</span>,</span>
 <span class='r-in'>          dat_file_in  <span class='op'>=</span> <span class='st'>"codOM.dat"</span>,</span>
@@ -277,7 +278,7 @@ on the log scale: \(ln(q'[y]) = ln(q) + link * env[y]\)</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

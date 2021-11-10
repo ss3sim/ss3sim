@@ -149,21 +149,22 @@ filling in the columns with ones.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>A data frame from a <code>dat_list</code> list. The leading columns,
-typically <code>Yr</code>, <code>Seas</code>, ... can be anything, but there must be columns
-with names that start with a lower-case letter followed by integers.</p></td>
+      <td><p>A data frame from a list object read in by <code><a href='https://rdrr.io/pkg/r4ss/man/SS_readdat.html'>r4ss::SS_readdat()</a></code>.
+The leading columns, typically <code>Yr</code>, <code>Seas</code>, ... can be anything,
+but there must be columns with names that start with a lower-case letter,
+followed by integers.</p></td>
     </tr>
     <tr>
       <th>bins</th>
       <td><p>A vector of characters or whatever you want the names of the
-new bins to be. Typically, this will be output from <code><a href='setup_bins.html'>setup_bins</a></code>.</p></td>
+new bins to be. Typically, this will be output from <code><a href='setup_bins.html'>setup_bins()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A modified data frame where columns holding old composition data are
-removed in their entiretly and new columns of ones are filled for each value in
+removed in their entirety and new columns of ones are filled for each value in
 <code>bins</code>.</p>
 
   </div>
@@ -177,7 +178,7 @@ removed in their entiretly and new columns of ones are filled for each value in
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

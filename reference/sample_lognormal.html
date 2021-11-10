@@ -153,16 +153,16 @@ log-normal error.</p></td>
     <tr>
       <th>sd</th>
       <td><p>A vector of standard deviations to use in
-<code><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></code>.</p></td>
+<code><a href='https://rdrr.io/r/stats/Normal.html'>stats::rnorm()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Newly sampled values are calculated
-<code>obs*exp(rnorm(1, 0, sd)-sd^2/2)</code>.
+\(obs*exp(stats::rnorm(1, 0, sd)-sd^2/2)\).
 The second term adjusts the random samples so that their expected value is
-<code>obs</code> (i.e. the log-normal bias correction).</p>
+<code>obs</code>, i.e., the log-normal bias correction.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Cole Monnahan</p>
@@ -178,7 +178,7 @@ The second term adjusts the random samples so that their expected value is
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

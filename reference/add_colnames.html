@@ -43,10 +43,8 @@
 
 <meta property="og:title" content="Create matching column names across a list of data frames — add_colnames" />
 <meta property="og:description" content="Add missing columns to each data frame in the list allowing
-for the use rbind to create a single data frame.
-The code is based on rbind.fill from the plyr package,
-but we didn't want to depend on that package for just one function
-given it had not been updated since 2016." />
+for the use rbind() to create a single data frame.
+The code is based on rbind.fill from the plyr package." />
 
 
 
@@ -142,10 +140,8 @@ given it had not been updated since 2016." />
 
     <div class="ref-description">
     <p>Add missing columns to each data frame in the list allowing
-for the use <code>rbind</code> to create a single data frame.
-The code is based on <code>rbind.fill</code> from the <code>plyr</code> package,
-but we didn't want to depend on that package for just one function
-given it had not been updated since 2016.</p>
+for the use <code><a href='https://rdrr.io/r/base/cbind.html'>rbind()</a></code> to create a single data frame.
+The code is based on <code>rbind.fill</code> from the <code>plyr</code> package.</p>
     </div>
 
     <pre class="usage"><span class='fu'>add_colnames</span><span class='op'>(</span><span class='va'>dfs</span>, bind <span class='op'>=</span> <span class='cn'>FALSE</span>, fillwith <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span></pre>
@@ -201,7 +197,7 @@ Missing values will be filled with the entry in <code>fillwith</code>.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

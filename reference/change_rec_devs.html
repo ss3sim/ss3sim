@@ -162,7 +162,7 @@ in the control file.</p>
     <tr>
       <th>recdevs</th>
       <td><p>A vector of recruitment deviations to be entered into
-the SS control file. The vector must be the same length as the vector
+the Stock Synthesis control file. The vector must be the same length as the vector
 of recruitment deviations that are commented out in the <code>ss_new</code>
 control file. This vector can be found by searching for
 <code># all recruitment deviations</code> within the file.
@@ -183,7 +183,7 @@ of the model. Missing years will be filled in with values of zero.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A modified SS control file.</p>
+    <p>A modified Stock Synthesis control file.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Kelli Faye Johnson</p>
@@ -194,13 +194,13 @@ of the model. Missing years will be filled in with values of zero.</p></td>
 <span class='r-in'>  ctl_file_in <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>d</span>, <span class='st'>"cod-om"</span>, <span class='st'>"codOM.ctl"</span><span class='op'>)</span>,</span>
 <span class='r-in'>  ctl_file_out <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"control_recdevs.ss"</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-in'><span class='co'># Change the recruitment deviations in years 2:11</span></span>
-<span class='r-in'><span class='fu'>change_rec_devs</span><span class='op'>(</span>recdevs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/setNames.html'>setNames</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Lognormal.html'>rlnorm</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>, <span class='fl'>2</span><span class='op'>:</span><span class='fl'>11</span><span class='op'>)</span>,</span>
+<span class='r-in'><span class='fu'>change_rec_devs</span><span class='op'>(</span>recdevs <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/setNames.html'>setNames</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Lognormal.html'>rlnorm</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>, <span class='fl'>2</span><span class='op'>:</span><span class='fl'>11</span><span class='op'>)</span>,</span>
 <span class='r-in'>  ctl_file_in <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>d</span>, <span class='st'>"cod-om"</span>, <span class='st'>"codOM.ctl"</span><span class='op'>)</span>,</span>
 <span class='r-in'>  ctl_file_out <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"control_recdevsInitial.ss"</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, pattern <span class='op'>=</span> <span class='st'>"control_.+ss"</span>, full.names <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='va'>unlink</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>        /tmp/RtmpB6IdT2/control_recdevs.ss </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        /tmp/RtmpbSqAyT/control_recdevs.ss </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>                                         0 </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> /tmp/RtmpB6IdT2/control_recdevsInitial.ss </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> /tmp/RtmpbSqAyT/control_recdevsInitial.ss </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>                                         0 </span>
 </pre>
   </div>
@@ -214,7 +214,7 @@ of the model. Missing years will be filled in with values of zero.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Change catch in the Stock Synthesis (SS) data list — change_catch • ss3sim</title>
+<title>Change catch in the Stock Synthesis data list — change_catch • ss3sim</title>
 
 
 <!-- jquery -->
@@ -41,10 +41,12 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Change catch in the Stock Synthesis (SS) data list — change_catch" />
-<meta property="og:description" content="Change catch in the data so at least all combinations of fleet, seas, yr,
-needed for catch are available. Equilbrium years are generated if there are
-equilibrium parameters in the control list." />
+<meta property="og:title" content="Change catch in the Stock Synthesis data list — change_catch" />
+<meta property="og:description" content="Change catch in the data so at least all combinations of
+fleet, season, and year,
+needed for catch are available.
+Equilibrium years are generated if
+there are equilibrium parameters in the control list." />
 
 
 
@@ -133,15 +135,17 @@ equilibrium parameters in the control list." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Change catch in the Stock Synthesis (SS) data list</h1>
+    <h1>Change catch in the Stock Synthesis data list</h1>
     <small class="dont-index">Source: <a href='https://github.com/ss3sim/ss3sim/blob/master/R/change_catch.R'><code>R/change_catch.R</code></a></small>
     <div class="hidden name"><code>change_catch.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Change catch in the data so at least all combinations of fleet, seas, yr,
-needed for catch are available. Equilbrium years are generated if there are
-equilibrium parameters in the control list.</p>
+    <p>Change catch in the data so at least all combinations of
+fleet, season, and year,
+needed for catch are available.
+Equilibrium years are generated if
+there are equilibrium parameters in the control list.</p>
     </div>
 
     <pre class="usage"><span class='fu'>change_catch</span><span class='op'>(</span><span class='va'>dat_list</span>, <span class='va'>ctl_list</span><span class='op'>)</span></pre>
@@ -166,13 +170,13 @@ combination.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A modified SS data file as a list in R.</p>
+    <p>A modified Stock Synthesis data file as a list in R.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='change_f.html'>change_f</a> changes the fishing mortality (<em>F</em>) parameters
-using the control file, but these <em>F</em> values will only be implemented
-for years with corresponding entries in the SS data file.
-Thus, change_catch must be implemented after <a href='change_f.html'>change_f</a>.</p></div>
+    <div class='dont-index'><p><code><a href='change_f.html'>change_f()</a></code> changes the fishing mortality, \(F\), parameters
+using the control file, but these \(F\) values will only be implemented
+for years with corresponding entries in the Stock Synthesis data file.
+Thus, this function must be implemented after <code><a href='change_f.html'>change_f()</a></code>.</p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Kathryn Doering</p>
@@ -188,7 +192,7 @@ Thus, change_catch must be implemented after <a href='change_f.html'>change_f</a
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

@@ -42,11 +42,11 @@
   
 
 <meta property="og:title" content="Run an operating or estimation model in a directory — run_ss3model" />
-<meta property="og:description" content="Call Stock Synthesis (SS) to generate data or fit model to data.
-The appropriate version of SS is called after determining if the
+<meta property="og:description" content="Call Stock Synthesis to generate data or fit model to data.
+The appropriate version of Stock Synthesis is called after determining if the
 user is on Unix or Windows. This lower-level
 function is meant to be called by higher level functions such as
-run_ss3sim, ss3sim_base, or your own custom
+run_ss3sim(), ss3sim_base(), or your own custom
 function." />
 
 
@@ -142,11 +142,11 @@ function." />
     </div>
 
     <div class="ref-description">
-    <p>Call Stock Synthesis (SS) to generate data or fit model to data.
-The appropriate version of SS is called after determining if the
+    <p>Call Stock Synthesis to generate data or fit model to data.
+The appropriate version of Stock Synthesis is called after determining if the
 user is on Unix or Windows. This lower-level
 function is meant to be called by higher level functions such as
-<code><a href='run_ss3sim.html'>run_ss3sim</a></code>, <code><a href='ss3sim_base.html'>ss3sim_base</a></code>, or your own custom
+<code><a href='run_ss3sim.html'>run_ss3sim()</a></code>, <code><a href='ss3sim_base.html'>ss3sim_base()</a></code>, or your own custom
 function.</p>
     </div>
 
@@ -171,7 +171,7 @@ terminal slash.</p></td>
     </tr>
     <tr>
       <th>admb_options</th>
-      <td><p>Any additional options to pass to the SS command.</p></td>
+      <td><p>Any additional options to pass to the Stock Synthesis command.</p></td>
     </tr>
     <tr>
       <th>hess</th>
@@ -191,33 +191,32 @@ writing can be slightly delayed. For example, on computers where the files
 are written over a network connection. If the output files haven't
 finished writing before <span style="R">R</span> starts looking for the output then the
 simulation will crash with an error about missing files. The default
-value is set to <code>0.01</code> seconds, just to be safe.</p></td>
+value is set to 0.01 seconds, just to be safe.</p></td>
     </tr>
     <tr>
       <th>show.output.on.console</th>
-      <td><p>Logical: passed on to
-<code>system</code>.</p></td>
+      <td><p>Logical: passed on to <code><a href='https://rdrr.io/r/base/system.html'>system()</a></code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Anything else to pass to <code>system</code>.</p></td>
+      <td><p>Anything else to pass to <code><a href='https://rdrr.io/r/base/system.html'>system()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>ss3sim requires you to place the SS executable in your
+    <p>ss3sim requires you to place the Stock Synthesis executable in your
 path. See the vignette <code><a href='../articles/introduction.html'>vignette("introduction", package = "ss3sim")</a></code> for details on
 this process. The executables themselves can be downloaded from github
 <a href='https://github.com/ss3sim/ss3sim/tree/master/inst/bin'>https://github.com/ss3sim/ss3sim/tree/master/inst/bin</a> or the
-SS website
+Stock Synthesis website
 <a href='https://vlab.noaa.gov/web/stock-synthesis/document-library/-/document_library/0LmuycloZeIt/view/5042555'>https://vlab.noaa.gov/web/stock-synthesis/document-library/-/document_library/0LmuycloZeIt/view/5042555</a>.
 If the github version of ss3sim is installed, rather than the CRAN version,
 then the executables are automatically downloaded and called from their
 stored location rather than from the path variable.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='ss3sim_base.html'>ss3sim_base</a></code>, <code><a href='run_ss3sim.html'>run_ss3sim</a></code></p></div>
+    <div class='dont-index'><p><code><a href='ss3sim_base.html'>ss3sim_base()</a></code>, <code><a href='run_ss3sim.html'>run_ss3sim()</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Sean C. Anderson</p>
@@ -233,7 +232,7 @@ stored location rather than from the path variable.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

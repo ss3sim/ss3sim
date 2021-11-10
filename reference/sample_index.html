@@ -43,11 +43,11 @@
 
 <meta property="og:title" content="Sample the biomass with observation error — sample_index" />
 <meta property="og:description" content="This function creates an index of abundance sampled from the expected
-available biomass for specified fleets in specified years. Let B_y be the biomass
+available biomass for specified fleets in specified years. Let \(B_y\) be the biomass
 from the operating model for year y. Then the sampled value is calculated as:
-B_y*exp(rnorm(1, 0, sds_obs)-sds_obs^2/2). The second term
-adjusts the random samples so that their expected value is B_y
-(i.e., the log-normal bias correction)." />
+\(B_y*exp(stats::rnorm(1, 0, sds_obs)-sds_obs^2/2)\). The second term
+adjusts the random samples so that their expected value is \(B_y\), i.e.,
+the log-normal bias correction." />
 
 
 
@@ -143,11 +143,11 @@ adjusts the random samples so that their expected value is B_y
 
     <div class="ref-description">
     <p>This function creates an index of abundance sampled from the expected
-available biomass for specified fleets in specified years. Let <code>B_y</code> be the biomass
+available biomass for specified fleets in specified years. Let \(B_y\) be the biomass
 from the operating model for year y. Then the sampled value is calculated as:
-<code>B_y*exp(rnorm(1, 0, sds_obs)-sds_obs^2/2)</code>. The second term
-adjusts the random samples so that their expected value is <code>B_y</code>
-(i.e., the log-normal bias correction).</p>
+\(B_y*exp(stats::rnorm(1, 0, sds_obs)-sds_obs^2/2)\). The second term
+adjusts the random samples so that their expected value is \(B_y\), i.e.,
+the log-normal bias correction.</p>
     </div>
 
     <pre class="usage"><span class='fu'>sample_index</span><span class='op'>(</span>
@@ -312,7 +312,7 @@ containing the modified <code>.dat</code> file is returned invisibly.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

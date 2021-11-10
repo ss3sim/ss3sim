@@ -42,14 +42,7 @@
   
 
 <meta property="og:title" content="Check input forecast file values — check_forecast" />
-<meta property="og:description" content="Ensure that the forecast.ss file is configured for use
-in ss3sim.
-fish at F_MSY
-use relative benchmark years (i.e., Bmark_years)
-use relative years for fishing specifications
-(i.e., Fcast_years)
-
-" />
+<meta property="og:description" content="Ensure that the forecast.ss file is configured for use in ss3sim." />
 
 
 
@@ -144,14 +137,7 @@ use relative years for fishing specifications
     </div>
 
     <div class="ref-description">
-    <p>Ensure that the <code>forecast.ss</code> file is configured for use
-in ss3sim.</p><ul>
-<li><p>fish at F_MSY</p></li>
-<li><p>use relative benchmark years (i.e., <code>Bmark_years</code>)</p></li>
-<li><p>use relative years for fishing specifications
-(i.e., <code>Fcast_years</code>)</p></li>
-</ul>
-
+    <p>Ensure that the <code>forecast.ss</code> file is configured for use in ss3sim.</p>
     </div>
 
     <pre class="usage"><span class='fu'>check_forecast</span><span class='op'>(</span><span class='va'>for_list</span><span class='op'>)</span></pre>
@@ -168,7 +154,17 @@ in ss3sim.</p><ul>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list object as returned by <code><a href='https://rdrr.io/pkg/r4ss/man/SS_readforecast.html'>SS_readforecast</a></code></p>
+    <p>A an augmented list object, as returned by <code><a href='https://rdrr.io/pkg/r4ss/man/SS_readforecast.html'>r4ss::SS_readforecast()</a></code>,
+is invisibly returned.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    
+<ul>
+<li><p>fish at \(F_{MSY}\)</p></li>
+<li><p>use relative benchmark years (i.e., <code>Bmark_years</code>)</p></li>
+<li><p>use relative years for fishing specifications, i.e., <code>Fcast_years</code></p></li>
+</ul>
+
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Kelli Faye Johnson</p>
@@ -184,7 +180,7 @@ in ss3sim.</p><ul>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

@@ -45,8 +45,8 @@
 <meta property="og:description" content="This is the main high-level wrapper function for running ss3sim
 simulations. First, this function separates the data frame of simulation
 settings by row for each scenario into a list format. These lists are then
-passed to ss3sim_base to run each simulation. Alternatively, you
-can run ss3sim_base directly using your own lists." />
+passed to ss3sim_base() to run each simulation. Alternatively, you
+can run ss3sim_base() directly using your own lists." />
 
 
 
@@ -144,8 +144,8 @@ can run ss3sim_base directly using your own lists." />
     <p>This is the main high-level wrapper function for running <span class="pkg">ss3sim</span>
 simulations. First, this function separates the data frame of simulation
 settings by row for each scenario into a list format. These lists are then
-passed to <code><a href='ss3sim_base.html'>ss3sim_base</a></code> to run each simulation. Alternatively, you
-can run <code><a href='ss3sim_base.html'>ss3sim_base</a></code> directly using your own lists.</p>
+passed to <code><a href='ss3sim_base.html'>ss3sim_base()</a></code> to run each simulation. Alternatively, you
+can run <code><a href='ss3sim_base.html'>ss3sim_base()</a></code> directly using your own lists.</p>
     </div>
 
     <pre class="usage"><span class='fu'>run_ss3sim</span><span class='op'>(</span>
@@ -174,7 +174,7 @@ If any iterations already exist, then ss3sim will skip over them.</p></td>
       <th>simdf</th>
       <td><p>A data frame of instructions with one row per scenario.
 The data frame replaces the old method of using case files.
-See <code><a href='setup_scenarios_defaults.html'>setup_scenarios_defaults</a></code> for default values that will be
+See <code><a href='setup_scenarios_defaults.html'>setup_scenarios_defaults()</a></code> for default values that will be
 passed to ss3sim for a generic simulation to get you started. These
 values will be used if <code>simdf</code> is left at its default value of <code>NULL</code>.</p></td>
     </tr>
@@ -196,7 +196,8 @@ but you wanted to run it faster.</p></td>
     <tr>
       <th>scenarios</th>
       <td><p><em>Deprecated</em>. Which scenarios to run. A vector of character objects. For
-example <code>c("D0-F0-cod", "D1-F1-cod")</code>. (The scenarios should be specified in simdf)</p></td>
+example <code>c("D0-F0-cod", "D1-F1-cod")</code>.
+The scenarios should be specified in <code>simdf</code>.</p></td>
     </tr>
     <tr>
       <th>case_folder</th>
@@ -204,13 +205,15 @@ example <code>c("D0-F0-cod", "D1-F1-cod")</code>. (The scenarios should be speci
     </tr>
     <tr>
       <th>om_dir</th>
-      <td><p><em>Deprecated</em>. The folder containing the SS3 operating model
-configuration files. (Specify the om_dir within simdf)</p></td>
+      <td><p><em>Deprecated</em>. The folder containing the Stock Synthesis operating model
+configuration files.
+Specify the om_dir within <code>simdf</code>.</p></td>
     </tr>
     <tr>
       <th>em_dir</th>
-      <td><p><em>Deprecated</em>. The folder containing the SS3 estimation model
-configuration files. (Specify the em_dir within simdf)</p></td>
+      <td><p><em>Deprecated</em>. The folder containing the Stock Synthesis estimation model
+configuration files.
+Specify the om_dir within <code>simdf</code>.</p></td>
     </tr>
     <tr>
       <th>case_files</th>
@@ -218,15 +221,15 @@ configuration files. (Specify the em_dir within simdf)</p></td>
 return. <b>The default list specifies only the required fishing
 mortality and data scenarios. To specify other cases you will need to
 extend this named list</b>. This argument is passed to
-<code><a href='ss3sim-deprecated.html'>get_caseargs</a></code>. See that function for details and examples of
+<code><a href='ss3sim-deprecated.html'>get_caseargs()</a></code>. See that function for details and examples of
 how to specify this. The introduction vignette also explains how to specify
 the case files.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Anything else to pass to <code><a href='ss3sim_base.html'>ss3sim_base</a></code>. This could
+      <td><p>Anything else to pass to <code><a href='ss3sim_base.html'>ss3sim_base()</a></code>. This could
 include <code>bias_adjust</code>. Also, you can pass
-additional options to the <code>SS3</code> command through the argument
+additional options to the executable through the argument
 <code>admb_options</code>.</p></td>
     </tr>
     </table>
@@ -250,15 +253,15 @@ your simulation at noon on January 01:</p><ul>
     <p>The operating model folder should contain: <code>forecast.ss</code>,
 <code>yourmodel.ctl</code>, <code>yourmodel.dat</code>, <code>ss.par</code>, and
 <code>starter.ss</code>. The files should be the versions that are returned from an
-SS run as <code>.ss_new</code> files. This is important because it creates
+Stock Synthesis run as <code>.ss_new</code> files. This is important because it creates
 consistent formatting which many of the functions in this package depend on.
 Rename the <code>.ss_new</code> files as listed above (and in all lowercase). The
 estimation model folder should contain all the same files listed above except
 the <code>ss.par</code> and <code>yourmodel.dat</code> files, which are unnecessary but
 can be included if desired. See the vignette for details on modifying an
-existing <code>SS3</code> model to run with <span class="pkg">ss3sim</span>. Alternatively, you might
+existing Stock Synthesis model to run with <span class="pkg">ss3sim</span>. Alternatively, you might
 consider modifying one of the built-in model configurations.</p>
-<p>Note that due to the way that SS is being used as an OM, you may see
+<p>Note that due to the way that Stock Synthesis is being used as an OM, you may see
 the following ADMB error may appear in the console:
 Error -- base = 0 in function prevariable&amp; pow(const prevariable&amp; v1, CGNU_DOUBLE u)
 However, this is not a problem because ADMB is not used to optimize the OM,
@@ -288,7 +291,7 @@ then <code><a href='ss3sim_base.html'>ss3sim_base()</a></code> will assume the v
 <span class='r-in'><span class='fu'>run_ss3sim</span><span class='op'>(</span>iterations <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, simdf <span class='op'>=</span> <span class='va'>df</span>,</span>
 <span class='r-in'>  bias_adjust <span class='op'>=</span> <span class='cn'>FALSE</span>, user_recdevs <span class='op'>=</span> <span class='va'>recdevs_det</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='get_results_all.html'>get_results_all</a></span><span class='op'>(</span>user_scenarios <span class='op'>=</span> <span class='st'>"determinate"</span>, overwrite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
-<span class='r-in'><span class='va'>ts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='st'>"ss3sim_ts.csv"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ts</span> <span class='op'>&lt;-</span> <span class='fu'>utils</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='st'>"ss3sim_ts.csv"</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'>expect_equivalent</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='op'>(</span><span class='va'>ts</span><span class='op'>$</span><span class='va'>rec_dev</span><span class='op'>[</span><span class='va'>ts</span><span class='op'>$</span><span class='va'>year</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> <span class='op'>&amp;</span> <span class='va'>ts</span><span class='op'>$</span><span class='va'>iteration</span> <span class='op'>==</span> <span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span>,</span>
 <span class='r-in'>  <span class='va'>recdevs_det</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>}</span></span>
@@ -305,7 +308,7 @@ then <code><a href='ss3sim_base.html'>ss3sim_base()</a></code> will assume the v
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Check if desired q parameters exist in control file — check_q • ss3sim</title>
+<title>Check if desired \(q\) parameters exist in control file — check_q • ss3sim</title>
 
 
 <!-- jquery -->
@@ -41,7 +41,7 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Check if desired q parameters exist in control file — check_q" />
+<meta property="og:title" content="Check if desired \(q\) parameters exist in control file — check_q" />
 <meta property="og:description" content="Check a Stock Synthesis control file to determine if the desired fleets
 have q parameters." />
 
@@ -132,7 +132,7 @@ have q parameters." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Check if desired q parameters exist in control file</h1>
+    <h1>Check if desired \(q\) parameters exist in control file</h1>
     <small class="dont-index">Source: <a href='https://github.com/ss3sim/ss3sim/blob/master/R/change_q.R'><code>R/change_q.R</code></a></small>
     <div class="hidden name"><code>check_q.Rd</code></div>
     </div>
@@ -153,14 +153,15 @@ have q parameters.</p>
     </tr>
     <tr>
       <th>Nfleets</th>
-      <td><p>The number of fleets in the model. This can be determined
-from the data file or using <code><a href='https://rdrr.io/pkg/r4ss/man/SS_readdat.html'>SS_readdat</a></code>, of which
+      <td><p>The number of fleets in the model.
+This can be determined manually from the data file or
+using the R object returned from <code><a href='https://rdrr.io/pkg/r4ss/man/SS_readdat.html'>r4ss::SS_readdat()</a></code>, of which
 <code>Nfleets</code> is a named element.</p></td>
     </tr>
     <tr>
       <th>desiredfleets</th>
-      <td><p>A numeric vector specifying which fleets you want
-to have q parameters for.</p></td>
+      <td><p>A numeric vector specifying which fleets should have
+catchability parameters.</p></td>
     </tr>
     </table>
 
@@ -170,23 +171,30 @@ to have q parameters for.</p></td>
 to remove from the control file.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>change_q</code></p></div>
+    <div class='dont-index'><p><code><a href='change_q.html'>change_q()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='fu'>r4ss</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/r4ss/man/SS_readdat.html'>SS_readdat</a></span><span class='op'>(</span></span>
-<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"models"</span>, <span class='st'>"cod-om"</span>, package <span class='op'>=</span> <span class='st'>"ss3sim"</span><span class='op'>)</span>,</span>
-<span class='r-in'> <span class='st'>"\\.dat"</span>, full.names <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'>  file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span><span class='op'>(</span></span>
+<span class='r-in'>    path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"models"</span>, <span class='st'>"cod-om"</span>, package <span class='op'>=</span> <span class='st'>"ss3sim"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    pattern <span class='op'>=</span> <span class='st'>"\\.dat"</span>,</span>
+<span class='r-in'>    full.names <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  verbose <span class='op'>=</span> <span class='cn'>FALSE</span></span>
+<span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>ctl</span> <span class='op'>&lt;-</span> <span class='fu'>r4ss</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/r4ss/man/SS_readctl.html'>SS_readctl</a></span><span class='op'>(</span></span>
-<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"models"</span>, <span class='st'>"cod-om"</span>, package <span class='op'>=</span> <span class='st'>"ss3sim"</span><span class='op'>)</span>,</span>
-<span class='r-in'> <span class='st'>"\\.ctl"</span>, full.names <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span>, echoall <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
-<span class='r-in'> use_datlist <span class='op'>=</span> <span class='cn'>TRUE</span>, datlist <span class='op'>=</span> <span class='va'>dat</span><span class='op'>)</span></span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>The `echoall` argument of `SS_readctl_3.30()` is deprecated as of r4ss 1.41.1.</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span style='color: #555555;'>This warning is displayed once every 8 hours.</span></span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span style='color: #555555;'>Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'>check_q</span><span class='op'>(</span><span class='va'>ctl</span>, <span class='va'>dat</span><span class='op'>$</span><span class='va'>Nfleets</span>, desiredfleets <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>$</span><span class='va'>remove</span> <span class='op'>==</span> <span class='fl'>2</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/all.html'>all</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mapply.html'>mapply</a></span><span class='op'>(</span><span class='va'>is.null</span>, <span class='fu'>check_q</span><span class='op'>(</span><span class='va'>ctl</span>, <span class='va'>dat</span><span class='op'>$</span><span class='va'>Nfleets</span>, desiredfleets <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'>check_q</span><span class='op'>(</span><span class='va'>ctl</span>, <span class='va'>dat</span><span class='op'>$</span><span class='va'>Nfleets</span>, desiredfleets <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>$</span><span class='va'>add</span> <span class='op'>==</span> <span class='fl'>3</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'>check_q</span><span class='op'>(</span><span class='va'>ctl</span>, <span class='va'>dat</span><span class='op'>$</span><span class='va'>Nfleets</span>, desiredfleets <span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>$</span><span class='va'>remove</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'>  file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span><span class='op'>(</span></span>
+<span class='r-in'>    path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"models"</span>, <span class='st'>"cod-om"</span>, package <span class='op'>=</span> <span class='st'>"ss3sim"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    pattern <span class='op'>=</span> <span class='st'>"\\.ctl"</span>,</span>
+<span class='r-in'>    full.names <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>  use_datlist <span class='op'>=</span> <span class='cn'>TRUE</span>, datlist <span class='op'>=</span> <span class='va'>dat</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'>check_q</span><span class='op'>(</span><span class='va'>ctl</span>, <span class='va'>dat</span><span class='op'>[[</span><span class='st'>"Nfleets"</span><span class='op'>]</span><span class='op'>]</span>, desiredfleets <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>[[</span><span class='st'>"remove"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>==</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/all.html'>all</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mapply.html'>mapply</a></span><span class='op'>(</span><span class='va'>is.null</span>, <span class='fu'>check_q</span><span class='op'>(</span><span class='va'>ctl</span>, <span class='va'>dat</span><span class='op'>[[</span><span class='st'>"Nfleets"</span><span class='op'>]</span><span class='op'>]</span>, desiredfleets <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'>check_q</span><span class='op'>(</span><span class='va'>ctl</span>, <span class='va'>dat</span><span class='op'>[[</span><span class='st'>"Nfleets"</span><span class='op'>]</span><span class='op'>]</span>, desiredfleets <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>[[</span><span class='st'>"add"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>==</span> <span class='fl'>3</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'>check_q</span><span class='op'>(</span><span class='va'>ctl</span>, <span class='va'>dat</span><span class='op'>[[</span><span class='st'>"Nfleets"</span><span class='op'>]</span><span class='op'>]</span>, desiredfleets <span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>[[</span><span class='st'>"remove"</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 </pre>
   </div>
@@ -200,7 +208,7 @@ to remove from the control file.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

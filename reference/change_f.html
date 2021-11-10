@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Specify fishing mortality (F) using the Stock Synthesis control file — change_f • ss3sim</title>
+<title>Specify fishing mortality, \(F\), using the Stock Synthesis control file — change_f • ss3sim</title>
 
 
 <!-- jquery -->
@@ -41,14 +41,15 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Specify fishing mortality (F) using the Stock Synthesis control file — change_f" />
-<meta property="og:description" content="Replace or input a time series of fishing mortality (F) values into
-a Stock Synthesis (SS) control file. In SS, inserting Fs in this
-manner relies on the assumption that fishing mortality operates continously
-throughout the year and the process operates jointly with natural mortality
-(Baranov 1918; (Branch 2009)https://cdnsciencepub.com/doi/10.1139/F08-196).
-The documentation for SS also describes this process as
-F method == 2, where F is continuous and modelled using
+<meta property="og:title" content="Specify fishing mortality, \(F\), using the Stock Synthesis control file — change_f" />
+<meta property="og:description" content="Replace or input a time series of fishing mortality, \(F\), values into
+a Stock Synthesis control file.
+In Stock Synthesis, inserting \(F\) values in this manner,
+relies on the assumption that \(F\) operates continuously throughout the year and
+and the process operates jointly with natural mortality
+(Baranov 1918; Branch 2009).
+The documentation for Stock Synthesis also describes this process as
+\(F\) method == 2, where \(F\) is continuous and modeled using
 full parameters." />
 
 
@@ -138,19 +139,20 @@ full parameters." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Specify fishing mortality (<em>F</em>) using the Stock Synthesis control file</h1>
+    <h1>Specify fishing mortality, \(F\), using the Stock Synthesis control file</h1>
     <small class="dont-index">Source: <a href='https://github.com/ss3sim/ss3sim/blob/master/R/change_f.r'><code>R/change_f.r</code></a></small>
     <div class="hidden name"><code>change_f.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Replace or input a time series of fishing mortality (<em>F</em>) values into
-a Stock Synthesis (SS) control file. In SS, inserting <em>Fs</em> in this
-manner relies on the assumption that fishing mortality operates continously
-throughout the year and the process operates jointly with natural mortality
-(Baranov 1918; (Branch 2009)https://cdnsciencepub.com/doi/10.1139/F08-196).
-The documentation for SS also describes this process as
-<em>F</em> method == 2, where <em>F</em> is continuous and modelled using
+    <p>Replace or input a time series of fishing mortality, \(F\), values into
+a Stock Synthesis control file.
+In Stock Synthesis, inserting \(F\) values in this manner,
+relies on the assumption that \(F\) operates continuously throughout the year and
+and the process operates jointly with natural mortality
+(Baranov 1918; <a href='https://cdnsciencepub.com/doi/10.1139/F08-196'>Branch 2009</a>).
+The documentation for Stock Synthesis also describes this process as
+\(F\) method == 2, where \(F\) is continuous and modeled using
 full parameters.</p>
     </div>
 
@@ -174,7 +176,7 @@ An entry of <code>fleets=NULL</code> leads to zero samples for any fleet.</p></t
     <tr>
       <th>fvals</th>
       <td><p>A list of the same length as <code>fleets</code> with one
-entry per fishing mortality level (<em>F</em>) entry in <code>years</code>.
+entry per fishing mortality level, \(F\), entry in <code>years</code>.
 A single value will be repeated for every value in <code>years</code>. If more than
 one fleet is present, then the single value will be used for all fleets, i.e.,
 there is no way to map a single value to each year specific to the given fleet.
@@ -183,14 +185,14 @@ Instead you would need to provide a list of vectors of repeated values.</p></td>
     <tr>
       <th>seasons</th>
       <td><p>A list of seasons to be entered into the
-SS control file for each fleet.
+Stock Synthesis control file for each fleet.
 The structure is the same as <code>fvals</code>, i.e., a list or a scalar.
 The default is 1, which will be applied to all fleets in all years.</p></td>
     </tr>
     <tr>
       <th>ses</th>
       <td><p>A list of fishing level standard errors (ses) to be entered into the
-SS control file for each fleet.
+Stock Synthesis control file for each fleet.
 The structure is the same as <code>fvals</code>, i.e., a list or a scalar.
 The default is 0.005, which will be applied to all fleets in all years.</p></td>
     </tr>
@@ -202,7 +204,7 @@ The default is 0.005, which will be applied to all fleets in all years.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Modified SS control file list.</p>
+    <p>Modified Stock Synthesis control file list.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The argument <code>years</code> is the only argument that must be a vector
@@ -215,12 +217,12 @@ both the <code>years</code> and other input arguments can be specified using a s
 vector if the length of <code>fleets</code> is just one or a vector of values
 is specified for fleets because all of these vectors will just be combined
 into a single data frame. Where it gets complicated is when there are
-mutliple fleet and year combinations, then it is best to just use the list
+multiple fleet and year combinations, then it is best to just use the list
 structure common to other functions within <span class="pkg">ss3sim</span>.</p>
-<p><code>change_f</code> overrides any <em>F</em> values that are in the supplied
+<p><code>change_f()</code> overrides any \(F\) values that are in the supplied
 control file with the newly specified values, i.e., <code>fvals</code>.
 Users do not need to specify values for years in which there
-will be zero fishing because SS will automatically set them to zero when
+will be zero fishing because Stock Synthesis will automatically set them to zero when
 running the operating model.
 Using the control file rather than the par file to manipulate the
 operating model requires a few other files within the operating
@@ -231,11 +233,11 @@ rather than the par file and
 combination that will be specified in the control file. If a year, fishery
 combination is specified in the control file and not present in the data file,
 then the entry in the control file will be ignored. ss3sim automatically corrects
-for this using <code><a href='ss3sim_base.html'>ss3sim_base</a></code> by
-specifying a row for every year and fleet using <code><a href='change_catch.html'>change_catch</a></code>.</p>
+for this using <code><a href='ss3sim_base.html'>ss3sim_base()</a></code> by
+specifying a row for every year and fleet using <code><a href='change_catch.html'>change_catch()</a></code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>See <code><a href='https://rdrr.io/pkg/r4ss/man/SS_readctl.html'>SS_readctl</a></code> and <code><a href='https://rdrr.io/pkg/r4ss/man/SS_writectl.html'>SS_writectl</a></code>
+    <div class='dont-index'><p>See <code><a href='https://rdrr.io/pkg/r4ss/man/SS_readctl.html'>r4ss::SS_readctl()</a></code> and <code><a href='https://rdrr.io/pkg/r4ss/man/SS_writectl.html'>r4ss::SS_writectl()</a></code>
 for how to supply <code>ctl_list</code> and how to write the file back to the disk
 once you are done manipulating the list object.</p>
 <p>Other change functions: 
@@ -275,7 +277,7 @@ once you are done manipulating the list object.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

@@ -43,11 +43,11 @@
 
 <meta property="og:title" content="High-level wrapper to run a simulation — ss3sim_base" />
 <meta property="og:description" content="A wrapper function that
-calls run_ss3model to run the operating model,
+calls run_ss3model() to run the operating model,
 samples the output (add recruitment deviations, survey the data, etc.), and
 runs the estimation model.
 This is the main workhorse of ss3sim and
-is typically not called by the user but called from run_ss3sim.
+is typically not called by the user but called from run_ss3sim().
 
 " />
 
@@ -145,11 +145,11 @@ is typically not called by the user but called from run_ss3sim.
 
     <div class="ref-description">
     <p>A wrapper function that</p><ul>
-<li><p>calls <code><a href='run_ss3model.html'>run_ss3model</a></code> to run the operating model,</p></li>
+<li><p>calls <code><a href='run_ss3model.html'>run_ss3model()</a></code> to run the operating model,</p></li>
 <li><p>samples the output (add recruitment deviations, survey the data, etc.), and</p></li>
 <li><p>runs the estimation model.
 This is the main workhorse of ss3sim and
-is typically not called by the user but called from <a href='run_ss3sim.html'>run_ss3sim</a>.</p></li>
+is typically not called by the user but called from <code><a href='run_ss3sim.html'>run_ss3sim()</a></code>.</p></li>
 </ul>
 
     </div>
@@ -198,62 +198,62 @@ of parameters for the OM and EM.</p></td>
     </tr>
     <tr>
       <th>f_params</th>
-      <td><p>A named list containing arguments for <code><a href='change_f.html'>change_f</a></code>.
+      <td><p>A named list containing arguments for <code><a href='change_f.html'>change_f()</a></code>.
 A mandatory case.</p></td>
     </tr>
     <tr>
       <th>index_params</th>
       <td><p>A named list containing arguments for
-<code><a href='sample_index.html'>sample_index</a></code>. A mandatory input.</p></td>
+<code><a href='sample_index.html'>sample_index()</a></code>. A mandatory input.</p></td>
     </tr>
     <tr>
       <th>discard_params</th>
       <td><p>A named list containing arguments for
-<code><a href='sample_discard.html'>sample_discard</a></code>.</p></td>
+<code><a href='sample_discard.html'>sample_discard()</a></code>.</p></td>
     </tr>
     <tr>
       <th>lcomp_params</th>
       <td><p>A named list containing arguments for
-<code><a href='sample_lcomp.html'>sample_lcomp</a></code>. A mandatory input.</p></td>
+<code><a href='sample_lcomp.html'>sample_lcomp()</a></code>. A mandatory input.</p></td>
     </tr>
     <tr>
       <th>agecomp_params</th>
       <td><p>A named list containing arguments for
-<code><a href='sample_agecomp.html'>sample_agecomp</a></code>. A mandatory input.</p></td>
+<code><a href='sample_agecomp.html'>sample_agecomp()</a></code>. A mandatory input.</p></td>
     </tr>
     <tr>
       <th>calcomp_params</th>
       <td><p>A named list containing arguments for
-<code><a href='sample_calcomp.html'>sample_calcomp</a></code>, for conditional age-at-length data.</p></td>
+<code><a href='sample_calcomp.html'>sample_calcomp()</a></code>, for conditional age-at-length data.</p></td>
     </tr>
     <tr>
       <th>wtatage_params</th>
       <td><p>A named list containing arguments for
-<code><a href='sample_wtatage.html'>sample_wtatage</a></code>, for empirical weight-at-age data.</p></td>
+<code><a href='sample_wtatage.html'>sample_wtatage()</a></code>, for empirical weight-at-age data.</p></td>
     </tr>
     <tr>
       <th>mlacomp_params</th>
       <td><p>A named list containing arguments for
-<code><a href='sample_mlacomp.html'>sample_mlacomp</a></code>, for mean length-at-age data.</p></td>
+<code><a href='sample_mlacomp.html'>sample_mlacomp()</a></code>, for mean length-at-age data.</p></td>
     </tr>
     <tr>
       <th>em_binning_params</th>
       <td><p>A named list containing arguments for
-<code><a href='change_em_binning.html'>change_em_binning</a></code>.</p></td>
+<code><a href='change_em_binning.html'>change_em_binning()</a></code>.</p></td>
     </tr>
     <tr>
       <th>estim_params</th>
       <td><p>A named list containing arguments for
-<code><a href='change_e.html'>change_e</a></code>.</p></td>
+<code><a href='change_e.html'>change_e()</a></code>.</p></td>
     </tr>
     <tr>
       <th>tv_params</th>
       <td><p>A named list containing arguments for
-<code><a href='change_tv.html'>change_tv</a></code> (time-varying).</p></td>
+<code><a href='change_tv.html'>change_tv()</a></code> (time-varying).</p></td>
     </tr>
     <tr>
       <th>operat_params</th>
-      <td><p>A named list containing arguments for <code><a href='change_o.html'>change_o</a></code>.</p></td>
+      <td><p>A named list containing arguments for <code><a href='change_o.html'>change_o()</a></code>.</p></td>
     </tr>
     <tr>
       <th>om_dir</th>
@@ -268,7 +268,7 @@ use for the specified simulations.</p></td>
     <tr>
       <th>retro_params</th>
       <td><p>A named list containing the arguments for
-<code><a href='change_retro.html'>change_retro</a></code>.</p></td>
+<code><a href='change_retro.html'>change_retro()</a></code>.</p></td>
     </tr>
     <tr>
       <th>data_params</th>
@@ -277,7 +277,7 @@ use for the specified simulations.</p></td>
     <tr>
       <th>weight_comps_params</th>
       <td><p>A named list containing arguments for
-<code><a href='https://rdrr.io/pkg/r4ss/man/SS_tune_comps.html'>SS_tune_comps</a></code>.</p></td>
+<code><a href='https://rdrr.io/pkg/r4ss/man/SS_tune_comps.html'>r4ss::SS_tune_comps()</a></code>.</p></td>
     </tr>
     <tr>
       <th>user_recdevs</th>
@@ -304,7 +304,8 @@ are specified.</p></td>
       <td><p>A logical argument specifying bias adjustment is conducted.
 Bias adjustment helps assure that the estimated recruitment deviations,
 which are assumed to be log-normally distributed,
-are mean unbiased leading to mean-unbiased estimates of biomass @methot2011.
+are mean unbiased leading to mean-unbiased estimates of biomass
+<a href='https://cdnsciencepub.com/doi/abs/10.1139/f2011-092'>Methot and Taylor, 2011</a>.
 Bias adjustment should always be performed when
 using maximum likelihood estimation when running simulations for publication or management.
 The argument allows users to turn bias adjustment off because
@@ -329,7 +330,7 @@ a shared server.</p></td>
     </tr>
     <tr>
       <th>seed</th>
-      <td><p>The seed value to pass to <code><a href='get_recdevs.html'>get_recdevs</a></code> when
+      <td><p>The seed value to pass to <code><a href='get_recdevs.html'>get_recdevs()</a></code> when
 generating recruitment deviations. The generated recruitment deviations
 depend on the iteration value, but also on the value of <code>seed</code>. A
 given combination of iteration, number of years, and <code>seed</code> value will
@@ -337,11 +338,11 @@ result in the same recruitment deviations.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Anything extra to pass to <code><a href='run_ss3model.html'>run_ss3model</a></code>. For
-example, you may want to pass additional options to <code>SS3</code> through
+      <td><p>Anything extra to pass to <code><a href='run_ss3model.html'>run_ss3model()</a></code>. For
+example, you may want to pass additional options to Stock Synthesis through
 the argument <code>admb_options</code>. Anything that doesn't match a named
-argument in <code><a href='run_ss3model.html'>run_ss3model</a></code> will be passed to the
-<code><a href='https://rdrr.io/r/base/system.html'>system</a></code> call that runs <code>SS3</code>.</p></td>
+argument in <code><a href='run_ss3model.html'>run_ss3model()</a></code> will be passed to the
+<code><a href='https://rdrr.io/r/base/system.html'>system()</a></code> call that runs Stock Synthesis.</p></td>
     </tr>
     </table>
 
@@ -362,12 +363,12 @@ look like this:</p><ul>
 mortality, survey index, length composition, age composition, and
 time-varying parameters in the function call as list objects (see the
 example below). For a generic higher-level function, see
-<code><a href='run_ss3sim.html'>run_ss3sim</a></code>.</p>
+<code><a href='run_ss3sim.html'>run_ss3sim()</a></code>.</p>
 <p>The steps carried out within <code>ss3sim_base</code>:</p>
 <p><img src='figures/simsteps.png' alt='' /></p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='run_ss3sim.html'>run_ss3sim</a></code></p></div>
+    <div class='dont-index'><p><code><a href='run_ss3sim.html'>run_ss3sim()</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Sean Anderson with contributions from many others as listed in
@@ -434,7 +435,7 @@ the DESCRIPTION file.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

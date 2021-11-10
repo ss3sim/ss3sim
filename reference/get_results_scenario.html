@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract SS3 simulation results for one scenario. — get_results_scenario • ss3sim</title>
+<title>Extract Stock Synthesis simulation results for one scenario — get_results_scenario • ss3sim</title>
 
 
 <!-- jquery -->
@@ -41,15 +41,17 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Extract SS3 simulation results for one scenario. — get_results_scenario" />
-<meta property="og:description" content="Function that extracts results from all iterations inside a supplied
-scenario folder. The function writes 3 .csv files to the scenario
-folder: (1) scalar metrics with one value per iteration (e.g. \(R_0\),
-\(h\)), (2) a timeseries data ('ts') which contains multiple values per
-iteration (e.g.  \(SSB_y\) for a range of years \(y\)), and (3) currently disabled and not tested residuals on the log scale from the surveys
-across all iterations. The function get_results_all loops through
-these .csv files and combines them together into a single &quot;final&quot;
-dataframe." />
+<meta property="og:title" content="Extract Stock Synthesis simulation results for one scenario — get_results_scenario" />
+<meta property="og:description" content="Extract results from all iterations inside a supplied scenario folder.
+The function writes the following .csv files to the scenario folder
+scalar metrics with one value per iteration
+(e.g. \(R_0\), \(h\)),
+a timeseries data ('ts') which contains multiple values per iteration
+(e.g.  \(SSB_y\) for a range of years \(y\)), and
+residuals on the log scale from the surveys across all iterations;
+this functionality is currently disabled and not tested.
+
+" />
 
 
 
@@ -138,20 +140,22 @@ dataframe." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract SS3 simulation results for one scenario.</h1>
+    <h1>Extract Stock Synthesis simulation results for one scenario</h1>
     <small class="dont-index">Source: <a href='https://github.com/ss3sim/ss3sim/blob/master/R/get-results.r'><code>R/get-results.r</code></a></small>
     <div class="hidden name"><code>get_results_scenario.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Function that extracts results from all iterations inside a supplied
-scenario folder. The function writes 3 .csv files to the scenario
-folder: (1) scalar metrics with one value per iteration (e.g. \(R_0\),
-\(h\)), (2) a timeseries data ('ts') which contains multiple values per
-iteration (e.g.  \(SSB_y\) for a range of years \(y\)), and (3) currently disabled and not tested residuals on the log scale from the surveys
-across all iterations. The function <code>get_results_all</code> loops through
-these .csv files and combines them together into a single "final"
-dataframe.</p>
+    <p>Extract results from all iterations inside a supplied scenario folder.
+The function writes the following .csv files to the scenario folder</p><ol>
+<li><p>scalar metrics with one value per iteration
+(e.g. \(R_0\), \(h\)),</p></li>
+<li><p>a timeseries data ('ts') which contains multiple values per iteration
+(e.g.  \(SSB_y\) for a range of years \(y\)), and</p></li>
+<li><p>residuals on the log scale from the surveys across all iterations;
+this functionality is currently disabled and not tested.</p></li>
+</ol>
+
     </div>
 
     <pre class="usage"><span class='fu'>get_results_scenario</span><span class='op'>(</span><span class='va'>scenario</span>, directory <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, overwrite_files <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
@@ -179,7 +183,9 @@ changes were made to this function.</p></td>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other get-results: 
+    <div class='dont-index'><p><code><a href='get_results_all.html'>get_results_all()</a></code> loops through these .csv files and
+combines them together into a single "final" dataframe.</p>
+<p>Other get-results: 
 <code><a href='get_results_all.html'>get_results_all</a>()</code>,
 <code><a href='get_results_derived.html'>get_results_derived</a>()</code>,
 <code><a href='get_results_scalar.html'>get_results_scalar</a>()</code>,
@@ -199,7 +205,7 @@ changes were made to this function.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

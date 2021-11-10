@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Change population and observed length composition bins in an SS estimation
-model — change_em_binning • ss3sim</title>
+<title>Change population and observed length-composition bins — change_em_binning • ss3sim</title>
 
 
 <!-- jquery -->
@@ -42,13 +41,12 @@ model — change_em_binning • ss3sim</title>
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Change population and observed length composition bins in an SS estimation
-model — change_em_binning" />
-<meta property="og:description" content="change_em_binning alters the bin structure for the population and
-length composition data in an SS estimation model. It is done by taking the
-original length composition info from the EM ss3.dat then changing
+<meta property="og:title" content="Change population and observed length-composition bins — change_em_binning" />
+<meta property="og:description" content="change_em_binning() alters the bin structure for the population and
+length-composition data in a Stock Synthesis estimation model (EM).
+The original length-composition data from the EM .dat is changed
 according to the user's specification. If the data file also contains
-conditional age-at-length data then these data will be re-binned as well." />
+conditional age-at-length data, then these data will be re-binned as well." />
 
 
 
@@ -137,18 +135,17 @@ conditional age-at-length data then these data will be re-binned as well." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Change population and observed length composition bins in an SS estimation
-model</h1>
+    <h1>Change population and observed length-composition bins</h1>
     <small class="dont-index">Source: <a href='https://github.com/ss3sim/ss3sim/blob/master/R/change_em_binning.r'><code>R/change_em_binning.r</code></a></small>
     <div class="hidden name"><code>change_em_binning.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>change_em_binning</code> alters the bin structure for the population and
-length composition data in an SS estimation model. It is done by taking the
-original length composition info from the EM <code>ss3.dat</code> then changing
+    <p><code>change_em_binning()</code> alters the bin structure for the population and
+length-composition data in a Stock Synthesis estimation model (EM).
+The original length-composition data from the EM <code>.dat</code> is changed
 according to the user's specification. If the data file also contains
-conditional age-at-length data then these data will be re-binned as well.</p>
+conditional age-at-length data, then these data will be re-binned as well.</p>
     </div>
 
     <pre class="usage"><span class='fu'>change_em_binning</span><span class='op'>(</span>
@@ -187,30 +184,31 @@ file takes time and computing resources.</p></td>
     <tr>
       <th>bin_vector</th>
       <td><p>A numeric vector of new length bins to substitute into the
-<code>ss3.dat</code> file.</p></td>
+<code>*.dat</code> file.</p></td>
     </tr>
     <tr>
       <th>lbin_method</th>
       <td><p>A numeric value of either <code>NULL, 1, 2, 3</code> to change
-the lbin_method for the population bin. Only supports either <code>NULL, 1,
-  2</code> at the moment. <code>NULL</code> means to not rebin.</p></td>
+the lbin_method for the population bin.
+<code>NULL</code> means to not re-bin.</p></td>
     </tr>
     <tr>
       <th>pop_binwidth</th>
-      <td><p>Population length bin width. Only necessary for
-<code>lbin_method=2</code>. Note that this value must be smaller than the bin
-width specified in length composition data <code>len_bins</code> or SS3 will
-fail (see notes in the SS3 manual).</p></td>
+      <td><p>Population length bin width.
+Only necessary for <code>lbin_method = 2</code>.
+Note that this value must be smaller than the bin width
+specified in length-composition data <code>len_bins</code> or
+Stock Synthesis will fail (see notes in the Stock Synthesis manual).</p></td>
     </tr>
     <tr>
       <th>pop_minimum_size</th>
-      <td><p>Population minimum length bin value. 'Only
-necessary for <code>lbin_method=2</code></p></td>
+      <td><p>Population minimum length bin value.
+Only necessary for <code>lbin_method = 2</code>.</p></td>
     </tr>
     <tr>
       <th>pop_maximum_size</th>
-      <td><p>Population maximum length bin value. Only
-necessary for <code>lbin_method=2</code></p></td>
+      <td><p>Population maximum length bin value.
+Only necessary for <code>lbin_method = 2</code>.</p></td>
     </tr>
     </table>
 
@@ -344,7 +342,7 @@ necessary for <code>lbin_method=2</code></p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

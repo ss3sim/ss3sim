@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Verify and standardize SS3 input files — verify_input • ss3sim</title>
+<title>Verify and standardize Stock Synthesis input files — verify_input • ss3sim</title>
 
 
 <!-- jquery -->
@@ -41,13 +41,16 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Verify and standardize SS3 input files — verify_input" />
-<meta property="og:description" content="This function verifies the contents of operating model (om) and
-estimation model (em) folders (i.e., it checks that the necessary SS
-input files are available). If the contents are correct, the
-.ctl and .dat files are renamed to standardized names and the
-starter.ss file is updated to reflect these names. If the contents
-are incorrect then a warning is issued and the simulation is aborted." />
+<meta property="og:title" content="Verify and standardize Stock Synthesis input files — verify_input" />
+<meta property="og:description" content="Verify the contents of
+operating model (OM) and
+estimation model (EM) folders, i.e.,
+check that the necessary SS input files are available.
+If the contents are correct,
+the .ctl and .dat files are renamed to standardized names and
+the starter.ss file is updated to reflect these names.
+If the contents are incorrect,
+then a warning is issued and the simulation is aborted." />
 
 
 
@@ -136,18 +139,21 @@ are incorrect then a warning is issued and the simulation is aborted." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Verify and standardize SS3 input files</h1>
+    <h1>Verify and standardize Stock Synthesis input files</h1>
     <small class="dont-index">Source: <a href='https://github.com/ss3sim/ss3sim/blob/master/R/verify_input.r'><code>R/verify_input.r</code></a></small>
     <div class="hidden name"><code>verify_input.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function verifies the contents of operating model (<code>om</code>) and
-estimation model (<code>em</code>) folders (i.e., it checks that the necessary SS
-input files are available). If the contents are correct, the
-<code>.ctl</code> and <code>.dat</code> files are renamed to standardized names and the
-<code>starter.ss</code> file is updated to reflect these names. If the contents
-are incorrect then a warning is issued and the simulation is aborted.</p>
+    <p>Verify the contents of
+operating model (<code>OM</code>) and
+estimation model (<code>EM</code>) folders, i.e.,
+check that the necessary SS input files are available.
+If the contents are correct,
+the <code>.ctl</code> and <code>.dat</code> files are renamed to standardized names and
+the <code>starter.ss</code> file is updated to reflect these names.
+If the contents are incorrect,
+then a warning is issued and the simulation is aborted.</p>
     </div>
 
     <pre class="usage"><span class='fu'>verify_input</span><span class='op'>(</span><span class='va'>model_dir</span>, type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"om"</span>, <span class='st'>"em"</span><span class='op'>)</span><span class='op'>)</span></pre>
@@ -168,12 +174,8 @@ are incorrect then a warning is issued and the simulation is aborted.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns a version of the folder with sanitized files or an error if
-some files are missing.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>This is a helper function to be used within the larger wrapper
-simulation functions.</p>
+    <p>Nothing is returned from this function. Instead,
+file are changed and saved to the disk.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Curry James Cunningham; modified by Sean Anderson</p>
@@ -183,10 +185,10 @@ simulation functions.</p>
 <span class='r-in'><span class='va'>temp_path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"ss3sim-verify-example"</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/files2.html'>dir.create</a></span><span class='op'>(</span><span class='va'>temp_path</span>, showWarnings <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package <span class='op'>=</span> <span class='st'>"ss3sim"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"models"</span>, package <span class='op'>=</span> <span class='st'>"ss3sim"</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='va'>om</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>d</span>, <span class='st'>"/models/cod-om"</span><span class='op'>)</span></span>
-<span class='r-in'><span class='va'>em</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>d</span>, <span class='st'>"/models/cod-em"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>om</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>d</span>, <span class='st'>"cod-om"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>em</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>d</span>, <span class='st'>"cod-em"</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.copy</a></span><span class='op'>(</span><span class='va'>om</span>, <span class='va'>temp_path</span>, recursive <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
@@ -194,8 +196,8 @@ simulation functions.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># Verify the correct files exist and change file names:</span></span>
-<span class='r-in'><span class='fu'>verify_input</span><span class='op'>(</span>model_dir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>temp_path</span>, <span class='st'>"/cod-om"</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"om"</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'>verify_input</span><span class='op'>(</span>model_dir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>temp_path</span>, <span class='st'>"/cod-em"</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"em"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>verify_input</span><span class='op'>(</span>model_dir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>temp_path</span>, <span class='st'>"cod-om"</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"om"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>verify_input</span><span class='op'>(</span>model_dir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>temp_path</span>, <span class='st'>"cod-em"</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"em"</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>temp_path</span>, recursive <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
 </pre>
   </div>
@@ -209,7 +211,7 @@ simulation functions.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

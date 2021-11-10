@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Set the robustification constant for length composition data. — change_lcomp_constant • ss3sim</title>
+<title>Set the robustification constant for length-composition data — change_lcomp_constant • ss3sim</title>
 
 
 <!-- jquery -->
@@ -41,12 +41,11 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Set the robustification constant for length composition data. — change_lcomp_constant" />
-<meta property="og:description" content="This function replaces the robustification value for length composition data
-in a .dat file that was read in using SS_readdat
-with those specified in
-lcomp_constant. It then writes a new file with name outfile
-into the working directory." />
+<meta property="og:title" content="Set the robustification constant for length-composition data — change_lcomp_constant" />
+<meta property="og:description" content="This function replaces the robustification value for length-composition data
+in a .dat file that was read in using r4ss::SS_readdat()
+with those specified in lcomp_constant.
+It then writes a new file with name outfile into the working directory." />
 
 
 
@@ -135,17 +134,16 @@ into the working directory." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Set the robustification constant for length composition data.</h1>
+    <h1>Set the robustification constant for length-composition data</h1>
     <small class="dont-index">Source: <a href='https://github.com/ss3sim/ss3sim/blob/master/R/change_lcomp_constant.R'><code>R/change_lcomp_constant.R</code></a></small>
     <div class="hidden name"><code>change_lcomp_constant.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function replaces the robustification value for length composition data
-in a <code>.dat</code> file that was read in using <code><a href='https://rdrr.io/pkg/r4ss/man/SS_readdat.html'>SS_readdat</a></code>
-with those specified in
-<code>lcomp_constant</code>. It then writes a new file with name <code>outfile</code>
-into the working directory.</p>
+    <p>This function replaces the robustification value for length-composition data
+in a <code>.dat</code> file that was read in using <code><a href='https://rdrr.io/pkg/r4ss/man/SS_readdat.html'>r4ss::SS_readdat()</a></code>
+with those specified in <code>lcomp_constant</code>.
+It then writes a new file with name <code>outfile</code> into the working directory.</p>
     </div>
 
     <pre class="usage"><span class='fu'>change_lcomp_constant</span><span class='op'>(</span><span class='va'>lcomp_constant</span>, <span class='va'>dat_list</span>, outfile <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
@@ -156,7 +154,7 @@ into the working directory.</p>
     <tr>
       <th>lcomp_constant</th>
       <td><p>The new value to be used. Must be a numeric value, as
-a proportion. For example 0.1 means 10 percent. See the SS3 manual for
+a proportion. For example 0.1 means 10 percent. See the Stock Synthesis manual for
 further information. A NULL value indicates no action resulting in using
 the current value, and a value of 0 will throw an error since that leads to
 an error when zeroes exist in the data. Instead use a very small value like
@@ -186,7 +184,7 @@ file takes time and computing resources.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A modified SS <code>.dat</code> file, and that file returned invisibly
+    <p>A modified Stock Synthesis <code>.dat</code> file, and that file returned invisibly
 (for testing) as a vector of character lines.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -210,7 +208,7 @@ length data.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

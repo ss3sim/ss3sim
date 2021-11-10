@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BETA VERSION Sample mean length (size-)-at-age data and write to file for use by the EM. — sample_mlacomp • ss3sim</title>
+<title>BETA VERSION Sample mean length (size-)-at-age data and write to file for use by the EM — sample_mlacomp • ss3sim</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="BETA VERSION Sample mean length (size-)-at-age data and write to file for use by the EM. — sample_mlacomp" />
-<meta property="og:description" content="BETA VERSION Sample mean length (size-)-at-age data and write to file for use by the EM." />
+<meta property="og:title" content="BETA VERSION Sample mean length (size-)-at-age data and write to file for use by the EM — sample_mlacomp" />
+<meta property="og:description" content="BETA VERSION Sample mean length (size-)-at-age data and write to file for use by the EM" />
 
 
 
@@ -131,13 +131,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>BETA VERSION Sample mean length (size-)-at-age data and write to file for use by the EM.</h1>
+    <h1><strong>BETA VERSION</strong> Sample mean length (size-)-at-age data and write to file for use by the EM</h1>
     <small class="dont-index">Source: <a href='https://github.com/ss3sim/ss3sim/blob/master/R/sample_mlacomp.R'><code>R/sample_mlacomp.R</code></a></small>
     <div class="hidden name"><code>sample_mlacomp.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>BETA VERSION Sample mean length (size-)-at-age data and write to file for use by the EM.</p>
+    <p><strong>BETA VERSION</strong> Sample mean length (size-)-at-age data and write to file for use by the EM</p>
     </div>
 
     <pre class="usage"><span class='fu'>sample_mlacomp</span><span class='op'>(</span>
@@ -204,8 +204,8 @@ numeric vectors. If no fleet collected samples, keep the value to
       <th>mean_outfile</th>
       <td><p>A path to write length and age data for external
 estimation of parametric growth. If <code>NULL</code> no file will be written.
-This file is used by <code>change_e</code> to externally estimate growth
-parameters. Filename must contain "vbgf" to be used by <code>change_e</code>.
+This file is used by <code><a href='change_e.html'>change_e()</a></code> to externally estimate growth
+parameters. Filename must contain "vbgf" to be used by <code><a href='change_e.html'>change_e()</a></code>.
 Also, if "remove" is included in the filename, the mean length at age data
 will be removed from the <code>.dat</code> file and not be available to the EM.</p></td>
     </tr>
@@ -224,7 +224,7 @@ containing the modified <code>.dat</code> file is returned invisibly.</p>
 
     <p><strong>This function is in beta and untested. Use with caution.</strong>
 Take a <code>data.SS_new</code> file, read in by <span class="pkg">r4ss</span> function
-<code><a href='https://rdrr.io/pkg/r4ss/man/SS_readdat.html'>SS_readdat</a></code> containing observed values, and
+<code><a href='https://rdrr.io/pkg/r4ss/man/SS_readdat.html'>r4ss::SS_readdat()</a></code> containing observed values, and
 sample from the observed ages to get realistic proportions for the number
 of fish in each age bin, then use the mean size-at-age and CV for growth to
 generate random samples of size, which are then averaged to get mean
@@ -256,7 +256,7 @@ EM.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">

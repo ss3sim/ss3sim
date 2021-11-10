@@ -42,9 +42,9 @@
   
 
 <meta property="og:title" content="ss3sim: Fisheries stock assessment simulation testing with Stock Synthesis — ss3sim" />
-<meta property="og:description" content="The ss3sim R package is designed to facilitate rapid, reproducible,
-and flexible simulation with the widely-used Stock Synthesis (SS)
-statistical catch-at-age stock assessment framework." />
+<meta property="og:description" content="The ss3sim R package is designed to
+simplify the steps needed to generate beautiful simulation output from the
+Stock Synthesis statistical catch-at-age stock assessment framework." />
 
 
 
@@ -139,9 +139,9 @@ statistical catch-at-age stock assessment framework." />
     </div>
 
     <div class="ref-description">
-    <p>The <span class="pkg">ss3sim</span> <span style="R">R</span> package is designed to facilitate rapid, reproducible,
-and flexible simulation with the widely-used Stock Synthesis (SS)
-statistical catch-at-age stock assessment framework.</p>
+    <p>The <span class="pkg">ss3sim</span> <span style="R">R</span> package is designed to
+simplify the steps needed to generate beautiful simulation output from the
+Stock Synthesis statistical catch-at-age stock assessment framework.</p>
     </div>
 
 
@@ -149,67 +149,67 @@ statistical catch-at-age stock assessment framework.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>An <span class="pkg">ss3sim</span> simulation requires three types of input: (1) a base
-model of the underlying truth (an SS operating model), (2) a base
-model of how you will assess that truth (an SS estimation model),
+model of the underlying truth (a Stock Synthesis operating model), (2) a base
+model of how you will assess that truth (a Stock Synthesis estimation model),
 (3) and a data frame specifying how you want to manipulate the
 operating and estimation models.</p>
 <p>You can find example an operating and estimation model
 within the package data (<code>inst/extdata/models/</code>).</p>
-<p>To carry out <span class="pkg">ss3sim</span> simulations
-with the CRAN version of ss3sim, you will need to have SS installed on
-your computer and the binary needs to be in the path that <span style="R">R</span> sees. See the
-section "Installing the ss3sim R package" in the vignette
-<code>vignette("ss3sim-vignette")</code> for instructions on installing SS. See
-the Appendix A "Putting SS in your path" in the vignette for instructions on
-making sure SS will work from within <span style="R">R</span>.</p>
+<p>To carry out <span class="pkg">ss3sim</span> simulations with the CRAN version of ss3sim,
+you will need to have Stock Synthesis installed on your computer and
+the binary needs to be in the path that <span style="R">R</span> sees.
+See
+<a href='https://nmfs-stock-synthesis.github.io/ss-documentation/Getting_Started_SS.html#the-path-approach'>Stock Synthesis, Getting Started</a> and
+the <a href='https://ss3sim.github.io/ss3sim/articles/introduction.html'>Introduction vignette</a>
+for instructions on
+making sure Stock Synthesis will work from within <span style="R">R</span>.</p>
 <p>The main <span class="pkg">ss3sim</span> functions are divided into three types:</p><ol>
-<li><p><code>change</code> and <code>sample</code> functions that manipulate SS
+<li><p><code>change_*()</code> and <code>sample_*()</code> functions that manipulate Stock Synthesis
 configuration files. These manipulations generate an underlying "truth"
 (operating models) and control our assessment of those models (estimation
 models).</p><ul>
-<li><p><code><a href='change_f.html'>change_f</a></code>: Controls fishing mortality.</p></li>
+<li><p><code><a href='change_f.html'>change_f()</a></code>: Controls fishing mortality.</p></li>
 </ul></li>
-<li><p><code><a href='change_tv.html'>change_tv</a></code>: Adds time-varying features. For
+<li><p><code><a href='change_tv.html'>change_tv()</a></code>: Adds time-varying features. For
 example, time-varying natural mortality, growth, or selectivity.</p></li>
-<li><p><code><a href='sample_lcomp.html'>sample_lcomp</a></code>: Controls how length-composition
+<li><p><code><a href='sample_lcomp.html'>sample_lcomp()</a></code>: Controls how length-composition
 data are sampled.</p></li>
-<li><p><code><a href='sample_agecomp.html'>sample_agecomp</a></code>: Controls how age-composition
+<li><p><code><a href='sample_agecomp.html'>sample_agecomp()</a></code>: Controls how age-composition
 data are sampled.</p></li>
-<li><p><code><a href='sample_index.html'>sample_index</a></code>: Controls how the fishery and
+<li><p><code><a href='sample_index.html'>sample_index()</a></code>: Controls how the fishery and
 survey indices are sampled.</p></li>
-<li><p><code><a href='change_e.html'>change_e</a></code>: Controls which and how parameters are
+<li><p><code><a href='change_e.html'>change_e()</a></code>: Controls which and how parameters are
 estimated.</p></li>
-<li><p><code><a href='change_retro.html'>change_retro</a></code>: Controls the number of years to
+<li><p><code><a href='change_retro.html'>change_retro()</a></code>: Controls the number of years to
 discard for a retrospective analysis.</p></li>
-<li><p><code><a href='change_rec_devs.html'>change_rec_devs</a></code>: Substitutes recruitment
+<li><p><code><a href='change_rec_devs.html'>change_rec_devs()</a></code>: Substitutes recruitment
 deviations.</p></li>
-<li><p><code><a href='change_lcomp_constant.html'>change_lcomp_constant</a></code>: Set the robustification constant
+<li><p><code><a href='change_lcomp_constant.html'>change_lcomp_constant()</a></code>: Set the robustification constant
 for length composition data.</p></li>
-<li><p><code><a href='change_tail_compression.html'>change_tail_compression</a></code>: Replace tail compression value
+<li><p><code><a href='change_tail_compression.html'>change_tail_compression()</a></code>: Replace tail compression value
 for length composition data.</p></li>
 </ol>
 <ol>
-<li><p><code>run</code> functions that conduct simulations. These functions
-generate a folder structure, call manipulation functions, run SS
+<li><p><code>run_*()</code> functions that conduct simulations. These functions
+generate a folder structure, call manipulation functions, run Stock Synthesis
 as needed, and save the output.</p><ul>
-<li><p><code><a href='run_ss3sim.html'>run_ss3sim</a></code>: Main function to run <span class="pkg">ss3sim</span>
+<li><p><code><a href='run_ss3sim.html'>run_ss3sim()</a></code>: Main function to run <span class="pkg">ss3sim</span>
 simulations.</p></li>
 </ul></li>
-<li><p><code><a href='ss3sim_base.html'>ss3sim_base</a></code>: Underlying base simulation
+<li><p><code><a href='ss3sim_base.html'>ss3sim_base()</a></code>: Underlying base simulation
 function. Can also be called directly.</p></li>
 </ol>
 <ol>
-<li><p><code>get</code> functions for synthesizing the output.</p><ul>
-<li><p><code><a href='get_results_scenario.html'>get_results_scenario</a></code>: Extract the results for a
+<li><p><code>get_*()</code> functions for synthesizing the output.</p><ul>
+<li><p><code><a href='get_results_scenario.html'>get_results_scenario()</a></code>: Extract the results for a
 single scenario.</p></li>
 </ul></li>
-<li><p><code><a href='get_results_all.html'>get_results_all</a></code>: Extract results from a series
+<li><p><code><a href='get_results_all.html'>get_results_all()</a></code>: Extract results from a series
 of scenarios.</p></li>
 </ol>
 
-<p>See the introductory vignette <code><a href='../articles/introduction.html'>vignette("introduction",
-package = "ss3sim")</a></code> for
-more extensive explanation of how to use the <span class="pkg">ss3sim</span> <span style="R">R</span> package.</p>
+<p>See the introductory vignette <code><a href='../articles/introduction.html'>vignette("introduction", package = "ss3sim")</a></code>
+for more extensive explanation of how to use the <span class="pkg">ss3sim</span> <span style="R">R</span> package.</p>
 <p><span class="pkg">ss3sim</span> was developed by graduate students and post doctoral researchers
 at the University of Washington (School of Aquatic and Fishery Sciences and
 Quantitative Ecology and Resource Management departments) and Simon Fraser
@@ -230,7 +230,7 @@ indicated by running <code>citation("ss3sim")</code> in the <span style="R">R</s
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn Doering, Cole Monnahan, Christine Stawitz, Ian Taylor.</p>
+  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">
