@@ -4,7 +4,7 @@
 #' INIT value for sigmaR (recruitment deviations sigma)
 #'
 #' @param om The name of the operating model, which should be the prefix of
-#' the \code{.ctl} file, e.g., "myOM".
+#' the `.ctl` file, e.g., "myOM".
 #' A full directory can be specified with the the prefix of the file name but
 #' leaving off the '.ctl' portion.
 #' @author Kelli Johnson

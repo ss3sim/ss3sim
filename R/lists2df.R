@@ -8,10 +8,10 @@
 #' @return A data frame. With one column for each vector present in
 #' the lists, e.g., if the lists have two vectors then the resulting
 #' data frame will have two columns. An additional column will be added
-#' called \code{"index"} that specifies which vector the information
+#' called `"index"` that specifies which vector the information
 #' was taken from within each list. For example, if each list has two
 #' vectors and the first vector is of length 3 and the second is of
-#' length 4, then the index column will be \code{c(rep(1,3), rep(2,4))}.
+#' length 4, then the index column will be `c(rep(1,3), rep(2,4))`.
 #' @author Kelli Faye Johnson
 #' @examples
 #' ss3sim:::lists2df(list(1:2, 5:10), list(3:4, 5:10))
@@ -41,16 +41,16 @@ lists2df <- function(...) {
 #' Replicate an object a number of times to return a list
 #' 
 #' Replicate the input scalar argument the provided number of times,
-#' where \code{length} can be a vector, and thus, the returned object
+#' where `length` can be a vector, and thus, the returned object
 #' will be a list with potentially more than one entry in the list.
 #' This is helpful when an input argument needs to be repeated to match
 #' other input arguments that are lists of vectors when creating data frames.
 #' 
 #' @param scalar A single numeric value.
-#' @param length A vector of integer values specifying how many times \code{scalar}
+#' @param length A vector of integer values specifying how many times `scalar`
 #' should be repeated in each list element.
 #' @keywords internal
-#' @return A list of the same length as \code{length}. If, \code{scalar} is not
+#' @return A list of the same length as `length`. If, `scalar` is not
 #' a list but a vector, then it will be returned as a list.
 scalar2list <- function(scalar, length) {
   if (all(mapply(length, scalar) == 1) && length(scalar) == length(length)) {

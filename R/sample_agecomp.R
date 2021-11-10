@@ -1,13 +1,13 @@
 #' Sample age compositions from a Stock Synthesis data file
 #'
-#' Extract age-composition data from a \code{.ss_new} data file and sample
+#' Extract age-composition data from a `.ss_new` data file and sample
 #' the data. It is assumed that the composition data will be expected values
 #' as written by Stock Synthesis in the second section of the data file, but
 #' one can also sample input data. The resulting age-composition
 #' data are assumed to represent observed age composition and will overwrite
-#' the age data in \code{dat_list}, which is returned invisibly.
+#' the age data in `dat_list`, which is returned invisibly.
 #' The data file can also be written to the disk, if a file path is provided to
-#' \code{outfile}, and used as simulated data by an estimation model.
+#' `outfile`, and used as simulated data by an estimation model.
 #'
 #' @author Cole Monnahan and Kotaro Ono
 #'
@@ -18,13 +18,12 @@
 #' @template Nsamp
 #' @param keep_conditional A logical if conditional age-at-length data
 #'   should be kept or removed entirely from the data file.
-#'   \code{sample_agecomp} only works on the age-composition data
+#'   `sample_agecomp` only works on the age-composition data
 #'   and not on the conditional age-at-length data. To sample the
-#'   conditional data, set \code{keep_conditional} to \code{TRUE}
-#'   and use \code{\link{sample_calcomp}}.
+#'   conditional data, set `keep_conditional` to `TRUE`
+#'   and use [sample_calcomp()].
 #' @template sampledots
 #' @template sampling-return
-#' @importFrom r4ss SS_writedat
 #'
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
@@ -47,19 +46,19 @@
 #'
 #' ## Run three  cases showing Multinomial, Dirichlet(1), and over-dispersed
 #' ## Dirichlet for different levels of sample sizes
-#' op <- par(mfrow = c(1, 3))
+#' op <- graphics::par(mfrow = c(1, 3))
 #' set.seed(1)
 #' true <- prop.table(dat_list$agecomp[
 #'   dat_list$agecomp$FltSvy == 1 & dat_list$agecomp$Yr == 50, -(1:9)])
 #' cpars <- c(NA, 1, 4)
 #' for (samplesize in c(30, 100, 1000)) {
-#'   if (samplesize > 30) par(mar = c(5.1, 1, 4.1, 2.1))
-#'   plot(dat_list$agebin_vector, true, type = "b", ylim = c(0, 1),
+#'   if (samplesize > 30) graphics::par(mar = c(5.1, 1, 4.1, 2.1))
+#'   graphics::plot(dat_list$agebin_vector, true, type = "b", ylim = c(0, 1),
 #'     col = 4, lwd = 2, xlab = "Age",
 #'     ylab = ifelse(samplesize == 30, "Proportion", ""),
 #'     main = paste("Sample size =", samplesize))
 #'   if (samplesize == 30) {
-#'     legend("topright", lty = 1, col = 1:4, bty = "n",
+#'     graphics::legend("topright", lty = 1, col = 1:4, bty = "n",
 #'       legend = c("Multinomial", "Dirichlet(1)", "Dirichlet(4)", "Truth"))
 #'   }
 #'   for (i in seq_along(cpars)) {
@@ -69,7 +68,7 @@
 #'       col = i, type = "b")
 #'   }
 #' }
-#' par(op)
+#' graphics::par(op)
 #' @family sampling functions
 #' @export
 sample_agecomp <- function(dat_list, outfile = NULL, fleets, Nsamp,
@@ -93,7 +92,7 @@ sample_agecomp <- function(dat_list, outfile = NULL, fleets, Nsamp,
 
     ## Write the modified file
     if (!is.null(outfile)){
-      SS_writedat(datlist = dat_list, outfile = outfile, overwrite = TRUE,
+      r4ss::SS_writedat(datlist = dat_list, outfile = outfile, overwrite = TRUE,
                   version = get_ss_ver_dl(dat_list),
                   verbose = FALSE)
     }

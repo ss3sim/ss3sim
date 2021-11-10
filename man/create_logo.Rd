@@ -23,7 +23,7 @@ the ss3sim logo using the built-in data.
 }
 \examples{
 ss3sim:::create_logo()
-dev.off()
+grDevices::dev.off()
 }
 \author{
 Kelli Faye Johnson

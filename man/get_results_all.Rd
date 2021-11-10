@@ -2,7 +2,7 @@
 % Please edit documentation in R/get-results.r
 \name{get_results_all}
 \alias{get_results_all}
-\title{Extract SS3 simulation output}
+\title{Extract Stock Synthesis simulation output}
 \usage{
 get_results_all(
   directory = getwd(),
@@ -25,7 +25,7 @@ in. Default is \code{NULL}, which indicates find all scenario folders in
 
 \item{type}{A character string specifying if you want the results to be
 written to the disk and returned as a long or wide data frame, where the
-default is \code{"long"}}
+default is \code{"long"}.}
 
 \item{filename_prefix}{A character string specifying a prefix to append to
 the filename. Defaults to "ss3sim".}
@@ -38,7 +38,7 @@ and the default leads to the following:
 \code{ss3sim_ts.csv} and \code{ss3sim_scalar.csv}.
 }
 \description{
-This high level function extracts results from SS3 model runs. Give it a
+This high level function extracts results from Stock Synthesis model runs. Give it a
 directory which contains directories for different "scenario" runs, within
 which are iterations. It writes two data.frames to file:
 one for single scalar values (e.g., MSY) and a second

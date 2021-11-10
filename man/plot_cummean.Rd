@@ -13,9 +13,9 @@ plot_cummean(
 )
 }
 \arguments{
-\item{data}{A valid data frame containing scalar or timeseries values
+\item{data}{A valid data frame containing scalar or time series values
 from a \pkg{ss3sim} simulation. That data are generated from
-\code{\link{get_results_all}}.}
+\code{\link[=get_results_all]{get_results_all()}}.}
 
 \item{var}{The column name of the parameter in data of which to plot
 cumulative mean. A string.}

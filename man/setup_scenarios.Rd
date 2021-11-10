@@ -14,7 +14,7 @@ This data frame is used by default if you do not supply anything
 to \code{df}.}
 
 \item{returntype}{The class of object that you want to return.
-ss3sim was a big fan of lists of lists until the \link{tidyverse} packages
+ss3sim was a big fan of lists of lists until the \code{tidyverse} packages
 were included. Now, data frames of list columns are preferred.
 Eventually, \code{list} will be downgraded from the default and data frames
 will be the only option as a return.}

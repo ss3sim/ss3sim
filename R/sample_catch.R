@@ -5,17 +5,16 @@
 #' The input value used for `catch_se` will be used to resample the catches.
 #' There is a bit of a disconnect here because catches are defined by input `F`
 #' values not absolute catches.
-#' Let \code{D_y} be the discard
+#' Let \eqn{D_y} be the discard
 #' from the operating model for year y. Then the sampled value is calculated as:
-#' \code{D_y*exp(rnorm(1, 0, sds_obs)-sds_obs^2/2)}. The second term
-#' adjusts the random samples so that their expected value is \code{D_y}
-#' (i.e., the log-normal bias correction).
+#' \eqn{D_y*exp(stats::rnorm(1, 0, sds_obs)-sds_obs^2/2)}. The second term
+#' adjusts the random samples so that their expected value is \eqn{D_y}, i.e.,
+#' the log-normal bias correction.
 #'
 #' @template dat_list
 #' @template outfile
 #'
 #' @template sampling-return
-#' @importFrom magrittr %>%
 #'
 #' @export
 #' @author Kelli F. Johnson

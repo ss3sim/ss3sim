@@ -10,11 +10,11 @@ add_tv_parlines(string, tab, ctl_string, ss3.ctl)
 \arguments{
 \item{string}{The code representing the section the parameter is from.}
 
-\item{tab}{As created in \code{change_tv()}}
+\item{tab}{As created in \code{\link[=change_tv]{change_tv()}}.}
 
 \item{ctl_string}{The code as called in the .ss_new comment for time varying.}
 
-\item{ss3.ctl}{A ss control file that has been read in using \code{readLines()}.}
+\item{ss3.ctl}{A ss control file that has been read in using \code{\link[=readLines]{readLines()}}.}
 }
 \value{
 A modified version of ss3.ctl (a vector of strings), containing the

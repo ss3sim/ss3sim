@@ -4,7 +4,7 @@ d <- system.file("extdata", package = "ss3sim")
 om_dir <- file.path(d, "models", "cod-om")
 
 # get the necessary inputs
-dat <- SS_readdat(file.path(om_dir, "codOM.dat"),
+dat <- r4ss::SS_readdat(file.path(om_dir, "codOM.dat"),
   verbose = FALSE) # a data file
 
 # Note: only the fleets and years list components matter for this function to

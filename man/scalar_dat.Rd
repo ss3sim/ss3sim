@@ -5,9 +5,9 @@
 \alias{scalar_dat}
 \title{Example scalar data from the Introduction vignette}
 \description{
-An R object read in using \code{read.csv("ss3sim_scalar.csv")} after
+An R object read in using \code{utils::read.csv("ss3sim_scalar.csv")} after
 processing the results from the Introduction vignette
-using \code{get_results_all()}. The data set is available
+using \code{\link[=get_results_all]{get_results_all()}}. The data set is available
 so users do not have to wait for the scenarios to run.
 }
 \examples{

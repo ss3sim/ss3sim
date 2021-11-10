@@ -1,6 +1,6 @@
 #' Change the data that is available from a list object
 #'
-#' Alter the structure of data that is available from a Stock Synthesis (SS)
+#' Alter the structure of data that is available from a Stock Synthesis
 #' operating model (OM), which in turn leads to changes
 #' in the output and ability to sample data after running the model.
 #'
@@ -9,45 +9,52 @@
 #' @param fleets A numeric vector of fleets.
 #' @param years A numeric vector of years.
 #' @param types A vector that can take combinations of the following entries:
-#'   \code{"len"}, \code{"age"}, \code{"cal"}, \code{"mla"}.
-#'   \code{types} controls what data structures the function acts on, with
-#'   \code{"len"} augmenting the length-composition data,
-#'   \code{"age"} augmenting the age-composition
-#'   data, \code{"cal"} augmenting the conditional age-at-length (CAAL) data, and
-#'   \code{"mla"} augmenting the mean length-at-age data.
-#' @param age_bins A numeric vector of age bins to use. If left as \code{NULL},
+#'   `"len"`, `"age"`, `"cal"`, `"mla"`.
+#'   `types` controls what data structures the function acts on, with
+#'   `"len"` augmenting the length-composition data,
+#'   `"age"` augmenting the age-composition data,
+#'   `"cal"` augmenting the conditional age-at-length data, and
+#'   `"mla"` augmenting the mean length-at-age data.
+#' @param age_bins A numeric vector of age bins to use. If left as `NULL`,
 #'   the age bin structure will be taken from the OM.
 #' @param len_bins A numeric vector of length bins to use. If left as
-#'   \code{NULL}, the length bin structure will be taken from the OM.
-#'   For CAAL data, the last value provided to
-#'   \code{len_bins} will be used for Lbin_lo and -1 will be used for Lbin_hi
-#'   for the largest length bin category, i.e., row of CAAL data.
+#'   `NULL`, the length bin structure will be taken from the OM.
+#'   For conditional age-at-length data,
+#'   the last value provided to `len_bins` will be used for Lbin_lo and
+#'   -1 will be used for Lbin_hi for the largest length bin category, i.e.,
+#'   row of conditional age-at-length data.
 #' @param pop_binwidth Population length bin width. Note that this value must
 #'   be smaller than the bin width specified in length-composition data
-#'   \code{len_bins} or SS will fail (see notes in the SS manual).
+#'   `len_bins` or Stock Synthesis will fail,
+#'   see notes in the
+#'   [Stock Synthesis manual](https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html).
 #' @param pop_minimum_size Population minimum length bin value.
 #' @param pop_maximum_size Population maximum length bin value.
-#' @param lcomp_constant The robustification constant for length-composition
-#'   data. Must be a numeric value, as a proportion. For example 0.1
-#'   means 10 percent. See the SS manual for further information. A \code{NULL}
-#'   value indicates no action resulting in using the current value, and a value
-#'   of 0 will throw an error because zero leads to an error when zeroes exist in
-#'   the data. Instead use a very small value like \code{1e-07}.
-#' @param tail_compression Tail compression value to be used in SS. Must
-#'   be a numeric value, as a proportion. For example 0.1 means 10 percent. See
-#'   the SS manual for further information. A \code{NULL} value indicates no
-#'   action, a negative value turns the feature off in SS.
+#' @param lcomp_constant The robustification constant for length-composition data.
+#'   Must be a numeric value, as a proportion.
+#'   For example, 0.1 means 10 percent.
+#'   See the notes in the
+#'   [Stock Synthesis manual](https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html).
+#'   A `NULL` value indicates no action resulting in using the current value, and
+#'   a value of 0 will throw an error because
+#'   zero leads to an error when zeroes exist in the data.
+#'   Instead use a very small value like 1e-07.
+#' @param tail_compression Tail compression value to be used in Stock Synthesis. Must
+#'   be a numeric value, as a proportion. For example 0.1 means 10 percent.
+#'   See the notes in the
+#'   [Stock Synthesis manual](https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html).
+#'   A `NULL` value indicates no action,
+#'   a negative value turns the feature off in Stock Synthesis.
 #' @template nsex
 #'
 #' @details
-#' \code{change_data} is called internally within ss3sim, but it can be used
+#' `change_data()` is called internally within ss3sim, but it can be used
 #' to manipulate data or to prepare a new OM for use in a simulation.
-#' Original data is removed and dummy data is added to the SS \code{.dat} object.
+#' Original data is removed and dummy data is added to the Stock Synthesis `.dat` object.
 #' The dummy data expands the data structure to provide information for all years
 #' and fleets, potentially adding many rows of data.
 #'
-#' Currently, \code{.dat} files with multiple sexes cannot be manipulated with
-#' \code{change_data}.
+#' Currently, `.dat` files with multiple sexes cannot be manipulated with `change_data()`.
 #'
 #' The robustification constant is added to both the observed and
 #' expected proportions of length composition data, before being normalized
@@ -56,14 +63,12 @@
 #' length data.
 #'
 #' @return An invisible data list, and a file is written to the disk if an
-#' entry other than the default of \code{NULL} is provided for \code{outfile}.
+#' entry other than the default of `NULL` is provided for `outfile`.
 #' @family change functions
 #'
-#'
-#' @importFrom r4ss SS_readdat SS_writedat
 #' @export
-#' @seealso See \code{\link{clean_data}} for a counter function.
-#' @author Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson
+#' @seealso See [clean_data()] for a counter function.
+#' @author Cole Monnahan, Ian G. Taylor, Sean Anderson, Kelli F. Johnson
 #'
 change_data <- function(dat_list, outfile = NULL, fleets, years,
   types = c("len", "age", "cal", "mla", "mwa"),
@@ -73,8 +78,8 @@ change_data <- function(dat_list, outfile = NULL, fleets, years,
   nsex = 1) {
 
   # TODO: pop length bins must not be wider than the length data bins, but the
-  # boundaries of the bins do not need to align (from SS manual)
-  # this is also checked within SS and will create a fatal error
+  # boundaries of the bins do not need to align (from Stock Synthesis manual)
+  # this is also checked within Stock Synthesis and will create a fatal error
 
   check_data(dat_list)
   ## Input checks:
@@ -157,7 +162,7 @@ change_data <- function(dat_list, outfile = NULL, fleets, years,
   }
 
   if (!is.null(outfile)) {
-    SS_writedat(datlist = dat_list, outfile = outfile, version = dat_list$ReadVersion,
+    r4ss::SS_writedat(datlist = dat_list, outfile = outfile, version = dat_list$ReadVersion,
       overwrite = TRUE, verbose = FALSE)
   }
   invisible(dat_list)
@@ -172,17 +177,17 @@ change_data <- function(dat_list, outfile = NULL, fleets, years,
 #'
 #' @author Cole Monnahan
 #' @param index_params Named lists containing the arguments for
-#'   \code{sample_index}.
+#'   [sample_index()].
 #' @param lcomp_params Named lists containing the arguments for
-#'   \code{\link{sample_lcomp}}.
+#'   [sample_lcomp()].
 #' @param agecomp_params Named lists containing the arguments for
-#'   \code{\link{sample_agecomp}}.
+#'   [sample_agecomp()].
 #' @param calcomp_params Named lists containing the arguments for
-#'   \code{\link{sample_calcomp}}.
+#'   [sample_calcomp()].
 #' @param mlacomp_params Named lists containing the arguments for
-#'   \code{\link{sample_mlacomp}}.
+#'   [sample_mlacomp()].
 #' @param wtatage_params Named lists containing the arguments for
-#'   \code{\link{sample_wtatage}}.
+#'   [sample_wtatage()].
 #' @seealso See further examples in [clean_data] and [change_data]
 #' @note A superset by nature is larger than the individual sets used to
 #' create it (unless all sampling arguments are identical), so that the
@@ -266,13 +271,13 @@ calculate_data_units <- function(index_params = NULL, lcomp_params = NULL,
 #'
 #' The population length bins in Stock Synthesis structure size data and
 #' empirical weight-at-age data.
-#' \code{change_pop_bin} changes the data file to contain
+#' `change_pop_bin` changes the data file to contain
 #' specifications to create a vector (length-bin method of 2) rather than
 #' the actual bins from the length data (length-bin method of 1) or
 #' an actual vector (length-bin method of 3).
 #'
-#' The only required argument is \code{dat_list} and the remaining arguments
-#' default to a value of \code{NULL}, which leads to the data file not being
+#' The only required argument is `dat_list` and the remaining arguments
+#' default to a value of `NULL`, which leads to the data file not being
 #' changed.
 #' @template dat_list
 #' @param binwidth A numeric value specifying the width of the size bins.
@@ -295,7 +300,8 @@ change_pop_bin <- function(dat_list, binwidth = NULL, minimum_size = NULL,
   if (!is.null(binwidth)) dat_list$binwidth <- binwidth[1]
   if (!is.null(minimum_size)) dat_list$minimum_size <- minimum_size[1]
   if (!is.null(maximum_size)) dat_list$maximum_size <- maximum_size[1]
-  #according to SS manual 3.30.14, this is how the number of bins is calculated.
+  # according to Stock Synthesis manual 3.30.14,
+  # this is how the number of bins is calculated.
   nlbin_pop <- (dat_list$maximum_size - dat_list$minimum_size)/dat_list$binwidth + 1
   dat_list$lbin_vector_pop <- seq(dat_list$minimum_size, dat_list$maximum_size,
                                   length.out = nlbin_pop)
@@ -314,9 +320,9 @@ change_pop_bin <- function(dat_list, binwidth = NULL, minimum_size = NULL,
   invisible(dat_list)
 }
 
-#' Check that the SS data file looks correct
+#' Check that the Stock Synthesis data file looks correct
 #'
-#' @param x An SS data list object as read in by \code{\link[r4ss]{SS_readdat}}.
+#' @param x An Stock Synthesis data list object as read in by [r4ss::SS_readdat()].
 #' @export
 
 check_data <- function(x) {
@@ -341,14 +347,14 @@ check_data <- function(x) {
   if (!identical(x$Lbin_method, 3)) {
     stop("Lbin_method must be 3 to specify how the conditional",
       "age-at-length data are represented in the SS data file. ",
-      "\nSee the SS manual.")
+      "\nSee the Stock Synthesis manual.")
   }
 
   if (!identical(x$N_areas, 1))
-    stop("N_areas in the SS data file must be set to 1.")
+    stop("N_areas in the Stock Synthesis data file must be set to 1.")
 
   if (!identical(x$areas, rep(1, x$Nfleets)))
     stop("_area_assignments_for_each_fishery_and_survey must be set to 1",
-      " for all fleets in the SS data file.")
+      " for all fleets in the Stock Synthesis data file.")
 }
 

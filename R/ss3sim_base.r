@@ -1,89 +1,88 @@
 #' High-level wrapper to run a simulation
 #'
 #' A wrapper function that
-#' * calls \code{\link{run_ss3model}} to run the operating model,
+#' * calls [run_ss3model()] to run the operating model,
 #' * samples the output (add recruitment deviations, survey the data, etc.), and
 #' * runs the estimation model.
 #' This is the main workhorse of ss3sim and
-#' is typically not called by the user but called from [run_ss3sim].
+#' is typically not called by the user but called from [run_ss3sim()].
 #'
 #' @param iterations Which iterations to run. A numeric vector.
 #' @param scenarios A name to use as the folder name for the unique combination
 #'   of parameters for the OM and EM.
 #' @param tv_params A named list containing arguments for
-#'   \code{\link{change_tv}} (time-varying).
-#' @param operat_params A named list containing arguments for \code{\link{change_o}}.
-#' @param f_params A named list containing arguments for \code{\link{change_f}}.
+#'   [change_tv()] (time-varying).
+#' @param operat_params A named list containing arguments for [change_o()].
+#' @param f_params A named list containing arguments for [change_f()].
 #'   A mandatory case.
 #' @param index_params A named list containing arguments for
-#'   \code{\link{sample_index}}. A mandatory input.
+#'   [sample_index()]. A mandatory input.
 #' @param discard_params A named list containing arguments for
-#'   \code{\link{sample_discard}}.
+#'   [sample_discard()].
 #' @param lcomp_params A named list containing arguments for
-#'   \code{\link{sample_lcomp}}. A mandatory input.
+#'   [sample_lcomp()]. A mandatory input.
 #' @param agecomp_params A named list containing arguments for
-#'   \code{\link{sample_agecomp}}. A mandatory input.
+#'   [sample_agecomp()]. A mandatory input.
 #' @param calcomp_params A named list containing arguments for
-#'   \code{\link{sample_calcomp}}, for conditional age-at-length data.
+#'   [sample_calcomp()], for conditional age-at-length data.
 #' @param wtatage_params A named list containing arguments for
-#'   \code{\link{sample_wtatage}}, for empirical weight-at-age data.
+#'   [sample_wtatage()], for empirical weight-at-age data.
 #' @param mlacomp_params A named list containing arguments for
-#'   \code{\link{sample_mlacomp}}, for mean length-at-age data.
+#'   [sample_mlacomp()], for mean length-at-age data.
 #' @param retro_params A named list containing the arguments for
-#'   \code{\link{change_retro}}.
+#'   [change_retro()].
 #' @param estim_params A named list containing arguments for
-#'   \code{\link{change_e}}.
+#'   [change_e()].
 #' @param em_binning_params A named list containing arguments for
-#'   \code{\link{change_em_binning}}.
+#'   [change_em_binning()].
 #' @param data_params A named list containing arguments for changing data.
 #' @param weight_comps_params A named list containing arguments for
-#'   \code{\link[r4ss]{SS_tune_comps}}.
+#'   [r4ss::SS_tune_comps()].
 #' @param om_dir The directory with the operating model you want to copy and use
 #'   for the specified simulations.
 #' @param em_dir The directory with the estimation model you want to copy and
 #'   use for the specified simulations.
 #' @template user_recdevs
 #' @param user_recdevs_warn A logical argument allowing users to turn the
-#'   warning regarding biased recruitment deviations off when \code{user_recdevs}
+#'   warning regarding biased recruitment deviations off when `user_recdevs`
 #'   are specified.
 #' @param bias_adjust A logical argument specifying bias adjustment is conducted.
 #'   Bias adjustment helps assure that the estimated recruitment deviations,
 #'   which are assumed to be log-normally distributed,
-#'   are mean unbiased leading to mean-unbiased estimates of biomass [@methot2011].
+#'   are mean unbiased leading to mean-unbiased estimates of biomass
+#'   [Methot and Taylor, 2011](https://cdnsciencepub.com/doi/abs/10.1139/f2011-092).
 #'   Bias adjustment should always be performed when
 #'   using maximum likelihood estimation when running simulations for publication or management.
 #'   The argument allows users to turn bias adjustment off because
 #'   it involves running the EM multiple times with the hessian and
 #'   is not needed when initially exploring your simulation structure.
-#' @param hess_always If \code{TRUE} then the Hessian will always be calculated.
-#'   If \code{FALSE} then the Hessian will only be calculated for
+#' @param hess_always If `TRUE` then the Hessian will always be calculated.
+#'   If `FALSE` then the Hessian will only be calculated for
 #'   bias-adjustment runs thereby saving time.
 #' @param print_logfile Logical. Print a log file?
 #' @param sleep A time interval (in seconds) to pause on each iteration. Useful
 #'   if you want to reduce average CPU time -- perhaps because you're working on
 #'   a shared server.
-#' @param seed The seed value to pass to \code{\link{get_recdevs}} when
+#' @param seed The seed value to pass to [get_recdevs()] when
 #'   generating recruitment deviations. The generated recruitment deviations
-#'   depend on the iteration value, but also on the value of \code{seed}. A
-#'   given combination of iteration, number of years, and \code{seed} value will
+#'   depend on the iteration value, but also on the value of `seed`. A
+#'   given combination of iteration, number of years, and `seed` value will
 #'   result in the same recruitment deviations.
-#' @param ... Anything extra to pass to \code{\link{run_ss3model}}. For
-#' example, you may want to pass additional options to \code{SS3} through
-#' the argument \code{admb_options}. Anything that doesn't match a named
-#' argument in \code{\link{run_ss3model}} will be passed to the
-#' \code{\link{system}} call that runs \code{SS3}.
+#' @param ... Anything extra to pass to [run_ss3model()]. For
+#' example, you may want to pass additional options to Stock Synthesis through
+#' the argument `admb_options`. Anything that doesn't match a named
+#' argument in [run_ss3model()] will be passed to the
+#' [system()] call that runs Stock Synthesis.
 #' @author Sean Anderson with contributions from many others as listed in
 #'   the DESCRIPTION file.
-#' @import r4ss
-#' @importFrom stats setNames
 #' @return
 #' The output will appear in whatever your current \R working directory
 #' is. There will be folders named after your scenarios. They will
 #' look like this:
 #' \itemize{
-#' \item \code{scen-cod/1/om}
-#' \item \code{scen-cod/1/em}
-#' \item \code{scen-cod/2/om}
+#' \item `scen-cod/1/om`
+#' \item `scen-cod/1/em`
+#' \item `scen-cod/2/om`
 #' \item ...
 #' }
 #'
@@ -91,16 +90,16 @@
 #
 # \figure{filestructure.png}
 #'
-#' @seealso \code{\link{run_ss3sim}}
+#' @seealso [run_ss3sim()]
 #' @export
 #' @details
 #' This function is written to be flexible. You can specify the fishing
 #' mortality, survey index, length composition, age composition, and
 #' time-varying parameters in the function call as list objects (see the
 #' example below). For a generic higher-level function, see
-#' \code{\link{run_ss3sim}}.
+#' [run_ss3sim()].
 #'
-#' The steps carried out within \code{ss3sim_base}:
+#' The steps carried out within `ss3sim_base`:
 #'
 #' \figure{simsteps.png}
 #'
@@ -238,20 +237,20 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       }
 
       # Find number of years in OM to change recdevs and F
-      datfile.orig <- SS_readdat(file.path(sc, i, "om", "ss3.dat"),
+      datfile.orig <- r4ss::SS_readdat(file.path(sc, i, "om", "ss3.dat"),
                                  version = NULL, verbose = FALSE)
-      forfile.orig <- SS_readforecast(file.path(sc, i, "om", "forecast.ss"),
+      forfile.orig <- r4ss::SS_readforecast(file.path(sc, i, "om", "forecast.ss"),
         verbose = FALSE)
       xyears <- seq(datfile.orig[["styr"]],
         datfile.orig[["endyr"]] + forfile.orig$Nforecastyrs)
-      sc_i_recdevs <- setNames(sc_i_recdevs[seq_along(xyears)], xyears)
+      sc_i_recdevs <- stats::setNames(sc_i_recdevs[seq_along(xyears)], xyears)
       change_rec_devs(recdevs      = sc_i_recdevs,
                       ctl_file_in  = file.path(sc, i, "om", "om.ctl"),
                       ctl_file_out = file.path(sc, i, "om", "om.ctl"))
 
       ctlom <- r4ss::SS_readctl(file = file.path(sc,i, "om", "om.ctl"),
         use_datlist = TRUE, datlist = datfile.orig,
-        verbose = FALSE, echoall = FALSE)
+        verbose = FALSE)
       ctlom <- do.call(change_f, c(f_params, ctl_list = list(ctlom)))
 
       # Change the data structure in the OM to produce the expected
@@ -317,7 +316,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ## OM: change bins
       # todo: do this for mean size at age
     fixlist <- function(local) {
-      out <- setNames(
+      out <- stats::setNames(
         unlist(local, recursive = FALSE, use.names = FALSE),
           names(local))
       if(class(out) == "numeric") {
@@ -429,7 +428,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ## Read in the datfile once and manipulate as a list object, then
       ## write it back to file at the end, before running the EM.
       # todo: use expdata rather than reading in the file again
-      dat_list <- SS_readdat(file.path(sc, i, "em", "ss3.dat"),
+      dat_list <- r4ss::SS_readdat(file.path(sc, i, "em", "ss3.dat"),
                              version = NULL, verbose = FALSE)
 
       ## Sample catches
@@ -459,7 +458,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       ## Add error in the empirical weight-at-age comp data. Note that if
       ## arguments are passed to this function it's functionality is turned
-      ## on by setting the wtatage switch to 1. If it's off SS will just
+      ## on by setting the wtatage switch to 1. If it's off Stock Synthesis will just
       ## ignore the wtatage.dat file so no need to turn it "off" like the
       ## other data.
       #TODO: check below section, as wtatage implementation has changed from 3.24
@@ -499,7 +498,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
       ## Add error in the conditional age at length comp data. The
       ## cal data are independent of the marginal agecomp and length comp data
-      ## in the SS 3.30 implementation.New length comp data is created
+      ## in the Stock Synthesis 3.30 implementation.New length comp data is created
       ## especially for conditional age at length comp data.
       if(!is.null(calcomp_params$fleets)){
         dat_list <- do.call("sample_calcomp", c(
@@ -552,7 +551,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 # check q EM values are correct.
     ctlem <- r4ss::SS_readctl(file = file.path(sc,i, "em", "em.ctl"),
       use_datlist = TRUE, datlist = datfile.orig,
-      verbose = FALSE, echoall = FALSE)
+      verbose = FALSE)
     qtasks <- check_q(ctl_list = ctlem, Nfleets = datfile.orig$Nfleets,
       desiredfleets = index_params$fleets)
     ctl_list <- change_q(string_add = qtasks$add, string_remove = qtasks$remove,
@@ -562,10 +561,10 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ctl_file_out = NULL)
       ss_version <- get_ss_ver_dl(dat_list)
       newlists <- change_year(dat_list, ctl_list)
-      SS_writedat(datlist = newlists$dat_list,
+      r4ss::SS_writedat(datlist = newlists$dat_list,
         outfile = file.path(sc, i, "em", "ss3.dat"),
         version = ss_version, overwrite = TRUE, verbose = FALSE)
-      SS_writectl(ctllist = newlists$ctl_list,
+      r4ss::SS_writectl(ctllist = newlists$ctl_list,
         outfile = file.path(sc, i, "em", "em.ctl"),
         version = ss_version, overwrite = TRUE, verbose = FALSE)
       # Add dirichlet multinomial parameters if using

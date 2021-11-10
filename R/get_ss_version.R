@@ -1,7 +1,7 @@
-#' Get the ss version (either 3.24 or 3.30) from a \code{dat_list} list.
+#' Get the Stock Synthesis version (either 3.24 or 3.30) from a list object
 #'
-#' @description # Get the SS version from a list \code{dat_list} that was a
-#'   originally read in using \code{\link[r4ss]{SS_readdat}}.
+#' @description Get the Stock Synthesis version from a data list, `dat_list`,
+#' that was a originally read in using [r4ss::SS_readdat()].
 #' @template dat_list
 get_ss_ver_dl <- function(dat_list){
   version <- dat_list[["SSversion"]]
@@ -12,11 +12,13 @@ get_ss_ver_dl <- function(dat_list){
   version
 }
 
-#' Get the ss version (either 3.24 or 3.30) from an ss file
+#' Get the Stock Synthesis version (either 3.24 or 3.30) from a Stock Synthesis file
 #'
-#' @description # Get the SS version from the top line in an SS file.
-#' as done in \code{\link[r4ss]{SS_readdat}}.
-#' @param file Input SS3 control file, either a starter, control, or data SS file.
+#' @description Get the Stock Synthesis version.
+#' This information can be found on the top line in a Stock Synthesis file.
+#' See code in [r4ss::SS_readdat()] for an example.
+#' @param file Input Stock Synthesis control file, starter, or data file.
+#' @return A character value with the version number.
 get_ss_ver_file <- function(file){
   # look for 3.24 or 3.30 at the top of the chosen control file
   nl <- 0

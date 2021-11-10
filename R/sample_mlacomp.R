@@ -1,8 +1,8 @@
-#' [BETA VERSION] Sample mean length (size-)-at-age data and write to file for use by the EM.
+#' **BETA VERSION** Sample mean length (size-)-at-age data and write to file for use by the EM
 #'
 #' @details **This function is in beta and untested. Use with caution.**
-#' Take a \code{data.SS_new} file, read in by \pkg{r4ss} function
-#'   \code{\link[r4ss]{SS_readdat}} containing observed values, and
+#' Take a `data.SS_new` file, read in by \pkg{r4ss} function
+#'   [r4ss::SS_readdat()] containing observed values, and
 #'   sample from the observed ages to get realistic proportions for the number
 #'   of fish in each age bin, then use the mean size-at-age and CV for growth to
 #'   generate random samples of size, which are then averaged to get mean
@@ -18,16 +18,15 @@
 #'   the OM parameters for growth. These values are used to determine the
 #'   uncertainty about size for fish sampled in each age bin.
 #' @param mean_outfile A path to write length and age data for external
-#' estimation of parametric growth. If \code{NULL} no file will be written.
-#' This file is used by \code{change_e} to externally estimate growth
-#' parameters. Filename must contain "vbgf" to be used by \code{change_e}.
+#' estimation of parametric growth. If `NULL` no file will be written.
+#' This file is used by [change_e()] to externally estimate growth
+#' parameters. Filename must contain "vbgf" to be used by [change_e()].
 #' Also, if "remove" is included in the filename, the mean length at age data
-#' will be removed from the \code{.dat} file and not be available to the EM.
+#' will be removed from the `.dat` file and not be available to the EM.
 #' @param verbose Logical value whether or not diagnostic information from
 #'   \pkg{r4ss} functions should be printed to the screen. Default is FALSE.
 #' @template sampling-return
 #' @family sampling functions
-#' @importFrom r4ss SS_writedat SS_parlines
 #' @export
 #'
 sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
@@ -40,7 +39,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
     dat_list$MeanSize_at_Age_obs <- NULL
     dat_list$N_MeanSize_at_Age_obs <- 0
     if (!is.null(outfile))
-      SS_writedat(datlist = dat_list, outfile = outfile, overwrite = TRUE,
+      r4ss::SS_writedat(datlist = dat_list, outfile = outfile, overwrite = TRUE,
                   version = ss_version, verbose = verbose)
     return(invisible(dat_list))
   }
@@ -57,7 +56,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
   agebin_vector <- dat_list$agebin_vector
 
   ## Read in the control file
-  ctl <- SS_parlines(ctl_file_in, version = ss_version)
+  ctl <- r4ss::SS_parlines(ctl_file_in, version = ss_version)
     CV.growth <- ctl[ctl$Label == "CV_young_Fem_GP_1", "INIT"]
     CV.growth.old <- ctl[ctl$Label == "CV_old_Fem_GP_1", "INIT"]
     if (CV.growth != CV.growth.old) {
@@ -172,7 +171,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
         age.samples <- sapply(seq_along(age.means), function(x) sum(temp == x))
       } else {
         # in the case of overdispersed age comp data
-        age.samples <- rmultinom(n = 1, size = as.integer(age.Nsamp),
+        age.samples <- stats::rmultinom(n = 1, size = as.integer(age.Nsamp),
                                  prob = age.means)
       }
       if (any(is.na(age.samples))) {
@@ -182,7 +181,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
       # apply sampling across columns (ages) to get sample of lengths
       lengths.list <-
         lapply(seq_along(means.log), function(kk) {
-          exp(rnorm(n = age.samples[kk], mean = means.log[kk],
+          exp(stats::rnorm(n = age.samples[kk], mean = means.log[kk],
           sd = sds.log[kk]))
           })
 
@@ -207,15 +206,21 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
     }
   } # end sampling
   if (!is.null(mean_outfile)) {
-    write.csv(do.call("rbind", forexport), mean_outfile, row.names = FALSE)
+    utils::write.csv(do.call("rbind", forexport), mean_outfile, row.names = FALSE)
   }
   ## Combine new rows together into one data.frame
   mlacomp.new <- do.call(rbind, mlacomp.new.list)
   dat_list$MeanSize_at_Age_obs <- rbind(mlacomp.new, mwacomp)
   dat_list$N_MeanSize_at_Age_obs <- NROW(mlacomp.new)
   ## Write the modified file
-  if (!is.null(outfile)) SS_writedat(datlist = dat_list, outfile = outfile,
-                             version =   ss_version, overwrite = TRUE,
-                             verbose = verbose)
+  if (!is.null(outfile)) {
+    r4ss::SS_writedat(
+      datlist = dat_list,
+      outfile = outfile,
+      version =   ss_version,
+      overwrite = TRUE,
+      verbose = verbose
+    )
+  }
   return(invisible(dat_list))
 }

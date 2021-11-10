@@ -15,22 +15,22 @@ calculate_data_units(
 }
 \arguments{
 \item{index_params}{Named lists containing the arguments for
-\code{sample_index}.}
+\code{\link[=sample_index]{sample_index()}}.}
 
 \item{lcomp_params}{Named lists containing the arguments for
-\code{\link{sample_lcomp}}.}
+\code{\link[=sample_lcomp]{sample_lcomp()}}.}
 
 \item{agecomp_params}{Named lists containing the arguments for
-\code{\link{sample_agecomp}}.}
+\code{\link[=sample_agecomp]{sample_agecomp()}}.}
 
 \item{calcomp_params}{Named lists containing the arguments for
-\code{\link{sample_calcomp}}.}
+\code{\link[=sample_calcomp]{sample_calcomp()}}.}
 
 \item{mlacomp_params}{Named lists containing the arguments for
-\code{\link{sample_mlacomp}}.}
+\code{\link[=sample_mlacomp]{sample_mlacomp()}}.}
 
 \item{wtatage_params}{Named lists containing the arguments for
-\code{\link{sample_wtatage}}.}
+\code{\link[=sample_wtatage]{sample_wtatage()}}.}
 }
 \value{
 A list with the following three elements:

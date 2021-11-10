@@ -2,8 +2,7 @@
 % Please edit documentation in R/change_em_binning.r
 \name{change_em_binning}
 \alias{change_em_binning}
-\title{Change population and observed length composition bins in an SS estimation
-model}
+\title{Change population and observed length-composition bins}
 \usage{
 change_em_binning(
   dat_list,
@@ -33,29 +32,30 @@ of \code{NULL}, which leads to increased speed because writing the
 file takes time and computing resources.}
 
 \item{bin_vector}{A numeric vector of new length bins to substitute into the
-\code{ss3.dat} file.}
+\verb{*.dat} file.}
 
-\item{lbin_method}{A numeric value of either \code{NULL, 1, 2, 3} to change
-the lbin_method for the population bin. Only supports either \code{NULL, 1,
-  2} at the moment. \code{NULL} means to not rebin.}
+\item{lbin_method}{A numeric value of either \verb{NULL, 1, 2, 3} to change
+the lbin_method for the population bin.
+\code{NULL} means to not re-bin.}
 
-\item{pop_binwidth}{Population length bin width. Only necessary for
-\code{lbin_method=2}. Note that this value must be smaller than the bin
-width specified in length composition data \code{len_bins} or SS3 will
-fail (see notes in the SS3 manual).}
+\item{pop_binwidth}{Population length bin width.
+Only necessary for \code{lbin_method = 2}.
+Note that this value must be smaller than the bin width
+specified in length-composition data \code{len_bins} or
+Stock Synthesis will fail (see notes in the Stock Synthesis manual).}
 
-\item{pop_minimum_size}{Population minimum length bin value. 'Only
-necessary for \code{lbin_method=2}}
+\item{pop_minimum_size}{Population minimum length bin value.
+Only necessary for \code{lbin_method = 2}.}
 
-\item{pop_maximum_size}{Population maximum length bin value. Only
-necessary for \code{lbin_method=2}}
+\item{pop_maximum_size}{Population maximum length bin value.
+Only necessary for \code{lbin_method = 2}.}
 }
 \description{
-\code{change_em_binning} alters the bin structure for the population and
-length composition data in an SS estimation model. It is done by taking the
-original length composition info from the EM \code{ss3.dat} then changing
+\code{change_em_binning()} alters the bin structure for the population and
+length-composition data in a Stock Synthesis estimation model (EM).
+The original length-composition data from the EM \code{.dat} is changed
 according to the user's specification. If the data file also contains
-conditional age-at-length data then these data will be re-binned as well.
+conditional age-at-length data, then these data will be re-binned as well.
 }
 \examples{
 # Note that typically this function is used with estimation models in ss3sim,

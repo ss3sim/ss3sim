@@ -2,17 +2,17 @@
 % Please edit documentation in R/case-parsing.r
 \name{substr_r}
 \alias{substr_r}
-\title{Substring from right}
+\title{Use \code{\link[=substr]{substr()}} but from the right rather than the left}
 \usage{
 substr_r(x, n)
 }
 \arguments{
-\item{x}{A character object}
+\item{x}{A character object.}
 
-\item{n}{The number of characters from the right to extract}
+\item{n}{The number of characters from the right to left that you want to extract.}
 }
 \description{
-Substring from right
+Use \code{\link[=substr]{substr()}} but from the right rather than the left
 }
 \references{
 http://stackoverflow.com/questions/7963898/extracting-the-last-n-characters-from-a-string-in-r

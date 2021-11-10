@@ -1,49 +1,45 @@
-#' Verify and standardize SS3 input files
+#' Verify and standardize Stock Synthesis input files
 #'
-#' This function verifies the contents of operating model (\code{om}) and
-#'   estimation model (\code{em}) folders (i.e., it checks that the necessary SS
-#'   input files are available). If the contents are correct, the
-#' \code{.ctl} and \code{.dat} files are renamed to standardized names and the
-#' \code{starter.ss} file is updated to reflect these names. If the contents
-#'   are incorrect then a warning is issued and the simulation is aborted.
+#' Verify the contents of
+#' operating model (`OM`) and
+#' estimation model (`EM`) folders, i.e.,
+#' check that the necessary SS input files are available.
+#' If the contents are correct,
+#' the `.ctl` and `.dat` files are renamed to standardized names and
+#' the `starter.ss` file is updated to reflect these names.
+#' If the contents are incorrect,
+#' then a warning is issued and the simulation is aborted.
 #'
 #' @author Curry James Cunningham; modified by Sean Anderson
-#' @details This is a helper function to be used within the larger wrapper
-#'   simulation functions.
-#' @return Returns a version of the folder with sanitized files or an error if
-#'   some files are missing.
+#' @return Nothing is returned from this function. Instead,
+#' file are changed and saved to the disk.
 #
 #' @param model_dir Directory name for model. This folder should contain the
-#'   \code{.ctl}, \code{.dat}, files etc.
+#'   `.ctl`, `.dat`, files etc.
 #' @param type One of "om" or "em" for operating or estimating model.
 #' @export
-#'
-#' @importFrom r4ss SS_readstarter SS_writestarter
 #'
 #' @examples
 #' # Create a temporary folder for the output:
 #' temp_path <- file.path(tempdir(), "ss3sim-verify-example")
 #' dir.create(temp_path, showWarnings = FALSE)
 #'
-#' d <- system.file("extdata", package = "ss3sim")
+#' d <- system.file("extdata", "models", package = "ss3sim")
 #'
-#' om <- paste0(d, "/models/cod-om")
-#' em <- paste0(d, "/models/cod-em")
+#' om <- file.path(d, "cod-om")
+#' em <- file.path(d, "cod-em")
 #'
 #' file.copy(om, temp_path, recursive = TRUE)
 #' file.copy(em, temp_path, recursive = TRUE)
 #'
 #' # Verify the correct files exist and change file names:
-#' verify_input(model_dir = paste0(temp_path, "/cod-om"), type = "om")
-#' verify_input(model_dir = paste0(temp_path, "/cod-em"), type = "em")
+#' verify_input(model_dir = file.path(temp_path, "cod-om"), type = "om")
+#' verify_input(model_dir = file.path(temp_path, "cod-em"), type = "em")
 #' unlink(temp_path, recursive = TRUE)
 
 verify_input <- function(model_dir, type = c("om", "em")) {
 
-  if (type != "om" & type != "em") {
-    stop(paste("Misspecification of \"type\", read as:", type,
-        "-should be either \"om\" or \"em\""))
-  }
+  type <- match.arg(type)
 
   type <- type[1]
   ctl_name <- paste0(type, ".ctl")
@@ -103,12 +99,12 @@ verify_input <- function(model_dir, type = c("om", "em")) {
         paste0(model_dir, "/ss3.dat"))
     }
     # Alter the starter.ss file
-    starter.ss <- SS_readstarter(file = paste0(model_dir, "/starter.ss"),
+    starter.ss <- r4ss::SS_readstarter(file = paste0(model_dir, "/starter.ss"),
       verbose = FALSE)
     starter.ss$datfile <- "ss3.dat"
     starter.ss$ctlfile <- ctl_name
     # Write new starter.ss
-    SS_writestarter(mylist = starter.ss, dir = model_dir,
+    r4ss::SS_writestarter(mylist = starter.ss, dir = model_dir,
       file = "starter.ss", overwrite = TRUE, verbose = FALSE, warn = FALSE)
     # Alter the .ctl file
     ctl <- readLines(paste0(model_dir, "/", ctl_name))

@@ -97,7 +97,7 @@ value will be apportioned among the conditional age at length bins as the
 \code{Nsamp_ages} is and therefore can be a fractional value.}
 
 \item{lcomps_sampled}{Have marginal length comps already been sampled and are
-included in \code{dat_list[["lencomp"]]}? If FALSE, expected values are in
+included in \code{dat_list[["lencomp"]]}? If \code{FALSE}, expected values are in
 present in \code{datlist[["lencomp"]]}.}
 
 \item{...}{Any argument you want to be a column in the new data frame of composition

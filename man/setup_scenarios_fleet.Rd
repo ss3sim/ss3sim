@@ -43,7 +43,7 @@ up and down I think within a group to make it work.
 \item implement add_args before expand fleet such that the new
 arg would be expanded for all fleets but I only have to specify
 the default one time
-\item fix .data[\link{""}] to pass CRAN
+\item fix \code{.data[[""]]} to pass CRAN
 x <- enquo(x)
 y <- enquo(y)
 ggplot(data) + geom_point(aes(!!x, !!y))

@@ -4,8 +4,8 @@
 #'
 #' @inheritParams plot_ss3sim
 #' @author Cole Monnahan
-#' @return A formula which can be used in \code{facet_grid} or \code{NULL}
-#' if all arguments are \code{NULL}.
+#' @return A formula which can be used in [ggplot2::facet_grid()] or `NULL`
+#' if all arguments are `NULL`.
 #'
 facet_form <- function(horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL) {
     h <- !is.null(horiz)
@@ -29,18 +29,18 @@ facet_form <- function(horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL) {
     }
     ## Build the formula, depending on nested cases
     if(!h & !h2) {
-        if(v & !v2) form <- as.formula(paste(". ~", vert))
-        else form <- as.formula(paste(". ~", vert, "+", vert2))
+        if(v & !v2) form <- stats::as.formula(paste(". ~", vert))
+        else form <- stats::as.formula(paste(". ~", vert, "+", vert2))
     }
     else if(h & !h2) {
-        if(!v & !v2) form <- as.formula(paste(horiz,"~ ."))
-        else if(v & !v2) form <- as.formula(paste(horiz,"~", vert))
-        else form <- as.formula(paste(horiz,"~", vert, "+", vert2))
+        if(!v & !v2) form <- stats::as.formula(paste(horiz,"~ ."))
+        else if(v & !v2) form <- stats::as.formula(paste(horiz,"~", vert))
+        else form <- stats::as.formula(paste(horiz,"~", vert, "+", vert2))
     }
     else if(h & h2){
-        if(!v & !v2) form <- as.formula(paste(horiz,"+", horiz2, "~ ."))
-        else if(v & !v2) form <- as.formula(paste(horiz, "+", horiz2, "~", vert))
-        else form <- as.formula(paste(horiz,"+", horiz2, "~", vert, "+", vert2))
+        if(!v & !v2) form <- stats::as.formula(paste(horiz,"+", horiz2, "~ ."))
+        else if(v & !v2) form <- stats::as.formula(paste(horiz, "+", horiz2, "~", vert))
+        else form <- stats::as.formula(paste(horiz,"+", horiz2, "~", vert, "+", vert2))
     }
     else stop("Incompatible horiz and vert arguments")
     return(form)

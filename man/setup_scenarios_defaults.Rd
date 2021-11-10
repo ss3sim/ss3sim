@@ -8,7 +8,7 @@ setup_scenarios_defaults(nscenarios = 1)
 }
 \arguments{
 \item{nscenarios}{The number of rows you want returned in the data frame.
-This argument removes the need for users to call \link[base:cbind]{base::rbind} repeatedly
+This argument removes the need for users to call \code{\link[base:cbind]{base::rbind()}} repeatedly
 on the output when you want to have more than one scenario.
 All rows will be identical with the default settings.
 The default is a single row.}

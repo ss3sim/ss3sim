@@ -1,25 +1,25 @@
 #' Plot results of a simulation as a scatterplot
 #'
-#' Generate a scatterplot using \code{\link[ggplot2]{ggplot}} to visualize
+#' Generate a scatterplot using [ggplot2::ggplot] to visualize
 #' the relationship between two continuous variables.
 #' 
 #' @details
 #' Points are placed on the figure using the width setting in
-#' \code{\link[ggplot2]{position_jitter}} that defaults to 40% resolution of
+#' [ggplot2::position_jitter()] that defaults to 40% resolution of
 #' the data, meaning that the jitter values will occupy 80% of the implied bins.
 #' The previous information was found in the documentation for
-#' \code{\link[ggplot2]{position_jitter}}.
+#' [ggplot2::position_jitter()].
 #'
-#' Values of \code{NA} are removed prior to plotting such that the typical
-#' error message from \code{ggplot} is not printed to the screen.
+#' Values of `NA` are removed prior to plotting such that the typical
+#' error message from \pkg{ggplot2} is not printed to the screen.
 #'
 #' @template plot-functions
 #' @template plot-functions-color
 #' @param jitter.height,jitter.width Parameters for
-#' \code{\link[ggplot2]{position_jitter}()} that specify the vertical and horizontal
+#' [ggplot2::position_jitter()] that specify the vertical and horizontal
 #' spread added to points. Where, added values are both positive and negative,
 #' so the total spread is twice the value specified here.
-#' If \code{NULL}, the spread will be 40% of the resolution of the data;
+#' If `NULL`, the spread will be 40% of the resolution of the data;
 #' this means the jitter values will occupy 80% of the implied bins.
 #' Categorical data is aligned on the integers,
 #' so a width or height of 0.5 will spread the data so it's not possible

@@ -2,27 +2,26 @@
 #'
 #' This function replaces the recruitment deviations in the
 #' control file of a Stock Synthesis model with those specified in the argument
-#' \code{recdevs}. The new control file is then written to the disk if
-#' \code{ctl_file_out} is specified.
-#' It is imperative that the path provided in \code{ctl_file_in}
-#' be to a \code{ss_new} file so \code{change_rec_devs} can
+#' `recdevs`. The new control file is then written to the disk if
+#' `ctl_file_out` is specified.
+#' It is imperative that the path provided in `ctl_file_in`
+#' be to a `ss_new` file so `change_rec_devs` can
 #' properly determine where to place the recruitment deviations
 #' in the control file.
 #'
 #' @param recdevs A vector of recruitment deviations to be entered into
-#' the SS control file. The vector must be the same length as the vector
-#' of recruitment deviations that are commented out in the \code{ss_new}
+#' the Stock Synthesis control file. The vector must be the same length as the vector
+#' of recruitment deviations that are commented out in the `ss_new`
 #' control file. This vector can be found by searching for
-#' \code{# all recruitment deviations} within the file.
+#' `# all recruitment deviations` within the file.
 #' If a single value is provided instead of a vector, the value
 #' will be repeated for every recruitment deviation in the model.
 #' Alternatively, users can supply a named vector with each name being a year
 #' of the model. Missing years will be filled in with values of zero.
 #' @template ctl_file_in
 #' @template ctl_file_out
-#' @return A modified SS control file.
+#' @return A modified Stock Synthesis control file.
 #' @author Kelli Faye Johnson
-#' @importFrom utils type.convert
 #' @export
 #'
 #' @examples
@@ -31,7 +30,7 @@
 #'   ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
 #'   ctl_file_out = file.path(tempdir(), "control_recdevs.ss"))
 #' # Change the recruitment deviations in years 2:11
-#' change_rec_devs(recdevs = setNames(rlnorm(10), 2:11),
+#' change_rec_devs(recdevs = stats::setNames(rlnorm(10), 2:11),
 #'   ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
 #'   ctl_file_out = file.path(tempdir(), "control_recdevsInitial.ss"))
 #' sapply(dir(tempdir(), pattern = "control_.+ss", full.names = TRUE), unlink)
@@ -41,11 +40,11 @@ change_rec_devs <- function(recdevs,
 
   ctl <- readLines(ctl_file_in)
   default_err_msg <- paste0(" Please make sure you are using a control file\n",
-    "that was run through SS to get a control.ss_new\n",
-    "so that it has the default SS comments that ",
+    "that was run through Stock Synthesis to get a control.ss_new\n",
+    "so that it has the default Stock Synthesis comments that ",
     "ss3sim expects.")
 
-  vecnames <- type.convert(names(recdevs), as.is = TRUE)
+  vecnames <- utils::type.convert(names(recdevs), as.is = TRUE)
   if (!all(is.numeric(vecnames))) {
     devs <- grep("#\\s*[0-9]+[RFE]", ctl, value = TRUE)
     years <- unlist(strsplit(

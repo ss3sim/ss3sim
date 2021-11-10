@@ -8,10 +8,10 @@ change_rec_devs(recdevs, ctl_file_in, ctl_file_out = "control_recruitment.ss")
 }
 \arguments{
 \item{recdevs}{A vector of recruitment deviations to be entered into
-the SS control file. The vector must be the same length as the vector
+the Stock Synthesis control file. The vector must be the same length as the vector
 of recruitment deviations that are commented out in the \code{ss_new}
 control file. This vector can be found by searching for
-\code{# all recruitment deviations} within the file.
+\verb{# all recruitment deviations} within the file.
 If a single value is provided instead of a vector, the value
 will be repeated for every recruitment deviation in the model.
 Alternatively, users can supply a named vector with each name being a year
@@ -22,7 +22,7 @@ of the model. Missing years will be filled in with values of zero.}
 \item{ctl_file_out}{A string providing the path to the output SS control file. If the value is \code{NULL}, the file will not be written to the disk.}
 }
 \value{
-A modified SS control file.
+A modified Stock Synthesis control file.
 }
 \description{
 This function replaces the recruitment deviations in the
@@ -40,7 +40,7 @@ change_rec_devs(recdevs = rlnorm(101),
   ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
   ctl_file_out = file.path(tempdir(), "control_recdevs.ss"))
 # Change the recruitment deviations in years 2:11
-change_rec_devs(recdevs = setNames(rlnorm(10), 2:11),
+change_rec_devs(recdevs = stats::setNames(rlnorm(10), 2:11),
   ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
   ctl_file_out = file.path(tempdir(), "control_recdevsInitial.ss"))
 sapply(dir(tempdir(), pattern = "control_.+ss", full.names = TRUE), unlink)

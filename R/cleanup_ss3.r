@@ -1,4 +1,4 @@
-#' Clean up after an SS3 run
+#' Clean up after a Stock Synthesis run
 #'
 #' Removes all of the unwanted output files from the specified
 #' directory.

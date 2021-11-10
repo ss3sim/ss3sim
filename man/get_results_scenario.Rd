@@ -2,7 +2,7 @@
 % Please edit documentation in R/get-results.r
 \name{get_results_scenario}
 \alias{get_results_scenario}
-\title{Extract SS3 simulation results for one scenario.}
+\title{Extract Stock Synthesis simulation results for one scenario}
 \usage{
 get_results_scenario(scenario, directory = getwd(), overwrite_files = FALSE)
 }
@@ -18,17 +18,21 @@ used if iterations were added since the last time it was called, or any
 changes were made to this function.}
 }
 \description{
-Function that extracts results from all iterations inside a supplied
-scenario folder. The function writes 3 .csv files to the scenario
-folder: (1) scalar metrics with one value per iteration (e.g. \eqn{R_0},
-\eqn{h}), (2) a timeseries data ('ts') which contains multiple values per
-iteration (e.g.  \eqn{SSB_y} for a range of years \eqn{y}), and (3) \link[=currently
-disabled and not tested]{currently disabled and not tested} residuals on the log scale from the surveys
-across all iterations. The function \code{get_results_all} loops through
-these .csv files and combines them together into a single "final"
-dataframe.
+Extract results from all iterations inside a supplied scenario folder.
+The function writes the following .csv files to the scenario folder
+\enumerate{
+\item scalar metrics with one value per iteration
+(e.g. \eqn{R_0}, \eqn{h}),
+\item a timeseries data ('ts') which contains multiple values per iteration
+(e.g.  \eqn{SSB_y} for a range of years \eqn{y}), and
+\item residuals on the log scale from the surveys across all iterations;
+this functionality is currently disabled and not tested.
+}
 }
 \seealso{
+\code{\link[=get_results_all]{get_results_all()}} loops through these .csv files and
+combines them together into a single "final" dataframe.
+
 Other get-results: 
 \code{\link{get_results_all}()},
 \code{\link{get_results_derived}()},

@@ -1,8 +1,8 @@
 #' Plot the cumulative mean for a parameter
 #'
-#' @param data A valid data frame containing scalar or timeseries values
+#' @param data A valid data frame containing scalar or time series values
 #'  from a \pkg{ss3sim} simulation. That data are generated from
-#'  \code{\link{get_results_all}}.
+#'  [get_results_all()].
 #' @param var The column name of the parameter in data of which to plot
 #'  cumulative mean. A string.
 #' @param order_var A column to order the data before calculating the cumulative

@@ -25,7 +25,7 @@
 #' * implement add_args before expand fleet such that the new
 #' arg would be expanded for all fleets but I only have to specify
 #' the default one time
-#' * fix .data[[""]] to pass CRAN
+#' * fix `.data[[""]]` to pass CRAN
 #' x <- enquo(x)
 #' y <- enquo(y)
 #' ggplot(data) + geom_point(aes(!!x, !!y))
@@ -86,7 +86,7 @@ setup_scenarios_fleet <- function(data) {
         tibble::tibble(
           label = paste(beginlabel[1], "fleets", sep = "."),
           arg = "fleets",
-          value = list(type.convert(as.is = TRUE,
+          value = list(utils::type.convert(as.is = TRUE,
             data %>% tidyr::drop_na(.data[["fleet"]]) %>%
             dplyr::distinct(.data[["fleet"]]) %>% dplyr::pull(.data[["fleet"]])))
         )
@@ -103,7 +103,7 @@ setup_scenarios_fleet <- function(data) {
 #' This data frame is used by default if you do not supply anything
 #' to `df`.
 #' @param returntype The class of object that you want to return.
-#' ss3sim was a big fan of lists of lists until the [tidyverse] packages
+#' ss3sim was a big fan of lists of lists until the `tidyverse` packages
 #' were included. Now, data frames of list columns are preferred.
 #' Eventually, `list` will be downgraded from the default and data frames
 #' will be the only option as a return.
@@ -261,7 +261,7 @@ setup_scenarios_lookup <- function() {
 #' without changing the returned value.
 #'
 #' @param nscenarios The number of rows you want returned in the data frame.
-#' This argument removes the need for users to call [base::rbind] repeatedly
+#' This argument removes the need for users to call [base::rbind()] repeatedly
 #' on the output when you want to have more than one scenario.
 #' All rows will be identical with the default settings.
 #' The default is a single row.

@@ -1,32 +1,37 @@
-#' Substring from right
+#' Use [substr()] but from the right rather than the left
 #'
 #' @references
 #' http://stackoverflow.com/questions/7963898/extracting-the-last-n-characters-from-a-string-in-r
-#' @param x A character object
-#' @param n The number of characters from the right to extract
+#' @param x A character object.
+#' @param n The number of characters from the right to left that you want to extract.
 substr_r <- function(x, n){
   substr(x, nchar(x)-n+1, nchar(x))
 }
 
 
-#' Function to check and standardize list components of sampling functions
+#' Check and standardize list components of sampling functions
 #'
+#' @param fleets Fleet numbers as a vector.
+#' @param years Number of years as a list.
+#'   The number of list components should be one or the same length as fleets.
+#'   Within the list components
+#'   should be a vector of years to correspond with each fleet.
+#' @param other_input Some other input to interpret.
+#'   The number of list components should be one or the same length as fleets.
+#'   Within the list components
+#'   should be a vector of length 1 the same length as the vectors within years.
+#' @param return_val If `other_input`, return the manipulated other_input value;
+#'   if `years`, return the manipulated year input.
+#'   If "both" return both as list components.
+#' @param other_input_name Only necessary if `both` is used as the return value.
 #'
-#' @param fleets Fleet numbers as a vector
-#' @param years Number of years as a list. The number of list components should
-#'  be one or the same length as fleets. Within the list components should be
-#'  a vector of years to correspond with each fleet.
-#' @param other_input Some other input to interpret. The number of list
-#'  components should be one or the same length as fleets. Within the list
-#'  components should be a vector of length 1 the same length as the vectors
-#'  within years.
-#' @param return_val If "other_input", return the manipulated other_input value;
-#'  if "years", return the manipulated year input. If "both" return both as list
-#'  components
-#' @param other_input_name Only necessary if "both" is used as the return
-#'   value
-#'
-standardize_sampling_args <- function(fleets, years, other_input, return_val = "other_input", other_input_name = "other_input") {
+standardize_sampling_args <- function(
+  fleets,
+  years,
+  other_input,
+  return_val = "other_input",
+  other_input_name = "other_input"
+) {
   # function input checks
   if(!return_val %in% c("other_input", "years","both")) {
     stop("The parameter return_val is ", return_val, ", which is not a valid ",

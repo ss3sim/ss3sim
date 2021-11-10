@@ -11,16 +11,17 @@ check_forecast(for_list)
 \code{\link[r4ss]{SS_readforecast}} in the \pkg{r4ss} package.}
 }
 \value{
-A list object as returned by \code{\link[r4ss]{SS_readforecast}}
+A an augmented list object, as returned by \code{\link[r4ss:SS_readforecast]{r4ss::SS_readforecast()}},
+is invisibly returned.
 }
 \description{
-Ensure that the \code{forecast.ss} file is configured for use
-in ss3sim.
+Ensure that the \code{forecast.ss} file is configured for use in ss3sim.
+}
+\details{
 \itemize{
-\item fish at F_{MSY}
+\item fish at \eqn{F_{MSY}}
 \item use relative benchmark years (i.e., \code{Bmark_years})
-\item use relative years for fishing specifications
-(i.e., \code{Fcast_years})
+\item use relative years for fishing specifications, i.e., \code{Fcast_years}
 }
 }
 \author{

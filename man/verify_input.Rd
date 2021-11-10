@@ -2,7 +2,7 @@
 % Please edit documentation in R/verify_input.r
 \name{verify_input}
 \alias{verify_input}
-\title{Verify and standardize SS3 input files}
+\title{Verify and standardize Stock Synthesis input files}
 \usage{
 verify_input(model_dir, type = c("om", "em"))
 }
@@ -13,37 +13,36 @@ verify_input(model_dir, type = c("om", "em"))
 \item{type}{One of "om" or "em" for operating or estimating model.}
 }
 \value{
-Returns a version of the folder with sanitized files or an error if
-some files are missing.
+Nothing is returned from this function. Instead,
+file are changed and saved to the disk.
 }
 \description{
-This function verifies the contents of operating model (\code{om}) and
-estimation model (\code{em}) folders (i.e., it checks that the necessary SS
-input files are available). If the contents are correct, the
-\code{.ctl} and \code{.dat} files are renamed to standardized names and the
-\code{starter.ss} file is updated to reflect these names. If the contents
-are incorrect then a warning is issued and the simulation is aborted.
-}
-\details{
-This is a helper function to be used within the larger wrapper
-simulation functions.
+Verify the contents of
+operating model (\code{OM}) and
+estimation model (\code{EM}) folders, i.e.,
+check that the necessary SS input files are available.
+If the contents are correct,
+the \code{.ctl} and \code{.dat} files are renamed to standardized names and
+the \code{starter.ss} file is updated to reflect these names.
+If the contents are incorrect,
+then a warning is issued and the simulation is aborted.
 }
 \examples{
 # Create a temporary folder for the output:
 temp_path <- file.path(tempdir(), "ss3sim-verify-example")
 dir.create(temp_path, showWarnings = FALSE)
 
-d <- system.file("extdata", package = "ss3sim")
+d <- system.file("extdata", "models", package = "ss3sim")
 
-om <- paste0(d, "/models/cod-om")
-em <- paste0(d, "/models/cod-em")
+om <- file.path(d, "cod-om")
+em <- file.path(d, "cod-em")
 
 file.copy(om, temp_path, recursive = TRUE)
 file.copy(em, temp_path, recursive = TRUE)
 
 # Verify the correct files exist and change file names:
-verify_input(model_dir = paste0(temp_path, "/cod-om"), type = "om")
-verify_input(model_dir = paste0(temp_path, "/cod-em"), type = "em")
+verify_input(model_dir = file.path(temp_path, "cod-om"), type = "om")
+verify_input(model_dir = file.path(temp_path, "cod-em"), type = "em")
 unlink(temp_path, recursive = TRUE)
 }
 \author{

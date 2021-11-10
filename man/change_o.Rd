@@ -2,7 +2,7 @@
 % Please edit documentation in R/change_o.R
 \name{change_o}
 \alias{change_o}
-\title{Methods to include parameters in an SS3operating model}
+\title{Methods to include parameters in a Stock Synthesis operating model}
 \usage{
 change_o(
   change_o_list,
@@ -42,7 +42,7 @@ The function creates modified versions of the  \code{.ctl} files. The
 function also returns \code{change_o_list} invisibly.
 }
 \description{
-\code{change_o} takes an SS3 \code{.ctl}file
+\code{change_o} takes a Stock Synthesis \code{.ctl} file
 and implements parameter value changes that are NOT time varying.
 \code{change_o} is specifically set up to work with an operating model
 \code{.ctl} file.
@@ -57,7 +57,7 @@ Parameter names must be unique and match the full parameter name in the
 \code{.ctl} file.
 }
 
-\section{Passing arguments to \code{change_o} through \code{\link{run_ss3sim}}}{
+\section{Passing arguments to \code{change_o()} through \code{\link[=run_ss3sim]{run_ss3sim()}}}{
 
 (1) add a column called \code{co.par_name} to the \code{simdf} that specifies which parameters
 you want to change in the OM, each element of this vector needs to be

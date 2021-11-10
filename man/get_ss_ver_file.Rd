@@ -2,17 +2,18 @@
 % Please edit documentation in R/get_ss_version.R
 \name{get_ss_ver_file}
 \alias{get_ss_ver_file}
-\title{Get the ss version (either 3.24 or 3.30) from an ss file}
+\title{Get the Stock Synthesis version (either 3.24 or 3.30) from a Stock Synthesis file}
 \usage{
 get_ss_ver_file(file)
 }
 \arguments{
-\item{file}{Input SS3 control file, either a starter, control, or data SS file.}
+\item{file}{Input Stock Synthesis control file, starter, or data file.}
+}
+\value{
+A character value with the version number.
 }
 \description{
-Get the ss version (either 3.24 or 3.30) from an ss file
+Get the Stock Synthesis version.
+This information can be found on the top line in a Stock Synthesis file.
+See code in \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}} for an example.
 }
-\section{Get the SS version from the top line in an SS file.}{
-as done in \code{\link[r4ss]{SS_readdat}}.
-}
-

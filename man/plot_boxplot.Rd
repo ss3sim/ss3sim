@@ -57,7 +57,7 @@ be used to fill the boxplots. The default value of \code{NA} leads to
 unfilled boxplots.}
 }
 \description{
-Generate boxplots using \code{\link[ggplot2]{ggplot}} to visualize
+Generate boxplots using \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} to visualize
 outliers and central tendencies.
 }
 \details{
@@ -66,10 +66,10 @@ summarize the data. The lower and upper hinges are the first and third
 quantiles (i.e., 25th and 75th percentiles). The upper and lower
 whiskers are 1.5*inner-quartile range, i.e., the distance between the first
 and third quartiles. Outliers are those points that lie beyond the whiskers.
-These explanations are detailed in \code{\link[ggplot2]{geom_boxplot}}.
+These explanations are detailed in \code{\link[ggplot2:geom_boxplot]{ggplot2::geom_boxplot()}}.
 
 Values of \code{NA} are removed prior to plotting such that the typical
-error message from \code{ggplot} is not printed to the screen.
+error message from \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} is not printed to the screen.
 
 The \pkg{ss3sim} plotting functions are simply
 wrappers for \pkg{ggplot2} code, specific to the output from

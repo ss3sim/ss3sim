@@ -2,13 +2,13 @@
 % Please edit documentation in R/get_model_folder.r
 \name{get_model_folder}
 \alias{get_model_folder}
-\title{Get the folder location of an included SS3 model configuration}
+\title{Get the folder location of an included Stock Synthesis model configuration}
 \usage{
 get_model_folder(folder_name)
 }
 \arguments{
-\item{folder_name}{The model folder name. One of \code{"cod-om", "cod-em",
-"fla-om", "fla-em", "sar-om", "sar-em"} representing cod, flatfish, and
+\item{folder_name}{The model folder name. One of \code{"cod-om"}, \code{"cod-em"},
+\code{"fla-om"}, \code{"fla-em"}, \code{"sar-om"}, \code{"sar-em"} representing cod, flatfish, and
 sardine-like model configurations and operating (om) and estimating model
 (em) varieties. See the \pkg{ss3sim} paper or vignette for further details.}
 }

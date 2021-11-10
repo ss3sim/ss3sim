@@ -2,13 +2,13 @@
 % Please edit documentation in R/change_lcomp_constant.R
 \name{change_lcomp_constant}
 \alias{change_lcomp_constant}
-\title{Set the robustification constant for length composition data.}
+\title{Set the robustification constant for length-composition data}
 \usage{
 change_lcomp_constant(lcomp_constant, dat_list, outfile = NULL)
 }
 \arguments{
 \item{lcomp_constant}{The new value to be used. Must be a numeric value, as
-a proportion. For example 0.1 means 10 percent. See the SS3 manual for
+a proportion. For example 0.1 means 10 percent. See the Stock Synthesis manual for
 further information. A NULL value indicates no action resulting in using
 the current value, and a value of 0 will throw an error since that leads to
 an error when zeroes exist in the data. Instead use a very small value like
@@ -31,15 +31,14 @@ of \code{NULL}, which leads to increased speed because writing the
 file takes time and computing resources.}
 }
 \value{
-A modified SS \code{.dat} file, and that file returned invisibly
+A modified Stock Synthesis \code{.dat} file, and that file returned invisibly
 (for testing) as a vector of character lines.
 }
 \description{
-This function replaces the robustification value for length composition data
-in a \code{.dat} file that was read in using \code{\link[r4ss]{SS_readdat}}
-with those specified in
-\code{lcomp_constant}. It then writes a new file with name \code{outfile}
-into the working directory.
+This function replaces the robustification value for length-composition data
+in a \code{.dat} file that was read in using \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}}
+with those specified in \code{lcomp_constant}.
+It then writes a new file with name \code{outfile} into the working directory.
 }
 \details{
 The robustification constant is added to both the observed and

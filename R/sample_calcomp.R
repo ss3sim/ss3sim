@@ -35,7 +35,7 @@
 #' please contact the developers if you are interested in helping facilitate this.
 #'
 #' Note that the overall total sample size for all CAAL bins is specified by
-#' the user for the given fleet and year in \code{Nsamp_ages}.
+#' the user for the given fleet and year in `Nsamp_ages`.
 #' These sample sizes and the expected values of age proportions
 #' (conditional on length) are used to sample for realistic age proportions.
 #' If all fish are aged,
@@ -96,18 +96,18 @@
 #' @param Nsamp_lengths A numeric list of the same length as fleets. Either
 #'  single values or vectors of the same length as the number of years can be
 #'  passed through. Single values are repeated for all years. If no fleet
-#'  collected samples, specify \code{Nsamp_lengths = NULL}. Specifically, for
-#'  \code{sample_calcomp}, \code{Nsamp_lengths} denotes the total number of
+#'  collected samples, specify `Nsamp_lengths = NULL`. Specifically, for
+#'  `sample_calcomp`, `Nsamp_lengths` denotes the total number of
 #'  length samples for a given year and fleet across all length bins that can be
 #'  used to then sample the conditional age at length samples.
-#'  \code{Nsamp_lengths} must be greater than or equal to \code{Nsamp_ages}.
+#'  `Nsamp_lengths` must be greater than or equal to `Nsamp_ages`.
 #' @param Nsamp_ages A numeric list of the same length as fleets. Either single
 #'  values or vectors of the same length as the number of years can be passed
 #'  through. Single values are repeated for all years. If no fleet collected
-#'  samples, specify \code{Nsamp_ages = NULL}. Specifically, for
-#'  \code{sample_calcomp}, \code{Nsamp_ages} denotes the total number of
+#'  samples, specify `Nsamp_ages = NULL`. Specifically, for
+#'  `sample_calcomp`, `Nsamp_ages` denotes the total number of
 #'  conditional age at length samples for a given year and fleet across all
-#'  length bins. \code{Nsamp_ages} must be less than \code{Nsamp_lengths}.
+#'  length bins. `Nsamp_ages` must be less than `Nsamp_lengths`.
 #' @param method The method used to sample ages from the lengths. Options are
 #'   "simple_random" and "length_stratified". In "simple_random" (the default
 #'   option), the fish aged are randomly sampled from the age bins, so the number
@@ -118,30 +118,29 @@
 #'  ESS is not used to generate the simulated data but can be used as an input
 #'  sample size in subsequent models that estimate population parameters or
 #'  status. The default, NULL, leads to the true (internally calculated)
-#'  effective sample size being used, which is \code{Nsamp_lengths} for the
-#'  multinomial case. \code{ESS_lengths} should be a numeric list of the same
+#'  effective sample size being used, which is `Nsamp_lengths` for the
+#'  multinomial case. `ESS_lengths` should be a numeric list of the same
 #'  length as fleets. Either single values or vectors of the same length as the
 #'  number of years can be passed through. Single values are repeated for all
 #'  years. Note that the dimensions of ESS_lengths must be compatible with the
-#'  dimensions of \code{Nsample_lengths}.
+#'  dimensions of `Nsample_lengths`.
 #' @param ESS_ages The final effective sample size (ESS) associated with the
 #'  simulated conditional age at length data. The ESS is not used to generate
 #'  the simulated data but can be used as an input sample size in subsequent
 #'  models that estimate population parameters or status. The default, NULL,
 #'  leads to the true (internally calculated) effective sample size being used,
-#'  which is Nsamp_ages for the multinomial case. \code{ESS_ages} should be
+#'  which is Nsamp_ages for the multinomial case. `ESS_ages` should be
 #'  a numeric list of the same length as fleets. Either single values or vectors
 #'  of the same length as the number of years can be passed through. Single
 #'  values are repeated for all years. Note that the dimensions of ESS_lengths
-#'  must be compatible with the dimensions of \code{Nsample_ages}. The input
+#'  must be compatible with the dimensions of `Nsample_ages`. The input
 #'  value will be apportioned among the conditional age at length bins as the
-#'  \code{Nsamp_ages} is and therefore can be a fractional value.
+#'  `Nsamp_ages` is and therefore can be a fractional value.
 #' @param lcomps_sampled Have marginal length comps already been sampled and are
-#'  included in \code{dat_list[["lencomp"]]}? If FALSE, expected values are in
-#'  present in \code{datlist[["lencomp"]]}.
+#'  included in `dat_list[["lencomp"]]`? If `FALSE`, expected values are in
+#'  present in `datlist[["lencomp"]]`.
 #' @template sampledots
 #' @template sampling-return
-#' @importFrom magrittr %>%
 #' @family sampling functions
 #' @export
 
@@ -163,7 +162,7 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
     if(is.null(fleets)){
       newfile$agecomp <- agecomp.age # only leave in maraginal age comps
       if(!is.null(outfile)){
-        SS_writedat(datlist = newfile, outfile = outfile, version = ss_version,
+        r4ss::SS_writedat(datlist = newfile, outfile = outfile, version = ss_version,
                     overwrite = TRUE, verbose=FALSE)
       }
       return(invisible(newfile))
@@ -348,7 +347,7 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
           MoreArgs = list(samples = temp),
           SIMPLIFY = FALSE))
       } else {
-        Nsamp.ages.per.lbin <- rmultinom(n=1,
+        Nsamp.ages.per.lbin <- stats::rmultinom(n=1,
                                          size=tmp_nsamp_ages,
                                          prob=prob.len)
       }
@@ -365,7 +364,7 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
         N.temp <- newcomp$Nsamp[ll]
         if(N.temp>0){
           cal.temp <-
-            rmultinom(n=1,
+            stats::rmultinom(n=1,
                       size=Nsamp.ages.per.lbin[ll],
                       prob=as.numeric(newcomp[ll,-(1:9)]))
         } else {

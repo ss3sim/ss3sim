@@ -22,22 +22,21 @@
 #' @author Cole Monnahan, Allan Hicks, Peter Kuriyama
 #'
 #' @param wta_file_in The file to read weight-at-age from. Specifically to get the
-#'   age-0 weight-at-age. This is typically \code{wtatage.ss_new}.
+#'   age-0 weight-at-age. This is typically `wtatage.ss_new`.
 #' @param ctl_file_in A path to the control file, output from an OM, containing
 #'   the OM parameters for growth and weight/length relationship. These values
 #'   are used to determine the uncertainty about weight for fish sampled in each
-#'   age bin. Commonly \code{control.ss_new}
+#'   age bin. Commonly `control.ss_new`
 #' @param fill_fnc A function to fill in missing values (ages and years). The
 #'   resulting weight-at-age file will have values for all years and ages.One
-#'   function is \code{fill_across}.
+#'   function is [fill_across()].
 #' @param cv_wtatage A user specified coefficient of variation (CV) for growth.
 #'   Default is `NULL`.
-#' @return A modified \code{.wtatage.ss} file if \code{!is.null(outfile)}. A list
-#'   object containing the modified \code{.wtatage.ss} file is returned invisibly.
+#' @return A modified `.wtatage.ss` file if `!is.null(outfile)`. A list
+#'   object containing the modified `.wtatage.ss` file is returned invisibly.
 #' @template lcomp-agecomp-index
 #' @template dat_list
 #' @template outfile
-#' @importFrom r4ss SS_parlines
 #' @seealso
 #' * [fill_across()]
 #' * [ss3sim_base()]
@@ -89,11 +88,11 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
     if(is.null(mlacomp)) stop("No mean length-at-age data found in dat_list")
     ## Read in the control file
     ss_version <- get_ss_ver_file(ctl_file_in)
-    ctl <-SS_parlines(ctl_file_in, version = ss_version)
+    ctl <- r4ss::SS_parlines(ctl_file_in, version = ss_version)
     ## Read in the file and grab the expected values
     wta_file_in <- readLines(wta_file_in)
 
-    ## Remove double spaces, which SS3 writes in the 7th column
+    ## Remove double spaces, which Stock Synthesis writes in the 7th column
     wta_file_in <- gsub("  ", replacement=" ", x=wta_file_in)
     xx <- grep(x=wta_file_in, "#yr seas gender growpattern birthseas fleet")
     if(length(xx)!=1) stop("Failed to read in wtatage file")
@@ -165,7 +164,7 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
                 #----------------------------------------------------------------------------------------------------
                 #Step 2, determine # of fish in sample per bin
                 #Use a multinomial here but may need to have dirichlet or option to toggle between the two
-                age.samples <- rmultinom(n = 1, size = age.Nsamp, prob = age.means)
+                age.samples <- stats::rmultinom(n = 1, size = age.Nsamp, prob = age.means)
 
                 #----------------------------------------------------------------------------------------------------
                 #Step 3, use mean length-at-age to sample with normal/lognormal and user-specified cv
@@ -195,7 +194,7 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
                 #fill in list by sampling from normal distribution
                 for(ii in seq_len(nrow(age.samples)))
                 {
-                  lengths.list[[ii]] <- suppressWarnings(rnorm(n = age.samples[ii], mean = mla.means[ii], sd = sds[ii]))
+                  lengths.list[[ii]] <- suppressWarnings(stats::rnorm(n = age.samples[ii], mean = mla.means[ii], sd = sds[ii]))
 
                   #Step 4, convert lengths to weights with no error
                   weights.list[[ii]] <- Wtlen1 * lengths.list[[ii]] ^ Wtlen2
@@ -235,8 +234,8 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
     # filled.wtatage <- fill_fnc(mat = temp.wtatage, minYear = dat_list$styr, maxYear = dat_list$endyr)
 
     #Manually check
-    # write.csv(temp.wtatage, file = 'wtatage1_gaps.csv')
-    # write.csv(filled.wtatage, file = 'wtatage1_filled.csv')
+    # utils::write.csv(temp.wtatage, file = 'wtatage1_gaps.csv')
+    # utils::write.csv(filled.wtatage, file = 'wtatage1_filled.csv')
     # save(wtatage.complete, file = '/Users/peterkuriyama/School/Research/capam_growth/Empirical/runs/wtatage.complete.Rdata')
 
     # wtatage.complete[[dat_list$Nfleet+1]] <- wtatage.complete[[dat_list$Nfleet]]
@@ -289,29 +288,29 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
 
     # wtatage.final[[1]] <- fecund
     # wtatage.final[[1]]$yr <- -1 * wtatage.final[[1]]$yr
-    if(!is.null(outfile)) write.table(unsampled.wtatage[[1]], file=outfile, append=TRUE, row.names=FALSE, col.names=FALSE)
+    if(!is.null(outfile)) utils::write.table(unsampled.wtatage[[1]], file=outfile, append=TRUE, row.names=FALSE, col.names=FALSE)
 
     if(!is.null(outfile)) cat("\n#Fleet -1\n",file=outfile,append=TRUE)
     # wtatage.final[[2]] <- fltNeg1
     wtatage.final[[2]] <- unsampled.wtatage[[2]]
     # wtatage.final[[2]]$yr <- -1 * wtatage.final[[2]]$yr
-    if(!is.null(outfile))     write.table(unsampled.wtatage[[2]], file=outfile, append=TRUE, row.names=FALSE, col.names=FALSE)
+    if(!is.null(outfile))     utils::write.table(unsampled.wtatage[[2]], file=outfile, append=TRUE, row.names=FALSE, col.names=FALSE)
 
     if(!is.null(outfile)) cat("\n#Fleet 0\n",file=outfile,append=TRUE)
     # wtatage.final[[3]] <- fltZero
     wtatage.final[[3]] <- unsampled.wtatage[[3]]
     # wtatage.final[[3]]$yr <- -1 * wtatage.final[[3]]$yr
-    if(!is.null(outfile)) write.table(unsampled.wtatage[[3]], file=outfile, append=TRUE, row.names=FALSE, col.names=FALSE)
+    if(!is.null(outfile)) utils::write.table(unsampled.wtatage[[3]], file=outfile, append=TRUE, row.names=FALSE, col.names=FALSE)
 
     #loop through fleets
     for(i in fleets) {
         if(!is.null(outfile))     cat("\n#Fleet",i,"\n",file=outfile,append=TRUE)
         wtatage.final[[i+3]] <- wtatage.complete[[i]]
         wtatage.final[[i+3]]$yr <- -1 * wtatage.final[[i+3]]$yr
-        if(!is.null(outfile))    write.table(wtatage.final[[i+3]], file=outfile, append=TRUE, row.names=FALSE, col.names=FALSE)
+        if(!is.null(outfile))    utils::write.table(wtatage.final[[i+3]], file=outfile, append=TRUE, row.names=FALSE, col.names=FALSE)
     }
     endline <- data.frame(t(c(-9999, 1, 1, 1, 1, rep(0, dat_list$Nages))))
-    if(!is.null(outfile)) write.table(endline, file = outfile, append = TRUE,
+    if(!is.null(outfile)) utils::write.table(endline, file = outfile, append = TRUE,
         row.names = FALSE, col.names = FALSE)
 
     return(invisible(wtatage.final))

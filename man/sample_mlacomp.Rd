@@ -2,7 +2,7 @@
 % Please edit documentation in R/sample_mlacomp.R
 \name{sample_mlacomp}
 \alias{sample_mlacomp}
-\title{\link{BETA VERSION} Sample mean length (size-)-at-age data and write to file for use by the EM.}
+\title{\strong{BETA VERSION} Sample mean length (size-)-at-age data and write to file for use by the EM}
 \usage{
 sample_mlacomp(
   dat_list,
@@ -52,8 +52,8 @@ numeric vectors. If no fleet collected samples, keep the value to
 
 \item{mean_outfile}{A path to write length and age data for external
 estimation of parametric growth. If \code{NULL} no file will be written.
-This file is used by \code{change_e} to externally estimate growth
-parameters. Filename must contain "vbgf" to be used by \code{change_e}.
+This file is used by \code{\link[=change_e]{change_e()}} to externally estimate growth
+parameters. Filename must contain "vbgf" to be used by \code{\link[=change_e]{change_e()}}.
 Also, if "remove" is included in the filename, the mean length at age data
 will be removed from the \code{.dat} file and not be available to the EM.}
 
@@ -65,12 +65,12 @@ A modified \code{.dat} file if \code{!is.null(outfile)}. A list object
 containing the modified \code{.dat} file is returned invisibly.
 }
 \description{
-\link{BETA VERSION} Sample mean length (size-)-at-age data and write to file for use by the EM.
+\strong{BETA VERSION} Sample mean length (size-)-at-age data and write to file for use by the EM
 }
 \details{
 \strong{This function is in beta and untested. Use with caution.}
 Take a \code{data.SS_new} file, read in by \pkg{r4ss} function
-\code{\link[r4ss]{SS_readdat}} containing observed values, and
+\code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}} containing observed values, and
 sample from the observed ages to get realistic proportions for the number
 of fish in each age bin, then use the mean size-at-age and CV for growth to
 generate random samples of size, which are then averaged to get mean

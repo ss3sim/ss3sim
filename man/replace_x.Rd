@@ -25,7 +25,7 @@ Replace items with a zero length in a list with the value supplied in
 the argument \code{replacement}. Useful for scenarios where \code{NULL}
 is sometimes a valid input from legacy code. Nested  lists can behave
 badly when they have a \code{NULL} entry, for example when converting
-to a \code{\link[tibble]{tibble}}, it will be unnamed.
+to a \code{\link[tibble:tibble]{tibble::tibble()}}, it will be unnamed.
 }
 \examples{
 employees <- list(

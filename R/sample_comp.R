@@ -7,7 +7,7 @@
 #' @details
 #' Sample size, i.e., 'Nsamp', is used as a measure of precision,
 #' where higher sample sizes lead to simulated samples that more accurately
-#' represent the truth provided in \code{data}.
+#' represent the truth provided in `data`.
 #'
 #' @param data A data frame with informational columns followed by
 #' columns of compositional data.
@@ -19,7 +19,6 @@
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp
 #' @template sampledots
-#' @importFrom magrittr %>%
 #'
 #' @author Kelli Faye Johnson
 #' @return A data frame of observed composition data.
@@ -86,7 +85,7 @@ sample_comp <- function(
   # sample_dm or sample_mn will give same values if used in loop
   # or force seed in the function
   all <- dplyr::inner_join(data, new,
-    by = na.omit(colnames(new)[match(colnames(data), colnames(new))])) %>%
+    by = stats::na.omit(colnames(new)[match(colnames(data), colnames(new))])) %>%
   dplyr::rowwise() %>%
   dplyr::mutate(
     comp = dplyr::case_when(

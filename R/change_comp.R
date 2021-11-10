@@ -10,12 +10,12 @@
 #' @template dat_list
 #' @param type The sample type you want.
 #' See the function call for available types,
-#' e.g., \code{formals(change_comp)$type};
+#' e.g., `formals(change_comp)$type`;
 #' the first value will be used as the default if user input is not provided.
 #' @param paramlist A list of parameter values derived from the data frame used to set up
-#' your similation. For example, \code{setup_scenarios(setup_scenarios_defaults())[[1]]}
+#' your similation. For example, `setup_scenarios(setup_scenarios_defaults())[[1]]`
 #' will give you defaults that you can extract from. Typically,
-#' \code{mylist[[c("agecomp_params", "lcomp_params")]]} are passed. Make sure that you
+#' `mylist[[c("agecomp_params", "lcomp_params")]]` are passed. Make sure that you
 #' only pass the portion of the list that pertains to the data you want.
 #' @param nsex An integer value between one and two specifying the number of sexes in the
 #' model, where 1 is based on females only for spawning stock biomass and two-sex models
@@ -23,7 +23,6 @@
 #' @param bins A vector of bins for the composition data. The bins do not
 #' need to be named because they will be renamed with their value and a
 #' leading character based on what type of data they are.
-#' @importFrom magrittr %>%
 #' @examples
 #' # todo: remove this example when testing is complete
 #' \dontrun{
@@ -36,7 +35,7 @@ change_comp <- function(
   paramlist,
   nsex = 1,
   bins
-  ) {
+) {
 
   type <- match.arg(type, several.ok = FALSE)
   if (missing(bins)) {

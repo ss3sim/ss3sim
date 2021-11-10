@@ -16,7 +16,7 @@ of sexes in the model.}
 
 \item{leader}{Most users will not need to change the leader
 character from the default unless you are working with age data,
-then just use \code{"a"} rather than the default of \code{"l"}.
+then just use \\code{"a"} rather than the default of \code{"l"}.
 If you have a two-sex model, i.e., \code{nsex = 2}, then the
 function will take care of the naming for you, which is forced
 to \code{"f"} and \code{"m"}. You can change them afterwards if you
@@ -39,5 +39,5 @@ testthat::expect_true(test)
 }
 \seealso{
 This is a helper function used to create the bins before
-sampling takes place, see \code{\link{ss3sim_base}}.
+sampling takes place, see \code{\link[=ss3sim_base]{ss3sim_base()}}.
 }
