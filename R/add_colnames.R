@@ -1,9 +1,9 @@
 #' Create matching column names across a list of data frames
-#' 
+#'
 #' Add missing columns to each data frame in the list allowing
 #' for the use [rbind()] to create a single data frame.
 #' The code is based on `rbind.fill` from the `plyr` package.
-#' 
+#'
 #' @param dfs A list of data frames, where the length can be one.
 #' @param bind A logical value specifying if the data frame(s)
 #' should be returned as a single data frame. The default is
@@ -23,8 +23,8 @@
 #' adataframe <- ss3sim:::add_colnames(list(x, y), bind = TRUE)
 #' # clean up
 #' rm(x, y, alist, adataframe)
-#' 
-add_colnames <- function (dfs, bind = FALSE, fillwith = NA) {
+#'
+add_colnames <- function(dfs, bind = FALSE, fillwith = NA) {
   vars <- unique(unlist(lapply(dfs, base::names)))
   newdfs <- lapply(dfs, function(x) {
     missing <- setdiff(vars, names(x))
