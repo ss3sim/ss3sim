@@ -1,0 +1,9 @@
+on:
+  push:
+    branches: [main, master]
+    tags: ['*']
+
+name: call-update-pkgdown
+jobs:
+  call-workflow:
+    uses: nmfs-stock-synthesis/workflows/.github/workflows/update-pkgdown.yml@main
