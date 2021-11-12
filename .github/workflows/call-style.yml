@@ -1,0 +1,10 @@
+# use styler to style code
+on:
+  workflow_dispatch:
+  schedule:
+    # This should run the default branch weekly on monday at 5 past midnight
+    - cron: '5 0 * * 1'
+name: call-style
+jobs:
+  call-workflow:
+    uses: nmfs-stock-synthesis/workflows/.github/workflows/style-r-code.yml@main

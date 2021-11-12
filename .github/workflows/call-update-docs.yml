@@ -1,0 +1,10 @@
+# Run devtools::document()
+on:
+  workflow_dispatch:
+  schedule:
+    # This should run the default branch weekly at 10 past midnight, monday
+    - cron: '10 0 * * 1'
+name: call-update-docs
+jobs:
+  call-workflow:
+    uses: nmfs-stock-synthesis/workflows/.github/workflows/update-roxygen-docs.yml@main
