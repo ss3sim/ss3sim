@@ -26,31 +26,39 @@
 #'
 #' # Locate the package data:
 #' starterfile <- system.file("extdata", "models", "cod-om",
-#'  "starter.ss", package = "ss3sim")
+#'   "starter.ss",
+#'   package = "ss3sim"
+#' )
 #'
 #' # No retrospective analysis:
 #' change_retro(starterfile, paste0(temp_path, "/retro-0-starter.ss"),
-#' retro_yr = 0)
+#'   retro_yr = 0
+#' )
 #'
 #' # A retrospective analysis of 5 years:
 #' change_retro(starterfile, paste0(temp_path, "/retro-5-starter.ss"),
-#' retro_yr = -5)
+#'   retro_yr = -5
+#' )
 #' @export
 
 change_retro <- function(str_file_in = "starter.ss", str_file_out =
-  "starter.ss", retro_yr = 0) {
+                           "starter.ss", retro_yr = 0) {
 
   # Sanity checks:
-  if(retro_yr > 0)
+  if (retro_yr > 0) {
     stop("retro_yr should be <= 0")
-  if(abs(retro_yr - round(retro_yr)) > .Machine$double.eps^0.5)
+  }
+  if (abs(retro_yr - round(retro_yr)) > .Machine$double.eps^0.5) {
     stop("retro_yr should be a whole number or integer")
+  }
 
   starter <- r4ss::SS_readstarter(file = str_file_in, verbose = FALSE)
 
   starter$retro_yr <- retro_yr
 
-  r4ss::SS_writestarter(mylist = starter,
+  r4ss::SS_writestarter(
+    mylist = starter,
     dir = dirname(str_file_out), file = basename(str_file_out),
-    verbose = FALSE, warn = FALSE, overwrite = TRUE)
+    verbose = FALSE, warn = FALSE, overwrite = TRUE
+  )
 }

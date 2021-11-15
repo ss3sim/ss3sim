@@ -67,26 +67,27 @@
 #' @export
 #' @examples
 #' dat <- r4ss::SS_readdat(
-#'   system.file("extdata","models", "cod-om", "codOM.dat", package = "ss3sim"),
-#'   verbose = FALSE)
+#'   system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim"),
+#'   verbose = FALSE
+#' )
 #' ctl <- r4ss::SS_readctl(
-#'   system.file("extdata","models", "cod-om", "codOM.ctl", package = "ss3sim"),
-#'   verbose = FALSE, use_datlist = TRUE, datlist = dat)
+#'   system.file("extdata", "models", "cod-om", "codOM.ctl", package = "ss3sim"),
+#'   verbose = FALSE, use_datlist = TRUE, datlist = dat
+#' )
 #' # Using original vector-style inputs
 #' newctl <- change_f(years = 1:50, fleets = 1, fvals = 0.2, ctl_list = ctl)
 #' # Using list-style inputs for when there are multiple fisheries
-#' newctl <- change_f(years = list(1:5, 1:10), fleets = 3:4,
-#'   fvals = list(rep(0.1, 5), rep(0.2, 10)), ctl_list = ctl)
+#' newctl <- change_f(
+#'   years = list(1:5, 1:10), fleets = 3:4,
+#'   fvals = list(rep(0.1, 5), rep(0.2, 10)), ctl_list = ctl
+#' )
 #' rm(dat, ctl, newctl)
-#'
-change_f <- function(
-  years,
-  fleets,
-  fvals,
-  seasons = 1,
-  ses = 0.005,
-  ctl_list
-) {
+change_f <- function(years,
+                     fleets,
+                     fvals,
+                     seasons = 1,
+                     ses = 0.005,
+                     ctl_list) {
 
   #### Input checks
   if (is.list(years)) {
@@ -108,7 +109,8 @@ change_f <- function(
     "Seas" =  seasons,
     "F_value" = fvals,
     "se" = ses,
-    "phase" = scalar2list(1, length = times))
+    "phase" = scalar2list(1, length = times)
+  )
   newdata[, "index"] <- fleets[newdata$index]
   names(newdata) <- gsub("index", "Fleet", names(newdata))
 
@@ -126,7 +128,7 @@ change_f <- function(
   if (any(newdata[["Yr"]] == -999)) {
     equilibrium <- newdata[newdata[["Yr"]] == -999 & newdata[["F_value"]] > 0, ]
     equilibrium <- equilibrium[order(equilibrium[["Seas"]], equilibrium[["Fleet"]]), ]
-    #_ LO HI INIT PRIOR PR_SD  PR_type PHASE
+    # _ LO HI INIT PRIOR PR_SD  PR_type PHASE
     ctl_list[["init_F"]] <- data.frame(
       LO = 0,
       HI = ctl_list[["maxF"]],
@@ -138,7 +140,7 @@ change_f <- function(
       equilibrium[["Seas"]],
       "_flt_",
       equilibrium[["Fleet"]]
-      )
+    )
   }
 
   return(invisible(ctl_list))

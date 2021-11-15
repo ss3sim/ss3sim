@@ -26,28 +26,29 @@
 #' @examples
 #' # todo: remove this example when testing is complete
 #' \dontrun{
-#' change_comp(dat_list = dat, type = "len",
-#'   paramlist = scenariol[[1]][[c("lcomp_params","agecomp_params")]])
+#' change_comp(
+#'   dat_list = dat, type = "len",
+#'   paramlist = scenariol[[1]][[c("lcomp_params", "agecomp_params")]]
+#' )
 #' }
-change_comp <- function(
-  dat_list,
-  type = c("len", "age", "cal"),
-  paramlist,
-  nsex = 1,
-  bins
-) {
-
+change_comp <- function(dat_list,
+                        type = c("len", "age", "cal"),
+                        paramlist,
+                        nsex = 1,
+                        bins) {
   type <- match.arg(type, several.ok = FALSE)
   if (missing(bins)) {
     lbin_vector <- dat_list[["lbin_vector"]]
     agebin_vector <- dat_list[["agebin_vector"]]
   } else {
     if (type == "cal") {
-      message("You really should not be changing bins if you are using\n",
+      message(
+        "You really should not be changing bins if you are using\n",
         "CAAL data because this will also lead to marginal comps using those\n",
         "same bins. Please set them using lcomp_params and agecomp_params.\n",
         "If you feel this feature should be added please contact\n",
-        "the package maintainer `utils::maintainer('ss3sim')`.")
+        "the package maintainer `utils::maintainer('ss3sim')`."
+      )
     }
     lbin_vector <- bins
     agebin_vector <- bins
@@ -58,40 +59,41 @@ change_comp <- function(
     by = character(),
     # Data frame from parameter list
     tibble::as_tibble(paramlist) %>%
-    dplyr::select(-dplyr::matches("cpar|Nsamp")) %>%
-    dplyr::rename_all(tolower) %>%
-    dplyr::distinct(),
+      dplyr::select(-dplyr::matches("cpar|Nsamp")) %>%
+      dplyr::rename_all(tolower) %>%
+      dplyr::distinct(),
     # Default, behind-the-scenes data frame
     data.frame(
       seas = 1,
       gender = ifelse(nsex == 1, 0, 3),
       part = 0,
       nsamp = 10
-    )) %>%
-  # Get rid of default columns if parameter list had them
-  dplyr::select(-dplyr::matches("\\.y")) %>%
-  dplyr::rename_all(~gsub("\\.x","",.x)) %>%
-  dplyr::rename(
+    )
+  ) %>%
+    # Get rid of default columns if parameter list had them
+    dplyr::select(-dplyr::matches("\\.y")) %>%
+    dplyr::rename_all(~ gsub("\\.x", "", .x)) %>%
+    dplyr::rename(
       Yr = dplyr::matches("years"),
       FltSvy = dplyr::matches("fleets")
     ) %>%
-  dplyr::rename_all(~gsub("(^[a-z]{1})", "\\U\\1", .x, perl = TRUE)) %>%
-  dplyr::relocate(dplyr::any_of(c(
-    "Yr",
-    "Seas",
-    "FltSvy",
-    "Gender",
-    "Part",
-    "Nsamp"
-  ))) %>%
-  # Make all combinations by fleet
-  tidyr::unnest(dplyr::everything())
+    dplyr::rename_all(~ gsub("(^[a-z]{1})", "\\U\\1", .x, perl = TRUE)) %>%
+    dplyr::relocate(dplyr::any_of(c(
+      "Yr",
+      "Seas",
+      "FltSvy",
+      "Gender",
+      "Part",
+      "Nsamp"
+    ))) %>%
+    # Make all combinations by fleet
+    tidyr::unnest(dplyr::everything())
 
   ## Length data
   if (type %in% c("len", "cal")) {
     if (type == "len") {
       old <- dat_list[["lencomp"]][0, ]
-      #todo: I think this is redundant with code below
+      # todo: I think this is redundant with code below
       old <- change_dat_bin(old, setup_bins(lbin_vector, nsex = nsex, leader = "l"))
     } else {
       old <- dat_list[["lencomp"]]
@@ -101,15 +103,18 @@ change_comp <- function(
 
     dat_list[["lencomp"]] <- dplyr::bind_rows(old, final) %>%
       dplyr::distinct(.keep_all = TRUE) %>%
-      dplyr::mutate(dplyr::across(dplyr::matches("[bflm][0-9]"),
-        ~tidyr::replace_na(.x, 1))) %>% as.data.frame()
+      dplyr::mutate(dplyr::across(
+        dplyr::matches("[bflm][0-9]"),
+        ~ tidyr::replace_na(.x, 1)
+      )) %>%
+      as.data.frame()
     dat_list[["lbin_vector"]] <- lbin_vector
     dat_list[["N_lencomp"]] <- NROW(dat_list[["lencomp"]])
     dat_list[["N_lbins"]] <- length(lbin_vector)
   }
 
   ## Age data
-  if (type %in% c("age", "cal")){
+  if (type %in% c("age", "cal")) {
     if (type == "age") {
       old <- dat_list[["agecomp"]] %>% dplyr::filter(.data[["Lbin_lo"]] > 0)
     } else {
@@ -129,15 +134,24 @@ change_comp <- function(
       final <- rbind(female, male)
     }
     # todo: get rid of join warning
-    dat_list$agecomp <- dplyr::full_join(by = colnames(final),
+    dat_list$agecomp <- dplyr::full_join(
+      by = colnames(final),
       old,
-      final) %>%
-      dplyr::mutate(dplyr::across(dplyr::matches("[abflm][0-9]"),
-        ~tidyr::replace_na(.x, 1))) %>%
-      dplyr::mutate(dplyr::across(dplyr::starts_with("Lbin"),
-        ~tidyr::replace_na(.x, -1))) %>%
-      dplyr::mutate(dplyr::across(dplyr::starts_with("Age"),
-        ~tidyr::replace_na(.x, 1))) %>% as.data.frame()
+      final
+    ) %>%
+      dplyr::mutate(dplyr::across(
+        dplyr::matches("[abflm][0-9]"),
+        ~ tidyr::replace_na(.x, 1)
+      )) %>%
+      dplyr::mutate(dplyr::across(
+        dplyr::starts_with("Lbin"),
+        ~ tidyr::replace_na(.x, -1)
+      )) %>%
+      dplyr::mutate(dplyr::across(
+        dplyr::starts_with("Age"),
+        ~ tidyr::replace_na(.x, 1)
+      )) %>%
+      as.data.frame()
     dat_list[["N_agecomp"]] <- NROW(dat_list[["agecomp"]])
     dat_list[["agebin_vector"]] <- agebin_vector
     dat_list[["N_agebins"]] <- length(dat_list[["agebin_vector"]])

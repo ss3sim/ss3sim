@@ -1,10 +1,10 @@
 #' Check if input arguments have the same length
-#' 
+#'
 #' Calculate the length of all input arguments to see if they
 #' are equal. Entries that are `NULL`, and thus, have
 #' a length of zero are ignored. An optional trigger to
 #' [stop()] is provided with a tailored error message.
-#' 
+#'
 #' @param ... Input arguments of unknown length.
 #' @param keepgoing A logical value specifying if the function
 #' should continue or terminate upon finding input arguments of
@@ -17,16 +17,21 @@
 #' \dontshow{
 #' testthat::expect_error(ss3sim:::check_eqlength(),
 #'   regex = "At least",
-#'   label = "check_eqlength didn't error with zero input args")
+#'   label = "check_eqlength didn't error with zero input args"
+#' )
 #' testthat::expect_error(ss3sim:::check_eqlength(yes = 1:2, no = 3:5),
 #'   regex = "Not all.+yes",
-#'   label = "check_eqlength didn't error with unequal-lengthed vectors")
+#'   label = "check_eqlength didn't error with unequal-lengthed vectors"
+#' )
 #' testthat::expect_true(ss3sim:::check_eqlength(yes = 1:2, no = 3:4),
-#'   label = "check_eqlength didn't return TRUE.")
+#'   label = "check_eqlength didn't return TRUE."
+#' )
 #' testthat::expect_false(ss3sim:::check_eqlength(yes = 1:2, no = 3:5, keepgoing = TRUE),
-#'   label = "check_eqlength didn't return TRUE.")
+#'   label = "check_eqlength didn't return TRUE."
+#' )
 #' testthat::expect_true(ss3sim:::check_eqlength(yes = NULL, no = NULL),
-#'   label = "check-eqlength didn't return TRUE for all NULLs")
+#'   label = "check-eqlength didn't return TRUE for all NULLs"
+#' )
 #' }
 #'
 check_eqlength <- function(..., keepgoing = FALSE) {
@@ -34,14 +39,17 @@ check_eqlength <- function(..., keepgoing = FALSE) {
     stop("At least one object needs to be passed to ...", call. = FALSE)
   }
   lng <- lapply(list(...), length)
-  if (all(lng == 0)) return(TRUE)
+  if (all(lng == 0)) {
+    return(TRUE)
+  }
   lng <- lng[lng != 0]
   check <- ifelse(all(lng == lng[[1]]), TRUE, FALSE)
   if (!keepgoing & !check) {
     stop("Not all of the following input arguments ",
       "are of the same length:\n",
-      paste(names(lng), collapse = ", "), ".", call. = FALSE
-      )
+      paste(names(lng), collapse = ", "), ".",
+      call. = FALSE
+    )
   }
   return(check)
 }

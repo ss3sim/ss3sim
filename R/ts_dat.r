@@ -10,10 +10,10 @@
 #' @keywords data
 #' @examples
 #' data("ts_dat", package = "ss3sim")
-#'
 #' \dontshow{
 #' testthat::expect_true("year" %in% colnames(ts_dat),
-#'   label = "the column 'year' of the time-series data set")
+#'   label = "the column 'year' of the time-series data set"
+#' )
 #' }
 #'
 NULL

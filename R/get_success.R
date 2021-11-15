@@ -8,7 +8,7 @@
 #' results from the run of the Stock Synthesis model.
 #'
 #' @return A named vector with two values, `ran` and `hess`,
-#' (1) a zero or one for the presence of the `Report.sso` file and 
+#' (1) a zero or one for the presence of the `Report.sso` file and
 #' (2) a zero or one for the presence of a positive definite hessian matrix.
 #' @author Kelli Faye Johnson
 #'

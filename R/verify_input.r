@@ -36,9 +36,7 @@
 #' verify_input(model_dir = file.path(temp_path, "cod-om"), type = "om")
 #' verify_input(model_dir = file.path(temp_path, "cod-em"), type = "em")
 #' unlink(temp_path, recursive = TRUE)
-
 verify_input <- function(model_dir, type = c("om", "em")) {
-
   type <- match.arg(type)
 
   type <- type[1]
@@ -51,16 +49,16 @@ verify_input <- function(model_dir, type = c("om", "em")) {
   } else {
     f.ctl <- NA
   }
-  if(type == "om") {
+  if (type == "om") {
     if (length(grep(".dat", files, ignore.case = TRUE))) {
       f.dat <- grep(".dat", files, ignore.case = TRUE)
     } else {
       f.dat <- NA
     }
   }
-  if(type == "om") {
+  if (type == "om") {
 
-    #commented out, because the inital .par will be generated in ss3sim_base(),
+    # commented out, because the inital .par will be generated in ss3sim_base(),
     # to ensure it is consistent with the ctl file.
     # if (length(grep("ss.par", files, ignore.case = TRUE))) {
     #   f.par <- grep("ss.par", files, ignore.case = TRUE)
@@ -78,34 +76,41 @@ verify_input <- function(model_dir, type = c("om", "em")) {
   } else {
     f.forecast <- NA
   }
-  if(type == "om") {
-    file.loc <- data.frame(f.ctl, f.dat, f.starter, f.forecast) #f.par was removed
+  if (type == "om") {
+    file.loc <- data.frame(f.ctl, f.dat, f.starter, f.forecast) # f.par was removed
     file.types <- c(".ctl file", ".dat file", "starter.ss
       file", "forecast.ss file") # "ss.par file",  was removed
   }
-  if(type == "em") {
+  if (type == "em") {
     file.loc <- data.frame(f.ctl, f.starter, f.forecast)
     file.types <- c(".ctl file", "starter.ss file", "forecast.ss file")
   }
   missing.file <- which(is.na(file.loc)) # Which files are missing
   if (length(missing.file) > 0) {
     stop(paste("Missing Files in", type, ":", file.types[missing.file], "\n"))
-  }
-  else { # Change names
-    file.rename(from = paste0(model_dir, "/", files[file.loc$f.ctl]), to =
-      paste0(model_dir, "/", ctl_name))
-    if(type == "om") {
-      file.rename(from = paste0(model_dir, "/", files[file.loc$f.dat]), to =
-        paste0(model_dir, "/ss3.dat"))
+  } else { # Change names
+    file.rename(
+      from = paste0(model_dir, "/", files[file.loc$f.ctl]), to =
+        paste0(model_dir, "/", ctl_name)
+    )
+    if (type == "om") {
+      file.rename(
+        from = paste0(model_dir, "/", files[file.loc$f.dat]), to =
+          paste0(model_dir, "/ss3.dat")
+      )
     }
     # Alter the starter.ss file
-    starter.ss <- r4ss::SS_readstarter(file = paste0(model_dir, "/starter.ss"),
-      verbose = FALSE)
+    starter.ss <- r4ss::SS_readstarter(
+      file = paste0(model_dir, "/starter.ss"),
+      verbose = FALSE
+    )
     starter.ss$datfile <- "ss3.dat"
     starter.ss$ctlfile <- ctl_name
     # Write new starter.ss
-    r4ss::SS_writestarter(mylist = starter.ss, dir = model_dir,
-      file = "starter.ss", overwrite = TRUE, verbose = FALSE, warn = FALSE)
+    r4ss::SS_writestarter(
+      mylist = starter.ss, dir = model_dir,
+      file = "starter.ss", overwrite = TRUE, verbose = FALSE, warn = FALSE
+    )
     # Alter the .ctl file
     ctl <- readLines(paste0(model_dir, "/", ctl_name))
     ctl.line <- grep("data_and_control_files", ctl, ignore.case = TRUE)

@@ -30,22 +30,25 @@ lists2df <- function(...) {
   }
   lvecs <- do.call("rbind", rapply(lists, length, how = "list"))
   if (all(sapply(apply(lvecs, 2, unique), length) != 1)) {
-    stop("Vectors within each list are not the same length for each",
-      " ith element of the input lists.")
+    stop(
+      "Vectors within each list are not the same length for each",
+      " ith element of the input lists."
+    )
   }
   do.call("rbind", mapply(data.frame,
     "index" = seq_along(lists[[1]]),
-    ..., SIMPLIFY = FALSE, MoreArgs = list(fix.empty.names = FALSE, stringsAsFactors = FALSE)))
+    ..., SIMPLIFY = FALSE, MoreArgs = list(fix.empty.names = FALSE, stringsAsFactors = FALSE)
+  ))
 }
 
 #' Replicate an object a number of times to return a list
-#' 
+#'
 #' Replicate the input scalar argument the provided number of times,
 #' where `length` can be a vector, and thus, the returned object
 #' will be a list with potentially more than one entry in the list.
 #' This is helpful when an input argument needs to be repeated to match
 #' other input arguments that are lists of vectors when creating data frames.
-#' 
+#'
 #' @param scalar A single numeric value.
 #' @param length A vector of integer values specifying how many times `scalar`
 #' should be repeated in each list element.
@@ -59,13 +62,17 @@ scalar2list <- function(scalar, length) {
   if (length(unlist(scalar)) != 1 && length(length) == 1) {
     if (is.list(scalar)) {
       out <- scalar
-    } else {out <- list(scalar)}
+    } else {
+      out <- list(scalar)
+    }
   }
   if (length(unlist(scalar)) == 1 && length(length) > 1) {
     out <- lapply(length, function(x) rep(scalar, length = x))
-    nm <-deparse(substitute(scalar))
-    names(out) <- gsub("(.+)\\..+\\.(.+)", 
-      paste0("\\1\\.", nm, "\\.\\2"), names(out))
+    nm <- deparse(substitute(scalar))
+    names(out) <- gsub(
+      "(.+)\\..+\\.(.+)",
+      paste0("\\1\\.", nm, "\\.\\2"), names(out)
+    )
   }
   if (length(scalar) == length(length) &&
     all(mapply(length, scalar) == length)) {
@@ -73,8 +80,10 @@ scalar2list <- function(scalar, length) {
     out <- scalar
   }
   if (!exists("out")) {
-    message("Sorry, scalar2list did not work properly.",
-      "\nSee the data structures below.")
+    message(
+      "Sorry, scalar2list did not work properly.",
+      "\nSee the data structures below."
+    )
     message("scalar is")
     utils::capture.output(type = "message", scalar)
     message("length is")
@@ -83,6 +92,7 @@ scalar2list <- function(scalar, length) {
   }
 
   testthat::expect_equivalent(length, sapply(out, length),
-    label = "\nscalar2list: specified 'length' is\n")
+    label = "\nscalar2list: specified 'length' is\n"
+  )
   return(out)
 }

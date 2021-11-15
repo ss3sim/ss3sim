@@ -22,15 +22,12 @@
 #' @author Kelli F. Johnson
 #' @family sampling functions
 
-sample_discard <- function(
-  dat_list,
-  outfile = NULL,
-  fleets,
-  years,
-  sds_obs,
-  seas = list(1)
-) {
-
+sample_discard <- function(dat_list,
+                           outfile = NULL,
+                           fleets,
+                           years,
+                           sds_obs,
+                           seas = list(1)) {
   if (!is.list(dat_list) | is.null(dat_list[["discard_data"]])) {
     stop("dat_list must be a list object read in using r4ss::SS_readdat().")
   }
@@ -43,13 +40,15 @@ sample_discard <- function(
   if (Nfleets != 0 & class(sds_obs) != "list" | length(sds_obs) != Nfleets) {
     stop("sds_obs needs to be a list of same length as fleets")
   }
-  if (Nfleets!= 0 & class(years) != "list" | length(years) != Nfleets) {
+  if (Nfleets != 0 & class(years) != "list" | length(years) != Nfleets) {
     stop("years needs to be a list of same length as fleets")
   }
   for (i in 1:Nfleets) {
-    if(length(sds_obs[[i]]) > 1 & length(sds_obs[[i]]) != length(years[[i]])) {
-      stop("Length of sds_obs does not match length of years for fleet ",
-           fleets[i])
+    if (length(sds_obs[[i]]) > 1 & length(sds_obs[[i]]) != length(years[[i]])) {
+      stop(
+        "Length of sds_obs does not match length of years for fleet ",
+        fleets[i]
+      )
     }
   }
   if (length(seas) != length(fleets) & length(seas) == 1) {
@@ -60,17 +59,22 @@ sample_discard <- function(
   ## arguments and use dplyr::mutate to apply sample_lognormal to each row
   ## based on input sd and observed values
   xxx <- merge(
-    do.call(rbind, mapply(data.frame, SIMPLIFY = FALSE,
+    do.call(rbind, mapply(data.frame,
+      SIMPLIFY = FALSE,
       Yr = years,
       Seas = standardize_sampling_args(fleets, years, other_input = seas),
       Flt = lapply(fleets, c),
       Std_in = standardize_sampling_args(fleets, years, other_input = sds_obs)
     )),
-    ev[, c("Yr", "Seas", "Flt", "obsOLD")], sort = FALSE)
-  if (NROW(xxx) ==  0) {
-    stop("The following specified years, seas, index combinations are not in dat_list:",
+    ev[, c("Yr", "Seas", "Flt", "obsOLD")],
+    sort = FALSE
+  )
+  if (NROW(xxx) == 0) {
+    stop(
+      "The following specified years, seas, index combinations are not in dat_list:",
       "\nyears:\n", years, "\nseas:\n", seas, "\nindex:\n", fleets,
-      "\nThus, these expected values are not available.")
+      "\nThus, these expected values are not available."
+    )
   }
   new <- xxx %>%
     dplyr::arrange(.data[["Flt"]], .data[["Yr"]], .data[["Seas"]]) %>%
@@ -81,8 +85,10 @@ sample_discard <- function(
   ## Open the .dat file and find the right lines to overwrite
   dat_list$discard_data <- as.data.frame(new)
   if (!is.null(outfile)) {
-    r4ss::SS_writedat(datlist = dat_list, outfile = outfile, overwrite = TRUE,
-      version = dat_list$ReadVersion, verbose = FALSE)
+    r4ss::SS_writedat(
+      datlist = dat_list, outfile = outfile, overwrite = TRUE,
+      version = dat_list$ReadVersion, verbose = FALSE
+    )
   }
 
   invisible(dat_list)

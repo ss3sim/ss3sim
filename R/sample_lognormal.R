@@ -15,5 +15,5 @@
 #' @author Cole Monnahan
 #'
 sample_lognormal <- function(obs, sd) {
-  obs * exp(stats::rnorm(n = 1, mean = 0, sd = sd) - sd^2/2)
+  obs * exp(stats::rnorm(n = 1, mean = 0, sd = sd) - sd^2 / 2)
 }

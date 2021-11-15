@@ -22,19 +22,22 @@
 #'   (for testing) as a vector of character lines.
 #' @author Cole Monnahan
 
-change_lcomp_constant <- function(lcomp_constant, dat_list, outfile = NULL){
-
-  if(is.null(lcomp_constant)) return(invisible(dat_list))
+change_lcomp_constant <- function(lcomp_constant, dat_list, outfile = NULL) {
+  if (is.null(lcomp_constant)) {
+    return(invisible(dat_list))
+  }
   stopifnot(is.numeric(lcomp_constant))
-  if(lcomp_constant <= 0) stop("lcomp_constant must be greater than 0")
+  if (lcomp_constant <= 0) stop("lcomp_constant must be greater than 0")
 
   # The data sections are repeated in the data.ss_new files, so only use first one
   dat_list$add_to_comp[1] <- lcomp_constant
 
   if (!is.null(outfile)) {
     ss_version <- get_ss_ver_dl(dat_list)
-    r4ss::SS_writedat(dat_list, outfile, overwrite = TRUE,
-                             version = ss_version, verbose = FALSE)
+    r4ss::SS_writedat(dat_list, outfile,
+      overwrite = TRUE,
+      version = ss_version, verbose = FALSE
+    )
   }
 
   invisible(dat_list)

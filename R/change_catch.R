@@ -21,10 +21,8 @@
 #'
 #' @author Kathryn Doering
 #'
-change_catch <- function(
-  dat_list,
-  ctl_list
-) {
+change_catch <- function(dat_list,
+                         ctl_list) {
 
   #### Pull out F values from control file
   newvals <- ctl_list[["F_setup2"]]
@@ -43,8 +41,8 @@ change_catch <- function(
   if (!is.null(ctl_list[["init_F"]])) {
     equil <- as.data.frame(do.call("rbind", strsplit(
       x = gsub("InitF_|Flt[0-9]+$", "", rownames(ctl_list[["init_F"]])),
-      split = "seas_|_flt_")
-    )[, -1])
+      split = "seas_|_flt_"
+    ))[, -1])
     colnames(equil) <- c("seas", "fleet")
     equil[, "year"] <- -999
     equil[, "catch"] <- 1
@@ -72,7 +70,7 @@ change_catch <- function(
   #### Insert dummy catch data
   dat_list[["catch"]] <- newvals[
     order(newvals[["fleet"]], newvals[["year"]], newvals[["seas"]]),
-    ]
+  ]
 
   return(dat_list)
 }

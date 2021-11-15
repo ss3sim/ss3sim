@@ -34,33 +34,39 @@
 #' d <- r4ss::SS_readdat(f, version = NULL, verbose = FALSE)
 #'
 #' # An example with lbin_method = 1
-#' l1 <- change_em_binning(d, outfile = NULL, lbin_method = 1,
-#'   bin_vector = seq(20, 152, by = 4))
+#' l1 <- change_em_binning(d,
+#'   outfile = NULL, lbin_method = 1,
+#'   bin_vector = seq(20, 152, by = 4)
+#' )
 #' l1$lbin_vector
 #' head(l1$lencomp)
 #'
-#' #An example with lbin_method = 2
+#' # An example with lbin_method = 2
 #' new_bin_vec <- seq(min(d$lbin_vector), max(d$lbin_vector), by = 4)
 #' # add the max value if necessary.
-#' if(new_bin_vec[length(new_bin_vec)] != d$lbin_vector[length(d$lbin_vector)]){
-#'   new_bin_vec <- c(new_bin_vec,
-#'                    d$lbin_vector[length(d$lbin_vector)])
+#' if (new_bin_vec[length(new_bin_vec)] != d$lbin_vector[length(d$lbin_vector)]) {
+#'   new_bin_vec <- c(
+#'     new_bin_vec,
+#'     d$lbin_vector[length(d$lbin_vector)]
+#'   )
 #' }
 #' pop_bin_input <- 5
 #' pop_min_size_input <- min(d$lbin_vector_pop) - 1
 #' pop_max_size_input <- max(d$lbin_vector_pop) + 5
-#' lbin_vec_pop <-seq(pop_min_size_input,
-#'                    pop_max_size_input,
-#'                    length.out = (pop_max_size_input - pop_min_size_input)/
-#'                      pop_bin_input + 1
+#' lbin_vec_pop <- seq(pop_min_size_input,
+#'   pop_max_size_input,
+#'   length.out = (pop_max_size_input - pop_min_size_input) /
+#'     pop_bin_input + 1
 #' )
-#' l2 <- change_em_binning(dat_list = d,
-#'                             bin_vector = new_bin_vec,
-#'                             lbin_method = 2,
-#'                             #Note: need more inputs with lbin_method = 2
-#'                             pop_binwidth = pop_bin_input,
-#'                             pop_minimum_size = pop_min_size_input,
-#'                             pop_maximum_size = pop_max_size_input)
+#' l2 <- change_em_binning(
+#'   dat_list = d,
+#'   bin_vector = new_bin_vec,
+#'   lbin_method = 2,
+#'   # Note: need more inputs with lbin_method = 2
+#'   pop_binwidth = pop_bin_input,
+#'   pop_minimum_size = pop_min_size_input,
+#'   pop_maximum_size = pop_max_size_input
+#' )
 #' l2$lbin_method
 #' # note bin width is now the same as the input
 #' pop_bin_input
@@ -71,14 +77,14 @@
 #' # so has max
 #' l2$maximum_size
 #' l2$lbin_vector
-#' #other modified components:
+#' # other modified components:
 #' l2$lbin_vector_pop
 #' head(l2$lencomp)
 change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method = NULL,
-                              pop_binwidth=NULL, pop_minimum_size=NULL,
-                              pop_maximum_size=NULL) {
+                              pop_binwidth = NULL, pop_minimum_size = NULL,
+                              pop_maximum_size = NULL) {
   ## If lbin_method is NULL then don't do anything
-  if (is.null(lbin_method)){
+  if (is.null(lbin_method)) {
     warning("lbin_method must be supplied for em rebinning to run. Skipping rebinning.")
     return(dat_list)
   }
@@ -88,32 +94,41 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
   }
 
   if (length(bin_vector) > length(dat_list$lbin_vector)) {
-    stop("The specified bin_vector is longer than the original ",
-         "lbin_vector in the Stock Synthesis data file and therefore can't be re-binned.")
+    stop(
+      "The specified bin_vector is longer than the original ",
+      "lbin_vector in the Stock Synthesis data file and therefore can't be re-binned."
+    )
   }
 
   if (length(bin_vector) == 1) {
-    warning("length(bin_vector) == 1; are you sure you input a full numeric ",
-            "vector of bins and not a bin size?")
+    warning(
+      "length(bin_vector) == 1; are you sure you input a full numeric ",
+      "vector of bins and not a bin size?"
+    )
   }
   ## verify correct pop bin specification
   if (!is.null(lbin_method)) {
-      ## If you implement method 3 need to alter code below
-      if(lbin_method==1 & !all(is.null(pop_binwidth) & is.null(pop_minimum_size) & is.null(pop_maximum_size)))
-          warning("lbin_method=1 so pop bin parameters ignored and data bins used")
-      if(lbin_method==2 & any(is.null(pop_binwidth), is.null(pop_minimum_size), is.null(pop_maximum_size)))
-          stop("you must specify all pop bin parameters if using lbin_method=2")
-      if (lbin_method > 2)
-          stop("lbin_method method should be either NULL, 1 or 2; 3 is not currently implemented")
+    ## If you implement method 3 need to alter code below
+    if (lbin_method == 1 & !all(is.null(pop_binwidth) & is.null(pop_minimum_size) & is.null(pop_maximum_size))) {
+      warning("lbin_method=1 so pop bin parameters ignored and data bins used")
+    }
+    if (lbin_method == 2 & any(is.null(pop_binwidth), is.null(pop_minimum_size), is.null(pop_maximum_size))) {
+      stop("you must specify all pop bin parameters if using lbin_method=2")
+    }
+    if (lbin_method > 2) {
+      stop("lbin_method method should be either NULL, 1 or 2; 3 is not currently implemented")
+    }
   }
   if (is.null(dat_list$lencomp)) {
     stop("no lcomp data. Verify your input arguments.")
   }
   if (dat_list$Ngenders > 1) {
-    stop("_Ngenders is greater than 1 in the model.change_em_binning only ",
-         "works with single-sex models.")
+    stop(
+      "_Ngenders is greater than 1 in the model.change_em_binning only ",
+      "works with single-sex models."
+    )
   }
-  #todo: determine if the commented out stops should be brought back
+  # todo: determine if the commented out stops should be brought back
   # if (!identical(as.integer(max(bin_vector)), as.integer(max(dat_list$lbin_vector)))) {
   #   stop("The maximum value in the bin_vector is not equal to the original ",
   #        "maximum length bin value.")
@@ -122,9 +137,11 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
   #   stop("The minimum value in the bin_vector is not equal to the original ",
   #        "minimum length bin value.")
   # }
-  if (any(!is_divisible(bin_vector, by_ = dat_list$binwidth)) ) {
-    stop("One or more of the values in bin_vector are not divisible by the ",
-      "population binwidth specified in the Stock Synthesis data file.")
+  if (any(!is_divisible(bin_vector, by_ = dat_list$binwidth))) {
+    stop(
+      "One or more of the values in bin_vector are not divisible by the ",
+      "population binwidth specified in the Stock Synthesis data file."
+    )
   }
 
   # Find ID columns and data columns to replace:
@@ -135,30 +152,33 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
   old_binvector <- dat_list$lbin_vector
 
   # change population length bin width
-  lcomp_new <- as.data.frame(matrix(0, nrow = nrow(newdummy),
-    ncol = length(bin_vector)))
+  lcomp_new <- as.data.frame(matrix(0,
+    nrow = nrow(newdummy),
+    ncol = length(bin_vector)
+  ))
   names(lcomp_new) <- paste0("l", bin_vector)
 
   # Re-bin length comps:
   for (i in seq_along(bin_vector)) {
-
     if (i == 1) {
       select_col <- which(dat_list$lbin_vector < bin_vector[i + 1])
       if (length(select_col) > 1) {
         lcomp_new[, i] <- apply(newdummy[, select_col], 1, sum, na.rm = TRUE)
       }
-      if (length(select_col) == 1)
+      if (length(select_col) == 1) {
         lcomp_new[, i] <- newdummy[, select_col]
+      }
     }
 
     if (i > 1 & i < length(bin_vector)) {
       select_col <- which(dat_list$lbin_vector >= bin_vector[i] &
-          dat_list$lbin_vector < bin_vector[i + 1])
+        dat_list$lbin_vector < bin_vector[i + 1])
       if (length(select_col) > 1) {
         lcomp_new[, i] <- apply(newdummy[, select_col], 1, sum, na.rm = TRUE)
       }
-      if (length(select_col) == 1)
+      if (length(select_col) == 1) {
         lcomp_new[, i] <- newdummy[, select_col]
+      }
     }
 
     if (i == length(bin_vector)) {
@@ -196,9 +216,11 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
       dat_list$lbin_vector_pop <- dat_list$lbin_vector
     } else {
       ## it is 2 so we  need to specify width, min and max
-      dat_list <- change_pop_bin(dat_list, binwidth = pop_binwidth,
-                                 minimum_size = pop_minimum_size,
-                                 maximum_size = pop_maximum_size)
+      dat_list <- change_pop_bin(dat_list,
+        binwidth = pop_binwidth,
+        minimum_size = pop_minimum_size,
+        maximum_size = pop_maximum_size
+      )
     }
   }
 
@@ -206,19 +228,24 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
   # if all Lbin_lo == -1 then there aren't any CAL data:
   if (length(unique(dat_list$agecomp$Lbin_lo)) > 1) {
     if (!identical(dat_list$Lbin_method, 3)) {
-      stop("Lbin_method was not set to 3 in the Stock Synthesis data file. ",
-           "change_em_binning() requires the data file to specify conditional ",
-           "age-at-length data with Lbin_method == 3. See the Stock Synthesis manual. Note ",
-           "the capital L in Lbin_method.")
-      }
+      stop(
+        "Lbin_method was not set to 3 in the Stock Synthesis data file. ",
+        "change_em_binning() requires the data file to specify conditional ",
+        "age-at-length data with Lbin_method == 3. See the Stock Synthesis manual. Note ",
+        "the capital L in Lbin_method."
+      )
+    }
 
     if (dat_list$lbin_method == 2) {
       population_bins <- seq(dat_list$minimum_size, dat_list$maximum_size,
-        by = dat_list$binwidth)
+        by = dat_list$binwidth
+      )
       if (!all(bin_vector %in% population_bins)) {
-        stop("One or more of bin_vector is not contained in the ",
-             "population bins (and lbin_method = 2). This is required in ",
-             "Stock Synthesis for conditional-age-at-length data.")
+        stop(
+          "One or more of bin_vector is not contained in the ",
+          "population bins (and lbin_method = 2). This is required in ",
+          "Stock Synthesis for conditional-age-at-length data."
+        )
       }
     }
 
@@ -233,43 +260,50 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
 
     # remove columns we'll merge back in after:
     a_ids_character <- names(old_cal_all)[a_ids]
-    old_cal <- old_cal_all[ , c("Yr", "Lbin_lo", a_ids_character)]
+    old_cal <- old_cal_all[, c("Yr", "Lbin_lo", a_ids_character)]
 
     # make a lookup table of old and new bins:
     lookup <- data.frame(
       Lbin_lo = old_binvector,
       lbin_new_low = bin_vector[findInterval(old_binvector, bin_vector)],
-      lbin_new_high = bin_vector[findInterval(old_binvector, bin_vector)])
+      lbin_new_high = bin_vector[findInterval(old_binvector, bin_vector)]
+    )
 
     # the re-binning happens here:
     new_cal <- merge(old_cal, lookup, by = "Lbin_lo", all = FALSE, sort = FALSE)
     dat_cols <- names(new_cal)[grep("^a[0-9.]+$", names(new_cal))]
-    new_cal <- stats::aggregate(new_cal[,dat_cols],
+    new_cal <- stats::aggregate(new_cal[, dat_cols],
       by = list(
         "Yr" = new_cal$Yr,
         "Lbin_lo" = new_cal$lbin_new_low,
-        "Lbin_hi" = new_cal$lbin_new_high),
-      sum)
+        "Lbin_hi" = new_cal$lbin_new_high
+      ),
+      sum
+    )
 
     new_cal$Nsamp <- rowSums(new_cal[, grepl("^a[0-9.]+$", names(new_cal))])
 
-    new_cal_meta_dat <- old_cal_all[seq_len(nrow(new_cal)),
+    new_cal_meta_dat <- old_cal_all[
+      seq_len(nrow(new_cal)),
       -which(names(old_cal_all) %in%
-        c("Yr", "Lbin_lo", a_ids_character, "Lbin_hi", "Nsamp"))]
+        c("Yr", "Lbin_lo", a_ids_character, "Lbin_hi", "Nsamp"))
+    ]
     new_cal <- cbind(new_cal_meta_dat, new_cal)
 
     # re-order the columns:
     new_cal <- new_cal[, match(names(old_cal_all), names(new_cal))]
 
     # and slot the new data into the .dat file:
-    dat_list$agecomp   <- rbind(old_age, new_cal)
+    dat_list$agecomp <- rbind(old_age, new_cal)
     dat_list$N_agecomp <- nrow(dat_list$agecomp)
 
     new_age_dat <- dat_list$agecomp[, grepl("^a[0-9.]+$", names(dat_list$agecomp))]
     new_agecomp_total <- sum(new_age_dat)
     if (!identical(old_agecomp_total, new_agecomp_total)) {
-      stop("Number of samples in the new agecomp data matrix does not match",
-           "the number of samples in the original dataset.")
+      stop(
+        "Number of samples in the new agecomp data matrix does not match",
+        "the number of samples in the original dataset."
+      )
     }
   }
 

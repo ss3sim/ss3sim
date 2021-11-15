@@ -99,18 +99,23 @@
 #' @export
 #' @import lifecycle
 #' @examples
-#'  \dontrun{
+#' \dontrun{
 #' # A run with deterministic process error for model checking
 #' # by passing user_recdevs to ss3sim_base through run_ss3sim:
 #' recdevs_det <- matrix(0, nrow = 101, ncol = 2)
 #' df <- data.frame(setup_scenarios_defaults(),
-#'   "scenarios" = "determinate")
-#' run_ss3sim(iterations = 1:2, simdf = df,
-#'   bias_adjust = FALSE, user_recdevs = recdevs_det)
+#'   "scenarios" = "determinate"
+#' )
+#' run_ss3sim(
+#'   iterations = 1:2, simdf = df,
+#'   bias_adjust = FALSE, user_recdevs = recdevs_det
+#' )
 #' get_results_all(user_scenarios = "determinate", overwrite = TRUE)
 #' ts <- utils::read.csv("ss3sim_ts.csv")
-#' expect_equivalent(unlist(ts$rec_dev[ts$year %in% 1:10 & ts$iteration == 2]),
-#'   recdevs_det[1:10, 2])
+#' expect_equivalent(
+#'   unlist(ts$rec_dev[ts$year %in% 1:10 & ts$iteration == 2]),
+#'   recdevs_det[1:10, 2]
+#' )
 #' }
 #'
 run_ss3sim <- function(iterations, simdf = NULL, parallel = FALSE,
@@ -119,38 +124,57 @@ run_ss3sim <- function(iterations, simdf = NULL, parallel = FALSE,
                        om_dir = deprecated(), em_dir = deprecated(),
                        case_files = deprecated(),
                        ...) {
-
   depr_args <- c("scenarios", "case_folder", "om_dir", "em_dir", "case_files")
-    if(lifecycle::is_present(scenarios)) {
-      lifecycle::deprecate_stop(when = "1.1.4",
-                                what = paste0("ss3sim::run_ss3sim(",
-                                              "scenarios", " = )"))
-    }
-    if(lifecycle::is_present(case_folder)) {
-      lifecycle::deprecate_stop(when = "1.1.4",
-                                what = paste0("ss3sim::run_ss3sim(",
-                                              "case_folder", " = )"))
-    }
-  if(lifecycle::is_present(om_dir)) {
-    lifecycle::deprecate_stop(when = "1.1.4",
-                              what = paste0("ss3sim::run_ss3sim(",
-                                            "om_dir", " = )"))
+  if (lifecycle::is_present(scenarios)) {
+    lifecycle::deprecate_stop(
+      when = "1.1.4",
+      what = paste0(
+        "ss3sim::run_ss3sim(",
+        "scenarios", " = )"
+      )
+    )
   }
-  if(lifecycle::is_present(em_dir)) {
-    lifecycle::deprecate_stop(when = "1.1.4",
-                              what = paste0("ss3sim::run_ss3sim(",
-                                            "em_dir", " = )"))
+  if (lifecycle::is_present(case_folder)) {
+    lifecycle::deprecate_stop(
+      when = "1.1.4",
+      what = paste0(
+        "ss3sim::run_ss3sim(",
+        "case_folder", " = )"
+      )
+    )
   }
-  if(lifecycle::is_present(case_files)) {
-    lifecycle::deprecate_stop(when = "1.1.4",
-                              what = paste0("ss3sim::run_ss3sim(",
-                                            "case_files", " = )"))
+  if (lifecycle::is_present(om_dir)) {
+    lifecycle::deprecate_stop(
+      when = "1.1.4",
+      what = paste0(
+        "ss3sim::run_ss3sim(",
+        "om_dir", " = )"
+      )
+    )
+  }
+  if (lifecycle::is_present(em_dir)) {
+    lifecycle::deprecate_stop(
+      when = "1.1.4",
+      what = paste0(
+        "ss3sim::run_ss3sim(",
+        "em_dir", " = )"
+      )
+    )
+  }
+  if (lifecycle::is_present(case_files)) {
+    lifecycle::deprecate_stop(
+      when = "1.1.4",
+      what = paste0(
+        "ss3sim::run_ss3sim(",
+        "case_files", " = )"
+      )
+    )
   }
 
 
-  if(parallel) {
+  if (parallel) {
     cores <- setup_parallel()
-    if(cores == 1) parallel <- FALSE
+    if (cores == 1) parallel <- FALSE
   }
   arg_list <- setup_scenarios(simdf)
   # Note that inside a foreach loop you pop out of your current
@@ -167,15 +191,19 @@ run_ss3sim <- function(iterations, simdf = NULL, parallel = FALSE,
       ignore <- lapply(arg_list, function(x) {
         dots <- list(...)
         message("Running iterations in parallel.")
-        foreach::foreach(it_ = iterations, .packages = "ss3sim",
-          .verbose = TRUE, .export = "substr_r") %dopar%
-            do.call("ss3sim_base",  c(x, list(iterations = it_), dots))
+        foreach::foreach(
+          it_ = iterations, .packages = "ss3sim",
+          .verbose = TRUE, .export = "substr_r"
+        ) %dopar%
+          do.call("ss3sim_base", c(x, list(iterations = it_), dots))
       })
     } else {
       message("Running scenarios in parallel.")
-      ignore <- foreach::foreach(x = arg_list, .packages = "ss3sim",
-        .verbose = FALSE, .export = "substr_r") %dopar%
-          do.call("ss3sim_base", c(x, list(iterations = iterations, ...)))
+      ignore <- foreach::foreach(
+        x = arg_list, .packages = "ss3sim",
+        .verbose = FALSE, .export = "substr_r"
+      ) %dopar%
+        do.call("ss3sim_base", c(x, list(iterations = iterations, ...)))
     }
   } else {
     message("Running scenarios and iterations sequentially.")
@@ -184,7 +212,9 @@ run_ss3sim <- function(iterations, simdf = NULL, parallel = FALSE,
     })
   }
 
-  message("Completed iterations: ", paste(iterations, collapse = ", "),
-    " for scenarios: ", paste(unlist(ignore), collapse = ", "))
+  message(
+    "Completed iterations: ", paste(iterations, collapse = ", "),
+    " for scenarios: ", paste(unlist(ignore), collapse = ", ")
+  )
   return(unlist(ignore))
 }

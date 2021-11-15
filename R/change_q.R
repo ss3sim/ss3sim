@@ -42,43 +42,50 @@
 #' @seealso [check_q()] can determine which fleets should removed or added.
 #' @author Kelli F. Johnson
 change_q <- function(string_add = NULL, string_remove = NULL,
-  ctl_list, dat_list, ctl_file_in = NULL, dat_file_in = NULL, ctl_file_out = NULL,
-  overwrite = FALSE, verbose = FALSE) {
-
-  if(!is.null(dat_file_in)) {
-    dat_list <- r4ss::SS_readdat(verbose = FALSE, echoall = FALSE,
-      file = dat_file_in)
+                     ctl_list, dat_list, ctl_file_in = NULL, dat_file_in = NULL, ctl_file_out = NULL,
+                     overwrite = FALSE, verbose = FALSE) {
+  if (!is.null(dat_file_in)) {
+    dat_list <- r4ss::SS_readdat(
+      verbose = FALSE, echoall = FALSE,
+      file = dat_file_in
+    )
   }
-  if(!is.null(ctl_file_in)) {
-    ctl_list <- r4ss::SS_readctl(verbose = FALSE,
+  if (!is.null(ctl_file_in)) {
+    ctl_list <- r4ss::SS_readctl(
+      verbose = FALSE,
       file = ctl_file_in,
-      use_datlist = TRUE, datlist = dat_list)
+      use_datlist = TRUE, datlist = dat_list
+    )
   }
   add <- remove <- NULL
 
-  for(ii in c("remove", "add")) {
+  for (ii in c("remove", "add")) {
     thisloop <- get(paste0("string_", ii))
-    if(is.null(thisloop)) next
+    if (is.null(thisloop)) next
     chars <- grepl("[a-zA-Z]", thisloop)
     temp <- unlist(utils::type.convert(ifelse(grepl("[a-zA-Z]", thisloop),
-      mapply(grep, thisloop, 
-        MoreArgs = list(x = dat_list[["fleetnames"]], ignore.case = TRUE)),
-      thisloop), as.is = TRUE))
-    if(length(thisloop) != length(temp) & verbose) {
-      warning("Not all fleets in string.", ii, " were present to be removed.",
-        "\nThose not present will be ignored.")
+      mapply(grep, thisloop,
+        MoreArgs = list(x = dat_list[["fleetnames"]], ignore.case = TRUE)
+      ),
+      thisloop
+    ), as.is = TRUE))
+    if (length(thisloop) != length(temp) & verbose) {
+      warning(
+        "Not all fleets in string.", ii, " were present to be removed.",
+        "\nThose not present will be ignored."
+      )
     }
     temp <- temp[order(temp)]
-    if(!all(temp %in% seq(dat_list$Nfleets))) {
+    if (!all(temp %in% seq(dat_list$Nfleets))) {
       warning("Not all fleets in string.", ii, " were present to be removed.")
       temp <- temp[temp %in% seq(dat_list$Nfleets)]
     }
     assign(ii, temp)
   }
 
-  if(!is.null(string_remove) & length(remove) > 0) {
+  if (!is.null(string_remove) & length(remove) > 0) {
     ctl_list$Q_options <- ctl_list$Q_options[!ctl_list$Q_options$fleet %in% remove, ]
-    if(NROW(ctl_list[["Q_options"]]) == 0) {
+    if (NROW(ctl_list[["Q_options"]]) == 0) {
       ctl_list$Q_options <- NULL
       ctl_list$Q_parms <- NULL
     } else {
@@ -86,42 +93,51 @@ change_q <- function(string_add = NULL, string_remove = NULL,
         !grepl(
           paste0("\\(", remove, "\\)$", collapse = "|"),
           row.names(ctl_list$Q_parms)
-        ), ]
+        ),
+      ]
     }
   }
 
-  if(!is.null(string_add) & length(add) > 0) {
+  if (!is.null(string_add) & length(add) > 0) {
     # todo: add ability to estimate extra SE
     ctl_list$Q_options <- rbind(
-      data.frame("fleet" = add, "link" = 1, "link_info" = 1,
-        "extra_se" = 0, "biasadj" = 0, "float" = 1),
-      ctl_list$Q_options)
+      data.frame(
+        "fleet" = add, "link" = 1, "link_info" = 1,
+        "extra_se" = 0, "biasadj" = 0, "float" = 1
+      ),
+      ctl_list$Q_options
+    )
     ctl_list$Q_options <- ctl_list$Q_options[order(ctl_list$Q_options$fleet), ]
     row.names(ctl_list$Q_options)[add] <- dat_list$fleetnames[add]
-    temp <- data.frame("LO" = -3, "HI" = 3, "INIT" = 0.0, "PRIOR" = 0,
-        "PR_SD" = 99, "PR_type" = 0, "PHASE" = -5, "env_var&link" = 0,
-        "dev_link" = 0, "dev_minyr" = 0, "dev_maxyr" = 0,
-        "dev_PH" = 0, "Block" = 0, "Block_Fxn" = 0)
+    temp <- data.frame(
+      "LO" = -3, "HI" = 3, "INIT" = 0.0, "PRIOR" = 0,
+      "PR_SD" = 99, "PR_type" = 0, "PHASE" = -5, "env_var&link" = 0,
+      "dev_link" = 0, "dev_minyr" = 0, "dev_maxyr" = 0,
+      "dev_PH" = 0, "Block" = 0, "Block_Fxn" = 0
+    )
     temp[seq(dat_list$Nfleets), ] <- temp[1, ]
     temp <- temp[add, ]
     row.names(temp) <- paste0("LnQ_base_", dat_list$fleetnames[add], "(", add, ")")
     ctl_list$Q_parms <- rbind(temp, ctl_list$Q_parms)
     ctl_list$Q_parms <- ctl_list$Q_parms[order(
-      utils::type.convert(gsub("a-zA-Z_\\(\\)", "", row.names(ctl_list$Q_parms)), as.is = TRUE)), ]
+      utils::type.convert(gsub("a-zA-Z_\\(\\)", "", row.names(ctl_list$Q_parms)), as.is = TRUE)
+    ), ]
   }
 
   if (!is.null(ctl_file_out)) {
-    r4ss::SS_writectl(ctllist = ctl_list, outfile = ctl_file_out,
-      verbose = FALSE, overwrite = overwrite)
+    r4ss::SS_writectl(
+      ctllist = ctl_list, outfile = ctl_file_out,
+      verbose = FALSE, overwrite = overwrite
+    )
   }
   invisible(ctl_list)
 }
 
 #' Check if desired \eqn{q} parameters exist in control file
-#' 
+#'
 #' Check a Stock Synthesis control file to determine if the desired fleets
 #' have q parameters.
-#' 
+#'
 #' @template ctl_list
 #' @param Nfleets The number of fleets in the model.
 #' This can be determined manually from the data file or
@@ -156,15 +172,14 @@ change_q <- function(string_add = NULL, string_remove = NULL,
 #' stopifnot(all(mapply(is.null, check_q(ctl, dat[["Nfleets"]], desiredfleets = 1:2))))
 #' stopifnot(check_q(ctl, dat[["Nfleets"]], desiredfleets = 1:3)[["add"]] == 3)
 #' stopifnot(check_q(ctl, dat[["Nfleets"]], desiredfleets = 2:3)[["remove"]] == 1)
-#'
 check_q <- function(ctl_list, Nfleets, desiredfleets) {
-  #figure out which are needed and which are not
+  # figure out which are needed and which are not
   no_q <- seq(Nfleets)[!seq(Nfleets) %in% desiredfleets]
   yes_q <- seq(Nfleets)[seq(Nfleets) %in% desiredfleets]
   # figure out which need to be removed
   remove <- ctl_list$Q_options$fleet[ctl_list$Q_options$fleet %in% no_q]
   add <- yes_q[!(yes_q %in% ctl_list$Q_options$fleet)]
-  if(length(add) == 0) add <- NULL
-  if(length(remove) == 0) remove <- NULL
+  if (length(add) == 0) add <- NULL
+  if (length(remove) == 0) remove <- NULL
   return(list("add" = add, "remove" = remove))
 }
