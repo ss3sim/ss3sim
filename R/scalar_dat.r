@@ -10,10 +10,10 @@
 #' @keywords data
 #' @examples
 #' data("scalar_dat", package = "ss3sim")
-#'
 #' \dontshow{
 #' testthat::expect_true("max_grad" %in% colnames(scalar_dat),
-#'   label = "the column 'max_grad' of the scalar data set")
+#'   label = "the column 'max_grad' of the scalar data set"
+#' )
 #' }
 #'
 NULL

@@ -71,11 +71,11 @@
 #' @author Cole Monnahan, Ian G. Taylor, Sean Anderson, Kelli F. Johnson
 #'
 change_data <- function(dat_list, outfile = NULL, fleets, years,
-  types = c("len", "age", "cal", "mla", "mwa"),
-  age_bins = NULL, len_bins = NULL, pop_binwidth = NULL,
-  pop_minimum_size = NULL, pop_maximum_size = NULL,
-  lcomp_constant = NULL, tail_compression = NULL,
-  nsex = 1) {
+                        types = c("len", "age", "cal", "mla", "mwa"),
+                        age_bins = NULL, len_bins = NULL, pop_binwidth = NULL,
+                        pop_minimum_size = NULL, pop_maximum_size = NULL,
+                        lcomp_constant = NULL, tail_compression = NULL,
+                        nsex = 1) {
 
   # TODO: pop length bins must not be wider than the length data bins, but the
   # boundaries of the bins do not need to align (from Stock Synthesis manual)
@@ -87,10 +87,10 @@ change_data <- function(dat_list, outfile = NULL, fleets, years,
   if ((!is.atomic(fleets)) | (!is.atomic(years))) {
     stop("fleets and years input both need to be numeric vectors")
   }
-  if(any(years < dat_list$styr) | any(years > dat_list$endyr)) {
+  if (any(years < dat_list$styr) | any(years > dat_list$endyr)) {
     stop("Some years specified in years are not within the model years of dat_list")
   }
-  if(any(!fleets %in% 1:dat_list$Nfleets)){
+  if (any(!fleets %in% 1:dat_list$Nfleets)) {
     stop("Some fleets specified in fleets are not included in dat_list")
   }
 
@@ -99,17 +99,21 @@ change_data <- function(dat_list, outfile = NULL, fleets, years,
 
   # population bins:
   # change_pop_bin() deals with NULLs internally by not changing values:
-  dat_list <- change_pop_bin(dat_list, binwidth = pop_binwidth,
-                minimum_size = pop_minimum_size,
-                maximum_size = pop_maximum_size)
+  dat_list <- change_pop_bin(dat_list,
+    binwidth = pop_binwidth,
+    minimum_size = pop_minimum_size,
+    maximum_size = pop_maximum_size
+  )
 
-  if(is.null(len_bins)) len_bins <- dat_list$lbin_vector
-  if(is.null(age_bins)) age_bins <- dat_list$agebin_vector
+  if (is.null(len_bins)) len_bins <- dat_list$lbin_vector
+  if (is.null(age_bins)) age_bins <- dat_list$agebin_vector
 
   ## Now modify each data type in turn
   if ("len" %in% types) {
-    dat_list$lencomp <- make_dummy_dat_lencomp(fleets = fleets, years = years,
-                          len_bins = len_bins, nsex = nsex)
+    dat_list$lencomp <- make_dummy_dat_lencomp(
+      fleets = fleets, years = years,
+      len_bins = len_bins, nsex = nsex
+    )
     dat_list$lbin_vector <- len_bins
     dat_list$N_lencomp <- nrow(dat_list$lencomp)
     dat_list$N_lbins <- length(len_bins)
@@ -117,8 +121,10 @@ change_data <- function(dat_list, outfile = NULL, fleets, years,
   ## Need to split calcomp and agecomp data as separate cases
   if ("age" %in% types) {
     conditional_data <- dat_list$agecomp[dat_list$agecomp$Lbin_lo >= 0, ]
-    new.agecomp <- make_dummy_dat_agecomp(fleets = fleets, years = years,
-                     age_bins = age_bins, nsex = nsex)
+    new.agecomp <- make_dummy_dat_agecomp(
+      fleets = fleets, years = years,
+      age_bins = age_bins, nsex = nsex
+    )
     dat_list$agecomp <- rbind(new.agecomp, conditional_data)
     dat_list$agebin_vector <- age_bins
     dat_list$N_agecomp <- nrow(dat_list$agecomp)
@@ -129,41 +135,53 @@ change_data <- function(dat_list, outfile = NULL, fleets, years,
   ## seriously slow down the OM to write uncessary calcomp data.
   if ("cal" %in% types) {
     agecomp <- dat_list$agecomp[dat_list$agecomp$Lbin_lo %in% c(-1, 0) &
-                                dat_list$agecomp$Lbin_hi %in% c(-1, 0), ]
-    if(!is.null(agecomp) && any(agecomp$Lbin_lo == 0 | agecomp$Lbin_hi == 0)) {
-      warning("Some regular age comp data (i.e., not conditional on length) ",
-              "had Lbin_lo and/or Lbin_high values as 0. It is safer to have ",
-              " all these values as -1 according to the Stock Synthesis user ",
-              "manual, so changing all to -1.")
+      dat_list$agecomp$Lbin_hi %in% c(-1, 0), ]
+    if (!is.null(agecomp) && any(agecomp$Lbin_lo == 0 | agecomp$Lbin_hi == 0)) {
+      warning(
+        "Some regular age comp data (i.e., not conditional on length) ",
+        "had Lbin_lo and/or Lbin_high values as 0. It is safer to have ",
+        " all these values as -1 according to the Stock Synthesis user ",
+        "manual, so changing all to -1."
+      )
       age_comp$Lbin_lo <- -1
       age_comp$Lbin_hi <- -1
     }
 
-    new.calcomp <- make_dummy_dat_calcomp(fleets = fleets,years = years,
-                     age_bins = age_bins, len_bins = len_bins, nsex = nsex)
+    new.calcomp <- make_dummy_dat_calcomp(
+      fleets = fleets, years = years,
+      age_bins = age_bins, len_bins = len_bins, nsex = nsex
+    )
     dat_list$agecomp <- rbind(agecomp, new.calcomp)
     dat_list$agebin_vector <- age_bins
     dat_list$N_agecomp <- nrow(dat_list$agecomp)
   }
 
   if ("mla" %in% types) {
-    dat_list$MeanSize_at_Age_obs <- make_dummy_dat_mlacomp(fleets = fleets,
-                                      years = years, age_bins = age_bins)
+    dat_list$MeanSize_at_Age_obs <- make_dummy_dat_mlacomp(
+      fleets = fleets,
+      years = years, age_bins = age_bins
+    )
     dat_list$N_MeanSize_at_Age_obs <- nrow(dat_list$MeanSize_at_Age_obs)
   }
 
-  if(!is.null(lcomp_constant)) {
-    dat_list <- change_lcomp_constant(lcomp_constant = lcomp_constant,
-      dat_list = dat_list, outfile = NULL)
+  if (!is.null(lcomp_constant)) {
+    dat_list <- change_lcomp_constant(
+      lcomp_constant = lcomp_constant,
+      dat_list = dat_list, outfile = NULL
+    )
   }
-  if(!is.null(tail_compression)) {
-    dat_list <- change_tail_compression(tail_compression = tail_compression,
-      dat_list = dat_list, outfile = NULL)
+  if (!is.null(tail_compression)) {
+    dat_list <- change_tail_compression(
+      tail_compression = tail_compression,
+      dat_list = dat_list, outfile = NULL
+    )
   }
 
   if (!is.null(outfile)) {
-    r4ss::SS_writedat(datlist = dat_list, outfile = outfile, version = dat_list$ReadVersion,
-      overwrite = TRUE, verbose = FALSE)
+    r4ss::SS_writedat(
+      datlist = dat_list, outfile = outfile, version = dat_list$ReadVersion,
+      overwrite = TRUE, verbose = FALSE
+    )
   }
   invisible(dat_list)
 }
@@ -209,7 +227,8 @@ change_data <- function(dat_list, outfile = NULL, fleets, years,
 #' testthat::expect_equal(morefleets[["years"]], 3:6)
 #' }
 #' ## Add length or age if missing and conditional-age-at-length is included
-#' test <- mapply(calculate_data_units, SIMPLIFY = FALSE,
+#' test <- mapply(calculate_data_units,
+#'   SIMPLIFY = FALSE,
 #'   lcomp_params = list(NULL, list(fleets = 1, years = 1:10)),
 #'   agecomp_params = list(NULL, NULL),
 #'   MoreArgs = list(calcomp_params = list(fleets = 1, years = 1:10))
@@ -222,9 +241,8 @@ change_data <- function(dat_list, outfile = NULL, fleets, years,
 #' @export
 #'
 calculate_data_units <- function(index_params = NULL, lcomp_params = NULL,
-  agecomp_params = NULL, calcomp_params = NULL,
-  mlacomp_params = NULL, wtatage_params = NULL){
-
+                                 agecomp_params = NULL, calcomp_params = NULL,
+                                 mlacomp_params = NULL, wtatage_params = NULL) {
   sample_args <- list(
     index = index_params,
     len = lcomp_params,
@@ -291,10 +309,12 @@ calculate_data_units <- function(index_params = NULL, lcomp_params = NULL,
 #'
 change_pop_bin <- function(dat_list, binwidth = NULL, minimum_size = NULL,
                            maximum_size = NULL, maximum_age = NULL) {
-  if(length(binwidth) > 1 | length(minimum_size) > 1 |
-     length(maximum_size) > 1) {
-    warning("Some inputs to function had length > 1. Using first value of ",
-            "vector input only.")
+  if (length(binwidth) > 1 | length(minimum_size) > 1 |
+    length(maximum_size) > 1) {
+    warning(
+      "Some inputs to function had length > 1. Using first value of ",
+      "vector input only."
+    )
   }
   dat_list$lbin_method <- 2
   if (!is.null(binwidth)) dat_list$binwidth <- binwidth[1]
@@ -302,9 +322,10 @@ change_pop_bin <- function(dat_list, binwidth = NULL, minimum_size = NULL,
   if (!is.null(maximum_size)) dat_list$maximum_size <- maximum_size[1]
   # according to Stock Synthesis manual 3.30.14,
   # this is how the number of bins is calculated.
-  nlbin_pop <- (dat_list$maximum_size - dat_list$minimum_size)/dat_list$binwidth + 1
+  nlbin_pop <- (dat_list$maximum_size - dat_list$minimum_size) / dat_list$binwidth + 1
   dat_list$lbin_vector_pop <- seq(dat_list$minimum_size, dat_list$maximum_size,
-                                  length.out = nlbin_pop)
+    length.out = nlbin_pop
+  )
   if (!is.null(maximum_age)) {
     if (dat_list$N_ageerror_definitions > 0) {
       if (NCOL(dat_list$ageerror) < (maximum_age + 1)) {
@@ -326,35 +347,46 @@ change_pop_bin <- function(dat_list, binwidth = NULL, minimum_size = NULL,
 #' @export
 
 check_data <- function(x) {
-  if (!is.list(x))
+  if (!is.list(x)) {
     stop("data file isn't a list; should be output from r4ss::SS_readdat()")
-
-  if(is.null(x$type)) {
-    stop("dat_list must be an r4ss data file read into R using ",
-         "r4ss::SSreaddat()")
   }
 
-  if(x$type != "Stock_Synthesis_data_file") {
-    stop("dat_list must be an r4ss data file read into R using ",
-         "r4ss::SSreaddat()")
+  if (is.null(x$type)) {
+    stop(
+      "dat_list must be an r4ss data file read into R using ",
+      "r4ss::SSreaddat()"
+    )
+  }
+
+  if (x$type != "Stock_Synthesis_data_file") {
+    stop(
+      "dat_list must be an r4ss data file read into R using ",
+      "r4ss::SSreaddat()"
+    )
   }
 
   if (!is.null(x$lbin_method)) {
-    if (x$lbin_method > 2)
+    if (x$lbin_method > 2) {
       stop("lbin_method in the SS data file should be either 1 or 2")
+    }
   }
 
   if (!identical(x$Lbin_method, 3)) {
-    stop("Lbin_method must be 3 to specify how the conditional",
+    stop(
+      "Lbin_method must be 3 to specify how the conditional",
       "age-at-length data are represented in the SS data file. ",
-      "\nSee the Stock Synthesis manual.")
+      "\nSee the Stock Synthesis manual."
+    )
   }
 
-  if (!identical(x$N_areas, 1))
+  if (!identical(x$N_areas, 1)) {
     stop("N_areas in the Stock Synthesis data file must be set to 1.")
+  }
 
-  if (!identical(x$areas, rep(1, x$Nfleets)))
-    stop("_area_assignments_for_each_fishery_and_survey must be set to 1",
-      " for all fleets in the Stock Synthesis data file.")
+  if (!identical(x$areas, rep(1, x$Nfleets))) {
+    stop(
+      "_area_assignments_for_each_fishery_and_survey must be set to 1",
+      " for all fleets in the Stock Synthesis data file."
+    )
+  }
 }
-

@@ -50,41 +50,49 @@ change_o <- function(change_o_list,
     check_eqlength("par_name" = par_name, "par_int" = par_int)
     change_o_list <- lapply(par_int, function(x) x)
     names(change_o_list) <- par_name
-  } else if (!(is.null(par_name) & is.null(par_int))){ # check for valid values
-    stop("Please make sure if you want to pass in arguments to change_o via ",
-         "par_name and par_int that BOTH have values. Par_name had value(s): ",
-         paste0(par_name, collapse = ", "), ", while par_int had value(s): ",
-         paste0(par_int, collapse = ", "), ".")
+  } else if (!(is.null(par_name) & is.null(par_int))) { # check for valid values
+    stop(
+      "Please make sure if you want to pass in arguments to change_o via ",
+      "par_name and par_int that BOTH have values. Par_name had value(s): ",
+      paste0(par_name, collapse = ", "), ", while par_int had value(s): ",
+      paste0(par_int, collapse = ", "), "."
+    )
   }
 
   # read in necessary ss files.
   ss3.ctl.parlines <- r4ss::SS_parlines(ctl_file_in, verbose = FALSE)
   # check for valid input ------------------------------------------------------
   # check that the variables can all be found and warn user if not
-  if(any(!(names(change_o_list) %in% ss3.ctl.parlines$Label))) {
+  if (any(!(names(change_o_list) %in% ss3.ctl.parlines$Label))) {
     tmp_names <- names(change_o_list)
     tmp_names <- tmp_names[-which(tmp_names %in% ss3.ctl.parlines)]
-    stop("The variables", paste(tmp_names, collapse = ", "), ", which the user",
-    " requested to modify in the OM could not be found in the OM control file.",
-    " Please check that this variable is in the OM control file.")
+    stop(
+      "The variables", paste(tmp_names, collapse = ", "), ", which the user",
+      " requested to modify in the OM could not be found in the OM control file.",
+      " Please check that this variable is in the OM control file."
+    )
   }
   # make sure only 1 value for each variable
-  if(any(lapply(change_o_list, function(x) length(x)) != 1)) {
+  if (any(lapply(change_o_list, function(x) length(x)) != 1)) {
     tmp_pos <- which(lapply(change_o_list, function(x) length(x)) != 1)
-    stop("The function change_o should only be used for changing single ",
-         "initial values in the OM control file. However, multiple values for ",
-         "the parameter", names(change_o_list)[tmp_pos], "were passed. If you ",
-         "wish to implement any parameter as time varying, please use the ",
-         "function change_tv instead and note that the input should be ",
-         "additive with the value already specified.")
+    stop(
+      "The function change_o should only be used for changing single ",
+      "initial values in the OM control file. However, multiple values for ",
+      "the parameter", names(change_o_list)[tmp_pos], "were passed. If you ",
+      "wish to implement any parameter as time varying, please use the ",
+      "function change_tv instead and note that the input should be ",
+      "additive with the value already specified."
+    )
   }
   # change the intial values ---------------------------------------------------
-  #make into a named vector
-  change_o_vec <- vapply(change_o_list, function(x) x[[1]], FUN.VALUE = 0.1 )
+  # make into a named vector
+  change_o_vec <- vapply(change_o_list, function(x) x[[1]], FUN.VALUE = 0.1)
   # pass to r4ss::SS_changepars
-  r4ss::SS_changepars(dir = NULL, ctlfile = ctl_file_in,
-                newctlfile = ctl_file_out, strings = names(change_o_vec),
-                newvals = change_o_vec, verbose = FALSE)
+  r4ss::SS_changepars(
+    dir = NULL, ctlfile = ctl_file_in,
+    newctlfile = ctl_file_out, strings = names(change_o_vec),
+    newvals = change_o_vec, verbose = FALSE
+  )
   # TODO: the way r4ss::SS_changepars is written means it is necessary to write to file.
   # May need to explore ways so a file does not need to be written, but a ctl r
   # object can be passed back with the changes.

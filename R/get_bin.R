@@ -12,7 +12,7 @@
 #' \dontrun{
 #' get_bin()
 #' }
-
+#'
 get_bin <- function(bin_name = "ss") {
   # code inspiration from glmmADMB package:
   if (.Platform$OS.type == "windows") {
@@ -22,11 +22,14 @@ get_bin <- function(bin_name = "ss") {
     if (grepl("3", bit)) {
       if (!grepl("86", bit)) {
         platform <- "Windows32"
-        warning("Stock Synthesis binary is not available for 32-bit ",
+        warning(
+          "Stock Synthesis binary is not available for 32-bit ",
           .Platform$OS.type, " within the package. ",
           "You must have an appropriate Stock Synthesis binary in your path. ",
-          "See the ss3sim vignette.")
-          }}
+          "See the ss3sim vignette."
+        )
+      }
+    }
   } else {
     if (substr(R.version$os, 1, 6) == "darwin") {
       platform <- "MacOS"
@@ -34,9 +37,11 @@ get_bin <- function(bin_name = "ss") {
       if (R.version$os == "linux-gnu") {
         platform <- "Linux64"
       } else {
-        warning("Stock Synthesis binary is not available for OS ", R.version$os,
+        warning(
+          "Stock Synthesis binary is not available for OS ", R.version$os,
           " within the package. You must have an appropriate Stock Synthesis binary in your ",
-          "path. See the ss3sim vignette.")
+          "path. See the ss3sim vignette."
+        )
       }
     }
   }
@@ -50,9 +55,13 @@ get_bin <- function(bin_name = "ss") {
 
   if (bin == "") { # resort to binaries in path
     bin <- Sys.which(bin_name)[[1]]
-    if(bin == "") stop(paste0("The expected Stock Synthesis executable, ", bin_name,
-      ", was not found in your path. See the ss3sim vignette and ?run_ss3model",
-      " for instructions."))
+    if (bin == "") {
+      stop(paste0(
+        "The expected Stock Synthesis executable, ", bin_name,
+        ", was not found in your path. See the ss3sim vignette and ?run_ss3model",
+        " for instructions."
+      ))
+    }
   }
   if (grepl("[[:space:]]", bin)) {
     bin <- shQuote(bin)

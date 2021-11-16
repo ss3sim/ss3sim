@@ -38,11 +38,14 @@ calculate_bias <- function(dir, ctl_file_in) {
     return(list("convergence" = 999))
   }
 
-  replist <- r4ss::SS_output(dir = dir,
+  replist <- r4ss::SS_output(
+    dir = dir,
     forecast = FALSE, verbose = FALSE, printstats = FALSE,
-    NoCompOK = TRUE)
+    NoCompOK = TRUE
+  )
 
-  bias <- r4ss::SS_fitbiasramp(replist, plotdir = dir_bias,
+  bias <- r4ss::SS_fitbiasramp(replist,
+    plotdir = dir_bias,
     oldctl = file.path(dir, ctl_file_in),
     newctl = file.path(dir, ctl_file_in),
     startvalues = NULL,
@@ -51,9 +54,11 @@ calculate_bias <- function(dir, ctl_file_in) {
     verbose = FALSE, transform = FALSE, exclude_forecast = FALSE,
     twoplots = TRUE, plot = FALSE, print = TRUE, shownew = TRUE,
     pwidth = 6.5, pheight = 5.0, punits = "in",
-    ptsize = 10, res = 300, cex.main = 1)
+    ptsize = 10, res = 300, cex.main = 1
+  )
   if (bias$newbias$convergence != 0) {
-    bias <- r4ss::SS_fitbiasramp(replist, plotdir = dir_bias,
+    bias <- r4ss::SS_fitbiasramp(replist,
+      plotdir = dir_bias,
       oldctl = file.path(dir, ctl_file_in),
       newctl = file.path(dir, ctl_file_in),
       startvalues = bias$newbias$par,
@@ -62,9 +67,12 @@ calculate_bias <- function(dir, ctl_file_in) {
       verbose = FALSE, transform = FALSE, exclude_forecast = FALSE,
       twoplots = TRUE, plot = FALSE, print = TRUE, shownew = TRUE,
       pwidth = 6.5, pheight = 5.0, punits = "in",
-      ptsize = 10, res = 300, cex.main = 1)
+      ptsize = 10, res = 300, cex.main = 1
+    )
   }
-  ignore <- file.remove(dir(path = dir, full.names = TRUE,
-    pattern = "^admodel|[bpr][0-9]{2}$|gradient|cor$|new$|par$|sso$|std$"))
+  ignore <- file.remove(dir(
+    path = dir, full.names = TRUE,
+    pattern = "^admodel|[bpr][0-9]{2}$|gradient|cor$|new$|par$|sso$|std$"
+  ))
   return(bias)
 }

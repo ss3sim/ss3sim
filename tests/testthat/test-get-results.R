@@ -10,7 +10,8 @@ d <- system.file("extdata", package = "ss3sim")
 om <- file.path(d, "models", "cod-om")
 em <- file.path(d, "models", "cod-em")
 simple <- tail(dir(system.file("extdata", package = "r4ss"),
-  full.names = TRUE), 1)
+  full.names = TRUE
+), 1)
 
 dir.create(file.path("scenario", "1", "om"), recursive = TRUE)
 dir.create(file.path("scenario", "1", "em"), recursive = TRUE)
@@ -37,20 +38,23 @@ test_that("get_results_iter() works", {
 })
 
 test_that("get_results_iter() works with 3 models", {
-   dir.create(file.path("scenario", "1", "em_2"))
-   ignore <- file.copy(list.files(file.path("scenario", "1", "em"),
-     recursive = TRUE, full.names = TRUE),
-     file.path("scenario", "1", "em_2"), recursive = TRUE)
-   res <- get_results_iter(file.path(temp_path, "scenario", "1"))
-   expect_length(res, 3)
-   expect_identical(names(res), c("scalar", "timeseries", "derived"))
-   expect_true(NROW(res$scalar) == 3) # for em, em_2, and om
-   expect_true(all(c("model_run", "iteration") %in% colnames(res$scalar))) # b/c need to distinguish runs
-   expect_true(all(unique(res$scalar$model_run) == c("em","em_2", "om")))
-   expect_true(all(c("year", "model_run", "iteration") %in% colnames(res$timeseries)))
-   expect_true(all(unique(res$ts$model_run) == c("em","em_2","om")))
-   expect_true(all(c("year", "model_run", "iteration") %in% colnames(res$derived)))
-   expect_true(all(unique(res$dq$model_run) == c("em","em_2","om")))
+  dir.create(file.path("scenario", "1", "em_2"))
+  ignore <- file.copy(list.files(file.path("scenario", "1", "em"),
+    recursive = TRUE, full.names = TRUE
+  ),
+  file.path("scenario", "1", "em_2"),
+  recursive = TRUE
+  )
+  res <- get_results_iter(file.path(temp_path, "scenario", "1"))
+  expect_length(res, 3)
+  expect_identical(names(res), c("scalar", "timeseries", "derived"))
+  expect_true(NROW(res$scalar) == 3) # for em, em_2, and om
+  expect_true(all(c("model_run", "iteration") %in% colnames(res$scalar))) # b/c need to distinguish runs
+  expect_true(all(unique(res$scalar$model_run) == c("em", "em_2", "om")))
+  expect_true(all(c("year", "model_run", "iteration") %in% colnames(res$timeseries)))
+  expect_true(all(unique(res$ts$model_run) == c("em", "em_2", "om")))
+  expect_true(all(c("year", "model_run", "iteration") %in% colnames(res$derived)))
+  expect_true(all(unique(res$dq$model_run) == c("em", "em_2", "om")))
 })
 
 test_that("get_results_all() works", {
@@ -70,7 +74,7 @@ test_that("get_results_all() works", {
 })
 
 test_that("convert_to_wide() works", {
-  scalar <-  read.csv("ss3sim_scalar.csv")
+  scalar <- read.csv("ss3sim_scalar.csv")
   scalar <- scalar[scalar$model_run %in% c("om", "em"), ]
   scalar_wide <- convert_to_wide(scalar)
   ts <- read.csv("ss3sim_ts.csv")
@@ -102,8 +106,10 @@ test_that("get_results_all() doesn't overwrite files if overwrite_files = FALSE"
 })
 
 test_that("get_results_scenario() doesn't overwrite files if overwrite_files = FALSE", {
-  expect_error(get_results_scenario("scenario", overwrite_files = FALSE),
-               "Files already exist for")
+  expect_error(
+    get_results_scenario("scenario", overwrite_files = FALSE),
+    "Files already exist for"
+  )
 })
 
 test_that("get_results_scenario() does overwrite files if overwrite_files = TRUE", {

@@ -18,27 +18,36 @@
 #' @author Amanda from [stack overflow](https://stackoverflow.com/questions/22870198/is-there-a-more-efficient-way-to-replace-null-with-na-in-a-list)
 #' @examples
 #' employees <- list(
-#'   list(id = 1,
+#'   list(
+#'     id = 1,
 #'     dept = "IT",
 #'     age = 29,
-#'     sportsteam = "softball"),
-#'   list(id = 2,
+#'     sportsteam = "softball"
+#'   ),
+#'   list(
+#'     id = 2,
 #'     dept = "IT",
 #'     age = 30,
-#'     sportsteam = NULL),
-#'   list(id = 3,
+#'     sportsteam = NULL
+#'   ),
+#'   list(
+#'     id = 3,
 #'     dept = "IT",
 #'     age = 29,
-#'     sportsteam = "hockey"),
-#'   list(id = 4,
+#'     sportsteam = "hockey"
+#'   ),
+#'   list(
+#'     id = 4,
 #'     dept = NULL,
 #'     age = 29,
-#'     sportsteam = "softball"))
+#'     sportsteam = "softball"
+#'   )
+#' )
 #' # Meat of the example here!
 #' \dontrun{
-#' # need %>% from [magrittr] package
-#'  do.call(rbind, lapply(employees, rbind)) magrittr::%>% data.frame() %>%
-#' purrr::modify_depth(2, replace_x)
+#' do.call(rbind, lapply(employees, rbind)) %>%
+#'   data.frame() %>%
+#'   purrr::modify_depth(2, replace_x)
 #' }
 #'
 replace_x <- function(x, replacement = NA_integer_) {

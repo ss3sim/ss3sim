@@ -46,31 +46,41 @@ setup_scenarios_fleet <- function(data) {
   # Use lookup to see if they are from the beginning section
   potentiallabels <- setup_scenarios_lookup()
   fleetspecificlabels <- names(potentiallabels)[
-    1:which(potentiallabels=="wtatage_params")
-    ]
+    1:which(potentiallabels == "wtatage_params")
+  ]
   beginlabel <- gsub("(.{2})\\..+", "\\1", data[["label"]])
-  if (all(is.na(data$arg))) return(data)
-  if (all(is.na(match(beginlabel, fleetspecificlabels)))) return(data)
+  if (all(is.na(data$arg))) {
+    return(data)
+  }
+  if (all(is.na(match(beginlabel, fleetspecificlabels)))) {
+    return(data)
+  }
 
   # Remove fleets that have an NA, which means they weren't sampled
-  removedfleets <- data %>% dplyr::filter(is.na(.data[["value"]])) %>% dplyr::pull(.data[["fleet"]])
+  removedfleets <- data %>%
+    dplyr::filter(is.na(.data[["value"]])) %>%
+    dplyr::pull(.data[["fleet"]])
   data <- data %>% dplyr::filter(!.data[["fleet"]] %in% removedfleets)
   #### Make data
   # Create a full data set providing one argument for each fleet
-  newdata <- dplyr::full_join(by = c("arg", "fleet"),
+  newdata <- dplyr::full_join(
+    by = c("arg", "fleet"),
     data,
-    tidyr::expand(data,
+    tidyr::expand(
+      data,
       .data[["arg"]],
       # see https://github.com/tidyverse/tidyr/issues/971 for why .data[["fleet"]] can't be used
       tidyr::nesting(fleet)
     ) %>%
-  # Remove the rows that aren't fleet-specific
-  tidyr::drop_na(.data[["fleet"]])
+      # Remove the rows that aren't fleet-specific
+      tidyr::drop_na(.data[["fleet"]])
   ) %>%
-  # Arrange and group so fill up works
-  dplyr::arrange(.data[["arg"]], .data[["fleet"]]) %>% dplyr::group_by(.data[["arg"]]) %>%
-  tidyr::fill(.data[["value"]], .direction = "up") %>%
-  dplyr::ungroup() %>% tidyr::drop_na(.data[["fleet"]])
+    # Arrange and group so fill up works
+    dplyr::arrange(.data[["arg"]], .data[["fleet"]]) %>%
+    dplyr::group_by(.data[["arg"]]) %>%
+    tidyr::fill(.data[["value"]], .direction = "up") %>%
+    dplyr::ungroup() %>%
+    tidyr::drop_na(.data[["fleet"]])
 
   # If no new data then return the old data
   if (NROW(newdata) == 0) {
@@ -78,19 +88,24 @@ setup_scenarios_fleet <- function(data) {
   } else {
     # Make the full data set to return, including new fleet variable
     return(
-      dplyr::nest_join(by = colnames(newdata),
+      dplyr::nest_join(
+        by = colnames(newdata),
         newdata,
-        data) %>%
-      dplyr::select(-.data[["data"]]) %>%
-      dplyr::full_join(by = c("label", "arg", "value"),
-        tibble::tibble(
-          label = paste(beginlabel[1], "fleets", sep = "."),
-          arg = "fleets",
-          value = list(utils::type.convert(as.is = TRUE,
-            data %>% tidyr::drop_na(.data[["fleet"]]) %>%
-            dplyr::distinct(.data[["fleet"]]) %>% dplyr::pull(.data[["fleet"]])))
+        data
+      ) %>%
+        dplyr::select(-.data[["data"]]) %>%
+        dplyr::full_join(
+          by = c("label", "arg", "value"),
+          tibble::tibble(
+            label = paste(beginlabel[1], "fleets", sep = "."),
+            arg = "fleets",
+            value = list(utils::type.convert(
+              as.is = TRUE,
+              data %>% tidyr::drop_na(.data[["fleet"]]) %>%
+                dplyr::distinct(.data[["fleet"]]) %>% dplyr::pull(.data[["fleet"]])
+            ))
+          )
         )
-      )
     )
   }
 }
@@ -114,11 +129,8 @@ setup_scenarios_fleet <- function(data) {
 #' See the input argument `returntype` for more information.
 #' @examples
 #' defaultscenarios <- setup_scenarios()
-#'
-setup_scenarios <- function (
-  df = "default",
-  returntype = c("list", "dataframe")) {
-
+setup_scenarios <- function(df = "default",
+                            returntype = c("list", "dataframe")) {
   returntype <- match.arg(returntype)
   if (is.character(df) && df == "default") {
     df <- setup_scenarios_defaults()
@@ -131,49 +143,62 @@ setup_scenarios <- function (
     df[["em_dir"]] <- setup_em_dir()
   }
   scenarios <- df %>%
-  # Use rownames to track scenarios
-  tibble::rownames_to_column() %>%
-  # evaluate all arguments, e.g., '1:4' to 1,2,3,4
-  dplyr::mutate(dplyr::across(dplyr::everything(),
-    ~purrr::map(.x, text2obj))) %>%
-  # wide to long by scenario
-  tidyr::pivot_longer(
-    !.data[["rowname"]],
-    names_to = "label",
-    values_to = "value") %>%
-  # change NULL to -999 b/c NULL has a zero length
-  # dplyr::mutate(
-  #   value = map(value, ~replace_x(.x, -999))
-  # ) %>%
-  # Split name into columns
-  tidyr::separate(
-    col = .data[["label"]],
-    into = c("type", "arg", "fleet"),
-    sep = "\\.",
-    fill = "right",
-    remove = FALSE) %>%
-  # Create one row per data type for each scenario
-  dplyr::group_by(.data[["rowname"]], .data[["type"]]) %>%
-  tidyr::nest() %>%
-  # Duplicate info by fleet
-  dplyr::mutate(data = purrr::map(.data[["data"]], setup_scenarios_fleet)) %>%
-  # Bring everything back together as a list of lists
-  tidyr::unnest(.data[["data"]]) %>% dplyr::ungroup() %>%
-  tidyr::unite(col = "label", .data[["type"]], .data[["arg"]], .data[["fleet"]],
-    sep = ".", na.rm = TRUE, remove = FALSE) %>%
-  dplyr::mutate(type = purrr::map_chr(.data[["type"]], ~setup_scenarios_lookup()[.x])) %>%
-  dplyr::arrange(.data[["type"]], .data[["arg"]], as.numeric(.data[["fleet"]]))
+    # Use rownames to track scenarios
+    tibble::rownames_to_column() %>%
+    # evaluate all arguments, e.g., '1:4' to 1,2,3,4
+    dplyr::mutate(dplyr::across(
+      dplyr::everything(),
+      ~ purrr::map(.x, text2obj)
+    )) %>%
+    # wide to long by scenario
+    tidyr::pivot_longer(
+      !.data[["rowname"]],
+      names_to = "label",
+      values_to = "value"
+    ) %>%
+    # change NULL to -999 b/c NULL has a zero length
+    # dplyr::mutate(
+    #   value = map(value, ~replace_x(.x, -999))
+    # ) %>%
+    # Split name into columns
+    tidyr::separate(
+      col = .data[["label"]],
+      into = c("type", "arg", "fleet"),
+      sep = "\\.",
+      fill = "right",
+      remove = FALSE
+    ) %>%
+    # Create one row per data type for each scenario
+    dplyr::group_by(.data[["rowname"]], .data[["type"]]) %>%
+    tidyr::nest() %>%
+    # Duplicate info by fleet
+    dplyr::mutate(data = purrr::map(.data[["data"]], setup_scenarios_fleet)) %>%
+    # Bring everything back together as a list of lists
+    tidyr::unnest(.data[["data"]]) %>%
+    dplyr::ungroup() %>%
+    tidyr::unite(
+      col = "label", .data[["type"]], .data[["arg"]], .data[["fleet"]],
+      sep = ".", na.rm = TRUE, remove = FALSE
+    ) %>%
+    dplyr::mutate(type = purrr::map_chr(.data[["type"]], ~ setup_scenarios_lookup()[.x])) %>%
+    dplyr::arrange(.data[["type"]], .data[["arg"]], as.numeric(.data[["fleet"]]))
   # check for NA or NULL values
-  labs_with_null_or_nas <- scenarios$label[unlist(lapply(scenarios$value,
-                                function(x) isTRUE(is.null(x)) |
-                                  isTRUE(any(is.na(x)))))]
-  if(isTRUE(length(labs_with_null_or_nas) > 0)) {
+  labs_with_null_or_nas <- scenarios$label[unlist(lapply(
+    scenarios$value,
+    function(x) {
+      isTRUE(is.null(x)) |
+        isTRUE(any(is.na(x)))
+    }
+  ))]
+  if (isTRUE(length(labs_with_null_or_nas) > 0)) {
     if (!all(grepl("cpar", labs_with_null_or_nas))) {
-      warning("The following dataframe columns contain NULL or NA values, ",
-            "which could cause ss3sim to behave unexpectedly. Please specify",
-            " these values, unless NULL or NA are valid inputs for the column",
-            " (e.g., cpar for lcomp or agecomp can be NULL.)\nColumns: ",
-            paste0(labs_with_null_or_nas, collapse = ", "))
+      warning(
+        "The following dataframe columns contain NULL or NA values, ",
+        "which could cause ss3sim to behave unexpectedly. Please specify",
+        " these values, unless NULL or NA are valid inputs for the column",
+        " (e.g., cpar for lcomp or agecomp can be NULL.)\nColumns: ",
+        paste0(labs_with_null_or_nas, collapse = ", ")
+      )
     }
   }
   if (returntype == "dataframe") {
@@ -184,13 +209,15 @@ setup_scenarios <- function (
   # with dplyr and purrr, this is ugly and will eventually be removed
   # after time to just use tibbles that can be more easily accessed.
   if (returntype == "list") {
-    out <- scenarios %>% dplyr::ungroup() %>%
-      dplyr::mutate(value = purrr::map(.data[["value"]], ~replace_x(.x))) %>%
+    out <- scenarios %>%
+      dplyr::ungroup() %>%
+      dplyr::mutate(value = purrr::map(.data[["value"]], ~ replace_x(.x))) %>%
       dplyr::mutate(value = stats::setNames(.data[["value"]], .data[["label"]])) %>%
-      dplyr::group_by(.data[["rowname"]], .data[["type"]]) %>% tidyr::nest() %>%
+      dplyr::group_by(.data[["rowname"]], .data[["type"]]) %>%
+      tidyr::nest() %>%
       dplyr::summarize(value = purrr::map(
-        .x = .data[["data"]], ~{
-          xxx <- base::split(.x$value,.x$arg)
+        .x = .data[["data"]], ~ {
+          xxx <- base::split(.x$value, .x$arg)
           if (length(xxx) == 0) {
             if (.x[["label"]] == "user_recdevs") {
               return(.x[["value"]][[1]])
@@ -200,16 +227,18 @@ setup_scenarios <- function (
           if (!is.null(xxx[["fleets"]])) {
             xxx[["fleets"]] <- stats::setNames(
               stats::na.omit(unlist(xxx[["fleets"]])),
-              NULL)
+              NULL
+            )
           }
           return(xxx)
         }
-        )
-      ) %>% dplyr::ungroup() %>%
+      )) %>%
+      dplyr::ungroup() %>%
       dplyr::mutate(value = stats::setNames(.data[["value"]], .data[["type"]])) %>%
       dplyr::select(-.data[["type"]]) %>%
-      dplyr::group_by(.data[["rowname"]]) %>% tidyr::nest() %>%
-      dplyr::summarize(out = purrr::lmap(.data[["data"]], ~do.call(as.list, .x)))
+      dplyr::group_by(.data[["rowname"]]) %>%
+      tidyr::nest() %>%
+      dplyr::summarize(out = purrr::lmap(.data[["data"]], ~ do.call(as.list, .x)))
     return(stats::setNames(out$out, out$rowname))
   }
 }
@@ -248,7 +277,7 @@ setup_scenarios_lookup <- function() {
   out <- lookuptable[2, ]
   names(out) <- lookuptable[1, ]
   out <- unlist(c(
-    out, extraargs[!extraargs %in% c(lookuptable[2,], "...")]
+    out, extraargs[!extraargs %in% c(lookuptable[2, ], "...")]
   ))
 
   return(out)
@@ -272,24 +301,24 @@ setup_scenarios_lookup <- function() {
 #'
 setup_scenarios_defaults <- function(nscenarios = 1) {
   data.frame(
-    cf.years.1 = '26:100',
-    cf.fvals.1 = 'rep(0.1052, 75)',
-    si.years.2 = 'seq(62, 100, by = 2)',
+    cf.years.1 = "26:100",
+    cf.fvals.1 = "rep(0.1052, 75)",
+    si.years.2 = "seq(62, 100, by = 2)",
     si.sds_obs.2 = 0.1,
     si.seas.2 = 1,
     sl.Nsamp.1 = 50,
-    sl.years.1 = '26:100',
+    sl.years.1 = "26:100",
     sl.Nsamp.2 = 100,
-    sl.years.2 = 'seq(62, 100, by = 2)',
+    sl.years.2 = "seq(62, 100, by = 2)",
     sl.cpar = "NULL",
     sa.Nsamp.1 = 50,
-    sa.years.1 = '26:100',
+    sa.years.1 = "26:100",
     sa.Nsamp.2 = 100,
-    sa.years.2 = 'seq(62, 100, by = 2)',
+    sa.years.2 = "seq(62, 100, by = 2)",
     sa.cpar = "NULL",
     stringsAsFactors = FALSE
   ) %>%
-  dplyr::slice(rep(1:dplyr::n(), each = nscenarios))
+    dplyr::slice(rep(1:dplyr::n(), each = nscenarios))
 }
 
 #' Create a name for an unnamed scenario
@@ -313,7 +342,7 @@ setup_scenarios_name <- function(check = FALSE) {
   }
   dt <- makename()
   if (check) {
-    while(file.exists(dt)) {
+    while (file.exists(dt)) {
       dt <- makename()
     }
   }
@@ -323,7 +352,9 @@ setup_scenarios_name <- function(check = FALSE) {
 text2obj <- function(x) {
   if (is.character(x)) {
     tryCatch(eval(parse(text = x)), error = function(e) as.character(x))
-  } else {x}
+  } else {
+    x
+  }
 }
 
 setup_em_dir <- function() {

@@ -36,9 +36,9 @@
 #' @export
 
 run_ss3model <- function(dir,
-  admb_options = "", hess = FALSE,
-  ignore.stdout = TRUE, admb_pause = 0.05,
-  show.output.on.console = FALSE, ...) {
+                         admb_options = "", hess = FALSE,
+                         ignore.stdout = TRUE, admb_pause = 0.05,
+                         show.output.on.console = FALSE, ...) {
 
   # Input checking:
   admb_options <- sanitize_admb_options(admb_options, "-nohess")
@@ -52,20 +52,27 @@ run_ss3model <- function(dir,
   ss_em_options <- ifelse(hess, "", "-nohess")
 
   message("Running SS in ", dir)
-  if(os == "unix") {
-    system(paste0("cd ", dir, ";", paste0(bin, " "),
-       ss_em_options, " ", admb_options), ignore.stdout = ignore.stdout, ...)
-    rename_ss3_files(path = dir, ss_bin = ss_bin,
-      extensions = c("par", "rep", "log", "bar", "cor"))
+  if (os == "unix") {
+    system(paste0(
+      "cd ", dir, ";", paste0(bin, " "),
+      ss_em_options, " ", admb_options
+    ), ignore.stdout = ignore.stdout, ...)
+    rename_ss3_files(
+      path = dir, ss_bin = ss_bin,
+      extensions = c("par", "rep", "log", "bar", "cor")
+    )
   } else {
     wd <- getwd()
     on.exit(setwd(wd), add = TRUE)
     setwd(dir)
     system(paste(bin, ss_em_options, admb_options),
       invisible = TRUE, ignore.stdout = ignore.stdout,
-           show.output.on.console = show.output.on.console, ...)
-    rename_ss3_files(path = ".", ss_bin = ss_bin,
-      extensions = c("par", "rep", "log", "bar", "cor"))
+      show.output.on.console = show.output.on.console, ...
+    )
+    rename_ss3_files(
+      path = ".", ss_bin = ss_bin,
+      extensions = c("par", "rep", "log", "bar", "cor")
+    )
   }
   Sys.sleep(admb_pause)
 }
@@ -86,10 +93,12 @@ run_ss3model <- function(dir,
 #'   periods preceding the values.
 #' @author Sean C. Anderson
 rename_ss3_files <- function(path, ss_bin, extensions) {
-  for(i in seq_along(extensions)) {
+  for (i in seq_along(extensions)) {
     if (!file.exists(file.path(path, paste0(ss_bin, ".", extensions[i])))) next()
-    file.rename(from = file.path(path, paste0(ss_bin, ".", extensions[i])),
-                to   = file.path(path, paste0("ss3",  ".", extensions[i])))
+    file.rename(
+      from = file.path(path, paste0(ss_bin, ".", extensions[i])),
+      to = file.path(path, paste0("ss3", ".", extensions[i]))
+    )
   }
 }
 
@@ -100,12 +109,12 @@ rename_ss3_files <- function(path, ss_bin, extensions) {
 #' @param exclude A character object (not a vector)
 #' @author Sean C. Anderson
 sanitize_admb_options <- function(x, exclude = "-nohess") {
-  if(length(x) > 1) stop("x should be of length 1")
-  if(length(exclude) > 1) stop("exclude should be of length 1")
+  if (length(x) > 1) stop("x should be of length 1")
+  if (length(exclude) > 1) stop("exclude should be of length 1")
 
   x_split <- strsplit(x, " ")[[1]]
   x_split_g <- grep(exclude, x_split)
-  if(sum(x_split_g) > 0) {
+  if (sum(x_split_g) > 0) {
     warning(paste("Removed admb_option", x_split[x_split_g]))
     x_split_clean <- x_split[-x_split_g]
   } else {
