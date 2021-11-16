@@ -183,17 +183,23 @@ iterations, then "om" or "em", and then the Stock Synthesis model files.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='co'># Locate the package data:</span></span>
-<span class='r-in'><span class='va'>om_folder</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"models"</span>, <span class='st'>"cod-om"</span>, package <span class='op'>=</span></span>
-<span class='r-in'>  <span class='st'>"ss3sim"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>om_folder</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"models"</span>, <span class='st'>"cod-om"</span>,</span>
+<span class='r-in'>  package <span class='op'>=</span></span>
+<span class='r-in'>    <span class='st'>"ss3sim"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># Copy the operating model:</span></span>
-<span class='r-in'><span class='fu'>copy_ss3models</span><span class='op'>(</span>model_dir <span class='op'>=</span> <span class='va'>om_folder</span>, type <span class='op'>=</span> <span class='st'>"om"</span>, iterations <span class='op'>=</span></span>
-<span class='r-in'>  <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, scenarios <span class='op'>=</span> <span class='st'>"D0-F0-testing"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>copy_ss3models</span><span class='op'>(</span></span>
+<span class='r-in'>  model_dir <span class='op'>=</span> <span class='va'>om_folder</span>, type <span class='op'>=</span> <span class='st'>"om"</span>, iterations <span class='op'>=</span></span>
+<span class='r-in'>    <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, scenarios <span class='op'>=</span> <span class='st'>"D0-F0-testing"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='co'># Now look at your working directory in your file system</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># Copy the estimation model with two scenario IDs:</span></span>
-<span class='r-in'><span class='fu'>copy_ss3models</span><span class='op'>(</span>model_dir <span class='op'>=</span> <span class='va'>om_folder</span>, type <span class='op'>=</span> <span class='st'>"em"</span>, iterations <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>,</span>
-<span class='r-in'>  scenarios <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"D1-F0-testing"</span>, <span class='st'>"D2-F0-testing"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>copy_ss3models</span><span class='op'>(</span></span>
+<span class='r-in'>  model_dir <span class='op'>=</span> <span class='va'>om_folder</span>, type <span class='op'>=</span> <span class='st'>"em"</span>, iterations <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>,</span>
+<span class='r-in'>  scenarios <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"D1-F0-testing"</span>, <span class='st'>"D2-F0-testing"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='co'># (Note that all the scenario argument does here is affect the</span></span>
 <span class='r-in'><span class='co'># folder names.)</span></span>
 <span class='r-in'></span>

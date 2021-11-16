@@ -257,18 +257,23 @@ theme or change an axis label before printing it.</p>
 <span class='r-in'><span class='va'>re</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculate_re.html'>calculate_re</a></span><span class='op'>(</span><span class='va'>scalar_dat</span><span class='op'>)</span></span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>number of columns of result is not a multiple of vector length (arg 1)</span>
 <span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
-<span class='r-in'><span class='fu'>plot_boxplot</span><span class='op'>(</span><span class='va'>re</span>, x <span class='op'>=</span> <span class='st'>"E"</span>, y <span class='op'>=</span> <span class='st'>"depletion_re"</span>, horiz <span class='op'>=</span> <span class='st'>'D'</span>,</span>
-<span class='r-in'>  relative.error <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>plot_boxplot</span><span class='op'>(</span><span class='va'>re</span>,</span>
+<span class='r-in'>  x <span class='op'>=</span> <span class='st'>"E"</span>, y <span class='op'>=</span> <span class='st'>"depletion_re"</span>, horiz <span class='op'>=</span> <span class='st'>"D"</span>,</span>
+<span class='r-in'>  relative.error <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>}</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span><span class='op'>(</span><span class='va'>re</span><span class='op'>)</span></span>
 <span class='r-in'><span class='co'># Merge scalar and time-series values to plot time series with color</span></span>
 <span class='r-in'><span class='co'># Be patient, the time-series boxplots take some time.</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"ts_dat"</span>, package <span class='op'>=</span> <span class='st'>"ss3sim"</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>ts_dat</span><span class='op'>[</span>, <span class='st'>"model_run"</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>ts_dat</span><span class='op'>[</span>, <span class='st'>"model_run"</span><span class='op'>]</span>,</span>
-<span class='r-in'>  levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"om"</span>, <span class='st'>"em"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'>  levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"om"</span>, <span class='st'>"em"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
-<span class='r-in'><span class='fu'>plot_boxplot</span><span class='op'>(</span><span class='va'>ts_dat</span>, x <span class='op'>=</span> <span class='st'>"year"</span>, y <span class='op'>=</span> <span class='st'>"SpawnBio"</span>,</span>
-<span class='r-in'>  horiz <span class='op'>=</span> <span class='st'>"scenario"</span>, vert <span class='op'>=</span> <span class='st'>"model_run"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>plot_boxplot</span><span class='op'>(</span><span class='va'>ts_dat</span>,</span>
+<span class='r-in'>  x <span class='op'>=</span> <span class='st'>"year"</span>, y <span class='op'>=</span> <span class='st'>"SpawnBio"</span>,</span>
+<span class='r-in'>  horiz <span class='op'>=</span> <span class='st'>"scenario"</span>, vert <span class='op'>=</span> <span class='st'>"model_run"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>}</span></span>
 <span class='r-in'></span>
 </pre>

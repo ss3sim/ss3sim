@@ -217,9 +217,11 @@ is <code>NULL</code>, which will leave parameter phases unchanged.</p></td>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Set to the path and filename of the OM and EM control files</span></span>
 <span class='r-in'><span class='va'>OM.ctl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"models"</span>, <span class='st'>"cod-om"</span>, <span class='st'>"codOM.ctl"</span>,</span>
-<span class='r-in'>  package <span class='op'>=</span> <span class='st'>"ss3sim"</span><span class='op'>)</span></span>
+<span class='r-in'>  package <span class='op'>=</span> <span class='st'>"ss3sim"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>EM.ctl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"models"</span>, <span class='st'>"cod-em"</span>, <span class='st'>"codEM.ctl"</span>,</span>
-<span class='r-in'>  package <span class='op'>=</span> <span class='st'>"ss3sim"</span><span class='op'>)</span></span>
+<span class='r-in'>  package <span class='op'>=</span> <span class='st'>"ss3sim"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.copy</a></span><span class='op'>(</span><span class='va'>OM.ctl</span>, <span class='st'>"om.ctl"</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.copy</a></span><span class='op'>(</span><span class='va'>EM.ctl</span>, <span class='st'>"em.ctl"</span><span class='op'>)</span></span>
 <span class='r-in'></span>
@@ -227,21 +229,26 @@ is <code>NULL</code>, which will leave parameter phases unchanged.</p></td>
 <span class='r-in'><span class='va'>em.pars</span> <span class='op'>&lt;-</span> <span class='fu'>r4ss</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/r4ss/man/SS_parlines.html'>SS_parlines</a></span><span class='op'>(</span>ctlfile <span class='op'>=</span> <span class='st'>"em.ctl"</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Set percentages to make lower and upper bounds</span></span>
-<span class='r-in'><span class='va'>lo.percent</span><span class='op'>&lt;-</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>.5</span>,<span class='fl'>11</span><span class='op'>)</span></span>
-<span class='r-in'><span class='va'>hi.percent</span><span class='op'>&lt;-</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>500</span>,<span class='fl'>1000</span>,<span class='fl'>1000</span>,<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>500</span>,<span class='fl'>8</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>lo.percent</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>.5</span>, <span class='fl'>11</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>hi.percent</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>500</span>, <span class='fl'>1000</span>, <span class='fl'>1000</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>500</span>, <span class='fl'>8</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>##Populate data frame using EM parameter names and percentages</span></span>
-<span class='r-in'><span class='va'>percent_df</span><span class='op'>&lt;-</span><span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>Label<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>em.pars</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>,<span class='fl'>17</span>,<span class='fl'>27</span><span class='op'>:</span><span class='fl'>30</span><span class='op'>)</span>,<span class='st'>"Label"</span><span class='op'>]</span><span class='op'>)</span>,</span>
-<span class='r-in'>  lo<span class='op'>=</span><span class='va'>lo.percent</span>,hi<span class='op'>=</span><span class='va'>hi.percent</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'>## Populate data frame using EM parameter names and percentages</span></span>
+<span class='r-in'><span class='va'>percent_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>  Label <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>em.pars</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='fl'>17</span>, <span class='fl'>27</span><span class='op'>:</span><span class='fl'>30</span><span class='op'>)</span>, <span class='st'>"Label"</span><span class='op'>]</span><span class='op'>)</span>,</span>
+<span class='r-in'>  lo <span class='op'>=</span> <span class='va'>lo.percent</span>, hi <span class='op'>=</span> <span class='va'>hi.percent</span></span>
+<span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>##Run function</span></span>
-<span class='r-in'><span class='fu'>standardize_bounds</span><span class='op'>(</span>percent_df <span class='op'>=</span> <span class='va'>percent_df</span>, dir <span class='op'>=</span> <span class='st'>"."</span>,</span>
-<span class='r-in'>                   em_ctl_file <span class='op'>=</span> <span class='st'>"em.ctl"</span>,</span>
-<span class='r-in'>                   om_ctl_file <span class='op'>=</span> <span class='st'>"om.ctl"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'>## Run function</span></span>
+<span class='r-in'><span class='fu'>standardize_bounds</span><span class='op'>(</span></span>
+<span class='r-in'>  percent_df <span class='op'>=</span> <span class='va'>percent_df</span>, dir <span class='op'>=</span> <span class='st'>"."</span>,</span>
+<span class='r-in'>  em_ctl_file <span class='op'>=</span> <span class='st'>"em.ctl"</span>,</span>
+<span class='r-in'>  om_ctl_file <span class='op'>=</span> <span class='st'>"om.ctl"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='st'>"om.ctl"</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='st'>"em.ctl"</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>temp_path</span>, recursive <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

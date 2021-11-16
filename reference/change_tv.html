@@ -255,17 +255,22 @@ on the log scale: \(ln(q'[y]) = ln(q) + link * env[y]\)</p>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.copy</a></span><span class='op'>(</span><span class='va'>om</span>, <span class='st'>"."</span>, recursive <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>setwd</a></span><span class='op'>(</span><span class='st'>"cod-om"</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='fu'>change_tv</span><span class='op'>(</span>change_tv_list <span class='op'>=</span></span>
-<span class='r-in'>            <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"NatM_p_1_Fem_GP_1"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>20</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>.1</span>, <span class='fl'>80</span><span class='op'>)</span><span class='op'>)</span>,</span>
-<span class='r-in'>                 <span class='st'>"SR_BH_steep"</span> <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>0</span>, <span class='fl'>0.05</span><span class='op'>)</span><span class='op'>)</span>,</span>
-<span class='r-in'>          ctl_file_in  <span class='op'>=</span> <span class='st'>"codOM.ctl"</span>,</span>
-<span class='r-in'>          ctl_file_out <span class='op'>=</span> <span class='st'>"example.ctl"</span>,</span>
-<span class='r-in'>          dat_file_in  <span class='op'>=</span> <span class='st'>"codOM.dat"</span>,</span>
-<span class='r-in'>          dat_file_out <span class='op'>=</span> <span class='st'>"example.dat"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>change_tv</span><span class='op'>(</span></span>
+<span class='r-in'>  change_tv_list <span class='op'>=</span></span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>      <span class='st'>"NatM_p_1_Fem_GP_1"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>20</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>.1</span>, <span class='fl'>80</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>      <span class='st'>"SR_BH_steep"</span> <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>0</span>, <span class='fl'>0.05</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='op'>)</span>,</span>
+<span class='r-in'>  ctl_file_in <span class='op'>=</span> <span class='st'>"codOM.ctl"</span>,</span>
+<span class='r-in'>  ctl_file_out <span class='op'>=</span> <span class='st'>"example.ctl"</span>,</span>
+<span class='r-in'>  dat_file_in <span class='op'>=</span> <span class='st'>"codOM.dat"</span>,</span>
+<span class='r-in'>  dat_file_out <span class='op'>=</span> <span class='st'>"example.dat"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># Clean up:</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='st'>"cod-om"</span>, recursive <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -282,18 +282,23 @@ then <code><a href='ss3sim_base.html'>ss3sim_base()</a></code> will assume the v
     <p>Sean C. Anderson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'> <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
 <span class='r-in'><span class='co'># A run with deterministic process error for model checking</span></span>
 <span class='r-in'><span class='co'># by passing user_recdevs to ss3sim_base through run_ss3sim:</span></span>
 <span class='r-in'><span class='va'>recdevs_det</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>0</span>, nrow <span class='op'>=</span> <span class='fl'>101</span>, ncol <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='fu'><a href='setup_scenarios_defaults.html'>setup_scenarios_defaults</a></span><span class='op'>(</span><span class='op'>)</span>,</span>
-<span class='r-in'>  <span class='st'>"scenarios"</span> <span class='op'>=</span> <span class='st'>"determinate"</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'>run_ss3sim</span><span class='op'>(</span>iterations <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, simdf <span class='op'>=</span> <span class='va'>df</span>,</span>
-<span class='r-in'>  bias_adjust <span class='op'>=</span> <span class='cn'>FALSE</span>, user_recdevs <span class='op'>=</span> <span class='va'>recdevs_det</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='st'>"scenarios"</span> <span class='op'>=</span> <span class='st'>"determinate"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>run_ss3sim</span><span class='op'>(</span></span>
+<span class='r-in'>  iterations <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, simdf <span class='op'>=</span> <span class='va'>df</span>,</span>
+<span class='r-in'>  bias_adjust <span class='op'>=</span> <span class='cn'>FALSE</span>, user_recdevs <span class='op'>=</span> <span class='va'>recdevs_det</span></span>
+<span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='get_results_all.html'>get_results_all</a></span><span class='op'>(</span>user_scenarios <span class='op'>=</span> <span class='st'>"determinate"</span>, overwrite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>ts</span> <span class='op'>&lt;-</span> <span class='fu'>utils</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='st'>"ss3sim_ts.csv"</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'>expect_equivalent</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='op'>(</span><span class='va'>ts</span><span class='op'>$</span><span class='va'>rec_dev</span><span class='op'>[</span><span class='va'>ts</span><span class='op'>$</span><span class='va'>year</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> <span class='op'>&amp;</span> <span class='va'>ts</span><span class='op'>$</span><span class='va'>iteration</span> <span class='op'>==</span> <span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span>,</span>
-<span class='r-in'>  <span class='va'>recdevs_det</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>expect_equivalent</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='op'>(</span><span class='va'>ts</span><span class='op'>$</span><span class='va'>rec_dev</span><span class='op'>[</span><span class='va'>ts</span><span class='op'>$</span><span class='va'>year</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> <span class='op'>&amp;</span> <span class='va'>ts</span><span class='op'>$</span><span class='va'>iteration</span> <span class='op'>==</span> <span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span>,</span>
+<span class='r-in'>  <span class='va'>recdevs_det</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>2</span><span class='op'>]</span></span>
+<span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>}</span></span>
 <span class='r-in'></span>
 </pre>

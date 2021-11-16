@@ -245,7 +245,7 @@ containing the modified <code>.dat</code> file is returned invisibly.</p>
 <span class='r-in'>  file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span></span>
 <span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"example-om"</span>, package <span class='op'>=</span> <span class='st'>"ss3sim"</span><span class='op'>)</span>,</span>
 <span class='r-in'>    <span class='st'>"ss3_expected_values.dat"</span></span>
-<span class='r-in'>    <span class='op'>)</span>,</span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
 <span class='r-in'>  version <span class='op'>=</span> <span class='cn'>NULL</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span></span>
 <span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='co'># Look at expected values for the index data</span></span>
@@ -253,41 +253,42 @@ containing the modified <code>.dat</code> file is returned invisibly.</p>
 <span class='r-in'><span class='co'># dat_list$CPUE</span></span>
 <span class='r-in'><span class='va'>sam_yrs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>76</span>, <span class='fl'>100</span>, by <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>ex1</span> <span class='op'>&lt;-</span> <span class='fu'>sample_index</span><span class='op'>(</span><span class='va'>dat_list</span>,</span>
-<span class='r-in'> outfile <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
-<span class='r-in'> fleets <span class='op'>=</span> <span class='fl'>2</span>,</span>
-<span class='r-in'> seas <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span></span>
-<span class='r-in'>   <span class='va'>dat_list</span><span class='op'>[[</span><span class='st'>"CPUE"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[</span><span class='va'>dat_list</span><span class='op'>[[</span><span class='st'>"CPUE"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[</span>, <span class='st'>"index"</span><span class='op'>]</span> <span class='op'>==</span> <span class='fl'>2</span>, <span class='st'>"seas"</span><span class='op'>]</span></span>
-<span class='r-in'> <span class='op'>)</span><span class='op'>)</span>,</span>
-<span class='r-in'> years <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>sam_yrs</span><span class='op'>)</span>,</span>
-<span class='r-in'> sds_obs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0.001</span>, <span class='fl'>0.1</span>, length.out <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>sam_yrs</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'>  outfile <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span class='r-in'>  fleets <span class='op'>=</span> <span class='fl'>2</span>,</span>
+<span class='r-in'>  seas <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>dat_list</span><span class='op'>[[</span><span class='st'>"CPUE"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[</span><span class='va'>dat_list</span><span class='op'>[[</span><span class='st'>"CPUE"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[</span>, <span class='st'>"index"</span><span class='op'>]</span> <span class='op'>==</span> <span class='fl'>2</span>, <span class='st'>"seas"</span><span class='op'>]</span></span>
+<span class='r-in'>  <span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  years <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>sam_yrs</span><span class='op'>)</span>,</span>
+<span class='r-in'>  sds_obs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0.001</span>, <span class='fl'>0.1</span>, length.out <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>sam_yrs</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='co'># \dontshow{</span></span>
 <span class='r-in'><span class='fu'>testthat</span><span class='fu'>::</span><span class='fu'><a href='https://testthat.r-lib.org/reference/expect_equivalent.html'>expect_equivalent</a></span><span class='op'>(</span></span>
 <span class='r-in'>  <span class='va'>ex1</span><span class='op'>[[</span><span class='st'>"CPUE"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, <span class='st'>"obs"</span><span class='op'>]</span>,</span>
-<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1472202421</span>, <span class='fl'>1554321845</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1472202421</span>, <span class='fl'>1554321845</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='co'># }</span></span>
 <span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
 <span class='r-in'><span class='va'>ex1</span><span class='op'>$</span><span class='va'>CPUE</span></span>
 <span class='r-in'><span class='co'># could sample from less years, but not more:</span></span>
 <span class='r-in'><span class='va'>ex2</span> <span class='op'>&lt;-</span> <span class='fu'>sample_index</span><span class='op'>(</span><span class='va'>dat_list</span>,</span>
-<span class='r-in'> outfile <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
-<span class='r-in'> fleets <span class='op'>=</span> <span class='fl'>2</span>,</span>
-<span class='r-in'> seas <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span></span>
-<span class='r-in'>   <span class='va'>dat_list</span><span class='op'>[[</span><span class='st'>"CPUE"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[</span><span class='va'>dat_list</span><span class='op'>[[</span><span class='st'>"CPUE"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[</span>, <span class='st'>"index"</span><span class='op'>]</span> <span class='op'>==</span> <span class='fl'>2</span>, <span class='st'>"seas"</span><span class='op'>]</span></span>
-<span class='r-in'> <span class='op'>)</span><span class='op'>)</span>,</span>
-<span class='r-in'> years <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>sam_yrs</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>1</span>, <span class='op'>-</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span>,</span>
-<span class='r-in'> sds_obs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0.001</span>, <span class='fl'>0.1</span>, length.out <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>sam_yrs</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'>  outfile <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span class='r-in'>  fleets <span class='op'>=</span> <span class='fl'>2</span>,</span>
+<span class='r-in'>  seas <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>dat_list</span><span class='op'>[[</span><span class='st'>"CPUE"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[</span><span class='va'>dat_list</span><span class='op'>[[</span><span class='st'>"CPUE"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[</span>, <span class='st'>"index"</span><span class='op'>]</span> <span class='op'>==</span> <span class='fl'>2</span>, <span class='st'>"seas"</span><span class='op'>]</span></span>
+<span class='r-in'>  <span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  years <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>sam_yrs</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>1</span>, <span class='op'>-</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span>,</span>
+<span class='r-in'>  sds_obs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0.001</span>, <span class='fl'>0.1</span>, length.out <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>sam_yrs</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>ex2</span><span class='op'>$</span><span class='va'>CPUE</span></span>
 <span class='r-in'><span class='co'># sd can be fixed across years:</span></span>
 <span class='r-in'><span class='va'>ex3</span> <span class='op'>&lt;-</span> <span class='fu'>sample_index</span><span class='op'>(</span><span class='va'>dat_list</span>,</span>
-<span class='r-in'> outfile <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
-<span class='r-in'> fleets <span class='op'>=</span> <span class='fl'>2</span>,</span>
-<span class='r-in'> seas <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span></span>
-<span class='r-in'>   <span class='va'>dat_list</span><span class='op'>[[</span><span class='st'>"CPUE"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[</span><span class='va'>dat_list</span><span class='op'>[[</span><span class='st'>"CPUE"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[</span>, <span class='st'>"index"</span><span class='op'>]</span> <span class='op'>==</span> <span class='fl'>2</span>, <span class='st'>"seas"</span><span class='op'>]</span></span>
-<span class='r-in'> <span class='op'>)</span><span class='op'>)</span>,</span>
-<span class='r-in'> years <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>sam_yrs</span><span class='op'>)</span>,</span>
-<span class='r-in'> sds_obs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>0.01</span><span class='op'>)</span></span>
+<span class='r-in'>  outfile <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span class='r-in'>  fleets <span class='op'>=</span> <span class='fl'>2</span>,</span>
+<span class='r-in'>  seas <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>dat_list</span><span class='op'>[[</span><span class='st'>"CPUE"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[</span><span class='va'>dat_list</span><span class='op'>[[</span><span class='st'>"CPUE"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[</span>, <span class='st'>"index"</span><span class='op'>]</span> <span class='op'>==</span> <span class='fl'>2</span>, <span class='st'>"seas"</span><span class='op'>]</span></span>
+<span class='r-in'>  <span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  years <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>sam_yrs</span><span class='op'>)</span>,</span>
+<span class='r-in'>  sds_obs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>0.01</span><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>ex3</span><span class='op'>$</span><span class='va'>CPUE</span></span>
 <span class='r-in'><span class='co'># If fleet 1 also had expected values in the index that you wanted to sample:</span></span>
@@ -296,7 +297,7 @@ containing the modified <code>.dat</code> file is returned invisibly.</p>
 <span class='r-in'>    outfile <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
 <span class='r-in'>    fleets <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,</span>
 <span class='r-in'>    years <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>sam_yrs</span>, <span class='va'>sam_yrs</span><span class='op'>)</span>,</span>
-<span class='r-in'>    sds_obs<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>0.01</span>, <span class='fl'>0.01</span><span class='op'>)</span></span>
+<span class='r-in'>    sds_obs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>0.01</span>, <span class='fl'>0.01</span><span class='op'>)</span></span>
 <span class='r-in'>  <span class='op'>)</span></span>
 <span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>}</span></span>

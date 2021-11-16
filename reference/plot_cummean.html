@@ -187,24 +187,26 @@ in the same plot.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"scalar_dat"</span>, package <span class='op'>=</span> <span class='st'>"ss3sim"</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>obj</span> <span class='op'>&lt;-</span> <span class='fu'>plot_cummean</span><span class='op'>(</span><span class='va'>scalar_dat</span><span class='op'>[</span><span class='va'>scalar_dat</span><span class='op'>$</span><span class='va'>model_run</span> <span class='op'>==</span> <span class='st'>"em"</span>, <span class='op'>]</span>,</span>
-<span class='r-in'>                    <span class='st'>"VonBert_K_Fem_GP_1"</span>,</span>
-<span class='r-in'>                    group <span class='op'>=</span> <span class='st'>"scenario"</span>,</span>
-<span class='r-in'>                    use_facet <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='st'>"VonBert_K_Fem_GP_1"</span>,</span>
+<span class='r-in'>  group <span class='op'>=</span> <span class='st'>"scenario"</span>,</span>
+<span class='r-in'>  use_facet <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='co'># obj$plot</span></span>
 <span class='r-in'><span class='co'># obj$data</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span><span class='op'>(</span><span class='va'>obj</span><span class='op'>)</span></span>
 <span class='r-in'><span class='co'># group can also be left NULL if only plotting a single scenario.</span></span>
 <span class='r-in'><span class='co'># it is recommended to set use_facet FALSE in this case.</span></span>
 <span class='r-in'><span class='va'>obj2</span> <span class='op'>&lt;-</span> <span class='fu'>plot_cummean</span><span class='op'>(</span><span class='va'>scalar_dat</span><span class='op'>[</span></span>
-<span class='r-in'>   <span class='va'>scalar_dat</span><span class='op'>$</span><span class='va'>scenario</span> <span class='op'>==</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>scalar_dat</span><span class='op'>$</span><span class='va'>scenario</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&amp;</span></span>
-<span class='r-in'>  <span class='va'>scalar_dat</span><span class='op'>$</span><span class='va'>model_run</span> <span class='op'>==</span> <span class='st'>"em"</span>, <span class='op'>]</span>,</span>
-<span class='r-in'>                     var <span class='op'>=</span> <span class='st'>"VonBert_K_Fem_GP_1"</span>,</span>
-<span class='r-in'>                     group <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
-<span class='r-in'>                     use_facet <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='va'>scalar_dat</span><span class='op'>$</span><span class='va'>scenario</span> <span class='op'>==</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>scalar_dat</span><span class='op'>$</span><span class='va'>scenario</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&amp;</span></span>
+<span class='r-in'>    <span class='va'>scalar_dat</span><span class='op'>$</span><span class='va'>model_run</span> <span class='op'>==</span> <span class='st'>"em"</span>,</span>
+<span class='r-in'><span class='op'>]</span>,</span>
+<span class='r-in'>var <span class='op'>=</span> <span class='st'>"VonBert_K_Fem_GP_1"</span>,</span>
+<span class='r-in'>group <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span class='r-in'>use_facet <span class='op'>=</span> <span class='cn'>FALSE</span></span>
+<span class='r-in'><span class='op'>)</span></span>
 <span class='r-in'><span class='co'># obj2$plot</span></span>
 <span class='r-in'><span class='co'># obj2$data</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span><span class='op'>(</span><span class='va'>obj2</span><span class='op'>)</span></span>
-<span class='r-in'></span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

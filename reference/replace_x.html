@@ -177,7 +177,40 @@ parameter will  be returned instead.</p>
     <p>Amanda from <a href='https://stackoverflow.com/questions/22870198/is-there-a-more-efficient-way-to-replace-null-with-na-in-a-list'>stack overflow</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>employees</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    id <span class='op'>=</span> <span class='fl'>1</span>,</span>
+<span class='r-in'>    dept <span class='op'>=</span> <span class='st'>"IT"</span>,</span>
+<span class='r-in'>    age <span class='op'>=</span> <span class='fl'>29</span>,</span>
+<span class='r-in'>    sportsteam <span class='op'>=</span> <span class='st'>"softball"</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    id <span class='op'>=</span> <span class='fl'>2</span>,</span>
+<span class='r-in'>    dept <span class='op'>=</span> <span class='st'>"IT"</span>,</span>
+<span class='r-in'>    age <span class='op'>=</span> <span class='fl'>30</span>,</span>
+<span class='r-in'>    sportsteam <span class='op'>=</span> <span class='cn'>NULL</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    id <span class='op'>=</span> <span class='fl'>3</span>,</span>
+<span class='r-in'>    dept <span class='op'>=</span> <span class='st'>"IT"</span>,</span>
+<span class='r-in'>    age <span class='op'>=</span> <span class='fl'>29</span>,</span>
+<span class='r-in'>    sportsteam <span class='op'>=</span> <span class='st'>"hockey"</span></span>
+<span class='r-in'>  <span class='op'>)</span>,</span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    id <span class='op'>=</span> <span class='fl'>4</span>,</span>
+<span class='r-in'>    dept <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span class='r-in'>    age <span class='op'>=</span> <span class='fl'>29</span>,</span>
+<span class='r-in'>    sportsteam <span class='op'>=</span> <span class='st'>"softball"</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># Meat of the example here!</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span><span class='op'>(</span><span class='va'>rbind</span>, <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>employees</span>, <span class='va'>rbind</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>purrr</span><span class='fu'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/modify.html'>modify_depth</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='va'>replace_x</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
