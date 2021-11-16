@@ -1,0 +1,9 @@
+# Run devtools::document()
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+name: call-update-docs
+jobs:
+  call-workflow:
+    uses: nmfs-stock-synthesis/workflows/.github/workflows/update-roxygen-docs.yml@main
