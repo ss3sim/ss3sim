@@ -46,7 +46,6 @@ head(calculate_re(ts_dat))
 head(calculate_re(ts_dat, add = FALSE))
 head(calculate_re(scalar_dat, add = FALSE))
 rm("ts_dat", "scalar_dat")
-
 }
 \seealso{
 \code{\link[=get_results_all]{get_results_all()}}, \code{\link[=get_results_scenario]{get_results_scenario()}}

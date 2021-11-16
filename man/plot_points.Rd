@@ -114,21 +114,26 @@ theme or change an axis label before printing it.
 data("scalar_dat", package = "ss3sim")
 re <- calculate_re(scalar_dat)
 \dontrun{
-plot_points(re, x = "E", y = "depletion_re", horiz = 'D',
-  color = "max_grad", relative.error = TRUE)
+plot_points(re,
+  x = "E", y = "depletion_re", horiz = "D",
+  color = "max_grad", relative.error = TRUE
+)
 }
 rm(re)
 # Merge scalar and time-series values to plot time series with color
 data("ts_dat", package = "ss3sim")
-re <- merge(by = "ID",
+re <- merge(
+  by = "ID",
   calculate_re(ts_dat, add = FALSE),
-  calculate_re(scalar_dat, add = FALSE)[, c("ID", "max_grad")])
+  calculate_re(scalar_dat, add = FALSE)[, c("ID", "max_grad")]
+)
 \dontrun{
-plot_points(re, x = "year", y = "SpawnBio_re",
-  horiz = "scenario", color = "max_grad", relative.error = TRUE)
+plot_points(re,
+  x = "year", y = "SpawnBio_re",
+  horiz = "scenario", color = "max_grad", relative.error = TRUE
+)
 }
 rm(re)
-
 }
 \author{
 Cole Monnahan

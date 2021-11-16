@@ -74,7 +74,7 @@ dat_list <- r4ss::SS_readdat(
   file = file.path(
     system.file("extdata", "example-om", package = "ss3sim"),
     "ss3_expected_values.dat"
-    ),
+  ),
   version = NULL, verbose = FALSE
 )
 # Look at expected values for the index data
@@ -82,41 +82,42 @@ dat_list <- r4ss::SS_readdat(
 # dat_list$CPUE
 sam_yrs <- seq(76, 100, by = 2)
 ex1 <- sample_index(dat_list,
- outfile = NULL,
- fleets = 2,
- seas = list(unique(
-   dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "seas"]
- )),
- years = list(sam_yrs),
- sds_obs = list(seq(0.001, 0.1, length.out = length(sam_yrs)))
+  outfile = NULL,
+  fleets = 2,
+  seas = list(unique(
+    dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "seas"]
+  )),
+  years = list(sam_yrs),
+  sds_obs = list(seq(0.001, 0.1, length.out = length(sam_yrs)))
 )
 \dontshow{
 testthat::expect_equivalent(
   ex1[["CPUE"]][1:2, "obs"],
-  c(1472202421, 1554321845))
+  c(1472202421, 1554321845)
+)
 }
 \dontrun{
 ex1$CPUE
 # could sample from less years, but not more:
 ex2 <- sample_index(dat_list,
- outfile = NULL,
- fleets = 2,
- seas = list(unique(
-   dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "seas"]
- )),
- years = list(sam_yrs[c(-1, -2)]),
- sds_obs = list(seq(0.001, 0.1, length.out = length(sam_yrs) - 2))
+  outfile = NULL,
+  fleets = 2,
+  seas = list(unique(
+    dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "seas"]
+  )),
+  years = list(sam_yrs[c(-1, -2)]),
+  sds_obs = list(seq(0.001, 0.1, length.out = length(sam_yrs) - 2))
 )
 ex2$CPUE
 # sd can be fixed across years:
 ex3 <- sample_index(dat_list,
- outfile = NULL,
- fleets = 2,
- seas = list(unique(
-   dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "seas"]
- )),
- years = list(sam_yrs),
- sds_obs = list(0.01)
+  outfile = NULL,
+  fleets = 2,
+  seas = list(unique(
+    dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "seas"]
+  )),
+  years = list(sam_yrs),
+  sds_obs = list(0.01)
 )
 ex3$CPUE
 # If fleet 1 also had expected values in the index that you wanted to sample:
@@ -125,7 +126,7 @@ testthat::expect_error(
     outfile = NULL,
     fleets = c(1, 2),
     years = list(sam_yrs, sam_yrs),
-    sds_obs=list(0.01, 0.01)
+    sds_obs = list(0.01, 0.01)
   )
 )
 }

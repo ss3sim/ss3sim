@@ -100,18 +100,23 @@ theme or change an axis label before printing it.
 data("scalar_dat", package = "ss3sim")
 re <- calculate_re(scalar_dat)
 \dontrun{
-plot_boxplot(re, x = "E", y = "depletion_re", horiz = 'D',
-  relative.error = TRUE)
+plot_boxplot(re,
+  x = "E", y = "depletion_re", horiz = "D",
+  relative.error = TRUE
+)
 }
 rm(re)
 # Merge scalar and time-series values to plot time series with color
 # Be patient, the time-series boxplots take some time.
 data("ts_dat", package = "ss3sim")
 ts_dat[, "model_run"] <- factor(ts_dat[, "model_run"],
-  levels = c("om", "em"))
+  levels = c("om", "em")
+)
 \dontrun{
-plot_boxplot(ts_dat, x = "year", y = "SpawnBio",
-  horiz = "scenario", vert = "model_run")
+plot_boxplot(ts_dat,
+  x = "year", y = "SpawnBio",
+  horiz = "scenario", vert = "model_run"
+)
 }
 
 }

@@ -62,10 +62,13 @@ specifications.
 }
 \examples{
 \dontrun{
-  d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
-  fmsy.val <- profile_fmsy(om_in = d, results_out = "fmsy",
-    start = 0.1, end = 0.2, by_val = 0.05)
-  #cleanup
-  unlink("fmsy", recursive = TRUE)
+d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
+fmsy.val <- profile_fmsy(
+  om_in = d, results_out = "fmsy",
+  start = 0.1, end = 0.2, by_val = 0.05
+)
+# cleanup
+unlink("fmsy", recursive = TRUE)
 }
+
 }

@@ -35,7 +35,6 @@ alist <- ss3sim:::add_colnames(list(x, y), bind = FALSE)
 adataframe <- ss3sim:::add_colnames(list(x, y), bind = TRUE)
 # clean up
 rm(x, y, alist, adataframe)
-
 }
 \author{
 Kelli Faye Johnson

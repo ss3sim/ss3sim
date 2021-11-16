@@ -64,7 +64,8 @@ morefleets <- calculate_data_units(
 testthat::expect_equal(morefleets[["years"]], 3:6)
 }
 ## Add length or age if missing and conditional-age-at-length is included
-test <- mapply(calculate_data_units, SIMPLIFY = FALSE,
+test <- mapply(calculate_data_units,
+  SIMPLIFY = FALSE,
   lcomp_params = list(NULL, list(fleets = 1, years = 1:10)),
   agecomp_params = list(NULL, NULL),
   MoreArgs = list(calcomp_params = list(fleets = 1, years = 1:10))

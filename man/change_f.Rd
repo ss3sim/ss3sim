@@ -81,18 +81,21 @@ specifying a row for every year and fleet using \code{\link[=change_catch]{chang
 }
 \examples{
 dat <- r4ss::SS_readdat(
-  system.file("extdata","models", "cod-om", "codOM.dat", package = "ss3sim"),
-  verbose = FALSE)
+  system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim"),
+  verbose = FALSE
+)
 ctl <- r4ss::SS_readctl(
-  system.file("extdata","models", "cod-om", "codOM.ctl", package = "ss3sim"),
-  verbose = FALSE, use_datlist = TRUE, datlist = dat)
+  system.file("extdata", "models", "cod-om", "codOM.ctl", package = "ss3sim"),
+  verbose = FALSE, use_datlist = TRUE, datlist = dat
+)
 # Using original vector-style inputs
 newctl <- change_f(years = 1:50, fleets = 1, fvals = 0.2, ctl_list = ctl)
 # Using list-style inputs for when there are multiple fisheries
-newctl <- change_f(years = list(1:5, 1:10), fleets = 3:4,
-  fvals = list(rep(0.1, 5), rep(0.2, 10)), ctl_list = ctl)
+newctl <- change_f(
+  years = list(1:5, 1:10), fleets = 3:4,
+  fvals = list(rep(0.1, 5), rep(0.2, 10)), ctl_list = ctl
+)
 rm(dat, ctl, newctl)
-
 }
 \seealso{
 See \code{\link[r4ss:SS_readctl]{r4ss::SS_readctl()}} and \code{\link[r4ss:SS_writectl]{r4ss::SS_writectl()}}

@@ -107,18 +107,23 @@ However, this is not a problem because ADMB is not used to optimize the OM,
 and thus, the error can safely be ignored.
 }
 \examples{
- \dontrun{
+\dontrun{
 # A run with deterministic process error for model checking
 # by passing user_recdevs to ss3sim_base through run_ss3sim:
 recdevs_det <- matrix(0, nrow = 101, ncol = 2)
 df <- data.frame(setup_scenarios_defaults(),
-  "scenarios" = "determinate")
-run_ss3sim(iterations = 1:2, simdf = df,
-  bias_adjust = FALSE, user_recdevs = recdevs_det)
+  "scenarios" = "determinate"
+)
+run_ss3sim(
+  iterations = 1:2, simdf = df,
+  bias_adjust = FALSE, user_recdevs = recdevs_det
+)
 get_results_all(user_scenarios = "determinate", overwrite = TRUE)
 ts <- utils::read.csv("ss3sim_ts.csv")
-expect_equivalent(unlist(ts$rec_dev[ts$year \%in\% 1:10 & ts$iteration == 2]),
-  recdevs_det[1:10, 2])
+expect_equivalent(
+  unlist(ts$rec_dev[ts$year \%in\% 1:10 & ts$iteration == 2]),
+  recdevs_det[1:10, 2]
+)
 }
 
 }

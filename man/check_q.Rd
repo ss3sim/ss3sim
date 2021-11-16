@@ -47,7 +47,6 @@ stopifnot(check_q(ctl, dat[["Nfleets"]], desiredfleets = 1)[["remove"]] == 2)
 stopifnot(all(mapply(is.null, check_q(ctl, dat[["Nfleets"]], desiredfleets = 1:2))))
 stopifnot(check_q(ctl, dat[["Nfleets"]], desiredfleets = 1:3)[["add"]] == 3)
 stopifnot(check_q(ctl, dat[["Nfleets"]], desiredfleets = 2:3)[["remove"]] == 1)
-
 }
 \seealso{
 \code{\link[=change_q]{change_q()}}
