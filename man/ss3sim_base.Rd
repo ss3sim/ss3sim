@@ -173,52 +173,66 @@ The steps carried out within \code{ss3sim_base}:
 \examples{
 \dontrun{
 # Create a temporary folder for the output and set the working directory:
-  # Create a temporary folder for the output and set the working directory:
-  temp_path <- file.path(tempdir(), "ss3sim-base-example")
-  dir.create(temp_path, showWarnings = FALSE)
-  wd <- getwd()
-  setwd(temp_path)
-  on.exit(setwd(wd), add = TRUE)
+# Create a temporary folder for the output and set the working directory:
+temp_path <- file.path(tempdir(), "ss3sim-base-example")
+dir.create(temp_path, showWarnings = FALSE)
+wd <- getwd()
+setwd(temp_path)
+on.exit(setwd(wd), add = TRUE)
 
-  # Find the data in the ss3sim package:
-  d <- system.file("extdata", package = "ss3sim")
-  om_dir <- file.path(d, "models", "cod-om")
-  em_dir <- file.path(d, "models", "cod-em")
+# Find the data in the ss3sim package:
+d <- system.file("extdata", package = "ss3sim")
+om_dir <- file.path(d, "models", "cod-om")
+em_dir <- file.path(d, "models", "cod-em")
 
-  # Or, create the argument lists directly in R:
+# Or, create the argument lists directly in R:
 
-  F0 <- list(years = 1:100,
-             fleets = 1,
-             fvals = c(rep(0, 25), rep(0.114, 75)))
+F0 <- list(
+  years = 1:100,
+  fleets = 1,
+  fvals = c(rep(0, 25), rep(0.114, 75))
+)
 
-  index1 <- list(fleets = 2, years = list(seq(62, 100, by = 2)),
-                 sds_obs = list(0.1))
+index1 <- list(
+  fleets = 2, years = list(seq(62, 100, by = 2)),
+  sds_obs = list(0.1)
+)
 
-  lcomp1 <- list(fleets = c(1, 2), Nsamp = list(50, 100),
-                 years = list(26:100, seq(62, 100, by = 2)))
+lcomp1 <- list(
+  fleets = c(1, 2), Nsamp = list(50, 100),
+  years = list(26:100, seq(62, 100, by = 2))
+)
 
-  agecomp1 <- list(fleets = c(1, 2), Nsamp = list(50, 100),
-                   years = list(26:100, seq(62, 100, by = 2)))
+agecomp1 <- list(
+  fleets = c(1, 2), Nsamp = list(50, 100),
+  years = list(26:100, seq(62, 100, by = 2))
+)
 
-  E0 <- list(par_name = c("LnQ_base_Fishery", "NatM_p_1_Fem_GP_1"),
-             par_int = c(NA, NA), par_phase = c(-5, -1), forecast_num = 0)
+E0 <- list(
+  par_name = c("LnQ_base_Fishery", "NatM_p_1_Fem_GP_1"),
+  par_int = c(NA, NA), par_phase = c(-5, -1), forecast_num = 0
+)
 
-  ss3sim_base(iterations = 1,
-              scenarios = "D1-E0-F0-cod", #name as desired
-              f_params = F0,
-              index_params = index1,
-              lcomp_params = lcomp1,
-              agecomp_params = agecomp1,
-              estim_params = E0,
-              om_dir = om_dir,
-              em_dir = em_dir)
-  replist <- r4ss::SS_output(file.path("D1-E0-F0-cod", 1, "em"),
-    verbose = FALSE, printstats = FALSE, covar = FALSE)
-  testthat::expect_equivalent(replist[["cpue"]][, "Yr"], index1[["years"]][[1]])
+ss3sim_base(
+  iterations = 1,
+  scenarios = "D1-E0-F0-cod", # name as desired
+  f_params = F0,
+  index_params = index1,
+  lcomp_params = lcomp1,
+  agecomp_params = agecomp1,
+  estim_params = E0,
+  om_dir = om_dir,
+  em_dir = em_dir
+)
+replist <- r4ss::SS_output(file.path("D1-E0-F0-cod", 1, "em"),
+  verbose = FALSE, printstats = FALSE, covar = FALSE
+)
+testthat::expect_equivalent(replist[["cpue"]][, "Yr"], index1[["years"]][[1]])
 
-  test <- replist
-  unlink("D1-E0-F0-cod", recursive = TRUE) # clean up
+test <- replist
+unlink("D1-E0-F0-cod", recursive = TRUE) # clean up
 }
+
 }
 \seealso{
 \code{\link[=run_ss3sim]{run_ss3sim()}}

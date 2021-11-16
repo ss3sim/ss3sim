@@ -39,22 +39,24 @@ Plot the cumulative mean for a parameter
 \examples{
 data("scalar_dat", package = "ss3sim")
 obj <- plot_cummean(scalar_dat[scalar_dat$model_run == "em", ],
-                    "VonBert_K_Fem_GP_1",
-                    group = "scenario",
-                    use_facet = TRUE)
+  "VonBert_K_Fem_GP_1",
+  group = "scenario",
+  use_facet = TRUE
+)
 # obj$plot
 # obj$data
 rm(obj)
 # group can also be left NULL if only plotting a single scenario.
 # it is recommended to set use_facet FALSE in this case.
 obj2 <- plot_cummean(scalar_dat[
-   scalar_dat$scenario == unique(scalar_dat$scenario)[1] &
-  scalar_dat$model_run == "em", ],
-                     var = "VonBert_K_Fem_GP_1",
-                     group = NULL,
-                     use_facet = FALSE)
+  scalar_dat$scenario == unique(scalar_dat$scenario)[1] &
+    scalar_dat$model_run == "em",
+],
+var = "VonBert_K_Fem_GP_1",
+group = NULL,
+use_facet = FALSE
+)
 # obj2$plot
 # obj2$data
 rm(obj2)
-
 }

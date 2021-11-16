@@ -41,15 +41,19 @@ dir.create(temp_path, showWarnings = FALSE)
 
 # Locate the package data:
 starterfile <- system.file("extdata", "models", "cod-om",
- "starter.ss", package = "ss3sim")
+  "starter.ss",
+  package = "ss3sim"
+)
 
 # No retrospective analysis:
 change_retro(starterfile, paste0(temp_path, "/retro-0-starter.ss"),
-retro_yr = 0)
+  retro_yr = 0
+)
 
 # A retrospective analysis of 5 years:
 change_retro(starterfile, paste0(temp_path, "/retro-5-starter.ss"),
-retro_yr = -5)
+  retro_yr = -5
+)
 }
 \seealso{
 Other change functions: 

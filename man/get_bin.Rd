@@ -22,4 +22,5 @@ Get Stock Synthesis binary/executable location in package
 \dontrun{
 get_bin()
 }
+
 }

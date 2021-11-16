@@ -35,15 +35,17 @@ create_em()
 dir(file.path(getwd(), "new-em"))
 \dontshow{
 testthat::expect_true("forecast.ss" \%in\% dir("new-em"),
-  label = "forecast file is in 'new-em'")
+  label = "forecast file is in 'new-em'"
+)
 testthat::expect_true("starter.ss" \%in\% dir("new-em"),
-  label = "starter file is in 'new-em'")
+  label = "starter file is in 'new-em'"
+)
 testthat::expect_true("codEM.ctl" \%in\% dir("new-em"),
-  label = "codEM file is in 'new-em'")
+  label = "codEM file is in 'new-em'"
+)
 }
 # Clean up your directory
 unlink(file.path(getwd(), "new-em"), recursive = TRUE)
-
 }
 \author{
 Kelli Faye Johnson

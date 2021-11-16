@@ -103,38 +103,50 @@ dat_list <- r4ss::SS_readdat(f_in, version = NULL, verbose = FALSE)
 test <- sample_agecomp(dat_list = dat_list, fleets = NULL)
 
 ## Generate with a smaller number of fleet taking samples
-ex1 <- sample_agecomp(dat_list = dat_list, outfile = NULL,
-  fleets = 2, Nsamp = list(c(10, 50)), years = list(c(26, 27)))
+ex1 <- sample_agecomp(
+  dat_list = dat_list, outfile = NULL,
+  fleets = 2, Nsamp = list(c(10, 50)), years = list(c(26, 27))
+)
 NROW(ex1$agecomp) == 2
 
 ## Generate with varying Nsamp by year for first fleet
-ex2 <- sample_agecomp(dat_list = dat_list, outfile = NULL,
+ex2 <- sample_agecomp(
+  dat_list = dat_list, outfile = NULL,
   fleets = c(1, 2),
   Nsamp = list(c(rep(50, 5), rep(100, 5)), 50),
-  years = list(seq(26, 44, 2), c(26:100)))
+  years = list(seq(26, 44, 2), c(26:100))
+)
 
 ## Run three  cases showing Multinomial, Dirichlet(1), and over-dispersed
 ## Dirichlet for different levels of sample sizes
 op <- graphics::par(mfrow = c(1, 3))
 set.seed(1)
 true <- prop.table(dat_list$agecomp[
-  dat_list$agecomp$FltSvy == 1 & dat_list$agecomp$Yr == 50, -(1:9)])
+  dat_list$agecomp$FltSvy == 1 & dat_list$agecomp$Yr == 50, -(1:9)
+])
 cpars <- c(NA, 1, 4)
 for (samplesize in c(30, 100, 1000)) {
   if (samplesize > 30) graphics::par(mar = c(5.1, 1, 4.1, 2.1))
-  graphics::plot(dat_list$agebin_vector, true, type = "b", ylim = c(0, 1),
+  graphics::plot(dat_list$agebin_vector, true,
+    type = "b", ylim = c(0, 1),
     col = 4, lwd = 2, xlab = "Age",
     ylab = ifelse(samplesize == 30, "Proportion", ""),
-    main = paste("Sample size =", samplesize))
+    main = paste("Sample size =", samplesize)
+  )
   if (samplesize == 30) {
-    graphics::legend("topright", lty = 1, col = 1:4, bty = "n",
-      legend = c("Multinomial", "Dirichlet(1)", "Dirichlet(4)", "Truth"))
+    graphics::legend("topright",
+      lty = 1, col = 1:4, bty = "n",
+      legend = c("Multinomial", "Dirichlet(1)", "Dirichlet(4)", "Truth")
+    )
   }
   for (i in seq_along(cpars)) {
-    ex <- sample_agecomp(dat_list = dat_list, outfile = NULL, fleets = 1,
-      Nsamp = list(samplesize), years = list(50), cpar = cpars[i])$agecomp
+    ex <- sample_agecomp(
+      dat_list = dat_list, outfile = NULL, fleets = 1,
+      Nsamp = list(samplesize), years = list(50), cpar = cpars[i]
+    )$agecomp
     lines(dat_list$agebin_vector, prop.table(ex[1, -(1:9)]),
-      col = i, type = "b")
+      col = i, type = "b"
+    )
   }
 }
 graphics::par(op)

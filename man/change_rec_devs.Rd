@@ -36,13 +36,17 @@ in the control file.
 }
 \examples{
 d <- system.file(file.path("extdata", "models"), package = "ss3sim")
-change_rec_devs(recdevs = rlnorm(101),
+change_rec_devs(
+  recdevs = rlnorm(101),
   ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
-  ctl_file_out = file.path(tempdir(), "control_recdevs.ss"))
+  ctl_file_out = file.path(tempdir(), "control_recdevs.ss")
+)
 # Change the recruitment deviations in years 2:11
-change_rec_devs(recdevs = stats::setNames(rlnorm(10), 2:11),
+change_rec_devs(
+  recdevs = stats::setNames(rlnorm(10), 2:11),
   ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
-  ctl_file_out = file.path(tempdir(), "control_recdevsInitial.ss"))
+  ctl_file_out = file.path(tempdir(), "control_recdevsInitial.ss")
+)
 sapply(dir(tempdir(), pattern = "control_.+ss", full.names = TRUE), unlink)
 }
 \author{

@@ -64,33 +64,39 @@ f <- system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim")
 d <- r4ss::SS_readdat(f, version = NULL, verbose = FALSE)
 
 # An example with lbin_method = 1
-l1 <- change_em_binning(d, outfile = NULL, lbin_method = 1,
-  bin_vector = seq(20, 152, by = 4))
+l1 <- change_em_binning(d,
+  outfile = NULL, lbin_method = 1,
+  bin_vector = seq(20, 152, by = 4)
+)
 l1$lbin_vector
 head(l1$lencomp)
 
-#An example with lbin_method = 2
+# An example with lbin_method = 2
 new_bin_vec <- seq(min(d$lbin_vector), max(d$lbin_vector), by = 4)
 # add the max value if necessary.
-if(new_bin_vec[length(new_bin_vec)] != d$lbin_vector[length(d$lbin_vector)]){
-  new_bin_vec <- c(new_bin_vec,
-                   d$lbin_vector[length(d$lbin_vector)])
+if (new_bin_vec[length(new_bin_vec)] != d$lbin_vector[length(d$lbin_vector)]) {
+  new_bin_vec <- c(
+    new_bin_vec,
+    d$lbin_vector[length(d$lbin_vector)]
+  )
 }
 pop_bin_input <- 5
 pop_min_size_input <- min(d$lbin_vector_pop) - 1
 pop_max_size_input <- max(d$lbin_vector_pop) + 5
-lbin_vec_pop <-seq(pop_min_size_input,
-                   pop_max_size_input,
-                   length.out = (pop_max_size_input - pop_min_size_input)/
-                     pop_bin_input + 1
+lbin_vec_pop <- seq(pop_min_size_input,
+  pop_max_size_input,
+  length.out = (pop_max_size_input - pop_min_size_input) /
+    pop_bin_input + 1
 )
-l2 <- change_em_binning(dat_list = d,
-                            bin_vector = new_bin_vec,
-                            lbin_method = 2,
-                            #Note: need more inputs with lbin_method = 2
-                            pop_binwidth = pop_bin_input,
-                            pop_minimum_size = pop_min_size_input,
-                            pop_maximum_size = pop_max_size_input)
+l2 <- change_em_binning(
+  dat_list = d,
+  bin_vector = new_bin_vec,
+  lbin_method = 2,
+  # Note: need more inputs with lbin_method = 2
+  pop_binwidth = pop_bin_input,
+  pop_minimum_size = pop_min_size_input,
+  pop_maximum_size = pop_max_size_input
+)
 l2$lbin_method
 # note bin width is now the same as the input
 pop_bin_input
@@ -101,7 +107,7 @@ l2$minimum_size
 # so has max
 l2$maximum_size
 l2$lbin_vector
-#other modified components:
+# other modified components:
 l2$lbin_vector_pop
 head(l2$lencomp)
 }

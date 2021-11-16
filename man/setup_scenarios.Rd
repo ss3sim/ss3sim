@@ -28,7 +28,6 @@ Get scenario information from a data frame of specifications
 }
 \examples{
 defaultscenarios <- setup_scenarios()
-
 }
 \author{
 Kelli F. Johnson
