@@ -1,7 +1,8 @@
 # document and style ss3sim using reusable workflow
 on:
   workflow_dispatch:
-  push: main
+  push:
+    branches: [main]
 name: call-doc-and-style-r
 jobs:
   call-workflow:
