@@ -1,8 +1,8 @@
 # use styler to style code
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
+  # push:
+  #   branches: [main]
 name: call-style
 jobs:
   call-workflow:
