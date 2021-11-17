@@ -1,0 +1,8 @@
+# document and style ss3sim using reusable workflow
+on:
+  workflow_dispatch:
+  push: main
+name: call-doc-and-style-r
+jobs:
+  call-workflow:
+    uses: nmfs-stock-synthesis/workflows/.github/workflows/doc-and-style-r.yml@main
