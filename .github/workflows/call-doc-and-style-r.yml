@@ -1,4 +1,4 @@
-# document and style ss3sim
+# document and style ss3sim using reusable workflow
 on:
   workflow_dispatch:
   push:
