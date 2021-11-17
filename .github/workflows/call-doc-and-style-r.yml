@@ -1,8 +1,8 @@
-# use styler to style code
+# document and style ss3sim
 on:
   workflow_dispatch:
   push:
-name: call-style
+name: call-doc-and-style-r
 jobs:
   call-workflow:
     uses: nmfs-stock-synthesis/workflows/.github/workflows/doc-and-style-r.yml@main
