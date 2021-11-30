@@ -197,7 +197,7 @@ Feel free to install r4ss directly via
 remotes::install_github(
   "r4ss/r4ss",
   dependencies = TRUE, upgrade = FALSE, build_vignettes = TRUE
-)`
+)
 ```
 But, make sure you do it before loading ss3sim.
 If you forget, you can use `devtools::unload(package = "ss3sim")` and
