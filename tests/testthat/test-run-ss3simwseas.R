@@ -1,4 +1,4 @@
-context("run_ss3sim with season functionality")
+
 
 # Tests are skipped on CRAN because the SS executable is no available.
 

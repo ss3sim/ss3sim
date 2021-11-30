@@ -1,4 +1,3 @@
-context("Make sure change_f works")
 
 om <- system.file("extdata", "models", "cod-om", package = "ss3sim")
 em <- system.file("extdata", "models", "cod-em", package = "ss3sim")

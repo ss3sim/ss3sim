@@ -1,4 +1,3 @@
-context("change_o works")
 
 # set up temp directory
 temp_path <- file.path(tempdir(), "ss3sim-test")

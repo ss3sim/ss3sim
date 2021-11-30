@@ -1,4 +1,4 @@
-context("functions in plot_functions work")
+
 
 data("scalar_dat", package = "ss3sim")
 

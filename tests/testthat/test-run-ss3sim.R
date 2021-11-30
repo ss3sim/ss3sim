@@ -1,4 +1,4 @@
-context("run_ss3sim and get-results functions work across a range of scenarios")
+
 
 # Tests are skipped on CRAN because the SS executable is no available.
 

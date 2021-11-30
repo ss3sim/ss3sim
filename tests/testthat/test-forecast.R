@@ -1,4 +1,4 @@
-context("Forecast file manipulation")
+
 
 test_that("check_forecast is working", {
   file <- system.file(

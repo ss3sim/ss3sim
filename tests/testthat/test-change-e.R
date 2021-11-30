@@ -1,4 +1,4 @@
-context("Changing EM binning and parameters in an EM")
+
 wd.old <- getwd()
 temp_path <- file.path(tempdir(), "pars")
 dir.create(temp_path, showWarnings = FALSE)

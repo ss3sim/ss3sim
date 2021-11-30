@@ -1,4 +1,3 @@
-context("Function change_tv() works")
 
 d <- system.file("extdata", package = "ss3sim")
 om <- paste0(d, "/models/cod-om")

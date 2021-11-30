@@ -1,4 +1,3 @@
-context("Q setup")
 
 temp_path <- file.path(tempdir(), "q-setup")
 dir.create(temp_path)

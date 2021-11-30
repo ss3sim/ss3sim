@@ -1,4 +1,4 @@
-context("run_ss3sim with conditional age-at-length data")
+
 
 temp_path <- file.path(tempdir(), "run-CAAL-test")
 dir.create(temp_path, showWarnings = FALSE)

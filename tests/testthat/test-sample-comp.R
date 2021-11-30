@@ -1,4 +1,4 @@
-context("tests functions for sampling composition data")
+
 
 d <- system.file("extdata", package = "ss3sim")
 exp_dat_path <- file.path(d, "example-om", "ss3_exp_vals_comps.dat")
