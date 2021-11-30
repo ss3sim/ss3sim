@@ -81,7 +81,7 @@ is typically not called by the user but called from run_ss3sim().
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ss3sim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.7</span>
       </span>
     </div>
 
@@ -178,7 +178,7 @@ is typically not called by the user but called from <code><a href='run_ss3sim.ht
   user_recdevs_warn <span class='op'>=</span> <span class='cn'>TRUE</span>,
   bias_adjust <span class='op'>=</span> <span class='cn'>FALSE</span>,
   hess_always <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  print_logfile <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  print_logfile <span class='op'>=</span> <span class='cn'>FALSE</span>,
   sleep <span class='op'>=</span> <span class='fl'>0</span>,
   seed <span class='op'>=</span> <span class='fl'>21</span>,
   <span class='va'>...</span>
@@ -320,7 +320,9 @@ bias-adjustment runs thereby saving time.</p></td>
     </tr>
     <tr>
       <th>print_logfile</th>
-      <td><p>Logical. Print a log file?</p></td>
+      <td><p><a href='https://lifecycle.r-lib.org/articles/stages.html#deprecated'><img src='figures/lifecycle-deprecated.svg' alt='[Deprecated]' /></a> <code>print_logfile = TRUE</code>
+is no longer supported.
+Previously, the default was <code>TRUE</code>, now the default is <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>sleep</th>
