@@ -28,7 +28,7 @@ ss3sim_base(
   user_recdevs_warn = TRUE,
   bias_adjust = FALSE,
   hess_always = FALSE,
-  print_logfile = TRUE,
+  print_logfile = FALSE,
   sleep = 0,
   seed = 21,
   ...
@@ -120,7 +120,9 @@ is not needed when initially exploring your simulation structure.}
 If \code{FALSE} then the Hessian will only be calculated for
 bias-adjustment runs thereby saving time.}
 
-\item{print_logfile}{Logical. Print a log file?}
+\item{print_logfile}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{print_logfile = TRUE}
+is no longer supported.
+Previously, the default was \code{TRUE}, now the default is \code{FALSE}.}
 
 \item{sleep}{A time interval (in seconds) to pause on each iteration. Useful
 if you want to reduce average CPU time -- perhaps because you're working on

@@ -1,3 +1,10 @@
+# ss3sim 1.1.7
+
+* Deprecate the use of the log file in [ss3sim_base()].
+  The argument [ss3sim_base(print_logfile = FALSE)] has a new default and
+  will warn users if they have the value set to `TRUE` that no log file will be printed.
+  Users can look at the results files to get most of this information.
+
 # ss3sim 1.1.6
 * Deprecate change_f_par which was not being used by any downstream code.
 Feel free to contact the package maintainers if you wish to reinstate this function,
