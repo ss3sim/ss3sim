@@ -90,12 +90,15 @@ which may not available on CRAN.
 
 Run the following code to install ss3sim and load it into your workspace.
 You will not need to install ss3sim every time but it is a good idea to ensure it is up to date.
-If you are installing from GitHub, R will let you know if your current version is up to date.
+If you are installing from GitHub,
+you may need to install {remotes}, `utils::install.packges("remotes")`,
+before installing {ss3sim} if you do not already have {devtools} installed.
+If your current version of ss3sim is up to date,
+R will let you know and prompt you if you want to override the current installation.
 
 ```{r, install, eval=FALSE}
 # CRAN version
 utils::install.packages("ss3sim")
-# install.packages("remotes")
 remotes::install_github(
   repo = "ss3sim/ss3sim",
   dependencies = TRUE, upgrade = FALSE, build_vignettes = TRUE
@@ -176,14 +179,6 @@ for instructions on how to put Stock Synthesis in your path.
 ### Installing dependent R packages
 
 Below we highlight a few packages that are essential for running ss3sim.
-
-#### remotes
-
-If you want to use the GitHub version of any R package,
-you will need to install the [remotes package][remotes] first.
-remotes can either be installed
-directly using `install.packages("remotes")` or
-will be available if you have [devtools][devtools].
 
 #### r4ss
 
@@ -573,8 +568,10 @@ The gradient information is in the scalar file.
 Merging the scalar and the time series can help add details to figures.
 
 ```{r}
-ts_dat <- merge(ts_dat, scalar_dat[,c("scenario", "iteration",
-    "max_grad")])
+ts_dat <- merge(
+  x = ts_dat,
+  y = scalar_dat[, c("scenario", "iteration", "max_grad")]
+)
 ```
 
 ### Separate the deterministic from the stochastic runs
@@ -586,7 +583,11 @@ ts_dat_det <- ts_dat[ts_dat$E %in% c("E100", "E101"), ]
 ts_dat_sto <- ts_dat[ts_dat$E %in% c("E0", "E1"), ]
 
 scalar_dat_long <- scalar_dat
-colnames(scalar_dat_long) <- gsub("(.+)_re", "RE _\\1", colnames(scalar_dat_long))
+colnames(scalar_dat_long) <- gsub(
+  pattern = "(.+)_re",
+  replacement = "RE _\\1",
+  x = colnames(scalar_dat_long)
+)
 scalar_dat_long <- reshape(scalar_dat_long, sep = " _",
   direction = "long",
   varying = grep(" _", colnames(scalar_dat_long)),
@@ -620,13 +621,13 @@ Figures~\ref{fig:plot-sto-ts},
 
 ```{r, plot-sto-ts, fig.height=5, fig.width=7, fig.cap="Time series of relative error in spawning stock biomass."}
 p <- plot_lines(ts_dat_sto, y = "SpawnBio_re",
-  vert = "E", horiz="D", print = FALSE, col = "max_grad")
+  vert = "E", horiz = "D", print = FALSE, col = "max_grad")
 print(p)
 ```
 
 ```{r, ssb-ts-plots, fig.height=5, fig.width=7, cache=TRUE, fig.cap="Spawning stock biomass time series."}
 p <- plot_lines(ts_dat_sto, y = "SpawnBio_re",
-  vert = "E", horiz="D", print = FALSE, col = "max_grad")
+  vert = "E", horiz = "D", print = FALSE, col = "max_grad")
 print(p)
 ```
 
@@ -643,12 +644,35 @@ print(p)
 
 ## Generating observation error {#obs-error}
 
-`sample_*()` use the expected values from the OM output and
-work together to create the input `.dat` file for the EM.
-Note that the years/fleets to be sampled must be present in the OM data file.
-ss3sim does this data creation dynamically [using `change_data()`](#change-data).
-But, in some cases adding information to the `.dat` file may need to be done manually.
-Currently ss3sim supports the sampling of the following types of data:
+`sample_*()` functions work together,
+adding observation error to the expected values from the OM,
+to create the input `.dat` file for the EM.
+For example,
+you might wish to sample conditional length-at-age data with
+a certain bin structure for certain years and fleets.
+To do that, expected values must be available from the OM for
+length and age data for appropriate years and fleets at a sufficiently fine bin size.
+One way around this would be to write an OM with
+all possible data types,
+for all possible years,
+at an extremely fine bin structure.
+Lots of data can substantially slow down how quickly the OM runs.
+Therefore, functions within ss3sim modify the OM to include just
+the data types and quantities that are needed
+based on the arguments passed to `sample_*()`.
+Internally,
+ss3sim uses `calculate_data_units()` to generate all necessary expected values.
+For example,
+if arguments are passed to `sample_mlacomp()`,
+then age and length-at-age expected values are created,
+even if you do not want observed age-composition samples.
+Similarly,
+`sample_wtatage()` leads to expected values in the OM for
+empirical weight-at-age, age-composition, and mean length-at-age data.
+`sample_calcomp()` leads to expected values in the OM for
+length- and age-composition data.
+
+Currently, ss3sim supports the sampling of the following types of data:
 
 * indices of abundance with `sample_index()`,
 * length and age compositions with `sample_lcomp()` and `sample_agecomp()`,
@@ -838,6 +862,19 @@ The ability to is specify the ESS was implemented to allow for users to explore 
 If you want to specify an input/effective sample size different that what is used in sampling,
 this is available via the `ESS` arguments of these two functions.
 
+#### Structure of data bins
+
+The ability of `change_data()` is to modify the binning structure of the data,
+not the population-level bins,
+is a lesser-known feature of this function.
+The desired ages and length bins for the data are specified in
+the arguments `len_bin` and `age_bin` in `ss3sim_base()`.
+These bins are consistent across fleets, years, etc.
+Empirical weight-at-age data are a special case because
+they are generated in a separate file and use the population bins.
+Also, when either of these bin arguments are set to `NULL` (the default value),
+the respective bins will match those used in the OM.
+
 ### Mean length at age
 
 The ability to sample mean-length-at-age data exists in ss3sim.
@@ -946,39 +983,6 @@ Each column holds code to generate
 a vector of time series information for a given parameter.
 The vectors are then combined into a named list that is passed to `change_tv_list` in `change_tv()`.
 
-## Adjusting the available OM data dynamically {#change-data}
-
-ss3sim can dynamically adjust the type of data available from the OM for sampling.
-For example, you might wish to sample conditional length-at-age in a certain bin structure for certain years and fleets.
-To do that, the OM will need to generate length and age data for appropriate years and fleets at a sufficiently fine bin size.
-However, the idea behind ss3sim is to avoid having to hand code many different versions of an OM that have only minor differences.
-One way around this would be to write an OM that included all possible data types for all possible years at an extremely fine bin structure.
-But, this can substantially slow down how quickly the OM runs in Stock Synthesis.
-Therefore, we made ss3sim capable of dynamically modifying the OM to include just the data types and quantities that are needed based on arguments that are passed to `sample_*()`.
-Internally, ss3sim uses `calculate_data_units()` to generate a superset of all necessary fleet and year combinations.
-See [the section below](#obs-error) for more information on these types of data.
-
-The dynamic creation of available data is the default behavior of the package.
-In practice, this means the user does not need to manage which data types, fleets, or years are produced by the OM.
-The following rules are applied if the arguments to any sampling function are not `NULL`:
-
-- If `sample_agecomp()`, generate age-composition data
-- If `sample_lcomp()`, generate length-composition data
-- If `sample_mlacomp()`, generate age-composition data and mean length-at-age data
-- If `sample_calcomp()`, generate length- and age-composition data and conditional length-at-age data
-- If `sample_wtatage()`, generate empirical weight-at-age, age-composition, and mean length-at-age data
-
-For example,
-if empirical weight-at-age data are to be sampled,
-`change_data()` adds age-composition and mean length-at-age data to the OM data file.
-
-Another feature of `change_data()` is that it can modify the binning structure of the data (not the population-level bins).
-The ages and length bins in the data are specified in the arguments `len_bin` and `age_bin` in `ss3sim_base()`.
-These bins are consistent across fleets, years, etc.
-Empirical weight-at-age data are a special case because they are generated in a separate file and use the population bins.
-Also, when either of these bin arguments are set to `NULL` (the default value),
-then the respective bins are taken from the OM.
-
 ## Parallel computing with ss3sim {#parallel}
 
 ss3sim can easily run multiple scenarios in parallel to speed up simulations.
@@ -992,8 +996,11 @@ Third, bring the results together and close the cluster.
 library(parallel)
 ncls <- as.numeric(Sys.getenv("NUMBER_OF_PROCESSORS"))
 cl <- makeCluster(getOption("cl.cores", ifelse(ncls < 6, 2, 4)))
-parSapply(cl, c(scname, scname_det), 
-  get_results_scenario, overwrite_files = TRUE)
+parSapply(cl,
+  X = c(scname, scname_det),
+  fun = get_results_scenario,
+  overwrite_files = TRUE
+)
 get_results_all()
 stopCluster(cl)
 ```
