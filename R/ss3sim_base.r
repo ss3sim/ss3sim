@@ -2,9 +2,9 @@
 #'
 #' A wrapper function that
 #' * calls [run_ss3model()] to run the operating model,
-#' * samples the output (add recruitment deviations, survey the data, etc.), and
+#' * samples the output to create fishery and survey data, and
 #' * runs the estimation model.
-#' This is the main workhorse of ss3sim and
+#' This function is the main workhorse of ss3sim and
 #' is typically not called by the user but called from [run_ss3sim()].
 #'
 #' @param iterations Which iterations to run. A numeric vector.
@@ -96,9 +96,9 @@
 #' @export
 #' @details
 #' This function is written to be flexible. You can specify the fishing
-#' mortality, survey index, length composition, age composition, and
-#' time-varying parameters in the function call as list objects (see the
-#' example below). For a generic higher-level function, see
+#' mortality, survey catch-per-unit-effort settings,
+#' length-composition data settings, etc. in the function call as list objects
+#' (see the example below). For a generic higher-level function, see
 #' [run_ss3sim()].
 #'
 #' The steps carried out within `ss3sim_base`:
