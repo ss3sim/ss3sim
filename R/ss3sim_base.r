@@ -59,7 +59,9 @@
 #' @param hess_always If `TRUE` then the Hessian will always be calculated.
 #'   If `FALSE` then the Hessian will only be calculated for
 #'   bias-adjustment runs thereby saving time.
-#' @param print_logfile Logical. Print a log file?
+#' @param print_logfile `r lifecycle::badge("deprecated")` `print_logfile = TRUE`
+#'   is no longer supported.
+#'   Previously, the default was `TRUE`, now the default is `FALSE`.
 #' @param sleep A time interval (in seconds) to pause on each iteration. Useful
 #'   if you want to reduce average CPU time -- perhaps because you're working on
 #'   a shared server.
@@ -174,7 +176,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                         retro_params = NULL, data_params = NULL, weight_comps_params = NULL,
                         user_recdevs = NULL, user_recdevs_warn = TRUE,
                         bias_adjust = FALSE, hess_always = FALSE,
-                        print_logfile = TRUE, sleep = 0, seed = 21,
+                        print_logfile = FALSE, sleep = 0, seed = 21,
                         ...) {
 
   # In case ss3sim_base is stopped before finishing:
@@ -717,59 +719,17 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       }
     }
 
-    # Write log file ---------------------------------------------------------------
-    # TODO pull the log file writing into a separate function and update
-    # for current arguments
-    if (print_logfile) {
-      today <- format(Sys.time(), "%Y-%m-%d")
-      me <- Sys.info()["nodename"]
-      sink(file.path(sc, i, "log.txt"))
-      cat("These models were run on ", today,
-        "\non the computer ", me,
-        "\nin the folder ", getwd(),
-        "\nwith the following arguments:",
-        sep = ""
-      )
-      cat("\n\n# change_tv arguments\n")
-      print(tv_params)
-      cat("\n\n# change_f arguments\n")
-      print(f_params)
-      cat("\n\n# sample_index arguments\n")
-      print(index_params)
-      cat("\n\n# sample_lcomp arguments\n")
-      print(lcomp_params)
-      cat("\n\n# sample_agecomp arguments\n")
-      print(agecomp_params)
-      cat("\n\n# sample_calcomp arguments\n")
-      print(calcomp_params)
-      cat("\n\n# sample_wtatage arguments\n")
-      print(wtatage_params)
-      cat("\n\n# sample_mlacomp arguments\n")
-      print(mlacomp_params)
-      cat("\n\n# tail compression arguments\n")
-      print(data_params)
-      cat("\n\n# change_em_lbin_params arguments\n")
-      print(em_binning_params)
-      cat("\n\n# changing the data arguments\n")
-      print(agecomp_params)
-      cat("\n\n# chante_retro arguments\n")
-      print(retro_params)
-      cat("\n\n# bias adjust?\n")
-      print(bias_adjust)
-      cat("\n\n# hess always?\n")
-      print(hess_always)
-      cat("\n\n# User recdevs?\n")
-      print(user_recdevs)
-      cat("\n\n# This run used the recruitment deviations (before scaling to sigma r):\n")
-      print(sc_i_recdevs)
-      cat("\n\n# With sigma r of\n")
-      print(sigmar)
-
-      sink()
-    }
-
     #  Pause to reduce average CPUE use?
     Sys.sleep(sleep)
   } # end iterations
+
+  if (print_logfile) {
+    lifecycle::deprecate_warn(
+      when = "1.1.7",
+      what = "ss3sim::ss3sim_base(print_logfile = TRUE)",
+      with = "ss3sim::ss3sim_base(print_logfile = FALSE)"
+    )
+  }
+
   return(scenarios)
 }
