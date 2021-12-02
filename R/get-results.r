@@ -71,7 +71,7 @@ get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
   if (length(scenarios) == 0) {
     stop("No scenarios found in:", directory)
   }
-  message("Extracting results from", length(scenarios), "scenarios")
+  message("Extracting results from ", length(scenarios), "scenarios")
 
   ## Loop through each scenario in folder in serial
   dq.list <- ts.list <- scalar.list <-
@@ -326,8 +326,12 @@ get_results_mod <- function(dir = getwd(), is_EM = NULL, is_OM = NULL) {
   # Input checks:
   if (!file.exists(file.path(dir, "Report.sso")) |
     file.size(file.path(dir, "Report.sso")) == 0) {
-    message("Missing Report.sso file for: ", dir, "; skipping...")
-    return(NA)
+    results_mod <- list(
+      scalar = NA,
+      timeseries = NA,
+      derived = NA
+    )
+    return(results_mod)
   }
   # figure out if is EM and if forecast report should be read
   if (is.null(is_EM)) {
@@ -645,6 +649,15 @@ get_compfit <- function(report.file, name) {
 #' @return A dataframe
 make_df <- function(list_name, list_df) {
   list_df_comp <- lapply(list_df, function(x) x[[list_name]])
+  # set anything not a dataframe (the NA values) as Null
+  list_df_comp <- lapply(list_df_comp, function (x) {
+      if(!is.data.frame(x)) {
+        x <- NULL
+      }
+      x
+    })
+  # drop any empty elements
+  list_df_comp <- purrr::compact(list_df_comp)
   all_nms <- unique(unlist(lapply(list_df_comp, names)))
   # this extra code is needed in case of extra colnames that are not in both
   # dataframes.
