@@ -118,3 +118,96 @@ test_that("get_results_scenario() does overwrite files if overwrite_files = TRUE
   ss3sim_scalar <- read.csv(file.path("scenario", "results_scalar_scenario.csv")) # should be real data
   expect_true(ncol(ss3sim_scalar) > 1)
 })
+
+test_that("get_results_all() works when some report files missing", {
+# get rid of old csv files
+all_files <- list.files(recursive = TRUE)
+to_rm <- grep("csv$", all_files, value = TRUE)
+file.remove(to_rm)
+# get rid ofreport files for the EMS
+file.remove("scenario/1/em/Report.sso")
+file.remove("scenario/1/em_2/Report.sso")
+# if in doubt, double check the commented out line returns "scenario/1/om/Report.sso"
+# ONLY.
+# grep("/Report\\.sso$", list.files(recursive = TRUE), value = TRUE)
+return <- get_results_all(user_scenarios = "scenario")
+expect_length(unique(return$scalar$model_run), 1)
+expect_true(unique(return$scalar$model_run) == "om")
+expect_true(unique(return$ts$model_run) == "om")
+expect_length(unique(return$ts$model_run), 1)
+expect_true(unique(return$dq$model_run) == "om")
+expect_length(unique(return$dq$model_run), 1)
+})
+
+test_that("get_results_all() works when all report files missing for 1 scenario", {
+  # get rid of old csv files
+  all_files <- list.files(recursive = TRUE)
+  to_rm <- grep("csv$", all_files, value = TRUE)
+  file.remove(to_rm)
+  dir.create("scenario_2")
+  file.copy(from = list.dirs("scenario", recursive = FALSE), to = "scenario_2", recursive = TRUE)
+  file.remove("scenario_2/1/om/Report.sso")
+  # if in doubt, double check the commented out line returns "scenario/1/om/Report.sso"
+  # ONLY.
+  # grep("/Report\\.sso$", list.files(recursive = TRUE), value = TRUE)
+  return <- get_results_all(user_scenarios = c("scenario_2", "scenario"))
+  expect_type(return, "list")
+  expect_length(return, 3)
+  expect_true(all(return$ts$scenario == "scenario"))
+  expect_true(all(return$scalar$scenario == "scenario"))
+  expect_true(all(return$dq$scenario == "scenario"))
+})
+
+test_that("get_results_all() works when 1 iteration of report files missing", {
+  # get rid of old csv files
+  all_files <- list.files(recursive = TRUE)
+  to_rm <- grep("csv$", all_files, value = TRUE)
+  file.remove(to_rm)
+  dir.create("scenario/2")
+  file.copy(from = list.files("scenario/1", recursive = F, include.dirs = T, full.names = T), to = "scenario/2", recursive = T)
+  # get rid ofreport files for the EMS
+  file.remove("scenario/1/om/Report.sso")
+  # if in doubt, double check the commented out line returns "scenario/1/om/Report.sso"
+  # ONLY.
+  # grep("/Report\\.sso$", list.files(recursive = TRUE), value = TRUE)
+  return <- get_results_all(user_scenarios = "scenario")
+  expect_type(return, "list")
+  expect_length(return, 3)
+  expect_true(all(return$ts$iteration == "2"))
+  expect_true(all(return$scalar$iteration == "2"))
+  expect_true(all(return$dq$iteration == "2"))
+})
+
+test_that("get_results_all() works when all report files missing", {
+  # get rid of old csv files
+  all_files <- list.files(recursive = TRUE)
+  to_rm <- grep("csv$", all_files, value = TRUE)
+  file.remove(to_rm)
+  # get rid ofreport files for the EMS
+  file.remove("scenario/2/om/Report.sso")
+  # if in doubt, double check the commented out line returns "scenario/1/om/Report.sso"
+  # ONLY.
+  # grep("/Report\\.sso$", list.files(recursive = TRUE), value = TRUE)
+  return <- get_results_all(user_scenarios = "scenario")
+  expect_type(return, "list")
+  expect_length(return, 3)
+  expect_true(is.null(return$ts))
+  expect_true(is.null(return$scalar))
+  expect_true(is.null(return$dq))
+})
+
+test_that("get_results_all() works when all report files missing for 2 scenarios", {
+  # get rid of old csv files
+  all_files <- list.files(recursive = TRUE)
+  to_rm <- grep("csv$", all_files, value = TRUE)
+  file.remove(to_rm)
+  # if in doubt, double check the commented out line returns "scenario/1/om/Report.sso"
+  # ONLY.
+  # grep("/Report\\.sso$", list.files(recursive = TRUE), value = TRUE)
+  return <- get_results_all(user_scenarios = c("scenario_2", "scenario"))
+  expect_type(return, "list")
+  expect_length(return, 3)
+  expect_true(is.null(return$ts))
+  expect_true(is.null(return$scalar))
+  expect_true(is.null(return$dq))
+})
