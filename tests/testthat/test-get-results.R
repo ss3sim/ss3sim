@@ -120,23 +120,23 @@ test_that("get_results_scenario() does overwrite files if overwrite_files = TRUE
 })
 
 test_that("get_results_all() works when some report files missing", {
-# get rid of old csv files
-all_files <- list.files(recursive = TRUE)
-to_rm <- grep("csv$", all_files, value = TRUE)
-file.remove(to_rm)
-# get rid ofreport files for the EMS
-file.remove("scenario/1/em/Report.sso")
-file.remove("scenario/1/em_2/Report.sso")
-# if in doubt, double check the commented out line returns "scenario/1/om/Report.sso"
-# ONLY.
-# grep("/Report\\.sso$", list.files(recursive = TRUE), value = TRUE)
-return <- get_results_all(user_scenarios = "scenario")
-expect_length(unique(return$scalar$model_run), 1)
-expect_true(unique(return$scalar$model_run) == "om")
-expect_true(unique(return$ts$model_run) == "om")
-expect_length(unique(return$ts$model_run), 1)
-expect_true(unique(return$dq$model_run) == "om")
-expect_length(unique(return$dq$model_run), 1)
+  # get rid of old csv files
+  all_files <- list.files(recursive = TRUE)
+  to_rm <- grep("csv$", all_files, value = TRUE)
+  file.remove(to_rm)
+  # get rid ofreport files for the EMS
+  file.remove("scenario/1/em/Report.sso")
+  file.remove("scenario/1/em_2/Report.sso")
+  # if in doubt, double check the commented out line returns "scenario/1/om/Report.sso"
+  # ONLY.
+  # grep("/Report\\.sso$", list.files(recursive = TRUE), value = TRUE)
+  return <- get_results_all(user_scenarios = "scenario")
+  expect_length(unique(return$scalar$model_run), 1)
+  expect_true(unique(return$scalar$model_run) == "om")
+  expect_true(unique(return$ts$model_run) == "om")
+  expect_length(unique(return$ts$model_run), 1)
+  expect_true(unique(return$dq$model_run) == "om")
+  expect_length(unique(return$dq$model_run), 1)
 })
 
 test_that("get_results_all() works when all report files missing for 1 scenario", {
