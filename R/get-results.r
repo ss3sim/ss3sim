@@ -226,7 +226,7 @@ get_results_scenario <- function(scenario, directory = getwd(),
   scalar <- scen_dfs[["scalar"]]
   ts <- scen_dfs[["ts"]]
   dq <- scen_dfs[["dq"]]
-  if(isTRUE(is.data.frame(scalar) & is.data.frame(ts) & is.data.frame(dq))) {
+  if (isTRUE(is.data.frame(scalar) & is.data.frame(ts) & is.data.frame(dq))) {
     scalar$scenario <- ts$scenario <- dq$scenario <- scenario
 
     ## Write them to file in the scenario folder
@@ -302,9 +302,9 @@ get_results_iter <- function(dir_1_iter = NULL, mod_dirs = NULL,
     list_df = iter_list
   )
   names(return_iter) <- c("scalar", "timeseries", "derived")
-  if(isTRUE(all(unlist(lapply(return_iter, function (x) is.data.frame(x)))) == TRUE)) {
-  return_iter$scalar$iteration <- return_iter$timeseries$iteration <-
-    return_iter$derived$iteration <- iter_name
+  if (isTRUE(all(unlist(lapply(return_iter, function(x) is.data.frame(x)))) == TRUE)) {
+    return_iter$scalar$iteration <- return_iter$timeseries$iteration <-
+      return_iter$derived$iteration <- iter_name
   }
   # return the iteration level dfs as a list
   return_iter
@@ -653,15 +653,15 @@ get_compfit <- function(report.file, name) {
 make_df <- function(list_name, list_df) {
   list_df_comp <- lapply(list_df, function(x) x[[list_name]])
   # set anything not a dataframe (the NA values) as Null
-  list_df_comp <- lapply(list_df_comp, function (x) {
-      if(!is.data.frame(x)) {
-        x <- NULL
-      }
-      x
-    })
+  list_df_comp <- lapply(list_df_comp, function(x) {
+    if (!is.data.frame(x)) {
+      x <- NULL
+    }
+    x
+  })
   # drop any empty elements
   list_df_comp <- purrr::compact(list_df_comp)
-  if(length(list_df_comp) > 0) {
+  if (length(list_df_comp) > 0) {
     all_nms <- unique(unlist(lapply(list_df_comp, names)))
     # this extra code is needed in case of extra colnames that are not in both
     # dataframes.
