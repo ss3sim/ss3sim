@@ -71,7 +71,7 @@ get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
   if (length(scenarios) == 0) {
     stop("No scenarios found in:", directory)
   }
-  message("Extracting results from ", length(scenarios), "scenarios")
+  message("Extracting results from ", length(scenarios), " scenarios")
 
   ## Loop through each scenario in folder in serial
   dq.list <- ts.list <- scalar.list <-
