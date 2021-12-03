@@ -22,6 +22,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -34,18 +36,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">ss3sim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.7</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -73,7 +69,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ss3sim/ss3sim/">
+  <a href="https://github.com/ss3sim/ss3sim/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -90,9 +86,9 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="ss3sim" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#ss3sim" class="anchor"></a>ss3sim</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="ss3sim">ss3sim<a class="anchor" aria-label="anchor" href="#ss3sim"></a>
+</h1></div>
 <ul>
 <li><a href="#badges">Badges</a></li>
 <li><a href="#installation">Installation</a></li>
@@ -103,13 +99,18 @@
 <li><a href="#contributing-to-ss3sim">Contributing to ss3sim</a></li>
 <li><a href="#code-of-conduct">Code of conduct</a></li>
 </ul>
-<!-- end toc -->
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>Install the <a href="https://cran.r-project.org/package=ss3sim">CRAN version</a> of ss3sim with:</p>
+<!-- end toc --><div class="section level2">
+<h2 id="badges">Badges<a class="anchor" aria-label="anchor" href="#badges"></a>
+</h2>
+<p>main: <a href="https://github.com/ss3sim/ss3sim/actions?query=workflow%3AR-CMD-check" class="external-link"><img src="https://github.com/ss3sim/ss3sim/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a> <a href="https://cran.r-project.org/package=ss3sim" class="external-link"><img src="http://www.r-pkg.org/badges/version/ss3sim" alt="CRAN_Status_Badge"></a></p>
+<p>ss3sim is an R package that simplifies the steps needed to generate beautiful simulation output from the widely-used <a href="https://vlab.noaa.gov/web/stock-synthesis" class="external-link">Stock Synthesis</a> (SS3) statistical age-structured stock assessment framework. To learn more, read on or check out the <a href="https://ss3sim.github.io/ss3sim/" class="external-link">vignettes</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>Install the <a href="https://cran.r-project.org/package=ss3sim" class="external-link">CRAN version</a> of ss3sim with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span></code></pre></div>
 <p>Or, install the development version from GitHub:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
@@ -118,134 +119,136 @@
   ref <span class="op">=</span> <span class="st">"main"</span>,
   build_vignettes <span class="op">=</span> <span class="cn">TRUE</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ss3sim/ss3sim">ss3sim</a></span><span class="op">)</span></code></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ss3sim/ss3sim" class="external-link">ss3sim</a></span><span class="op">)</span></code></pre></div>
 <p>A note: As of April 9, 2021, use of parallel master and development branches in the GitHub ss3sim repository has ended. The default branch is now called main, and feature branches will be used for new development. Once tested, feature branches should be merged into main. See issue #305 for more details.</p>
-<p>We suggest using the GitHub version because it comes with the SS3 executable/binary. If you are using the CRAN version, you will need to install the binary and place it in your system path. See the <a href="https://ss3sim.github.io/ss3sim/articles/introduction.html">Introduction vignette</a> for more details on how to get the latest version of SS3 and <a href="https://ss3sim.github.io/ss3sim/articles/introduction.html#installing-stock-synthesis">place it in your path</a>.</p>
-<p>You can read the help files and access the <a href="http://ss3sim.github.io/ss3sim/">vignettes</a> for reproducible examples of ss3sim simulations with</p>
+<p>We suggest using the GitHub version because it comes with the SS3 executable/binary. If you are using the CRAN version, you will need to install the binary and place it in your system path. See the <a href="https://ss3sim.github.io/ss3sim/articles/introduction.html" class="external-link">Introduction vignette</a> for more details on how to get the latest version of SS3 and <a href="https://ss3sim.github.io/ss3sim/articles/introduction.html#installing-stock-synthesis" class="external-link">place it in your path</a>.</p>
+<p>You can read the help files and access the <a href="http://ss3sim.github.io/ss3sim/" class="external-link">vignettes</a> for reproducible examples of ss3sim simulations with</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">?</span><span class="va">ss3sim</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/browseVignettes.html">browseVignettes</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">"introduction"</span>, <span class="st">"ss3sim"</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/browseVignettes.html" class="external-link">browseVignettes</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"introduction"</span>, <span class="st">"ss3sim"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="the-ss3sim-simulation-setup" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-ss3sim-simulation-setup" class="anchor"></a>The ss3sim simulation setup</h2>
+<div class="section level2">
+<h2 id="the-ss3sim-simulation-setup">The ss3sim simulation setup<a class="anchor" aria-label="anchor" href="#the-ss3sim-simulation-setup"></a>
+</h2>
 <p>An ss3sim simulation requires three types of input:</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>a base model of the underlying truth (an SS3 operating model; OM),</li>
 <li>a base model of how you will assess that truth (an SS3 estimation model; EM), and</li>
 <li>a data frame specifying how you want to manipulate (1) and (2) from their base-model configurations.</li>
 </ol>
-<p>You can find examples of an SS3 OM and EM <a href="https://github.com/ss3sim/ss3sim/tree/master/inst/extdata/models">within the package data</a>. An example data frame for (3) is also available within the package via <code><a href="reference/setup_scenarios_defaults.html">ss3sim::setup_scenarios_defaults()</a></code>. Adding columns to this default scenario data frame will enable the manipulation of additional components of the OM, sampling procedure, and the EM. Adding rows to this default scenario data frame will lead to more scenarios, where a scenario is the result of the combination of specifications in that row, i.e., how you manipulate the OM and the EM. There will be many folders inside each scenario folder, where each of these folders are iterations. Iterations within a scenario differ only by the seed used within R to define the randomness of that iteration.</p>
-<p><img src="https://raw.githubusercontent.com/ss3sim/ss3sim/f763cfb462a9e68db670155070cd554812a65160/man/figures/filestructure.png" alt="An illustration of the input and output file and folder structure."></p>
+<p>You can find examples of an SS3 OM and EM <a href="https://github.com/ss3sim/ss3sim/tree/master/inst/extdata/models" class="external-link">within the package data</a>. An example data frame for (3) is also available within the package via <code><a href="reference/setup_scenarios_defaults.html">ss3sim::setup_scenarios_defaults()</a></code>. Adding columns to this default scenario data frame will enable the manipulation of additional components of the OM, sampling procedure, and the EM. Adding rows to this default scenario data frame will lead to more scenarios, where a scenario is the result of the combination of specifications in that row, i.e., how you manipulate the OM and the EM. There will be many folders inside each scenario folder, where each of these folders are iterations. Iterations within a scenario differ only by the seed used within R to define the randomness of that iteration.</p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/ss3sim/ss3sim/f763cfb462a9e68db670155070cd554812a65160/reference/figures/filestructure.png" alt=""><p class="caption">An illustration of the input and output file and folder structure.</p>
+</div>
 <p>An illustration of the input and output file and folder structure.</p>
 </div>
-<div id="how-ss3sim-works" class="section level2">
-<h2 class="hasAnchor">
-<a href="#how-ss3sim-works" class="anchor"></a>How ss3sim works</h2>
+<div class="section level2">
+<h2 id="how-ss3sim-works">How ss3sim works<a class="anchor" aria-label="anchor" href="#how-ss3sim-works"></a>
+</h2>
 <p>ss3sim works by converting simulation arguments (e.g., a given natural mortality trajectory) into manipulations of SS3 configuration files. It takes care of running the operating and estimation models as well as making these manipulations at the appropriate stage in the simulation.</p>
 <p>ss3sim functions are divided into three types:</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li><p><code>change</code> and <code>sample</code> functions that manipulate SS3 configuration files. These manipulations generate an underlying “truth” (operating models) and control our assessment of those models (estimation models).</p></li>
 <li><p><code>run</code> functions that conduct simulations. These functions generate a folder structure, call manipulation functions, run SS3 as needed, and save the output.</p></li>
 <li><p><code>get</code> functions for synthesizing the output.</p></li>
 </ol>
 </div>
-<div id="example-output-from-an-ss3sim-simulation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example-output-from-an-ss3sim-simulation" class="anchor"></a>Example output from an ss3sim simulation</h2>
-<p><img src="https://raw.github.com/seananderson/ss3sim/master/inst/ms/fig2-20131109.png" alt="An example of ss3sim output"></p>
+<div class="section level2">
+<h2 id="example-output-from-an-ss3sim-simulation">Example output from an ss3sim simulation<a class="anchor" aria-label="anchor" href="#example-output-from-an-ss3sim-simulation"></a>
+</h2>
+<div class="figure">
+<img src="https://raw.github.com/seananderson/ss3sim/master/inst/ms/fig2-20131109.png" alt=""><p class="caption">An example of ss3sim output</p>
+</div>
 <p>This example shows a crossed simulation in which we considered (1) the effect of fixing natural mortality (<em>M</em>) at its true value from the OM (0.2; case E0) or estimating <em>M</em> (case E1) and (2) the effect of high survey effort (sigma_survey = 0.1; case D0) or low survey effort (sigma_survey = 0.4; case D1). Upper panels (blue) show time series of relative error in spawning stock biomass (SSB). Lower panels (gray) show the distribution of relative error across four scalar variables: depletion, <em>M</em>, SSB at maximum sustainable yield (SSB_MSY), and fishing mortality (<em>F</em>) in the terminal year. We show the values across simulation iterations with dots and the distributions with beanplots (kernel density smoothers).</p>
 </div>
-<div id="citing-ss3sim" class="section level2">
-<h2 class="hasAnchor">
-<a href="#citing-ss3sim" class="anchor"></a>Citing ss3sim</h2>
+<div class="section level2">
+<h2 id="citing-ss3sim">Citing ss3sim<a class="anchor" aria-label="anchor" href="#citing-ss3sim"></a>
+</h2>
 <p>If you use ss3sim in a publication, please cite ss3sim as shown by</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/citation.html">citation</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/toLatex.html">toBibtex</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html">citation</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>and add your publication to the <a href="https://github.com/ss3sim/ss3sim/wiki/manuscripts">list of publications</a> in the <a href="https://github.com/ss3sim/ss3sim/wiki">wiki</a>.</p>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/toLatex.html" class="external-link">toBibtex</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p>and add your publication to the <a href="https://github.com/ss3sim/ss3sim/wiki/manuscripts" class="external-link">list of publications</a> in the <a href="https://github.com/ss3sim/ss3sim/wiki" class="external-link">wiki</a>.</p>
 </div>
-<div id="contributing-to-ss3sim" class="section level2">
-<h2 class="hasAnchor">
-<a href="#contributing-to-ss3sim" class="anchor"></a>Contributing to ss3sim</h2>
+<div class="section level2">
+<h2 id="contributing-to-ss3sim">Contributing to ss3sim<a class="anchor" aria-label="anchor" href="#contributing-to-ss3sim"></a>
+</h2>
 <p>Interested in contributing to ss3sim? We recognize contributions come in many forms, including but not limited to code, reporting issues, creating examples and/or documentation.</p>
-<p>We strive to follow the <a href="https://github.com/nmfs-fish-tools/Resources/blob/master/CONTRIBUTING.md">NMFS Fisheries Toolbox Contribution Guide</a>. We also have included ss3sim-specific code contribution information in the <a href="https://github.com/ss3sim/ss3sim/wiki/developers">Developers page of the ss3sim wiki</a>. Note that these are guidelines, not rules, and we are open to collaborations in other ways that may work better for you. Please feel free to reach out to us by opening an issue in this repository or by emailing the maintainer (call <code>maintainer("ss3sim")</code> in R to view the current maintainer’s name and email address).</p>
+<p>We strive to follow the <a href="https://github.com/nmfs-fish-tools/Resources/blob/master/CONTRIBUTING.md" class="external-link">NMFS Fisheries Toolbox Contribution Guide</a>. We also have included ss3sim-specific code contribution information in the <a href="https://github.com/ss3sim/ss3sim/wiki/developers" class="external-link">Developers page of the ss3sim wiki</a>. Note that these are guidelines, not rules, and we are open to collaborations in other ways that may work better for you. Please feel free to reach out to us by opening an issue in this repository or by emailing the maintainer (call <code>maintainer("ss3sim")</code> in R to view the current maintainer’s name and email address).</p>
 <p>Note that contributors are expected to uphold the <a href="#code-of-conduct">code of conduct</a>.</p>
 </div>
-<div id="code-of-conduct" class="section level2">
-<h2 class="hasAnchor">
-<a href="#code-of-conduct" class="anchor"></a>Code of conduct</h2>
-<p>This project and everyone participating in it is governed by the <a href="https://github.com/nmfs-fish-tools/Resources/blob/master/CODE_OF_CONDUCT.md">NMFS Fisheries Toolbox Code of Conduct</a>. By participating, you are expected to uphold this code. Please report unacceptable behavior to <a href="mailto:fisheries.toolbox@noaa.gov">fisheries.toolbox@noaa.gov</a>. Note that the maintainers of ss3sim do not have access to this email account, so unacceptable behavior of maintainers can also be reported here.</p>
-<p>The NFMS Fisheries Toolbox Code of Conduct is adapted from the <a href="https://www.contributor-covenant.org">Contributor Covenant</a>, version 1.4, available at <a href="https://www.contributor-covenant.org/version/1/4/code-of-conduct.html" class="uri">https://www.contributor-covenant.org/version/1/4/code-of-conduct.html</a></p>
-<p>For answers to common questions about this code of conduct, see <a href="https://www.contributor-covenant.org/faq" class="uri">https://www.contributor-covenant.org/faq</a></p>
+<div class="section level2">
+<h2 id="code-of-conduct">Code of conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
+</h2>
+<p>This project and everyone participating in it is governed by the <a href="https://github.com/nmfs-fish-tools/Resources/blob/master/CODE_OF_CONDUCT.md" class="external-link">NMFS Fisheries Toolbox Code of Conduct</a>. By participating, you are expected to uphold this code. Please report unacceptable behavior to <a href="mailto:fisheries.toolbox@noaa.gov">fisheries.toolbox@noaa.gov</a>. Note that the maintainers of ss3sim do not have access to this email account, so unacceptable behavior of maintainers can also be reported here.</p>
+<p>The NFMS Fisheries Toolbox Code of Conduct is adapted from the <a href="https://www.contributor-covenant.org" class="external-link">Contributor Covenant</a>, version 1.4, available at <a href="https://www.contributor-covenant.org/version/1/4/code-of-conduct.html" class="external-link uri">https://www.contributor-covenant.org/version/1/4/code-of-conduct.html</a></p>
+<p>For answers to common questions about this code of conduct, see <a href="https://www.contributor-covenant.org/faq" class="external-link uri">https://www.contributor-covenant.org/faq</a></p>
 </div>
-<div id="disclaimer" class="section level2">
-<h2 class="hasAnchor">
-<a href="#disclaimer" class="anchor"></a>Disclaimer</h2>
+<div class="section level2">
+<h2 id="disclaimer">Disclaimer<a class="anchor" aria-label="anchor" href="#disclaimer"></a>
+</h2>
 <p>“The United States Department of Commerce (DOC) GitHub project code is provided on an ‘as is’ basis and the user assumes responsibility for its use. DOC has relinquished control of the information and no longer has responsibility to protect the integrity, confidentiality, or availability of the information. Any claims against the Department of Commerce stemming from the use of its GitHub project will be governed by all applicable Federal law. Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation or favoring by the Department of Commerce. The Department of Commerce seal and logo, or the seal and logo of a DOC bureau, shall not be used in any manner to imply endorsement of any commercial product or activity by DOC or the United States Government.”</p>
-<p><img src="https://raw.githubusercontent.com/nmfs-general-modeling-tools/nmfspalette/main/man/figures/noaa-fisheries-rgb-2line-horizontal-small.png" height="75" alt="NOAA Fisheries"></p>
-<p><a href="https://www.commerce.gov/">U.S. Department of Commerce</a> | <a href="https://www.noaa.gov">National Oceanographic and Atmospheric Administration</a> | <a href="https://www.fisheries.noaa.gov/">NOAA Fisheries</a></p>
+<p><img src="https://raw.githubusercontent.com/nmfs-general-modeling-tools/nmfspalette/main/reference/figures/noaa-fisheries-rgb-2line-horizontal-small.png" height="75" alt="NOAA Fisheries"></p>
+<p><a href="https://www.commerce.gov/" class="external-link">U.S. Department of Commerce</a> | <a href="https://www.noaa.gov" class="external-link">National Oceanographic and Atmospheric Administration</a> | <a href="https://www.fisheries.noaa.gov/" class="external-link">NOAA Fisheries</a></p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=ss3sim">https://​cloud.r-project.org/​package=ss3sim</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/ss3sim/ss3sim/">https://​github.com/​ss3sim/​ss3sim/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/ss3sim/ss3sim/issues">https://​github.com/​ss3sim/​ss3sim/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=ss3sim" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/ss3sim/ss3sim/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/ss3sim/ss3sim/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
+<a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
 </li>
 </ul>
 </div>
+
+
 <div class="citation">
-<h2>Citation</h2>
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html">Citing ss3sim</a></li>
+<li><a href="authors.html#citation">Citing ss3sim</a></li>
 </ul>
 </div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Kelli F. Johnson <br><small class="roles"> Author, maintainer </small>  </li>
-<li>Sean C. Anderson <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-9563-1937" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Sean C. Anderson <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-9563-1937" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Kathryn L. Doering <br><small class="roles"> Author </small>  </li>
 <li>Cole C. Monnahan <br><small class="roles"> Author </small>  </li>
 <li>Christine C. Stawitz <br><small class="roles"> Author </small>  </li>
 <li>Ian G. Taylor <br><small class="roles"> Author </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://github.com/ss3sim/ss3sim/actions?query=workflow%3AR-CMD-check"><img src="https://github.com/ss3sim/ss3sim/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://cran.r-project.org/package=ss3sim"><img src="http://www.r-pkg.org/badges/version/ss3sim" alt="CRAN_Status_Badge"></a></li>
-</ul>
-</div>
-</div>
+
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
+  <p></p>
+<p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -253,6 +256,8 @@
 
   
 
+
+  
 
   </body>
 </html>

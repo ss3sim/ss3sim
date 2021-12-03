@@ -20,6 +20,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -32,18 +34,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ss3sim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.7</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -71,7 +67,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ss3sim/ss3sim/">
+  <a href="https://github.com/ss3sim/ss3sim/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -91,9 +87,9 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Creating new ss3sim model setups</h1>
             
-            <h4 class="date">2021-11-30</h4>
+            <h4 data-toc-skip class="date">2021-12-03</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ss3sim/ss3sim/blob/master/vignettes/making-models.Rmd"><code>vignettes/making-models.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ss3sim/ss3sim/blob/HEAD/vignettes/making-models.Rmd" class="external-link"><code>vignettes/making-models.Rmd</code></a></small>
       <div class="hidden name"><code>making-models.Rmd</code></div>
 
     </div>
@@ -102,38 +98,38 @@
     
 <p>In some cases you may wish to adapt your own SS model to work with ss3sim. This is possible but may be difficult. The functions in ss3sim were developed to work with the existing model setups, and a model with a different structure may cause errors in these functions. This stems from the high flexibility of SS, allowing for more complex model setups than those used while developing ss3sim. Given the many options available in SS, it is extremely difficult to write auxiliary functions that will interact reliably with all combinations of these options. For this reason, we recommend that users strongly consider trying to <a href="modifying-models.html">modify an existing model rather than creating a new one</a>.</p>
 <p>For those users who choose to create a new ss3sim model setup, we outline the steps to take an existing SS model and modify it to work with the ss3sim package.</p>
-<div id="overall-file-structure" class="section level1">
-<h1 class="hasAnchor">
-<a href="#overall-file-structure" class="anchor"></a>Overall file structure</h1>
+<div class="section level1">
+<h1 id="overall-file-structure">Overall file structure<a class="anchor" aria-label="anchor" href="#overall-file-structure"></a>
+</h1>
 <p><a href="#om-setup">OM</a> folders should have the following files:</p>
-<pre><code>yourOMmodel.ctl
-yourOMmodel.dat
-starter.ss
-forecast.ss</code></pre>
+<pre><code><span class="va">yourOMmodel.ctl</span>
+<span class="va">yourOMmodel.dat</span>
+<span class="va">starter.ss</span>
+<span class="va">forecast.ss</span></code></pre>
 <p><a href="#em-setup">EM</a> folders should have the following files:</p>
-<pre><code>yourEMmodel.ctl
-starter.ss
-forecast.ss</code></pre>
+<pre><code><span class="va">yourEMmodel.ctl</span>
+<span class="va">starter.ss</span>
+<span class="va">forecast.ss</span></code></pre>
 <p>The names of the <code>.ctl</code> and <code>.dat</code> files are not important. The wrapper functions within ss3sim will rename the files when copying them to appropriate folders. These files should be derived from <code>.ss_new</code> files but have the file extensions as shown above. It is important to use <code>.ss_new</code> files so the files have consistent formatting. Many of the functions in this package and r4ss depend on that formatting.</p>
 </div>
-<div id="om-setup" class="section level1">
-<h1 class="hasAnchor">
-<a href="#om-setup" class="anchor"></a>Setting up a new operating model</h1>
+<div class="section level1">
+<h1 id="om-setup">Setting up a new operating model<a class="anchor" aria-label="anchor" href="#om-setup"></a>
+</h1>
 <p>The main purpose of the operating model (OM) is to generate data files that can be read into the estimation model (EM). The user needs to setup the OM <code>.dat</code> file to conform to the structure needed by the EM. Two key examples are with age- and length-composition data. The OM <code>.dat</code> file will determine which years and bins are available to the sampling functions <code><a href="../reference/sample_agecomp.html">sample_agecomp()</a></code> and <code><a href="../reference/sample_lcomp.html">sample_lcomp()</a></code>. If dynamic binning is desired, the user should setup the OM <code>.dat</code> file so that all desired combinations of bins are possible (see the <a href="introduction.html#change-data">section in the Introduction vignette on dynamic binning</a> for more details). Specifically, the user must specify small enough OM bins for the data, but not smaller than the population bins so that they can easily be re-binned.</p>
 <p>The first step to setting up an OM is to run the assessment model to make sure the model runs and estimates parameters as desired. We recommend opening a command window inside your OM and EM folders to test if the model still runs at many points along the process. After turning parameter estimation off in the starter file (see below), the model can be checked by running <code>ss -nohess</code> to make sure the input files are read in properly and the model writes the new input files. The previous will only work if you have placed the executable in your path (<a href="introduction.html">see the Introduction vignette</a>). Use the <code>.ss_new</code> files produced as a starting point to ensure that your SS input files are properly formatted.</p>
 <p>To obtain <code>.ss_new</code> files, open a command window in the OM folder and type <code>ss</code> to run the model. Once the model is finished running, it will generate a number of files, including <code>.ss_new</code> files. Remove the <code>.ss_new</code> file extension from the files needed and add the appropriate file extension. Then, move the generated data file to the EM folder and repeat the process for the EM.</p>
 <p>Note that there may be an error message in the command window indicating that ADMB cannot find the data file. ADMB expects a certain name and SS uses a name stored in the starter file. You can safely ignore this error.</p>
-<div id="forecast-file-modifications" class="section level2">
-<h2 class="hasAnchor">
-<a href="#forecast-file-modifications" class="anchor"></a>Forecast file modifications</h2>
+<div class="section level2">
+<h2 id="forecast-file-modifications">Forecast file modifications<a class="anchor" aria-label="anchor" href="#forecast-file-modifications"></a>
+</h2>
 <ol style="list-style-type: decimal">
 <li><p>Set <code># Do West Coast gfish rebuilder output (0/1)</code> to 0.</p></li>
 <li><p>Optionally, comment out the lines below specifying the years of the rebuilding plan.</p></li>
 </ol>
 </div>
-<div id="starter-file-modifications" class="section level2">
-<h2 class="hasAnchor">
-<a href="#starter-file-modifications" class="anchor"></a>Starter file modifications</h2>
+<div class="section level2">
+<h2 id="starter-file-modifications">Starter file modifications<a class="anchor" aria-label="anchor" href="#starter-file-modifications"></a>
+</h2>
 <ol style="list-style-type: decimal">
 <li><p>Delete <code>starter.ss</code> and rename <code>starter.ss_new</code> to <code>starter.ss</code>. Modify this new file.</p></li>
 <li><p>Turn off parameter estimation by changing <code># Turn off estimation for parameters entering after this phase</code> to <code>0</code>.</p></li>
@@ -146,9 +142,9 @@ forecast.ss</code></pre>
 <li><p>Implement catches using instantaneous fishing mortality by changing <code># F_report_basis</code> to <code>0</code>. Instantaneous fishing mortality is used rather than an input vector of catches to ensure that the catches are not more than available population biomass, which can happen with absolute catch rather than fishing mortality.</p></li>
 </ol>
 </div>
-<div id="control-file-modifications" class="section level2">
-<h2 class="hasAnchor">
-<a href="#control-file-modifications" class="anchor"></a>Control file modifications</h2>
+<div class="section level2">
+<h2 id="control-file-modifications">Control file modifications<a class="anchor" aria-label="anchor" href="#control-file-modifications"></a>
+</h2>
 <ol style="list-style-type: decimal">
 <li><p>Delete the <code>&lt;modelname&gt;.ctl</code> file and rename <code>control.ss_new</code> to <code>om.ctl</code>. Modify this new file.</p></li>
 <li><p>Specify all environmental deviates on biological parameters to be unconstrained by bounds by setting <code>#_env/block/dev_adjust_method</code> to <code>1</code>. If the method is set to <code>2</code>, parameters adjusted using environmental covariate inputs will be adjusted using a logistic transformation. The logistic transformation ensures that the adjusted parameter will stay within the bounds of the base parameter. If it exists and is not already commented out, comment out the second line entitled <code>#_env/block/dev_adjust_method</code> underneath the section which specifies selectivity parameters. If time-varying selectivity parameters are added using the <code><a href="../reference/change_tv.html">change_tv()</a></code> function, this line will be modified by the same function.</p></li>
@@ -164,9 +160,9 @@ forecast.ss</code></pre>
 <li><p>If desired, change the initial values of the growth, selectivity, etc. parameters to specify the dynamics of the operating model. In theory these can be based on values estimated from the stock assessment model you are altering or values you wish to explore.</p></li>
 </ol>
 </div>
-<div id="data-file-modifications" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-file-modifications" class="anchor"></a>Data file modifications</h2>
+<div class="section level2">
+<h2 id="data-file-modifications">Data file modifications<a class="anchor" aria-label="anchor" href="#data-file-modifications"></a>
+</h2>
 <ol style="list-style-type: decimal">
 <li><p>Delete the <code>&lt;modelname&gt;.dat</code> file and rename <code>data.ss_new</code> to <code>om.dat</code>. Modify this new file.</p></li>
 <li><p>Specify the start and end year for the simulation by modifying <code>#_styr</code> and <code>#_endyr</code>. Years can be specified as a number line (i.e., <code>1</code> and <code>5</code>) or as actual years (i.e., <code>2001</code> and <code>2005</code>).</p></li>
@@ -179,22 +175,22 @@ forecast.ss</code></pre>
 </ol>
 </div>
 </div>
-<div id="em-setup" class="section level1">
-<h1 class="hasAnchor">
-<a href="#em-setup" class="anchor"></a>Setting up a new estimation model</h1>
+<div class="section level1">
+<h1 id="em-setup">Setting up a new estimation model<a class="anchor" aria-label="anchor" href="#em-setup"></a>
+</h1>
 <p>Unlike the OM, the EM needs to be a valid SS model setup and run to achieve maximum likelihood estimates (and possibly standard errors). Thus, the OM needs to be adapted to create a new EM.</p>
-<div id="starter-file-modifications-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#starter-file-modifications-1" class="anchor"></a>Starter file modifications</h2>
+<div class="section level2">
+<h2 id="starter-file-modifications-1">Starter file modifications<a class="anchor" aria-label="anchor" href="#starter-file-modifications-1"></a>
+</h2>
 <ol style="list-style-type: decimal">
 <li><p>Change the names of the <code>.dat</code> and <code>.ctl</code> files to your chosen naming scheme.</p></li>
 <li><p>Specify the model to use parameter values found in the <code>.ctl</code> file, by changing <code># 0=use init values in control file; 1=use ss3.par</code> to <code>0</code>.</p></li>
 <li><p>Turn on parameter estimation by changing <code># Turn off estimation for parameters entering after this phase</code> to a value larger than the max phase specified in the <code>.ctl</code> file.</p></li>
 </ol>
 </div>
-<div id="control-file-modifications-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#control-file-modifications-1" class="anchor"></a>Control file modifications</h2>
+<div class="section level2">
+<h2 id="control-file-modifications-1">Control file modifications<a class="anchor" aria-label="anchor" href="#control-file-modifications-1"></a>
+</h2>
 <ol style="list-style-type: decimal">
 <li><p>Set the phases of the parameters to positive or negative values to inform SS to estimate or fix the parameters, respectively. The parameter set that one chooses to estimate will depend on the available data. For example, conditional-age-at-length data are often informative about growth and age compositions are often informative about natural mortality. Selectivity cannot be estimated without some type of fleet-specific composition data. The variance about the stock recruitment relationship is not typically estimated in a SS model that uses maximum likelihood estimates, but is rather iterated to find a solution. Thus, this variability will need to be fixed at the ball park value. It is uncommon to have enough data on recruitment to estimate the steepness of the stock-recruitment function. Simulations will often fix steepness at the true value, or natural mortality. Do not try to estimate steepness and natural mortality unless you set up your data to specifically do so.</p></li>
 <li><p>Set the <code>#_recdev phase</code> to a positive value to estimate yearly recruitment deviations.</p></li>
@@ -203,14 +199,14 @@ forecast.ss</code></pre>
 <li><p>If desired, change the initial values of the growth, selectivity, etc. parameters to specify the starting dynamics for the EM and check the bounds of the estimated parameters to ensure that they are, or are not, influencing the parameters as you intend them to.</p></li>
 </ol>
 </div>
-<div id="data-file-modifications-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-file-modifications-1" class="anchor"></a>Data file modifications</h2>
+<div class="section level2">
+<h2 id="data-file-modifications-1">Data file modifications<a class="anchor" aria-label="anchor" href="#data-file-modifications-1"></a>
+</h2>
 <p>You can delete the <code>.dat</code> file from the EM model setup. The <code>data.ss_new</code> files produced when executing the OM contain the expected values of the OM population dynamics. ss3sim provides three functions which carry out the random sampling process and generate <code>.dat</code> files to be used in the EM. See the <a href="introduction.html#obs-error">Introduction vignette section</a> for more details.</p>
 </div>
-<div id="testing-the-new-estimation-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#testing-the-new-estimation-model" class="anchor"></a>Testing the new estimation model</h2>
+<div class="section level2">
+<h2 id="testing-the-new-estimation-model">Testing the new estimation model<a class="anchor" aria-label="anchor" href="#testing-the-new-estimation-model"></a>
+</h2>
 <p>After completing the above steps run the models manually one last time. Verify that the data are read in correctly and expected values of the population dynamics are written to the <code>.dat</code> files and sensical. Verify that the EM loads the data properly and the objective function value (negative log-likelihood) is sensible. If it works correctly, try running deterministic simulations on the model (see the <a href="introduction.html#deterministic">Introduction vignette</a>) and further verify that ss3sim functions that modify the EM (e.g., <code>change_e</code>) act correctly on the model setup. The help files for the functions demonstrate how to use the functions to test models. Note that the OM will not be a valid SS model in the sense that ADMB cannot run and produce maximum likelihood estimates of parameters; it is intended to only be run for one iteration to generate the population dynamics using values specified in the input files.</p>
 </div>
 </div>
@@ -227,11 +223,13 @@ forecast.ss</code></pre>
 
 
       <footer><div class="copyright">
-  <p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
+  <p></p>
+<p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -239,6 +237,8 @@ forecast.ss</code></pre>
 
   
 
+
+  
 
   </body>
 </html>
