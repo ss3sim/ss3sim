@@ -226,24 +226,26 @@ get_results_scenario <- function(scenario, directory = getwd(),
   scalar <- scen_dfs[["scalar"]]
   ts <- scen_dfs[["ts"]]
   dq <- scen_dfs[["dq"]]
-  scalar$scenario <- ts$scenario <- dq$scenario <- scenario
+  if(isTRUE(is.data.frame(scalar) & is.data.frame(ts) & is.data.frame(dq))) {
+    scalar$scenario <- ts$scenario <- dq$scenario <- scenario
 
-  ## Write them to file in the scenario folder
-  scalar.exists <- file.exists(scalar.file)
-  utils::write.table(
-    x = scalar, file = scalar.file, append = scalar.exists,
-    col.names = !scalar.exists, row.names = FALSE, sep = ","
-  )
-  ts.exists <- file.exists(ts.file)
-  utils::write.table(
-    x = ts, file = ts.file, append = ts.exists,
-    col.names = !ts.exists, row.names = FALSE, sep = ","
-  )
-  dq.exists <- file.exists(dq.file)
-  utils::write.table(
-    x = dq, file = dq.file, append = dq.exists,
-    col.names = !dq.exists, row.names = FALSE, sep = ","
-  )
+    ## Write them to file in the scenario folder
+    scalar.exists <- file.exists(scalar.file)
+    utils::write.table(
+      x = scalar, file = scalar.file, append = scalar.exists,
+      col.names = !scalar.exists, row.names = FALSE, sep = ","
+    )
+    ts.exists <- file.exists(ts.file)
+    utils::write.table(
+      x = ts, file = ts.file, append = ts.exists,
+      col.names = !ts.exists, row.names = FALSE, sep = ","
+    )
+    dq.exists <- file.exists(dq.file)
+    utils::write.table(
+      x = dq, file = dq.file, append = dq.exists,
+      col.names = !dq.exists, row.names = FALSE, sep = ","
+    )
+  }
   ret <- list(
     scalar = scalar,
     ts = ts,
@@ -300,9 +302,10 @@ get_results_iter <- function(dir_1_iter = NULL, mod_dirs = NULL,
     list_df = iter_list
   )
   names(return_iter) <- c("scalar", "timeseries", "derived")
-  # todo: find the iteration value to set
+  if(isTRUE(all(unlist(lapply(return_iter, function (x) is.data.frame(x)))) == TRUE)) {
   return_iter$scalar$iteration <- return_iter$timeseries$iteration <-
     return_iter$derived$iteration <- iter_name
+  }
   # return the iteration level dfs as a list
   return_iter
 }
@@ -658,25 +661,30 @@ make_df <- function(list_name, list_df) {
     })
   # drop any empty elements
   list_df_comp <- purrr::compact(list_df_comp)
-  all_nms <- unique(unlist(lapply(list_df_comp, names)))
-  # this extra code is needed in case of extra colnames that are not in both
-  # dataframes.
-  df <- do.call(
-    rbind,
-    c(lapply(
-      list_df_comp,
-      function(x) {
-        data.frame(c(x, vapply(
-          setdiff(all_nms, names(x)),
-          function(y) NA, NA
-        )),
-        stringsAsFactors = FALSE
-        )
-      }
-    ),
-    make.row.names = FALSE
+  if(length(list_df_comp) > 0) {
+    all_nms <- unique(unlist(lapply(list_df_comp, names)))
+    # this extra code is needed in case of extra colnames that are not in both
+    # dataframes.
+    df <- do.call(
+      rbind,
+      c(lapply(
+        list_df_comp,
+        function(x) {
+          data.frame(c(x, vapply(
+            setdiff(all_nms, names(x)),
+            function(y) NA, NA
+          )),
+          stringsAsFactors = FALSE
+          )
+        }
+      ),
+      make.row.names = FALSE
+      )
     )
-  )
+  } else {
+    df <- NA
+  }
+
   df
 }
 
