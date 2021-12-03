@@ -46,7 +46,7 @@ change_q <- function(string_add = NULL, string_remove = NULL,
                      overwrite = FALSE, verbose = FALSE) {
   if (!is.null(dat_file_in)) {
     dat_list <- r4ss::SS_readdat(
-      verbose = FALSE, echoall = FALSE,
+      verbose = FALSE,
       file = dat_file_in
     )
   }
