@@ -1,5 +1,8 @@
 on:
   push:
+    paths-ignore:
+      - '.github/**'
+      - '**.md'
   pull_request:
   schedule:
     # This should run the default branch weekly on sunday
