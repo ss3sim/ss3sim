@@ -31,7 +31,7 @@
 #' ggplot(data) + geom_point(aes(!!x, !!y))
 #'
 #' @param data A data frame of scenario information that was passed to
-#' [setup_scenarios] and as subsequently been passed to this function as a
+#' [setup_scenarios()] and as subsequently been passed to this function as a
 #' long data frame rather than a wide data frame.
 #'
 #' @author Kelli F. Johnson

@@ -285,6 +285,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       use_datlist = TRUE, datlist = datfile.orig,
       verbose = FALSE
     )
+    browser()
     ctlom <- do.call(change_f, c(f_params, ctl_list = list(ctlom)))
 
     # Change the data structure in the OM to produce the expected
