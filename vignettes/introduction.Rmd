@@ -644,48 +644,57 @@ print(p)
 
 ## Generating observation error {#obs-error}
 
-`sample_*()` functions work together,
-adding observation error to the expected values from the OM,
-to create the input `.dat` file for the EM.
-For example,
-you might wish to sample conditional length-at-age data with
-a certain bin structure for certain years and fleets.
-To do that, expected values must be available from the OM for
-length and age data for appropriate years and fleets at a sufficiently fine bin size.
-One way around this would be to write an OM with
-all possible data types,
-for all possible years,
-at an extremely fine bin structure.
-Lots of data can substantially slow down how quickly the OM runs.
-Therefore, functions within ss3sim modify the OM to include just
+The `sample_*()` functions work together to add
+observation error to the expected values before creating
+the input `.dat` file for the EM.
+Input arguments for these functions have two primary tasks.
+First, they help decide what types of data are included in the expected values.
+Second, they dictate how observation error is added to the expectations.
+
+### `calculate_data_units()`
+
+`calculate_data_units()` is used to modify the OM to include just
 the data types and quantities that are needed
 based on the arguments passed to `sample_*()`.
-Internally,
-ss3sim uses `calculate_data_units()` to generate all necessary expected values.
+For example,
+you might wish to fit an EM to conditional length-at-age data with
+a certain bin structure for certain years and fleets.
+To do that, expected lengths and ages must be available for
+appropriate years and fleets at a sufficiently fine bin size.
+If you have many different scenarios in your simulation,
+then there will be lots of combinations of expected values that are needed.
+
+Instead of generating every possible combination of years, fleets, etc.,
+which is slow and inefficient,
+{ss3sim} uses `calculate_data_units()`
+to determine the minimal-viable amount of data types needed.
 For example,
 if arguments are passed to `sample_mlacomp()`,
-then age and length-at-age expected values are created,
-even if you do not want observed age-composition samples.
+then expected values for age and length-at-age are created,
+even if `sample_agecomp()` is not being called directly.
 Similarly,
-`sample_wtatage()` leads to expected values in the OM for
+`sample_wtatage()` leads to expected values for
 empirical weight-at-age, age-composition, and mean length-at-age data.
-`sample_calcomp()` leads to expected values in the OM for
+`sample_calcomp()` leads to expected values for
 length- and age-composition data.
 
 Currently, ss3sim supports the sampling of the following types of data:
 
-* indices of abundance with `sample_index()`,
+* catch-per-unit effort data with `sample_index()`,
 * length and age compositions with `sample_lcomp()` and `sample_agecomp()`,
 * mean length (size) at age `sample_mlacomp()`,
 * empirical weight at age with `sample_wtatage()`, and
 * conditional age at length with `sample_calcomp()`.
 
-In simulations, the true underlying dynamics of the population are known and therefore a variety of sampling techniques are possible.
+### Distributional assumptions for observation error
+
+In simulations, the true underlying dynamics of the population are known,
+and therefore, a variety of sampling techniques are possible.
 Ideal sampling, in the statistical sense, can be done easily.
-However, there is some question about the realism behind providing the model with this kind of data because
+However, there is some question about
+the realism behind providing the model with this kind of data because
 it is unlikely to happen in practice [@pennington2002].
-Thus, there is a need to be able to generate more realistic data.
-One way is to use flexible distributions,
+One way to generate more realistic data is to use flexible distributions,
 which allow the user to control the statistical properties, e.g.,
 overdispersion of the data.
 Another option is to use unmodeled process error,
@@ -712,7 +721,7 @@ providing a large amount of flexibility to the user.
 What is optimal will depend on the questions addressed by a simulation and how the results are meant to be interpreted.
 We caution users to carefully consider how data are generated and fit.
 
-### Indices of abundance
+#### Indices of abundance
 
 `sample_index()` facilitates generating relative indices of abundance (catch-per-unit-effort (CPUE) data for fishery fleets).
 It samples from the biomass trends available for the different fleets to simulate the collection of CPUE and survey index data.
@@ -746,7 +755,7 @@ It is possible for the user to specify the amount of uncertainty, e.g.,
 to mimic the amount of survey effort.
 But currently, it is not possible to induce bias in this process.
 
-#### Effective sample sizes
+##### Effective sample sizes
 
 For index data, which are assumed by Stock Synthesis to follow a log-normal distribution,
 the weight of the data is determined by the CV of each point.
@@ -758,7 +767,7 @@ The user-supplied $\sigma_y$ term is written to the `.dat` file along with the s
 So, the EM has the correct level of uncertainty.
 Thus, the EM has unbiased estimates of both $B_y$ and the true $\sigma_y$ for all fleets in all years sampled.
 
-### Age and length compositions {#comps}
+#### Age and length compositions {#comps}
 
 `sample_agecomp()` and `sample_lcomp()` sample from the true age and length compositions using either a multinomial or Dirichlet distribution.
 The user can specify which fleets are sampled in which years and with what amount of noise (via sample size).
@@ -788,7 +797,7 @@ is based on assumptions of ideal sampling and is likely unrealistic,
 particularly with large sample sizes.
 One strategy to add realism is to allow for overdispersion.
 
-#### Sampling with overdispersion
+##### Sampling with overdispersion
 
 Users can specify the level of overdispersion present in the sampled data through the argument `cpar`.
 `cpar` is the ratio of the standard deviation between a multinomial and Dirichlet distribution with the same probabilities and sample size.
@@ -831,7 +840,7 @@ The following steps are used to generate overdispersed samples:
   Samples from the Dirichlet with this value of $\lambda$ will then give the appropriate level of variance.
   For instance, we can generate samples with twice the standard deviation of the multinomial by setting $c=2$ (this is `cpar`).
 
-#### Effective sample sizes
+##### Effective sample sizes
 
 The term "effective sample size" (ESS) for Stock Synthesis often refers to the tuned sample size,
 right-weighted depending on the information contained in the data.
@@ -862,7 +871,7 @@ The ability to is specify the ESS was implemented to allow for users to explore 
 If you want to specify an input/effective sample size different that what is used in sampling,
 this is available via the `ESS` arguments of these two functions.
 
-#### Structure of data bins
+##### Structure of data bins
 
 The ability of `change_data()` is to modify the binning structure of the data,
 not the population-level bins,
@@ -875,13 +884,13 @@ they are generated in a separate file and use the population bins.
 Also, when either of these bin arguments are set to `NULL` (the default value),
 the respective bins will match those used in the OM.
 
-### Mean length at age
+#### Mean length at age
 
 The ability to sample mean-length-at-age data exists in ss3sim.
 But, this sampling has not been thoroughly tested or used in a simulation before.
 Contact the developers for more information.
 
-### Conditional age at length
+#### Conditional age at length
 
 Conditional age-at-length (CAAL) data is an alternative to age-composition data,
 when there are paired age and length observations of the same fish.
