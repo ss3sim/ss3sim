@@ -9,7 +9,7 @@ change_recyear(ctl_list, main)
 \arguments{
 \item{ctl_list}{A control file read in by \code{\link[r4ss]{SS_readctl}}.}
 
-\item{main}{An integer value specifying the year in which you want to
+\item{main}{An integer specifying the year to
 start the main period of recruitment.}
 }
 \value{
