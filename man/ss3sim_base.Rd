@@ -155,17 +155,17 @@ look like this:
 A wrapper function that
 \itemize{
 \item calls \code{\link[=run_ss3model]{run_ss3model()}} to run the operating model,
-\item samples the output (add recruitment deviations, survey the data, etc.), and
+\item samples the output to create fishery and survey data, and
 \item runs the estimation model.
-This is the main workhorse of ss3sim and
+This function is the main workhorse of ss3sim and
 is typically not called by the user but called from \code{\link[=run_ss3sim]{run_ss3sim()}}.
 }
 }
 \details{
 This function is written to be flexible. You can specify the fishing
-mortality, survey index, length composition, age composition, and
-time-varying parameters in the function call as list objects (see the
-example below). For a generic higher-level function, see
+mortality, survey catch-per-unit-effort settings,
+length-composition data settings, etc. in the function call as list objects
+(see the example below). For a generic higher-level function, see
 \code{\link[=run_ss3sim]{run_ss3sim()}}.
 
 The steps carried out within \code{ss3sim_base}:
