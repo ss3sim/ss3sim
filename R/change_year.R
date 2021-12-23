@@ -26,9 +26,9 @@ change_year <- function(dat_list, ctl_list) {
 #' Change start year of the data file
 #'
 #' @template dat_list
-#' @param firstyear An integer value specifying the year in which you want to start
-#' fitting your data. The default is `NULL`, which will look to the first year
-#' with a non-zero catch in `dat_list` and use that as the first year.
+#' @param firstyear An integer specifying the year to start fitting the model.
+#' The default is `NULL`, which will look up the first year
+#' with non-zero catch or non-zero catch-per-unit-effort data in `dat_list`.
 #'
 #' @return
 #' A [r4ss::SS_readdat()] list with an augmented start year.
@@ -49,7 +49,7 @@ change_startyear <- function(dat_list, firstyear = NULL) {
 #' Change start year main recruitment deviations in control file
 #'
 #' @template ctl_list
-#' @param main An integer value specifying the year in which you want to
+#' @param main An integer specifying the year to
 #' start the main period of recruitment.
 #'
 #' @return
