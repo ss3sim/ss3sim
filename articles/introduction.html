@@ -88,7 +88,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to ss3sim</h1>
             
-            <h4 data-toc-skip class="date">2021-12-03</h4>
+            <h4 data-toc-skip class="date">2021-12-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ss3sim/ss3sim/blob/HEAD/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="hidden name"><code>introduction.Rmd</code></div>
@@ -123,12 +123,11 @@
 <h3 id="installing-ss3sim">Installing ss3sim<a class="anchor" aria-label="anchor" href="#installing-ss3sim"></a>
 </h3>
 <p>ss3sim is available on <a href="https://cran.r-project.org/package=ss3sim" title="ss3sim on CRAN" class="external-link">CRAN</a> and <a href="https://github.com/ss3sim/ss3sim/releases" title="ss3sim on GitHub" class="external-link">GitHub</a> and can be run on OS X, Windows, or Linux. The GitHub branch “main” contains the newest features, which may not available on CRAN.</p>
-<p>Run the following code to install ss3sim and load it into your workspace. You will not need to install ss3sim every time but it is a good idea to ensure it is up to date. If you are installing from GitHub, R will let you know if your current version is up to date.</p>
+<p>Run the following code to install ss3sim and load it into your workspace. You will not need to install ss3sim every time but it is a good idea to ensure it is up to date. If you are installing from GitHub, you may need to install {remotes}, <code>utils::install.packges("remotes")</code>, before installing {ss3sim} if you do not already have {devtools} installed. If your current version of ss3sim is up to date, R will let you know and prompt you if you want to override the current installation.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># CRAN version</span>
 <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span>
-<span class="co"># install.packages("remotes")</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span>
   repo <span class="op">=</span> <span class="st">"ss3sim/ss3sim"</span>,
   dependencies <span class="op">=</span> <span class="cn">TRUE</span>, upgrade <span class="op">=</span> <span class="cn">FALSE</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span></code></pre></div>
@@ -173,18 +172,14 @@
 </h3>
 <p>Below we highlight a few packages that are essential for running ss3sim.</p>
 <div class="section level4">
-<h4 id="remotes">remotes<a class="anchor" aria-label="anchor" href="#remotes"></a>
-</h4>
-<p>If you want to use the GitHub version of any R package, you will need to install the <a href="https://remotes.r-lib.org/" title="remotes R package" class="external-link">remotes package</a> first. remotes can either be installed directly using <code>install.packages("remotes")</code> or will be available if you have <a href="https://devtools.r-lib.org/" title="devtools R package" class="external-link">devtools</a>.</p>
-</div>
-<div class="section level4">
 <h4 id="r4ss">r4ss<a class="anchor" aria-label="anchor" href="#r4ss"></a>
 </h4>
 <p>If you are using the GitHub version of ss3sim, R will install the <a href="https://github.com/r4ss/r4ss" title="r4ss on GitHub" class="external-link">GitHub version of r4ss</a>. If you are using the CRAN version of ss3sim, R will install the <a href="https://cran.r-project.org/package=r4ss" title="r4ss on CRAN" class="external-link">CRAN version of r4ss</a>. Both methods will check to make sure that you have the most recent version of r4ss in your R library available given which mirror you are using. Feel free to install r4ss directly via</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>remotes<span class="op">::</span><span class="kw">install_github</span>(</span>
-<span id="cb4-2"><a href="#cb4-2"></a>  <span class="st">"r4ss/r4ss"</span>,</span>
-<span id="cb4-3"><a href="#cb4-3"></a>  <span class="dt">dependencies =</span> <span class="ot">TRUE</span>, <span class="dt">upgrade =</span> <span class="ot">FALSE</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a>)<span class="st">`</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span>
+  <span class="st">"r4ss/r4ss"</span>,
+  dependencies <span class="op">=</span> <span class="cn">TRUE</span>, upgrade <span class="op">=</span> <span class="cn">FALSE</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span></code></pre></div>
 <p>But, make sure you do it before loading ss3sim. If you forget, you can use <code>devtools::unload(package = "ss3sim")</code> and then reinstall r4ss.</p>
 </div>
 <div class="section level4">
@@ -513,8 +508,10 @@
 </h3>
 <p>The gradient information is in the scalar file. Merging the scalar and the time series can help add details to figures.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ts_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">ts_dat</span>, <span class="va">scalar_dat</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"scenario"</span>, <span class="st">"iteration"</span>,
-    <span class="st">"max_grad"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">ts_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span>
+  x <span class="op">=</span> <span class="va">ts_dat</span>,
+  y <span class="op">=</span> <span class="va">scalar_dat</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"scenario"</span>, <span class="st">"iteration"</span>, <span class="st">"max_grad"</span><span class="op">)</span><span class="op">]</span>
+<span class="op">)</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="separate-the-deterministic-from-the-stochastic-runs">Separate the deterministic from the stochastic runs<a class="anchor" aria-label="anchor" href="#separate-the-deterministic-from-the-stochastic-runs"></a>
@@ -526,7 +523,11 @@
 <span class="va">ts_dat_sto</span> <span class="op">&lt;-</span> <span class="va">ts_dat</span><span class="op">[</span><span class="va">ts_dat</span><span class="op">$</span><span class="va">E</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"E0"</span>, <span class="st">"E1"</span><span class="op">)</span>, <span class="op">]</span>
 
 <span class="va">scalar_dat_long</span> <span class="op">&lt;-</span> <span class="va">scalar_dat</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">scalar_dat_long</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"(.+)_re"</span>, <span class="st">"RE _\\1"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">scalar_dat_long</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">scalar_dat_long</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span>
+  pattern <span class="op">=</span> <span class="st">"(.+)_re"</span>,
+  replacement <span class="op">=</span> <span class="st">"RE _\\1"</span>,
+  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">scalar_dat_long</span><span class="op">)</span>
+<span class="op">)</span>
 <span class="va">scalar_dat_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reshape.html" class="external-link">reshape</a></span><span class="op">(</span><span class="va">scalar_dat_long</span>, sep <span class="op">=</span> <span class="st">" _"</span>,
   direction <span class="op">=</span> <span class="st">"long"</span>,
   varying <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">" _"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">scalar_dat_long</span><span class="op">)</span><span class="op">)</span>,
@@ -555,7 +556,7 @@ Box plots of the relative error (RE) for deterministic runs. <span class="math i
 <p>While plotting the relative error in estimates of spawning biomass, one can add color to the time series according to the maximum gradient. Small values of the maximum gradient (approximately 0.001 or less) indicate that model convergence is likely. Larger values (greater than 1) indicate that model convergence is unlikely. Results of individual iterations are jittered around the vertical axis to aid in visualization. The following three blocks of code produce Figures~, , and .</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_lines.html">plot_lines</a></span><span class="op">(</span><span class="va">ts_dat_sto</span>, y <span class="op">=</span> <span class="st">"SpawnBio_re"</span>,
-  vert <span class="op">=</span> <span class="st">"E"</span>, horiz<span class="op">=</span><span class="st">"D"</span>, print <span class="op">=</span> <span class="cn">FALSE</span>, col <span class="op">=</span> <span class="st">"max_grad"</span><span class="op">)</span>
+  vert <span class="op">=</span> <span class="st">"E"</span>, horiz <span class="op">=</span> <span class="st">"D"</span>, print <span class="op">=</span> <span class="cn">FALSE</span>, col <span class="op">=</span> <span class="st">"max_grad"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <img src="introduction_files/figure-html/plot-sto-ts-1.png" alt="Time series of relative error in spawning stock biomass." width="672"><p class="caption">
@@ -564,7 +565,7 @@ Time series of relative error in spawning stock biomass.
 </div>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_lines.html">plot_lines</a></span><span class="op">(</span><span class="va">ts_dat_sto</span>, y <span class="op">=</span> <span class="st">"SpawnBio_re"</span>,
-  vert <span class="op">=</span> <span class="st">"E"</span>, horiz<span class="op">=</span><span class="st">"D"</span>, print <span class="op">=</span> <span class="cn">FALSE</span>, col <span class="op">=</span> <span class="st">"max_grad"</span><span class="op">)</span>
+  vert <span class="op">=</span> <span class="st">"E"</span>, horiz <span class="op">=</span> <span class="st">"D"</span>, print <span class="op">=</span> <span class="cn">FALSE</span>, col <span class="op">=</span> <span class="st">"max_grad"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <img src="introduction_files/figure-html/ssb-ts-plots-1.png" alt="Spawning stock biomass time series." width="672"><p class="caption">
@@ -591,19 +592,30 @@ Box plots of relative error (RE) for stochastic runs. <span class="math inline">
 <div class="section level2">
 <h2 id="obs-error">Generating observation error<a class="anchor" aria-label="anchor" href="#obs-error"></a>
 </h2>
-<p><code>sample_*()</code> use the expected values from the OM output and work together to create the input <code>.dat</code> file for the EM. Note that the years/fleets to be sampled must be present in the OM data file. ss3sim does this data creation dynamically <a href="#change-data">using <code>change_data()</code></a>. But, in some cases adding information to the <code>.dat</code> file may need to be done manually. Currently ss3sim supports the sampling of the following types of data:</p>
+<p>The <code>sample_*()</code> functions work together to add observation error to the expected values before creating the input <code>.dat</code> file for the EM. Input arguments for these functions have two primary tasks. First, they help decide what types of data are included in the expected values. Second, they dictate how observation error is added to the expectations.</p>
+<div class="section level3">
+<h3 id="calculate_data_units">
+<code>calculate_data_units()</code><a class="anchor" aria-label="anchor" href="#calculate_data_units"></a>
+</h3>
+<p><code><a href="../reference/calculate_data_units.html">calculate_data_units()</a></code> is used to modify the OM to include just the data types and quantities that are needed based on the arguments passed to <code>sample_*()</code>. For example, you might wish to fit an EM to conditional length-at-age data with a certain bin structure for certain years and fleets. To do that, expected lengths and ages must be available for appropriate years and fleets at a sufficiently fine bin size. If you have many different scenarios in your simulation, then there will be lots of combinations of expected values that are needed.</p>
+<p>Instead of generating every possible combination of years, fleets, etc., which is slow and inefficient, {ss3sim} uses <code><a href="../reference/calculate_data_units.html">calculate_data_units()</a></code> to determine the minimal-viable amount of data types needed. For example, if arguments are passed to <code><a href="../reference/sample_mlacomp.html">sample_mlacomp()</a></code>, then expected values for age and length-at-age are created, even if <code><a href="../reference/sample_agecomp.html">sample_agecomp()</a></code> is not being called directly. Similarly, <code><a href="../reference/sample_wtatage.html">sample_wtatage()</a></code> leads to expected values for empirical weight-at-age, age-composition, and mean length-at-age data. <code><a href="../reference/sample_calcomp.html">sample_calcomp()</a></code> leads to expected values for length- and age-composition data.</p>
+<p>Currently, ss3sim supports the sampling of the following types of data:</p>
 <ul>
-<li>indices of abundance with <code><a href="../reference/sample_index.html">sample_index()</a></code>,</li>
+<li>catch-per-unit effort data with <code><a href="../reference/sample_index.html">sample_index()</a></code>,</li>
 <li>length and age compositions with <code><a href="../reference/sample_lcomp.html">sample_lcomp()</a></code> and <code><a href="../reference/sample_agecomp.html">sample_agecomp()</a></code>,</li>
 <li>mean length (size) at age <code><a href="../reference/sample_mlacomp.html">sample_mlacomp()</a></code>,</li>
 <li>empirical weight at age with <code><a href="../reference/sample_wtatage.html">sample_wtatage()</a></code>, and</li>
 <li>conditional age at length with <code><a href="../reference/sample_calcomp.html">sample_calcomp()</a></code>.</li>
 </ul>
-<p>In simulations, the true underlying dynamics of the population are known and therefore a variety of sampling techniques are possible. Ideal sampling, in the statistical sense, can be done easily. However, there is some question about the realism behind providing the model with this kind of data because it is unlikely to happen in practice <span class="citation">(Pennington et al. 2002)</span>. Thus, there is a need to be able to generate more realistic data. One way is to use flexible distributions, which allow the user to control the statistical properties, e.g., overdispersion of the data. Another option is to use unmodeled process error, typically in selectivity.</p>
-<p>Under perfect mixing of fish and truly random sampling of the population, the age samples would be multinomial. However, in practice fish are never perfectly mixed because fish tend to aggregate by size and age <span class="citation">(e.g., Pennington et al. 2002)</span>. And, it is difficult to take random samples. Both of these sampling properties can cause the data to have more variance than expected, i.e., be overdispersed, and the effective sample size is smaller than expected <span class="citation">(Maunder 2011, Hulson et al. 2012)</span>. For example, if a multinomial likelihood is assumed for overdispersed data, the model puts too much weight on those data by thinking they should be less variable than they are, at the cost of fitting other data less well <span class="citation">(Maunder 2011)</span>. Analysts thus often “tune” their model to find a sample size, i.e., “effective sample size”, that is more appropriate than the “input sample size”. The effective sample size will in theory more accurately reflect the information in the composition data <span class="citation">(Francis and Hilborn 2011)</span>. In our case, we exactly control how the data are generated and specified in the EM, providing a large amount of flexibility to the user. What is optimal will depend on the questions addressed by a simulation and how the results are meant to be interpreted. We caution users to carefully consider how data are generated and fit.</p>
+</div>
 <div class="section level3">
-<h3 id="indices-of-abundance">Indices of abundance<a class="anchor" aria-label="anchor" href="#indices-of-abundance"></a>
+<h3 id="distributional-assumptions-for-observation-error">Distributional assumptions for observation error<a class="anchor" aria-label="anchor" href="#distributional-assumptions-for-observation-error"></a>
 </h3>
+<p>In simulations, the true underlying dynamics of the population are known, and therefore, a variety of sampling techniques are possible. Ideal sampling, in the statistical sense, can be done easily. However, there is some question about the realism behind providing the model with this kind of data because it is unlikely to happen in practice <span class="citation">(Pennington et al. 2002)</span>. One way to generate more realistic data is to use flexible distributions, which allow the user to control the statistical properties, e.g., overdispersion of the data. Another option is to use unmodeled process error, typically in selectivity.</p>
+<p>Under perfect mixing of fish and truly random sampling of the population, the age samples would be multinomial. However, in practice fish are never perfectly mixed because fish tend to aggregate by size and age <span class="citation">(e.g., Pennington et al. 2002)</span>. And, it is difficult to take random samples. Both of these sampling properties can cause the data to have more variance than expected, i.e., be overdispersed, and the effective sample size is smaller than expected <span class="citation">(Maunder 2011, Hulson et al. 2012)</span>. For example, if a multinomial likelihood is assumed for overdispersed data, the model puts too much weight on those data by thinking they should be less variable than they are, at the cost of fitting other data less well <span class="citation">(Maunder 2011)</span>. Analysts thus often “tune” their model to find a sample size, i.e., “effective sample size”, that is more appropriate than the “input sample size”. The effective sample size will in theory more accurately reflect the information in the composition data <span class="citation">(Francis and Hilborn 2011)</span>. In our case, we exactly control how the data are generated and specified in the EM, providing a large amount of flexibility to the user. What is optimal will depend on the questions addressed by a simulation and how the results are meant to be interpreted. We caution users to carefully consider how data are generated and fit.</p>
+<div class="section level4">
+<h4 id="indices-of-abundance">Indices of abundance<a class="anchor" aria-label="anchor" href="#indices-of-abundance"></a>
+</h4>
 <p><code><a href="../reference/sample_index.html">sample_index()</a></code> facilitates generating relative indices of abundance (catch-per-unit-effort (CPUE) data for fishery fleets). It samples from the biomass trends available for the different fleets to simulate the collection of CPUE and survey index data. The user can specify which fleets are sampled in which years and with what amount of noise. Different fleets will “see” different biomass trends due to differences in selectivity. Catchability for the OM is equal to one, <span class="math inline">\(q=1\)</span>, and thus, the indices are actually absolute indices of (spawning) biomass.</p>
 <p>In practice, sampling from the abundance indices is relatively straightforward. The OM <code>.dat</code> file contains the annual biomass values for each fleet, and the <code>sample_index</code> function uses these true values as the mean of a distribution. The function uses a bias-corrected log-normal distribution with expected values given by the OM biomass and a user-provided standard deviation term that controls the level of variance.</p>
 <p>More specifically, let</p>
@@ -615,15 +627,15 @@ Box plots of relative error (RE) for stochastic runs. <span class="math inline">
 <p>then the sampled value, <span class="math inline">\(B_y^\text{obs}\)</span> is</p>
 <p><span class="math display">\[B_y^\text{obs}=B_y e^{X-\sigma_y^2/2}\]</span></p>
 <p>which has expected value <span class="math inline">\(\mathrm{E}\left[B_y^\text{obs}\right]=B_y\)</span> due to the bias adjustment term <span class="math inline">\(\sigma_y^2/2\)</span> (<code>SR_sigmaR</code> in Stock Synthesis). This process generates log-normal values centered at the true value. It is possible for the user to specify the amount of uncertainty, e.g., to mimic the amount of survey effort. But currently, it is not possible to induce bias in this process.</p>
-<div class="section level4">
-<h4 id="effective-sample-sizes">Effective sample sizes<a class="anchor" aria-label="anchor" href="#effective-sample-sizes"></a>
-</h4>
+<div class="section level5">
+<h5 id="effective-sample-sizes">Effective sample sizes<a class="anchor" aria-label="anchor" href="#effective-sample-sizes"></a>
+</h5>
 <p>For index data, which are assumed by Stock Synthesis to follow a log-normal distribution, the weight of the data is determined by the CV of each point. As the CV increases, the data have less weight in the joint likelihood. This is equivalent to decreasing the effective sample size in other distributions. ss3sim sets these values automatically at the truth internally, although future versions may allow for more complex options. The user-supplied <span class="math inline">\(\sigma_y\)</span> term is written to the <code>.dat</code> file along with the sampled values. So, the EM has the correct level of uncertainty. Thus, the EM has unbiased estimates of both <span class="math inline">\(B_y\)</span> and the true <span class="math inline">\(\sigma_y\)</span> for all fleets in all years sampled.</p>
 </div>
 </div>
-<div class="section level3">
-<h3 id="comps">Age and length compositions<a class="anchor" aria-label="anchor" href="#comps"></a>
-</h3>
+<div class="section level4">
+<h4 id="comps">Age and length compositions<a class="anchor" aria-label="anchor" href="#comps"></a>
+</h4>
 <p><code><a href="../reference/sample_agecomp.html">sample_agecomp()</a></code> and <code><a href="../reference/sample_lcomp.html">sample_lcomp()</a></code> sample from the true age and length compositions using either a multinomial or Dirichlet distribution. The user can specify which fleets are sampled in which years and with what amount of noise (via sample size).</p>
 <p>The following calculations are shown for how age-composition-data is sampled. But, the equations apply equally to how length-composition data is sampled as well. The multinomial distribution <span class="math inline">\(\mathbf{m} \sim \text{MN}\left(\mathbf{p}, n, A\right )\)</span> is defined as</p>
 <p><span class="math display">\[\begin{aligned}
@@ -636,9 +648,9 @@ Box plots of relative error (RE) for stochastic runs. <span class="math inline">
 \end{aligned}\]</span></p>
 <p>In the case of Stock Synthesis, actual proportions are input as data. So, <span class="math inline">\(\mathbf{m}/n\)</span> is the distribution used instead of <span class="math inline">\(\mathbf{m}\)</span>. Thus, the variance of the estimated proportion for age bin <span class="math inline">\(a\)</span> is <span class="math inline">\(\mathrm{Var}\left[M_a/n\right]=p_aq_a/n\)</span>. Note that <span class="math inline">\(m_a/n\)</span> can only take on values in the set <span class="math inline">\(\{0, 1/n, 2/n, \ldots, 1\}\)</span>. With sufficiently large sample size this set approximates the real interval <span class="math inline">\([0,1]\)</span>. But, the key point being that only a finite set of rational values of <span class="math inline">\(m_a/n\)</span> are possible.</p>
 <p>The multinomial, as described above, is based on assumptions of ideal sampling and is likely unrealistic, particularly with large sample sizes. One strategy to add realism is to allow for overdispersion.</p>
-<div class="section level4">
-<h4 id="sampling-with-overdispersion">Sampling with overdispersion<a class="anchor" aria-label="anchor" href="#sampling-with-overdispersion"></a>
-</h4>
+<div class="section level5">
+<h5 id="sampling-with-overdispersion">Sampling with overdispersion<a class="anchor" aria-label="anchor" href="#sampling-with-overdispersion"></a>
+</h5>
 <p>Users can specify the level of overdispersion present in the sampled data through the argument <code>cpar</code>. <code>cpar</code> is the ratio of the standard deviation between a multinomial and Dirichlet distribution with the same probabilities and sample size. Thus, a value of 1 would be the same standard deviation, while 2 would be twice the standard deviation of a multinomial (overdispersed). The package also currently allows for specifying the effective sample sizes used as input for the EM separately from the sample sizes used to sample the data. See <code><a href="../reference/sample_agecomp.html">?sample_agecomp</a></code> and <code><a href="../reference/sample_lcomp.html">?sample_lcomp</a></code> for more detail.</p>
 <p>This Dirichlet distribution has the same range and mean as the multinomial. But, the distribution has a different variance controlled by a parameter. The variance is determined exclusively by the cell probabilities and sample size n the multinomial, making it more flexible than the multinomial. Let <span class="math inline">\(\mathbf{d} \sim \text{Dirichlet}\left (\boldsymbol{\alpha}, A\right )\)</span> be a Dirichlet random vector. It is characterized by</p>
 <p><span class="math display">\[\begin{aligned}
@@ -656,24 +668,30 @@ Box plots of relative error (RE) for stochastic runs. <span class="math inline">
 <li>Specify a level, <span class="math inline">\(c\)</span>, that scales the standard deviation of the multinomial. Then <span class="math inline">\(\sqrt{V_{d_{a}}}=c\sqrt{V_{m_{a}}}\)</span> from which <span class="math inline">\(\lambda=n/c^2-1\)</span> can be solved. Samples from the Dirichlet with this value of <span class="math inline">\(\lambda\)</span> will then give the appropriate level of variance. For instance, we can generate samples with twice the standard deviation of the multinomial by setting <span class="math inline">\(c=2\)</span> (this is <code>cpar</code>).</li>
 </ul>
 </div>
-<div class="section level4">
-<h4 id="effective-sample-sizes-1">Effective sample sizes<a class="anchor" aria-label="anchor" href="#effective-sample-sizes-1"></a>
-</h4>
+<div class="section level5">
+<h5 id="effective-sample-sizes-1">Effective sample sizes<a class="anchor" aria-label="anchor" href="#effective-sample-sizes-1"></a>
+</h5>
 <p>The term “effective sample size” (ESS) for Stock Synthesis often refers to the tuned sample size, right-weighted depending on the information contained in the data. These values are estimated after an initial run and then written to the .dat file and Stock Synthesis is run again <span class="citation">(Francis and Hilborn 2011)</span>. Perhaps a better term would be “input sample size” to contrast it with what was originally sampled.</p>
 <p>In any case, the default behavior for both multinomial and Dirichlet generated composition data is to set the effective sample size automatically in <code>sample_*()</code>. In the case of the multinomial, the effective sample size is just the original sample size, i.e., how many fish were sampled, the number of sampled tows, etc. However, with the Dirichlet distribution, the effective sample size depends on the parameters passed to these functions and is automatically calculated internally and passed on to the <code>.dat</code> file. The effective sample size is calculated as <span class="math inline">\(N_{eff}=n/c^2\)</span>, where <span class="math inline">\(c\)</span> is <code>cpar</code>. Note that these values will not necessarily be integer-valued and Stock Synthesis handles this without issue.</p>
 <p>If the effective sample size is known and passed to the EM, there is much similarity between the multinomial and Dirichlet methods for generating data. The main difference arises when sample sizes (<span class="math inline">\(n\)</span>) are small; in this case, the multinomial will be restricted to few potential values (i.e., <span class="math inline">\(0/n, 1/n, \ldots, n/n\)</span>), whereas the Dirichlet has values in <span class="math inline">\([0,1]\)</span>. Thus, without the Dirichlet it would be impossible to generate realistic values that would come about from highly overdispersed data with a large <span class="math inline">\(n\)</span>.</p>
 <p>The ability to is specify the ESS was implemented to allow for users to explore data weighting issues. If you want to specify an input/effective sample size different that what is used in sampling, this is available via the <code>ESS</code> arguments of these two functions.</p>
 </div>
+<div class="section level5">
+<h5 id="structure-of-data-bins">Structure of data bins<a class="anchor" aria-label="anchor" href="#structure-of-data-bins"></a>
+</h5>
+<p>The ability of <code><a href="../reference/change_data.html">change_data()</a></code> is to modify the binning structure of the data, not the population-level bins, is a lesser-known feature of this function. The desired ages and length bins for the data are specified in the arguments <code>len_bin</code> and <code>age_bin</code> in <code><a href="../reference/ss3sim_base.html">ss3sim_base()</a></code>. These bins are consistent across fleets, years, etc. Empirical weight-at-age data are a special case because they are generated in a separate file and use the population bins. Also, when either of these bin arguments are set to <code>NULL</code> (the default value), the respective bins will match those used in the OM.</p>
 </div>
-<div class="section level3">
-<h3 id="mean-length-at-age">Mean length at age<a class="anchor" aria-label="anchor" href="#mean-length-at-age"></a>
-</h3>
+</div>
+<div class="section level4">
+<h4 id="mean-length-at-age">Mean length at age<a class="anchor" aria-label="anchor" href="#mean-length-at-age"></a>
+</h4>
 <p>The ability to sample mean-length-at-age data exists in ss3sim. But, this sampling has not been thoroughly tested or used in a simulation before. Contact the developers for more information.</p>
 </div>
-<div class="section level3">
-<h3 id="conditional-age-at-length">Conditional age at length<a class="anchor" aria-label="anchor" href="#conditional-age-at-length"></a>
-</h3>
+<div class="section level4">
+<h4 id="conditional-age-at-length">Conditional age at length<a class="anchor" aria-label="anchor" href="#conditional-age-at-length"></a>
+</h4>
 <p>Conditional age-at-length (CAAL) data is an alternative to age-composition data, when there are paired age and length observations of the same fish. CAAL data are inherently tied to the length compositions, e.g., as if a trip measured lengths and ages for all fish. In contrast to the age compositions, which were generated independently of the length data, e.g., as if one trip measured only ages and a second only lengths. Stock Synthesis has the capability to associate the measurements, and doing so has many appealing attributes. CAAL data are expected to be more informative about growth than marginal age-composition data. Although, to date, few studies have examined this data type <span class="citation">(He et al. 2015, Monnahan et al. 2015)</span>. See <code>?sample_calcomp()</code> for more details on the sampling process.</p>
+</div>
 </div>
 </div>
 <div class="section level2">
@@ -714,21 +732,6 @@ par_y = par + link * env_y.
 <p>To pass arguments to <code>change_tv</code> through <code>run_ss3sim</code> you need to create a column labeled <code>ct.&lt;name of parameter&gt;</code>. Where you have to change <code>name of parameter</code> to the parameter of interest. This structure, where the column name includes the parameter name, allows for multiple parameters to be time varying, you just have to use multiple columns. Each column holds code to generate a vector of time series information for a given parameter. The vectors are then combined into a named list that is passed to <code>change_tv_list</code> in <code><a href="../reference/change_tv.html">change_tv()</a></code>.</p>
 </div>
 <div class="section level2">
-<h2 id="change-data">Adjusting the available OM data dynamically<a class="anchor" aria-label="anchor" href="#change-data"></a>
-</h2>
-<p>ss3sim can dynamically adjust the type of data available from the OM for sampling. For example, you might wish to sample conditional length-at-age in a certain bin structure for certain years and fleets. To do that, the OM will need to generate length and age data for appropriate years and fleets at a sufficiently fine bin size. However, the idea behind ss3sim is to avoid having to hand code many different versions of an OM that have only minor differences. One way around this would be to write an OM that included all possible data types for all possible years at an extremely fine bin structure. But, this can substantially slow down how quickly the OM runs in Stock Synthesis. Therefore, we made ss3sim capable of dynamically modifying the OM to include just the data types and quantities that are needed based on arguments that are passed to <code>sample_*()</code>. Internally, ss3sim uses <code><a href="../reference/calculate_data_units.html">calculate_data_units()</a></code> to generate a superset of all necessary fleet and year combinations. See <a href="#obs-error">the section below</a> for more information on these types of data.</p>
-<p>The dynamic creation of available data is the default behavior of the package. In practice, this means the user does not need to manage which data types, fleets, or years are produced by the OM. The following rules are applied if the arguments to any sampling function are not <code>NULL</code>:</p>
-<ul>
-<li>If <code><a href="../reference/sample_agecomp.html">sample_agecomp()</a></code>, generate age-composition data</li>
-<li>If <code><a href="../reference/sample_lcomp.html">sample_lcomp()</a></code>, generate length-composition data</li>
-<li>If <code><a href="../reference/sample_mlacomp.html">sample_mlacomp()</a></code>, generate age-composition data and mean length-at-age data</li>
-<li>If <code><a href="../reference/sample_calcomp.html">sample_calcomp()</a></code>, generate length- and age-composition data and conditional length-at-age data</li>
-<li>If <code><a href="../reference/sample_wtatage.html">sample_wtatage()</a></code>, generate empirical weight-at-age, age-composition, and mean length-at-age data</li>
-</ul>
-<p>For example, if empirical weight-at-age data are to be sampled, <code><a href="../reference/change_data.html">change_data()</a></code> adds age-composition and mean length-at-age data to the OM data file.</p>
-<p>Another feature of <code><a href="../reference/change_data.html">change_data()</a></code> is that it can modify the binning structure of the data (not the population-level bins). The ages and length bins in the data are specified in the arguments <code>len_bin</code> and <code>age_bin</code> in <code><a href="../reference/ss3sim_base.html">ss3sim_base()</a></code>. These bins are consistent across fleets, years, etc. Empirical weight-at-age data are a special case because they are generated in a separate file and use the population bins. Also, when either of these bin arguments are set to <code>NULL</code> (the default value), then the respective bins are taken from the OM.</p>
-</div>
-<div class="section level2">
 <h2 id="parallel">Parallel computing with ss3sim<a class="anchor" aria-label="anchor" href="#parallel"></a>
 </h2>
 <p>ss3sim can easily run multiple scenarios in parallel to speed up simulations. To run a simulation in parallel, you need to register multiple cores or clusters using the package of your choice. Here, we recommend using the parallel package and provide an example for you. First, find out how many cores are on the computer and register a portion of those for parallel processing. Second, us an apply function to get the results from each scenario. Third, bring the results together and close the cluster.</p>
@@ -736,8 +739,11 @@ par_y = par + link * env_y.
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">parallel</span><span class="op">)</span>
 <span class="va">ncls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"NUMBER_OF_PROCESSORS"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"cl.cores"</span>, <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">ncls</span> <span class="op">&lt;</span> <span class="fl">6</span>, <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/parallel/clusterApply.html" class="external-link">parSapply</a></span><span class="op">(</span><span class="va">cl</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">scname</span>, <span class="va">scname_det</span><span class="op">)</span>, 
-  <span class="va">get_results_scenario</span>, overwrite_files <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/parallel/clusterApply.html" class="external-link">parSapply</a></span><span class="op">(</span><span class="va">cl</span>,
+  X <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">scname</span>, <span class="va">scname_det</span><span class="op">)</span>,
+  fun <span class="op">=</span> <span class="va">get_results_scenario</span>,
+  overwrite_files <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span>
 <span class="fu"><a href="../reference/get_results_all.html">get_results_all</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">stopCluster</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></code></pre></div>
 <p>Note that if the simulation aborts for any reason while <code><a href="../reference/run_ss3sim.html">run_ss3sim()</a></code> is running in parallel, you may need to abort the left over parallel processes. On Windows, open the task manager (Ctrl-Shift-Esc) and close any R processes. On a Mac, open Activity Monitor and force quit any R processes. Also, if you are working with a local development version of <code>ss3sim</code> and you are on a Windows machine, you may not be able to run in parallel if you load the package with <code>devtools::load_all()</code>. Instead, do a full install with <code>devtools::install()</code> (and potentially restart R if ss3sim was already loaded).</p>
