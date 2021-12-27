@@ -121,6 +121,12 @@
     <loc>/reference/cleanup_ss3.html</loc>
   </url>
   <url>
+    <loc>/reference/codomctl.html</loc>
+  </url>
+  <url>
+    <loc>/reference/codomdat.html</loc>
+  </url>
+  <url>
     <loc>/reference/convert_to_wide.html</loc>
   </url>
   <url>
@@ -131,6 +137,9 @@
   </url>
   <url>
     <loc>/reference/create_logo.html</loc>
+  </url>
+  <url>
+    <loc>/reference/dat2dimdf.html</loc>
   </url>
   <url>
     <loc>/reference/facet_form.html</loc>
