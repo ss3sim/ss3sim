@@ -65,11 +65,12 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.7" id="ss3sim-117">ss3sim 1.1.7<a class="anchor" aria-label="anchor" href="#ss3sim-117"></a></h2>
-<ul><li>Deprecate the use of the log file in [ss3sim_base()]. The argument [ss3sim_base(print_logfile = FALSE)] has a new default and will warn users if they have the value set to <code>TRUE</code> that no log file will be printed. Users can look at the results files to get most of this information.</li>
+<ul><li><p>Deprecate the use of the log file in [ss3sim_base()]. The argument [ss3sim_base(print_logfile = FALSE)] has a new default and will warn users if they have the value set to <code>TRUE</code> that no log file will be printed. Users can look at the results files to get most of this information.</p></li>
+<li><p>Create data objects for the OM and EM control and data files. These files are often used in examples.</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.6" id="ss3sim-116">ss3sim 1.1.6<a class="anchor" aria-label="anchor" href="#ss3sim-116"></a></h2>
-<ul><li>Deprecate change_f_par which was not being used by any downstream code. Feel free to contact the package maintainers if you wish to reinstate this function, but ss3sim uses the control file instead of the par file as in the orginal ss3sim.</li>
+<ul><li>Deprecate change_f_par which was not being used by any downstream code. Feel free to contact the package maintainers if you wish to reinstate this function, but ss3sim uses the control file instead of the par file as in the original ss3sim.</li>
 <li>Move Anderson et al. (2014) to a dedicated repository ss3sim/ss3sim_andersonetal</li>
 <li>Allow for seas and partition in sampling</li>
 </ul></div>

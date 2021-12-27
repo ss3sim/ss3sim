@@ -88,7 +88,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to ss3sim</h1>
             
-            <h4 data-toc-skip class="date">2021-12-23</h4>
+            <h4 data-toc-skip class="date">2021-12-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ss3sim/ss3sim/blob/HEAD/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="hidden name"><code>introduction.Rmd</code></div>
@@ -97,24 +97,24 @@
 
     
     
-<p>This vignette is a good starting place for learning about ss3sim.</p>
+<p>This vignette is a good starting place for learning about {ss3sim}.</p>
 <div class="section level1">
 <h1 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h1>
-<p>ss3sim is an R package to simplify the steps needed to generate beautiful simulation output from <a href="https://github.com/nmfs-stock-synthesis/stock-synthesis" title="Stock Synthesis (SS3) github repository" class="external-link">Stock Synthesis (SS3)</a>. If you need help learning R prior to using ss3sim, we recommend navigating to the <a href="https://blog.rstudio.org/" title="RStudio Blog" class="external-link">RStudio Blog</a>.</p>
-<p>ss3sim consists of</p>
+<p>{ss3sim} is an R package to simplify the steps needed to generate beautiful simulation output from <a href="https://github.com/nmfs-stock-synthesis/stock-synthesis" title="Stock Synthesis (SS3) github repository" class="external-link">Stock Synthesis (SS3)</a>. If you need help learning R prior to using {ss3sim}, we recommend navigating to the <a href="https://blog.rstudio.org/" title="RStudio Blog" class="external-link">RStudio Blog</a>.</p>
+<p>{ss3sim} consists of</p>
 <ul>
 <li>a series of low-level functions that facilitate manipulating Stock Synthesis configuration files, running Stock Synthesis models, and combining the output</li>
 <li>a few high-level wrapper functions that control simulation experiments, e.g., [run_ss3sim()]</li>
 <li>documentation for the user, e.g., <code><a href="../reference/change_f.html">?change_f</a></code>, vignettes, <a href="https://github.com/ss3sim/ss3sim/issues" title="ss3sim issue tracker on GitHub" class="external-link">issue tracker</a>, and a <a href="https://github.com/ss3sim/ss3sim/discussions" title="ss3sim Discussions on GitHub" class="external-link">Discussion board</a> for users and developers to interact.</li>
 </ul>
-<p>The developers of ss3sim strive to facilitate an inviting place where all individuals feel welcome. Please see the <a href="https://github.com/nmfs-fish-tools/Resources/blob/master/CODE_OF_CONDUCT.md" title="Code of Conduct" class="external-link">Code of Conduct</a> that we abide by to ensure contributors are valued and <a href="https://github.com/nmfs-fish-tools/Resources/blob/master/CONTRIBUTING.md" title="Contributor guidelines" class="external-link">Contributor Guidelines</a> for how to contribute.</p>
+<p>The developers of {ss3sim} strive to facilitate an inviting place where all individuals feel welcome. Please see the <a href="https://github.com/nmfs-fish-tools/Resources/blob/master/CODE_OF_CONDUCT.md" title="Code of Conduct" class="external-link">Code of Conduct</a> that we abide by to ensure contributors are valued and <a href="https://github.com/nmfs-fish-tools/Resources/blob/master/CONTRIBUTING.md" title="Contributor guidelines" class="external-link">Contributor Guidelines</a> for how to contribute.</p>
 <div class="section level2">
 <h2 id="stock-synthesis">Stock Synthesis<a class="anchor" aria-label="anchor" href="#stock-synthesis"></a>
 </h2>
 <p>It seems imperative to first describe <a href="https://github.com/nmfs-stock-synthesis/stock-synthesis" title="Stock Synthesis (SS3) github repository" class="external-link">Stock Synthesis</a> because without Stock Synthesis there would not be ss3sim. Stock Synthesis is an integrated statistical catch-at-age model written in <a href="https://www.admb-project.org/community/" title="AD model builder project" class="external-link">ADMB</a>. The software is widely used across the globe and has been around for 40+ years.</p>
-<p>The inspiration for ss3sim came from Hui-Hua Lee’s hooilator software. hooliator parsed <code>data.ss_new</code> files into multiple files and created a consistent directory structure to store the results. These <code>ss_new</code> files are produced by Stock Synthesis, such that output that contains expected values is available with consistent formatting. The developers of ss3sim built off of the ideas within hooliator and added functions to sample from the expected values. Sampling from expected values was atypical, where most simulations typically relied on bootstrapped values that were provided in the Stock Synthesis output. With a plethora of simulation output stored in structured folders, there was an imminent need for functions to visualize the results. <a href="https://ggplot2.tidyverse.org/" title="ggplot2 documentation" class="external-link">ggplot2</a> was gaining traction at the time and shaped how we thought about things, including our <a href="#overview">mission statement</a> and <a href="beautiful-output">example output</a>.</p>
-<p>ss3sim is just a minor part of the suite of functionality available for Stock Synthesis. See the <a href="https://github.com/nmfs-stock-synthesis/stock-synthesis" title="Stock Synthesis (SS3) github repository" class="external-link">Stock Synthesis website</a> for a list of additional software.</p>
+<p>The inspiration for {ss3sim} came from Hui-Hua Lee’s hooilator software. hooliator parsed <code>data.ss_new</code> files into multiple files and created a consistent directory structure to store the results. These <code>ss_new</code> files are produced by Stock Synthesis, such that output that contains expected values is available with consistent formatting. The developers of {ss3sim} built off of the ideas within hooliator and added functions to sample from the expected values. Sampling from expected values was atypical, where most simulations typically relied on bootstrapped values that were provided in the Stock Synthesis output. With a plethora of simulation output stored in structured folders, there was an imminent need for functions to visualize the results. <a href="https://ggplot2.tidyverse.org/" title="ggplot2 documentation" class="external-link">ggplot2</a> was gaining traction at the time and shaped how we thought about things, including our <a href="#overview">mission statement</a> and <a href="beautiful-output">example output</a>.</p>
+<p>{ss3sim} is just a minor part of the suite of functionality available for Stock Synthesis. See the <a href="https://github.com/nmfs-stock-synthesis/stock-synthesis" title="Stock Synthesis (SS3) github repository" class="external-link">Stock Synthesis website</a> for a list of additional software.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -122,19 +122,19 @@
 <div class="section level3">
 <h3 id="installing-ss3sim">Installing ss3sim<a class="anchor" aria-label="anchor" href="#installing-ss3sim"></a>
 </h3>
-<p>ss3sim is available on <a href="https://cran.r-project.org/package=ss3sim" title="ss3sim on CRAN" class="external-link">CRAN</a> and <a href="https://github.com/ss3sim/ss3sim/releases" title="ss3sim on GitHub" class="external-link">GitHub</a> and can be run on OS X, Windows, or Linux. The GitHub branch “main” contains the newest features, which may not available on CRAN.</p>
-<p>Run the following code to install ss3sim and load it into your workspace. You will not need to install ss3sim every time but it is a good idea to ensure it is up to date. If you are installing from GitHub, you may need to install {remotes}, <code>utils::install.packges("remotes")</code>, before installing {ss3sim} if you do not already have {devtools} installed. If your current version of ss3sim is up to date, R will let you know and prompt you if you want to override the current installation.</p>
+<p>{ss3sim} is available on <a href="https://cran.r-project.org/package=ss3sim" title="ss3sim on CRAN" class="external-link">CRAN</a> and <a href="https://github.com/ss3sim/ss3sim/releases" title="ss3sim on GitHub" class="external-link">GitHub</a> and can be run on OS X, Windows, or Linux. The GitHub branch “main” contains the newest features, which may not available on CRAN.</p>
+<p>Run the following code to install {ss3sim} and load it into your workspace. You will not need to install {ss3sim} every time but it is a good idea to ensure it is up to date. If you are installing from GitHub, you may need to install {remotes}, <code>utils::install.packges("remotes")</code>, before installing {ss3sim} if you do not already have {devtools} installed. If your current version of {ss3sim} is up to date, R will let you know and prompt you if you want to override the current installation.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># CRAN version</span>
 <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span>
   repo <span class="op">=</span> <span class="st">"ss3sim/ss3sim"</span>,
   dependencies <span class="op">=</span> <span class="cn">TRUE</span>, upgrade <span class="op">=</span> <span class="cn">FALSE</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Load the package</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/ss3sim/ss3sim" class="external-link">"ss3sim"</a></span><span class="op">)</span></code></pre></div>
-<p>The following code demonstrates how to access the ss3sim documentation within R. You can also view the <a href="https://ss3sim.github.io/ss3sim/" title="ss3sim website hosted on GitHub" class="external-link">vignettes online</a>.</p>
+<p>The following code demonstrates how to access the {ss3sim} documentation within R. You can also view the <a href="https://ss3sim.github.io/ss3sim/" title="ss3sim website hosted on GitHub" class="external-link">vignettes online</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">?</span><span class="va">ss3sim</span>
 <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/help.html" class="external-link">help</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"ss3sim"</span><span class="op">)</span>
@@ -143,13 +143,13 @@
 <div class="section level3">
 <h3 id="installing-stock-synthesis">Installing Stock Synthesis<a class="anchor" aria-label="anchor" href="#installing-stock-synthesis"></a>
 </h3>
-<p>ss3sim relies the Stock Synthesis executable being available to the operating system regardless of the directory. Thus, <code>ss</code> or <code>ss.exe</code> must <a href="#path">be in your path</a>, which is a list of directories that your operating system has access to. Your operating system will search directories listed in your path when searching for programs. Having <a href="#path">Stock Synthesis in your path</a> allows users to use just the name of the executable and not the full file path in a shell and run the executable in a directory without copying it to the directory. This functionality of not copying the executable works even when <a href="#parallel">running Stock Synthesis in parallel</a>. This approach saves on storage space because the Stock Synthesis binary is about 6 MB. It also facilitates manually running models during development and testing. For example, you might be trying to create input files for a new simulation, where the simulation is based on a life history that you are interested in. Having Stock Synthesis in your path allows you to open a shell prompt in the directory with your Stock Synthesis input files and run the Stock Synthesis executable by typing <code>ss</code>. Debugging can be facilitated by</p>
+<p>{ss3sim} relies the Stock Synthesis executable being available to the operating system regardless of the directory. Thus, <code>ss</code> or <code>ss.exe</code> must <a href="#path">be in your path</a>, which is a list of directories that your operating system has access to. Your operating system will search directories listed in your path when searching for programs. Having <a href="#path">Stock Synthesis in your path</a> allows users to use just the name of the executable and not the full file path in a shell and run the executable in a directory without copying it to the directory. This functionality of not copying the executable works even when <a href="#parallel">running Stock Synthesis in parallel</a>. This approach saves on storage space because the Stock Synthesis binary is about 6 MB. It also facilitates manually running models during development and testing. For example, you might be trying to create input files for a new simulation, where the simulation is based on a life history that you are interested in. Having Stock Synthesis in your path allows you to open a shell prompt in the directory with your Stock Synthesis input files and run the Stock Synthesis executable by typing <code>ss</code>. Debugging can be facilitated by</p>
 <ul>
 <li>output that is printed to the console,</li>
 <li>echoinput.sso, and</li>
 <li>Report.sso.</li>
 </ul>
-<p>ss3sim was originally based on Stock Synthesis 3.24O <span class="citation">(Anderson et al. 2014)</span>. At first, ss3sim did not keep up to date with newer versions of Stock Synthesis. In 2019, ss3sim was updated to use Stock Synthesis 3.30. <strong>Users can count on future versions of ss3sim being up to date with the newest version of Stock Synthesis.</strong> Stock Synthesis will end development with major-version three, hence the name ss3sim. But, minor versions will continue to be updated for quite some time.</p>
+<p>{ss3sim} was originally based on Stock Synthesis 3.24O <span class="citation">(Anderson et al. 2014)</span>. At first, {ss3sim} did not keep up to date with newer versions of Stock Synthesis. In 2019, {ss3sim} was updated to use Stock Synthesis 3.30. <strong>Users can count on future versions of {ss3sim} being up to date with the newest version of Stock Synthesis.</strong> Stock Synthesis will end development with major-version three, hence the name ss3sim. But, minor versions will continue to be updated for quite some time.</p>
 <div class="section level4">
 <h4 id="executables">Executables<a class="anchor" aria-label="anchor" href="#executables"></a>
 </h4>
@@ -163,20 +163,20 @@
 <div class="section level4">
 <h4 id="path">Putting Stock Synthesis in your path<a class="anchor" aria-label="anchor" href="#path"></a>
 </h4>
-<p>ss3sim will first look to see if the executable is available in your R library using <code>system.file("bin", package = "ss3sim")</code>. The previous will only lead to a viable file path if you are using the GitHub version of ss3sim because the distribution of executables is not allowed on CRAN. If the location is not returned from <code>system.file</code>, R will look for the executable in your path. This hierarchy is important for understanding which version of Stock Synthesis is being used.</p>
-<p>If you are using the CRAN version of ss3sim, reference the <a href="https://nmfs-stock-synthesis.github.io/ss-documentation/Getting_Started_SS.html" title="Stock Synthesis Getting Started documentation" class="external-link">Getting Started with Stock Synthesis documentation</a> for instructions on how to put Stock Synthesis in your path.</p>
+<p>{ss3sim} will first look to see if the executable is available in your R library using <code>system.file("bin", package = "ss3sim")</code>. The previous will only lead to a viable file path if you are using the GitHub version of {ss3sim} because the distribution of executables is not allowed on CRAN. If the location is not returned from <code>system.file</code>, R will look for the executable in your path. This hierarchy is important for understanding which version of Stock Synthesis is being used.</p>
+<p>If you are using the CRAN version of {ss3sim}, reference the <a href="https://nmfs-stock-synthesis.github.io/ss-documentation/Getting_Started_SS.html" title="Stock Synthesis Getting Started documentation" class="external-link">Getting Started with Stock Synthesis documentation</a> for instructions on how to put Stock Synthesis in your path.</p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="installing-dependent-r-packages">Installing dependent R packages<a class="anchor" aria-label="anchor" href="#installing-dependent-r-packages"></a>
 </h3>
-<p>Below we highlight a few packages that are essential for running ss3sim.</p>
+<p>Below we highlight a few packages that are essential for running {ss3sim}.</p>
 <div class="section level4">
 <h4 id="r4ss">r4ss<a class="anchor" aria-label="anchor" href="#r4ss"></a>
 </h4>
-<p>If you are using the GitHub version of ss3sim, R will install the <a href="https://github.com/r4ss/r4ss" title="r4ss on GitHub" class="external-link">GitHub version of r4ss</a>. If you are using the CRAN version of ss3sim, R will install the <a href="https://cran.r-project.org/package=r4ss" title="r4ss on CRAN" class="external-link">CRAN version of r4ss</a>. Both methods will check to make sure that you have the most recent version of r4ss in your R library available given which mirror you are using. Feel free to install r4ss directly via</p>
+<p>If you are using the GitHub version of {ss3sim}, R will install the <a href="https://github.com/r4ss/r4ss" title="r4ss on GitHub" class="external-link">GitHub version of r4ss</a>. If you are using the CRAN version of {ss3sim}, R will install the <a href="https://cran.r-project.org/package=r4ss" title="r4ss on CRAN" class="external-link">CRAN version of r4ss</a>. Both methods will check to make sure that you have the most recent version of r4ss in your R library available given which mirror you are using. Feel free to install r4ss directly via</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span>
   <span class="st">"r4ss/r4ss"</span>,
   dependencies <span class="op">=</span> <span class="cn">TRUE</span>, upgrade <span class="op">=</span> <span class="cn">FALSE</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span></code></pre></div>
@@ -199,23 +199,23 @@
 <code class="sourceCode R"><span class="va">simdf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_scenarios_defaults.html">setup_scenarios_defaults</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co"># Get standard errors by turning on the hessian</span>
 <span class="va">simdf</span><span class="op">[</span>, <span class="st">"hess_always"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></code></pre></div>
-<p>Column entries of <code>simdf</code> need to be quoted if they are to be evaluated later, e.g., <code>"seq(1,10,by=2)"</code> and <code>"c('NatM_p_1_Fem_GP_1', 'L_at_Amin_Fem_GP_1')"</code>. Scalar values can numeric. Use single quotes inside of double quotes to quote text. Developers of ss3sim are working on a better, more tidyverse-like non-standard evaluation method such that quotes will not be needed. Feel free to reach out if you would like to help with this effort or have ideas on how to make it work better.</p>
+<p>Column entries of <code>simdf</code> need to be quoted if they are to be evaluated later, e.g., <code>"seq(1,10,by=2)"</code> and <code>"c('NatM_p_1_Fem_GP_1', 'L_at_Amin_Fem_GP_1')"</code>. Scalar values can numeric. Use single quotes inside of double quotes to quote text. Developers of {ss3sim} are working on a better, more tidyverse-like non-standard evaluation method such that quotes will not be needed. Feel free to reach out if you would like to help with this effort or have ideas on how to make it work better.</p>
 <p>Column names of <code>simdf</code> are key. In the example above, <code>hess_always</code> is an argument of <code><a href="../reference/ss3sim_base.html">ss3sim_base()</a></code> and can be used directly as the column name. In fact, you can specify any input argument to <code><a href="../reference/ss3sim_base.html">ss3sim_base()</a></code> as a column of <code>simdf</code>.</p>
 <table class="table">
 <thead><tr class="header">
-<th>ss3sim function</th>
-<th align="left">Argument</th>
+<th>{ss3sim} function</th>
+<th align="center">Argument</th>
 <th align="right">Description</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td><code>ss3sim_base</code></td>
-<td align="left"><code>bias_adjust</code></td>
+<td align="center"><code>bias_adjust</code></td>
 <td align="right">Perform bias adjustment</td>
 </tr>
 <tr class="even">
 <td><code>ss3sim_base</code></td>
-<td align="left"><code>hess_always</code></td>
+<td align="center"><code>hess_always</code></td>
 <td align="right">Calculate hessian</td>
 </tr>
 </tbody>
@@ -231,75 +231,75 @@
 <p>For example, <code>cf.years.1</code> passes information to the <code>year</code> argument of <code><a href="../reference/change_f.html">change_f()</a></code> for fleet 1. <code>cf.years.2</code> passes information to the <code>year</code> argument of <code><a href="../reference/change_f.html">change_f()</a></code> for fleet 2. Function abbreviations are as follows:</p>
 <table class="table">
 <thead><tr class="header">
-<th>ss3sim function</th>
-<th align="left">Prefix</th>
-<th>Description</th>
+<th>{ss3sim} function</th>
+<th align="center">Prefix</th>
+<th align="right">Description</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td><code><a href="../reference/change_f.html">change_f()</a></code></td>
-<td align="left"><code>cf.</code></td>
-<td>Fishing mortality</td>
+<td align="center"><code>cf.</code></td>
+<td align="right">Fishing mortality</td>
 </tr>
 <tr class="even">
 <td><code><a href="../reference/change_e.html">change_e()</a></code></td>
-<td align="left"><code>ce.</code></td>
-<td>Estimation</td>
+<td align="center"><code>ce.</code></td>
+<td align="right">Estimation</td>
 </tr>
 <tr class="odd">
 <td><code><a href="../reference/change_o.html">change_o()</a></code></td>
-<td align="left"><code>co.</code></td>
-<td>Operating model</td>
+<td align="center"><code>co.</code></td>
+<td align="right">Operating model</td>
 </tr>
 <tr class="even">
 <td><code><a href="../reference/change_tv.html">change_tv()</a></code></td>
-<td align="left"><code>ct.</code></td>
-<td>Time-varying OM parameter</td>
+<td align="center"><code>ct.</code></td>
+<td align="right">Time-varying OM parameter</td>
 </tr>
 <tr class="odd">
 <td><code><a href="../reference/change_data.html">change_data()</a></code></td>
-<td align="left"><code>cd.</code></td>
-<td>Available OM data, bins, etc.</td>
+<td align="center"><code>cd.</code></td>
+<td align="right">Available OM data, bins, etc.</td>
 </tr>
 <tr class="even">
 <td><code><a href="../reference/change_em_binning.html">change_em_binning()</a></code></td>
-<td align="left"><code>cb.</code></td>
-<td>Available EM data bins</td>
+<td align="center"><code>cb.</code></td>
+<td align="right">Available EM data bins</td>
 </tr>
 <tr class="odd">
 <td><code><a href="../reference/change_retro.html">change_retro()</a></code></td>
-<td align="left"><code>cr.</code></td>
-<td>Retrospective year</td>
+<td align="center"><code>cr.</code></td>
+<td align="right">Retrospective year</td>
 </tr>
 <tr class="even">
 <td><code><a href="../reference/sample_index.html">sample_index()</a></code></td>
-<td align="left"><code>si.</code></td>
-<td>Index data</td>
+<td align="center"><code>si.</code></td>
+<td align="right">Index data</td>
 </tr>
 <tr class="odd">
 <td><code><a href="../reference/sample_agecomp.html">sample_agecomp()</a></code></td>
-<td align="left"><code>sa.</code></td>
-<td>Age-composition data</td>
+<td align="center"><code>sa.</code></td>
+<td align="right">Age-composition data</td>
 </tr>
 <tr class="even">
 <td><code><a href="../reference/sample_lcomp.html">sample_lcomp()</a></code></td>
-<td align="left"><code>sl.</code></td>
-<td>Length-composition data</td>
+<td align="center"><code>sl.</code></td>
+<td align="right">Length-composition data</td>
 </tr>
 <tr class="odd">
 <td><code><a href="../reference/sample_calcomp.html">sample_calcomp()</a></code></td>
-<td align="left"><code>sc.</code></td>
-<td>Conditional age-at-length data</td>
+<td align="center"><code>sc.</code></td>
+<td align="right">Conditional age-at-length data</td>
 </tr>
 <tr class="even">
 <td><code><a href="../reference/sample_mlacomp.html">sample_mlacomp()</a></code></td>
-<td align="left"><code>sm.</code></td>
-<td>Mean length-at-age data</td>
+<td align="center"><code>sm.</code></td>
+<td align="right">Mean length-at-age data</td>
 </tr>
 <tr class="odd">
 <td><code><a href="../reference/sample_wtatage.html">sample_wtatage()</a></code></td>
-<td align="left"><code>sw.</code></td>
-<td>Weight-at-age data</td>
+<td align="center"><code>sw.</code></td>
+<td align="right">Weight-at-age data</td>
 </tr>
 </tbody>
 </table>
@@ -311,7 +311,7 @@
 <div class="section level3">
 <h3 id="input-file-structure">Input file structure<a class="anchor" aria-label="anchor" href="#input-file-structure"></a>
 </h3>
-<p>The ss3sim package comes with a generic, built-in operating model (OM) and estimation method (EM). The life history for these available files is based on a cod-like fish. You can peruse the files if you have ss3sim installed here</p>
+<p>{ss3sim} comes with a generic, built-in operating model (OM) and estimation method (EM). The life history for these available files is based on a cod-like fish. You can peruse the files if you have {ss3sim} installed here</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/models"</span>, package <span class="op">=</span> <span class="st">"ss3sim"</span><span class="op">)</span></code></pre></div>
 <p>These model files can be used as is, modified, or replaced. For more details on how to modify or replace the default models, see the vignettes on <a href="modifying-models.html">modifying model setups</a> and <a href="making-models.html">creating your own OM and EMs</a>.</p>
@@ -328,7 +328,7 @@
   <span class="va">scenarioB</span><span class="op">/</span><span class="fl">1</span><span class="op">/</span><span class="va">om</span>
   <span class="va">scenarioB</span><span class="op">/</span><span class="fl">1</span><span class="op">/</span><span class="va">em</span>
   <span class="va">...</span></code></pre>
-<p>The integer values after the scenario represent iterations; the total number of iterations is specified by the user. The OM and EM directories are copied into individual directories for an iteration. Note that the supplied OM and EM directories will be renamed <code>om</code> and <code>em</code> within each iteration. There will be some additional directories if you are using bias adjustment. See <code><a href="../reference/ss3sim_base.html">ss3sim_base()</a></code> for more information on bias adjustment. You can name the scenarios any combination of character values or use the default naming system within ss3sim that uses the date and time.</p>
+<p>The integer values after the scenario represent iterations; the total number of iterations is specified by the user. The OM and EM directories are copied into individual directories for an iteration. Note that the supplied OM and EM directories will be renamed <code>om</code> and <code>em</code> within each iteration. There will be some additional directories if you are using bias adjustment. See <code><a href="../reference/ss3sim_base.html">ss3sim_base()</a></code> for more information on bias adjustment. You can name the scenarios any combination of character values or use the default naming system within {ss3sim} that uses the date and time.</p>
 <p>The supplied OM and EM directories are checked to ensure</p>
 <ul>
 <li>they contain the minimal files,</li>
@@ -341,9 +341,9 @@
 </div>
 </div>
 <div class="section level1">
-<h1 id="example">Example simulations with ss3sim<a class="anchor" aria-label="anchor" href="#example"></a>
+<h1 id="example">Example simulations with {ss3sim}<a class="anchor" aria-label="anchor" href="#example"></a>
 </h1>
-<p>The example is based on the cod-like species in the papers <span class="citation">Ono et al. (2015)</span> and <span class="citation">Johnson et al. (2015)</span>, both of which used the ss3sim package. All of the required files for this example are contained within the ss3sim package. This example is a 2x2 design, testing</p>
+<p>The example is based on the cod-like species in the papers <span class="citation">Ono et al. (2015)</span> and <span class="citation">Johnson et al. (2015)</span>, both of which used {ss3sim}. All of the required files for this example are contained within {ss3sim}. This example is a 2x2 design, testing</p>
 <ol style="list-style-type: decimal">
 <li>the effect of high and low precision on the index of abundance provided by the survey and</li>
 <li>the effect of fixing versus estimating natural mortality (<span class="math inline">\(M\)</span>).</li>
@@ -353,7 +353,7 @@
 </h2>
 <p>First we will create <code>df</code>, a data frame for <code>run_ss3sim(simdf = df)</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Use the boiler-plate data frame available in the package for 2 scenarios</span>
+<code class="sourceCode R"><span class="co"># Use the boiler-plate data frame available in {ss3sim} for 2 scenarios</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_scenarios_defaults.html">setup_scenarios_defaults</a></span><span class="op">(</span>nscenarios <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 <span class="co"># Turn off bias adjustment and use default settings in cod EM model</span>
 <span class="va">df</span><span class="op">[</span>, <span class="st">"bias_adjust"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span>
@@ -426,7 +426,7 @@
   verbose <span class="op">=</span> <span class="cn">FALSE</span>, printstats <span class="op">=</span> <span class="cn">FALSE</span>, covar <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="fu">r4ss</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/r4ss/man/SSplotComparisons.html" class="external-link">SSplotComparisons</a></span><span class="op">(</span><span class="fu">r4ss</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/r4ss/man/SSsummarize.html" class="external-link">SSsummarize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">r_om</span>, <span class="va">r_em</span><span class="op">)</span><span class="op">)</span>,
   legendlabels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"OM"</span>, <span class="st">"EM"</span><span class="op">)</span>, subplots <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
-<p>Each iteration is unique because of process error included through normally-distributed recruitment deviations. Thus, if you were to plot the OMs from iteration one and two using <code><a href="https://rdrr.io/pkg/r4ss/man/SSplotComparisons.html" class="external-link">r4ss::SSplotComparisons()</a></code> there would be clear annual differences. Deviations are generated for each iteration in your simulation and used across scenarios. Using the same deviations for iteration one of each scenario, and a different set of deviations for each additional iteration, facilitates comparisons across scenarios. The default distribution in ss3sim has a mean of <code>-0.5</code> and a standard deviation of <code>1</code> (bias-corrected standard-normal deviations). These deviations are then scaled by the level of recruitment variability specified in the OM with <span class="math inline">\(\sigma_r\)</span>. If you would like to specify your own deviations, you can pass them using <code>user_recdevs</code>. See the next section on <a href="#deterministic">self tests</a> for an example of <code>user_recdevs</code>.</p>
+<p>Each iteration is unique because of process error included through normally-distributed recruitment deviations. Thus, if you were to plot the OMs from iteration one and two using <code><a href="https://rdrr.io/pkg/r4ss/man/SSplotComparisons.html" class="external-link">r4ss::SSplotComparisons()</a></code> there would be clear annual differences. Deviations are generated for each iteration in your simulation and used across scenarios. Using the same deviations for iteration one of each scenario, and a different set of deviations for each additional iteration, facilitates comparisons across scenarios. The default distribution in {ss3sim} has a mean of <code>-0.5</code> and a standard deviation of <code>1</code> (bias-corrected standard-normal deviations). These deviations are then scaled by the level of recruitment variability specified in the OM with <span class="math inline">\(\sigma_r\)</span>. If you would like to specify your own deviations, you can pass them using <code>user_recdevs</code>. See the next section on <a href="#deterministic">self tests</a> for an example of <code>user_recdevs</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="deterministic">Self test to check for bias<a class="anchor" aria-label="anchor" href="#deterministic"></a>
@@ -475,7 +475,7 @@
 </h2>
 <p><code><a href="../reference/get_results_all.html">get_results_all()</a></code> reads in a set of scenarios and combines the output into <code>.csv</code> files, e.g., <code>ss3sim_scalar.csv</code> and <code>ss3sim_ts.csv</code>. The <code>scalar</code> file contains values for which there is a single estimated value, e.g., MSY. The <code>ts</code> file refers to values for which there are time series of estimated values, e.g., biomass for each year.</p>
 <p>Parameter names in these files will not always be the same across simulations because names are dependent on OM and EM settings. For example, an EM with age-specific natural mortality will have multiple natural mortality parameters each with a different name based on the age they pertain to. <code><a href="../reference/get_results_all.html">get_results_all()</a></code> accommodates this by using the parameter name assigned by Stock Synthesis rather than attempting to standardize names.</p>
-<p>Originally, ss3sim provided the results using a wide-table format, with individual columns for each OM and EM parameter along with some summary information for each scenario. In May of 2020 we changed to providing results using a tidier long format.</p>
+<p>Originally, {ss3sim} provided the results using a wide-table format, with individual columns for each OM and EM parameter along with some summary information for each scenario. In May of 2020 we changed to providing results using a tidier long format.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/get_results_all.html">get_results_all</a></span><span class="op">(</span>
   overwrite_files <span class="op">=</span> <span class="cn">TRUE</span>,
@@ -599,7 +599,7 @@ Box plots of relative error (RE) for stochastic runs. <span class="math inline">
 </h3>
 <p><code><a href="../reference/calculate_data_units.html">calculate_data_units()</a></code> is used to modify the OM to include just the data types and quantities that are needed based on the arguments passed to <code>sample_*()</code>. For example, you might wish to fit an EM to conditional length-at-age data with a certain bin structure for certain years and fleets. To do that, expected lengths and ages must be available for appropriate years and fleets at a sufficiently fine bin size. If you have many different scenarios in your simulation, then there will be lots of combinations of expected values that are needed.</p>
 <p>Instead of generating every possible combination of years, fleets, etc., which is slow and inefficient, {ss3sim} uses <code><a href="../reference/calculate_data_units.html">calculate_data_units()</a></code> to determine the minimal-viable amount of data types needed. For example, if arguments are passed to <code><a href="../reference/sample_mlacomp.html">sample_mlacomp()</a></code>, then expected values for age and length-at-age are created, even if <code><a href="../reference/sample_agecomp.html">sample_agecomp()</a></code> is not being called directly. Similarly, <code><a href="../reference/sample_wtatage.html">sample_wtatage()</a></code> leads to expected values for empirical weight-at-age, age-composition, and mean length-at-age data. <code><a href="../reference/sample_calcomp.html">sample_calcomp()</a></code> leads to expected values for length- and age-composition data.</p>
-<p>Currently, ss3sim supports the sampling of the following types of data:</p>
+<p>Currently, {ss3sim} supports the sampling of the following types of data:</p>
 <ul>
 <li>catch-per-unit effort data with <code><a href="../reference/sample_index.html">sample_index()</a></code>,</li>
 <li>length and age compositions with <code><a href="../reference/sample_lcomp.html">sample_lcomp()</a></code> and <code><a href="../reference/sample_agecomp.html">sample_agecomp()</a></code>,</li>
@@ -630,7 +630,7 @@ Box plots of relative error (RE) for stochastic runs. <span class="math inline">
 <div class="section level5">
 <h5 id="effective-sample-sizes">Effective sample sizes<a class="anchor" aria-label="anchor" href="#effective-sample-sizes"></a>
 </h5>
-<p>For index data, which are assumed by Stock Synthesis to follow a log-normal distribution, the weight of the data is determined by the CV of each point. As the CV increases, the data have less weight in the joint likelihood. This is equivalent to decreasing the effective sample size in other distributions. ss3sim sets these values automatically at the truth internally, although future versions may allow for more complex options. The user-supplied <span class="math inline">\(\sigma_y\)</span> term is written to the <code>.dat</code> file along with the sampled values. So, the EM has the correct level of uncertainty. Thus, the EM has unbiased estimates of both <span class="math inline">\(B_y\)</span> and the true <span class="math inline">\(\sigma_y\)</span> for all fleets in all years sampled.</p>
+<p>For index data, which are assumed by Stock Synthesis to follow a log-normal distribution, the weight of the data is determined by the CV of each point. As the CV increases, the data have less weight in the joint likelihood. This is equivalent to decreasing the effective sample size in other distributions. {ss3sim} sets these values automatically at the truth internally, although future versions may allow for more complex options. The user-supplied <span class="math inline">\(\sigma_y\)</span> term is written to the <code>.dat</code> file along with the sampled values. So, the EM has the correct level of uncertainty. Thus, the EM has unbiased estimates of both <span class="math inline">\(B_y\)</span> and the true <span class="math inline">\(\sigma_y\)</span> for all fleets in all years sampled.</p>
 </div>
 </div>
 <div class="section level4">
@@ -651,7 +651,7 @@ Box plots of relative error (RE) for stochastic runs. <span class="math inline">
 <div class="section level5">
 <h5 id="sampling-with-overdispersion">Sampling with overdispersion<a class="anchor" aria-label="anchor" href="#sampling-with-overdispersion"></a>
 </h5>
-<p>Users can specify the level of overdispersion present in the sampled data through the argument <code>cpar</code>. <code>cpar</code> is the ratio of the standard deviation between a multinomial and Dirichlet distribution with the same probabilities and sample size. Thus, a value of 1 would be the same standard deviation, while 2 would be twice the standard deviation of a multinomial (overdispersed). The package also currently allows for specifying the effective sample sizes used as input for the EM separately from the sample sizes used to sample the data. See <code><a href="../reference/sample_agecomp.html">?sample_agecomp</a></code> and <code><a href="../reference/sample_lcomp.html">?sample_lcomp</a></code> for more detail.</p>
+<p>Users can specify the level of overdispersion present in the sampled data through the argument <code>cpar</code>. <code>cpar</code> is the ratio of the standard deviation between a multinomial and Dirichlet distribution with the same probabilities and sample size. Thus, a value of 1 would be the same standard deviation, while 2 would be twice the standard deviation of a multinomial (overdispersed). {ss3sim} also currently allows for specifying the effective sample sizes used as input for the EM separately from the sample sizes used to sample the data. See <code><a href="../reference/sample_agecomp.html">?sample_agecomp</a></code> and <code><a href="../reference/sample_lcomp.html">?sample_lcomp</a></code> for more detail.</p>
 <p>This Dirichlet distribution has the same range and mean as the multinomial. But, the distribution has a different variance controlled by a parameter. The variance is determined exclusively by the cell probabilities and sample size n the multinomial, making it more flexible than the multinomial. Let <span class="math inline">\(\mathbf{d} \sim \text{Dirichlet}\left (\boldsymbol{\alpha}, A\right )\)</span> be a Dirichlet random vector. It is characterized by</p>
 <p><span class="math display">\[\begin{aligned}
   \mathbf{d} &amp;= d_1, \ldots, d_A\\
@@ -698,17 +698,17 @@ Box plots of relative error (RE) for stochastic runs. <span class="math inline">
 <h2 id="pro-error">Generating process error<a class="anchor" aria-label="anchor" href="#pro-error"></a>
 </h2>
 <p>Process error is incorporated into the OM in the form of deviates in recruitment (“recdevs”) from the stock-recruitment relationship. Unlike the observation error, the process error affects the population dynamics and thus must be done before running the OM.</p>
-<p>These built-in recruitment deviations are standard normal deviates and are multiplied by <span class="math inline">\(\sigma_r\)</span> (recruitment standard deviation) as specified in the OM, and bias adjusted within the package. That is, <span class="math display">\[\begin{equation*}
+<p>These built-in recruitment deviations are standard normal deviates and are multiplied by <span class="math inline">\(\sigma_r\)</span> (recruitment standard deviation) as specified in the OM, and bias adjusted within {ss3sim}. That is, <span class="math display">\[\begin{equation*}
   \text{recdev}_i=\sigma_r z_i-\sigma_r^2/2
 \end{equation*}\]</span> where <span class="math inline">\(z_i\)</span> is a standard normal deviate and the bias adjustment term (<span class="math inline">\(\sigma_r^2/2\)</span>) makes the deviates have an expected value of 1 after exponentiation.</p>
-<p>If the recruitment deviations are not specified, then the package will use these built-in recruitment deviations. Alternatively, you can specify your own recruitment deviations, via the argument <code>user_recdevs</code> to the top-level function <code>ss3sim_base</code>. Ensure that you pass a matrix with at least enough columns (iterations) and rows (years). The user-supplied recruitment deviations are used exactly as specified (i.e., not multiplied by <span class="math inline">\(\sigma_r\)</span> as specified in the Stock Synthesis model), and <strong>it is up to you to bias correct them manually</strong> by subtracting <span class="math inline">\(\sigma_r^2 / 2\)</span> as is done above. This functionality allows for flexibility in how the recruitment deviations are specified, for example <a href="#deterministic">running deterministic runs</a> or adding serial correlation.</p>
-<p>Note that for both built-in and user-specified recdevs, ss3sim will reuse the same set of recruitment deviations for all iterations across scenarios. For example if you have two scenarios and run 100 iterations of each, the same set of recruitment deviations are used for iteration one for both those two scenarios.</p>
+<p>If the recruitment deviations are not specified, then {ss3sim} will use these built-in recruitment deviations. Alternatively, you can specify your own recruitment deviations, via the argument <code>user_recdevs</code> to the top-level function <code><a href="../reference/ss3sim_base.html">ss3sim_base()</a></code>. Ensure that you pass a matrix with at least enough columns (iterations) and rows (years). The user-supplied recruitment deviations are used exactly as specified (i.e., not multiplied by <span class="math inline">\(\sigma_r\)</span> as specified in the Stock Synthesis model), and <strong>it is up to you to bias correct them manually</strong> by subtracting <span class="math inline">\(\sigma_r^2 / 2\)</span> as is done above. This functionality allows for flexibility in how the recruitment deviations are specified, for example <a href="#deterministic">running deterministic runs</a> or adding serial correlation.</p>
+<p>Note that for both built-in and user-specified recdevs, {ss3sim} will reuse the same set of recruitment deviations for all iterations across scenarios. For example if you have two scenarios and run 100 iterations of each, the same set of recruitment deviations are used for iteration one for both those two scenarios.</p>
 </div>
 <div class="section level2">
 <h2 id="reproducibility">Reproducibility<a class="anchor" aria-label="anchor" href="#reproducibility"></a>
 </h2>
 <p>In many cases, you may want to make the observation and process error reproducible. For instance, you may want to reuse process error so that differences between scenarios are not confounded with process error. More broadly, you may want to make a simulation reproducible on another machine by another user (such as a reviewer).</p>
-<p>By default ss3sim sets a seed based on the iteration number. This will create the same recruitment deviations for a given iteration number. You can therefore avoid having the same recruitment deviations for a given iteration number by either specifying your own recruitment deviation matrix. This can be done using the <code>user_recdevs</code> argument or by changing the iteration numbers (e.g., using iterations 101 to 200 instead of 1 to 100). If you use the latter method, you must specify a vector of iterations instead of a single number. The vector will specify which numbers along a number line to use versus a single number leads to 1:x iterations being generated. If you want the different scenarios to have different process error you will need to make separate calls to <code>run_ss3sim</code> for each scenario.</p>
+<p>By default {ss3sim} sets a seed based on the iteration number. This will create the same recruitment deviations for a given iteration number. You can therefore avoid having the same recruitment deviations for a given iteration number by either specifying your own recruitment deviation matrix. This can be done using the <code>user_recdevs</code> argument or by changing the iteration numbers (e.g., using iterations 101 to 200 instead of 1 to 100). If you use the latter method, you must specify a vector of iterations instead of a single number. The vector will specify which numbers along a number line to use versus a single number leads to 1:x iterations being generated. If you want the different scenarios to have different process error you will need to make separate calls to <code>run_ss3sim</code> for each scenario.</p>
 <p>The observation error seed affecting the sampling of data is set during the OM generation. Therefore, a given iteration-scenario-argument combination will generate repeatable results. Given that different arguments can generate different sampling routines, e.g., stochastically sampling or not sampling from the age compositions or sampling a different number of years, the observation error is not necessarily comparable across different arguments.</p>
 </div>
 </div>
@@ -718,7 +718,7 @@ Box plots of relative error (RE) for stochastic runs. <span class="math inline">
 <div class="section level2">
 <h2 id="time-varying">Time-varying parameters in the OM<a class="anchor" aria-label="anchor" href="#time-varying"></a>
 </h2>
-<p>ss3sim includes the capability for inducing time-varying changes in the OM using <code><a href="../reference/change_tv.html">change_tv()</a></code>. The package currently does not have built-in functions to turn on/off the estimation of time-varying parameters in the EM. However, it is possible to create versions of an EM with and without time-varying estimation of a parameter and specify each EM in <code>simdf</code> using the <code>em</code> column. This approach would allow for testing of differences between estimating a single, constant parameter versus time-varying estimation of the same parameter.</p>
+<p>{ss3sim} includes the capability for inducing time-varying changes in the OM using <code><a href="../reference/change_tv.html">change_tv()</a></code>. {ss3sim} currently does not have built-in functions to turn on/off the estimation of time-varying parameters in the EM. However, it is possible to create versions of an EM with and without time-varying estimation of a parameter and specify each EM in <code>simdf</code> using the <code>em</code> column. This approach would allow for testing of differences between estimating a single, constant parameter versus time-varying estimation of the same parameter.</p>
 <p><code><a href="../reference/change_tv.html">change_tv()</a></code> works by adding an environmental deviate (<span class="math inline">\(env\)</span>) to the base parameter (<span class="math inline">\(par\)</span>), creating a time varying parameter (<span class="math inline">\(par\)</span>) for each year (<span class="math inline">\(y\)</span>),</p>
 <p><span class="math display">\[\begin{equation}
 par_y = par + link * env_y.
@@ -732,9 +732,9 @@ par_y = par + link * env_y.
 <p>To pass arguments to <code>change_tv</code> through <code>run_ss3sim</code> you need to create a column labeled <code>ct.&lt;name of parameter&gt;</code>. Where you have to change <code>name of parameter</code> to the parameter of interest. This structure, where the column name includes the parameter name, allows for multiple parameters to be time varying, you just have to use multiple columns. Each column holds code to generate a vector of time series information for a given parameter. The vectors are then combined into a named list that is passed to <code>change_tv_list</code> in <code><a href="../reference/change_tv.html">change_tv()</a></code>.</p>
 </div>
 <div class="section level2">
-<h2 id="parallel">Parallel computing with ss3sim<a class="anchor" aria-label="anchor" href="#parallel"></a>
+<h2 id="parallel">Parallel computing with {ss3sim}<a class="anchor" aria-label="anchor" href="#parallel"></a>
 </h2>
-<p>ss3sim can easily run multiple scenarios in parallel to speed up simulations. To run a simulation in parallel, you need to register multiple cores or clusters using the package of your choice. Here, we recommend using the parallel package and provide an example for you. First, find out how many cores are on the computer and register a portion of those for parallel processing. Second, us an apply function to get the results from each scenario. Third, bring the results together and close the cluster.</p>
+<p>{ss3sim} can easily run multiple scenarios in parallel to speed up simulations. To run a simulation in parallel, you need to register multiple cores or clusters using the package of your choice. Here, we recommend using {parallel} and provide an example for you. First, find out how many cores are on the computer and register a portion of those for parallel processing. Second, us an apply function to get the results from each scenario. Third, bring the results together and close the cluster.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">parallel</span><span class="op">)</span>
 <span class="va">ncls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"NUMBER_OF_PROCESSORS"</span><span class="op">)</span><span class="op">)</span>
@@ -746,7 +746,7 @@ par_y = par + link * env_y.
 <span class="op">)</span>
 <span class="fu"><a href="../reference/get_results_all.html">get_results_all</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">stopCluster</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></code></pre></div>
-<p>Note that if the simulation aborts for any reason while <code><a href="../reference/run_ss3sim.html">run_ss3sim()</a></code> is running in parallel, you may need to abort the left over parallel processes. On Windows, open the task manager (Ctrl-Shift-Esc) and close any R processes. On a Mac, open Activity Monitor and force quit any R processes. Also, if you are working with a local development version of <code>ss3sim</code> and you are on a Windows machine, you may not be able to run in parallel if you load the package with <code>devtools::load_all()</code>. Instead, do a full install with <code>devtools::install()</code> (and potentially restart R if ss3sim was already loaded).</p>
+<p>Note that if the simulation aborts for any reason while <code><a href="../reference/run_ss3sim.html">run_ss3sim()</a></code> is running in parallel, you may need to abort the left over parallel processes. On Windows, open the task manager (Ctrl-Shift-Esc) and close any R processes. On a Mac, open Activity Monitor and force quit any R processes. Also, if you are working with a local development version of <code>ss3sim</code> and you are on a Windows machine, you may not be able to run in parallel if you load {ss3sim} with <code>devtools::load_all()</code>. Instead, do a full install with <code>devtools::install()</code> (and potentially restart R if {ss3sim} was already loaded).</p>
 </div>
 </div>
 <div class="section level1 unnumbered">
