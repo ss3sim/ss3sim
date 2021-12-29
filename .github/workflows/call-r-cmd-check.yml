@@ -1,6 +1,13 @@
 on:
+  workflow_dispatch:
   push:
+    paths-ignore:
+      - '.github/**'
+      - '**.md'
   pull_request:
+    paths-ignore:
+      - '.github/**'
+      - '**.md'
   schedule:
     # This should run the default branch weekly on sunday
     - cron: '0 0 * * 0'
