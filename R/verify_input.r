@@ -67,12 +67,12 @@ verify_input <- function(model_dir, type = c("om", "em")) {
     # }
   }
   if (length(grep("starter.ss", files, ignore.case = TRUE))) {
-    f.starter <- grep("starter.ss", files, ignore.case = TRUE)
+    f.starter <- grep("starter.ss$", files, ignore.case = TRUE)
   } else {
     f.starter <- NA
   }
   if (length(grep("forecast.ss", files, ignore.case = TRUE))) {
-    f.forecast <- grep("forecast.ss", files, ignore.case = TRUE)
+    f.forecast <- grep("forecast.ss$", files, ignore.case = TRUE)
   } else {
     f.forecast <- NA
   }
