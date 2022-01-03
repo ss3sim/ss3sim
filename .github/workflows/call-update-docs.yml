@@ -4,4 +4,4 @@ on:
 name: call-update-docs
 jobs:
   call-workflow:
-    uses: nmfs-stock-synthesis/workflows/.github/workflows/update-roxygen-docs.yml@main
+    uses: nmfs-fish-tools/ghactions4r/.github/workflows/update-roxygen-docs.yml@main
