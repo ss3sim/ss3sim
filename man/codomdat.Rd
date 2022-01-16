@@ -25,6 +25,15 @@ A list of data returned from \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}} f
 North Sea cod operating model.
 The input file is stored in \code{extdata/models}.
 }
+\examples{
+data("codomdat", package = "ss3sim")
+\dontshow{
+testthat::expect_true(
+  codomdat[["type"]] == "Stock_Synthesis_data_file",
+  label = "Is a Stock Synthesis data file"
+)
+}
+}
 \seealso{
 \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}}
 }
