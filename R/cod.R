@@ -16,6 +16,14 @@
 #' @seealso
 #' * [r4ss::SS_readctl()]
 #' * [r4ss::SS_readdat()]
+#' @examples
+#' data("codomctl", package = "ss3sim")
+#' \dontshow{
+#' testthat::expect_true(
+#'   codomctl[["type"]] == "Stock_Synthesis_control_file",
+#'   label = "Is a Stock Synthesis control file"
+#' )
+#' }
 "codomctl"
 
 #' Data for the cod operating model
@@ -34,6 +42,14 @@
 #' @source North Sea cod
 #' (*Gadus morhua*; Richard D. Methot, Jr., NMFS, NOAA, pers. comm.)
 #' @seealso [r4ss::SS_readdat()]
+#' @examples
+#' data("codomdat", package = "ss3sim")
+#' \dontshow{
+#' testthat::expect_true(
+#'   codomdat[["type"]] == "Stock_Synthesis_data_file",
+#'   label = "Is a Stock Synthesis data file"
+#' )
+#' }
 "codomdat"
 
 #' Control file for the cod estimation method
@@ -54,4 +70,12 @@
 #' @seealso
 #' * [r4ss::SS_readctl()]
 #' * [r4ss::SS_readdat()]
+#' @examples
+#' data("codemctl", package = "ss3sim")
+#' \dontshow{
+#' testthat::expect_true(
+#'   codemctl[["type"]] == "Stock_Synthesis_control_file",
+#'   label = "codemctl is a Stock Synthesis control file"
+#' )
+#' }
 "codemctl"
