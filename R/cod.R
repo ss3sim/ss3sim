@@ -54,4 +54,4 @@
 #' @seealso
 #' * [r4ss::SS_readctl()]
 #' * [r4ss::SS_readdat()]
-"codomctl"
+"codemctl"
