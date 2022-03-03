@@ -1,3 +1,9 @@
+# ss3sim 1.1.8
+
+* Fix bug related to tidyverse in [sample_comp()] where the composition
+  data were appended to the data frame as a matrix rather than integrated
+  as additional columns.
+
 # ss3sim 1.1.7
 
 * Deprecate the use of the log file in [ss3sim_base()].
