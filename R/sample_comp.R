@@ -126,9 +126,9 @@ sample_comp <- function(data,
     )
   return(
     cbind(
-     dplyr::select(all, -comp),
-     do.call("rbind", all$comp)
+      dplyr::select(all, -comp),
+      do.call("rbind", all$comp)
     ) %>%
-    `colnames<-`(colnames(data))
+      `colnames<-`(colnames(data))
   )
 }
