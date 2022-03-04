@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ss3sim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.8</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -63,6 +63,10 @@
       <small>Source: <a href="https://github.com/ss3sim/ss3sim/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.1.8" id="ss3sim-118">ss3sim 1.1.8<a class="anchor" aria-label="anchor" href="#ss3sim-118"></a></h2>
+<ul><li>Fix bug related to tidyverse in [sample_comp()] where the composition data were appended to the data frame as a matrix rather than integrated as additional columns.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.7" id="ss3sim-117">ss3sim 1.1.7<a class="anchor" aria-label="anchor" href="#ss3sim-117"></a></h2>
 <ul><li><p>Deprecate the use of the log file in [ss3sim_base()]. The argument [ss3sim_base(print_logfile = FALSE)] has a new default and will warn users if they have the value set to <code>TRUE</code> that no log file will be printed. Users can look at the results files to get most of this information.</p></li>
