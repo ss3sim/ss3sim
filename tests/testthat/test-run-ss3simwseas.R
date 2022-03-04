@@ -129,7 +129,7 @@ test_that("Repeat some years for each part.", {
     subset(sumt, Freq > 0)[["Freq"]],
     newdat[["lencomp"]] %>% dplyr::group_by(Seas, Part) %>%
       dplyr::summarize(n = dplyr::n(), .groups = "keep") %>%
-      tidyr::pivot_wider() %>% dplyr::pull(n)
+      dplyr::pull(n)
   )
 })
 

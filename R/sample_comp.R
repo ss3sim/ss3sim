@@ -123,9 +123,12 @@ sample_comp <- function(data,
       1:(dplyr::matches("Nsamp") - 1),
       Nsamp = .data[[ifelse(useESS, "ESS", "ncalc")]],
       .data[["comp"]]
+    )
+  return(
+    cbind(
+     dplyr::select(all, -comp),
+     do.call("rbind", all$comp)
     ) %>%
-    tidyr::unnest_wider(.data[["comp"]], names_sep = "") %>%
     `colnames<-`(colnames(data))
-
-  return(data.frame(all))
+  )
 }
