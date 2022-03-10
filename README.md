@@ -17,7 +17,7 @@ Badges
 
 main: [![R-CMD-check](https://github.com/ss3sim/ss3sim/workflows/R-CMD-check/badge.svg)](https://github.com/ss3sim/ss3sim/actions?query=workflow%3AR-CMD-check) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ss3sim)](https://cran.r-project.org/package=ss3sim)
 
-ss3sim is an R package that simplifies the steps needed to generate beautiful simulation output from the widely-used [Stock Synthesis](https://vlab.noaa.gov/web/stock-synthesis) (SS3) statistical age-structured stock assessment framework. To learn more, read on or check out the [vignettes](https://ss3sim.github.io/ss3sim/).
+ss3sim is an R package that simplifies the steps needed to generate beautiful simulation output from the widely-used [Stock Synthesis](https://github.com/nmfs-stock-synthesis/stock-synthesis) (SS3) statistical age-structured stock assessment framework. To learn more, read on or check out the [vignettes](https://ss3sim.github.io/ss3sim/).
 
 
 Installation

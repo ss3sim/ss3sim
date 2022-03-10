@@ -12,7 +12,7 @@
 #' this process. The executables themselves can be downloaded from github
 #' \url{https://github.com/ss3sim/ss3sim/tree/master/inst/bin} or the
 #' Stock Synthesis website
-#' \url{https://vlab.noaa.gov/web/stock-synthesis/document-library/-/document_library/0LmuycloZeIt/view/5042555}.
+#' \url{https://github.com/nmfs-stock-synthesis/stock-synthesis/releases}.
 #' If the github version of ss3sim is installed, rather than the CRAN version,
 #' then the executables are automatically downloaded and called from their
 #' stored location rather than from the path variable.
