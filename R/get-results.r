@@ -424,7 +424,7 @@ get_results_timeseries <- function(report.file) {
   catch_cols <- grep("^retain\\([B|N]\\):_", colnames(report.file$timeseries))
   dead_cols <- grep("^dead\\([B|N]\\):_", colnames(report.file$timeseries))
   other_cols <- which(colnames(report.file$timeseries) %in%
-    c("Yr", "Seas", "SpawnBio", "Recruit_0"))
+    c("Yr", "Seas", "Bio_smry", "SpawnBio", "Recruit_0"))
   xx <- report.file$timeseries[, c(other_cols, catch_cols, dead_cols, F_cols)]
   # remove parentheses from column names because they make the names
   # non-synatic
