@@ -14,8 +14,8 @@ get_bin_info <- function(dat) {
         lapply(seq_along(dat[[type]]$fleets), function(fleet) {
           data.frame(
             "fleet" = dat[[type]]$fleets[fleet],
-            "year"  = dat[[type]]$years[[fleet]],
-            "type"  = names(dat)[type],
+            "year" = dat[[type]]$years[[fleet]],
+            "type" = names(dat)[type],
             stringsAsFactors = FALSE
           )
         })
