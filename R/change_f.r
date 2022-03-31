@@ -106,7 +106,7 @@ change_f <- function(years,
   # Fleet Yr Seas F_value se phase
   newdata <- lists2df(
     "Yr" = years,
-    "Seas" =  seasons,
+    "Seas" = seasons,
     "F_value" = fvals,
     "se" = ses,
     "phase" = scalar2list(1, length = times)
