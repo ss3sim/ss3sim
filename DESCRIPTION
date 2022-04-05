@@ -56,19 +56,19 @@ Depends:
 Imports:
     dplyr,
     foreach,
-    r4ss (>= 1.43.1),
     gtools,
     ggplot2,
     grDevices,
     graphics,
+    lifecycle,
     magrittr,
     purrr,
+    r4ss (>= 1.43.1),
     rlang,
     stats,
     tibble,
     tidyr,
-    utils,
-    lifecycle
+    utils
 Remotes: github::r4ss/r4ss@main
 RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
