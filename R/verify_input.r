@@ -55,16 +55,7 @@ verify_input <- function(model_dir, type = c("om", "em")) {
       f.dat <- NA
     }
   }
-  if (type == "om") {
 
-    # commented out, because the inital .par will be generated in ss3sim_base(),
-    # to ensure it is consistent with the ctl file.
-    # if (length(grep("ss.par", files, ignore.case = TRUE))) {
-    #   f.par <- grep("ss.par", files, ignore.case = TRUE)
-    # } else {
-    #   f.par <- NA
-    # }
-  }
   if (length(grep("starter.ss", files, ignore.case = TRUE))) {
     f.starter <- grep("starter.ss$", files, ignore.case = TRUE)
   } else {
