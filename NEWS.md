@@ -1,3 +1,10 @@
+# ss3sim 1.19.0
+
+* Bump version to match current version of SS3,
+  where version numbers of ss3sim will now be major version of ss3sim,
+  followed by minor version number of SS3, and terminated with minor version
+  number of ss3sim.
+
 # ss3sim 1.1.8
 
 * Fix bug related to tidyverse in [sample_comp()] where the composition
