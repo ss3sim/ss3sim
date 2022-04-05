@@ -93,5 +93,5 @@
 #' indicated by running `citation("ss3sim")` in the \R console.
 #'
 #' @docType package
-#' @name ss3sim
-NULL
+#' @keywords internal
+"_PACKAGE"

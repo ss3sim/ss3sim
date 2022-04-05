@@ -56,7 +56,7 @@ Depends:
 Imports:
     dplyr,
     foreach,
-    r4ss (>= 1.38.0),
+    r4ss (>= 1.43.1),
     gtools,
     ggplot2,
     grDevices,

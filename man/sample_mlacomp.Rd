@@ -52,8 +52,6 @@ numeric vectors. If no fleet collected samples, keep the value to
 
 \item{mean_outfile}{A path to write length and age data for external
 estimation of parametric growth. If \code{NULL} no file will be written.
-This file is used by \code{\link[=change_e]{change_e()}} to externally estimate growth
-parameters. Filename must contain "vbgf" to be used by \code{\link[=change_e]{change_e()}}.
 Also, if "remove" is included in the filename, the mean length at age data
 will be removed from the \code{.dat} file and not be available to the EM.}
 
