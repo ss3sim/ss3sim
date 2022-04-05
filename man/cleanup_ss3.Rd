@@ -16,10 +16,10 @@ cleanup_ss3(
 }
 \arguments{
 \item{dir_name}{The directory of interest, the function ignores
-case (i.e. names can be specified as lower or upper case)}
+case (i.e., names can be specified as lower or upper case).}
 
 \item{clean_vector}{A vector of characters specifying the unwanted
-files to be removed. The function allows the use of wildcards (i.e.
+files to be removed. The function allows the use of wildcards (i.e.,
 "*").}
 }
 \description{

@@ -10,7 +10,6 @@
 #'   `1:100`. The same number of iterations will be run for each scenario.
 #'   If any iterations already exist, then ss3sim will skip over them.
 #' @param simdf A data frame of instructions with one row per scenario.
-#'   The data frame replaces the old method of using case files.
 #'   See [setup_scenarios_defaults()] for default values that will be
 #'   passed to ss3sim for a generic simulation to get you started. These
 #'   values will be used if `simdf` is left at its default value of `NULL`.
@@ -23,23 +22,6 @@
 #'   `parallel_iterations = TRUE` then the iterations will be run in
 #'   parallel. This would be useful if you were only running one scenario
 #'   but you wanted to run it faster.
-#' @param scenarios \emph{Deprecated}. Which scenarios to run. A vector of character objects. For
-#'   example `c("D0-F0-cod", "D1-F1-cod")`.
-#'   The scenarios should be specified in `simdf`.
-#' @param case_folder \emph{Deprecated}. The folder containing the plain-text case files.
-#' @param om_dir \emph{Deprecated}. The folder containing the Stock Synthesis operating model
-#'   configuration files.
-#'   Specify the om_dir within `simdf`.
-#' @param em_dir \emph{Deprecated}. The folder containing the Stock Synthesis estimation model
-#'   configuration files.
-#'   Specify the om_dir within `simdf`.
-#' @param case_files \emph{Deprecated}. A named list that relates the case IDs to the files to
-#'   return. \bold{The default list specifies only the required fishing
-#'   mortality and data scenarios. To specify other cases you will need to
-#'   extend this named list}. This argument is passed to
-#'   [get_caseargs()]. See that function for details and examples of
-#'   how to specify this. The introduction vignette also explains how to specify
-#'   the case files.
 #' @param ... Anything else to pass to [ss3sim_base()]. This could
 #'   include `bias_adjust`. Also, you can pass
 #'   additional options to the executable through the argument
@@ -118,58 +100,11 @@
 #' )
 #' }
 #'
-run_ss3sim <- function(iterations, simdf = NULL, parallel = FALSE,
+run_ss3sim <- function(iterations,
+                       simdf = NULL,
+                       parallel = FALSE,
                        parallel_iterations = FALSE,
-                       scenarios = deprecated(), case_folder = deprecated(),
-                       om_dir = deprecated(), em_dir = deprecated(),
-                       case_files = deprecated(),
                        ...) {
-  depr_args <- c("scenarios", "case_folder", "om_dir", "em_dir", "case_files")
-  if (lifecycle::is_present(scenarios)) {
-    lifecycle::deprecate_stop(
-      when = "1.1.4",
-      what = paste0(
-        "ss3sim::run_ss3sim(",
-        "scenarios", " = )"
-      )
-    )
-  }
-  if (lifecycle::is_present(case_folder)) {
-    lifecycle::deprecate_stop(
-      when = "1.1.4",
-      what = paste0(
-        "ss3sim::run_ss3sim(",
-        "case_folder", " = )"
-      )
-    )
-  }
-  if (lifecycle::is_present(om_dir)) {
-    lifecycle::deprecate_stop(
-      when = "1.1.4",
-      what = paste0(
-        "ss3sim::run_ss3sim(",
-        "om_dir", " = )"
-      )
-    )
-  }
-  if (lifecycle::is_present(em_dir)) {
-    lifecycle::deprecate_stop(
-      when = "1.1.4",
-      what = paste0(
-        "ss3sim::run_ss3sim(",
-        "em_dir", " = )"
-      )
-    )
-  }
-  if (lifecycle::is_present(case_files)) {
-    lifecycle::deprecate_stop(
-      when = "1.1.4",
-      what = paste0(
-        "ss3sim::run_ss3sim(",
-        "case_files", " = )"
-      )
-    )
-  }
 
 
   if (parallel) {
