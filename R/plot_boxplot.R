@@ -60,32 +60,3 @@ plot_boxplot <- function(data, x, y,
   if (print) print(g)
   invisible(g)
 }
-
-plot_scalar_boxplot <- function(data, x, y,
-                                horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL,
-                                relative.error = FALSE, axes.free = TRUE, print = TRUE,
-                                fill = NA) {
-  .Deprecated("plot_boxplot", package = "ss3sim")
-  plot_boxplot(
-    data = data, x = x, y = y,
-    horiz = horiz, horiz2 = horiz2,
-    vert = vert, vert2 = vert2,
-    relative.error = relative.error,
-    axes.free = axes.free, print = print,
-    fill = fill
-  )
-}
-plot_ts_boxplot <- function(data, y,
-                            horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL,
-                            relative.error = FALSE, axes.free = TRUE, print = TRUE,
-                            fill = NA) {
-  .Deprecated("plot_boxplot", package = "ss3sim")
-  plot_boxplot(
-    data = data, x = "year", y = y,
-    horiz = horiz, horiz2 = horiz2,
-    vert = vert, vert2 = vert2,
-    relative.error = relative.error,
-    axes.free = axes.free, print = print,
-    fill = fill
-  )
-}
