@@ -52,7 +52,7 @@ Suggests:
     testthat
 VignetteBuilder: knitr
 Depends:
-    R (>= 3.5)
+    R (>= 4.0)
 Imports:
     dplyr,
     foreach,
