@@ -5,6 +5,8 @@
   followed by minor version number of SS3, and terminated with minor version
   number of ss3sim.
 
+* Remove dependency on bbmle to externally estimate growth.
+
 # ss3sim 1.1.8
 
 * Fix bug related to tidyverse in [sample_comp()] where the composition

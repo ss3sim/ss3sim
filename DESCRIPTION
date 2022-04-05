@@ -59,7 +59,6 @@ Imports:
     r4ss (>= 1.38.0),
     gtools,
     ggplot2,
-    bbmle,
     grDevices,
     graphics,
     magrittr,

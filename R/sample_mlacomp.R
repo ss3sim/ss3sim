@@ -19,8 +19,6 @@
 #'   uncertainty about size for fish sampled in each age bin.
 #' @param mean_outfile A path to write length and age data for external
 #' estimation of parametric growth. If `NULL` no file will be written.
-#' This file is used by [change_e()] to externally estimate growth
-#' parameters. Filename must contain "vbgf" to be used by [change_e()].
 #' Also, if "remove" is included in the filename, the mean length at age data
 #' will be removed from the `.dat` file and not be available to the EM.
 #' @param verbose Logical value whether or not diagnostic information from
