@@ -294,7 +294,7 @@ setup_scenarios_lookup <- function() {
 #' on the output when you want to have more than one scenario.
 #' All rows will be identical with the default settings.
 #' The default is a single row.
-#' @author Kelli Faye Johnson
+#' @author Kelli F. Johnson
 #' @export
 #' @return A data frame with the minimal information needed to run a scenario.
 #' The number of rows of the data frame depends on `nscenarios`.

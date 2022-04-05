@@ -14,7 +14,7 @@
 #' folder called `new-em`.
 #'
 #' @export
-#' @author Kelli Faye Johnson
+#' @author Kelli F. Johnson
 #' @return Nothing is returned, but three files are saved to the disk in
 #' the specified folder that may also be new.
 #' @examples

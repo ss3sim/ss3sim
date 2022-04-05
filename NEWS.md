@@ -140,7 +140,7 @@ SS_writestarter to decrease the amount of original code in ss3sim
 to not change the users working directory when possible.
 * Change to providing a single model inside the package rather than
 maintaining models both in the package and in ss3sim/ss3models
-* Kelli Faye Johnson is now the maintainer of the package
+* Kelli F. Johnson is now the maintainer of the package
 * updated authors to reflect current contributors
 * reduced the complexity of sampling functions by initiating the same
 protocol for ages and lengths, where each function calls a simple function

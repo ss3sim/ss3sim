@@ -57,5 +57,5 @@ unlink("D1-F0-testing", recursive = TRUE)
 unlink("D2-F0-testing", recursive = TRUE)
 }
 \author{
-Sean Anderson, Kelli Johnson
+Sean Anderson, Kelli F. Johnson
 }

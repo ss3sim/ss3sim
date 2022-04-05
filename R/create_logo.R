@@ -9,7 +9,7 @@
 #' grDevices::dev.off()
 #' @return A `png` file or a graphics device with the
 #' logo used for the `ss3sim` project.
-#' @author Kelli Faye Johnson
+#' @author Kelli F. Johnson
 #'
 create_logo <- function(outfile = NULL) {
   if (!is.null(outfile)) {

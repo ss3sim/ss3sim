@@ -41,7 +41,7 @@
 #' for this using [ss3sim_base()] by
 #' specifying a row for every year and fleet using [change_catch()].
 #'
-#' @author Kelli Faye Johnson
+#' @author Kelli F. Johnson
 #'
 #' @template lcomp-agecomp-index
 #' @param fvals A list of the same length as `fleets` with one

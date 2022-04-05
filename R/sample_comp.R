@@ -20,7 +20,7 @@
 #' @template lcomp-agecomp
 #' @template sampledots
 #'
-#' @author Kelli Faye Johnson
+#' @author Kelli F. Johnson
 #' @return A data frame of observed composition data.
 #'
 sample_comp <- function(data,

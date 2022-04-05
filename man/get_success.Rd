@@ -21,5 +21,5 @@ run was successful or not. There are two levels of success that must
 be determined if the run was meant to include estimating the hessian.
 }
 \author{
-Kelli Faye Johnson
+Kelli F. Johnson
 }

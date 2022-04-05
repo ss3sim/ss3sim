@@ -27,5 +27,5 @@ Removes all of the unwanted output files from the specified
 directory.
 }
 \author{
-Kelli Johnson
+Kelli F. Johnson
 }

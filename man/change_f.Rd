@@ -111,6 +111,6 @@ Other change functions:
 \code{\link{change_tv}()}
 }
 \author{
-Kelli Faye Johnson
+Kelli F. Johnson
 }
 \concept{change functions}

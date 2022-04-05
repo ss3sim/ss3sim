@@ -37,5 +37,5 @@ adataframe <- ss3sim:::add_colnames(list(x, y), bind = TRUE)
 rm(x, y, alist, adataframe)
 }
 \author{
-Kelli Faye Johnson
+Kelli F. Johnson
 }

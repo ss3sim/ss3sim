@@ -21,7 +21,7 @@
 #' @template ctl_file_in
 #' @template ctl_file_out
 #' @return A modified Stock Synthesis control file.
-#' @author Kelli Faye Johnson
+#' @author Kelli F. Johnson
 #' @export
 #'
 #' @examples

@@ -32,7 +32,7 @@ change_year <- function(dat_list, ctl_list) {
 #'
 #' @return
 #' A [r4ss::SS_readdat()] list with an augmented start year.
-#' @author Kelli Faye Johnson
+#' @author Kelli F. Johnson
 #'
 change_startyear <- function(dat_list, firstyear = NULL) {
   if (is.null(firstyear)) {
@@ -55,7 +55,7 @@ change_startyear <- function(dat_list, firstyear = NULL) {
 #' @return
 #' A [r4ss::SS_readctl()] list with an augmented start year of
 #' the recruitment deviations in the main period.
-#' @author Kelli Faye Johnson
+#' @author Kelli F. Johnson
 #'
 change_recyear <- function(ctl_list, main) {
   ctl_list$MainRdevYrFirst <- main

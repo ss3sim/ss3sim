@@ -20,7 +20,7 @@
 #' @template dir
 #' @template ctl_file_in
 #'
-#' @author Kelli Faye Johnson
+#' @author Kelli F. Johnson
 #' @return A list of bias adjustment parameters.
 #'
 calculate_bias <- function(dir, ctl_file_in) {

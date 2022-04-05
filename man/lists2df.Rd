@@ -34,6 +34,6 @@ testthat::expect_error(
 
 }
 \author{
-Kelli Faye Johnson
+Kelli F. Johnson
 }
 \keyword{internal}

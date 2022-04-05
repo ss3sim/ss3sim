@@ -68,5 +68,5 @@ where higher sample sizes lead to simulated samples that more accurately
 represent the truth provided in \code{data}.
 }
 \author{
-Kelli Faye Johnson
+Kelli F. Johnson
 }

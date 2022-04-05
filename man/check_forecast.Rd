@@ -25,5 +25,5 @@ Ensure that the \code{forecast.ss} file is configured for use in ss3sim.
 }
 }
 \author{
-Kelli Faye Johnson
+Kelli F. Johnson
 }

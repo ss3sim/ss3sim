@@ -17,5 +17,5 @@ Use the name of the operating model to open the ctl file and obtain the
 INIT value for sigmaR (recruitment deviations sigma)
 }
 \author{
-Kelli Johnson
+Kelli F. Johnson
 }

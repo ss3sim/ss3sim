@@ -26,5 +26,5 @@ ss3sim:::create_logo()
 grDevices::dev.off()
 }
 \author{
-Kelli Faye Johnson
+Kelli F. Johnson
 }

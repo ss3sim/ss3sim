@@ -87,6 +87,6 @@ Other sampling functions:
 \code{\link{sample_wtatage}()}
 }
 \author{
-Cole Monnahan, Kelli Johnson
+Cole Monnahan, Kelli F. Johnson
 }
 \concept{sampling functions}

@@ -124,6 +124,6 @@ Other change functions:
 \code{\link{change_retro}()}
 }
 \author{
-Kotaro Ono, Carey McGilliard, Kelli Johnson, and Kathryn Doering
+Kotaro Ono, Carey McGilliard, Kelli F. Johnson, and Kathryn Doering
 }
 \concept{change functions}

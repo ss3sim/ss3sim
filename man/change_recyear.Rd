@@ -20,5 +20,5 @@ the recruitment deviations in the main period.
 Change start year main recruitment deviations in control file
 }
 \author{
-Kelli Faye Johnson
+Kelli F. Johnson
 }

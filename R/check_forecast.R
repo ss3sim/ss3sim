@@ -8,7 +8,7 @@
 #'
 #' @template for_list
 #'
-#' @author Kelli Faye Johnson
+#' @author Kelli F. Johnson
 #' @return A an augmented list object, as returned by [r4ss::SS_readforecast()],
 #' is invisibly returned.
 #'

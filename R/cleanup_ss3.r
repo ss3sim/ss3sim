@@ -9,7 +9,7 @@
 #' @param clean_vector A vector of characters specifying the unwanted
 #' files to be removed. The function allows the use of wildcards (i.e.,
 #' "*").
-#' @author Kelli Johnson
+#' @author Kelli F. Johnson
 
 cleanup_ss3 <- function(dir_name, clean_vector = c(
                           "admodel.*",

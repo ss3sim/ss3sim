@@ -7,7 +7,7 @@
 #' the `.ctl` file, e.g., "myOM".
 #' A full directory can be specified with the the prefix of the file name but
 #' leaving off the '.ctl' portion.
-#' @author Kelli Johnson
+#' @author Kelli F. Johnson
 #' @export
 
 get_sigmar <- function(om) {
