@@ -5,9 +5,9 @@
 #'
 #' @export
 #' @param dir_name The directory of interest, the function ignores
-#' case (i.e. names can be specified as lower or upper case)
+#' case (i.e., names can be specified as lower or upper case).
 #' @param clean_vector A vector of characters specifying the unwanted
-#' files to be removed. The function allows the use of wildcards (i.e.
+#' files to be removed. The function allows the use of wildcards (i.e.,
 #' "*").
 #' @author Kelli Johnson
 
