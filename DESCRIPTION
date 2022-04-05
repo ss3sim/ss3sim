@@ -2,14 +2,28 @@ Package: ss3sim
 Type: Package
 Title: Fisheries Stock Assessment Simulation Testing with Stock Synthesis
 Version: 1.19.0
-Authors@R: c(person(c("Kelli", "F."), "Johnson", 
-    email = "kelli.johnson@noaa.gov",
-    role = c("aut", "cre")),
-    person(c("Sean", "C."), "Anderson", role = "aut", comment = c(ORCID = "0000-0001-9563-1937")),
-    person(c("Kathryn", "L."), "Doering", role = "aut"),
-    person(c("Cole", "C."), "Monnahan", role = "aut"),
-    person(c("Christine", "C."), "Stawitz", role = "aut"),
-    person(c("Ian", "G."), "Taylor", role = "aut"),
+Authors@R: c(
+    person(c("Kelli", "F."), "Johnson", 
+      email = "kelli.johnson@noaa.gov",
+      role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0002-5149-451X")
+    ),
+    person(c("Sean", "C."), "Anderson",
+      role = "aut",
+      comment = c(ORCID = "0000-0001-9563-1937")
+    ),
+    person(c("Kathryn", "L."), "Doering",
+      role = "aut",
+      comment = c(ORCID = "0000-0002-0396-7044")
+    ),
+    person(c("Cole", "C."), "Monnahan",
+      role = "aut",
+      comment = c(ORCID = "0000-0003-0871-6700")
+      ),
+    person(c("Christine", "C."), "Stawitz",
+      role = "aut",
+      comment = c(ORCID = "0000-0003-3122-4501")
+    ),
     person("Curry", "Cunningham", role = "ctb"),
     person("Allan", "Hicks", role = "ctb"),
     person("Felipe", "Hurtado-Ferro", role = "ctb"),
@@ -21,9 +35,10 @@ Authors@R: c(person(c("Kelli", "F."), "Johnson",
     person("Kotaro", "Ono", role = "ctb"),
     person("Merrill", "Rudd", role = "ctb"),
     person("Cody", "Szuwalski", role = "ctb"),
+    person(c("Ian", "G."), "Taylor", role = "ctb"),
     person("Juan", "Valero", role = "ctb"),
     person("Athol", "Whitten", role = "ctb"))
-Description: Develops a framework for fisheries stock assessment simulation
+Description: A framework for fisheries stock assessment simulation
     testing with Stock Synthesis (SS3) as described in Anderson et al.
     (2014) <doi:10.1371/journal.pone.0092725>.
 License: MIT + file LICENSE
