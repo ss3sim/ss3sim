@@ -37,9 +37,8 @@
 #' verify_input(model_dir = file.path(temp_path, "cod-em"), type = "em")
 #' unlink(temp_path, recursive = TRUE)
 verify_input <- function(model_dir, type = c("om", "em")) {
-  type <- match.arg(type)
+  type <- match.arg(type, several.ok = FALSE)
 
-  type <- type[1]
   ctl_name <- paste0(type, ".ctl")
 
   # Ensure correct files are provided
