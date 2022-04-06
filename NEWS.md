@@ -7,6 +7,9 @@
 
 * Remove dependency on bbmle to externally estimate growth.
 
+* Deprecate functions that were not being used in the code base, i.e.,
+  cleanup_ss3, get_bin_info, change_rec_devs_par, ...
+
 # ss3sim 1.1.8
 
 * Fix bug related to tidyverse in [sample_comp()] where the composition
