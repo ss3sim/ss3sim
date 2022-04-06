@@ -30,15 +30,16 @@
 sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
                            years, mean_outfile = NULL,
                            verbose = TRUE) {
-  ss_version <- get_ss_ver_dl(dat_list)
   ## If fleets==NULL, quit here and delete the data so the EM doesn't use it.
   if (is.null(fleets)) {
     dat_list$MeanSize_at_Age_obs <- NULL
     dat_list$N_MeanSize_at_Age_obs <- 0
     if (!is.null(outfile)) {
       r4ss::SS_writedat(
-        datlist = dat_list, outfile = outfile, overwrite = TRUE,
-        version = ss_version, verbose = verbose
+        datlist = dat_list,
+        outfile = outfile,
+        overwrite = TRUE,
+        verbose = verbose
       )
     }
     return(invisible(dat_list))
@@ -56,7 +57,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
   agebin_vector <- dat_list$agebin_vector
 
   ## Read in the control file
-  ctl <- r4ss::SS_parlines(ctl_file_in, version = ss_version)
+  ctl <- r4ss::SS_parlines(ctl_file_in)
   CV.growth <- ctl[ctl$Label == "CV_young_Fem_GP_1", "INIT"]
   CV.growth.old <- ctl[ctl$Label == "CV_old_Fem_GP_1", "INIT"]
   if (CV.growth != CV.growth.old) {
@@ -239,7 +240,6 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
     r4ss::SS_writedat(
       datlist = dat_list,
       outfile = outfile,
-      version = ss_version,
       overwrite = TRUE,
       verbose = verbose
     )

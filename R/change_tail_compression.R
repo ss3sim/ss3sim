@@ -26,10 +26,10 @@ change_tail_compression <- function(tail_compression, dat_list,
   # The data sections are repeated in the data.ss_new files, so only use first one
   dat_list$comp_tail_compression[1] <- tail_compression
   if (!is.null(outfile)) {
-    ss_version <- get_ss_ver_dl(dat_list)
-    r4ss::SS_writedat(dat_list, outfile,
+    r4ss::SS_writedat(dat_list,
+      outfile,
       overwrite = TRUE,
-      version = ss_version, verbose = FALSE
+      verbose = FALSE
     )
   }
 

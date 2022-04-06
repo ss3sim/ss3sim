@@ -33,10 +33,10 @@ change_lcomp_constant <- function(lcomp_constant, dat_list, outfile = NULL) {
   dat_list$add_to_comp[1] <- lcomp_constant
 
   if (!is.null(outfile)) {
-    ss_version <- get_ss_ver_dl(dat_list)
-    r4ss::SS_writedat(dat_list, outfile,
+    r4ss::SS_writedat(dat_list,
+      outfile,
       overwrite = TRUE,
-      version = ss_version, verbose = FALSE
+      verbose = FALSE
     )
   }
 

@@ -31,7 +31,7 @@
 #'     system.file("extdata", "example-om", package = "ss3sim"),
 #'     "ss3_expected_values.dat"
 #'   ),
-#'   version = NULL, verbose = FALSE
+#'   verbose = FALSE
 #' )
 #' # Look at expected values for the index data
 #' # fleet 2, every other year from 76 to 100
@@ -162,8 +162,10 @@ sample_index <- function(dat_list,
   dat_list$N_cpue <- ifelse(Nfleets > 0, nrow(cpue.new), )
   if (!is.null(outfile)) {
     r4ss::SS_writedat(
-      datlist = dat_list, outfile = outfile, overwrite = TRUE,
-      version = dat_list$ReadVersion, verbose = FALSE
+      datlist = dat_list,
+      outfile = outfile,
+      overwrite = TRUE,
+      verbose = FALSE
     )
   }
 

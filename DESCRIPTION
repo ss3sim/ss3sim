@@ -63,7 +63,7 @@ Imports:
     lifecycle,
     magrittr,
     purrr,
-    r4ss (>= 1.43.1),
+    r4ss (>= 1.43.2),
     rlang,
     stats,
     tibble,

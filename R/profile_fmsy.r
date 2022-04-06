@@ -67,7 +67,7 @@ profile_fmsy <- function(om_in, results_out,
   ## read in dat file to get years of model
   datFile <- r4ss::SS_readdat(
     file = starter$datfile,
-    version = NULL, verbose = FALSE
+    verbose = FALSE
   )
   simlength <- datFile$endyr - datFile$styr + 1
   forecast <- r4ss::SS_readforecast(file = "forecast.ss", verbose = FALSE)
@@ -105,7 +105,8 @@ profile_fmsy <- function(om_in, results_out,
       ignore.stdout = TRUE
     )
     allcatch <- r4ss::SS_readdat("data.ss_new",
-      verbose = FALSE, version = NULL, section = 2
+      verbose = FALSE,
+      section = 2
     )$catch$catch
     endcatch <- utils::tail(allcatch, ceiling(datFile$Nages * 0.5))
     CVs[i] <- round(stats::sd(endcatch) / mean(endcatch), 5)

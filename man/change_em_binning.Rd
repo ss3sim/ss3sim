@@ -61,7 +61,7 @@ conditional age-at-length data, then these data will be re-binned as well.
 # Note that typically this function is used with estimation models in ss3sim,
 # but it is used with an operating model data file in the following examples.
 f <- system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim")
-d <- r4ss::SS_readdat(f, version = NULL, verbose = FALSE)
+d <- r4ss::SS_readdat(f, verbose = FALSE)
 
 # An example with lbin_method = 1
 l1 <- change_em_binning(d,

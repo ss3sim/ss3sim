@@ -38,7 +38,7 @@
 #' d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
 #' data.old <- r4ss::SS_readdat(
 #'   dir(d, pattern = ".dat", full.names = TRUE),
-#'   version = NULL, verbose = FALSE
+#'   verbose = FALSE
 #' )
 #' change_e(
 #'   ctl_file_in = file.path(d, "codOM.ctl"),
@@ -98,8 +98,6 @@ change_e <- function(ctl_file_in = "em.ctl",
       }
     }
   )
-  # get the ss_version from the control file to use with r4ss functions
-  ss_version <- get_ss_ver_file(ctl_file_out)
   ss3.ctl <- readLines(ctl_file_out)
 
   if (!is.null(par_name)) {
@@ -107,8 +105,10 @@ change_e <- function(ctl_file_in = "em.ctl",
     par_name_q <- grep("LnQ_", par_name, value = TRUE)
     if (length(par_name_q) > 0) {
       parsinmodel <- r4ss::SS_parlines(
-        ctlfile = ctl_file_out, dir = NULL,
-        version = ss_version, verbose = verbose, active = FALSE
+        ctlfile = ctl_file_out,
+        dir = NULL,
+        verbose = verbose,
+        active = FALSE
       )
       defaultq <- r4ss::SS_parlines(
         dir = NULL,
@@ -117,7 +117,8 @@ change_e <- function(ctl_file_in = "em.ctl",
           path = system.file("extdata", "models", "cod-em", package = "ss3sim"),
           full.names = TRUE
         ),
-        version = ss_version, verbose = verbose, active = FALSE
+        verbose = verbose,
+        active = FALSE
       )
       defaultq <- defaultq[grep("LnQ_", defaultq$Label), ]
       fleet_q <- sapply(
@@ -181,9 +182,12 @@ change_e <- function(ctl_file_in = "em.ctl",
     endyr_orig <- dat_list$endyr
     dat_list$endyr <- dat_list$endyr - forecast_num
     ss3.for <- r4ss::SS_readforecast(
-      file = for_file_in, Nfleets = dat_list$Nfleet,
-      Nareas = dat_list$N_areas, version = ss_version, verbose = verbose,
-      nseas = dat_list$nseas, readAll = TRUE
+      file = for_file_in,
+      Nfleets = dat_list$Nfleet,
+      Nareas = dat_list$N_areas,
+      verbose = verbose,
+      nseas = dat_list$nseas,
+      readAll = TRUE
     )
     ss3.for <- check_forecast(ss3.for)
     ss3.for$Nforecastyrs <- forecast_num

@@ -264,7 +264,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
     # Find number of years in OM to change recdevs and F
     datfile.orig <- r4ss::SS_readdat(file.path(sc, i, "om", "ss3.dat"),
-      version = NULL, verbose = FALSE
+      verbose = FALSE
     )
     forfile.orig <- r4ss::SS_readforecast(file.path(sc, i, "om", "forecast.ss"),
       verbose = FALSE
@@ -469,7 +469,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     r4ss::SS_writedat(
       datlist = datfile.modified,
       outfile = file.path(sc, i, "om", "ss3.dat"),
-      version = datfile.modified$ReadVersion,
       overwrite = TRUE, verbose = FALSE
     )
 
@@ -503,7 +502,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     ## write it back to file at the end, before running the EM.
     # todo: use expdata rather than reading in the file again
     dat_list <- r4ss::SS_readdat(file.path(sc, i, "em", "ss3.dat"),
-      version = NULL, verbose = FALSE
+      verbose = FALSE
     )
 
     ## Sample catches
@@ -653,17 +652,18 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ctl_list = NULL, dat_list = datfile.modified,
       ctl_file_out = NULL
     )
-    ss_version <- get_ss_ver_dl(dat_list)
     newlists <- change_year(dat_list, ctl_list)
     r4ss::SS_writedat(
       datlist = newlists$dat_list,
       outfile = file.path(sc, i, "em", "ss3.dat"),
-      version = ss_version, overwrite = TRUE, verbose = FALSE
+      overwrite = TRUE,
+      verbose = FALSE
     )
     r4ss::SS_writectl(
       ctllist = newlists$ctl_list,
       outfile = file.path(sc, i, "em", "em.ctl"),
-      version = ss_version, overwrite = TRUE, verbose = FALSE
+      overwrite = TRUE,
+      verbose = FALSE
     )
     # Add dirichlet multinomial parameters if using
     if (!is.null(weight_comps_params)) {

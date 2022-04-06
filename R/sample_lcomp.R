@@ -52,8 +52,9 @@ sample_lcomp <- function(dat_list, outfile = NULL, fleets, Nsamp,
   ## Write the modified file
   if (!is.null(outfile)) {
     r4ss::SS_writedat(
-      datlist = dat_list, outfile = outfile, overwrite = TRUE,
-      version = get_ss_ver_dl(dat_list),
+      datlist = dat_list,
+      outfile = outfile,
+      overwrite = TRUE,
       verbose = FALSE
     )
   }

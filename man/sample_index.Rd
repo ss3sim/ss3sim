@@ -75,7 +75,7 @@ dat_list <- r4ss::SS_readdat(
     system.file("extdata", "example-om", package = "ss3sim"),
     "ss3_expected_values.dat"
   ),
-  version = NULL, verbose = FALSE
+  verbose = FALSE
 )
 # Look at expected values for the index data
 # fleet 2, every other year from 76 to 100

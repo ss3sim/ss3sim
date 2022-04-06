@@ -97,7 +97,7 @@ The data file can also be written to the disk, if a file path is provided to
 \examples{
 d <- system.file("extdata", package = "ss3sim")
 f_in <- file.path(d, "models", "cod-om", "codOM.dat")
-dat_list <- r4ss::SS_readdat(f_in, version = NULL, verbose = FALSE)
+dat_list <- r4ss::SS_readdat(f_in, verbose = FALSE)
 
 ## Turn off age comps by specifying fleets=NULL
 test <- sample_agecomp(dat_list = dat_list, fleets = NULL)

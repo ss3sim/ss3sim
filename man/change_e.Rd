@@ -87,7 +87,7 @@ itself or within \code{\link[=run_ss3sim]{run_ss3sim()}} to alter an estimation 
 d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
 data.old <- r4ss::SS_readdat(
   dir(d, pattern = ".dat", full.names = TRUE),
-  version = NULL, verbose = FALSE
+  verbose = FALSE
 )
 change_e(
   ctl_file_in = file.path(d, "codOM.ctl"),

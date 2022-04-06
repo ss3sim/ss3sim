@@ -28,7 +28,7 @@
 #' @examples
 #' d <- system.file("extdata", package = "ss3sim")
 #' f_in <- file.path(d, "models", "cod-om", "codOM.dat")
-#' dat_list <- r4ss::SS_readdat(f_in, version = NULL, verbose = FALSE)
+#' dat_list <- r4ss::SS_readdat(f_in, verbose = FALSE)
 #'
 #' ## Turn off age comps by specifying fleets=NULL
 #' test <- sample_agecomp(dat_list = dat_list, fleets = NULL)
@@ -106,8 +106,9 @@ sample_agecomp <- function(dat_list, outfile = NULL, fleets, Nsamp,
   ## Write the modified file
   if (!is.null(outfile)) {
     r4ss::SS_writedat(
-      datlist = dat_list, outfile = outfile, overwrite = TRUE,
-      version = get_ss_ver_dl(dat_list),
+      datlist = dat_list,
+      outfile = outfile,
+      overwrite = TRUE,
       verbose = FALSE
     )
   }
