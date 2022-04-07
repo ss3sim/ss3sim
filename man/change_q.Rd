@@ -2,7 +2,7 @@
 % Please edit documentation in R/change_q.R
 \name{change_q}
 \alias{change_q}
-\title{Add or remove a q in an SS control file}
+\title{Add or remove catchability parameters in a Stock Synthesis control file}
 \usage{
 change_q(
   string_add = NULL,
@@ -52,29 +52,34 @@ from the function. Often useful for debugging. The default
 is \code{FALSE}.}
 }
 \value{
-A modified SS control file list with the same structure as that read
-in by \code{\link[r4ss]{SS_readctl}}.
+A modified Stock Synthesis control file list with
+the same structure returned by \code{\link[r4ss:SS_readctl]{r4ss::SS_readctl()}}.
 }
 \description{
-This function adds or removes a q setup line in an SS control file.
+Catchability, \eqn{q}, is the proportionality parameter between
+fishing effort and population abundance.
+That is, when \eqn{q=1},
+a survey of the population is thought to encompass the entire population.
+Removing or adding a catch-per-unit effort time series
+can require changes to the control file because
+each catch-per-unit-effort time series requires set up and parameter lines.
 }
 \details{
-Parameters that are added are simple versions of the structures available
-within Stock Synthesis. For example, the current functionality of
-\code{change_q} does not allow for modeling an additional parameter for
-added variance for the given survey of interest. Though it will remove
-that parameter if present for a given fleet that no longer has survey data.
-Additionally, the float term is not used and is instead set to zero.
+In Stock Synthesis, environmental time series can also be modeled as
+catch-per-unit-effort time series.
+Readers interested in the complete range of functionality should see the
+\href{https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html#catchability}{section of the Stock Synthesis user manual on catchability}.
+\verb{code\{change_q\} has limited functionality relative to what is available in Stock Synthesis. For example, }change_q` cannot add a parameter to estimate additional variance.
+Though it will remove additional variance parameters for
+fleets that no longer have survey data.
+Additionally, the float term is not used within ss3sim and is set to zero.
 
-\code{change_q} can add and remove parameters in the control file
-simultaneously, and thus, it is not necessary to call the function twice
-when wanting to perform both operations. A helper function,
-\code{\link{check_q}} is a available to determine which fleets one should
-remove and add.
+This function can add and remove parameters in the control file simultaneously.
+Thus, it is not necessary to call it twice to perform both operations.
 }
 \seealso{
-\code{\link{change_q}}
+\code{\link[=check_q]{check_q()}} can determine which fleets should removed or added.
 }
 \author{
-Kelli Faye Johnson
+Kelli F. Johnson
 }

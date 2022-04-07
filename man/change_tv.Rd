@@ -2,7 +2,7 @@
 % Please edit documentation in R/change_tv.r
 \name{change_tv}
 \alias{change_tv}
-\title{Methods to include time-varying parameters in an SS3 operating model}
+\title{Methods to include time-varying parameters in a Stock Synthesis operating model}
 \usage{
 change_tv(
   change_tv_list,
@@ -15,8 +15,8 @@ change_tv(
 \arguments{
 \item{change_tv_list}{A list of named vectors. Names correspond to parameters
 in the operating model that currently do not use environmental deviations and
-the vectors correspond to deviations. See the section "Specifying the
-\code{change_tv_list}" below for help on specifying this argument.}
+the vectors correspond to deviations. See the section
+"Specifying the \code{change_tv_list}" for help on specifying this argument.}
 
 \item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
 
@@ -28,20 +28,21 @@ the vectors correspond to deviations. See the section "Specifying the
 }
 \value{
 The function creates modified versions of the  \code{.ctl} and
-  \code{.dat} files if ctl_file_out and dat_file_out are not NULL. The function
-  also returns a list of the modified \code{.ctl} and \code{.dat} R objects
-  invisibly.
+\code{.dat} files if ctl_file_out and dat_file_out are not NULL. The function
+also returns a list of the modified \code{.ctl} and \code{.dat} R objects
+invisibly.
 }
 \description{
-\code{change_tv} takes SS3 \code{.ctl}, \code{.par}, and \code{.dat} files
+\code{change_tv} takes Stock Synthesis \code{.ctl}, \code{.par}, and \code{.dat} files
 and implements time-varying parameters using environmental variables.
 \code{change_tv} is specifically set up to work with an operating model
 \code{.ctl} file.
 }
 \details{
 Although there are three ways to implement time-varying parameters within
-SS3, \pkg{ss3sim} and \code{change_tv} only use the environmental variable
-option. Within SS, time-varying parameters work on an annual time-step.
+Stock Synthesis, \pkg{ss3sim} and \code{change_tv} only use the environmental variable
+option.
+Within Stock Synthesis, time-varying parameters work on an annual time-step.
 Thus, for models with multiple seasons, the time-varying parameters will
 remain constant for the entire year.
 
@@ -56,15 +57,15 @@ is necessary to implement time-varying parameters.
 model that ties recruitment deviations to environmental covariates. If you
 need to compare the environment to annual recruitment deviations, the
 preferred option is to transform the environmental variable into an age 0
-pre-recruit survey. See page 55 of the SS3 version 3.24f manual for more
+pre-recruit survey. See page 55 of the Stock Synthesis version 3.24f manual for more
 information.
 }
 \section{Specifying the \code{change_tv_list}}{
 
 Parameters will change to vary with time according to the vectors of
 deviations passed to \code{change_tv_list}. Vectors of deviations, also
-referred to as environmental data, must have a length equal to \code{
-endyr-startyr+1}, where \code{endyr} and \code{startyr} are specified the
+referred to as environmental data, must have a length equal to
+\code{endyr-startyr+1}, where \code{endyr} and \code{startyr} are specified the
 \code{.dat} file. Specify years without deviations as zero.
 
 Parameter names must be unique and match the full parameter name in the
@@ -72,12 +73,12 @@ Parameter names must be unique and match the full parameter name in the
 "R0", or "steep", and only one stock recruit parameter can be time-varying
 per model.
 
-This feature will include an *additive* functional linkage between
+This feature will include an \emph{additive} functional linkage between
 environmental data and the parameter where the link parameter is fixed at a
 value of one and the par value is specified in the \code{.par} file:
 \eqn{par'[y] = par + link * env[y]}.
 
-For catchability (\eqn{q}) the *additive* functional linkage is implemented
+For catchability (\eqn{q}) the \emph{additive} functional linkage is implemented
 on the log scale: \eqn{ln(q'[y]) = ln(q) + link * env[y]}
 }
 
@@ -96,17 +97,22 @@ dir.create("cod-om")
 file.copy(om, ".", recursive = TRUE)
 setwd("cod-om")
 
-change_tv(change_tv_list =
-            list("NatM_p_1_Fem_GP_1" = c(rep(0, 20), rep(.1, 80)),
-                 "SR_BH_steep"=rnorm(100, 0, 0.05)),
-          ctl_file_in  = "codOM.ctl",
-          ctl_file_out = "example.ctl",
-          dat_file_in  = "codOM.dat",
-          dat_file_out = "example.dat")
+change_tv(
+  change_tv_list =
+    list(
+      "NatM_p_1_Fem_GP_1" = c(rep(0, 20), rep(.1, 80)),
+      "SR_BH_steep" = stats::rnorm(100, 0, 0.05)
+    ),
+  ctl_file_in = "codOM.ctl",
+  ctl_file_out = "example.ctl",
+  dat_file_in = "codOM.dat",
+  dat_file_out = "example.dat"
+)
 
 # Clean up:
 unlink("cod-om", recursive = TRUE)
 }
+
 }
 \seealso{
 Other change functions: 

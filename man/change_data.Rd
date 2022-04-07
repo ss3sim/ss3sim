@@ -34,7 +34,7 @@ within SS.}
 \item{outfile}{A character string specifying the file name to use
 when writing the information to the disk. The string must include
 the proper file extension. No file is written using the default value
-of \code{NULL}, which leads to increased speed because writing the 
+of \code{NULL}, which leads to increased speed because writing the
 file takes time and computing resources.}
 
 \item{fleets}{A numeric vector of fleets.}
@@ -45,8 +45,8 @@ file takes time and computing resources.}
 \code{"len"}, \code{"age"}, \code{"cal"}, \code{"mla"}.
 \code{types} controls what data structures the function acts on, with
 \code{"len"} augmenting the length-composition data,
-\code{"age"} augmenting the age-composition
-data, \code{"cal"} augmenting the conditional age-at-length (CAAL) data, and
+\code{"age"} augmenting the age-composition data,
+\code{"cal"} augmenting the conditional age-at-length data, and
 \code{"mla"} augmenting the mean length-at-age data.}
 
 \item{age_bins}{A numeric vector of age bins to use. If left as \code{NULL},
@@ -54,29 +54,37 @@ the age bin structure will be taken from the OM.}
 
 \item{len_bins}{A numeric vector of length bins to use. If left as
 \code{NULL}, the length bin structure will be taken from the OM.
-For CAAL data, the last value provided to
-\code{len_bins} will be used for Lbin_lo and -1 will be used for Lbin_hi
-for the largest length bin category, i.e., row of CAAL data.}
+For conditional age-at-length data,
+the last value provided to \code{len_bins} will be used for Lbin_lo and
+-1 will be used for Lbin_hi for the largest length bin category, i.e.,
+row of conditional age-at-length data.}
 
 \item{pop_binwidth}{Population length bin width. Note that this value must
 be smaller than the bin width specified in length-composition data
-\code{len_bins} or SS will fail (see notes in the SS manual).}
+\code{len_bins} or Stock Synthesis will fail,
+see notes in the
+\href{https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html}{Stock Synthesis manual}.}
 
 \item{pop_minimum_size}{Population minimum length bin value.}
 
 \item{pop_maximum_size}{Population maximum length bin value.}
 
-\item{lcomp_constant}{The robustification constant for length-composition
-data. Must be a numeric value, as a proportion. For example 0.1
-means 10 percent. See the SS manual for further information. A \code{NULL}
-value indicates no action resulting in using the current value, and a value
-of 0 will throw an error because zero leads to an error when zeroes exist in
-the data. Instead use a very small value like \code{1e-07}.}
+\item{lcomp_constant}{The robustification constant for length-composition data.
+Must be a numeric value, as a proportion.
+For example, 0.1 means 10 percent.
+See the notes in the
+\href{https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html}{Stock Synthesis manual}.
+A \code{NULL} value indicates no action resulting in using the current value, and
+a value of 0 will throw an error because
+zero leads to an error when zeroes exist in the data.
+Instead use a very small value like 1e-07.}
 
-\item{tail_compression}{Tail compression value to be used in SS. Must
-be a numeric value, as a proportion. For example 0.1 means 10 percent. See
-the SS manual for further information. A \code{NULL} value indicates no
-action, a negative value turns the feature off in SS.}
+\item{tail_compression}{Tail compression value to be used in Stock Synthesis. Must
+be a numeric value, as a proportion. For example 0.1 means 10 percent.
+See the notes in the
+\href{https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html}{Stock Synthesis manual}.
+A \code{NULL} value indicates no action,
+a negative value turns the feature off in Stock Synthesis.}
 
 \item{nsex}{An integer value of 1 or 2 specifying the number of sexes in the
 model. If 1, then females are the only included sex. This information can be
@@ -88,19 +96,18 @@ An invisible data list, and a file is written to the disk if an
 entry other than the default of \code{NULL} is provided for \code{outfile}.
 }
 \description{
-Alter the structure of data that is available from a Stock Synthesis (SS)
+Alter the structure of data that is available from a Stock Synthesis
 operating model (OM), which in turn leads to changes
 in the output and ability to sample data after running the model.
 }
 \details{
-\code{change_data} is called internally within ss3sim, but it can be used
+\code{change_data()} is called internally within ss3sim, but it can be used
 to manipulate data or to prepare a new OM for use in a simulation.
-Original data is removed and dummy data is added to the SS \code{.dat} object.
+Original data is removed and dummy data is added to the Stock Synthesis \code{.dat} object.
 The dummy data expands the data structure to provide information for all years
 and fleets, potentially adding many rows of data.
 
-Currently, \code{.dat} files with multiple sexes cannot be manipulated with
-\code{change_data}.
+Currently, \code{.dat} files with multiple sexes cannot be manipulated with \code{change_data()}.
 
 The robustification constant is added to both the observed and
 expected proportions of length composition data, before being normalized
@@ -109,7 +116,7 @@ and when to use it for optimal effect. The same value is used for all
 length data.
 }
 \seealso{
-See \code{\link{clean_data}} for a counter function.
+See \code{\link[=clean_data]{clean_data()}} for a counter function.
 
 Other change functions: 
 \code{\link{change_em_binning}()},
@@ -120,6 +127,6 @@ Other change functions:
 \code{\link{change_tv}()}
 }
 \author{
-Cole Monnahan, Ian Taylor, Sean Anderson, Kelli Johnson
+Cole Monnahan, Ian G. Taylor, Sean Anderson, Kelli F. Johnson
 }
 \concept{change functions}

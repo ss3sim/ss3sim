@@ -42,11 +42,11 @@ the vertical direction. E.g., "M" or "species". A value of NULL (default)
 indicates no faceting in the vertical space.}
 
 \item{jitter.height, jitter.width}{Parameters for
-\code{\link[ggplot2]{position_jitter}()} that specify the vertical and horizontal
+\code{\link[ggplot2:position_jitter]{ggplot2::position_jitter()}} that specify the vertical and horizontal
 spread added to points. Where, added values are both positive and negative,
 so the total spread is twice the value specified here.
-If \code{NULL}, the spread will be 40% of the resolution of the data;
-this means the jitter values will occupy 80% of the implied bins.
+If \code{NULL}, the spread will be 40\% of the resolution of the data;
+this means the jitter values will occupy 80\% of the implied bins.
 Categorical data is aligned on the integers,
 so a width or height of 0.5 will spread the data so it's not possible
 to see the distinction between the categories.
@@ -72,18 +72,18 @@ in \code{facet_grid}.}
 \item{print}{A logical for whether the plot is printed or not.}
 }
 \description{
-Generate a scatterplot using \code{\link[ggplot2]{ggplot}} to visualize
+Generate a scatterplot using \link[ggplot2:ggplot]{ggplot2::ggplot} to visualize
 the relationship between two continuous variables.
 }
 \details{
 Points are placed on the figure using the width setting in
-\code{\link[ggplot2]{position_jitter}} that defaults to 40% resolution of
-the data, meaning that the jitter values will occupy 80% of the implied bins.
+\code{\link[ggplot2:position_jitter]{ggplot2::position_jitter()}} that defaults to 40\% resolution of
+the data, meaning that the jitter values will occupy 80\% of the implied bins.
 The previous information was found in the documentation for
-\code{\link[ggplot2]{position_jitter}}.
+\code{\link[ggplot2:position_jitter]{ggplot2::position_jitter()}}.
 
 Values of \code{NA} are removed prior to plotting such that the typical
-error message from \code{ggplot} is not printed to the screen.
+error message from \pkg{ggplot2} is not printed to the screen.
 
 The \pkg{ss3sim} plotting functions are simply
 wrappers for \pkg{ggplot2} code, specific to the output from
@@ -114,21 +114,26 @@ theme or change an axis label before printing it.
 data("scalar_dat", package = "ss3sim")
 re <- calculate_re(scalar_dat)
 \dontrun{
-plot_points(re, x = "E", y = "depletion_re", horiz = 'D',
-  color = "max_grad", relative.error = TRUE)
+plot_points(re,
+  x = "E", y = "depletion_re", horiz = "D",
+  color = "max_grad", relative.error = TRUE
+)
 }
 rm(re)
 # Merge scalar and time-series values to plot time series with color
 data("ts_dat", package = "ss3sim")
-re <- merge(by = "ID",
+re <- merge(
+  by = "ID",
   calculate_re(ts_dat, add = FALSE),
-  calculate_re(scalar_dat, add = FALSE)[, c("ID", "max_grad")])
+  calculate_re(scalar_dat, add = FALSE)[, c("ID", "max_grad")]
+)
 \dontrun{
-plot_points(re, x = "year", y = "SpawnBio_re",
-  horiz = "scenario", color = "max_grad", relative.error = TRUE)
+plot_points(re,
+  x = "year", y = "SpawnBio_re",
+  horiz = "scenario", color = "max_grad", relative.error = TRUE
+)
 }
 rm(re)
-
 }
 \author{
 Cole Monnahan

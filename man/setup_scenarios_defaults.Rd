@@ -4,10 +4,18 @@
 \alias{setup_scenarios_defaults}
 \title{Set up a generic scenario}
 \usage{
-setup_scenarios_defaults()
+setup_scenarios_defaults(nscenarios = 1)
+}
+\arguments{
+\item{nscenarios}{The number of rows you want returned in the data frame.
+This argument removes the need for users to call \code{\link[base:cbind]{base::rbind()}} repeatedly
+on the output when you want to have more than one scenario.
+All rows will be identical with the default settings.
+The default is a single row.}
 }
 \value{
 A data frame with the minimal information needed to run a scenario.
+The number of rows of the data frame depends on \code{nscenarios}.
 }
 \description{
 Create a data frame of scenario inputs for a generic simulation that will

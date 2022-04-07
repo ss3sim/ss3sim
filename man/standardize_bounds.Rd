@@ -33,11 +33,11 @@ OM and EM INIT values is ignored. Default is \code{""}.
 \item{verbose}{Detailed output to command line. Default is \code{FALSE}.}
 
 \item{estimate}{A logical for which changed parameters are to be estimated.
-Used by \code{\link[r4ss]{SS_changepars}}, where in \pkg{r4ss} the default
+Used by \code{\link[r4ss:SS_changepars]{r4ss::SS_changepars()}}, where in \pkg{r4ss} the default
 is \code{FALSE}, which turns all parameter estimation off. Here the default
 is \code{NULL}, which will leave parameter phases unchanged.}
 
-\item{...}{Any other arguments to pass to \code{\link[r4ss]{SS_changepars}}.}
+\item{...}{Any other arguments to pass to \code{\link[r4ss:SS_changepars]{r4ss::SS_changepars()}}.}
 }
 \description{
 Function to standardize the bounds of the control file in the estimation
@@ -57,31 +57,38 @@ on.exit(setwd(wd), add = TRUE)
 
 ## Set to the path and filename of the OM and EM control files
 OM.ctl <- system.file("extdata", "models", "cod-om", "codOM.ctl",
-  package = "ss3sim")
+  package = "ss3sim"
+)
 EM.ctl <- system.file("extdata", "models", "cod-em", "codEM.ctl",
-  package = "ss3sim")
+  package = "ss3sim"
+)
 file.copy(OM.ctl, "om.ctl")
 file.copy(EM.ctl, "em.ctl")
 
-## Use SS_parlines to get the proper names for parameters for the data frame
+## Use r4ss::SS_parlines to get the proper names for parameters for the data frame
 em.pars <- r4ss::SS_parlines(ctlfile = "em.ctl")
 
 ## Set percentages to make lower and upper bounds
-lo.percent<-rep(.5,11)
-hi.percent<-c(500,1000,1000,rep(500,8))
+lo.percent <- rep(.5, 11)
+hi.percent <- c(500, 1000, 1000, rep(500, 8))
 
-##Populate data frame using EM parameter names and percentages
-percent_df<-data.frame(Label=as.character(em.pars[c(1:6,17,27:30),"Label"]),
-  lo=lo.percent,hi=hi.percent)
+## Populate data frame using EM parameter names and percentages
+percent_df <- data.frame(
+  Label = as.character(em.pars[c(1:6, 17, 27:30), "Label"]),
+  lo = lo.percent, hi = hi.percent
+)
 
-##Run function
-standardize_bounds(percent_df = percent_df, dir = ".",
-                   em_ctl_file = "em.ctl",
-                   om_ctl_file = "om.ctl")
+## Run function
+standardize_bounds(
+  percent_df = percent_df, dir = ".",
+  em_ctl_file = "em.ctl",
+  om_ctl_file = "om.ctl"
+)
 unlink("om.ctl")
 unlink("em.ctl")
 unlink(temp_path, recursive = TRUE)
 }
+
 }
 \author{
 Christine Stawitz

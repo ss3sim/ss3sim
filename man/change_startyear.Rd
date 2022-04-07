@@ -17,12 +17,12 @@ input to the OM. \code{section = 3} is not used within ss3sim, but this
 section provides bootstrapped data sets that have been sampled internally
 within SS.}
 
-\item{firstyear}{An integer value specifying the year in which you want to start
-fitting your data. The default is \code{NULL}, which will look to the first year
-with a non-zero catch in \code{dat_list} and use that as the first year.}
+\item{firstyear}{An integer specifying the year to start fitting the model.
+The default is \code{NULL}, which will look up the first year
+with non-zero catch or non-zero catch-per-unit-effort data in \code{dat_list}.}
 }
 \value{
-A \code{\link[r4ss]{SS_readdat}} list with an augmented start year.
+A \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}} list with an augmented start year.
 }
 \description{
 Change start year of the data file

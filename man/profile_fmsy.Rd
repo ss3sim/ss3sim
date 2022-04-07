@@ -36,8 +36,8 @@ Creates a plot and a table with catches and F values.
 Also, invisibly returns a table of F and catch as a data frame.
 }
 \description{
-Runs an operating model over a range of fishing mortality (F) levels to
-determine the F at maximum sustainable yield (Fmsy).
+Runs an operating model over a range of fishing mortality, \eqn{F}, levels to
+determine the F at maximum sustainable yield, \eqn{F_{MSY}}.
 }
 \details{
 This function extracts the number of years from the data
@@ -56,16 +56,19 @@ screen for each model that is ran. For the default cod model provided within
 the package, the CV is less than 1e-04 for all F levels explored.
 
 Ensure that the argument \code{om_in} leads to an operating model that is
-configured for use within \pkg{ss3sim}. For example, the F type must
-allow for an input vector of Fs rather than catches, along with other
+configured for use within \pkg{ss3sim}. For example, the \eqn{F} type must
+allow for an input vector of \eqn{Fs} rather than catches, along with other
 specifications.
 }
 \examples{
 \dontrun{
-  d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
-  fmsy.val <- profile_fmsy(om_in = d, results_out = "fmsy",
-    start = 0.1, end = 0.2, by_val = 0.05)
-  #cleanup
-  unlink("fmsy", recursive = TRUE)
+d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
+fmsy.val <- profile_fmsy(
+  om_in = d, results_out = "fmsy",
+  start = 0.1, end = 0.2, by_val = 0.05
+)
+# cleanup
+unlink("fmsy", recursive = TRUE)
 }
+
 }

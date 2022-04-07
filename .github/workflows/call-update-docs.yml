@@ -1,0 +1,7 @@
+# Run devtools::document()
+on:
+  workflow_dispatch:
+name: call-update-docs
+jobs:
+  call-workflow:
+    uses: nmfs-fish-tools/ghactions4r/.github/workflows/update-roxygen-docs.yml@main

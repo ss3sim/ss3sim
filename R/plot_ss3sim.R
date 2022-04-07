@@ -1,18 +1,18 @@
-#' Base plot for \code{ss3sim} data
+#' Base plot for `ss3sim` data
 #'
-#' Use \code{\link[ggplot2]{ggplot}} to plot data from \code{ss3sim}
+#' Use [ggplot2::ggplot] to plot data from `ss3sim`
 #' simulation.
 #' @template plot-functions
 #' @template plot-functions-color
 #'
 plot_ss3sim <- function(data, x, y, color = NULL,
-  relative.error = FALSE, axes.free = TRUE, print = TRUE,
-  horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL) {
-
-
-  verify_plot_arguments(data = data, x = x, y = y, print = print,
+                        relative.error = FALSE, axes.free = TRUE, print = TRUE,
+                        horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL) {
+  verify_plot_arguments(
+    data = data, x = x, y = y, print = print,
     horiz = horiz, horiz2 = horiz2, vert = vert, vert2 = vert2,
-    color = color, relative.error = relative.error, axes.free = axes.free)
+    color = color, relative.error = relative.error, axes.free = axes.free
+  )
 
   data <- data[!is.na(data[, y]), ]
   if (!"ID" %in% colnames(data)) {
@@ -21,8 +21,10 @@ plot_ss3sim <- function(data, x, y, color = NULL,
   if (!is.null(color)) {
     stopifnot(is.numeric(data[, color]))
   }
-  g <- ggplot2::ggplot(data = data,
-    ggplot2::aes(x = .data[[x]], y = .data[[y]])) +
+  g <- ggplot2::ggplot(
+    data = data,
+    ggplot2::aes(x = .data[[x]], y = .data[[y]])
+  ) +
     ggplot2::xlab(gsub("year", "Year", x))
   if (x == "year") {
     g <- g + ggplot2::aes(group = .data[["year"]])
@@ -38,12 +40,12 @@ plot_ss3sim <- function(data, x, y, color = NULL,
   form <- facet_form(horiz, horiz2, vert, vert2)
   if (!is.null(form)) {
     g <- g + ggplot2::facet_grid(form,
-      scales = ifelse(axes.free, "free", "fixed"))
+      scales = ifelse(axes.free, "free", "fixed")
+    )
   }
   if (!is.null(color)) {
     g <- g + ggplot2::aes(color = .data[[color]]) +
       ggplot2::labs(col = color)
   }
   invisible(g)
-
 }

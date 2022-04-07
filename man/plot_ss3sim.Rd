@@ -59,7 +59,7 @@ the vertical direction. E.g., "M" or "species". A value of NULL (default)
 indicates no faceting in the vertical space.}
 }
 \description{
-Use \code{\link[ggplot2]{ggplot}} to plot data from \code{ss3sim}
+Use \link[ggplot2:ggplot]{ggplot2::ggplot} to plot data from \code{ss3sim}
 simulation.
 }
 \details{

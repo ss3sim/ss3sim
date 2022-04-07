@@ -1,0 +1,7 @@
+# use styler to style code
+on:
+  workflow_dispatch:
+name: call-style
+jobs:
+  call-workflow:
+    uses: nmfs-fish-tools/ghactions4r/.github/workflows/style-r-code.yml@main

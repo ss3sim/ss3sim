@@ -9,26 +9,25 @@ setup_scenarios(df = "default", returntype = c("list", "dataframe"))
 \arguments{
 \item{df}{A data frame with scenarios in the rows and
 information for function arguments in the columns.
-See [setup_scenarios_defaults] for how to set up the data frame.
+See \link{setup_scenarios_defaults} for how to set up the data frame.
 This data frame is used by default if you do not supply anything
-to `df`.}
+to \code{df}.}
 
 \item{returntype}{The class of object that you want to return.
-ss3sim was a big fan of lists of lists until the [tidyverse] packages
+ss3sim was a big fan of lists of lists until the \code{tidyverse} packages
 were included. Now, data frames of list columns are preferred.
-Eventually, `list` will be downgraded from the default and data frames
+Eventually, \code{list} will be downgraded from the default and data frames
 will be the only option as a return.}
 }
 \value{
 Either a long data frame or a list is returned.
-See the input argument `returntype` for more information.
+See the input argument \code{returntype} for more information.
 }
 \description{
 Get scenario information from a data frame of specifications
 }
 \examples{
 defaultscenarios <- setup_scenarios()
-
 }
 \author{
 Kelli F. Johnson

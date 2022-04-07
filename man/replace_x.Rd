@@ -25,34 +25,43 @@ Replace items with a zero length in a list with the value supplied in
 the argument \code{replacement}. Useful for scenarios where \code{NULL}
 is sometimes a valid input from legacy code. Nested  lists can behave
 badly when they have a \code{NULL} entry, for example when converting
-to a \code{\link[tibble]{tibble}}, it will be unnamed.
+to a \code{\link[tibble:tibble]{tibble::tibble()}}, it will be unnamed.
 }
 \examples{
 employees <- list(
-  list(id = 1,
+  list(
+    id = 1,
     dept = "IT",
     age = 29,
-    sportsteam = "softball"),
-  list(id = 2,
+    sportsteam = "softball"
+  ),
+  list(
+    id = 2,
     dept = "IT",
     age = 30,
-    sportsteam = NULL),
-  list(id = 3,
+    sportsteam = NULL
+  ),
+  list(
+    id = 3,
     dept = "IT",
     age = 29,
-    sportsteam = "hockey"),
-  list(id = 4,
+    sportsteam = "hockey"
+  ),
+  list(
+    id = 4,
     dept = NULL,
     age = 29,
-    sportsteam = "softball"))
+    sportsteam = "softball"
+  )
+)
 # Meat of the example here!
 \dontrun{
-# need \%>\% from [magrittr] package
- do.call(rbind, lapply(employees, rbind)) magrittr::\%>\% data.frame() \%>\%
-purrr::modify_depth(2, replace_x)
+do.call(rbind, lapply(employees, rbind)) \%>\%
+  data.frame() \%>\%
+  purrr::modify_depth(2, replace_x)
 }
 
 }
 \author{
-Amanda from [stack overflow](https://stackoverflow.com/questions/22870198/is-there-a-more-efficient-way-to-replace-null-with-na-in-a-list)
+Amanda from \href{https://stackoverflow.com/questions/22870198/is-there-a-more-efficient-way-to-replace-null-with-na-in-a-list}{stack overflow}
 }

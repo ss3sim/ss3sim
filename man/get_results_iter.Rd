@@ -7,12 +7,12 @@
 get_results_iter(dir_1_iter = NULL, mod_dirs = NULL, iter_name = NULL)
 }
 \arguments{
-\item{dir_1_iter}{The full or relative path to the SS iteration folder.
+\item{dir_1_iter}{The full or relative path to the Stock Synthesis iteration folder.
 Assumed to contain multiple model folders that contain "om" or "em"
 (not case sensitive) somewhere in the model file name. If specified,
 mod_dirs need not be specified.}
 
-\item{mod_dirs}{The full or relative path to the SS model folders as a
+\item{mod_dirs}{The full or relative path to the Stock Synthesis model folders as a
 vector of characters. If specified, dir_1_iter need not be specified.}
 
 \item{iter_name}{Name of the iteration, which will be appended to the
@@ -22,9 +22,9 @@ mod_dirs specified}
 }
 \value{
 A list of 3 data frames called scalar, timeseries, and
- derived (for derived quantities). These lists contain information for
- multiple model runs (estimation models and operating models) for 1
- iteration.
+derived (for derived quantities). These lists contain information for
+multiple model runs (estimation models and operating models) for 1
+iteration.
 }
 \description{
 Get results for 1 iteration

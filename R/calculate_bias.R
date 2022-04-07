@@ -6,25 +6,22 @@
 #' both before this function and then running the estimation method again with
 #' the new values. Estimation files in the original folder will be deleted to
 #' ensure that convergence afterwards is not based on the input run.
-#' These files are permanently archived in the \code{bias_[0-9]{2}} folder
+#' These files are permanently archived in the `bias_[0-9]{2}` folder
 #' within the directory. Only the three middle steps listed below are performed
-#' using \code{calculate_bias}, and the rest of the steps must be performed
+#' using `calculate_bias`, and the rest of the steps must be performed
 #' externally.
 #'
-#' \itemize{
-#' \item Estimate recruitment and the standard error about those estimates.
-#' \item Correct the estimates given their estimated uncertainty using a ramp.
-#' \item Save a new control file.
-#' \item Move original estimation files.
-#' \item Estimate model parameters.
-#' }
+#' * Estimate recruitment and the standard error about those estimates.
+#' * Correct the estimates given their estimated uncertainty using a ramp.
+#' * Save a new control file.
+#' * Move original estimation files.
+#' * Estimate model parameters.
 #'
 #' @template dir
 #' @template ctl_file_in
 #'
 #' @author Kelli Faye Johnson
-#' @return
-#' A list of bias adjustment parameters.
+#' @return A list of bias adjustment parameters.
 #'
 calculate_bias <- function(dir, ctl_file_in) {
   dir_all <- list.dirs(dir, recursive = FALSE)
@@ -41,11 +38,14 @@ calculate_bias <- function(dir, ctl_file_in) {
     return(list("convergence" = 999))
   }
 
-  replist <- r4ss::SS_output(dir = dir,
+  replist <- r4ss::SS_output(
+    dir = dir,
     forecast = FALSE, verbose = FALSE, printstats = FALSE,
-    NoCompOK = TRUE)
+    NoCompOK = TRUE
+  )
 
-  bias <- r4ss::SS_fitbiasramp(replist, plotdir = dir_bias,
+  bias <- r4ss::SS_fitbiasramp(replist,
+    plotdir = dir_bias,
     oldctl = file.path(dir, ctl_file_in),
     newctl = file.path(dir, ctl_file_in),
     startvalues = NULL,
@@ -54,9 +54,11 @@ calculate_bias <- function(dir, ctl_file_in) {
     verbose = FALSE, transform = FALSE, exclude_forecast = FALSE,
     twoplots = TRUE, plot = FALSE, print = TRUE, shownew = TRUE,
     pwidth = 6.5, pheight = 5.0, punits = "in",
-    ptsize = 10, res = 300, cex.main = 1)
+    ptsize = 10, res = 300, cex.main = 1
+  )
   if (bias$newbias$convergence != 0) {
-    bias <- r4ss::SS_fitbiasramp(replist, plotdir = dir_bias,
+    bias <- r4ss::SS_fitbiasramp(replist,
+      plotdir = dir_bias,
       oldctl = file.path(dir, ctl_file_in),
       newctl = file.path(dir, ctl_file_in),
       startvalues = bias$newbias$par,
@@ -65,9 +67,12 @@ calculate_bias <- function(dir, ctl_file_in) {
       verbose = FALSE, transform = FALSE, exclude_forecast = FALSE,
       twoplots = TRUE, plot = FALSE, print = TRUE, shownew = TRUE,
       pwidth = 6.5, pheight = 5.0, punits = "in",
-      ptsize = 10, res = 300, cex.main = 1)
+      ptsize = 10, res = 300, cex.main = 1
+    )
   }
-  ignore <- file.remove(dir(path = dir, full.names = TRUE,
-    pattern = "^admodel|[bpr][0-9]{2}$|gradient|cor$|new$|par$|sso$|std$"))
+  ignore <- file.remove(dir(
+    path = dir, full.names = TRUE,
+    pattern = "^admodel|[bpr][0-9]{2}$|gradient|cor$|new$|par$|sso$|std$"
+  ))
   return(bias)
 }

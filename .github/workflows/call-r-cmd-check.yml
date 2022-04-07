@@ -1,0 +1,17 @@
+on:
+  workflow_dispatch:
+  push:
+    paths-ignore:
+      - '.github/**'
+      - '**.md'
+  pull_request:
+    paths-ignore:
+      - '.github/**'
+      - '**.md'
+  schedule:
+    # This should run the default branch weekly on sunday
+    - cron: '0 0 * * 0'
+name: call-r-cmd-check
+jobs:
+  call-workflow:
+    uses: nmfs-fish-tools/ghactions4r/.github/workflows/r-cmd-check.yml@main

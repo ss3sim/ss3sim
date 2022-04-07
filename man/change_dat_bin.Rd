@@ -7,16 +7,17 @@
 change_dat_bin(object, bins)
 }
 \arguments{
-\item{object}{A data frame from a \code{dat_list} list. The leading columns,
-typically \code{Yr}, \code{Seas}, ... can be anything, but there must be columns
-with names that start with a lower-case letter followed by integers.}
+\item{object}{A data frame from a list object read in by \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}}.
+The leading columns, typically \code{Yr}, \code{Seas}, ... can be anything,
+but there must be columns with names that start with a lower-case letter,
+followed by integers.}
 
 \item{bins}{A vector of characters or whatever you want the names of the
-new bins to be. Typically, this will be output from \code{\link{setup_bins}}.}
+new bins to be. Typically, this will be output from \code{\link[=setup_bins]{setup_bins()}}.}
 }
 \value{
 A modified data frame where columns holding old composition data are
-removed in their entiretly and new columns of ones are filled for each value in
+removed in their entirety and new columns of ones are filled for each value in
 \code{bins}.
 }
 \description{

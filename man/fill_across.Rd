@@ -18,8 +18,11 @@ Function that fills in matrix across rows of wtatage data by interpolation
 Missing Rows are then backfilled
 }
 \seealso{
-\code{\link{sample_lcomp}}, \code{\link{sample_agecomp}},
-  \code{\link{fill_across}}
+\itemize{
+\item \code{\link[=sample_lcomp]{sample_lcomp()}}
+\item \code{\link[=sample_agecomp]{sample_agecomp()}}
+\item \code{\link[=sample_wtatage]{sample_wtatage()}}
+}
 }
 \author{
 Peter Kuriyama and Allan Hicks

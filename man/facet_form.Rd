@@ -28,7 +28,7 @@ the vertical direction. E.g., "M" or "species". A value of NULL (default)
 indicates no faceting in the vertical space.}
 }
 \value{
-A formula which can be used in \code{facet_grid} or \code{NULL}
+A formula which can be used in \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}} or \code{NULL}
 if all arguments are \code{NULL}.
 }
 \description{

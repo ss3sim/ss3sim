@@ -11,8 +11,8 @@ get_results_derived(report.file)
 (operating model or estimation model).}
 }
 \description{
-Extract time series from an \code{\link[r4ss]{SS_output}} list from a model run.
-Returns a data.frame of the results for SSB, recruitment,
+Extract time series from an \code{\link[r4ss:SS_output]{r4ss::SS_output()}} list from a model run.
+Returns a data.frame of the results for spawning stock biomass (SSB), recruitment,
 forecasts, and effort by year.
 }
 \seealso{

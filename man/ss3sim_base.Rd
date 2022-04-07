@@ -2,7 +2,7 @@
 % Please edit documentation in R/ss3sim_base.r
 \name{ss3sim_base}
 \alias{ss3sim_base}
-\title{Base wrapper function to run an ss3sim simulation}
+\title{High-level wrapper to run a simulation}
 \usage{
 ss3sim_base(
   iterations,
@@ -28,7 +28,7 @@ ss3sim_base(
   user_recdevs_warn = TRUE,
   bias_adjust = FALSE,
   hess_always = FALSE,
-  print_logfile = TRUE,
+  print_logfile = FALSE,
   sleep = 0,
   seed = 21,
   ...
@@ -40,40 +40,40 @@ ss3sim_base(
 \item{scenarios}{A name to use as the folder name for the unique combination
 of parameters for the OM and EM.}
 
-\item{f_params}{A named list containing arguments for \code{\link{change_f}}.
+\item{f_params}{A named list containing arguments for \code{\link[=change_f]{change_f()}}.
 A mandatory case.}
 
 \item{index_params}{A named list containing arguments for
-\code{\link{sample_index}}. A mandatory input.}
+\code{\link[=sample_index]{sample_index()}}. A mandatory input.}
 
 \item{discard_params}{A named list containing arguments for
-\code{\link{sample_discard}}.}
+\code{\link[=sample_discard]{sample_discard()}}.}
 
 \item{lcomp_params}{A named list containing arguments for
-\code{\link{sample_lcomp}}. A mandatory input.}
+\code{\link[=sample_lcomp]{sample_lcomp()}}. A mandatory input.}
 
 \item{agecomp_params}{A named list containing arguments for
-\code{\link{sample_agecomp}}. A mandatory input.}
+\code{\link[=sample_agecomp]{sample_agecomp()}}. A mandatory input.}
 
 \item{calcomp_params}{A named list containing arguments for
-\code{\link{sample_calcomp}}, for conditional age-at-length data.}
+\code{\link[=sample_calcomp]{sample_calcomp()}}, for conditional age-at-length data.}
 
 \item{wtatage_params}{A named list containing arguments for
-\code{\link{sample_wtatage}}, for empirical weight-at-age data.}
+\code{\link[=sample_wtatage]{sample_wtatage()}}, for empirical weight-at-age data.}
 
 \item{mlacomp_params}{A named list containing arguments for
-\code{\link{sample_mlacomp}}, for mean length-at-age data.}
+\code{\link[=sample_mlacomp]{sample_mlacomp()}}, for mean length-at-age data.}
 
 \item{em_binning_params}{A named list containing arguments for
-\code{\link{change_em_binning}}.}
+\code{\link[=change_em_binning]{change_em_binning()}}.}
 
 \item{estim_params}{A named list containing arguments for
-\code{\link{change_e}}.}
+\code{\link[=change_e]{change_e()}}.}
 
 \item{tv_params}{A named list containing arguments for
-\code{\link{change_tv}} (time-varying).}
+\code{\link[=change_tv]{change_tv()}} (time-varying).}
 
-\item{operat_params}{A named list containing arguments for \code{\link{change_o}}.}
+\item{operat_params}{A named list containing arguments for \code{\link[=change_o]{change_o()}}.}
 
 \item{om_dir}{The directory with the operating model you want to copy and use
 for the specified simulations.}
@@ -82,12 +82,12 @@ for the specified simulations.}
 use for the specified simulations.}
 
 \item{retro_params}{A named list containing the arguments for
-\code{\link{change_retro}}.}
+\code{\link[=change_retro]{change_retro()}}.}
 
 \item{data_params}{A named list containing arguments for changing data.}
 
 \item{weight_comps_params}{A named list containing arguments for
-\code{\link[r4ss]{SS_tune_comps}}.}
+\code{\link[r4ss:SS_tune_comps]{r4ss::SS_tune_comps()}}.}
 
 \item{user_recdevs}{An optional matrix of recruitment deviations to replace
 the recruitment deviations built into the package. The columns represent
@@ -96,7 +96,7 @@ matrix of 0s for deterministic model checking. For traditional stochastic
 simulations these would be independent and normally distributed deviations
 with a standard deviation equal to the desired sigma R. Note that these
 recruitment deviations will be used verbatim (after exponentiation).
-\code{user_recdevs} will *not* be multiplied by sigma R and they will *not*
+\code{user_recdevs} will \emph{not} be multiplied by sigma R and they will \emph{not}
 be log-normal bias corrected. If \code{user_recdevs} are specified as
 anything besides \code{NULL} the package will issue a warning about this.
 Biased recruitment deviations can lead to biased model results.}
@@ -105,29 +105,40 @@ Biased recruitment deviations can lead to biased model results.}
 warning regarding biased recruitment deviations off when \code{user_recdevs}
 are specified.}
 
-\item{bias_adjust}{Run bias adjustment first?.}
+\item{bias_adjust}{A logical argument specifying bias adjustment is conducted.
+Bias adjustment helps assure that the estimated recruitment deviations,
+which are assumed to be log-normally distributed,
+are mean unbiased leading to mean-unbiased estimates of biomass
+\href{https://cdnsciencepub.com/doi/abs/10.1139/f2011-092}{Methot and Taylor, 2011}.
+Bias adjustment should always be performed when
+using maximum likelihood estimation when running simulations for publication or management.
+The argument allows users to turn bias adjustment off because
+it involves running the EM multiple times with the hessian and
+is not needed when initially exploring your simulation structure.}
 
 \item{hess_always}{If \code{TRUE} then the Hessian will always be calculated.
 If \code{FALSE} then the Hessian will only be calculated for
 bias-adjustment runs thereby saving time.}
 
-\item{print_logfile}{Logical. Print a log file?}
+\item{print_logfile}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{print_logfile = TRUE}
+is no longer supported.
+Previously, the default was \code{TRUE}, now the default is \code{FALSE}.}
 
 \item{sleep}{A time interval (in seconds) to pause on each iteration. Useful
 if you want to reduce average CPU time -- perhaps because you're working on
 a shared server.}
 
-\item{seed}{The seed value to pass to \code{\link{get_recdevs}} when
+\item{seed}{The seed value to pass to \code{\link[=get_recdevs]{get_recdevs()}} when
 generating recruitment deviations. The generated recruitment deviations
 depend on the iteration value, but also on the value of \code{seed}. A
 given combination of iteration, number of years, and \code{seed} value will
 result in the same recruitment deviations.}
 
-\item{...}{Anything extra to pass to \code{\link{run_ss3model}}. For
-example, you may want to pass additional options to \code{SS3} through
+\item{...}{Anything extra to pass to \code{\link[=run_ss3model]{run_ss3model()}}. For
+example, you may want to pass additional options to Stock Synthesis through
 the argument \code{admb_options}. Anything that doesn't match a named
-argument in \code{\link{run_ss3model}} will be passed to the
-\code{\link{system}} call that runs \code{SS3}.}
+argument in \code{\link[=run_ss3model]{run_ss3model()}} will be passed to the
+\code{\link[=system]{system()}} call that runs Stock Synthesis.}
 }
 \value{
 The output will appear in whatever your current \R working directory
@@ -141,73 +152,94 @@ look like this:
 }
 }
 \description{
-This function is a wrapper function that can call \code{\link{run_ss3model}}
-for the operating model, sample the output (add recruitment deviations,
-survey the data, etc.), and run the estimation model. \code{ss3sim_base} is
-the main internal function for \pkg{ss3sim}. It is intended to be used
-through \code{\link{run_ss3sim}}, but can also be used directly.
+A wrapper function that
+\itemize{
+\item calls \code{\link[=run_ss3model]{run_ss3model()}} to run the operating model,
+\item samples the output to create fishery and survey data, and
+\item runs the estimation model.
+This function is the main workhorse of ss3sim and
+is typically not called by the user but called from \code{\link[=run_ss3sim]{run_ss3sim()}}.
+}
 }
 \details{
 This function is written to be flexible. You can specify the fishing
-mortality, survey index, length composition, age composition, and
-time-varying parameters in the function call as list objects (see the
-example below). For a generic higher-level function, see
-\code{\link{run_ss3sim}}.
+mortality, survey catch-per-unit-effort settings,
+length-composition data settings, etc. in the function call as list objects
+(see the example below). For a generic higher-level function, see
+\code{\link[=run_ss3sim]{run_ss3sim()}}.
+
+The steps carried out within \code{ss3sim_base}:
+
+\figure{simsteps.png}
 }
 \examples{
 \dontrun{
 # Create a temporary folder for the output and set the working directory:
-  # Create a temporary folder for the output and set the working directory:
-  temp_path <- file.path(tempdir(), "ss3sim-base-example")
-  dir.create(temp_path, showWarnings = FALSE)
-  wd <- getwd()
-  setwd(temp_path)
-  on.exit(setwd(wd), add = TRUE)
+# Create a temporary folder for the output and set the working directory:
+temp_path <- file.path(tempdir(), "ss3sim-base-example")
+dir.create(temp_path, showWarnings = FALSE)
+wd <- getwd()
+setwd(temp_path)
+on.exit(setwd(wd), add = TRUE)
 
-  # Find the data in the ss3sim package:
-  d <- system.file("extdata", package = "ss3sim")
-  om_dir <- file.path(d, "models", "cod-om")
-  em_dir <- file.path(d, "models", "cod-em")
+# Find the data in the ss3sim package:
+d <- system.file("extdata", package = "ss3sim")
+om_dir <- file.path(d, "models", "cod-om")
+em_dir <- file.path(d, "models", "cod-em")
 
-  # Or, create the argument lists directly in R:
+# Or, create the argument lists directly in R:
 
-  F0 <- list(years = 1:100,
-             fleets = 1,
-             fvals = c(rep(0, 25), rep(0.114, 75)))
+F0 <- list(
+  years = 1:100,
+  fleets = 1,
+  fvals = c(rep(0, 25), rep(0.114, 75))
+)
 
-  index1 <- list(fleets = 2, years = list(seq(62, 100, by = 2)),
-                 sds_obs = list(0.1))
+index1 <- list(
+  fleets = 2, years = list(seq(62, 100, by = 2)),
+  sds_obs = list(0.1)
+)
 
-  lcomp1 <- list(fleets = c(1, 2), Nsamp = list(50, 100),
-                 years = list(26:100, seq(62, 100, by = 2)))
+lcomp1 <- list(
+  fleets = c(1, 2), Nsamp = list(50, 100),
+  years = list(26:100, seq(62, 100, by = 2))
+)
 
-  agecomp1 <- list(fleets = c(1, 2), Nsamp = list(50, 100),
-                   years = list(26:100, seq(62, 100, by = 2)))
+agecomp1 <- list(
+  fleets = c(1, 2), Nsamp = list(50, 100),
+  years = list(26:100, seq(62, 100, by = 2))
+)
 
-  E0 <- list(par_name = c("LnQ_base_Fishery", "NatM_p_1_Fem_GP_1"),
-             par_int = c(NA, NA), par_phase = c(-5, -1), forecast_num = 0)
+E0 <- list(
+  par_name = c("LnQ_base_Fishery", "NatM_p_1_Fem_GP_1"),
+  par_int = c(NA, NA), par_phase = c(-5, -1), forecast_num = 0
+)
 
-  ss3sim_base(iterations = 1,
-              scenarios = "D1-E0-F0-cod", #name as desired
-              f_params = F0,
-              index_params = index1,
-              lcomp_params = lcomp1,
-              agecomp_params = agecomp1,
-              estim_params = E0,
-              om_dir = om_dir,
-              em_dir = em_dir)
-  replist <- r4ss::SS_output(file.path("D1-E0-F0-cod", 1, "em"),
-    verbose = FALSE, printstats = FALSE, covar = FALSE)
-  testthat::expect_equivalent(replist[["cpue"]][, "Yr"], index1[["years"]][[1]])
+ss3sim_base(
+  iterations = 1,
+  scenarios = "D1-E0-F0-cod", # name as desired
+  f_params = F0,
+  index_params = index1,
+  lcomp_params = lcomp1,
+  agecomp_params = agecomp1,
+  estim_params = E0,
+  om_dir = om_dir,
+  em_dir = em_dir
+)
+replist <- r4ss::SS_output(file.path("D1-E0-F0-cod", 1, "em"),
+  verbose = FALSE, printstats = FALSE, covar = FALSE
+)
+testthat::expect_equivalent(replist[["cpue"]][, "Yr"], index1[["years"]][[1]])
 
-  test <- replist
-  unlink("D1-E0-F0-cod", recursive = TRUE) # clean up
+test <- replist
+unlink("D1-E0-F0-cod", recursive = TRUE) # clean up
 }
+
 }
 \seealso{
-\code{\link{run_ss3sim}}
+\code{\link[=run_ss3sim]{run_ss3sim()}}
 }
 \author{
 Sean Anderson with contributions from many others as listed in
-  the DESCRIPTION file.
+the DESCRIPTION file.
 }

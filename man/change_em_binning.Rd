@@ -2,8 +2,7 @@
 % Please edit documentation in R/change_em_binning.r
 \name{change_em_binning}
 \alias{change_em_binning}
-\title{Change population and observed length composition bins in an SS estimation
-model}
+\title{Change population and observed length-composition bins}
 \usage{
 change_em_binning(
   dat_list,
@@ -29,33 +28,34 @@ within SS.}
 \item{outfile}{A character string specifying the file name to use
 when writing the information to the disk. The string must include
 the proper file extension. No file is written using the default value
-of \code{NULL}, which leads to increased speed because writing the 
+of \code{NULL}, which leads to increased speed because writing the
 file takes time and computing resources.}
 
 \item{bin_vector}{A numeric vector of new length bins to substitute into the
-\code{ss3.dat} file.}
+\verb{*.dat} file.}
 
-\item{lbin_method}{A numeric value of either \code{NULL, 1, 2, 3} to change
-the lbin_method for the population bin. Only supports either \code{NULL, 1,
-2} at the moment. \code{NULL} means to not rebin.}
+\item{lbin_method}{A numeric value of either \verb{NULL, 1, 2, 3} to change
+the lbin_method for the population bin.
+\code{NULL} means to not re-bin.}
 
-\item{pop_binwidth}{Population length bin width. Only necessary for
-\code{lbin_method=2}. Note that this value must be smaller than the bin
-width specified in length composition data \code{len_bins} or SS3 will
-fail (see notes in the SS3 manual).}
+\item{pop_binwidth}{Population length bin width.
+Only necessary for \code{lbin_method = 2}.
+Note that this value must be smaller than the bin width
+specified in length-composition data \code{len_bins} or
+Stock Synthesis will fail (see notes in the Stock Synthesis manual).}
 
-\item{pop_minimum_size}{Population minimum length bin value. 'Only
-necessary for \code{lbin_method=2}}
+\item{pop_minimum_size}{Population minimum length bin value.
+Only necessary for \code{lbin_method = 2}.}
 
-\item{pop_maximum_size}{Population maximum length bin value. Only
-necessary for \code{lbin_method=2}}
+\item{pop_maximum_size}{Population maximum length bin value.
+Only necessary for \code{lbin_method = 2}.}
 }
 \description{
-\code{change_em_binning} alters the bin structure for the population and
-length composition data in an SS estimation model. It is done by taking the
-original length composition info from the EM \code{ss3.dat} then changing
+\code{change_em_binning()} alters the bin structure for the population and
+length-composition data in a Stock Synthesis estimation model (EM).
+The original length-composition data from the EM \code{.dat} is changed
 according to the user's specification. If the data file also contains
-conditional age-at-length data then these data will be re-binned as well.
+conditional age-at-length data, then these data will be re-binned as well.
 }
 \examples{
 # Note that typically this function is used with estimation models in ss3sim,
@@ -64,33 +64,39 @@ f <- system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim")
 d <- r4ss::SS_readdat(f, version = NULL, verbose = FALSE)
 
 # An example with lbin_method = 1
-l1 <- change_em_binning(d, outfile = NULL, lbin_method = 1,
-  bin_vector = seq(20, 152, by = 4))
+l1 <- change_em_binning(d,
+  outfile = NULL, lbin_method = 1,
+  bin_vector = seq(20, 152, by = 4)
+)
 l1$lbin_vector
 head(l1$lencomp)
 
-#An example with lbin_method = 2
+# An example with lbin_method = 2
 new_bin_vec <- seq(min(d$lbin_vector), max(d$lbin_vector), by = 4)
 # add the max value if necessary.
-if(new_bin_vec[length(new_bin_vec)] != d$lbin_vector[length(d$lbin_vector)]){
-  new_bin_vec <- c(new_bin_vec,
-                   d$lbin_vector[length(d$lbin_vector)])
+if (new_bin_vec[length(new_bin_vec)] != d$lbin_vector[length(d$lbin_vector)]) {
+  new_bin_vec <- c(
+    new_bin_vec,
+    d$lbin_vector[length(d$lbin_vector)]
+  )
 }
 pop_bin_input <- 5
 pop_min_size_input <- min(d$lbin_vector_pop) - 1
 pop_max_size_input <- max(d$lbin_vector_pop) + 5
-lbin_vec_pop <-seq(pop_min_size_input,
-                   pop_max_size_input,
-                   length.out = (pop_max_size_input - pop_min_size_input)/
-                     pop_bin_input + 1
+lbin_vec_pop <- seq(pop_min_size_input,
+  pop_max_size_input,
+  length.out = (pop_max_size_input - pop_min_size_input) /
+    pop_bin_input + 1
 )
-l2 <- change_em_binning(dat_list = d,
-                            bin_vector = new_bin_vec,
-                            lbin_method = 2,
-                            #Note: need more inputs with lbin_method = 2
-                            pop_binwidth = pop_bin_input,
-                            pop_minimum_size = pop_min_size_input,
-                            pop_maximum_size = pop_max_size_input)
+l2 <- change_em_binning(
+  dat_list = d,
+  bin_vector = new_bin_vec,
+  lbin_method = 2,
+  # Note: need more inputs with lbin_method = 2
+  pop_binwidth = pop_bin_input,
+  pop_minimum_size = pop_min_size_input,
+  pop_maximum_size = pop_max_size_input
+)
 l2$lbin_method
 # note bin width is now the same as the input
 pop_bin_input
@@ -101,7 +107,7 @@ l2$minimum_size
 # so has max
 l2$maximum_size
 l2$lbin_vector
-#other modified components:
+# other modified components:
 l2$lbin_vector_pop
 head(l2$lencomp)
 }
@@ -116,7 +122,7 @@ Other change functions:
 }
 \author{
 Kotaro Ono (length-composition rebinning), Sean Anderson
-  (conditional age-at-length rebinning)
+(conditional age-at-length rebinning)
 }
 \concept{change functions}
 \concept{sample functions}

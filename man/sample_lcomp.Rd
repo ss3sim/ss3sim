@@ -29,7 +29,7 @@ within SS.}
 \item{outfile}{A character string specifying the file name to use
 when writing the information to the disk. The string must include
 the proper file extension. No file is written using the default value
-of \code{NULL}, which leads to increased speed because writing the 
+of \code{NULL}, which leads to increased speed because writing the
 file takes time and computing resources.}
 
 \item{fleets}{*A vector of integers specifying which fleets to include.
@@ -79,28 +79,33 @@ containing the modified \code{.dat} file is returned invisibly.
 \description{
 Extract length-composition data from a \code{.ss_new} data file and sample
 the data. It is assumed that the composition data will be expected values
-as written by Stock Synthesis in the second section of the data file, but 
+as written by Stock Synthesis in the second section of the data file, but
 one can also sample input data. The resulting length-composition
 data are assumed to represent observed length composition and will overwrite
-the length data in \code{dat_list}, which is returned invisibly. 
+the length data in \code{dat_list}, which is returned invisibly.
 The data file can also be written to the disk, if a file path is provided to
 \code{outfile}, and used as simulated data by an estimation model.
 }
 \examples{
-dat_list <- r4ss::SS_readdat(verbose = FALSE,
-  file = system.file(file.path("extdata", "models", "cod-om", "codOM.dat"), 
-  package="ss3sim"))
+dat_list <- r4ss::SS_readdat(
+  verbose = FALSE,
+  file = system.file(file.path("extdata", "models", "cod-om", "codOM.dat"),
+    package = "ss3sim"
+  )
+)
 ## Generate with constant sample size across years
-ex1 <- sample_lcomp(dat_list=dat_list, outfile = NULL, 
-  fleets = 1:2, Nsamp = list(100, 50), 
-  years=list(seq(26, 100, by = 2), 80:100))
+ex1 <- sample_lcomp(
+  dat_list = dat_list, outfile = NULL,
+  fleets = 1:2, Nsamp = list(100, 50),
+  years = list(seq(26, 100, by = 2), 80:100)
+)
 \dontshow{
 testthat::expect_equal(dim(ex1[["lencomp"]]), c(59, 51))
 }
 
 }
 \seealso{
-\code{\link{sample_agecomp}} for more examples
+\code{\link[=sample_agecomp]{sample_agecomp()}} for more examples.
 
 Other sampling functions: 
 \code{\link{clean_data}()},

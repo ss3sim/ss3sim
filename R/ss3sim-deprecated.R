@@ -2,8 +2,7 @@
 #' @description The functions listed below are deprecated and will be
 #' removed from the package in the near future.
 #' When possible, alternative functions with similar functionality are
-#' available at \code{help("ss3sim-deprecated")}.
-#' @md
+#' available at `help("ss3sim-deprecated")`.
 #' @name ss3sim-deprecated
 #' @keywords internal
 NULL

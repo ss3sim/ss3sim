@@ -1,4 +1,4 @@
-context("Verify input")
+
 
 wd.old <- getwd()
 temp_path <- file.path(tempdir(), "verify_input")

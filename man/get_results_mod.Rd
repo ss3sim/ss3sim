@@ -7,7 +7,7 @@
 get_results_mod(dir = getwd(), is_EM = NULL, is_OM = NULL)
 }
 \arguments{
-\item{dir}{The full or relative path to the SS model file folder. If not
+\item{dir}{The full or relative path to the Stock Synthesis model file folder. If not
 specified, uses the working directory.}
 
 \item{is_EM}{Is this an estimation model? Defaults to NULL, which will look
@@ -20,8 +20,8 @@ model or operating model.}
 }
 \value{
 A list of 3 data frames called scalar, timeseries, and
- derived (for derived quantities). These data frames contain results for 1
- model run.
+derived (for derived quantities). These data frames contain results for 1
+model run.
 }
 \description{
 Get results for 1 model run

@@ -47,7 +47,9 @@ the creation of observed values for each desired combination.
 \examples{
 # todo: remove this example when testing is complete
 \dontrun{
-change_comp(dat_list = dat, type = "len",
-  paramlist = scenariol[[1]][[c("lcomp_params","agecomp_params")]])
+change_comp(
+  dat_list = dat, type = "len",
+  paramlist = scenariol[[1]][[c("lcomp_params", "agecomp_params")]]
+)
 }
 }

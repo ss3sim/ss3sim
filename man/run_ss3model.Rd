@@ -19,7 +19,7 @@ run_ss3model(
 results from a stock assessment model run. Paths are passed without a
 terminal slash.}
 
-\item{admb_options}{Any additional options to pass to the SS command.}
+\item{admb_options}{Any additional options to pass to the Stock Synthesis command.}
 
 \item{hess}{Calculate the Hessian on estimation model runs?}
 
@@ -33,34 +33,33 @@ writing can be slightly delayed. For example, on computers where the files
 are written over a network connection. If the output files haven't
 finished writing before \R starts looking for the output then the
 simulation will crash with an error about missing files. The default
-value is set to \code{0.01} seconds, just to be safe.}
+value is set to 0.01 seconds, just to be safe.}
 
-\item{show.output.on.console}{Logical: passed on to
-\code{system}.}
+\item{show.output.on.console}{Logical: passed on to \code{\link[=system]{system()}}.}
 
-\item{...}{Anything else to pass to \code{system}.}
+\item{...}{Anything else to pass to \code{\link[=system]{system()}}.}
 }
 \description{
-Call Stock Synthesis (SS) to generate data or fit model to data.
-The appropriate version of SS is called after determining if the
+Call Stock Synthesis to generate data or fit model to data.
+The appropriate version of Stock Synthesis is called after determining if the
 user is on Unix or Windows. This lower-level
 function is meant to be called by higher level functions such as
-\code{\link{run_ss3sim}}, \code{\link{ss3sim_base}}, or your own custom
+\code{\link[=run_ss3sim]{run_ss3sim()}}, \code{\link[=ss3sim_base]{ss3sim_base()}}, or your own custom
 function.
 }
 \details{
-ss3sim requires you to place the SS executable in your
+ss3sim requires you to place the Stock Synthesis executable in your
 path. See the vignette \code{vignette("introduction", package = "ss3sim")} for details on
 this process. The executables themselves can be downloaded from github
 \url{https://github.com/ss3sim/ss3sim/tree/master/inst/bin} or the
-SS website
-\url{https://vlab.noaa.gov/web/stock-synthesis/document-library/-/document_library/0LmuycloZeIt/view/5042555}.
+Stock Synthesis website
+\url{https://github.com/nmfs-stock-synthesis/stock-synthesis/releases}.
 If the github version of ss3sim is installed, rather than the CRAN version,
 then the executables are automatically downloaded and called from their
 stored location rather than from the path variable.
 }
 \seealso{
-\code{\link{ss3sim_base}}, \code{\link{run_ss3sim}}
+\code{\link[=ss3sim_base]{ss3sim_base()}}, \code{\link[=run_ss3sim]{run_ss3sim()}}
 }
 \author{
 Sean C. Anderson

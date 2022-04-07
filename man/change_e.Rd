@@ -2,7 +2,7 @@
 % Please edit documentation in R/change_e.r
 \name{change_e}
 \alias{change_e}
-\title{Methods to alter estimated parameters in an SS model}
+\title{Methods to alter the parameters estimated in a Stock Synthesis model}
 \usage{
 change_e(
   ctl_file_in = "em.ctl",
@@ -54,7 +54,7 @@ the phase for a given parameter. Negative values will fix the parameter
 at the INIT value.}
 
 \item{forecast_num}{Number of years to perform forecasts. For those years,
-the data will be removed from the \code{dat_list}, enabling SS3 to
+the data will be removed from the \code{dat_list}, enabling Stock Synthesis to
 generate forecasts rather than use the data to fit the model.}
 
 \item{verbose}{When \code{TRUE} messages will be returned
@@ -70,32 +70,34 @@ is \code{FALSE}.}
 \item{natM_val}{Deprecated. Should have value NULL.}
 }
 \value{
-Altered versions of SS \code{.ctl} and \code{forecast.ss} files are written
+Altered versions of Stock Synthesis \code{.ctl} and \code{forecast.ss} files are written
 to the disk and the altered \code{dat_list} is returned invisibly.
 }
 \description{
-Takes Stock Synthesis (SS)
-  \code{.ctl} and \code{forecast.ss} files, along with
-  a list structure which houses the data file as read in by
-  \code{\link[r4ss]{SS_readdat}}
-  and changes which parameters are estimated, how natural mortality is
-  estimated, and if forecasts are performed. The function can be called by
-  itself or within \code{\link{run_ss3sim}} to alter an estimation model
-  \code{.ctl} file.
+Takes Stock Synthesis
+\code{.ctl} and \code{forecast.ss} files, along with
+a list structure which houses the data file as read in by
+\code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}}
+and changes which parameters are estimated, how natural mortality is
+estimated, and if forecasts are performed. The function can be called by
+itself or within \code{\link[=run_ss3sim]{run_ss3sim()}} to alter an estimation model
+\code{.ctl} file.
 }
 \examples{
 d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
 data.old <- r4ss::SS_readdat(
   dir(d, pattern = ".dat", full.names = TRUE),
-  version = NULL, verbose = FALSE)
+  version = NULL, verbose = FALSE
+)
 change_e(
   ctl_file_in = file.path(d, "codOM.ctl"),
   ctl_file_out = file.path(tempdir(), "change_e.ctl"),
   dat_list = data.old,
   for_file_in = file.path(d, "forecast.ss"),
-         par_name = c("_steep", "SizeSel_P1_Fishery(1)"),
-         par_int = c(0.3, 40), par_phase = c(3, 2),
-         forecast_num = 0)
+  par_name = c("_steep", "SizeSel_P1_Fishery(1)"),
+  par_int = c(0.3, 40), par_phase = c(3, 2),
+  forecast_num = 0
+)
 # clean up the temporary files
 file.remove(file.path(tempdir(), "change_e.ctl"))
 }
@@ -109,6 +111,6 @@ Other change functions:
 \code{\link{change_tv}()}
 }
 \author{
-Kelli Johnson
+Kelli F. Johnson
 }
 \concept{change functions}

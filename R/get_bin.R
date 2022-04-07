@@ -1,8 +1,8 @@
-#' Get SS3 binary/executable location in package
+#' Get Stock Synthesis binary/executable location in package
 #'
-#' @param bin_name Name of SS3 binary, defaults to "ss_safe"
+#' @param bin_name Name of Stock Synthesis binary, defaults to "ss_safe"
 #'
-#' @return The path to an SS3 binary. If using the GitHub version of the
+#' @return The path to a Stock Synthesis binary. If using the GitHub version of the
 #'   package, this will be an internal binary. Otherwise, this function
 #'   will search for a version of the binary in your path. See the
 #'   ss3sim vignette.
@@ -12,7 +12,7 @@
 #' \dontrun{
 #' get_bin()
 #' }
-
+#'
 get_bin <- function(bin_name = "ss") {
   # code inspiration from glmmADMB package:
   if (.Platform$OS.type == "windows") {
@@ -22,11 +22,14 @@ get_bin <- function(bin_name = "ss") {
     if (grepl("3", bit)) {
       if (!grepl("86", bit)) {
         platform <- "Windows32"
-        warning("SS3 binary is not available for 32-bit ",
+        warning(
+          "Stock Synthesis binary is not available for 32-bit ",
           .Platform$OS.type, " within the package. ",
-          "You must have an appropriate SS3 binary in your path. ",
-          "See the ss3sim vignette.")
-          }}
+          "You must have an appropriate Stock Synthesis binary in your path. ",
+          "See the ss3sim vignette."
+        )
+      }
+    }
   } else {
     if (substr(R.version$os, 1, 6) == "darwin") {
       platform <- "MacOS"
@@ -34,9 +37,11 @@ get_bin <- function(bin_name = "ss") {
       if (R.version$os == "linux-gnu") {
         platform <- "Linux64"
       } else {
-        warning("SS3 binary is not available for OS ", R.version$os,
-          " within the package. You must have an appropriate SS3 binary in your ",
-          "path. See the ss3sim vignette.")
+        warning(
+          "Stock Synthesis binary is not available for OS ", R.version$os,
+          " within the package. You must have an appropriate Stock Synthesis binary in your ",
+          "path. See the ss3sim vignette."
+        )
       }
     }
   }
@@ -50,9 +55,13 @@ get_bin <- function(bin_name = "ss") {
 
   if (bin == "") { # resort to binaries in path
     bin <- Sys.which(bin_name)[[1]]
-    if(bin == "") stop(paste0("The expected SS3 executable, ", bin_name,
-      ", was not found in your path. See the ss3sim vignette and ?run_ss3model",
-      " for instructions."))
+    if (bin == "") {
+      stop(paste0(
+        "The expected Stock Synthesis executable, ", bin_name,
+        ", was not found in your path. See the ss3sim vignette and ?run_ss3model",
+        " for instructions."
+      ))
+    }
   }
   if (grepl("[[:space:]]", bin)) {
     bin <- shQuote(bin)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/case-parsing.r
 \name{standardize_sampling_args}
 \alias{standardize_sampling_args}
-\title{Function to check and standardize list components of sampling functions}
+\title{Check and standardize list components of sampling functions}
 \usage{
 standardize_sampling_args(
   fleets,
@@ -13,24 +13,24 @@ standardize_sampling_args(
 )
 }
 \arguments{
-\item{fleets}{Fleet numbers as a vector}
+\item{fleets}{Fleet numbers as a vector.}
 
-\item{years}{Number of years as a list. The number of list components should
-be one or the same length as fleets. Within the list components should be
-a vector of years to correspond with each fleet.}
+\item{years}{Number of years as a list.
+The number of list components should be one or the same length as fleets.
+Within the list components
+should be a vector of years to correspond with each fleet.}
 
-\item{other_input}{Some other input to interpret. The number of list
-components should be one or the same length as fleets. Within the list
-components should be a vector of length 1 the same length as the vectors
-within years.}
+\item{other_input}{Some other input to interpret.
+The number of list components should be one or the same length as fleets.
+Within the list components
+should be a vector of length 1 the same length as the vectors within years.}
 
-\item{return_val}{If "other_input", return the manipulated other_input value;
-if "years", return the manipulated year input. If "both" return both as list
-components}
+\item{return_val}{If \code{other_input}, return the manipulated other_input value;
+if \code{years}, return the manipulated year input.
+If "both" return both as list components.}
 
-\item{other_input_name}{Only necessary if "both" is used as the return
-value}
+\item{other_input_name}{Only necessary if \code{both} is used as the return value.}
 }
 \description{
-Function to check and standardize list components of sampling functions
+Check and standardize list components of sampling functions
 }

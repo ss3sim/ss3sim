@@ -13,20 +13,32 @@ vignette: >
 
 # Modifying the OM and EM models included with ss3sim {#modify}
 
-ss3sim comes with a built-in Stock Synthesis (SS) operating model (OM) and estimation model (EM) for a cod-like (slow-growing and long-lived) species. This cod-like species is based on North Sea cod (*Gadus morhua*; R. Methot, pers. comm.). The original assessment model was simplified to make it more generic for simulation testing and structured to work with ss3sim.
+ss3sim comes with a built-in Stock Synthesis (SS) operating model (OM) and estimation model (EM) for a cod-like (slow-growing and long-lived) species.
+This cod-like species is based on North Sea cod (*Gadus morhua*; R. Methot, pers. comm.).
+The original assessment model was simplified to make it more generic for simulation testing and structured to work with ss3sim.
 Previous ss3sim simulation studies also used flatfish-like (fast-growing and long-lived) and sardine-like (fast-growing and short-lived) model set ups.
-These model setups were based yellowtail flounder (*Limanda ferruginea*; R. Methot, pers. comm.) and Pacific sardine [*Sardinops sagax caeruleus*; @hill2012]. The specific details (e.g., many fleets, tagging data, seasons, etc.) of the original model setups were not important and removed to produce a set of models generic enough to represent different life-history types. Further details on these models are available in @johnson2014 and @ono2014.
-While these model setups are generic and cover a wide range of life-history types, they may not be suitable for all users. Therefore, in this section, we outline strategies for modifying the existing SS model available within the ss3sim package.
+These model setups were based yellowtail flounder (*Limanda ferruginea*; R. Methot, pers. comm.) and Pacific sardine [*Sardinops sagax caeruleus*; @hill2012].
+The specific details (e.g., many fleets, tagging data, seasons, etc.) of the original model setups were not important and removed to produce a set of models generic enough to represent different life-history types.
+Further details on these models are available in @johnson2014 and @ono2014.
+While these model setups are generic and cover a wide range of life-history types,
+they may not be suitable for all users.
+Therefore, in this section, we outline strategies for modifying the existing SS model available within the ss3sim package.
 
-ss3sim is not designed for testing properties of specific SS models, but rather properties of assessment models in general. Currently, there are many features of SS that cannot be manipulated by ss3sim. For example, seasons, hermaphrodism, multiple areas, movement, growth morphs, and platoons. All features that have been removed from the cod-like species if they were present in the original assessment.
-It is possible to create new models that will work within the ss3sim framework, but this task will be complicated and likely require extensive knowledge of SS3 and R. This process is described in more detail in Sections \ref{sec:om-setup} and \ref{sec:em-setup}. We recommend adapting the current built-in models to match your desired model setup because the configuration of this model has already been tested within ss3sim and is easily adaptable.
+ss3sim is not designed for testing properties of specific SS models, but rather properties of assessment models in general.
+Currently, there are many features of SS that cannot be manipulated by ss3sim.
+For example, seasons, hermaphrodism, multiple areas, movement, growth morphs, and platoons.
+All features that have been removed from the cod-like species if they were present in the original assessment.
+It is possible to create new models that will work within the ss3sim framework.
+But, this task will be complicated and likely require extensive knowledge of SS3 and R.
+This process is described in more detail in Sections \ref{sec:om-setup} and \ref{sec:em-setup}.
+We recommend adapting the current built-in models to match your desired model setup because the configuration of this model has already been tested within ss3sim and is easily adaptable.
 
-For example, you can modify the cod OM and EM files to have a different
-maturity before exploring sampling schemes using the
-`sample_index`, `sample_lcomp`, and `sample_agecomp`
-functions. The following steps provide a basic guideline for how to accomplish this:
+For example, you can modify the cod OM and EM files to have a different maturity before exploring sampling schemes using the `sample_index`, `sample_lcomp`, and `sample_agecomp` functions.
+The following steps provide a basic guideline for how to accomplish this:
 
-- Create a simulation dataframe or list and verify these simulations run with the original cod model using the function `run_ss3sim` or `ss3sim_base`, respectively. It is probably best to do a shorter deterministic run ([see the section on deterministic runs](introduction.html#deterministic)) rather than a run with process error. After running, read in the data and do visual checks for proper functionality.
+- Create a simulation dataframe or list and verify these simulations run with the original cod model using the function `run_ss3sim` or `ss3sim_base`, respectively.
+  It is probably best to do a shorter deterministic run ([see the section on deterministic runs](introduction.html#deterministic)) rather than a run with process error.
+  After running, read in the data and do visual checks for proper functionality.
 - Locate the cod model OM and EM files using `system.file(file.path("extdata", "models"), package = "ss3sim")`.
 - Copy the OM and EM folders and rename them as desired.
 - Make a single change to either the `.dat` or `.ctl` files for the new model and run them manually with SS via the command line or a `system` call within R if there is any question if they might break the model.

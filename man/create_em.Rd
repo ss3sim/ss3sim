@@ -11,9 +11,8 @@ create_em(
 }
 \arguments{
 \item{dir_in}{A file path to a directory that contains the following files:
-\code{forecast.ss}, \code{starter.ss}, and a control file 
-(e.g., \code{xxxOM.ctl}). The default is to get the codOM within the
-\code{ss3sim} package.}
+\code{forecast.ss}, \code{starter.ss}, and a control file
+(e.g., \code{xxxOM.ctl}). The default is to get the codOM within \pkg{ss3sim}.}
 
 \item{dir_out}{A file path to a directory where the new files will be saved.
 The default is to save the files in your current working directory in a
@@ -36,15 +35,17 @@ create_em()
 dir(file.path(getwd(), "new-em"))
 \dontshow{
 testthat::expect_true("forecast.ss" \%in\% dir("new-em"),
-  label = "forecast file is in 'new-em'")
+  label = "forecast file is in 'new-em'"
+)
 testthat::expect_true("starter.ss" \%in\% dir("new-em"),
-  label = "starter file is in 'new-em'")
+  label = "starter file is in 'new-em'"
+)
 testthat::expect_true("codEM.ctl" \%in\% dir("new-em"),
-  label = "codEM file is in 'new-em'")
+  label = "codEM file is in 'new-em'"
+)
 }
 # Clean up your directory
 unlink(file.path(getwd(), "new-em"), recursive = TRUE)
-
 }
 \author{
 Kelli Faye Johnson

@@ -21,18 +21,18 @@ leads to the removal of data for the specified number of years.
 Positive values are not allowed.}
 }
 \value{
-A modified SS3 starter file.
+A modified Stock Synthesis starter file.
 }
 \description{
 A retrospective analysis tests the effect of peeling back the number of
 operating model years observable to the estimation model. This function
-alters the SS starter file to run a retrospective analysis.
+alters the Stock Synthesis starter file to run a retrospective analysis.
 }
 \details{
 Note that the starter file is set up to run a single retrospective
-  run. Therefore, if you would like to run retrospective analyses for, say,
-  0, 1, 2, 3, 4, and 5 years, you will need to use this function to adjust
-  the starter file 6 separate times.
+run. Therefore, if you would like to run retrospective analyses for, say,
+0, 1, 2, 3, 4, and 5 years, you will need to use this function to adjust
+the starter file 6 separate times.
 }
 \examples{
 # Create a temporary folder for the output:
@@ -41,15 +41,19 @@ dir.create(temp_path, showWarnings = FALSE)
 
 # Locate the package data:
 starterfile <- system.file("extdata", "models", "cod-om",
- "starter.ss", package = "ss3sim")
+  "starter.ss",
+  package = "ss3sim"
+)
 
 # No retrospective analysis:
 change_retro(starterfile, paste0(temp_path, "/retro-0-starter.ss"),
-retro_yr = 0)
+  retro_yr = 0
+)
 
 # A retrospective analysis of 5 years:
 change_retro(starterfile, paste0(temp_path, "/retro-5-starter.ss"),
-retro_yr = -5)
+  retro_yr = -5
+)
 }
 \seealso{
 Other change functions: 

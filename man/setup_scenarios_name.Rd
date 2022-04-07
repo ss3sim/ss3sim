@@ -8,17 +8,17 @@ setup_scenarios_name(check = FALSE)
 }
 \arguments{
 \item{check}{A logical that enables checking for a unique name.
-If `check = TRUE` then the function enters a loop and will generate
+If \code{check = TRUE} then the function enters a loop and will generate
 a names until it finds one that doesn't already exist.
 This could be helpful when running scenarios in parallel.}
 }
 \value{
 A single character value is returned.
-The object starts with the letter `s` and is followed by [Sys.time]
-Where, the date/time portion is `%m%d%H%M%S`, better known as
+The object starts with the letter \code{s} and is followed by \link{Sys.time}
+Where, the date/time portion is \verb{\%m\%d\%H\%M\%S}, better known as
 a two-digit month, e.g., 01; a two-digit number for the day of the month;
 and finally a two-digit hour, then minute, then second.
 }
 \description{
-Create a name for an unnamed scenario based on [Sys.time].
+Create a name for an unnamed scenario based on \link{Sys.time}.
 }
