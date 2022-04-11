@@ -264,7 +264,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
     # Find number of years in OM to change recdevs and F
     datfile.orig <- r4ss::SS_readdat(file.path(sc, i, "om", "ss3.dat"),
-      version = NULL, verbose = FALSE
+       verbose = FALSE
     )
     forfile.orig <- r4ss::SS_readforecast(file.path(sc, i, "om", "forecast.ss"),
       verbose = FALSE
@@ -503,7 +503,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     ## write it back to file at the end, before running the EM.
     # todo: use expdata rather than reading in the file again
     dat_list <- r4ss::SS_readdat(file.path(sc, i, "em", "ss3.dat"),
-      version = NULL, verbose = FALSE
+       verbose = FALSE
     )
 
     ## Sample catches
