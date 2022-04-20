@@ -104,9 +104,8 @@ profile_fmsy <- function(om_in, results_out,
       show.output.on.console = FALSE,
       ignore.stdout = TRUE
     )
-    allcatch <- r4ss::SS_readdat("data.ss_new",
-      verbose = FALSE,
-      section = 2
+    allcatch <- r4ss::SS_readdat("data_expval.ss",
+      verbose = FALSE
     )$catch$catch
     endcatch <- utils::tail(allcatch, ceiling(datFile$Nages * 0.5))
     CVs[i] <- round(stats::sd(endcatch) / mean(endcatch), 5)

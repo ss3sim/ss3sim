@@ -79,7 +79,7 @@ test_that("setup_scenarios works without specifying fleet for years then Nsamp",
   dat_list <- exp_vals <- r4ss::SS_readdat(file.path(
     system.file("extdata", package = "ss3sim"), "example-om", "ss3_expected_values.dat"
   ),
-  version = NULL, verbose = FALSE
+  verbose = FALSE
   )
 
   df <- setup_scenarios_defaults()
