@@ -88,9 +88,6 @@
 #' \item ...
 #' }
 #'
-# The input and output file structure of an \pkg{ss3sim} simulation:
-#
-# \figure{filestructure.png}
 #'
 #' @seealso [run_ss3sim()]
 #' @export
