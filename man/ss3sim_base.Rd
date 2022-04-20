@@ -167,10 +167,6 @@ mortality, survey catch-per-unit-effort settings,
 length-composition data settings, etc. in the function call as list objects
 (see the example below). For a generic higher-level function, see
 \code{\link[=run_ss3sim]{run_ss3sim()}}.
-
-The steps carried out within \code{ss3sim_base}:
-
-\figure{simsteps.png}
 }
 \examples{
 \dontrun{

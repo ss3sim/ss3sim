@@ -101,9 +101,6 @@
 #' (see the example below). For a generic higher-level function, see
 #' [run_ss3sim()].
 #'
-#' The steps carried out within `ss3sim_base`:
-#'
-#' \figure{simsteps.png}
 #'
 #' @examples
 #' \dontrun{
