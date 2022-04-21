@@ -15,7 +15,7 @@ test_that("A basic run_ss3sim scenario runs", {
   # check run_ss3sim and get_results_all
   df <- data.frame(
     bias_adjust = TRUE,
-    ce.par_name = "c('NatM_p_1_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
+    ce.par_name = "c('NatM_uniform_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
     ce.par_int = "c(0.2, 19.9)",
     ce.par_phase = "c(-1, 4)",
     cf.years.1 = "26:100", cf.fval.1 = "rep('0.1052', 75)",
@@ -77,7 +77,7 @@ test_that("A basic run_ss3sim scenario runs", {
   expect_equal(ssem$nseasons, 1)
   expect_equivalent(
     data.frame(Value = 0.2, Phase = -1, Init = 0.2),
-    ssem$parameters[ssem$parameters$Label == "NatM_p_1_Fem_GP_1", c("Value", "Phase", "Init")]
+    ssem$parameters[ssem$parameters$Label == "NatM_uniform_Fem_GP_1", c("Value", "Phase", "Init")]
   )
   expect_equivalent(
     data.frame(Phase = 4, Init = 19.9),
@@ -145,7 +145,7 @@ test_that("run_ss3sim works with multiple scenarios without estimation", {
   skip_on_cran()
   df <- data.frame(
     admb_options = "-maxfn 0",
-    co.par_name = "c('NatM_p_1_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
+    co.par_name = "c('NatM_uniform_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
     co.par_int = "c(0.20001, 19.0001)",
     cf.years.1 = "26:100",
     cf.fval.1 = c("rep('0.1052', 75)", "rep(0.1, 75)"),

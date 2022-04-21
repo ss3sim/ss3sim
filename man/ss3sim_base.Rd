@@ -207,7 +207,7 @@ agecomp1 <- list(
 )
 
 E0 <- list(
-  par_name = c("LnQ_base_Fishery", "NatM_p_1_Fem_GP_1"),
+  par_name = c("LnQ_base_Fishery", "NatM_uniform_Fem_GP_1"),
   par_int = c(NA, NA), par_phase = c(-5, -1), forecast_num = 0
 )
 

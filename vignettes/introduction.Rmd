@@ -66,13 +66,20 @@ The software is widely used across the globe and has been around for 40+ years.
 The inspiration for {ss3sim} came from Hui-Hua Lee's hooilator software.
 hooliator parsed `data.ss_new` files into multiple files and
 created a consistent directory structure to store the results.
-These `ss_new` files are produced by Stock Synthesis,
-such that output that contains expected values is available with consistent formatting.
-The developers of {ss3sim} built off of the ideas within hooliator and
-added functions to sample from the expected values.
-Sampling from expected values was atypical,
-where most simulations typically relied on bootstrapped values
-that were provided in the Stock Synthesis output.
+As of Stock Synthesis 3.30.19,
+the need to separate out the `data.ss_new` file into separate files
+is no longer necessary because Stock Synthesis itself now ports the output
+into separate files, i.e.,
+the echoed data are in `data_echo.ss_new`,
+the expected values are in `data_expval.ss`, and
+simulated data sets are in `data_boot_**N.ss`.
+See the [section on output files in the Stock Synthesis manual][ss-manual-output-files]
+for more detailed information.
+{ss3sim} finishes the creation of simulation-specific directories similar to
+the directory structure that was created by hooliator.
+Additionally, {ss3sim} added functionality to sample from the expected values
+such that simulations were not forced to rely on bootstrapped values
+provided in `data_boot_**N.ss`.
 With a plethora of simulation output stored in structured folders,
 there was an imminent need for functions to visualize the results.
 [ggplot2][ggplot2]
@@ -243,7 +250,7 @@ simdf[, "hess_always"] <- TRUE
 
 Column entries of `simdf` need to be quoted if they are to be evaluated later, e.g.,
 `"seq(1,10,by=2)"` and
-`"c('NatM_p_1_Fem_GP_1', 'L_at_Amin_Fem_GP_1')"`.
+`"c('NatM_uniform_Fem_GP_1', 'L_at_Amin_Fem_GP_1')"`.
 Scalar values can numeric.
 Use single quotes inside of double quotes to quote text.
 Developers of {ss3sim} are working on a better, more tidyverse-like non-standard evaluation method such that quotes will not be needed.
@@ -424,7 +431,7 @@ The second scenario will estimate $M$ in phase `3`.
 
 ```{r change_e}
 df <- rbind(df, df)
-df[, "ce.par_name"] <- "NatM_p_1_Fem_GP_1"
+df[, "ce.par_name"] <- "NatM_uniform_Fem_GP_1"
 df[, "ce.par_int"] <- NA
 # Set the phase for estimating natural mortality
 df[, "ce.par_phase"] <- rep(c(-1, 3), each = 2)
@@ -502,7 +509,7 @@ df[, "ce.par_int"] <- 0.001
 df[, "ce.forecast_num"] <- 0
 df[, "si.years.2"] <- "seq(60, 100, by = 2)"
 df[, "si.sds_obs.2"] <- 0.001
-df[, "ce.par_name"] <- "NatM_p_1_Fem_GP_1"
+df[, "ce.par_name"] <- "NatM_uniform_Fem_GP_1"
 df[, "ce.par_int"] <- NA
 df[, "ce.par_phase"] <- c(-1, 3)
 df[, "scenarios"] <- c("D1-E100-F0-cod", "D1-E101-F0-M1-cod")

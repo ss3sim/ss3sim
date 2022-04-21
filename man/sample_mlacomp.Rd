@@ -67,7 +67,7 @@ containing the modified \code{.dat} file is returned invisibly.
 }
 \details{
 \strong{This function is in beta and untested. Use with caution.}
-Take a \code{data.SS_new} file, read in by \pkg{r4ss} function
+Take a \code{data_expval.ss} file, read in by \pkg{r4ss} function
 \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}} containing observed values, and
 sample from the observed ages to get realistic proportions for the number
 of fish in each age bin, then use the mean size-at-age and CV for growth to

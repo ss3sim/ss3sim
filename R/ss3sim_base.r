@@ -138,7 +138,7 @@
 #' )
 #'
 #' E0 <- list(
-#'   par_name = c("LnQ_base_Fishery", "NatM_p_1_Fem_GP_1"),
+#'   par_name = c("LnQ_base_Fishery", "NatM_uniform_Fem_GP_1"),
 #'   par_int = c(NA, NA), par_phase = c(-5, -1), forecast_num = 0
 #' )
 #'
@@ -468,14 +468,15 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
     # Run the operating model and copy the dat file over
     run_ss3model(dir = pathom, ...)
-    if (!file.exists(file.path(sc, i, "om", "data.ss_new"))) {
+    if (!file.exists(file.path(sc, i, "om", "data_expval.ss"))) {
       stop(
-        "The data.ss_new not created in the OM run for ",
+        "The data_expval.ss was not created in the OM run for ",
         sc, "-", i, ": is something wrong with initial model files?"
       )
     }
-    expdata <- r4ss::SS_readdat(file.path(sc, i, "om", "data.ss_new"),
-      section = 2, verbose = FALSE
+    expdata <- r4ss::SS_readdat(
+      file = file.path(sc, i, "om", "data_expval.ss"),
+      verbose = FALSE
     )
     # check that there is some catch to ensure the OM data data generation
     # did not fail.
