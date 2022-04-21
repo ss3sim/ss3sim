@@ -63,6 +63,7 @@ setup_scenarios_fleet <- function(data) {
   data <- data %>% dplyr::filter(!.data[["fleet"]] %in% removedfleets)
   #### Make data
   # Create a full data set providing one argument for each fleet
+  fleet <- NULL # To remove "no visible binding for global variable 'fleet'"
   newdata <- dplyr::full_join(
     by = c("arg", "fleet"),
     data,

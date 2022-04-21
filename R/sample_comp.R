@@ -124,6 +124,7 @@ sample_comp <- function(data,
       Nsamp = .data[[ifelse(useESS, "ESS", "ncalc")]],
       .data[["comp"]]
     )
+  comp <- NULL # To remove "no visible binding for global variable 'comp'"
   return(
     cbind(
       dplyr::select(all, -comp),
