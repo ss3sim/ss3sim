@@ -1,9 +1,11 @@
 # ss3sim 1.19.0
 
 * Bump version to match current version of SS3,
-  where version numbers of ss3sim will now be major version of ss3sim,
-  followed by minor version number of SS3, and terminated with minor version
-  number of ss3sim.
+  where version numbers of {ss3sim} include three parts separated by full stops.
+  The first number represents the major version of {ss3sim}.
+  The second number is the minor version, i.e.,
+  third set of digits, of the SS3 executable used in this version of {ss3sim}.
+  The third number is the minor version of {ss3sim}.
 
 * Remove dependency on bbmle to externally estimate growth.
 
