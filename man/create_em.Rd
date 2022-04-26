@@ -48,5 +48,5 @@ testthat::expect_true("codEM.ctl" \%in\% dir("new-em"),
 unlink(file.path(getwd(), "new-em"), recursive = TRUE)
 }
 \author{
-Kelli Faye Johnson
+Kelli F. Johnson
 }

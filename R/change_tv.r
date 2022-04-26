@@ -13,7 +13,7 @@
 #' @template ctl_file_out
 #' @template dat_file_in
 #' @template dat_file_out
-#' @author Kotaro Ono, Carey McGilliard, Kelli Johnson, and Kathryn Doering
+#' @author Kotaro Ono, Carey McGilliard, Kelli F. Johnson, and Kathryn Doering
 #' @family change functions
 #' @return The function creates modified versions of the  `.ctl` and
 #'   `.dat` files if ctl_file_out and dat_file_out are not NULL. The function
@@ -81,7 +81,7 @@
 #' change_tv(
 #'   change_tv_list =
 #'     list(
-#'       "NatM_p_1_Fem_GP_1" = c(rep(0, 20), rep(.1, 80)),
+#'       "NatM_uniform_Fem_GP_1" = c(rep(0, 20), rep(.1, 80)),
 #'       "SR_BH_steep" = stats::rnorm(100, 0, 0.05)
 #'     ),
 #'   ctl_file_in = "codOM.ctl",

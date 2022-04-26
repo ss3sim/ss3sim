@@ -63,6 +63,7 @@ setup_scenarios_fleet <- function(data) {
   data <- data %>% dplyr::filter(!.data[["fleet"]] %in% removedfleets)
   #### Make data
   # Create a full data set providing one argument for each fleet
+  fleet <- NULL # To remove "no visible binding for global variable 'fleet'"
   newdata <- dplyr::full_join(
     by = c("arg", "fleet"),
     data,
@@ -294,7 +295,7 @@ setup_scenarios_lookup <- function() {
 #' on the output when you want to have more than one scenario.
 #' All rows will be identical with the default settings.
 #' The default is a single row.
-#' @author Kelli Faye Johnson
+#' @author Kelli F. Johnson
 #' @export
 #' @return A data frame with the minimal information needed to run a scenario.
 #' The number of rows of the data frame depends on `nscenarios`.

@@ -11,7 +11,7 @@
 #' was provided in `dfs`.
 #' @param fillwith A single value that will be used to populate all
 #' of the missing columns.
-#' @author Kelli Faye Johnson
+#' @author Kelli F. Johnson
 #' @return Depending on the input to `bind` you can either
 #' return the same structure, i.e., a list of data frames, or
 #' a data frame with all rows from each original data frame.

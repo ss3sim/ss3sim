@@ -23,5 +23,5 @@ run within ss3sim. Users can add more arguments, but the scenario will run
 without changing the returned value.
 }
 \author{
-Kelli Faye Johnson
+Kelli F. Johnson
 }

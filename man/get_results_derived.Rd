@@ -23,6 +23,6 @@ Other get-results:
 \code{\link{get_results_timeseries}()}
 }
 \author{
-Kelli Johnson
+Kelli F. Johnson
 }
 \concept{get-results}

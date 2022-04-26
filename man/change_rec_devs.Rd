@@ -50,5 +50,5 @@ change_rec_devs(
 sapply(dir(tempdir(), pattern = "control_.+ss", full.names = TRUE), unlink)
 }
 \author{
-Kelli Faye Johnson
+Kelli F. Johnson
 }

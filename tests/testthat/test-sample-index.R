@@ -13,8 +13,9 @@ a <- list("index" = list(
   "sds_obs" = list(0.2)
 ))
 
-exp_vals <- r4ss::SS_readdat(file.path(d, "example-om", "ss3_expected_values.dat"),
-  version = NULL, verbose = FALSE
+exp_vals <- r4ss::SS_readdat(
+  file = file.path(d, "example-om", "ss3_expected_values.dat"),
+  verbose = FALSE
 )
 
 test_that("sample_index() works for 1 fleet", {

@@ -25,7 +25,7 @@ dat <- r4ss::SS_readdat(
 test_that("A season-specific data file looks right.", {
   df <- data.frame(
     bias_adjust = FALSE,
-    ce.par_name = "c('NatM_p_1_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
+    ce.par_name = "c('NatM_uniform_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
     ce.par_int = "c(0.2, 19.9)",
     ce.par_phase = "c(-1, -4)",
     cf.years.1 = "26:100", cf.fval.1 = "rep('0.1052', 75)",
@@ -57,7 +57,7 @@ test_that("Specifying season and part works.", {
   # and numeric, such as seasons here if season.2 was 2 instead of "2"
   df <- data.frame(
     bias_adjust = FALSE,
-    ce.par_name = "c('NatM_p_1_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
+    ce.par_name = "c('NatM_uniform_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
     ce.par_int = "c(0.2, 19.9)",
     ce.par_phase = "c(-1, -4)",
     cf.years.1 = "26:100", cf.fval.1 = "rep('0.1052', 75)",
@@ -97,7 +97,7 @@ test_that("Repeat some years for each part.", {
   # and numeric, such as seasons here if season.2 was 2 instead of "2"
   df <- data.frame(
     bias_adjust = FALSE,
-    ce.par_name = "c('NatM_p_1_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
+    ce.par_name = "c('NatM_uniform_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
     ce.par_int = "c(0.2, 19.9)",
     ce.par_phase = "c(-1, -4)",
     cf.years.1 = "26:100", cf.fval.1 = "rep('0.1052', 75)",
@@ -140,7 +140,7 @@ test_that("Survey with all months runs", {
   set.seed(3)
   df <- data.frame(
     bias_adjust = FALSE,
-    ce.par_name = "c('NatM_p_1_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
+    ce.par_name = "c('NatM_uniform_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
     ce.par_int = "c(0.2, 19.9)",
     ce.par_phase = "c(-1, 4)",
     cf.years.1 = "26:100", cf.fval.1 = "rep('0.1052', 75)",

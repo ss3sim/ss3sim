@@ -33,18 +33,3 @@ plot_lines <- function(data, x = "year", y,
   if (print) print(g)
   return(invisible(g))
 }
-
-plot_ts_lines <- function(data, y,
-                          horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL,
-                          relative.error = FALSE, axes.free = TRUE, print = TRUE,
-                          color = NULL) {
-  .Deprecated("plot_lines", package = "ss3sim")
-  plot_lines(
-    data = data, x = "year", y = y,
-    horiz = horiz, horiz2 = horiz2,
-    vert = vert, vert2 = vert2,
-    relative.error = relative.error,
-    axes.free = axes.free, print = print,
-    color = color
-  )
-}

@@ -47,5 +47,5 @@ testthat::expect_true(ss3sim:::check_eqlength(yes = NULL, no = NULL),
 
 }
 \author{
-Kelli Faye Johnson
+Kelli F. Johnson
 }

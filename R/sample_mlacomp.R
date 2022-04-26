@@ -1,14 +1,14 @@
 #' **BETA VERSION** Sample mean length (size-)-at-age data and write to file for use by the EM
 #'
 #' @details **This function is in beta and untested. Use with caution.**
-#' Take a `data.SS_new` file, read in by \pkg{r4ss} function
+#' Take a `data_expval.ss` file, read in by \pkg{r4ss} function
 #'   [r4ss::SS_readdat()] containing observed values, and
 #'   sample from the observed ages to get realistic proportions for the number
 #'   of fish in each age bin, then use the mean size-at-age and CV for growth to
 #'   generate random samples of size, which are then averaged to get mean
 #'   length-at-age values. These values are then written to file for the
 #'   EM.
-#' @author Cole Monnahan, Kelli Johnson
+#' @author Cole Monnahan, Kelli F. Johnson
 #'
 #' @template lcomp-agecomp-index
 #' @template Nsamp
@@ -19,8 +19,6 @@
 #'   uncertainty about size for fish sampled in each age bin.
 #' @param mean_outfile A path to write length and age data for external
 #' estimation of parametric growth. If `NULL` no file will be written.
-#' This file is used by [change_e()] to externally estimate growth
-#' parameters. Filename must contain "vbgf" to be used by [change_e()].
 #' Also, if "remove" is included in the filename, the mean length at age data
 #' will be removed from the `.dat` file and not be available to the EM.
 #' @param verbose Logical value whether or not diagnostic information from
@@ -32,15 +30,16 @@
 sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
                            years, mean_outfile = NULL,
                            verbose = TRUE) {
-  ss_version <- get_ss_ver_dl(dat_list)
   ## If fleets==NULL, quit here and delete the data so the EM doesn't use it.
   if (is.null(fleets)) {
     dat_list$MeanSize_at_Age_obs <- NULL
     dat_list$N_MeanSize_at_Age_obs <- 0
     if (!is.null(outfile)) {
       r4ss::SS_writedat(
-        datlist = dat_list, outfile = outfile, overwrite = TRUE,
-        version = ss_version, verbose = verbose
+        datlist = dat_list,
+        outfile = outfile,
+        overwrite = TRUE,
+        verbose = verbose
       )
     }
     return(invisible(dat_list))
@@ -58,7 +57,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
   agebin_vector <- dat_list$agebin_vector
 
   ## Read in the control file
-  ctl <- r4ss::SS_parlines(ctl_file_in, version = ss_version)
+  ctl <- r4ss::SS_parlines(ctl_file_in)
   CV.growth <- ctl[ctl$Label == "CV_young_Fem_GP_1", "INIT"]
   CV.growth.old <- ctl[ctl$Label == "CV_old_Fem_GP_1", "INIT"]
   if (CV.growth != CV.growth.old) {
@@ -241,7 +240,6 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
     r4ss::SS_writedat(
       datlist = dat_list,
       outfile = outfile,
-      version = ss_version,
       overwrite = TRUE,
       verbose = verbose
     )

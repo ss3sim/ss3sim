@@ -37,9 +37,8 @@
 #' verify_input(model_dir = file.path(temp_path, "cod-em"), type = "em")
 #' unlink(temp_path, recursive = TRUE)
 verify_input <- function(model_dir, type = c("om", "em")) {
-  type <- match.arg(type)
+  type <- match.arg(type, several.ok = FALSE)
 
-  type <- type[1]
   ctl_name <- paste0(type, ".ctl")
 
   # Ensure correct files are provided
@@ -56,23 +55,14 @@ verify_input <- function(model_dir, type = c("om", "em")) {
       f.dat <- NA
     }
   }
-  if (type == "om") {
 
-    # commented out, because the inital .par will be generated in ss3sim_base(),
-    # to ensure it is consistent with the ctl file.
-    # if (length(grep("ss.par", files, ignore.case = TRUE))) {
-    #   f.par <- grep("ss.par", files, ignore.case = TRUE)
-    # } else {
-    #   f.par <- NA
-    # }
-  }
   if (length(grep("starter.ss", files, ignore.case = TRUE))) {
-    f.starter <- grep("starter.ss", files, ignore.case = TRUE)
+    f.starter <- grep("starter.ss$", files, ignore.case = TRUE)
   } else {
     f.starter <- NA
   }
   if (length(grep("forecast.ss", files, ignore.case = TRUE))) {
-    f.forecast <- grep("forecast.ss", files, ignore.case = TRUE)
+    f.forecast <- grep("^forecast.ss$", files, ignore.case = TRUE)
   } else {
     f.forecast <- NA
   }

@@ -100,7 +100,7 @@ setwd("cod-om")
 change_tv(
   change_tv_list =
     list(
-      "NatM_p_1_Fem_GP_1" = c(rep(0, 20), rep(.1, 80)),
+      "NatM_uniform_Fem_GP_1" = c(rep(0, 20), rep(.1, 80)),
       "SR_BH_steep" = stats::rnorm(100, 0, 0.05)
     ),
   ctl_file_in = "codOM.ctl",
@@ -124,6 +124,6 @@ Other change functions:
 \code{\link{change_retro}()}
 }
 \author{
-Kotaro Ono, Carey McGilliard, Kelli Johnson, and Kathryn Doering
+Kotaro Ono, Carey McGilliard, Kelli F. Johnson, and Kathryn Doering
 }
 \concept{change functions}

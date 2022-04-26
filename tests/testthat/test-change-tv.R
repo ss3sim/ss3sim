@@ -3,15 +3,15 @@ d <- system.file("extdata", package = "ss3sim")
 om <- paste0(d, "/models/cod-om")
 
 test_that("change_tv() works for a MG param.", {
-  tv_params <- list(NatM_p_1_Fem_GP_1 = seq(0.05, 0.1, length.out = 100))
+  tv_params <- list(NatM_uniform_Fem_GP_1 = seq(0.05, 0.1, length.out = 100))
   out <- suppressWarnings(change_tv(tv_params,
     ctl_file_in = file.path(om, "codOM.ctl"), ctl_file_out = NULL,
     dat_file_in = file.path(om, "codOM.dat"), dat_file_out = NULL
   ))
 
-  expect_equal(out$dat_out$envdat$Value, tv_params$NatM_p_1_Fem_GP_1)
+  expect_equal(out$dat_out$envdat$Value, tv_params$NatM_uniform_Fem_GP_1)
   expect_length(grep(
-    "0.01 1.8 0.2 0.1 0.8 0 -3 201 0 0 0 0 0 0 # NatM_p_1_Fem_GP_1",
+    "0.01 1.8 0.2 0.1 0.8 0 -3 201 0 0 0 0 0 0 # NatM_uniform_Fem_GP_1",
     out$ctl_out
   ), 1)
   expect_length(grep(
@@ -23,7 +23,7 @@ test_that("change_tv() works for a MG param.", {
 test_that("change_tv() works for an MG param and an SR param", {
   # add SR param.
   tv_params <- list(
-    "NatM_p_1_Fem_GP_1" = seq(0.05, 0.1, length.out = 100),
+    "NatM_uniform_Fem_GP_1" = seq(0.05, 0.1, length.out = 100),
     "SR_BH_steep" = seq(0.05, 0.01, length.out = 100)
   )
   out <- suppressWarnings(change_tv(tv_params,
@@ -32,10 +32,10 @@ test_that("change_tv() works for an MG param and an SR param", {
   ))
   expect_equal(
     out$dat_out$envdat$Value,
-    c(tv_params$NatM_p_1_Fem_GP_1, tv_params$SR_BH_steep)
+    c(tv_params$NatM_uniform_Fem_GP_1, tv_params$SR_BH_steep)
   )
   expect_length(grep(
-    "0.01 1.8 0.2 0.1 0.8 0 -3 201 0 0 0 0 0 0 # NatM_p_1_Fem_GP_1",
+    "0.01 1.8 0.2 0.1 0.8 0 -3 201 0 0 0 0 0 0 # NatM_uniform_Fem_GP_1",
     out$ctl_out
   ), 1)
   expect_length(grep(
@@ -108,7 +108,7 @@ test_that("change_tv() works for a selectivity parm", {
 
 test_that("change_tv() works when there are 2 MG parms", {
   tv_params <- list(
-    "NatM_p_1_Fem_GP_1" = seq(0.01, 0.05, length.out = 100),
+    "NatM_uniform_Fem_GP_1" = seq(0.01, 0.05, length.out = 100),
     "VonBert_K_Fem_GP_1" = seq(0.02, 0.06, length.out = 100)
   )
   out <- suppressWarnings(change_tv(tv_params,
@@ -117,9 +117,9 @@ test_that("change_tv() works when there are 2 MG parms", {
   ))
   expect_equal(
     out$dat_out$envdat$Value,
-    c(tv_params$NatM_p_1_Fem_GP_1, tv_params$VonBert_K_Fem_GP_1)
+    c(tv_params$NatM_uniform_Fem_GP_1, tv_params$VonBert_K_Fem_GP_1)
   )
-  expect_length(grep("0.01 1.8 0.2 0.1 0.8 0 -3 201 0 0 0 0 0 0 # NatM_p_1_Fem_GP_1",
+  expect_length(grep("0.01 1.8 0.2 0.1 0.8 0 -3 201 0 0 0 0 0 0 # NatM_uniform_Fem_GP_1",
     out$ctl_out,
     fixed = TRUE
   ), 1)

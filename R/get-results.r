@@ -483,7 +483,7 @@ get_results_timeseries <- function(report.file) {
 #' @template report.file
 #' @export
 #' @family get-results
-#' @author Kelli Johnson
+#' @author Kelli F. Johnson
 get_results_derived <- function(report.file) {
   # todo: Move val-1/std to stddev column for those pars that need it
   # todo: move time series values to the time series data frame

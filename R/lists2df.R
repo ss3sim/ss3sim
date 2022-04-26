@@ -12,7 +12,7 @@
 #' was taken from within each list. For example, if each list has two
 #' vectors and the first vector is of length 3 and the second is of
 #' length 4, then the index column will be `c(rep(1,3), rep(2,4))`.
-#' @author Kelli Faye Johnson
+#' @author Kelli F. Johnson
 #' @examples
 #' ss3sim:::lists2df(list(1:2, 5:10), list(3:4, 5:10))
 #' ss3sim:::lists2df(years = list(1:2, 5:10), fvals = list(3:4, 5:10))

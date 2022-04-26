@@ -86,8 +86,10 @@ sample_discard <- function(dat_list,
   dat_list$discard_data <- as.data.frame(new)
   if (!is.null(outfile)) {
     r4ss::SS_writedat(
-      datlist = dat_list, outfile = outfile, overwrite = TRUE,
-      version = dat_list$ReadVersion, verbose = FALSE
+      datlist = dat_list,
+      outfile = outfile,
+      overwrite = TRUE,
+      verbose = FALSE
     )
   }
 

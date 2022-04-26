@@ -68,28 +68,3 @@ plot_points <- function(data, x, y,
   if (print) print(g)
   invisible(g)
 }
-
-plot_scalar_points <- function(data, x, y,
-                               horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL,
-                               color = NULL, relative.error = FALSE, axes.free = TRUE, print = TRUE) {
-  .Deprecated("plot_points", package = "ss3sim")
-  plot_points(
-    data = data, x = x, y = y,
-    horiz = horiz, horiz2 = horiz2,
-    vert = vert, vert2 = vert2,
-    color = color, relative.error = relative.error,
-    axes.free = axes.free, print = print
-  )
-}
-plot_ts_points <- function(data, y,
-                           horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL,
-                           color = NULL, relative.error = FALSE, axes.free = TRUE, print = TRUE) {
-  .Deprecated("plot_points", package = "ss3sim")
-  plot_points(
-    data = data, x = "year", y = y,
-    horiz = horiz, horiz2 = horiz2,
-    vert = vert, vert2 = vert2,
-    color = color, relative.error = relative.error,
-    axes.free = axes.free, print = print
-  )
-}

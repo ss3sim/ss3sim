@@ -9,11 +9,6 @@ run_ss3sim(
   simdf = NULL,
   parallel = FALSE,
   parallel_iterations = FALSE,
-  scenarios = deprecated(),
-  case_folder = deprecated(),
-  om_dir = deprecated(),
-  em_dir = deprecated(),
-  case_files = deprecated(),
   ...
 )
 }
@@ -23,7 +18,6 @@ run_ss3sim(
 If any iterations already exist, then ss3sim will skip over them.}
 
 \item{simdf}{A data frame of instructions with one row per scenario.
-The data frame replaces the old method of using case files.
 See \code{\link[=setup_scenarios_defaults]{setup_scenarios_defaults()}} for default values that will be
 passed to ss3sim for a generic simulation to get you started. These
 values will be used if \code{simdf} is left at its default value of \code{NULL}.}
@@ -38,28 +32,6 @@ run scenarios in parallel. If you set \code{parallel = TRUE} and
 \code{parallel_iterations = TRUE} then the iterations will be run in
 parallel. This would be useful if you were only running one scenario
 but you wanted to run it faster.}
-
-\item{scenarios}{\emph{Deprecated}. Which scenarios to run. A vector of character objects. For
-example \code{c("D0-F0-cod", "D1-F1-cod")}.
-The scenarios should be specified in \code{simdf}.}
-
-\item{case_folder}{\emph{Deprecated}. The folder containing the plain-text case files.}
-
-\item{om_dir}{\emph{Deprecated}. The folder containing the Stock Synthesis operating model
-configuration files.
-Specify the om_dir within \code{simdf}.}
-
-\item{em_dir}{\emph{Deprecated}. The folder containing the Stock Synthesis estimation model
-configuration files.
-Specify the om_dir within \code{simdf}.}
-
-\item{case_files}{\emph{Deprecated}. A named list that relates the case IDs to the files to
-return. \bold{The default list specifies only the required fishing
-mortality and data scenarios. To specify other cases you will need to
-extend this named list}. This argument is passed to
-\code{\link[=get_caseargs]{get_caseargs()}}. See that function for details and examples of
-how to specify this. The introduction vignette also explains how to specify
-the case files.}
 
 \item{...}{Anything else to pass to \code{\link[=ss3sim_base]{ss3sim_base()}}. This could
 include \code{bias_adjust}. Also, you can pass

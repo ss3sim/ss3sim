@@ -163,8 +163,10 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
     newfile$agecomp <- agecomp.age # only leave in maraginal age comps
     if (!is.null(outfile)) {
       r4ss::SS_writedat(
-        datlist = newfile, outfile = outfile, version = ss_version,
-        overwrite = TRUE, verbose = FALSE
+        datlist = newfile,
+        outfile = outfile,
+        overwrite = TRUE,
+        verbose = FALSE
       )
     }
     return(invisible(newfile))
@@ -205,7 +207,6 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
   check_data(dat_list)
 
   # Get necessary values
-  ss_version <- get_ss_ver_dl(dat_list) # to use later in SS_writedat calls
   if (lcomps_sampled == TRUE) {
     lencomp_marginal <- dat_list$lencomp
   } else {
@@ -464,8 +465,10 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
   ## Write the modified file
   if (!is.null(outfile)) {
     r4ss::SS_writedat(
-      datlist = newfile, outfile = outfile,
-      version = ss_version, overwrite = TRUE, verbose = FALSE
+      datlist = newfile,
+      outfile = outfile,
+      overwrite = TRUE,
+      verbose = FALSE
     )
   }
   invisible(newfile)

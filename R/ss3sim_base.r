@@ -88,9 +88,6 @@
 #' \item ...
 #' }
 #'
-# The input and output file structure of an \pkg{ss3sim} simulation:
-#
-# \figure{filestructure.png}
 #'
 #' @seealso [run_ss3sim()]
 #' @export
@@ -101,9 +98,6 @@
 #' (see the example below). For a generic higher-level function, see
 #' [run_ss3sim()].
 #'
-#' The steps carried out within `ss3sim_base`:
-#'
-#' \figure{simsteps.png}
 #'
 #' @examples
 #' \dontrun{
@@ -144,7 +138,7 @@
 #' )
 #'
 #' E0 <- list(
-#'   par_name = c("LnQ_base_Fishery", "NatM_p_1_Fem_GP_1"),
+#'   par_name = c("LnQ_base_Fishery", "NatM_uniform_Fem_GP_1"),
 #'   par_int = c(NA, NA), par_phase = c(-5, -1), forecast_num = 0
 #' )
 #'
@@ -264,7 +258,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
     # Find number of years in OM to change recdevs and F
     datfile.orig <- r4ss::SS_readdat(file.path(sc, i, "om", "ss3.dat"),
-      version = NULL, verbose = FALSE
+      verbose = FALSE
     )
     forfile.orig <- r4ss::SS_readforecast(file.path(sc, i, "om", "forecast.ss"),
       verbose = FALSE
@@ -469,20 +463,20 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     r4ss::SS_writedat(
       datlist = datfile.modified,
       outfile = file.path(sc, i, "om", "ss3.dat"),
-      version = datfile.modified$ReadVersion,
       overwrite = TRUE, verbose = FALSE
     )
 
     # Run the operating model and copy the dat file over
     run_ss3model(dir = pathom, ...)
-    if (!file.exists(file.path(sc, i, "om", "data.ss_new"))) {
+    if (!file.exists(file.path(sc, i, "om", "data_expval.ss"))) {
       stop(
-        "The data.ss_new not created in the OM run for ",
+        "The data_expval.ss was not created in the OM run for ",
         sc, "-", i, ": is something wrong with initial model files?"
       )
     }
-    expdata <- r4ss::SS_readdat(file.path(sc, i, "om", "data.ss_new"),
-      section = 2, verbose = FALSE
+    expdata <- r4ss::SS_readdat(
+      file = file.path(sc, i, "om", "data_expval.ss"),
+      verbose = FALSE
     )
     # check that there is some catch to ensure the OM data data generation
     # did not fail.
@@ -503,7 +497,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     ## write it back to file at the end, before running the EM.
     # todo: use expdata rather than reading in the file again
     dat_list <- r4ss::SS_readdat(file.path(sc, i, "em", "ss3.dat"),
-      version = NULL, verbose = FALSE
+      verbose = FALSE
     )
 
     ## Sample catches
@@ -653,17 +647,18 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       ctl_list = NULL, dat_list = datfile.modified,
       ctl_file_out = NULL
     )
-    ss_version <- get_ss_ver_dl(dat_list)
     newlists <- change_year(dat_list, ctl_list)
     r4ss::SS_writedat(
       datlist = newlists$dat_list,
       outfile = file.path(sc, i, "em", "ss3.dat"),
-      version = ss_version, overwrite = TRUE, verbose = FALSE
+      overwrite = TRUE,
+      verbose = FALSE
     )
     r4ss::SS_writectl(
       ctllist = newlists$ctl_list,
       outfile = file.path(sc, i, "em", "em.ctl"),
-      version = ss_version, overwrite = TRUE, verbose = FALSE
+      overwrite = TRUE,
+      verbose = FALSE
     )
     # Add dirichlet multinomial parameters if using
     if (!is.null(weight_comps_params)) {
@@ -675,6 +670,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           fleets = weight_comps_params[["fleets"]],
           dir = pathem,
           model = get_bin(bin_name = "ss"),
+          exe_in_path = TRUE,
           extras = ifelse(hess_always | bias_adjust, "", "-nohess"),
           verbose = FALSE
         )
@@ -710,6 +706,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           option = weight_comps_params[["method"]], ,
           fleets = weight_comps_params[["fleets"]],
           niters_tuning = weight_comps_params[["niters_weighting"]],
+          exe_in_path = TRUE,
           extras = ifelse(hess_always | bias_adjust, "", "-nohess"),
           systemcmd = TRUE,
           model = get_bin(bin_name = "ss"),

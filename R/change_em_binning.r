@@ -31,7 +31,7 @@
 #' # Note that typically this function is used with estimation models in ss3sim,
 #' # but it is used with an operating model data file in the following examples.
 #' f <- system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim")
-#' d <- r4ss::SS_readdat(f, version = NULL, verbose = FALSE)
+#' d <- r4ss::SS_readdat(f, verbose = FALSE)
 #'
 #' # An example with lbin_method = 1
 #' l1 <- change_em_binning(d,
@@ -308,12 +308,10 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
   }
 
   if (!is.null(outfile)) {
-    SS_version <- get_ss_ver_dl(dat_list)
     r4ss::SS_writedat(
       datlist = dat_list,
       outfile = outfile,
       overwrite = TRUE,
-      version = SS_version,
       verbose = FALSE
     )
   }

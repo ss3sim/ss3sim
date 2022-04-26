@@ -179,7 +179,7 @@ change_data <- function(dat_list, outfile = NULL, fleets, years,
 
   if (!is.null(outfile)) {
     r4ss::SS_writedat(
-      datlist = dat_list, outfile = outfile, version = dat_list$ReadVersion,
+      datlist = dat_list, outfile = outfile,
       overwrite = TRUE, verbose = FALSE
     )
   }

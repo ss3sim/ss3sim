@@ -1,3 +1,17 @@
+# ss3sim 1.19.0
+
+* Bump version to match current version of SS3,
+  where version numbers of {ss3sim} include three parts separated by full stops.
+  The first number represents the major version of {ss3sim}.
+  The second number is the minor version, i.e.,
+  third set of digits, of the SS3 executable used in this version of {ss3sim}.
+  The third number is the minor version of {ss3sim}.
+
+* Remove dependency on bbmle to externally estimate growth.
+
+* Deprecate functions that were not being used in the code base, i.e.,
+  cleanup_ss3, get_bin_info, change_rec_devs_par, ...
+
 # ss3sim 1.1.8
 
 * Fix bug related to tidyverse in [sample_comp()] where the composition
@@ -131,7 +145,7 @@ SS_writestarter to decrease the amount of original code in ss3sim
 to not change the users working directory when possible.
 * Change to providing a single model inside the package rather than
 maintaining models both in the package and in ss3sim/ss3models
-* Kelli Faye Johnson is now the maintainer of the package
+* Kelli F. Johnson is now the maintainer of the package
 * updated authors to reflect current contributors
 * reduced the complexity of sampling functions by initiating the same
 protocol for ages and lengths, where each function calls a simple function

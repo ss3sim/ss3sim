@@ -1,8 +1,8 @@
 
 
-data("scalar_dat", package = "ss3sim")
-
 test_that("plot_cummean works", {
+  data("scalar_dat", package = "ss3sim")
+
   obj <- plot_cummean(scalar_dat,
     "VonBert_K_Fem_GP_1",
     group = "scenario",

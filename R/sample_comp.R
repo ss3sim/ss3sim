@@ -20,7 +20,7 @@
 #' @template lcomp-agecomp
 #' @template sampledots
 #'
-#' @author Kelli Faye Johnson
+#' @author Kelli F. Johnson
 #' @return A data frame of observed composition data.
 #'
 sample_comp <- function(data,
@@ -124,6 +124,7 @@ sample_comp <- function(data,
       Nsamp = .data[[ifelse(useESS, "ESS", "ncalc")]],
       .data[["comp"]]
     )
+  comp <- NULL # To remove "no visible binding for global variable 'comp'"
   return(
     cbind(
       dplyr::select(all, -comp),

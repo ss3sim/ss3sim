@@ -28,5 +28,5 @@ A \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}} list with an augmented start
 Change start year of the data file
 }
 \author{
-Kelli Faye Johnson
+Kelli F. Johnson
 }

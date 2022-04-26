@@ -38,7 +38,7 @@
 #' d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
 #' data.old <- r4ss::SS_readdat(
 #'   dir(d, pattern = ".dat", full.names = TRUE),
-#'   version = NULL, verbose = FALSE
+#'   verbose = FALSE
 #' )
 #' change_e(
 #'   ctl_file_in = file.path(d, "codOM.ctl"),
@@ -98,61 +98,17 @@ change_e <- function(ctl_file_in = "em.ctl",
       }
     }
   )
-  # get the ss_version from the control file to use with r4ss functions
-  ss_version <- get_ss_ver_file(ctl_file_out)
   ss3.ctl <- readLines(ctl_file_out)
-  # Run external estimator for growth if needed
-  if (any(grepl("change_e_vbgf", par_int))) {
-    if (length(dir(pattern = "vbgf")) != 1) {
-      stop(
-        "The necessary file containing \"vbgf\" does not exist in ",
-        getwd(), ". Please make sure the correct data is available for the ",
-        "external estimator."
-      )
-    }
-    data <- utils::read.csv(dir(pattern = "vbgf"), header = TRUE)
-    # Get start values
-    pars <- r4ss::SS_parlines(ctl_file_out, version = ss_version, verbose = FALSE)
-    change_e_vbgf <- try(
-      sample_fit_vbgf(
-        length.data = data,
-        start.L1 = with(pars, INIT[Label == "L_at_Amin_Fem_GP_1"]),
-        start.L2 = with(pars, INIT[Label == "L_at_Amax_Fem_GP_1"]),
-        start.k = with(pars, INIT[Label == "VonBert_K_Fem_GP_1"]),
-        start.cv.young = with(pars, INIT[Label == "CV_young_Fem_GP_1"]),
-        start.cv.old = with(pars, INIT[Label == "CV_old_Fem_GP_1"]),
-        lo.L1 = with(pars, LO[Label == "L_at_Amin_Fem_GP_1"]),
-        lo.L2 = with(pars, LO[Label == "L_at_Amax_Fem_GP_1"]),
-        lo.k = with(pars, LO[Label == "VonBert_K_Fem_GP_1"]),
-        lo.cv.young = with(pars, LO[Label == "CV_young_Fem_GP_1"]),
-        lo.cv.old = with(pars, LO[Label == "CV_old_Fem_GP_1"]),
-        hi.L1 = with(pars, HI[Label == "L_at_Amin_Fem_GP_1"]),
-        hi.L2 = with(pars, HI[Label == "L_at_Amax_Fem_GP_1"]),
-        hi.k = with(pars, HI[Label == "VonBert_K_Fem_GP_1"]),
-        hi.cv.young = with(pars, HI[Label == "CV_young_Fem_GP_1"]),
-        hi.cv.old = with(pars, HI[Label == "CV_old_Fem_GP_1"]),
-        a3 = min(data$age), A = max(data$age)
-      ),
-      silent = TRUE
-    )
-    # Get par estimates and append them to par_name par_int and par_phase
-    changeinits <- which(par_int == "change_e_vbgf")
-    keep <- sapply(par_name[changeinits], grep, names(change_e_vbgf),
-      ignore.case = TRUE
-    )
-    par_int[changeinits] <- unlist(change_e_vbgf)[keep]
-    par_int[!par_int %in% c(NA, "NA", "Nan")] <-
-      as.numeric(par_int[!par_int %in% c(NA, "NA", "Nan")])
-  }
-
 
   if (!is.null(par_name)) {
     par_name <- unlist(strsplit(par_name, split = ","))
     par_name_q <- grep("LnQ_", par_name, value = TRUE)
     if (length(par_name_q) > 0) {
       parsinmodel <- r4ss::SS_parlines(
-        ctlfile = ctl_file_out, dir = NULL,
-        version = ss_version, verbose = verbose, active = FALSE
+        ctlfile = ctl_file_out,
+        dir = NULL,
+        verbose = verbose,
+        active = FALSE
       )
       defaultq <- r4ss::SS_parlines(
         dir = NULL,
@@ -161,7 +117,8 @@ change_e <- function(ctl_file_in = "em.ctl",
           path = system.file("extdata", "models", "cod-em", package = "ss3sim"),
           full.names = TRUE
         ),
-        version = ss_version, verbose = verbose, active = FALSE
+        verbose = verbose,
+        active = FALSE
       )
       defaultq <- defaultq[grep("LnQ_", defaultq$Label), ]
       fleet_q <- sapply(
@@ -225,9 +182,12 @@ change_e <- function(ctl_file_in = "em.ctl",
     endyr_orig <- dat_list$endyr
     dat_list$endyr <- dat_list$endyr - forecast_num
     ss3.for <- r4ss::SS_readforecast(
-      file = for_file_in, Nfleets = dat_list$Nfleet,
-      Nareas = dat_list$N_areas, version = ss_version, verbose = verbose,
-      nseas = dat_list$nseas, readAll = TRUE
+      file = for_file_in,
+      Nfleets = dat_list$Nfleet,
+      Nareas = dat_list$N_areas,
+      verbose = verbose,
+      nseas = dat_list$nseas,
+      readAll = TRUE
     )
     ss3.for <- check_forecast(ss3.for)
     ss3.for$Nforecastyrs <- forecast_num

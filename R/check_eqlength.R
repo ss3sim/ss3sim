@@ -10,7 +10,7 @@
 #' should continue or terminate upon finding input arguments of
 #' non-equal length. The default, `FALSE`, produces an
 #' error and terminates the function.
-#' @author Kelli Faye Johnson
+#' @author Kelli F. Johnson
 #' @return `TRUE` or `FALSE` depending on the result
 #' of the test. Nothing is returned if the stop function is invoked.
 #' @examples

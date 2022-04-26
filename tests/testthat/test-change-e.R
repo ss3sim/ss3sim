@@ -9,7 +9,7 @@ file.copy(file.path(d, "models", "cod-om"), ".", recursive = TRUE)
 setwd("cod-om")
 on.exit(setwd(wd.old), add = TRUE)
 on.exit(unlink(temp_path, recursive = TRUE), add = TRUE)
-datalist <- r4ss::SS_readdat("codOM.dat", verbose = F, version = NULL)
+datalist <- r4ss::SS_readdat("codOM.dat", verbose = F)
 
 
 test_that("change_e changes forecast year successfully", {
