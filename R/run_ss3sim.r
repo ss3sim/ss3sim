@@ -105,8 +105,6 @@ run_ss3sim <- function(iterations,
                        parallel = FALSE,
                        parallel_iterations = FALSE,
                        ...) {
-
-
   if (parallel) {
     cores <- setup_parallel()
     if (cores == 1) parallel <- FALSE
