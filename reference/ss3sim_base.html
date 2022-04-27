@@ -24,7 +24,7 @@ is typically not called by the user but called from run_ss3sim().
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ss3sim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.19.0</span>
       </span>
     </div>
 
@@ -235,8 +235,6 @@ mortality, survey catch-per-unit-effort settings,
 length-composition data settings, etc. in the function call as list objects
 (see the example below). For a generic higher-level function, see
 <code><a href="run_ss3sim.html">run_ss3sim()</a></code>.</p>
-<p>The steps carried out within <code>ss3sim_base</code>:</p>
-<p><img src="figures/simsteps.png" alt=""></p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -288,7 +286,7 @@ the DESCRIPTION file.</p>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">E0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  par_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LnQ_base_Fishery"</span>, <span class="st">"NatM_p_1_Fem_GP_1"</span><span class="op">)</span>,</span>
+<span class="r-in">  par_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LnQ_base_Fishery"</span>, <span class="st">"NatM_uniform_Fem_GP_1"</span><span class="op">)</span>,</span>
 <span class="r-in">  par_int <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>, par_phase <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>, forecast_num <span class="op">=</span> <span class="fl">0</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"></span>
@@ -322,11 +320,11 @@ the DESCRIPTION file.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
+  <p></p><p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

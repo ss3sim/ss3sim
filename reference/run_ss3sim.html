@@ -21,7 +21,7 @@ can run ss3sim_base() directly using your own lists."><!-- mathjax --><script sr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ss3sim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.19.0</span>
       </span>
     </div>
 
@@ -82,11 +82,6 @@ can run <code><a href="ss3sim_base.html">ss3sim_base()</a></code> directly using
   simdf <span class="op">=</span> <span class="cn">NULL</span>,
   parallel <span class="op">=</span> <span class="cn">FALSE</span>,
   parallel_iterations <span class="op">=</span> <span class="cn">FALSE</span>,
-  scenarios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,
-  case_folder <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,
-  om_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,
-  em_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,
-  case_files <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,
   <span class="va">...</span>
 <span class="op">)</span></code></pre></div>
     </div>
@@ -99,7 +94,6 @@ can run <code><a href="ss3sim_base.html">ss3sim_base()</a></code> directly using
 If any iterations already exist, then ss3sim will skip over them.</p></dd>
 <dt>simdf</dt>
 <dd><p>A data frame of instructions with one row per scenario.
-The data frame replaces the old method of using case files.
 See <code><a href="setup_scenarios_defaults.html">setup_scenarios_defaults()</a></code> for default values that will be
 passed to ss3sim for a generic simulation to get you started. These
 values will be used if <code>simdf</code> is left at its default value of <code>NULL</code>.</p></dd>
@@ -114,28 +108,6 @@ run scenarios in parallel. If you set <code>parallel = TRUE</code> and
 <code>parallel_iterations = TRUE</code> then the iterations will be run in
 parallel. This would be useful if you were only running one scenario
 but you wanted to run it faster.</p></dd>
-<dt>scenarios</dt>
-<dd><p><em>Deprecated</em>. Which scenarios to run. A vector of character objects. For
-example <code>c("D0-F0-cod", "D1-F1-cod")</code>.
-The scenarios should be specified in <code>simdf</code>.</p></dd>
-<dt>case_folder</dt>
-<dd><p><em>Deprecated</em>. The folder containing the plain-text case files.</p></dd>
-<dt>om_dir</dt>
-<dd><p><em>Deprecated</em>. The folder containing the Stock Synthesis operating model
-configuration files.
-Specify the om_dir within <code>simdf</code>.</p></dd>
-<dt>em_dir</dt>
-<dd><p><em>Deprecated</em>. The folder containing the Stock Synthesis estimation model
-configuration files.
-Specify the om_dir within <code>simdf</code>.</p></dd>
-<dt>case_files</dt>
-<dd><p><em>Deprecated</em>. A named list that relates the case IDs to the files to
-return. <b>The default list specifies only the required fishing
-mortality and data scenarios. To specify other cases you will need to
-extend this named list</b>. This argument is passed to
-<code><a href="ss3sim-deprecated.html">get_caseargs()</a></code>. See that function for details and examples of
-how to specify this. The introduction vignette also explains how to specify
-the case files.</p></dd>
 <dt>...</dt>
 <dd><p>Anything else to pass to <code><a href="ss3sim_base.html">ss3sim_base()</a></code>. This could
 include <code>bias_adjust</code>. Also, you can pass
@@ -221,11 +193,11 @@ then <code><a href="ss3sim_base.html">ss3sim_base()</a></code> will assume the v
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz, Ian G. Taylor.</p>
+  <p></p><p>Developed by Kelli F. Johnson, Sean C. Anderson, Kathryn L. Doering, Cole C. Monnahan, Christine C. Stawitz.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

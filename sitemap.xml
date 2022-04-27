@@ -79,9 +79,6 @@
     <loc>/reference/change_rec_devs.html</loc>
   </url>
   <url>
-    <loc>/reference/change_rec_devs_par.html</loc>
-  </url>
-  <url>
     <loc>/reference/change_recyear.html</loc>
   </url>
   <url>
@@ -118,9 +115,6 @@
     <loc>/reference/clean_data.html</loc>
   </url>
   <url>
-    <loc>/reference/cleanup_ss3.html</loc>
-  </url>
-  <url>
     <loc>/reference/codemctl.html</loc>
   </url>
   <url>
@@ -149,9 +143,6 @@
   </url>
   <url>
     <loc>/reference/get_bin.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_bin_info.html</loc>
   </url>
   <url>
     <loc>/reference/get_compfit.html</loc>
@@ -188,12 +179,6 @@
   </url>
   <url>
     <loc>/reference/get_sigmar.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_ss_ver_dl.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_ss_ver_file.html</loc>
   </url>
   <url>
     <loc>/reference/get_success.html</loc>
@@ -313,13 +298,10 @@
     <loc>/reference/ss3sim-deprecated.html</loc>
   </url>
   <url>
-    <loc>/reference/ss3sim.html</loc>
+    <loc>/reference/ss3sim-package.html</loc>
   </url>
   <url>
     <loc>/reference/ss3sim_base.html</loc>
-  </url>
-  <url>
-    <loc>/reference/standardize_bounds.html</loc>
   </url>
   <url>
     <loc>/reference/standardize_sampling_args.html</loc>
@@ -329,9 +311,6 @@
   </url>
   <url>
     <loc>/reference/ts_dat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/vbgf_func.html</loc>
   </url>
   <url>
     <loc>/reference/verify_input.html</loc>
