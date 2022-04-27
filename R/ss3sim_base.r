@@ -202,12 +202,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
   }
   for (i in iterations) {
     # todo: fix spacing, organize comments
-    #setup ability to not run em
-    if(is.na(em_dir)){
-      em_dir <- file.path(sc, i, "em")
-      em_run <- FALSE
-    }
-    
 
     # Create folders, copy models, check for necessary files, rename
     # files for consistency
@@ -215,26 +209,11 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       model_dir = om_dir, scenarios = sc,
       iterations = i, type = "om"
     )
-  
     if (iteration_existed) next
-    if(em_run){
     iteration_existed <- copy_ss3models(
       model_dir = em_dir, scenarios = sc,
       iterations = i, type = "em"
     )
-    } else{
-      #if this is an OM only model, em is just next to the om
-      #make a phony em dir with the o swapped for the e
-      length_em_dir <- nchar(om_dir)
-      copy_em_dir <- om_dir
-      substr(copy_em_dir, start = length_em_dir -1, 
-      stop = length_em_dir - 1) <- "e"
-
-      iteration_existed <- copy_ss3models(
-      model_dir = copy_em_dir,
-      scenarios = sc,
-      iterations = i, type = "em")
-    }
     pathom <- file.path(sc, i, "om")
     pathem <- file.path(sc, i, "em")
 
@@ -279,7 +258,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
     # Find number of years in OM to change recdevs and F
     datfile.orig <- r4ss::SS_readdat(file.path(sc, i, "om", "ss3.dat"),
-       verbose = FALSE
+      verbose = FALSE
     )
     forfile.orig <- r4ss::SS_readforecast(file.path(sc, i, "om", "forecast.ss"),
       verbose = FALSE
@@ -518,7 +497,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     ## write it back to file at the end, before running the EM.
     # todo: use expdata rather than reading in the file again
     dat_list <- r4ss::SS_readdat(file.path(sc, i, "em", "ss3.dat"),
-       verbose = FALSE
+      verbose = FALSE
     )
 
     ## Sample catches
@@ -617,6 +596,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     )
 
     # Make EM as specified by user -------------------------------------------
+
     ## Manipulate EM starter file for a possible retrospective analysis
     if (!is.null(retro_params)) {
       do.call("change_retro", c(
@@ -696,7 +676,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         )
       }
     }
-    if(em_run){
     # Run the EM -------------------------------------------------------------
     # run model 1x as-is, regardless if data weighting used or not.
     run_ss3model(
@@ -736,7 +715,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         )
       }
     }
-    }
+
     #  Pause to reduce average CPUE use?
     Sys.sleep(sleep)
   } # end iterations
