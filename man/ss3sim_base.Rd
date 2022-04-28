@@ -41,7 +41,7 @@ ss3sim_base(
 of parameters for the OM and EM.}
 
 \item{f_params}{A named list containing arguments for \code{\link[=change_f]{change_f()}}.
-A mandatory case.}
+A mandatory input.}
 
 \item{index_params}{A named list containing arguments for
 \code{\link[=sample_index]{sample_index()}}. A mandatory input.}

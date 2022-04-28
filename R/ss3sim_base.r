@@ -14,7 +14,7 @@
 #'   [change_tv()] (time-varying).
 #' @param operat_params A named list containing arguments for [change_o()].
 #' @param f_params A named list containing arguments for [change_f()].
-#'   A mandatory case.
+#'   A mandatory input.
 #' @param index_params A named list containing arguments for
 #'   [sample_index()]. A mandatory input.
 #' @param discard_params A named list containing arguments for
