@@ -79,7 +79,9 @@ A mandatory input.}
 for the specified simulations.}
 
 \item{em_dir}{The directory with the estimation model you want to copy and
-use for the specified simulations.}
+use for the specified simulations.
+If \code{NA}, then no estimation method is included and
+{ss3sim} just generates data.}
 
 \item{retro_params}{A named list containing the arguments for
 \code{\link[=change_retro]{change_retro()}}.}
@@ -142,14 +144,18 @@ argument in \code{\link[=run_ss3model]{run_ss3model()}} will be passed to the
 }
 \value{
 The output will appear in whatever your current \R working directory
-is. There will be folders named after your scenarios. They will
-look like this:
+is. There will be folders named after your scenarios with one folder
+per iteration. Each iteration folder with include an operating model and
+an estimation method. Your directory will look like the following:
 \itemize{
 \item \code{scen-cod/1/om}
 \item \code{scen-cod/1/em}
 \item \code{scen-cod/2/om}
 \item ...
 }
+If \code{em_dir = NA}, then the contents of the \code{em} directories will be minimal
+because they will only contain the simulated data and
+not any fits to those data.
 }
 \description{
 A wrapper function that
@@ -157,7 +163,7 @@ A wrapper function that
 \item calls \code{\link[=run_ss3model]{run_ss3model()}} to run the operating model,
 \item samples the output to create fishery and survey data, and
 \item runs the estimation model.
-This function is the main workhorse of ss3sim and
+This function is the main workhorse of {ss3sim} and
 is typically not called by the user but called from \code{\link[=run_ss3sim]{run_ss3sim()}}.
 }
 }
@@ -229,6 +235,19 @@ testthat::expect_equivalent(replist[["cpue"]][, "Yr"], index1[["years"]][[1]])
 
 test <- replist
 unlink("D1-E0-F0-cod", recursive = TRUE) # clean up
+
+# Run without an EM, where {ss3sim} is a data-generating tool
+ss3sim_base(
+  iterations = 1,
+  scenarios = "noEM",
+  f_params = F0,
+  index_params = index1,
+  lcomp_params = lcomp1,
+  agecomp_params = agecomp1,
+  estim_params = E0,
+  om_dir = om_dir,
+  em_dir = NA
+)
 }
 
 }

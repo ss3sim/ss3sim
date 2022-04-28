@@ -4,7 +4,7 @@
 #' * calls [run_ss3model()] to run the operating model,
 #' * samples the output to create fishery and survey data, and
 #' * runs the estimation model.
-#' This function is the main workhorse of ss3sim and
+#' This function is the main workhorse of {ss3sim} and
 #' is typically not called by the user but called from [run_ss3sim()].
 #'
 #' @param iterations Which iterations to run. A numeric vector.
@@ -42,6 +42,8 @@
 #'   for the specified simulations.
 #' @param em_dir The directory with the estimation model you want to copy and
 #'   use for the specified simulations.
+#'   If `NA`, then no estimation method is included and
+#'   {ss3sim} just generates data.
 #' @template user_recdevs
 #' @param user_recdevs_warn A logical argument allowing users to turn the
 #'   warning regarding biased recruitment deviations off when `user_recdevs`
@@ -79,15 +81,18 @@
 #'   the DESCRIPTION file.
 #' @return
 #' The output will appear in whatever your current \R working directory
-#' is. There will be folders named after your scenarios. They will
-#' look like this:
+#' is. There will be folders named after your scenarios with one folder
+#' per iteration. Each iteration folder with include an operating model and
+#' an estimation method. Your directory will look like the following:
 #' \itemize{
 #' \item `scen-cod/1/om`
 #' \item `scen-cod/1/em`
 #' \item `scen-cod/2/om`
 #' \item ...
 #' }
-#'
+#' If `em_dir = NA`, then the contents of the `em` directories will be minimal
+#' because they will only contain the simulated data and
+#' not any fits to those data.
 #'
 #' @seealso [run_ss3sim()]
 #' @export
@@ -160,6 +165,19 @@
 #'
 #' test <- replist
 #' unlink("D1-E0-F0-cod", recursive = TRUE) # clean up
+#'
+#' # Run without an EM, where {ss3sim} is a data-generating tool
+#' ss3sim_base(
+#'   iterations = 1,
+#'   scenarios = "noEM",
+#'   f_params = F0,
+#'   index_params = index1,
+#'   lcomp_params = lcomp1,
+#'   agecomp_params = agecomp1,
+#'   estim_params = E0,
+#'   om_dir = om_dir,
+#'   em_dir = NA
+#' )
 #' }
 #'
 ss3sim_base <- function(iterations, scenarios, f_params,
@@ -210,12 +228,16 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       iterations = i, type = "om"
     )
     if (iteration_existed) next
-    iteration_existed <- copy_ss3models(
-      model_dir = em_dir, scenarios = sc,
-      iterations = i, type = "em"
-    )
     pathom <- file.path(sc, i, "om")
     pathem <- file.path(sc, i, "em")
+    if (!is.na(em_dir)) {
+      copy_ss3models(
+        model_dir = em_dir, scenarios = sc,
+        iterations = i, type = "em"
+      )
+    } else {
+      dir.create(pathem, showWarnings = FALSE, recursive = TRUE)      
+    }
 
     # Make the OM as specified by the user -----------------------------------
 
@@ -488,17 +510,9 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         "please contact the ss3sim developers."
       )
     }
-    # TODO: rather than write expdata to file: dat_list <- expdata; rm(expdata)
-    r4ss::SS_writedat(expdata, file.path(sc, i, "em", "ss3.dat"),
-      overwrite = TRUE, verbose = FALSE
-    )
+
     # Sample from the OM -----------------------------------------------------
-    ## Read in the datfile once and manipulate as a list object, then
-    ## write it back to file at the end, before running the EM.
-    # todo: use expdata rather than reading in the file again
-    dat_list <- r4ss::SS_readdat(file.path(sc, i, "em", "ss3.dat"),
-      verbose = FALSE
-    )
+    dat_list <- expdata
 
     ## Sample catches
     dat_list <- sample_catch(dat_list = dat_list)
@@ -527,11 +541,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       dat_list <- do.call("sample_agecomp", c(list(dat_list), agecomp_params))
     }
 
-    ## Add error in the empirical weight-at-age comp data. Note that if
-    ## arguments are passed to this function it's functionality is turned
-    ## on by setting the wtatage switch to 1. If it's off Stock Synthesis will just
-    ## ignore the wtatage.dat file so no need to turn it "off" like the
-    ## other data.
+    ## Add error in the empirical weight-at-age comp data.
     # TODO: check below section, as wtatage implementation has changed from 3.24
     # to 3.30.
     if (!is.null(wtatage_params)) {
@@ -588,17 +598,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     )
 
     # Make EM as specified by user -------------------------------------------
-
-    ## Manipulate EM starter file for a possible retrospective analysis
-    if (!is.null(retro_params)) {
-      do.call("change_retro", c(
-        str_file_in = file.path(sc, i, "em", "starter.ss"),
-        str_file_out = file.path(sc, i, "em", "starter.ss"),
-        retro_params
-      ))
-    }
-
-    ## Now change the binning structure in the EM ss3.dat file as needed
+    ## Change the binning structure in the EM ss3.dat file as needed
     if (!is.null(em_binning_params)) {
       em_binning_params <- fixlist(em_binning_params)
       dat_list <- do.call("change_em_binning", c(
@@ -607,8 +607,19 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         em_binning_params
       ))
     }
-    # Manipulate EM control file to adjust what gets estimated
 
+    # Exit this iteration and write dat file early if no EM
+    if (is.na(em_dir)) {
+      r4ss::SS_writedat(
+        datlist = dat_list,
+        outfile = file.path(sc, i, "em", "ss3.dat"),
+        overwrite = TRUE,
+        verbose = FALSE
+      )
+      next
+    }
+
+    # Manipulate EM control file to adjust what gets estimated
     if (!is.null(estim_params)) {
       wd <- getwd()
       setwd(pathem)
@@ -667,6 +678,14 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           verbose = FALSE
         )
       }
+    }
+    # Manipulate EM starter file for a possible retrospective analysis
+    if (!is.null(retro_params)) {
+      do.call("change_retro", c(
+        str_file_in = file.path(sc, i, "em", "starter.ss"),
+        str_file_out = file.path(sc, i, "em", "starter.ss"),
+        retro_params
+      ))
     }
     # Run the EM -------------------------------------------------------------
     # run model 1x as-is, regardless if data weighting used or not.

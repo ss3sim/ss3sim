@@ -17,6 +17,9 @@
   control file for the estimation method allowing users to sample the data but
   not use it if they do not want to.
 
+* Allows for no estimation method via `em_dir = NA`,
+  creating a way to simulate data quickly.
+
 # ss3sim 1.1.8
 
 * Fix bug related to tidyverse in [sample_comp()] where the composition
