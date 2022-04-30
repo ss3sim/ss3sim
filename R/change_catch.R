@@ -39,10 +39,11 @@ change_catch <- function(dat_list,
 
   # Find equilibrium values
   if (!is.null(ctl_list[["init_F"]])) {
-    equil <- as.data.frame(do.call("rbind", strsplit(
-      x = gsub("InitF_|Flt[0-9]+$", "", rownames(ctl_list[["init_F"]])),
+    fleetnames <- gsub("InitF_|Flt[0-9]+$", "", rownames(ctl_list[["init_F"]]))
+    equil <- as.data.frame(do.call("rbind", lapply(strsplit(
+      x = fleetnames,
       split = "seas_|_flt_"
-    ))[, -1])
+    ), "[", 2:3)))
     colnames(equil) <- c("seas", "fleet")
     equil[, "year"] <- -999
     equil[, "catch"] <- 1
