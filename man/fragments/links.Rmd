@@ -15,6 +15,7 @@ missionstatement <- "simplify the steps needed to generate beautiful simulation 
 [remotes]: https://remotes.r-lib.org/ "remotes R package"
 [rstudio-blog]: https://blog.rstudio.org/ "RStudio Blog"
 [ss]: https://github.com/nmfs-stock-synthesis/stock-synthesis "Stock Synthesis (SS3) github repository"
+[ss-catchability]: https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html#catchability "Stock Synthesis catchability documentation"
 [ss-gettingstarted]: https://nmfs-stock-synthesis.github.io/ss-documentation/Getting_Started_SS.html "Stock Synthesis Getting Started documentation"
 [ss-githubactions]: https://github.com/nmfs-stock-synthesis/stock-synthesis/actions "Stock Synthesis GitHub actions"
 [ss-manual]: https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html "Stock Synthesis manual"

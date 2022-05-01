@@ -2,83 +2,94 @@
 % Please edit documentation in R/change_q.R
 \name{change_q}
 \alias{change_q}
-\title{Add or remove catchability parameters in a Stock Synthesis control file}
+\title{Adds or removes catchability parameters from a control file}
 \usage{
 change_q(
   string_add = NULL,
   string_remove = NULL,
   ctl_list,
-  dat_list,
-  ctl_file_in = NULL,
-  dat_file_in = NULL,
-  ctl_file_out = NULL,
-  overwrite = FALSE,
-  verbose = FALSE
+  dat_list = lifecycle::deprecated(),
+  ctl_file_in = lifecycle::deprecated(),
+  dat_file_in = lifecycle::deprecated(),
+  ctl_file_out = lifecycle::deprecated(),
+  overwrite = lifecycle::deprecated(),
+  verbose = lifecycle::deprecated()
 )
 }
 \arguments{
-\item{string_add}{A vector of character strings with the fleetnames to add.
-Numeric values representing the fleet number are also allowed or any
-combination thereof.}
+\item{string_add}{A vector of fleet names and/or integers representing
+fleets that need \eqn{q} parameters added to the control file.}
 
-\item{string_remove}{A vector of character strings with the fleetnames to remove.
-Numeric values representing the fleet number are also allowed or any
-combination thereof.}
+\item{string_remove}{A vector of fleet names and/or integers representing
+fleets that need \eqn{q} parameters removed from the control file.}
 
 \item{ctl_list}{A control file read in by \code{\link[r4ss]{SS_readctl}}.}
 
-\item{dat_list}{An SS data list object as read in from
-\code{\link[r4ss]{SS_readdat}}.
-Be sure to correctly specify which section of the data file you want
-to work with when reading it in using the \code{section} argument.
-Where, \code{section = 1} reads in the input values used to run the model
-and \code{section = 2} reads in the expected values generated given all the
-input to the OM. \code{section = 3} is not used within ss3sim, but this
-section provides bootstrapped data sets that have been sampled internally
-within SS.}
+\item{dat_list}{Deprecated with {ss3sim} version 1.19.1 because users can
+obtain fleet information from \code{ctl_list}.}
 
-\item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
+\item{ctl_file_in}{Deprecated with {ss3sim} version 1.19.1 because users can
+pass list as read in by \code{\link[r4ss:SS_readctl]{r4ss::SS_readctl()}} rather than specifying the
+file name to be read in.}
 
-\item{dat_file_in}{A string providing the path to the input SS \code{.dat} file.}
+\item{dat_file_in}{Deprecated with {ss3sim} version 1.19.1 because users can
+pass list as read in by \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}} rather than specifying the
+file name to be read in.}
 
-\item{ctl_file_out}{A string providing the path to the output SS control file. If the value is \code{NULL}, the file will not be written to the disk.}
+\item{ctl_file_out}{Deprecated with {ss3sim} version 1.19.1 because {ss3sim}
+uses the returned list internally rather than the saved control file.}
 
-\item{overwrite}{A logical value specifying if the file being written to the
-disk should overwrite an existing file with the same name.
-The default is to not overwrite files, i.e., \code{overwrite = FALSE}.}
+\item{overwrite}{Deprecated with {ss3sim} version 1.19.1 because the file is
+no longer being saved to the disk. So, there is nothing to overwrite.}
 
-\item{verbose}{When \code{TRUE} messages will be returned
-from the function. Often useful for debugging. The default
-is \code{FALSE}.}
+\item{verbose}{Deprecated with {ss3sim} version 1.19.1 because all messages
+were removed.}
 }
 \value{
-A modified Stock Synthesis control file list with
-the same structure returned by \code{\link[r4ss:SS_readctl]{r4ss::SS_readctl()}}.
+A modified Stock Synthesis control list.
 }
 \description{
-Catchability, \eqn{q}, is the proportionality parameter between
-fishing effort and population abundance.
-That is, when \eqn{q=1},
-a survey of the population is thought to encompass the entire population.
-Removing or adding a catch-per-unit effort time series
-can require changes to the control file because
-each catch-per-unit-effort time series requires set up and parameter lines.
+Manipulates the control list to simultaneously add and remove
+elements related to time series data on trends.
 }
 \details{
-In Stock Synthesis, environmental time series can also be modeled as
-catch-per-unit-effort time series.
+Catchability, \eqn{q},
+represents the proportionality constant between
+data on trends and estimated population abundance.
+Thus a survey thought to encapsulate the entire population, e.g.,
+an acoustic survey of the entire area, will have \eqn{q = 1}.
+In Stock Synthesis, environmental time series are modelled similarly to
+a survey or catch-per-unit-effort time series and thus will also have
+a catchability term.
 Readers interested in the complete range of functionality should see the
-\href{https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html#catchability}{section of the Stock Synthesis user manual on catchability}.
-\verb{code\{change_q\} has limited functionality relative to what is available in Stock Synthesis. For example, }change_q` cannot add a parameter to estimate additional variance.
+\href{https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html#catchability}{catchability section of the Stock Synthesis user manual}.
+\code{change_q()} has limited functionality relative to
+what is available in Stock Synthesis.
+For example, \code{change_q()} cannot add parameters for additional variance.
 Though it will remove additional variance parameters for
 fleets that no longer have survey data.
-Additionally, the float term is not used within ss3sim and is set to zero.
-
-This function can add and remove parameters in the control file simultaneously.
-Thus, it is not necessary to call it twice to perform both operations.
+Additionally, the float term is not used within {ss3sim} and is set to zero.
+}
+\examples{
+removedfleet1 <- change_q(string_remove = 1, ctl_list = codomctl)
+removedfleet2 <- change_q(string_remove = 2, ctl_list = codomctl)
+removedfleets <- change_q(
+  string_remove = c("Fishery", 2),
+  ctl_list = codomctl
+)
+testthat::expect_null(removedfleets[["Q_options"]])
+newctl <- codomctl
+newctl[["fleetnames"]] <- c(newctl[["fleetnames"]], "testfleet")
+newctl[["Nfleets"]] <- length(newctl[["fleetnames"]])
+newctl <- change_q(string_add = "testfleet", ctl_list = newctl)
+testthat::expect_equal(newctl[["Q_options"]][, "fleet"], 1:3)
 }
 \seealso{
-\code{\link[=check_q]{check_q()}} can determine which fleets should removed or added.
+\itemize{
+\item \code{\link[=check_q]{check_q()}} determines which fleets should removed or added.
+\item \code{\link[r4ss:SS_readctl]{r4ss::SS_readctl()}} reads in the control file passed to \code{ctl_list}.
+\item \code{\link[=find_position]{find_position()}} allows \verb{string_*} to use strings or integers.
+}
 }
 \author{
 Kelli F. Johnson

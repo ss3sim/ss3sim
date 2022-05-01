@@ -1,3 +1,12 @@
+# ss3sim 1.19.1
+
+* Updates `change_q()` to more modern code, and while doing so
+  a few bugs were noticed. Errors are no longer generated when
+  the fleet doesn't exist.
+* `find_position()` simplifies the code to find the position of
+  a fleet name in a vector. As well as, the code was moved to an
+  exported function for others to use outside of `change_q()`.
+
 # ss3sim 1.19.0
 
 * Bump version to match current version of SS3,

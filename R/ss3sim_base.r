@@ -373,14 +373,12 @@ ss3sim_base <- function(iterations, scenarios, f_params,
 
     # check qs are correct.
     qtasks <- check_q(
-      ctl_list = ctlom, Nfleets = datfile.orig$Nfleets,
+      ctl_list = ctlom,
       desiredfleets = index_params$fleets
     )
     ctlom <- change_q(
       string_add = qtasks$add, string_remove = qtasks$remove,
-      overwrite = TRUE,
-      ctl_list = ctlom, dat_list = datfile.modified,
-      ctl_file_out = file.path(sc, i, "om", "om.ctl")
+      ctl_list = ctlom,
     )
 
     ## OM: change bins
@@ -495,6 +493,11 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       datlist = datfile.modified,
       outfile = file.path(sc, i, "om", "ss3.dat"),
       overwrite = TRUE, verbose = FALSE
+    )
+    r4ss::SS_writectl(
+      ctllist = ctlom,
+      outfile = file.path(sc, i, "om", "om.ctl"),
+      overwrite = TRUE
     )
 
     # Run the operating model and copy the dat file over
@@ -649,15 +652,13 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       verbose = FALSE
     )
     qtasks <- check_q(
-      ctl_list = ctlem, Nfleets = datfile.orig$Nfleets,
+      ctl_list = ctlem,
       desiredfleets = index_params$fleets
     )
     ctl_list <- change_q(
-      string_add = qtasks$add, string_remove = qtasks$remove,
-      overwrite = TRUE,
-      ctl_file_in = file.path(sc, i, "em", "em.ctl"),
-      ctl_list = NULL, dat_list = datfile.modified,
-      ctl_file_out = NULL
+      string_add = qtasks$add,
+      string_remove = qtasks$remove,
+      ctl_list = ctlem,
     )
     newlists <- change_year(dat_list, ctl_list)
     r4ss::SS_writedat(

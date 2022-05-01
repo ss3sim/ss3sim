@@ -2,52 +2,37 @@
 % Please edit documentation in R/change_q.R
 \name{check_q}
 \alias{check_q}
-\title{Check if desired \eqn{q} parameters exist in control file}
+\title{Check if desired \eqn{q} parameters exist in control file list}
 \usage{
-check_q(ctl_list, Nfleets, desiredfleets)
+check_q(ctl_list, Nfleets = lifecycle::deprecated(), desiredfleets)
 }
 \arguments{
 \item{ctl_list}{A control file read in by \code{\link[r4ss]{SS_readctl}}.}
 
-\item{Nfleets}{The number of fleets in the model.
-This can be determined manually from the data file or
-using the R object returned from \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}}, of which
-\code{Nfleets} is a named element.}
+\item{Nfleets}{Deprecated with {ss3sim} version 1.19.1 because
+the number of fleets is available in \code{ctl_list}.}
 
 \item{desiredfleets}{A numeric vector specifying which fleets should have
 catchability parameters.}
 }
 \value{
-A list with two vectors specifying which fleets to add and which
-to remove from the control file.
+A list with two vectors, \code{add} and \code{remove},
+specifying which fleets to add and which to remove from the control file.
 }
 \description{
 Check a Stock Synthesis control file to determine if the desired fleets
-have q parameters.
+have q parameters set up.
 }
 \examples{
-dat <- r4ss::SS_readdat(
-  file = dir(
-    path = system.file("extdata", "models", "cod-om", package = "ss3sim"),
-    pattern = "\\\\.dat",
-    full.names = TRUE
-  ),
-  verbose = FALSE
-)
-ctl <- r4ss::SS_readctl(
-  file = dir(
-    path = system.file("extdata", "models", "cod-om", package = "ss3sim"),
-    pattern = "\\\\.ctl",
-    full.names = TRUE
-  ),
-  verbose = FALSE,
-  use_datlist = TRUE, datlist = dat
-)
-stopifnot(check_q(ctl, dat[["Nfleets"]], desiredfleets = 1)[["remove"]] == 2)
-stopifnot(all(mapply(is.null, check_q(ctl, dat[["Nfleets"]], desiredfleets = 1:2))))
-stopifnot(check_q(ctl, dat[["Nfleets"]], desiredfleets = 1:3)[["add"]] == 3)
-stopifnot(check_q(ctl, dat[["Nfleets"]], desiredfleets = 2:3)[["remove"]] == 1)
+# Keep just the fishery
+stopifnot(check_q(ctl_list = codomctl, desiredfleets =  1)[["remove"]] == 2)
+# All elements of the returned list should be NULL
+# because the model only has two \eqn{q} parameters
+stopifnot(all(mapply(is.null, check_q(codomctl, desiredfleets = 1:2))))
+# Fleet 3 is not present
+stopifnot(check_q(codomctl, desiredfleets = 1:3)[["add"]] == 3)
+stopifnot(check_q(codomctl, desiredfleets = 2:3)[["remove"]] == 1)
 }
 \seealso{
-\code{\link[=change_q]{change_q()}}
+\code{\link[=change_q]{change_q()}} for actually adding or removing the fleets.
 }
