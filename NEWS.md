@@ -12,6 +12,14 @@
 * Deprecate functions that were not being used in the code base, i.e.,
   cleanup_ss3, get_bin_info, change_rec_devs_par, ...
 
+* Does not turn on empirical weight-at-age in EM if sampling weight-at-age data.
+  Instead, users must specify to use empirical weight-at-age data in their
+  control file for the estimation method allowing users to sample the data but
+  not use it if they do not want to.
+
+* Allows for no estimation method via `em_dir = NA`,
+  creating a way to simulate data quickly.
+
 # ss3sim 1.1.8
 
 * Fix bug related to tidyverse in [sample_comp()] where the composition
