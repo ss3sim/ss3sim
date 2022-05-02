@@ -17,6 +17,7 @@
 ^inst/ms$
 ^man-roxygen$
 ^Meta$
+^pkgdown/extra.css
 ^R/tags$
 ^README.Rmd$
 ^Session\.vim$
