@@ -21,19 +21,23 @@ r4ss::run_SS_models(
 )
 file.copy(
   file.path(om_dir, "control.ss_new"),
-  file.path(om_dir, "codOM.ctl"), overwrite = TRUE
+  file.path(om_dir, "codOM.ctl"),
+  overwrite = TRUE
 )
 file.copy(
   file.path(om_dir, "data_echo.ss_new"),
-  file.path(om_dir, "codOM.dat"), overwrite = TRUE
+  file.path(om_dir, "codOM.dat"),
+  overwrite = TRUE
 )
 file.copy(
   file.path(om_dir, "starter.ss_new"),
-  file.path(om_dir, "starter.ss"), overwrite = TRUE
+  file.path(om_dir, "starter.ss"),
+  overwrite = TRUE
 )
 file.copy(
   file.path(om_dir, "forecast.ss_new"),
-  file.path(om_dir, "forecast.ss"), overwrite = TRUE
+  file.path(om_dir, "forecast.ss"),
+  overwrite = TRUE
 )
 file.remove(dir(om_dir, full.names = TRUE)[!grepl("cod|starter.ss$|forecast.ss$", dir(om_dir))])
 file.copy(
@@ -46,15 +50,18 @@ r4ss::run_SS_models(
 )
 file.copy(
   file.path(em_dir, "control.ss_new"),
-  file.path(em_dir, "codEM.ctl"), overwrite = TRUE
+  file.path(em_dir, "codEM.ctl"),
+  overwrite = TRUE
 )
 file.copy(
   file.path(em_dir, "starter.ss_new"),
-  file.path(em_dir, "starter.ss"), overwrite = TRUE
+  file.path(em_dir, "starter.ss"),
+  overwrite = TRUE
 )
 file.copy(
   file.path(em_dir, "forecast.ss_new"),
-  file.path(em_dir, "forecast.ss"), overwrite = TRUE
+  file.path(em_dir, "forecast.ss"),
+  overwrite = TRUE
 )
 file.remove(dir(em_dir, full.names = TRUE)[!grepl("cod|starter.ss$|forecast.ss$", dir(em_dir))])
 
@@ -79,4 +86,3 @@ usethis::use_data(name = codomdat, overwrite = TRUE)
 usethis::use_data(name = codomctl, overwrite = TRUE)
 usethis::use_data(name = codemctl, overwrite = TRUE)
 rm(list = ls())
-
