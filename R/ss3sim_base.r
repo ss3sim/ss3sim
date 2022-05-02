@@ -287,7 +287,16 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     )
     xyears <- seq(
       datfile.orig[["styr"]],
-      datfile.orig[["endyr"]] + forfile.orig$Nforecastyrs
+      datfile.orig[["endyr"]] +
+      ifelse(
+        test = forfile.orig[["Forecast"]] == 0,
+        yes = 0,
+        no = ifelse(
+          test = is.null(forfile.orig$Nforecastyrs),
+          yes = 0,
+          no = forfile.orig[["Nforecastyrs"]]
+        )
+      )
     )
     sc_i_recdevs <- stats::setNames(sc_i_recdevs[seq_along(xyears)], xyears)
     change_rec_devs(
