@@ -89,14 +89,14 @@ test_that("change_tv() works for a q parm", {
 
 test_that("change_tv() works for a selectivity parm", {
   # add SR param.
-  tv_params <- list("SizeSel_P1_Fishery(1)" = seq(0.01, 0.05, length.out = 100))
+  tv_params <- list("Size_DblN_peak_Fishery(1)" = seq(0.01, 0.05, length.out = 100))
 
   out <- suppressWarnings(change_tv(tv_params,
     ctl_file_in = file.path(om, "codOM.ctl"), ctl_file_out = NULL,
     dat_file_in = file.path(om, "codOM.dat"), dat_file_out = NULL
   ))
-  expect_equal(out$dat_out$envdat$Value, tv_params$`SizeSel_P1_Fishery(1)`)
-  expect_length(grep("5 102 50.8 50.8 0.05 0 2 201 0 0 0 0.5 0 0 # SizeSel_P1_Fishery(1)",
+  expect_equal(out$dat_out$envdat$Value, tv_params$`Size_DblN_peak_Fishery(1)`)
+  expect_length(grep("5 102 50.8 50.8 0.05 0 2 201 0 0 0 0.5 0 0 # Size_DblN_peak_Fishery(1)",
     out$ctl_out,
     fixed = TRUE
   ), 1)

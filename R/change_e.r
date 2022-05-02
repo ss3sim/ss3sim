@@ -36,16 +36,12 @@
 #' @export
 #' @examples
 #' d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
-#' data.old <- r4ss::SS_readdat(
-#'   dir(d, pattern = ".dat", full.names = TRUE),
-#'   verbose = FALSE
-#' )
 #' change_e(
 #'   ctl_file_in = file.path(d, "codOM.ctl"),
 #'   ctl_file_out = file.path(tempdir(), "change_e.ctl"),
-#'   dat_list = data.old,
+#'   dat_list = codomdat,
 #'   for_file_in = file.path(d, "forecast.ss"),
-#'   par_name = c("_steep", "SizeSel_P1_Fishery(1)"),
+#'   par_name = c("_steep", "Size_DblN_peak_Fishery(1)"),
 #'   par_int = c(0.3, 40), par_phase = c(3, 2),
 #'   forecast_num = 0
 #' )

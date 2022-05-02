@@ -89,7 +89,7 @@ test_that("change_rec_devs gives error when cannot find info on number and yrs f
   ctl <- readLines("codOM.ctl")
   # get rid of recrutiment dev lines that ss3sim uses to determine recdevs number
   tmp_start <- grep("# all recruitment deviations", ctl, fixed = TRUE)
-  tmp_end <- grep("implementation error by year in forecast", ctl, fixed = TRUE)
+  tmp_end <- grep("Fishing Mortality info", ctl, fixed = TRUE)
   writeLines(ctl[-(tmp_start:tmp_end)], "codOM_mod.ctl")
   expect_error(
     change_rec_devs(recdevs, "codOM_mod.ctl", NULL),
@@ -139,7 +139,7 @@ test_that("change_rec_devs looks for spot to put recdevs as expected", {
   # missing both F comments
   mod_ctl <- ctl
   F_line <- grep("Fishing Mortality info", mod_ctl)
-  F_ball_line <- grep("F ballpark$", mod_ctl)
+  F_ball_line <- grep("F ballpark year", mod_ctl)
   mod_ctl <- mod_ctl[-c(F_line, F_ball_line)]
   writeLines(mod_ctl, "codOM_missing_2_F_cmt.ctl")
   expect_error(
@@ -150,10 +150,8 @@ test_that("change_rec_devs looks for spot to put recdevs as expected", {
   mod_ctl <- ctl
   mod_ctl <- mod_ctl[-F_line]
   writeLines(mod_ctl, "CodOM_missing_1_F_cmt.ctl")
-  out_ctl <- change_rec_devs(recdevs, "CodOM_missing_1_F_cmt.ctl", NULL)
-  n_recdevs_line <- grep("#_read_recdevs", out_ctl, fixed = TRUE)
-  n_recdevs <- as.numeric(strsplit(trimws(out_ctl[n_recdevs_line]), "\\s+")[[1]][1])
-  f_recdev_line <- n_recdevs_line + 1
-  l_recdev_line <- grep("F ballpark$", out_ctl) - 1
-  expect_equal(n_recdevs, l_recdev_line - f_recdev_line + 1)
+  expect_error(
+    change_rec_devs(recdevs, "CodOM_missing_1_F_cmt.ctl", NULL),
+    "Could not find spot where Fishing Mortality info starts"
+  )
 })
