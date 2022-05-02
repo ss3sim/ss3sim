@@ -68,6 +68,8 @@
 <ul><li><p>Bump version to match current version of SS3, where version numbers of {ss3sim} include three parts separated by full stops. The first number represents the major version of {ss3sim}. The second number is the minor version, i.e., third set of digits, of the SS3 executable used in this version of {ss3sim}. The third number is the minor version of {ss3sim}.</p></li>
 <li><p>Remove dependency on bbmle to externally estimate growth.</p></li>
 <li><p>Deprecate functions that were not being used in the code base, i.e., cleanup_ss3, get_bin_info, change_rec_devs_par, …</p></li>
+<li><p>Does not turn on empirical weight-at-age in EM if sampling weight-at-age data. Instead, users must specify to use empirical weight-at-age data in their control file for the estimation method allowing users to sample the data but not use it if they do not want to.</p></li>
+<li><p>Allows for no estimation method via <code>em_dir = NA</code>, creating a way to simulate data quickly.</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.8" id="ss3sim-118">ss3sim 1.1.8<a class="anchor" aria-label="anchor" href="#ss3sim-118"></a></h2>

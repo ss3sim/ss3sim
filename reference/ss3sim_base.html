@@ -158,7 +158,9 @@ A mandatory input.</p></dd>
 for the specified simulations.</p></dd>
 <dt>em_dir</dt>
 <dd><p>The directory with the estimation model you want to copy and
-use for the specified simulations.</p></dd>
+use for the specified simulations.
+If <code>NA</code>, then no estimation method is included and
+ss3sim just generates data.</p></dd>
 <dt>retro_params</dt>
 <dd><p>A named list containing the arguments for
 <code><a href="change_retro.html">change_retro()</a></code>.</p></dd>
@@ -222,12 +224,16 @@ argument in <code><a href="run_ss3model.html">run_ss3model()</a></code> will be 
     <div id="value">
     <h2>Value</h2>
     <p>The output will appear in whatever your current <span style="R">R</span> working directory
-is. There will be folders named after your scenarios. They will
-look like this:</p><ul><li><p><code>scen-cod/1/om</code></p></li>
+is. There will be folders named after your scenarios with one folder
+per iteration. Each iteration folder with include an operating model and
+an estimation method. Your directory will look like the following:</p><ul><li><p><code>scen-cod/1/om</code></p></li>
 <li><p><code>scen-cod/1/em</code></p></li>
 <li><p><code>scen-cod/2/om</code></p></li>
 <li><p>...</p></li>
-</ul></div>
+</ul><p>If <code>em_dir = NA</code>, then the contents of the <code>em</code> directories will be minimal
+because they will only contain the simulated data and
+not any fits to those data.</p>
+    </div>
     <div id="details">
     <h2>Details</h2>
     <p>This function is written to be flexible. You can specify the fishing
@@ -308,6 +314,19 @@ the DESCRIPTION file.</p>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">test</span> <span class="op">&lt;-</span> <span class="va">replist</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"D1-E0-F0-cod"</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># clean up</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># Run without an EM, where {ss3sim} is a data-generating tool</span></span>
+<span class="r-in"><span class="fu">ss3sim_base</span><span class="op">(</span></span>
+<span class="r-in">  iterations <span class="op">=</span> <span class="fl">1</span>,</span>
+<span class="r-in">  scenarios <span class="op">=</span> <span class="st">"noEM"</span>,</span>
+<span class="r-in">  f_params <span class="op">=</span> <span class="va">F0</span>,</span>
+<span class="r-in">  index_params <span class="op">=</span> <span class="va">index1</span>,</span>
+<span class="r-in">  lcomp_params <span class="op">=</span> <span class="va">lcomp1</span>,</span>
+<span class="r-in">  agecomp_params <span class="op">=</span> <span class="va">agecomp1</span>,</span>
+<span class="r-in">  estim_params <span class="op">=</span> <span class="va">E0</span>,</span>
+<span class="r-in">  om_dir <span class="op">=</span> <span class="va">om_dir</span>,</span>
+<span class="r-in">  em_dir <span class="op">=</span> <span class="cn">NA</span></span>
+<span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
 <span class="r-in"></span>
 </code></pre></div>
