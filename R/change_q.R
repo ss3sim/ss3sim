@@ -204,7 +204,7 @@ change_q <- function(string_add = NULL,
 #' @seealso [change_q()] for actually adding or removing the fleets.
 #' @examples
 #' # Keep just the fishery
-#' stopifnot(check_q(ctl_list = codomctl, desiredfleets =  1)[["remove"]] == 2)
+#' stopifnot(check_q(ctl_list = codomctl, desiredfleets = 1)[["remove"]] == 2)
 #' # All elements of the returned list should be NULL
 #' # because the model only has two \eqn{q} parameters
 #' stopifnot(all(mapply(is.null, check_q(codomctl, desiredfleets = 1:2))))
