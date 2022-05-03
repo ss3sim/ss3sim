@@ -371,7 +371,7 @@ check_data <- function(x) {
     }
   }
 
-  if (!identical(x$Lbin_method, 3)) {
+  if (!identical(x$Lbin_method, 3) & !is.null(x$lencomp)) {
     stop(
       "Lbin_method must be 3 to specify how the conditional",
       "\nage-at-length data are represented in the SS data file.",
