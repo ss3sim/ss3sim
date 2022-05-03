@@ -374,7 +374,7 @@ check_data <- function(x) {
   if (!identical(x$Lbin_method, 3)) {
     stop(
       "Lbin_method must be 3 to specify how the conditional",
-      "age-at-length data are represented in the SS data file. ",
+      "\nage-at-length data are represented in the SS data file.",
       "\nSee the Stock Synthesis manual."
     )
   }
