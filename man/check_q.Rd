@@ -25,7 +25,7 @@ have q parameters set up.
 }
 \examples{
 # Keep just the fishery
-stopifnot(check_q(ctl_list = codomctl, desiredfleets =  1)[["remove"]] == 2)
+stopifnot(check_q(ctl_list = codomctl, desiredfleets = 1)[["remove"]] == 2)
 # All elements of the returned list should be NULL
 # because the model only has two \eqn{q} parameters
 stopifnot(all(mapply(is.null, check_q(codomctl, desiredfleets = 1:2))))
