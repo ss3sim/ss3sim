@@ -27,7 +27,7 @@ Stock Synthesis control file for each fleet.
 The structure is the same as \code{fvals}, i.e., a list or a scalar.
 The default is 1, which will be applied to all fleets in all years.}
 
-\item{ses}{A list of fishing level standard errors (ses) to be entered into the
+\item{ses}{A list of fishing level standard errors to be entered into the
 Stock Synthesis control file for each fleet.
 The structure is the same as \code{fvals}, i.e., a list or a scalar.
 The default is 0.005, which will be applied to all fleets in all years.}

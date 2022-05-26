@@ -12,7 +12,8 @@ get_results_timeseries(report.file)
 }
 \description{
 Extract time series from an \code{\link[r4ss:SS_output]{r4ss::SS_output()}} list from a model run.
-Returns a data.frame of the results for SSB, recruitment and effort by year.
+Returns a data frame of the results for
+spawning biomass, recruitment, and effort by year.
 }
 \seealso{
 Other get-results: 

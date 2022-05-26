@@ -28,7 +28,7 @@ the vectors correspond to deviations. See the section
 }
 \value{
 The function creates modified versions of the  \code{.ctl} and
-\code{.dat} files if ctl_file_out and dat_file_out are not NULL. The function
+\code{.dat} files if \code{ctl_file_out} and \code{dat_file_out} are not NULL. The function
 also returns a list of the modified \code{.ctl} and \code{.dat} R objects
 invisibly.
 }
@@ -56,8 +56,8 @@ is necessary to implement time-varying parameters.
 \pkg{ss3sim} uses annual recruitment deviations and may not work with a
 model that ties recruitment deviations to environmental covariates. If you
 need to compare the environment to annual recruitment deviations, the
-preferred option is to transform the environmental variable into an age 0
-pre-recruit survey. See page 55 of the Stock Synthesis version 3.24f manual for more
+preferred option is to transform the environmental variable into an age-0
+recruitment survey. See the Stock Synthesis manual for more
 information.
 }
 \section{Specifying the \code{change_tv_list}}{
@@ -69,8 +69,8 @@ referred to as environmental data, must have a length equal to
 \code{.dat} file. Specify years without deviations as zero.
 
 Parameter names must be unique and match the full parameter name in the
-\code{.ctl} file. Names for stock recruit parameters must contain "devs",
-"R0", or "steep", and only one stock recruit parameter can be time-varying
+\code{.ctl} file. Names for stock recruit parameters must contain \code{devs},
+\code{R0}, or \code{steep}, and only one stock recruit parameter can be time-varying
 per model.
 
 This feature will include an \emph{additive} functional linkage between

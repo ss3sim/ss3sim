@@ -1,11 +1,13 @@
 #' Fill in matrix across rows of weight-at-age data by interpolation
 #'
-#' Function that fills in matrix across rows of wtatage data by interpolation
-#' Missing Rows are then backfilled
+#' First, missing information in a matrix is filled across rows using
+#' interpolation. Second, missing information is then back filled using
+#' a previous row if an entire row is missing, e.g., no weight-at-age data
+#' for a given year-fleet combination.
 #'
-#' @param mat A matrix
-#' @param minYear Minimum year
-#' @param maxYear Maximum year
+#' @param mat A matrix.
+#' @param minYear Minimum year.
+#' @param maxYear Maximum year.
 #'
 #' @author Peter Kuriyama and Allan Hicks
 #'

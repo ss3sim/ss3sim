@@ -19,7 +19,7 @@ verify_plot_arguments(
 )
 }
 \arguments{
-\item{data}{A valid data frame containing scalar or timeseries values
+\item{data}{A valid data frame containing \code{scalar} or \code{timeseries} values
 from a \pkg{ss3sim} simulation. That data are generated from
 \code{\link{get_results_all}}.}
 

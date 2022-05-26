@@ -11,7 +11,7 @@ sample_dm(data, n, par)
 
 \item{n}{The desired sample size.}
 
-\item{par}{The cpar value to define overdispersion.}
+\item{par}{The \code{cpar} value to define overdispersion.}
 }
 \value{
 A data frame with one row because right now the input

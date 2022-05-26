@@ -44,7 +44,7 @@ An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 Either single values or vectors of the same length as the number of
 years can be passed through. Single values are repeated for all
 years. If no fleet collected samples, keep the value to
-\code{Nsamp=NULL}.}
+\code{Nsamp = NULL}.}
 
 \item{years}{*A list the same length as \code{fleets} giving the years as
 numeric vectors. If no fleet collected samples, keep the value to

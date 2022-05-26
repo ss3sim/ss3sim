@@ -2,7 +2,7 @@
 % Please edit documentation in R/clean_data.r
 \name{clean_data}
 \alias{clean_data}
-\title{Given sampling arguments, remove unneeded data from a .dat file}
+\title{Given sampling arguments, remove unneeded data from a data file}
 \usage{
 clean_data(
   dat_list,
@@ -43,7 +43,7 @@ deleted.}
 An invisible cleaned data list as an object.
 }
 \description{
-This prepares a \code{.dat} file to be used by an estimation method,
+This prepares a data file to be used by an estimation method,
 whereas before it may have had leftover data from sampling purposes.
 }
 \note{

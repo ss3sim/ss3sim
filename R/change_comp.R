@@ -13,7 +13,7 @@
 #' e.g., `formals(change_comp)$type`;
 #' the first value will be used as the default if user input is not provided.
 #' @param paramlist A list of parameter values derived from the data frame used to set up
-#' your similation. For example, `setup_scenarios(setup_scenarios_defaults())[[1]]`
+#' your simulation. E.g., `setup_scenarios(setup_scenarios_defaults())[[1]]`
 #' will give you defaults that you can extract from. Typically,
 #' `mylist[[c("agecomp_params", "lcomp_params")]]` are passed. Make sure that you
 #' only pass the portion of the list that pertains to the data you want.

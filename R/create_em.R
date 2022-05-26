@@ -8,7 +8,7 @@
 #'
 #' @param dir_in A file path to a directory that contains the following files:
 #' `forecast.ss`, `starter.ss`, and a control file
-#' (e.g., `xxxOM.ctl`). The default is to get the codOM within \pkg{ss3sim}.
+#' (e.g., `xxxOM.ctl`). The default is to get `codOM` from within \pkg{ss3sim}.
 #' @param dir_out A file path to a directory where the new files will be saved.
 #' The default is to save the files in your current working directory in a
 #' folder called `new-em`.

@@ -41,9 +41,9 @@
 #' existing Stock Synthesis model to run with \pkg{ss3sim}. Alternatively, you might
 #' consider modifying one of the built-in model configurations.
 #'
-#' Note that due to the way that Stock Synthesis is being used as an OM, you may see
+#' Due to the way that Stock Synthesis is being used as an OM, you may see
 #' the following ADMB error may appear in the console:
-#' Error -- base = 0 in function prevariable& pow(const prevariable& v1, CGNU_DOUBLE u)
+#' `Error -- base = 0 in function prevariable& pow(const prevariable& v1, CGNU_DOUBLE u)`
 #' However, this is not a problem because ADMB is not used to optimize the OM,
 #' and thus, the error can safely be ignored.
 #'
@@ -53,7 +53,7 @@
 #' The output will appear in your current \R working directory
 #' Folders will be named based on the `"scenario"` column
 #' of `simdf` or based on the date-time stamp
-#' (i.e., mmddhhmmss) generated automatically at the start of the simulation.
+#' (i.e., `mmddhhmmss`) generated automatically at the start of the simulation.
 #' The resulting folders will look like the following if you run
 #' your simulation at noon on January 01:
 #' * `0101120000/1/om`

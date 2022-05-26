@@ -3,7 +3,7 @@
 #' Keep all of the data in the model but change the years that are estimated
 #' in the model. First year of the model will be first year of non-zero catch.
 #' Main recruitment period starts 1/2 generation time before first year
-#' of compositional data included in the model.
+#' of composition data included in the model.
 #' Late recruitment is the last year of the model by default and cannot be
 #' modified using this function, neither can early recruitment, which starts
 #' in year 1.

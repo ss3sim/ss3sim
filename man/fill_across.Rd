@@ -7,15 +7,17 @@
 fill_across(mat, minYear, maxYear)
 }
 \arguments{
-\item{mat}{A matrix}
+\item{mat}{A matrix.}
 
-\item{minYear}{Minimum year}
+\item{minYear}{Minimum year.}
 
-\item{maxYear}{Maximum year}
+\item{maxYear}{Maximum year.}
 }
 \description{
-Function that fills in matrix across rows of wtatage data by interpolation
-Missing Rows are then backfilled
+First, missing information in a matrix is filled across rows using
+interpolation. Second, missing information is then back filled using
+a previous row if an entire row is missing, e.g., no weight-at-age data
+for a given year-fleet combination.
 }
 \seealso{
 \itemize{

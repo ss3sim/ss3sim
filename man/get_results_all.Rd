@@ -31,8 +31,8 @@ default is \code{"long"}.}
 the filename. Defaults to "ss3sim".}
 }
 \value{
-Returns a list of 3 dataframes: scalar, ts, and dq.
-Creates two .csv files in the current working directory,
+Returns a list of 3 data frames: \code{scalar}, \code{ts}, and \code{dq}.
+Creates two \code{.csv} files in the current working directory,
 where the names of those files are based on \code{filename_prefix}
 and the default leads to the following:
 \code{ss3sim_ts.csv} and \code{ss3sim_scalar.csv}.
@@ -40,10 +40,10 @@ and the default leads to the following:
 \description{
 This high level function extracts results from Stock Synthesis model runs. Give it a
 directory which contains directories for different "scenario" runs, within
-which are iterations. It writes two data.frames to file:
+which are iterations. It writes two data frames to file:
 one for single scalar values (e.g., MSY) and a second
-that contains output for each year of the same model (timeseries, e.g.,
-biomass(year)). These can always be joined later.
+that contains output for each year of the same model (\code{timeseries}, e.g.,
+biomass per year). These can always be joined later.
 }
 \seealso{
 Other get-results: 

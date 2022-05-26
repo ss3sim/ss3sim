@@ -6,15 +6,15 @@
 #' @param var The column name of the parameter in data of which to plot
 #'  cumulative mean. A string.
 #' @param order_var A column to order the data before calculating the cumulative
-#'  mean
+#'  mean.
 #' @param group A column in data to group the data together before calculating
-#'  the cumulative mean
-#' @param use_facet Should the group be used to create facets? If TRUE, facets
-#'  are created; If FALSE, grouping will be done by making different color lines
+#'  the cumulative mean.
+#' @param use_facet Should the group be used to create facets? If `TRUE`, facets
+#'  are created; If `FALSE`, grouping will be done by making different color lines
 #'  in the same plot.
 #' @importFrom rlang .data
 #' @export
-#' @return A list containing the ggplot object and the data used to make it
+#' @return A list containing the {ggplot2} object and the data used to make it.
 #' @examples
 #' data("scalar_dat", package = "ss3sim")
 #' obj <- plot_cummean(scalar_dat[scalar_dat$model_run == "em", ],

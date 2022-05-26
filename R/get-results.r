@@ -24,10 +24,10 @@ id_scenarios <- function(directory) {
 #'
 #' This high level function extracts results from Stock Synthesis model runs. Give it a
 #' directory which contains directories for different "scenario" runs, within
-#' which are iterations. It writes two data.frames to file:
+#' which are iterations. It writes two data frames to file:
 #' one for single scalar values (e.g., MSY) and a second
-#' that contains output for each year of the same model (timeseries, e.g.,
-#' biomass(year)). These can always be joined later.
+#' that contains output for each year of the same model (`timeseries`, e.g.,
+#' biomass per year). These can always be joined later.
 #'
 #' @param directory The directory which contains scenario folders with
 #'   results.
@@ -42,8 +42,8 @@ id_scenarios <- function(directory) {
 #' @param filename_prefix A character string specifying a prefix to append to
 #'   the filename. Defaults to "ss3sim".
 #' @export
-#' @return Returns a list of 3 dataframes: scalar, ts, and dq.
-#' Creates two .csv files in the current working directory,
+#' @return Returns a list of 3 data frames: `scalar`, `ts`, and `dq`.
+#' Creates two `.csv` files in the current working directory,
 #' where the names of those files are based on `filename_prefix`
 #' and the default leads to the following:
 #' `ss3sim_ts.csv` and `ss3sim_scalar.csv`.
@@ -154,17 +154,17 @@ get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
 #' Extract Stock Synthesis simulation results for one scenario
 #'
 #' Extract results from all iterations inside a supplied scenario folder.
-#' The function writes the following .csv files to the scenario folder
+#' The function writes the following `.csv` files to the scenario folder
 #' 1. scalar metrics with one value per iteration
 #'    (e.g. \eqn{R_0}, \eqn{h}),
-#' 1. a timeseries data ('ts') which contains multiple values per iteration
-#'    (e.g.  \eqn{SSB_y} for a range of years \eqn{y}), and
+#' 1. a `timeseries` data frame ('ts') which contains multiple values per iteration
+#'    (e.g.,  \eqn{SSB_y} for a range of years \eqn{y}), and
 #' 1. residuals on the log scale from the surveys across all iterations;
 #'    this functionality is currently disabled and not tested.
 #'
 #' @seealso
-#' [get_results_all()] loops through these .csv files and
-#' combines them together into a single "final" dataframe.
+#' [get_results_all()] loops through these `.csv` files and
+#' combines them together into a single "final" data frame.
 #'
 #' @param scenario A single character giving the scenario from which to
 #'   extract results.
@@ -257,19 +257,19 @@ get_results_scenario <- function(scenario, directory = getwd(),
 #' Get results for 1 iteration
 #'
 #' @param dir_1_iter The full or relative path to the Stock Synthesis iteration folder.
-#'  Assumed to contain multiple model folders that contain "om" or "em"
+#'  Assumed to contain multiple model folders that contain `OM` or `EM`
 #'  (not case sensitive) somewhere in the model file name. If specified,
-#'  mod_dirs need not be specified.
+#'  `mod_dirs` need not be specified.
 #' @param mod_dirs The full or relative path to the Stock Synthesis model folders as a
-#'  vector of characters. If specified, dir_1_iter need not be specified.
+#'  vector of characters. If specified, `dir_1_iter` need not be specified.
 #' @param iter_name Name of the iteration, which will be appended to the
-#'  dataframes . Defaults to NULL, in which case the iter_name will be the
-#'  folder name of dir_1_iter or the folder name 1 level up from the first
-#'  mod_dirs specified
-#' @author Kathryn Doering
+#'  data frames. Defaults to `NULL`, in which case the `iter_name` will be the
+#'  folder name of `dir_1_iter` or the folder name 1 level up from the first
+#'  `mod_dirs` specified.
+#' @author Kathryn L. Doering
 #' @export
-#' @return A list of 3 data frames called scalar, timeseries, and
-#'  derived (for derived quantities). These lists contain information for
+#' @return A list of 3 data frames named `scalar`, `timeseries`, and
+#'  `derived` (for derived quantities). These lists contain information for
 #'  multiple model runs (estimation models and operating models) for 1
 #'  iteration.
 get_results_iter <- function(dir_1_iter = NULL, mod_dirs = NULL,
@@ -315,15 +315,15 @@ get_results_iter <- function(dir_1_iter = NULL, mod_dirs = NULL,
 #' @param dir The full or relative path to the Stock Synthesis model file folder. If not
 #'  specified, uses the working directory.
 #' @param is_EM Is this an estimation model? Defaults to NULL, which will look
-#' for the letters "em" (lower or uppercase) to decide if this is an estimation
+#' for the letters `"EM"` (lower or uppercase) to decide if this is an estimation
 #' model or operating model.
 #' @param is_OM Is this an operating model? Defaults to NULL, which will look
-#' for the letters "om" (lower or uppercase) to decide if this is an estimation
+#' for the letters `"OM"` (lower or uppercase) to decide if this is an estimation
 #' model or operating model.
-#' @author Kathryn Doering
+#' @author Kathryn L. Doering
 #' @export
-#' @return A list of 3 data frames called scalar, timeseries, and
-#'  derived (for derived quantities). These data frames contain results for 1
+#' @return A list of 3 data frames called `scalar`, `timeseries`, and
+#'  `derived` (for derived quantities). These data frames contain results for 1
 #'  model run.
 get_results_mod <- function(dir = getwd(), is_EM = NULL, is_OM = NULL) {
   # Input checks:
@@ -408,7 +408,8 @@ get_results_mod <- function(dir = getwd(), is_EM = NULL, is_OM = NULL) {
 #' Extract time series from a model run.
 #'
 #' Extract time series from an [r4ss::SS_output()] list from a model run.
-#' Returns a data.frame of the results for SSB, recruitment and effort by year.
+#' Returns a data frame of the results for
+#' spawning biomass, recruitment, and effort by year.
 #'
 #' @template report.file
 #' @export
@@ -477,7 +478,7 @@ get_results_timeseries <- function(report.file) {
 #' Extract time series from a model run with the associated standard deviation.
 #'
 #' Extract time series from an [r4ss::SS_output()] list from a model run.
-#' Returns a data.frame of the results for spawning stock biomass (SSB), recruitment,
+#' Returns a data.frame of the results for spawning biomass, recruitment,
 #' forecasts, and effort by year.
 #'
 #' @template report.file
@@ -518,7 +519,8 @@ get_results_derived <- function(report.file) {
 #' Extract scalar quantities from a model run.
 #'
 #' Extract scalar quantities from an [r4ss::SS_output()] list from a model run.
-#' Returns a data.frame of the results (a single row) which can be rbinded later.
+#' Returns a data.frame of the results (a single row) which can be bound using
+#' [rbind] later.
 #' @template report.file
 #' @family get-results
 #' @export
@@ -642,17 +644,17 @@ get_compfit <- function(report.file, name) {
   return(tuning)
 }
 
-#' Make a list of lists with dataframe components into a dataframes
+#' Make a list of lists with data frame components into a data frames
 #'
-#' Bind together list of list components with the same name
-#' @param list_name A name to subset from iter_list
-#' @param list_df A list of dataframes. These need not have the same column
+#' Bind together list of list components with the same name.
+#' @param list_name A name to subset from `iter_list`.
+#' @param list_df A list of data frames. These need not have the same column
 #'  names, as this function will fill in with NAs.
-#' @author Kathryn Doering
-#' @return A dataframe
+#' @author Kathryn L. Doering
+#' @return A data frame.
 make_df <- function(list_name, list_df) {
   list_df_comp <- lapply(list_df, function(x) x[[list_name]])
-  # set anything not a dataframe (the NA values) as Null
+  # set anything not a data frame (the NA values) as Null
   list_df_comp <- lapply(list_df_comp, function(x) {
     if (!is.data.frame(x)) {
       x <- NULL
@@ -664,7 +666,7 @@ make_df <- function(list_name, list_df) {
   if (length(list_df_comp) > 0) {
     all_nms <- unique(unlist(lapply(list_df_comp, names)))
     # this extra code is needed in case of extra colnames that are not in both
-    # dataframes.
+    # data frames.
     df <- do.call(
       rbind,
       c(lapply(
@@ -691,9 +693,9 @@ make_df <- function(list_name, list_df) {
 #' Convert long-style ss3sim output to wide format
 #'
 #' This function exists for back compatibility. Note that this will only work
-#' if the column model_run has only the strings"om" or "em".
-#' @param lng A long dataframe produced from get_results_all().
-#' @return A wide dataframe (separate columns for em and om results)
+#' if the column model_run has only the strings `OM` or `EM`.
+#' @param lng A long data frame produced from get_results_all().
+#' @return A wide data frame (separate columns for EM and OM results).
 #' @export
 #' @examples \dontrun{
 #' scalar <- utils::read.csv("ss3sim_scalar.csv")

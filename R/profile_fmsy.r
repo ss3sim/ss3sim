@@ -1,7 +1,7 @@
-#' Determine Fmsy for a given operating model
+#' Determine fishing mortality at maximum sustainable yield
 #'
 #' Runs an operating model over a range of fishing mortality, \eqn{F}, levels to
-#' determine the F at maximum sustainable yield, \eqn{F_{MSY}}.
+#' determine the \eqn{F} at maximum sustainable yield, \eqn{F_{MSY}}.
 #'
 #' @param om_in A full or relative path to a directory that contains an
 #'   \pkg{ss3sim} operating model.

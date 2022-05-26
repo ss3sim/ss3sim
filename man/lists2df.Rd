@@ -19,8 +19,8 @@ vectors and the first vector is of length 3 and the second is of
 length 4, then the index column will be \code{c(rep(1,3), rep(2,4))}.
 }
 \description{
-Take the ith element from each list and combine into a data frame
-and then rbind the resulting data frames to form a single data frame.
+Take the \code{ith} element from each list and combine into a data frame
+and then \code{rbind} the resulting data frames to form a single data frame.
 }
 \examples{
 ss3sim:::lists2df(list(1:2, 5:10), list(3:4, 5:10))

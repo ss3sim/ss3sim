@@ -15,20 +15,20 @@
 #' for all fleets.
 #'
 #' A todo list for future features is as follows:
-#' * remove fleets that have NA
-#' * allow for arguments rather than hardwiring arg and fleet
-#' * see if sa.Nsamp and sa.Nsamp.1 can be in the same data frame and just
+#' * remove fleets that have `NA`
+#' * allow for arguments rather than hard wiring `arg` and `fleet`
+#' * see if `sa.Nsamp` and `sa.Nsamp.1` can be in the same data frame and just
 #' fill in the value for fleets that aren't specified; would need to fill
 #' up and down I think within a group to make it work.
-#' * accomodate -999 in sample function cpar arguments
-#' * create add_args to fill in missing arguments across fleets
-#' * implement add_args before expand fleet such that the new
-#' arg would be expanded for all fleets but I only have to specify
+#' * accommodate -999 in sample function `cpar` arguments
+#' * create `add_args` to fill in missing arguments across fleets
+#' * implement `add_args` before expand fleet such that the new
+#' `arg` would be expanded for all fleets but I only have to specify
 #' the default one time
 #' * fix `.data[[""]]` to pass CRAN
-#' x <- enquo(x)
-#' y <- enquo(y)
-#' ggplot(data) + geom_point(aes(!!x, !!y))
+#' `x <- enquo(x)`
+#' `y <- enquo(y)`
+#' `ggplot(data) + geom_point(aes(!!x, !!y))`
 #'
 #' @param data A data frame of scenario information that was passed to
 #' [setup_scenarios()] and as subsequently been passed to this function as a
@@ -42,7 +42,7 @@
 setup_scenarios_fleet <- function(data) {
   #### Set up
   # Create a FULL data set with missing values by
-  # expanding and nesting arg and fleet for sampling args
+  # expanding and nesting `arg` and `fleet` for sampling arguments
   # Use lookup to see if they are from the beginning section
   potentiallabels <- setup_scenarios_lookup()
   fleetspecificlabels <- names(potentiallabels)[
@@ -194,8 +194,8 @@ setup_scenarios <- function(df = "default",
   if (isTRUE(length(labs_with_null_or_nas) > 0)) {
     if (!all(grepl("cpar", labs_with_null_or_nas))) {
       warning(
-        "The following dataframe columns contain NULL or NA values, ",
-        "which could cause ss3sim to behave unexpectedly. Please specify",
+        "The following data frame columns contain NULL or NA values,",
+        " which could cause ss3sim to behave unexpectedly. Please specify",
         " these values, unless NULL or NA are valid inputs for the column",
         " (e.g., cpar for lcomp or agecomp can be NULL.)\nColumns: ",
         paste0(labs_with_null_or_nas, collapse = ", ")
@@ -324,7 +324,7 @@ setup_scenarios_defaults <- function(nscenarios = 1) {
 
 #' Create a name for an unnamed scenario
 #'
-#' Create a name for an unnamed scenario based on [Sys.time].
+#' Create a name for an unnamed scenario based on [Sys.time()].
 #'
 #' @param check A logical that enables checking for a unique name.
 #' If `check = TRUE` then the function enters a loop and will generate
@@ -332,7 +332,7 @@ setup_scenarios_defaults <- function(nscenarios = 1) {
 #' This could be helpful when running scenarios in parallel.
 #'
 #' @return A single character value is returned.
-#' The object starts with the letter `s` and is followed by [Sys.time]
+#' The object starts with the letter `s` and is followed by [Sys.time()]
 #' Where, the date/time portion is `%m%d%H%M%S`, better known as
 #' a two-digit month, e.g., 01; a two-digit number for the day of the month;
 #' and finally a two-digit hour, then minute, then second.

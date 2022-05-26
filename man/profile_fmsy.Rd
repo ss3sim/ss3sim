@@ -2,7 +2,7 @@
 % Please edit documentation in R/profile_fmsy.r
 \name{profile_fmsy}
 \alias{profile_fmsy}
-\title{Determine Fmsy for a given operating model}
+\title{Determine fishing mortality at maximum sustainable yield}
 \usage{
 profile_fmsy(
   om_in,
@@ -37,7 +37,7 @@ Also, invisibly returns a table of F and catch as a data frame.
 }
 \description{
 Runs an operating model over a range of fishing mortality, \eqn{F}, levels to
-determine the F at maximum sustainable yield, \eqn{F_{MSY}}.
+determine the \eqn{F} at maximum sustainable yield, \eqn{F_{MSY}}.
 }
 \details{
 This function extracts the number of years from the data

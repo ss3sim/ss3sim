@@ -12,7 +12,7 @@ get_results_derived(report.file)
 }
 \description{
 Extract time series from an \code{\link[r4ss:SS_output]{r4ss::SS_output()}} list from a model run.
-Returns a data.frame of the results for spawning stock biomass (SSB), recruitment,
+Returns a data.frame of the results for spawning biomass, recruitment,
 forecasts, and effort by year.
 }
 \seealso{

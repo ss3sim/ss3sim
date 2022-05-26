@@ -24,7 +24,7 @@ To carry out \pkg{ss3sim} simulations with the CRAN version of ss3sim,
 you will need to have Stock Synthesis installed on your computer and
 the binary needs to be in the path that \R sees.
 See
-\href{https://nmfs-stock-synthesis.github.io/ss-documentation/Getting_Started_SS.html#the-path-approach}{Stock Synthesis, Getting Started} and
+\href{https://nmfs-stock-synthesis.github.io/doc/Getting_Started_SS.html#the-path-approach}{Stock Synthesis, Getting Started} and
 the \href{https://ss3sim.github.io/ss3sim/articles/introduction.html}{Introduction vignette}
 for instructions on
 making sure Stock Synthesis will work from within \R.

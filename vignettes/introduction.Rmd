@@ -31,7 +31,7 @@ This vignette is a good starting place for learning about {ss3sim}.
 
 {ss3sim} is an R package to `r missionstatement`.
 If you need help learning R prior to using {ss3sim},
-we recommend navigating to the [RStudio Blog][rstudio-blog].
+we recommend navigating to the [RStudio Blog][RStudio-blog].
 
 {ss3sim} consists of
 
@@ -57,14 +57,14 @@ for how to contribute.
 
 ## Stock Synthesis
 
-It seems imperative to first describe [Stock Synthesis][ss]
+It seems imperative to first describe [Stock Synthesis][SS3]
 because without Stock Synthesis there would not be ss3sim.
 Stock Synthesis is an integrated statistical catch-at-age model written in
-[ADMB][admb].
+[ADMB][ADMB].
 The software is widely used across the globe and has been around for 40+ years.
 
 The inspiration for {ss3sim} came from Hui-Hua Lee's hooilator software.
-hooliator parsed `data.ss_new` files into multiple files and
+hooilator parsed `data.ss_new` files into multiple files and
 created a consistent directory structure to store the results.
 As of Stock Synthesis 3.30.19,
 the need to separate out the `data.ss_new` file into separate files
@@ -76,7 +76,7 @@ simulated data sets are in `data_boot_**N.ss`.
 See the [section on output files in the Stock Synthesis manual][ss-manual-output-files]
 for more detailed information.
 {ss3sim} finishes the creation of simulation-specific directories similar to
-the directory structure that was created by hooliator.
+the directory structure that was created by hooilator.
 Additionally, {ss3sim} added functionality to sample from the expected values
 such that simulations were not forced to rely on bootstrapped values
 provided in `data_boot_**N.ss`.
@@ -89,15 +89,15 @@ including our
 [example output](beautiful-output).
 
 {ss3sim} is just a minor part of the suite of functionality available for Stock Synthesis.
-See the [Stock Synthesis website][ss] for a list of additional software.
+See the [Stock Synthesis website][SS3] for a list of additional software.
 
 ## Installation
 
 ### Installing ss3sim
 
 {ss3sim} is available on
-[CRAN][ss3sim-cran] and
-[GitHub][ss3sim-github] and
+[CRAN][ss3sim-CRAN] and
+[GitHub][ss3sim-GitHub] and
 can be run on OS X, Windows, or Linux.
 The GitHub branch "main" contains the newest features,
 which may not available on CRAN.
@@ -154,8 +154,8 @@ run the Stock Synthesis executable by typing `ss`.
 Debugging can be facilitated by
 
 * output that is printed to the console,
-* echoinput.sso, and
-* Report.sso.
+* `echoinput.sso`, and
+* `Report.sso`.
 
 {ss3sim} was originally based on Stock Synthesis 3.24O [@anderson2014a].
 At first, {ss3sim} did not keep up to date with newer versions of Stock Synthesis.
@@ -170,8 +170,8 @@ But, minor versions will continue to be updated for quite some time.
 Compiled Stock Synthesis executables are available for
 multiple operating systems at the following locations:
 
-* available [on github][ss3sim-bin],
-* available [within GitHub actions in the Stock Synthesis GitHub repository][ss-githubactions], or
+* available [on GitHub][ss3sim-bin],
+* available [within GitHub actions in the Stock Synthesis GitHub repository][ss-GitHubactions], or
 * are downloaded automatically when you use the GitHub version of ss3sim.
 
 #### Putting Stock Synthesis in your path {#path}
@@ -197,9 +197,9 @@ Below we highlight a few packages that are essential for running {ss3sim}.
 #### r4ss
 
 If you are using the GitHub version of {ss3sim},
-R will install the [GitHub version of r4ss][r4ss-github].
+R will install the [GitHub version of r4ss][r4ss-GitHub].
 If you are using the CRAN version of {ss3sim},
-R will install the [CRAN version of r4ss][r4ss-cran].
+R will install the [CRAN version of r4ss][r4ss-CRAN].
 Both methods will check to make sure that you have the most recent version of r4ss  in your R library available given which mirror you are using.
 Feel free to install r4ss directly via
 ```{r, r4ss, eval=FALSE}
@@ -212,15 +212,15 @@ But, make sure you do it before loading ss3sim.
 If you forget, you can use `devtools::unload(package = "ss3sim")` and
 then reinstall r4ss.
 
-#### ggplot2
+#### {ggplot2}
 
 [ggplot2][ggplot2] uses the
 [Grammar of Graphics][grammar-of-graphics]
 to decoratively create images that represent things in a tidy way.
-We do not force users to use ggplot2.
-All output is available as csv files and
+We do not force users to use {ggplot2}.
+All output is available as `.csv` files and
 can be visualized using base R if you prefer.
-The easiest way to get ggplot2 is to install the whole tidyverse suite
+The easiest way to get {ggplot2} is to install the whole {tidyverse} suite
 
 ```{r installggplot2, eval=FALSE}
 utils::install.packages("tidyverse")
@@ -527,12 +527,12 @@ scname_det <- run_ss3sim(iterations = iterations, simdf = df)
 
 Check the model results to make sure that the EM returns the same parameters as the OM.
 `get_results_all()` should be sufficient here,
-which will produce csv files that you can use to check parameter estimates.
+which will produce `.csv` files that you can use to check parameter estimates.
 For more details see the [section on model output](#beautiful-output).
 
 # Beautiful output
 
-## .csv files
+## `.csv` files
 
 `get_results_all()` reads in a set of scenarios and combines the output into `.csv` files, e.g.,
 `ss3sim_scalar.csv` and `ss3sim_ts.csv`.
@@ -554,7 +554,7 @@ get_results_all(
   overwrite_files = TRUE,
   user_scenarios = c(scname, scname_det)
 )
-# Read in the data frames stored in the csv files
+# Read in the data frames stored in the `.csv` files
 scalar_dat <- read.csv("ss3sim_scalar.csv")
 ts_dat <- read.csv("ss3sim_ts.csv")
 ```
@@ -654,7 +654,7 @@ p <- plot_boxplot(scalar_dat_long[
 print(p)
 ```
 
-# Stochasticity
+# Stochastic dynamics
 
 ## Generating observation error {#obs-error}
 
@@ -711,7 +711,7 @@ it is unlikely to happen in practice [@pennington2002].
 One way to generate more realistic data is to use flexible distributions,
 which allow the user to control the statistical properties, e.g.,
 overdispersion of the data.
-Another option is to use unmodeled process error,
+Another option is to use process error that is not being modeled,
 typically in selectivity.
 
 Under perfect mixing of fish and truly random sampling of the population,
@@ -737,8 +737,10 @@ We caution users to carefully consider how data are generated and fit.
 
 #### Indices of abundance
 
-`sample_index()` facilitates generating relative indices of abundance (catch-per-unit-effort (CPUE) data for fishery fleets).
-It samples from the biomass trends available for the different fleets to simulate the collection of CPUE and survey index data.
+`sample_index()` facilitates generating relative indices of abundance
+(catch-per-unit-effort data for fishery fleets).
+It samples from the biomass trends available for the different fleets to
+simulate the collection of catch-per-unit-effort and survey index data.
 The user can specify which fleets are sampled in which years and with what amount of noise.
 Different fleets will "see" different biomass trends due to differences in selectivity.
 Catchability for the OM is equal to one, $q=1$,
@@ -860,7 +862,7 @@ The following steps are used to generate overdispersed samples:
 
 The term "effective sample size" (ESS) for Stock Synthesis often refers to the tuned sample size,
 right-weighted depending on the information contained in the data.
-These values are estimated after an initial run and then written to the .dat file and Stock Synthesis is run again [@francis2011].
+These values are estimated after an initial run and then written to the data file and Stock Synthesis is run again [@francis2011].
 Perhaps a better term would be "input sample size" to contrast it with what was originally sampled.
 
 In any case,
@@ -908,22 +910,23 @@ Contact the developers for more information.
 
 #### Conditional age at length
 
-Conditional age-at-length (CAAL) data is an alternative to age-composition data,
+Conditional age-at-length data is an alternative to age-composition data,
 when there are paired age and length observations of the same fish.
-CAAL data are inherently tied to the length compositions, e.g.,
+Conditional age-at-length data are inherently tied to the length compositions, e.g.,
 as if a trip measured lengths and ages for all fish.
 In contrast to the age compositions,
 which were generated independently of the length data, e.g.,
 as if one trip measured only ages and a second only lengths.
 Stock Synthesis has the capability to associate the measurements,
 and doing so has many appealing attributes.
-CAAL data are expected to be more informative about growth than marginal age-composition data.
+Conditional age-at-length data are expected to be
+more informative about growth than marginal age-composition data.
 Although, to date, few studies have examined this data type [@he2015; @monnahan2015].
 See `?sample_calcomp()` for more details on the sampling process.
 
 ## Generating process error {#pro-error}
 
-Process error is incorporated into the OM in the form of deviates in recruitment ("recdevs") from the stock-recruitment relationship.
+Process error is incorporated into the OM in the form of deviates in recruitment from the stock-recruitment relationship.
 Unlike the observation error, the process error affects the population dynamics and thus must be done before running the OM.
 
 These built-in recruitment deviations are standard normal deviates and
@@ -945,10 +948,10 @@ The user-supplied recruitment deviations are used exactly as specified
 **it is up to you to bias correct them manually** by subtracting $\sigma_r^2 / 2$ as is done above.
 This functionality allows for flexibility in how the recruitment deviations are specified, for example [running deterministic runs](#deterministic) or adding serial correlation.
 
-Note that for both built-in and user-specified recdevs, {ss3sim} will reuse the same set of recruitment deviations for all iterations across scenarios.
+Note that for both built-in and user-specified recruitment deviations, {ss3sim} will reuse the same set of recruitment deviations for all iterations across scenarios.
 For example if you have two scenarios and run 100 iterations of each, the same set of recruitment deviations are used for iteration one for both those two scenarios.
 
-## Reproducibility
+## Reproducible
 
 In many cases, you may want to make the observation and process error reproducible.
 For instance, you may want to reuse process error so that differences between scenarios are not confounded with process error.
@@ -983,8 +986,8 @@ This approach would allow for testing of differences between estimating a single
 par_y = par + link * env_y.
 \end{equation}
 
-$link$ is pre-specified to a value of one.
-$par$ is the base value for the given parameter, as defined by the INIT value in the `.ctl` file.
+$link$ is prespecified to a value of one.
+$par$ is the base value for the given parameter, as defined by the `INIT` value in the `.ctl` file.
 For all catchability parameters ($q$),
 the deviate will be added to the log transform of the base parameter using the following equation:
 
@@ -1037,7 +1040,7 @@ stopCluster(cl)
 
 Note that if the simulation aborts for any reason while `run_ss3sim()` is running in parallel,
 you may need to abort the left over parallel processes.
-On Windows, open the task manager (Ctrl-Shift-Esc) and close any R processes.
+On Windows, open the task manager (`Ctrl-Shift-Esc`) and close any R processes.
 On a Mac, open Activity Monitor and force quit any R processes.
 Also, if you are working with a local development version of `ss3sim` and you are on a Windows machine,
 you may not be able to run in parallel if you load {ss3sim} with `devtools::load_all()`.

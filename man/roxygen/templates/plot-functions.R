@@ -18,7 +18,7 @@
 #' also return it invisibly for saving or printing again later.
 #' For example, you could save the \code{ggplot} object and add a custom
 #' theme or change an axis label before printing it.
-#' @param data A valid data frame containing scalar or timeseries values
+#' @param data A valid data frame containing `scalar` or `timeseries` values
 #' from a \pkg{ss3sim} simulation. That data are generated from
 #' \code{\link{get_results_all}}.
 #' @param x A character string denoting which column to use as the x variable.

@@ -13,7 +13,7 @@
 #' @export
 #' @return An integer vector indicating the positions of `x` in `table`.
 #' Same as [match()], if `x[i]` is found to be equal to `table[j]`, then
-#' the value returned in the `i`-th position of the integer vector is `j`.
+#' the value returned in the `ith` position of the integer vector is `j`.
 #' The smallest value of `j`, i.e., the first match, is always returned.
 #'
 #' `find_position()` differs from [match()] in three ways.

@@ -2,22 +2,22 @@
 % Please edit documentation in R/get-results.r
 \name{make_df}
 \alias{make_df}
-\title{Make a list of lists with dataframe components into a dataframes}
+\title{Make a list of lists with data frame components into a data frames}
 \usage{
 make_df(list_name, list_df)
 }
 \arguments{
-\item{list_name}{A name to subset from iter_list}
+\item{list_name}{A name to subset from \code{iter_list}.}
 
-\item{list_df}{A list of dataframes. These need not have the same column
+\item{list_df}{A list of data frames. These need not have the same column
 names, as this function will fill in with NAs.}
 }
 \value{
-A dataframe
+A data frame.
 }
 \description{
-Bind together list of list components with the same name
+Bind together list of list components with the same name.
 }
 \author{
-Kathryn Doering
+Kathryn L. Doering
 }

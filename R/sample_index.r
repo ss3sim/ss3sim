@@ -157,7 +157,7 @@ sample_index <- function(dat_list,
     dplyr::mutate(obs = sample_lognormal(.data[["obsOLD"]], .data[["se_log"]])) %>%
     dplyr::select(.data[["year"]]:.data[["index"]], .data[["obs"]], .data[["se_log"]])
 
-  ## Open the .dat file and find the right lines to overwrite
+  ## Open the data file and find the right lines to overwrite
   dat_list$CPUE <- as.data.frame(cpue.new)
   dat_list$N_cpue <- ifelse(Nfleets > 0, nrow(cpue.new), )
   if (!is.null(outfile)) {

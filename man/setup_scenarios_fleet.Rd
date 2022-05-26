@@ -33,20 +33,20 @@ for all fleets.
 
 A todo list for future features is as follows:
 \itemize{
-\item remove fleets that have NA
-\item allow for arguments rather than hardwiring arg and fleet
-\item see if sa.Nsamp and sa.Nsamp.1 can be in the same data frame and just
+\item remove fleets that have \code{NA}
+\item allow for arguments rather than hard wiring \code{arg} and \code{fleet}
+\item see if \code{sa.Nsamp} and \code{sa.Nsamp.1} can be in the same data frame and just
 fill in the value for fleets that aren't specified; would need to fill
 up and down I think within a group to make it work.
-\item accomodate -999 in sample function cpar arguments
-\item create add_args to fill in missing arguments across fleets
-\item implement add_args before expand fleet such that the new
-arg would be expanded for all fleets but I only have to specify
+\item accommodate -999 in sample function \code{cpar} arguments
+\item create \code{add_args} to fill in missing arguments across fleets
+\item implement \code{add_args} before expand fleet such that the new
+\code{arg} would be expanded for all fleets but I only have to specify
 the default one time
 \item fix \code{.data[[""]]} to pass CRAN
-x <- enquo(x)
-y <- enquo(y)
-ggplot(data) + geom_point(aes(!!x, !!y))
+\code{x <- enquo(x)}
+\code{y <- enquo(y)}
+\code{ggplot(data) + geom_point(aes(!!x, !!y))}
 }
 }
 \author{

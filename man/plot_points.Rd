@@ -21,7 +21,7 @@ plot_points(
 )
 }
 \arguments{
-\item{data}{A valid data frame containing scalar or timeseries values
+\item{data}{A valid data frame containing \code{scalar} or \code{timeseries} values
 from a \pkg{ss3sim} simulation. That data are generated from
 \code{\link{get_results_all}}.}
 
@@ -72,7 +72,7 @@ in \code{facet_grid}.}
 \item{print}{A logical for whether the plot is printed or not.}
 }
 \description{
-Generate a scatterplot using \link[ggplot2:ggplot]{ggplot2::ggplot} to visualize
+Generate a scatter plot using \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} to visualize
 the relationship between two continuous variables.
 }
 \details{

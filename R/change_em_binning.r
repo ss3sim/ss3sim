@@ -9,9 +9,9 @@
 #' @template dat_list
 #' @template outfile
 #' @param bin_vector A numeric vector of new length bins to substitute into the
-#'   `*.dat` file.
+#'   data file.
 #' @param lbin_method A numeric value of either `NULL, 1, 2, 3` to change
-#'   the lbin_method for the population bin.
+#'   the `lbin_method` for the population bin.
 #'   `NULL` means to not re-bin.
 #' @param pop_binwidth Population length bin width.
 #'   Only necessary for `lbin_method = 2`.
@@ -25,11 +25,11 @@
 #' @export
 #' @family sample functions
 #' @family change functions
-#' @author Kotaro Ono (length-composition rebinning), Sean Anderson
-#'   (conditional age-at-length rebinning)
+#' @author Kotaro Ono (length-composition section), Sean Anderson
+#'   (conditional age-at-length section)
 #' @examples
-#' # Note that typically this function is used with estimation models in ss3sim,
-#' # but it is used with an operating model data file in the following examples.
+#' # Note that, typically this function is used with EMs in ss3sim,
+#' # but it is used with an OM data file in the following examples.
 #' f <- system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim")
 #' d <- r4ss::SS_readdat(f, verbose = FALSE)
 #'
@@ -293,7 +293,7 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
     # re-order the columns:
     new_cal <- new_cal[, match(names(old_cal_all), names(new_cal))]
 
-    # and slot the new data into the .dat file:
+    # and slot the new data into the data file:
     dat_list$agecomp <- rbind(old_age, new_cal)
     dat_list$N_agecomp <- nrow(dat_list$agecomp)
 

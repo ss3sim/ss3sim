@@ -2,19 +2,19 @@
 % Please edit documentation in R/get_sigma.r
 \name{get_sigmar}
 \alias{get_sigmar}
-\title{Get Variability About Recruitment Deviations (\eqn{\sigma_R})}
+\title{Get variability about recruitment deviations (\eqn{\sigma_R})}
 \usage{
 get_sigmar(om)
 }
 \arguments{
 \item{om}{The name of the operating model, which should be the prefix of
-the \code{.ctl} file, e.g., "myOM".
+the control file, e.g., \code{"myOM"}.
 A full directory can be specified with the the prefix of the file name but
-leaving off the '.ctl' portion.}
+leaving off the file extension.}
 }
 \description{
-Use the name of the operating model to open the ctl file and obtain the
-INIT value for sigmaR (recruitment deviations sigma)
+Use the name of the operating model to open the control file and obtain the
+\code{INIT} value for recruitment deviations \eqn{sigma} (\eqn{\sigma_R}).
 }
 \author{
 Kelli F. Johnson

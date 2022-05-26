@@ -1,7 +1,7 @@
 #' Combine multiple lists element wise to a single data frame
 #'
-#' Take the ith element from each list and combine into a data frame
-#' and then rbind the resulting data frames to form a single data frame.
+#' Take the `ith` element from each list and combine into a data frame
+#' and then `rbind` the resulting data frames to form a single data frame.
 #'
 #' @param ... Lists of the same length
 #' @keywords internal

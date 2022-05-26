@@ -30,7 +30,7 @@ in which they are estimated. Entries are searched for in
 names as they are specified in the file.}
 
 \item{par_int}{A vector of initial values, one for each entry in
-\code{par_name}. Values of \code{NA} leave the INIT value for
+\code{par_name}. Values of \code{NA} leave the \code{INIT} value for
 that parameter at the value found in the \code{.ctl} file.}
 
 \item{verbose}{When \code{TRUE} messages will be returned
@@ -63,10 +63,10 @@ Parameter names must be unique and match the full parameter name in the
 you want to change in the OM, each element of this vector needs to be
 wrapped in quotations to be later evaluated, e.g., \code{'c("SR_BH_steep","SR_sigmaR")'}
 represents a single entry;
-and (2) add an additional column called \code{co.par_int} to the \code{simdf} that specifies
-INIT values for each parameter in the previous column, e.g., \code{"c(0.6, 1.0)"}, if
-there is more than one value, the vector needs to be wrapped in quotations to be
-evaluated later.
+and (2) add column called \code{co.par_int} to the \code{simdf} that specifies
+\code{INIT} values for each parameter in the previous column, e.g.,
+\code{"c(0.6, 1.0)"}. If there is more than one value,
+the vector needs to be wrapped in quotations to be evaluated later.
 }
 
 \seealso{

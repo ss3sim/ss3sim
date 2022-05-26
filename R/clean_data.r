@@ -1,6 +1,6 @@
-#' Given sampling arguments, remove unneeded data from a .dat file
+#' Given sampling arguments, remove unneeded data from a data file
 #'
-#' This prepares a `.dat` file to be used by an estimation method,
+#' This prepares a data file to be used by an estimation method,
 #' whereas before it may have had leftover data from sampling purposes.
 #'
 #' @author Cole Monnahan
@@ -205,12 +205,13 @@ clean_data <- function(dat_list, lcomp_params = NULL,
 
 #' Check input arguments for data
 #'
-#' Check that the param list inputs have correct structure and range given an
-#' associated data file.
+#' Check that the parameter list inputs have correct structure and range
+#' given an associated data file.
 #'
 #' @param all_params A named list of the parameters containing at a minimum
 #'   year and fleet values
-#' @param dat_list An Stock Synthesis data list object as read in by [r4ss::SS_readdat()].
+#' @param dat_list A Stock Synthesis data list object as read in by
+#'   [r4ss::SS_readdat()].
 #'
 check_data_str_range <- function(all_params, dat_list) {
   str_err <- lapply(all_params, FUN = function(params) {

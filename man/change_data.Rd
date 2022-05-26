@@ -55,15 +55,15 @@ the age bin structure will be taken from the OM.}
 \item{len_bins}{A numeric vector of length bins to use. If left as
 \code{NULL}, the length bin structure will be taken from the OM.
 For conditional age-at-length data,
-the last value provided to \code{len_bins} will be used for Lbin_lo and
--1 will be used for Lbin_hi for the largest length bin category, i.e.,
+the last value provided to \code{len_bins} will be used for \code{Lbin_lo} and
+-1 will be used for \code{Lbin_hi} for the largest length bin category, i.e.,
 row of conditional age-at-length data.}
 
 \item{pop_binwidth}{Population length bin width. Note that this value must
 be smaller than the bin width specified in length-composition data
 \code{len_bins} or Stock Synthesis will fail,
 see notes in the
-\href{https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html}{Stock Synthesis manual}.}
+\href{https://nmfs-stock-synthesis.github.io/doc/SS330_User_Manual.html}{Stock Synthesis manual}.}
 
 \item{pop_minimum_size}{Population minimum length bin value.}
 
@@ -73,7 +73,7 @@ see notes in the
 Must be a numeric value, as a proportion.
 For example, 0.1 means 10 percent.
 See the notes in the
-\href{https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html}{Stock Synthesis manual}.
+\href{https://nmfs-stock-synthesis.github.io/doc/SS330_User_Manual.html}{Stock Synthesis manual}.
 A \code{NULL} value indicates no action resulting in using the current value, and
 a value of 0 will throw an error because
 zero leads to an error when zeroes exist in the data.
@@ -82,7 +82,7 @@ Instead use a very small value like 1e-07.}
 \item{tail_compression}{Tail compression value to be used in Stock Synthesis. Must
 be a numeric value, as a proportion. For example 0.1 means 10 percent.
 See the notes in the
-\href{https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html}{Stock Synthesis manual}.
+\href{https://nmfs-stock-synthesis.github.io/doc/SS330_User_Manual.html}{Stock Synthesis manual}.
 A \code{NULL} value indicates no action,
 a negative value turns the feature off in Stock Synthesis.}
 

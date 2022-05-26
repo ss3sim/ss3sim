@@ -1,6 +1,6 @@
 #' Plot results of a simulation as a scatterplot
 #'
-#' Generate a scatterplot using [ggplot2::ggplot] to visualize
+#' Generate a scatter plot using [ggplot2::ggplot()] to visualize
 #' the relationship between two continuous variables.
 #'
 #' @details

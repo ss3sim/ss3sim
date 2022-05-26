@@ -11,21 +11,21 @@ get_results_mod(dir = getwd(), is_EM = NULL, is_OM = NULL)
 specified, uses the working directory.}
 
 \item{is_EM}{Is this an estimation model? Defaults to NULL, which will look
-for the letters "em" (lower or uppercase) to decide if this is an estimation
+for the letters \code{"EM"} (lower or uppercase) to decide if this is an estimation
 model or operating model.}
 
 \item{is_OM}{Is this an operating model? Defaults to NULL, which will look
-for the letters "om" (lower or uppercase) to decide if this is an estimation
+for the letters \code{"OM"} (lower or uppercase) to decide if this is an estimation
 model or operating model.}
 }
 \value{
-A list of 3 data frames called scalar, timeseries, and
-derived (for derived quantities). These data frames contain results for 1
+A list of 3 data frames called \code{scalar}, \code{timeseries}, and
+\code{derived} (for derived quantities). These data frames contain results for 1
 model run.
 }
 \description{
 Get results for 1 model run
 }
 \author{
-Kathryn Doering
+Kathryn L. Doering
 }

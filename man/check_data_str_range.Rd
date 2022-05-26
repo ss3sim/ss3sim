@@ -10,9 +10,10 @@ check_data_str_range(all_params, dat_list)
 \item{all_params}{A named list of the parameters containing at a minimum
 year and fleet values}
 
-\item{dat_list}{An Stock Synthesis data list object as read in by \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}}.}
+\item{dat_list}{A Stock Synthesis data list object as read in by
+\code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}}.}
 }
 \description{
-Check that the param list inputs have correct structure and range given an
-associated data file.
+Check that the parameter list inputs have correct structure and range
+given an associated data file.
 }

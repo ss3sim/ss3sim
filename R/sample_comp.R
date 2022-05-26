@@ -5,16 +5,16 @@
 #' observed composition data.
 #'
 #' @details
-#' Sample size, i.e., 'Nsamp', is used as a measure of precision,
+#' Sample size, i.e., `Nsamp`, is used as a measure of precision,
 #' where higher sample sizes lead to simulated samples that more accurately
 #' represent the truth provided in `data`.
 #'
 #' @param data A data frame with informational columns followed by
-#' columns of compositional data.
+#' columns of composition data.
 #' The informational columns must include columns labeled
-#' 'Yr' and 'FltSvy' and end with a column labeled 'Nsamp'.
-#' Columns of compositional data should follow 'Nsamp'.
-#' Rows of compositional data do not need to sum to one.
+#' `Yr` and `FltSvy` and end with a column labeled `Nsamp`.
+#' Columns of composition data should follow `Nsamp`.
+#' Rows of composition data do not need to sum to one.
 #' @template Nsamp
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp

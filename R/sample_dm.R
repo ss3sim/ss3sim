@@ -2,7 +2,7 @@
 #'
 #' @param data A data frame with one row.
 #' @param n The desired sample size.
-#' @param par The cpar value to define overdispersion.
+#' @param par The `cpar` value to define overdispersion.
 #'
 #' @return A data frame with one row because right now the input
 #' data should only be a single row of data.

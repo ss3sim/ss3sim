@@ -8,17 +8,17 @@ sample_comp(data, Nsamp, fleets, years, ESS = NULL, cpar = 1, ...)
 }
 \arguments{
 \item{data}{A data frame with informational columns followed by
-columns of compositional data.
+columns of composition data.
 The informational columns must include columns labeled
-'Yr' and 'FltSvy' and end with a column labeled 'Nsamp'.
-Columns of compositional data should follow 'Nsamp'.
-Rows of compositional data do not need to sum to one.}
+\code{Yr} and \code{FltSvy} and end with a column labeled \code{Nsamp}.
+Columns of composition data should follow \code{Nsamp}.
+Rows of composition data do not need to sum to one.}
 
 \item{Nsamp}{*A numeric list of the same length as \code{fleets}.
 Either single values or vectors of the same length as the number of
 years can be passed through. Single values are repeated for all
 years. If no fleet collected samples, keep the value to
-\code{Nsamp=NULL}.}
+\code{Nsamp = NULL}.}
 
 \item{fleets}{*A vector of integers specifying which fleets to include.
 The order of the fleets pertains to the input order of other arguments.
@@ -45,7 +45,7 @@ either a single integer or a vector of integers, for each fleet.}
 distribution used for sampling. A value of \code{1} leads to the
 same standard deviation as a multinomial of the given \code{Nsamp},
 \code{2} indicates twice, etc. Values greater than one indicate
-overdispersion, and less underdispersion. \code{NULL} or \code{NA}
+over dispersion, and less under dispersion. \code{NULL} or \code{NA}
 for a given fleet will lead to no dispersion.}
 
 \item{...}{Any argument you want to be a column in the new data frame of composition
@@ -63,7 +63,7 @@ composition data, creating a data frame that mimics
 observed composition data.
 }
 \details{
-Sample size, i.e., 'Nsamp', is used as a measure of precision,
+Sample size, i.e., \code{Nsamp}, is used as a measure of precision,
 where higher sample sizes lead to simulated samples that more accurately
 represent the truth provided in \code{data}.
 }

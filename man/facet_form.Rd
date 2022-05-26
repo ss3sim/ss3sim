@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_functions.R
 \name{facet_form}
 \alias{facet_form}
-\title{Helper function for building a ggplot facet}
+\title{Helper function for building a {ggplot2} facet}
 \usage{
 facet_form(horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL)
 }

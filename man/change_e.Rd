@@ -45,13 +45,13 @@ in which they are estimated. Entries are searched for in
 names as they are specified in the file.}
 
 \item{par_int}{A vector of initial values, one for each entry in
-\code{par_name}. Values of \code{NA} leave the INIT value for
+\code{par_name}. Values of \code{NA} leave the \code{INIT} value for
 that parameter at the value found in the \code{.ctl} file.}
 
 \item{par_phase}{A vector of phase values, one for each parameter in
 \code{par_name}.  Values can be \code{NA} if you do not wish to change
 the phase for a given parameter. Negative values will fix the parameter
-at the INIT value.}
+at the \code{INIT} value.}
 
 \item{forecast_num}{Number of years to perform forecasts. For those years,
 the data will be removed from the \code{dat_list}, enabling Stock Synthesis to

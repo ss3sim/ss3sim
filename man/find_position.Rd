@@ -17,7 +17,7 @@ function because \code{x = 1} will produce a return value of 3 rather than 1.}
 \value{
 An integer vector indicating the positions of \code{x} in \code{table}.
 Same as \code{\link[=match]{match()}}, if \code{x[i]} is found to be equal to \code{table[j]}, then
-the value returned in the \code{i}-th position of the integer vector is \code{j}.
+the value returned in the \code{ith} position of the integer vector is \code{j}.
 The smallest value of \code{j}, i.e., the first match, is always returned.
 
 \code{find_position()} differs from \code{\link[=match]{match()}} in three ways.

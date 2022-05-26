@@ -610,7 +610,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     )
 
     # Make EM as specified by user -------------------------------------------
-    ## Change the binning structure in the EM ss3.dat file as needed
+    ## Change the binning structure in the EM data file as needed
     if (!is.null(em_binning_params)) {
       em_binning_params <- fixlist(em_binning_params)
       dat_list <- do.call("change_em_binning", c(

@@ -8,21 +8,21 @@ get_results_iter(dir_1_iter = NULL, mod_dirs = NULL, iter_name = NULL)
 }
 \arguments{
 \item{dir_1_iter}{The full or relative path to the Stock Synthesis iteration folder.
-Assumed to contain multiple model folders that contain "om" or "em"
+Assumed to contain multiple model folders that contain \code{OM} or \code{EM}
 (not case sensitive) somewhere in the model file name. If specified,
-mod_dirs need not be specified.}
+\code{mod_dirs} need not be specified.}
 
 \item{mod_dirs}{The full or relative path to the Stock Synthesis model folders as a
-vector of characters. If specified, dir_1_iter need not be specified.}
+vector of characters. If specified, \code{dir_1_iter} need not be specified.}
 
 \item{iter_name}{Name of the iteration, which will be appended to the
-dataframes . Defaults to NULL, in which case the iter_name will be the
-folder name of dir_1_iter or the folder name 1 level up from the first
-mod_dirs specified}
+data frames. Defaults to \code{NULL}, in which case the \code{iter_name} will be the
+folder name of \code{dir_1_iter} or the folder name 1 level up from the first
+\code{mod_dirs} specified.}
 }
 \value{
-A list of 3 data frames called scalar, timeseries, and
-derived (for derived quantities). These lists contain information for
+A list of 3 data frames named \code{scalar}, \code{timeseries}, and
+\code{derived} (for derived quantities). These lists contain information for
 multiple model runs (estimation models and operating models) for 1
 iteration.
 }
@@ -30,5 +30,5 @@ iteration.
 Get results for 1 iteration
 }
 \author{
-Kathryn Doering
+Kathryn L. Doering
 }

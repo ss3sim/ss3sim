@@ -19,19 +19,19 @@ changes were made to this function.}
 }
 \description{
 Extract results from all iterations inside a supplied scenario folder.
-The function writes the following .csv files to the scenario folder
+The function writes the following \code{.csv} files to the scenario folder
 \enumerate{
 \item scalar metrics with one value per iteration
 (e.g. \eqn{R_0}, \eqn{h}),
-\item a timeseries data ('ts') which contains multiple values per iteration
-(e.g.  \eqn{SSB_y} for a range of years \eqn{y}), and
+\item a \code{timeseries} data frame ('ts') which contains multiple values per iteration
+(e.g.,  \eqn{SSB_y} for a range of years \eqn{y}), and
 \item residuals on the log scale from the surveys across all iterations;
 this functionality is currently disabled and not tested.
 }
 }
 \seealso{
-\code{\link[=get_results_all]{get_results_all()}} loops through these .csv files and
-combines them together into a single "final" dataframe.
+\code{\link[=get_results_all]{get_results_all()}} loops through these \code{.csv} files and
+combines them together into a single "final" data frame.
 
 Other get-results: 
 \code{\link{get_results_all}()},

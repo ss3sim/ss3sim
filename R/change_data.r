@@ -20,21 +20,21 @@
 #' @param len_bins A numeric vector of length bins to use. If left as
 #'   `NULL`, the length bin structure will be taken from the OM.
 #'   For conditional age-at-length data,
-#'   the last value provided to `len_bins` will be used for Lbin_lo and
-#'   -1 will be used for Lbin_hi for the largest length bin category, i.e.,
+#'   the last value provided to `len_bins` will be used for `Lbin_lo` and
+#'   -1 will be used for `Lbin_hi` for the largest length bin category, i.e.,
 #'   row of conditional age-at-length data.
 #' @param pop_binwidth Population length bin width. Note that this value must
 #'   be smaller than the bin width specified in length-composition data
 #'   `len_bins` or Stock Synthesis will fail,
 #'   see notes in the
-#'   [Stock Synthesis manual](https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html).
+#'   [Stock Synthesis manual](https://nmfs-stock-synthesis.github.io/doc/SS330_User_Manual.html).
 #' @param pop_minimum_size Population minimum length bin value.
 #' @param pop_maximum_size Population maximum length bin value.
 #' @param lcomp_constant The robustification constant for length-composition data.
 #'   Must be a numeric value, as a proportion.
 #'   For example, 0.1 means 10 percent.
 #'   See the notes in the
-#'   [Stock Synthesis manual](https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html).
+#'   [Stock Synthesis manual](https://nmfs-stock-synthesis.github.io/doc/SS330_User_Manual.html).
 #'   A `NULL` value indicates no action resulting in using the current value, and
 #'   a value of 0 will throw an error because
 #'   zero leads to an error when zeroes exist in the data.
@@ -42,7 +42,7 @@
 #' @param tail_compression Tail compression value to be used in Stock Synthesis. Must
 #'   be a numeric value, as a proportion. For example 0.1 means 10 percent.
 #'   See the notes in the
-#'   [Stock Synthesis manual](https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html).
+#'   [Stock Synthesis manual](https://nmfs-stock-synthesis.github.io/doc/SS330_User_Manual.html).
 #'   A `NULL` value indicates no action,
 #'   a negative value turns the feature off in Stock Synthesis.
 #' @template nsex
@@ -343,7 +343,7 @@ change_pop_bin <- function(dat_list, binwidth = NULL, minimum_size = NULL,
 
 #' Check that the Stock Synthesis data file looks correct
 #'
-#' @param x An Stock Synthesis data list object as read in by [r4ss::SS_readdat()].
+#' @param x A Stock Synthesis data list object as read in by [r4ss::SS_readdat()].
 #' @export
 
 check_data <- function(x) {

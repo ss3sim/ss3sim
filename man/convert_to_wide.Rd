@@ -7,14 +7,14 @@
 convert_to_wide(lng)
 }
 \arguments{
-\item{lng}{A long dataframe produced from get_results_all().}
+\item{lng}{A long data frame produced from get_results_all().}
 }
 \value{
-A wide dataframe (separate columns for em and om results)
+A wide data frame (separate columns for EM and OM results).
 }
 \description{
 This function exists for back compatibility. Note that this will only work
-if the column model_run has only the strings"om" or "em".
+if the column model_run has only the strings \code{OM} or \code{EM}.
 }
 \examples{
 \dontrun{

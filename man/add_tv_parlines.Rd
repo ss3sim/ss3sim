@@ -2,8 +2,7 @@
 % Please edit documentation in R/change_tv.r
 \name{add_tv_parlines}
 \alias{add_tv_parlines}
-\title{Add short time varying parameter lines. At time of writing, this method will
-work for MG, selectivity, and catchability time varying, but not for SR}
+\title{Add short time varying parameter lines.}
 \usage{
 add_tv_parlines(string, tab, ctl_string, ss3.ctl)
 }
@@ -12,15 +11,16 @@ add_tv_parlines(string, tab, ctl_string, ss3.ctl)
 
 \item{tab}{As created in \code{\link[=change_tv]{change_tv()}}.}
 
-\item{ctl_string}{The code as called in the .ss_new comment for time varying.}
+\item{ctl_string}{The code as called in the \code{.ss_new} comment for time varying.}
 
 \item{ss3.ctl}{A ss control file that has been read in using \code{\link[=readLines]{readLines()}}.}
 }
 \value{
-A modified version of ss3.ctl (a vector of strings), containing the
+A modified version of \code{ss3.ctl} (a vector of strings), containing the
 new parameter line
 }
 \description{
-Add short time varying parameter lines. At time of writing, this method will
-work for MG, selectivity, and catchability time varying, but not for SR
+At time of writing, this method will
+work for natural mortality, growth, selectivity, and catchability time varying
+but not for stock-recruitment parameters.
 }

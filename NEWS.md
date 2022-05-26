@@ -16,10 +16,10 @@
   third set of digits, of the SS3 executable used in this version of {ss3sim}.
   The third number is the minor version of {ss3sim}.
 
-* Remove dependency on bbmle to externally estimate growth.
+* Remove dependency on {bbmle} to externally estimate growth.
 
 * Deprecate functions that were not being used in the code base, i.e.,
-  cleanup_ss3, get_bin_info, change_rec_devs_par, ...
+  `cleanup_ss3()`, `get_bin_info()`, `change_rec_devs_par()`, ...
 
 * Does not turn on empirical weight-at-age in EM if sampling weight-at-age data.
   Instead, users must specify to use empirical weight-at-age data in their
@@ -31,14 +31,14 @@
 
 # ss3sim 1.1.8
 
-* Fix bug related to tidyverse in [sample_comp()] where the composition
+* Fix bug related to {tidyverse} in `sample_comp()` where the composition
   data were appended to the data frame as a matrix rather than integrated
   as additional columns.
 
 # ss3sim 1.1.7
 
-* Deprecate the use of the log file in [ss3sim_base()].
-  The argument [ss3sim_base(print_logfile = FALSE)] has a new default and
+* Deprecate the use of the log file in `ss3sim_base()`.
+  The argument `ss3sim_base(print_logfile = FALSE)` has a new default and
   will warn users if they have the value set to `TRUE` that no log file will be printed.
   Users can look at the results files to get most of this information.
 
@@ -49,7 +49,8 @@
 * Deprecate change_f_par which was not being used by any downstream code.
 Feel free to contact the package maintainers if you wish to reinstate this function,
 but ss3sim uses the control file instead of the par file as in the original ss3sim.
-* Move Anderson et al. (2014) to a dedicated repository ss3sim/ss3sim_andersonetal
+* Move [Anderson et al. (2014)](www.github.com/ss3sim/ss3sim_andersonetal)
+  to a dedicated repository
 * Allow for seas and partition in sampling
 
 # ss3sim 1.1.5
@@ -63,9 +64,9 @@ but ss3sim uses the control file instead of the par file as in the original ss3s
 * Start allowing for seasons in data (F right now)
 * Fixed bug in how q was being checked
 * Partition change_catch from change_data
-* Allow for fleet specific cpar and ESS values
-* Allow for no SPR in results file
-* Fix bad param argument in weight_comps with DM
+* Allow for fleet specific `cpar` and `ESS` arguments
+* Allow for no spawner per recruit in results file
+* Fix bad `param` argument in weight_comps with Dirichlet-multinomial
 
 # ss3sim 1.1.2
 
@@ -77,34 +78,38 @@ but ss3sim uses the control file instead of the par file as in the original ss3s
 
 # ss3sim 1.1.0
 
-* Upgrade to SS 3.30.15.03
-* Deprecate case files in favor of simdf, an argument passed to run_ss3sim
+* Upgrade to SS3.30.15.03
+* Deprecate case files in favor of `simdf`, an argument passed to `run_ss3sim()`
 * Use more templates for parameter arguments, e.g., par_int
-* Simplify scenarios, iterations, em/om to dir to increase the usability
-of functions outside of ss3sim
+* Simplify scenarios, iterations, EM/OM to `dir` to increase the usability
+of functions outside of {ss3sim}
 * Add as.is for all calls to type.convert because of an upgrade within R 4.0
-* Use maxfn 0 to increase speed of tests and run more tests on CRAN check
-* Figures: Use better labels for x and y axes in ggplots; change RE line
-to dashed black; pass coloration of lines in a better way; use plot_ss3sim
-as back-end code for plotting functions; properly use character strings as
-input arguments with calls to data; add cumulative mean figure; allow for fill
-in boxplots; 
-* Results: long-data format for results to allow functions to be used by SSMSE;
-remove columns that are not needed; remove row names in summary files; rename
-rec_dev to increase clarity; better grep of management quantities;
-remove parallel capacity; only read comp file if present by changing CompFile to
-SS_output(); allow for relative directories for SSMSE (a dependency)
-* Allow for multiple fisheries in change_f and change fisheries to fleets
-* Increase robustness of get_success
-* Break tests into multiple chunks to pass Travis-ci checks
+* Use `maxfn 0` to increase speed of tests and run more tests on CRAN check
+* Figures: Use better labels for x and y axes in {ggplot2} figures;
+  change relative error line to dashed black;
+  pass coloration of lines in a better way;
+  use `plot_ss3sim()` as back-end code for plotting functions;
+  properly use character strings as input arguments with calls to data;
+  add cumulative mean figure; allow for fill in box plots; 
+* Results: long-data format for results to allow functions to be used by {SSMSE};
+  remove columns that are not needed;
+  remove row names in summary files;
+  rename `rec_dev` to increase clarity;
+  better grep of management quantities;
+  remove parallel capacity;
+  only read composition file if present by changing `SS_output(compfile = )`;
+  allow for relative directories for {SSMSE} (a dependency)
+* Allow for multiple fisheries in `change_f()` and change fisheries to fleets
+* Increase robustness of `get_success()`
+* Break tests into multiple chunks to pass continuous integration checks
 * Allow weighting of composition data
 * Start EM in first year with non-zero catches
 * Reinstate bias adjustment, but once for every iteration
 
 # ss3sim 1.0.4
 
-* Add create_logo() to generate github logo
-* change [travis configuration](https://towardsdatascience.com/travis-ci-for-r-advanced-guide-719cb2d9e0e5) to use Xenial 
+* Add `create_logo()` to generate GitHub logo
+* change continuous integration to use Xenial 
 
 # ss3sim 1.0.3
 
@@ -119,7 +124,7 @@ using ../doc/introduction.html
 
 # ss3sim 1.0.1
 
-* fixed broken links in README.md and inst/doc/introduction.html
+* fixed broken links in README and inst/doc/introduction.html
 * confirmed that the links in inst/doc/making-models.html are working
 
 # ss3sim 1.0.0
@@ -127,41 +132,41 @@ using ../doc/introduction.html
 * Improved the documentation of many functions
 * Updated, added, or removed examples increasing the number of functions with
 helpful examples
-* Update profile_fmsy to allow for relative or absolute paths to directories
+* Update `profile_fmsy()` to allow for relative or absolute paths to directories
 and provide a better message if verbose = TRUE warning users when they may have
 not run their model long enough to reach equilibrium
-* Remove reliance on tidyverse packages
+* Remove reliance on {tidyverse} packages
 * Change to 'iteration' instead of 'replicate'
 * Update the license to 2019
-* Change README from Rmd to md file
+* Change README from R markdown to markdown file
 * Deleted the vignette on making functions and updated remaining vignettes
 * Remove bias adjustment capability and sampling of conditional age-at-length
 data; both will eventually be added back to the package with better code
 * Remove write_file argument from many functions and rely on other input
 arguments to determine if a file should be written to the disk, such as
 if the name of the file is NULL then nothing is written
-* Create change_o for the operating model so users can input INIT values
+* Create change_o for the operating model so users can input `INIT` values
 for parameters in their operating model rather than having to use a dev
-vector and the change_tv function
+vector and the `change_tv()` function
 * Implement check of q parameter such that a given q is created from a template
 for each survey-like data set included after sampling
 * Manipulate control file rather than par file and delete the par
 file from the operating model folder
-* Use merge rather than cbind for those instances that the names of the 
+* Use merge rather than `cbind` for those instances that the names of the 
 columns in the results file from the OM do not exactly match the EM.
 * Fix get_results working directory issue
-* Deprecate change_year, change_fltname, change_maturity, and pastef
+* Deprecate `change_year()`, `change_fltname()`, `change_maturity()`, and `pastef()`
 * Reduce restrictions placed on the operating and estimation models used
 by individual users to allow for multiple fleets, two-sexed models, and other
 trivial changes such as different fleet names. Feel free to email the
 developers if there is a feature that you want or one that isn't working as
 expected because more work in planned in this area.
-* Implement the use of more r4ss functions such as SS_readstarter and 
-SS_writestarter to decrease the amount of original code in ss3sim
+* Implement the use of more {r4ss} functions such as `SS_readstarter()` and 
+`SS_writestarter()` to decrease the amount of original code in {ss3sim}
 * Increase the number of functions with examples and update examples
 to not change the users working directory when possible.
 * Change to providing a single model inside the package rather than
-maintaining models both in the package and in ss3sim/ss3models
+maintaining models both in the package and in {ss3models}
 * Kelli F. Johnson is now the maintainer of the package
 * updated authors to reflect current contributors
 * reduced the complexity of sampling functions by initiating the same
@@ -176,14 +181,14 @@ option to specify safe or optimized
 
 # ss3sim 0.9.4
 
-* Fix compatibility with dplyr 0.6.0
+* Fix compatibility with {dplyr} 0.6.0
 * Fix issue with SS3 binary in development version #239
 
 # ss3sim 0.9.3
 
 * Fix LICENSE for CRAN
 * Update author list 
-* Incorporate @cstawitz's additions to the `making-models` vignette
+* Incorporate additions by Christine Stawitz to the `making-models` vignette
 * Fixes to executable locating for Windows
 
 # ss3sim 0.9.2
@@ -192,11 +197,11 @@ option to specify safe or optimized
 
 # ss3sim 0.9.1
 
-* Fix compatibility with dplyr 0.4.3.9001.
+* Fix compatibility with {dplyr} 0.4.3.9001.
 
 # ss3sim 0.9.0
 
-* Fix compatibility of vignette with ggplot2 2.0.0.
+* Fix compatibility of vignette with {ggplot2} 2.0.0.
 
 * Add new data types: conditional age at length, mean length at age, and
   empirical weight at age.
@@ -213,7 +218,7 @@ option to specify safe or optimized
 * Check that fleet name in the data frame matches the newest SS3 version
   (see `change_fltname()`)
 
-* Add `change_data()`, which prepares the OM .dat files to have the correct
+* Add `change_data()`, which prepares the OM data files to have the correct
   data used for sampling that scenario. It also can manipulate length
   bin widths, the SS3 robustification constant, and the SS3 tail
   compression value. It takes care of calling the new
@@ -221,7 +226,7 @@ option to specify safe or optimized
 
 * Add `calculate_re()` to calculate relative errors on the result data frames.
 
-* Add internal checking of the validity of SS3 .dat files (#203)
+* Add internal checking of the validity of SS3 data files (#203)
 
 * The `get_results` function now returns run time, a list of parameters that were
   on bounds, and recruitment deviations.
@@ -244,7 +249,7 @@ option to specify safe or optimized
   check for folders that look like ss3sim runs, and to issue a warning if
   there are problems reading the files (#155).
 
-* Copy wtatage.ss_new from OM to EM (#163).
+* Copy `wtatage.ss_new` from OM to EM (#163).
 
 * Add Travis CI testing of the package https://travis-ci.org/ss3sim/ss3sim
 
@@ -261,7 +266,7 @@ option to specify safe or optimized
 * Add the option to use the optimized SS executables (#138 and #147) and
   ability to have spaces in the path name to the executable.
 
-* Add Cole Monnahan's ss3sim plotting functions (#134).
+* Add ss3sim plotting functions (#134).
 
 * `change_lcomp`, `change_agecomp`, and `change_index` are now `sample_lcomp`,
   `sample_agecomp`, and `sample_index`. The old functions point to the new
@@ -285,7 +290,7 @@ option to specify safe or optimized
 * Added dimension check of `user_recdevs` to ensure recruitment deviations are
   supplied for all iterations (#130).
 
-* Vignette now uses a custom Solarized color theme.
+* Vignette now uses a custom solar color theme.
 
 ## Bug fixes
 

@@ -21,17 +21,17 @@ from a \pkg{ss3sim} simulation. That data are generated from
 cumulative mean. A string.}
 
 \item{order_var}{A column to order the data before calculating the cumulative
-mean}
+mean.}
 
 \item{group}{A column in data to group the data together before calculating
-the cumulative mean}
+the cumulative mean.}
 
-\item{use_facet}{Should the group be used to create facets? If TRUE, facets
-are created; If FALSE, grouping will be done by making different color lines
+\item{use_facet}{Should the group be used to create facets? If \code{TRUE}, facets
+are created; If \code{FALSE}, grouping will be done by making different color lines
 in the same plot.}
 }
 \value{
-A list containing the ggplot object and the data used to make it
+A list containing the {ggplot2} object and the data used to make it.
 }
 \description{
 Plot the cumulative mean for a parameter

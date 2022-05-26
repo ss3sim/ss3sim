@@ -15,5 +15,5 @@ substr_r(x, n)
 Use \code{\link[=substr]{substr()}} but from the right rather than the left
 }
 \references{
-http://stackoverflow.com/questions/7963898/extracting-the-last-n-characters-from-a-string-in-r
+\href{https://stackoverflow.com/questions/7963898/extracting-the-last-n-characters-from-a-string-in-r}{Stack Overflow}
 }

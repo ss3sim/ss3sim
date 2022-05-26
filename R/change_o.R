@@ -32,10 +32,10 @@
 #' you want to change in the OM, each element of this vector needs to be
 #' wrapped in quotations to be later evaluated, e.g., `'c("SR_BH_steep","SR_sigmaR")'`
 #' represents a single entry;
-#' and (2) add an additional column called `co.par_int` to the `simdf` that specifies
-#' INIT values for each parameter in the previous column, e.g., `"c(0.6, 1.0)"`, if
-#' there is more than one value, the vector needs to be wrapped in quotations to be
-#' evaluated later.
+#' and (2) add column called `co.par_int` to the `simdf` that specifies
+#' `INIT` values for each parameter in the previous column, e.g.,
+#' `"c(0.6, 1.0)"`. If there is more than one value,
+#' the vector needs to be wrapped in quotations to be evaluated later.
 #'
 #' @export
 

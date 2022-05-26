@@ -1,12 +1,12 @@
-#' Get Variability About Recruitment Deviations (\eqn{\sigma_R})
+#' Get variability about recruitment deviations (\eqn{\sigma_R})
 #'
-#' Use the name of the operating model to open the ctl file and obtain the
-#' INIT value for sigmaR (recruitment deviations sigma)
+#' Use the name of the operating model to open the control file and obtain the
+#' `INIT` value for recruitment deviations \eqn{sigma} (\eqn{\sigma_R}).
 #'
 #' @param om The name of the operating model, which should be the prefix of
-#' the `.ctl` file, e.g., "myOM".
+#' the control file, e.g., `"myOM"`.
 #' A full directory can be specified with the the prefix of the file name but
-#' leaving off the '.ctl' portion.
+#' leaving off the file extension.
 #' @author Kelli F. Johnson
 #' @export
 

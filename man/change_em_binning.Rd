@@ -32,10 +32,10 @@ of \code{NULL}, which leads to increased speed because writing the
 file takes time and computing resources.}
 
 \item{bin_vector}{A numeric vector of new length bins to substitute into the
-\verb{*.dat} file.}
+data file.}
 
 \item{lbin_method}{A numeric value of either \verb{NULL, 1, 2, 3} to change
-the lbin_method for the population bin.
+the \code{lbin_method} for the population bin.
 \code{NULL} means to not re-bin.}
 
 \item{pop_binwidth}{Population length bin width.
@@ -58,8 +58,8 @@ according to the user's specification. If the data file also contains
 conditional age-at-length data, then these data will be re-binned as well.
 }
 \examples{
-# Note that typically this function is used with estimation models in ss3sim,
-# but it is used with an operating model data file in the following examples.
+# Note that, typically this function is used with EMs in ss3sim,
+# but it is used with an OM data file in the following examples.
 f <- system.file("extdata", "models", "cod-om", "codOM.dat", package = "ss3sim")
 d <- r4ss::SS_readdat(f, verbose = FALSE)
 
@@ -121,8 +121,8 @@ Other change functions:
 \code{\link{change_tv}()}
 }
 \author{
-Kotaro Ono (length-composition rebinning), Sean Anderson
-(conditional age-at-length rebinning)
+Kotaro Ono (length-composition section), Sean Anderson
+(conditional age-at-length section)
 }
 \concept{change functions}
 \concept{sample functions}

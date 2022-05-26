@@ -16,7 +16,7 @@
 #' @author Kotaro Ono, Carey McGilliard, Kelli F. Johnson, and Kathryn Doering
 #' @family change functions
 #' @return The function creates modified versions of the  `.ctl` and
-#'   `.dat` files if ctl_file_out and dat_file_out are not NULL. The function
+#'   `.dat` files if `ctl_file_out` and `dat_file_out` are not NULL. The function
 #'   also returns a list of the modified `.ctl` and `.dat` R objects
 #'   invisibly.
 #' @details
@@ -37,8 +37,8 @@
 #' \pkg{ss3sim} uses annual recruitment deviations and may not work with a
 #' model that ties recruitment deviations to environmental covariates. If you
 #' need to compare the environment to annual recruitment deviations, the
-#' preferred option is to transform the environmental variable into an age 0
-#' pre-recruit survey. See page 55 of the Stock Synthesis version 3.24f manual for more
+#' preferred option is to transform the environmental variable into an age-0
+#' recruitment survey. See the Stock Synthesis manual for more
 #' information.
 #'
 #' @section Specifying the `change_tv_list`:
@@ -49,8 +49,8 @@
 #' `.dat` file. Specify years without deviations as zero.
 #'
 #' Parameter names must be unique and match the full parameter name in the
-#' `.ctl` file. Names for stock recruit parameters must contain "devs",
-#' "R0", or "steep", and only one stock recruit parameter can be time-varying
+#' `.ctl` file. Names for stock recruit parameters must contain `devs`,
+#' `R0`, or `steep`, and only one stock recruit parameter can be time-varying
 #' per model.
 #'
 #' This feature will include an *additive* functional linkage between
@@ -173,7 +173,7 @@ change_tv <- function(change_tv_list,
       " should not or cannot be time varying in Stock Synthesis models."
     )
   }
-  # Divide .dat file at the environmental variable table
+  # Divide data file at the environmental variable table
   # If no environmental variables create an empty table to be filled later
   dat.varnum.counter <- ss3.dat$N_environ_variables
 
@@ -325,13 +325,16 @@ change_tv <- function(change_tv_list,
   invisible(list(ctl_out = ss3.ctl, dat_out = ss3.dat))
 }
 
-#' Add short time varying parameter lines. At time of writing, this method will
-#' work for MG, selectivity, and catchability time varying, but not for SR
+#' Add short time varying parameter lines.
+#'
+#' At time of writing, this method will
+#' work for natural mortality, growth, selectivity, and catchability time varying
+#' but not for stock-recruitment parameters.
 #' @param string The code representing the section the parameter is from.
 #' @param tab As created in [change_tv()].
-#' @param ctl_string The code as called in the .ss_new comment for time varying.
+#' @param ctl_string The code as called in the `.ss_new` comment for time varying.
 #' @param ss3.ctl A ss control file that has been read in using [readLines()].
-#' @return A modified version of ss3.ctl (a vector of strings), containing the
+#' @return A modified version of `ss3.ctl` (a vector of strings), containing the
 #'   new parameter line
 add_tv_parlines <- function(string, tab, ctl_string, ss3.ctl) {
   if (string %in% tab$lab) {

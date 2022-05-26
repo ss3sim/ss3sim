@@ -18,7 +18,7 @@
 #' @param par_phase A vector of phase values, one for each parameter in
 #'   `par_name`.  Values can be `NA` if you do not wish to change
 #'   the phase for a given parameter. Negative values will fix the parameter
-#'   at the INIT value.
+#'   at the `INIT` value.
 #' @param forecast_num Number of years to perform forecasts. For those years,
 #'   the data will be removed from the `dat_list`, enabling Stock Synthesis to
 #'   generate forecasts rather than use the data to fit the model.

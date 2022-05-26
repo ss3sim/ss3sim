@@ -6,9 +6,10 @@
 #' @details
 #' Median, hinges, and whiskers as well as outliers are displayed to
 #' summarize the data. The lower and upper hinges are the first and third
-#' quantiles (i.e., 25th and 75th percentiles). The upper and lower
+#' quantiles (i.e., 25% and 75% percentiles). The upper and lower
 #' whiskers are 1.5*inner-quartile range, i.e., the distance between the first
-#' and third quartiles. Outliers are those points that lie beyond the whiskers.
+#' and third quartile values.
+#' Outliers are those points that lie beyond the whiskers.
 #' These explanations are detailed in [ggplot2::geom_boxplot()].
 #'
 #' Values of `NA` are removed prior to plotting such that the typical

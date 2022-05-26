@@ -12,7 +12,8 @@ get_results_scalar(report.file)
 }
 \description{
 Extract scalar quantities from an \code{\link[r4ss:SS_output]{r4ss::SS_output()}} list from a model run.
-Returns a data.frame of the results (a single row) which can be rbinded later.
+Returns a data.frame of the results (a single row) which can be bound using
+\link{rbind} later.
 }
 \seealso{
 Other get-results: 

@@ -9,11 +9,11 @@
 #'
 #' @details ss3sim requires you to place the Stock Synthesis executable in your
 #' path. See the vignette `vignette("introduction", package = "ss3sim")` for details on
-#' this process. The executables themselves can be downloaded from github
+#' this process. The executables themselves can be downloaded from GitHub
 #' \url{https://github.com/ss3sim/ss3sim/tree/master/inst/bin} or the
 #' Stock Synthesis website
 #' \url{https://github.com/nmfs-stock-synthesis/stock-synthesis/releases}.
-#' If the github version of ss3sim is installed, rather than the CRAN version,
+#' If the GitHub version of ss3sim is installed, rather than the CRAN version,
 #' then the executables are automatically downloaded and called from their
 #' stored location rather than from the path variable.
 #' @template dir
@@ -81,14 +81,14 @@ run_ss3model <- function(dir,
 #'
 #' @details
 #' Renaming the files from the name of the executable that was used plus the
-#' relevant extension to Stock Synthesis plus the relevant extension allows users to use
-#' any executable, such as ss_safe.exe. Renaming, particularly of the files
-#' in the OM folder allows for other functions to expect ss.par instead of
-#' random.par. This consistency is not as relevant now that we are using the
+#' relevant extension to Stock Synthesis allows users to use
+#' any executable, such as `ss_safe.exe`. Renaming, particularly of the files
+#' in the OM folder allows for other functions to expect `ss.par` instead of
+#' `random.par`. This consistency is not as relevant now that we are using the
 #' control file instead of the par file for most of the parameter manipulation.
 #'
 #' @param path The path to the folder with the files.
-#' @param ss_bin A character value giving the Stock Synthesis binary name
+#' @param ss_bin A character value giving the Stock Synthesis binary name.
 #' @param extensions A character vector of file extensions to rename without
 #'   periods preceding the values.
 #' @author Sean C. Anderson
@@ -102,11 +102,10 @@ rename_ss3_files <- function(path, ss_bin, extensions) {
   }
 }
 
-#' Check admb options to make sure there aren't flags there shouldn't
-#' be
+#' Check ADMB options to make sure there aren't flags there shouldn't be
 #'
-#' @param x The admb options
-#' @param exclude A character object (not a vector)
+#' @param x The ADMB options.
+#' @param exclude A string (not a vector).
 #' @author Sean C. Anderson
 sanitize_admb_options <- function(x, exclude = "-nohess") {
   if (length(x) > 1) stop("x should be of length 1")

@@ -41,7 +41,7 @@ An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 Either single values or vectors of the same length as the number of
 years can be passed through. Single values are repeated for all
 years. If no fleet collected samples, keep the value to
-\code{Nsamp=NULL}.}
+\code{Nsamp = NULL}.}
 
 \item{years}{*A list the same length as \code{fleets} giving the years as
 numeric vectors. If no fleet collected samples, keep the value to
@@ -52,7 +52,7 @@ numeric vectors. If no fleet collected samples, keep the value to
 distribution used for sampling. A value of \code{1} leads to the
 same standard deviation as a multinomial of the given \code{Nsamp},
 \code{2} indicates twice, etc. Values greater than one indicate
-overdispersion, and less underdispersion. \code{NULL} or \code{NA}
+over dispersion, and less under dispersion. \code{NULL} or \code{NA}
 for a given fleet will lead to no dispersion.}
 
 \item{ESS}{The final effective sample size (ESS) associated with the

@@ -50,11 +50,11 @@ function.
 \details{
 ss3sim requires you to place the Stock Synthesis executable in your
 path. See the vignette \code{vignette("introduction", package = "ss3sim")} for details on
-this process. The executables themselves can be downloaded from github
+this process. The executables themselves can be downloaded from GitHub
 \url{https://github.com/ss3sim/ss3sim/tree/master/inst/bin} or the
 Stock Synthesis website
 \url{https://github.com/nmfs-stock-synthesis/stock-synthesis/releases}.
-If the github version of ss3sim is installed, rather than the CRAN version,
+If the GitHub version of ss3sim is installed, rather than the CRAN version,
 then the executables are automatically downloaded and called from their
 stored location rather than from the path variable.
 }

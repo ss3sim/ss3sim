@@ -9,11 +9,11 @@
 #' data on trends and estimated population abundance.
 #' Thus a survey thought to encapsulate the entire population, e.g.,
 #' an acoustic survey of the entire area, will have \eqn{q = 1}.
-#' In Stock Synthesis, environmental time series are modelled similarly to
+#' In Stock Synthesis, environmental time series are modeled similarly to
 #' a survey or catch-per-unit-effort time series and thus will also have
 #' a catchability term.
 #' Readers interested in the complete range of functionality should see the
-#' [catchability section of the Stock Synthesis user manual](https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html#catchability).
+#' [catchability section of the Stock Synthesis user manual](https://nmfs-stock-synthesis.github.io/doc/SS330_User_Manual.html#catchability).
 #' `change_q()` has limited functionality relative to
 #' what is available in Stock Synthesis.
 #' For example, `change_q()` cannot add parameters for additional variance.

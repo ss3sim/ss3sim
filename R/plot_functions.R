@@ -1,4 +1,4 @@
-#' Helper function for building a ggplot facet
+#' Helper function for building a {ggplot2} facet
 #'
 #' Used internally by the plotting functions to create faceting formulas.
 #'

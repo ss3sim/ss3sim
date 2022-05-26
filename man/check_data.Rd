@@ -7,7 +7,7 @@
 check_data(x)
 }
 \arguments{
-\item{x}{An Stock Synthesis data list object as read in by \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}}.}
+\item{x}{A Stock Synthesis data list object as read in by \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}}.}
 }
 \description{
 Check that the Stock Synthesis data file looks correct

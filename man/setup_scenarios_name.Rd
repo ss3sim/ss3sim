@@ -14,11 +14,11 @@ This could be helpful when running scenarios in parallel.}
 }
 \value{
 A single character value is returned.
-The object starts with the letter \code{s} and is followed by \link{Sys.time}
+The object starts with the letter \code{s} and is followed by \code{\link[=Sys.time]{Sys.time()}}
 Where, the date/time portion is \verb{\%m\%d\%H\%M\%S}, better known as
 a two-digit month, e.g., 01; a two-digit number for the day of the month;
 and finally a two-digit hour, then minute, then second.
 }
 \description{
-Create a name for an unnamed scenario based on \link{Sys.time}.
+Create a name for an unnamed scenario based on \code{\link[=Sys.time]{Sys.time()}}.
 }

@@ -34,7 +34,7 @@ sample_catch <- function(dat_list,
     dplyr::mutate(catch = sample_lognormal(.data[["obsOLD"]], .data[["catch_se"]])) %>%
     dplyr::select(.data[["year"]]:.data[["fleet"]], .data[["catch"]], .data[["catch_se"]])
 
-  ## Open the .dat file and find the right lines to overwrite
+  ## Open the data file and find the right lines to overwrite
   dat_list$catch <- as.data.frame(new)
   if (!is.null(outfile)) {
     r4ss::SS_writedat(

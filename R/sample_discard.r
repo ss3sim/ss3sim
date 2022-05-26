@@ -82,7 +82,7 @@ sample_discard <- function(dat_list,
     dplyr::mutate(Discard = sample_lognormal(.data[["obsOLD"]], .data[["Std_in"]])) %>%
     dplyr::select(.data[["Yr"]]:.data[["Flt"]], .data[["Discard"]], .data[["Std_in"]])
 
-  ## Open the .dat file and find the right lines to overwrite
+  ## Open the data file and find the right lines to overwrite
   dat_list$discard_data <- as.data.frame(new)
   if (!is.null(outfile)) {
     r4ss::SS_writedat(
