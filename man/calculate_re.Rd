@@ -51,5 +51,5 @@ rm("ts_dat", "scalar_dat")
 \code{\link[=get_results_all]{get_results_all()}}, \code{\link[=get_results_scenario]{get_results_scenario()}}
 }
 \author{
-Sean Anderson and Cole Monnahan
+Sean C. Anderson and Cole C. Monnahan
 }

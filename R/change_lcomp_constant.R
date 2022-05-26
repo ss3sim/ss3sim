@@ -20,7 +20,7 @@
 #' @template outfile
 #' @return A modified Stock Synthesis `.dat` file, and that file returned invisibly
 #'   (for testing) as a vector of character lines.
-#' @author Cole Monnahan
+#' @author Cole C. Monnahan
 
 change_lcomp_constant <- function(lcomp_constant, dat_list, outfile = NULL) {
   if (is.null(lcomp_constant)) {

@@ -48,5 +48,5 @@ and when to use it for optimal effect. The same value is used for all
 length data.
 }
 \author{
-Cole Monnahan
+Cole C. Monnahan
 }

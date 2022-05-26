@@ -98,6 +98,6 @@ Other sampling functions:
 \code{\link{sample_mlacomp}()}
 }
 \author{
-Cole Monnahan, Allan Hicks, Peter Kuriyama
+Cole C. Monnahan, Allan Hicks, Peter Kuriyama
 }
 \concept{sampling functions}

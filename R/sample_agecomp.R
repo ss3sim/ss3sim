@@ -9,7 +9,7 @@
 #' The data file can also be written to the disk, if a file path is provided to
 #' `outfile`, and used as simulated data by an estimation model.
 #'
-#' @author Cole Monnahan and Kotaro Ono
+#' @author Cole C. Monnahan and Kotaro Ono
 #'
 #' @template lcomp-agecomp-index
 #' @template lcomp-agecomp

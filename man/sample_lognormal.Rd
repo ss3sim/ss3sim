@@ -23,5 +23,5 @@ The second term adjusts the random samples so that their expected value is
 \code{obs}, i.e., the log-normal bias correction.
 }
 \author{
-Cole Monnahan
+Cole C. Monnahan
 }

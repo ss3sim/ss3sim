@@ -23,6 +23,6 @@ Other get-results:
 \code{\link{get_results_scenario}()}
 }
 \author{
-Cole Monnahan
+Cole C. Monnahan
 }
 \concept{get-results}

@@ -13,7 +13,7 @@
 #' @template dat_list
 #' @template outfile
 #' @return A modified Stock Synthesis `.dat` file is returned invisibly.
-#' @author Cole Monnahan
+#' @author Cole C. Monnahan
 #' @export
 
 change_tail_compression <- function(tail_compression, dat_list,

@@ -143,6 +143,6 @@ Other sampling functions:
 \code{\link{sample_wtatage}()}
 }
 \author{
-Cole Monnahan, Kotaro Ono
+Cole C. Monnahan, Kotaro Ono
 }
 \concept{sampling functions}

@@ -121,7 +121,7 @@ Other change functions:
 \code{\link{change_tv}()}
 }
 \author{
-Kotaro Ono (length-composition section), Sean Anderson
+Kotaro Ono (length-composition section), Sean C. Anderson
 (conditional age-at-length section)
 }
 \concept{change functions}

@@ -136,5 +136,5 @@ plot_points(re,
 rm(re)
 }
 \author{
-Cole Monnahan
+Cole C. Monnahan
 }

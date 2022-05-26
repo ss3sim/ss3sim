@@ -77,7 +77,7 @@
 #' the argument `admb_options`. Anything that doesn't match a named
 #' argument in [run_ss3model()] will be passed to the
 #' [system()] call that runs Stock Synthesis.
-#' @author Sean Anderson with contributions from many others as listed in
+#' @author Sean C. Anderson with contributions from many others as listed in
 #'   the DESCRIPTION file.
 #' @return
 #' The output will appear in whatever your current \R working directory

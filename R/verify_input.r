@@ -10,7 +10,7 @@
 #' If the contents are incorrect,
 #' then a warning is issued and the simulation is aborted.
 #'
-#' @author Curry James Cunningham; modified by Sean Anderson
+#' @author Curry James Cunningham; modified by Sean C. Anderson
 #' @return Nothing is returned from this function. Instead,
 #' file are changed and saved to the disk.
 #

@@ -26,5 +26,5 @@ ts_wide <- convert_to_wide(scalar)
 }
 }
 \author{
-Kathryn Doering
+Kathryn L. Doering
 }

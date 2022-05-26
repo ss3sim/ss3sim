@@ -63,6 +63,6 @@ Other sampling functions:
 \code{\link{sample_wtatage}()}
 }
 \author{
-Cole Monnahan
+Cole C. Monnahan
 }
 \concept{sampling functions}

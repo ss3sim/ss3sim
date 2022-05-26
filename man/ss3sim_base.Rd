@@ -255,6 +255,6 @@ ss3sim_base(
 \code{\link[=run_ss3sim]{run_ss3sim()}}
 }
 \author{
-Sean Anderson with contributions from many others as listed in
+Sean C. Anderson with contributions from many others as listed in
 the DESCRIPTION file.
 }

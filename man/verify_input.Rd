@@ -46,5 +46,5 @@ verify_input(model_dir = file.path(temp_path, "cod-em"), type = "em")
 unlink(temp_path, recursive = TRUE)
 }
 \author{
-Curry James Cunningham; modified by Sean Anderson
+Curry James Cunningham; modified by Sean C. Anderson
 }

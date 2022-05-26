@@ -18,7 +18,7 @@
 #' @param EM A character value specifying the name of the EM to calculate the
 #'   RE of when the results are provided in long format and there is the potential
 #'   for multiple EMs. See the column `model_run` for options.
-#' @author Sean Anderson and Cole Monnahan
+#' @author Sean C. Anderson and Cole C. Monnahan
 #' @seealso [get_results_all()], [get_results_scenario()]
 #' @return The default is to return a data frame structured the same as the
 #' input data frame, i.e., `dat`, but with additional columns, where

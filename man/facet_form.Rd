@@ -35,5 +35,5 @@ if all arguments are \code{NULL}.
 Used internally by the plotting functions to create faceting formulas.
 }
 \author{
-Cole Monnahan
+Cole C. Monnahan
 }

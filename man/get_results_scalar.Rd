@@ -23,6 +23,6 @@ Other get-results:
 \code{\link{get_results_timeseries}()}
 }
 \author{
-Cole Monnahan; Merrill Rudd
+Cole C. Monnahan; Merrill Rudd
 }
 \concept{get-results}

@@ -94,7 +94,7 @@
 #' although these data could also be put into a Stock Synthesis model
 #' as conditional age-at-length data.
 #'
-#' @author Cole Monnahan, Kotaro Ono
+#' @author Cole C. Monnahan, Kotaro Ono
 #' @template lcomp-agecomp-index
 #' @template dat_list
 #' @param exp_vals_list This is a data list containing all expected values. It

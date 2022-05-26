@@ -8,7 +8,7 @@
 #'   generate random samples of size, which are then averaged to get mean
 #'   length-at-age values. These values are then written to file for the
 #'   EM.
-#' @author Cole Monnahan, Kelli F. Johnson
+#' @author Cole C. Monnahan, Kelli F. Johnson
 #'
 #' @template lcomp-agecomp-index
 #' @template Nsamp

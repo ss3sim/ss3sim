@@ -80,5 +80,5 @@ rm(test)
 See further examples in \link{clean_data} and \link{change_data}
 }
 \author{
-Cole Monnahan
+Cole C. Monnahan
 }

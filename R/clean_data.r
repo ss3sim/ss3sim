@@ -3,7 +3,7 @@
 #' This prepares a data file to be used by an estimation method,
 #' whereas before it may have had leftover data from sampling purposes.
 #'
-#' @author Cole Monnahan
+#' @author Cole C. Monnahan
 #' @param lcomp_params Named lists containing the arguments for
 #'   [sample_lcomp()].
 #' @param agecomp_params Named lists containing the arguments for

@@ -44,4 +44,4 @@
 #' in \code{facet_grid}.
 #' @param print A logical for whether the plot is printed or not.
 #' @importFrom rlang .data
-#' @author Cole Monnahan
+#' @author Cole C. Monnahan

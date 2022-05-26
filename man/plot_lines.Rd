@@ -103,5 +103,5 @@ plot_lines(re,
 
 }
 \author{
-Cole Monnahan
+Cole C. Monnahan
 }

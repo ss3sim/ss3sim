@@ -39,5 +39,5 @@ with those specified in
 into the working directory.
 }
 \author{
-Cole Monnahan
+Cole C. Monnahan
 }

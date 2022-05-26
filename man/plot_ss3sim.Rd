@@ -88,5 +88,5 @@ theme or change an axis label before printing it.
 }
 
 \author{
-Cole Monnahan
+Cole C. Monnahan
 }

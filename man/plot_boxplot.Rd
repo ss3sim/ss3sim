@@ -122,5 +122,5 @@ plot_boxplot(ts_dat,
 
 }
 \author{
-Cole Monnahan
+Cole C. Monnahan
 }

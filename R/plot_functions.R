@@ -3,7 +3,7 @@
 #' Used internally by the plotting functions to create faceting formulas.
 #'
 #' @inheritParams plot_ss3sim
-#' @author Cole Monnahan
+#' @author Cole C. Monnahan
 #' @return A formula which can be used in [ggplot2::facet_grid()] or `NULL`
 #' if all arguments are `NULL`.
 #'

@@ -47,7 +47,7 @@ id_scenarios <- function(directory) {
 #' where the names of those files are based on `filename_prefix`
 #' and the default leads to the following:
 #' `ss3sim_ts.csv` and `ss3sim_scalar.csv`.
-#' @author Cole Monnahan, Merrill Rudd, Kathryn Doering
+#' @author Cole C. Monnahan, Merrill Rudd, Kathryn L. Doering
 #' @family get-results
 get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
                             user_scenarios = NULL, type = c("long", "wide"), filename_prefix = "ss3sim") {
@@ -173,7 +173,7 @@ get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
 #'   any files previously created with this function. This is intended to be
 #'   used if iterations were added since the last time it was called, or any
 #'   changes were made to this function.
-#' @author Cole Monnahan and Kathryn Doering
+#' @author Cole C. Monnahan and Kathryn L. Doering
 #' @family get-results
 #' @export
 get_results_scenario <- function(scenario, directory = getwd(),
@@ -414,7 +414,7 @@ get_results_mod <- function(dir = getwd(), is_EM = NULL, is_OM = NULL) {
 #' @template report.file
 #' @export
 #' @family get-results
-#' @author Cole Monnahan
+#' @author Cole C. Monnahan
 get_results_timeseries <- function(report.file) {
   years <- report.file$startyr:(report.file$endyr +
     ifelse(is.na(report.file$nforecastyears),
@@ -524,7 +524,7 @@ get_results_derived <- function(report.file) {
 #' @template report.file
 #' @family get-results
 #' @export
-#' @author Cole Monnahan; Merrill Rudd
+#' @author Cole C. Monnahan; Merrill Rudd
 get_results_scalar <- function(report.file) {
   der <- t(report.file$derived_quants[
     # Find MSY and Btarget variables
@@ -704,7 +704,7 @@ make_df <- function(list_name, list_df) {
 #' ts <- utils::read.csv("ss3sim_ts.csv")
 #' ts_wide <- convert_to_wide(scalar)
 #' }
-#' @author Kathryn Doering
+#' @author Kathryn L. Doering
 convert_to_wide <- function(lng) {
   em_df <- lng[lng$model_run == "em", , drop = FALSE]
   colnames(em_df) <- paste0(colnames(em_df), "_em")

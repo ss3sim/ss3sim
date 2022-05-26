@@ -12,7 +12,7 @@
 #' log-normal error.
 #' @param sd A vector of standard deviations to use in
 #' [stats::rnorm()].
-#' @author Cole Monnahan
+#' @author Cole C. Monnahan
 #'
 sample_lognormal <- function(obs, sd) {
   obs * exp(stats::rnorm(n = 1, mean = 0, sd = sd) - sd^2 / 2)

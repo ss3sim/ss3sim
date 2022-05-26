@@ -25,7 +25,7 @@
 #' @export
 #' @family sample functions
 #' @family change functions
-#' @author Kotaro Ono (length-composition section), Sean Anderson
+#' @author Kotaro Ono (length-composition section), Sean C. Anderson
 #'   (conditional age-at-length section)
 #' @examples
 #' # Note that, typically this function is used with EMs in ss3sim,

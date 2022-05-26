@@ -127,6 +127,6 @@ Other change functions:
 \code{\link{change_tv}()}
 }
 \author{
-Cole Monnahan, Ian G. Taylor, Sean Anderson, Kelli F. Johnson
+Cole C. Monnahan, Ian G. Taylor, Sean C. Anderson, Kelli F. Johnson
 }
 \concept{change functions}

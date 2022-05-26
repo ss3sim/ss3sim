@@ -19,7 +19,7 @@
 #' for years with corresponding entries in the Stock Synthesis data file.
 #' Thus, this function must be implemented after [change_f()].
 #'
-#' @author Kathryn Doering
+#' @author Kathryn L. Doering
 #'
 change_catch <- function(dat_list,
                          ctl_list) {

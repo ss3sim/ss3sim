@@ -40,6 +40,6 @@ Other get-results:
 \code{\link{get_results_timeseries}()}
 }
 \author{
-Cole Monnahan and Kathryn Doering
+Cole C. Monnahan and Kathryn L. Doering
 }
 \concept{get-results}

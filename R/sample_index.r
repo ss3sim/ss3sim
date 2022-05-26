@@ -22,7 +22,7 @@
 #' @template sampling-return
 #'
 #' @export
-#' @author Cole Monnahan, Kotaro Ono
+#' @author Cole C. Monnahan, Kotaro Ono
 #' @examples
 #' # Find the example data location:
 #' set.seed(3)

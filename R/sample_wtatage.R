@@ -19,7 +19,7 @@
 #' * Write the information to the appropriate files.
 #' * Turn on weight-at-age data in Stock Synthesis by setting the maturity option to 5.
 #'
-#' @author Cole Monnahan, Allan Hicks, Peter Kuriyama
+#' @author Cole C. Monnahan, Allan Hicks, Peter Kuriyama
 #'
 #' @param wta_file_in The file to read weight-at-age from. Specifically to get the
 #'   age-0 weight-at-age. This is typically `wtatage.ss_new`.
