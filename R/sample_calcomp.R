@@ -90,7 +90,7 @@
 #'     where a constant proportion from each length bin are selected for aging.
 #' This does not represent length stratified sampling where a subset of
 #' fish with length measurements are aged, and
-#' a constant number from each length bin is selected for aging, 
+#' a constant number from each length bin is selected for aging,
 #' although these data could also be put into a Stock Synthesis model
 #' as conditional age-at-length data.
 #'
