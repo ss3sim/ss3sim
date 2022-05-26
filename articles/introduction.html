@@ -101,7 +101,7 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>{ss3sim} is an R package to simplify the steps needed to generate beautiful simulation output from <a href="https://github.com/nmfs-stock-synthesis/stock-synthesis" title="Stock Synthesis (SS3) github repository" class="external-link">Stock Synthesis (SS3)</a>. If you need help learning R prior to using {ss3sim}, we recommend navigating to the <a href="https://blog.rstudio.org/" title="RStudio Blog" class="external-link">RStudio Blog</a>.</p>
+<p>{ss3sim} is an R package to simplify the steps needed to generate beautiful simulation output from <a href="https://github.com/nmfs-stock-synthesis/stock-synthesis" title="Stock Synthesis (SS3) github repository" class="external-link">Stock Synthesis (SS3)</a>. If you need help learning R prior to using {ss3sim}, we recommend navigating to the <a href="https://www.rstudio.com/blog/" title="RStudio Blog" class="external-link">RStudio Blog</a>.</p>
 <p>{ss3sim} consists of</p>
 <ul>
 <li>a series of low-level functions that facilitate manipulating Stock Synthesis configuration files, running Stock Synthesis models, and combining the output</li>
@@ -113,7 +113,7 @@
 <h3 id="stock-synthesis">Stock Synthesis<a class="anchor" aria-label="anchor" href="#stock-synthesis"></a>
 </h3>
 <p>It seems imperative to first describe <a href="https://github.com/nmfs-stock-synthesis/stock-synthesis" title="Stock Synthesis (SS3) github repository" class="external-link">Stock Synthesis</a> because without Stock Synthesis there would not be ss3sim. Stock Synthesis is an integrated statistical catch-at-age model written in <a href="https://www.admb-project.org/community/" title="AD model builder project" class="external-link">ADMB</a>. The software is widely used across the globe and has been around for 40+ years.</p>
-<p>The inspiration for {ss3sim} came from Hui-Hua Lee’s hooilator software. hooliator parsed <code>data.ss_new</code> files into multiple files and created a consistent directory structure to store the results. As of Stock Synthesis 3.30.19, the need to separate out the <code>data.ss_new</code> file into separate files is no longer necessary because Stock Synthesis itself now ports the output into separate files, i.e., the echoed data are in <code>data_echo.ss_new</code>, the expected values are in <code>data_expval.ss</code>, and simulated data sets are in <code>data_boot_**N.ss</code>. See the <a href="https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html#output-files" title="Stock Synthesis output file documentation" class="external-link">section on output files in the Stock Synthesis manual</a> for more detailed information. {ss3sim} finishes the creation of simulation-specific directories similar to the directory structure that was created by hooliator. Additionally, {ss3sim} added functionality to sample from the expected values such that simulations were not forced to rely on bootstrapped values provided in <code>data_boot_**N.ss</code>. With a plethora of simulation output stored in structured folders, there was an imminent need for functions to visualize the results. <a href="https://ggplot2.tidyverse.org/" title="ggplot2 documentation" class="external-link">ggplot2</a> was gaining traction at the time and shaped how we thought about things, including our <a href="#overview">mission statement</a> and <a href="beautiful-output">example output</a>.</p>
+<p>The inspiration for {ss3sim} came from Hui-Hua Lee’s hooilator software. hooilator parsed <code>data.ss_new</code> files into multiple files and created a consistent directory structure to store the results. As of Stock Synthesis 3.30.19, the need to separate out the <code>data.ss_new</code> file into separate files is no longer necessary because Stock Synthesis itself now ports the output into separate files, i.e., the echoed data are in <code>data_echo.ss_new</code>, the expected values are in <code>data_expval.ss</code>, and simulated data sets are in <code>data_boot_**N.ss</code>. See the <a href="https://nmfs-stock-synthesis.github.io/doc/SS330_User_Manual.html#output-files" title="Stock Synthesis output file documentation" class="external-link">section on output files in the Stock Synthesis manual</a> for more detailed information. {ss3sim} finishes the creation of simulation-specific directories similar to the directory structure that was created by hooilator. Additionally, {ss3sim} added functionality to sample from the expected values such that simulations were not forced to rely on bootstrapped values provided in <code>data_boot_**N.ss</code>. With a plethora of simulation output stored in structured folders, there was an imminent need for functions to visualize the results. <a href="https://ggplot2.tidyverse.org/" title="ggplot2 documentation" class="external-link">ggplot2</a> was gaining traction at the time and shaped how we thought about things, including our <a href="#overview">mission statement</a> and <a href="beautiful-output">example output</a>.</p>
 <p>{ss3sim} is just a minor part of the suite of functionality available for Stock Synthesis. See the <a href="https://github.com/nmfs-stock-synthesis/stock-synthesis" title="Stock Synthesis (SS3) github repository" class="external-link">Stock Synthesis website</a> for a list of additional software.</p>
 </div>
 <div class="section level3">
@@ -146,8 +146,10 @@
 <p>{ss3sim} relies the Stock Synthesis executable being available to the operating system regardless of the directory. Thus, <code>ss</code> or <code>ss.exe</code> must <a href="#path">be in your path</a>, which is a list of directories that your operating system has access to. Your operating system will search directories listed in your path when searching for programs. Having <a href="#path">Stock Synthesis in your path</a> allows users to use just the name of the executable and not the full file path in a shell and run the executable in a directory without copying it to the directory. This functionality of not copying the executable works even when <a href="#parallel">running Stock Synthesis in parallel</a>. This approach saves on storage space because the Stock Synthesis binary is about 6 MB. It also facilitates manually running models during development and testing. For example, you might be trying to create input files for a new simulation, where the simulation is based on a life history that you are interested in. Having Stock Synthesis in your path allows you to open a shell prompt in the directory with your Stock Synthesis input files and run the Stock Synthesis executable by typing <code>ss</code>. Debugging can be facilitated by</p>
 <ul>
 <li>output that is printed to the console,</li>
-<li>echoinput.sso, and</li>
-<li>Report.sso.</li>
+<li>
+<code>echoinput.sso</code>, and</li>
+<li>
+<code>Report.sso</code>.</li>
 </ul>
 <p>{ss3sim} was originally based on Stock Synthesis 3.24O <span class="citation">(Anderson et al. 2014)</span>. At first, {ss3sim} did not keep up to date with newer versions of Stock Synthesis. In 2019, {ss3sim} was updated to use Stock Synthesis 3.30. <strong>Users can count on future versions of {ss3sim} being up to date with the newest version of Stock Synthesis.</strong> Stock Synthesis will end development with major-version three, hence the name ss3sim. But, minor versions will continue to be updated for quite some time.</p>
 <div class="section level5">
@@ -155,7 +157,7 @@
 </h5>
 <p>Compiled Stock Synthesis executables are available for multiple operating systems at the following locations:</p>
 <ul>
-<li>available <a href="https://github.com/ss3sim/ss3sim/tree/main/inst/bin" title="Stock Synthesis executables on GitHub in ss3sim" class="external-link">on github</a>,</li>
+<li>available <a href="https://github.com/ss3sim/ss3sim/tree/main/inst/bin" title="Stock Synthesis executables on GitHub in ss3sim" class="external-link">on GitHub</a>,</li>
 <li>available <a href="https://github.com/nmfs-stock-synthesis/stock-synthesis/actions" title="Stock Synthesis GitHub actions" class="external-link">within GitHub actions in the Stock Synthesis GitHub repository</a>, or</li>
 <li>are downloaded automatically when you use the GitHub version of ss3sim.</li>
 </ul>
@@ -164,7 +166,7 @@
 <h5 id="path">Putting Stock Synthesis in your path<a class="anchor" aria-label="anchor" href="#path"></a>
 </h5>
 <p>{ss3sim} will first look to see if the executable is available in your R library using <code>system.file("bin", package = "ss3sim")</code>. The previous will only lead to a viable file path if you are using the GitHub version of {ss3sim} because the distribution of executables is not allowed on CRAN. If the location is not returned from <code>system.file</code>, R will look for the executable in your path. This hierarchy is important for understanding which version of Stock Synthesis is being used.</p>
-<p>If you are using the CRAN version of {ss3sim}, reference the <a href="https://nmfs-stock-synthesis.github.io/ss-documentation/Getting_Started_SS.html" title="Stock Synthesis Getting Started documentation" class="external-link">Getting Started with Stock Synthesis documentation</a> for instructions on how to put Stock Synthesis in your path.</p>
+<p>If you are using the CRAN version of {ss3sim}, reference the <a href="https://nmfs-stock-synthesis.github.io/doc/Getting_Started_SS.html" title="Stock Synthesis Getting Started documentation" class="external-link">Getting Started with Stock Synthesis documentation</a> for instructions on how to put Stock Synthesis in your path.</p>
 </div>
 </div>
 <div class="section level4">
@@ -183,9 +185,9 @@
 <p>But, make sure you do it before loading ss3sim. If you forget, you can use <code>devtools::unload(package = "ss3sim")</code> and then reinstall r4ss.</p>
 </div>
 <div class="section level5">
-<h5 id="ggplot2">ggplot2<a class="anchor" aria-label="anchor" href="#ggplot2"></a>
+<h5 id="ggplot2">{ggplot2}<a class="anchor" aria-label="anchor" href="#ggplot2"></a>
 </h5>
-<p><a href="https://ggplot2.tidyverse.org/" title="ggplot2 documentation" class="external-link">ggplot2</a> uses the <a href="https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448/ref=as_li_ss_tl" title="Grammar of Graphics on Amazon" class="external-link">Grammar of Graphics</a> to decoratively create images that represent things in a tidy way. We do not force users to use ggplot2. All output is available as csv files and can be visualized using base R if you prefer. The easiest way to get ggplot2 is to install the whole tidyverse suite</p>
+<p><a href="https://ggplot2.tidyverse.org/" title="ggplot2 documentation" class="external-link">ggplot2</a> uses the <a href="https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448/ref=as_li_ss_tl" title="Grammar of Graphics on Amazon" class="external-link">Grammar of Graphics</a> to decoratively create images that represent things in a tidy way. We do not force users to use {ggplot2}. All output is available as <code>.csv</code> files and can be visualized using base R if you prefer. The easiest way to get {ggplot2} is to install the whole {tidyverse} suite</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tidyverse"</span><span class="op">)</span></code></pre></div>
 </div>
@@ -463,7 +465,7 @@
 <div class="section level4">
 <h4 id="checking-output">Checking output<a class="anchor" aria-label="anchor" href="#checking-output"></a>
 </h4>
-<p>Check the model results to make sure that the EM returns the same parameters as the OM. <code><a href="../reference/get_results_all.html">get_results_all()</a></code> should be sufficient here, which will produce csv files that you can use to check parameter estimates. For more details see the <a href="#beautiful-output">section on model output</a>.</p>
+<p>Check the model results to make sure that the EM returns the same parameters as the OM. <code><a href="../reference/get_results_all.html">get_results_all()</a></code> should be sufficient here, which will produce <code>.csv</code> files that you can use to check parameter estimates. For more details see the <a href="#beautiful-output">section on model output</a>.</p>
 </div>
 </div>
 </div>
@@ -471,7 +473,8 @@
 <h2 id="beautiful-output">Beautiful output<a class="anchor" aria-label="anchor" href="#beautiful-output"></a>
 </h2>
 <div class="section level3">
-<h3 id="csv-files">.csv files<a class="anchor" aria-label="anchor" href="#csv-files"></a>
+<h3 id="csv-files">
+<code>.csv</code> files<a class="anchor" aria-label="anchor" href="#csv-files"></a>
 </h3>
 <p><code><a href="../reference/get_results_all.html">get_results_all()</a></code> reads in a set of scenarios and combines the output into <code>.csv</code> files, e.g., <code>ss3sim_scalar.csv</code> and <code>ss3sim_ts.csv</code>. The <code>scalar</code> file contains values for which there is a single estimated value, e.g., MSY. The <code>ts</code> file refers to values for which there are time series of estimated values, e.g., biomass for each year.</p>
 <p>Parameter names in these files will not always be the same across simulations because names are dependent on OM and EM settings. For example, an EM with age-specific natural mortality will have multiple natural mortality parameters each with a different name based on the age they pertain to. <code><a href="../reference/get_results_all.html">get_results_all()</a></code> accommodates this by using the parameter name assigned by Stock Synthesis rather than attempting to standardize names.</p>
@@ -481,7 +484,7 @@
   overwrite_files <span class="op">=</span> <span class="cn">TRUE</span>,
   user_scenarios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">scname</span>, <span class="va">scname_det</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co"># Read in the data frames stored in the csv files</span>
+<span class="co"># Read in the data frames stored in the `.csv` files</span>
 <span class="va">scalar_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"ss3sim_scalar.csv"</span><span class="op">)</span>
 <span class="va">ts_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"ss3sim_ts.csv"</span><span class="op">)</span></code></pre></div>
 <p>If you would like to follow along with the rest of the vignette without running the simulations detailed above, you can load a saved version of the output.</p>
@@ -587,7 +590,7 @@ Box plots of relative error (RE) for stochastic runs. <span class="math inline">
 </div>
 </div>
 <div class="section level2">
-<h2 id="stochasticity">Stochasticity<a class="anchor" aria-label="anchor" href="#stochasticity"></a>
+<h2 id="stochastic-dynamics">Stochastic dynamics<a class="anchor" aria-label="anchor" href="#stochastic-dynamics"></a>
 </h2>
 <div class="section level3">
 <h3 id="obs-error">Generating observation error<a class="anchor" aria-label="anchor" href="#obs-error"></a>
@@ -611,12 +614,12 @@ Box plots of relative error (RE) for stochastic runs. <span class="math inline">
 <div class="section level4">
 <h4 id="distributional-assumptions-for-observation-error">Distributional assumptions for observation error<a class="anchor" aria-label="anchor" href="#distributional-assumptions-for-observation-error"></a>
 </h4>
-<p>In simulations, the true underlying dynamics of the population are known, and therefore, a variety of sampling techniques are possible. Ideal sampling, in the statistical sense, can be done easily. However, there is some question about the realism behind providing the model with this kind of data because it is unlikely to happen in practice <span class="citation">(Pennington et al. 2002)</span>. One way to generate more realistic data is to use flexible distributions, which allow the user to control the statistical properties, e.g., overdispersion of the data. Another option is to use unmodeled process error, typically in selectivity.</p>
+<p>In simulations, the true underlying dynamics of the population are known, and therefore, a variety of sampling techniques are possible. Ideal sampling, in the statistical sense, can be done easily. However, there is some question about the realism behind providing the model with this kind of data because it is unlikely to happen in practice <span class="citation">(Pennington et al. 2002)</span>. One way to generate more realistic data is to use flexible distributions, which allow the user to control the statistical properties, e.g., overdispersion of the data. Another option is to use process error that is not being modeled, typically in selectivity.</p>
 <p>Under perfect mixing of fish and truly random sampling of the population, the age samples would be multinomial. However, in practice fish are never perfectly mixed because fish tend to aggregate by size and age <span class="citation">(e.g., Pennington et al. 2002)</span>. And, it is difficult to take random samples. Both of these sampling properties can cause the data to have more variance than expected, i.e., be overdispersed, and the effective sample size is smaller than expected <span class="citation">(Maunder 2011, Hulson et al. 2012)</span>. For example, if a multinomial likelihood is assumed for overdispersed data, the model puts too much weight on those data by thinking they should be less variable than they are, at the cost of fitting other data less well <span class="citation">(Maunder 2011)</span>. Analysts thus often “tune” their model to find a sample size, i.e., “effective sample size”, that is more appropriate than the “input sample size”. The effective sample size will in theory more accurately reflect the information in the composition data <span class="citation">(Francis and Hilborn 2011)</span>. In our case, we exactly control how the data are generated and specified in the EM, providing a large amount of flexibility to the user. What is optimal will depend on the questions addressed by a simulation and how the results are meant to be interpreted. We caution users to carefully consider how data are generated and fit.</p>
 <div class="section level5">
 <h5 id="indices-of-abundance">Indices of abundance<a class="anchor" aria-label="anchor" href="#indices-of-abundance"></a>
 </h5>
-<p><code><a href="../reference/sample_index.html">sample_index()</a></code> facilitates generating relative indices of abundance (catch-per-unit-effort (CPUE) data for fishery fleets). It samples from the biomass trends available for the different fleets to simulate the collection of CPUE and survey index data. The user can specify which fleets are sampled in which years and with what amount of noise. Different fleets will “see” different biomass trends due to differences in selectivity. Catchability for the OM is equal to one, <span class="math inline">\(q=1\)</span>, and thus, the indices are actually absolute indices of (spawning) biomass.</p>
+<p><code><a href="../reference/sample_index.html">sample_index()</a></code> facilitates generating relative indices of abundance (catch-per-unit-effort data for fishery fleets). It samples from the biomass trends available for the different fleets to simulate the collection of catch-per-unit-effort and survey index data. The user can specify which fleets are sampled in which years and with what amount of noise. Different fleets will “see” different biomass trends due to differences in selectivity. Catchability for the OM is equal to one, <span class="math inline">\(q=1\)</span>, and thus, the indices are actually absolute indices of (spawning) biomass.</p>
 <p>In practice, sampling from the abundance indices is relatively straightforward. The OM <code>.dat</code> file contains the annual biomass values for each fleet, and the <code>sample_index</code> function uses these true values as the mean of a distribution. The function uses a bias-corrected log-normal distribution with expected values given by the OM biomass and a user-provided standard deviation term that controls the level of variance.</p>
 <p>More specifically, let</p>
 <p><span class="math display">\[\begin{aligned}
@@ -671,7 +674,7 @@ Box plots of relative error (RE) for stochastic runs. <span class="math inline">
 <div class="section level6">
 <h6 id="effective-sample-sizes-1">Effective sample sizes<a class="anchor" aria-label="anchor" href="#effective-sample-sizes-1"></a>
 </h6>
-<p>The term “effective sample size” (ESS) for Stock Synthesis often refers to the tuned sample size, right-weighted depending on the information contained in the data. These values are estimated after an initial run and then written to the .dat file and Stock Synthesis is run again <span class="citation">(Francis and Hilborn 2011)</span>. Perhaps a better term would be “input sample size” to contrast it with what was originally sampled.</p>
+<p>The term “effective sample size” (ESS) for Stock Synthesis often refers to the tuned sample size, right-weighted depending on the information contained in the data. These values are estimated after an initial run and then written to the data file and Stock Synthesis is run again <span class="citation">(Francis and Hilborn 2011)</span>. Perhaps a better term would be “input sample size” to contrast it with what was originally sampled.</p>
 <p>In any case, the default behavior for both multinomial and Dirichlet generated composition data is to set the effective sample size automatically in <code>sample_*()</code>. In the case of the multinomial, the effective sample size is just the original sample size, i.e., how many fish were sampled, the number of sampled tows, etc. However, with the Dirichlet distribution, the effective sample size depends on the parameters passed to these functions and is automatically calculated internally and passed on to the <code>.dat</code> file. The effective sample size is calculated as <span class="math inline">\(N_{eff}=n/c^2\)</span>, where <span class="math inline">\(c\)</span> is <code>cpar</code>. Note that these values will not necessarily be integer-valued and Stock Synthesis handles this without issue.</p>
 <p>If the effective sample size is known and passed to the EM, there is much similarity between the multinomial and Dirichlet methods for generating data. The main difference arises when sample sizes (<span class="math inline">\(n\)</span>) are small; in this case, the multinomial will be restricted to few potential values (i.e., <span class="math inline">\(0/n, 1/n, \ldots, n/n\)</span>), whereas the Dirichlet has values in <span class="math inline">\([0,1]\)</span>. Thus, without the Dirichlet it would be impossible to generate realistic values that would come about from highly overdispersed data with a large <span class="math inline">\(n\)</span>.</p>
 <p>The ability to is specify the ESS was implemented to allow for users to explore data weighting issues. If you want to specify an input/effective sample size different that what is used in sampling, this is available via the <code>ESS</code> arguments of these two functions.</p>
@@ -690,22 +693,22 @@ Box plots of relative error (RE) for stochastic runs. <span class="math inline">
 <div class="section level5">
 <h5 id="conditional-age-at-length">Conditional age at length<a class="anchor" aria-label="anchor" href="#conditional-age-at-length"></a>
 </h5>
-<p>Conditional age-at-length (CAAL) data is an alternative to age-composition data, when there are paired age and length observations of the same fish. CAAL data are inherently tied to the length compositions, e.g., as if a trip measured lengths and ages for all fish. In contrast to the age compositions, which were generated independently of the length data, e.g., as if one trip measured only ages and a second only lengths. Stock Synthesis has the capability to associate the measurements, and doing so has many appealing attributes. CAAL data are expected to be more informative about growth than marginal age-composition data. Although, to date, few studies have examined this data type <span class="citation">(He et al. 2015, Monnahan et al. 2015)</span>. See <code>?sample_calcomp()</code> for more details on the sampling process.</p>
+<p>Conditional age-at-length data is an alternative to age-composition data, when there are paired age and length observations of the same fish. Conditional age-at-length data are inherently tied to the length compositions, e.g., as if a trip measured lengths and ages for all fish. In contrast to the age compositions, which were generated independently of the length data, e.g., as if one trip measured only ages and a second only lengths. Stock Synthesis has the capability to associate the measurements, and doing so has many appealing attributes. Conditional age-at-length data are expected to be more informative about growth than marginal age-composition data. Although, to date, few studies have examined this data type <span class="citation">(He et al. 2015, Monnahan et al. 2015)</span>. See <code>?sample_calcomp()</code> for more details on the sampling process.</p>
 </div>
 </div>
 </div>
 <div class="section level3">
 <h3 id="pro-error">Generating process error<a class="anchor" aria-label="anchor" href="#pro-error"></a>
 </h3>
-<p>Process error is incorporated into the OM in the form of deviates in recruitment (“recdevs”) from the stock-recruitment relationship. Unlike the observation error, the process error affects the population dynamics and thus must be done before running the OM.</p>
+<p>Process error is incorporated into the OM in the form of deviates in recruitment from the stock-recruitment relationship. Unlike the observation error, the process error affects the population dynamics and thus must be done before running the OM.</p>
 <p>These built-in recruitment deviations are standard normal deviates and are multiplied by <span class="math inline">\(\sigma_r\)</span> (recruitment standard deviation) as specified in the OM, and bias adjusted within {ss3sim}. That is, <span class="math display">\[\begin{equation*}
   \text{recdev}_i=\sigma_r z_i-\sigma_r^2/2
 \end{equation*}\]</span> where <span class="math inline">\(z_i\)</span> is a standard normal deviate and the bias adjustment term (<span class="math inline">\(\sigma_r^2/2\)</span>) makes the deviates have an expected value of 1 after exponentiation.</p>
 <p>If the recruitment deviations are not specified, then {ss3sim} will use these built-in recruitment deviations. Alternatively, you can specify your own recruitment deviations, via the argument <code>user_recdevs</code> to the top-level function <code><a href="../reference/ss3sim_base.html">ss3sim_base()</a></code>. Ensure that you pass a matrix with at least enough columns (iterations) and rows (years). The user-supplied recruitment deviations are used exactly as specified (i.e., not multiplied by <span class="math inline">\(\sigma_r\)</span> as specified in the Stock Synthesis model), and <strong>it is up to you to bias correct them manually</strong> by subtracting <span class="math inline">\(\sigma_r^2 / 2\)</span> as is done above. This functionality allows for flexibility in how the recruitment deviations are specified, for example <a href="#deterministic">running deterministic runs</a> or adding serial correlation.</p>
-<p>Note that for both built-in and user-specified recdevs, {ss3sim} will reuse the same set of recruitment deviations for all iterations across scenarios. For example if you have two scenarios and run 100 iterations of each, the same set of recruitment deviations are used for iteration one for both those two scenarios.</p>
+<p>Note that for both built-in and user-specified recruitment deviations, {ss3sim} will reuse the same set of recruitment deviations for all iterations across scenarios. For example if you have two scenarios and run 100 iterations of each, the same set of recruitment deviations are used for iteration one for both those two scenarios.</p>
 </div>
 <div class="section level3">
-<h3 id="reproducibility">Reproducibility<a class="anchor" aria-label="anchor" href="#reproducibility"></a>
+<h3 id="reproducible">Reproducible<a class="anchor" aria-label="anchor" href="#reproducible"></a>
 </h3>
 <p>In many cases, you may want to make the observation and process error reproducible. For instance, you may want to reuse process error so that differences between scenarios are not confounded with process error. More broadly, you may want to make a simulation reproducible on another machine by another user (such as a reviewer).</p>
 <p>By default {ss3sim} sets a seed based on the iteration number. This will create the same recruitment deviations for a given iteration number. You can therefore avoid having the same recruitment deviations for a given iteration number by either specifying your own recruitment deviation matrix. This can be done using the <code>user_recdevs</code> argument or by changing the iteration numbers (e.g., using iterations 101 to 200 instead of 1 to 100). If you use the latter method, you must specify a vector of iterations instead of a single number. The vector will specify which numbers along a number line to use versus a single number leads to 1:x iterations being generated. If you want the different scenarios to have different process error you will need to make separate calls to <code>run_ss3sim</code> for each scenario.</p>
@@ -723,7 +726,7 @@ Box plots of relative error (RE) for stochastic runs. <span class="math inline">
 <p><span class="math display">\[\begin{equation}
 par_y = par + link * env_y.
 \end{equation}\]</span></p>
-<p><span class="math inline">\(link\)</span> is pre-specified to a value of one. <span class="math inline">\(par\)</span> is the base value for the given parameter, as defined by the INIT value in the <code>.ctl</code> file. For all catchability parameters (<span class="math inline">\(q\)</span>), the deviate will be added to the log transform of the base parameter using the following equation:</p>
+<p><span class="math inline">\(link\)</span> is prespecified to a value of one. <span class="math inline">\(par\)</span> is the base value for the given parameter, as defined by the <code>INIT</code> value in the <code>.ctl</code> file. For all catchability parameters (<span class="math inline">\(q\)</span>), the deviate will be added to the log transform of the base parameter using the following equation:</p>
 <p><span class="math display">\[\begin{equation}
   \log(q_{y}) = \log(q) + link * env_{y}.
 \end{equation}\]</span></p>
@@ -746,7 +749,7 @@ par_y = par + link * env_y.
 <span class="op">)</span>
 <span class="fu"><a href="../reference/get_results_all.html">get_results_all</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">stopCluster</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></code></pre></div>
-<p>Note that if the simulation aborts for any reason while <code><a href="../reference/run_ss3sim.html">run_ss3sim()</a></code> is running in parallel, you may need to abort the left over parallel processes. On Windows, open the task manager (Ctrl-Shift-Esc) and close any R processes. On a Mac, open Activity Monitor and force quit any R processes. Also, if you are working with a local development version of <code>ss3sim</code> and you are on a Windows machine, you may not be able to run in parallel if you load {ss3sim} with <code>devtools::load_all()</code>. Instead, do a full install with <code>devtools::install()</code> (and potentially restart R if {ss3sim} was already loaded).</p>
+<p>Note that if the simulation aborts for any reason while <code><a href="../reference/run_ss3sim.html">run_ss3sim()</a></code> is running in parallel, you may need to abort the left over parallel processes. On Windows, open the task manager (<code>Ctrl-Shift-Esc</code>) and close any R processes. On a Mac, open Activity Monitor and force quit any R processes. Also, if you are working with a local development version of <code>ss3sim</code> and you are on a Windows machine, you may not be able to run in parallel if you load {ss3sim} with <code>devtools::load_all()</code>. Instead, do a full install with <code>devtools::install()</code> (and potentially restart R if {ss3sim} was already loaded).</p>
 </div>
 </div>
 <div class="section level2">

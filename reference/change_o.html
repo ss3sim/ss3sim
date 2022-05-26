@@ -104,7 +104,7 @@ in which they are estimated. Entries are searched for in
 names as they are specified in the file.</p></dd>
 <dt>par_int</dt>
 <dd><p>A vector of initial values, one for each entry in
-<code>par_name</code>. Values of <code>NA</code> leave the INIT value for
+<code>par_name</code>. Values of <code>NA</code> leave the <code>INIT</code> value for
 that parameter at the value found in the <code>.ctl</code> file.</p></dd>
 <dt>verbose</dt>
 <dd><p>When <code>TRUE</code> messages will be returned
@@ -134,10 +134,10 @@ function also returns <code>change_o_list</code> invisibly.</p>
 you want to change in the OM, each element of this vector needs to be
 wrapped in quotations to be later evaluated, e.g., <code>'c("SR_BH_steep","SR_sigmaR")'</code>
 represents a single entry;
-and (2) add an additional column called <code>co.par_int</code> to the <code>simdf</code> that specifies
-INIT values for each parameter in the previous column, e.g., <code>"c(0.6, 1.0)"</code>, if
-there is more than one value, the vector needs to be wrapped in quotations to be
-evaluated later.</p>
+and (2) add column called <code>co.par_int</code> to the <code>simdf</code> that specifies
+<code>INIT</code> values for each parameter in the previous column, e.g.,
+<code>"c(0.6, 1.0)"</code>. If there is more than one value,
+the vector needs to be wrapped in quotations to be evaluated later.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>

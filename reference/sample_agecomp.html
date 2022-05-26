@@ -123,7 +123,7 @@ An entry of <code>fleets=NULL</code> leads to zero samples for any fleet.</p></d
 Either single values or vectors of the same length as the number of
 years can be passed through. Single values are repeated for all
 years. If no fleet collected samples, keep the value to
-<code>Nsamp=NULL</code>.</p></dd>
+<code>Nsamp = NULL</code>.</p></dd>
 <dt>years</dt>
 <dd><p>*A list the same length as <code>fleets</code> giving the years as
 numeric vectors. If no fleet collected samples, keep the value to
@@ -134,7 +134,7 @@ numeric vectors. If no fleet collected samples, keep the value to
 distribution used for sampling. A value of <code>1</code> leads to the
 same standard deviation as a multinomial of the given <code>Nsamp</code>,
 <code>2</code> indicates twice, etc. Values greater than one indicate
-overdispersion, and less underdispersion. <code>NULL</code> or <code>NA</code>
+over dispersion, and less under dispersion. <code>NULL</code> or <code>NA</code>
 for a given fleet will lead to no dispersion.</p></dd>
 <dt>ESS</dt>
 <dd><p>The final effective sample size (ESS) associated with the

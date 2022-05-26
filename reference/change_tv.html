@@ -103,7 +103,7 @@ the vectors correspond to deviations. See the section
     <div id="value">
     <h2>Value</h2>
     <p>The function creates modified versions of the  <code>.ctl</code> and
-<code>.dat</code> files if ctl_file_out and dat_file_out are not NULL. The function
+<code>.dat</code> files if <code>ctl_file_out</code> and <code>dat_file_out</code> are not NULL. The function
 also returns a list of the modified <code>.ctl</code> and <code>.dat</code> R objects
 invisibly.</p>
     </div>
@@ -124,8 +124,8 @@ is necessary to implement time-varying parameters.</p>
 <p><span class="pkg">ss3sim</span> uses annual recruitment deviations and may not work with a
 model that ties recruitment deviations to environmental covariates. If you
 need to compare the environment to annual recruitment deviations, the
-preferred option is to transform the environmental variable into an age 0
-pre-recruit survey. See page 55 of the Stock Synthesis version 3.24f manual for more
+preferred option is to transform the environmental variable into an age-0
+recruitment survey. See the Stock Synthesis manual for more
 information.</p>
     </div>
     <div id="specifying-the-change-tv-list">
@@ -138,8 +138,8 @@ referred to as environmental data, must have a length equal to
 <code>endyr-startyr+1</code>, where <code>endyr</code> and <code>startyr</code> are specified the
 <code>.dat</code> file. Specify years without deviations as zero.</p>
 <p>Parameter names must be unique and match the full parameter name in the
-<code>.ctl</code> file. Names for stock recruit parameters must contain "devs",
-"R0", or "steep", and only one stock recruit parameter can be time-varying
+<code>.ctl</code> file. Names for stock recruit parameters must contain <code>devs</code>,
+<code>R0</code>, or <code>steep</code>, and only one stock recruit parameter can be time-varying
 per model.</p>
 <p>This feature will include an <em>additive</em> functional linkage between
 environmental data and the parameter where the link parameter is fixed at a

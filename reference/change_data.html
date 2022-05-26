@@ -127,15 +127,15 @@ the age bin structure will be taken from the OM.</p></dd>
 <dd><p>A numeric vector of length bins to use. If left as
 <code>NULL</code>, the length bin structure will be taken from the OM.
 For conditional age-at-length data,
-the last value provided to <code>len_bins</code> will be used for Lbin_lo and
--1 will be used for Lbin_hi for the largest length bin category, i.e.,
+the last value provided to <code>len_bins</code> will be used for <code>Lbin_lo</code> and
+-1 will be used for <code>Lbin_hi</code> for the largest length bin category, i.e.,
 row of conditional age-at-length data.</p></dd>
 <dt>pop_binwidth</dt>
 <dd><p>Population length bin width. Note that this value must
 be smaller than the bin width specified in length-composition data
 <code>len_bins</code> or Stock Synthesis will fail,
 see notes in the
-<a href="https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html" class="external-link">Stock Synthesis manual</a>.</p></dd>
+<a href="https://nmfs-stock-synthesis.github.io/doc/SS330_User_Manual.html" class="external-link">Stock Synthesis manual</a>.</p></dd>
 <dt>pop_minimum_size</dt>
 <dd><p>Population minimum length bin value.</p></dd>
 <dt>pop_maximum_size</dt>
@@ -145,7 +145,7 @@ see notes in the
 Must be a numeric value, as a proportion.
 For example, 0.1 means 10 percent.
 See the notes in the
-<a href="https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html" class="external-link">Stock Synthesis manual</a>.
+<a href="https://nmfs-stock-synthesis.github.io/doc/SS330_User_Manual.html" class="external-link">Stock Synthesis manual</a>.
 A <code>NULL</code> value indicates no action resulting in using the current value, and
 a value of 0 will throw an error because
 zero leads to an error when zeroes exist in the data.
@@ -154,7 +154,7 @@ Instead use a very small value like 1e-07.</p></dd>
 <dd><p>Tail compression value to be used in Stock Synthesis. Must
 be a numeric value, as a proportion. For example 0.1 means 10 percent.
 See the notes in the
-<a href="https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html" class="external-link">Stock Synthesis manual</a>.
+<a href="https://nmfs-stock-synthesis.github.io/doc/SS330_User_Manual.html" class="external-link">Stock Synthesis manual</a>.
 A <code>NULL</code> value indicates no action,
 a negative value turns the feature off in Stock Synthesis.</p></dd>
 <dt>nsex</dt>

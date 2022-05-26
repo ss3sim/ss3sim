@@ -80,17 +80,17 @@ observed composition data.</p>
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>A data frame with informational columns followed by
-columns of compositional data.
+columns of composition data.
 The informational columns must include columns labeled
-'Yr' and 'FltSvy' and end with a column labeled 'Nsamp'.
-Columns of compositional data should follow 'Nsamp'.
-Rows of compositional data do not need to sum to one.</p></dd>
+<code>Yr</code> and <code>FltSvy</code> and end with a column labeled <code>Nsamp</code>.
+Columns of composition data should follow <code>Nsamp</code>.
+Rows of composition data do not need to sum to one.</p></dd>
 <dt>Nsamp</dt>
 <dd><p>*A numeric list of the same length as <code>fleets</code>.
 Either single values or vectors of the same length as the number of
 years can be passed through. Single values are repeated for all
 years. If no fleet collected samples, keep the value to
-<code>Nsamp=NULL</code>.</p></dd>
+<code>Nsamp = NULL</code>.</p></dd>
 <dt>fleets</dt>
 <dd><p>*A vector of integers specifying which fleets to include.
 The order of the fleets pertains to the input order of other arguments.
@@ -117,7 +117,7 @@ either a single integer or a vector of integers, for each fleet.</p></dd>
 distribution used for sampling. A value of <code>1</code> leads to the
 same standard deviation as a multinomial of the given <code>Nsamp</code>,
 <code>2</code> indicates twice, etc. Values greater than one indicate
-overdispersion, and less underdispersion. <code>NULL</code> or <code>NA</code>
+over dispersion, and less under dispersion. <code>NULL</code> or <code>NA</code>
 for a given fleet will lead to no dispersion.</p></dd>
 <dt>...</dt>
 <dd><p>Any argument you want to be a column in the new data frame of composition
@@ -132,7 +132,7 @@ in your data.</p></dd>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>Sample size, i.e., 'Nsamp', is used as a measure of precision,
+    <p>Sample size, i.e., <code>Nsamp</code>, is used as a measure of precision,
 where higher sample sizes lead to simulated samples that more accurately
 represent the truth provided in <code>data</code>.</p>
     </div>

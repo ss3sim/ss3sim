@@ -3,8 +3,8 @@
 The function writes the following .csv files to the scenario folder
 scalar metrics with one value per iteration
 (e.g. \(R_0\), \(h\)),
-a timeseries data ('ts') which contains multiple values per iteration
-(e.g.  \(SSB_y\) for a range of years \(y\)), and
+a timeseries data frame ('ts') which contains multiple values per iteration
+(e.g.,  \(SSB_y\) for a range of years \(y\)), and
 residuals on the log scale from the surveys across all iterations;
 this functionality is currently disabled and not tested.
 
@@ -75,10 +75,10 @@ this functionality is currently disabled and not tested.
 
     <div class="ref-description">
     <p>Extract results from all iterations inside a supplied scenario folder.
-The function writes the following .csv files to the scenario folder</p><ol><li><p>scalar metrics with one value per iteration
+The function writes the following <code>.csv</code> files to the scenario folder</p><ol><li><p>scalar metrics with one value per iteration
 (e.g. \(R_0\), \(h\)),</p></li>
-<li><p>a timeseries data ('ts') which contains multiple values per iteration
-(e.g.  \(SSB_y\) for a range of years \(y\)), and</p></li>
+<li><p>a <code>timeseries</code> data frame ('ts') which contains multiple values per iteration
+(e.g.,  \(SSB_y\) for a range of years \(y\)), and</p></li>
 <li><p>residuals on the log scale from the surveys across all iterations;
 this functionality is currently disabled and not tested.</p></li>
 </ol></div>
@@ -102,8 +102,8 @@ changes were made to this function.</p></dd>
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="get_results_all.html">get_results_all()</a></code> loops through these .csv files and
-combines them together into a single "final" dataframe.</p>
+    <div class="dont-index"><p><code><a href="get_results_all.html">get_results_all()</a></code> loops through these <code>.csv</code> files and
+combines them together into a single "final" data frame.</p>
 <p>Other get-results: 
 <code><a href="get_results_all.html">get_results_all</a>()</code>,
 <code><a href="get_results_derived.html">get_results_derived</a>()</code>,
