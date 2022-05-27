@@ -100,20 +100,20 @@ then the value will be copied for all fleets.
 For example, <code>sa.Nsamp.1</code> specifies the sample size for age-composition data
 for fleet number one. Whereas, <code>sa.Nsamp</code> specifies the input sample-size
 for all fleets.</p>
-<p>A todo list for future features is as follows:</p><ul><li><p>remove fleets that have <code>NA</code></p></li>
-<li><p>allow for arguments rather than hard wiring <code>arg</code> and <code>fleet</code></p></li>
-<li><p>see if <code>sa.Nsamp</code> and <code>sa.Nsamp.1</code> can be in the same data frame and just
+<p>A todo list for future features is as follows:</p><ul><li><p>remove fleets that have NA</p></li>
+<li><p>allow for arguments rather than hardwiring arg and fleet</p></li>
+<li><p>see if sa.Nsamp and sa.Nsamp.1 can be in the same data frame and just
 fill in the value for fleets that aren't specified; would need to fill
 up and down I think within a group to make it work.</p></li>
-<li><p>accommodate -999 in sample function <code>cpar</code> arguments</p></li>
-<li><p>create <code>add_args</code> to fill in missing arguments across fleets</p></li>
-<li><p>implement <code>add_args</code> before expand fleet such that the new
-<code>arg</code> would be expanded for all fleets but I only have to specify
+<li><p>accomodate -999 in sample function cpar arguments</p></li>
+<li><p>create add_args to fill in missing arguments across fleets</p></li>
+<li><p>implement add_args before expand fleet such that the new
+arg would be expanded for all fleets but I only have to specify
 the default one time</p></li>
 <li><p>fix <code>.data[[""]]</code> to pass CRAN
-<code>x &lt;- enquo(x)</code>
-<code>y &lt;- enquo(y)</code>
-<code>ggplot(data) + geom_point(aes(!!x, !!y))</code></p></li>
+x &lt;- enquo(x)
+y &lt;- enquo(y)
+ggplot(data) + geom_point(aes(!!x, !!y))</p></li>
 </ul></div>
     <div id="author">
     <h2>Author</h2>
