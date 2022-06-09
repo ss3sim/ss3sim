@@ -17,13 +17,13 @@
 #'
 fill_across <- function(mat, minYear, maxYear) {
   ## Initial Checks
-  mat$yr <- abs(mat$yr)
+  mat$Yr <- abs(mat$Yr)
   mat$index <- seq_len(nrow(mat))
 
   # check.mat <- mat
 
   # input matrix must have value for year 1
-  if (length(unique(mat$fleet)) != 1) stop("Too Many Fleets")
+  if (length(unique(mat$Fleet)) != 1) stop("Too Many Fleets")
 
   # Interpolate Values across Rows
   for (ii in seq_len(max(mat$index))) {
@@ -69,12 +69,12 @@ fill_across <- function(mat, minYear, maxYear) {
 
   # Create Temporary Data frame
   temp.df <- as.data.frame(matrix(nrow = length(seq(minYear, maxYear)), ncol = ncol(mat)))
-  temp.df[mat$yr, ] <- mat
+  temp.df[match(mat$Yr,seq(minYear,maxYear)), ] <- mat
   names(temp.df) <- names(mat)
-  temp.df$yr <- seq(minYear, maxYear)
+  temp.df$Yr <- seq(minYear, maxYear)
 
   # Back Fill Rows
-  fill.index <- c(minYear, which(is.na(temp.df$age0) == FALSE), maxYear)
+  fill.index <- c(1, which(is.na(temp.df$`0`) == FALSE), NROW(temp.df))
   if (length(which(fill.index == 1)) != 1) stop("Did you really have wtatage data in the first year?")
   # Remove Duplicates, occurs when input matrix has values in mat[maxYear, ]
 
@@ -101,21 +101,21 @@ fill_across <- function(mat, minYear, maxYear) {
     }
 
     # If Last Row is Missing, fill Forwards
-    if (ii == length(fill.index) & is.na(temp.df[fill.index[ii], "age0"])) {
+    if (ii == length(fill.index) & is.na(temp.df[fill.index[ii], "0"])) {
       temp.df[(prev + 1):curr, -1] <- temp.df[prev, -1]
     }
   }
 
   # check to make sure that first year is filled
-  if (is.na(temp.df[1, "age0"])) {
+  if (is.na(temp.df[1, "0"])) {
     temp.df[1, -1] <- temp.df[2, -1]
-    temp.df[1, "yr"] <- 1
+    temp.df[1, "Yr"] <- 1
   }
 
   # check to make sure that last year is filled
-  if (is.na(temp.df[100, "age0"])) {
+  if (is.na(temp.df[100, "0"])) {
     temp.df[100, -1] <- temp.df[99, -1]
-    temp.df[100, "yr"] <- 100
+    temp.df[100, "Yr"] <- 100
   }
 
   return(temp.df)

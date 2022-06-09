@@ -479,15 +479,35 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         nsex = datfile.modified[["Nsexes"]]
       )
     }
-    if (!is.null(mlacomp_params)) {
+    if (!is.null(mlacomp_params) | !is.null(wtatage_params)) {
       # todo: fix this to use comp function
-      # dummy_dat <- as.data.frame(do.call(lapply(fleets, function(fleet)
-      #     data.frame("Yr"   = years, "Seas" = 1, "Flt"  = fleet, "Gender" = 0,
-      #                "Part"   = 0, "AgeErr"=1, "Nsamp" = 10, stringsAsFactors = FALSE))))
-      # dummy_df <- data.frame(matrix(1, nrow=nrow(dummy_dat), ncol=length(age_bins)*2))
-      # names(dummy_df) <- c(paste0("a", c(age_bins)), paste0("N", c(age_bins)))
-      # datfile.modified$MeanSize_at_Age_obs <- cbind(dummy_dat, dummy_df)
-      # datfile.modified$N_MeanSize_at_Age_obs <- NROW(datfile.modified$MeanSize_at_Age_obs)
+      dummy_dat <- as.data.frame(do.call("rbind", lapply(
+        seq(datfile.modified[["Nfleets"]]),
+        function(fleet, dat = datfile.modified) {
+          data.frame(
+            "Yr"   = dat[["styr"]]:dat[["endyr"]],
+            "Seas" = 1,
+            "Flt"  = fleet,
+            "Gender" = 0,
+            "Part"   = 0,
+            "AgeErr" = 1,
+            "Nsamp" = 10,
+            stringsAsFactors = FALSE
+          )
+        }
+      )))
+      dummy_df <- data.frame(matrix(
+        1,
+        nrow = nrow(dummy_dat),
+        ncol = length(datfile.modified[["agebin_vector"]]) * 2
+      ))
+      names(dummy_df) <- c(
+        paste0("a", datfile.modified[["agebin_vector"]]),
+        paste0("N", datfile.modified[["agebin_vector"]])
+      )
+      datfile.modified[["use_MeanSize_at_Age_obs"]] <- 1
+      datfile.modified$MeanSize_at_Age_obs <- cbind(dummy_dat, dummy_df)
+      datfile.modified$N_MeanSize_at_Age_obs <- NROW(datfile.modified$MeanSize_at_Age_obs)
     }
     r4ss::SS_writedat(
       datlist = datfile.modified,
