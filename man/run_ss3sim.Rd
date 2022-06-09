@@ -2,7 +2,7 @@
 % Please edit documentation in R/run_ss3sim.r
 \name{run_ss3sim}
 \alias{run_ss3sim}
-\title{Master function to run simulations using Stock Synthesis}
+\title{Master function to run a set of simulations using \pkg{ss3sim}}
 \usage{
 run_ss3sim(
   iterations,
@@ -13,25 +13,41 @@ run_ss3sim(
 )
 }
 \arguments{
-\item{iterations}{Which iterations to run. A numeric vector. For example
-\code{1:100}. The same number of iterations will be run for each scenario.
-If any iterations already exist, then ss3sim will skip over them.}
+\item{iterations}{A numeric vector specifying which iterations are desired.
+For example \code{1:100}.
+The same number of iterations will be ran for each scenario.
+If any iterations already have a folder from a previous run, they will be
+skipped even if they do not contain viable results.}
 
 \item{simdf}{A data frame of instructions with one row per scenario.
 See \code{\link[=setup_scenarios_defaults]{setup_scenarios_defaults()}} for default values that will be
-passed to ss3sim for a generic simulation to get you started. These
-values will be used if \code{simdf} is left at its default value of \code{NULL}.}
+used for a generic simulation to get you started.
+These default values will only work with the stored cod model because
+some of the columns in \code{simdf} need to have values that
+match the fleet structure of the operating model. If you are not using the
+default cod model, please remember to add \code{om_dir} and \code{em_dir} columns
+to \code{simdf} with file paths to the locations of your operating model and
+estimation method. Essentially, \code{simdf} is a way to pass scenario-specific
+information to the arguments of \code{\link[=ss3sim_base]{ss3sim_base()}}, whereas the \code{...} method
+will only work for things like \code{seed} that are universal to all scenarios
+in a simulation.}
 
 \item{parallel}{A logical argument that controls whether the scenarios are
 run in parallel. You will need to register multiple cores first with a
 package such as \pkg{doParallel} and have the \pkg{foreach} package
-installed. See the example below.}
+installed. For example, the following code will register two cores:\preformatted{library(doParallel)
+cl <- makeCluster(2)
+registerDoParallel(cl)
+}}
 
-\item{parallel_iterations}{Logical. By default \code{parallel = TRUE} will
-run scenarios in parallel. If you set \code{parallel = TRUE} and
-\code{parallel_iterations = TRUE} then the iterations will be run in
-parallel. This would be useful if you were only running one scenario
-but you wanted to run it faster.}
+\item{parallel_iterations}{A logical argument specifying if you wish to
+run iterations in parallel. If you set \code{parallel = TRUE} and
+\code{parallel_iterations = TRUE} then iterations for a given scenario will
+be sent to multiple processors. All iterations for a given scenario must
+finish before the next scenario is started.
+This will be useful if you want to run one scenario fast or if you want
+to be able to look at the results for each scenario as they finish in
+another instance of \R. The argument will be ignored if \code{parallel = FALSE}.}
 
 \item{...}{Anything else to pass to \code{\link[=ss3sim_base]{ss3sim_base()}}. This could
 include \code{bias_adjust}. Also, you can pass
@@ -39,7 +55,7 @@ additional options to the executable through the argument
 \code{admb_options}.}
 }
 \value{
-The output will appear in your current \R working directory
+The output will appear in your current \R working directory.
 Folders will be named based on the \code{"scenario"} column
 of \code{simdf} or based on the date-time stamp
 (i.e., mmddhhmmss) generated automatically at the start of the simulation.
@@ -53,27 +69,38 @@ your simulation at noon on January 01:
 }
 }
 \description{
-This is the main high-level wrapper function for running \pkg{ss3sim}
-simulations. First, this function separates the data frame of simulation
-settings by row for each scenario into a list format. These lists are then
-passed to \code{\link[=ss3sim_base]{ss3sim_base()}} to run each simulation. Alternatively, you
-can run \code{\link[=ss3sim_base]{ss3sim_base()}} directly using your own lists.
+This is the main high-level wrapper function used to run
+a set of \pkg{ss3sim} simulations.
+The data frame passed to \code{simdf} is parsed into a list and used to control
+\code{\link[=ss3sim_base]{ss3sim_base()}}. Alternatively, you can call \code{\link[=ss3sim_base]{ss3sim_base()}} directly
+with your own lists.
 }
 \details{
-The operating model folder should contain: \code{forecast.ss},
-\code{yourmodel.ctl}, \code{yourmodel.dat}, \code{ss.par}, and
-\code{starter.ss}. The files should be the versions that are returned from an
-Stock Synthesis run as \code{.ss_new} files. This is important because it creates
-consistent formatting which many of the functions in this package depend on.
-Rename the \code{.ss_new} files as listed above (and in all lowercase). The
-estimation model folder should contain all the same files listed above except
-the \code{ss.par} and \code{yourmodel.dat} files, which are unnecessary but
-can be included if desired. See the vignette for details on modifying an
-existing Stock Synthesis model to run with \pkg{ss3sim}. Alternatively, you might
-consider modifying one of the built-in model configurations.
+The operating model folder, which is passed as a file path
+using \code{simdf[["om_dir"]]}, should contain the following files:
+\itemize{
+\item \code{forecast.ss},
+\item \code{yourmodel.ctl},
+\item \code{yourmodel.dat},
+\item \code{ss.par}, and
+\item \code{starter.ss}.
+The files should be the formatted versions that are returned from
+Stock Synthesis after the model is optimized, i.e., \code{.ss_new} files.
+It is important to use these formatted files because many functions in
+\pkg{ss3sim} and \pkg{r4ss} depend on the location of keywords present
+in the comments and other standardized formatting. Once you have these
+files from a successfully optimized model, rename the \code{.ss_new} files
+to match the names listed above, though you can change \code{yourmodel} to
+whatever name is listed for the control and data files in \code{starter.ss}.
+The estimation model folder should also contain these files, except
+\code{ss.par} and \code{yourmodel.dat} files, which are unnecessary.
+See the vignette titled modifying-models for details on modifying an
+existing Stock Synthesis model to run with \pkg{ss3sim}. Alternatively,
+consider modifying the built-in model configuration based on north sea cod.
+}
 
-Note that due to the way that Stock Synthesis is being used as an OM, you may see
-the following ADMB error may appear in the console:
+Note that due to the way that Stock Synthesis is being used as an OM,
+you may see the following error from ADMB in the console:
 Error -- base = 0 in function prevariable& pow(const prevariable& v1, CGNU_DOUBLE u)
 However, this is not a problem because ADMB is not used to optimize the OM,
 and thus, the error can safely be ignored.
@@ -100,8 +127,9 @@ expect_equivalent(
 
 }
 \seealso{
-\code{\link[=ss3sim_base]{ss3sim_base()}} can be called directly by passing lists of arguments,
-rather than using the data frame approach with \code{run_ss3sim}.
+\code{\link[=ss3sim_base]{ss3sim_base()}} can be called directly by passing lists to each
+individual argument rather than using the data-frame approach
+of \code{run_ss3sim(simdf = )}.
 The lists correspond to each function called by \code{\link[=ss3sim_base]{ss3sim_base()}}.
 Each element is itself a list of arguments for the given function.
 Either way allows users to pass arguments to each of the
