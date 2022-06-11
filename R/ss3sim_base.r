@@ -574,15 +574,13 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     }
 
     ## Add error in the empirical weight-at-age comp data.
-    # TODO: check below section, as wtatage implementation has changed from 3.24
-    # to 3.30.
     if (!is.null(wtatage_params)) {
       if (!is.null(wtatage_params$fleets)) {
         do.call("sample_wtatage", c(
           wta_file_in = file.path(sc, i, "om", "wtatage.ss_new"),
           outfile     = file.path(sc, i, "em", "wtatage.ss"),
           dat_list    = list(dat_list),
-          ctl_file_in = file.path(sc, i, "om", "control.ss_new"),
+          ctl_file_in = list(ctlom),
           wtatage_params
         ))
       }

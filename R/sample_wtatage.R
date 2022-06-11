@@ -24,15 +24,9 @@
 #'
 #' @param wta_file_in The file to read weight-at-age from, this is typically
 #'   `wtatage.ss_new`.
-#' @param ctl_file_in A path to the control file, output from an OM, containing
-#'   the OM parameters for growth and weight/length relationship. These values
-#'   are used to determine the uncertainty about weight for fish sampled in each
-#'   age bin. Commonly `control.ss_new`.
-#' @param fill_fnc A function to fill in missing values (ages and years). The
-#'   resulting weight-at-age file will have values for all years and ages. One
-#'   such function is [fill_across()].
-#' @param fleets A vector of integers specifying which fleets to sample from.
-#'   `fleets = NULL` results in `return(NULL)`.
+#' @template outfile
+#' @template dat_list
+#' @template ctl_list
 #' @param years A list of numeric vectors with one vector for each entry in
 #'   `fleets`. The order of the entries in the list is assumed to be in the
 #'   same order as fleets. That is, the first element of `years` must pertain
@@ -47,8 +41,11 @@
 #'   for fleet 2 occurs before information is needed for fleet 1. The single
 #'   integer in `years[[1]]` signifies to `sample_wtatage` that it should get
 #'   sample information for fleet 1 from fleet 2.
-#' @template dat_list
-#' @template outfile
+#' @param fill_fnc A function to fill in missing values (ages and years). The
+#'   resulting weight-at-age file will have values for all years and ages. One
+#'   such function is [fill_across()].
+#' @param fleets A vector of integers specifying which fleets to sample from.
+#'   `fleets = NULL` results in `return(NULL)`.
 #' @param cv_wtatage Coefficient of variation (CV) for growth.
 #' @return A modified weight-at-age file will be saved if a file path is
 #' provided to `outfile`. A `list` containing the weight-at-age data frame
@@ -61,16 +58,11 @@
 #' @examples
 #' \dontrun{
 #' wta_file_in <- "https://raw.githubuser.com/nmfs-stock-synthesis/user-examples//wtatage.ss"
-#' ctl_file_in <- "om/control.ss_new"
-#' dat_list <- r4ss::SS_readdat(
-#'   file = ,
-#'   verbose = FALSE
-#' )
 #' test <- sample_wtatage(
 #'   wta_file_in = wta_file_in,
 #'   outfile = "wtatage.ss",
-#'   dat_list = dat_list,
-#'   ctl_file_in = ctl_file_in,
+#'   dat_list = codomdat,
+#'   ctl_list = codomctl,
 #'   years = list(seq(2, 100, 1), seq(2, 100, 1)),
 #'   fill_fnc = fill_across,
 #'   fleets = 1:2,
@@ -81,7 +73,7 @@ sample_wtatage <- function(
   wta_file_in,
   outfile,
   dat_list,
-  ctl_file_in,
+  ctl_list,
   years,
   fill_fnc = fill_across,
   fleets,
@@ -100,8 +92,6 @@ sample_wtatage <- function(
   mlacomp <- dat_list$MeanSize_at_Age_obs
   if (is.null(mlacomp)) stop("No mean length-at-age data in dat_list")
 
-  # TODO: Change to providing a control list rather than file
-  ctl <- r4ss::SS_parlines(ctl_file_in)
   # Read in the file and grab the expected values
   wtatage <- r4ss::SS_readwtatage(wta_file_in)
   wtatage$Yr <- abs(wtatage$Yr)
@@ -186,8 +176,13 @@ sample_wtatage <- function(
         CV.growth <- as.numeric(cv_wtatage) # User-Specified
 
         # Define growth parameters
-        Wtlen1 <- ctl[ctl$Label == "Wtlen_1_Fem", "INIT"]
-        Wtlen2 <- ctl[ctl$Label == "Wtlen_2_Fem", "INIT"]
+        findpar <- function(data, par, whichcol = "INIT") {
+          out <- data[grep(par, row.names(data)), whichcol]
+          stopifnot(length(out) == 1)
+          return(out)
+        }
+        Wtlen1 <- findpar(ctl_list[["MG_parms"]], "Wtlen_1_Fem")
+        Wtlen2 <- findpar(ctl_list[["MG_parms"]], "Wtlen_2_Fem")
         sds <- mla.means * CV.growth
 
         # create empty list to store lengths and weights
