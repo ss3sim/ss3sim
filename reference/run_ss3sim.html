@@ -115,9 +115,11 @@ in a simulation.</p></dd>
 <dd><p>A logical argument that controls whether the scenarios are
 run in parallel. You will need to register multiple cores first with a
 package such as <span class="pkg">doParallel</span> and have the <span class="pkg">foreach</span> package
-installed. For example, the following code will register two cores:</p><div class="sourceCode"><pre><code><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RevolutionAnalytics/doparallel" class="external-link">doParallel</a></span><span class="op">)</span>
-<span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html" class="external-link">registerDoParallel</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></code></pre></div></dd>
+installed. For example, the following code will register two cores
+and must be called before running <code>run_ss3sim()</code>:</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(doParallel)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>cl &lt;-<span class="st"> </span><span class="kw">makeCluster</span>(<span class="dv">2</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">registerDoParallel</span>(cl)</span></code></pre><p></p></div></dd>
 
 
 <dt>parallel_iterations</dt>
