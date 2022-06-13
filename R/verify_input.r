@@ -99,7 +99,7 @@ verify_input <- function(model_dir, type = c("om", "em")) {
     # Write new starter.ss
     r4ss::SS_writestarter(
       mylist = starter.ss, dir = model_dir,
-      file = "starter.ss", overwrite = TRUE, verbose = FALSE, warn = FALSE
+      file = "starter.ss", overwrite = TRUE, verbose = FALSE
     )
     # Alter the .ctl file
     ctl <- readLines(paste0(model_dir, "/", ctl_name))

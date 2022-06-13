@@ -236,15 +236,15 @@ test_that("change_EM_binning stops on error when expected", {
     ),
     "you must specify all pop bin parameters if using lbin_method=2"
   )
-  orig <- datalist$Ngenders
-  datalist$Ngenders <- 2
+  orig <- datalist$Nsexes
+  datalist$Nsexes <- 2
   expect_error(
     change_em_binning(
       dat_list = datalist,
       bin_vector = seq(1, 6, length.out = length(datalist$lbin_vector)),
       lbin_method = 1
     ),
-    "_Ngenders is greater than 1 in the model."
+    "_Nsexes is greater than 1 in the model."
   )
   expect_error(
     change_em_binning(
@@ -252,10 +252,10 @@ test_that("change_EM_binning stops on error when expected", {
       bin_vector = seq(1, 6, length.out = length(datalist$lbin_vector)),
       lbin_method = 1
     ),
-    "_Ngenders is greater than 1 in the model."
+    "_Nsexes is greater than 1 in the model."
   )
   # todo: think about what these two tests really mean
-  # datalist$Ngenders <- orig
+  # datalist$Nsexes <- orig
   # tmp_lbin_max <- datalist$lbin_vector[length(datalist$lbin_vector)]
   # tmp_lbin_vec <- datalist$lbin_vector[-(length(datalist$lbin_vector))]
   # tmp_lbin_vec <- c(tmp_lbin_vec, (tmp_lbin_max+1))

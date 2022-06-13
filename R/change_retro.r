@@ -59,6 +59,6 @@ change_retro <- function(str_file_in = "starter.ss", str_file_out =
   r4ss::SS_writestarter(
     mylist = starter,
     dir = dirname(str_file_out), file = basename(str_file_out),
-    verbose = FALSE, warn = FALSE, overwrite = TRUE
+    verbose = FALSE, overwrite = TRUE
   )
 }

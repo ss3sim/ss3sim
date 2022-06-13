@@ -122,9 +122,9 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
   if (is.null(dat_list$lencomp)) {
     stop("no lcomp data. Verify your input arguments.")
   }
-  if (dat_list$Ngenders > 1) {
+  if (dat_list$Nsexes > 1) {
     stop(
-      "_Ngenders is greater than 1 in the model.change_em_binning only ",
+      "_Nsexes is greater than 1 in the model.change_em_binning only ",
       "works with single-sex models."
     )
   }

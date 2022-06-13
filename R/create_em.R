@@ -97,6 +97,6 @@ create_em <- function(dir_in = system.file("extdata", "models", "cod-om", packag
   starter_list$maxyr_sdreport <- -2
   r4ss::SS_writestarter(starter_list,
     dir = dir_out,
-    overwrite = TRUE, verbose = FALSE, warn = FALSE
+    overwrite = TRUE, verbose = FALSE
   )
 }
