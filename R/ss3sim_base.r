@@ -404,7 +404,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     if (!is.null(data_params[["age_bins"]])) {
       datfile.modified[["agecomp"]] <- change_dat_bin(datfile.modified[["agecomp"]],
         bins = setup_bins(data_params[["age_bins"]],
-          nsex = datfile.modified[["Ngenders"]],
+          nsex = datfile.modified[["Nsexes"]],
           leader = "a"
         )
       )
@@ -414,7 +414,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     if (!is.null(data_params[["len_bins"]])) {
       datfile.modified[["lencomp"]] <- change_dat_bin(datfile.modified[["lencomp"]],
         bins = setup_bins(data_params[["len_bins"]],
-          nsex = datfile.modified[["Ngenders"]],
+          nsex = datfile.modified[["Nsexes"]],
           leader = "l"
         )
       )
@@ -438,7 +438,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           data_params$age_bins
         },
         paramlist = agecomp_params,
-        nsex = datfile.modified[["Ngenders"]]
+        nsex = datfile.modified[["Nsexes"]]
       )
     }
     if (!is.null(lcomp_params)) {
@@ -451,7 +451,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           data_params$len_bins
         },
         paramlist = lcomp_params,
-        nsex = datfile.modified[["Ngenders"]]
+        nsex = datfile.modified[["Nsexes"]]
       )
     }
     datfile.modified <- change_lcomp_constant(
@@ -476,7 +476,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         dat_list = datfile.modified,
         type = "cal",
         paramlist = params,
-        nsex = datfile.modified[["Ngenders"]]
+        nsex = datfile.modified[["Nsexes"]]
       )
     }
     if (!is.null(mlacomp_params)) {
