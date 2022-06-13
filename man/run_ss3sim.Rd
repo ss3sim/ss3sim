@@ -35,10 +35,13 @@ in a simulation.}
 \item{parallel}{A logical argument that controls whether the scenarios are
 run in parallel. You will need to register multiple cores first with a
 package such as \pkg{doParallel} and have the \pkg{foreach} package
-installed. For example, the following code will register two cores:\preformatted{library(doParallel)
+installed. For example, the following code will register two cores
+and must be called before running \code{run_ss3sim()}:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{library(doParallel)
 cl <- makeCluster(2)
 registerDoParallel(cl)
-}}
+}\if{html}{\out{</div>}}}
 
 \item{parallel_iterations}{A logical argument specifying if you wish to
 run iterations in parallel. If you set \code{parallel = TRUE} and

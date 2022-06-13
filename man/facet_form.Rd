@@ -7,22 +7,12 @@
 facet_form(horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL)
 }
 \arguments{
-\item{horiz}{A character string denoting which column to use as
+\item{horiz, horiz2}{A character string denoting which column to use as
 the first (\code{horiz}) and second (\code{horiz2}) level of faceting in
 the horizontal direction. E.g., "M" or "species". A value of NULL (default)
 indicates no faceting in the horizontal space.}
 
-\item{horiz2}{A character string denoting which column to use as
-the first (\code{horiz}) and second (\code{horiz2}) level of faceting in
-the horizontal direction. E.g., "M" or "species". A value of NULL (default)
-indicates no faceting in the horizontal space.}
-
-\item{vert}{A character string denoting which column to use as
-the first (\code{vert}) and second (\code{vert2}) level of faceting in
-the vertical direction. E.g., "M" or "species". A value of NULL (default)
-indicates no faceting in the vertical space.}
-
-\item{vert2}{A character string denoting which column to use as
+\item{vert, vert2}{A character string denoting which column to use as
 the first (\code{vert}) and second (\code{vert2}) level of faceting in
 the vertical direction. E.g., "M" or "species". A value of NULL (default)
 indicates no faceting in the vertical space.}
