@@ -94,6 +94,8 @@ For example <code>1:100</code>.
 The same number of iterations will be ran for each scenario.
 If any iterations already have a folder from a previous run, they will be
 skipped even if they do not contain viable results.</p></dd>
+
+
 <dt>simdf</dt>
 <dd><p>A data frame of instructions with one row per scenario.
 See <code><a href="setup_scenarios_defaults.html">setup_scenarios_defaults()</a></code> for default values that will be
@@ -107,6 +109,8 @@ estimation method. Essentially, <code>simdf</code> is a way to pass scenario-spe
 information to the arguments of <code><a href="ss3sim_base.html">ss3sim_base()</a></code>, whereas the <code>...</code> method
 will only work for things like <code>seed</code> that are universal to all scenarios
 in a simulation.</p></dd>
+
+
 <dt>parallel</dt>
 <dd><p>A logical argument that controls whether the scenarios are
 run in parallel. You will need to register multiple cores first with a
@@ -114,6 +118,8 @@ package such as <span class="pkg">doParallel</span> and have the <span class="pk
 installed. For example, the following code will register two cores:</p><div class="sourceCode"><pre><code><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RevolutionAnalytics/doparallel" class="external-link">doParallel</a></span><span class="op">)</span>
 <span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html" class="external-link">registerDoParallel</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></code></pre></div></dd>
+
+
 <dt>parallel_iterations</dt>
 <dd><p>A logical argument specifying if you wish to
 run iterations in parallel. If you set <code>parallel = TRUE</code> and
@@ -123,15 +129,20 @@ finish before the next scenario is started.
 This will be useful if you want to run one scenario fast or if you want
 to be able to look at the results for each scenario as they finish in
 another instance of <span style="R">R</span>. The argument will be ignored if <code>parallel = FALSE</code>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Anything else to pass to <code><a href="ss3sim_base.html">ss3sim_base()</a></code>. This could
 include <code>bias_adjust</code>. Also, you can pass
 additional options to the executable through the argument
 <code>admb_options</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The output will appear in your current <span style="R">R</span> working directory.
+    
+
+<p>The output will appear in your current <span style="R">R</span> working directory.
 Folders will be named based on the <code>"scenario"</code> column
 of <code>simdf</code> or based on the date-time stamp
 (i.e., mmddhhmmss) generated automatically at the start of the simulation.
@@ -221,7 +232,7 @@ then <code><a href="ss3sim_base.html">ss3sim_base()</a></code> will assume the v
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

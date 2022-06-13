@@ -91,18 +91,29 @@ and implements time-varying parameters using environmental variables.
 in the operating model that currently do not use environmental deviations and
 the vectors correspond to deviations. See the section
 "Specifying the <code>change_tv_list</code>" for help on specifying this argument.</p></dd>
+
+
 <dt>ctl_file_in</dt>
 <dd><p>A string providing the path to the input SS <code>.ctl</code> file.</p></dd>
+
+
 <dt>ctl_file_out</dt>
 <dd><p>A string providing the path to the output SS control file. If the value is <code>NULL</code>, the file will not be written to the disk.</p></dd>
+
+
 <dt>dat_file_in</dt>
 <dd><p>A string providing the path to the input SS <code>.dat</code> file.</p></dd>
+
+
 <dt>dat_file_out</dt>
 <dd><p>A string providing the path to the output SS <code>.dat</code> file.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The function creates modified versions of the  <code>.ctl</code> and
+    
+
+<p>The function creates modified versions of the  <code>.ctl</code> and
 <code>.dat</code> files if ctl_file_out and dat_file_out are not NULL. The function
 also returns a list of the modified <code>.ctl</code> and <code>.dat</code> R objects
 invisibly.</p>
@@ -209,7 +220,7 @@ on the log scale: \(ln(q'[y]) = ln(q) + link * env[y]\)</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

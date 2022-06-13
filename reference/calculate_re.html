@@ -85,20 +85,27 @@ data frame as returned from <code><a href="get_results_all.html">get_results_all
 with <code>_em</code> and <code>_om</code> as names. If the data is provided in long
 rather than wide format, then <code><a href="convert_to_wide.html">convert_to_wide()</a></code> will be used
 internally before calculating RE and a wide data frame will be returned.</p></dd>
+
+
 <dt>add</dt>
 <dd><p>Logical: should the relative error columns be added to <code>dat</code>
 or should the original EM and OM columns be dropped? If <code>FALSE</code>, then
 the returned data frame will have only the identifying columns and the new
 relative error columns. You could then merge selected columns back into
 <code>dat</code> if you wished. The default is to return all columns.</p></dd>
+
+
 <dt>EM</dt>
 <dd><p>A character value specifying the name of the EM to calculate the
 RE of when the results are provided in long format and there is the potential
 for multiple EMs. See the column <code>model_run</code> for options.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The default is to return a data frame structured the same as the
+    
+
+<p>The default is to return a data frame structured the same as the
 input data frame, i.e., <code>dat</code>, but with additional columns, where
 <code>'_re'</code> is appended to the base string of the column name.
 All <code>NAN</code> and <code>Inf</code> values are returned as <code>NA</code> values,
@@ -262,7 +269,7 @@ data frame.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

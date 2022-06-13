@@ -94,10 +94,14 @@ full parameters.</p>
 <dd><p>*A list the same length as <code>fleets</code> giving the years as
 numeric vectors. If no fleet collected samples, keep the value to
 <code>years=NULL</code>.</p></dd>
+
+
 <dt>fleets</dt>
 <dd><p>*A vector of integers specifying which fleets to include.
 The order of the fleets pertains to the input order of other arguments.
 An entry of <code>fleets=NULL</code> leads to zero samples for any fleet.</p></dd>
+
+
 <dt>fvals</dt>
 <dd><p>A list of the same length as <code>fleets</code> with one
 entry per fishing mortality level, \(F\), entry in <code>years</code>.
@@ -105,22 +109,31 @@ A single value will be repeated for every value in <code>years</code>. If more t
 one fleet is present, then the single value will be used for all fleets, i.e.,
 there is no way to map a single value to each year specific to the given fleet.
 Instead you would need to provide a list of vectors of repeated values.</p></dd>
+
+
 <dt>seasons</dt>
 <dd><p>A list of seasons to be entered into the
 Stock Synthesis control file for each fleet.
 The structure is the same as <code>fvals</code>, i.e., a list or a scalar.
 The default is 1, which will be applied to all fleets in all years.</p></dd>
+
+
 <dt>ses</dt>
 <dd><p>A list of fishing level standard errors (ses) to be entered into the
 Stock Synthesis control file for each fleet.
 The structure is the same as <code>fvals</code>, i.e., a list or a scalar.
 The default is 0.005, which will be applied to all fleets in all years.</p></dd>
+
+
 <dt>ctl_list</dt>
 <dd><p>A control file read in by <code><a href="https://rdrr.io/pkg/r4ss/man/SS_readctl.html" class="external-link">SS_readctl</a></code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Modified Stock Synthesis control file list.</p>
+    
+
+<p>Modified Stock Synthesis control file list.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -203,7 +216,7 @@ once you are done manipulating the list object.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

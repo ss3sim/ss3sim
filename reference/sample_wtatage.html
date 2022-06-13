@@ -98,12 +98,16 @@ Sampling empirical weight-at-age data from the expected values takes many steps.
     <dl><dt>wta_file_in</dt>
 <dd><p>The file to read weight-at-age from. Specifically to get the
 age-0 weight-at-age. This is typically <code>wtatage.ss_new</code>.</p></dd>
+
+
 <dt>outfile</dt>
 <dd><p>A character string specifying the file name to use
 when writing the information to the disk. The string must include
 the proper file extension. No file is written using the default value
 of <code>NULL</code>, which leads to increased speed because writing the
 file takes time and computing resources.</p></dd>
+
+
 <dt>dat_list</dt>
 <dd><p>An SS data list object as read in from
 <code><a href="https://rdrr.io/pkg/r4ss/man/SS_readdat.html" class="external-link">SS_readdat</a></code>.
@@ -114,30 +118,43 @@ and <code>section = 2</code> reads in the expected values generated given all th
 input to the OM. <code>section = 3</code> is not used within ss3sim, but this
 section provides bootstrapped data sets that have been sampled internally
 within SS.</p></dd>
+
+
 <dt>ctl_file_in</dt>
 <dd><p>A path to the control file, output from an OM, containing
 the OM parameters for growth and weight/length relationship. These values
 are used to determine the uncertainty about weight for fish sampled in each
 age bin. Commonly <code>control.ss_new</code></p></dd>
+
+
 <dt>years</dt>
 <dd><p>*A list the same length as <code>fleets</code> giving the years as
 numeric vectors. If no fleet collected samples, keep the value to
 <code>years=NULL</code>.</p></dd>
+
+
 <dt>fill_fnc</dt>
 <dd><p>A function to fill in missing values (ages and years). The
 resulting weight-at-age file will have values for all years and ages.One
 function is <code><a href="fill_across.html">fill_across()</a></code>.</p></dd>
+
+
 <dt>fleets</dt>
 <dd><p>*A vector of integers specifying which fleets to include.
 The order of the fleets pertains to the input order of other arguments.
 An entry of <code>fleets=NULL</code> leads to zero samples for any fleet.</p></dd>
+
+
 <dt>cv_wtatage</dt>
 <dd><p>A user specified coefficient of variation (CV) for growth.
 Default is <code>NULL</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A modified <code>.wtatage.ss</code> file if <code>!is.null(outfile)</code>. A list
+    
+
+<p>A modified <code>.wtatage.ss</code> file if <code>!is.null(outfile)</code>. A list
 object containing the modified <code>.wtatage.ss</code> file is returned invisibly.</p>
     </div>
     <div id="details">
@@ -183,7 +200,7 @@ which are then converted to weight and averaged to get mean weight-at-age values
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

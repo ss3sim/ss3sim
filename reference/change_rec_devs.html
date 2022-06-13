@@ -98,14 +98,21 @@ If a single value is provided instead of a vector, the value
 will be repeated for every recruitment deviation in the model.
 Alternatively, users can supply a named vector with each name being a year
 of the model. Missing years will be filled in with values of zero.</p></dd>
+
+
 <dt>ctl_file_in</dt>
 <dd><p>A string providing the path to the input SS <code>.ctl</code> file.</p></dd>
+
+
 <dt>ctl_file_out</dt>
 <dd><p>A string providing the path to the output SS control file. If the value is <code>NULL</code>, the file will not be written to the disk.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A modified Stock Synthesis control file.</p>
+    
+
+<p>A modified Stock Synthesis control file.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -127,9 +134,9 @@ of the model. Missing years will be filled in with values of zero.</p></dd>
 <span class="r-in">  ctl_file_out <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"control_recdevsInitial.ss"</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pattern <span class="op">=</span> <span class="st">"control_.+ss"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="va">unlink</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        /tmp/RtmpGN5jl2/control_recdevs.ss </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        /tmp/Rtmp9lTmMK/control_recdevs.ss </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                         0 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> /tmp/RtmpGN5jl2/control_recdevsInitial.ss </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> /tmp/Rtmp9lTmMK/control_recdevsInitial.ss </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                         0 </span>
 </code></pre></div>
     </div>
@@ -145,7 +152,7 @@ of the model. Missing years will be filled in with values of zero.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

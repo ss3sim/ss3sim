@@ -108,26 +108,36 @@ and <code>section = 2</code> reads in the expected values generated given all th
 input to the OM. <code>section = 3</code> is not used within ss3sim, but this
 section provides bootstrapped data sets that have been sampled internally
 within SS.</p></dd>
+
+
 <dt>outfile</dt>
 <dd><p>A character string specifying the file name to use
 when writing the information to the disk. The string must include
 the proper file extension. No file is written using the default value
 of <code>NULL</code>, which leads to increased speed because writing the
 file takes time and computing resources.</p></dd>
+
+
 <dt>fleets</dt>
 <dd><p>*A vector of integers specifying which fleets to include.
 The order of the fleets pertains to the input order of other arguments.
 An entry of <code>fleets=NULL</code> leads to zero samples for any fleet.</p></dd>
+
+
 <dt>Nsamp</dt>
 <dd><p>*A numeric list of the same length as <code>fleets</code>.
 Either single values or vectors of the same length as the number of
 years can be passed through. Single values are repeated for all
 years. If no fleet collected samples, keep the value to
 <code>Nsamp=NULL</code>.</p></dd>
+
+
 <dt>years</dt>
 <dd><p>*A list the same length as <code>fleets</code> giving the years as
 numeric vectors. If no fleet collected samples, keep the value to
 <code>years=NULL</code>.</p></dd>
+
+
 <dt>cpar</dt>
 <dd><p>A numeric value or vector the same length as
 <code>fleets</code> controlling the variance of the Dirichlet
@@ -136,6 +146,8 @@ same standard deviation as a multinomial of the given <code>Nsamp</code>,
 <code>2</code> indicates twice, etc. Values greater than one indicate
 overdispersion, and less underdispersion. <code>NULL</code> or <code>NA</code>
 for a given fleet will lead to no dispersion.</p></dd>
+
+
 <dt>ESS</dt>
 <dd><p>The final effective sample size (ESS) associated with the
 simulated data. The ESS is not used to generate the simulated data
@@ -148,6 +160,8 @@ At least one value must be provided for each fleet or a vector of
 year-specific values can be used for any given fleet.
 The argument accepts a list with entries,
 either a single integer or a vector of integers, for each fleet.</p></dd>
+
+
 <dt>keep_conditional</dt>
 <dd><p>A logical if conditional age-at-length data
 should be kept or removed entirely from the data file.
@@ -155,16 +169,21 @@ should be kept or removed entirely from the data file.
 and not on the conditional age-at-length data. To sample the
 conditional data, set <code>keep_conditional</code> to <code>TRUE</code>
 and use <code><a href="sample_calcomp.html">sample_calcomp()</a></code>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Any argument you want to be a column in the new data frame of composition
 data. All extra arguments should be named columns in <code>data</code>.
 Each argument needs to be a list of length <code>length(fleets)</code>. Or, you can use a
 single value that will be repeated for each combination of fleet, year, ...
 in your data.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A modified <code>.dat</code> file if <code>!is.null(outfile)</code>. A list object
+    
+
+<p>A modified <code>.dat</code> file if <code>!is.null(outfile)</code>. A list object
 containing the modified <code>.dat</code> file is returned invisibly.</p>
     </div>
     <div id="see-also">
@@ -257,7 +276,7 @@ containing the modified <code>.dat</code> file is returned invisibly.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

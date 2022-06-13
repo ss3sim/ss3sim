@@ -101,25 +101,35 @@ and <code>section = 2</code> reads in the expected values generated given all th
 input to the OM. <code>section = 3</code> is not used within ss3sim, but this
 section provides bootstrapped data sets that have been sampled internally
 within SS.</p></dd>
+
+
 <dt>outfile</dt>
 <dd><p>A character string specifying the file name to use
 when writing the information to the disk. The string must include
 the proper file extension. No file is written using the default value
 of <code>NULL</code>, which leads to increased speed because writing the
 file takes time and computing resources.</p></dd>
+
+
 <dt>fleets</dt>
 <dd><p>*A vector of integers specifying which fleets to include.
 The order of the fleets pertains to the input order of other arguments.
 An entry of <code>fleets=NULL</code> leads to zero samples for any fleet.</p></dd>
+
+
 <dt>years</dt>
 <dd><p>*A list the same length as <code>fleets</code> giving the years as
 numeric vectors. If no fleet collected samples, keep the value to
 <code>years=NULL</code>.</p></dd>
+
+
 <dt>sds_obs</dt>
 <dd><p>A list the same length as <code>fleets</code>. The list should
 contain either single values or numeric vectors of the same length as the
 number of years which represent the standard deviation of the observation
 error. Single values are repeated for all years.</p></dd>
+
+
 <dt>seas</dt>
 <dd><p>A list the same length as <code>fleets</code>. The list should contain
 either single numeric values or numeric vectors, where the length of each
@@ -127,10 +137,13 @@ vector matches the length of each vector present in <code>years</code>.
 Single values are repeated for all years.
 This parameter operates the same as <code>sds_obs</code> but it specifies the
 season rather than the standard deviation of the observations.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A modified <code>.dat</code> file if <code>!is.null(outfile)</code>. A list object
+    
+
+<p>A modified <code>.dat</code> file if <code>!is.null(outfile)</code>. A list object
 containing the modified <code>.dat</code> file is returned invisibly.</p>
     </div>
     <div id="see-also">
@@ -162,7 +175,7 @@ containing the modified <code>.dat</code> file is returned invisibly.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

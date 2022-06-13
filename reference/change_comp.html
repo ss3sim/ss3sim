@@ -94,25 +94,34 @@ and <code>section = 2</code> reads in the expected values generated given all th
 input to the OM. <code>section = 3</code> is not used within ss3sim, but this
 section provides bootstrapped data sets that have been sampled internally
 within SS.</p></dd>
+
+
 <dt>type</dt>
 <dd><p>The sample type you want.
 See the function call for available types,
 e.g., <code>formals(change_comp)$type</code>;
 the first value will be used as the default if user input is not provided.</p></dd>
+
+
 <dt>paramlist</dt>
 <dd><p>A list of parameter values derived from the data frame used to set up
 your similation. For example, <code>setup_scenarios(setup_scenarios_defaults())[[1]]</code>
 will give you defaults that you can extract from. Typically,
 <code>mylist[[c("agecomp_params", "lcomp_params")]]</code> are passed. Make sure that you
 only pass the portion of the list that pertains to the data you want.</p></dd>
+
+
 <dt>nsex</dt>
 <dd><p>An integer value between one and two specifying the number of sexes in the
 model, where 1 is based on females only for spawning stock biomass and two-sex models
 allow for sex-specific parameters.</p></dd>
+
+
 <dt>bins</dt>
 <dd><p>A vector of bins for the composition data. The bins do not
 need to be named because they will be renamed with their value and a
 leading character based on what type of data they are.</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
@@ -138,7 +147,7 @@ leading character based on what type of data they are.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

@@ -115,60 +115,98 @@ is typically not called by the user but called from <code><a href="run_ss3sim.ht
     <h2>Arguments</h2>
     <dl><dt>iterations</dt>
 <dd><p>Which iterations to run. A numeric vector.</p></dd>
+
+
 <dt>scenarios</dt>
 <dd><p>A name to use as the folder name for the unique combination
 of parameters for the OM and EM.</p></dd>
+
+
 <dt>f_params</dt>
 <dd><p>A named list containing arguments for <code><a href="change_f.html">change_f()</a></code>.
 A mandatory input.</p></dd>
+
+
 <dt>index_params</dt>
 <dd><p>A named list containing arguments for
 <code><a href="sample_index.html">sample_index()</a></code>. A mandatory input.</p></dd>
+
+
 <dt>discard_params</dt>
 <dd><p>A named list containing arguments for
 <code><a href="sample_discard.html">sample_discard()</a></code>.</p></dd>
+
+
 <dt>lcomp_params</dt>
 <dd><p>A named list containing arguments for
 <code><a href="sample_lcomp.html">sample_lcomp()</a></code>. A mandatory input.</p></dd>
+
+
 <dt>agecomp_params</dt>
 <dd><p>A named list containing arguments for
 <code><a href="sample_agecomp.html">sample_agecomp()</a></code>. A mandatory input.</p></dd>
+
+
 <dt>calcomp_params</dt>
 <dd><p>A named list containing arguments for
 <code><a href="sample_calcomp.html">sample_calcomp()</a></code>, for conditional age-at-length data.</p></dd>
+
+
 <dt>wtatage_params</dt>
 <dd><p>A named list containing arguments for
 <code><a href="sample_wtatage.html">sample_wtatage()</a></code>, for empirical weight-at-age data.</p></dd>
+
+
 <dt>mlacomp_params</dt>
 <dd><p>A named list containing arguments for
 <code><a href="sample_mlacomp.html">sample_mlacomp()</a></code>, for mean length-at-age data.</p></dd>
+
+
 <dt>em_binning_params</dt>
 <dd><p>A named list containing arguments for
 <code><a href="change_em_binning.html">change_em_binning()</a></code>.</p></dd>
+
+
 <dt>estim_params</dt>
 <dd><p>A named list containing arguments for
 <code><a href="change_e.html">change_e()</a></code>.</p></dd>
+
+
 <dt>tv_params</dt>
 <dd><p>A named list containing arguments for
 <code><a href="change_tv.html">change_tv()</a></code> (time-varying).</p></dd>
+
+
 <dt>operat_params</dt>
 <dd><p>A named list containing arguments for <code><a href="change_o.html">change_o()</a></code>.</p></dd>
+
+
 <dt>om_dir</dt>
 <dd><p>The directory with the operating model you want to copy and use
 for the specified simulations.</p></dd>
+
+
 <dt>em_dir</dt>
 <dd><p>The directory with the estimation model you want to copy and
 use for the specified simulations.
 If <code>NA</code>, then no estimation method is included and
 ss3sim just generates data.</p></dd>
+
+
 <dt>retro_params</dt>
 <dd><p>A named list containing the arguments for
 <code><a href="change_retro.html">change_retro()</a></code>.</p></dd>
+
+
 <dt>data_params</dt>
 <dd><p>A named list containing arguments for changing data.</p></dd>
+
+
 <dt>weight_comps_params</dt>
 <dd><p>A named list containing arguments for
 <code><a href="https://rdrr.io/pkg/r4ss/man/SS_tune_comps.html" class="external-link">r4ss::SS_tune_comps()</a></code>.</p></dd>
+
+
 <dt>user_recdevs</dt>
 <dd><p>An optional matrix of recruitment deviations to replace
 the recruitment deviations built into the package. The columns represent
@@ -181,10 +219,14 @@ recruitment deviations will be used verbatim (after exponentiation).
 be log-normal bias corrected. If <code>user_recdevs</code> are specified as
 anything besides <code>NULL</code> the package will issue a warning about this.
 Biased recruitment deviations can lead to biased model results.</p></dd>
+
+
 <dt>user_recdevs_warn</dt>
 <dd><p>A logical argument allowing users to turn the
 warning regarding biased recruitment deviations off when <code>user_recdevs</code>
 are specified.</p></dd>
+
+
 <dt>bias_adjust</dt>
 <dd><p>A logical argument specifying bias adjustment is conducted.
 Bias adjustment helps assure that the estimated recruitment deviations,
@@ -196,34 +238,47 @@ using maximum likelihood estimation when running simulations for publication or 
 The argument allows users to turn bias adjustment off because
 it involves running the EM multiple times with the hessian and
 is not needed when initially exploring your simulation structure.</p></dd>
+
+
 <dt>hess_always</dt>
 <dd><p>If <code>TRUE</code> then the Hessian will always be calculated.
 If <code>FALSE</code> then the Hessian will only be calculated for
 bias-adjustment runs thereby saving time.</p></dd>
+
+
 <dt>print_logfile</dt>
 <dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> <code>print_logfile = TRUE</code>
 is no longer supported.
 Previously, the default was <code>TRUE</code>, now the default is <code>FALSE</code>.</p></dd>
+
+
 <dt>sleep</dt>
 <dd><p>A time interval (in seconds) to pause on each iteration. Useful
 if you want to reduce average CPU time -- perhaps because you're working on
 a shared server.</p></dd>
+
+
 <dt>seed</dt>
 <dd><p>The seed value to pass to <code><a href="get_recdevs.html">get_recdevs()</a></code> when
 generating recruitment deviations. The generated recruitment deviations
 depend on the iteration value, but also on the value of <code>seed</code>. A
 given combination of iteration, number of years, and <code>seed</code> value will
 result in the same recruitment deviations.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Anything extra to pass to <code><a href="run_ss3model.html">run_ss3model()</a></code>. For
 example, you may want to pass additional options to Stock Synthesis through
 the argument <code>admb_options</code>. Anything that doesn't match a named
 argument in <code><a href="run_ss3model.html">run_ss3model()</a></code> will be passed to the
 <code><a href="https://rdrr.io/r/base/system.html" class="external-link">system()</a></code> call that runs Stock Synthesis.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The output will appear in whatever your current <span style="R">R</span> working directory
+    
+
+<p>The output will appear in whatever your current <span style="R">R</span> working directory
 is. There will be folders named after your scenarios with one folder
 per iteration. Each iteration folder with include an operating model and
 an estimation method. Your directory will look like the following:</p><ul><li><p><code>scen-cod/1/om</code></p></li>
@@ -343,7 +398,7 @@ the DESCRIPTION file.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

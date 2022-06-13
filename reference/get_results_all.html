@@ -93,26 +93,40 @@ biomass(year)). These can always be joined later.</p>
     <dl><dt>directory</dt>
 <dd><p>The directory which contains scenario folders with
 results.</p></dd>
+
+
 <dt>overwrite_files</dt>
 <dd><p>A switch to determine if existing files should be
 overwritten, useful for testing purposes or if new iterations are run.</p></dd>
+
+
 <dt>user_scenarios</dt>
 <dd><p>A character vector of scenarios that should be read
 in. Default is <code>NULL</code>, which indicates find all scenario folders in
 <code>directory</code>.</p></dd>
+
+
 <dt>type</dt>
 <dd><p>A character string specifying if you want the results to be
 written to the disk and returned as a long or wide data frame, where the
 default is <code>"long"</code>.</p></dd>
+
+
 <dt>filename_prefix</dt>
 <dd><p>A character string specifying a prefix to append to
 the filename. Defaults to "ss3sim".</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Returns a list of 3 dataframes: scalar, ts, and dq.
+    
+
+<p>Returns a list of 3 dataframes: scalar, ts, and dq.
 Creates two .csv files in the current working directory,
-where the names of those files are based on <code>filename_prefix</code>and the default leads to the following:
+where the names of those files are based on <code>filename_prefix</code></p>
+
+
+<p>and the default leads to the following:
 <code>ss3sim_ts.csv</code> and <code>ss3sim_scalar.csv</code>.</p>
     </div>
     <div id="see-also">
@@ -140,7 +154,7 @@ where the names of those files are based on <code>filename_prefix</code>and the 
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

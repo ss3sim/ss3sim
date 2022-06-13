@@ -104,8 +104,12 @@ itself or within <code><a href="run_ss3sim.html">run_ss3sim()</a></code> to alte
     <h2>Arguments</h2>
     <dl><dt>ctl_file_in</dt>
 <dd><p>A string providing the path to the input SS <code>.ctl</code> file.</p></dd>
+
+
 <dt>ctl_file_out</dt>
 <dd><p>A string providing the path to the output SS control file. If the value is <code>NULL</code>, the file will not be written to the disk.</p></dd>
+
+
 <dt>dat_list</dt>
 <dd><p>An SS data list object as read in from
 <code><a href="https://rdrr.io/pkg/r4ss/man/SS_readdat.html" class="external-link">SS_readdat</a></code>.
@@ -116,44 +120,67 @@ and <code>section = 2</code> reads in the expected values generated given all th
 input to the OM. <code>section = 3</code> is not used within ss3sim, but this
 section provides bootstrapped data sets that have been sampled internally
 within SS.</p></dd>
+
+
 <dt>for_file_in</dt>
 <dd><p>A string providing the path to the input SS
 <code>forecast.ss</code> file.</p></dd>
+
+
 <dt>par_name</dt>
 <dd><p>A vector of character values corresponding to parameter
 names that you wish to initialize at different values or change the phase
 in which they are estimated. Entries are searched for in
 <code>ctl_file_in</code>, and therefore, it is best to use full parameter
 names as they are specified in the file.</p></dd>
+
+
 <dt>par_int</dt>
 <dd><p>A vector of initial values, one for each entry in
 <code>par_name</code>. Values of <code>NA</code> leave the INIT value for
 that parameter at the value found in the <code>.ctl</code> file.</p></dd>
+
+
 <dt>par_phase</dt>
 <dd><p>A vector of phase values, one for each parameter in
 <code>par_name</code>.  Values can be <code>NA</code> if you do not wish to change
 the phase for a given parameter. Negative values will fix the parameter
 at the INIT value.</p></dd>
+
+
 <dt>forecast_num</dt>
 <dd><p>Number of years to perform forecasts. For those years,
 the data will be removed from the <code>dat_list</code>, enabling Stock Synthesis to
 generate forecasts rather than use the data to fit the model.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>When <code>TRUE</code> messages will be returned
 from the function. Often useful for debugging. The default
 is <code>FALSE</code>.</p></dd>
+
+
 <dt>natM_type</dt>
 <dd><p>Deprecated. Should have value NULL.</p></dd>
+
+
 <dt>natM_n_breakpoints</dt>
 <dd><p>Deprecated. Should have value NULL.</p></dd>
+
+
 <dt>natM_lorenzen</dt>
 <dd><p>Deprecated. Should have value NULL.</p></dd>
+
+
 <dt>natM_val</dt>
 <dd><p>Deprecated. Should have value NULL.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Altered versions of Stock Synthesis <code>.ctl</code> and <code>forecast.ss</code> files are written
+    
+
+<p>Altered versions of Stock Synthesis <code>.ctl</code> and <code>forecast.ss</code> files are written
 to the disk and the altered <code>dat_list</code> is returned invisibly.</p>
     </div>
     <div id="see-also">
@@ -200,7 +227,7 @@ to the disk and the altered <code>dat_list</code> is returned invisibly.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>
