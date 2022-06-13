@@ -70,7 +70,7 @@ Imports:
     tidyr,
     utils
 Remotes: github::r4ss/r4ss@main
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 Roxygen: list(markdown = TRUE)
 Encoding: UTF-8
 Language: en-US
