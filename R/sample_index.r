@@ -1,19 +1,40 @@
 #' Sample the biomass with observation error
 #'
-#' This function creates an index of abundance sampled from the expected
-#' available biomass for specified fleets in specified years. Let \eqn{B_y} be the biomass
-#' from the operating model for year y. Then the sampled value is calculated as:
-#' \eqn{B_y*exp(stats::rnorm(1, 0, sds_obs)-sds_obs^2/2)}. The second term
-#' adjusts the random samples so that their expected value is \eqn{B_y}, i.e.,
-#' the log-normal bias correction.
+#' Create an index of abundance sampled from the expected
+#' available biomass for specified fleets in specified years.
+#'
+#' @details
+#' Samples are generated using the following equation:
+#' \deqn{
+#'   B_y*exp(stats::rnorm(1, 0, sds_obs)-sds_obs^2/2)
+#' },
+#' where \eqn{B_y} is the expected biomass in year y and
+#' \eqn{sds_obs} is the standard deviation of the normal distribution or
+#' the standard error of the \eqn{log_e(B_y)}.
+#' For the error term, this is the same
+#' parameterization that is used in Stock Synthesis.
+#' More details can be found in the
+#' [section on indices in the Stock Synthesis manual](https://nmfs-stock-synthesis.github.io/doc/SS330_User_Manual_release.html#indices)
+#' The second term in the equation adjusts the random samples so their expected
+#' value is \eqn{B_y}, i.e., the log-normal bias correction.
+#'
+#' If you only know the coefficient of variation (\eqn{CV}), then
+#' the input error can be approximated using \eqn{\sqrt{log_e(1+CV^{2})}}.
+#' Where, \eqn{CV} is assumed to be constant with mean changes in biomass.
+#' The lognormal distribution can be approximated by a proportional
+#' distribution or normal distribution only when the variance is low, i.e.,
+#' \eqn{CV < 0.50} or log standard deviation of 0.22.
 #'
 #' @template lcomp-agecomp-index
 #' @template dat_list
 #' @template outfile
-#' @param sds_obs A list the same length as `fleets`. The list should
-#'   contain either single values or numeric vectors of the same length as the
-#'   number of years which represent the standard deviation of the observation
-#'   error. Single values are repeated for all years.
+#' @param sds_obs A list the same length as `fleets` specifying the
+#'   standard deviation of the observation error.
+#'   List elements should be
+#'   either single numeric values or numeric vectors the same length as the
+#'   number of years sampled for each given fleet.
+#'   Single values are repeated for all years.
+#'   See details for more information, particularly the equations.
 #' @param make_plot Deprecated with ss3sim version 1.1.5.
 #'   A logical switch for whether to make a crude plot showing
 #'   the results. Useful for testing and exploring the function.
