@@ -10,7 +10,7 @@ sample_index(
   fleets,
   years,
   sds_obs,
-  make_plot = lifecycle::deprecated(),
+  sds_out,
   seas = list(1)
 )
 }
@@ -39,14 +39,17 @@ An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 numeric vectors. If no fleet collected samples, keep the value to
 \code{years=NULL}.}
 
-\item{sds_obs}{A list the same length as \code{fleets}. The list should
-contain either single values or numeric vectors of the same length as the
-number of years which represent the standard deviation of the observation
-error. Single values are repeated for all years.}
-
-\item{make_plot}{Deprecated with ss3sim version 1.1.5.
-A logical switch for whether to make a crude plot showing
-the results. Useful for testing and exploring the function.}
+\item{sds_obs, }{sds_out A list the same length as \code{fleets} specifying the
+standard deviation of the observation error used for the sampling and
+the value used in the returned output. Thus, \code{sds_obs} is what is actually
+used to sample and \code{sds_out} can be used to test what happens when the
+input values to your model are biased. If \code{sds_out} is missing, then
+\code{sds_obs} will be used for the output as well as the input.
+List elements should be
+either single numeric values or numeric vectors the same length as the
+number of years sampled for each given fleet.
+Single values are repeated for all years.
+See details for more information, particularly for the equations.}
 
 \item{seas}{A list the same length as \code{fleets}. The list should contain
 either single numeric values or numeric vectors, where the length of each
@@ -60,12 +63,30 @@ A modified \code{.dat} file if \code{!is.null(outfile)}. A list object
 containing the modified \code{.dat} file is returned invisibly.
 }
 \description{
-This function creates an index of abundance sampled from the expected
-available biomass for specified fleets in specified years. Let \eqn{B_y} be the biomass
-from the operating model for year y. Then the sampled value is calculated as:
-\eqn{B_y*exp(stats::rnorm(1, 0, sds_obs)-sds_obs^2/2)}. The second term
-adjusts the random samples so that their expected value is \eqn{B_y}, i.e.,
-the log-normal bias correction.
+Create an index of abundance sampled from the expected
+available biomass for specified fleets in specified years.
+}
+\details{
+Samples are generated using the following equation:
+\deqn{
+  B_y*exp(stats::rnorm(1, 0, sds_obs)-sds_obs^2/2)
+},
+where \eqn{B_y} is the expected biomass in year y and
+\eqn{sds_obs} is the standard deviation of the normal distribution or
+the standard error of the \eqn{log_e(B_y)}.
+For the error term, this is the same
+parameterization that is used in Stock Synthesis.
+More details can be found in the
+\href{https://nmfs-stock-synthesis.github.io/doc/SS330_User_Manual_release.html#indices}{section on indices in the Stock Synthesis manual}
+The second term in the equation adjusts the random samples so their expected
+value is \eqn{B_y}, i.e., the log-normal bias correction.
+
+If you only know the coefficient of variation (\eqn{CV}), then
+the input error can be approximated using \eqn{\sqrt{log_e(1+CV^{2})}}.
+Where, \eqn{CV} is assumed to be constant with mean changes in biomass.
+The lognormal distribution can be approximated by a proportional
+distribution or normal distribution only when the variance is low, i.e.,
+\eqn{CV < 0.50} or log standard deviation of 0.22.
 }
 \examples{
 # Find the example data location:
@@ -129,6 +150,19 @@ testthat::expect_error(
     sds_obs = list(0.01, 0.01)
   )
 )
+# sd in the returned file can be different than what is used to sample:
+ex5 <- sample_index(dat_list,
+  outfile = NULL,
+  fleets = 2,
+  seas = list(unique(
+    dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "seas"]
+  )),
+  years = list(sam_yrs),
+  sds_obs = list(0.01),
+  sds_out = list(0.20)
+)
+ex5$CPUE
+testthat::expect_true(all(ex5[["CPUE"]][["se_log"]] == 0.2))
 }
 }
 \seealso{
