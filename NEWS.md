@@ -1,3 +1,9 @@
+# ss3sim 1.19.2
+
+* Adds `sds_out` to `sample_index()` thanks to the request and review by
+  Leire Citores. Now, bias in the estimation method regarding the uncertainty
+  of the index can be tested.
+
 # ss3sim 1.19.1
 
 * Updates `change_q()` to more modern code, and while doing so
