@@ -35,9 +35,6 @@
 #'   number of years sampled for each given fleet.
 #'   Single values are repeated for all years.
 #'   See details for more information, particularly the equations.
-#' @param make_plot Deprecated with ss3sim version 1.1.5.
-#'   A logical switch for whether to make a crude plot showing
-#'   the results. Useful for testing and exploring the function.
 #' @template seas
 #'
 #' @template sampling-return
@@ -114,16 +111,9 @@ sample_index <- function(dat_list,
                          fleets,
                          years,
                          sds_obs,
-                         make_plot = lifecycle::deprecated(),
                          seas = list(1)) {
 
   ## Check inputs for errors
-  if (lifecycle::is_present(make_plot)) {
-    lifecycle::deprecate_warn(
-      when = "1.1.5",
-      what = "ss3sim::sample_index(make_plot = )"
-    )
-  }
   if (!is.list(dat_list) | is.null(dat_list[["CPUE"]])) {
     stop("dat_list must be a list object read in using r4ss::SS_readdat().")
   }
