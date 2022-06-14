@@ -170,7 +170,7 @@ sample_index <- function(dat_list,
 
   ## Open the .dat file and find the right lines to overwrite
   dat_list$CPUE <- as.data.frame(cpue.new)
-  dat_list$N_cpue <- ifelse(Nfleets > 0, nrow(cpue.new), )
+  dat_list$N_cpue <- ifelse(Nfleets > 0, nrow(cpue.new), 0)
   if (!is.null(outfile)) {
     r4ss::SS_writedat(
       datlist = dat_list,
