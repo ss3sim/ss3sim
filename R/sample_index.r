@@ -28,13 +28,17 @@
 #' @template lcomp-agecomp-index
 #' @template dat_list
 #' @template outfile
-#' @param sds_obs A list the same length as `fleets` specifying the
-#'   standard deviation of the observation error.
+#' @param sds_obs, sds_out A list the same length as `fleets` specifying the
+#'   standard deviation of the observation error used for the sampling and
+#'   the value used in the returned output. Thus, `sds_obs` is what is actually
+#'   used to sample and `sds_out` can be used to test what happens when the
+#'   input values to your model are biased. If `sds_out` is missing, then
+#'   `sds_obs` will be used for the output as well as the input.
 #'   List elements should be
 #'   either single numeric values or numeric vectors the same length as the
 #'   number of years sampled for each given fleet.
 #'   Single values are repeated for all years.
-#'   See details for more information, particularly the equations.
+#'   See details for more information, particularly for the equations.
 #' @template seas
 #'
 #' @template sampling-return
@@ -103,6 +107,19 @@
 #'     sds_obs = list(0.01, 0.01)
 #'   )
 #' )
+#' # sd in the returned file can be different than what is used to sample:
+#' ex5 <- sample_index(dat_list,
+#'   outfile = NULL,
+#'   fleets = 2,
+#'   seas = list(unique(
+#'     dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "seas"]
+#'   )),
+#'   years = list(sam_yrs),
+#'   sds_obs = list(0.01),
+#'   sds_out = list(0.20)
+#' )
+#' ex5$CPUE
+#' testthat::expect_true(all(ex5[["CPUE"]][["se_log"]] == 0.2))
 #' }
 #' @family sampling functions
 
@@ -111,11 +128,15 @@ sample_index <- function(dat_list,
                          fleets,
                          years,
                          sds_obs,
+                         sds_out,
                          seas = list(1)) {
 
   ## Check inputs for errors
   if (!is.list(dat_list) | is.null(dat_list[["CPUE"]])) {
     stop("dat_list must be a list object read in using r4ss::SS_readdat().")
+  }
+  if (missing(sds_out)) {
+    sds_out <- sds_obs
   }
   cpue <- dat_list$CPUE # CPUE expected values.
   colnames(cpue) <- gsub("obs", "obsOLD", colnames(cpue))
@@ -150,7 +171,8 @@ sample_index <- function(dat_list,
       year = years,
       seas = standardize_sampling_args(fleets, years, other_input = seas),
       index = lapply(fleets, c),
-      se_log = standardize_sampling_args(fleets, years, other_input = sds_obs)
+      se_in = standardize_sampling_args(fleets, years, other_input = sds_obs),
+      se_log = standardize_sampling_args(fleets, years, other_input = sds_out)
     )),
     cpue[, c("year", "seas", "index", "obsOLD")],
     sort = FALSE
@@ -165,7 +187,7 @@ sample_index <- function(dat_list,
   cpue.new <- xxx %>%
     dplyr::arrange(.data[["index"]], .data[["year"]], .data[["seas"]]) %>%
     dplyr::rowwise() %>%
-    dplyr::mutate(obs = sample_lognormal(.data[["obsOLD"]], .data[["se_log"]])) %>%
+    dplyr::mutate(obs = sample_lognormal(.data[["obsOLD"]], .data[["se_in"]])) %>%
     dplyr::select(.data[["year"]]:.data[["index"]], .data[["obs"]], .data[["se_log"]])
 
   ## Open the .dat file and find the right lines to overwrite
