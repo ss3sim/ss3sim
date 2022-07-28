@@ -17,9 +17,9 @@ will be repeated for every recruitment deviation in the model.
 Alternatively, users can supply a named vector with each name being a year
 of the model. Missing years will be filled in with values of zero.}
 
-\item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
+\item{ctl_file_in}{A string providing the path to the input Stock Synthesis \code{.ctl} file.}
 
-\item{ctl_file_out}{A string providing the path to the output SS control file. If the value is \code{NULL}, the file will not be written to the disk.}
+\item{ctl_file_out}{A string providing the path to the output Stock Synthesis control file. If the value is \code{NULL}, the file will not be written to the disk.}
 }
 \value{
 A modified Stock Synthesis control file.

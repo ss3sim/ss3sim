@@ -14,7 +14,7 @@ add_tv_parlines(string, tab, ctl_string, ss3.ctl)
 
 \item{ctl_string}{The code as called in the .ss_new comment for time varying.}
 
-\item{ss3.ctl}{A ss control file that has been read in using \code{\link[=readLines]{readLines()}}.}
+\item{ss3.ctl}{A Stock Synthesis control file that has been read in using \code{\link[=readLines]{readLines()}}.}
 }
 \value{
 A modified version of ss3.ctl (a vector of strings), containing the

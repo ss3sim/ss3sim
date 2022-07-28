@@ -19,9 +19,9 @@ in the operating model and the vectors correspond to deviations.
 Alternatively, \code{par_name} and \code{par_init} can be passed to this
 function.}
 
-\item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
+\item{ctl_file_in}{A string providing the path to the input Stock Synthesis \code{.ctl} file.}
 
-\item{ctl_file_out}{A string providing the path to the output SS control file. If the value is \code{NULL}, the file will not be written to the disk.}
+\item{ctl_file_out}{A string providing the path to the output Stock Synthesis control file. If the value is \code{NULL}, the file will not be written to the disk.}
 
 \item{par_name}{A vector of character values corresponding to parameter
 names that you wish to initialize at different values or change the phase

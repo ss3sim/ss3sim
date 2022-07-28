@@ -51,7 +51,7 @@ run_ss3model <- function(dir,
 
   ss_em_options <- ifelse(hess, "", "-nohess")
 
-  message("Running SS in ", dir)
+  message("Running Stock Synthesis in ", dir)
   if (os == "unix") {
     system(paste0(
       "cd ", dir, ";", paste0(bin, " "),

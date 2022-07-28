@@ -11,9 +11,9 @@ change_retro(
 )
 }
 \arguments{
-\item{str_file_in}{A string providing the path to the input SS \code{starter.ss} file.}
+\item{str_file_in}{A string providing the path to the input Stock Synthesis \code{starter.ss} file.}
 
-\item{str_file_out}{A string providing the path to the output SS \code{starter.ss} file.}
+\item{str_file_out}{A string providing the path to the output Stock Synthesis \code{starter.ss} file.}
 
 \item{retro_yr}{Which retrospective year to enter into the starter file.
 Should be 0 (no retrospective analysis) or a negative value, which

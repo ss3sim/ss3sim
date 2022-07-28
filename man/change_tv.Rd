@@ -18,13 +18,13 @@ in the operating model that currently do not use environmental deviations and
 the vectors correspond to deviations. See the section
 "Specifying the \code{change_tv_list}" for help on specifying this argument.}
 
-\item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
+\item{ctl_file_in}{A string providing the path to the input Stock Synthesis \code{.ctl} file.}
 
-\item{ctl_file_out}{A string providing the path to the output SS control file. If the value is \code{NULL}, the file will not be written to the disk.}
+\item{ctl_file_out}{A string providing the path to the output Stock Synthesis control file. If the value is \code{NULL}, the file will not be written to the disk.}
 
-\item{dat_file_in}{A string providing the path to the input SS \code{.dat} file.}
+\item{dat_file_in}{A string providing the path to the input Stock Synthesis \code{.dat} file.}
 
-\item{dat_file_out}{A string providing the path to the output SS \code{.dat} file.}
+\item{dat_file_out}{A string providing the path to the output Stock Synthesis \code{.dat} file.}
 }
 \value{
 The function creates modified versions of the  \code{.ctl} and

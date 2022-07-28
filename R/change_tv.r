@@ -97,7 +97,7 @@
 change_tv <- function(change_tv_list,
                       ctl_file_in = "control.ss_new", ctl_file_out = "om.ctl",
                       dat_file_in = "ss3.dat", dat_file_out = "ss3.dat") {
-  # read in necessary ss files.
+  # read in necessary Stock Synthesis files.
   ss3.ctl <- readLines(con = ctl_file_in)
   ss3.dat <- r4ss::SS_readdat(dat_file_in, verbose = FALSE)
   ss3.ctl.parlines <- r4ss::SS_parlines(ctl_file_in, verbose = FALSE)
@@ -330,7 +330,7 @@ change_tv <- function(change_tv_list,
 #' @param string The code representing the section the parameter is from.
 #' @param tab As created in [change_tv()].
 #' @param ctl_string The code as called in the .ss_new comment for time varying.
-#' @param ss3.ctl A ss control file that has been read in using [readLines()].
+#' @param ss3.ctl A Stock Synthesis control file that has been read in using [readLines()].
 #' @return A modified version of ss3.ctl (a vector of strings), containing the
 #'   new parameter line
 add_tv_parlines <- function(string, tab, ctl_string, ss3.ctl) {

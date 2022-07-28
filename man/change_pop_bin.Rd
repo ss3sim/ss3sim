@@ -13,7 +13,7 @@ change_pop_bin(
 )
 }
 \arguments{
-\item{dat_list}{An SS data list object as read in from
+\item{dat_list}{A Stock Synthesis  data list object as read in from
 \code{\link[r4ss]{SS_readdat}}.
 Be sure to correctly specify which section of the data file you want
 to work with when reading it in using the \code{section} argument.

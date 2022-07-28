@@ -1,1 +1,1 @@
-#' @param par_file_in A string providing the path to the input SS \code{.par} file.
+#' @param par_file_in A string providing the path to the input Stock Synthesis \code{.par} file.

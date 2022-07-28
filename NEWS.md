@@ -65,7 +65,7 @@ but ss3sim uses the control file instead of the par file as in the original ss3s
 # ss3sim 1.1.3
 
 * Drop fleets from sampling regimes using NA in the scenario data frame.
-* Upgrade to SS 3.30.16
+* Upgrade to Stock Synthesis 3.30.16
 * Start allowing for seasons in data (F right now)
 * Fixed bug in how q was being checked
 * Partition change_catch from change_data
@@ -83,7 +83,7 @@ but ss3sim uses the control file instead of the par file as in the original ss3s
 
 # ss3sim 1.1.0
 
-* Upgrade to SS 3.30.15.03
+* Upgrade to Stock Synthesis 3.30.15.03
 * Deprecate case files in favor of simdf, an argument passed to run_ss3sim
 * Use more templates for parameter arguments, e.g., par_int
 * Simplify scenarios, iterations, em/om to dir to increase the usability
@@ -173,7 +173,7 @@ maintaining models both in the package and in ss3sim/ss3models
 * reduced the complexity of sampling functions by initiating the same
 protocol for ages and lengths, where each function calls a simple function
 * Update functions to work with latest version of r4ss, which is compatible
-with SS 3.3.0, and change to using the newer executable of SS without the
+with Stock Synthesis 3.3.0, and change to using the newer executable of Stock Synthesis without the
 option to specify safe or optimized
 
 # ss3sim 0.9.5
@@ -264,7 +264,7 @@ option to specify safe or optimized
 * Re-write case file parsing to be more robust and allow for scientific
   notations (#157).
 
-* Add the option to use the optimized SS executables (#138 and #147) and
+* Add the option to use the optimized Stock Synthesis executables (#138 and #147) and
   ability to have spaces in the path name to the executable.
 
 * Add Cole Monnahan's ss3sim plotting functions (#134).

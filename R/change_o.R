@@ -59,7 +59,7 @@ change_o <- function(change_o_list,
     )
   }
 
-  # read in necessary ss files.
+  # read in necessary Stock Synthesis files.
   ss3.ctl.parlines <- r4ss::SS_parlines(ctl_file_in, verbose = FALSE)
   # check for valid input ------------------------------------------------------
   # check that the variables can all be found and warn user if not

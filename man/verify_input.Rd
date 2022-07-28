@@ -20,7 +20,7 @@ file are changed and saved to the disk.
 Verify the contents of
 operating model (\code{OM}) and
 estimation model (\code{EM}) folders, i.e.,
-check that the necessary SS input files are available.
+check that the necessary Stock Synthesis input files are available.
 If the contents are correct,
 the \code{.ctl} and \code{.dat} files are renamed to standardized names and
 the \code{starter.ss} file is updated to reflect these names.

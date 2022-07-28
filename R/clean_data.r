@@ -210,7 +210,7 @@ clean_data <- function(dat_list, lcomp_params = NULL,
 #'
 #' @param all_params A named list of the parameters containing at a minimum
 #'   year and fleet values
-#' @param dat_list An Stock Synthesis data list object as read in by [r4ss::SS_readdat()].
+#' @param dat_list  A Stock Synthesis  data list object as read in by [r4ss::SS_readdat()].
 #'
 check_data_str_range <- function(all_params, dat_list) {
   str_err <- lapply(all_params, FUN = function(params) {

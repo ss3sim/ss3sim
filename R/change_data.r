@@ -343,7 +343,7 @@ change_pop_bin <- function(dat_list, binwidth = NULL, minimum_size = NULL,
 
 #' Check that the Stock Synthesis data file looks correct
 #'
-#' @param x An Stock Synthesis data list object as read in by [r4ss::SS_readdat()].
+#' @param x  A Stock Synthesis  data list object as read in by [r4ss::SS_readdat()].
 #' @export
 
 check_data <- function(x) {
@@ -367,14 +367,14 @@ check_data <- function(x) {
 
   if (!is.null(x$lbin_method)) {
     if (x$lbin_method > 2) {
-      stop("lbin_method in the SS data file should be either 1 or 2")
+      stop("lbin_method in the Stock Synthesis data file should be either 1 or 2")
     }
   }
 
   if (!identical(x$Lbin_method, 3) & !is.null(x$lencomp)) {
     stop(
       "Lbin_method must be 3 to specify how the conditional",
-      "\nage-at-length data are represented in the SS data file.",
+      "\nage-at-length data are represented in the Stock Synthesis data file.",
       "\nSee the Stock Synthesis manual."
     )
   }

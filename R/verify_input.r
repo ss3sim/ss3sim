@@ -3,7 +3,7 @@
 #' Verify the contents of
 #' operating model (`OM`) and
 #' estimation model (`EM`) folders, i.e.,
-#' check that the necessary SS input files are available.
+#' check that the necessary Stock Synthesis input files are available.
 #' If the contents are correct,
 #' the `.ctl` and `.dat` files are renamed to standardized names and
 #' the `starter.ss` file is updated to reflect these names.

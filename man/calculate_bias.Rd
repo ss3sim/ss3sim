@@ -11,7 +11,7 @@ calculate_bias(dir, ctl_file_in)
 results from a stock assessment model run. Paths are passed without a
 terminal slash.}
 
-\item{ctl_file_in}{A string providing the path to the input SS \code{.ctl} file.}
+\item{ctl_file_in}{A string providing the path to the input Stock Synthesis \code{.ctl} file.}
 }
 \value{
 A list of bias adjustment parameters.

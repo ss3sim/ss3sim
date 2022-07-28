@@ -13,7 +13,7 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-In some cases you may wish to adapt your own SS model to work with ss3sim.
+In some cases you may wish to adapt your own Stock Synthesis model to work with ss3sim.
 This is possible but may be difficult.
 The functions in ss3sim were developed to work with the existing model setups, and
 a model with a different structure may cause errors in these functions.
@@ -25,7 +25,7 @@ For this reason,
 we recommend that users strongly consider trying to [modify an existing model rather than creating a new one](modifying-models.html).
 
 For those users who choose to create a new ss3sim model setup,
-we outline the steps to take an existing SS model and modify it to work with the ss3sim package.
+we outline the steps to take an existing Stock Synthesis model and modify it to work with the ss3sim package.
 
 # Overall file structure
 
@@ -75,7 +75,7 @@ the input files are read in properly and
 the model writes the new input files.
 The previous will only work if you have placed the executable in your path
 ([see the Introduction vignette](introduction.html)).
-Use the `.ss_new` files produced as a starting point to ensure that your SS input files are properly formatted.
+Use the `.ss_new` files produced as a starting point to ensure that your Stock Synthesis input files are properly formatted.
 
 To obtain `.ss_new` files, open a command window in the OM folder and type `ss` to run the model.
 Once the model is finished running, it will generate a number of files, including `.ss_new` files.
@@ -83,7 +83,7 @@ Remove the `.ss_new` file extension from the files needed and add the appropriat
 Then, move the generated data file to the EM folder and repeat the process for the EM.
 
 Note that there may be an error message in the command window indicating that ADMB cannot find the data file.
-ADMB expects a certain name and SS uses a name stored in the starter file.
+ADMB expects a certain name and Stock Synthesis uses a name stored in the starter file.
 You can safely ignore this error.
 
 ## Forecast file modifications
@@ -162,7 +162,7 @@ You can safely ignore this error.
 
 7.  Recruitment is log-normally distributed in SS.
     If inputting a normally distributed recruitment deviations specify
-    `#_max_bias_adj_in_MPD` to `-1` so that SS performs the bias correction for you.
+    `#_max_bias_adj_in_MPD` to `-1` so that Stock Synthesis performs the bias correction for you.
     If inputting bias corrected normal recruitment deviation,
     specify it at `0`.
     Either method will lead to the same end result.
@@ -229,7 +229,7 @@ Years can be specified as a number line (i.e., `1` and `5`) or as actual years 
 5.  Set the length bin method to 1 or 2 in the line labeled `# length bin method`.
     Using a value of `1`,
     the bins refer to the data bins (specified later).
-    Using a value of `2` instructs SS to generate the bin widths from a user specified minimum and maximum value.
+    Using a value of `2` instructs Stock Synthesis to generate the bin widths from a user specified minimum and maximum value.
     In the following three lines,
     specify the bin width for population size composition data; the minimum size,
     or the lower edge of the first bin and size at age zero; and the maximum size,
@@ -249,7 +249,7 @@ Years can be specified as a number line (i.e., `1` and `5`) or as actual years 
 # Setting up a new estimation model {#em-setup}
 
 Unlike the OM,
-the EM needs to be a valid SS model setup and run to achieve
+the EM needs to be a valid Stock Synthesis model setup and run to achieve
 maximum likelihood estimates (and possibly standard errors). 
 Thus,
 the OM needs to be adapted to create a new EM.
@@ -265,13 +265,13 @@ the OM needs to be adapted to create a new EM.
 
 ## Control file modifications
 
-1.  Set the phases of the parameters to positive or negative values to inform SS to estimate or fix the parameters,
+1.  Set the phases of the parameters to positive or negative values to inform Stock Synthesis to estimate or fix the parameters,
     respectively.
     The parameter set that one chooses to estimate will depend on the available data.
     For example,
     conditional-age-at-length data are often informative about growth and age compositions are often informative about natural mortality.
     Selectivity cannot be estimated without some type of fleet-specific composition data.
-    The variance about the stock recruitment relationship is not typically estimated in a SS model that uses maximum likelihood estimates,
+    The variance about the stock recruitment relationship is not typically estimated in a Stock Synthesis model that uses maximum likelihood estimates,
     but is rather iterated to find a solution.
     Thus,
     this variability will need to be fixed at the ball park value.
@@ -314,4 +314,4 @@ If it works correctly,
 try running deterministic simulations on the model  (see the [Introduction vignette](introduction.html#deterministic)) and further verify that ss3sim functions that modify the EM (e.g.,
 `change_e`) act correctly on the model setup.
 The help files for the functions demonstrate how to use the functions to test models.
-Note that the OM will not be a valid SS model in the sense that ADMB cannot run and produce maximum likelihood estimates of parameters; it is intended to only be run for one iteration to generate the population dynamics using values specified in the input files. 
+Note that the OM will not be a valid Stock Synthesis model in the sense that ADMB cannot run and produce maximum likelihood estimates of parameters; it is intended to only be run for one iteration to generate the population dynamics using values specified in the input files. 
