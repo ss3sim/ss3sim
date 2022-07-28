@@ -29,6 +29,44 @@ less files need to be maintained.
 Differences between the OM and EM are mainly related to how the
 OM takes input fishing mortality values rather than absolute catches.
 }
+\section{Control file}{
+
+Most changes to the EM control file relate to recruitment and fishing.
+The phase in which recruitment deviations are estimated is checked to
+ensure that it is positive. Though, this might be unnecessary because the OM
+file can have negative or positive phases. Thus, users are encouraged to
+just set the phase in which recruitment is estimated in the OM at the value
+that they would like to use in the EM.
+Additional changes are made to the bias adjustment procedure based on
+the biology of the stock.
+
+The \code{F_Method} is set to 3 to allow the model to estimate fishing mortality
+based on catches in the data file. Users might want to adjust the maximum
+fishing mortality based on their scenarios.
+}
+
+\section{Data file}{
+
+No data file is needed for the EM.
+The \code{data_expval.ss} file produced when executing the OM contains the
+expected values of the OM population dynamics.
+{ss3sim} provides three functions which carry out the random sampling
+process and generate \code{.dat} files to be used in the EM.
+See the Introduction vignette \code{vignette("introduction", package = "ss3sim")}
+for more details.
+}
+
+\section{Forecast file}{
+
+Nothing is changed in the forecast file from the OM.
+}
+
+\section{Starter file}{
+
+The names of the data and control files are specified and
+the maximum phase for estimation is set to 100.
+}
+
 \examples{
 create_em()
 # The necessary files are in the following folder

@@ -15,17 +15,14 @@ vignette: >
 
 In some cases you may wish to adapt your own Stock Synthesis model to work with ss3sim.
 This is possible but may be difficult.
-The functions in ss3sim were developed to work with the existing model setups, and
-a model with a different structure may cause errors in these functions.
-This stems from the high flexibility of SS,
-allowing for more complex model setups than those used while developing ss3sim.
-Given the many options available in SS,
-it is extremely difficult to write auxiliary functions that will interact reliably with all combinations of these options.
+The functions in {ss3sim} were developed to work with the existing model setups, and
+a model with a different structure may lead to incomprehensible error messages because
+it is extremely difficult to write auxiliary functions that will interact reliably with all the available options in Stock Synthesis.
 For this reason,
 we recommend that users strongly consider trying to [modify an existing model rather than creating a new one](modifying-models.html).
 
-For those users who choose to create a new ss3sim model setup,
-we outline the steps to take an existing Stock Synthesis model and modify it to work with the ss3sim package.
+For those users who choose to create a new {ss3sim} model setup,
+we outline below the steps needed to take an existing Stock Synthesis model and modify it to work with {ss3sim}.
 
 # Overall file structure
 
@@ -50,127 +47,116 @@ The names of the `.ctl` and `.dat` files are not important.
 The wrapper functions within ss3sim will rename the files when copying them to appropriate folders.
 These files should be derived from `.ss_new` files but have the file extensions as shown above.
 It is important to use `.ss_new` files so the files have consistent formatting.
-Many of the functions in this package and r4ss depend on that formatting.
+Many of the functions in this package and {r4ss} depend on that formatting.
 
 # Setting up a new operating model {#om-setup}
 
-The main purpose of the operating model (OM) is to generate data files that can be read into the estimation model (EM).
-The user needs to setup the OM `.dat` file to conform to the structure needed by the EM.
-Two key examples are with age- and length-composition data.
-The OM `.dat` file will determine which years and bins are available to the sampling functions
-`sample_agecomp()` and
-`sample_lcomp()`.
+The main purpose of the operating model (OM) is to generate data files that can used for the estimation model (EM).
+The initial data file stored in the OM folder does not have to contain actual data but
+it does need to contain enough information for the executable to run.
+For example, if age-composition data are turned on, then at least one row of age-composition data must be in the file.
+The actual composition information in this row of data can be any numeric value and does not have to make sense biologically because
+the compositions will be replaced with expected values and then sampled values.
 If dynamic binning is desired,
-the user should setup the OM `.dat` file so that all desired combinations of bins are possible
+the OM data file should have all desired combinations of bins that will be used in the sampled scenarios
 (see the [section in the Introduction vignette on dynamic binning](introduction.html#change-data) for more details).
 Specifically,
-the user must specify small enough OM bins for the data,
-but not smaller than the population bins so that they can easily be re-binned.
+OM bins for the data must be at least as small as the smallest bins desired but
+not smaller than the population bins so that they can easily be re-binned.
 
-The first step to setting up an OM is to run the assessment model to make sure the model runs and estimates parameters as desired.
-We recommend opening a command window inside your OM and EM folders to test if the model still runs at many points along the process.
-After turning parameter estimation off in the starter file (see below),
-the model can be checked by running `ss -nohess` to make sure
-the input files are read in properly and
-the model writes the new input files.
-The previous will only work if you have placed the executable in your path
-([see the Introduction vignette](introduction.html)).
-Use the `.ss_new` files produced as a starting point to ensure that your Stock Synthesis input files are properly formatted.
-
-To obtain `.ss_new` files, open a command window in the OM folder and type `ss` to run the model.
-Once the model is finished running, it will generate a number of files, including `.ss_new` files.
-Remove the `.ss_new` file extension from the files needed and add the appropriate file extension.
-Then, move the generated data file to the EM folder and repeat the process for the EM.
-
+The first step to setting up an OM is to run Stock Synthesis using your original files to make sure the model runs and estimates parameters as desired.
+Thus, open a command window inside the folder with your original files and run Stock Synthesis.
+If Stock Synthesis is not in your path
+([see the Introduction vignette](introduction.html)),
+you will need to have the executable available in this folder.
 Note that there may be an error message in the command window indicating that ADMB cannot find the data file.
 ADMB expects a certain name and Stock Synthesis uses a name stored in the starter file.
 You can safely ignore this error.
+Once the model is finished running, it will generate a number of files, including `.ss_new` files.
+Copy the needed `.ss_new` files to the OM folder and remove the `.ss_new` file extension and add the appropriate file extensions.
+Do the same for the files needed for the EM.
+Use the `.ss_new` files produced as a starting point to ensure that your Stock Synthesis input files are properly formatted.
+
+We recommend opening a command window inside your OM and EM folders to test if the model still runs at many points along the process.
+First, turn parameter estimation off in the OM starter file (see below) and run
+`ss -nohess` to make sure the input files are read in properly and
+the model writes the new input files.
 
 ## Forecast file modifications
 
 1.  Set `# Do West Coast gfish rebuilder output (0/1)` to 0.
 
-2.  Optionally, comment out the lines below specifying the years of the rebuilding plan.
+1.  Optionally, comment out the lines below specifying the years of the rebuilding plan.
 
 ## Starter file modifications
 
-1.  Delete `starter.ss` and rename `starter.ss_new` to `starter.ss`.
-    Modify this new file.
-
-2.  Turn off parameter estimation by changing
+1.  Turn off parameter estimation by changing
     `# Turn off estimation for parameters entering after this phase` to `0`.
 
-3.  Use the `.ctl` file to initialize model parameters.
-    To do so change `# use init values in Starter file` to `0`.
+1.  Use the INIT values in the `.ctl` file to initialize model parameters for your population.
+    To do so, change `# use init values in Starter file` to `0`.
     The `.par` file will be ignored.
 
-4.  Generate detailed report files,
+1.  Generate detailed report files,
     containing age-structure information,
     by setting `# detailed age-structured reports in REPORT.SSO` to `1`.
 
-5.  Generate data by setting `# Number of datafiles to produce` to `3`.
+1.  Generate data by setting `# Number of datafiles to produce` to `3`.
     If `X=1` it only generates the original data.
     If `X=2` it generates the original data and the expected value data (based on model specification).
     If `X>=3` it generates all the above and `X-2` bootstrapped data sets.
 
-6.  Turn off parameter jittering by setting `# jitter initial parm value by this fraction` to `0`.
-    Jitter is used,
-    among other things,
-    to test for convergence to the same solution when starting from alternative initial values.
-    However,
-    the OM is used here as the truth,
-    so jittering is not needed.
+1.  Turn off parameter jittering by setting `# jitter initial parm value by this fraction` to `0`.
+    The OM is used as the truth so jittering is not needed.
 
-7.  Turn off retrospective analyses by setting `# retrospective year relative to end year` to `0`.
+1.  Turn off retrospective analyses by setting `# retrospective year relative to end year` to `0`.
 
-8.  Specify how catch is reported by setting `# F_report_units` to `1` if catch is reported in biomass or `2` if catch is reported in numbers.
+1.  Specify how catch is reported by setting `# F_report_units` to `1` if catch is reported in biomass or `2` if catch is reported in numbers.
     Additionally,
     comment out the next line,
     `#_min and max age over which average F will be calculated`,
     by removing all characters prior to the hash symbol.
 
-9.  Implement catches using instantaneous fishing mortality by changing `# F_report_basis` to `0`.
-    Instantaneous fishing mortality is used rather than an input vector of catches to ensure that the catches are not more than available population biomass,
-    which can happen with absolute catch rather than fishing mortality.
+1.  Implement catches using instantaneous fishing mortality by changing `# F_report_basis` to `0`.
+    Instantaneous fishing mortality is used rather than catches in numbers or biomass to run the OM, which
+    ensures that the resulting catches will be less than the available biomass for every given year.
+    Where, if we allowed users to specify catch in numbers or biomass they might crash the population.
 
 ## Control file modifications
 
-1.  Delete the `<modelname>.ctl` file and rename `control.ss_new` to `om.ctl`.
-    Modify this new file.
-
-2.  Specify all environmental deviates on biological parameters to be unconstrained by bounds by
+1.  Specify all environmental deviates on biological parameters to be unconstrained by bounds by
     setting `#_env/block/dev_adjust_method` to `1`.
     If the method is set to `2`,
-    parameters adjusted using environmental covariate inputs will be adjusted using a logistic transformation.
+    parameters adjusted using environmental-covariate inputs will be adjusted using a logistic transformation.
     The logistic transformation ensures that the adjusted parameter will stay within the bounds of the base parameter.
     If it exists and is not already commented out,
     comment out the second line entitled `#_env/block/dev_adjust_method` underneath the section which specifies selectivity parameters.
     If time-varying selectivity parameters are added using the `change_tv()` function,
     this line will be modified by the same function.
 
-3.  Turn on recruitment deviations by specifying `#do_recdev` to `1`.
+1.  Turn on recruitment deviations by specifying `#do_recdev` to `1`.
     Using the next two lines,
     specify the use of recruitment deviations to begin and end with the start and end years of the model.
 
-4.  Turn on additional advanced options for the recruitment deviations by specifying `# (0/1) to read 13 advanced options` to `1`.
+1.  Turn on additional advanced options for the recruitment deviations by specifying `# (0/1) to read 13 advanced options` to `1`.
 
-5.  Set `#_recdev_early_start` to `0` so that the model will use the `# first year of main recr_devs`.
+1.  Set `#_recdev_early_start` to `0` so that the model will use the `# first year of main recr_devs`.
 
-6.  Set `#_lambda for Fcast_rec_like occurring before endyr+1` to `1`.
+1.  Set `#_lambda for Fcast_rec_like occurring before endyr+1` to `1`.
     This lambda is for the log likelihood of the forecast recruitment deviations that occur before the first year of forecasting.
     Values larger than one accommodate noisy data at the end of the time series.
 
-7.  Recruitment is log-normally distributed in SS.
+1.  Recruitment is log-normally distributed in Stock Synthesis.
     If inputting a normally distributed recruitment deviations specify
     `#_max_bias_adj_in_MPD` to `-1` so that Stock Synthesis performs the bias correction for you.
-    If inputting bias corrected normal recruitment deviation,
-    specify it at `0`.
-    Either method will lead to the same end result.
+    {ss3sim} internally uses bias corrected normal recruitment deviations,
+    unless users specify `user_recdevs`, which do not need bias correction and
+    users should specify `#_max_bias_adj_in_MPD` to `0`.
 
-8.  Use any negative value in line `# F ballpark year`,
+1.  Use any negative value in line `# F ballpark year`,
     to disable the use of a ballpark year to determine fishing mortality levels.
 
-9.  Specify `# F_Method` to `2`,
+1.  Specify `# F_Method` to `2`,
     which facilitates the use of a vector of instantaneous fishing mortality levels.
     The max harvest rate in the subsequent line will depend upon the fishing mortality levels in your simulation.
     Following the max harvest rate,
@@ -190,43 +176,59 @@ You can safely ignore this error.
     and a negative phase value,
     e.g., `1 1 1 0 0.01 -1`.
 
-10. Set `#_Variance_adjustments_to_input_values` to `0`.
-    Comment out any lines underneath referring to variance adjustments. 
+1. Remove non-terminator lines in `# Input variance adjustments factors` or
+   set all elements in the  `Value` column to `0`.
+   For example, your file could look like the following:
+   ```
+   # Input variance adjustments factors: 
+    #_1=add_to_survey_CV
+    #_2=add_to_discard_stddev
+    #_3=add_to_bodywt_CV
+    #_4=mult_by_lencomp_N
+    #_5=mult_by_agecomp_N
+    #_6=mult_by_size-at-age_N
+    #_7=mult_by_generalized_sizecomp
+   #_Factor  Fleet  Value
+    -9999   1    0  # terminator
+   ```
 
-11. Set `# number of changes to make to default Lambdas` to `0`.
-    Comment out any lines with default lambda changes below.
+1. Remove non-terminator lines in `#_maxlambdaphase` or
+   set all elements in the `value` column to `0`.
+   For example, your file could look like the following:
+   ```
+   1 #_maxlambdaphase
+   1 #_sd_offset; must be 1 if any growthCV, sigmaR, or survey extraSD is an estimated parameter
+   # read 0 changes to default Lambdas (default value is 1.0)
+   # Like_comp codes:  1=surv; 2=disc; 3=mnwt; 4=length; 5=age; 6=SizeFreq; 7=sizeage; 8=catch; 9=init_equ_catch; 
+   # 10=recrdev; 11=parm_prior; 12=parm_dev; 13=CrashPen; 14=Morphcomp; 15=Tag-comp; 16=Tag-negbin; 17=F_ballpark; 18=initEQregime
+   #like_comp fleet  phase  value  sizefreq_method
+   -9999  1  1  1  1  #  terminator
+   ```
 
-12. If desired,
-    change the initial values of the growth,
-    selectivity,
-    etc. parameters to specify the dynamics of the operating model.
-    In theory these can be based on values estimated from the stock assessment model you are altering or values you wish to explore.
+1. If desired, change the initial, i.e., `INIT`, values of the
+   growth, selectivity, etc. parameters to specify the dynamics of the OM.
+   In theory, these will not need to be altered because they will be based
+   on what was estimated in your production stock assessment model.
 
 ## Data file modifications
 
-1.  Delete the `<modelname>.dat` file and rename `data.ss_new` to `om.dat`.
-    Modify this new file.
+1.  Specify the start and end year for the simulation by modifying `#_StartYr` and `#_EndYr`.
+    Years can be specified as a number line (i.e., `1` and `5`) or as actual years (i.e., `2001` and `2005`).
 
-2.  Specify the start and end year for the simulation by modifying `#_styr` and `#_endyr`.
-Years can be specified as a number line (i.e., `1` and `5`) or as actual years (i.e., `2001` and `2005`).
-
-3.  Specify the type,
-    timing,
-    area (1),
+1.  Specify the fleet_type,
+    sample_timing,
+    fleet_area (1),
     units,
-    catch multiplier,
-    and name for each fleet with one row per fleet before `#Bycatch_fleet_input_goes_next`.
-    The fleet names specified here will be used in the scenario dataframe to
-    specify and change characteristics of each fleet throughout the simulation.
+    catch_mult,
+    and fleet name with one row per fleet
+    after `#_Nfleets` and
+    before `#Bycatch_fleet_input_goes_next`.
 
-4.  Specify the number of mean body weight observations across all selected sizes and ages to be specific to measured fish by setting
-    `#_N_meanbodywt` to `0`.
-    Subsequently,
-    specify `1` under `#_DF_for_meanbodywt_T-distribution_like` -
-    this is the degree of freedom for the Student’s T distribution used to evaluated the mean body weight deviations in the following line.
-    The degrees of freedom must be specified even if there are zero mean body weight observations.
+1.  Turn off mean body weight observations by setting
+    `#_use meanbodysize_data` to `0` because {ss3sim} currently does not
+    have the capability to sample these data.
 
-5.  Set the length bin method to 1 or 2 in the line labeled `# length bin method`.
+1.  Set `# length bin method` to `1` or `2`.
     Using a value of `1`,
     the bins refer to the data bins (specified later).
     Using a value of `2` instructs Stock Synthesis to generate the bin widths from a user specified minimum and maximum value.
@@ -234,76 +236,30 @@ Years can be specified as a number line (i.e., `1` and `5`) or as actual years 
     specify the bin width for population size composition data; the minimum size,
     or the lower edge of the first bin and size at age zero; and the maximum size,
     or lower edge of the last bin.
-    The length data bins MUST be wider than the population bin but the boundaries do not have to align.
+    The length data bins MUST be wider than the population bins but the boundaries do not have to align.
 
-6.  Specify `#_comp_tail_compression` to any negative value to turn off tail compression.
+1.  Turn off `#_mintailcomp` using any negative value for each fleet.
 
-7.  Specify `#_add_to_comp` to a very small number,
-    e.g., `1e-005`,
-    which specifies the value that will be added to each composition (age and length) data bin.
+1.  Specify `addtocomp` to a very small number for each fleet,
+    e.g., `1e-005`.
+    `addtocomp` represents the amount that is added to each composition
+    (age and length) data bin such that the likelihood is always computable.
 
-8.  Set the length bin range method for the age composition data (used when the conditional age at length data exists) to 1,
-    2,
-    or 3 in the line `#_Lbin_method` depending on the data you have or the purpose of the study.
+1.  Set `#_Lbin_method_for_Age_Data` for ages
+    (used when the conditional-age-at-length data exists) to
+    `1`, `2`, or `3`
+    depending on the data you have or the purpose of the study.
 
 # Setting up a new estimation model {#em-setup}
 
 Unlike the OM,
-the EM needs to be a valid Stock Synthesis model setup and run to achieve
-maximum likelihood estimates (and possibly standard errors). 
+the EM needs to be a valid Stock Synthesis model and
+be able to successfully estimate parameters and their standard errors
+using maximum likelihood estimates.
 Thus,
 the OM needs to be adapted to create a new EM.
-
-## Starter file modifications
-
-1.  Change the names of the `.dat` and `.ctl` files to your chosen naming scheme.
-
-2.  Specify the model to use parameter values found in the `.ctl` file,
-    by changing `# 0=use init values in control file; 1=use ss3.par` to `0`.
-
-3.  Turn on parameter estimation by changing `# Turn off estimation for parameters entering after this phase` to a value larger than the max phase specified in the `.ctl` file.
-
-## Control file modifications
-
-1.  Set the phases of the parameters to positive or negative values to inform Stock Synthesis to estimate or fix the parameters,
-    respectively.
-    The parameter set that one chooses to estimate will depend on the available data.
-    For example,
-    conditional-age-at-length data are often informative about growth and age compositions are often informative about natural mortality.
-    Selectivity cannot be estimated without some type of fleet-specific composition data.
-    The variance about the stock recruitment relationship is not typically estimated in a Stock Synthesis model that uses maximum likelihood estimates,
-    but is rather iterated to find a solution.
-    Thus,
-    this variability will need to be fixed at the ball park value.
-    It is uncommon to have enough data on recruitment to estimate the steepness of the stock-recruitment function.
-    Simulations will often fix steepness at the true value,
-    or natural mortality.
-    Do not try to estimate steepness and natural mortality unless you set up your data to specifically do so.
-
-2.  Set the `#_recdev phase` to a positive value to estimate yearly recruitment deviations.
-
-3.  If using bias adjustment set `#_recdev_early_phase` to a positive value.
-Estimates for the years and maximum bias adjustment can initially be inputted with approximations or use the bias adjustment capability within ss3sim to find appropriate values.
-Set this early phase to follow the estimation of the main recruitment deviations where there are data to inform them because these early deviations will be ill-informed.
-
-4.  Specify `# F_Method` to `3`,
-    which allows the model to use catches to estimate appropriate fishing mortality levels.
-    The max harvest rate in the subsequent line will depend upon the fishing mortality levels in your simulation.
-    An additional line must be inserted after the maximum harvest rate to specify the number of iterations used in the hybrid method from `3` to `7`.
-
-5.  If desired,
-    change the initial values of the growth,
-    selectivity,
-    etc. parameters to specify the starting dynamics for the EM and check the bounds of the estimated parameters to ensure that they are,
-    or are not,
-    influencing the parameters as you intend them to.
-
-## Data file modifications
-
-You can delete the `.dat` file from the EM model setup.
-The `data.ss_new` files produced when executing the OM contain the expected values of the OM population dynamics.
-ss3sim provides three functions which carry out the random sampling process and generate `.dat` files to be used in the EM.
-See the [Introduction vignette section](introduction.html#obs-error) for more details.
+The preferred method here is to run
+`create_em()` using the newly created OM files.
 
 ## Testing the new estimation model
 
