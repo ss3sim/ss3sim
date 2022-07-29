@@ -65,16 +65,16 @@ test_that("weight_comps works for MI method", {
     printstats = FALSE, hidewarn = TRUE, covar = FALSE, warn = FALSE
   )
   test <- r4ss::SS_tune_comps(
-    option = "MI",
     replist = replist,
-    dir = scen_path_MI,
-    niters_weighting = 1,
+    fleets = c(1, 2),
+    option = "MI",
+    niters_tuning = 1,
     init_run = FALSE,
+    dir = scen_path_MI,
+    exe = get_bin(bin_name = "ss"),
     extras = "-nohess",
-    systemcmd = TRUE,
-    model = get_bin(bin_name = "ss"),
     verbose = FALSE,
-    fleets = c(1, 2)
+    show_in_console = FALSE
   )
   # create an expectation that arent dummy ones.
   dat <- r4ss::SS_readdat(file.path(scen_path_MI, "ss3.dat"), verbose = FALSE)
@@ -98,16 +98,16 @@ test_that("weight_comps works for Francis", {
     printstats = FALSE, hidewarn = TRUE, covar = FALSE, warn = FALSE
   )
   test <- r4ss::SS_tune_comps(
-    option = "Francis",
     replist = replist,
-    dir = scen_path_Francis,
-    niters_weighting = 1,
+    fleets = c(1, 2),
+    option = "Francis",
+    niters_tuning = 1,
     init_run = FALSE,
+    dir = scen_path_Francis,
+    exe = get_bin(bin_name = "ss"),
     extras = "-nohess",
-    systemcmd = TRUE,
-    model = get_bin(bin_name = "ss"),
     verbose = FALSE,
-    fleets = c(1, 2)
+    show_in_console = FALSE
   )
   dat <- r4ss::SS_readdat(file.path(scen_path_Francis, "ss3.dat"), verbose = FALSE)
   ctl <- r4ss::SS_readctl(file.path(scen_path_Francis, "codEM.ctl"),
@@ -127,15 +127,15 @@ test_that("weight_comps works for DM", {
     printstats = FALSE, hidewarn = TRUE, covar = FALSE, warn = FALSE
   )
   test <- r4ss::SS_tune_comps(
-    option = "DM",
     replist = replist,
+    fleets = c(1, 2),
+    option = "DM",
+    niters_tuning = 0,
     dir = scen_path_DM,
-    niters_weighting = 0,
+    exe = get_bin(bin_name = "ss"),
     extras = "-nohess",
-    systemcmd = TRUE,
-    model = get_bin(bin_name = "ss"),
     verbose = FALSE,
-    fleets = c(1, 2)
+    show_in_console = FALSE
   )
   dat <- r4ss::SS_readdat(file.path(scen_path_DM, "ss3.dat"), verbose = FALSE)
   ctl <- r4ss::SS_readctl(file.path(scen_path_DM, "codEM.ctl"),

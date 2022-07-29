@@ -679,13 +679,13 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       if (weight_comps_params$method == "DM") {
         # convert model so it can be used
         out <- r4ss::SS_tune_comps(
-          option = weight_comps_params[["method"]],
           fleets = weight_comps_params[["fleets"]],
+          option = weight_comps_params[["method"]],
           dir = pathem,
-          model = get_bin(bin_name = "ss"),
-          exe_in_path = TRUE,
+          exe = get_bin(bin_name = "ss"),
           extras = ifelse(hess_always | bias_adjust, "", "-nohess"),
-          verbose = FALSE
+          verbose = FALSE,
+          show_in_console = FALSE
         )
       }
     }
@@ -724,15 +724,14 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         )
         out <- r4ss::SS_tune_comps(
           replist = replist,
-          option = weight_comps_params[["method"]], ,
           fleets = weight_comps_params[["fleets"]],
+          option = weight_comps_params[["method"]],
           niters_tuning = weight_comps_params[["niters_weighting"]],
-          exe_in_path = TRUE,
+          dir = pathem,
+          exe = get_bin(bin_name = "ss"),
           extras = ifelse(hess_always | bias_adjust, "", "-nohess"),
-          systemcmd = TRUE,
-          model = get_bin(bin_name = "ss"),
           verbose = FALSE,
-          dir = pathem
+          show_in_console = FALSE
         )
       }
     }
