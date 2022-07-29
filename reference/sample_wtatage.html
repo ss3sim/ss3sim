@@ -81,16 +81,16 @@ Sampling empirical weight-at-age data from the expected values takes many steps.
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sample_wtatage</span><span class="op">(</span>
-  <span class="va">wta_file_in</span>,
-  <span class="va">outfile</span>,
-  <span class="va">dat_list</span>,
-  <span class="va">ctl_file_in</span>,
-  <span class="va">years</span>,
-  fill_fnc <span class="op">=</span> <span class="va">fill_across</span>,
-  <span class="va">fleets</span>,
-  cv_wtatage <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sample_wtatage</span><span class="op">(</span></span>
+<span>  <span class="va">wta_file_in</span>,</span>
+<span>  <span class="va">outfile</span>,</span>
+<span>  <span class="va">dat_list</span>,</span>
+<span>  <span class="va">ctl_file_in</span>,</span>
+<span>  <span class="va">years</span>,</span>
+<span>  fill_fnc <span class="op">=</span> <span class="va">fill_across</span>,</span>
+<span>  <span class="va">fleets</span>,</span>
+<span>  cv_wtatage <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -109,7 +109,7 @@ file takes time and computing resources.</p></dd>
 
 
 <dt>dat_list</dt>
-<dd><p>An SS data list object as read in from
+<dd><p>A Stock Synthesis  data list object as read in from
 <code><a href="https://rdrr.io/pkg/r4ss/man/SS_readdat.html" class="external-link">SS_readdat</a></code>.
 Be sure to correctly specify which section of the data file you want
 to work with when reading it in using the <code>section</code> argument.
@@ -200,7 +200,7 @@ which are then converted to weight and averaged to get mean weight-at-age values
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

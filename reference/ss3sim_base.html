@@ -80,35 +80,35 @@ is typically not called by the user but called from <code><a href="run_ss3sim.ht
 </ul></div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ss3sim_base</span><span class="op">(</span>
-  <span class="va">iterations</span>,
-  <span class="va">scenarios</span>,
-  <span class="va">f_params</span>,
-  <span class="va">index_params</span>,
-  discard_params <span class="op">=</span> <span class="cn">NULL</span>,
-  lcomp_params <span class="op">=</span> <span class="cn">NULL</span>,
-  agecomp_params <span class="op">=</span> <span class="cn">NULL</span>,
-  calcomp_params <span class="op">=</span> <span class="cn">NULL</span>,
-  wtatage_params <span class="op">=</span> <span class="cn">NULL</span>,
-  mlacomp_params <span class="op">=</span> <span class="cn">NULL</span>,
-  em_binning_params <span class="op">=</span> <span class="cn">NULL</span>,
-  estim_params <span class="op">=</span> <span class="cn">NULL</span>,
-  tv_params <span class="op">=</span> <span class="cn">NULL</span>,
-  operat_params <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">om_dir</span>,
-  <span class="va">em_dir</span>,
-  retro_params <span class="op">=</span> <span class="cn">NULL</span>,
-  data_params <span class="op">=</span> <span class="cn">NULL</span>,
-  weight_comps_params <span class="op">=</span> <span class="cn">NULL</span>,
-  user_recdevs <span class="op">=</span> <span class="cn">NULL</span>,
-  user_recdevs_warn <span class="op">=</span> <span class="cn">TRUE</span>,
-  bias_adjust <span class="op">=</span> <span class="cn">FALSE</span>,
-  hess_always <span class="op">=</span> <span class="cn">FALSE</span>,
-  print_logfile <span class="op">=</span> <span class="cn">FALSE</span>,
-  sleep <span class="op">=</span> <span class="fl">0</span>,
-  seed <span class="op">=</span> <span class="fl">21</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ss3sim_base</span><span class="op">(</span></span>
+<span>  <span class="va">iterations</span>,</span>
+<span>  <span class="va">scenarios</span>,</span>
+<span>  <span class="va">f_params</span>,</span>
+<span>  <span class="va">index_params</span>,</span>
+<span>  discard_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  lcomp_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  agecomp_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  calcomp_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  wtatage_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  mlacomp_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  em_binning_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  estim_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tv_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  operat_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">om_dir</span>,</span>
+<span>  <span class="va">em_dir</span>,</span>
+<span>  retro_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  data_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  weight_comps_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  user_recdevs <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  user_recdevs_warn <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  bias_adjust <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  hess_always <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  print_logfile <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  sleep <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">21</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -309,81 +309,81 @@ the DESCRIPTION file.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co"># Create a temporary folder for the output and set the working directory:</span></span>
-<span class="r-in"><span class="co"># Create a temporary folder for the output and set the working directory:</span></span>
-<span class="r-in"><span class="va">temp_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ss3sim-base-example"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">temp_path</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">wd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="va">temp_path</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="va">wd</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Find the data in the ss3sim package:</span></span>
-<span class="r-in"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"ss3sim"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">om_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"models"</span>, <span class="st">"cod-om"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">em_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"models"</span>, <span class="st">"cod-em"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Or, create the argument lists directly in R:</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">F0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  years <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span>,</span>
-<span class="r-in">  fleets <span class="op">=</span> <span class="fl">1</span>,</span>
-<span class="r-in">  fvals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">25</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.114</span>, <span class="fl">75</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">index1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  fleets <span class="op">=</span> <span class="fl">2</span>, years <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">62</span>, <span class="fl">100</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  sds_obs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">lcomp1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  fleets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, Nsamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">100</span><span class="op">)</span>,</span>
-<span class="r-in">  years <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">26</span><span class="op">:</span><span class="fl">100</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">62</span>, <span class="fl">100</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">agecomp1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  fleets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, Nsamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">100</span><span class="op">)</span>,</span>
-<span class="r-in">  years <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">26</span><span class="op">:</span><span class="fl">100</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">62</span>, <span class="fl">100</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">E0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  par_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LnQ_base_Fishery"</span>, <span class="st">"NatM_uniform_Fem_GP_1"</span><span class="op">)</span>,</span>
-<span class="r-in">  par_int <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>, par_phase <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>, forecast_num <span class="op">=</span> <span class="fl">0</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">ss3sim_base</span><span class="op">(</span></span>
-<span class="r-in">  iterations <span class="op">=</span> <span class="fl">1</span>,</span>
-<span class="r-in">  scenarios <span class="op">=</span> <span class="st">"D1-E0-F0-cod"</span>, <span class="co"># name as desired</span></span>
-<span class="r-in">  f_params <span class="op">=</span> <span class="va">F0</span>,</span>
-<span class="r-in">  index_params <span class="op">=</span> <span class="va">index1</span>,</span>
-<span class="r-in">  lcomp_params <span class="op">=</span> <span class="va">lcomp1</span>,</span>
-<span class="r-in">  agecomp_params <span class="op">=</span> <span class="va">agecomp1</span>,</span>
-<span class="r-in">  estim_params <span class="op">=</span> <span class="va">E0</span>,</span>
-<span class="r-in">  om_dir <span class="op">=</span> <span class="va">om_dir</span>,</span>
-<span class="r-in">  em_dir <span class="op">=</span> <span class="va">em_dir</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">replist</span> <span class="op">&lt;-</span> <span class="fu">r4ss</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/r4ss/man/SS_output.html" class="external-link">SS_output</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"D1-E0-F0-cod"</span>, <span class="fl">1</span>, <span class="st">"em"</span><span class="op">)</span>,</span>
-<span class="r-in">  verbose <span class="op">=</span> <span class="cn">FALSE</span>, printstats <span class="op">=</span> <span class="cn">FALSE</span>, covar <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_equivalent.html" class="external-link">expect_equivalent</a></span><span class="op">(</span><span class="va">replist</span><span class="op">[[</span><span class="st">"cpue"</span><span class="op">]</span><span class="op">]</span><span class="op">[</span>, <span class="st">"Yr"</span><span class="op">]</span>, <span class="va">index1</span><span class="op">[[</span><span class="st">"years"</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">test</span> <span class="op">&lt;-</span> <span class="va">replist</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"D1-E0-F0-cod"</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># clean up</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Run without an EM, where {ss3sim} is a data-generating tool</span></span>
-<span class="r-in"><span class="fu">ss3sim_base</span><span class="op">(</span></span>
-<span class="r-in">  iterations <span class="op">=</span> <span class="fl">1</span>,</span>
-<span class="r-in">  scenarios <span class="op">=</span> <span class="st">"noEM"</span>,</span>
-<span class="r-in">  f_params <span class="op">=</span> <span class="va">F0</span>,</span>
-<span class="r-in">  index_params <span class="op">=</span> <span class="va">index1</span>,</span>
-<span class="r-in">  lcomp_params <span class="op">=</span> <span class="va">lcomp1</span>,</span>
-<span class="r-in">  agecomp_params <span class="op">=</span> <span class="va">agecomp1</span>,</span>
-<span class="r-in">  estim_params <span class="op">=</span> <span class="va">E0</span>,</span>
-<span class="r-in">  om_dir <span class="op">=</span> <span class="va">om_dir</span>,</span>
-<span class="r-in">  em_dir <span class="op">=</span> <span class="cn">NA</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># Create a temporary folder for the output and set the working directory:</span></span></span>
+<span class="r-in"><span><span class="co"># Create a temporary folder for the output and set the working directory:</span></span></span>
+<span class="r-in"><span><span class="va">temp_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ss3sim-base-example"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">temp_path</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">wd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="va">temp_path</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="va">wd</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Find the data in the ss3sim package:</span></span></span>
+<span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"ss3sim"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">om_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"models"</span>, <span class="st">"cod-om"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">em_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"models"</span>, <span class="st">"cod-em"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Or, create the argument lists directly in R:</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">F0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  years <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span>,</span></span>
+<span class="r-in"><span>  fleets <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>  fvals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">25</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.114</span>, <span class="fl">75</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">index1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  fleets <span class="op">=</span> <span class="fl">2</span>, years <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">62</span>, <span class="fl">100</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  sds_obs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lcomp1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  fleets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, Nsamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">100</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  years <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">26</span><span class="op">:</span><span class="fl">100</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">62</span>, <span class="fl">100</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">agecomp1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  fleets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, Nsamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">100</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  years <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">26</span><span class="op">:</span><span class="fl">100</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">62</span>, <span class="fl">100</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">E0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  par_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LnQ_base_Fishery"</span>, <span class="st">"NatM_uniform_Fem_GP_1"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  par_int <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>, par_phase <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>, forecast_num <span class="op">=</span> <span class="fl">0</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">ss3sim_base</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  iterations <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>  scenarios <span class="op">=</span> <span class="st">"D1-E0-F0-cod"</span>, <span class="co"># name as desired</span></span></span>
+<span class="r-in"><span>  f_params <span class="op">=</span> <span class="va">F0</span>,</span></span>
+<span class="r-in"><span>  index_params <span class="op">=</span> <span class="va">index1</span>,</span></span>
+<span class="r-in"><span>  lcomp_params <span class="op">=</span> <span class="va">lcomp1</span>,</span></span>
+<span class="r-in"><span>  agecomp_params <span class="op">=</span> <span class="va">agecomp1</span>,</span></span>
+<span class="r-in"><span>  estim_params <span class="op">=</span> <span class="va">E0</span>,</span></span>
+<span class="r-in"><span>  om_dir <span class="op">=</span> <span class="va">om_dir</span>,</span></span>
+<span class="r-in"><span>  em_dir <span class="op">=</span> <span class="va">em_dir</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">replist</span> <span class="op">&lt;-</span> <span class="fu">r4ss</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/r4ss/man/SS_output.html" class="external-link">SS_output</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"D1-E0-F0-cod"</span>, <span class="fl">1</span>, <span class="st">"em"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>, printstats <span class="op">=</span> <span class="cn">FALSE</span>, covar <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_equivalent.html" class="external-link">expect_equivalent</a></span><span class="op">(</span><span class="va">replist</span><span class="op">[[</span><span class="st">"cpue"</span><span class="op">]</span><span class="op">]</span><span class="op">[</span>, <span class="st">"Yr"</span><span class="op">]</span>, <span class="va">index1</span><span class="op">[[</span><span class="st">"years"</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="va">replist</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"D1-E0-F0-cod"</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># clean up</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Run without an EM, where {ss3sim} is a data-generating tool</span></span></span>
+<span class="r-in"><span><span class="fu">ss3sim_base</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  iterations <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>  scenarios <span class="op">=</span> <span class="st">"noEM"</span>,</span></span>
+<span class="r-in"><span>  f_params <span class="op">=</span> <span class="va">F0</span>,</span></span>
+<span class="r-in"><span>  index_params <span class="op">=</span> <span class="va">index1</span>,</span></span>
+<span class="r-in"><span>  lcomp_params <span class="op">=</span> <span class="va">lcomp1</span>,</span></span>
+<span class="r-in"><span>  agecomp_params <span class="op">=</span> <span class="va">agecomp1</span>,</span></span>
+<span class="r-in"><span>  estim_params <span class="op">=</span> <span class="va">E0</span>,</span></span>
+<span class="r-in"><span>  om_dir <span class="op">=</span> <span class="va">om_dir</span>,</span></span>
+<span class="r-in"><span>  em_dir <span class="op">=</span> <span class="cn">NA</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -398,7 +398,7 @@ the DESCRIPTION file.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

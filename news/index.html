@@ -99,7 +99,7 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.3" id="ss3sim-113">ss3sim 1.1.3<a class="anchor" aria-label="anchor" href="#ss3sim-113"></a></h2>
 <ul><li>Drop fleets from sampling regimes using NA in the scenario data frame.</li>
-<li>Upgrade to SS 3.30.16</li>
+<li>Upgrade to Stock Synthesis 3.30.16</li>
 <li>Start allowing for seasons in data (F right now)</li>
 <li>Fixed bug in how q was being checked</li>
 <li>Partition change_catch from change_data</li>
@@ -115,7 +115,7 @@
 <ul><li>Allow for custom name of results files</li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.0" id="ss3sim-110">ss3sim 1.1.0<a class="anchor" aria-label="anchor" href="#ss3sim-110"></a></h2>
-<ul><li>Upgrade to SS 3.30.15.03</li>
+<ul><li>Upgrade to Stock Synthesis 3.30.15.03</li>
 <li>Deprecate case files in favor of simdf, an argument passed to run_ss3sim</li>
 <li>Use more templates for parameter arguments, e.g., par_int</li>
 <li>Simplify scenarios, iterations, em/om to dir to increase the usability of functions outside of ss3sim</li>
@@ -173,7 +173,7 @@
 <li>Kelli F. Johnson is now the maintainer of the package</li>
 <li>updated authors to reflect current contributors</li>
 <li>reduced the complexity of sampling functions by initiating the same protocol for ages and lengths, where each function calls a simple function</li>
-<li>Update functions to work with latest version of r4ss, which is compatible with SS 3.3.0, and change to using the newer executable of SS without the option to specify safe or optimized</li>
+<li>Update functions to work with latest version of r4ss, which is compatible with Stock Synthesis 3.3.0, and change to using the newer executable of Stock Synthesis without the option to specify safe or optimized</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.5" id="ss3sim-095">ss3sim 0.9.5<small>2017-04-19</small><a class="anchor" aria-label="anchor" href="#ss3sim-095"></a></h2>
@@ -220,7 +220,7 @@
 <li><p>Added much more extensive testing of the package in the root <code>tests</code> folder. This is for internal testing only and not bundled with the package (<a href="https://github.com/ss3sim/ss3sim/issues/156" class="external-link">#156</a>).</p></li>
 <li><p>Allow for missing arguments in case files. This allows us to add new arguments to existing functions without breaking old code. A missing argument gets passed as <code>NULL</code> via the <code>add_nulls()</code> function (within <a href="https://github.com/ss3sim/ss3sim/issues/148" class="external-link">#148</a>).</p></li>
 <li><p>Re-write case file parsing to be more robust and allow for scientific notations (<a href="https://github.com/ss3sim/ss3sim/issues/157" class="external-link">#157</a>).</p></li>
-<li><p>Add the option to use the optimized SS executables (<a href="https://github.com/ss3sim/ss3sim/issues/138" class="external-link">#138</a> and <a href="https://github.com/ss3sim/ss3sim/issues/147" class="external-link">#147</a>) and ability to have spaces in the path name to the executable.</p></li>
+<li><p>Add the option to use the optimized Stock Synthesis executables (<a href="https://github.com/ss3sim/ss3sim/issues/138" class="external-link">#138</a> and <a href="https://github.com/ss3sim/ss3sim/issues/147" class="external-link">#147</a>) and ability to have spaces in the path name to the executable.</p></li>
 <li><p>Add Cole Monnahan’s ss3sim plotting functions (<a href="https://github.com/ss3sim/ss3sim/issues/134" class="external-link">#134</a>).</p></li>
 <li><p><code>change_lcomp</code>, <code>change_agecomp</code>, and <code>change_index</code> are now <code>sample_lcomp</code>, <code>sample_agecomp</code>, and <code>sample_index</code>. The old functions point to the new functions with warnings that they are depreciated. Existing code should continue to work (<a href="https://github.com/ss3sim/ss3sim/issues/145" class="external-link">#145</a>).</p></li>
 <li><p>ss3sim now requires the SS3 binary to be named according to the version (<a href="https://github.com/ss3sim/ss3sim/issues/138" class="external-link">#138</a> and <a href="https://github.com/ss3sim/ss3sim/issues/147" class="external-link">#147</a>).</p></li>
@@ -256,7 +256,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

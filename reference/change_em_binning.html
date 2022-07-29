@@ -77,21 +77,21 @@ conditional age-at-length data, then these data will be re-binned as well.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">change_em_binning</span><span class="op">(</span>
-  <span class="va">dat_list</span>,
-  outfile <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">bin_vector</span>,
-  lbin_method <span class="op">=</span> <span class="cn">NULL</span>,
-  pop_binwidth <span class="op">=</span> <span class="cn">NULL</span>,
-  pop_minimum_size <span class="op">=</span> <span class="cn">NULL</span>,
-  pop_maximum_size <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">change_em_binning</span><span class="op">(</span></span>
+<span>  <span class="va">dat_list</span>,</span>
+<span>  outfile <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">bin_vector</span>,</span>
+<span>  lbin_method <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pop_binwidth <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pop_minimum_size <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pop_maximum_size <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>dat_list</dt>
-<dd><p>An SS data list object as read in from
+<dd><p>A Stock Synthesis  data list object as read in from
 <code><a href="https://rdrr.io/pkg/r4ss/man/SS_readdat.html" class="external-link">SS_readdat</a></code>.
 Be sure to correctly specify which section of the data file you want
 to work with when reading it in using the <code>section</code> argument.
@@ -157,20 +157,20 @@ Only necessary for <code>lbin_method = 2</code>.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Note that typically this function is used with estimation models in ss3sim,</span></span>
-<span class="r-in"><span class="co"># but it is used with an operating model data file in the following examples.</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"models"</span>, <span class="st">"cod-om"</span>, <span class="st">"codOM.dat"</span>, package <span class="op">=</span> <span class="st">"ss3sim"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">r4ss</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/r4ss/man/SS_readdat.html" class="external-link">SS_readdat</a></span><span class="op">(</span><span class="va">f</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># An example with lbin_method = 1</span></span>
-<span class="r-in"><span class="va">l1</span> <span class="op">&lt;-</span> <span class="fu">change_em_binning</span><span class="op">(</span><span class="va">d</span>,</span>
-<span class="r-in">  outfile <span class="op">=</span> <span class="cn">NULL</span>, lbin_method <span class="op">=</span> <span class="fl">1</span>,</span>
-<span class="r-in">  bin_vector <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">152</span>, by <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">l1</span><span class="op">$</span><span class="va">lbin_vector</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Note that typically this function is used with estimation models in ss3sim,</span></span></span>
+<span class="r-in"><span><span class="co"># but it is used with an operating model data file in the following examples.</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"models"</span>, <span class="st">"cod-om"</span>, <span class="st">"codOM.dat"</span>, package <span class="op">=</span> <span class="st">"ss3sim"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">r4ss</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/r4ss/man/SS_readdat.html" class="external-link">SS_readdat</a></span><span class="op">(</span><span class="va">f</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># An example with lbin_method = 1</span></span></span>
+<span class="r-in"><span><span class="va">l1</span> <span class="op">&lt;-</span> <span class="fu">change_em_binning</span><span class="op">(</span><span class="va">d</span>,</span></span>
+<span class="r-in"><span>  outfile <span class="op">=</span> <span class="cn">NULL</span>, lbin_method <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>  bin_vector <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">152</span>, by <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">l1</span><span class="op">$</span><span class="va">lbin_vector</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  20  24  28  32  36  40  44  48  52  56  60  64  68  72  76  80  84  88  92</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [20]  96 100 104 108 112 116 120 124 128 132 136 140 144 148 152</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">l1</span><span class="op">$</span><span class="va">lencomp</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">l1</span><span class="op">$</span><span class="va">lencomp</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Yr Seas FltSvy Gender Part Nsamp l20 l24 l28 l32 l36 l40 l44 l48 l52 l56 l60</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 26    1      1      0    0   100   2   1   1   2   1   1   2   1   1   2   1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 27    1      1      0    0   100   2   1   1   2   1   1   2   1   1   2   1</span>
@@ -192,59 +192,59 @@ Only necessary for <code>lbin_method = 2</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4    1    1    2    1    1    1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5    1    1    2    1    1    1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6    1    1    2    1    1    1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># An example with lbin_method = 2</span></span>
-<span class="r-in"><span class="va">new_bin_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">lbin_vector</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">lbin_vector</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># add the max value if necessary.</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="va">new_bin_vec</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">new_bin_vec</span><span class="op">)</span><span class="op">]</span> <span class="op">!=</span> <span class="va">d</span><span class="op">$</span><span class="va">lbin_vector</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">lbin_vector</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">new_bin_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="va">new_bin_vec</span>,</span>
-<span class="r-in">    <span class="va">d</span><span class="op">$</span><span class="va">lbin_vector</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">lbin_vector</span><span class="op">)</span><span class="op">]</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="va">pop_bin_input</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
-<span class="r-in"><span class="va">pop_min_size_input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">lbin_vector_pop</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span></span>
-<span class="r-in"><span class="va">pop_max_size_input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">lbin_vector_pop</span><span class="op">)</span> <span class="op">+</span> <span class="fl">5</span></span>
-<span class="r-in"><span class="va">lbin_vec_pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">pop_min_size_input</span>,</span>
-<span class="r-in">  <span class="va">pop_max_size_input</span>,</span>
-<span class="r-in">  length.out <span class="op">=</span> <span class="op">(</span><span class="va">pop_max_size_input</span> <span class="op">-</span> <span class="va">pop_min_size_input</span><span class="op">)</span> <span class="op">/</span></span>
-<span class="r-in">    <span class="va">pop_bin_input</span> <span class="op">+</span> <span class="fl">1</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">l2</span> <span class="op">&lt;-</span> <span class="fu">change_em_binning</span><span class="op">(</span></span>
-<span class="r-in">  dat_list <span class="op">=</span> <span class="va">d</span>,</span>
-<span class="r-in">  bin_vector <span class="op">=</span> <span class="va">new_bin_vec</span>,</span>
-<span class="r-in">  lbin_method <span class="op">=</span> <span class="fl">2</span>,</span>
-<span class="r-in">  <span class="co"># Note: need more inputs with lbin_method = 2</span></span>
-<span class="r-in">  pop_binwidth <span class="op">=</span> <span class="va">pop_bin_input</span>,</span>
-<span class="r-in">  pop_minimum_size <span class="op">=</span> <span class="va">pop_min_size_input</span>,</span>
-<span class="r-in">  pop_maximum_size <span class="op">=</span> <span class="va">pop_max_size_input</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">l2</span><span class="op">$</span><span class="va">lbin_method</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># An example with lbin_method = 2</span></span></span>
+<span class="r-in"><span><span class="va">new_bin_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">lbin_vector</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">lbin_vector</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># add the max value if necessary.</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="va">new_bin_vec</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">new_bin_vec</span><span class="op">)</span><span class="op">]</span> <span class="op">!=</span> <span class="va">d</span><span class="op">$</span><span class="va">lbin_vector</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">lbin_vector</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">new_bin_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">new_bin_vec</span>,</span></span>
+<span class="r-in"><span>    <span class="va">d</span><span class="op">$</span><span class="va">lbin_vector</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">lbin_vector</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="va">pop_bin_input</span> <span class="op">&lt;-</span> <span class="fl">5</span></span></span>
+<span class="r-in"><span><span class="va">pop_min_size_input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">lbin_vector_pop</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="va">pop_max_size_input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">lbin_vector_pop</span><span class="op">)</span> <span class="op">+</span> <span class="fl">5</span></span></span>
+<span class="r-in"><span><span class="va">lbin_vec_pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">pop_min_size_input</span>,</span></span>
+<span class="r-in"><span>  <span class="va">pop_max_size_input</span>,</span></span>
+<span class="r-in"><span>  length.out <span class="op">=</span> <span class="op">(</span><span class="va">pop_max_size_input</span> <span class="op">-</span> <span class="va">pop_min_size_input</span><span class="op">)</span> <span class="op">/</span></span></span>
+<span class="r-in"><span>    <span class="va">pop_bin_input</span> <span class="op">+</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">l2</span> <span class="op">&lt;-</span> <span class="fu">change_em_binning</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  dat_list <span class="op">=</span> <span class="va">d</span>,</span></span>
+<span class="r-in"><span>  bin_vector <span class="op">=</span> <span class="va">new_bin_vec</span>,</span></span>
+<span class="r-in"><span>  lbin_method <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  <span class="co"># Note: need more inputs with lbin_method = 2</span></span></span>
+<span class="r-in"><span>  pop_binwidth <span class="op">=</span> <span class="va">pop_bin_input</span>,</span></span>
+<span class="r-in"><span>  pop_minimum_size <span class="op">=</span> <span class="va">pop_min_size_input</span>,</span></span>
+<span class="r-in"><span>  pop_maximum_size <span class="op">=</span> <span class="va">pop_max_size_input</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">l2</span><span class="op">$</span><span class="va">lbin_method</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
-<span class="r-in"><span class="co"># note bin width is now the same as the input</span></span>
-<span class="r-in"><span class="va">pop_bin_input</span></span>
+<span class="r-in"><span><span class="co"># note bin width is now the same as the input</span></span></span>
+<span class="r-in"><span><span class="va">pop_bin_input</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
-<span class="r-in"><span class="va">l2</span><span class="op">$</span><span class="va">binwidth</span></span>
+<span class="r-in"><span><span class="va">l2</span><span class="op">$</span><span class="va">binwidth</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
-<span class="r-in"><span class="co"># note the minimum size has changed based on the input:</span></span>
-<span class="r-in"><span class="va">pop_min_size_input</span></span>
+<span class="r-in"><span><span class="co"># note the minimum size has changed based on the input:</span></span></span>
+<span class="r-in"><span><span class="va">pop_min_size_input</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 9</span>
-<span class="r-in"><span class="va">l2</span><span class="op">$</span><span class="va">minimum_size</span></span>
+<span class="r-in"><span><span class="va">l2</span><span class="op">$</span><span class="va">minimum_size</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 9</span>
-<span class="r-in"><span class="co"># so has max</span></span>
-<span class="r-in"><span class="va">l2</span><span class="op">$</span><span class="va">maximum_size</span></span>
+<span class="r-in"><span><span class="co"># so has max</span></span></span>
+<span class="r-in"><span><span class="va">l2</span><span class="op">$</span><span class="va">maximum_size</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 206</span>
-<span class="r-in"><span class="va">l2</span><span class="op">$</span><span class="va">lbin_vector</span></span>
+<span class="r-in"><span><span class="va">l2</span><span class="op">$</span><span class="va">lbin_vector</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  20  24  28  32  36  40  44  48  52  56  60  64  68  72  76  80  84  88  92</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [20]  96 100 104 108 112 116 120 124 128 132 136 140 144 148 152</span>
-<span class="r-in"><span class="co"># other modified components:</span></span>
-<span class="r-in"><span class="va">l2</span><span class="op">$</span><span class="va">lbin_vector_pop</span></span>
+<span class="r-in"><span><span class="co"># other modified components:</span></span></span>
+<span class="r-in"><span><span class="va">l2</span><span class="op">$</span><span class="va">lbin_vector_pop</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]   9.000  13.925  18.850  23.775  28.700  33.625  38.550  43.475  48.400</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10]  53.325  58.250  63.175  68.100  73.025  77.950  82.875  87.800  92.725</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [19]  97.650 102.575 107.500 112.425 117.350 122.275 127.200 132.125 137.050</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [28] 141.975 146.900 151.825 156.750 161.675 166.600 171.525 176.450 181.375</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [37] 186.300 191.225 196.150 201.075 206.000</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">l2</span><span class="op">$</span><span class="va">lencomp</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">l2</span><span class="op">$</span><span class="va">lencomp</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Yr Seas FltSvy Gender Part Nsamp l20 l24 l28 l32 l36 l40 l44 l48 l52 l56 l60</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 26    1      1      0    0   100   2   1   1   2   1   1   2   1   1   2   1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 27    1      1      0    0   100   2   1   1   2   1   1   2   1   1   2   1</span>
@@ -280,7 +280,7 @@ Only necessary for <code>lbin_method = 2</code>.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

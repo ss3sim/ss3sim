@@ -73,27 +73,27 @@ in the output and ability to sample data after running the model.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">change_data</span><span class="op">(</span>
-  <span class="va">dat_list</span>,
-  outfile <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">fleets</span>,
-  <span class="va">years</span>,
-  types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"len"</span>, <span class="st">"age"</span>, <span class="st">"cal"</span>, <span class="st">"mla"</span>, <span class="st">"mwa"</span><span class="op">)</span>,
-  age_bins <span class="op">=</span> <span class="cn">NULL</span>,
-  len_bins <span class="op">=</span> <span class="cn">NULL</span>,
-  pop_binwidth <span class="op">=</span> <span class="cn">NULL</span>,
-  pop_minimum_size <span class="op">=</span> <span class="cn">NULL</span>,
-  pop_maximum_size <span class="op">=</span> <span class="cn">NULL</span>,
-  lcomp_constant <span class="op">=</span> <span class="cn">NULL</span>,
-  tail_compression <span class="op">=</span> <span class="cn">NULL</span>,
-  nsex <span class="op">=</span> <span class="fl">1</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">change_data</span><span class="op">(</span></span>
+<span>  <span class="va">dat_list</span>,</span>
+<span>  outfile <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">fleets</span>,</span>
+<span>  <span class="va">years</span>,</span>
+<span>  types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"len"</span>, <span class="st">"age"</span>, <span class="st">"cal"</span>, <span class="st">"mla"</span>, <span class="st">"mwa"</span><span class="op">)</span>,</span>
+<span>  age_bins <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  len_bins <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pop_binwidth <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pop_minimum_size <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pop_maximum_size <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  lcomp_constant <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tail_compression <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  nsex <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>dat_list</dt>
-<dd><p>An SS data list object as read in from
+<dd><p>A Stock Synthesis  data list object as read in from
 <code><a href="https://rdrr.io/pkg/r4ss/man/SS_readdat.html" class="external-link">SS_readdat</a></code>.
 Be sure to correctly specify which section of the data file you want
 to work with when reading it in using the <code>section</code> argument.
@@ -237,7 +237,7 @@ length data.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

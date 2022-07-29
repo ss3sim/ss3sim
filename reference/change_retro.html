@@ -73,21 +73,21 @@ alters the Stock Synthesis starter file to run a retrospective analysis.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">change_retro</span><span class="op">(</span>
-  str_file_in <span class="op">=</span> <span class="st">"starter.ss"</span>,
-  str_file_out <span class="op">=</span> <span class="st">"starter.ss"</span>,
-  retro_yr <span class="op">=</span> <span class="fl">0</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">change_retro</span><span class="op">(</span></span>
+<span>  str_file_in <span class="op">=</span> <span class="st">"starter.ss"</span>,</span>
+<span>  str_file_out <span class="op">=</span> <span class="st">"starter.ss"</span>,</span>
+<span>  retro_yr <span class="op">=</span> <span class="fl">0</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>str_file_in</dt>
-<dd><p>A string providing the path to the input SS <code>starter.ss</code> file.</p></dd>
+<dd><p>A string providing the path to the input Stock Synthesis <code>starter.ss</code> file.</p></dd>
 
 
 <dt>str_file_out</dt>
-<dd><p>A string providing the path to the output SS <code>starter.ss</code> file.</p></dd>
+<dd><p>A string providing the path to the output Stock Synthesis <code>starter.ss</code> file.</p></dd>
 
 
 <dt>retro_yr</dt>
@@ -127,25 +127,25 @@ the starter file 6 separate times.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Create a temporary folder for the output:</span></span>
-<span class="r-in"><span class="va">temp_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ss3sim-retro-example"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">temp_path</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Locate the package data:</span></span>
-<span class="r-in"><span class="va">starterfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"models"</span>, <span class="st">"cod-om"</span>,</span>
-<span class="r-in">  <span class="st">"starter.ss"</span>,</span>
-<span class="r-in">  package <span class="op">=</span> <span class="st">"ss3sim"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># No retrospective analysis:</span></span>
-<span class="r-in"><span class="fu">change_retro</span><span class="op">(</span><span class="va">starterfile</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">temp_path</span>, <span class="st">"/retro-0-starter.ss"</span><span class="op">)</span>,</span>
-<span class="r-in">  retro_yr <span class="op">=</span> <span class="fl">0</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># A retrospective analysis of 5 years:</span></span>
-<span class="r-in"><span class="fu">change_retro</span><span class="op">(</span><span class="va">starterfile</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">temp_path</span>, <span class="st">"/retro-5-starter.ss"</span><span class="op">)</span>,</span>
-<span class="r-in">  retro_yr <span class="op">=</span> <span class="op">-</span><span class="fl">5</span></span>
-<span class="r-in"><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create a temporary folder for the output:</span></span></span>
+<span class="r-in"><span><span class="va">temp_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ss3sim-retro-example"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">temp_path</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Locate the package data:</span></span></span>
+<span class="r-in"><span><span class="va">starterfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"models"</span>, <span class="st">"cod-om"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"starter.ss"</span>,</span></span>
+<span class="r-in"><span>  package <span class="op">=</span> <span class="st">"ss3sim"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># No retrospective analysis:</span></span></span>
+<span class="r-in"><span><span class="fu">change_retro</span><span class="op">(</span><span class="va">starterfile</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">temp_path</span>, <span class="st">"/retro-0-starter.ss"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  retro_yr <span class="op">=</span> <span class="fl">0</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># A retrospective analysis of 5 years:</span></span></span>
+<span class="r-in"><span><span class="fu">change_retro</span><span class="op">(</span><span class="va">starterfile</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">temp_path</span>, <span class="st">"/retro-5-starter.ss"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  retro_yr <span class="op">=</span> <span class="op">-</span><span class="fl">5</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -160,7 +160,7 @@ the starter file 6 separate times.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

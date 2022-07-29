@@ -77,7 +77,7 @@ to a <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="e
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">replace_x</span><span class="op">(</span><span class="va">x</span>, replacement <span class="op">=</span> <span class="cn">NA_integer_</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">replace_x</span><span class="op">(</span><span class="va">x</span>, replacement <span class="op">=</span> <span class="cn">NA_integer_</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -111,39 +111,39 @@ If the input object was of zero length, then the <code>replacement</code></p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">employees</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    id <span class="op">=</span> <span class="fl">1</span>,</span>
-<span class="r-in">    dept <span class="op">=</span> <span class="st">"IT"</span>,</span>
-<span class="r-in">    age <span class="op">=</span> <span class="fl">29</span>,</span>
-<span class="r-in">    sportsteam <span class="op">=</span> <span class="st">"softball"</span></span>
-<span class="r-in">  <span class="op">)</span>,</span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    id <span class="op">=</span> <span class="fl">2</span>,</span>
-<span class="r-in">    dept <span class="op">=</span> <span class="st">"IT"</span>,</span>
-<span class="r-in">    age <span class="op">=</span> <span class="fl">30</span>,</span>
-<span class="r-in">    sportsteam <span class="op">=</span> <span class="cn">NULL</span></span>
-<span class="r-in">  <span class="op">)</span>,</span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    id <span class="op">=</span> <span class="fl">3</span>,</span>
-<span class="r-in">    dept <span class="op">=</span> <span class="st">"IT"</span>,</span>
-<span class="r-in">    age <span class="op">=</span> <span class="fl">29</span>,</span>
-<span class="r-in">    sportsteam <span class="op">=</span> <span class="st">"hockey"</span></span>
-<span class="r-in">  <span class="op">)</span>,</span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    id <span class="op">=</span> <span class="fl">4</span>,</span>
-<span class="r-in">    dept <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span class="r-in">    age <span class="op">=</span> <span class="fl">29</span>,</span>
-<span class="r-in">    sportsteam <span class="op">=</span> <span class="st">"softball"</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="co"># Meat of the example here!</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">employees</span>, <span class="va">rbind</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/modify.html" class="external-link">modify_depth</a></span><span class="op">(</span><span class="fl">2</span>, <span class="va">replace_x</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">employees</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>    dept <span class="op">=</span> <span class="st">"IT"</span>,</span></span>
+<span class="r-in"><span>    age <span class="op">=</span> <span class="fl">29</span>,</span></span>
+<span class="r-in"><span>    sportsteam <span class="op">=</span> <span class="st">"softball"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>    dept <span class="op">=</span> <span class="st">"IT"</span>,</span></span>
+<span class="r-in"><span>    age <span class="op">=</span> <span class="fl">30</span>,</span></span>
+<span class="r-in"><span>    sportsteam <span class="op">=</span> <span class="cn">NULL</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>    dept <span class="op">=</span> <span class="st">"IT"</span>,</span></span>
+<span class="r-in"><span>    age <span class="op">=</span> <span class="fl">29</span>,</span></span>
+<span class="r-in"><span>    sportsteam <span class="op">=</span> <span class="st">"hockey"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="fl">4</span>,</span></span>
+<span class="r-in"><span>    dept <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>    age <span class="op">=</span> <span class="fl">29</span>,</span></span>
+<span class="r-in"><span>    sportsteam <span class="op">=</span> <span class="st">"softball"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Meat of the example here!</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">employees</span>, <span class="va">rbind</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/modify.html" class="external-link">modify_depth</a></span><span class="op">(</span><span class="fl">2</span>, <span class="va">replace_x</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -158,7 +158,7 @@ If the input object was of zero length, then the <code>replacement</code></p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
