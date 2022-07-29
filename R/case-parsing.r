@@ -1,14 +1,3 @@
-#' Use [substr()] but from the right rather than the left
-#'
-#' @references
-#' http://stackoverflow.com/questions/7963898/extracting-the-last-n-characters-from-a-string-in-r
-#' @param x A character object.
-#' @param n The number of characters from the right to left that you want to extract.
-substr_r <- function(x, n) {
-  substr(x, nchar(x) - n + 1, nchar(x))
-}
-
-
 #' Check and standardize list components of sampling functions
 #'
 #' @param fleets Fleet numbers as a vector.

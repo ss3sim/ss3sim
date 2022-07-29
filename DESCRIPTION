@@ -66,6 +66,7 @@ Imports:
     r4ss (>= 1.43.2),
     rlang,
     stats,
+    stringi,
     tibble,
     tidyr,
     utils

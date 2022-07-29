@@ -71,7 +71,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
 
   ## Check inputs for errors
   if (!is.null(outfile)) {
-    if (substr_r(outfile, 4) != ".dat") {
+    if (stringi::stri_sub(str = outfile, from = -4) != ".dat") {
       stop(paste0("outfile ", outfile, " needs to end in .dat"))
     }
   }

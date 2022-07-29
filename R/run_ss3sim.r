@@ -151,7 +151,7 @@ run_ss3sim <- function(iterations,
         message("Running iterations in parallel.")
         foreach::foreach(
           it_ = iterations, .packages = "ss3sim",
-          .verbose = TRUE, .export = "substr_r"
+          .verbose = TRUE,
         ) %dopar%
           do.call("ss3sim_base", c(x, list(iterations = it_), dots))
       })
@@ -159,7 +159,7 @@ run_ss3sim <- function(iterations,
       message("Running scenarios in parallel.")
       ignore <- foreach::foreach(
         x = arg_list, .packages = "ss3sim",
-        .verbose = FALSE, .export = "substr_r"
+        .verbose = FALSE,
       ) %dopar%
         do.call("ss3sim_base", c(x, list(iterations = iterations, ...)))
     }
