@@ -39,7 +39,7 @@ An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 numeric vectors. If no fleet collected samples, keep the value to
 \code{years=NULL}.}
 
-\item{sds_obs, }{sds_out A list the same length as \code{fleets} specifying the
+\item{sds_obs, sds_out}{A list the same length as \code{fleets} specifying the
 standard deviation of the observation error used for the sampling and
 the value used in the returned output. Thus, \code{sds_obs} is what is actually
 used to sample and \code{sds_out} can be used to test what happens when the
