@@ -28,7 +28,7 @@
 #' @template lcomp-agecomp-index
 #' @template dat_list
 #' @template outfile
-#' @param sds_obs, sds_out A list the same length as `fleets` specifying the
+#' @param sds_obs,sds_out A list the same length as `fleets` specifying the
 #'   standard deviation of the observation error used for the sampling and
 #'   the value used in the returned output. Thus, `sds_obs` is what is actually
 #'   used to sample and `sds_out` can be used to test what happens when the
