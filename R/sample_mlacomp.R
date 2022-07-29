@@ -80,7 +80,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
   if (length(years) != Nfleets) {
     stop("years needs to be a list of same length as fleets")
   }
-  if (class(years) != "list" & length(years) > 1 & Nfleets == 1) {
+  if (!inherits(years, "list") && length(years) > 1 && Nfleets == 1) {
     stop("years needs to be a list unless it only includes one fleet and one year")
   }
   if (is.null(mlacomp)) {

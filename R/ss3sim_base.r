@@ -388,7 +388,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         unlist(local, recursive = FALSE, use.names = FALSE),
         names(local)
       )
-      if (class(out) == "numeric") {
+      if (inherits(out, "numeric")) {
         return(local)
       } else {
         return(out)

@@ -28,7 +28,7 @@ sample_discard <- function(dat_list,
                            years,
                            sds_obs,
                            seas = list(1)) {
-  if (!is.list(dat_list) | is.null(dat_list[["discard_data"]])) {
+  if (!is.list(dat_list) || is.null(dat_list[["discard_data"]])) {
     stop("dat_list must be a list object read in using r4ss::SS_readdat().")
   }
   ev <- dat_list$discard_data # expected values.
@@ -37,21 +37,21 @@ sample_discard <- function(dat_list,
   if (FALSE %in% (fleets %in% unique(ev$Flt))) {
     stop("The specified fleet numbers do not match input file")
   }
-  if (Nfleets != 0 & class(sds_obs) != "list" | length(sds_obs) != Nfleets) {
+  if (Nfleets != 0 && !inherits(sds_obs, "list") || length(sds_obs) != Nfleets) {
     stop("sds_obs needs to be a list of same length as fleets")
   }
-  if (Nfleets != 0 & class(years) != "list" | length(years) != Nfleets) {
+  if (Nfleets != 0 && !inherits(years, "list") || length(years) != Nfleets) {
     stop("years needs to be a list of same length as fleets")
   }
   for (i in 1:Nfleets) {
-    if (length(sds_obs[[i]]) > 1 & length(sds_obs[[i]]) != length(years[[i]])) {
+    if (length(sds_obs[[i]]) > 1 && length(sds_obs[[i]]) != length(years[[i]])) {
       stop(
         "Length of sds_obs does not match length of years for fleet ",
         fleets[i]
       )
     }
   }
-  if (length(seas) != length(fleets) & length(seas) == 1) {
+  if (length(seas) != length(fleets) && length(seas) == 1) {
     seas <- rep(list(seas), length(fleets))
   }
 
