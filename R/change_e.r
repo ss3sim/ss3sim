@@ -87,10 +87,7 @@ change_e <- function(ctl_file_in = "em.ctl",
         active = FALSE
       )
       defaultq <- defaultq[grep("LnQ_", defaultq$Label), ]
-      fleet_q <- sapply(
-        strsplit(par_name_q, "\\(|\\)|_"),
-        function(x) x[grepl("[0-9]+", x)]
-      )
+      fleet_q <- gsub(".+\\(([0-9]*)\\)", "\\1", par_name_q, perl = TRUE)
     }
 
     phasenochange <- is.na(par_phase)

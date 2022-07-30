@@ -102,17 +102,17 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
       "vectors, with the same dimensions as years."
     ))
   }
-  if (any(sapply(Nsamp, length) == 1)) {
-    repNsamp <- which(sapply(Nsamp, length) == 1)
+  if (any(vapply(Nsamp, length, 1L) == 1)) {
+    repNsamp <- which(vapply(Nsamp, length, 1L) == 1)
     for (i in repNsamp) {
       Nsamp[[i]] <- rep_len(Nsamp[[i]], length(years[[i]]))
     }
   }
-  if (any(sapply(Nsamp, length) != sapply(years, length))) {
+  if (any(vapply(Nsamp, length, 1L) != vapply(years, length, 1L))) {
     stop(paste(
       "Number of samples were not specified for every year.\n",
       "Length of years and Nsamp did not match for fleet(s)",
-      fleets[which(sapply(Nsamp, length) != sapply(years, length))]
+      fleets[which(vapply(Nsamp, length, 1L) != vapply(years, length, 1L))]
     ))
   }
   ## End input checks
@@ -142,7 +142,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
         ))
       }
       # Get the columns that pertain to the actual mla data and not metadata
-      mla.means <- as.numeric(mlacomp.new[paste0("a", agebin_vector)])
+      mla.means <- as.numeric(mlacomp.new[grepl("^[fmuaFMUA][0-9]+$", names(mlacomp.new))])
       # For each age, given year and fleet, get the expected length and CV
       # around length, then sample from it using lognormal (below)
       # length for a given age is lognormal with expected value = E[mla]
@@ -178,12 +178,17 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
       if (any(age.means > 1)) {
         # Create a vector of empirical samples of ages, such that each age bin
         # is repeated equal to the number of observed fish in that bin.
-        prob.age.ints <- unlist(sapply(seq_along(age.means), function(x) {
-          rep(x, age.means[x])
-        }))
+        prob.age.ints <- unlist(lapply(
+          X = seq_along(age.means),
+          FUN = function(x) {rep(x, age.means[x])}
+        ))
         # Resample to guarantee the sample size does not exceed the observed
         temp <- sample(x = prob.age.ints, size = age.Nsamp, replace = FALSE)
-        age.samples <- sapply(seq_along(age.means), function(x) sum(temp == x))
+        age.samples <- vapply(
+          X = seq_along(age.means),
+          FUN = function(x) sum(temp == x),
+          FUN.VALUE = 1L
+        )
       } else {
         # in the case of overdispersed age comp data
         age.samples <- stats::rmultinom(

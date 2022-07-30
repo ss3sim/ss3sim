@@ -91,7 +91,7 @@ change_f <- function(years,
 
   #### Input checks
   if (is.list(years)) {
-    times <- sapply(years, length)
+    times <- vapply(X = years, FUN = length, FUN.VALUE = 1L)
   } else {
     times <- length(years)
     years <- list(years)

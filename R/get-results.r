@@ -13,7 +13,12 @@ id_scenarios <- function(directory) {
   all.dirs <- list.dirs(path = directory, full.names = FALSE, recursive = TRUE)
   seperator <- paste0(.Platform$file.sep, "[0-9]+", .Platform$file.sep)
   scensfull <- grep(seperator, all.dirs, value = TRUE)
-  scens <- unique(sapply(strsplit(scensfull, seperator), "[[", 1))
+  scens <- unique(vapply(
+    X = strsplit(scensfull, seperator),
+    FUN = "[[",
+    1, 
+    FUN.VALUE = "character"
+  ))
   if (length(scens) == 0) {
     stop("No scenario folders were found in ", directory)
   }
@@ -498,8 +503,8 @@ get_results_derived <- function(report.file) {
   tosplit <- strsplit(
     xx[, grep("Label", colnames(xx), ignore.case = TRUE)], "_"
   )
-  xx$Yr <- sapply(tosplit, "[", 2)
-  xx$name <- sapply(tosplit, "[", 1)
+  xx$Yr <- vapply(tosplit, "[", 2, FUN.VALUE = "character")
+  xx$name <- vapply(tosplit, "[", 1, FUN.VALUE = "character")
   badname <- grep("Label", colnames(xx), value = TRUE, ignore.case = TRUE)
   if (all(xx$StdDev == 0)) xx <- xx[, -which(colnames(xx) == "StdDev")]
   xx <- xx[grep("[0-9]", xx$Yr), ]

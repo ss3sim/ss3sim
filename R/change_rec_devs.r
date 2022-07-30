@@ -37,7 +37,10 @@
 #'   ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
 #'   ctl_file_out = file.path(tempdir(), "control_recdevsInitial.ss")
 #' )
-#' sapply(dir(tempdir(), pattern = "control_.+ss", full.names = TRUE), unlink)
+#' lapply(
+#'   X = dir(tempdir(), pattern = "control_.+ss", full.names = TRUE),
+#'   FUN = unlink
+#' )
 change_rec_devs <- function(recdevs,
                             ctl_file_in, ctl_file_out = "control_recruitment.ss") {
   ctl <- readLines(ctl_file_in)

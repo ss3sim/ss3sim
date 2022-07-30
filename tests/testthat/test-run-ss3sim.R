@@ -185,5 +185,5 @@ test_that("run_ss3sim works with multiple scenarios without estimation", {
   expect_equal(ssem$lbin_vector, seq(10, 190, by = 10))
   expect_true(all(ssem$len_info$addtocomp == 1e-10))
   expect_true(all(ssem$len_info$mintailcomp == -1))
-  sapply(scname, unlink, recursive = TRUE)
+  unlink(scname, recursive = TRUE)
 })

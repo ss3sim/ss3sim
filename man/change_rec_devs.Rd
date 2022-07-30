@@ -47,7 +47,10 @@ change_rec_devs(
   ctl_file_in = file.path(d, "cod-om", "codOM.ctl"),
   ctl_file_out = file.path(tempdir(), "control_recdevsInitial.ss")
 )
-sapply(dir(tempdir(), pattern = "control_.+ss", full.names = TRUE), unlink)
+lapply(
+  X = dir(tempdir(), pattern = "control_.+ss", full.names = TRUE),
+  FUN = unlink
+)
 }
 \author{
 Kelli F. Johnson

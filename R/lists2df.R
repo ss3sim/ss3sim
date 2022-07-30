@@ -25,11 +25,11 @@
 #'
 lists2df <- function(...) {
   lists <- list(...)
-  if (length(unique(sapply(lists, length))) != 1) {
+  if (length(unique(vapply(lists, length, 1L))) != 1) {
     stop("Lists are not all the same length.")
   }
   lvecs <- do.call("rbind", rapply(lists, length, how = "list"))
-  if (all(sapply(apply(lvecs, 2, unique), length) != 1)) {
+  if (all(vapply(apply(lvecs, 2, unique), length, 1L) != 1)) {
     stop(
       "Vectors within each list are not the same length for each",
       " ith element of the input lists."
@@ -91,7 +91,7 @@ scalar2list <- function(scalar, length) {
     stop("scalar2list was terminated.", call. = FALSE)
   }
 
-  testthat::expect_equivalent(length, sapply(out, length),
+  testthat::expect_equivalent(length, vapply(out, length, 1L),
     label = "\nscalar2list: specified 'length' is\n"
   )
   return(out)

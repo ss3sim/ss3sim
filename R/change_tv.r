@@ -194,9 +194,9 @@ change_tv <- function(change_tv_list,
   divider.a <- grep("#_Spawner-Recruitment", ss3.ctl, fixed = TRUE)[1]
   divider.b <- grep("#_Q_setup", ss3.ctl, fixed = TRUE)[1]
   divider.c <- grep("_size_selex_patterns", ss3.ctl, fixed = TRUE)[1]
-  lab <- sapply(
-    names(change_tv_list),
-    function(x) {
+  lab <- vapply(
+    X = names(change_tv_list),
+    FUN = function(x) {
       val <- grep(pattern = x, x = ss3.ctl, fixed = TRUE)[1]
       if (is.na(val)) {
         stop(
@@ -213,7 +213,8 @@ change_tv <- function(change_tv_list,
       if (val > divider.c) temp <- "sx"
       if (x %in% ss3.dat$fleetnames) temp <- "qs"
       temp
-    }
+    },
+    FUN.VALUE = "character"
   )
   tab <- as.data.frame.table(table(lab))
   # For MG parms or selectivity parameters, turn on the environmental link in the
