@@ -13,11 +13,7 @@ change_e(
   par_int = "NA",
   par_phase = "NA",
   forecast_num = 0,
-  verbose = FALSE,
-  natM_type = NULL,
-  natM_n_breakpoints = NULL,
-  natM_lorenzen = NULL,
-  natM_val = NULL
+  verbose = FALSE
 )
 }
 \arguments{
@@ -60,14 +56,6 @@ generate forecasts rather than use the data to fit the model.}
 \item{verbose}{When \code{TRUE} messages will be returned
 from the function. Often useful for debugging. The default
 is \code{FALSE}.}
-
-\item{natM_type}{Deprecated. Should have value NULL.}
-
-\item{natM_n_breakpoints}{Deprecated. Should have value NULL.}
-
-\item{natM_lorenzen}{Deprecated. Should have value NULL.}
-
-\item{natM_val}{Deprecated. Should have value NULL.}
 }
 \value{
 Altered versions of Stock Synthesis \code{.ctl} and \code{forecast.ss} files are written

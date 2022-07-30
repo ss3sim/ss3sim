@@ -35,10 +35,6 @@ test_that("change_e works as expected", {
     ctl_file_out = "change_e.ctl",
     dat_list = datalist,
     for_file_in = "forecast.ss",
-    natM_type = NULL,
-    natM_n_breakpoints = NULL,
-    natM_lorenzen = NULL,
-    natM_val = NULL,
     par_name = c("SR_BH_steep", "Size_DblN_peak_Fishery(1)"),
     par_int = c(0.3, 40),
     par_phase = c(3, 2),
@@ -51,76 +47,6 @@ test_that("change_e works as expected", {
   expect_equal(new_ctl[steep_line, "PHASE"], 3)
   expect_equal(new_ctl[sel_line, "INIT"], 40)
   expect_equal(new_ctl[sel_line, "PHASE"], 2)
-})
-test_that("change_e M inputs are properly deprecated", {
-  expect_error(change_e(
-    ctl_file_in = "codOM.ctl",
-    ctl_file_out = "change_e.ctl",
-    dat_list = datalist,
-    for_file_in = "forecast.ss",
-    natM_type = "n_breakpoints",
-    natM_n_breakpoints = NULL,
-    natM_lorenzen = NULL,
-    natM_val = NULL,
-    par_name = c("SR_BH_steep", "Size_DblN_peak_Fishery(1)"),
-    par_int = c(0.3, 40),
-    par_phase = c(3, 2),
-    forecast_num = 0
-  ),
-  "Parameters in change_e: natM_type, natM_n_breakpoints, natM_lorenzen, and natM_val have been deprecated",
-  fixed = TRUE
-  )
-  expect_error(change_e(
-    ctl_file_in = "codOM.ctl",
-    ctl_file_out = "change_e.ctl",
-    dat_list = datalist,
-    for_file_in = "forecast.ss",
-    natM_type = NULL,
-    natM_n_breakpoints = c(1, 4),
-    natM_lorenzen = NULL,
-    natM_val = NULL,
-    par_name = c("SR_BH_steep", "Size_DblN_peak_Fishery(1)"),
-    par_int = c(0.3, 40),
-    par_phase = c(3, 2),
-    forecast_num = 0
-  ),
-  "Parameters in change_e: natM_type, natM_n_breakpoints, natM_lorenzen, and natM_val have been deprecated",
-  fixed = TRUE
-  )
-  expect_error(change_e(
-    ctl_file_in = "codOM.ctl",
-    ctl_file_out = "change_e.ctl",
-    dat_list = datalist,
-    for_file_in = "forecast.ss",
-    natM_type = NULL,
-    natM_n_breakpoints = NULL,
-    natM_lorenzen = NULL,
-    natM_val = c(.2, 3, 0.4, 5),
-    par_name = c("SR_BH_steep", "Size_DblN_peak_Fishery(1)"),
-    par_int = c(0.3, 40),
-    par_phase = c(3, 2),
-    forecast_num = 0
-  ),
-  "Parameters in change_e: natM_type, natM_n_breakpoints, natM_lorenzen, and natM_val have been deprecated",
-  fixed = TRUE
-  )
-  expect_error(change_e(
-    ctl_file_in = "codOM.ctl",
-    ctl_file_out = "change_e.ctl",
-    dat_list = datalist,
-    for_file_in = "forecast.ss",
-    natM_type = NULL,
-    natM_n_breakpoints = NULL,
-    natM_lorenzen = c(0.1, 0.2, 0.3),
-    natM_val = NULL,
-    par_name = c("SR_BH_steep", "Size_DblN_peak_Fishery(1)"),
-    par_int = c(0.3, 40),
-    par_phase = c(3, 2),
-    forecast_num = 0
-  ),
-  "Parameters in change_e: natM_type, natM_n_breakpoints, natM_lorenzen, and natM_val have been deprecated",
-  fixed = TRUE
-  )
 })
 
 test_that("change_em_binning works with method = 1", {

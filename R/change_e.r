@@ -23,10 +23,6 @@
 #'   the data will be removed from the `dat_list`, enabling Stock Synthesis to
 #'   generate forecasts rather than use the data to fit the model.
 #' @template verbose
-#' @param natM_type Deprecated. Should have value NULL.
-#' @param natM_n_breakpoints Deprecated. Should have value NULL.
-#' @param natM_lorenzen Deprecated. Should have value NULL.
-#' @param natM_val Deprecated. Should have value NULL.
 #' @family change functions
 #' @return
 #' Altered versions of Stock Synthesis `.ctl` and `forecast.ss` files are written
@@ -55,12 +51,7 @@ change_e <- function(ctl_file_in = "em.ctl",
                      par_int = "NA",
                      par_phase = "NA",
                      forecast_num = 0,
-                     verbose = FALSE,
-                     # below are deprecated parameters:
-                     natM_type = NULL,
-                     natM_n_breakpoints = NULL,
-                     natM_lorenzen = NULL,
-                     natM_val = NULL) {
+                     verbose = FALSE) {
   if (is.list(par_name)) par_name <- unlist(par_name)
   if (is.list(par_int)) par_int <- unlist(par_int)
   if (is.list(par_phase)) par_phase <- unlist(par_phase)
@@ -73,27 +64,6 @@ change_e <- function(ctl_file_in = "em.ctl",
   # will be in the same directory, so now we can specify the out directory
   # and out file and not overwrite the original file
   file.copy(ctl_file_in, ctl_file_out)
-
-  # provide errors if deprecated parameters are used.
-  lapply(
-    list(
-      natM_type = natM_type, natM_n_breakpoints = natM_n_breakpoints,
-      natM_lorenzen = natM_lorenzen, natM_val = natM_val
-    ),
-    function(x) {
-      if (!is.null(x)) {
-        stop(
-          "Parameters in change_e: natM_type, natM_n_breakpoints, ",
-          "natM_lorenzen, and natM_val have been deprecated and cannot be ",
-          "used. Instead, please make sure the default values NULL are used",
-          " for deprecated parameters and specify your natural mortality ",
-          "type within the EM model itself. If you wish to change the ",
-          "value or phase of M parameter(s), please use parameters ",
-          "par_name, par_init, and par_phase."
-        )
-      }
-    }
-  )
   ss3.ctl <- readLines(ctl_file_out)
 
   if (!is.null(par_name)) {
