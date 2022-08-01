@@ -1,29 +1,23 @@
 ss3sim
 ======
 
--   [Badges](#badges)
--   [Installation](#installation)
--   [The ss3sim simulation setup](#the-ss3sim-simulation-setup)
--   [How ss3sim works](#how-ss3sim-works)
--   [Example output from an ss3sim simulation](#example-output-from-an-ss3sim-simulation)
--   [Citing ss3sim](#citing-ss3sim)
--   [Contributing to ss3sim](#contributing-to-ss3sim)
--   [Code of conduct](#code-of-conduct)
-
-<!-- end toc -->
-
-Badges
-------
-
 main: [![R-CMD-check](https://github.com/ss3sim/ss3sim/workflows/R-CMD-check/badge.svg)](https://github.com/ss3sim/ss3sim/actions?query=workflow%3AR-CMD-check) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ss3sim)](https://cran.r-project.org/package=ss3sim)
 
-ss3sim is an R package that simplifies the steps needed to generate beautiful simulation output from the widely-used [Stock Synthesis](https://github.com/nmfs-stock-synthesis/stock-synthesis) (SS3) statistical age-structured stock assessment framework. To learn more, read on or check out the [vignettes](https://ss3sim.github.io/ss3sim/).
+{ss3sim} is an R package that simplifies the steps needed to generate beautiful simulation output from the widely-used [Stock Synthesis](https://github.com/nmfs-stock-synthesis/stock-synthesis) (SS3) statistical age-structured stock assessment framework. To learn more, read on or check out the [vignettes](https://ss3sim.github.io/ss3sim/).
 
+-   [Badges](#badges)
+-   [Installation](#installation)
+-   [{ss3sim} simulation setup](#the-ss3sim-simulation-setup)
+-   [How {ss3sim} works](#how-ss3sim-works)
+-   [Example output from an ss3sim simulation](#example-output-from-an-ss3sim-simulation)
+-   [Citing {ss3sim}](#citing-ss3sim)
+-   [Contributing to {ss3sim}](#contributing-to-ss3sim)
+-   [Code of conduct](#code-of-conduct)
 
 Installation
 ------------
 
-Install the [CRAN version](https://cran.r-project.org/package=ss3sim) of ss3sim with:
+Install the [CRAN version](https://cran.r-project.org/package=ss3sim) of {ss3sim} with:
 
 ``` r
 install.packages("ss3sim")
@@ -32,16 +26,13 @@ install.packages("ss3sim")
 Or, install the development version from GitHub:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github(
+# install.packages("remotes")
+remotes::install_github(
   "ss3sim/ss3sim",
   ref = "main",
   build_vignettes = TRUE, dependencies = TRUE
 )
-library(ss3sim)
 ```
-
-A note: As of April 9, 2021, use of parallel master and development branches in the GitHub ss3sim repository has ended. The default branch is now called main, and feature branches will be used for new development. Once tested, feature branches should be merged into main. See issue #305 for more details.
 
 We suggest using the GitHub version because it comes with the SS3 executable/binary. If you are using the CRAN version, you will need to install the binary and place it in your system path. See the [Introduction vignette](https://ss3sim.github.io/ss3sim/articles/introduction.html) for more details on how to get the latest version of SS3 and [place it in your path](https://ss3sim.github.io/ss3sim/articles/introduction.html#installing-stock-synthesis).
 
@@ -53,20 +44,43 @@ browseVignettes("ss3sim")
 vignette("introduction", "ss3sim")
 ```
 
-The ss3sim simulation setup
----------------------------
+The {ss3sim} simulation setup
+-----------------------------
 
-An ss3sim simulation requires three types of input:
+An {ss3sim} simulation requires three types of input:
 
 1.  a base model of the underlying truth (an SS3 operating model; OM),
 2.  a base model of how you will assess that truth (an SS3 estimation model; EM), and
-3.  a data frame specifying how you want to manipulate (1) and (2) from their base-model configurations.
+3.  a data frame specifying how you want to manipulate (1) and (2) from their status-quo configurations.
 
-You can find examples of an SS3 OM and EM [within the package data](https://github.com/ss3sim/ss3sim/tree/master/inst/extdata/models). An example data frame for (3) is also available within the package via `ss3sim::setup_scenarios_defaults()`. Adding columns to this default scenario data frame will enable the manipulation of additional components of the OM, sampling procedure, and the EM. Adding rows to this default scenario data frame will lead to more scenarios, where a scenario is the result of the combination of specifications in that row, i.e., how you manipulate the OM and the EM. There will be many folders inside each scenario folder, where each of these folders are iterations. Iterations within a scenario differ only by the seed used within R to define the randomness of that iteration.
+You can find examples of an OM and EM [on GitHub](https://github.com/ss3sim/ss3sim/tree/master/inst/extdata/models) or locally on your machine if you have installed {ss3sim}. To find the location of these files locally, run `system.file("extdata", "models", package = "ss3sim")`. Users often modify these files to create new life histories or modify their own files from a production stock assessment to work within {ss3sim}. See the vignettes [ on modifying models](https://ss3sim.github.io/ss3sim/articles/modifying-models.html) and [making models](https://ss3sim.github.io/ss3sim/articles/making-models.html) for more information.
 
-![An illustration of the input and output file and folder structure.](https://raw.githubusercontent.com/ss3sim/ss3sim/f763cfb462a9e68db670155070cd554812a65160/man/figures/filestructure.png)
+An example data frame for (3) is also available within the package via `ss3sim::setup_scenarios_defaults()`. This example is sufficient to run a single scenario using the OM and EM supplied in the package. Many more options (i.e., columns) are possible and users should take note that this example provided in the package represents a minimum viable setup. Users can either create their own data frame in R or augment this existing data frame to run a set of custom scenarios. Specifically, adding columns will enable the manipulation of additional components of the OM, sampling procedure, and the EM. Adding will lead to more scenarios, where a scenario is the result of the combination of specifications in that row, i.e., how you manipulate the OM and the EM.
 
-An illustration of the input and output file and folder structure.
+{ss3sim} stores each scenario in its own directory. Inside the scenario directory will be one directory per iteration. Iterations within a scenario differ only by the seed used within R to define the randomness of that iteration. See the figure below for an example directory structure from a simulation with two scenarios and 3 iterations.
+
+```
+├📁 scenario 1
+│   ├📁  1
+│   │    ├📁  OM
+│   │    └📁  EM
+│   ├📁  2
+│   │    ├📁  OM
+│   │    └📁  EM
+│   └📁  3
+│        ├📁  OM
+│        └📁  EM
+└📁 scenario 2
+    ├📁  1
+    │     ├📁  OM
+    │     └📁  EM
+    ├📁  2
+    │     ├📁  OM
+    │     └📁  EM
+    └📁  3
+         ├📁  OM
+         └📁  EM
+```
 
 How ss3sim works
 ----------------
@@ -75,7 +89,7 @@ ss3sim works by converting simulation arguments (e.g., a given natural mortality
 
 ss3sim functions are divided into three types:
 
-1.  `change` and `sample` functions that manipulate SS3 configuration files. These manipulations generate an underlying "truth" (operating models) and control our assessment of those models (estimation models).
+1.  `change` and `sample` functions that manipulate SS3 configuration files. These manipulations generate an underlying "truth" (OMs) and control our assessment of those models (EMs).
 
 2.  `run` functions that conduct simulations. These functions generate a folder structure, call manipulation functions, run SS3 as needed, and save the output.
 
@@ -84,9 +98,21 @@ ss3sim functions are divided into three types:
 Example output from an ss3sim simulation
 ----------------------------------------
 
-![An example of ss3sim output](https://raw.github.com/seananderson/ss3sim/master/inst/ms/fig2-20131109.png)
+```r
+data("scalar_dat", package = "ss3sim")
+p <- scalar_dat %>%
+  dplyr::mutate(
+    M = ifelse(NatM_p_1_Fem_GP_1 == 0.2, "M = 0.2", "M = Estimated")
+  ) %>%
+  dplyr::filter(model_run == "em") %>%
+  ggplot2::ggplot(ggplot2::aes(x = LnQ_base_Survey_2, y = depletion)) +
+  ggplot2::geom_point() +
+  ggplot2::facet_grid("M") +
+  ggplot2::xlab("Survey scalar (q)")
+print(p)
+```
 
-This example shows a crossed simulation in which we considered (1) the effect of fixing natural mortality (*M*) at its true value from the OM (0.2; E0) or estimating *M* (E1) and (2) the effect of high survey effort (sigma\_survey = 0.1; D0) or low survey effort (sigma\_survey = 0.4; D1). Upper panels (blue) show time series of relative error in spawning stock biomass (SSB). Lower panels (gray) show the distribution of relative error across four scalar variables: depletion, *M*, SSB at maximum sustainable yield (SSB\_MSY), and fishing mortality (*F*) in the terminal year. We show the values across simulation iterations with dots and the distributions with bean plots (kernel density smoothers).
+Use the previous code chunk to visualize the results of a simulation that investigated scenarios that fixed natural mortality (*M*) at its true value from the OM (0.2) or estimated *M*. Upper panel shows how the estimates depletion change as the estimate of *q* changes for when *M* is fixed at the truth and the lower panel shows the same relationship when *M* is estimated.
 
 Citing ss3sim
 -------------
