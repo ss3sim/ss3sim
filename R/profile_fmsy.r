@@ -6,29 +6,33 @@
 #' @param om_in A full or relative path to a directory that contains an
 #'   \pkg{ss3sim} operating model.
 #' @param results_out A full or relative path to a directory where the results
-#' will be saved. The directory will be created if it doesn't already exist.
-#' @param start Lower fishing mortality levels that will be explored.
-#' @param end Upper fishing mortality levels that will be explored.
-#' @param by_val Interval at which F will be incremented between `start`
-#'   and `end`.
+#' will be saved. The directory will be created if it does not already exist.
+#' @param start,end A single numerical value for each argument specifying the
+#'   lowest and highest fishing levels that you want to explore for the fishing
+#'   fleet in your model.
+#' @param by_val Interval at which fishing mortality will be incremented
+#'   between `start` and `end` using `seq(start, end, by_val)`.
 #' @template verbose
-#' @return Creates a plot and a table with catches and F values.
-#' Also, invisibly returns a table of F and catch as a data frame.
+#' @return A data frame of catch by fishing mortality is returned invisibly and
+#' saved to the disk along with a figure, `Fmsy.pdf`.
 #' @export
-#' @details This function extracts the number of years from the data
-#' file and then runs the model with a constant level of fishing for each year,
-#' extracting the catch in the last year. This assumes the length of the
-#' model is long enough to reach an equilibrium catch. The user is
-#' responsible for ensuring this fact. If the function is run with
-#' `verbose = TRUE`, which is not the default, users will be provided
-#' with coefficient of variations of the catches in the terminal years of
-#' the model. Here, terminal is defined as half as many years as there are
+#' @details `profile_fmsy()` runs the operating model with a constant level of
+#' fishing for each year and extracts the expected catch in the terminal year.
+#' It is assumed that the model time series is long enough for the population
+#' to come to equilibrium, and thus, the catch in the terminal year is
+#' equivalent to equilibrium catch.
+#'
+#' If the function is run with `verbose = TRUE`, which is not the default,
+#' the coefficient of variations of the catches in the terminal years of
+#' the model will be printed to the screen.
+#' Here, terminal is defined as half as many years as there are
 #' ages in the population dynamics of your model.
 #' Thus, if the population plus group starts at age twenty,
-#' then the standard deviation of the last ten years of catch
+#' the standard deviation of the last ten years of catch
 #' divided by the mean catch over that same time will be printed to the
 #' screen for each model that is ran. For the default cod model provided within
-#' the package, the CV is less than 1e-04 for all F levels explored.
+#' the package, the CV is less than 1e-04 for all explored levels of fishing
+#' mortality.
 #'
 #' Ensure that the argument `om_in` leads to an operating model that is
 #' configured for use within \pkg{ss3sim}. For example, the \eqn{F} type must
@@ -46,109 +50,135 @@
 #' unlink("fmsy", recursive = TRUE)
 #' }
 #'
-profile_fmsy <- function(om_in, results_out,
-                         start = 0.00, end = 1.5, by_val = 0.01, verbose = FALSE) {
-  origWD <- getwd()
-  on.exit(expr = setwd(origWD), add = FALSE)
+profile_fmsy <- function(om_in,
+                         results_out,
+                         start = 0.00,
+                         end = 1.5,
+                         by_val = 0.01,
+                         verbose = FALSE) {
 
-  ss_bin <- get_bin("ss")
   om_in <- normalizePath(om_in, mustWork = TRUE)
   dir.create(results_out, showWarnings = FALSE, recursive = TRUE)
-  setwd(results_out)
-  ignore <- file.copy(dir(om_in, full.names = TRUE), list.files(om_in),
+  file.copy(
+    from = dir(om_in, full.names = TRUE),
+    to = file.path(results_out, list.files(om_in)),
     overwrite = TRUE
   )
-  starter <- r4ss::SS_readstarter(verbose = FALSE)
-
-  fVector <- seq(start, end, by_val)
-  fEqCatch <- NULL
-  CVs <- NULL
-
-  ## read in dat file to get years of model
-  datFile <- r4ss::SS_readdat(
-    file = starter$datfile,
+  starter <- r4ss::SS_readstarter(
+    file = file.path(results_out, "starter.ss"),
     verbose = FALSE
   )
-  simlength <- datFile$endyr - datFile$styr + 1
-  forecast <- r4ss::SS_readforecast(file = "forecast.ss", verbose = FALSE)
+
+  f_in <- seq(start, end, by_val)
+  catch_out <- NULL
+  cv_out <- NULL
+
+  ## read in dat file to get years of model
+  dat_list <- r4ss::SS_readdat(
+    file = file.path(results_out, starter$datfile),
+    verbose = FALSE
+  )
+  simlength <- dat_list$endyr - dat_list$styr + 1
+  forecast <- r4ss::SS_readforecast(
+    file = file.path(results_out, "forecast.ss"),
+    verbose = FALSE
+  )
   ## remove recdevs
-  change_rec_devs(stats::setNames(
-    rep(0, simlength + forecast$Nforecastyrs),
-    datFile$styr:(simlength + forecast$Nforecastyrs)
-  ),
-  ctl_file_in = starter$ctlfile,
-  ctl_file_out = starter$ctlfile
+  change_rec_devs(
+    recdevs = stats::setNames(
+      rep(0, simlength + forecast$Nforecastyrs),
+      dat_list$styr:(simlength + forecast$Nforecastyrs)
+    ),
+    ctl_file_in = file.path(results_out, starter$ctlfile),
+    ctl_file_out = file.path(results_out, starter$ctlfile)
   )
   r4ss::SS_changepars(
-    ctlfile = starter$ctlfile,
-    newctlfile = starter$ctlfile,
-    strings = "SR_sigmaR", newvals = 0.001, newlos = 0,
-    estimate = FALSE, verbose = FALSE
+    ctlfile = file.path(results_out, starter$ctlfile),
+    newctlfile = file.path(results_out, starter$ctlfile),
+    strings = "SR_sigmaR",
+    newvals = 0.001,
+    newlos = 0,
+    estimate = FALSE,
+    verbose = FALSE
   )
 
-  if (NROW((datFile$fleetinfo[datFile$fleetinfo$type == 1, ])) > 1) {
+  fleetofinterest <- dat_list$fleetinfo[dat_list$fleetinfo$type == 1, ]
+  if (NROW(fleetofinterest) > 1) {
     stop("profile_fmsy is not meant to work with more than one fishery")
   }
-  for (i in seq(fVector)) {
-    ctl <- r4ss::SS_readctl(starter$ctlfile,
-      use_datlist = TRUE, datlist = datFile, verbose = FALSE
+  for (i in seq(f_in)) {
+    ctl <- r4ss::SS_readctl(
+      file.path(results_out, starter$ctlfile),
+      use_datlist = TRUE,
+      datlist = dat_list,
+      verbose = FALSE
     )
     ctl <- change_f(
       years = 1:simlength,
-      fleets = as.numeric(row.names(datFile$fleetinfo[datFile$fleetinfo$type == 1, ])),
-      fvals = rep(fVector[i], simlength),
+      fleets = as.numeric(row.names(fleetofinterest)),
+      fvals = rep(f_in[i], simlength),
       ctl_list = ctl
     )
-    r4ss::SS_writectl(ctllist = ctl, outfile = starter$ctlfile, overwrite = TRUE, verbose = FALSE)
-    system(paste(ss_bin, "-nohess"),
-      show.output.on.console = FALSE,
-      ignore.stdout = TRUE
+    r4ss::SS_writectl(
+      ctllist = ctl,
+      outfile = file.path(results_out, starter$ctlfile),
+      overwrite = TRUE,
+      verbose = FALSE
     )
-    allcatch <- r4ss::SS_readdat("data_expval.ss",
+    r4ss::run(
+      dir = results_out,
+      exe = get_bin("ss"),
+      extras = "-nohess",
+      skipfinished = FALSE,
+      show_in_console = FALSE,
+      verbose = FALSE
+    )
+
+    allcatch <- r4ss::SS_readdat(
+      file.path(results_out, "data_expval.ss"),
       verbose = FALSE
     )$catch$catch
-    endcatch <- utils::tail(allcatch, ceiling(datFile$Nages * 0.5))
-    CVs[i] <- round(stats::sd(endcatch) / mean(endcatch), 5)
-    fEqCatch[i] <- allcatch[simlength]
+    endcatch <- utils::tail(allcatch, ceiling(dat_list$Nages * 0.5))
+    cv_out[i] <- round(stats::sd(endcatch) / mean(endcatch), 5)
+    catch_out[i] <- allcatch[simlength]
   }
   if (verbose) {
     message(
-      "The CVs of the catch in the last ",
-      ceiling(datFile$Nages * 0.5), " years of each model that was run were\n",
-      paste(CVs, collapse = " * "), "\nIf these are large, the model",
+      "The cv_out of the catch in the last ",
+      ceiling(dat_list$Nages * 0.5), " years of each model that was run were\n",
+      paste(cv_out, collapse = " * "), "\nIf these are large, the model",
       " might not be reaching equilibrium and\n",
       "should be ran for more than ", simlength, " years."
     )
   }
 
-  grDevices::pdf("Fmsy.pdf")
+  grDevices::pdf(file.path(results_out, "Fmsy.pdf"))
   graphics::plot(
-    x = fVector,
-    y = fEqCatch,
+    x = f_in,
+    y = catch_out,
     type = "b",
     xlab = "Fishing mortality rate",
     ylab = "Yield at equilibrium"
   )
-  maxFVal <- which.max(fEqCatch)
-  Fmsy <- fVector[maxFVal]
+  f_msy <- f_in[which.max(catch_out)]
   graphics::points(
-    x = Fmsy, y = max(fEqCatch),
+    x = f_msy, y = max(catch_out),
     col = "red", pch = 19
   )
   graphics::mtext(
     text = paste(
       " OM = ", om_in, "\n",
       "Fishing mortality at maximum yield (Fmsy) = ",
-      Fmsy, "\n",
-      "Landings at Fmsy = ", max(fEqCatch), "(mt)"
+      f_msy, "\n",
+      "Landings at Fmsy = ", max(catch_out), "(mt)"
     ),
     side = 1, line = -1, las = 1, adj = 0
   )
   grDevices::dev.off()
-  FmsyTable <- data.frame(
-    fValues = fVector,
-    eqCatch = fEqCatch
+  f_table <- data.frame(
+    fValues = f_in,
+    eqCatch = catch_out
   )
-  utils::write.table(FmsyTable, "Fmsy.txt")
-  invisible(FmsyTable)
+  utils::write.table(f_table, file.path(results_out, "Fmsy.txt"))
+  invisible(f_table)
 }
