@@ -65,7 +65,10 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.19.2" id="ss3sim-1192">ss3sim 1.19.2<a class="anchor" aria-label="anchor" href="#ss3sim-1192"></a></h2>
-<ul><li>Adds <code>sds_out</code> to <code><a href="../reference/sample_index.html">sample_index()</a></code> thanks to the request and review by Leire Citores. Now, bias in the estimation method regarding the uncertainty of the index can be tested.</li></ul></div>
+<ul><li><p>Depends on {stringi}.</p></li>
+<li><p>Removes deprecated arguments in <code><a href="../reference/change_e.html">change_e()</a></code>.</p></li>
+<li><p>Adds <code>sds_out</code> to <code><a href="../reference/sample_index.html">sample_index()</a></code> thanks to the request and review by Leire Citores. Now, bias in the estimation method regarding the uncertainty of the index can be tested.</p></li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.19.1" id="ss3sim-1191">ss3sim 1.19.1<a class="anchor" aria-label="anchor" href="#ss3sim-1191"></a></h2>
 <ul><li>Updates <code><a href="../reference/change_q.html">change_q()</a></code> to more modern code, and while doing so a few bugs were noticed. Errors are no longer generated when the fleet doesn’t exist.</li>
@@ -75,7 +78,7 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.19.0" id="ss3sim-1190">ss3sim 1.19.0<a class="anchor" aria-label="anchor" href="#ss3sim-1190"></a></h2>
 <ul><li><p>Bump version to match current version of SS3, where version numbers of {ss3sim} include three parts separated by full stops. The first number represents the major version of {ss3sim}. The second number is the minor version, i.e., third set of digits, of the SS3 executable used in this version of {ss3sim}. The third number is the minor version of {ss3sim}.</p></li>
-<li><p>Remove dependency on bbmle to externally estimate growth.</p></li>
+<li><p>Remove dependency on {bbmle} to externally estimate growth.</p></li>
 <li><p>Deprecate functions that were not being used in the code base, i.e., cleanup_ss3, get_bin_info, change_rec_devs_par, …</p></li>
 <li><p>Does not turn on empirical weight-at-age in EM if sampling weight-at-age data. Instead, users must specify to use empirical weight-at-age data in their control file for the estimation method allowing users to sample the data but not use it if they do not want to.</p></li>
 <li><p>Allows for no estimation method via <code>em_dir = NA</code>, creating a way to simulate data quickly.</p></li>
