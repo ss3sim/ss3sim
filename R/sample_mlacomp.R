@@ -180,7 +180,9 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
         # is repeated equal to the number of observed fish in that bin.
         prob.age.ints <- unlist(lapply(
           X = seq_along(age.means),
-          FUN = function(x) {rep(x, age.means[x])}
+          FUN = function(x) {
+            rep(x, age.means[x])
+          }
         ))
         # Resample to guarantee the sample size does not exceed the observed
         temp <- sample(x = prob.age.ints, size = age.Nsamp, replace = FALSE)
