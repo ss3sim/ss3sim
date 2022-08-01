@@ -16,7 +16,7 @@ id_scenarios <- function(directory) {
   scens <- unique(vapply(
     X = strsplit(scensfull, seperator),
     FUN = "[[",
-    1, 
+    1,
     FUN.VALUE = "character"
   ))
   if (length(scens) == 0) {
