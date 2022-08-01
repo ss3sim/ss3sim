@@ -1,5 +1,9 @@
 # ss3sim 1.19.2
 
+* Depends on {stringi}.
+
+* Removes deprecated arguments in `change_e()`.
+
 * Adds `sds_out` to `sample_index()` thanks to the request and review by
   Leire Citores. Now, bias in the estimation method regarding the uncertainty
   of the index can be tested.
@@ -22,7 +26,7 @@
   third set of digits, of the SS3 executable used in this version of {ss3sim}.
   The third number is the minor version of {ss3sim}.
 
-* Remove dependency on bbmle to externally estimate growth.
+* Remove dependency on {bbmle} to externally estimate growth.
 
 * Deprecate functions that were not being used in the code base, i.e.,
   cleanup_ss3, get_bin_info, change_rec_devs_par, ...
