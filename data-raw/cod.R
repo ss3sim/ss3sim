@@ -15,8 +15,8 @@ file.copy(
   from = system.file("bin", "Windows64", "ss.exe", package = "ss3sim"),
   to = file.path(em_dir, "ss.exe")
 )
-r4ss::run_SS_models(
-  dirvec = om_dir,
+r4ss::run(
+  dir = om_dir,
   extras = "-maxfun 0 -nohess"
 )
 file.copy(
@@ -44,8 +44,8 @@ file.copy(
   file.path(om_dir, "codOM.dat"),
   file.path(em_dir, "ss3.dat")
 )
-r4ss::run_SS_models(
-  dirvec = em_dir,
+r4ss::run(
+  dir = em_dir,
   extras = "-maxfun 0 -nohess -maxI 0"
 )
 file.copy(
