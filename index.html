@@ -89,38 +89,32 @@
 <div class="section level1">
 <div class="page-header"><h1 id="ss3sim">ss3sim<a class="anchor" aria-label="anchor" href="#ss3sim"></a>
 </h1></div>
+<p>main: <a href="https://github.com/ss3sim/ss3sim/actions?query=workflow%3AR-CMD-check" class="external-link"><img src="https://github.com/ss3sim/ss3sim/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a> <a href="https://cran.r-project.org/package=ss3sim" class="external-link"><img src="http://www.r-pkg.org/badges/version/ss3sim" alt="CRAN_Status_Badge"></a></p>
+<p>{ss3sim} is an R package that simplifies the steps needed to generate beautiful simulation output from the widely-used <a href="https://github.com/nmfs-stock-synthesis/stock-synthesis" class="external-link">Stock Synthesis</a> (SS3) statistical age-structured stock assessment framework. To learn more, read on or check out the <a href="https://ss3sim.github.io/ss3sim/" class="external-link">vignettes</a>.</p>
 <ul>
 <li><a href="#badges">Badges</a></li>
 <li><a href="#installation">Installation</a></li>
-<li><a href="#the-ss3sim-simulation-setup">The ss3sim simulation setup</a></li>
-<li><a href="#how-ss3sim-works">How ss3sim works</a></li>
+<li><a href="#the-ss3sim-simulation-setup">{ss3sim} simulation setup</a></li>
+<li><a href="#how-ss3sim-works">How {ss3sim} works</a></li>
 <li><a href="#example-output-from-an-ss3sim-simulation">Example output from an ss3sim simulation</a></li>
-<li><a href="#citing-ss3sim">Citing ss3sim</a></li>
-<li><a href="#contributing-to-ss3sim">Contributing to ss3sim</a></li>
+<li><a href="#citing-ss3sim">Citing {ss3sim}</a></li>
+<li><a href="#contributing-to-ss3sim">Contributing to {ss3sim}</a></li>
 <li><a href="#code-of-conduct">Code of conduct</a></li>
 </ul>
-<!-- end toc --><div class="section level2">
-<h2 id="badges">Badges<a class="anchor" aria-label="anchor" href="#badges"></a>
-</h2>
-<p>main: <a href="https://github.com/ss3sim/ss3sim/actions?query=workflow%3AR-CMD-check" class="external-link"><img src="https://github.com/ss3sim/ss3sim/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a> <a href="https://cran.r-project.org/package=ss3sim" class="external-link"><img src="http://www.r-pkg.org/badges/version/ss3sim" alt="CRAN_Status_Badge"></a></p>
-<p>ss3sim is an R package that simplifies the steps needed to generate beautiful simulation output from the widely-used <a href="https://github.com/nmfs-stock-synthesis/stock-synthesis" class="external-link">Stock Synthesis</a> (SS3) statistical age-structured stock assessment framework. To learn more, read on or check out the <a href="https://ss3sim.github.io/ss3sim/" class="external-link">vignettes</a>.</p>
-</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>Install the <a href="https://cran.r-project.org/package=ss3sim" class="external-link">CRAN version</a> of ss3sim with:</p>
+<p>Install the <a href="https://cran.r-project.org/package=ss3sim" class="external-link">CRAN version</a> of {ss3sim} with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span></span></code></pre></div>
 <p>Or, install the development version from GitHub:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span></span>
 <span>  <span class="st">"ss3sim/ss3sim"</span>,</span>
 <span>  ref <span class="op">=</span> <span class="st">"main"</span>,</span>
 <span>  build_vignettes <span class="op">=</span> <span class="cn">TRUE</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ss3sim/ss3sim" class="external-link">ss3sim</a></span><span class="op">)</span></span></code></pre></div>
-<p>A note: As of April 9, 2021, use of parallel master and development branches in the GitHub ss3sim repository has ended. The default branch is now called main, and feature branches will be used for new development. Once tested, feature branches should be merged into main. See issue #305 for more details.</p>
+<span><span class="op">)</span></span></code></pre></div>
 <p>We suggest using the GitHub version because it comes with the SS3 executable/binary. If you are using the CRAN version, you will need to install the binary and place it in your system path. See the <a href="https://ss3sim.github.io/ss3sim/articles/introduction.html" class="external-link">Introduction vignette</a> for more details on how to get the latest version of SS3 and <a href="https://ss3sim.github.io/ss3sim/articles/introduction.html#installing-stock-synthesis" class="external-link">place it in your path</a>.</p>
 <p>You can read the help files and access the <a href="http://ss3sim.github.io/ss3sim/" class="external-link">vignettes</a> for reproducible examples of ss3sim simulations with</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -129,19 +123,37 @@
 <span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"introduction"</span>, <span class="st">"ss3sim"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="the-ss3sim-simulation-setup">The ss3sim simulation setup<a class="anchor" aria-label="anchor" href="#the-ss3sim-simulation-setup"></a>
+<h2 id="the-ss3sim-simulation-setup">The {ss3sim} simulation setup<a class="anchor" aria-label="anchor" href="#the-ss3sim-simulation-setup"></a>
 </h2>
-<p>An ss3sim simulation requires three types of input:</p>
+<p>An {ss3sim} simulation requires three types of input:</p>
 <ol style="list-style-type: decimal">
 <li>a base model of the underlying truth (an SS3 operating model; OM),</li>
 <li>a base model of how you will assess that truth (an SS3 estimation model; EM), and</li>
-<li>a data frame specifying how you want to manipulate (1) and (2) from their base-model configurations.</li>
+<li>a data frame specifying how you want to manipulate (1) and (2) from their status-quo configurations.</li>
 </ol>
-<p>You can find examples of an SS3 OM and EM <a href="https://github.com/ss3sim/ss3sim/tree/master/inst/extdata/models" class="external-link">within the package data</a>. An example data frame for (3) is also available within the package via <code><a href="reference/setup_scenarios_defaults.html">ss3sim::setup_scenarios_defaults()</a></code>. Adding columns to this default scenario data frame will enable the manipulation of additional components of the OM, sampling procedure, and the EM. Adding rows to this default scenario data frame will lead to more scenarios, where a scenario is the result of the combination of specifications in that row, i.e., how you manipulate the OM and the EM. There will be many folders inside each scenario folder, where each of these folders are iterations. Iterations within a scenario differ only by the seed used within R to define the randomness of that iteration.</p>
-<div class="figure">
-<img src="https://raw.githubusercontent.com/ss3sim/ss3sim/f763cfb462a9e68db670155070cd554812a65160/man/figures/filestructure.png" alt=""><p class="caption">An illustration of the input and output file and folder structure.</p>
-</div>
-<p>An illustration of the input and output file and folder structure.</p>
+<p>You can find examples of an OM and EM <a href="https://github.com/ss3sim/ss3sim/tree/master/inst/extdata/models" class="external-link">on GitHub</a> or locally on your machine if you have installed {ss3sim}. To find the location of these files locally, run <code>system.file("extdata", "models", package = "ss3sim")</code>. Users often modify these files to create new life histories or modify their own files from a production stock assessment to work within {ss3sim}. See the vignettes <a href="https://ss3sim.github.io/ss3sim/articles/modifying-models.html" class="external-link">on modifying models</a> and <a href="https://ss3sim.github.io/ss3sim/articles/making-models.html" class="external-link">making models</a> for more information.</p>
+<p>An example data frame for (3) is also available within the package via <code><a href="reference/setup_scenarios_defaults.html">ss3sim::setup_scenarios_defaults()</a></code>. This example is sufficient to run a single scenario using the OM and EM supplied in the package. Many more options (i.e., columns) are possible and users should take note that this example provided in the package represents a minimum viable setup. Users can either create their own data frame in R or augment this existing data frame to run a set of custom scenarios. Specifically, adding columns will enable the manipulation of additional components of the OM, sampling procedure, and the EM. Adding will lead to more scenarios, where a scenario is the result of the combination of specifications in that row, i.e., how you manipulate the OM and the EM.</p>
+<p>{ss3sim} stores each scenario in its own directory. Inside the scenario directory will be one directory per iteration. Iterations within a scenario differ only by the seed used within R to define the randomness of that iteration. See the figure below for an example directory structure from a simulation with two scenarios and 3 iterations.</p>
+<pre><code>├📁 scenario 1
+│   ├📁  1
+│   │    ├📁  OM
+│   │    └📁  EM
+│   ├📁  2
+│   │    ├📁  OM
+│   │    └📁  EM
+│   └📁  3
+│        ├📁  OM
+│        └📁  EM
+└📁 scenario 2
+    ├📁  1
+    │     ├📁  OM
+    │     └📁  EM
+    ├📁  2
+    │     ├📁  OM
+    │     └📁  EM
+    └📁  3
+         ├📁  OM
+         └📁  EM</code></pre>
 </div>
 <div class="section level2">
 <h2 id="how-ss3sim-works">How ss3sim works<a class="anchor" aria-label="anchor" href="#how-ss3sim-works"></a>
@@ -149,7 +161,7 @@
 <p>ss3sim works by converting simulation arguments (e.g., a given natural mortality trajectory) into manipulations of SS3 configuration files. It takes care of running the operating and estimation models as well as making these manipulations at the appropriate stage in the simulation.</p>
 <p>ss3sim functions are divided into three types:</p>
 <ol style="list-style-type: decimal">
-<li><p><code>change</code> and <code>sample</code> functions that manipulate SS3 configuration files. These manipulations generate an underlying “truth” (operating models) and control our assessment of those models (estimation models).</p></li>
+<li><p><code>change</code> and <code>sample</code> functions that manipulate SS3 configuration files. These manipulations generate an underlying “truth” (OMs) and control our assessment of those models (EMs).</p></li>
 <li><p><code>run</code> functions that conduct simulations. These functions generate a folder structure, call manipulation functions, run SS3 as needed, and save the output.</p></li>
 <li><p><code>get</code> functions for synthesizing the output.</p></li>
 </ol>
@@ -157,16 +169,25 @@
 <div class="section level2">
 <h2 id="example-output-from-an-ss3sim-simulation">Example output from an ss3sim simulation<a class="anchor" aria-label="anchor" href="#example-output-from-an-ss3sim-simulation"></a>
 </h2>
-<div class="figure">
-<img src="https://raw.github.com/seananderson/ss3sim/master/inst/ms/fig2-20131109.png" alt=""><p class="caption">An example of ss3sim output</p>
-</div>
-<p>This example shows a crossed simulation in which we considered (1) the effect of fixing natural mortality (<em>M</em>) at its true value from the OM (0.2; E0) or estimating <em>M</em> (E1) and (2) the effect of high survey effort (sigma_survey = 0.1; D0) or low survey effort (sigma_survey = 0.4; D1). Upper panels (blue) show time series of relative error in spawning stock biomass (SSB). Lower panels (gray) show the distribution of relative error across four scalar variables: depletion, <em>M</em>, SSB at maximum sustainable yield (SSB_MSY), and fishing mortality (<em>F</em>) in the terminal year. We show the values across simulation iterations with dots and the distributions with bean plots (kernel density smoothers).</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"scalar_dat"</span>, package <span class="op">=</span> <span class="st">"ss3sim"</span><span class="op">)</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">scalar_dat</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    M <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">NatM_p_1_Fem_GP_1</span> <span class="op">==</span> <span class="fl">0.2</span>, <span class="st">"M = 0.2"</span>, <span class="st">"M = Estimated"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">model_run</span> <span class="op">==</span> <span class="st">"em"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">LnQ_base_Survey_2</span>, y <span class="op">=</span> <span class="va">depletion</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="st">"M"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Survey scalar (q)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
+<p>Use the previous code chunk to visualize the results of a simulation that investigated scenarios that fixed natural mortality (<em>M</em>) at its true value from the OM (0.2) or estimated <em>M</em>. Upper panel shows how the estimates depletion change as the estimate of <em>q</em> changes for when <em>M</em> is fixed at the truth and the lower panel shows the same relationship when <em>M</em> is estimated.</p>
 </div>
 <div class="section level2">
 <h2 id="citing-ss3sim">Citing ss3sim<a class="anchor" aria-label="anchor" href="#citing-ss3sim"></a>
 </h2>
 <p>If you use ss3sim in a publication, please cite ss3sim as shown by</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/toLatex.html" class="external-link">toBibtex</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>and add your publication to the <a href="https://github.com/ss3sim/ss3sim/wiki/manuscripts" class="external-link">list of publications</a> in the <a href="https://github.com/ss3sim/ss3sim/wiki" class="external-link">wiki</a>.</p>
