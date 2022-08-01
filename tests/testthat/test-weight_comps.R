@@ -64,7 +64,7 @@ test_that("weight_comps works for MI method", {
     verbose = FALSE,
     printstats = FALSE, hidewarn = TRUE, covar = FALSE, warn = FALSE
   )
-  test <- r4ss::SS_tune_comps(
+  test <- r4ss::tune_comps(
     replist = replist,
     fleets = c(1, 2),
     option = "MI",
@@ -97,7 +97,7 @@ test_that("weight_comps works for Francis", {
     verbose = FALSE,
     printstats = FALSE, hidewarn = TRUE, covar = FALSE, warn = FALSE
   )
-  test <- r4ss::SS_tune_comps(
+  test <- r4ss::tune_comps(
     replist = replist,
     fleets = c(1, 2),
     option = "Francis",
@@ -126,7 +126,7 @@ test_that("weight_comps works for DM", {
     verbose = FALSE,
     printstats = FALSE, hidewarn = TRUE, covar = FALSE, warn = FALSE
   )
-  test <- r4ss::SS_tune_comps(
+  test <- r4ss::tune_comps(
     replist = replist,
     fleets = c(1, 2),
     option = "DM",

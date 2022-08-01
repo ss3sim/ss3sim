@@ -37,7 +37,7 @@
 #'   [change_em_binning()].
 #' @param data_params A named list containing arguments for changing data.
 #' @param weight_comps_params A named list containing arguments for
-#'   [r4ss::SS_tune_comps()].
+#'   [r4ss::tune_comps()].
 #' @param om_dir The directory with the operating model you want to copy and use
 #'   for the specified simulations.
 #' @param em_dir The directory with the estimation model you want to copy and
@@ -678,7 +678,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
       weight_comps_params <- purrr::modify_depth(weight_comps_params, 1, unlist)
       if (weight_comps_params$method == "DM") {
         # convert model so it can be used
-        out <- r4ss::SS_tune_comps(
+        out <- r4ss::tune_comps(
           fleets = weight_comps_params[["fleets"]],
           option = weight_comps_params[["method"]],
           dir = pathem,
@@ -722,7 +722,7 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           verbose = FALSE, hidewarn = TRUE,
           printstats = FALSE, covar = hess_always | bias_adjust
         )
-        out <- r4ss::SS_tune_comps(
+        out <- r4ss::tune_comps(
           replist = replist,
           fleets = weight_comps_params[["fleets"]],
           option = weight_comps_params[["method"]],

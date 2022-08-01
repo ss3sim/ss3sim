@@ -89,7 +89,7 @@ If \code{NA}, then no estimation method is included and
 \item{data_params}{A named list containing arguments for changing data.}
 
 \item{weight_comps_params}{A named list containing arguments for
-\code{\link[r4ss:SS_tune_comps]{r4ss::SS_tune_comps()}}.}
+\code{\link[r4ss:tune_comps]{r4ss::tune_comps()}}.}
 
 \item{user_recdevs}{An optional matrix of recruitment deviations to replace
 the recruitment deviations built into the package. The columns represent

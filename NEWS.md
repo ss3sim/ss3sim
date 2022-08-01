@@ -1,3 +1,7 @@
+# ss3sim 1.19.3
+
+* Updates {ss3sim} to use {r4ss} version 1.46.1 `tune_comps()`.
+
 # ss3sim 1.19.2
 
 * Depends on {stringi}.
