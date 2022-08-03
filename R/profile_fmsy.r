@@ -56,7 +56,6 @@ profile_fmsy <- function(om_in,
                          end = 1.5,
                          by_val = 0.01,
                          verbose = FALSE) {
-
   om_in <- normalizePath(om_in, mustWork = TRUE)
   dir.create(results_out, showWarnings = FALSE, recursive = TRUE)
   file.copy(
