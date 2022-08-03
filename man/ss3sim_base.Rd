@@ -27,11 +27,10 @@ ss3sim_base(
   user_recdevs = NULL,
   user_recdevs_warn = TRUE,
   bias_adjust = FALSE,
-  hess_always = FALSE,
   print_logfile = FALSE,
   sleep = 0,
   seed = 21,
-  ...
+  extras = " "
 )
 }
 \arguments{
@@ -118,10 +117,6 @@ The argument allows users to turn bias adjustment off because
 it involves running the EM multiple times with the hessian and
 is not needed when initially exploring your simulation structure.}
 
-\item{hess_always}{If \code{TRUE} then the Hessian will always be calculated.
-If \code{FALSE} then the Hessian will only be calculated for
-bias-adjustment runs thereby saving time.}
-
 \item{print_logfile}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{print_logfile = TRUE}
 is no longer supported.
 Previously, the default was \code{TRUE}, now the default is \code{FALSE}.}
@@ -136,7 +131,7 @@ depend on the iteration value, but also on the value of \code{seed}. A
 given combination of iteration, number of years, and \code{seed} value will
 result in the same recruitment deviations.}
 
-\item{...}{Anything extra to pass to \code{\link[=run_ss3model]{run_ss3model()}}. For
+\item{extras}{Anything extra to pass to \code{\link[=run_ss3model]{run_ss3model()}}. For
 example, you may want to pass additional options to Stock Synthesis through
 the argument \code{admb_options}. Anything that doesn't match a named
 argument in \code{\link[=run_ss3model]{run_ss3model()}} will be passed to the

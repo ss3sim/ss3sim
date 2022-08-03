@@ -55,7 +55,7 @@ another instance of \R. The argument will be ignored if \code{parallel = FALSE}.
 \item{...}{Anything else to pass to \code{\link[=ss3sim_base]{ss3sim_base()}}. This could
 include \code{bias_adjust}. Also, you can pass
 additional options to the executable through the argument
-\code{admb_options}.}
+\code{extras}.}
 }
 \value{
 The output will appear in your current \R working directory.
@@ -139,8 +139,6 @@ Either way allows users to pass arguments to each of the
 \verb{change_*()} or \verb{sample_*()} functions.
 Note that if you do not include an argument,
 then \code{\link[=ss3sim_base]{ss3sim_base()}} will assume the value of that argument is \code{NULL}.
-
-\code{\link[=run_ss3model]{run_ss3model()}} is called by \code{\link[=ss3sim_base]{ss3sim_base()}}.
 }
 \author{
 Sean C. Anderson

@@ -58,9 +58,6 @@
 #'   The argument allows users to turn bias adjustment off because
 #'   it involves running the EM multiple times with the hessian and
 #'   is not needed when initially exploring your simulation structure.
-#' @param hess_always If `TRUE` then the Hessian will always be calculated.
-#'   If `FALSE` then the Hessian will only be calculated for
-#'   bias-adjustment runs thereby saving time.
 #' @param print_logfile `r lifecycle::badge("deprecated")` `print_logfile = TRUE`
 #'   is no longer supported.
 #'   Previously, the default was `TRUE`, now the default is `FALSE`.
@@ -72,7 +69,7 @@
 #'   depend on the iteration value, but also on the value of `seed`. A
 #'   given combination of iteration, number of years, and `seed` value will
 #'   result in the same recruitment deviations.
-#' @param ... Anything extra to pass to [run_ss3model()]. For
+#' @param extras Anything extra to pass to [run_ss3model()]. For
 #' example, you may want to pass additional options to Stock Synthesis through
 #' the argument `admb_options`. Anything that doesn't match a named
 #' argument in [run_ss3model()] will be passed to the
@@ -187,9 +184,9 @@ ss3sim_base <- function(iterations, scenarios, f_params,
                         estim_params = NULL, tv_params = NULL, operat_params = NULL, om_dir, em_dir,
                         retro_params = NULL, data_params = NULL, weight_comps_params = NULL,
                         user_recdevs = NULL, user_recdevs_warn = TRUE,
-                        bias_adjust = FALSE, hess_always = FALSE,
+                        bias_adjust = FALSE,
                         print_logfile = FALSE, sleep = 0, seed = 21,
-                        ...) {
+                        extras = " ") {
 
   # In case ss3sim_base is stopped before finishing:
   old_wd <- getwd()
@@ -501,7 +498,14 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     )
 
     # Run the operating model and copy the dat file over
-    run_ss3model(dir = pathom, ...)
+    r4ss::run(
+      dir = pathom,
+      exe = get_bin(),
+      extras = extras,
+      skipfinished = FALSE,
+      show_in_console = FALSE,
+      verbose = FALSE
+    )
     if (!file.exists(file.path(sc, i, "om", "data_expval.ss"))) {
       stop(
         "The data_expval.ss was not created in the OM run for ",
@@ -682,8 +686,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           fleets = weight_comps_params[["fleets"]],
           option = weight_comps_params[["method"]],
           dir = pathem,
-          exe = get_bin(bin_name = "ss"),
-          extras = ifelse(hess_always | bias_adjust, "", "-nohess"),
+          exe = get_bin(),
+          extras = extras,
           verbose = FALSE,
           show_in_console = FALSE
         )
@@ -699,9 +703,13 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     }
     # Run the EM -------------------------------------------------------------
     # run model 1x as-is, regardless if data weighting used or not.
-    run_ss3model(
+    r4ss::run(
       dir = pathem,
-      hess = ifelse(bias_adjust, TRUE, hess_always), ...
+      exe = get_bin(),
+      extras = ifelse(bias_adjust, gsub("-nohess *", "", extras), extras),
+      skipfinished = FALSE,
+      show_in_console = FALSE,
+      verbose = FALSE
     )
     success <- get_success(dir = pathem)
     if (bias_adjust & all(success > 0)) {
@@ -710,17 +718,24 @@ ss3sim_base <- function(iterations, scenarios, f_params,
         dir = pathem,
         ctl_file_in = "em.ctl"
       )
-      run_ss3model(
+      r4ss::run(
         dir = pathem,
-        hess = ifelse(bias_adjust, TRUE, hess_always), ...
+        exe = get_bin(),
+        extras = extras,
+        skipfinished = FALSE,
+        show_in_console = FALSE,
+        verbose = FALSE
       )
     }
     if (!is.null(weight_comps_params)) {
       # need to do data tuning, regardless of if bias adjustment was done.
       if (weight_comps_params$method %in% c("MI", "Francis")) {
-        replist <- r4ss::SS_output(pathem,
-          verbose = FALSE, hidewarn = TRUE,
-          printstats = FALSE, covar = hess_always | bias_adjust
+        replist <- r4ss::SS_output(
+          pathem,
+          verbose = FALSE,
+          hidewarn = TRUE,
+          printstats = FALSE,
+          covar = !grepl("-nohess", extras) || bias_adjust
         )
         out <- r4ss::tune_comps(
           replist = replist,
@@ -728,8 +743,8 @@ ss3sim_base <- function(iterations, scenarios, f_params,
           option = weight_comps_params[["method"]],
           niters_tuning = weight_comps_params[["niters_weighting"]],
           dir = pathem,
-          exe = get_bin(bin_name = "ss"),
-          extras = ifelse(hess_always | bias_adjust, "", "-nohess"),
+          exe = get_bin(),
+          extras = extras,
           verbose = FALSE,
           show_in_console = FALSE
         )

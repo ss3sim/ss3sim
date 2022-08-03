@@ -27,15 +27,24 @@ file.copy(data, scen_path_MI)
 file.copy(data, scen_path_Francis)
 file.copy(data, scen_path_DM)
 # name the data file so it matches with what the starter file expects.
-file.rename(file.path(scen_path_MI, "testing_em_cod.dat"), file.path(scen_path_MI, "ss3.dat"))
-file.rename(file.path(scen_path_Francis, "testing_em_cod.dat"), file.path(scen_path_Francis, "ss3.dat"))
-file.rename(file.path(scen_path_DM, "testing_em_cod.dat"), file.path(scen_path_DM, "ss3.dat"))
+file.rename(
+  file.path(scen_path_MI, "testing_em_cod.dat"),
+  file.path(scen_path_MI, "ss3.dat")
+)
+file.rename(
+  file.path(scen_path_Francis, "testing_em_cod.dat"),
+  file.path(scen_path_Francis, "ss3.dat")
+)
+file.rename(
+  file.path(scen_path_DM, "testing_em_cod.dat"),
+  file.path(scen_path_DM, "ss3.dat")
+)
 
 
 test_that("run_ss3sim runs with data weighting", {
   skip_on_cran()
   df <- data.frame(
-    admb_options = "-maxfn 0",
+    extras = "-maxfn 0",
     cf.years.1 = "26:100",
     cf.fval.1 = "rep('0.1052', 75)",
     si.years.2 = "seq(90,100,1)", si.sds_obs.2 = 0.01,
@@ -45,8 +54,12 @@ test_that("run_ss3sim runs with data weighting", {
     wc.niters_weighting = 1, wc.method = "MI", wc.fleets = "1:2"
   )
   scname <- run_ss3sim(iterations = 1, simdf = df)
-  DW_dat <- r4ss::SS_readdat(file.path(scname, "1", "em", "ss3.dat"), verbose = FALSE)
-  DW_ctl <- r4ss::SS_readctl(file.path(scname, "1", "em", "em.ctl"),
+  DW_dat <- r4ss::SS_readdat(
+    file.path(scname, "1", "em", "ss3.dat"),
+    verbose = FALSE
+  )
+  DW_ctl <- r4ss::SS_readctl(
+    file.path(scname, "1", "em", "em.ctl"),
     use_datlist = TRUE,
     datlist = DW_dat, verbose = FALSE
   )
@@ -56,13 +69,21 @@ test_that("run_ss3sim runs with data weighting", {
 
 test_that("weight_comps works for MI method", {
   skip_on_cran()
-  run_ss3model(
+  r4ss::run(
     dir = scen_path_MI,
-    hess = FALSE
+    exe = get_bin(),
+    extras = "-nohess",
+    skipfinished = FALSE,
+    show_in_console = FALSE,
+    verbose = FALSE
   )
-  replist <- r4ss::SS_output(scen_path_MI,
+  replist <- r4ss::SS_output(
+    scen_path_MI,
     verbose = FALSE,
-    printstats = FALSE, hidewarn = TRUE, covar = FALSE, warn = FALSE
+    printstats = FALSE,
+    hidewarn = TRUE,
+    covar = FALSE,
+    warn = FALSE
   )
   test <- r4ss::tune_comps(
     replist = replist,
@@ -71,7 +92,7 @@ test_that("weight_comps works for MI method", {
     niters_tuning = 1,
     init_run = FALSE,
     dir = scen_path_MI,
-    exe = get_bin(bin_name = "ss"),
+    exe = get_bin(),
     extras = "-nohess",
     verbose = FALSE,
     show_in_console = FALSE
@@ -83,15 +104,22 @@ test_that("weight_comps works for MI method", {
     use_datlist = TRUE, datlist = dat
   )
   # only true if no adjustments initially.
-  expect_equivalent(ctl$Variance_adjustment_list, test$weights[[length(test$weights)]])
+  expect_equivalent(
+    ctl$Variance_adjustment_list,
+    test$weights[[length(test$weights)]]
+  )
   expect_true(all(test$weights$Value <= 1))
 })
 
 test_that("weight_comps works for Francis", {
   skip_on_cran()
-  run_ss3model(
+  r4ss::run(
     dir = scen_path_Francis,
-    hess = FALSE
+    exe = get_bin(),
+    extras = "-nohess",
+    skipfinished = FALSE,
+    show_in_console = FALSE,
+    verbose = FALSE
   )
   replist <- r4ss::SS_output(scen_path_Francis,
     verbose = FALSE,
@@ -104,27 +132,46 @@ test_that("weight_comps works for Francis", {
     niters_tuning = 1,
     init_run = FALSE,
     dir = scen_path_Francis,
-    exe = get_bin(bin_name = "ss"),
+    exe = get_bin(),
     extras = "-nohess",
     verbose = FALSE,
     show_in_console = FALSE
   )
-  dat <- r4ss::SS_readdat(file.path(scen_path_Francis, "ss3.dat"), verbose = FALSE)
-  ctl <- r4ss::SS_readctl(file.path(scen_path_Francis, "codEM.ctl"),
+  dat <- r4ss::SS_readdat(
+    file.path(scen_path_Francis, "ss3.dat"),
+    verbose = FALSE
+  )
+  ctl <- r4ss::SS_readctl(
+    file.path(scen_path_Francis, "codEM.ctl"),
     verbose = FALSE,
-    use_datlist = TRUE, datlist = dat
+    use_datlist = TRUE,
+    datlist = dat
   )
   # only true if no adjustments initially.
-  expect_equivalent(ctl$Variance_adjustment_list, test$weights[[length(test$weights)]])
+  expect_equivalent(
+    ctl$Variance_adjustment_list,
+    test$weights[[length(test$weights)]]
+  )
   expect_true(all(test$weights$Value <= 1))
 })
 
 test_that("weight_comps works for DM", {
   skip_on_cran()
-  run_ss3model(dir = scen_path_DM, hess = FALSE)
-  replist <- r4ss::SS_output(scen_path_Francis,
+  r4ss::run(
+    dir = scen_path_DM,
+    exe = get_bin(),
+    extras = "-nohess",
+    skipfinished = FALSE,
+    show_in_console = FALSE,
+    verbose = FALSE
+  )
+  replist <- r4ss::SS_output(
+    scen_path_Francis,
     verbose = FALSE,
-    printstats = FALSE, hidewarn = TRUE, covar = FALSE, warn = FALSE
+    printstats = FALSE,
+    hidewarn = TRUE,
+    covar = FALSE,
+    warn = FALSE
   )
   test <- r4ss::tune_comps(
     replist = replist,
@@ -132,13 +179,17 @@ test_that("weight_comps works for DM", {
     option = "DM",
     niters_tuning = 0,
     dir = scen_path_DM,
-    exe = get_bin(bin_name = "ss"),
+    exe = get_bin(),
     extras = "-nohess",
     verbose = FALSE,
     show_in_console = FALSE
   )
-  dat <- r4ss::SS_readdat(file.path(scen_path_DM, "ss3.dat"), verbose = FALSE)
-  ctl <- r4ss::SS_readctl(file.path(scen_path_DM, "codEM.ctl"),
+  dat <- r4ss::SS_readdat(
+    file.path(scen_path_DM, "ss3.dat"),
+    verbose = FALSE
+  )
+  ctl <- r4ss::SS_readctl(
+    file.path(scen_path_DM, "codEM.ctl"),
     verbose = FALSE,
     use_datlist = TRUE, datlist = dat
   )

@@ -11,7 +11,7 @@ on.exit(unlink(temp_path, recursive = TRUE), add = TRUE)
 test_that("run_ss3sim runs with CAL data", {
   skip_on_cran()
   df <- data.frame(
-    admb_options = "-maxfn 0",
+    extras = "-maxfn 0",
     cf.years.1 = "26:100",
     cf.fval.1 = "rep('0.1052', 75)",
     si.years.2 = "seq(50,100,1)", si.sds_obs.2 = 0.01,

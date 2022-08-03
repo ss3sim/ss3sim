@@ -29,10 +29,10 @@ test_that("A basic run_ss3sim scenario runs", {
   expect_true("control.ss_new" %in% list.files(file.path(scname, "1", "em")))
   success <- get_success(file.path(scname, "1", "em"))
   expect_equal(success["ran"], c("ran" = 1),
-    label = "Sucess vector for the Report file is"
+    label = "Success vector for the Report file is"
   )
   expect_equal(success["hess"], c("hess" = 1),
-    label = "Sucess vector for the hessian file is"
+    label = "Success vector for the hessian file is"
   )
   suppressWarnings(get_results_all(
     user_scenarios = scname,
@@ -144,7 +144,7 @@ test_that("A basic run_ss3sim scenario runs", {
 test_that("run_ss3sim works with multiple scenarios without estimation", {
   skip_on_cran()
   df <- data.frame(
-    admb_options = "-maxfn 0",
+    extras = "-maxfn 0",
     co.par_name = "c('NatM_uniform_Fem_GP_1', 'L_at_Amin_Fem_GP_1')",
     co.par_int = "c(0.20001, 19.0001)",
     cf.years.1 = "26:100",

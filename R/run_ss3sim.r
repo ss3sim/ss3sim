@@ -45,7 +45,7 @@
 #' @param ... Anything else to pass to [ss3sim_base()]. This could
 #'   include `bias_adjust`. Also, you can pass
 #'   additional options to the executable through the argument
-#'   `admb_options`.
+#'   `extras`.
 
 #' @author Sean C. Anderson
 #'
@@ -100,8 +100,6 @@
 #' `change_*()` or `sample_*()` functions.
 #' Note that if you do not include an argument,
 #' then [ss3sim_base()] will assume the value of that argument is `NULL`.
-#'
-#' [run_ss3model()] is called by [ss3sim_base()].
 #'
 #' @export
 #' @import lifecycle

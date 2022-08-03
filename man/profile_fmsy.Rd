@@ -18,42 +18,45 @@ profile_fmsy(
 \pkg{ss3sim} operating model.}
 
 \item{results_out}{A full or relative path to a directory where the results
-will be saved. The directory will be created if it doesn't already exist.}
+will be saved. The directory will be created if it does not already exist.}
 
-\item{start}{Lower fishing mortality levels that will be explored.}
+\item{start, end}{A single numerical value for each argument specifying the
+lowest and highest fishing levels that you want to explore for the fishing
+fleet in your model.}
 
-\item{end}{Upper fishing mortality levels that will be explored.}
-
-\item{by_val}{Interval at which F will be incremented between \code{start}
-and \code{end}.}
+\item{by_val}{Interval at which fishing mortality will be incremented
+between \code{start} and \code{end} using \code{seq(start, end, by_val)}.}
 
 \item{verbose}{When \code{TRUE} messages will be returned
 from the function. Often useful for debugging. The default
 is \code{FALSE}.}
 }
 \value{
-Creates a plot and a table with catches and F values.
-Also, invisibly returns a table of F and catch as a data frame.
+A data frame of catch by fishing mortality is returned invisibly and
+saved to the disk along with a figure, \code{Fmsy.pdf}.
 }
 \description{
 Runs an operating model over a range of fishing mortality, \eqn{F}, levels to
 determine the F at maximum sustainable yield, \eqn{F_{MSY}}.
 }
 \details{
-This function extracts the number of years from the data
-file and then runs the model with a constant level of fishing for each year,
-extracting the catch in the last year. This assumes the length of the
-model is long enough to reach an equilibrium catch. The user is
-responsible for ensuring this fact. If the function is run with
-\code{verbose = TRUE}, which is not the default, users will be provided
-with coefficient of variations of the catches in the terminal years of
-the model. Here, terminal is defined as half as many years as there are
+\code{profile_fmsy()} runs the operating model with a constant level of
+fishing for each year and extracts the expected catch in the terminal year.
+It is assumed that the model time series is long enough for the population
+to come to equilibrium, and thus, the catch in the terminal year is
+equivalent to equilibrium catch.
+
+If the function is run with \code{verbose = TRUE}, which is not the default,
+the coefficient of variations of the catches in the terminal years of
+the model will be printed to the screen.
+Here, terminal is defined as half as many years as there are
 ages in the population dynamics of your model.
 Thus, if the population plus group starts at age twenty,
-then the standard deviation of the last ten years of catch
+the standard deviation of the last ten years of catch
 divided by the mean catch over that same time will be printed to the
 screen for each model that is ran. For the default cod model provided within
-the package, the CV is less than 1e-04 for all F levels explored.
+the package, the CV is less than 1e-04 for all explored levels of fishing
+mortality.
 
 Ensure that the argument \code{om_in} leads to an operating model that is
 configured for use within \pkg{ss3sim}. For example, the \eqn{F} type must

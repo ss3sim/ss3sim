@@ -271,7 +271,7 @@ setup_scenarios_lookup <- function() {
     c("co", "operat_params"),
     c("ct", "tv_params"),
     c("cr", "retro_params"),
-    c("admb_options", "admb_options")
+    c("extras", "extras")
   )
   extraargs <- names(formals(ss3sim_base))
   names(extraargs) <- extraargs

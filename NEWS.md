@@ -1,6 +1,8 @@
 # ss3sim 1.19.3
 
-* Updates {ss3sim} to use {r4ss} version 1.46.1 `tune_comps()`.
+* Updates {ss3sim} to use {r4ss} version 1.46.1
+  * `tune_comps()`
+  * `run()`
 
 # ss3sim 1.19.2
 

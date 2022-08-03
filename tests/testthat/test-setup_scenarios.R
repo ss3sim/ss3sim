@@ -34,7 +34,6 @@ test_that("setup_scenarios work with multiple rows, NAs", {
   df[2, "sl.Nsamp.2"] <- NA # b/c can't put as null
   df[, "scenarios"] <- c("ctl", "no_lencomps_2")
   df[, "bias_adjust"] <- FALSE
-  df[, "hess_always"] <- FALSE
   scenario_list <- setup_scenarios(df)
   expect_length(scenario_list, 2)
   expect_equal(

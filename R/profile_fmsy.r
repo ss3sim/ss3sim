@@ -127,7 +127,7 @@ profile_fmsy <- function(om_in,
     )
     r4ss::run(
       dir = results_out,
-      exe = get_bin("ss"),
+      exe = get_bin(),
       extras = "-nohess",
       skipfinished = FALSE,
       show_in_console = FALSE,
