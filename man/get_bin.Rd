@@ -2,25 +2,30 @@
 % Please edit documentation in R/get_bin.R
 \name{get_bin}
 \alias{get_bin}
-\title{Get Stock Synthesis binary/executable location in package}
+\title{Get Stock Synthesis binary/executable location}
 \usage{
-get_bin(bin_name = "ss")
+get_bin(bin_name = "ss3")
 }
 \arguments{
-\item{bin_name}{Name of Stock Synthesis binary, defaults to "ss_safe"}
+\item{bin_name}{A string providing the name of the binary/executable without
+the extension. The default is \code{"ss3"}, which is the name of the executable
+that is saved in {ss3sim} on GitHub.}
 }
 \value{
-The path to a Stock Synthesis binary. If using the GitHub version of the
-package, this will be an internal binary. Otherwise, this function
-will search for a version of the binary in your path. See the
-ss3sim vignette.
+A string providing the full path to a Stock Synthesis binary.
+If using the GitHub version of {ss3sim}, this will be an internal binary.
+Otherwise, \code{get_bin()} searches for a version of the binary in your path.
+See the ss3sim vignette fore more information.
 }
 \description{
-Get Stock Synthesis binary/executable location in package
+Get Stock Synthesis binary/executable location
 }
 \examples{
 \dontrun{
 get_bin()
 }
 
+}
+\author{
+Sean C. Anderson
 }

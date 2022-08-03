@@ -1,19 +1,24 @@
-#' Get Stock Synthesis binary/executable location in package
+#' Get Stock Synthesis binary/executable location
 #'
-#' @param bin_name Name of Stock Synthesis binary, defaults to "ss_safe"
+#' @param bin_name A string providing the name of the binary/executable without
+#'   the extension. The default is `"ss3"`, which is the name of the executable
+#'   that is saved in {ss3sim} on GitHub.
 #'
-#' @return The path to a Stock Synthesis binary. If using the GitHub version of the
-#'   package, this will be an internal binary. Otherwise, this function
-#'   will search for a version of the binary in your path. See the
-#'   ss3sim vignette.
+#' @return
+#' A string providing the full path to a Stock Synthesis binary.
+#' If using the GitHub version of {ss3sim}, this will be an internal binary.
+#' Otherwise, `get_bin()` searches for a version of the binary in your path.
+#' See the ss3sim vignette fore more information.
 #'
+#' @author Sean C. Anderson
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' get_bin()
 #' }
 #'
-get_bin <- function(bin_name = "ss") {
+get_bin <- function(bin_name = "ss3") {
   # code inspiration from glmmADMB package:
   if (.Platform$OS.type == "windows") {
     platform <- "Windows64"
@@ -58,7 +63,7 @@ get_bin <- function(bin_name = "ss") {
     if (bin == "") {
       stop(paste0(
         "The expected Stock Synthesis executable, ", bin_name,
-        ", was not found in your path. See the ss3sim vignette and ?run_ss3model",
+        ", was not found in your path. See the ss3sim vignette and ?r4ss::run",
         " for instructions."
       ))
     }
