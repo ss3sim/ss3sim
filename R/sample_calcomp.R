@@ -349,7 +349,11 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
         agecomp.cal$Part == tmp_CAL_lencomp$Part,
     ]
     # get the sample size to use
-    tmp_nsamp_ages <- dplyr::left_join(tmp_CAL_lencomp, new)
+    tmp_nsamp_ages <- dplyr::left_join(
+      x = tmp_CAL_lencomp,
+      y = new,
+      by = colnames(new)[colnames(new) %in% colnames(tmp_CAL_lencomp)]
+    )
     tmp_nsamp_ages <- tmp_nsamp_ages[1, "Nsamp_ages"]
     # check that all necessary values are available
     if (nrow(newcomp) != length(dat_list$lbin_vector)) {
@@ -423,7 +427,11 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
     newcomp <- newcomp[newcomp$Nsamp > 0, ] # get rid of placeholders
     # replace the Nsamp with ESS_ages, if applicable
     if ("ESS_ages" %in% colnames(new)) {
-      tmp_metadat <- dplyr::left_join(tmp_CAL_lencomp, new)
+      tmp_metadat <- dplyr::left_join(
+        x = tmp_CAL_lencomp,
+        y = new,
+        by = colnames(new)[colnames(new) %in% colnames(tmp_CAL_lencomp)]
+      )
       tmp_mult <- tmp_metadat[1, "ESS_ages_mult"]
       newcomp[["Nsamp"]] <- newcomp[["Nsamp"]] * tmp_mult
     }
@@ -438,7 +446,11 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
   if ("ESS_lengths" %in% colnames(new)) {
     for (r in seq_len(nrow(CAL_lencomp))) {
       tmp_lencomp <- CAL_lencomp[r, ]
-      tmp_ESS_lengths <- dplyr::left_join(tmp_lencomp, new)
+      tmp_ESS_lengths <- dplyr::left_join(
+        x = tmp_lencomp,
+        y = new,
+        by = colnames(new)[colnames(new) %in% colnames(tmp_lencomp)]
+      )
       CAL_lencomp[r, "Nsamp"] <- tmp_ESS_lengths[1, "ESS_lengths"]
     }
   }

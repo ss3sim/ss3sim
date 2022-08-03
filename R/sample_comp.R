@@ -99,7 +99,9 @@ sample_comp <- function(data,
   # Results are slightly different because of some seed thing with dplyr
   # sample_dm or sample_mn will give same values if used in loop
   # or force seed in the function
-  all <- dplyr::inner_join(data, new,
+  all <- dplyr::inner_join(
+    x = data,
+    y = new,
     by = stats::na.omit(colnames(new)[match(colnames(data), colnames(new))])
   ) %>%
     dplyr::rowwise() %>%
