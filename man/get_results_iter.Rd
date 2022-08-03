@@ -30,5 +30,5 @@ iteration.
 Get results for 1 iteration
 }
 \author{
-Kathryn Doering
+Kathryn L. Doering
 }

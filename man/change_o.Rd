@@ -79,6 +79,6 @@ Other change functions:
 \code{\link{change_tv}()}
 }
 \author{
-Kathryn Doering
+Kathryn L. Doering
 }
 \concept{change functions}

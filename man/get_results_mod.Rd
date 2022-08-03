@@ -27,5 +27,5 @@ model run.
 Get results for 1 model run
 }
 \author{
-Kathryn Doering
+Kathryn L. Doering
 }

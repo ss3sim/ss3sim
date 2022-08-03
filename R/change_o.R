@@ -14,7 +14,7 @@
 #' @template par_name
 #' @template par_int
 #' @template verbose
-#' @author Kathryn Doering
+#' @author Kathryn L. Doering
 #' @family change functions
 #' @return The function creates modified versions of the  `.ctl` files. The
 #'   function also returns `change_o_list` invisibly.

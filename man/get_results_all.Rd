@@ -53,6 +53,6 @@ Other get-results:
 \code{\link{get_results_timeseries}()}
 }
 \author{
-Cole Monnahan, Merrill Rudd, Kathryn Doering
+Cole Monnahan, Merrill Rudd, Kathryn L. Doering
 }
 \concept{get-results}

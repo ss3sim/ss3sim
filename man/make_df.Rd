@@ -19,5 +19,5 @@ A dataframe
 Bind together list of list components with the same name
 }
 \author{
-Kathryn Doering
+Kathryn L. Doering
 }

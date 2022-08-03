@@ -33,5 +33,5 @@ for years with corresponding entries in the Stock Synthesis data file.
 Thus, this function must be implemented after \code{\link[=change_f]{change_f()}}.
 }
 \author{
-Kathryn Doering
+Kathryn L. Doering
 }

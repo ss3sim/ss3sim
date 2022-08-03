@@ -52,7 +52,7 @@ id_scenarios <- function(directory) {
 #' where the names of those files are based on `filename_prefix`
 #' and the default leads to the following:
 #' `ss3sim_ts.csv` and `ss3sim_scalar.csv`.
-#' @author Cole Monnahan, Merrill Rudd, Kathryn Doering
+#' @author Cole Monnahan, Merrill Rudd, Kathryn L. Doering
 #' @family get-results
 get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
                             user_scenarios = NULL, type = c("long", "wide"), filename_prefix = "ss3sim") {
@@ -178,7 +178,7 @@ get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
 #'   any files previously created with this function. This is intended to be
 #'   used if iterations were added since the last time it was called, or any
 #'   changes were made to this function.
-#' @author Cole Monnahan and Kathryn Doering
+#' @author Cole Monnahan and Kathryn L. Doering
 #' @family get-results
 #' @export
 get_results_scenario <- function(scenario, directory = getwd(),
@@ -271,7 +271,7 @@ get_results_scenario <- function(scenario, directory = getwd(),
 #'  dataframes . Defaults to NULL, in which case the iter_name will be the
 #'  folder name of dir_1_iter or the folder name 1 level up from the first
 #'  mod_dirs specified
-#' @author Kathryn Doering
+#' @author Kathryn L. Doering
 #' @export
 #' @return A list of 3 data frames called scalar, timeseries, and
 #'  derived (for derived quantities). These lists contain information for
@@ -325,7 +325,7 @@ get_results_iter <- function(dir_1_iter = NULL, mod_dirs = NULL,
 #' @param is_OM Is this an operating model? Defaults to NULL, which will look
 #' for the letters "om" (lower or uppercase) to decide if this is an estimation
 #' model or operating model.
-#' @author Kathryn Doering
+#' @author Kathryn L. Doering
 #' @export
 #' @return A list of 3 data frames called scalar, timeseries, and
 #'  derived (for derived quantities). These data frames contain results for 1
@@ -653,7 +653,7 @@ get_compfit <- function(report.file, name) {
 #' @param list_name A name to subset from iter_list
 #' @param list_df A list of dataframes. These need not have the same column
 #'  names, as this function will fill in with NAs.
-#' @author Kathryn Doering
+#' @author Kathryn L. Doering
 #' @return A dataframe
 make_df <- function(list_name, list_df) {
   list_df_comp <- lapply(list_df, function(x) x[[list_name]])
@@ -707,7 +707,7 @@ make_df <- function(list_name, list_df) {
 #' ts <- utils::read.csv("ss3sim_ts.csv")
 #' ts_wide <- convert_to_wide(scalar)
 #' }
-#' @author Kathryn Doering
+#' @author Kathryn L. Doering
 convert_to_wide <- function(lng) {
   em_df <- lng[lng$model_run == "em", , drop = FALSE]
   colnames(em_df) <- paste0(colnames(em_df), "_em")
