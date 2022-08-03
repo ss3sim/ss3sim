@@ -1,9 +1,9 @@
 #' High-level wrapper to run a simulation
 #'
 #' A wrapper function that
-#' * calls [run_ss3model()] to run the operating model,
+#' * calls [r4ss::run()] to run the operating model,
 #' * samples the output to create fishery and survey data, and
-#' * runs the estimation model.
+#' * calls [r4ss::run()] to run the estimation model.
 #' This function is the main workhorse of {ss3sim} and
 #' is typically not called by the user but called from [run_ss3sim()].
 #'
@@ -58,9 +58,6 @@
 #'   The argument allows users to turn bias adjustment off because
 #'   it involves running the EM multiple times with the hessian and
 #'   is not needed when initially exploring your simulation structure.
-#' @param print_logfile `r lifecycle::badge("deprecated")` `print_logfile = TRUE`
-#'   is no longer supported.
-#'   Previously, the default was `TRUE`, now the default is `FALSE`.
 #' @param sleep A time interval (in seconds) to pause on each iteration. Useful
 #'   if you want to reduce average CPU time -- perhaps because you're working on
 #'   a shared server.
@@ -69,11 +66,13 @@
 #'   depend on the iteration value, but also on the value of `seed`. A
 #'   given combination of iteration, number of years, and `seed` value will
 #'   result in the same recruitment deviations.
-#' @param extras Anything extra to pass to [run_ss3model()]. For
-#' example, you may want to pass additional options to Stock Synthesis through
-#' the argument `admb_options`. Anything that doesn't match a named
-#' argument in [run_ss3model()] will be passed to the
-#' [system()] call that runs Stock Synthesis.
+#' @param extras A character string that will be passed to the `extras`
+#'   argument of [r4ss::run()]. The default is `" "` which results in the
+#'   hessian being inverted if the model has positive phases, i.e., the EM.
+#'   Pass `"-nohess "` if you do not want to estimate the hessian or
+#'   `"-stopph 3 -nohess"` if you want to stop the model in phase 3 and you
+#'   do not want to invert the hessian. The key is that the entry must be one
+#'   string with spaces between the arguments that will be passed to ADMB.
 #' @author Sean Anderson with contributions from many others as listed in
 #'   the DESCRIPTION file.
 #' @return
@@ -177,15 +176,30 @@
 #' )
 #' }
 #'
-ss3sim_base <- function(iterations, scenarios, f_params,
-                        index_params, discard_params = NULL,
-                        lcomp_params = NULL, agecomp_params = NULL, calcomp_params = NULL,
-                        wtatage_params = NULL, mlacomp_params = NULL, em_binning_params = NULL,
-                        estim_params = NULL, tv_params = NULL, operat_params = NULL, om_dir, em_dir,
-                        retro_params = NULL, data_params = NULL, weight_comps_params = NULL,
-                        user_recdevs = NULL, user_recdevs_warn = TRUE,
+ss3sim_base <- function(iterations,
+                        scenarios,
+                        f_params,
+                        index_params,
+                        discard_params = NULL,
+                        lcomp_params = NULL,
+                        agecomp_params = NULL,
+                        calcomp_params = NULL,
+                        wtatage_params = NULL,
+                        mlacomp_params = NULL,
+                        em_binning_params = NULL,
+                        estim_params = NULL,
+                        tv_params = NULL,
+                        operat_params = NULL,
+                        om_dir,
+                        em_dir,
+                        retro_params = NULL,
+                        data_params = NULL,
+                        weight_comps_params = NULL,
+                        user_recdevs = NULL,
+                        user_recdevs_warn = TRUE,
                         bias_adjust = FALSE,
-                        print_logfile = FALSE, sleep = 0, seed = 21,
+                        sleep = 0,
+                        seed = 21,
                         extras = " ") {
 
   # In case ss3sim_base is stopped before finishing:
@@ -754,14 +768,6 @@ ss3sim_base <- function(iterations, scenarios, f_params,
     #  Pause to reduce average CPUE use?
     Sys.sleep(sleep)
   } # end iterations
-
-  if (print_logfile) {
-    lifecycle::deprecate_warn(
-      when = "1.1.7",
-      what = "ss3sim::ss3sim_base(print_logfile = TRUE)",
-      with = "ss3sim::ss3sim_base(print_logfile = FALSE)"
-    )
-  }
 
   return(scenarios)
 }

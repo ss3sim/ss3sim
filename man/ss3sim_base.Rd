@@ -27,7 +27,6 @@ ss3sim_base(
   user_recdevs = NULL,
   user_recdevs_warn = TRUE,
   bias_adjust = FALSE,
-  print_logfile = FALSE,
   sleep = 0,
   seed = 21,
   extras = " "
@@ -117,10 +116,6 @@ The argument allows users to turn bias adjustment off because
 it involves running the EM multiple times with the hessian and
 is not needed when initially exploring your simulation structure.}
 
-\item{print_logfile}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{print_logfile = TRUE}
-is no longer supported.
-Previously, the default was \code{TRUE}, now the default is \code{FALSE}.}
-
 \item{sleep}{A time interval (in seconds) to pause on each iteration. Useful
 if you want to reduce average CPU time -- perhaps because you're working on
 a shared server.}
@@ -131,11 +126,13 @@ depend on the iteration value, but also on the value of \code{seed}. A
 given combination of iteration, number of years, and \code{seed} value will
 result in the same recruitment deviations.}
 
-\item{extras}{Anything extra to pass to \code{\link[=run_ss3model]{run_ss3model()}}. For
-example, you may want to pass additional options to Stock Synthesis through
-the argument \code{admb_options}. Anything that doesn't match a named
-argument in \code{\link[=run_ss3model]{run_ss3model()}} will be passed to the
-\code{\link[=system]{system()}} call that runs Stock Synthesis.}
+\item{extras}{A character string that will be passed to the \code{extras}
+argument of \code{\link[r4ss:run]{r4ss::run()}}. The default is \code{" "} which results in the
+hessian being inverted if the model has positive phases, i.e., the EM.
+Pass \code{"-nohess "} if you do not want to estimate the hessian or
+\code{"-stopph 3 -nohess"} if you want to stop the model in phase 3 and you
+do not want to invert the hessian. The key is that the entry must be one
+string with spaces between the arguments that will be passed to ADMB.}
 }
 \value{
 The output will appear in whatever your current \R working directory
@@ -155,9 +152,9 @@ not any fits to those data.
 \description{
 A wrapper function that
 \itemize{
-\item calls \code{\link[=run_ss3model]{run_ss3model()}} to run the operating model,
+\item calls \code{\link[r4ss:run]{r4ss::run()}} to run the operating model,
 \item samples the output to create fishery and survey data, and
-\item runs the estimation model.
+\item calls \code{\link[r4ss:run]{r4ss::run()}} to run the estimation model.
 This function is the main workhorse of {ss3sim} and
 is typically not called by the user but called from \code{\link[=run_ss3sim]{run_ss3sim()}}.
 }
