@@ -65,187 +65,221 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.19.3" id="ss3sim-1193">ss3sim 1.19.3<a class="anchor" aria-label="anchor" href="#ss3sim-1193"></a></h2>
-<ul><li>Updates {ss3sim} to use {r4ss} version 1.46.1 <code>tune_comps()</code>.</li></ul></div>
+<ul><li>Updates {ss3sim} to use {r4ss} version 1.46.1<ul><li><code>tune_comps()</code></li>
+<li><code>run()</code></li>
+</ul></li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.19.2" id="ss3sim-1192">ss3sim 1.19.2<a class="anchor" aria-label="anchor" href="#ss3sim-1192"></a></h2>
-<ul><li><p>Depends on {stringi}.</p></li>
-<li><p>Removes deprecated arguments in <code><a href="../reference/change_e.html">change_e()</a></code>.</p></li>
-<li><p>Adds <code>sds_out</code> to <code><a href="../reference/sample_index.html">sample_index()</a></code> thanks to the request and review by Leire Citores. Now, bias in the estimation method regarding the uncertainty of the index can be tested.</p></li>
+<ul><li>Depends on {stringi}.</li>
+<li>Removes deprecated arguments in <code><a href="../reference/change_e.html">change_e()</a></code>.</li>
+<li>Adds <code>sds_out</code> to <code><a href="../reference/sample_index.html">sample_index()</a></code> thanks to the request and review by Leire Citores. Now, bias in the estimation method regarding the uncertainty of the index can be tested.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.19.1" id="ss3sim-1191">ss3sim 1.19.1<a class="anchor" aria-label="anchor" href="#ss3sim-1191"></a></h2>
-<ul><li>Updates <code><a href="../reference/change_q.html">change_q()</a></code> to more modern code, and while doing so a few bugs were noticed. Errors are no longer generated when the fleet doesn’t exist.</li>
+<ul><li>Updates <code><a href="../reference/change_q.html">change_q()</a></code> to more modern code and removes bugs. Errors are no longer generated when the fleet does not exist.</li>
 <li>
 <code><a href="../reference/find_position.html">find_position()</a></code> simplifies the code to find the position of a fleet name in a vector. As well as, the code was moved to an exported function for others to use outside of <code><a href="../reference/change_q.html">change_q()</a></code>.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.19.0" id="ss3sim-1190">ss3sim 1.19.0<a class="anchor" aria-label="anchor" href="#ss3sim-1190"></a></h2>
-<ul><li><p>Bump version to match current version of SS3, where version numbers of {ss3sim} include three parts separated by full stops. The first number represents the major version of {ss3sim}. The second number is the minor version, i.e., third set of digits, of the SS3 executable used in this version of {ss3sim}. The third number is the minor version of {ss3sim}.</p></li>
-<li><p>Remove dependency on {bbmle} to externally estimate growth.</p></li>
-<li><p>Deprecate functions that were not being used in the code base, i.e., cleanup_ss3, get_bin_info, change_rec_devs_par, …</p></li>
-<li><p>Does not turn on empirical weight-at-age in EM if sampling weight-at-age data. Instead, users must specify to use empirical weight-at-age data in their control file for the estimation method allowing users to sample the data but not use it if they do not want to.</p></li>
-<li><p>Allows for no estimation method via <code>em_dir = NA</code>, creating a way to simulate data quickly.</p></li>
+<ul><li>Bump version to match current version of SS3, where version numbers of {ss3sim} includes three parts separated by full stops. The first number represents the major version of {ss3sim}. The second number is the minor version, i.e., third set of digits, of the SS3 executable used in {ss3sim}. The third number is the minor version of {ss3sim}.</li>
+<li>Remove dependency on {bbmle} to externally estimate growth.</li>
+<li>Deprecate functions that were not being used in the code base, i.e., <code>cleanup_ss3()</code>, <code>get_bin_info()</code>, <code>change_rec_devs_par()</code>, …</li>
+<li>Does not turn on empirical weight-at-age in EM if sampling weight-at-age data. Instead, users must specify to use empirical weight-at-age data in their control file for the estimation method allowing users to sample the data but not use it if they do not want to.</li>
+<li>Allows for no estimation method via <code>em_dir = NA</code>, creating a way to simulate data quickly.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.8" id="ss3sim-118">ss3sim 1.1.8<a class="anchor" aria-label="anchor" href="#ss3sim-118"></a></h2>
-<ul><li>Fix bug related to tidyverse in [sample_comp()] where the composition data were appended to the data frame as a matrix rather than integrated as additional columns.</li></ul></div>
+<ul><li>Fix bug related to tidyverse in <code><a href="../reference/sample_comp.html">sample_comp()</a></code> where the composition data were appended to the data frame as a matrix rather than integrated as additional columns.</li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.7" id="ss3sim-117">ss3sim 1.1.7<a class="anchor" aria-label="anchor" href="#ss3sim-117"></a></h2>
-<ul><li><p>Deprecate the use of the log file in [ss3sim_base()]. The argument [ss3sim_base(print_logfile = FALSE)] has a new default and will warn users if they have the value set to <code>TRUE</code> that no log file will be printed. Users can look at the results files to get most of this information.</p></li>
+<ul><li><p>Deprecate the use of the log file in <code><a href="../reference/ss3sim_base.html">ss3sim_base()</a></code>. The argument <code>ss3sim_base(print_logfile = FALSE)</code> has a new default and will warn users if they have the value set to <code>TRUE</code>. Fully deprecated in {ss3sim} version 1.19.3.</p></li>
 <li><p>Create data objects for the OM and EM control and data files. These files are often used in examples.</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.6" id="ss3sim-116">ss3sim 1.1.6<a class="anchor" aria-label="anchor" href="#ss3sim-116"></a></h2>
-<ul><li>Deprecate change_f_par which was not being used by any downstream code. Feel free to contact the package maintainers if you wish to reinstate this function, but ss3sim uses the control file instead of the par file as in the original ss3sim.</li>
-<li>Move Anderson et al. (2014) to a dedicated repository ss3sim/ss3sim_andersonetal</li>
-<li>Allow for seas and partition in sampling</li>
+<ul><li>Deprecate <code>change_f_par()</code> which was not being used by any downstream code because {ss3sim} uses the control file instead of the par file.</li>
+<li>Move Anderson et al. (2014) to a dedicated repository ss3sim/ss3sim_andersonetal.</li>
+<li>Allow for seas and partition in sampling.</li>
 </ul></div>
     <div class="section level2"><h2 class="page-header" data-toc-text="1.1.5" id="ss3sim-115">ss3sim 1.1.5<a class="anchor" aria-label="anchor" href="#ss3sim-115"></a></h2></div>
     <div class="section level2"><h2 class="page-header" data-toc-text="1.1.4" id="ss3sim-114">ss3sim 1.1.4<a class="anchor" aria-label="anchor" href="#ss3sim-114"></a></h2></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.3" id="ss3sim-113">ss3sim 1.1.3<a class="anchor" aria-label="anchor" href="#ss3sim-113"></a></h2>
-<ul><li>Drop fleets from sampling regimes using NA in the scenario data frame.</li>
-<li>Upgrade to Stock Synthesis 3.30.16</li>
-<li>Start allowing for seasons in data (F right now)</li>
-<li>Fixed bug in how q was being checked</li>
-<li>Partition change_catch from change_data</li>
-<li>Allow for fleet specific cpar and ESS values</li>
-<li>Allow for no SPR in results file</li>
-<li>Fix bad param argument in weight_comps with DM</li>
+<ul><li>Drop fleets from sampling regimes using <code>NA</code> in the scenario data frame.</li>
+<li>Upgrade to Stock Synthesis 3.30.16.</li>
+<li>Start allowing for seasons in data.</li>
+<li>Fixed bug in how q was being checked.</li>
+<li>Partition <code><a href="../reference/change_catch.html">change_catch()</a></code> from <code><a href="../reference/change_data.html">change_data()</a></code>.</li>
+<li>Allow for fleet specific <code>cpar</code> and <code>ESS</code> values.</li>
+<li>Allow for no SPR in results file.</li>
+<li>Fix bad param argument in <code>weight_comps()</code> with DM.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.2" id="ss3sim-112">ss3sim 1.1.2<a class="anchor" aria-label="anchor" href="#ss3sim-112"></a></h2>
-<ul><li>Control height and width of jittering in plot_points with jitter.height and jitter.width.</li></ul></div>
+<ul><li>Control height and width of jittering in <code><a href="../reference/plot_points.html">plot_points()</a></code> with <code>jitter.height</code> and <code>jitter.width</code>.</li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.1" id="ss3sim-111">ss3sim 1.1.1<a class="anchor" aria-label="anchor" href="#ss3sim-111"></a></h2>
-<ul><li>Allow for custom name of results files</li></ul></div>
+<ul><li>Allow for custom name of results files.</li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.0" id="ss3sim-110">ss3sim 1.1.0<a class="anchor" aria-label="anchor" href="#ss3sim-110"></a></h2>
-<ul><li>Upgrade to Stock Synthesis 3.30.15.03</li>
-<li>Deprecate case files in favor of simdf, an argument passed to run_ss3sim</li>
-<li>Use more templates for parameter arguments, e.g., par_int</li>
-<li>Simplify scenarios, iterations, em/om to dir to increase the usability of functions outside of ss3sim</li>
-<li>Add as.is for all calls to type.convert because of an upgrade within R 4.0</li>
-<li>Use maxfn 0 to increase speed of tests and run more tests on CRAN check</li>
-<li>Figures: Use better labels for x and y axes in ggplots; change RE line to dashed black; pass coloration of lines in a better way; use plot_ss3sim as back-end code for plotting functions; properly use character strings as input arguments with calls to data; add cumulative mean figure; allow for fill in boxplots;</li>
-<li>Results: long-data format for results to allow functions to be used by SSMSE; remove columns that are not needed; remove row names in summary files; rename rec_dev to increase clarity; better grep of management quantities; remove parallel capacity; only read comp file if present by changing CompFile to SS_output(); allow for relative directories for SSMSE (a dependency)</li>
-<li>Allow for multiple fisheries in change_f and change fisheries to fleets</li>
-<li>Increase robustness of get_success</li>
-<li>Break tests into multiple chunks to pass Travis-ci checks</li>
-<li>Allow weighting of composition data</li>
-<li>Start EM in first year with non-zero catches</li>
-<li>Reinstate bias adjustment, but once for every iteration</li>
+<ul><li>Upgrades to Stock Synthesis 3.30.15.03.</li>
+<li>Deprecates case files in favor of <code>run_ss3sim(simdf =)</code>.</li>
+<li>Uses more templates for parameter arguments, e.g., <code>par_int</code>.</li>
+<li>Simplifies scenarios, iterations, OM/EM to <code>dir</code> to increase the usability of functions outside of {ss3sim}.</li>
+<li>Adds <code>type.convert(as.is = TRUE)</code> because of R 4.0.</li>
+<li>Uses maxfn 0 to increase speed of tests and run more tests on CRAN check.</li>
+<li>Figures<ul><li>Uses better labels for x and y axes in <code>ggplot2::ggplots()</code>;</li>
+<li>Changes RE line to dashed black;</li>
+<li>Passes coloration of lines in a better way;</li>
+<li>Uses <code><a href="../reference/plot_ss3sim.html">plot_ss3sim()</a></code> as back-end code for plotting functions;</li>
+<li>Uses character strings as input arguments with calls to data;</li>
+<li>Adds cumulative mean figure; and</li>
+<li>Allows for fill in boxplots;.</li>
+</ul></li>
+<li>Results:<ul><li>Creates long-data format for results to allow functions to be used by {SSMSE};</li>
+<li>Removes columns that are not needed;</li>
+<li>Removes row names in summary files;</li>
+<li>Renames rec_dev to increase clarity;</li>
+<li>Creates better grep of management quantities;</li>
+<li>Removes parallel capacity;</li>
+<li>Only reads comp file if present by changing CompFile to <code><a href="https://rdrr.io/pkg/r4ss/man/SS_output.html" class="external-link">r4ss::SS_output()</a></code>;</li>
+<li>Allows for relative directories for {SSMSE}.</li>
+</ul></li>
+<li>Allows for multiple fisheries in <code><a href="../reference/change_f.html">change_f()</a></code> and change fisheries to fleets.</li>
+<li>Increases robustness of <code><a href="../reference/get_success.html">get_success()</a></code>.</li>
+<li>Break tests into multiple chunks to pass Travis-ci checks.</li>
+<li>Allows weighting of composition data.</li>
+<li>Starts EM in first year with non-zero catches.</li>
+<li>Reinstate bias adjustment, but once for every iteration.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.4" id="ss3sim-104">ss3sim 1.0.4<a class="anchor" aria-label="anchor" href="#ss3sim-104"></a></h2>
-<ul><li>Add create_logo() to generate github logo</li>
-<li>change <a href="https://towardsdatascience.com/travis-ci-for-r-advanced-guide-719cb2d9e0e5" class="external-link">travis configuration</a> to use Xenial</li>
+<ul><li>Add <code><a href="../reference/create_logo.html">create_logo()</a></code> to generate GitHub logo.</li>
+<li>change <a href="https://towardsdatascience.com/travis-ci-for-r-advanced-guide-719cb2d9e0e5" class="external-link">travis configuration</a> to use Xenial.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.3" id="ss3sim-103">ss3sim 1.0.3<small>2019-11-08</small><a class="anchor" aria-label="anchor" href="#ss3sim-103"></a></h2>
-<ul><li>Realized broken links are because of case not full path and changed all links back to shorter path with lower-case first letter</li>
-<li>include NOAA disclaimer in README</li>
+<ul><li>Realized broken links are because of case not full path and changed all links back to shorter path with lower-case first letter.</li>
+<li>Includes NOAA disclaimer in README.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.2" id="ss3sim-102">ss3sim 1.0.2<a class="anchor" aria-label="anchor" href="#ss3sim-102"></a></h2>
-<ul><li>changed link in inst/doc/making-models.html to a more explicit link using ../doc/introduction.html</li></ul></div>
+<ul><li>Changes link in inst/doc/making-models.html to a more explicit link using ../doc/introduction.html.</li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.1" id="ss3sim-101">ss3sim 1.0.1<a class="anchor" aria-label="anchor" href="#ss3sim-101"></a></h2>
-<ul><li>fixed broken links in README.md and inst/doc/introduction.html</li>
-<li>confirmed that the links in inst/doc/making-models.html are working</li>
+<ul><li>Fixes broken links in README.md and inst/doc/introduction.html.</li>
+<li>Confirmed that the links in inst/doc/making-models.html are working.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.0" id="ss3sim-100">ss3sim 1.0.0<a class="anchor" aria-label="anchor" href="#ss3sim-100"></a></h2>
-<ul><li>Improved the documentation of many functions</li>
-<li>Updated, added, or removed examples increasing the number of functions with helpful examples</li>
-<li>Update profile_fmsy to allow for relative or absolute paths to directories and provide a better message if verbose = TRUE warning users when they may have not run their model long enough to reach equilibrium</li>
-<li>Remove reliance on tidyverse packages</li>
-<li>Change to ‘iteration’ instead of ‘replicate’</li>
-<li>Update the license to 2019</li>
-<li>Change README from Rmd to md file</li>
-<li>Deleted the vignette on making functions and updated remaining vignettes</li>
-<li>Remove bias adjustment capability and sampling of conditional age-at-length data; both will eventually be added back to the package with better code</li>
-<li>Remove write_file argument from many functions and rely on other input arguments to determine if a file should be written to the disk, such as if the name of the file is NULL then nothing is written</li>
-<li>Create change_o for the operating model so users can input INIT values for parameters in their operating model rather than having to use a dev vector and the change_tv function</li>
-<li>Implement check of q parameter such that a given q is created from a template for each survey-like data set included after sampling</li>
-<li>Manipulate control file rather than par file and delete the par file from the operating model folder</li>
-<li>Use merge rather than cbind for those instances that the names of the columns in the results file from the OM do not exactly match the EM.</li>
-<li>Fix get_results working directory issue</li>
-<li>Deprecate change_year, change_fltname, change_maturity, and pastef</li>
-<li>Reduce restrictions placed on the operating and estimation models used by individual users to allow for multiple fleets, two-sexed models, and other trivial changes such as different fleet names. Feel free to email the developers if there is a feature that you want or one that isn’t working as expected because more work in planned in this area.</li>
-<li>Implement the use of more r4ss functions such as SS_readstarter and SS_writestarter to decrease the amount of original code in ss3sim</li>
-<li>Increase the number of functions with examples and update examples to not change the users working directory when possible.</li>
-<li>Change to providing a single model inside the package rather than maintaining models both in the package and in ss3sim/ss3models</li>
-<li>Kelli F. Johnson is now the maintainer of the package</li>
-<li>updated authors to reflect current contributors</li>
-<li>reduced the complexity of sampling functions by initiating the same protocol for ages and lengths, where each function calls a simple function</li>
-<li>Update functions to work with latest version of r4ss, which is compatible with Stock Synthesis 3.3.0, and change to using the newer executable of Stock Synthesis without the option to specify safe or optimized</li>
+<ul><li>Improves documentation.</li>
+<li>Updates, adds, or removes examples.</li>
+<li>Updates <code><a href="../reference/profile_fmsy.html">profile_fmsy()</a></code> to allow for relative or absolute paths to directories and provide a better message if <code>verbose = TRUE</code> when users may have not run their model long enough to reach equilibrium.</li>
+<li>Removes reliance on {tidyverse}.</li>
+<li>Changes to ‘iteration’ instead of ‘replicate’.</li>
+<li>Updates the license to 2019.</li>
+<li>Changes README from Rmd to md file.</li>
+<li>Deletes the vignette on making functions and updated remaining vignettes.</li>
+<li>Removes bias adjustment capability and sampling of conditional age-at-length data; both will eventually be added back to the package with better code</li>
+<li>Removes <code>write_file</code> argument from many functions and rely on other input arguments to determine if a file should be written to the disk, such as if the name of the file is <code>NULL</code> then nothing is written.</li>
+<li>Creates <code><a href="../reference/change_o.html">change_o()</a></code> for the OM so users can input INIT values for parameters in their OM rather than having to use a dev vector and <code><a href="../reference/change_tv.html">change_tv()</a></code>.</li>
+<li>Implements check of q parameter such that a given q is created from a template for each survey-like data set included after sampling.</li>
+<li>Manipulate control file rather than par file and delete the par file from the OM folder.</li>
+<li>Use <code><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge()</a></code> rather than <code><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind()</a></code> for those instances that the names of the columns in the results file from the OM do not exactly match the EM.</li>
+<li>Fixes <code>get_results()</code> working directory issue.</li>
+<li>Deprecates<ul><li>
+<code><a href="../reference/change_year.html">change_year()</a></code>,</li>
+<li>
+<code>change_fltname()</code>,</li>
+<li>
+<code>change_maturity()</code>, and</li>
+<li>
+<code>pastef()</code>.</li>
+</ul></li>
+<li>Reduces restrictions placed on the OMs and EMs used by individual users to allow for multiple fleets, two-sexed models, and other trivial changes such as different fleet names.</li>
+<li>Implements the use of more {r4ss} functions.</li>
+<li>Increases the number of functions with examples and update examples to not change the users working directory when possible.</li>
+<li>Provides a single model inside the package rather than maintaining models both in the package and in ss3sim/ss3models.</li>
+<li>Kelli F. Johnson is now the maintainer of the package.</li>
+<li>Updates authors to reflect current contributors.</li>
+<li>Reduces the complexity of sampling functions by initiating the same protocol for ages and lengths, where each function calls a simple function.</li>
+<li>Updates functions to work with latest version of {r4ss}, which is compatible with Stock Synthesis 3.3.0</li>
+<li>Removes option to specify safe or optimized version of SS3.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.5" id="ss3sim-095">ss3sim 0.9.5<small>2017-04-19</small><a class="anchor" aria-label="anchor" href="#ss3sim-095"></a></h2>
-<ul><li>Adds citation to Description field</li></ul></div>
+<ul><li>Adds citation to Description.</li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.4" id="ss3sim-094">ss3sim 0.9.4<a class="anchor" aria-label="anchor" href="#ss3sim-094"></a></h2>
-<ul><li>Fix compatibility with dplyr 0.6.0</li>
-<li>Fix issue with SS3 binary in development version <a href="https://github.com/ss3sim/ss3sim/issues/239" class="external-link">#239</a></li>
+<ul><li>Fixes compatibility with {dplyr} 0.6.0.</li>
+<li>Fixes issue with SS3 binary in development version <a href="https://github.com/ss3sim/ss3sim/issues/239" class="external-link">#239</a>.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.3" id="ss3sim-093">ss3sim 0.9.3<small>2016-11-30</small><a class="anchor" aria-label="anchor" href="#ss3sim-093"></a></h2>
-<ul><li>Fix LICENSE for CRAN</li>
-<li>Update author list</li>
-<li>Incorporate <a href="https://github.com/cstawitz" class="external-link">@cstawitz</a>’s additions to the <code>making-models</code> vignette</li>
-<li>Fixes to executable locating for Windows</li>
+<ul><li>Fixes LICENSE for CRAN.</li>
+<li>Updates author list.</li>
+<li>Incorporate <a href="https://github.com/cstawitz" class="external-link">@cstawitz</a>’s additions to the <code>making-models</code> vignette.</li>
+<li>Fixes to executable locating for Windows.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.2" id="ss3sim-092">ss3sim 0.9.2<small>2016-04-24</small><a class="anchor" aria-label="anchor" href="#ss3sim-092"></a></h2>
-<ul><li>Revise package description</li></ul></div>
+<ul><li>Updates DESCRIPTION.</li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.1" id="ss3sim-091">ss3sim 0.9.1<a class="anchor" aria-label="anchor" href="#ss3sim-091"></a></h2>
-<ul><li>Fix compatibility with dplyr 0.4.3.9001.</li></ul></div>
+<ul><li>Fixes compatibility with {dplyr} 0.4.3.9001.</li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.0" id="ss3sim-090">ss3sim 0.9.0<small>2015-12-24</small><a class="anchor" aria-label="anchor" href="#ss3sim-090"></a></h2>
-<ul><li><p>Fix compatibility of vignette with ggplot2 2.0.0.</p></li>
-<li><p>Add new data types: conditional age at length, mean length at age, and empirical weight at age.</p></li>
-<li><p><code>sample_agecomp</code> and <code>sample_lcomp</code> now take new effective sample size (ESS) argument as inputs, so the user can weight the composition data as desired.</p></li>
-<li><p>Add functions to estimate von Bertalanffy growth. These are used internally by <code><a href="../reference/change_e.html">change_e()</a></code>.</p></li>
-<li><p>Add <code>change_maturity()</code> to alter the SS3 maturity option</p></li>
-<li><p>Check that fleet name in the data frame matches the newest SS3 version (see <code>change_fltname()</code>)</p></li>
-<li><p>Add <code><a href="../reference/change_data.html">change_data()</a></code>, which prepares the OM .dat files to have the correct data used for sampling that scenario. It also can manipulate length bin widths, the SS3 robustification constant, and the SS3 tail compression value. It takes care of calling the new <code><a href="../reference/change_tail_compression.html">change_tail_compression()</a></code> and <code><a href="../reference/change_lcomp_constant.html">change_lcomp_constant()</a></code> functions.</p></li>
-<li><p>Add <code><a href="../reference/calculate_re.html">calculate_re()</a></code> to calculate relative errors on the result data frames.</p></li>
-<li><p>Add internal checking of the validity of SS3 .dat files (<a href="https://github.com/ss3sim/ss3sim/issues/203" class="external-link">#203</a>)</p></li>
-<li><p>The <code>get_results</code> function now returns run time, a list of parameters that were on bounds, and recruitment deviations.</p></li>
-<li><p>Switch vignette to R Markdown and HTML output (<a href="https://github.com/ss3sim/ss3sim/issues/194" class="external-link">#194</a>)</p></li>
-<li><p>Add re-binning within the estimation model of length and conditional age-at-length data (<a href="https://github.com/ss3sim/ss3sim/issues/201" class="external-link">#201</a>, <a href="https://github.com/ss3sim/ss3sim/issues/205" class="external-link">#205</a>)</p></li>
-<li><p>Add Kelli’s <code><a href="../reference/profile_fmsy.html">profile_fmsy()</a></code> function (<a href="https://github.com/ss3sim/ss3sim/issues/173" class="external-link">#173</a>)</p></li>
-<li><p>Merrill added parallel processing option to the get results functions (<a href="https://github.com/ss3sim/ss3sim/issues/171" class="external-link">#171</a>)</p></li>
-<li><p>Added parallel iterations processing option (<a href="https://github.com/ss3sim/ss3sim/issues/168" class="external-link">#168</a>)</p></li>
-<li><p>Function argument descriptions now indicate which ones need to be specified in case files with an asterisk (<a href="https://github.com/ss3sim/ss3sim/issues/161" class="external-link">#161</a>).</p></li>
-<li><p>Merrill updated the get-results functions to work without bias runs, to check for folders that look like ss3sim runs, and to issue a warning if there are problems reading the files (<a href="https://github.com/ss3sim/ss3sim/issues/155" class="external-link">#155</a>).</p></li>
-<li><p>Copy wtatage.ss_new from OM to EM (<a href="https://github.com/ss3sim/ss3sim/issues/163" class="external-link">#163</a>).</p></li>
-<li><p>Add Travis CI testing of the package <a href="https://travis-ci.org/ss3sim/ss3sim" class="external-link uri">https://travis-ci.org/ss3sim/ss3sim</a></p></li>
-<li><p>Added much more extensive testing of the package in the root <code>tests</code> folder. This is for internal testing only and not bundled with the package (<a href="https://github.com/ss3sim/ss3sim/issues/156" class="external-link">#156</a>).</p></li>
-<li><p>Allow for missing arguments in case files. This allows us to add new arguments to existing functions without breaking old code. A missing argument gets passed as <code>NULL</code> via the <code>add_nulls()</code> function (within <a href="https://github.com/ss3sim/ss3sim/issues/148" class="external-link">#148</a>).</p></li>
-<li><p>Re-write case file parsing to be more robust and allow for scientific notations (<a href="https://github.com/ss3sim/ss3sim/issues/157" class="external-link">#157</a>).</p></li>
-<li><p>Add the option to use the optimized Stock Synthesis executables (<a href="https://github.com/ss3sim/ss3sim/issues/138" class="external-link">#138</a> and <a href="https://github.com/ss3sim/ss3sim/issues/147" class="external-link">#147</a>) and ability to have spaces in the path name to the executable.</p></li>
-<li><p>Add Cole Monnahan’s ss3sim plotting functions (<a href="https://github.com/ss3sim/ss3sim/issues/134" class="external-link">#134</a>).</p></li>
-<li><p><code>change_lcomp</code>, <code>change_agecomp</code>, and <code>change_index</code> are now <code>sample_lcomp</code>, <code>sample_agecomp</code>, and <code>sample_index</code>. The old functions point to the new functions with warnings that they are depreciated. Existing code should continue to work (<a href="https://github.com/ss3sim/ss3sim/issues/145" class="external-link">#145</a>).</p></li>
-<li><p>ss3sim now requires the SS3 binary to be named according to the version (<a href="https://github.com/ss3sim/ss3sim/issues/138" class="external-link">#138</a> and <a href="https://github.com/ss3sim/ss3sim/issues/147" class="external-link">#147</a>).</p></li>
-<li><p>Bump required version of r4ss to 1.22.1 since 1.22.0 did not export functions that ss3sim needs.</p></li>
-<li><p>ss3sim now requires R 3.1.0 since we cannot easily test on earlier versions.</p></li>
+<ul><li>Fixes compatibility of vignette with {ggplot2} 2.0.0.</li>
+<li>Adds new data types:<ul><li>conditional age at length,</li>
+<li>mean length at age, and</li>
+<li>empirical weight at age.</li>
+</ul></li>
+<li>
+<code><a href="../reference/sample_agecomp.html">sample_agecomp()</a></code> and <code><a href="../reference/sample_lcomp.html">sample_lcomp()</a></code> now take new effective sample size (ESS) argument as inputs, so the user can weight the composition data as desired.</li>
+<li>Add functions to estimate von Bertalanffy growth. These are used internally by <code><a href="../reference/change_e.html">change_e()</a></code>.</li>
+<li>Add <code>change_maturity()</code> to alter the SS3 maturity option.</li>
+<li>Check that fleet name in the data frame matches the newest SS3 version (see <code>change_fltname()</code>).</li>
+<li>Add <code><a href="../reference/change_data.html">change_data()</a></code>, which prepares the OM .dat files to have the correct data used for sampling that scenario. It also can manipulate length bin widths, the SS3 robustification constant, and the SS3 tail compression value. It takes care of calling the new <code><a href="../reference/change_tail_compression.html">change_tail_compression()</a></code> and <code><a href="../reference/change_lcomp_constant.html">change_lcomp_constant()</a></code> functions.</li>
+<li>Add <code><a href="../reference/calculate_re.html">calculate_re()</a></code> to calculate relative errors on the result data frames.</li>
+<li>Add internal checking of the validity of SS3 .dat files (<a href="https://github.com/ss3sim/ss3sim/issues/203" class="external-link">#203</a>).</li>
+<li>The <code>get_results()</code> function now returns the following:<ul><li>run time,</li>
+<li>a list of parameters that were on bounds, and</li>
+<li>recruitment deviations.</li>
+</ul></li>
+<li>Switches vignette to R Markdown and HTML output (<a href="https://github.com/ss3sim/ss3sim/issues/194" class="external-link">#194</a>).</li>
+<li>Adds re-binning within the EM for length and conditional age-at-length data (<a href="https://github.com/ss3sim/ss3sim/issues/201" class="external-link">#201</a>, <a href="https://github.com/ss3sim/ss3sim/issues/205" class="external-link">#205</a>).</li>
+<li>Add Kelli’s <code><a href="../reference/profile_fmsy.html">profile_fmsy()</a></code> function (<a href="https://github.com/ss3sim/ss3sim/issues/173" class="external-link">#173</a>).</li>
+<li>Merrill added parallel processing option to the get results functions (<a href="https://github.com/ss3sim/ss3sim/issues/171" class="external-link">#171</a>).</li>
+<li>Adds parallel iterations processing option (<a href="https://github.com/ss3sim/ss3sim/issues/168" class="external-link">#168</a>).</li>
+<li>Function argument descriptions now indicate which ones need to be specified in case files with an asterisk (<a href="https://github.com/ss3sim/ss3sim/issues/161" class="external-link">#161</a>).</li>
+<li>Merrill updated the get-results functions to work without bias runs, to check for folders that look like ss3sim runs, and to issue a warning if there are problems reading the files (<a href="https://github.com/ss3sim/ss3sim/issues/155" class="external-link">#155</a>).</li>
+<li>Copy wtatage.ss_new from OM to EM (<a href="https://github.com/ss3sim/ss3sim/issues/163" class="external-link">#163</a>).</li>
+<li>Adds Travis CI testing of the package <a href="https://travis-ci.org/ss3sim/ss3sim" class="external-link uri">https://travis-ci.org/ss3sim/ss3sim</a>.</li>
+<li>Adds much more extensive testing of the package in the root <code>tests</code> folder. This is for internal testing only and not bundled with the package (<a href="https://github.com/ss3sim/ss3sim/issues/156" class="external-link">#156</a>).</li>
+<li>Allow for missing arguments in case files. This allows us to add new arguments to existing functions without breaking old code. A missing argument gets passed as <code>NULL</code> via the <code>add_nulls()</code> function (within <a href="https://github.com/ss3sim/ss3sim/issues/148" class="external-link">#148</a>).</li>
+<li>Re-write case file parsing to be more robust and allow for scientific notations (<a href="https://github.com/ss3sim/ss3sim/issues/157" class="external-link">#157</a>).</li>
+<li>Adds the option to use the optimized Stock Synthesis executables (<a href="https://github.com/ss3sim/ss3sim/issues/138" class="external-link">#138</a> and <a href="https://github.com/ss3sim/ss3sim/issues/147" class="external-link">#147</a>) and ability to have spaces in the path name to the executable.</li>
+<li>Adds Cole Monnahan’s plotting functions (<a href="https://github.com/ss3sim/ss3sim/issues/134" class="external-link">#134</a>).</li>
+<li>
+<code>change_lcomp()</code>, <code>change_agecomp()</code>, and <code>change_index()</code> are now <code><a href="../reference/sample_lcomp.html">sample_lcomp()</a></code>, <code><a href="../reference/sample_agecomp.html">sample_agecomp()</a></code>, and <code><a href="../reference/sample_index.html">sample_index()</a></code> (<a href="https://github.com/ss3sim/ss3sim/issues/145" class="external-link">#145</a>).</li>
+<li>Requires the SS3 binary to be named according to the version (<a href="https://github.com/ss3sim/ss3sim/issues/138" class="external-link">#138</a> and <a href="https://github.com/ss3sim/ss3sim/issues/147" class="external-link">#147</a>).</li>
+<li>Bump required version of {r4ss} to 1.22.1.</li>
+<li>Requires R 3.1.0.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.8.2" id="ss3sim-082">ss3sim 0.8.2<small>2014-03-10</small><a class="anchor" aria-label="anchor" href="#ss3sim-082"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-8-2">New features<a class="anchor" aria-label="anchor" href="#new-features-0-8-2"></a></h3>
-<ul><li><p>Added ability to pass seed value to <code><a href="../reference/get_recdevs.html">get_recdevs()</a></code> (<a href="https://github.com/ss3sim/ss3sim/issues/125" class="external-link">#125</a>).</p></li>
-<li><p>Added dimension check of <code>user_recdevs</code> to ensure recruitment deviations are supplied for all iterations (<a href="https://github.com/ss3sim/ss3sim/issues/130" class="external-link">#130</a>).</p></li>
-<li><p>Vignette now uses a custom Solarized color theme.</p></li>
+<ul><li>Adds ability to pass seed value to <code><a href="../reference/get_recdevs.html">get_recdevs()</a></code> (<a href="https://github.com/ss3sim/ss3sim/issues/125" class="external-link">#125</a>).</li>
+<li>Adds dimension check of <code>user_recdevs</code> to ensure recruitment deviations are supplied for all iterations (<a href="https://github.com/ss3sim/ss3sim/issues/130" class="external-link">#130</a>).</li>
+<li>Uses a custom Solarized color theme in vignette.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-8-2">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-8-2"></a></h3>
-<ul><li><p>Moved vignette data files to the <code>data</code> folder so they are user-accessible after installing the package (<a href="https://github.com/ss3sim/ss3sim/issues/126" class="external-link">#126</a>).</p></li>
-<li><p>Updated out-dated paper citations. All papers are now accepted.</p></li>
-<li><p>Removed multi-core code in vignette for CRAN checks.</p></li>
+<ul><li>Moves vignette data files to the <code>data</code> folder so they are user-accessible after installing the package (<a href="https://github.com/ss3sim/ss3sim/issues/126" class="external-link">#126</a>).</li>
+<li>Updates out-dated paper citations. All papers are now accepted.</li>
+<li>Removes multi-core code in vignette for CRAN checks.</li>
 </ul></div>
 </div>
   </div>
