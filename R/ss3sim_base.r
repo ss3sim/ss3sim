@@ -235,16 +235,16 @@ ss3sim_base <- function(iterations,
     # Create folders, copy models, check for necessary files, rename
     # files for consistency
     iteration_existed <- copy_ss3models(
-      model_dir = om_dir, scenarios = sc,
-      iterations = i, type = "om"
+      model_dir = om_dir, scenario = sc,
+      iteration = i, type = "om"
     )
     if (iteration_existed) next
     pathom <- file.path(sc, i, "om")
     pathem <- file.path(sc, i, "em")
     if (!is.na(em_dir)) {
       copy_ss3models(
-        model_dir = em_dir, scenarios = sc,
-        iterations = i, type = "em"
+        model_dir = em_dir, scenario = sc,
+        iteration = i, type = "em"
       )
     } else {
       dir.create(pathem, showWarnings = FALSE, recursive = TRUE)

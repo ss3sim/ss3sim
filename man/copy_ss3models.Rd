@@ -2,60 +2,56 @@
 % Please edit documentation in R/copy_ss3models.r
 \name{copy_ss3models}
 \alias{copy_ss3models}
-\title{Copy the operating and estimation models and create a folder
-structure}
+\title{Copy the OM or EM into a scenario directory}
 \usage{
-copy_ss3models(model_dir, scenarios, iterations = 1:100, type = c("om", "em"))
+copy_ss3models(model_dir, scenario, iteration = 1, type = c("om", "em"))
 }
 \arguments{
-\item{model_dir}{A directory containing the operating or estimation
-model. Each folder should be named according to a scenario ID.}
+\item{model_dir}{A directory containing an OM or EM.}
 
-\item{scenarios}{Which scenarios to copy to. Supply a vector of
-character elements.}
+\item{scenario}{A string giving the scenario name which will be used in the
+resulting directory name. If you want this directory created somewhere
+other than your current working directory, you can pass a full file path
+with the last level being the new scenario name. All intermediate
+directories that do not exist will be created.}
 
-\item{iterations}{A numeric vector of the iterations to copy to.
-The function will create the folders as needed.}
+\item{iteration}{An integer specifying the iteration of interest.}
 
-\item{type}{Are you copying operating or estimation models? This
-affects whether the model folder gets named "om" or "em"}
+\item{type}{Either \code{"om"} or \code{"em"} depending on which type of model folder
+needs created.}
 }
 \value{
-An invisible boolean for whether that iteration already
-existed. A set of nested folders starting with the scenario ID, then the
-iterations, then "om" or "em", and then the Stock Synthesis model files.
+An invisible boolean for whether that iteration already existed.
 }
 \description{
-Copy the operating and estimation models and create a folder
-structure
+Copy the OM or EM into a scenario directory
 }
 \examples{
 # Locate the package data:
-om_folder <- system.file("extdata", "models", "cod-om",
-  package =
-    "ss3sim"
+om_folder <- system.file(
+  "extdata", "models", "cod-om",
+  package = "ss3sim"
 )
 
 # Copy the operating model:
 copy_ss3models(
-  model_dir = om_folder, type = "om", iterations =
-    1:3, scenarios = "D0-F0-testing"
+  model_dir = om_folder,
+  scenario = "D0-F0-testing"
 )
 # Now look at your working directory in your file system
 
-# Copy the estimation model with two scenario IDs:
+# Copy the EM
 copy_ss3models(
-  model_dir = om_folder, type = "em", iterations = 1:2,
-  scenarios = c("D1-F0-testing", "D2-F0-testing")
+  model_dir = om_folder,
+  type = "em",
+  scenario = "D1-F0-testing"
 )
-# (Note that all the scenario argument does here is affect the
-# folder names.)
+# Scenario argument affects the folder names.
 
 # Clean up:
 unlink("D0-F0-testing", recursive = TRUE)
 unlink("D1-F0-testing", recursive = TRUE)
-unlink("D2-F0-testing", recursive = TRUE)
 }
 \author{
-Sean Anderson, Kelli F. Johnson
+Sean C. Anderson, Kelli F. Johnson
 }
