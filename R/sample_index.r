@@ -138,7 +138,7 @@ sample_index <- function(dat_list,
   if (missing(sds_out)) {
     sds_out <- sds_obs
   }
-  cpue <- dat_list$CPUE # CPUE expected values.
+  cpue <- dat_list[["CPUE"]]
   colnames(cpue) <- gsub("obs", "obsOLD", colnames(cpue))
   Nfleets <- length(fleets)
   if (FALSE %in% (fleets %in% unique(cpue$index))) {
@@ -187,7 +187,16 @@ sample_index <- function(dat_list,
   cpue.new <- xxx %>%
     dplyr::arrange(.data[["index"]], .data[["year"]], .data[["seas"]]) %>%
     dplyr::rowwise() %>%
-    dplyr::mutate(obs = sample_lognormal(.data[["obsOLD"]], .data[["se_in"]])) %>%
+    dplyr::mutate(
+      dist = dat_list[["CPUEinfo"]][["Errtype"]][
+        match(index, dat_list[["CPUEinfo"]][["Fleet"]])
+      ],
+      obs = ifelse(
+        test = dist == 0,
+        yes = sample_lognormal(.data[["obsOLD"]], .data[["se_in"]]),
+        no = stats::rnorm(n = 1, mean = .data[["obsOLD"]], .data[["se_in"]])
+      )
+    ) %>%
     dplyr::select(.data[["year"]]:.data[["index"]], .data[["obs"]], .data[["se_log"]])
 
   ## Open the .dat file and find the right lines to overwrite
