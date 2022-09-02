@@ -12,7 +12,7 @@ csl: cjfas.csl
 description: >
   Start here to learn how to use ss3sim.
   Basic information is provided on
-  key functions, e.g., [run_ss3sim()], and available outputs.
+  key functions, e.g., `run_ss3sim()`, and available outputs.
 vignette: >
   %\VignetteIndexEntry{Introduction to ss3sim}
   %\VignetteEngine{knitr::rmarkdown}
@@ -38,9 +38,9 @@ we recommend navigating to the [RStudio Blog][rstudio-blog].
 * a series of low-level functions that facilitate
   manipulating Stock Synthesis configuration files,
   running Stock Synthesis models, and
-  combining the output
+  combining the output;
 * a few high-level wrapper functions that control simulation experiments,
-  e.g., [run_ss3sim()]
+  e.g., `run_ss3sim()`; and
 * documentation for the user, e.g.,
   `?change_f`,
   vignettes,
@@ -58,7 +58,7 @@ for how to contribute.
 ## Stock Synthesis
 
 It seems imperative to first describe [Stock Synthesis][ss]
-because without Stock Synthesis there would not be ss3sim.
+because without Stock Synthesis there would not be {ss3sim}.
 Stock Synthesis is an integrated statistical catch-at-age model written in
 [ADMB][admb].
 The software is widely used across the globe and has been around for 40+ years.
@@ -82,7 +82,7 @@ such that simulations were not forced to rely on bootstrapped values
 provided in `data_boot_**N.ss`.
 With a plethora of simulation output stored in structured folders,
 there was an imminent need for functions to visualize the results.
-[ggplot2][ggplot2]
+[{ggplot2}][ggplot2]
 was gaining traction at the time and shaped how we thought about things,
 including our
 [mission statement](#overview) and
@@ -93,7 +93,7 @@ See the [Stock Synthesis website][ss] for a list of additional software.
 
 ## Installation
 
-### Installing ss3sim
+### Installing {ss3sim}
 
 {ss3sim} is available on
 [CRAN][ss3sim-cran] and
@@ -171,8 +171,7 @@ Compiled Stock Synthesis executables are available for
 multiple operating systems at the following locations:
 
 * available [on github][ss3sim-bin],
-* available [within GitHub actions in the Stock Synthesis GitHub repository][ss-githubactions], or
-* are downloaded automatically when you use the GitHub version of ss3sim.
+* are downloaded automatically when you use the GitHub version of {ss3sim}.
 
 #### Putting Stock Synthesis in your path {#path}
 
@@ -194,14 +193,15 @@ for instructions on how to put Stock Synthesis in your path.
 
 Below we highlight a few packages that are essential for running {ss3sim}.
 
-#### r4ss
+#### {r4ss}
 
 If you are using the GitHub version of {ss3sim},
-R will install the [GitHub version of r4ss][r4ss-github].
+R will install the [GitHub version of {r4ss}][r4ss-github].
 If you are using the CRAN version of {ss3sim},
-R will install the [CRAN version of r4ss][r4ss-cran].
-Both methods will check to make sure that you have the most recent version of r4ss  in your R library available given which mirror you are using.
-Feel free to install r4ss directly via
+R will install the [CRAN version of {r4ss}][r4ss-cran].
+Both methods will check to make sure that you have the most recent version of
+{r4ss} in your R library available given which mirror you are using.
+Feel free to install {r4ss} directly via
 ```{r, r4ss, eval=FALSE}
 remotes::install_github(
   "r4ss/r4ss",
@@ -210,17 +210,17 @@ remotes::install_github(
 ```
 But, make sure you do it before loading ss3sim.
 If you forget, you can use `devtools::unload(package = "ss3sim")` and
-then reinstall r4ss.
+then reinstall {r4ss}.
 
-#### ggplot2
+#### {ggplot2}
 
-[ggplot2][ggplot2] uses the
+[{ggplot2}][ggplot2] uses the
 [Grammar of Graphics][grammar-of-graphics]
 to decoratively create images that represent things in a tidy way.
-We do not force users to use ggplot2.
+We do not force users to use {ggplot2}.
 All output is available as csv files and
 can be visualized using base R if you prefer.
-The easiest way to get ggplot2 is to install the whole tidyverse suite
+The easiest way to get {ggplot2} is to install the whole tidyverse suite
 
 ```{r installggplot2, eval=FALSE}
 utils::install.packages("tidyverse")
@@ -572,8 +572,8 @@ data("ts_dat", package = "ss3sim")
 ### Calculate the relative error (RE)
 
 ```{r}
-scalar_dat <- calculate_re(scalar_dat, add = TRUE)
-ts_dat <- calculate_re(ts_dat, add = TRUE)
+scalar_dat <- calculate_re(scalar_dat)
+ts_dat <- calculate_re(ts_dat)
 ```
 
 ### Merge scalar and time series
@@ -611,7 +611,7 @@ scalar_dat_long <- reshape(scalar_dat_long, sep = " _",
 
 ## Boxplots
 
-Use the long data to create a multi-panel plot with ggplot2.
+Use the long data to create a multi-panel plot with {ggplot2}.
 
 ```{r, relative-error-boxplots-det, fig.height=7, fig.width=5, fig.cap="Box plots of the relative error (RE) for deterministic runs. $M$ is fixed at the true value from the OM (E100) or estimated (E101)."}
 p <- plot_boxplot(scalar_dat_long[
