@@ -88,6 +88,7 @@ file.remove(file.path(tempdir(), "change_e.ctl"))
 \seealso{
 Other change functions: 
 \code{\link{change_data}()},
+\code{\link{change_em_ageerr}()},
 \code{\link{change_em_binning}()},
 \code{\link{change_f}()},
 \code{\link{change_o}()},

@@ -10,6 +10,7 @@ ss3sim_base(
   f_params,
   index_params,
   discard_params = NULL,
+  em_ageerr_params = NULL,
   lcomp_params = NULL,
   agecomp_params = NULL,
   calcomp_params = NULL,
@@ -46,6 +47,9 @@ A mandatory input.}
 
 \item{discard_params}{A named list containing arguments for
 \code{\link[=sample_discard]{sample_discard()}}.}
+
+\item{em_ageerr_params}{A named list containing arguments for
+\code{\link[=change_em_ageerr]{change_em_ageerr()}}.}
 
 \item{lcomp_params}{A named list containing arguments for
 \code{\link[=sample_lcomp]{sample_lcomp()}}. A mandatory input.}
