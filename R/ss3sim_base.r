@@ -181,6 +181,7 @@ ss3sim_base <- function(iterations,
                         f_params,
                         index_params,
                         discard_params = NULL,
+                        em_ageerr_params = NULL,
                         lcomp_params = NULL,
                         agecomp_params = NULL,
                         calcomp_params = NULL,
@@ -635,6 +636,17 @@ ss3sim_base <- function(iterations,
         dat_list         = list(dat_list),
         outfile          = NULL,
         em_binning_params
+      ))
+    }
+
+    # Make EM as specified by user -------------------------------------------
+    ## Change the age comp Ageerr definition in the EM ss3.dat file as needed
+    if (!is.null(em_ageerr_params)) {
+      em_ageerr_params <- fixlist(em_ageerr_params)
+      dat_list <- do.call("change_em_ageerr", c(
+        dat_list         = list(dat_list),
+        outfile          = NULL,
+        em_ageerr_params
       ))
     }
 
