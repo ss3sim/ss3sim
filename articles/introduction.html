@@ -88,7 +88,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to ss3sim</h1>
             
-            <h4 data-toc-skip class="date">2022-08-23</h4>
+            <h4 data-toc-skip class="date">2022-09-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ss3sim/ss3sim/blob/HEAD/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="hidden name"><code>introduction.Rmd</code></div>
@@ -196,29 +196,20 @@
 </h3>
 <p>Simulations are composed of scenarios, i.e., unique sets of changes to the OM and EM. <code><a href="../reference/run_ss3sim.html">run_ss3sim()</a></code> uses <code>simdf</code> to specify the setup of scenarios within a simulation. <code>simdf</code> stands for simulation data frame. The rows of the data frame store scenario-level information. The columns of the data frame store function arguments. Arguments can be direct arguments of <code><a href="../reference/ss3sim_base.html">ss3sim_base()</a></code> or functions called by <code><a href="../reference/ss3sim_base.html">ss3sim_base()</a></code> such as <code><a href="../reference/change_f.html">change_f()</a></code>. You only need to specify columns for the arguments that you want to change. That is, you do not have to have a column for every argument of all functions called by <code><a href="../reference/ss3sim_base.html">ss3sim_base()</a></code>. To get a feel for the columns needed in the <code>simdf</code> data frame run the following code, where the output can be saved and used to build <code>simdf</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">simdf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_scenarios_defaults.html">setup_scenarios_defaults</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co"># Get standard errors by turning on the hessian</span></span>
-<span><span class="va">simdf</span><span class="op">[</span>, <span class="st">"hess_always"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">simdf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_scenarios_defaults.html">setup_scenarios_defaults</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Column entries of <code>simdf</code> need to be quoted if they are to be evaluated later, e.g., <code>"seq(1,10,by=2)"</code> and <code>"c('NatM_uniform_Fem_GP_1', 'L_at_Amin_Fem_GP_1')"</code>. Scalar values can numeric. Use single quotes inside of double quotes to quote text. Developers of {ss3sim} are working on a better, more tidyverse-like non-standard evaluation method such that quotes will not be needed. Feel free to reach out if you would like to help with this effort or have ideas on how to make it work better.</p>
-<p>Column names of <code>simdf</code> are key. In the example above, <code>hess_always</code> is an argument of <code><a href="../reference/ss3sim_base.html">ss3sim_base()</a></code> and can be used directly as the column name. In fact, you can specify any input argument to <code><a href="../reference/ss3sim_base.html">ss3sim_base()</a></code> as a column of <code>simdf</code>.</p>
+<p>Column names of <code>simdf</code> are key. You can specify any input argument to <code><a href="../reference/ss3sim_base.html">ss3sim_base()</a></code> as a column of <code>simdf</code>.</p>
 <table class="table">
 <thead><tr class="header">
 <th>{ss3sim} function</th>
 <th align="center">Argument</th>
 <th align="right">Description</th>
 </tr></thead>
-<tbody>
-<tr class="odd">
+<tbody><tr class="odd">
 <td><code>ss3sim_base</code></td>
 <td align="center"><code>bias_adjust</code></td>
 <td align="right">Perform bias adjustment</td>
-</tr>
-<tr class="even">
-<td><code>ss3sim_base</code></td>
-<td align="center"><code>hess_always</code></td>
-<td align="right">Calculate hessian</td>
-</tr>
-</tbody>
+</tr></tbody>
 </table>
 <p>For functions that are called by <code><a href="../reference/ss3sim_base.html">ss3sim_base()</a></code> you need to use the following rules to create appropriate column names:</p>
 <ul>
@@ -356,9 +347,7 @@
 <code class="sourceCode R"><span><span class="co"># Use the boiler-plate data frame available in {ss3sim} for 2 scenarios</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_scenarios_defaults.html">setup_scenarios_defaults</a></span><span class="op">(</span>nscenarios <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co"># Turn off bias adjustment and use default settings in cod EM model</span></span>
-<span><span class="va">df</span><span class="op">[</span>, <span class="st">"bias_adjust"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span></span>
-<span><span class="co"># Estimate the hessian</span></span>
-<span><span class="va">df</span><span class="op">[</span>, <span class="st">"hess_always"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></span></code></pre></div>
+<span><span class="va">df</span><span class="op">[</span>, <span class="st">"bias_adjust"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="fishing-mortality">Fishing mortality<a class="anchor" aria-label="anchor" href="#fishing-mortality"></a>
 </h4>
@@ -451,8 +440,7 @@
 <span><span class="va">df</span><span class="op">[</span>, <span class="st">"ce.par_int"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
 <span><span class="va">df</span><span class="op">[</span>, <span class="st">"ce.par_phase"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">df</span><span class="op">[</span>, <span class="st">"scenarios"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"D1-E100-F0-cod"</span>, <span class="st">"D1-E101-F0-M1-cod"</span><span class="op">)</span></span>
-<span><span class="va">df</span><span class="op">[</span>, <span class="st">"bias_adjust"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span></span>
-<span><span class="va">df</span><span class="op">[</span>, <span class="st">"hess_always"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></span></code></pre></div>
+<span><span class="va">df</span><span class="op">[</span>, <span class="st">"bias_adjust"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="run-self-test">Run self-test<a class="anchor" aria-label="anchor" href="#run-self-test"></a>
