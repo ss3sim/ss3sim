@@ -367,8 +367,7 @@ get_results_mod <- function(dir = getwd(), is_EM = NULL, is_OM = NULL) {
   report <- r4ss::SS_output(file.path(dir),
     covar = FALSE, verbose = FALSE,
     compfile = NULL, forecast = forecastTF, warn = FALSE,
-    readwt = FALSE, printstats = FALSE, NoCompOK = TRUE,
-    ncols = NULL
+    readwt = FALSE, printstats = FALSE, NoCompOK = TRUE
   )
   ## Get dfs
   scalar <- get_results_scalar(report)
