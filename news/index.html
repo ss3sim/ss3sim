@@ -64,9 +64,15 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="1.20.0" id="ss3sim-1200">ss3sim 1.20.0<a class="anchor" aria-label="anchor" href="#ss3sim-1200"></a></h2>
+<ul><li>Updates {ss3sim} to use Stock Synthesis v3.30.20.</li>
+<li>Removes <code><a href="https://rdrr.io/r/base/shQuote.html" class="external-link">shQuote()</a></code> from <code><a href="../reference/get_bin.html">get_bin()</a></code> where file paths with spaces are no longer quoted.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="1.19.3" id="ss3sim-1193">ss3sim 1.19.3<a class="anchor" aria-label="anchor" href="#ss3sim-1193"></a></h2>
 <ul><li>Updates {ss3sim} to use {r4ss} version 1.46.1<ul><li><code>tune_comps()</code></li>
-<li><code>run()</code></li>
+<li>
+<code>run()</code>, which requires removal of <code>hess_always</code> call and instead uses <code>extras</code> call to <code>run()</code> to turn the hessian off.</li>
 </ul></li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.19.2" id="ss3sim-1192">ss3sim 1.19.2<a class="anchor" aria-label="anchor" href="#ss3sim-1192"></a></h2>
