@@ -69,8 +69,5 @@ get_bin <- function(bin_name = "ss3") {
       ))
     }
   }
-  if (grepl("[[:space:]]", bin)) {
-    bin <- shQuote(bin)
-  }
-  bin
+  return(bin)
 }
