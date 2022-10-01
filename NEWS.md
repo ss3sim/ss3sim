@@ -1,8 +1,15 @@
+# ss3sim 1.20.0
+
+* Updates {ss3sim} to use Stock Synthesis v3.30.20.
+* Removes `shQuote()` from `get_bin()` where file paths with spaces are no
+  longer quoted.
+
 # ss3sim 1.19.3
 
 * Updates {ss3sim} to use {r4ss} version 1.46.1
   * `tune_comps()`
-  * `run()`
+  * `run()`, which requires removal of `hess_always` call and instead uses
+    `extras` call to `run()` to turn the hessian off.
 
 # ss3sim 1.19.2
 
