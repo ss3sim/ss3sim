@@ -43,8 +43,9 @@ get_bin <- function(bin_name = "ss3") {
         platform <- "Linux64"
       } else {
         warning(
-          "Stock Synthesis binary is not available for OS ", R.version$os,
-          " within the package. You must have an appropriate Stock Synthesis binary in your ",
+          "Stock Synthesis binary is not available for ", R.version$os,
+          " within the package.",
+          "\nYou must have an appropriate Stock Synthesis binary in your ",
           "path. See the ss3sim vignette."
         )
       }
