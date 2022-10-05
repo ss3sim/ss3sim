@@ -104,6 +104,7 @@ once you are done manipulating the list object.
 
 Other change functions: 
 \code{\link{change_data}()},
+\code{\link{change_em_ageerr}()},
 \code{\link{change_em_binning}()},
 \code{\link{change_e}()},
 \code{\link{change_o}()},

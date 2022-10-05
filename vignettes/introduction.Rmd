@@ -1019,7 +1019,7 @@ The vectors are then combined into a named list that is passed to `change_tv_lis
 To run a simulation in parallel, you need to register multiple cores or clusters using the package of your choice.
 Here, we recommend using {parallel} and provide an example for you.
 First, find out how many cores are on the computer and register a portion of those for parallel processing.
-Second, us an apply function to get the results from each scenario.
+Second, use an apply function to get the results from each scenario.
 Third, bring the results together and close the cluster.
 
 ```{r, parallel-one, eval=FALSE}
@@ -1032,6 +1032,27 @@ parSapply(cl,
   overwrite_files = TRUE
 )
 get_results_all()
+stopCluster(cl)
+```
+
+
+Example with `run_ss3sim()` function.
+
+If your simdf data frame references any other variable, as opposed to directly 
+inputting a vector, you need to make that variable available to cores using the
+`parallel::clusterExport()` function.
+
+```{r, parallel-two, eval=FALSE}
+library(parallel)
+ncls <- as.numeric(Sys.getenv("NUMBER_OF_PROCESSORS"))
+cl <- makeCluster(getOption("cl.cores", ifelse(ncls < 6, 2, 4)))
+#example of iteration setup for 4 cores
+iterations <- list(1:5,6:10,11:15,16:20)
+scname<-parSapply(cl,
+          X = iterations,
+          FUN = run_ss3sim,
+          simdf = df
+)
 stopCluster(cl)
 ```
 

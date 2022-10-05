@@ -58,6 +58,7 @@ change_retro(starterfile, paste0(temp_path, "/retro-5-starter.ss"),
 \seealso{
 Other change functions: 
 \code{\link{change_data}()},
+\code{\link{change_em_ageerr}()},
 \code{\link{change_em_binning}()},
 \code{\link{change_e}()},
 \code{\link{change_f}()},

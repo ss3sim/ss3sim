@@ -35,6 +35,8 @@
 #'   [change_e()].
 #' @param em_binning_params A named list containing arguments for
 #'   [change_em_binning()].
+#' @param em_ageerr_params A named list containing arguments for
+#'   [change_em_ageerr()].
 #' @param data_params A named list containing arguments for changing data.
 #' @param weight_comps_params A named list containing arguments for
 #'   [r4ss::tune_comps()].
@@ -642,7 +644,10 @@ ss3sim_base <- function(iterations,
     # Make EM as specified by user -------------------------------------------
     ## Change the age comp Ageerr definition in the EM ss3.dat file as needed
     if (!is.null(em_ageerr_params)) {
-      em_ageerr_params <- fixlist(em_ageerr_params)
+      em_ageerr_params <- list(definition=unlist(em_ageerr_params$definition, 
+                                                 recursive = FALSE, 
+                                                 use.names = FALSE),
+                               fleets=em_ageerr_params$fleets)
       dat_list <- do.call("change_em_ageerr", c(
         dat_list         = list(dat_list),
         outfile          = NULL,

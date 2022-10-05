@@ -1,38 +1,79 @@
-# Tasks To-Do
-# write a test in test to see if everything works
-
-# Tasks Completed
-# Use one value per fleet, not all fleets need to have a value
-    # function below does this
-# Check to make sure that all values in list are in ageing error definitions
-    # error check in for loop does this, had to be in for loop otherwise only
-    # the first value in fleet and definitions was checked
-# look up values to see which values
-# need to be changed, then change the value to the given integer from the list
-    # function below looks up fleet and applies new definition
-# return the dat list so it can be used by the em
-    # function below returns invisible dat_list
-# In simdf use "ca." to send arguments to change_em_ageerr
-    # Example, ca.definition.1 <- 2 would change Ageerr def of fleet 1 to 2
-# Next after creating function change ss3sim_base to use the function
-    # added code to run change_em_ageerr function if em_ageerr_params
-    # are present in ss3sim_base.R (lines 642-652)
-# Change scenario stuff to use ca.
-    #added c("ca", "em_ageerr_params") to lookuptable in setup_scenarios.R (line 256)
-
-# Example input for ageerr_def
-#em_ageerr_params <- list(
-#  "fleets" = c(1:3,5),
-#  "definition" = c(1, 3, 2, 1)
-#)
-
+#' Change aging error matrix in estimation model age composition
+#' 
+#' `change_em_ageerr()` alters the fleet specific aging error definition in
+#' a stock synthesis estimation model (EM). The original aging error definition
+#' in the age composition observation section of the data file is changed 
+#' according to the user's specification. 
+#' 
+#' @details
+#' The arguments `fleets` and `definition` are both vectors, or a list of vectors
+#' that must be of equal length. The order in which the fleets are specified in
+#' the `fleets` vector should correspond to the intended new aging error 
+#' definition in the `definition` vector. Currently this function only allows
+#' for fleet specific changes to  aging error observations, not year specific.
+#' 
+#' Users need to input all aging error matrices being considered into the 
+#' operating model (OM) data file, as this function changes an aging error 
+#' definition in the age composition observation section of the dat file
+#' and does not allow a new aging error matrix to be added.
+#' 
+#' This function can also be called in [run_ss3sim()] by inputting a vector of
+#' aging error definitions, corresponding to the aging error definition in each 
+#' scenario, into a column labeled `ca.definition.1` in the `simdf` data frame. 
+#' Where the number in `ca.definition.#` corresponds to the fleet. e.g.- 
+#' `ca.definition.1 <- c(3, 2)` will change the aging error definition, in the EM, 
+#' of fleet 1 to 3 in the first scenario and 2 in the second scenario.
+#' 
+#' Aging error definitions can also be changed in the OM in [run_ss3sim()] 
+#' by inputting a vector of aging error definitions, corresponding to the 
+#' aging error definition in each scenario, into a column labeled 
+#' `sa.Ageerr.1` in the `simdf` data frame. Where the number in `sa.Ageerr.#` 
+#' corresponds to the fleet. e.g.- `sa.Ageerr.1 <- c(3, 2)` will change the 
+#' aging error definition, in the OM, of fleet 1 to 3 in the first scenario 
+#' and 2 in the second scenario.
+#' 
+#' @author Derek W. Chamberlin
+#' 
+#' @template dat_list
+#' @template outfile
+#' @param fleets A vector of integers specifying the fleets to include. The
+#' order of the fleets corresponds to the order of the `definition` argument.
+#' An entry of `fleets=NULL` leads to no ageing error definitions being 
+#' changed in the EM.
+#' 
+#' @param definition A vector of integers, of the same length as `fleets`, 
+#' specifying the aging error definitions to include. The order of the 
+#' definitions corresponds to the order of the `fleets` argument. The aging 
+#' error definitions must already input in the operating model (OM) data file.
+#' 
+#' @family change functions
+#' @export
+#' @examples
+#' d <- system.file("extdata", package = "ss3sim")
+#' f_in <- file.path(d, "models", "cod-om", "codOM.dat")
+#' dat_list <- r4ss::SS_readdat(f_in, verbose = FALSE)
+#' 
+#' # Adding in second aging error definition to the data file
+#' dat_list$N_ageerror_definitions <- 2
+#' dat_list$ageerror <- rbind(dat_list$ageerror,dat_list$ageerror)
+#' 
+#' # An example changing the aging error observation for multiple fleets
+#' new_dat <- change_em_ageerr(
+#'   dat_list = dat_list, outfile = NULL, fleets = c(1, 2), definition = c(2, 2)
+#' )
+#' 
+#' # An example changing the aging error observations for a single fleet
+#' new_dat2 <- change_em_ageerr(
+#'   dat_list = dat_list, outfile = NULL, fleets = 2, definition = 2
+#' )
+#' 
+#' rm(d, f_in, dat_list, new_dat, new_dat2)
 change_em_ageerr <- function(dat_list, outfile = NULL, fleets,
 definition) {
-  #check if Ageerr is being changed
   change_err <- ifelse(is.null(definition), FALSE, TRUE)
   if (change_err){
       for(i in 1:length(fleets)){
-        #check if definition and fleet are in dat file
+        # Input checks
         if (!definition[i] %in% seq(dat_list$N_ageerror_definitions)) {
           stop("Supplied ageing error definition is not in your dat file.")
         }
@@ -40,9 +81,8 @@ definition) {
           stop("Supplied fleet is not in your dat file. Ageing error 
           definition cannot be changed.")
         }
-        # the following code looks up values to see which fleets need
-        # to be changed then changes the Ageerr value to the given
-        # integer from the list
+        # Lookup fleets to be changed and change aging
+        # error deifnition
         dat_list$agecomp$Ageerr[dat_list$agecomp$FltSvy 
         %in% fleets[i]] <- definition[i]
       }
@@ -59,13 +99,3 @@ definition) {
   }
   invisible(dat_list)
 }
-
-
-#test code to run change_em_age_err function
-#this is called the same way ss3sim_base calls the function
-#test<-do.call("change_em_ageerr", c(
-#        dat_list         = list(dat_list),
-#        outfile          = NULL,
-#        em_ageerr_params
-#))
-#test$agecomp$Ageerr
