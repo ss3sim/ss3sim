@@ -19,7 +19,7 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-```{r, echo=FALSE, message=FALSE}
+```{r echo=FALSE, message=FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 ```{r child="../man/fragments/links.Rmd", echo=FALSE}
@@ -77,8 +77,8 @@ See the [section on output files in the Stock Synthesis manual][ss-manual-output
 for more detailed information.
 {ss3sim} finishes the creation of simulation-specific directories similar to
 the directory structure that was created by hooliator.
-Additionally, {ss3sim} added functionality to sample from the expected values
-such that simulations were not forced to rely on bootstrapped values
+{ss3sim} adds functionality to sample from the expected values
+such that simulations need not rely on bootstrapped values
 provided in `data_boot_**N.ss`.
 With a plethora of simulation output stored in structured folders,
 there was an imminent need for functions to visualize the results.
@@ -110,88 +110,82 @@ before installing {ss3sim} if you do not already have {devtools} installed.
 If your current version of {ss3sim} is up to date,
 R will let you know and prompt you if you want to override the current installation.
 
-```{r, install, eval=FALSE}
+```{r install, eval=FALSE}
 # CRAN version
 utils::install.packages("ss3sim")
+# GitHub version
 remotes::install_github(
   repo = "ss3sim/ss3sim",
   dependencies = TRUE, upgrade = FALSE, build_vignettes = TRUE
 )
 ```
 
-```{r, load, eval=TRUE, message=FALSE}
+```{r load, eval=TRUE, message=FALSE}
 # Load the package
 library("ss3sim")
 ```
 
-The following code demonstrates how to access the {ss3sim} documentation within R.
-You can also view the [vignettes online][ss3sim].
+The following code demonstrates how to access the {ss3sim} documentation within
+R. You can also view the [vignettes online][ss3sim].
 
-```{r, help, eval=FALSE}
+```{r help, eval=FALSE}
 ?ss3sim
 utils::help(package = "ss3sim")
 utils::browseVignettes("ss3sim")
 ```
 
-### Installing Stock Synthesis
+### Installing Stock Synthesis {#path}
 
-{ss3sim} relies the Stock Synthesis executable
-being available to the operating system regardless of the directory.
-Thus, `ss` or `ss.exe` must [be in your path](#path),
-which is a list of directories that your operating system has access to.
-Your operating system will search directories listed in your path when searching for programs.
-Having [Stock Synthesis in your path](#path) allows users to
-use just the name of the executable and not the full file path in a shell and
-run the executable in a directory without copying it to the directory.
-This functionality of not copying the executable works even when [running Stock Synthesis in parallel](#parallel).
-This approach saves on storage space because the Stock Synthesis binary is about 6 MB.
-It also facilitates manually running models during development and testing.
-For example, you might be trying to create input files for a new simulation,
-where the simulation is based on a life history that you are interested in.
-Having Stock Synthesis in your path allows you to
-open a shell prompt in the directory with your Stock Synthesis input files and
-run the Stock Synthesis executable by typing `ss`.
-Debugging can be facilitated by
+{ss3sim} relies the Stock Synthesis executable being available to the operating
+system. Thus, the executable must be in your path, which is a list of
+directories that your operating system has access to and searches through when
+a program is called. Having Stock Synthesis in your path allows {ss3sim} to use
+the name of the single, saved executable instead of requiring the full path or
+copying the executable to every local directory before calling it, which saves
+on space because the Stock Synthesis binary is about 6 MB. This functionality
+of not copying the executable works even when [running Stock Synthesis in
+parallel](#parallel).
 
-* output that is printed to the console,
-* echoinput.sso, and
-* Report.sso.
+{ss3sim} will first look to see if the executable is available in your R
+library using `system.file("bin", package = "ss3sim")`. The previous will only
+lead to a viable file path if you are using the GitHub version of {ss3sim}
+because the distribution of executables is not allowed on CRAN. If the location
+is not returned from `system.file`, R will look for the executable in your
+path. This hierarchy is important for understanding which version of Stock
+Synthesis is being used because you might already have a version of Stock
+Synthesis in your path.
 
-{ss3sim} was originally based on Stock Synthesis 3.24O [@anderson2014a].
-At first, {ss3sim} did not keep up to date with newer versions of Stock Synthesis.
-In 2019, {ss3sim} was updated to use Stock Synthesis 3.30.
-**Users can count on future versions of {ss3sim} being up to date with the newest version of Stock Synthesis.**
-Stock Synthesis will end development with major-version three,
-hence the name ss3sim.
-But, minor versions will continue to be updated for quite some time.
+{ss3sim} was originally based on Stock Synthesis 3.24O [@anderson2014a] and did
+not immediately update to use Stock Synthesis 3.30. In 2019, {ss3sim} was
+updated to use Stock Synthesis 3.30, and **users can count on future versions
+of {ss3sim} being up to date with the newest version of Stock Synthesis.**
+Stock Synthesis will end development with major-version three but minor
+versions will continue to be updated for quite some time.
 
-#### Executables
+If you are using the CRAN version of {ss3sim}, reference [Getting Started with
+Stock Synthesis][ss-gettingstarted] for instructions on how to put Stock
+Synthesis in your path. Or, you can mimic the directory structure of the GitHub
+version of {ss3sim} and place the executable in the appropriate folder below
+```
+├──library
+|  └──ss3sim
+|  |  ├──bin
+|  |  |  ├──Linux64
+|  |  |  ├──MacOS
+|  |  |  └──Windows64
+```
+But, the executable will need to be updated every time you reinstall {ss3sim}.
 
-Compiled Stock Synthesis executables are available for
-multiple operating systems at the following locations:
-
-* available [on github][ss3sim-bin],
-* are downloaded automatically when you use the GitHub version of {ss3sim}.
-
-#### Putting Stock Synthesis in your path {#path}
-
-{ss3sim} will first look to see if the executable is available in your R library using
-`system.file("bin", package = "ss3sim")`.
-The previous will only lead to a viable file path if
-you are using the GitHub version of {ss3sim} because
-the distribution of executables is not allowed on CRAN.
-If the location is not returned from `system.file`,
-R will look for the executable in your path.
-This hierarchy is important for understanding which version of Stock Synthesis is being used.
-
-If you are using the CRAN version of {ss3sim},
-reference the
-[Getting Started with Stock Synthesis documentation][ss-gettingstarted]
-for instructions on how to put Stock Synthesis in your path.
+Compiled Stock Synthesis executables are available for multiple operating
+systems [on GitHub][ss3sim-bin] or in [GitHub actions in the Stock Synthesis
+repository][ss-githubactions].
 
 ### Installing dependent R packages
 
-Below we highlight a few packages that are essential for running {ss3sim}.
+Installing {ss3sim} will install all of the necessary dependent packages
+without users needing to do anything extra. But, for completeness and as
+an acknowledgement, below we highlight a few packages that are essential for
+running {ss3sim}.
 
 #### {r4ss}
 
@@ -199,16 +193,16 @@ If you are using the GitHub version of {ss3sim},
 R will install the [GitHub version of {r4ss}][r4ss-github].
 If you are using the CRAN version of {ss3sim},
 R will install the [CRAN version of {r4ss}][r4ss-cran].
-Both methods will check to make sure that you have the most recent version of
-{r4ss} in your R library available given which mirror you are using.
+Both methods will check to make sure that you have the appropriate version of
+{r4ss} in your R library given the mirror you are using.
 Feel free to install {r4ss} directly via
-```{r, r4ss, eval=FALSE}
+```{r r4ss, eval=FALSE}
 remotes::install_github(
   "r4ss/r4ss",
   dependencies = TRUE, upgrade = FALSE, build_vignettes = TRUE
 )
 ```
-But, make sure you do it before loading ss3sim.
+But, make sure you do it before loading {ss3sim}.
 If you forget, you can use `devtools::unload(package = "ss3sim")` and
 then reinstall {r4ss}.
 
@@ -218,9 +212,9 @@ then reinstall {r4ss}.
 [Grammar of Graphics][grammar-of-graphics]
 to decoratively create images that represent things in a tidy way.
 We do not force users to use {ggplot2}.
-All output is available as csv files and
+All output is available in *.csv files and
 can be visualized using base R if you prefer.
-The easiest way to get {ggplot2} is to install the whole tidyverse suite
+The easiest way to get {ggplot2} is to install the whole tidyverse suite.
 
 ```{r installggplot2, eval=FALSE}
 utils::install.packages("tidyverse")
@@ -307,7 +301,7 @@ operating model (OM) and
 estimation method (EM).
 The life history for these available files is based on a cod-like fish.
 You can peruse the files if you have {ss3sim} installed here
-```{r, eval=FALSE}
+```{r eval=FALSE}
 system.file("extdata/models", package = "ss3sim")
 ```
 These model files can be used as is, modified, or replaced.
@@ -441,14 +435,14 @@ which plots the mean relative error on the y as additional iterations.
 The goal is to run plenty of iterations,
 such that additional iterations no longer appreciably flatten the curve towards a relative error of zero.
 
-```{r, case-file-checks, eval=FALSE}
+```{r case-file-checks, eval=FALSE}
 iterations <- 1:5
 scname <- run_ss3sim(iterations = iterations, simdf = df)
 ```
 
 A quick test that can be helpful is visualizing the patterns of spawning stock biomass from the OM and the EM using r4ss.
 
-```{r, r4ss1iteration, eval=FALSE}
+```{r r4ss1iteration, eval=FALSE}
 r_om <- r4ss::SS_output(file.path(scname[1], "1", "om"),
   verbose = FALSE, printstats = FALSE, covar = FALSE)
 r_em <- r4ss::SS_output(file.path(scname[1], "1", "em"),
@@ -492,7 +486,7 @@ To minimize observation error on the survey index,
 we will create a standard deviation on the survey observation error of 0.001.
 Finally, we will fix $M$ at the true value and estimate it in phase 3 as we did before.
 
-```{r, df_deterministic}
+```{r df_deterministic}
 df <- setup_scenarios_defaults(nscenarios = 2)
 df[, "user_recdevs"] <- "matrix(0, nrow = 200, ncol = 20)"
 df[, "co.par_name"] <- "SR_sigmaR"
@@ -511,7 +505,7 @@ df[, "bias_adjust"] <- FALSE
 
 ### Run self-test
 
-```{r, deterministic-runs, eval=FALSE}
+```{r deterministic-runs, eval=FALSE}
 scname_det <- run_ss3sim(iterations = iterations, simdf = df)
 ```
 
@@ -541,7 +535,7 @@ Originally, {ss3sim} provided the results using a wide-table format,
 with individual columns for each OM and EM parameter along with some summary information for each scenario.
 In May of 2020 we changed to providing results using a tidier long format.
 
-```{r, get-results, eval=FALSE}
+```{r get-results, eval=FALSE}
 get_results_all(
   overwrite_files = TRUE,
   user_scenarios = c(scname, scname_det)
@@ -554,7 +548,7 @@ ts_dat <- read.csv("ss3sim_ts.csv")
 If you would like to follow along with the rest of the vignette without running the simulations detailed above,
 you can load a saved version of the output.
 
-```{r, load-output}
+```{r load-output}
 data("scalar_dat", package = "ss3sim")
 data("ts_dat", package = "ss3sim")
 ```
@@ -605,7 +599,7 @@ scalar_dat_long <- reshape(scalar_dat_long, sep = " _",
 
 Use the long data to create a multi-panel plot with {ggplot2}.
 
-```{r, relative-error-boxplots-det, fig.height=7, fig.width=5, fig.cap="Box plots of the relative error (RE) for deterministic runs. $M$ is fixed at the true value from the OM (E100) or estimated (E101)."}
+```{r relative-error-boxplots-det, fig.height=7, fig.width=5, fig.cap="Box plots of the relative error (RE) for deterministic runs. $M$ is fixed at the true value from the OM (E100) or estimated (E101)."}
 p <- plot_boxplot(scalar_dat_long[
   scalar_dat_long$parameter %in% c("depletion", "SSB_MSY") &
   scalar_dat_long$E %in% c("E100", "E101"), ],
@@ -625,19 +619,19 @@ Figures~\ref{fig:plot-sto-ts},
 \ref{fig:ssb-ts-plots}, and
 \ref{fig:relative-error-boxplots-sto}.
 
-```{r, plot-sto-ts, fig.height=5, fig.width=7, fig.cap="Time series of relative error in spawning stock biomass."}
+```{r plot-sto-ts, fig.height=5, fig.width=7, fig.cap="Time series of relative error in spawning stock biomass."}
 p <- plot_lines(ts_dat_sto, y = "SpawnBio_re",
   vert = "E", horiz = "D", print = FALSE, col = "max_grad")
 print(p)
 ```
 
-```{r, ssb-ts-plots, fig.height=5, fig.width=7, cache=TRUE, fig.cap="Spawning stock biomass time series."}
+```{r ssb-ts-plots, fig.height=5, fig.width=7, cache=TRUE, fig.cap="Spawning stock biomass time series."}
 p <- plot_lines(ts_dat_sto, y = "SpawnBio_re",
   vert = "E", horiz = "D", print = FALSE, col = "max_grad")
 print(p)
 ```
 
-```{r, relative-error-boxplots-sto, fig.height=7, fig.width=5, cache=TRUE, fig.cap="Box plots of relative error (RE) for stochastic runs. $M$ is fixed at the true value from the OM (E0) or estimated (E1). The standard deviation on the survey index observation error is 0.4 (D1) or 0.1 (D0), representing an increase in survey sampling effort."}
+```{r relative-error-boxplots-sto, fig.height=7, fig.width=5, cache=TRUE, fig.cap="Box plots of relative error (RE) for stochastic runs. $M$ is fixed at the true value from the OM (E0) or estimated (E1). The standard deviation on the survey index observation error is 0.4 (D1) or 0.1 (D0), representing an increase in survey sampling effort."}
 p <- plot_boxplot(scalar_dat_long[
   scalar_dat_long$parameter %in% c("depletion", "SSB_MSY") &
   scalar_dat_long$E %in% c("E0", "E1"), ],
@@ -1014,7 +1008,7 @@ First, find out how many cores are on the computer and register a portion of tho
 Second, us an apply function to get the results from each scenario.
 Third, bring the results together and close the cluster.
 
-```{r, parallel-one, eval=FALSE}
+```{r parallel-one, eval=FALSE}
 library(parallel)
 ncls <- as.numeric(Sys.getenv("NUMBER_OF_PROCESSORS"))
 cl <- makeCluster(getOption("cl.cores", ifelse(ncls < 6, 2, 4)))
