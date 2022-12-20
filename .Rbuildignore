@@ -1,6 +1,7 @@
 ^\.DS_Store$
 ^\.git/*
 ^\.github$
+^\.history$
 ^\.Rproj\.user$
 ^\.Rapp\.history$
 ^\.travis\.yml$
