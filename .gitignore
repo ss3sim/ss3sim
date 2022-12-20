@@ -7,6 +7,7 @@
 *.blg
 *.fdb_latexmk
 *.fls
+*.history/*
 *.log
 *.pdf
 *.pdfsync
