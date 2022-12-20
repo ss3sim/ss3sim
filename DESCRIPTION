@@ -48,6 +48,7 @@ LazyData: true
 Suggests:
     knitr,
     doParallel,
+    pak,
     rmarkdown,
     testthat
 VignetteBuilder: knitr
