@@ -1,30 +1,3 @@
-#' Identify scenarios in `directory`
-#'
-#' Find folders within `directory` that contain iterations,
-#' i.e., "1", "2", "3", ..., and thus, allowing for unique scenario names.
-#' @param directory The directory that you want to search for scenarios.
-#'   The search is recursive, and thus, it is in one's best interest to
-#'   provide a shorter path name rather than one high up in the call stack.
-#' @return A character vector of relative paths to directories that contain
-#'   iterations.
-#' @author Merrill Rudd
-#' @export
-id_scenarios <- function(directory) {
-  all.dirs <- list.dirs(path = directory, full.names = FALSE, recursive = TRUE)
-  seperator <- paste0(.Platform$file.sep, "[0-9]+", .Platform$file.sep)
-  scensfull <- grep(seperator, all.dirs, value = TRUE)
-  scens <- unique(vapply(
-    X = strsplit(scensfull, seperator),
-    FUN = "[[",
-    1,
-    FUN.VALUE = "character"
-  ))
-  if (length(scens) == 0) {
-    stop("No scenario folders were found in ", directory)
-  }
-  return(scens)
-}
-
 #' Extract Stock Synthesis simulation output
 #'
 #' This high level function extracts results from Stock Synthesis model runs. Give it a
@@ -63,7 +36,7 @@ get_results_all <- function(directory = getwd(), overwrite_files = FALSE,
 
   ## Choose whether to do all scenarios or the vector passed by user
   if (is.null(user_scenarios)) {
-    scenarios <- id_scenarios(directory = directory)
+    scenarios <- get_scenarios(directory = directory)
   } else {
     temp_scenarios <- dir(path = directory, include.dirs = TRUE)
     scenarios <- user_scenarios[which(user_scenarios %in% temp_scenarios)]
