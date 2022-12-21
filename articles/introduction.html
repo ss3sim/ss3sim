@@ -542,8 +542,10 @@ estimate <span class="math inline">\(M\)</span> in phase
 <span><span class="co"># Set the phase for estimating natural mortality</span></span>
 <span><span class="va">df</span><span class="op">[</span>, <span class="st">"ce.par_phase"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co"># Name the scenarios</span></span>
-<span><span class="va">df</span><span class="op">[</span>, <span class="st">"scenarios"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"D0-E0-F0-cod"</span>, <span class="st">"D1-E0-F0-cod"</span>,</span>
-<span>  <span class="st">"D0-E1-F0-cod"</span>, <span class="st">"D1-E1-F0-cod"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">df</span><span class="op">[</span>, <span class="st">"scenarios"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"D0-E0-F0-cod"</span>, <span class="st">"D1-E0-F0-cod"</span>,</span>
+<span>  <span class="st">"D0-E1-F0-cod"</span>, <span class="st">"D1-E1-F0-cod"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -562,11 +564,14 @@ appreciably flatten the curve towards a relative error of zero.</p>
 spawning stock biomass from the OM and the EM using r4ss.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">r_om</span> <span class="op">&lt;-</span> <span class="fu">r4ss</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/r4ss/man/SS_output.html" class="external-link">SS_output</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">scname</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"1"</span>, <span class="st">"om"</span><span class="op">)</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>, printstats <span class="op">=</span> <span class="cn">FALSE</span>, covar <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>, printstats <span class="op">=</span> <span class="cn">FALSE</span>, covar <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
 <span><span class="va">r_em</span> <span class="op">&lt;-</span> <span class="fu">r4ss</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/r4ss/man/SS_output.html" class="external-link">SS_output</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">scname</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"1"</span>, <span class="st">"em"</span><span class="op">)</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>, printstats <span class="op">=</span> <span class="cn">FALSE</span>, covar <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>, printstats <span class="op">=</span> <span class="cn">FALSE</span>, covar <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
 <span><span class="fu">r4ss</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/r4ss/man/SSplotComparisons.html" class="external-link">SSplotComparisons</a></span><span class="op">(</span><span class="fu">r4ss</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/r4ss/man/SSsummarize.html" class="external-link">SSsummarize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">r_om</span>, <span class="va">r_em</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  legendlabels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"OM"</span>, <span class="st">"EM"</span><span class="op">)</span>, subplots <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<span>  legendlabels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"OM"</span>, <span class="st">"EM"</span><span class="op">)</span>, subplots <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Each iteration is unique because of process error included through
 normally-distributed recruitment deviations. Thus, if you were to plot
 the OMs from iteration one and two using
@@ -720,11 +725,13 @@ and the time series can help add details to figures.</p>
 <span>  replacement <span class="op">=</span> <span class="st">"RE _\\1"</span>,</span>
 <span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">scalar_dat_long</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">scalar_dat_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reshape.html" class="external-link">reshape</a></span><span class="op">(</span><span class="va">scalar_dat_long</span>, sep <span class="op">=</span> <span class="st">" _"</span>,</span>
+<span><span class="va">scalar_dat_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reshape.html" class="external-link">reshape</a></span><span class="op">(</span><span class="va">scalar_dat_long</span>,</span>
+<span>  sep <span class="op">=</span> <span class="st">" _"</span>,</span>
 <span>  direction <span class="op">=</span> <span class="st">"long"</span>,</span>
 <span>  varying <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">" _"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">scalar_dat_long</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  idvar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"scenario"</span>, <span class="st">"iteration"</span><span class="op">)</span>,</span>
-<span>  timevar <span class="op">=</span> <span class="st">"parameter"</span><span class="op">)</span></span></code></pre></div>
+<span>  timevar <span class="op">=</span> <span class="st">"parameter"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -732,11 +739,14 @@ and the time series can help add details to figures.</p>
 </h3>
 <p>Use the long data to create a multi-panel plot with {ggplot2}.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_boxplot.html">plot_boxplot</a></span><span class="op">(</span><span class="va">scalar_dat_long</span><span class="op">[</span></span>
-<span>  <span class="va">scalar_dat_long</span><span class="op">$</span><span class="va">parameter</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"depletion"</span>, <span class="st">"SSB_MSY"</span><span class="op">)</span> <span class="op">&amp;</span></span>
-<span>  <span class="va">scalar_dat_long</span><span class="op">$</span><span class="va">E</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"E100"</span>, <span class="st">"E101"</span><span class="op">)</span>, <span class="op">]</span>,</span>
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_boxplot.html">plot_boxplot</a></span><span class="op">(</span></span>
+<span>  <span class="va">scalar_dat_long</span><span class="op">[</span></span>
+<span>    <span class="va">scalar_dat_long</span><span class="op">$</span><span class="va">parameter</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"depletion"</span>, <span class="st">"SSB_MSY"</span><span class="op">)</span> <span class="op">&amp;</span></span>
+<span>      <span class="va">scalar_dat_long</span><span class="op">$</span><span class="va">E</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"E100"</span>, <span class="st">"E101"</span><span class="op">)</span>,</span>
+<span>  <span class="op">]</span>,</span>
 <span>  x <span class="op">=</span> <span class="st">"D"</span>, y <span class="op">=</span> <span class="st">"RE"</span>, re <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  vert <span class="op">=</span> <span class="st">"E"</span>, horiz <span class="op">=</span> <span class="st">"parameter"</span>, print <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  vert <span class="op">=</span> <span class="st">"E"</span>, horiz <span class="op">=</span> <span class="st">"parameter"</span>, print <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="introduction_files/figure-html/relative-error-boxplots-det-1.png" alt="Box plots of the relative error (RE) for deterministic runs. $M$ is fixed at the true value from the OM (E100) or estimated (E101)." width="480"><p class="caption">
@@ -754,8 +764,10 @@ indicate that model convergence is likely. Larger values (greater than
 iterations are jittered around the vertical axis to aid in
 visualization. The following three blocks of code produce Figures~<span class="math inline">\(\ref{fig:plot-sto-ts}\)</span>, <span class="math inline">\(\ref{fig:ssb-ts-plots}\)</span>, and <span class="math inline">\(\ref{fig:relative-error-boxplots-sto}\)</span>.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_lines.html">plot_lines</a></span><span class="op">(</span><span class="va">ts_dat_sto</span>, y <span class="op">=</span> <span class="st">"SpawnBio_re"</span>,</span>
-<span>  vert <span class="op">=</span> <span class="st">"E"</span>, horiz <span class="op">=</span> <span class="st">"D"</span>, print <span class="op">=</span> <span class="cn">FALSE</span>, col <span class="op">=</span> <span class="st">"max_grad"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_lines.html">plot_lines</a></span><span class="op">(</span><span class="va">ts_dat_sto</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"SpawnBio_re"</span>,</span>
+<span>  vert <span class="op">=</span> <span class="st">"E"</span>, horiz <span class="op">=</span> <span class="st">"D"</span>, print <span class="op">=</span> <span class="cn">FALSE</span>, col <span class="op">=</span> <span class="st">"max_grad"</span></span>
+<span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="introduction_files/figure-html/plot-sto-ts-1.png" alt="Time series of relative error in spawning stock biomass." width="672"><p class="caption">
@@ -763,8 +775,10 @@ Time series of relative error in spawning stock biomass.
 </p>
 </div>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_lines.html">plot_lines</a></span><span class="op">(</span><span class="va">ts_dat_sto</span>, y <span class="op">=</span> <span class="st">"SpawnBio_re"</span>,</span>
-<span>  vert <span class="op">=</span> <span class="st">"E"</span>, horiz <span class="op">=</span> <span class="st">"D"</span>, print <span class="op">=</span> <span class="cn">FALSE</span>, col <span class="op">=</span> <span class="st">"max_grad"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_lines.html">plot_lines</a></span><span class="op">(</span><span class="va">ts_dat_sto</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"SpawnBio_re"</span>,</span>
+<span>  vert <span class="op">=</span> <span class="st">"E"</span>, horiz <span class="op">=</span> <span class="st">"D"</span>, print <span class="op">=</span> <span class="cn">FALSE</span>, col <span class="op">=</span> <span class="st">"max_grad"</span></span>
+<span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="introduction_files/figure-html/ssb-ts-plots-1.png" alt="Spawning stock biomass time series." width="672"><p class="caption">
@@ -772,11 +786,14 @@ Spawning stock biomass time series.
 </p>
 </div>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_boxplot.html">plot_boxplot</a></span><span class="op">(</span><span class="va">scalar_dat_long</span><span class="op">[</span></span>
-<span>  <span class="va">scalar_dat_long</span><span class="op">$</span><span class="va">parameter</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"depletion"</span>, <span class="st">"SSB_MSY"</span><span class="op">)</span> <span class="op">&amp;</span></span>
-<span>  <span class="va">scalar_dat_long</span><span class="op">$</span><span class="va">E</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"E0"</span>, <span class="st">"E1"</span><span class="op">)</span>, <span class="op">]</span>,</span>
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_boxplot.html">plot_boxplot</a></span><span class="op">(</span></span>
+<span>  <span class="va">scalar_dat_long</span><span class="op">[</span></span>
+<span>    <span class="va">scalar_dat_long</span><span class="op">$</span><span class="va">parameter</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"depletion"</span>, <span class="st">"SSB_MSY"</span><span class="op">)</span> <span class="op">&amp;</span></span>
+<span>      <span class="va">scalar_dat_long</span><span class="op">$</span><span class="va">E</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"E0"</span>, <span class="st">"E1"</span><span class="op">)</span>,</span>
+<span>  <span class="op">]</span>,</span>
 <span>  x <span class="op">=</span> <span class="st">"D"</span>, y <span class="op">=</span> <span class="st">"RE"</span>, re <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  vert <span class="op">=</span> <span class="st">"E"</span>, horiz <span class="op">=</span> <span class="st">"parameter"</span>, print <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  vert <span class="op">=</span> <span class="st">"E"</span>, horiz <span class="op">=</span> <span class="st">"parameter"</span>, print <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="introduction_files/figure-html/relative-error-boxplots-sto-1.png" alt="Box plots of relative error (RE) for stochastic runs. $M$ is fixed at the true value from the OM (E0) or estimated (E1). The standard deviation on the survey index observation error is 0.4 (D1) or 0.1 (D0), representing an increase in survey sampling effort." width="480"><p class="caption">

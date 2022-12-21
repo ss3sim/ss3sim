@@ -127,13 +127,14 @@ in the same plot.</p></dd>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">obj</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># group can also be left NULL if only plotting a single scenario.</span></span></span>
 <span class="r-in"><span><span class="co"># it is recommended to set use_facet FALSE in this case.</span></span></span>
-<span class="r-in"><span><span class="va">obj2</span> <span class="op">&lt;-</span> <span class="fu">plot_cummean</span><span class="op">(</span><span class="va">scalar_dat</span><span class="op">[</span></span></span>
-<span class="r-in"><span>  <span class="va">scalar_dat</span><span class="op">$</span><span class="va">scenario</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">scalar_dat</span><span class="op">$</span><span class="va">scenario</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&amp;</span></span></span>
-<span class="r-in"><span>    <span class="va">scalar_dat</span><span class="op">$</span><span class="va">model_run</span> <span class="op">==</span> <span class="st">"em"</span>,</span></span>
-<span class="r-in"><span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>var <span class="op">=</span> <span class="st">"VonBert_K_Fem_GP_1"</span>,</span></span>
-<span class="r-in"><span>group <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
-<span class="r-in"><span>use_facet <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span><span class="va">obj2</span> <span class="op">&lt;-</span> <span class="fu">plot_cummean</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">scalar_dat</span><span class="op">[</span></span></span>
+<span class="r-in"><span>    <span class="va">scalar_dat</span><span class="op">$</span><span class="va">scenario</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">scalar_dat</span><span class="op">$</span><span class="va">scenario</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&amp;</span></span></span>
+<span class="r-in"><span>      <span class="va">scalar_dat</span><span class="op">$</span><span class="va">model_run</span> <span class="op">==</span> <span class="st">"em"</span>,</span></span>
+<span class="r-in"><span>  <span class="op">]</span>,</span></span>
+<span class="r-in"><span>  var <span class="op">=</span> <span class="st">"VonBert_K_Fem_GP_1"</span>,</span></span>
+<span class="r-in"><span>  group <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>  use_facet <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># obj2$plot</span></span></span>
 <span class="r-in"><span><span class="co"># obj2$data</span></span></span>
