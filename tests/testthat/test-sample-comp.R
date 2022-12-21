@@ -379,54 +379,58 @@ test_that("sample_calcomp works", {
   expect_true(all(tmp_age[, "FltSvy"] %in% 1))
   expect_true(sum(tmp_age$Nsamp) == 40) # because 2 years of 20 samples each.
 
-  expect_error(sample_calcomp(exp_dat,
-    exp_dat,
-    fleets = c(1),
-    years = list(96),
-    # expect error b/c Nsamp_lengths is too low for the Nsamp_ages
-    Nsamp_lengths = list(10),
-    Nsamp_ages = list(20)
-  ),
-  "More age samples specified than fish collected for",
-  fixed = TRUE
+  expect_error(
+    sample_calcomp(exp_dat,
+      exp_dat,
+      fleets = c(1),
+      years = list(96),
+      # expect error b/c Nsamp_lengths is too low for the Nsamp_ages
+      Nsamp_lengths = list(10),
+      Nsamp_ages = list(20)
+    ),
+    "More age samples specified than fish collected for",
+    fixed = TRUE
   )
   # expect error b/c there is no fleet 4.
-  expect_error(sample_calcomp(
-    dat_list = exp_dat,
-    exp_vals_list = exp_dat,
-    fleets = c(4),
-    years = list(96),
-    Nsamp_lengths = list(10),
-    Nsamp_ages = list(20)
-  ),
-  "A fleet specified in fleets was not found",
-  fixed = TRUE
+  expect_error(
+    sample_calcomp(
+      dat_list = exp_dat,
+      exp_vals_list = exp_dat,
+      fleets = c(4),
+      years = list(96),
+      Nsamp_lengths = list(10),
+      Nsamp_ages = list(20)
+    ),
+    "A fleet specified in fleets was not found",
+    fixed = TRUE
   )
   # expect error b/c wrong years
-  expect_error(sample_calcomp(
-    dat_list = exp_dat,
-    exp_vals_list = exp_dat,
-    fleets = c(1),
-    years = list(150),
-    Nsamp_lengths = list(10),
-    Nsamp_ages = list(5)
-  ),
-  "A year specified in years was not found",
-  fixed = TRUE
+  expect_error(
+    sample_calcomp(
+      dat_list = exp_dat,
+      exp_vals_list = exp_dat,
+      fleets = c(1),
+      years = list(150),
+      Nsamp_lengths = list(10),
+      Nsamp_ages = list(5)
+    ),
+    "A year specified in years was not found",
+    fixed = TRUE
   )
 
   # expect error b/c of wrong years
-  expect_error(sample_calcomp(exp_dat_2,
-    exp_dat_2,
-    fleets = c(1),
-    years = list(c(96, 97)),
-    Nsamp_lengths = list(50),
-    Nsamp_ages = list(10),
-    ESS_lengths = list(30),
-    ESS_ages = list(20)
-  ),
-  "A year specified in years was not found",
-  fixed = TRUE
+  expect_error(
+    sample_calcomp(exp_dat_2,
+      exp_dat_2,
+      fleets = c(1),
+      years = list(c(96, 97)),
+      Nsamp_lengths = list(50),
+      Nsamp_ages = list(10),
+      ESS_lengths = list(30),
+      ESS_ages = list(20)
+    ),
+    "A year specified in years was not found",
+    fixed = TRUE
   )
 
   # Make sure when fleet is NULL returns no CAL data.
@@ -445,29 +449,31 @@ test_that("sample_calcomp works", {
     dat$agecomp
   )
   # Test error if bad input for ESS used
-  expect_error(sample_calcomp(exp_dat,
-    exp_dat,
-    fleets = c(1),
-    years = list(96),
-    Nsamp_lengths = list(50),
-    Nsamp_ages = list(10),
-    ESS_lengths = list(30, 1),
-    ESS_ages = list(20)
-  ),
-  "ESS_lengths did not have the correct dimensions",
-  fixed = TRUE
+  expect_error(
+    sample_calcomp(exp_dat,
+      exp_dat,
+      fleets = c(1),
+      years = list(96),
+      Nsamp_lengths = list(50),
+      Nsamp_ages = list(10),
+      ESS_lengths = list(30, 1),
+      ESS_ages = list(20)
+    ),
+    "ESS_lengths did not have the correct dimensions",
+    fixed = TRUE
   )
-  expect_error(sample_calcomp(exp_dat,
-    exp_dat,
-    fleets = c(1),
-    years = list(96),
-    Nsamp_lengths = list(50),
-    Nsamp_ages = list(10),
-    ESS_lengths = list(30),
-    ESS_ages = list(20, 1)
-  ),
-  "ESS_ages did not have the correct dimensions",
-  fixed = TRUE
+  expect_error(
+    sample_calcomp(exp_dat,
+      exp_dat,
+      fleets = c(1),
+      years = list(96),
+      Nsamp_lengths = list(50),
+      Nsamp_ages = list(10),
+      ESS_lengths = list(30),
+      ESS_ages = list(20, 1)
+    ),
+    "ESS_ages did not have the correct dimensions",
+    fixed = TRUE
   )
   # try using different bins where Lbin_lo and Lbin_hi are not equal. Note that
   # this cannot be done the way the sample_calcomp function is currently written.
@@ -492,15 +498,16 @@ test_that("sample_calcomp works", {
   dat_diff_bins <- exp_dat
   dat_diff_bins$agecomp <- calcomp
 
-  expect_error(sample_calcomp(
-    dat_list = dat_diff_bins,
-    exp_vals_list = dat_diff_bins,
-    fleets = c(1),
-    years = list(cal_yr),
-    Nsamp_lengths = list(10),
-    Nsamp_ages = list(5)
-  ),
-  "In order to use sample_calcomp, for each row of conditional age at",
-  fixed = TRUE
+  expect_error(
+    sample_calcomp(
+      dat_list = dat_diff_bins,
+      exp_vals_list = dat_diff_bins,
+      fleets = c(1),
+      years = list(cal_yr),
+      Nsamp_lengths = list(10),
+      Nsamp_ages = list(5)
+    ),
+    "In order to use sample_calcomp, for each row of conditional age at",
+    fixed = TRUE
   )
 })

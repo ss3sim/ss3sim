@@ -644,18 +644,20 @@ make_df <- function(list_name, list_df) {
     # dataframes.
     df <- do.call(
       rbind,
-      c(lapply(
-        list_df_comp,
-        function(x) {
-          data.frame(c(x, vapply(
-            setdiff(all_nms, names(x)),
-            function(y) NA, NA
-          )),
-          stringsAsFactors = FALSE
-          )
-        }
-      ),
-      make.row.names = FALSE
+      c(
+        lapply(
+          list_df_comp,
+          function(x) {
+            data.frame(
+              c(x, vapply(
+                setdiff(all_nms, names(x)),
+                function(y) NA, NA
+              )),
+              stringsAsFactors = FALSE
+            )
+          }
+        ),
+        make.row.names = FALSE
       )
     )
   } else {
@@ -724,11 +726,12 @@ convert_to_wide <- function(lng) {
   ## parse the scenarios into columns for plotting later
   # use this old code:
   new_cols <-
-    data.frame(do.call(rbind, strsplit(gsub(
-      "([0-9]+-)", "\\1 ",
-      as.character(wide$scenario)
-    ), "- ")),
-    stringsAsFactors = FALSE
+    data.frame(
+      do.call(rbind, strsplit(gsub(
+        "([0-9]+-)", "\\1 ",
+        as.character(wide$scenario)
+      ), "- ")),
+      stringsAsFactors = FALSE
     )
   names(new_cols) <-
     c(substr(as.vector(as.character(

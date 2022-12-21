@@ -201,7 +201,6 @@ ss3sim_base <- function(iterations,
                         sleep = 0,
                         seed = 21,
                         extras = " ") {
-
   # In case ss3sim_base is stopped before finishing:
   old_wd <- getwd()
   on.exit(setwd(old_wd), add = TRUE)

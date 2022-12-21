@@ -23,7 +23,6 @@
 #'
 change_catch <- function(dat_list,
                          ctl_list) {
-
   #### Pull out F values from control file
   newvals <- ctl_list[["F_setup2"]]
   colnames(newvals) <- tolower(colnames(newvals))

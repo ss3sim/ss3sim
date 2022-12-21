@@ -99,11 +99,12 @@ test_that("A basic run_ss3sim scenario runs", {
     utils::type.convert(scalar[om_line, "SSB_MSY"], as.is = TRUE),
     scale = 1000000000000000, label = "EM SSB at MSY"
   )
-  expect_true(1 >
-    abs((utils::type.convert(scalar[em_line, "Catch_endyear"], as.is = TRUE) -
-      utils::type.convert(scalar[om_line, "Catch_endyear"], as.is = TRUE)) /
-      utils::type.convert(scalar[em_line, "Catch_endyear"], as.is = TRUE)) * 100,
-  label = "EM terminal catch has less than 1 percent error"
+  expect_true(
+    1 >
+      abs((utils::type.convert(scalar[em_line, "Catch_endyear"], as.is = TRUE) -
+        utils::type.convert(scalar[om_line, "Catch_endyear"], as.is = TRUE)) /
+        utils::type.convert(scalar[em_line, "Catch_endyear"], as.is = TRUE)) * 100,
+    label = "EM terminal catch has less than 1 percent error"
   )
   expect_equal(scalar[em_line, "SR_LN_R0"], 18.7,
     tolerance = 0.001, label = "EM R_0"

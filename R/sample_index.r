@@ -130,7 +130,6 @@ sample_index <- function(dat_list,
                          sds_obs,
                          sds_out,
                          seas = list(1)) {
-
   ## Check inputs for errors
   if (!inherits(dat_list, "list") || is.null(dat_list[["CPUE"]])) {
     stop("dat_list must be a list object read in using r4ss::SS_readdat().")

@@ -30,7 +30,6 @@ sample_comp <- function(data,
                         ESS = NULL,
                         cpar = 1,
                         ...) {
-
   #### Perform input checks
   if (is.null(fleets)) {
     return(data[0, ])

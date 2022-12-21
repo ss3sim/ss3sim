@@ -88,7 +88,6 @@ change_f <- function(years,
                      seasons = 1,
                      ses = 0.005,
                      ctl_list) {
-
   #### Input checks
   if (is.list(years)) {
     times <- vapply(X = years, FUN = length, FUN.VALUE = 1L)

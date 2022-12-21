@@ -75,10 +75,11 @@ test_that("Catches are removed from third fleet", {
 })
 
 test_that("setup_scenarios works without specifying fleet for years then Nsamp", {
-  dat_list <- exp_vals <- r4ss::SS_readdat(file.path(
-    system.file("extdata", package = "ss3sim"), "example-om", "ss3_expected_values.dat"
-  ),
-  verbose = FALSE
+  dat_list <- exp_vals <- r4ss::SS_readdat(
+    file.path(
+      system.file("extdata", package = "ss3sim"), "example-om", "ss3_expected_values.dat"
+    ),
+    verbose = FALSE
   )
 
   df <- setup_scenarios_defaults()

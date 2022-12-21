@@ -52,7 +52,6 @@ test_that("A season-specific data file looks right.", {
   )
 })
 test_that("Specifying season and part works.", {
-
   # todo fix if data frame has a mixture of characters to evaluate
   # and numeric, such as seasons here if season.2 was 2 instead of "2"
   df <- data.frame(
@@ -92,7 +91,6 @@ test_that("Specifying season and part works.", {
   )
 })
 test_that("Repeat some years for each part.", {
-
   # todo fix if data frame has a mixture of characters to evaluate
   # and numeric, such as seasons here if season.2 was 2 instead of "2"
   df <- data.frame(
