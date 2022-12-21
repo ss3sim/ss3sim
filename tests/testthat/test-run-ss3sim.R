@@ -94,7 +94,8 @@ test_that("A basic run_ss3sim scenario runs", {
     scalar[om_line, "depletion"],
     tolerance = 0.012, label = "OM depletion"
   )
-expect_equal( (scalar[em_line, "SSB_MSY"], as.is = TRUE),
+  expect_equal(
+    utils::type.convert(scalar[em_line, "SSB_MSY"], as.is = TRUE),
     utils::type.convert(scalar[om_line, "SSB_MSY"], as.is = TRUE),
     scale = 1000000000000000, label = "EM SSB at MSY"
   )
