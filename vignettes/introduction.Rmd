@@ -568,20 +568,26 @@ The gradient information is in the scalar file.
 Merging the scalar and the time series can help add details to figures.
 
 ```{r}
+scalar_dat[, "D"] <- gsub(
+  pattern = "D([0-9]+)-.+",
+  replacement = "D\\1",
+  scalar_dat[, "scenario"]
+)
+scalar_dat[, "E"] <- ifelse(
+  test = scalar_dat$NatM_uniform_Fem_GP_1_em == 0.2,
+  "fix M",
+  "estimate M"
+)
 ts_dat <- merge(
-  x = ts_dat,
-  y = scalar_dat[, c("scenario", "iteration", "max_grad")]
+  x = dplyr::select(ts_dat, -E),
+  y = scalar_dat[, c("scenario", "iteration", "max_grad", "D", "E")]
 )
 ```
 
 ### Separate the deterministic from the stochastic runs
 
 ```{r}
-scalar_dat_det <- scalar_dat[scalar_dat$E %in% c("E100", "E101"), ]
-scalar_dat_sto <- scalar_dat[scalar_dat$E %in% c("E0", "E1"), ]
-ts_dat_det <- ts_dat[ts_dat$E %in% c("E100", "E101"), ]
-ts_dat_sto <- ts_dat[ts_dat$E %in% c("E0", "E1"), ]
-
+ts_dat_sto <- ts_dat[grepl("E[0-1]-", ts_dat[, "scenario"]), ]
 scalar_dat_long <- scalar_dat
 colnames(scalar_dat_long) <- gsub(
   pattern = "(.+)_re",
@@ -605,10 +611,10 @@ Use the long data to create a multi-panel plot with {ggplot2}.
 p <- plot_boxplot(
   scalar_dat_long[
     scalar_dat_long$parameter %in% c("depletion", "SSB_MSY") &
-      scalar_dat_long$E %in% c("E100", "E101"),
+    grepl("E10[0-1]", scalar_dat_long[, "scenario"]),
   ],
-  x = "D", y = "RE", re = FALSE,
-  vert = "E", horiz = "parameter", print = FALSE
+  x = "E", y = "RE", re = FALSE,
+  horiz = "parameter", print = FALSE
 )
 print(p)
 # see plot_points() for another plotting function
@@ -632,19 +638,11 @@ p <- plot_lines(ts_dat_sto,
 print(p)
 ```
 
-```{r ssb-ts-plots, fig.height=5, fig.width=7, cache=TRUE, fig.cap="Spawning stock biomass time series."}
-p <- plot_lines(ts_dat_sto,
-  y = "SpawnBio_re",
-  vert = "E", horiz = "D", print = FALSE, col = "max_grad"
-)
-print(p)
-```
-
 ```{r relative-error-boxplots-sto, fig.height=7, fig.width=5, cache=TRUE, fig.cap="Box plots of relative error (RE) for stochastic runs. $M$ is fixed at the true value from the OM (E0) or estimated (E1). The standard deviation on the survey index observation error is 0.4 (D1) or 0.1 (D0), representing an increase in survey sampling effort."}
 p <- plot_boxplot(
   scalar_dat_long[
     scalar_dat_long$parameter %in% c("depletion", "SSB_MSY") &
-      scalar_dat_long$E %in% c("E0", "E1"),
+    grepl("E[0-1]-", scalar_dat_long$scenario),
   ],
   x = "D", y = "RE", re = FALSE,
   vert = "E", horiz = "parameter", print = FALSE
