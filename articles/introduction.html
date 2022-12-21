@@ -705,20 +705,26 @@ version of the output.</p>
 <p>The gradient information is in the scalar file. Merging the scalar
 and the time series can help add details to figures.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ts_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span></span>
-<span>  x <span class="op">=</span> <span class="va">ts_dat</span>,</span>
-<span>  y <span class="op">=</span> <span class="va">scalar_dat</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"scenario"</span>, <span class="st">"iteration"</span>, <span class="st">"max_grad"</span><span class="op">)</span><span class="op">]</span></span>
+<code class="sourceCode R"><span><span class="va">scalar_dat</span><span class="op">[</span>, <span class="st">"D"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span></span>
+<span>  pattern <span class="op">=</span> <span class="st">"D([0-9]+)-.+"</span>,</span>
+<span>  replacement <span class="op">=</span> <span class="st">"D\\1"</span>,</span>
+<span>  <span class="va">scalar_dat</span><span class="op">[</span>, <span class="st">"scenario"</span><span class="op">]</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">scalar_dat</span><span class="op">[</span>, <span class="st">"E"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
+<span>  test <span class="op">=</span> <span class="va">scalar_dat</span><span class="op">$</span><span class="va">NatM_uniform_Fem_GP_1_em</span> <span class="op">==</span> <span class="fl">0.2</span>,</span>
+<span>  <span class="st">"fix M"</span>,</span>
+<span>  <span class="st">"estimate M"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">ts_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">ts_dat</span>, <span class="op">-</span><span class="va">E</span><span class="op">)</span>,</span>
+<span>  y <span class="op">=</span> <span class="va">scalar_dat</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"scenario"</span>, <span class="st">"iteration"</span>, <span class="st">"max_grad"</span>, <span class="st">"D"</span>, <span class="st">"E"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="separate-the-deterministic-from-the-stochastic-runs">Separate the deterministic from the stochastic runs<a class="anchor" aria-label="anchor" href="#separate-the-deterministic-from-the-stochastic-runs"></a>
 </h4>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">scalar_dat_det</span> <span class="op">&lt;-</span> <span class="va">scalar_dat</span><span class="op">[</span><span class="va">scalar_dat</span><span class="op">$</span><span class="va">E</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"E100"</span>, <span class="st">"E101"</span><span class="op">)</span>, <span class="op">]</span></span>
-<span><span class="va">scalar_dat_sto</span> <span class="op">&lt;-</span> <span class="va">scalar_dat</span><span class="op">[</span><span class="va">scalar_dat</span><span class="op">$</span><span class="va">E</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"E0"</span>, <span class="st">"E1"</span><span class="op">)</span>, <span class="op">]</span></span>
-<span><span class="va">ts_dat_det</span> <span class="op">&lt;-</span> <span class="va">ts_dat</span><span class="op">[</span><span class="va">ts_dat</span><span class="op">$</span><span class="va">E</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"E100"</span>, <span class="st">"E101"</span><span class="op">)</span>, <span class="op">]</span></span>
-<span><span class="va">ts_dat_sto</span> <span class="op">&lt;-</span> <span class="va">ts_dat</span><span class="op">[</span><span class="va">ts_dat</span><span class="op">$</span><span class="va">E</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"E0"</span>, <span class="st">"E1"</span><span class="op">)</span>, <span class="op">]</span></span>
-<span></span>
+<code class="sourceCode R"><span><span class="va">ts_dat_sto</span> <span class="op">&lt;-</span> <span class="va">ts_dat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"E[0-1]-"</span>, <span class="va">ts_dat</span><span class="op">[</span>, <span class="st">"scenario"</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="va">scalar_dat_long</span> <span class="op">&lt;-</span> <span class="va">scalar_dat</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">scalar_dat_long</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span></span>
 <span>  pattern <span class="op">=</span> <span class="st">"(.+)_re"</span>,</span>
@@ -742,10 +748,10 @@ and the time series can help add details to figures.</p>
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_boxplot.html">plot_boxplot</a></span><span class="op">(</span></span>
 <span>  <span class="va">scalar_dat_long</span><span class="op">[</span></span>
 <span>    <span class="va">scalar_dat_long</span><span class="op">$</span><span class="va">parameter</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"depletion"</span>, <span class="st">"SSB_MSY"</span><span class="op">)</span> <span class="op">&amp;</span></span>
-<span>      <span class="va">scalar_dat_long</span><span class="op">$</span><span class="va">E</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"E100"</span>, <span class="st">"E101"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"E10[0-1]"</span>, <span class="va">scalar_dat_long</span><span class="op">[</span>, <span class="st">"scenario"</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>  <span class="op">]</span>,</span>
-<span>  x <span class="op">=</span> <span class="st">"D"</span>, y <span class="op">=</span> <span class="st">"RE"</span>, re <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  vert <span class="op">=</span> <span class="st">"E"</span>, horiz <span class="op">=</span> <span class="st">"parameter"</span>, print <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  x <span class="op">=</span> <span class="st">"E"</span>, y <span class="op">=</span> <span class="st">"RE"</span>, re <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  horiz <span class="op">=</span> <span class="st">"parameter"</span>, print <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
@@ -775,21 +781,10 @@ Time series of relative error in spawning stock biomass.
 </p>
 </div>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_lines.html">plot_lines</a></span><span class="op">(</span><span class="va">ts_dat_sto</span>,</span>
-<span>  y <span class="op">=</span> <span class="st">"SpawnBio_re"</span>,</span>
-<span>  vert <span class="op">=</span> <span class="st">"E"</span>, horiz <span class="op">=</span> <span class="st">"D"</span>, print <span class="op">=</span> <span class="cn">FALSE</span>, col <span class="op">=</span> <span class="st">"max_grad"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
-<div class="figure">
-<img src="introduction_files/figure-html/ssb-ts-plots-1.png" alt="Spawning stock biomass time series." width="672"><p class="caption">
-Spawning stock biomass time series.
-</p>
-</div>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_boxplot.html">plot_boxplot</a></span><span class="op">(</span></span>
 <span>  <span class="va">scalar_dat_long</span><span class="op">[</span></span>
 <span>    <span class="va">scalar_dat_long</span><span class="op">$</span><span class="va">parameter</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"depletion"</span>, <span class="st">"SSB_MSY"</span><span class="op">)</span> <span class="op">&amp;</span></span>
-<span>      <span class="va">scalar_dat_long</span><span class="op">$</span><span class="va">E</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"E0"</span>, <span class="st">"E1"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"E[0-1]-"</span>, <span class="va">scalar_dat_long</span><span class="op">$</span><span class="va">scenario</span><span class="op">)</span>,</span>
 <span>  <span class="op">]</span>,</span>
 <span>  x <span class="op">=</span> <span class="st">"D"</span>, y <span class="op">=</span> <span class="st">"RE"</span>, re <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  vert <span class="op">=</span> <span class="st">"E"</span>, horiz <span class="op">=</span> <span class="st">"parameter"</span>, print <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -1219,7 +1214,7 @@ out how many cores are on the computer and register a portion of those
 for parallel processing. Second, us an apply function to get the results
 from each scenario. Third, bring the results together and close the
 cluster.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">parallel</span><span class="op">)</span></span>
 <span><span class="va">ncls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"NUMBER_OF_PROCESSORS"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"cl.cores"</span>, <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">ncls</span> <span class="op">&lt;</span> <span class="fl">6</span>, <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
