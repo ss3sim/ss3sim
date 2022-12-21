@@ -48,12 +48,14 @@ LazyData: true
 Suggests:
     knitr,
     doParallel,
+    pak,
     rmarkdown,
     testthat
 VignetteBuilder: knitr
 Depends:
     R (>= 4.0)
 Imports:
+    cli,
     dplyr,
     foreach,
     gtools,
