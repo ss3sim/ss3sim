@@ -27,13 +27,14 @@
 #' rm(obj)
 #' # group can also be left NULL if only plotting a single scenario.
 #' # it is recommended to set use_facet FALSE in this case.
-#' obj2 <- plot_cummean(scalar_dat[
-#'   scalar_dat$scenario == unique(scalar_dat$scenario)[1] &
-#'     scalar_dat$model_run == "em",
-#' ],
-#' var = "VonBert_K_Fem_GP_1",
-#' group = NULL,
-#' use_facet = FALSE
+#' obj2 <- plot_cummean(
+#'   scalar_dat[
+#'     scalar_dat$scenario == unique(scalar_dat$scenario)[1] &
+#'       scalar_dat$model_run == "em",
+#'   ],
+#'   var = "VonBert_K_Fem_GP_1",
+#'   group = NULL,
+#'   use_facet = FALSE
 #' )
 #' # obj2$plot
 #' # obj2$data

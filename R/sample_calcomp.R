@@ -375,24 +375,26 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
       ## This code creates a vector of empirical samples of
       ## length, such that each length bin is repeated equal to
       ## the number of observed fish in that bin
-      prob.len.inits <- unlist(mapply(function(ind, vec) {
-        rep(ind, vec[ind])
-      },
-      ind = seq_along(prob.len),
-      MoreArgs = list(vec = prob.len),
-      SIMPLIFY = FALSE
+      prob.len.inits <- unlist(mapply(
+        function(ind, vec) {
+          rep(ind, vec[ind])
+        },
+        ind = seq_along(prob.len),
+        MoreArgs = list(vec = prob.len),
+        SIMPLIFY = FALSE
       ))
       ## Now resample from it, ensuring that the sample size doesn't exceed
       temp <- sample(
         x = prob.len.inits, size = tmp_nsamp_ages,
         replace = FALSE
       )
-      Nsamp.ages.per.lbin <- unlist(mapply(function(ind, samples) {
-        sum(samples == ind)
-      },
-      ind = seq_along(prob.len),
-      MoreArgs = list(samples = temp),
-      SIMPLIFY = FALSE
+      Nsamp.ages.per.lbin <- unlist(mapply(
+        function(ind, samples) {
+          sum(samples == ind)
+        },
+        ind = seq_along(prob.len),
+        MoreArgs = list(samples = temp),
+        SIMPLIFY = FALSE
       ))
     } else {
       Nsamp.ages.per.lbin <- stats::rmultinom(

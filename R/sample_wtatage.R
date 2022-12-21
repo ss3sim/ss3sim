@@ -154,7 +154,6 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
       wtatage.new.list[[fl]]$fleet <- fl
     } else {
       for (yr in years[[fl]]) {
-
         #----------------------------------------------------------------------------------------------------
         # Step 1, draw from true age distributions
         agecomp.temp <- agecomp[agecomp$Yr == yr & agecomp$FltSvy == fl, ]

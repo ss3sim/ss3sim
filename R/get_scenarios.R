@@ -28,7 +28,7 @@ get_scenarios <- function(directory = getwd(),
       pattern = "[0-9]{1,+}/[eo]m$",
       replacement = ""
     ) %>%
-    unique
+    unique()
 
   if (length(scenarios) == 0) {
     cli::cli_alert_danger(
@@ -42,5 +42,4 @@ get_scenarios <- function(directory = getwd(),
     }
     return(out)
   }
-
 }

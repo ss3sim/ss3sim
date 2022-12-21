@@ -43,7 +43,6 @@
 
 change_retro <- function(str_file_in = "starter.ss", str_file_out =
                            "starter.ss", retro_yr = 0) {
-
   # Sanity checks:
   if (retro_yr > 0) {
     stop("retro_yr should be <= 0")

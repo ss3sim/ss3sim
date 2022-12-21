@@ -37,7 +37,6 @@
 #' head(calculate_re(scalar_dat, add = FALSE))
 #' rm("ts_dat", "scalar_dat")
 calculate_re <- function(dat, add = TRUE, EM = "em") {
-
   # Check if wide or long data
   if ("model_run" %in% colnames(dat)) {
     stopifnot(length(EM) == 1)

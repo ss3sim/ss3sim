@@ -76,7 +76,6 @@ change_data <- function(dat_list, outfile = NULL, fleets, years,
                         pop_minimum_size = NULL, pop_maximum_size = NULL,
                         lcomp_constant = NULL, tail_compression = NULL,
                         nsex = 1) {
-
   # TODO: pop length bins must not be wider than the length data bins, but the
   # boundaries of the bins do not need to align (from Stock Synthesis manual)
   # this is also checked within Stock Synthesis and will create a fatal error

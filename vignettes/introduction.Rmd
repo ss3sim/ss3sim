@@ -418,8 +418,10 @@ df[, "ce.par_int"] <- NA
 # Set the phase for estimating natural mortality
 df[, "ce.par_phase"] <- rep(c(-1, 3), each = 2)
 # Name the scenarios
-df[, "scenarios"] <- c("D0-E0-F0-cod", "D1-E0-F0-cod",
-  "D0-E1-F0-cod", "D1-E1-F0-cod")
+df[, "scenarios"] <- c(
+  "D0-E0-F0-cod", "D1-E0-F0-cod",
+  "D0-E1-F0-cod", "D1-E1-F0-cod"
+)
 ```
 
 ## Visualizing the results
@@ -439,11 +441,14 @@ A quick test that can be helpful is visualizing the patterns of spawning stock b
 
 ```{r r4ss1iteration, eval=FALSE}
 r_om <- r4ss::SS_output(file.path(scname[1], "1", "om"),
-  verbose = FALSE, printstats = FALSE, covar = FALSE)
+  verbose = FALSE, printstats = FALSE, covar = FALSE
+)
 r_em <- r4ss::SS_output(file.path(scname[1], "1", "em"),
-  verbose = FALSE, printstats = FALSE, covar = FALSE)
+  verbose = FALSE, printstats = FALSE, covar = FALSE
+)
 r4ss::SSplotComparisons(r4ss::SSsummarize(list(r_om, r_em)),
-  legendlabels = c("OM", "EM"), subplots = 1)
+  legendlabels = c("OM", "EM"), subplots = 1
+)
 ```
 
 Each iteration is unique because of process error included through normally-distributed recruitment deviations.
@@ -583,11 +588,13 @@ colnames(scalar_dat_long) <- gsub(
   replacement = "RE _\\1",
   x = colnames(scalar_dat_long)
 )
-scalar_dat_long <- reshape(scalar_dat_long, sep = " _",
+scalar_dat_long <- reshape(scalar_dat_long,
+  sep = " _",
   direction = "long",
   varying = grep(" _", colnames(scalar_dat_long)),
   idvar = c("scenario", "iteration"),
-  timevar = "parameter")
+  timevar = "parameter"
+)
 ```
 
 ## Boxplots
@@ -595,11 +602,14 @@ scalar_dat_long <- reshape(scalar_dat_long, sep = " _",
 Use the long data to create a multi-panel plot with {ggplot2}.
 
 ```{r relative-error-boxplots-det, fig.height=7, fig.width=5, fig.cap="Box plots of the relative error (RE) for deterministic runs. $M$ is fixed at the true value from the OM (E100) or estimated (E101)."}
-p <- plot_boxplot(scalar_dat_long[
-  scalar_dat_long$parameter %in% c("depletion", "SSB_MSY") &
-  scalar_dat_long$E %in% c("E100", "E101"), ],
+p <- plot_boxplot(
+  scalar_dat_long[
+    scalar_dat_long$parameter %in% c("depletion", "SSB_MSY") &
+      scalar_dat_long$E %in% c("E100", "E101"),
+  ],
   x = "D", y = "RE", re = FALSE,
-  vert = "E", horiz = "parameter", print = FALSE)
+  vert = "E", horiz = "parameter", print = FALSE
+)
 print(p)
 # see plot_points() for another plotting function
 ```
@@ -615,23 +625,30 @@ Figures~\ref{fig:plot-sto-ts},
 \ref{fig:relative-error-boxplots-sto}.
 
 ```{r plot-sto-ts, fig.height=5, fig.width=7, fig.cap="Time series of relative error in spawning stock biomass."}
-p <- plot_lines(ts_dat_sto, y = "SpawnBio_re",
-  vert = "E", horiz = "D", print = FALSE, col = "max_grad")
+p <- plot_lines(ts_dat_sto,
+  y = "SpawnBio_re",
+  vert = "E", horiz = "D", print = FALSE, col = "max_grad"
+)
 print(p)
 ```
 
 ```{r ssb-ts-plots, fig.height=5, fig.width=7, cache=TRUE, fig.cap="Spawning stock biomass time series."}
-p <- plot_lines(ts_dat_sto, y = "SpawnBio_re",
-  vert = "E", horiz = "D", print = FALSE, col = "max_grad")
+p <- plot_lines(ts_dat_sto,
+  y = "SpawnBio_re",
+  vert = "E", horiz = "D", print = FALSE, col = "max_grad"
+)
 print(p)
 ```
 
 ```{r relative-error-boxplots-sto, fig.height=7, fig.width=5, cache=TRUE, fig.cap="Box plots of relative error (RE) for stochastic runs. $M$ is fixed at the true value from the OM (E0) or estimated (E1). The standard deviation on the survey index observation error is 0.4 (D1) or 0.1 (D0), representing an increase in survey sampling effort."}
-p <- plot_boxplot(scalar_dat_long[
-  scalar_dat_long$parameter %in% c("depletion", "SSB_MSY") &
-  scalar_dat_long$E %in% c("E0", "E1"), ],
+p <- plot_boxplot(
+  scalar_dat_long[
+    scalar_dat_long$parameter %in% c("depletion", "SSB_MSY") &
+      scalar_dat_long$E %in% c("E0", "E1"),
+  ],
   x = "D", y = "RE", re = FALSE,
-  vert = "E", horiz = "parameter", print = FALSE)
+  vert = "E", horiz = "parameter", print = FALSE
+)
 print(p)
 ```
 
