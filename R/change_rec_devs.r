@@ -45,7 +45,7 @@ change_rec_devs <- function(recdevs,
                             ctl_file_in, ctl_file_out = "control_recruitment.ss") {
   ctl <- readLines(ctl_file_in)
   default_err_msg <- paste0(
-    " Please make sure you are using a control file\n",
+    "Please make sure you are using a control file\n",
     "that was run through Stock Synthesis to get a control.ss_new\n",
     "so that it has the default Stock Synthesis comments that ",
     "ss3sim expects."

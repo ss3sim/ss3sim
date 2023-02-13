@@ -197,6 +197,7 @@ ss3sim_base <- function(iterations,
                         weight_comps_params = NULL,
                         user_recdevs = NULL,
                         user_recdevs_warn = TRUE,
+                        recdev_option = NULL,
                         bias_adjust = FALSE,
                         sleep = 0,
                         seed = 21,
@@ -667,6 +668,11 @@ ss3sim_base <- function(iterations,
       file = file.path(sc, i, "em", "em.ctl"),
       use_datlist = TRUE, datlist = datfile.orig,
       verbose = FALSE
+    )
+    # change recdev options
+    ctlem <- change_recdev_option(
+      ctl_list = ctlem,
+      new_recdev_option = recdev_option
     )
     qtasks <- check_q(
       ctl_list = ctlem,
