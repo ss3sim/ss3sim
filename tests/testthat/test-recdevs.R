@@ -1,4 +1,3 @@
-
 # .
 # get_recdevs() is pretty simple, so does not need a test for now.
 

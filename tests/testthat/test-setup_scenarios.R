@@ -1,7 +1,3 @@
-
-
-
-
 test_that("Default setup_scenarios work", {
   input <- setup_scenarios_defaults()
   scenario_list <- setup_scenarios(input)

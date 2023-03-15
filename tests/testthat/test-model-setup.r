@@ -1,5 +1,3 @@
-
-
 wd.old <- getwd()
 temp_path <- file.path(tempdir(), "verify_input")
 dir.create(temp_path, showWarnings = FALSE)

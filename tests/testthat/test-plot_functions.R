@@ -1,5 +1,3 @@
-
-
 test_that("plot_cummean works", {
   data("scalar_dat", package = "ss3sim")
 
