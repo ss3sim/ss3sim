@@ -1,4 +1,3 @@
-
 d <- system.file("extdata", "models", "cod-om", package = "ss3sim")
 dat <- r4ss::SS_readdat(
   file = file.path(d, "codOM.dat"),

@@ -1,4 +1,3 @@
-
 test_that("Automatic errors in change_q", {
   expect_error(change_q(string_add = "Fishery"))
   expect_error(change_q())

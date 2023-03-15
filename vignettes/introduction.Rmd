@@ -611,7 +611,7 @@ Use the long data to create a multi-panel plot with {ggplot2}.
 p <- plot_boxplot(
   scalar_dat_long[
     scalar_dat_long$parameter %in% c("depletion", "SSB_MSY") &
-    grepl("E10[0-1]", scalar_dat_long[, "scenario"]),
+      grepl("E10[0-1]", scalar_dat_long[, "scenario"]),
   ],
   x = "E", y = "RE", re = FALSE,
   horiz = "parameter", print = FALSE
@@ -642,7 +642,7 @@ print(p)
 p <- plot_boxplot(
   scalar_dat_long[
     scalar_dat_long$parameter %in% c("depletion", "SSB_MSY") &
-    grepl("E[0-1]-", scalar_dat_long$scenario),
+      grepl("E[0-1]-", scalar_dat_long$scenario),
   ],
   x = "D", y = "RE", re = FALSE,
   vert = "E", horiz = "parameter", print = FALSE

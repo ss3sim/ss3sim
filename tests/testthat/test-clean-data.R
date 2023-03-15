@@ -1,5 +1,3 @@
-
-
 d <- system.file("extdata", package = "ss3sim")
 om_dir <- file.path(d, "models", "cod-om")
 

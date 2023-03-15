@@ -1,5 +1,3 @@
-
-
 # Tests are skipped on CRAN because the Stock Synthesis executable is no available.
 
 library(magrittr)

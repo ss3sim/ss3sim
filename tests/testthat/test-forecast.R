@@ -1,5 +1,3 @@
-
-
 test_that("check_forecast is working", {
   file <- system.file(
     package = "ss3sim",

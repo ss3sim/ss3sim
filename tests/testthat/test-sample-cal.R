@@ -1,5 +1,3 @@
-
-
 temp_path <- file.path(tempdir(), "run-CAAL-test")
 dir.create(temp_path, showWarnings = FALSE)
 wd <- getwd()
