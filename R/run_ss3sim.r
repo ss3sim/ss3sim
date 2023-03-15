@@ -128,6 +128,15 @@ run_ss3sim <- function(iterations,
                        parallel = FALSE,
                        parallel_iterations = FALSE,
                        ...) {
+  # Provide a sensible error message in case users try to run ss3sim using the
+  # old way of case files
+  if ("case_files" %in% names(list(...))) {
+    stop(
+      "The use of case_files was deprecated in v.1.1.0 in favor of simdf. ",
+      "Please see the documentation, i.e., ?run_ss3sim"
+    )
+  }
+
   if (parallel) {
     cores <- setup_parallel()
     if (cores == 1) parallel <- FALSE
