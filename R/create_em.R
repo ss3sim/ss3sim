@@ -51,33 +51,26 @@
 #' create_em()
 #' # The necessary files are in the following folder
 #' dir(file.path(getwd(), "new-em"))
-#' \dontshow{
-#' testthat::expect_true("forecast.ss" %in% dir("new-em"),
-#'   label = "forecast file is in 'new-em'"
-#' )
-#' testthat::expect_true("starter.ss" %in% dir("new-em"),
-#'   label = "starter file is in 'new-em'"
-#' )
-#' testthat::expect_true("codEM.ctl" %in% dir("new-em"),
-#'   label = "codEM file is in 'new-em'"
-#' )
-#' }
 #' # Clean up your directory
 #' unlink(file.path(getwd(), "new-em"), recursive = TRUE)
 create_em <- function(dir_in = system.file("extdata", "models", "cod-om", package = "ss3sim"),
                       dir_out = file.path(getwd(), "new-em")) {
   dir.create(dir_out, showWarnings = FALSE, recursive = TRUE)
-
-  # Control file
-  ctl_name <- dir(dir_in, "ctl")
-  ctl_name_out <- gsub("OM", "EM", ctl_name, ignore.case = TRUE)
-  dat_list <- r4ss::SS_readdat(dir(dir_in, pattern = "dat$", full.names = TRUE),
+  inputs <- r4ss::SS_read(
+    dir = dir_in,
+    ss_new = FALSE,
     verbose = FALSE
   )
-  ctl_list <- r4ss::SS_readctl(file.path(dir_in, ctl_name),
-    verbose = FALSE,
-    use_datlist = TRUE, datlist = dat_list
+
+  # Control file
+  ctl_name_out <- gsub(
+    "OM",
+    "EM",
+    basename(inputs[["ctl"]][["sourcefile"]]),
+    ignore.case = TRUE
   )
+  dat_list <- inputs[["dat"]]
+  ctl_list <- inputs[["ctl"]]
   ctl_list$MainRdevYrFirst <- dat_list$Nages
   ctl_list$recdev_early_start <- floor(dat_list$Nages * -0.5)
   ctl_list$recdev_early_phase <- abs(ctl_list$recdev_early_phase)
@@ -104,22 +97,16 @@ create_em <- function(dir_in = system.file("extdata", "models", "cod-om", packag
   )
 
   # Forecast file
-  forecast_list <- r4ss::SS_readforecast(
-    file = dir(dir_in, pattern = "forecast", full.names = TRUE),
-    Nfleets = dat_list$Nfleets, Nareas = dat_list$Nareas,
-    nseas = dat_list$nseas,
-    readAll = TRUE, verbose = FALSE
-  )
-  r4ss::SS_writeforecast(forecast_list,
+  r4ss::SS_writeforecast(
+    inputs[["fore"]],
     dir = dir_out,
-    writeAll = TRUE, overwrite = TRUE, verbose = FALSE
+    writeAll = FALSE,
+    overwrite = TRUE,
+    verbose = FALSE
   )
 
   # Starter file
-  starter_list <- r4ss::SS_readstarter(
-    file = dir(dir_in, pattern = "starter", full.names = TRUE),
-    verbose = FALSE
-  )
+  starter_list <- inputs[["start"]]
   starter_list$datfile <- "ss3.dat"
   starter_list$ctlfile <- ctl_name_out
   starter_list$cumreport <- 1
