@@ -99,7 +99,7 @@ The data file can also be written to the disk, if a file path is provided to
     <h2>Arguments</h2>
     <dl><dt>dat_list</dt>
 <dd><p>A Stock Synthesis  data list object as read in from
-<code><a href="https://rdrr.io/pkg/r4ss/man/SS_readdat.html" class="external-link">SS_readdat</a></code>.
+<code><a href="https://r4ss.github.io/r4ss/reference/SS_readdat.html" class="external-link">SS_readdat</a></code>.
 Be sure to correctly specify which section of the data file you want
 to work with when reading it in using the <code>section</code> argument.
 Where, <code>section = 1</code> reads in the input values used to run the model
@@ -196,7 +196,7 @@ containing the modified <code>.dat</code> file is returned invisibly.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dat_list</span> <span class="op">&lt;-</span> <span class="fu">r4ss</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/r4ss/man/SS_readdat.html" class="external-link">SS_readdat</a></span><span class="op">(</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dat_list</span> <span class="op">&lt;-</span> <span class="fu">r4ss</span><span class="fu">::</span><span class="fu"><a href="https://r4ss.github.io/r4ss/reference/SS_readdat.html" class="external-link">SS_readdat</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"models"</span>, <span class="st">"cod-om"</span>, <span class="st">"codOM.dat"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    package <span class="op">=</span> <span class="st">"ss3sim"</span></span></span>

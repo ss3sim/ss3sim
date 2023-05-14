@@ -126,7 +126,7 @@ The default is 0.005, which will be applied to all fleets in all years.</p></dd>
 
 
 <dt>ctl_list</dt>
-<dd><p>A control file read in by <code><a href="https://rdrr.io/pkg/r4ss/man/SS_readctl.html" class="external-link">SS_readctl</a></code>.</p></dd>
+<dd><p>A control file read in by <code><a href="https://r4ss.github.io/r4ss/reference/SS_readctl.html" class="external-link">SS_readctl</a></code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -168,7 +168,7 @@ specifying a row for every year and fleet using <code><a href="change_catch.html
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p>See <code><a href="https://rdrr.io/pkg/r4ss/man/SS_readctl.html" class="external-link">r4ss::SS_readctl()</a></code> and <code><a href="https://rdrr.io/pkg/r4ss/man/SS_writectl.html" class="external-link">r4ss::SS_writectl()</a></code>
+    <div class="dont-index"><p>See <code><a href="https://r4ss.github.io/r4ss/reference/SS_readctl.html" class="external-link">r4ss::SS_readctl()</a></code> and <code><a href="https://r4ss.github.io/r4ss/reference/SS_writectl.html" class="external-link">r4ss::SS_writectl()</a></code>
 for how to supply <code>ctl_list</code> and how to write the file back to the disk
 once you are done manipulating the list object.</p>
 <p>Other change functions: 
@@ -186,11 +186,11 @@ once you are done manipulating the list object.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">r4ss</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/r4ss/man/SS_readdat.html" class="external-link">SS_readdat</a></span><span class="op">(</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">r4ss</span><span class="fu">::</span><span class="fu"><a href="https://r4ss.github.io/r4ss/reference/SS_readdat.html" class="external-link">SS_readdat</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"models"</span>, <span class="st">"cod-om"</span>, <span class="st">"codOM.dat"</span>, package <span class="op">=</span> <span class="st">"ss3sim"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ctl</span> <span class="op">&lt;-</span> <span class="fu">r4ss</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/r4ss/man/SS_readctl.html" class="external-link">SS_readctl</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">ctl</span> <span class="op">&lt;-</span> <span class="fu">r4ss</span><span class="fu">::</span><span class="fu"><a href="https://r4ss.github.io/r4ss/reference/SS_readctl.html" class="external-link">SS_readctl</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"models"</span>, <span class="st">"cod-om"</span>, <span class="st">"codOM.ctl"</span>, package <span class="op">=</span> <span class="st">"ss3sim"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>, use_datlist <span class="op">=</span> <span class="cn">TRUE</span>, datlist <span class="op">=</span> <span class="va">dat</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
