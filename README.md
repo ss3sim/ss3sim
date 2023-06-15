@@ -17,24 +17,13 @@ main: [![R-CMD-check](https://github.com/ss3sim/ss3sim/workflows/R-CMD-check/bad
 Installation
 ------------
 
-Install the [CRAN version](https://cran.r-project.org/package=ss3sim) of {ss3sim} with:
-
+Install the GitHub version via {pak}:
 ``` r
-install.packages("ss3sim")
+# install.packages("pak")
+pak::pkg_install("ss3sim/ss3sim")
 ```
 
-Or, install the development version from GitHub:
-
-``` r
-# install.packages("remotes")
-remotes::install_github(
-  "ss3sim/ss3sim",
-  ref = "main",
-  build_vignettes = TRUE, dependencies = TRUE
-)
-```
-
-We suggest using the GitHub version because it comes with the SS3 executable/binary. If you are using the CRAN version, you will need to install the binary and place it in your system path. See the [Introduction vignette](https://ss3sim.github.io/ss3sim/articles/introduction.html) for more details on how to get the latest version of SS3 and [place it in your path](https://ss3sim.github.io/ss3sim/articles/introduction.html#installing-stock-synthesis).
+The [CRAN version](https://cran.r-project.org/package=ss3sim) of {ss3sim} will be updated one last time in September prior to being archived, thus it is not recommended to install from CRAN. We suggest using the GitHub version because it comes with the SS3 executable/binary. If you are using the CRAN version, you will need to install the binary and place it in your system path. See the [Introduction vignette](https://ss3sim.github.io/ss3sim/articles/introduction.html) for more details on how to get the latest version of SS3 and [place it in your path](https://ss3sim.github.io/ss3sim/articles/introduction.html#installing-stock-synthesis).
 
 You can read the help files and access the [vignettes](http://ss3sim.github.io/ss3sim/) for reproducible examples of ss3sim simulations with
 
