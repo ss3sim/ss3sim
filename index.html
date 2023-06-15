@@ -104,20 +104,13 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>Install the <a href="https://cran.r-project.org/package=ss3sim" class="external-link">CRAN version</a> of {ss3sim} with:</p>
+<p>Install the GitHub version via {pak}:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span></span></code></pre></div>
-<p>Or, install the development version from GitHub:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span></span>
-<span>  <span class="st">"ss3sim/ss3sim"</span>,</span>
-<span>  ref <span class="op">=</span> <span class="st">"main"</span>,</span>
-<span>  build_vignettes <span class="op">=</span> <span class="cn">TRUE</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p>We suggest using the GitHub version because it comes with the SS3 executable/binary. If you are using the CRAN version, you will need to install the binary and place it in your system path. See the <a href="https://ss3sim.github.io/ss3sim/articles/introduction.html" class="external-link">Introduction vignette</a> for more details on how to get the latest version of SS3 and <a href="https://ss3sim.github.io/ss3sim/articles/introduction.html#installing-stock-synthesis" class="external-link">place it in your path</a>.</p>
+<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="http://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"ss3sim/ss3sim"</span><span class="op">)</span></span></code></pre></div>
+<p>The <a href="https://cran.r-project.org/package=ss3sim" class="external-link">CRAN version</a> of {ss3sim} will be updated one last time in September prior to being archived, thus it is not recommended to install from CRAN. We suggest using the GitHub version because it comes with the SS3 executable/binary. If you are using the CRAN version, you will need to install the binary and place it in your system path. See the <a href="https://ss3sim.github.io/ss3sim/articles/introduction.html" class="external-link">Introduction vignette</a> for more details on how to get the latest version of SS3 and <a href="https://ss3sim.github.io/ss3sim/articles/introduction.html#installing-stock-synthesis" class="external-link">place it in your path</a>.</p>
 <p>You can read the help files and access the <a href="http://ss3sim.github.io/ss3sim/" class="external-link">vignettes</a> for reproducible examples of ss3sim simulations with</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">ss3sim</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/browseVignettes.html" class="external-link">browseVignettes</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"introduction"</span>, <span class="st">"ss3sim"</span><span class="op">)</span></span></code></pre></div>
@@ -169,7 +162,7 @@
 <div class="section level2">
 <h2 id="example-output-from-an-ss3sim-simulation">Example output from an ss3sim simulation<a class="anchor" aria-label="anchor" href="#example-output-from-an-ss3sim-simulation"></a>
 </h2>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"scalar_dat"</span>, package <span class="op">=</span> <span class="st">"ss3sim"</span><span class="op">)</span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">scalar_dat</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
@@ -187,7 +180,7 @@
 <h2 id="citing-ss3sim">Citing ss3sim<a class="anchor" aria-label="anchor" href="#citing-ss3sim"></a>
 </h2>
 <p>If you use ss3sim in a publication, please cite ss3sim as shown by</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/toLatex.html" class="external-link">toBibtex</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>and add your publication to the <a href="https://github.com/ss3sim/ss3sim/wiki/manuscripts" class="external-link">list of publications</a> in the <a href="https://github.com/ss3sim/ss3sim/wiki" class="external-link">wiki</a>.</p>
