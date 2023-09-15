@@ -40,16 +40,15 @@ numeric vectors. If no fleet collected samples, keep the value to
 \code{years=NULL}.}
 
 \item{sds_obs, sds_out}{A list the same length as \code{fleets} specifying the
-standard deviation of the observation error used for the sampling and
-the value used in the returned output. Thus, \code{sds_obs} is what is actually
+standard deviation of the observation error used for the sampling and the
+value used in the returned output. Thus, \code{sds_obs} is what is actually
 used to sample and \code{sds_out} can be used to test what happens when the
 input values to your model are biased. If \code{sds_out} is missing, then
-\code{sds_obs} will be used for the output as well as the input.
-List elements should be
-either single numeric values or numeric vectors the same length as the
-number of years sampled for each given fleet.
-Single values are repeated for all years.
-See details for more information, particularly for the equations.}
+\code{sds_obs} will be used for the output as well as the input. List elements
+should be either single numeric values or numeric vectors the same length
+as the number of years sampled for each given fleet. Single values are
+repeated for all years. See details for more information, particularly for
+the equations.}
 
 \item{seas}{A list the same length as \code{fleets}. The list should contain
 either single numeric values or numeric vectors, where the length of each
@@ -63,30 +62,28 @@ A modified \code{.dat} file if \code{!is.null(outfile)}. A list object
 containing the modified \code{.dat} file is returned invisibly.
 }
 \description{
-Create an index of abundance sampled from the expected
-available biomass for specified fleets in specified years.
+Create indices of abundance sampled from the expected available biomass for
+specified fleets in specified years.
 }
 \details{
 Samples are generated using the following equation:
 \deqn{
   B_y*exp(stats::rnorm(1, 0, sds_obs)-sds_obs^2/2)
 },
-where \eqn{B_y} is the expected biomass in year y and
-\eqn{sds_obs} is the standard deviation of the normal distribution or
-the standard error of the \eqn{log_e(B_y)}.
-For the error term, this is the same
-parameterization that is used in Stock Synthesis.
-More details can be found in the
-\href{https://nmfs-stock-synthesis.github.io/doc/SS330_User_Manual_release.html#indices}{section on indices in the Stock Synthesis manual}
+where \eqn{B_y} is the expected biomass in year y and \eqn{sds_obs} is the
+standard deviation of the normally distributed biomass or the standard error
+of the \eqn{log_e(B_y)}. For the error term, this is the same
+parameterization that is used in Stock Synthesis. More details can be found
+in the \href{https://nmfs-stock-synthesis.github.io/doc/SS330_User_Manual_release.html#indices}{section on indices in the Stock Synthesis manual}
 The second term in the equation adjusts the random samples so their expected
 value is \eqn{B_y}, i.e., the log-normal bias correction.
 
-If you only know the coefficient of variation (\eqn{CV}), then
-the input error can be approximated using \eqn{\sqrt{log_e(1+CV^{2})}}.
-Where, \eqn{CV} is assumed to be constant with mean changes in biomass.
-The lognormal distribution can be approximated by a proportional
-distribution or normal distribution only when the variance is low, i.e.,
-\eqn{CV < 0.50} or log standard deviation of 0.22.
+If you only know the coefficient of variation (\eqn{CV}), then the input
+error can be approximated using \eqn{\sqrt{log_e(1+CV^{2})}}. Where,
+\eqn{CV} is assumed to be constant with mean changes in biomass. The
+log-normal distribution can be approximated by a proportional distribution
+or normal distribution only when the variance is low, i.e., \eqn{CV < 0.50}
+or log standard deviation of 0.22.
 }
 \examples{
 # Find the example data location:
@@ -100,7 +97,7 @@ dat_list <- r4ss::SS_readdat(
 )
 # Look at expected values for the index data
 # fleet 2, every other year from 76 to 100
-# dat_list$CPUE
+# dat_list[["CPUE"]]
 sam_yrs <- seq(76, 100, by = 2)
 ex1 <- sample_index(dat_list,
   outfile = NULL,
@@ -118,7 +115,7 @@ testthat::expect_equivalent(
 )
 }
 \dontrun{
-ex1$CPUE
+ex1[["CPUE"]]
 # could sample from less years, but not more:
 ex2 <- sample_index(dat_list,
   outfile = NULL,
@@ -129,7 +126,7 @@ ex2 <- sample_index(dat_list,
   years = list(sam_yrs[c(-1, -2)]),
   sds_obs = list(seq(0.001, 0.1, length.out = length(sam_yrs) - 2))
 )
-ex2$CPUE
+ex2[["CPUE"]]
 # sd can be fixed across years:
 ex3 <- sample_index(dat_list,
   outfile = NULL,
@@ -140,7 +137,7 @@ ex3 <- sample_index(dat_list,
   years = list(sam_yrs),
   sds_obs = list(0.01)
 )
-ex3$CPUE
+ex3[["CPUE"]]
 # If fleet 1 also had expected values in the index that you wanted to sample:
 testthat::expect_error(
   ex4 <- sample_index(dat_list,
@@ -161,7 +158,7 @@ ex5 <- sample_index(dat_list,
   sds_obs = list(0.01),
   sds_out = list(0.20)
 )
-ex5$CPUE
+ex5[["CPUE"]]
 testthat::expect_true(all(ex5[["CPUE"]][["se_log"]] == 0.2))
 }
 }
