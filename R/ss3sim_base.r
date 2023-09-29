@@ -48,16 +48,16 @@
 #' @param user_recdevs_warn A logical argument allowing users to turn the
 #'   warning regarding biased recruitment deviations off when `user_recdevs`
 #'   are specified.
-#' @param bias_adjust A logical argument specifying bias adjustment is conducted.
-#'   Bias adjustment helps assure that the estimated recruitment deviations,
-#'   which are assumed to be log-normally distributed,
-#'   are mean unbiased leading to mean-unbiased estimates of biomass
-#'   [Methot and Taylor, 2011](https://cdnsciencepub.com/doi/abs/10.1139/f2011-092).
-#'   Bias adjustment should always be performed when
-#'   using maximum likelihood estimation when running simulations for publication or management.
-#'   The argument allows users to turn bias adjustment off because
-#'   it involves running the EM multiple times with the hessian and
-#'   is not needed when initially exploring your simulation structure.
+#' @param bias_adjust A logical argument specifying bias adjustment is
+#'   conducted. Bias adjustment helps assure that the estimated recruitment
+#'   deviations, which are assumed to be log-normally distributed, are mean
+#'   unbiased leading to mean-unbiased estimates of biomass [Methot and Taylor,
+#'   2011](https://cdnsciencepub.com/doi/abs/10.1139/f2011-092). Bias
+#'   adjustment should always be performed when using maximum likelihood
+#'   estimation when running simulations for publication or management. The
+#'   argument allows users to turn bias adjustment off because it involves
+#'   running the EM multiple times with the hessian and is not needed when
+#'   initially exploring your simulation structure.
 #' @param sleep A time interval (in seconds) to pause on each iteration. Useful
 #'   if you want to reduce average CPU time -- perhaps because you're working on
 #'   a shared server.
