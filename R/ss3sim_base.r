@@ -514,7 +514,8 @@ ss3sim_base <- function(iterations,
     r4ss::run(
       dir = pathom,
       exe = get_bin(),
-      extras = extras,
+      # Ensure no hess is in extras
+      extras = paste("-nohess", gsub("-nohess *", " ", extras)),
       skipfinished = FALSE,
       show_in_console = FALSE,
       verbose = FALSE
