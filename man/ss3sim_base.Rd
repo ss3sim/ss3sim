@@ -105,16 +105,15 @@ Biased recruitment deviations can lead to biased model results.}
 warning regarding biased recruitment deviations off when \code{user_recdevs}
 are specified.}
 
-\item{bias_adjust}{A logical argument specifying bias adjustment is conducted.
-Bias adjustment helps assure that the estimated recruitment deviations,
-which are assumed to be log-normally distributed,
-are mean unbiased leading to mean-unbiased estimates of biomass
-\href{https://cdnsciencepub.com/doi/abs/10.1139/f2011-092}{Methot and Taylor, 2011}.
-Bias adjustment should always be performed when
-using maximum likelihood estimation when running simulations for publication or management.
-The argument allows users to turn bias adjustment off because
-it involves running the EM multiple times with the hessian and
-is not needed when initially exploring your simulation structure.}
+\item{bias_adjust}{A logical argument specifying bias adjustment is
+conducted. Bias adjustment helps assure that the estimated recruitment
+deviations, which are assumed to be log-normally distributed, are mean
+unbiased leading to mean-unbiased estimates of biomass \href{https://cdnsciencepub.com/doi/abs/10.1139/f2011-092}{Methot and Taylor, 2011}. Bias
+adjustment should always be performed when using maximum likelihood
+estimation when running simulations for publication or management. The
+argument allows users to turn bias adjustment off because it involves
+running the EM multiple times with the hessian and is not needed when
+initially exploring your simulation structure.}
 
 \item{sleep}{A time interval (in seconds) to pause on each iteration. Useful
 if you want to reduce average CPU time -- perhaps because you're working on
