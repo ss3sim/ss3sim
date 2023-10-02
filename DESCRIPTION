@@ -1,29 +1,18 @@
-Package: ss3sim
 Type: Package
+Package: ss3sim
 Title: Fisheries Stock Assessment Simulation Testing with Stock Synthesis
 Version: 1.20.0
 Authors@R: c(
-    person(c("Kelli", "F."), "Johnson", 
-      email = "kelli.johnson@noaa.gov",
-      role = c("aut", "cre"),
-      comment = c(ORCID = "0000-0002-5149-451X")
-    ),
-    person(c("Sean", "C."), "Anderson",
-      role = "aut",
-      comment = c(ORCID = "0000-0001-9563-1937")
-    ),
-    person(c("Kathryn", "L."), "Doering",
-      role = "aut",
-      comment = c(ORCID = "0000-0002-0396-7044")
-    ),
-    person(c("Cole", "C."), "Monnahan",
-      role = "aut",
-      comment = c(ORCID = "0000-0003-0871-6700")
-      ),
-    person(c("Christine", "C."), "Stawitz",
-      role = "aut",
-      comment = c(ORCID = "0000-0003-3122-4501")
-    ),
+    person(c("Kelli", "F."), "Johnson", , "kelli.johnson@noaa.gov", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-5149-451X")),
+    person(c("Sean", "C."), "Anderson", role = "aut",
+           comment = c(ORCID = "0000-0001-9563-1937")),
+    person(c("Kathryn", "L."), "Doering", role = "aut",
+           comment = c(ORCID = "0000-0002-0396-7044")),
+    person(c("Cole", "C."), "Monnahan", role = "aut",
+           comment = c(ORCID = "0000-0003-0871-6700")),
+    person(c("Christine", "C."), "Stawitz", role = "aut",
+           comment = c(ORCID = "0000-0003-3122-4501")),
     person("Curry", "Cunningham", role = "ctb"),
     person("Allan", "Hicks", role = "ctb"),
     person("Felipe", "Hurtado-Ferro", role = "ctb"),
@@ -37,31 +26,24 @@ Authors@R: c(
     person("Cody", "Szuwalski", role = "ctb"),
     person(c("Ian", "G."), "Taylor", role = "ctb"),
     person("Juan", "Valero", role = "ctb"),
-    person("Athol", "Whitten", role = "ctb"))
-Description: A framework for fisheries stock assessment simulation
-    testing with Stock Synthesis (SS3) as described in Anderson et al.
-    (2014) <doi:10.1371/journal.pone.0092725>.
+    person("Athol", "Whitten", role = "ctb")
+  )
+Description: A framework for fisheries stock assessment simulation testing
+    with Stock Synthesis (SS3) as described in Anderson et al.  (2014)
+    <doi:10.1371/journal.pone.0092725>.
 License: MIT + file LICENSE
 URL: https://github.com/ss3sim/ss3sim
 BugReports: https://github.com/ss3sim/ss3sim/issues
-LazyData: true
-Suggests:
-    knitr,
-    doParallel,
-    pak,
-    rmarkdown,
-    testthat
-VignetteBuilder: knitr
 Depends:
     R (>= 4.0)
 Imports:
     cli,
     dplyr,
     foreach,
-    gtools,
     ggplot2,
-    grDevices,
     graphics,
+    grDevices,
+    gtools,
     lifecycle,
     magrittr,
     purrr,
@@ -72,8 +54,18 @@ Imports:
     tibble,
     tidyr,
     utils
-Remotes: github::r4ss/r4ss@main
-RoxygenNote: 7.2.3
-Roxygen: list(markdown = TRUE)
+Suggests:
+    doParallel,
+    knitr,
+    pak,
+    rmarkdown,
+    testthat
+VignetteBuilder: 
+    knitr
+Remotes: 
+    github::r4ss/r4ss@main
 Encoding: UTF-8
 Language: en-US
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
