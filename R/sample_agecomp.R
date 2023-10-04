@@ -83,8 +83,15 @@
 #' graphics::par(op)
 #' @family sampling functions
 #' @export
-sample_agecomp <- function(dat_list, outfile = NULL, fleets, Nsamp,
-                           years, cpar = 1, ESS = NULL, keep_conditional = TRUE, ...) {
+sample_agecomp <- function(dat_list,
+                           outfile = NULL,
+                           fleets,
+                           Nsamp,
+                           years,
+                           cpar = 1,
+                           ESS = NULL,
+                           keep_conditional = TRUE,
+                           ...) {
   check_data(dat_list)
   agecomp <- dat_list$agecomp
   ## Split the conditional data from the age data

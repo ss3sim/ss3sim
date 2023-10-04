@@ -21,7 +21,8 @@ test_that("A basic run_ss3sim scenario runs", {
     sl.years.1 = "seq(26,100,4)", sl.Nsamp.1 = 200, sl.cpar.1 = "NULL",
     sl.years.2 = "seq(26,100,1)", sl.Nsamp.2 = 201, sl.cpar.2 = "NULL",
     sa.years.1 = "seq(26,100,4)", sa.Nsamp.1 = 202, sa.cpar.1 = "NULL",
-    sa.years.2 = "seq(26,100,1)", sa.Nsamp.2 = 203, sa.cpar.2 = "NULL"
+    sa.years.2 = "seq(26,100,1)", sa.Nsamp.2 = 203, sa.cpar.2 = "NULL",
+    ca.definition.1 = "2"
   )
   scname <- run_ss3sim(iterations = 1, simdf = df)
   expect_true("control.ss_new" %in% list.files(file.path(scname, "1", "em")))
@@ -107,6 +108,7 @@ test_that("A basic run_ss3sim scenario runs", {
   expect_equal(scalar[em_line, "SR_LN_R0"], 18.7,
     tolerance = 0.001, label = "EM R_0"
   )
+  expect_equal(ssem$age_comp_fit_table$Ageerr[1],2)
   # check provides warning if skippint iteration.
   expect_warning(
     run_ss3sim(

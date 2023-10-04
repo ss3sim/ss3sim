@@ -243,6 +243,7 @@ setup_scenarios_lookup <- function() {
     c("sa", "agecomp_params"),
     c("sc", "calcomp_params"),
     c("sd", "discard_params"),
+    c("ca", "em_ageerr_params"),
     c("cf", "f_params"),
     c("si", "index_params"),
     c("sl", "lcomp_params"),
