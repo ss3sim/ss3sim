@@ -55,6 +55,7 @@ change_e <- function(ctl_file_in = "em.ctl",
   if (is.list(par_name)) par_name <- unlist(par_name)
   if (is.list(par_int)) par_int <- unlist(par_int)
   if (is.list(par_phase)) par_phase <- unlist(par_phase)
+  if (is.list(forecast_num)) forecast_num <- unlist(forecast_num)
   check_eqlength(
     "par_name" = par_name,
     "par_int" = par_int, "par_phase" = par_phase
