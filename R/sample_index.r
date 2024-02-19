@@ -93,7 +93,9 @@
 #'   verbose = FALSE
 #' )
 #'
-#' \dontshow{set.seed(3)}
+#' \dontshow{
+#' set.seed(3)
+#' }
 #' # Sample from each available year from fleet 2 with an increasing trend in
 #' # the observation error, i.e., the most recent year has the highest
 #' # likelihood to be the furthest from the input data
@@ -144,7 +146,7 @@
 #'   sds_out = list(0.20)
 #' )
 #' ex3[["CPUE"]][["se_log"]]
-#'}
+#' }
 #' # Sample from two fleets after adding fake CPUE data for fleet 1
 #' dat_list2 <- dat_list
 #' dat_list2[["CPUE"]] <- rbind(

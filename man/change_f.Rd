@@ -104,8 +104,8 @@ once you are done manipulating the list object.
 
 Other change functions: 
 \code{\link{change_data}()},
-\code{\link{change_em_binning}()},
 \code{\link{change_e}()},
+\code{\link{change_em_binning}()},
 \code{\link{change_o}()},
 \code{\link{change_retro}()},
 \code{\link{change_tv}()}

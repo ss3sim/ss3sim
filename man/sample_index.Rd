@@ -111,7 +111,9 @@ dat_list <- r4ss::SS_readdat(
   verbose = FALSE
 )
 
-\dontshow{set.seed(3)}
+\dontshow{
+set.seed(3)
+}
 # Sample from each available year from fleet 2 with an increasing trend in
 # the observation error, i.e., the most recent year has the highest
 # likelihood to be the furthest from the input data
