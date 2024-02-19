@@ -5,7 +5,7 @@ a <- list(
     "years" = list(seq(76, 100, by = 2)),
     "sds_obs" = list(0.2)
   )
- )
+)
 
 exp_vals <- r4ss::SS_readdat(
   file = file.path(d, "example-om", "ss3_expected_values.dat"),
