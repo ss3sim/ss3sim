@@ -52,15 +52,22 @@ change_e <- function(ctl_file_in = "em.ctl",
                      par_phase = "NA",
                      forecast_num = 0,
                      verbose = FALSE) {
-  if (is.list(par_name)) par_name <- unlist(par_name)
-  if (is.list(par_int)) par_int <- unlist(par_int)
-  if (is.list(par_phase)) par_phase <- unlist(par_phase)
-  if (is.list(forecast_num)) {
+  if (inherits(par_name, "list")) {
+    par_name <- unlist(par_name)
+  }
+  if (inherits(par_int, "list")) {
+    par_int <- unlist(par_int)
+  }
+  if (inherits(par_phase, "list")) {
+    par_phase <- unlist(par_phase)
+  }
+  if (inherits(forecast_num, "list")) {
     forecast_num <- unlist(forecast_num, use.names = FALSE)
   }
   check_eqlength(
     "par_name" = par_name,
-    "par_int" = par_int, "par_phase" = par_phase
+    "par_int" = par_int,
+    "par_phase" = par_phase
   )
 
   # Work with the out file b/c r4ss sometimes assumes the in and out files
@@ -111,10 +118,13 @@ change_e <- function(ctl_file_in = "em.ctl",
         dir = dirname(ctl_file_out),
         ctlfile = basename(ctl_file_out),
         newctlfile = basename(ctl_file_out),
-        linenums = NULL, strings = par_name[phaseneg],
-        newvals = par_int[phaseneg], repeat.vals = verbose,
+        linenums = NULL,
+        strings = par_name[phaseneg],
+        newvals = par_int[phaseneg],
+        repeat.vals = verbose,
         newlos = NULL, newhis = NULL,
-        estimate = rep(FALSE, times = length(par_name[phaseneg])), verbose = verbose,
+        estimate = rep(FALSE, times = length(par_name[phaseneg])),
+        verbose = verbose,
         newphs = par_phase[phaseneg]
       )
     }
@@ -124,8 +134,10 @@ change_e <- function(ctl_file_in = "em.ctl",
         dir = dirname(ctl_file_out),
         ctlfile = basename(ctl_file_out),
         newctlfile = basename(ctl_file_out),
-        linenums = NULL, strings = par_name[pasepos],
-        newvals = par_int[pasepos], repeat.vals = verbose,
+        linenums = NULL,
+        strings = par_name[pasepos],
+        newvals = par_int[pasepos],
+        repeat.vals = verbose,
         newlos = NULL, newhis = NULL,
         estimate = rep(TRUE, times = length(par_name[pasepos])),
         verbose = verbose,
@@ -162,5 +174,7 @@ change_e <- function(ctl_file_in = "em.ctl",
       verbose = verbose
     )
   }
-  if (!is.null(dat_list)) invisible(dat_list)
+  if (!is.null(dat_list)) {
+    return(invisible(dat_list))
+  }
 }
