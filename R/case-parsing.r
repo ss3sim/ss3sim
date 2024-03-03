@@ -48,7 +48,7 @@ standardize_sampling_args <- function(fleets,
   if (length(years) == 1 & length(fleets) > 1) {
     years <- rep(years, length(fleets))
   }
-  if (length(other_input) == 1 & length(fleets > 1)) {
+  if (length(other_input) == 1 & length(fleets) > 1) {
     other_input <- rep(other_input, length(fleets))
   }
   # make sure other_inputs has the same length vectors as the number of years
