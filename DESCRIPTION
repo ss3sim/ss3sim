@@ -26,7 +26,8 @@ Authors@R: c(
     person("Cody", "Szuwalski", role = "ctb"),
     person(c("Ian", "G."), "Taylor", role = "ctb"),
     person("Juan", "Valero", role = "ctb"),
-    person("Athol", "Whitten", role = "ctb")
+    person("Athol", "Whitten", role = "ctb"),
+    person(c("Kiva", "L."), "Oken", role = "ctb")
   )
 Description: A framework for fisheries stock assessment simulation testing
     with Stock Synthesis (SS3) as described in Anderson et al.  (2014)
