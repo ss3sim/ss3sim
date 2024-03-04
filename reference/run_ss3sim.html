@@ -117,9 +117,9 @@ run in parallel. You will need to register multiple cores first with a
 package such as <span class="pkg">doParallel</span> and have the <span class="pkg">foreach</span> package
 installed. For example, the following code will register two cores
 and must be called before running <code>run_ss3sim()</code>:</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(doParallel)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(<span class="dv">2</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">registerDoParallel</span>(cl)</span></code></pre><p></p></div></dd>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(doParallel)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(<span class="dv">2</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">registerDoParallel</span>(cl)</span></code></pre><p></p></div></dd>
 
 
 <dt>parallel_iterations</dt>
