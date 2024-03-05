@@ -1,3 +1,10 @@
+# ss3sim 1.20.2
+
+* Fixed bug in Introduction vignette regarding self-test estimation method
+  to allow for changing multiple parameters
+
+# ss3sim 1.20.1
+
 # ss3sim 1.20.0
 
 * Updates {ss3sim} to use Stock Synthesis v3.30.20.

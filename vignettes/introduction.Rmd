@@ -491,14 +491,15 @@ df <- setup_scenarios_defaults(nscenarios = 2)
 df[, "user_recdevs"] <- "matrix(0, nrow = 200, ncol = 20)"
 df[, "co.par_name"] <- "SR_sigmaR"
 df[, "co.par_int"] <- 0.001
-df[, "ce.par_name"] <- "SR_sigmaR"
-df[, "ce.par_int"] <- 0.001
+df[1, "ce.par_name"] <- "SR_sigmaR"
+df[1, "ce.par_int"] <- 0.001
+df[1, "ce.par_phase"] <- -1
 df[, "ce.forecast_num"] <- 0
 df[, "si.years.2"] <- "seq(60, 100, by = 2)"
 df[, "si.sds_obs.2"] <- 0.001
-df[, "ce.par_name"] <- "NatM_uniform_Fem_GP_1"
-df[, "ce.par_int"] <- NA
-df[, "ce.par_phase"] <- c(-1, 3)
+df[2, "ce.par_name"] <- 'c("SR_sigmaR", "NatM_uniform_Fem_GP_1")'
+df[2, "ce.par_int"] <- "c(0.001, NA)"
+df[2, "ce.par_phase"] <- "c(-1, 3)"
 df[, "scenarios"] <- c("D1-E100-F0-cod", "D1-E101-F0-M1-cod")
 df[, "bias_adjust"] <- FALSE
 ```
@@ -506,6 +507,7 @@ df[, "bias_adjust"] <- FALSE
 ### Run self-test
 
 ```{r deterministic-runs, eval=FALSE}
+iterations <- 1:5
 scname_det <- run_ss3sim(iterations = iterations, simdf = df)
 ```
 
