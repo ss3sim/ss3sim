@@ -1,7 +1,5 @@
 # ss3sim
 
-main: [![R-CMD-check](https://github.com/ss3sim/ss3sim/workflows/R-CMD-check/badge.svg)](https://github.com/ss3sim/ss3sim/actions?query=workflow%3AR-CMD-check) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ss3sim)](https://cran.r-project.org/package=ss3sim)
-
 ss3sim is an R package that simplifies the steps needed to generate beautiful
 simulation output from the widely-used [Stock
 Synthesis](https://nmfs-ost.github.io/ss3-doc/) (SS3) assessment framework. To
@@ -16,11 +14,11 @@ vignette](https://ss3sim.github.io/ss3sim/articles/introduction.html) on the
   - [Installation](#installation)
   - [Simulation setup](#simulation-setup)
   - [How ss3sim works](#how-ss3sim-works)
-- [Example output from a simulation](#example-output-from-a-simulation)
-- [Citing ss3sim](#citing-ss3sim)
-- [Contributing to ss3sim](#contributing-to-ss3sim)
-- [Code of conduct](#code-of-conduct)
-- [Disclaimer](#disclaimer)
+    - [Example output from a simulation](#example-output-from-a-simulation)
+  - [Citing ss3sim](#citing-ss3sim)
+  - [Contributing to ss3sim](#contributing-to-ss3sim)
+    - [Code of conduct](#code-of-conduct)
+    - [Disclaimer](#disclaimer)
 
 ## Installation
 
@@ -34,6 +32,7 @@ branch with the latest code, all developmental features will be in feature
 branches.
 
 Install the GitHub version via {pak}:
+
 ``` r
 # install.packages("pak")
 pak::pkg_install("ss3sim/ss3sim")
@@ -98,7 +97,7 @@ by the seed used within R to define the randomness of that iteration. See the
 figure below for an example directory structure from a simulation with two
 scenarios and 3 iterations.
 
-```
+``` text
 ├📁 scenario 1
 │   ├📁  1
 │   │    ├📁  OM
@@ -130,6 +129,7 @@ arguments to manipulate the associated OM and EM files such that the
 appropriate simulated data is generated and used to fit the EM. For example,
 the first row of the simulation argument for the observation error of the index
 might be equal to 0.4 if you want a noisy survey
+
 ``` r
 example_df_configuration <- ss3sim::setup_scenarios_defaults()
 example_df_configuration[1, "si.sds_obs.2"] <- 0.4
@@ -137,17 +137,15 @@ example_df_configuration[1, "si.sds_obs.2"] <- 0.4
 
 ss3sim functions are divided into the following three types of functions:
 
-1.  `change` and `sample` functions that manipulate SS3 configuration files.
-    These manipulations generate the underlying "truth" (OMs) and control the
-    assessment of the truth (EMs).
+1. `change` and `sample` functions that manipulate SS3 configuration files.
+   These manipulations generate the underlying "truth" (OMs) and control the
+   assessment of the truth (EMs).
+2. `run` functions that conduct simulations. These functions generate a folder
+   structure, call manipulation functions, run SS3 as needed, and save the
+   output.
+3. `get` functions that synthesize the output.
 
-2.  `run` functions that conduct simulations. These functions generate a folder
-    structure, call manipulation functions, run SS3 as needed, and save the
-    output.
-
-3.  `get` functions that synthesize the output.
-
-# Example output from a simulation
+### Example output from a simulation
 
 ```r
 data("scalar_dat", package = "ss3sim")
@@ -170,7 +168,7 @@ scenarios, one that fixed natural mortality (*M*) at its true value from the OM
 depletion change as the estimate of *q* changes for when *M* is fixed at the
 truth and the lower panel shows the same relationship when *M* is estimated.
 
-# Citing ss3sim
+## Citing ss3sim
 
 If you use ss3sim in a publication, please cite it as shown by
 
@@ -179,7 +177,7 @@ citation("ss3sim")
 toBibtex(citation("ss3sim"))
 ```
 
-# Contributing to ss3sim
+## Contributing to ss3sim
 
 Interested in contributing to ss3sim? We recognize and appreciate that
 contributions come in many forms, including but not limited to writing code,
@@ -197,7 +195,7 @@ to view the current maintainer's name and email address).
 
 Note that contributors are expected to uphold the [code of conduct](#code-of-conduct).
 
-# Code of conduct
+### Code of conduct
 
 This project and everyone participating in it is governed by the [NMFS
 Fisheries Toolbox Code of
@@ -211,9 +209,9 @@ behavior of maintainers can also be reported here.
 The NFMS Fisheries Toolbox Code of Conduct is adapted from the [Contributor
 Covenant][[homepage](https://www.contributor-covenant.org)], version 1.4,
 available at
-https://www.contributor-covenant.org/version/1/4/code-of-conduct.html
+<https://www.contributor-covenant.org/version/1/4/code-of-conduct.html>.
 
-# Disclaimer
+### Disclaimer
 
 "The United States Department of Commerce (DOC) GitHub project code is provided
 on an 'as is' basis and the user assumes responsibility for its use. DOC has
@@ -228,6 +226,6 @@ Department of Commerce seal and logo, or the seal and logo of a DOC bureau,
 shall not be used in any manner to imply endorsement of any commercial product
 or activity by DOC or the United States Government."
 
-<img src="https://raw.githubusercontent.com/nmfs-general-modeling-tools/nmfspalette/main/man/figures/noaa-fisheries-rgb-2line-horizontal-small.png" height="75" alt="NOAA Fisheries logo.">
-
-[U.S. Department of Commerce](https://www.commerce.gov/) | [National Oceanographic and Atmospheric Administration](https://www.noaa.gov) | [NOAA Fisheries](https://www.fisheries.noaa.gov/)
+[U.S. Department of Commerce](https://www.commerce.gov/) | [National
+Oceanographic and Atmospheric Administration](https://www.noaa.gov) | [NOAA
+Fisheries](https://www.fisheries.noaa.gov/)
