@@ -91,30 +91,37 @@
 <div class="page-header"><h1 id="ss3sim">ss3sim<a class="anchor" aria-label="anchor" href="#ss3sim"></a>
 </h1></div>
 <p>main: <a href="https://github.com/ss3sim/ss3sim/actions?query=workflow%3AR-CMD-check" class="external-link"><img src="https://github.com/ss3sim/ss3sim/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a> <a href="https://cran.r-project.org/package=ss3sim" class="external-link"><img src="http://www.r-pkg.org/badges/version/ss3sim" alt="CRAN_Status_Badge"></a></p>
-<p>ss3sim is an R package that simplifies the steps needed to generate beautiful simulation output from the widely-used <a href="https://github.com/nmfs-stock-synthesis/stock-synthesis" class="external-link">Stock Synthesis</a> (SS3), a statistical age-structured stock assessment framework. To learn more, read on or check out the <a href="https://ss3sim.github.io/ss3sim/" class="external-link">vignettes</a>.</p>
+<p>ss3sim is an R package that simplifies the steps needed to generate beautiful simulation output from the widely-used <a href="https://nmfs-ost.github.io/ss3-doc/" class="external-link">Stock Synthesis</a> (SS3) assessment framework. To learn more, read on or check out the <a href="https://ss3sim.github.io/ss3sim/articles/introduction.html" class="external-link">Introduction vignette</a> on the <a href="https://ss3sim.github.io/ss3sim/" class="external-link">ss3sim website</a>.</p>
 <div class="section level2">
 <h2 id="table-of-contents">Table of contents<a class="anchor" aria-label="anchor" href="#table-of-contents"></a>
 </h2>
 <ul>
+<li>
+<a href="#ss3sim">ss3sim</a>
+<ul>
+<li><a href="#table-of-contents">Table of contents</a></li>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#simulation-setup">Simulation setup</a></li>
 <li><a href="#how-ss3sim-works">How ss3sim works</a></li>
+</ul>
+</li>
 <li><a href="#example-output-from-a-simulation">Example output from a simulation</a></li>
 <li><a href="#citing-ss3sim">Citing ss3sim</a></li>
 <li><a href="#contributing-to-ss3sim">Contributing to ss3sim</a></li>
 <li><a href="#code-of-conduct">Code of conduct</a></li>
+<li><a href="#disclaimer">Disclaimer</a></li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>Below are instructions for installing ss3sim from GitHub, which is the preferred approach. Users can use either {remotes} or {pak} to do this, though the example below is for the former. <code>"main"</code> is the default branch with the latest code, all features in development will be in feature branches.</p>
+<p>Below are instructions for installing ss3sim from GitHub, which is the preferred approach. Users can use <a href="https://github.com/r-lib/remotes" class="external-link">remotes</a>, <a href="https://github.com/r-lib/devtools" class="external-link">devtools</a>, or <a href="https://github.com/r-lib/pak" class="external-link">pak</a> to do this, though the example below is for the latter. <code>"main"</code> is the default branch with the latest code, all developmental features will be in feature branches.</p>
 <p>Install the GitHub version via {pak}:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"ss3sim/ss3sim"</span><span class="op">)</span></span></code></pre></div>
-<p>The <a href="https://cran.r-project.org/package=ss3sim" class="external-link">CRAN version</a> of ss3sim will be updated one last time in September prior to being archived, thus it is not recommended to install from CRAN. We suggest using the GitHub version because it comes with the SS3 executable/binary. If you are using the CRAN version, you will need to install the binary and place it in your system path. See the <a href="https://ss3sim.github.io/ss3sim/articles/introduction.html" class="external-link">Introduction vignette</a> for more details on how to get the latest version of SS3 and <a href="https://ss3sim.github.io/ss3sim/articles/introduction.html#installing-stock-synthesis" class="external-link">place it in your path</a>.</p>
-<p>Once ss3sim is installed, you can read the help files and access the <a href="http://ss3sim.github.io/ss3sim/" class="external-link">vignettes</a> for reproducible examples of ss3sim simulations with</p>
+<p>The <a href="https://cran.r-project.org/package=ss3sim" class="external-link">CRAN version</a> of ss3sim is not regularly updated, and thus, it is not recommended to install from CRAN. We suggest using the GitHub version because it comes with the SS3 executable/binary. If you are using the CRAN version, you will need to install the binary and place it in your system path. See the <a href="https://github.com/nmfs-ost/ss3-source-code/releases" class="external-link">SS3 Release page</a> for an executable that will work on your operating system and the SS3 documentation for <a href="https://nmfs-ost.github.io/ss3-doc/SS330_User_Manual_release.html#putting-stock-synthesis-in-your-path" class="external-link">how to place the executable in your path</a>.</p>
+<p>Once ss3sim is installed, you can read the help files and access the <a href="https://ss3sim.github.io/ss3sim/articles/introduction.html" class="external-link">Introduction vignette</a> for reproducible examples of ss3sim. See below for code how to do both.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">ss3sim</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/browseVignettes.html" class="external-link">browseVignettes</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span></span>
@@ -126,11 +133,11 @@
 <p>An ss3sim simulation requires three types of input:</p>
 <ol style="list-style-type: decimal">
 <li>a base model of the underlying truth (an SS3 operating model; OM),</li>
-<li>a base model of how you will assess that truth (an SS3 estimation model; EM), and</li>
+<li>an SS3 estimation method (EM) to assess the current status, and</li>
 <li>a data frame specifying how you want to manipulate (1) and (2) from their status-quo configurations.</li>
 </ol>
-<p>You can find examples of an OM and EM <a href="https://github.com/ss3sim/ss3sim/tree/master/inst/extdata/models" class="external-link">on GitHub</a> or locally on your machine if you have installed ss3sim. To find the location of these files locally, run <code>system.file("extdata", "models", package = "ss3sim")</code>. Users often modify these files to create new life histories or modify their own files from a production stock assessment to work within ss3sim. See the vignettes <a href="https://ss3sim.github.io/ss3sim/articles/modifying-models.html" class="external-link">on modifying models</a> and <a href="https://ss3sim.github.io/ss3sim/articles/making-models.html" class="external-link">making models</a> for more information.</p>
-<p>An example data frame for (3) is also available within the package via <code><a href="reference/setup_scenarios_defaults.html">ss3sim::setup_scenarios_defaults()</a></code>. This example is sufficient to run a single scenario using the OM and EM supplied in the package. Many more options (i.e., columns) are possible and users should take note that this example provided in the package represents a minimum viable setup. Users can either create their own data frame in R or augment this existing data frame to run a set of custom scenarios. Specifically, adding columns will enable the manipulation of additional components of the OM, sampling procedure, and the EM. Adding will lead to more scenarios, where a scenario is the result of the combination of specifications in that row, i.e., how you manipulate the OM and the EM.</p>
+<p>You can find <a href="https://github.com/ss3sim/ss3sim/tree/master/inst/extdata/models" class="external-link">examples of an OM and EM on GitHub</a> or locally on your machine if you have installed ss3sim. To find the location of these files locally, run <code>system.file("extdata", "models", package = "ss3sim")</code>. Users often modify these files to create new life histories or modify their own files from a production stock assessment to work within ss3sim. See the vignettes <a href="https://ss3sim.github.io/ss3sim/articles/modifying-models.html" class="external-link">on modifying models</a> and <a href="https://ss3sim.github.io/ss3sim/articles/making-models.html" class="external-link">making models</a> for more information.</p>
+<p>An example data frame for (3) is also available within the package via <code><a href="reference/setup_scenarios_defaults.html">ss3sim::setup_scenarios_defaults()</a></code>. This example is sufficient to run a single scenario using the OM and EM supplied in the package. Many more options (i.e., columns) are possible and users should take note that this example provided in the package represents a minimum viable setup. Users can either create their own data frame in R or augment this existing data frame to run a set of custom scenarios. Specifically, adding columns will enable the manipulation of additional components of the OM, sampling procedure, or the EM. Adding rows will lead to more scenarios, where a scenario is the result of the combination of specifications in that row, i.e., how you manipulate the OM and the EM.</p>
 <p>ss3sim stores each scenario in its own directory. Inside the scenario directory will be one directory per iteration. Iterations within a scenario differ only by the seed used within R to define the randomness of that iteration. See the figure below for an example directory structure from a simulation with two scenarios and 3 iterations.</p>
 <pre><code>├📁 scenario 1
 │   ├📁  1
@@ -156,60 +163,62 @@
 <div class="section level2">
 <h2 id="how-ss3sim-works">How ss3sim works<a class="anchor" aria-label="anchor" href="#how-ss3sim-works"></a>
 </h2>
-<p>ss3sim works by converting simulation arguments (e.g., a given natural mortality trajectory) into manipulations of SS3 configuration files. It takes care of running the operating and estimation models as well as making these manipulations at the appropriate stage in the simulation.</p>
-<p>ss3sim functions are divided into three types:</p>
+<p>ss3sim works by converting information stored in the columns of your data frame that stores your simulation specifications (e.g., <code>example_df_configuration</code>) into function arguments. Functions within the ss3sim package use these arguments to manipulate the associated OM and EM files such that the appropriate simulated data is generated and used to fit the EM. For example, the first row of the simulation argument for the observation error of the index might be equal to 0.4 if you want a noisy survey</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">example_df_configuration</span> <span class="op">&lt;-</span> <span class="fu">ss3sim</span><span class="fu">::</span><span class="fu"><a href="reference/setup_scenarios_defaults.html">setup_scenarios_defaults</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">example_df_configuration</span><span class="op">[</span><span class="fl">1</span>, <span class="st">"si.sds_obs.2"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0.4</span></span></code></pre></div>
+<p>ss3sim functions are divided into the following three types of functions:</p>
 <ol style="list-style-type: decimal">
-<li><p><code>change</code> and <code>sample</code> functions that manipulate SS3 configuration files. These manipulations generate an underlying “truth” (OMs) and control our assessment of those models (EMs).</p></li>
+<li><p><code>change</code> and <code>sample</code> functions that manipulate SS3 configuration files. These manipulations generate the underlying “truth” (OMs) and control the assessment of the truth (EMs).</p></li>
 <li><p><code>run</code> functions that conduct simulations. These functions generate a folder structure, call manipulation functions, run SS3 as needed, and save the output.</p></li>
-<li><p><code>get</code> functions for synthesizing the output.</p></li>
+<li><p><code>get</code> functions that synthesize the output.</p></li>
 </ol>
 </div>
 </div>
 <div class="section level1">
 <h1 id="example-output-from-a-simulation">Example output from a simulation<a class="anchor" aria-label="anchor" href="#example-output-from-a-simulation"></a>
 </h1>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"scalar_dat"</span>, package <span class="op">=</span> <span class="st">"ss3sim"</span><span class="op">)</span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">scalar_dat</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">scalar_dat</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    M <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">NatM_p_1_Fem_GP_1</span> <span class="op">==</span> <span class="fl">0.2</span>, <span class="st">"M = 0.2"</span>, <span class="st">"M = Estimated"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">model_run</span> <span class="op">==</span> <span class="st">"em"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">model_run</span> <span class="op">==</span> <span class="st">"em"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">LnQ_base_Survey_2</span>, y <span class="op">=</span> <span class="va">depletion</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="st">"M"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Survey scalar (q)"</span><span class="op">)</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Survey scalar (q)"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Depletion"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
-<p>Use the previous code chunk to visualize the results of a simulation that investigated scenarios that fixed natural mortality (<em>M</em>) at its true value from the OM (0.2) or estimated <em>M</em>. Upper panel shows how the estimates depletion change as the estimate of <em>q</em> changes for when <em>M</em> is fixed at the truth and the lower panel shows the same relationship when <em>M</em> is estimated.</p>
+<p>You can run the code below to visualize the results of a simulation with two scenarios, one that fixed natural mortality (<em>M</em>) at its true value from the OM (<em>M</em> = 0.2) and one that estimated <em>M</em>. The upper panel shows how the estimates depletion change as the estimate of <em>q</em> changes for when <em>M</em> is fixed at the truth and the lower panel shows the same relationship when <em>M</em> is estimated.</p>
 </div>
 <div class="section level1">
 <h1 id="citing-ss3sim">Citing ss3sim<a class="anchor" aria-label="anchor" href="#citing-ss3sim"></a>
 </h1>
 <p>If you use ss3sim in a publication, please cite it as shown by</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/toLatex.html" class="external-link">toBibtex</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"ss3sim"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>and add your publication to the <a href="https://github.com/ss3sim/ss3sim/wiki/manuscripts" class="external-link">list of publications</a> in the <a href="https://github.com/ss3sim/ss3sim/wiki" class="external-link">wiki</a>.</p>
 </div>
 <div class="section level1">
 <h1 id="contributing-to-ss3sim">Contributing to ss3sim<a class="anchor" aria-label="anchor" href="#contributing-to-ss3sim"></a>
 </h1>
-<p>Interested in contributing to ss3sim? We recognize contributions come in many forms, including but not limited to code, reporting issues, creating examples and/or documentation.</p>
-<p>We strive to follow the <a href="https://github.com/nmfs-fish-tools/Resources/blob/master/CONTRIBUTING.md" class="external-link">NMFS Fisheries Toolbox Contribution Guide</a>. We also have included ss3sim-specific code contribution information in the <a href="https://github.com/ss3sim/ss3sim/wiki/developers" class="external-link">Developers page of the ss3sim wiki</a>. Note that these are guidelines, not rules, and we are open to collaborations in other ways that may work better for you. Please feel free to reach out to us by opening an issue in this repository or by emailing the maintainer (call <code>maintainer("ss3sim")</code> in R to view the current maintainer’s name and email address).</p>
+<p>Interested in contributing to ss3sim? We recognize and appreciate that contributions come in many forms, including but not limited to writing code, reporting issues, and creating examples and/or documentation.</p>
+<p>We strive to follow the <a href="https://github.com/nmfs-fish-tools/Resources/blob/master/CONTRIBUTING.md" class="external-link">NMFS Fisheries Toolbox Contribution Guide</a>. We also have included ss3sim-specific code contribution information in the <a href="https://github.com/ss3sim/ss3sim/wiki/developers" class="external-link">Developers page of the ss3sim wiki</a>. Note that these are guidelines, not rules, and we are open to collaborations in other ways that may work better for you. Please feel free to reach out to us by opening an issue in this repository or by emailing the maintainer (run <code>maintainer("ss3sim")</code> in R to view the current maintainer’s name and email address).</p>
 <p>Note that contributors are expected to uphold the <a href="#code-of-conduct">code of conduct</a>.</p>
 </div>
 <div class="section level1">
 <h1 id="code-of-conduct">Code of conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
 </h1>
 <p>This project and everyone participating in it is governed by the <a href="https://github.com/nmfs-fish-tools/Resources/blob/master/CODE_OF_CONDUCT.md" class="external-link">NMFS Fisheries Toolbox Code of Conduct</a>. By participating, you are expected to uphold this code. Please report unacceptable behavior to <a href="mailto:fisheries.toolbox@noaa.gov">fisheries.toolbox@noaa.gov</a>. Note that the maintainers of ss3sim do not have access to this email account, so unacceptable behavior of maintainers can also be reported here.</p>
-<p>The NFMS Fisheries Toolbox Code of Conduct is adapted from the <a href="https://www.contributor-covenant.org" class="external-link">Contributor Covenant</a>, version 1.4, available at <a href="https://www.contributor-covenant.org/version/1/4/code-of-conduct.html" class="external-link uri">https://www.contributor-covenant.org/version/1/4/code-of-conduct.html</a></p>
-<p>For answers to common questions about this code of conduct, see <a href="https://www.contributor-covenant.org/faq" class="external-link uri">https://www.contributor-covenant.org/faq</a></p>
+<p>The NFMS Fisheries Toolbox Code of Conduct is adapted from the [Contributor Covenant][<a href="https://www.contributor-covenant.org" class="external-link">homepage</a>], version 1.4, available at <a href="https://www.contributor-covenant.org/version/1/4/code-of-conduct.html" class="external-link uri">https://www.contributor-covenant.org/version/1/4/code-of-conduct.html</a></p>
 </div>
 <div class="section level1">
 <h1 id="disclaimer">Disclaimer<a class="anchor" aria-label="anchor" href="#disclaimer"></a>
 </h1>
 <p>“The United States Department of Commerce (DOC) GitHub project code is provided on an ‘as is’ basis and the user assumes responsibility for its use. DOC has relinquished control of the information and no longer has responsibility to protect the integrity, confidentiality, or availability of the information. Any claims against the Department of Commerce stemming from the use of its GitHub project will be governed by all applicable Federal law. Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation or favoring by the Department of Commerce. The Department of Commerce seal and logo, or the seal and logo of a DOC bureau, shall not be used in any manner to imply endorsement of any commercial product or activity by DOC or the United States Government.”</p>
-<p><img src="https://raw.githubusercontent.com/nmfs-general-modeling-tools/nmfspalette/main/man/figures/noaa-fisheries-rgb-2line-horizontal-small.png" height="75" alt="NOAA Fisheries"></p>
+<p><img src="https://raw.githubusercontent.com/nmfs-general-modeling-tools/nmfspalette/main/man/figures/noaa-fisheries-rgb-2line-horizontal-small.png" height="75" alt="NOAA Fisheries logo."></p>
 <p><a href="https://www.commerce.gov/" class="external-link">U.S. Department of Commerce</a> | <a href="https://www.noaa.gov" class="external-link">National Oceanographic and Atmospheric Administration</a> | <a href="https://www.fisheries.noaa.gov/" class="external-link">NOAA Fisheries</a></p>
 </div>
 
