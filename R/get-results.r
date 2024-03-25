@@ -403,10 +403,8 @@ get_results_timeseries <- function(report.file) {
   other_cols <- which(colnames(report.file$timeseries) %in%
     c("Yr", "Seas", "Bio_smry", "SpawnBio", "Recruit_0"))
   xx <- report.file$timeseries[, c(other_cols, catch_cols, dead_cols, F_cols)]
-  # remove parentheses from column names because they make the names
-  # non-synatic
-  colnames(xx) <- gsub("\\(|\\)", "", colnames(xx))
-  colnames(xx) <- gsub("\\:", "", colnames(xx))
+  # remove parentheses and colons from column names
+  colnames(xx) <- gsub("\\(|\\)|\\:", "", colnames(xx))
   xx <- xx[xx$Yr %in% years, ]
   # Get SPR from derived_quants
   spr <- report.file$derived_quants[grep(
