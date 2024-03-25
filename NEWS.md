@@ -1,5 +1,14 @@
 # News
 
+## ss3sim 1.21.0
+
+* Added season to the time series results and stopped hard-coding to
+  season 1.
+* Added month to the time series results.
+* Use better semantic versioning protocols where the minor number
+  is reserved for features and the patch number (terminal) is for
+  fixes.
+
 ## ss3sim 1.20.2
 
 * Fixed bug in Introduction vignette regarding self-test estimation method to
