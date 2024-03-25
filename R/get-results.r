@@ -382,15 +382,40 @@ get_results_mod <- function(dir = getwd(), is_EM = NULL, is_OM = NULL) {
   )
 }
 
-#' Extract time series from a model run.
+#' Return the time series information from an iteration
 #'
-#' Extract time series from an [r4ss::SS_output()] list from a model run.
-#' Returns a data.frame of the results for SSB, recruitment and effort by year.
+#' Extract and return time series from an [r4ss::SS_output()] list, that is
+#' read in from the estimation method of a single iteration. The main time
+#' series information is included but no information about the uncertainty of
+#' those measurements is available. See the derived quantities for uncertainty.
+#'
+#' @details
+#' Information about both season and area are included in the data frame. For
+#' values that have no associated season or area, i.e., are summary values over
+#' all areas and seasons, the values are repeated for each area/season
+#' combination within a given year. For example, the recruitment deviation is
+#' for all areas and is thus repeated in each row across areas for a given year.
 #'
 #' @template report.file
 #' @export
 #' @family get-results
 #' @author Cole Monnahan
+#' @return
+#' A data frame with the following columns:
+#' * year
+#' * Area
+#' * Seas
+#' * Bio_smry
+#' * SpawnBio
+#' * Recruit_0
+#' * retainB_[0-9]+
+#' * retainN_[0-9]+
+#' * deadB_[0-9]+
+#' * deadN_[0-9]+
+#' * F_[0-9]+
+#' * SPRratio
+#' * rec_dev
+#' * raw_rec_dev
 get_results_timeseries <- function(report.file) {
   years <- report.file$startyr:(report.file$endyr +
     ifelse(is.na(report.file$nforecastyears),
@@ -401,7 +426,7 @@ get_results_timeseries <- function(report.file) {
   catch_cols <- grep("^retain\\([B|N]\\):_", colnames(report.file$timeseries))
   dead_cols <- grep("^dead\\([B|N]\\):_", colnames(report.file$timeseries))
   other_cols <- which(colnames(report.file$timeseries) %in%
-    c("Yr", "Seas", "Bio_smry", "SpawnBio", "Recruit_0"))
+    c("Yr", "Area", "Seas", "Bio_smry", "SpawnBio", "Recruit_0"))
   xx <- report.file$timeseries[, c(other_cols, catch_cols, dead_cols, F_cols)]
   # remove parentheses and colons from column names
   colnames(xx) <- gsub("\\(|\\)|\\:", "", colnames(xx))
@@ -421,8 +446,13 @@ get_results_timeseries <- function(report.file) {
       spr[, grep("label", colnames(spr), ignore.case = TRUE)], "_"
     ), "[", 2))
     colnames(spr)[which(colnames(spr) == "Value")] <- "SPRratio"
-    spr[["Seas"]] <- 1 # need to add seasonal column; just assign to first? Or should be NA?
-    df <- merge(xx, spr[, c("SPRratio", "Yr", "Seas")], by = c("Yr", "Seas"), all.x = TRUE)
+    df <- merge(
+      xx,
+      spr[, c("SPRratio", "Yr")],
+      by = c("Yr"),
+      all.x = TRUE,
+      all.y = FALSE
+    )
     df$SPRratio[is.na(df$SPRratio)] <- 0
   } else {
     df <- xx
@@ -436,17 +466,16 @@ get_results_timeseries <- function(report.file) {
   )
   dev <- dev[dev[, getcols[1]] %in% years, getcols]
   colnames(dev) <- gsub("dev", "rec_dev", colnames(dev), ignore.case = TRUE)
-  dev[["Seas"]] <- 1 # Add Seas; just assign to 1? or should be NA?
-  ## create final data.frame
-  df <- merge(df, dev,
-    by.x = c("Yr", "Seas"),
-    by.y = c(colnames(dev)[getcols[1]], "Seas"), all.x = TRUE, all.y = TRUE
-  )
-  rownames(df) <- NULL
-  # change year name
-  df$year <- df$Yr
-  df$Yr <- NULL
-  df
+  dev[["Seas"]] <- report.file[["spawnseas"]]
+  # create final data.frame
+  out <- dplyr::full_join(
+    x = df |> dplyr::mutate(Yr = as.integer(Yr)),
+    y = dev,
+    by = c(Yr = colnames(dev)[getcols[1]], "Seas")
+  ) |>
+    dplyr::arrange(Yr, Area, Seas) |>
+    dplyr::rename(year = Yr)
+  return(out)
 }
 
 #' Extract time series from a model run with the associated standard deviation.
