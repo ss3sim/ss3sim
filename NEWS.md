@@ -1,5 +1,11 @@
 # News
 
+## ss3sim 1.20.3
+
+* Added season to the time series results and stopped hard-coding to
+  season 1.
+* Added month to the time series results.
+
 ## ss3sim 1.20.2
 
 * Fixed bug in Introduction vignette regarding self-test estimation method to
