@@ -137,6 +137,7 @@ Other contributors:
   \item Ian G. Taylor [contributor]
   \item Juan Valero [contributor]
   \item Athol Whitten [contributor]
+  \item Kiva L. Oken [contributor]
 }
 
 }
