@@ -88,7 +88,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to ss3sim</h1>
             
-            <h4 data-toc-skip class="date">2024-04-17</h4>
+            <h4 data-toc-skip class="date">2024-05-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ss3sim/ss3sim/blob/HEAD/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="hidden name"><code>introduction.Rmd</code></div>
@@ -696,8 +696,9 @@ version of the output.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scalar_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_re.html">calculate_re</a></span><span class="op">(</span><span class="va">scalar_dat</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in (function (..., deparse.level = 1) : number of columns of result is</span></span>
-<span><span class="co">#&gt; not a multiple of vector length (arg 1)</span></span>
-<span><span class="va">ts_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_re.html">calculate_re</a></span><span class="op">(</span><span class="va">ts_dat</span><span class="op">)</span></span>
+<span><span class="co">#&gt; not a multiple of vector length (arg 1)</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ts_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_re.html">calculate_re</a></span><span class="op">(</span><span class="va">ts_dat</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in (function (..., deparse.level = 1) : number of columns of result is</span></span>
 <span><span class="co">#&gt; not a multiple of vector length (arg 1)</span></span></code></pre></div>
 </div>
@@ -706,7 +707,7 @@ version of the output.</p>
 </h4>
 <p>The gradient information is in the scalar file. Merging the scalar
 and the time series can help add details to figures.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scalar_dat</span><span class="op">[</span>, <span class="st">"D"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span></span>
 <span>  pattern <span class="op">=</span> <span class="st">"D([0-9]+)-.+"</span>,</span>
 <span>  replacement <span class="op">=</span> <span class="st">"D\\1"</span>,</span>
@@ -725,7 +726,7 @@ and the time series can help add details to figures.</p>
 <div class="section level4">
 <h4 id="separate-the-deterministic-from-the-stochastic-runs">Separate the deterministic from the stochastic runs<a class="anchor" aria-label="anchor" href="#separate-the-deterministic-from-the-stochastic-runs"></a>
 </h4>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ts_dat_sto</span> <span class="op">&lt;-</span> <span class="va">ts_dat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"E[0-1]-"</span>, <span class="va">ts_dat</span><span class="op">[</span>, <span class="st">"scenario"</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="va">scalar_dat_long</span> <span class="op">&lt;-</span> <span class="va">scalar_dat</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">scalar_dat_long</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span></span>
@@ -746,7 +747,7 @@ and the time series can help add details to figures.</p>
 <h3 id="boxplots">Boxplots<a class="anchor" aria-label="anchor" href="#boxplots"></a>
 </h3>
 <p>Use the long data to create a multi-panel plot with {ggplot2}.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_boxplot.html">plot_boxplot</a></span><span class="op">(</span></span>
 <span>  <span class="va">scalar_dat_long</span><span class="op">[</span></span>
 <span>    <span class="va">scalar_dat_long</span><span class="op">$</span><span class="va">parameter</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"depletion"</span>, <span class="st">"SSB_MSY"</span><span class="op">)</span> <span class="op">&amp;</span></span>
@@ -762,7 +763,7 @@ Box plots of the relative error (RE) for deterministic runs. <span class="math i
 (E100) or estimated (E101).
 </p>
 </div>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># see plot_points() for another plotting function</span></span></code></pre></div>
 <p>While plotting the relative error in estimates of spawning biomass,
 one can add color to the time series according to the maximum gradient.
@@ -771,7 +772,7 @@ indicate that model convergence is likely. Larger values (greater than
 1) indicate that model convergence is unlikely. Results of individual
 iterations are jittered around the vertical axis to aid in
 visualization. The following three blocks of code produce Figures~<span class="math inline">\(\ref{fig:plot-sto-ts}\)</span>, <span class="math inline">\(\ref{fig:ssb-ts-plots}\)</span>, and <span class="math inline">\(\ref{fig:relative-error-boxplots-sto}\)</span>.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_lines.html">plot_lines</a></span><span class="op">(</span><span class="va">ts_dat_sto</span>,</span>
 <span>  y <span class="op">=</span> <span class="st">"SpawnBio_re"</span>,</span>
 <span>  vert <span class="op">=</span> <span class="st">"E"</span>, horiz <span class="op">=</span> <span class="st">"D"</span>, print <span class="op">=</span> <span class="cn">FALSE</span>, col <span class="op">=</span> <span class="st">"max_grad"</span></span>
@@ -782,7 +783,7 @@ visualization. The following three blocks of code produce Figures~<span class="m
 Time series of relative error in spawning stock biomass.
 </p>
 </div>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_boxplot.html">plot_boxplot</a></span><span class="op">(</span></span>
 <span>  <span class="va">scalar_dat_long</span><span class="op">[</span></span>
 <span>    <span class="va">scalar_dat_long</span><span class="op">$</span><span class="va">parameter</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"depletion"</span>, <span class="st">"SSB_MSY"</span><span class="op">)</span> <span class="op">&amp;</span></span>
@@ -1216,7 +1217,7 @@ out how many cores are on the computer and register a portion of those
 for parallel processing. Second, us an apply function to get the results
 from each scenario. Third, bring the results together and close the
 cluster.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">parallel</span><span class="op">)</span></span>
 <span><span class="va">ncls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"NUMBER_OF_PROCESSORS"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"cl.cores"</span>, <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">ncls</span> <span class="op">&lt;</span> <span class="fl">6</span>, <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -1323,7 +1324,7 @@ trawl-survey samples. Fishery Bulletin <strong>100</strong>(1).
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>
