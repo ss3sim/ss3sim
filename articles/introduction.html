@@ -21,7 +21,7 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -47,7 +47,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -70,7 +70,7 @@
 <li>
   <a href="https://github.com/ss3sim/ss3sim/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -81,16 +81,16 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to ss3sim</h1>
             
-            <h4 data-toc-skip class="date">2024-05-28</h4>
+            <h4 data-toc-skip class="date">2024-07-17</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ss3sim/ss3sim/blob/HEAD/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ss3sim/ss3sim/blob/main/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="hidden name"><code>introduction.Rmd</code></div>
 
     </div>
@@ -465,7 +465,8 @@ within {ss3sim}. This example is a 2x2 design, testing</p>
 <ol style="list-style-type: decimal">
 <li>the effect of high and low precision on the index of abundance
 provided by the survey and</li>
-<li>the effect of fixing versus estimating natural mortality (<span class="math inline">\(M\)</span>).</li>
+<li>the effect of fixing versus estimating natural mortality
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>).</li>
 </ol>
 <div class="section level3">
 <h3 id="setting-up-the-example">Setting up the example<a class="anchor" aria-label="anchor" href="#setting-up-the-example"></a>
@@ -480,10 +481,14 @@ provided by the survey and</li>
 <div class="section level4">
 <h4 id="fishing-mortality">Fishing mortality<a class="anchor" aria-label="anchor" href="#fishing-mortality"></a>
 </h4>
-<p>Fishing mortality, <span class="math inline">\(F\)</span>, is set to
-a constant percentage of <span class="math inline">\(F\)</span> at
-maximum sustainable yield, <span class="math inline">\(F_\mathrm{MSY}\)</span>, from when the fishery
-starts in year 26 until the end of the simulation in year 100.</p>
+<p>Fishing mortality,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>,
+is set to a constant percentage of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+at maximum sustainable yield,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>F</mi><mrow><mi mathvariant="normal">M</mi><mi mathvariant="normal">S</mi><mi mathvariant="normal">Y</mi></mrow></msub><annotation encoding="application/x-tex">F_\mathrm{MSY}</annotation></semantics></math>,
+from when the fishery starts in year 26 until the end of the simulation
+in year 100.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Display the default fishing mortality settings</span></span>
 <span><span class="va">df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"^cf\\."</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span>
@@ -529,12 +534,14 @@ the second scenario <code>sds_obs = 0.4</code>.</p>
 <div class="section level4">
 <h4 id="estimating-parameters">Estimating parameters<a class="anchor" aria-label="anchor" href="#estimating-parameters"></a>
 </h4>
-<p>To investigate the effect of fixing versus estimating <span class="math inline">\(M\)</span>, <code>df</code> must be augmented to
-call <code><a href="../reference/change_e.html">change_e()</a></code>. Using <code>par_phase</code> one can turn
-a parameter on and off in the EM, where negative phases tells Stock
-Synthesis to not estimate the parameter. The second scenario will
-estimate <span class="math inline">\(M\)</span> in phase
-<code>3</code>.</p>
+<p>To investigate the effect of fixing versus estimating
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>,
+<code>df</code> must be augmented to call <code><a href="../reference/change_e.html">change_e()</a></code>. Using
+<code>par_phase</code> one can turn a parameter on and off in the EM,
+where negative phases tells Stock Synthesis to not estimate the
+parameter. The second scenario will estimate
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
+in phase <code>3</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">df</span><span class="op">)</span></span>
 <span><span class="va">df</span><span class="op">[</span>, <span class="st">"ce.par_name"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"NatM_uniform_Fem_GP_1"</span></span>
@@ -583,10 +590,11 @@ each additional iteration, facilitates comparisons across scenarios. The
 default distribution in {ss3sim} has a mean of <code>-0.5</code> and a
 standard deviation of <code>1</code> (bias-corrected standard-normal
 deviations). These deviations are then scaled by the level of
-recruitment variability specified in the OM with <span class="math inline">\(\sigma_r\)</span>. If you would like to specify
-your own deviations, you can pass them using <code>user_recdevs</code>.
-See the next section on <a href="#deterministic">self tests</a> for an
-example of <code>user_recdevs</code>.</p>
+recruitment variability specified in the OM with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mi>r</mi></msub><annotation encoding="application/x-tex">\sigma_r</annotation></semantics></math>.
+If you would like to specify your own deviations, you can pass them
+using <code>user_recdevs</code>. See the next section on <a href="#deterministic">self tests</a> for an example of
+<code>user_recdevs</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="deterministic">Self test to check for bias<a class="anchor" aria-label="anchor" href="#deterministic"></a>
@@ -605,15 +613,17 @@ in fact none.</p>
 (number of iterations) matrix of recruitment deviations, where all
 values are set to zero.</p>
 <p>Then, we will set up OM and EM files with the standard deviation of
-recruitment variability, <code>SR_sigmaR</code> <span class="math inline">\(\sigma_R\)</span>, set to <code>0.001</code>. To
-do this, the data frame that controls the scenarios must specify
-<code>par_name = SR_sigmaR</code> (the Stock Synthesis parameter name)
-and <code>par_int = 0.001</code> (the initial value) for both
-<code>change_o</code> and <code>change_e</code> for the OM and EM,
-respectively. To minimize observation error on the survey index, we will
-create a standard deviation on the survey observation error of 0.001.
-Finally, we will fix <span class="math inline">\(M\)</span> at the true
-value and estimate it in phase 3 as we did before.</p>
+recruitment variability, <code>SR_sigmaR</code>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mi>R</mi></msub><annotation encoding="application/x-tex">\sigma_R</annotation></semantics></math>,
+set to <code>0.001</code>. To do this, the data frame that controls the
+scenarios must specify <code>par_name = SR_sigmaR</code> (the Stock
+Synthesis parameter name) and <code>par_int = 0.001</code> (the initial
+value) for both <code>change_o</code> and <code>change_e</code> for the
+OM and EM, respectively. To minimize observation error on the survey
+index, we will create a standard deviation on the survey observation
+error of 0.001. Finally, we will fix
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
+at the true value and estimate it in phase 3 as we did before.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_scenarios_defaults.html">setup_scenarios_defaults</a></span><span class="op">(</span>nscenarios <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">df</span><span class="op">[</span>, <span class="st">"user_recdevs"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"matrix(0, nrow = 200, ncol = 20)"</span></span>
@@ -696,9 +706,8 @@ version of the output.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scalar_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_re.html">calculate_re</a></span><span class="op">(</span><span class="va">scalar_dat</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in (function (..., deparse.level = 1) : number of columns of result is</span></span>
-<span><span class="co">#&gt; not a multiple of vector length (arg 1)</span></span></code></pre></div>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ts_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_re.html">calculate_re</a></span><span class="op">(</span><span class="va">ts_dat</span><span class="op">)</span></span>
+<span><span class="co">#&gt; not a multiple of vector length (arg 1)</span></span>
+<span><span class="va">ts_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_re.html">calculate_re</a></span><span class="op">(</span><span class="va">ts_dat</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in (function (..., deparse.level = 1) : number of columns of result is</span></span>
 <span><span class="co">#&gt; not a multiple of vector length (arg 1)</span></span></code></pre></div>
 </div>
@@ -707,7 +716,7 @@ version of the output.</p>
 </h4>
 <p>The gradient information is in the scalar file. Merging the scalar
 and the time series can help add details to figures.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scalar_dat</span><span class="op">[</span>, <span class="st">"D"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span></span>
 <span>  pattern <span class="op">=</span> <span class="st">"D([0-9]+)-.+"</span>,</span>
 <span>  replacement <span class="op">=</span> <span class="st">"D\\1"</span>,</span>
@@ -726,7 +735,7 @@ and the time series can help add details to figures.</p>
 <div class="section level4">
 <h4 id="separate-the-deterministic-from-the-stochastic-runs">Separate the deterministic from the stochastic runs<a class="anchor" aria-label="anchor" href="#separate-the-deterministic-from-the-stochastic-runs"></a>
 </h4>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ts_dat_sto</span> <span class="op">&lt;-</span> <span class="va">ts_dat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"E[0-1]-"</span>, <span class="va">ts_dat</span><span class="op">[</span>, <span class="st">"scenario"</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="va">scalar_dat_long</span> <span class="op">&lt;-</span> <span class="va">scalar_dat</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">scalar_dat_long</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span></span>
@@ -747,7 +756,7 @@ and the time series can help add details to figures.</p>
 <h3 id="boxplots">Boxplots<a class="anchor" aria-label="anchor" href="#boxplots"></a>
 </h3>
 <p>Use the long data to create a multi-panel plot with {ggplot2}.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_boxplot.html">plot_boxplot</a></span><span class="op">(</span></span>
 <span>  <span class="va">scalar_dat_long</span><span class="op">[</span></span>
 <span>    <span class="va">scalar_dat_long</span><span class="op">$</span><span class="va">parameter</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"depletion"</span>, <span class="st">"SSB_MSY"</span><span class="op">)</span> <span class="op">&amp;</span></span>
@@ -759,11 +768,12 @@ and the time series can help add details to figures.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="introduction_files/figure-html/relative-error-boxplots-det-1.png" alt="Box plots of the relative error (RE) for deterministic runs. $M$ is fixed at the true value from the OM (E100) or estimated (E101)." width="480"><p class="caption">
-Box plots of the relative error (RE) for deterministic runs. <span class="math inline">\(M\)</span> is fixed at the true value from the OM
-(E100) or estimated (E101).
+Box plots of the relative error (RE) for deterministic runs.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
+is fixed at the true value from the OM (E100) or estimated (E101).
 </p>
 </div>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># see plot_points() for another plotting function</span></span></code></pre></div>
 <p>While plotting the relative error in estimates of spawning biomass,
 one can add color to the time series according to the maximum gradient.
@@ -771,8 +781,9 @@ Small values of the maximum gradient (approximately 0.001 or less)
 indicate that model convergence is likely. Larger values (greater than
 1) indicate that model convergence is unlikely. Results of individual
 iterations are jittered around the vertical axis to aid in
-visualization. The following three blocks of code produce Figures~<span class="math inline">\(\ref{fig:plot-sto-ts}\)</span>, <span class="math inline">\(\ref{fig:ssb-ts-plots}\)</span>, and <span class="math inline">\(\ref{fig:relative-error-boxplots-sto}\)</span>.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+visualization. The following three blocks of code produce Figures~, ,
+and .</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_lines.html">plot_lines</a></span><span class="op">(</span><span class="va">ts_dat_sto</span>,</span>
 <span>  y <span class="op">=</span> <span class="st">"SpawnBio_re"</span>,</span>
 <span>  vert <span class="op">=</span> <span class="st">"E"</span>, horiz <span class="op">=</span> <span class="st">"D"</span>, print <span class="op">=</span> <span class="cn">FALSE</span>, col <span class="op">=</span> <span class="st">"max_grad"</span></span>
@@ -783,7 +794,7 @@ visualization. The following three blocks of code produce Figures~<span class="m
 Time series of relative error in spawning stock biomass.
 </p>
 </div>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_boxplot.html">plot_boxplot</a></span><span class="op">(</span></span>
 <span>  <span class="va">scalar_dat_long</span><span class="op">[</span></span>
 <span>    <span class="va">scalar_dat_long</span><span class="op">$</span><span class="va">parameter</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"depletion"</span>, <span class="st">"SSB_MSY"</span><span class="op">)</span> <span class="op">&amp;</span></span>
@@ -795,10 +806,11 @@ Time series of relative error in spawning stock biomass.
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="introduction_files/figure-html/relative-error-boxplots-sto-1.png" alt="Box plots of relative error (RE) for stochastic runs. $M$ is fixed at the true value from the OM (E0) or estimated (E1). The standard deviation on the survey index observation error is 0.4 (D1) or 0.1 (D0), representing an increase in survey sampling effort." width="480"><p class="caption">
-Box plots of relative error (RE) for stochastic runs. <span class="math inline">\(M\)</span> is fixed at the true value from the OM
-(E0) or estimated (E1). The standard deviation on the survey index
-observation error is 0.4 (D1) or 0.1 (D0), representing an increase in
-survey sampling effort.
+Box plots of relative error (RE) for stochastic runs.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
+is fixed at the true value from the OM (E0) or estimated (E1). The
+standard deviation on the survey index observation error is 0.4 (D1) or
+0.1 (D0), representing an increase in survey sampling effort.
 </p>
 </div>
 </div>
@@ -892,8 +904,9 @@ simulate the collection of CPUE and survey index data. The user can
 specify which fleets are sampled in which years and with what amount of
 noise. Different fleets will “see” different biomass trends due to
 differences in selectivity. Catchability for the OM is equal to one,
-<span class="math inline">\(q=1\)</span>, and thus, the indices are
-actually absolute indices of (spawning) biomass.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">q=1</annotation></semantics></math>,
+and thus, the indices are actually absolute indices of (spawning)
+biomass.</p>
 <p>In practice, sampling from the abundance indices is relatively
 straightforward. The OM <code>.dat</code> file contains the annual
 biomass values for each fleet, and the <code>sample_index</code>
@@ -902,21 +915,25 @@ function uses a bias-corrected log-normal distribution with expected
 values given by the OM biomass and a user-provided standard deviation
 term that controls the level of variance.</p>
 <p>More specifically, let</p>
-<p><span class="math display">\[\begin{aligned}
+<p><span class="math display">$$\begin{aligned}
   B_y&amp;=\text{the true (OM) biomass in year $y$}\newline
   \sigma_y&amp;=\text{the standard deviation provided by the
 user}\newline
   X\sim N(0, \sigma_y^2)&amp;=\text{a normal random variable}
-\end{aligned}\]</span></p>
-<p>then the sampled value, <span class="math inline">\(B_y^\text{obs}\)</span> is</p>
-<p><span class="math display">\[B_y^\text{obs}=B_y
-e^{X-\sigma_y^2/2}\]</span></p>
-<p>which has expected value <span class="math inline">\(\mathrm{E}\left[B_y^\text{obs}\right]=B_y\)</span>
-due to the bias adjustment term <span class="math inline">\(\sigma_y^2/2\)</span> (<code>SR_sigmaR</code> in
-Stock Synthesis). This process generates log-normal values centered at
-the true value. It is possible for the user to specify the amount of
-uncertainty, e.g., to mimic the amount of survey effort. But currently,
-it is not possible to induce bias in this process.</p>
+\end{aligned}$$</span></p>
+<p>then the sampled value,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>B</mi><mi>y</mi><mtext mathvariant="normal">obs</mtext></msubsup><annotation encoding="application/x-tex">B_y^\text{obs}</annotation></semantics></math>
+is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>B</mi><mi>y</mi><mtext mathvariant="normal">obs</mtext></msubsup><mo>=</mo><msub><mi>B</mi><mi>y</mi></msub><msup><mi>e</mi><mrow><mi>X</mi><mo>−</mo><msubsup><mi>σ</mi><mi>y</mi><mn>2</mn></msubsup><mi>/</mi><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">B_y^\text{obs}=B_y e^{X-\sigma_y^2/2}</annotation></semantics></math></p>
+<p>which has expected value
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">E</mi><mrow><mo stretchy="true" form="prefix">[</mo><msubsup><mi>B</mi><mi>y</mi><mtext mathvariant="normal">obs</mtext></msubsup><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><msub><mi>B</mi><mi>y</mi></msub></mrow><annotation encoding="application/x-tex">\mathrm{E}\left[B_y^\text{obs}\right]=B_y</annotation></semantics></math>
+due to the bias adjustment term
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>σ</mi><mi>y</mi><mn>2</mn></msubsup><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\sigma_y^2/2</annotation></semantics></math>
+(<code>SR_sigmaR</code> in Stock Synthesis). This process generates
+log-normal values centered at the true value. It is possible for the
+user to specify the amount of uncertainty, e.g., to mimic the amount of
+survey effort. But currently, it is not possible to induce bias in this
+process.</p>
 <div class="section level6">
 <h6 id="effective-sample-sizes">Effective sample sizes<a class="anchor" aria-label="anchor" href="#effective-sample-sizes"></a>
 </h6>
@@ -926,11 +943,15 @@ of each point. As the CV increases, the data have less weight in the
 joint likelihood. This is equivalent to decreasing the effective sample
 size in other distributions. {ss3sim} sets these values automatically at
 the truth internally, although future versions may allow for more
-complex options. The user-supplied <span class="math inline">\(\sigma_y\)</span> term is written to the
-<code>.dat</code> file along with the sampled values. So, the EM has the
-correct level of uncertainty. Thus, the EM has unbiased estimates of
-both <span class="math inline">\(B_y\)</span> and the true <span class="math inline">\(\sigma_y\)</span> for all fleets in all years
-sampled.</p>
+complex options. The user-supplied
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mi>y</mi></msub><annotation encoding="application/x-tex">\sigma_y</annotation></semantics></math>
+term is written to the <code>.dat</code> file along with the sampled
+values. So, the EM has the correct level of uncertainty. Thus, the EM
+has unbiased estimates of both
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>B</mi><mi>y</mi></msub><annotation encoding="application/x-tex">B_y</annotation></semantics></math>
+and the true
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mi>y</mi></msub><annotation encoding="application/x-tex">\sigma_y</annotation></semantics></math>
+for all fleets in all years sampled.</p>
 </div>
 </div>
 <div class="section level5">
@@ -942,26 +963,36 @@ Dirichlet distribution. The user can specify which fleets are sampled in
 which years and with what amount of noise (via sample size).</p>
 <p>The following calculations are shown for how age-composition-data is
 sampled. But, the equations apply equally to how length-composition data
-is sampled as well. The multinomial distribution <span class="math inline">\(\mathbf{m} \sim \text{MN}\left(\mathbf{p}, n,
-A\right )\)</span> is defined as</p>
-<p><span class="math display">\[\begin{aligned}
-\mathbf{m} &amp;= m_1, \ldots, m_A\\
+is sampled as well. The multinomial distribution
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝐦</mi><mo>∼</mo><mtext mathvariant="normal">MN</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐩</mi><mo>,</mo><mi>n</mi><mo>,</mo><mi>A</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mathbf{m} \sim \text{MN}\left(\mathbf{p}, n, A\right )</annotation></semantics></math>
+is defined as</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>𝐦</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>m</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>m</mi><mi>A</mi></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mrow><mtext mathvariant="normal">the number of fish observed in bin </mtext><mspace width="0.333em"></mspace></mrow><mi>a</mi></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mi>𝐩</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>p</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>p</mi><mi>A</mi></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mrow><mtext mathvariant="normal">the true proportion of fish in bin </mtext><mspace width="0.333em"></mspace></mrow><mi>a</mi></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mi>n</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mtext mathvariant="normal">sample size</mtext></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mi>A</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mtext mathvariant="normal">number of age bins</mtext></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+ \mathbf{m} &amp;= m_1, \ldots, m_A\\
   &amp;=\text{the number of fish observed in bin $a$}\\
   \mathbf{p}&amp;= p_1, \ldots, p_A\\
   &amp;=\text{the true proportion of fish in bin $a$}\\
   n&amp;=\text{sample size} \\
   A&amp;=\text{number of age bins}
-\end{aligned}\]</span></p>
+\end{aligned}</annotation></semantics></math></p>
 <p>In the case of Stock Synthesis, actual proportions are input as data.
-So, <span class="math inline">\(\mathbf{m}/n\)</span> is the
-distribution used instead of <span class="math inline">\(\mathbf{m}\)</span>. Thus, the variance of the
-estimated proportion for age bin <span class="math inline">\(a\)</span>
-is <span class="math inline">\(\mathrm{Var}\left[M_a/n\right]=p_aq_a/n\)</span>.
-Note that <span class="math inline">\(m_a/n\)</span> can only take on
-values in the set <span class="math inline">\(\{0, 1/n, 2/n, \ldots,
-1\}\)</span>. With sufficiently large sample size this set approximates
-the real interval <span class="math inline">\([0,1]\)</span>. But, the
-key point being that only a finite set of rational values of <span class="math inline">\(m_a/n\)</span> are possible.</p>
+So,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝐦</mi><mi>/</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">\mathbf{m}/n</annotation></semantics></math>
+is the distribution used instead of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝐦</mi><annotation encoding="application/x-tex">\mathbf{m}</annotation></semantics></math>.
+Thus, the variance of the estimated proportion for age bin
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">V</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">r</mi></mrow><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>M</mi><mi>a</mi></msub><mi>/</mi><mi>n</mi><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><msub><mi>p</mi><mi>a</mi></msub><msub><mi>q</mi><mi>a</mi></msub><mi>/</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">\mathrm{Var}\left[M_a/n\right]=p_aq_a/n</annotation></semantics></math>.
+Note that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>m</mi><mi>a</mi></msub><mi>/</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">m_a/n</annotation></semantics></math>
+can only take on values in the set
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo>,</mo><mn>1</mn><mi>/</mi><mi>n</mi><mo>,</mo><mn>2</mn><mi>/</mi><mi>n</mi><mo>,</mo><mi>…</mi><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{0, 1/n, 2/n, \ldots, 1\}</annotation></semantics></math>.
+With sufficiently large sample size this set approximates the real
+interval
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,1]</annotation></semantics></math>.
+But, the key point being that only a finite set of rational values of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>m</mi><mi>a</mi></msub><mi>/</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">m_a/n</annotation></semantics></math>
+are possible.</p>
 <p>The multinomial, as described above, is based on assumptions of ideal
 sampling and is likely unrealistic, particularly with large sample
 sizes. One strategy to add realism is to allow for overdispersion.</p>
@@ -982,36 +1013,55 @@ detail.</p>
 multinomial. But, the distribution has a different variance controlled
 by a parameter. The variance is determined exclusively by the cell
 probabilities and sample size n the multinomial, making it more flexible
-than the multinomial. Let <span class="math inline">\(\mathbf{d} \sim
-\text{Dirichlet}\left (\boldsymbol{\alpha}, A\right )\)</span> be a
-Dirichlet random vector. It is characterized by</p>
-<p><span class="math display">\[\begin{aligned}
+than the multinomial. Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝐝</mi><mo>∼</mo><mtext mathvariant="normal">Dirichlet</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝛂</mi><mo>,</mo><mi>A</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mathbf{d} \sim \text{Dirichlet}\left (\boldsymbol{\alpha}, A\right )</annotation></semantics></math>
+be a Dirichlet random vector. It is characterized by</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>𝐝</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>d</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>d</mi><mi>A</mi></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mrow><mtext mathvariant="normal">the proportion of fish observed in bin </mtext><mspace width="0.333em"></mspace></mrow><mi>a</mi></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mi>𝛂</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>A</mi></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mrow><mtext mathvariant="normal">concentration parameters for the proportion of fish in bin </mtext><mspace width="0.333em"></mspace></mrow><mi>a</mi></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mi>A</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mtext mathvariant="normal">number of age bins</mtext></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
   \mathbf{d} &amp;= d_1, \ldots, d_A\\
   &amp;=\text{the proportion of fish observed in bin $a$}\\
   \boldsymbol{\alpha}&amp;= \alpha_1, \ldots, \alpha_A\\
-  &amp;=\text{concentration parameters for the proportion of fish in bin
-$a$}\\
+  &amp;=\text{concentration parameters for the proportion of fish in bin $a$}\\
   A&amp;=\text{number of age bins}
-\end{aligned}\]</span></p>
+\end{aligned}</annotation></semantics></math></p>
 <p>When using the Dirichlet distribution to generate random samples, it
 is convenient to parameterize the vector of concentration parameters
-<span class="math inline">\(\boldsymbol{\alpha}\)</span> as <span class="math inline">\(\lambda \mathbf{p}\)</span> so that <span class="math inline">\(\alpha_a=\lambda p_a\)</span>. The mean of <span class="math inline">\(d_a\)</span> is then <span class="math inline">\(\mathrm{E}\left[d_a\right]=p_a\)</span>. The
-variance is <span class="math inline">\(\mathrm{Var}\left[d_a\right]=\frac{p_aq_a}{\lambda+1}\)</span>.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝛂</mi><annotation encoding="application/x-tex">\boldsymbol{\alpha}</annotation></semantics></math>
+as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mi>𝐩</mi></mrow><annotation encoding="application/x-tex">\lambda \mathbf{p}</annotation></semantics></math>
+so that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mi>a</mi></msub><mo>=</mo><mi>λ</mi><msub><mi>p</mi><mi>a</mi></msub></mrow><annotation encoding="application/x-tex">\alpha_a=\lambda p_a</annotation></semantics></math>.
+The mean of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>d</mi><mi>a</mi></msub><annotation encoding="application/x-tex">d_a</annotation></semantics></math>
+is then
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">E</mi><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>d</mi><mi>a</mi></msub><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><msub><mi>p</mi><mi>a</mi></msub></mrow><annotation encoding="application/x-tex">\mathrm{E}\left[d_a\right]=p_a</annotation></semantics></math>.
+The variance is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">V</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">r</mi></mrow><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>d</mi><mi>a</mi></msub><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mfrac><mrow><msub><mi>p</mi><mi>a</mi></msub><msub><mi>q</mi><mi>a</mi></msub></mrow><mrow><mi>λ</mi><mo>+</mo><mn>1</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">\mathrm{Var}\left[d_a\right]=\frac{p_aq_a}{\lambda+1}</annotation></semantics></math>.
 The marginal distributions for the Dirichlet are beta distributed. In
 contrast to the multinomial, the Dirichlet generates points on the real
-interval <span class="math inline">\([0,1]\)</span>.</p>
+interval
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,1]</annotation></semantics></math>.</p>
 <p>The following steps are used to generate overdispersed samples:</p>
 <ul>
 <li>Get the true proportions at age from OM for the number of age bins
-<span class="math inline">\(A\)</span>.</li>
-<li>Determine a realistic sample size, say <span class="math inline">\(n=100\)</span>. Calculate the variance of the
-samples from a multinomial distribution, call it <span class="math inline">\(V_{m_a}\)</span>.</li>
-<li>Specify a level, <span class="math inline">\(c\)</span>, that scales
-the standard deviation of the multinomial. Then <span class="math inline">\(\sqrt{V_{d_{a}}}=c\sqrt{V_{m_{a}}}\)</span> from
-which <span class="math inline">\(\lambda=n/c^2-1\)</span> can be
-solved. Samples from the Dirichlet with this value of <span class="math inline">\(\lambda\)</span> will then give the appropriate
-level of variance. For instance, we can generate samples with twice the
-standard deviation of the multinomial by setting <span class="math inline">\(c=2\)</span> (this is <code>cpar</code>).</li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>.</li>
+<li>Determine a realistic sample size, say
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>100</mn></mrow><annotation encoding="application/x-tex">n=100</annotation></semantics></math>.
+Calculate the variance of the samples from a multinomial distribution,
+call it
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>V</mi><msub><mi>m</mi><mi>a</mi></msub></msub><annotation encoding="application/x-tex">V_{m_a}</annotation></semantics></math>.</li>
+<li>Specify a level,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>,
+that scales the standard deviation of the multinomial. Then
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><msub><mi>V</mi><msub><mi>d</mi><mi>a</mi></msub></msub></msqrt><mo>=</mo><mi>c</mi><msqrt><msub><mi>V</mi><msub><mi>m</mi><mi>a</mi></msub></msub></msqrt></mrow><annotation encoding="application/x-tex">\sqrt{V_{d_{a}}}=c\sqrt{V_{m_{a}}}</annotation></semantics></math>
+from which
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mi>n</mi><mi>/</mi><msup><mi>c</mi><mn>2</mn></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\lambda=n/c^2-1</annotation></semantics></math>
+can be solved. Samples from the Dirichlet with this value of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>
+will then give the appropriate level of variance. For instance, we can
+generate samples with twice the standard deviation of the multinomial by
+setting
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">c=2</annotation></semantics></math>
+(this is <code>cpar</code>).</li>
 </ul>
 </div>
 <div class="section level6">
@@ -1032,17 +1082,24 @@ i.e., how many fish were sampled, the number of sampled tows, etc.
 However, with the Dirichlet distribution, the effective sample size
 depends on the parameters passed to these functions and is automatically
 calculated internally and passed on to the <code>.dat</code> file. The
-effective sample size is calculated as <span class="math inline">\(N_{eff}=n/c^2\)</span>, where <span class="math inline">\(c\)</span> is <code>cpar</code>. Note that these
-values will not necessarily be integer-valued and Stock Synthesis
-handles this without issue.</p>
+effective sample size is calculated as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mrow><mi>e</mi><mi>f</mi><mi>f</mi></mrow></msub><mo>=</mo><mi>n</mi><mi>/</mi><msup><mi>c</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">N_{eff}=n/c^2</annotation></semantics></math>,
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>
+is <code>cpar</code>. Note that these values will not necessarily be
+integer-valued and Stock Synthesis handles this without issue.</p>
 <p>If the effective sample size is known and passed to the EM, there is
 much similarity between the multinomial and Dirichlet methods for
-generating data. The main difference arises when sample sizes (<span class="math inline">\(n\)</span>) are small; in this case, the
-multinomial will be restricted to few potential values (i.e., <span class="math inline">\(0/n, 1/n, \ldots, n/n\)</span>), whereas the
-Dirichlet has values in <span class="math inline">\([0,1]\)</span>.
+generating data. The main difference arises when sample sizes
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>)
+are small; in this case, the multinomial will be restricted to few
+potential values (i.e.,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mi>/</mi><mi>n</mi><mo>,</mo><mn>1</mn><mi>/</mi><mi>n</mi><mo>,</mo><mi>…</mi><mo>,</mo><mi>n</mi><mi>/</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">0/n, 1/n, \ldots, n/n</annotation></semantics></math>),
+whereas the Dirichlet has values in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,1]</annotation></semantics></math>.
 Thus, without the Dirichlet it would be impossible to generate realistic
 values that would come about from highly overdispersed data with a large
-<span class="math inline">\(n\)</span>.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>.</p>
 <p>The ability to is specify the ESS was implemented to allow for users
 to explore data weighting issues. If you want to specify an
 input/effective sample size different that what is used in sampling,
@@ -1098,13 +1155,17 @@ recruitment (“recdevs”) from the stock-recruitment relationship. Unlike
 the observation error, the process error affects the population dynamics
 and thus must be done before running the OM.</p>
 <p>These built-in recruitment deviations are standard normal deviates
-and are multiplied by <span class="math inline">\(\sigma_r\)</span>
+and are multiplied by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mi>r</mi></msub><annotation encoding="application/x-tex">\sigma_r</annotation></semantics></math>
 (recruitment standard deviation) as specified in the OM, and bias
-adjusted within {ss3sim}. That is, <span class="math display">\[\begin{equation*}
+adjusted within {ss3sim}. That is,
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext mathvariant="normal">recdev</mtext><mi>i</mi></msub><mo>=</mo><msub><mi>σ</mi><mi>r</mi></msub><msub><mi>z</mi><mi>i</mi></msub><mo>−</mo><msubsup><mi>σ</mi><mi>r</mi><mn>2</mn></msubsup><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\begin{equation*}
   \text{recdev}_i=\sigma_r z_i-\sigma_r^2/2
-\end{equation*}\]</span> where <span class="math inline">\(z_i\)</span>
-is a standard normal deviate and the bias adjustment term (<span class="math inline">\(\sigma_r^2/2\)</span>) makes the deviates have an
-expected value of 1 after exponentiation.</p>
+\end{equation*}</annotation></semantics></math> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>z</mi><mi>i</mi></msub><annotation encoding="application/x-tex">z_i</annotation></semantics></math>
+is a standard normal deviate and the bias adjustment term
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>σ</mi><mi>r</mi><mn>2</mn></msubsup><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\sigma_r^2/2</annotation></semantics></math>)
+makes the deviates have an expected value of 1 after exponentiation.</p>
 <p>If the recruitment deviations are not specified, then {ss3sim} will
 use these built-in recruitment deviations. Alternatively, you can
 specify your own recruitment deviations, via the argument
@@ -1112,12 +1173,14 @@ specify your own recruitment deviations, via the argument
 <code><a href="../reference/ss3sim_base.html">ss3sim_base()</a></code>. Ensure that you pass a matrix with at least
 enough columns (iterations) and rows (years). The user-supplied
 recruitment deviations are used exactly as specified (i.e., not
-multiplied by <span class="math inline">\(\sigma_r\)</span> as specified
-in the Stock Synthesis model), and <strong>it is up to you to bias
-correct them manually</strong> by subtracting <span class="math inline">\(\sigma_r^2 / 2\)</span> as is done above. This
-functionality allows for flexibility in how the recruitment deviations
-are specified, for example <a href="#deterministic">running
-deterministic runs</a> or adding serial correlation.</p>
+multiplied by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mi>r</mi></msub><annotation encoding="application/x-tex">\sigma_r</annotation></semantics></math>
+as specified in the Stock Synthesis model), and <strong>it is up to you
+to bias correct them manually</strong> by subtracting
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>σ</mi><mi>r</mi><mn>2</mn></msubsup><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\sigma_r^2 / 2</annotation></semantics></math>
+as is done above. This functionality allows for flexibility in how the
+recruitment deviations are specified, for example <a href="#deterministic">running deterministic runs</a> or adding serial
+correlation.</p>
 <p>Note that for both built-in and user-specified recdevs, {ss3sim} will
 reuse the same set of recruitment deviations for all iterations across
 scenarios. For example if you have two scenarios and run 100 iterations
@@ -1169,19 +1232,27 @@ approach would allow for testing of differences between estimating a
 single, constant parameter versus time-varying estimation of the same
 parameter.</p>
 <p><code><a href="../reference/change_tv.html">change_tv()</a></code> works by adding an environmental deviate
-(<span class="math inline">\(env\)</span>) to the base parameter (<span class="math inline">\(par\)</span>), creating a time varying parameter
-(<span class="math inline">\(par\)</span>) for each year (<span class="math inline">\(y\)</span>),</p>
-<p><span class="math display">\[\begin{equation}
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>n</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">env</annotation></semantics></math>)
+to the base parameter
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mi>a</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">par</annotation></semantics></math>),
+creating a time varying parameter
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mi>a</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">par</annotation></semantics></math>)
+for each year
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>),</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mi>a</mi><msub><mi>r</mi><mi>y</mi></msub><mo>=</mo><mi>p</mi><mi>a</mi><mi>r</mi><mo>+</mo><mi>l</mi><mi>i</mi><mi>n</mi><mi>k</mi><mo>*</mo><mi>e</mi><mi>n</mi><msub><mi>v</mi><mi>y</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{equation}
 par_y = par + link * env_y.
-\end{equation}\]</span></p>
-<p><span class="math inline">\(link\)</span> is pre-specified to a value
-of one. <span class="math inline">\(par\)</span> is the base value for
-the given parameter, as defined by the INIT value in the
-<code>.ctl</code> file. For all catchability parameters (<span class="math inline">\(q\)</span>), the deviate will be added to the log
-transform of the base parameter using the following equation:</p>
-<p><span class="math display">\[\begin{equation}
+\end{equation}</annotation></semantics></math></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mi>i</mi><mi>n</mi><mi>k</mi></mrow><annotation encoding="application/x-tex">link</annotation></semantics></math>
+is pre-specified to a value of one.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mi>a</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">par</annotation></semantics></math>
+is the base value for the given parameter, as defined by the INIT value
+in the <code>.ctl</code> file. For all catchability parameters
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>q</mi><annotation encoding="application/x-tex">q</annotation></semantics></math>),
+the deviate will be added to the log transform of the base parameter
+using the following equation:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>q</mi><mi>y</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>q</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>l</mi><mi>i</mi><mi>n</mi><mi>k</mi><mo>*</mo><mi>e</mi><mi>n</mi><msub><mi>v</mi><mi>y</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{equation}
   \log(q_{y}) = \log(q) + link * env_{y}.
-\end{equation}\]</span></p>
+\end{equation}</annotation></semantics></math></p>
 <p>The vector of deviates must contain one value for every year of the
 simulation and can be specified as zero for years in which the parameter
 does not deviate from the base parameter value.</p>
@@ -1217,7 +1288,7 @@ out how many cores are on the computer and register a portion of those
 for parallel processing. Second, us an apply function to get the results
 from each scenario. Third, bring the results together and close the
 cluster.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">parallel</span><span class="op">)</span></span>
 <span><span class="va">ncls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"NUMBER_OF_PROCESSORS"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"cl.cores"</span>, <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">ncls</span> <span class="op">&lt;</span> <span class="fl">6</span>, <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -1309,9 +1380,7 @@ trawl-survey samples. Fishery Bulletin <strong>100</strong>(1).
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
+      </div>
 
 </div>
 
@@ -1324,16 +1393,16 @@ trawl-survey samples. Fishery Bulletin <strong>100</strong>(1).
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer>
 </div>
 
-  
 
 
-  
+
+
 
   </body>
 </html>

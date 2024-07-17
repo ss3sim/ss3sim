@@ -10,7 +10,7 @@ itself or within run_ss3sim() to alter an estimation model
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -35,7 +35,7 @@ itself or within run_ss3sim() to alter an estimation model
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -54,20 +54,20 @@ itself or within run_ss3sim() to alter an estimation model
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/ss3sim/ss3sim/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Methods to alter the parameters estimated in a Stock Synthesis model</h1>
-    <small class="dont-index">Source: <a href="https://github.com/ss3sim/ss3sim/blob/HEAD/R/change_e.r" class="external-link"><code>R/change_e.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/ss3sim/ss3sim/blob/main/R/change_e.r" class="external-link"><code>R/change_e.r</code></a></small>
     <div class="hidden name"><code>change_e.Rd</code></div>
     </div>
 
@@ -98,15 +98,17 @@ itself or within <code><a href="run_ss3sim.html">run_ss3sim()</a></code> to alte
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>ctl_file_in</dt>
+
+
+<dl><dt id="arg-ctl-file-in">ctl_file_in<a class="anchor" aria-label="anchor" href="#arg-ctl-file-in"></a></dt>
 <dd><p>A string providing the path to the input Stock Synthesis <code>.ctl</code> file.</p></dd>
 
 
-<dt>ctl_file_out</dt>
+<dt id="arg-ctl-file-out">ctl_file_out<a class="anchor" aria-label="anchor" href="#arg-ctl-file-out"></a></dt>
 <dd><p>A string providing the path to the output Stock Synthesis control file. If the value is <code>NULL</code>, the file will not be written to the disk.</p></dd>
 
 
-<dt>dat_list</dt>
+<dt id="arg-dat-list">dat_list<a class="anchor" aria-label="anchor" href="#arg-dat-list"></a></dt>
 <dd><p>A Stock Synthesis  data list object as read in from
 <code><a href="https://r4ss.github.io/r4ss/reference/SS_readdat.html" class="external-link">SS_readdat</a></code>.
 Be sure to correctly specify which section of the data file you want
@@ -118,12 +120,12 @@ section provides bootstrapped data sets that have been sampled internally
 within SS.</p></dd>
 
 
-<dt>for_file_in</dt>
+<dt id="arg-for-file-in">for_file_in<a class="anchor" aria-label="anchor" href="#arg-for-file-in"></a></dt>
 <dd><p>A string providing the path to the input SS
 <code>forecast.ss</code> file.</p></dd>
 
 
-<dt>par_name</dt>
+<dt id="arg-par-name">par_name<a class="anchor" aria-label="anchor" href="#arg-par-name"></a></dt>
 <dd><p>A vector of character values corresponding to parameter
 names that you wish to initialize at different values or change the phase
 in which they are estimated. Entries are searched for in
@@ -131,26 +133,26 @@ in which they are estimated. Entries are searched for in
 names as they are specified in the file.</p></dd>
 
 
-<dt>par_int</dt>
+<dt id="arg-par-int">par_int<a class="anchor" aria-label="anchor" href="#arg-par-int"></a></dt>
 <dd><p>A vector of initial values, one for each entry in
 <code>par_name</code>. Values of <code>NA</code> leave the INIT value for
 that parameter at the value found in the <code>.ctl</code> file.</p></dd>
 
 
-<dt>par_phase</dt>
+<dt id="arg-par-phase">par_phase<a class="anchor" aria-label="anchor" href="#arg-par-phase"></a></dt>
 <dd><p>A vector of phase values, one for each parameter in
 <code>par_name</code>.  Values can be <code>NA</code> if you do not wish to change
 the phase for a given parameter. Negative values will fix the parameter
 at the INIT value.</p></dd>
 
 
-<dt>forecast_num</dt>
+<dt id="arg-forecast-num">forecast_num<a class="anchor" aria-label="anchor" href="#arg-forecast-num"></a></dt>
 <dd><p>Number of years to perform forecasts. For those years,
 the data will be removed from the <code>dat_list</code>, enabling Stock Synthesis to
 generate forecasts rather than use the data to fit the model.</p></dd>
 
 
-<dt>verbose</dt>
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>When <code>TRUE</code> messages will be returned
 from the function. Often useful for debugging. The default
 is <code>FALSE</code>.</p></dd>
@@ -158,14 +160,12 @@ is <code>FALSE</code>.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>Altered versions of Stock Synthesis <code>.ctl</code> and <code>forecast.ss</code> files are written
+    <p>Altered versions of Stock Synthesis <code>.ctl</code> and <code>forecast.ss</code> files are written
 to the disk and the altered <code>dat_list</code> is returned invisibly.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p>Other change functions: 
+    <div class="dont-index"><p>Other change functions:
 <code><a href="change_data.html">change_data</a>()</code>,
 <code><a href="change_em_binning.html">change_em_binning</a>()</code>,
 <code><a href="change_f.html">change_f</a>()</code>,
@@ -207,15 +207,15 @@ to the disk and the altered <code>dat_list</code> is returned invisibly.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 

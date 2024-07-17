@@ -1,312 +1,106 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/introduction.html</loc>
-  </url>
-  <url>
-    <loc>/articles/making-models.html</loc>
-  </url>
-  <url>
-    <loc>/articles/modifying-models.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_colnames.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_tv_parlines.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calculate_bias.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calculate_data_units.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calculate_re.html</loc>
-  </url>
-  <url>
-    <loc>/reference/change_catch.html</loc>
-  </url>
-  <url>
-    <loc>/reference/change_comp.html</loc>
-  </url>
-  <url>
-    <loc>/reference/change_dat_bin.html</loc>
-  </url>
-  <url>
-    <loc>/reference/change_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/change_e.html</loc>
-  </url>
-  <url>
-    <loc>/reference/change_em_binning.html</loc>
-  </url>
-  <url>
-    <loc>/reference/change_f.html</loc>
-  </url>
-  <url>
-    <loc>/reference/change_lcomp_constant.html</loc>
-  </url>
-  <url>
-    <loc>/reference/change_o.html</loc>
-  </url>
-  <url>
-    <loc>/reference/change_pop_bin.html</loc>
-  </url>
-  <url>
-    <loc>/reference/change_q.html</loc>
-  </url>
-  <url>
-    <loc>/reference/change_rec_devs.html</loc>
-  </url>
-  <url>
-    <loc>/reference/change_recyear.html</loc>
-  </url>
-  <url>
-    <loc>/reference/change_retro.html</loc>
-  </url>
-  <url>
-    <loc>/reference/change_startyear.html</loc>
-  </url>
-  <url>
-    <loc>/reference/change_tail_compression.html</loc>
-  </url>
-  <url>
-    <loc>/reference/change_tv.html</loc>
-  </url>
-  <url>
-    <loc>/reference/change_year.html</loc>
-  </url>
-  <url>
-    <loc>/reference/check_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/check_data_str_range.html</loc>
-  </url>
-  <url>
-    <loc>/reference/check_eqlength.html</loc>
-  </url>
-  <url>
-    <loc>/reference/check_forecast.html</loc>
-  </url>
-  <url>
-    <loc>/reference/check_q.html</loc>
-  </url>
-  <url>
-    <loc>/reference/clean_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/codemctl.html</loc>
-  </url>
-  <url>
-    <loc>/reference/codomctl.html</loc>
-  </url>
-  <url>
-    <loc>/reference/codomdat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/convert_to_wide.html</loc>
-  </url>
-  <url>
-    <loc>/reference/copy_ss3models.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_em.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_logo.html</loc>
-  </url>
-  <url>
-    <loc>/reference/facet_form.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fill_across.html</loc>
-  </url>
-  <url>
-    <loc>/reference/find_position.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_bin.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_compfit.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_model_folder.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_nll_components.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_recdevs.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_results_all.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_results_derived.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_results_iter.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_results_mod.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_results_scalar.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_results_scenario.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_results_timeseries.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_scenarios.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_sigmar.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_success.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/lists2df.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make_df.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_boxplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_cummean.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_lines.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_points.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_ss3sim.html</loc>
-  </url>
-  <url>
-    <loc>/reference/profile_fmsy.html</loc>
-  </url>
-  <url>
-    <loc>/reference/replace_x.html</loc>
-  </url>
-  <url>
-    <loc>/reference/run_ss3sim.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sample_agecomp.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sample_calcomp.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sample_catch.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sample_comp.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sample_discard.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sample_dm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sample_index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sample_lcomp.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sample_lognormal.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sample_mlacomp.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sample_mn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sample_wtatage.html</loc>
-  </url>
-  <url>
-    <loc>/reference/scalar2list.html</loc>
-  </url>
-  <url>
-    <loc>/reference/scalar_dat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/setup_bins.html</loc>
-  </url>
-  <url>
-    <loc>/reference/setup_parallel.html</loc>
-  </url>
-  <url>
-    <loc>/reference/setup_scenarios.html</loc>
-  </url>
-  <url>
-    <loc>/reference/setup_scenarios_defaults.html</loc>
-  </url>
-  <url>
-    <loc>/reference/setup_scenarios_fleet.html</loc>
-  </url>
-  <url>
-    <loc>/reference/setup_scenarios_lookup.html</loc>
-  </url>
-  <url>
-    <loc>/reference/setup_scenarios_name.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ss3sim-deprecated.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ss3sim-package.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ss3sim_base.html</loc>
-  </url>
-  <url>
-    <loc>/reference/standardize_sampling_args.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ts_dat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/verify_input.html</loc>
-  </url>
-  <url>
-    <loc>/reference/verify_plot_arguments.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/introduction.html</loc></url>
+<url><loc>/articles/making-models.html</loc></url>
+<url><loc>/articles/modifying-models.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/add_colnames.html</loc></url>
+<url><loc>/reference/add_tv_parlines.html</loc></url>
+<url><loc>/reference/calculate_bias.html</loc></url>
+<url><loc>/reference/calculate_data_units.html</loc></url>
+<url><loc>/reference/calculate_re.html</loc></url>
+<url><loc>/reference/change_catch.html</loc></url>
+<url><loc>/reference/change_comp.html</loc></url>
+<url><loc>/reference/change_dat_bin.html</loc></url>
+<url><loc>/reference/change_data.html</loc></url>
+<url><loc>/reference/change_e.html</loc></url>
+<url><loc>/reference/change_em_binning.html</loc></url>
+<url><loc>/reference/change_f.html</loc></url>
+<url><loc>/reference/change_lcomp_constant.html</loc></url>
+<url><loc>/reference/change_o.html</loc></url>
+<url><loc>/reference/change_pop_bin.html</loc></url>
+<url><loc>/reference/change_q.html</loc></url>
+<url><loc>/reference/change_rec_devs.html</loc></url>
+<url><loc>/reference/change_recyear.html</loc></url>
+<url><loc>/reference/change_retro.html</loc></url>
+<url><loc>/reference/change_startyear.html</loc></url>
+<url><loc>/reference/change_tail_compression.html</loc></url>
+<url><loc>/reference/change_tv.html</loc></url>
+<url><loc>/reference/change_year.html</loc></url>
+<url><loc>/reference/check_data.html</loc></url>
+<url><loc>/reference/check_data_str_range.html</loc></url>
+<url><loc>/reference/check_eqlength.html</loc></url>
+<url><loc>/reference/check_forecast.html</loc></url>
+<url><loc>/reference/check_q.html</loc></url>
+<url><loc>/reference/clean_data.html</loc></url>
+<url><loc>/reference/codemctl.html</loc></url>
+<url><loc>/reference/codomctl.html</loc></url>
+<url><loc>/reference/codomdat.html</loc></url>
+<url><loc>/reference/convert_to_wide.html</loc></url>
+<url><loc>/reference/copy_ss3models.html</loc></url>
+<url><loc>/reference/create_em.html</loc></url>
+<url><loc>/reference/create_logo.html</loc></url>
+<url><loc>/reference/facet_form.html</loc></url>
+<url><loc>/reference/fill_across.html</loc></url>
+<url><loc>/reference/find_position.html</loc></url>
+<url><loc>/reference/get_bin.html</loc></url>
+<url><loc>/reference/get_compfit.html</loc></url>
+<url><loc>/reference/get_model_folder.html</loc></url>
+<url><loc>/reference/get_nll_components.html</loc></url>
+<url><loc>/reference/get_recdevs.html</loc></url>
+<url><loc>/reference/get_results_all.html</loc></url>
+<url><loc>/reference/get_results_derived.html</loc></url>
+<url><loc>/reference/get_results_iter.html</loc></url>
+<url><loc>/reference/get_results_mod.html</loc></url>
+<url><loc>/reference/get_results_scalar.html</loc></url>
+<url><loc>/reference/get_results_scenario.html</loc></url>
+<url><loc>/reference/get_results_timeseries.html</loc></url>
+<url><loc>/reference/get_scenarios.html</loc></url>
+<url><loc>/reference/get_sigmar.html</loc></url>
+<url><loc>/reference/get_success.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/lists2df.html</loc></url>
+<url><loc>/reference/make_df.html</loc></url>
+<url><loc>/reference/pipe.html</loc></url>
+<url><loc>/reference/plot_boxplot.html</loc></url>
+<url><loc>/reference/plot_cummean.html</loc></url>
+<url><loc>/reference/plot_lines.html</loc></url>
+<url><loc>/reference/plot_points.html</loc></url>
+<url><loc>/reference/plot_ss3sim.html</loc></url>
+<url><loc>/reference/profile_fmsy.html</loc></url>
+<url><loc>/reference/replace_x.html</loc></url>
+<url><loc>/reference/run_ss3sim.html</loc></url>
+<url><loc>/reference/sample_agecomp.html</loc></url>
+<url><loc>/reference/sample_calcomp.html</loc></url>
+<url><loc>/reference/sample_catch.html</loc></url>
+<url><loc>/reference/sample_comp.html</loc></url>
+<url><loc>/reference/sample_discard.html</loc></url>
+<url><loc>/reference/sample_dm.html</loc></url>
+<url><loc>/reference/sample_index.html</loc></url>
+<url><loc>/reference/sample_lcomp.html</loc></url>
+<url><loc>/reference/sample_lognormal.html</loc></url>
+<url><loc>/reference/sample_mlacomp.html</loc></url>
+<url><loc>/reference/sample_mn.html</loc></url>
+<url><loc>/reference/sample_wtatage.html</loc></url>
+<url><loc>/reference/scalar2list.html</loc></url>
+<url><loc>/reference/scalar_dat.html</loc></url>
+<url><loc>/reference/setup_bins.html</loc></url>
+<url><loc>/reference/setup_parallel.html</loc></url>
+<url><loc>/reference/setup_scenarios.html</loc></url>
+<url><loc>/reference/setup_scenarios_defaults.html</loc></url>
+<url><loc>/reference/setup_scenarios_fleet.html</loc></url>
+<url><loc>/reference/setup_scenarios_lookup.html</loc></url>
+<url><loc>/reference/setup_scenarios_name.html</loc></url>
+<url><loc>/reference/ss3sim-deprecated.html</loc></url>
+<url><loc>/reference/ss3sim-package.html</loc></url>
+<url><loc>/reference/ss3sim_base.html</loc></url>
+<url><loc>/reference/standardize_sampling_args.html</loc></url>
+<url><loc>/reference/ts_dat.html</loc></url>
+<url><loc>/reference/verify_input.html</loc></url>
+<url><loc>/reference/verify_plot_arguments.html</loc></url>
 </urlset>
+
