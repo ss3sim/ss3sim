@@ -71,8 +71,8 @@ create_em <- function(dir_in = system.file("extdata", "models", "cod-om", packag
   )
   dat_list <- inputs[["dat"]]
   ctl_list <- inputs[["ctl"]]
-  ctl_list$MainRdevYrFirst <- dat_list$Nages
-  ctl_list$recdev_early_start <- floor(dat_list$Nages * -0.5)
+  ctl_list$MainRdevYrFirst <- dat_list$styr + dat_list$Nages
+  ctl_list$recdev_early_start <- dat_list$styr + floor(dat_list$Nages * -0.5)
   ctl_list$recdev_early_phase <- abs(ctl_list$recdev_early_phase)
   ctl_list$recdev_phase <- abs(ctl_list$recdev_phase)
   ctl_list$last_early_yr_nobias_adj <- ifelse(
