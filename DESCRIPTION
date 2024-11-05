@@ -48,7 +48,7 @@ Imports:
     lifecycle,
     magrittr,
     purrr,
-    r4ss (>= 1.46.1),
+    r4ss (<= 1.49.3),
     rlang,
     stats,
     stringi,
