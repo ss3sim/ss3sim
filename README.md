@@ -184,7 +184,7 @@ contributions come in many forms, including but not limited to writing code,
 reporting issues, and creating examples and/or documentation.
 
 We strive to follow the [NMFS Fisheries Toolbox Contribution
-Guide](https://github.com/nmfs-fish-tools/Resources/blob/master/CONTRIBUTING.md).
+Guide](https://github.com/nmfs-fish-tools/Resources/blob/main/CONTRIBUTING.md).
 We also have included ss3sim-specific code contribution information in the
 [Developers page of the ss3sim
 wiki](https://github.com/ss3sim/ss3sim/wiki/developers). Note that these are
@@ -199,17 +199,12 @@ Note that contributors are expected to uphold the [code of conduct](#code-of-con
 
 This project and everyone participating in it is governed by the [NMFS
 Fisheries Toolbox Code of
-Conduct](https://github.com/nmfs-fish-tools/Resources/blob/master/CODE_OF_CONDUCT.md).
+Conduct](https://github.com/nmfs-fish-tools/Resources/blob/main/CODE_OF_CONDUCT.md).
 By participating, you are expected to uphold this code. Please report
 unacceptable behavior to
 [fisheries.toolbox@noaa.gov](mailto:fisheries.toolbox@noaa.gov). Note that the
 maintainers of ss3sim do not have access to this email account, so unacceptable
 behavior of maintainers can also be reported here.
-
-The NFMS Fisheries Toolbox Code of Conduct is adapted from the [Contributor
-Covenant][[homepage](https://www.contributor-covenant.org)], version 1.4,
-available at
-<https://www.contributor-covenant.org/version/1/4/code-of-conduct.html>.
 
 ### Disclaimer
 

@@ -3,8 +3,8 @@ missionstatement <- "simplify the steps needed to generate beautiful simulation 
 ```
 
 [admb]: https://www.admb-project.org/community/ "AD model builder project"
-[code-of-conduct]: https://github.com/nmfs-fish-tools/Resources/blob/master/CODE_OF_CONDUCT.md "Code of Conduct"
-[contributor-guidelines]: https://github.com/nmfs-fish-tools/Resources/blob/master/CONTRIBUTING.md "Contributor guidelines"
+[code-of-conduct]: https://github.com/nmfs-fish-tools/Resources/blob/main/CODE_OF_CONDUCT.md "Code of Conduct"
+[contributor-guidelines]: https://github.com/nmfs-fish-tools/Resources/blob/main/CONTRIBUTING.md "Contributor guidelines"
 [devtools]: https://devtools.r-lib.org/ "devtools R package"
 [discussions]: https://github.com/ss3sim/ss3sim/discussions "ss3sim Discussions on GitHub"
 [ggplot2]: https://ggplot2.tidyverse.org/ "ggplot2 documentation"
