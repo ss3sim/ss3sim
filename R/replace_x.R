@@ -45,8 +45,8 @@
 #' )
 #' # Meat of the example here!
 #' \dontrun{
-#' do.call(rbind, lapply(employees, rbind)) %>%
-#'   data.frame() %>%
+#' do.call(rbind, lapply(employees, rbind)) |>
+#'   data.frame() |>
 #'   purrr::modify_depth(2, replace_x)
 #' }
 #'
