@@ -23,11 +23,11 @@ get_scenarios <- function(directory = getwd(),
     directory <- unlist(directory)
   }
   paths <- fs::dir_ls(directory, type = "directory", recurse = TRUE)
-  scenarios <- paths[grepl("[0-9].[eo]m$", paths)] %>%
+  scenarios <- paths[grepl("[0-9].[eo]m$", paths)] |>
     gsub(
       pattern = "[0-9]{1,+}/[eo]m$",
       replacement = ""
-    ) %>%
+    ) |>
     unique()
 
   if (length(scenarios) == 0) {

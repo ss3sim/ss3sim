@@ -46,9 +46,8 @@ Imports:
     grDevices,
     gtools,
     lifecycle,
-    magrittr,
     purrr,
-    r4ss (<= 1.49.3),
+    r4ss,
     rlang,
     stats,
     stringi,
@@ -63,8 +62,6 @@ Suggests:
     testthat
 VignetteBuilder: 
     knitr
-Remotes: 
-    github::r4ss/r4ss@main
 Encoding: UTF-8
 Language: en-US
 LazyData: true

@@ -76,10 +76,10 @@ sample_discard <- function(dat_list,
       "\nThus, these expected values are not available."
     )
   }
-  new <- xxx %>%
-    dplyr::arrange(.data[["Flt"]], .data[["Yr"]], .data[["Seas"]]) %>%
-    dplyr::rowwise() %>%
-    dplyr::mutate(Discard = sample_lognormal(.data[["obsOLD"]], .data[["Std_in"]])) %>%
+  new <- xxx |>
+    dplyr::arrange(.data[["Flt"]], .data[["Yr"]], .data[["Seas"]]) |>
+    dplyr::rowwise() |>
+    dplyr::mutate(Discard = sample_lognormal(.data[["obsOLD"]], .data[["Std_in"]])) |>
     dplyr::select(.data[["Yr"]]:.data[["Flt"]], .data[["Discard"]], .data[["Std_in"]])
 
   ## Open the .dat file and find the right lines to overwrite
