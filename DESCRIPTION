@@ -63,7 +63,7 @@ Suggests:
 VignetteBuilder: 
     knitr
 Remotes: 
-    github::r4ss/r4ss@main
+    github::r4ss/r4ss@1.49.3
 Encoding: UTF-8
 Language: en-US
 LazyData: true
