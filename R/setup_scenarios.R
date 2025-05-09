@@ -200,12 +200,12 @@ setup_scenarios <- function(df = "default",
   # with dplyr and purrr, this is ugly and will eventually be removed
   # after time to just use tibbles that can be more easily accessed.
   if (returntype == "list") {
-    out <- scenarios %>%
-      dplyr::ungroup() %>%
-      dplyr::mutate(value = purrr::map(.data[["value"]], ~ replace_x(.x))) %>%
-      dplyr::mutate(value = stats::setNames(.data[["value"]], .data[["label"]])) %>%
-      dplyr::group_by(.data[["rowname"]], .data[["type"]]) %>%
-      tidyr::nest() %>%
+    out <- scenarios |>
+      dplyr::ungroup() |>
+      dplyr::mutate(value = purrr::map(.data[["value"]], ~ replace_x(.x))) |>
+      dplyr::mutate(value = stats::setNames(.data[["value"]], .data[["label"]])) |>
+      dplyr::group_by(.data[["rowname"]], .data[["type"]]) |>
+      tidyr::nest() |>
       dplyr::summarize(value = purrr::map(
         .x = .data[["data"]], ~ {
           xxx <- base::split(.x$value, .x$arg)
@@ -223,12 +223,12 @@ setup_scenarios <- function(df = "default",
           }
           return(xxx)
         }
-      )) %>%
-      dplyr::ungroup() %>%
-      dplyr::mutate(value = stats::setNames(.data[["value"]], .data[["type"]])) %>%
-      dplyr::select(-.data[["type"]]) %>%
-      dplyr::group_by(.data[["rowname"]]) %>%
-      tidyr::nest() %>%
+      )) |>
+      dplyr::ungroup() |>
+      dplyr::mutate(value = stats::setNames(.data[["value"]], .data[["type"]])) |>
+      dplyr::select(-.data[["type"]]) |>
+      dplyr::group_by(.data[["rowname"]]) |>
+      tidyr::nest() |>
       dplyr::summarize(out = purrr::lmap(.data[["data"]], ~ do.call(as.list, .x)))
     return(stats::setNames(out$out, out$rowname))
   }
@@ -308,7 +308,7 @@ setup_scenarios_defaults <- function(nscenarios = 1) {
     sa.years.2 = "seq(62, 100, by = 2)",
     sa.cpar = "NULL",
     stringsAsFactors = FALSE
-  ) %>%
+  ) |>
     dplyr::slice(rep(1:dplyr::n(), each = nscenarios))
 }
 
