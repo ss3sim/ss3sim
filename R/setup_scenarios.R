@@ -308,7 +308,7 @@ setup_scenarios_defaults <- function(nscenarios = 1) {
     sa.years.2 = "seq(62, 100, by = 2)",
     sa.cpar = "NULL",
     stringsAsFactors = FALSE
-  ) %>%
+  ) |>
     dplyr::slice(rep(1:dplyr::n(), each = nscenarios))
 }
 
