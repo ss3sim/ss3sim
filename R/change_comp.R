@@ -58,9 +58,9 @@ change_comp <- function(dat_list,
     # Not really joining at all if no columns match
     by = character(),
     # Data frame from parameter list
-    tibble::as_tibble(paramlist) %>%
-      dplyr::select(-dplyr::matches("cpar|Nsamp")) %>%
-      dplyr::rename_all(tolower) %>%
+    tibble::as_tibble(paramlist) |>
+      dplyr::select(-dplyr::matches("cpar|Nsamp")) |>
+      dplyr::rename_all(tolower) |>
       dplyr::distinct(),
     # Default, behind-the-scenes data frame
     data.frame(
@@ -69,15 +69,15 @@ change_comp <- function(dat_list,
       part = 0,
       nsamp = 10
     )
-  ) %>%
+  ) |>
     # Get rid of default columns if parameter list had them
-    dplyr::select(-dplyr::matches("\\.y")) %>%
-    dplyr::rename_all(~ gsub("\\.x", "", .x)) %>%
+    dplyr::select(-dplyr::matches("\\.y")) |>
+    dplyr::rename_all(~ gsub("\\.x", "", .x)) |>
     dplyr::rename(
       Yr = dplyr::matches("years"),
       FltSvy = dplyr::matches("fleets")
-    ) %>%
-    dplyr::rename_all(~ gsub("(^[a-z]{1})", "\\U\\1", .x, perl = TRUE)) %>%
+    ) |>
+    dplyr::rename_all(~ gsub("(^[a-z]{1})", "\\U\\1", .x, perl = TRUE)) |>
     dplyr::relocate(dplyr::any_of(c(
       "Yr",
       "Seas",
@@ -85,7 +85,7 @@ change_comp <- function(dat_list,
       "Gender",
       "Part",
       "Nsamp"
-    ))) %>%
+    ))) |>
     # Make all combinations by fleet
     tidyr::unnest(dplyr::everything())
 
@@ -101,12 +101,12 @@ change_comp <- function(dat_list,
 
     final <- change_dat_bin(out, setup_bins(lbin_vector, nsex = nsex, leader = "l"))
 
-    dat_list[["lencomp"]] <- dplyr::bind_rows(old, final) %>%
-      dplyr::distinct(.keep_all = TRUE) %>%
+    dat_list[["lencomp"]] <- dplyr::bind_rows(old, final) |>
+      dplyr::distinct(.keep_all = TRUE) |>
       dplyr::mutate(dplyr::across(
         dplyr::matches("[bflm][0-9]"),
         ~ tidyr::replace_na(.x, 1)
-      )) %>%
+      )) |>
       as.data.frame()
     dat_list[["lbin_vector"]] <- lbin_vector
     dat_list[["N_lencomp"]] <- NROW(dat_list[["lencomp"]])
@@ -116,9 +116,9 @@ change_comp <- function(dat_list,
   ## Age data
   if (type %in% c("age", "cal")) {
     if (type == "age") {
-      old <- dat_list[["agecomp"]] %>% dplyr::filter(.data[["Lbin_lo"]] > 0)
+      old <- dat_list[["agecomp"]] |> dplyr::filter(.data[["Lbin_lo"]] > 0)
     } else {
-      old <- dat_list[["agecomp"]] %>% dplyr::filter(.data[["Lbin_lo"]] <= -1)
+      old <- dat_list[["agecomp"]] |> dplyr::filter(.data[["Lbin_lo"]] <= -1)
     }
 
     if (type == "cal") {
@@ -129,8 +129,8 @@ change_comp <- function(dat_list,
 
     if (nsex == 2 & type == "cal") {
       # todo: determine what we want to do about Gender for CAAL
-      female <- final %>% dplyr::mutate(Gender = 1)
-      male <- final %>% dplyr::mutate(Gender = 2)
+      female <- final |> dplyr::mutate(Gender = 1)
+      male <- final |> dplyr::mutate(Gender = 2)
       final <- rbind(female, male)
     }
     # todo: get rid of join warning
@@ -138,19 +138,19 @@ change_comp <- function(dat_list,
       by = colnames(final),
       old,
       final
-    ) %>%
+    ) |>
       dplyr::mutate(dplyr::across(
         dplyr::matches("[abflm][0-9]"),
         ~ tidyr::replace_na(.x, 1)
-      )) %>%
+      )) |>
       dplyr::mutate(dplyr::across(
         dplyr::starts_with("Lbin"),
         ~ tidyr::replace_na(.x, -1)
-      )) %>%
+      )) |>
       dplyr::mutate(dplyr::across(
         dplyr::starts_with("Age"),
         ~ tidyr::replace_na(.x, 1)
-      )) %>%
+      )) |>
       as.data.frame()
     dat_list[["N_agecomp"]] <- NROW(dat_list[["agecomp"]])
     dat_list[["agebin_vector"]] <- agebin_vector

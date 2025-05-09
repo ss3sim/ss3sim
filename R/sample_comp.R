@@ -86,9 +86,9 @@ sample_comp <- function(data,
   new <- dplyr::bind_cols(tibble::tibble(FltSvy = fleets), tibble::tibble(
     Yr = years,
     newN = Nsamp, ESS = ESS, cpar = cpar, ...
-  )) %>%
-    dplyr::rowwise() %>%
-    tidyr::unnest(dplyr::everything()) %>%
+  )) |>
+    dplyr::rowwise() |>
+    tidyr::unnest(dplyr::everything()) |>
     dplyr::bind_rows()
   colnames(new) <- gsub("part", "Part", colnames(new))
   colnames(new) <- gsub("seas", "Seas", colnames(new))
@@ -102,8 +102,8 @@ sample_comp <- function(data,
     x = data,
     y = new,
     by = stats::na.omit(colnames(new)[match(colnames(data), colnames(new))])
-  ) %>%
-    dplyr::rowwise() %>%
+  ) |>
+    dplyr::rowwise() |>
     dplyr::mutate(
       comp = dplyr::case_when(
         is.na(.data[["cpar"]]) ~ list(sample_mn(
@@ -119,7 +119,7 @@ sample_comp <- function(data,
         is.na(.data[["cpar"]]) ~ .data[["newN"]],
         is.numeric(.data[["cpar"]]) ~ .data[["newN"]] / .data[["cpar"]]^2
       )
-    ) %>%
+    ) |>
     dplyr::select(
       1:(dplyr::matches("Nsamp") - 1),
       Nsamp = .data[[ifelse(useESS, "ESS", "ncalc")]],
@@ -130,7 +130,7 @@ sample_comp <- function(data,
     cbind(
       dplyr::select(all, -comp),
       do.call("rbind", all$comp)
-    ) %>%
+    ) |>
       `colnames<-`(colnames(data))
   )
 }
