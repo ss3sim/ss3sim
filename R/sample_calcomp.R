@@ -229,9 +229,9 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
       Nsamp_ages = Nsamp_ages, ESS_lengths = ESS_lengths,
       ESS_ages = ESS_ages, ...
     )
-  ) %>%
-    dplyr::rowwise() %>%
-    tidyr::unnest(dplyr::everything()) %>%
+  ) |>
+    dplyr::rowwise() |>
+    tidyr::unnest(dplyr::everything()) |>
     dplyr::bind_rows()
   colnames(new) <- gsub("part", "Part", colnames(new))
   colnames(new) <- gsub("seas", "Seas", colnames(new))

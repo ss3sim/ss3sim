@@ -157,7 +157,7 @@ test_that("sample_agecomp runs and changes values", {
     ESS = NULL
   )
   expect_equivalent(
-    new_dat_d[["agecomp"]] %>% dplyr::group_by(.data[["FltSvy"]]) %>%
+    new_dat_d[["agecomp"]] |> dplyr::group_by(.data[["FltSvy"]]) |>
       dplyr::summarize(dplyr::n()),
     tibble::tibble(1:2, 11:10)
   )
@@ -174,7 +174,7 @@ test_that("sample_agecomp runs and changes values", {
     Part = list(1, 0)
   )
   expect_equivalent(
-    new_dat_d[["agecomp"]] %>% dplyr::group_by(.data[["Part"]]) %>%
+    new_dat_d[["agecomp"]] |> dplyr::group_by(.data[["Part"]]) |>
       dplyr::summarize(dplyr::n()),
     tibble::tibble(0:1, 11:10)
   )

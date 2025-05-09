@@ -1,6 +1,5 @@
 # Tests are skipped on CRAN because the Stock Synthesis executable is no available.
 
-library(magrittr)
 temp_path <- file.path(tempdir(), "run-ss3sim-test")
 dir.create(temp_path, showWarnings = FALSE)
 wd <- getwd()
@@ -42,10 +41,10 @@ test_that("A season-specific data file looks right.", {
     paramlist = slist[[1]][["lcomp_params"]]
   )
   expect_equivalent(
-    tibble::as_tibble(slist[[1]][["lcomp_params"]][c("fleets", "seas", "years")]) %>%
-      dplyr::mutate(years = lapply(years, length)) %>% data.frame(),
-    newdat[["lencomp"]] %>% dplyr::group_by(FltSvy, Seas) %>%
-      dplyr::summarize(n = dplyr::n(), .groups = "keep") %>%
+    tibble::as_tibble(slist[[1]][["lcomp_params"]][c("fleets", "seas", "years")]) |>
+      dplyr::mutate(years = lapply(years, length)) |> data.frame(),
+    newdat[["lencomp"]] |> dplyr::group_by(FltSvy, Seas) |>
+      dplyr::summarize(n = dplyr::n(), .groups = "keep") |>
       data.frame()
   )
 })
@@ -77,15 +76,15 @@ test_that("Specifying season and part works.", {
   )
   sumt <- tibble::as_tibble(
     slist[[1]][["lcomp_params"]][c("part", "seas")]
-  ) %>%
-    tidyr::unnest(dplyr::everything()) %>%
-    table() %>%
+  ) |>
+    tidyr::unnest(dplyr::everything()) |>
+    table() |>
     data.frame()
   expect_equivalent(
     subset(sumt, Freq > 0)[["Freq"]],
-    newdat[["lencomp"]] %>% dplyr::group_by(Part, FltSvy, Seas) %>%
-      dplyr::summarize(n = dplyr::n(), .groups = "keep") %>%
-      data.frame() %>% dplyr::pull(n)
+    newdat[["lencomp"]] |> dplyr::group_by(Part, FltSvy, Seas) |>
+      dplyr::summarize(n = dplyr::n(), .groups = "keep") |>
+      data.frame() |> dplyr::pull(n)
   )
 })
 test_that("Repeat some years for each part.", {
@@ -117,14 +116,14 @@ test_that("Repeat some years for each part.", {
   )
   sumt <- tibble::as_tibble(
     slist[[1]][["lcomp_params"]][c("seas", "part")]
-  ) %>%
-    tidyr::unnest(dplyr::everything()) %>%
-    table() %>%
+  ) |>
+    tidyr::unnest(dplyr::everything()) |>
+    table() |>
     data.frame()
   expect_equivalent(
     subset(sumt, Freq > 0)[["Freq"]],
-    newdat[["lencomp"]] %>% dplyr::group_by(Seas, Part) %>%
-      dplyr::summarize(n = dplyr::n(), .groups = "keep") %>%
+    newdat[["lencomp"]] |> dplyr::group_by(Seas, Part) |>
+      dplyr::summarize(n = dplyr::n(), .groups = "keep") |>
       dplyr::pull(n)
   )
 })
@@ -164,8 +163,8 @@ test_that("Survey with all months runs", {
   expect_equal(min(ssom[["cpue"]][, "Yr"]), 26)
   expect_equal(max(ssom[["cpue"]][, "Yr"]), 100)
   expect_equivalent(
-    ssom[["cpue"]] %>%
-      dplyr::arrange(.data[["Fleet_name"]], .data[["Yr"]], .data[["Month"]]) %>%
+    ssom[["cpue"]] |>
+      dplyr::arrange(.data[["Fleet_name"]], .data[["Yr"]], .data[["Month"]]) |>
       dplyr::select(.data[["Month"]]),
     data.frame(eval(expr = parse(text = df[, "si.seas.2"])))
   )

@@ -57,10 +57,10 @@ setup_scenarios_fleet <- function(data) {
   }
 
   # Remove fleets that have an NA, which means they weren't sampled
-  removedfleets <- data %>%
-    dplyr::filter(is.na(.data[["value"]])) %>%
+  removedfleets <- data |>
+    dplyr::filter(is.na(.data[["value"]])) |>
     dplyr::pull(.data[["fleet"]])
-  data <- data %>% dplyr::filter(!.data[["fleet"]] %in% removedfleets)
+  data <- data |> dplyr::filter(!.data[["fleet"]] %in% removedfleets)
   #### Make data
   # Create a full data set providing one argument for each fleet
   fleet <- NULL # To remove "no visible binding for global variable 'fleet'"
@@ -72,15 +72,15 @@ setup_scenarios_fleet <- function(data) {
       .data[["arg"]],
       # see https://github.com/tidyverse/tidyr/issues/971 for why .data[["fleet"]] can't be used
       tidyr::nesting(fleet)
-    ) %>%
+    ) |>
       # Remove the rows that aren't fleet-specific
       tidyr::drop_na(.data[["fleet"]])
-  ) %>%
+  ) |>
     # Arrange and group so fill up works
-    dplyr::arrange(.data[["arg"]], .data[["fleet"]]) %>%
-    dplyr::group_by(.data[["arg"]]) %>%
-    tidyr::fill(.data[["value"]], .direction = "up") %>%
-    dplyr::ungroup() %>%
+    dplyr::arrange(.data[["arg"]], .data[["fleet"]]) |>
+    dplyr::group_by(.data[["arg"]]) |>
+    tidyr::fill(.data[["value"]], .direction = "up") |>
+    dplyr::ungroup() |>
     tidyr::drop_na(.data[["fleet"]])
 
   # If no new data then return the old data
@@ -93,8 +93,8 @@ setup_scenarios_fleet <- function(data) {
         by = colnames(newdata),
         newdata,
         data
-      ) %>%
-        dplyr::select(-.data[["data"]]) %>%
+      ) |>
+        dplyr::select(-.data[["data"]]) |>
         dplyr::full_join(
           by = c("label", "arg", "value"),
           tibble::tibble(
@@ -102,8 +102,8 @@ setup_scenarios_fleet <- function(data) {
             arg = "fleets",
             value = list(utils::type.convert(
               as.is = TRUE,
-              data %>% tidyr::drop_na(.data[["fleet"]]) %>%
-                dplyr::distinct(.data[["fleet"]]) %>% dplyr::pull(.data[["fleet"]])
+              data |> tidyr::drop_na(.data[["fleet"]]) |>
+                dplyr::distinct(.data[["fleet"]]) |> dplyr::pull(.data[["fleet"]])
             ))
           )
         )
@@ -143,24 +143,24 @@ setup_scenarios <- function(df = "default",
   if (all(!grepl("^em_*", names(df)))) {
     df[["em_dir"]] <- setup_em_dir()
   }
-  scenarios <- df %>%
+  scenarios <- df |>
     # Use rownames to track scenarios
-    tibble::rownames_to_column() %>%
+    tibble::rownames_to_column() |>
     # evaluate all arguments, e.g., '1:4' to 1,2,3,4
     dplyr::mutate(dplyr::across(
       dplyr::everything(),
       ~ purrr::map(.x, text2obj)
-    )) %>%
+    )) |>
     # wide to long by scenario
     tidyr::pivot_longer(
       !.data[["rowname"]],
       names_to = "label",
       values_to = "value"
-    ) %>%
+    ) |>
     # change NULL to -999 b/c NULL has a zero length
     # dplyr::mutate(
     #   value = map(value, ~replace_x(.x, -999))
-    # ) %>%
+    # ) |>
     # Split name into columns
     tidyr::separate(
       col = .data[["label"]],
@@ -168,20 +168,20 @@ setup_scenarios <- function(df = "default",
       sep = "\\.",
       fill = "right",
       remove = FALSE
-    ) %>%
+    ) |>
     # Create one row per data type for each scenario
-    dplyr::group_by(.data[["rowname"]], .data[["type"]]) %>%
-    tidyr::nest() %>%
+    dplyr::group_by(.data[["rowname"]], .data[["type"]]) |>
+    tidyr::nest() |>
     # Duplicate info by fleet
-    dplyr::mutate(data = purrr::map(.data[["data"]], setup_scenarios_fleet)) %>%
+    dplyr::mutate(data = purrr::map(.data[["data"]], setup_scenarios_fleet)) |>
     # Bring everything back together as a list of lists
-    tidyr::unnest(.data[["data"]]) %>%
-    dplyr::ungroup() %>%
+    tidyr::unnest(.data[["data"]]) |>
+    dplyr::ungroup() |>
     tidyr::unite(
       col = "label", .data[["type"]], .data[["arg"]], .data[["fleet"]],
       sep = ".", na.rm = TRUE, remove = FALSE
-    ) %>%
-    dplyr::mutate(type = purrr::map_chr(.data[["type"]], ~ setup_scenarios_lookup()[.x])) %>%
+    ) |>
+    dplyr::mutate(type = purrr::map_chr(.data[["type"]], ~ setup_scenarios_lookup()[.x])) |>
     dplyr::arrange(.data[["type"]], .data[["arg"]], as.numeric(.data[["fleet"]]))
   # check for NA or NULL values
   labs_with_null_or_nas <- scenarios$label[unlist(lapply(
@@ -200,12 +200,12 @@ setup_scenarios <- function(df = "default",
   # with dplyr and purrr, this is ugly and will eventually be removed
   # after time to just use tibbles that can be more easily accessed.
   if (returntype == "list") {
-    out <- scenarios %>%
-      dplyr::ungroup() %>%
-      dplyr::mutate(value = purrr::map(.data[["value"]], ~ replace_x(.x))) %>%
-      dplyr::mutate(value = stats::setNames(.data[["value"]], .data[["label"]])) %>%
-      dplyr::group_by(.data[["rowname"]], .data[["type"]]) %>%
-      tidyr::nest() %>%
+    out <- scenarios |>
+      dplyr::ungroup() |>
+      dplyr::mutate(value = purrr::map(.data[["value"]], ~ replace_x(.x))) |>
+      dplyr::mutate(value = stats::setNames(.data[["value"]], .data[["label"]])) |>
+      dplyr::group_by(.data[["rowname"]], .data[["type"]]) |>
+      tidyr::nest() |>
       dplyr::summarize(value = purrr::map(
         .x = .data[["data"]], ~ {
           xxx <- base::split(.x$value, .x$arg)
@@ -223,12 +223,12 @@ setup_scenarios <- function(df = "default",
           }
           return(xxx)
         }
-      )) %>%
-      dplyr::ungroup() %>%
-      dplyr::mutate(value = stats::setNames(.data[["value"]], .data[["type"]])) %>%
-      dplyr::select(-.data[["type"]]) %>%
-      dplyr::group_by(.data[["rowname"]]) %>%
-      tidyr::nest() %>%
+      )) |>
+      dplyr::ungroup() |>
+      dplyr::mutate(value = stats::setNames(.data[["value"]], .data[["type"]])) |>
+      dplyr::select(-.data[["type"]]) |>
+      dplyr::group_by(.data[["rowname"]]) |>
+      tidyr::nest() |>
       dplyr::summarize(out = purrr::lmap(.data[["data"]], ~ do.call(as.list, .x)))
     return(stats::setNames(out$out, out$rowname))
   }
@@ -308,7 +308,7 @@ setup_scenarios_defaults <- function(nscenarios = 1) {
     sa.years.2 = "seq(62, 100, by = 2)",
     sa.cpar = "NULL",
     stringsAsFactors = FALSE
-  ) %>%
+  ) |>
     dplyr::slice(rep(1:dplyr::n(), each = nscenarios))
 }
 

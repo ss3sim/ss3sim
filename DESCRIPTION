@@ -36,7 +36,7 @@ License: MIT + file LICENSE
 URL: https://github.com/ss3sim/ss3sim
 BugReports: https://github.com/ss3sim/ss3sim/issues
 Depends:
-    R (>= 4.0)
+    R (>= 4.1.0)
 Imports:
     cli,
     dplyr,
@@ -46,7 +46,6 @@ Imports:
     grDevices,
     gtools,
     lifecycle,
-    magrittr,
     purrr,
     r4ss (<= 1.49.3),
     rlang,
