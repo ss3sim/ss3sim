@@ -19,22 +19,22 @@ test_that("clean_data is working for index, age comp, and length comp", {
   )
   expect_false(nrow(new_dat$lencomp) == nrow(dat$lencomp))
   expect_false(nrow(new_dat$agecomp) == nrow(dat$agecomp))
-  expect_equal(sort(new_dat$lencomp$Yr), sort(lcomp_params$years[[1]]))
-  expect_equal(sort(new_dat$agecomp$Yr), sort(agecomp_params$years[[1]]))
+  expect_equal(sort(new_dat$lencomp$year), sort(lcomp_params$years[[1]]))
+  expect_equal(sort(new_dat$agecomp$year), sort(agecomp_params$years[[1]]))
 })
 
 test_that("clean_dat is working for mean size at age (mla_comp)", {
   # create some mla data to add to the data.
   dat$use_MeanSize_at_Age_obs <- 1
   dat$MeanSize_at_Age_obs <- data.frame(
-    Yr = 1:10,
-    Seas = 1,
-    FltSvy = c(
+    year = 1:10,
+    month = 1,
+    fleet = c(
       rep(1, times = 5),
       rep(2, times = 5)
     ),
-    Gender = 3,
-    Part = 0,
+    sex = 3,
+    part = 0,
     AgeErr = 1,
     Ignore = 2,
     f1 = 30, f2 = 40,
@@ -46,8 +46,8 @@ test_that("clean_dat is working for mean size at age (mla_comp)", {
     mlacomp_params = mlacomp_params
   )
   expect_false(nrow(new_dat$MeanSize_at_Age_obs) == nrow(dat$MeanSize_at_Age_obs))
-  expect_equal(sort(new_dat$MeanSize_at_Age_obs$Yr), sort(mlacomp_params$years[[1]]))
-  expect_equal(new_dat$N_MeanSize_at_Age_obs, length(new_dat$MeanSize_at_Age_obs$Yr))
+  expect_equal(sort(new_dat$MeanSize_at_Age_obs$year), sort(mlacomp_params$years[[1]]))
+  expect_equal(new_dat$N_MeanSize_at_Age_obs, length(new_dat$MeanSize_at_Age_obs$year))
 })
 
 test_that("clean_dat works for conditional age at length", {
@@ -63,13 +63,13 @@ test_that("clean_dat works for conditional age at length", {
   new_dat <- clean_data(data_CAL,
     calcomp_params = calcomp_params
   )
-  expect_true(all(new_dat$agecomp$Yr %in% unlist(calcomp_params$years)))
-  expect_true(all(new_dat$agecomp$FltSvy %in% unlist(calcomp_params$fleets)))
-  expect_true(length(new_dat$agecomp$Yr) ==
+  expect_true(all(new_dat$agecomp$year %in% unlist(calcomp_params$years)))
+  expect_true(all(new_dat$agecomp$fleet %in% unlist(calcomp_params$fleets)))
+  expect_true(length(new_dat$agecomp$year) ==
     length(unlist(calcomp_params$years)) *
       length(unlist(calcomp_params$fleets)))
-  expect_true(all(new_dat$lencomp$Yr %in% unlist(calcomp_params$years)))
-  expect_true(all(new_dat$lencomp$FltSvy %in% calcomp_params$fleets))
+  expect_true(all(new_dat$lencomp$year %in% unlist(calcomp_params$years)))
+  expect_true(all(new_dat$lencomp$fleet %in% calcomp_params$fleets))
 })
 
 test_that("clean_data is working for calcomp and length comp used together", {
@@ -77,9 +77,9 @@ test_that("clean_data is working for calcomp and length comp used together", {
     calcomp_params = calcomp_params,
     lcomp_params = lcomp_params
   )
-  expect_true(length(new_dat$lencomp$Yr) == 8) # not a generic test. only works if calcomp and lencomp do not include any of the same fleets and years.
-  expect_true(all(new_dat$lencomp$Yr %in% c(unlist(calcomp_params$years), unlist(lcomp_params$years))))
-  expect_true(all(new_dat$lencomp$FltSvy %in% c(calcomp_params$fleets, lcomp_params$fleets)))
+  expect_true(length(new_dat$lencomp$year) == 8) # not a generic test. only works if calcomp and lencomp do not include any of the same fleets and years.
+  expect_true(all(new_dat$lencomp$year %in% c(unlist(calcomp_params$years), unlist(lcomp_params$years))))
+  expect_true(all(new_dat$lencomp$fleet %in% c(calcomp_params$fleets, lcomp_params$fleets)))
 
   # test if still works when the cal comp params and len comp params occur for same fleets and years
   lcomp_params_2 <- calcomp_params
@@ -87,9 +87,9 @@ test_that("clean_data is working for calcomp and length comp used together", {
     calcomp_params = calcomp_params,
     lcomp_params = lcomp_params_2
   )
-  expect_true(length(new_dat$lencomp$Yr) == 2)
-  expect_true(all(new_dat$lencomp$Yr %in% c(unlist(calcomp_params$years), unlist(lcomp_params_2$years))))
-  expect_true(all(new_dat$lencomp$FltSvy %in% c(calcomp_params$fleets, lcomp_params_2$fleets)))
+  expect_true(length(new_dat$lencomp$year) == 2)
+  expect_true(all(new_dat$lencomp$year %in% c(unlist(calcomp_params$years), unlist(lcomp_params_2$years))))
+  expect_true(all(new_dat$lencomp$fleet %in% c(calcomp_params$fleets, lcomp_params_2$fleets)))
 })
 
 test_that("clean_data fails when r4ss list object not used", {

@@ -11,7 +11,8 @@ sample_index(
   years,
   sds_obs = list(0.01),
   sds_out,
-  seas = list(1)
+  seas = lifecycle::deprecated(),
+  month = list(1)
 )
 }
 \arguments{
@@ -38,19 +39,21 @@ fleet specified in \code{fleets}. The function assumes that the information for
 the first fleet specified in \code{fleets} will be the first object in the list
 and so on so order matters here.}
 
-\item{sds_obs, sds_out, seas}{A list the same length as \code{fleets} specifying the
+\item{sds_obs, sds_out, month}{A list the same length as \code{fleets} specifying the
 standard deviation of the observation error used for the sampling; the
 standard deviation of the observation error you would like listed in the
 returned output, which might not always equal what was actually used for
-sampling; and the seasons you want to sample from. Each list element
+sampling; and the months you want to sample from. Each list element
 should contain a single numeric value or a vector, where vectors need to
 match the structure of \code{years} for the relevant fleet. If single values
 are passed, then, internally, they will be repeated for each year. If you
 want to repeat a single value for every year and fleet combination, then
-just pass it as a list with one entry, e.g., \code{seas = list(1)} will sample
-from season one for all fleets and years --- this is the default for
-season. The default for \code{sds_obs} is 0.01 and if \code{sds_out} is missing,
+just pass it as a list with one entry, e.g., \code{month = list(1)} will sample
+from month one for all fleets and years --- this is the default for
+month. The default for \code{sds_obs} is 0.01 and if \code{sds_out} is missing,
 then \code{sds_obs} will be used for the output as well as the input.}
+
+\item{seas}{A deprecated argument.}
 }
 \value{
 A Stock Synthesis data file list object is returned. The object will be a
@@ -60,7 +63,7 @@ modified version of \code{dat_list}.
 Create new catch-per-unit-effort (CPUE)/indices of abundance that are
 based on the numbers in a data file. Typically the data file will be filled
 with expected values rather than observed data but it does not have to be.
-Sampling can only occur on fleets, years, and seasons that have current
+Sampling can only occur on fleets, years, and months that have current
 observations. If rows of information are not sampled from, then they are
 removed. So, you can take away rows of data but you cannot add them with
 this function.
@@ -71,11 +74,11 @@ Limitations to the functionality of this function are as follows:
 \item you can only generate observations from rows of data that are present,
 e.g., you cannot make a new observation for a year that is not present in
 the passed data file;
-\item no warning will be given if some of the desired year, seas, fleet
+\item no warning will be given if some of the desired year, month, fleet
 combinations are available but not all, instead just the combinations
 that are available will be returned in the data list object; and
 \item sampling uses a log-normal distribution when the log-normal distribution
-is specified in \code{CPUEinfo[["Errtype"]]} and a normal distribution for all
+is specified in \code{CPUEinfo[["errtype"]]} and a normal distribution for all
 other error types, see below for details on the log-normal sampling.
 }
 
@@ -119,10 +122,9 @@ set.seed(3)
 # likelihood to be the furthest from the input data
 ex1 <- sample_index(
   dat_list,
-  outfile = NULL,
   fleets = 2,
-  seas = list(
-    dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "seas"]
+  month = list(
+    dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "month"]
   ),
   years = list(dat_list[["CPUE"]][["year"]]),
   sds_obs = list(
@@ -141,10 +143,9 @@ testthat::expect_equivalent(
 # Sample from less years, note that sampling from more years than what is
 # present in the data will not work
 ex2 <- sample_index(dat_list,
-  outfile = NULL,
   fleets = 2,
-  seas = list(unique(
-    dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "seas"]
+  month = list(unique(
+    dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "month"]
   )),
   years = list(dat_list[["CPUE"]][["year"]][-c(1:2)]),
   sds_obs = list(0.001)
@@ -156,8 +157,8 @@ ex2 <- sample_index(dat_list,
 ex3 <- sample_index(
   dat_list = dat_list,
   fleets = 2,
-  seas = list(unique(
-    dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "seas"]
+  month = list(unique(
+    dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "month"]
   )),
   years = list(dat_list[["CPUE"]][["year"]]),
   sds_obs = list(0.01),
@@ -170,13 +171,13 @@ dat_list2 <- dat_list
 dat_list2[["CPUE"]] <- rbind(
   dat_list[["CPUE"]],
   dat_list[["CPUE"]] |>
-    dplyr::mutate(index = 1, seas = 1)
+    dplyr::mutate(index = 1, month = 1)
 )
 dat_list2[["N_cpue"]] <- NROW(dat_list2[["CPUE"]])
 ex4 <- sample_index(
   dat_list = dat_list2,
   fleets = 1:2,
-  seas = list(1, 7),
+  month = list(1, 7),
   # Subset two years from each fleet
   years = list(c(76, 78), c(80, 82)),
   # Use the same sd values for both fleets

@@ -60,8 +60,8 @@ clean_data <- function(dat_list, lcomp_params = NULL,
     dat_list$lencomp <- do.call(
       rbind,
       lapply(seq_along(lcomp_params$fleets), function(i) {
-        a[a$FltSvy == lcomp_params$fleets[i] &
-          a$Yr %in% lcomp_params$years[[i]], ]
+        a[a$fleet == lcomp_params$fleets[i] &
+          a$year %in% lcomp_params$years[[i]], ]
       })
     )
     dat_list$N_lencomp <- NROW(dat_list$lencomp)
@@ -70,8 +70,8 @@ clean_data <- function(dat_list, lcomp_params = NULL,
     dat_list$lencomp <- do.call(
       rbind,
       lapply(seq_along(calcomp_params$fleets), function(i) {
-        a[a$FltSvy == calcomp_params$fleets[i] &
-          a$Yr %in% calcomp_params$years[[i]], ]
+        a[a$fleet == calcomp_params$fleets[i] &
+          a$year %in% calcomp_params$years[[i]], ]
       })
     )
     dat_list$N_lencomp <- NROW(dat_list$lencomp)
@@ -96,8 +96,8 @@ clean_data <- function(dat_list, lcomp_params = NULL,
     dat_list$lencomp <- do.call(
       rbind,
       lapply(seq_len(dat_list$Nfleets), function(i) {
-        a[a$FltSvy == i &
-          a$Yr %in% unlist(tmp_yrs[[i]]), ]
+        a[a$fleet == i &
+          a$year %in% unlist(tmp_yrs[[i]]), ]
       })
     )
     dat_list$N_lencomp <- NROW(dat_list$lencomp)
@@ -124,8 +124,8 @@ clean_data <- function(dat_list, lcomp_params = NULL,
       do.call(
         rbind,
         lapply(seq_along(mlacomp_params$fleets), function(i) {
-          a[a$FltSvy == mlacomp_params$fleets[i] &
-            a$Yr %in% mlacomp_params$years[[i]], ]
+          a[a$fleet == mlacomp_params$fleets[i] &
+            a$year %in% mlacomp_params$years[[i]], ]
         })
       )
     dat_list$N_MeanSize_at_Age_obs <- NROW(dat_list$MeanSize_at_Age_obs)
@@ -148,8 +148,8 @@ clean_data <- function(dat_list, lcomp_params = NULL,
       new.agecomp <- do.call(
         rbind,
         lapply(seq_along(agecomp_params$fleets), function(i) {
-          agecomp[agecomp$FltSvy == agecomp_params$fleets[i] &
-            agecomp$Yr %in% agecomp_params$years[[i]], ]
+          agecomp[agecomp$fleet == agecomp_params$fleets[i] &
+            agecomp$year %in% agecomp_params$years[[i]], ]
         })
       )
       new.calcomp <- NULL
@@ -158,15 +158,15 @@ clean_data <- function(dat_list, lcomp_params = NULL,
     new.agecomp <- do.call(
       rbind,
       lapply(seq_along(agecomp_params$fleets), function(i) {
-        agecomp[agecomp$FltSvy == agecomp_params$fleets[i] &
-          agecomp$Yr %in% agecomp_params$years[[i]], ]
+        agecomp[agecomp$fleet == agecomp_params$fleets[i] &
+          agecomp$year %in% agecomp_params$years[[i]], ]
       })
     )
     new.calcomp <- do.call(
       rbind,
       lapply(seq_along(calcomp_params$fleets), function(i) {
-        calcomp[calcomp$FltSvy == calcomp_params$fleets[i] &
-          calcomp$Yr %in% calcomp_params$years[[i]], ]
+        calcomp[calcomp$fleet == calcomp_params$fleets[i] &
+          calcomp$year %in% calcomp_params$years[[i]], ]
       })
     )
   } else if (is.null(agecomp_params$fleets) & !is.null(calcomp_params$fleets)) {
@@ -175,8 +175,8 @@ clean_data <- function(dat_list, lcomp_params = NULL,
     new.calcomp <- do.call(
       rbind,
       lapply(seq_along(calcomp_params$fleets), function(i) {
-        calcomp[calcomp$FltSvy == calcomp_params$fleets[i] &
-          calcomp$Yr %in% calcomp_params$years[[i]], ]
+        calcomp[calcomp$fleet == calcomp_params$fleets[i] &
+          calcomp$year %in% calcomp_params$years[[i]], ]
       })
     )
   }

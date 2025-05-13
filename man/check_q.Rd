@@ -29,7 +29,7 @@ stopifnot(check_q(ctl_list = codomctl, desiredfleets = 1)[["remove"]] == 2)
 # All elements of the returned list should be NULL
 # because the model only has two \eqn{q} parameters
 stopifnot(all(mapply(is.null, check_q(codomctl, desiredfleets = 1:2))))
-# Fleet 3 is not present
+# fleet 3 is not present
 stopifnot(check_q(codomctl, desiredfleets = 1:3)[["add"]] == 3)
 stopifnot(check_q(codomctl, desiredfleets = 2:3)[["remove"]] == 1)
 }

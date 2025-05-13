@@ -20,8 +20,8 @@ test_that("sample_index() works for 1 fleet", {
       dat_list = exp_vals,
       fleets = fleets,
       years = years,
-      seas = list(unique(
-        exp_vals[["CPUE"]][, "seas"]
+      month = list(unique(
+        exp_vals[["CPUE"]][, "month"]
       )),
       sds_obs = sds_obs
     )
@@ -54,8 +54,8 @@ test_that("sample_index() works for 1 fleet", {
       dat_list = exp_vals,
       fleets = NULL,
       years = years,
-      seas = list(unique(
-        exp_vals[["CPUE"]][, "seas"]
+      month = list(unique(
+        exp_vals[["CPUE"]][, "month"]
       )),
       sds_obs = sds_obs
     )

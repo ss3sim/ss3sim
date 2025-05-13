@@ -156,7 +156,7 @@
 #' replist <- r4ss::SS_output(file.path("D1-E0-F0-cod", 1, "em"),
 #'   verbose = FALSE, printstats = FALSE, covar = FALSE
 #' )
-#' testthat::expect_equivalent(replist[["cpue"]][, "Yr"], index1[["years"]][[1]])
+#' testthat::expect_equivalent(replist[["cpue"]][, "year"], index1[["years"]][[1]])
 #'
 #' test <- replist
 #' unlink("D1-E0-F0-cod", recursive = TRUE) # clean up
@@ -340,11 +340,11 @@ ss3sim_base <- function(iterations,
 
     datfile.modified <- datfile.orig
     ## OM: index
-    # todo: find a better way to check if seas exists
+    # todo: find a better way to check if month exists
     # maybe warn users that this default is being set for index & discard
     if (!is.null(index_params)) {
-      if (!any(grepl("seas", names(index_params), ignore.case = TRUE))) {
-        index_params[["seas"]] <- standardize_sampling_args(
+      if (!any(grepl("month", names(index_params), ignore.case = TRUE))) {
+        index_params[["month"]] <- standardize_sampling_args(
           index_params[["fleets"]], index_params[["years"]],
           other_input = list(1)
         )
@@ -354,7 +354,7 @@ ss3sim_base <- function(iterations,
         mapply(data.frame,
           SIMPLIFY = FALSE,
           year = index_params[["years"]],
-          seas = index_params[["seas"]],
+          month = index_params[["month"]],
           index = as.list(index_params[["fleets"]]),
           MoreArgs = list(obs = 1, se_log = 0.1)
         )
@@ -362,8 +362,8 @@ ss3sim_base <- function(iterations,
     }
     ## OM: discard
     if (!is.null(discard_params)) {
-      if (!any(grepl("seas", names(discard_params), ignore.case = TRUE))) {
-        discard_params[["seas"]] <- standardize_sampling_args(
+      if (!any(grepl("month", names(discard_params), ignore.case = TRUE))) {
+        discard_params[["month"]] <- standardize_sampling_args(
           index_params[["fleets"]], index_params[["years"]],
           other_input = list(1)
         )
@@ -372,10 +372,10 @@ ss3sim_base <- function(iterations,
         "rbind",
         mapply(data.frame,
           SIMPLIFY = FALSE,
-          Yr = discard_params[["years"]],
-          Seas = discard_params[["seas"]],
+          year = discard_params[["years"]],
+          month = discard_params[["month"]],
           Flt = as.list(discard_params[["fleets"]]),
-          MoreArgs = list(Discard = 1, Std_in = 0.1)
+          MoreArgs = list(Discard = 1, stderr = 0.1)
         )
       )
     }
@@ -473,7 +473,7 @@ ss3sim_base <- function(iterations,
     )
     if (!is.null(calcomp_params)) {
       params <- mapply(standardize_sampling_args,
-        other_input = calcomp_params[grep("Gender|Part|Age|years", names(calcomp_params))],
+        other_input = calcomp_params[grep("sex|part|Age|years", names(calcomp_params))],
         MoreArgs = list(
           fleets = calcomp_params$fleets,
           years = calcomp_params$years
@@ -491,8 +491,8 @@ ss3sim_base <- function(iterations,
     if (!is.null(mlacomp_params)) {
       # todo: fix this to use comp function
       # dummy_dat <- as.data.frame(do.call(lapply(fleets, function(fleet)
-      #     data.frame("Yr"   = years, "Seas" = 1, "Flt"  = fleet, "Gender" = 0,
-      #                "Part"   = 0, "AgeErr"=1, "Nsamp" = 10, stringsAsFactors = FALSE))))
+      #     data.frame("year"   = years, "month" = 1, "Flt"  = fleet, "sex" = 0,
+      #                "part"   = 0, "AgeErr"=1, "Nsamp" = 10, stringsAsFactors = FALSE))))
       # dummy_df <- data.frame(matrix(1, nrow=nrow(dummy_dat), ncol=length(age_bins)*2))
       # names(dummy_df) <- c(paste0("a", c(age_bins)), paste0("N", c(age_bins)))
       # datfile.modified$MeanSize_at_Age_obs <- cbind(dummy_dat, dummy_df)

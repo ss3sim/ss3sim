@@ -1,7 +1,7 @@
 #' Change catch in the Stock Synthesis data list
 #'
 #' Change catch in the data so at least all combinations of
-#' fleet, season, and year,
+#' fleet, month, and year,
 #' needed for catch are available.
 #' Equilibrium years are generated if
 #' there are equilibrium parameters in the control list.
@@ -11,7 +11,7 @@
 #' The start and end year of the resulting data list will be based on years
 #' with positive fishing mortality values, and
 #' equilibrium catches will be non-zero only if
-#' there is a equilibrium fishing mortality parameter for that fleet and season
+#' there is a equilibrium fishing mortality parameter for that fleet and month
 #' combination.
 #' @return A modified Stock Synthesis data file as a list in R.
 #' @seealso [change_f()] changes the fishing mortality, \eqn{F}, parameters
@@ -24,11 +24,17 @@
 change_catch <- function(dat_list,
                          ctl_list) {
   #### Pull out F values from control file
+  # Control file uses month instead of seas for column names
   newvals <- ctl_list[["F_setup2"]]
   colnames(newvals) <- tolower(colnames(newvals))
   colnames(newvals) <- gsub(
     pattern = "y[a-z]+",
     replacement = "year",
+    x = colnames(newvals)
+  )
+  colnames(newvals) <- gsub(
+    pattern = "month",
+    replacement = "seas",
     x = colnames(newvals)
   )
   newvals <- newvals[, c("year", "seas", "fleet")]

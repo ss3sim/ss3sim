@@ -1,20 +1,21 @@
 #' Sample the discard with observation error
 #'
 #' This function creates an index of discards sampled from the expected
-#' available discards for specified fleets in specified years. Let \eqn{D_y} be the discard
-#' from the operating model for year y. Then the sampled value is calculated as:
-#' \eqn{D_y*exp(stats::rnorm(1, 0, sds_obs)-sds_obs^2/2)}. The second term
-#' adjusts the random samples so that their expected value is \eqn{D_y}, i.e.,
-#' the log-normal bias correction.
+#' available discards for specified fleets in specified years. Let \eqn{D_y} be
+#' the discard from the operating model for year y. Then the sampled value is
+#' calculated as: \eqn{D_y*exp(stats::rnorm(1, 0, sds_obs)-sds_obs^2/2)}. The
+#' second term adjusts the random samples so that their expected value is
+#' \eqn{D_y}, i.e., the log-normal bias correction.
 #'
 #' @template lcomp-agecomp-index
 #' @template dat_list
 #' @template outfile
-#' @param sds_obs A list the same length as `fleets`. The list should
-#'   contain either single values or numeric vectors of the same length as the
-#'   number of years which represent the standard deviation of the observation
-#'   error. Single values are repeated for all years.
-#' @template seas
+#' @param sds_obs,month A list the same length as `fleets`. The list should
+#'   contain either single values or numeric vectors, where the length of each
+#'   vector matches the length of each vector present in `years`. Single values
+#'   are repeated for all years. `sds_obs` represents the standard deviation of
+#'   the observation error and month is the month of the observation.
+#' @param seas A deprecated argument.
 #'
 #' @template sampling-return
 #'
@@ -27,14 +28,23 @@ sample_discard <- function(dat_list,
                            fleets,
                            years,
                            sds_obs,
-                           seas = list(1)) {
+                           seas = lifecycle::deprecated(),
+                           month = list(1)) {
+  if (lifecycle::is_present(seas)) {
+    lifecycle::deprecate_warn(
+      "1.20.1",
+      "sample_discard(seas)",
+      details = "Please use `month` rather than `seas`"
+    )
+    month <- seas
+  }
   if (!is.list(dat_list) || is.null(dat_list[["discard_data"]])) {
     stop("dat_list must be a list object read in using r4ss::SS_readdat().")
   }
   ev <- dat_list$discard_data # expected values.
-  colnames(ev) <- gsub("Discard", "obsOLD", colnames(ev))
+  colnames(ev) <- gsub("obs", "obsOLD", colnames(ev))
   Nfleets <- length(fleets)
-  if (FALSE %in% (fleets %in% unique(ev$Flt))) {
+  if (FALSE %in% (fleets %in% unique(ev$fleet))) {
     stop("The specified fleet numbers do not match input file")
   }
   if (Nfleets != 0 && !inherits(sds_obs, "list") || length(sds_obs) != Nfleets) {
@@ -51,8 +61,8 @@ sample_discard <- function(dat_list,
       )
     }
   }
-  if (length(seas) != length(fleets) && length(seas) == 1) {
-    seas <- rep(list(seas), length(fleets))
+  if (length(month) != length(fleets) && length(month) == 1) {
+    month <- rep(list(month), length(fleets))
   }
 
   ## Start of sampling from the indices. Create a new data frame based on input
@@ -61,26 +71,26 @@ sample_discard <- function(dat_list,
   xxx <- merge(
     do.call(rbind, mapply(data.frame,
       SIMPLIFY = FALSE,
-      Yr = years,
-      Seas = standardize_sampling_args(fleets, years, other_input = seas),
-      Flt = lapply(fleets, c),
-      Std_in = standardize_sampling_args(fleets, years, other_input = sds_obs)
+      year = years,
+      month = standardize_sampling_args(fleets, years, other_input = month),
+      fleet = lapply(fleets, c),
+      stderr = standardize_sampling_args(fleets, years, other_input = sds_obs)
     )),
-    ev[, c("Yr", "Seas", "Flt", "obsOLD")],
+    ev[, c("year", "month", "fleet", "obsOLD")],
     sort = FALSE
   )
   if (NROW(xxx) == 0) {
     stop(
-      "The following specified years, seas, index combinations are not in dat_list:",
-      "\nyears:\n", years, "\nseas:\n", seas, "\nindex:\n", fleets,
+      "The following specified years, month, index combinations are not in dat_list:",
+      "\nyears:\n", years, "\nmonth:\n", month, "\nindex:\n", fleets,
       "\nThus, these expected values are not available."
     )
   }
   new <- xxx |>
-    dplyr::arrange(Flt, Yr, Seas) |>
+    dplyr::arrange(fleet, year, month) |>
     dplyr::rowwise() |>
-    dplyr::mutate(Discard = sample_lognormal(obsOLD, Std_in)) |>
-    dplyr::select(Yr:Flt, Discard, Std_in)
+    dplyr::mutate(obs = sample_lognormal(obsOLD, stderr)) |>
+    dplyr::select(year:fleet, obs, stderr)
 
   ## Open the .dat file and find the right lines to overwrite
   dat_list$discard_data <- as.data.frame(new)

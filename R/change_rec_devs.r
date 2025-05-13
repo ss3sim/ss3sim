@@ -81,7 +81,7 @@ change_rec_devs <- function(recdevs,
     )
   }
   newdata <- data.frame(
-    "Yr" = years,
+    "year" = years,
     "recdev" = recdevs
   )
   if (anyNA(newdata)) {

@@ -223,9 +223,9 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
     ESS_ages <- Nsamp_ages
   }
   new <- dplyr::bind_cols(
-    tibble::tibble(FltSvy = fleets),
+    tibble::tibble(fleet = fleets),
     tibble::tibble(
-      Yr = years, Nsamp_lengths = Nsamp_lengths,
+      year = years, Nsamp_lengths = Nsamp_lengths,
       Nsamp_ages = Nsamp_ages, ESS_lengths = ESS_lengths,
       ESS_ages = ESS_ages, ...
     )
@@ -233,8 +233,6 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
     dplyr::rowwise() |>
     tidyr::unnest(dplyr::everything()) |>
     dplyr::bind_rows()
-  colnames(new) <- gsub("part", "Part", colnames(new))
-  colnames(new) <- gsub("seas", "Seas", colnames(new))
   # will use this later
   new <- dplyr::mutate(new, ESS_ages_mult = ESS_ages / Nsamp_ages)
 
@@ -244,13 +242,13 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
     stop("No conditional age-at-length expected values found")
   }
   Nfleets <- length(fleets)
-  if (any(!fleets %in% unique(agecomp.cal$FltSvy))) {
+  if (any(!fleets %in% unique(agecomp.cal$fleet))) {
     stop(
       "A fleet specified in fleets was not found in ",
       "the fleets in age comps for dat_list."
     )
   }
-  if (any(!fleets %in% unique(exp_vals_list$lencomp$FltSvy))) {
+  if (any(!fleets %in% unique(exp_vals_list$lencomp$fleet))) {
     stop(
       "A fleet specified in fleets was not found in the fleets in len ",
       "comps for exp_vals_list."
@@ -307,7 +305,7 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
   }
   # Check that the years specified are valid
   check_yrs <- function(f, y, d) {
-    yrs_in_mod <- unique(d[d$FltSvy == f, "Yr"])
+    yrs_in_mod <- unique(d[d$fleet == f, "year"])
     if (any(!y %in% yrs_in_mod)) {
       stop(
         "A year specified in years was not found in the expected value ",
@@ -342,11 +340,11 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
     tmp_CAL_lencomp <- CAL_lencomp[r, , drop = FALSE]
     # for this line, subset the expected values of CAL that match it.
     newcomp <- agecomp.cal[
-      agecomp.cal$Yr == tmp_CAL_lencomp$Yr &
-        agecomp.cal$Seas == tmp_CAL_lencomp$Seas &
-        agecomp.cal$FltSvy == tmp_CAL_lencomp$FltSvy &
-        agecomp.cal$Gender == tmp_CAL_lencomp$Gender &
-        agecomp.cal$Part == tmp_CAL_lencomp$Part,
+      agecomp.cal$year == tmp_CAL_lencomp$year &
+        agecomp.cal$month == tmp_CAL_lencomp$month &
+        agecomp.cal$fleet == tmp_CAL_lencomp$fleet &
+        agecomp.cal$sex == tmp_CAL_lencomp$sex &
+        agecomp.cal$part == tmp_CAL_lencomp$part,
     ]
     # get the sample size to use
     tmp_nsamp_ages <- dplyr::left_join(
@@ -359,7 +357,7 @@ sample_calcomp <- function(dat_list, exp_vals_list, outfile = NULL, fleets,
     if (nrow(newcomp) != length(dat_list$lbin_vector)) {
       stop(
         "The number of conditional age at length data rows for ",
-        "fleet ", tmp_CAL_lencomp$FltSvy, " and year ", tmp_CAL_lencomp$Yr, " is not the same as the number",
+        "fleet ", tmp_CAL_lencomp$fleet, " and year ", tmp_CAL_lencomp$year, " is not the same as the number",
         " of length bins. For each fleet and year, please make sure ",
         "there is row where Lbin_lo and Lbin_hi are equal to each of ",
         "the values in lbin_vector: ",

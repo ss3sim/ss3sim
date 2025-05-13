@@ -124,15 +124,15 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
   for (fl in seq_along(fleets)) {
     fl.temp <- fleets[fl]
     mlacomp.fl <- mlacomp[mlacomp$Flt == fleets[fl] &
-      mlacomp$Yr %in% years[[fl]], ]
-    if (length(years[[fl]]) != length(unique(mlacomp.fl$Yr))) {
+      mlacomp$year %in% years[[fl]], ]
+    if (length(years[[fl]]) != length(unique(mlacomp.fl$year))) {
       stop(paste(
         "A year specified in years for fleet", fl.temp, "was not",
         "found in the input dat_list for fleet", fl.temp
       ))
     }
     for (j in seq_len(NROW(mlacomp.fl))) {
-      yr.temp <- mlacomp.fl$Yr[j]
+      yr.temp <- mlacomp.fl$year[j]
       # Loop through mla data for this fleet / year combo
       mlacomp.new <- mlacomp.fl[j, ]
       if (NROW(mlacomp.new) == 0) {
@@ -156,7 +156,7 @@ sample_mlacomp <- function(dat_list, outfile, ctl_file_in, fleets = 1, Nsamp,
       # symmetric distribution: Var on real scale, $\mu$ on log scale
       sds.log <- sqrt(log(1 + sds^2 / mla.means^2))
       # Get the true age distributions, probability of being a fish of age x
-      agecomp.temp <- agecomp[agecomp$Yr == yr.temp &
+      agecomp.temp <- agecomp[agecomp$year == yr.temp &
         agecomp$Flt == fl.temp, ]
       # remove the 9 columns of metadata
       age.means <- as.numeric(agecomp.temp[-(1:9)])

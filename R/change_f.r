@@ -102,19 +102,19 @@ change_f <- function(years,
   stopifnot(ctl_list[["F_Method"]] == 2)
 
   #### Create data frame for Stock Synthesis
-  # Fleet Yr Seas F_value se phase
+  # fleet year month F_value se phase
   newdata <- lists2df(
-    "Yr" = years,
-    "Seas" = seasons,
+    "year" = years,
+    "month" = seasons,
     "F_value" = fvals,
     "se" = ses,
     "phase" = scalar2list(1, length = times)
   )
   newdata[, "index"] <- fleets[newdata$index]
-  names(newdata) <- gsub("index", "Fleet", names(newdata))
+  names(newdata) <- gsub("index", "fleet", names(newdata))
 
   #### Change control list
-  nonequilibrium <- newdata[newdata[["Yr"]] != -999, ]
+  nonequilibrium <- newdata[newdata[["year"]] != -999, ]
   ctl_list[["maxF"]] <- ifelse(
     test = max(newdata[["F_value"]]) < 4,
     yes = 4,
@@ -124,9 +124,9 @@ change_f <- function(years,
   ctl_list[["F_setup"]][2] <- 1 # F phase
   ctl_list[["F_setup"]][3] <- NROW(nonequilibrium) # N F values to read
   ctl_list[["F_setup2"]] <- nonequilibrium
-  if (any(newdata[["Yr"]] == -999)) {
-    equilibrium <- newdata[newdata[["Yr"]] == -999 & newdata[["F_value"]] > 0, ]
-    equilibrium <- equilibrium[order(equilibrium[["Seas"]], equilibrium[["Fleet"]]), ]
+  if (any(newdata[["year"]] == -999)) {
+    equilibrium <- newdata[newdata[["year"]] == -999 & newdata[["F_value"]] > 0, ]
+    equilibrium <- equilibrium[order(equilibrium[["month"]], equilibrium[["fleet"]]), ]
     # _ LO HI INIT PRIOR PR_SD  PR_type PHASE
     ctl_list[["init_F"]] <- data.frame(
       LO = 0,
@@ -136,9 +136,9 @@ change_f <- function(years,
     )
     rownames(ctl_list[["init_F"]]) <- paste0(
       "InitF_seas_",
-      equilibrium[["Seas"]],
+      equilibrium[["month"]],
       "_flt_",
-      equilibrium[["Fleet"]]
+      equilibrium[["fleet"]]
     )
   }
 

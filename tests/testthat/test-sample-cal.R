@@ -28,8 +28,8 @@ test_that("run_ss3sim runs with CAL data", {
   # check the length comps to make sure CAL consistent
   expect_true(547 ==
     NROW(EM_datfile$agecomp[EM_datfile$agecomp$Lbin_lo > -1, ]))
-  expect_equivalent(c(13, 51), c(table(EM_datfile$lencomp$FltSvy)))
-  expect_true(all(aggregate(Nsamp ~ Yr,
+  expect_equivalent(c(13, 51), c(table(EM_datfile$lencomp$fleet)))
+  expect_true(all(aggregate(Nsamp ~ year,
     data = EM_datfile$agecomp[EM_datfile$agecomp$Lbin_lo != -1, ],
     FUN = sum
   )$Nsamp == 20))

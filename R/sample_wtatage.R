@@ -156,7 +156,7 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
       for (yr in years[[fl]]) {
         #----------------------------------------------------------------------------------------------------
         # Step 1, draw from true age distributions
-        agecomp.temp <- agecomp[agecomp$Yr == yr & agecomp$FltSvy == fl, ]
+        agecomp.temp <- agecomp[agecomp$year == yr & agecomp$fleet == fl, ]
         # ACH: I'm going with the motto of think about it. Why enter a year for wtatage when you do not have data?
         if (nrow(agecomp.temp) == 0) {
           stop("No age comp observations for year", yr, "and fleet", fl, "\n")
@@ -175,11 +175,11 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
         # Step 3, use mean length-at-age to sample with normal/lognormal and user-specified cv
         # first define mean length-at-age
 
-        # Change fleets name to FltSvy to keep everything consistent
-        names(mlacomp)[3] <- "FltSvy"
-        # [which(names(mlacomp) == 'Fleet')]
+        # Change fleets name to fleet to keep everything consistent
+        names(mlacomp)[3] <- "fleet"
+        # [which(names(mlacomp) == 'fleet')]
         mla.means <- as.numeric(mlacomp[
-          mlacomp$Yr == yr & mlacomp$FltSvy == fl,
+          mlacomp$year == yr & mlacomp$fleet == fl,
           paste0("a", agebin_vector)
         ])
 
@@ -291,20 +291,20 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
   # loop through the various matrices and build up wtatage.final while doing it
   wtatage.final <- list()
 
-  if (is.null(outfile)) cat("#Fleet -2, fecundity\n", file = outfile, append = TRUE)
+  if (is.null(outfile)) cat("#fleet -2, fecundity\n", file = outfile, append = TRUE)
   wtatage.final[[1]] <- unsampled.wtatage[[1]]
 
   # wtatage.final[[1]] <- fecund
   # wtatage.final[[1]]$yr <- -1 * wtatage.final[[1]]$yr
   if (!is.null(outfile)) utils::write.table(unsampled.wtatage[[1]], file = outfile, append = TRUE, row.names = FALSE, col.names = FALSE)
 
-  if (!is.null(outfile)) cat("\n#Fleet -1\n", file = outfile, append = TRUE)
+  if (!is.null(outfile)) cat("\n#fleet -1\n", file = outfile, append = TRUE)
   # wtatage.final[[2]] <- fltNeg1
   wtatage.final[[2]] <- unsampled.wtatage[[2]]
   # wtatage.final[[2]]$yr <- -1 * wtatage.final[[2]]$yr
   if (!is.null(outfile)) utils::write.table(unsampled.wtatage[[2]], file = outfile, append = TRUE, row.names = FALSE, col.names = FALSE)
 
-  if (!is.null(outfile)) cat("\n#Fleet 0\n", file = outfile, append = TRUE)
+  if (!is.null(outfile)) cat("\n#fleet 0\n", file = outfile, append = TRUE)
   # wtatage.final[[3]] <- fltZero
   wtatage.final[[3]] <- unsampled.wtatage[[3]]
   # wtatage.final[[3]]$yr <- -1 * wtatage.final[[3]]$yr
@@ -312,7 +312,7 @@ sample_wtatage <- function(wta_file_in, outfile, dat_list, ctl_file_in,
 
   # loop through fleets
   for (i in fleets) {
-    if (!is.null(outfile)) cat("\n#Fleet", i, "\n", file = outfile, append = TRUE)
+    if (!is.null(outfile)) cat("\n#fleet", i, "\n", file = outfile, append = TRUE)
     wtatage.final[[i + 3]] <- wtatage.complete[[i]]
     wtatage.final[[i + 3]]$yr <- -1 * wtatage.final[[i + 3]]$yr
     if (!is.null(outfile)) utils::write.table(wtatage.final[[i + 3]], file = outfile, append = TRUE, row.names = FALSE, col.names = FALSE)

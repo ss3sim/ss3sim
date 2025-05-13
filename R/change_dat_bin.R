@@ -4,7 +4,7 @@
 #' filling in the columns with ones.
 #'
 #' @param object A data frame from a list object read in by [r4ss::SS_readdat()].
-#'   The leading columns, typically `Yr`, `Seas`, ... can be anything,
+#'   The leading columns, typically `year`, `month`, ... can be anything,
 #'   but there must be columns with names that start with a lower-case letter,
 #'   followed by integers.
 #' @param bins A vector of characters or whatever you want the names of the

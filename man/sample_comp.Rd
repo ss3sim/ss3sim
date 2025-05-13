@@ -10,7 +10,7 @@ sample_comp(data, Nsamp, fleets, years, ESS = NULL, cpar = 1, ...)
 \item{data}{A data frame with informational columns followed by
 columns of compositional data.
 The informational columns must include columns labeled
-'Yr' and 'FltSvy' and end with a column labeled 'Nsamp'.
+'year' and 'fleet' and end with a column labeled 'Nsamp'.
 Columns of compositional data should follow 'Nsamp'.
 Rows of compositional data do not need to sum to one.}
 

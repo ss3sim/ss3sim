@@ -182,7 +182,7 @@ change_tv <- function(change_tv_list,
       dim = c(0, 3),
       dimnames = list(
         NULL,
-        c("Yr", "Variable", "Value")
+        c("year", "Variable", "Value")
       )
     ))
   } else {
@@ -248,11 +248,11 @@ change_tv <- function(change_tv_list,
     val[8] <- as.numeric(paste0("2", "0", dat.varnum.counter))
     ss3.ctl[par.ch] <- paste(c(val, "#", names(temp.data)[i]), collapse = " ")
     dat <- data.frame(
-      "Yr" = ss3.dat$styr:ss3.dat$endyr,
+      "year" = ss3.dat$styr:ss3.dat$endyr,
       "Variable" = dat.varnum.counter,
       "Value" = temp.data[i]
     )
-    colnames(dat) <- c("Yr", "Variable", "Value")
+    colnames(dat) <- c("year", "Variable", "Value")
     ss3.dat.tbl <- rbind(ss3.dat.tbl, dat)
   }
 

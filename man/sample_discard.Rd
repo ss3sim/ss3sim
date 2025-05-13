@@ -10,7 +10,8 @@ sample_discard(
   fleets,
   years,
   sds_obs,
-  seas = list(1)
+  seas = lifecycle::deprecated(),
+  month = list(1)
 )
 }
 \arguments{
@@ -38,17 +39,13 @@ An entry of \code{fleets=NULL} leads to zero samples for any fleet.}
 numeric vectors. If no fleet collected samples, keep the value to
 \code{years=NULL}.}
 
-\item{sds_obs}{A list the same length as \code{fleets}. The list should
-contain either single values or numeric vectors of the same length as the
-number of years which represent the standard deviation of the observation
-error. Single values are repeated for all years.}
+\item{sds_obs, month}{A list the same length as \code{fleets}. The list should
+contain either single values or numeric vectors, where the length of each
+vector matches the length of each vector present in \code{years}. Single values
+are repeated for all years. \code{sds_obs} represents the standard deviation of
+the observation error and month is the month of the observation.}
 
-\item{seas}{A list the same length as \code{fleets}. The list should contain
-either single numeric values or numeric vectors, where the length of each
-vector matches the length of each vector present in \code{years}.
-Single values are repeated for all years.
-This parameter operates the same as \code{sds_obs} but it specifies the
-season rather than the standard deviation of the observations.}
+\item{seas}{A deprecated argument.}
 }
 \value{
 A modified \code{.dat} file if \code{!is.null(outfile)}. A list object
@@ -56,11 +53,11 @@ containing the modified \code{.dat} file is returned invisibly.
 }
 \description{
 This function creates an index of discards sampled from the expected
-available discards for specified fleets in specified years. Let \eqn{D_y} be the discard
-from the operating model for year y. Then the sampled value is calculated as:
-\eqn{D_y*exp(stats::rnorm(1, 0, sds_obs)-sds_obs^2/2)}. The second term
-adjusts the random samples so that their expected value is \eqn{D_y}, i.e.,
-the log-normal bias correction.
+available discards for specified fleets in specified years. Let \eqn{D_y} be
+the discard from the operating model for year y. Then the sampled value is
+calculated as: \eqn{D_y*exp(stats::rnorm(1, 0, sds_obs)-sds_obs^2/2)}. The
+second term adjusts the random samples so that their expected value is
+\eqn{D_y}, i.e., the log-normal bias correction.
 }
 \seealso{
 Other sampling functions: 

@@ -260,7 +260,7 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
 
     # remove columns we'll merge back in after:
     a_ids_character <- names(old_cal_all)[a_ids]
-    old_cal <- old_cal_all[, c("Yr", "Lbin_lo", a_ids_character)]
+    old_cal <- old_cal_all[, c("year", "Lbin_lo", a_ids_character)]
 
     # make a lookup table of old and new bins:
     lookup <- data.frame(
@@ -274,7 +274,7 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
     dat_cols <- names(new_cal)[grep("^a[0-9.]+$", names(new_cal))]
     new_cal <- stats::aggregate(new_cal[, dat_cols],
       by = list(
-        "Yr" = new_cal$Yr,
+        "year" = new_cal$year,
         "Lbin_lo" = new_cal$lbin_new_low,
         "Lbin_hi" = new_cal$lbin_new_high
       ),
@@ -286,7 +286,7 @@ change_em_binning <- function(dat_list, outfile = NULL, bin_vector, lbin_method 
     new_cal_meta_dat <- old_cal_all[
       seq_len(nrow(new_cal)),
       -which(names(old_cal_all) %in%
-        c("Yr", "Lbin_lo", a_ids_character, "Lbin_hi", "Nsamp"))
+        c("year", "Lbin_lo", a_ids_character, "Lbin_hi", "Nsamp"))
     ]
     new_cal <- cbind(new_cal_meta_dat, new_cal)
 

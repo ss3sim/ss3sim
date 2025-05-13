@@ -295,7 +295,7 @@ setup_scenarios_defaults <- function(nscenarios = 1) {
     cf.fvals.1 = "rep(0.1052, 75)",
     si.years.2 = "seq(62, 100, by = 2)",
     si.sds_obs.2 = 0.1,
-    si.seas.2 = 1,
+    si.month.2 = 1,
     sl.Nsamp.1 = 50,
     sl.years.1 = "26:100",
     sl.Nsamp.2 = 100,

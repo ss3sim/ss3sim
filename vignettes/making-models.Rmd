@@ -188,7 +188,7 @@ the model writes the new input files.
     #_5=mult_by_agecomp_N
     #_6=mult_by_size-at-age_N
     #_7=mult_by_generalized_sizecomp
-   #_Factor  Fleet  Value
+   #_Factor  fleet  Value
     -9999   1    0  # terminator
    ```
 

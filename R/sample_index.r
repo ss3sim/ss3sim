@@ -3,7 +3,7 @@
 #' Create new catch-per-unit-effort (CPUE)/indices of abundance that are
 #' based on the numbers in a data file. Typically the data file will be filled
 #' with expected values rather than observed data but it does not have to be.
-#' Sampling can only occur on fleets, years, and seasons that have current
+#' Sampling can only occur on fleets, years, and months that have current
 #' observations. If rows of information are not sampled from, then they are
 #' removed. So, you can take away rows of data but you cannot add them with
 #' this function.
@@ -13,11 +13,11 @@
 #' * you can only generate observations from rows of data that are present,
 #'   e.g., you cannot make a new observation for a year that is not present in
 #'   the passed data file;
-#' * no warning will be given if some of the desired year, seas, fleet
+#' * no warning will be given if some of the desired year, month, fleet
 #'   combinations are available but not all, instead just the combinations
 #'   that are available will be returned in the data list object; and
 #' * sampling uses a log-normal distribution when the log-normal distribution
-#'   is specified in `CPUEinfo[["Errtype"]]` and a normal distribution for all
+#'   is specified in `CPUEinfo[["errtype"]]` and a normal distribution for all
 #'   other error types, see below for details on the log-normal sampling.
 #'
 #' Samples are generated using the following equation when the log-normal
@@ -60,20 +60,20 @@
 #'   the first fleet specified in `fleets` will be the first object in the list
 #'   and so on so order matters here.
 #' @param outfile A deprecated argument.
-#' @param sds_obs,sds_out,seas A list the same length as `fleets` specifying the
+#' @param sds_obs,sds_out,month A list the same length as `fleets` specifying the
 #'   standard deviation of the observation error used for the sampling; the
 #'   standard deviation of the observation error you would like listed in the
 #'   returned output, which might not always equal what was actually used for
-#'   sampling; and the seasons you want to sample from. Each list element
+#'   sampling; and the months you want to sample from. Each list element
 #'   should contain a single numeric value or a vector, where vectors need to
 #'   match the structure of `years` for the relevant fleet. If single values
 #'   are passed, then, internally, they will be repeated for each year. If you
 #'   want to repeat a single value for every year and fleet combination, then
-#'   just pass it as a list with one entry, e.g., `seas = list(1)` will sample
-#'   from season one for all fleets and years --- this is the default for
-#'   season. The default for `sds_obs` is 0.01 and if `sds_out` is missing,
+#'   just pass it as a list with one entry, e.g., `month = list(1)` will sample
+#'   from month one for all fleets and years --- this is the default for
+#'   month. The default for `sds_obs` is 0.01 and if `sds_out` is missing,
 #'   then `sds_obs` will be used for the output as well as the input.
-#'
+#' @param seas A deprecated argument.
 #' @return
 #' A Stock Synthesis data file list object is returned. The object will be a
 #' modified version of `dat_list`.
@@ -101,10 +101,9 @@
 #' # likelihood to be the furthest from the input data
 #' ex1 <- sample_index(
 #'   dat_list,
-#'   outfile = NULL,
 #'   fleets = 2,
-#'   seas = list(
-#'     dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "seas"]
+#'   month = list(
+#'     dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "month"]
 #'   ),
 #'   years = list(dat_list[["CPUE"]][["year"]]),
 #'   sds_obs = list(
@@ -123,10 +122,9 @@
 #' # Sample from less years, note that sampling from more years than what is
 #' # present in the data will not work
 #' ex2 <- sample_index(dat_list,
-#'   outfile = NULL,
 #'   fleets = 2,
-#'   seas = list(unique(
-#'     dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "seas"]
+#'   month = list(unique(
+#'     dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "month"]
 #'   )),
 #'   years = list(dat_list[["CPUE"]][["year"]][-c(1:2)]),
 #'   sds_obs = list(0.001)
@@ -138,8 +136,8 @@
 #' ex3 <- sample_index(
 #'   dat_list = dat_list,
 #'   fleets = 2,
-#'   seas = list(unique(
-#'     dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "seas"]
+#'   month = list(unique(
+#'     dat_list[["CPUE"]][dat_list[["CPUE"]][, "index"] == 2, "month"]
 #'   )),
 #'   years = list(dat_list[["CPUE"]][["year"]]),
 #'   sds_obs = list(0.01),
@@ -152,13 +150,13 @@
 #' dat_list2[["CPUE"]] <- rbind(
 #'   dat_list[["CPUE"]],
 #'   dat_list[["CPUE"]] |>
-#'     dplyr::mutate(index = 1, seas = 1)
+#'     dplyr::mutate(index = 1, month = 1)
 #' )
 #' dat_list2[["N_cpue"]] <- NROW(dat_list2[["CPUE"]])
 #' ex4 <- sample_index(
 #'   dat_list = dat_list2,
 #'   fleets = 1:2,
-#'   seas = list(1, 7),
+#'   month = list(1, 7),
 #'   # Subset two years from each fleet
 #'   years = list(c(76, 78), c(80, 82)),
 #'   # Use the same sd values for both fleets
@@ -171,7 +169,8 @@ sample_index <- function(dat_list,
                          years,
                          sds_obs = list(0.01),
                          sds_out,
-                         seas = list(1)) {
+                         seas = lifecycle::deprecated(),
+                         month = list(1)) {
   # Set up inputs
   Nfleets <- length(fleets)
   if (missing(sds_out)) {
@@ -185,6 +184,14 @@ sample_index <- function(dat_list,
       "sample_index(outfile)",
       details = "Please save the returned output using `r4ss::SS_writedat()`"
     )
+  }
+  if (lifecycle::is_present(seas)) {
+    lifecycle::deprecate_warn(
+      "1.20.1",
+      "sample_index(seas)",
+      details = "Please use `month` rather than `seas`"
+    )
+    month <- seas
   }
   # Check that dat_list was read in using {r4ss}
   if (!inherits(dat_list, "list") || is.null(dat_list[["CPUE"]])) {
@@ -207,7 +214,7 @@ sample_index <- function(dat_list,
       "All {.var fleets} must be found in {.var dat_list$cpue$index}",
       i = "{cli::qty(length(fleets))} You tried to sample from fleet{?s}
            {fleets}.",
-      x = "{cli::qty(length(missing_fleets))} Fleet{?s} {missing_fleets}
+      x = "{cli::qty(length(missing_fleets))} fleet{?s} {missing_fleets}
            {cli::qty(length(missing_fleets))} {?is/are} missing."
     ))
   }
@@ -221,7 +228,7 @@ sample_index <- function(dat_list,
         FUN = data.frame,
         SIMPLIFY = FALSE,
         year = years,
-        seas = standardize_sampling_args(fleets, years, other_input = seas),
+        month = standardize_sampling_args(fleets, years, other_input = month),
         index = lapply(fleets, c),
         se_in = standardize_sampling_args(fleets, years, other_input = sds_obs),
         se_log = standardize_sampling_args(fleets, years, other_input = sds_out)
@@ -234,17 +241,18 @@ sample_index <- function(dat_list,
   )
   if (NROW(xxx) == 0) {
     cli::cli_abort(c(
-      "None of the desired fleets, years, seasons were in the CPUE data.",
+      "None of the desired fleets, years, months were in the CPUE data.",
       i = "Check your input values against {.var dat_list$CPUE}.",
-      i = "sample_index() can't sample non-existent years, fleets, seasons."
+      i = "sample_index() can't sample non-existent years, fleets, months."
     ))
   }
+
   dat_list[["CPUE"]] <- xxx |>
-    dplyr::arrange(index, year, seas) |>
+    dplyr::arrange(index, year, month) |>
     dplyr::rowwise() |>
     dplyr::mutate(
-      distribution = dat_list[["CPUEinfo"]][["Errtype"]][
-        match(index, dat_list[["CPUEinfo"]][["Fleet"]])
+      distribution = dat_list[["CPUEinfo"]][["errtype"]][
+        match(index, dat_list[["CPUEinfo"]][["fleet"]])
       ],
       obs = ifelse(
         test = distribution == 0,

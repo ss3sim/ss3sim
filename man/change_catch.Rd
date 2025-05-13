@@ -13,7 +13,7 @@ change_catch(dat_list, ctl_list)
 The start and end year of the resulting data list will be based on years
 with positive fishing mortality values, and
 equilibrium catches will be non-zero only if
-there is a equilibrium fishing mortality parameter for that fleet and season
+there is a equilibrium fishing mortality parameter for that fleet and month
 combination.}
 }
 \value{
@@ -21,7 +21,7 @@ A modified Stock Synthesis data file as a list in R.
 }
 \description{
 Change catch in the data so at least all combinations of
-fleet, season, and year,
+fleet, month, and year,
 needed for catch are available.
 Equilibrium years are generated if
 there are equilibrium parameters in the control list.

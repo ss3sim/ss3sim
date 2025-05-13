@@ -8,7 +8,7 @@ change_dat_bin(object, bins)
 }
 \arguments{
 \item{object}{A data frame from a list object read in by \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}}.
-The leading columns, typically \code{Yr}, \code{Seas}, ... can be anything,
+The leading columns, typically \code{year}, \code{month}, ... can be anything,
 but there must be columns with names that start with a lower-case letter,
 followed by integers.}
 

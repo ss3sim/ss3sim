@@ -404,7 +404,7 @@ get_results_mod <- function(dir = getwd(), is_EM = NULL, is_OM = NULL) {
 #' A data frame with the following columns:
 #' * year
 #' * Area
-#' * Seas
+#' * month
 #' * Bio_smry
 #' * SpawnBio
 #' * Recruit_0

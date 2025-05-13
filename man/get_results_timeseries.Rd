@@ -15,7 +15,7 @@ A data frame with the following columns:
 \itemize{
 \item year
 \item Area
-\item Seas
+\item month
 \item Bio_smry
 \item SpawnBio
 \item Recruit_0

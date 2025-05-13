@@ -12,7 +12,7 @@
 #' @template ctl_list
 change_year <- function(dat_list, ctl_list) {
   # Find first year of compositional data
-  firstyearcomp <- min(c(dat_list$lencomp$Yr, dat_list$agecomp$Yr))
+  firstyearcomp <- min(c(dat_list$lencomp$year, dat_list$agecomp$year))
   halfage50mat <- ctl_list$MG_parms[
     grep("50\\%", row.names(ctl_list$MG_parms)), "INIT"
   ] / 2

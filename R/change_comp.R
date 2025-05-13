@@ -64,8 +64,8 @@ change_comp <- function(dat_list,
       dplyr::distinct(),
     # Default, behind-the-scenes data frame
     data.frame(
-      seas = 1,
-      gender = ifelse(nsex == 1, 0, 3),
+      month = 1,
+      sex = ifelse(nsex == 1, 0, 3),
       part = 0,
       nsamp = 10
     )
@@ -74,16 +74,16 @@ change_comp <- function(dat_list,
     dplyr::select(-dplyr::matches("\\.y")) |>
     dplyr::rename_all(~ gsub("\\.x", "", .x)) |>
     dplyr::rename(
-      Yr = dplyr::matches("years"),
-      FltSvy = dplyr::matches("fleets")
+      year = dplyr::matches("years"),
+      fleet = dplyr::matches("fleets")
     ) |>
-    dplyr::rename_all(~ gsub("(^[a-z]{1})", "\\U\\1", .x, perl = TRUE)) |>
+    dplyr::rename_all(~ gsub("^ns", "Ns", .x, perl = TRUE)) |>
     dplyr::relocate(dplyr::any_of(c(
-      "Yr",
-      "Seas",
-      "FltSvy",
-      "Gender",
-      "Part",
+      "year",
+      "month",
+      "fleet",
+      "sex",
+      "part",
       "Nsamp"
     ))) |>
     # Make all combinations by fleet
@@ -128,9 +128,9 @@ change_comp <- function(dat_list,
     final <- change_dat_bin(out, setup_bins(agebin_vector, nsex = nsex, leader = "a"))
 
     if (nsex == 2 & type == "cal") {
-      # todo: determine what we want to do about Gender for CAAL
-      female <- final |> dplyr::mutate(Gender = 1)
-      male <- final |> dplyr::mutate(Gender = 2)
+      # todo: determine what we want to do about sex for CAAL
+      female <- final |> dplyr::mutate(sex = 1)
+      male <- final |> dplyr::mutate(sex = 2)
       final <- rbind(female, male)
     }
     # todo: get rid of join warning

@@ -221,7 +221,7 @@ ss3sim_base(
 replist <- r4ss::SS_output(file.path("D1-E0-F0-cod", 1, "em"),
   verbose = FALSE, printstats = FALSE, covar = FALSE
 )
-testthat::expect_equivalent(replist[["cpue"]][, "Yr"], index1[["years"]][[1]])
+testthat::expect_equivalent(replist[["cpue"]][, "year"], index1[["years"]][[1]])
 
 test <- replist
 unlink("D1-E0-F0-cod", recursive = TRUE) # clean up

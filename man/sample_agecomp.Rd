@@ -122,7 +122,7 @@ ex2 <- sample_agecomp(
 op <- graphics::par(mfrow = c(1, 3))
 set.seed(1)
 true <- prop.table(dat_list$agecomp[
-  dat_list$agecomp$FltSvy == 1 & dat_list$agecomp$Yr == 50, -(1:9)
+  dat_list$agecomp$fleet == 1 & dat_list$agecomp$year == 50, -(1:9)
 ])
 cpars <- c(NA, 1, 4)
 for (samplesize in c(30, 100, 1000)) {

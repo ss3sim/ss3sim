@@ -12,7 +12,7 @@
 #' @param data A data frame with informational columns followed by
 #' columns of compositional data.
 #' The informational columns must include columns labeled
-#' 'Yr' and 'FltSvy' and end with a column labeled 'Nsamp'.
+#' 'year' and 'fleet' and end with a column labeled 'Nsamp'.
 #' Columns of compositional data should follow 'Nsamp'.
 #' Rows of compositional data do not need to sum to one.
 #' @template Nsamp
@@ -83,15 +83,13 @@ sample_comp <- function(data,
   )
 
   # Repeat short inputs
-  new <- dplyr::bind_cols(tibble::tibble(FltSvy = fleets), tibble::tibble(
-    Yr = years,
+  new <- dplyr::bind_cols(tibble::tibble(fleet = fleets), tibble::tibble(
+    year = years,
     newN = Nsamp, ESS = ESS, cpar = cpar, ...
   )) |>
     dplyr::rowwise() |>
     tidyr::unnest(dplyr::everything()) |>
     dplyr::bind_rows()
-  colnames(new) <- gsub("part", "Part", colnames(new))
-  colnames(new) <- gsub("seas", "Seas", colnames(new))
   # todo: make the rename above more generic
 
   #### Multinomial or DM sampling based on case_when with cpar

@@ -71,9 +71,11 @@ test_that("get_results_all() works when some report files missing", {
   all_files <- list.files(recursive = TRUE)
   to_rm <- grep("csv$", all_files, value = TRUE)
   file.remove(to_rm)
-  # get rid ofreport files for the EMS
+  # get rid of report files for the EMS
   file.remove("scenario/1/em/Report.sso")
-  file.remove("scenario/1/em_2/Report.sso")
+  if (file.exists("scenario/1/em_2/Report.sso")) {
+    file.remove("scenario/1/em_2/Report.sso")
+  }
   # if in doubt, double check the commented out line returns "scenario/1/om/Report.sso"
   # ONLY.
   # grep("/Report\\.sso$", list.files(recursive = TRUE), value = TRUE)

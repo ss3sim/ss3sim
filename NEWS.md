@@ -1,5 +1,10 @@
 # News
 
+## ss3sim 1.21.1
+
+* Updates the package to use the latest version of {r4ss} where there was
+  a breaking change with column names.
+
 ## ss3sim 1.21.0
 
 * Added season to the time series results and stopped hard-coding to
