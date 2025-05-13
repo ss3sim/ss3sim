@@ -9,7 +9,7 @@
 #' of sexes in the model.
 #' @param leader Most users will not need to change the leader
 #' character from the default unless you are working with age data,
-#' then just use \`"a"` rather than the default of `"l"`.
+#' then just use `"a"` rather than the default of `"l"`.
 #' If you have a two-sex model, i.e., `nsex = 2`, then the
 #' function will take care of the naming for you, which is forced
 #' to `"f"` and `"m"`. You can change them afterwards if you

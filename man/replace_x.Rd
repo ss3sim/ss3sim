@@ -12,7 +12,7 @@ wish it to be an actual value.}
 
 \item{replacement}{The value you would like to use to replace items
 with a length of zero. For example, the default \code{NA_integer_}
-will replace all \code{NULL} values with {NA}. Other options for this
+will replace all \code{NULL} values with \code{NA}. Other options for this
 argument could be \code{NA_character_}.}
 }
 \value{

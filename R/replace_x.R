@@ -10,7 +10,7 @@
 #' wish it to be an actual value.
 #' @param replacement The value you would like to use to replace items
 #' with a length of zero. For example, the default `NA_integer_`
-#' will replace all `NULL` values with {NA}. Other options for this
+#' will replace all `NULL` values with `NA`. Other options for this
 #' argument could be `NA_character_`.
 #' @return The object `x` is returned with some items replaced.
 #' If the input object was of zero length, then the `replacement`
