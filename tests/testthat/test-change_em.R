@@ -27,5 +27,5 @@ test_that("change_em works and model is viable", {
     verbose = FALSE,
     show_in_console = FALSE
   )
-  expect_true(results == "ran model")
+  expect_true(all(results == "ran model"))
 })
