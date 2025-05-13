@@ -103,34 +103,34 @@ fleets that need \(q\) parameters removed from the control file.</p></dd>
 
 
 <dt id="arg-dat-list">dat_list<a class="anchor" aria-label="anchor" href="#arg-dat-list"></a></dt>
-<dd><p>Deprecated with ss3sim version 1.19.1 because users can
+<dd><p>Deprecated with version 1.19.1 because users can
 obtain fleet information from <code>ctl_list</code>.</p></dd>
 
 
 <dt id="arg-ctl-file-in">ctl_file_in<a class="anchor" aria-label="anchor" href="#arg-ctl-file-in"></a></dt>
-<dd><p>Deprecated with ss3sim version 1.19.1 because users can
+<dd><p>Deprecated with version 1.19.1 because users can
 pass list as read in by <code><a href="https://r4ss.github.io/r4ss/reference/SS_readctl.html" class="external-link">r4ss::SS_readctl()</a></code> rather than specifying the
 file name to be read in.</p></dd>
 
 
 <dt id="arg-dat-file-in">dat_file_in<a class="anchor" aria-label="anchor" href="#arg-dat-file-in"></a></dt>
-<dd><p>Deprecated with ss3sim version 1.19.1 because users can
+<dd><p>Deprecated with version 1.19.1 because users can
 pass list as read in by <code><a href="https://r4ss.github.io/r4ss/reference/SS_readdat.html" class="external-link">r4ss::SS_readdat()</a></code> rather than specifying the
 file name to be read in.</p></dd>
 
 
 <dt id="arg-ctl-file-out">ctl_file_out<a class="anchor" aria-label="anchor" href="#arg-ctl-file-out"></a></dt>
-<dd><p>Deprecated with ss3sim version 1.19.1 because ss3sim
+<dd><p>Deprecated with version 1.19.1 because ss3sim
 uses the returned list internally rather than the saved control file.</p></dd>
 
 
 <dt id="arg-overwrite">overwrite<a class="anchor" aria-label="anchor" href="#arg-overwrite"></a></dt>
-<dd><p>Deprecated with ss3sim version 1.19.1 because the file is
+<dd><p>Deprecated with version 1.19.1 because the file is
 no longer being saved to the disk. So, there is nothing to overwrite.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p>Deprecated with ss3sim version 1.19.1 because all messages
+<dd><p>Deprecated with version 1.19.1 because all messages
 were removed.</p></dd>
 
 </dl></div>
@@ -155,7 +155,8 @@ what is available in Stock Synthesis.
 For example, <code>change_q()</code> cannot add parameters for additional variance.
 Though it will remove additional variance parameters for
 fleets that no longer have survey data.
-Additionally, the float term is not used within ss3sim and is set to zero.</p>
+Additionally, the float term is not used within this package and is set to
+zero.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>

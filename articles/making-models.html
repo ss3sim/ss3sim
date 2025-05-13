@@ -86,7 +86,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Creating new ss3sim model setups</h1>
             
-            <h4 data-toc-skip class="date">2025-05-12</h4>
+            <h4 data-toc-skip class="date">2025-05-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ss3sim/ss3sim/blob/main/vignettes/making-models.Rmd" class="external-link"><code>vignettes/making-models.Rmd</code></a></small>
       <div class="hidden name"><code>making-models.Rmd</code></div>
@@ -97,16 +97,16 @@
     
 <p>In some cases you may wish to adapt your own Stock Synthesis model to
 work with ss3sim. This is possible but may be difficult. The functions
-in {ss3sim} were developed to work with the existing model setups, and a
-model with a different structure may lead to incomprehensible error
-messages because it is extremely difficult to write auxiliary functions
-that will interact reliably with all the available options in Stock
-Synthesis. For this reason, we recommend that users strongly consider
-trying to <a href="modifying-models.html">modify an existing model
-rather than creating a new one</a>.</p>
-<p>For those users who choose to create a new {ss3sim} model setup, we
-outline below the steps needed to take an existing Stock Synthesis model
-and modify it to work with {ss3sim}.</p>
+in this package were developed to work with the existing model setups,
+and a model with a different structure may lead to incomprehensible
+error messages because it is extremely difficult to write auxiliary
+functions that will interact reliably with all the available options in
+Stock Synthesis. For this reason, we recommend that users strongly
+consider trying to <a href="modifying-models.html">modify an existing
+model rather than creating a new one</a>.</p>
+<p>For those users who choose to create a new this package model setup,
+we outline below the steps needed to take an existing Stock Synthesis
+model and modify it to work with {ss3sim}.</p>
 <div class="section level2">
 <h2 id="overall-file-structure">Overall file structure<a class="anchor" aria-label="anchor" href="#overall-file-structure"></a>
 </h2>
@@ -259,8 +259,8 @@ series.</p></li>
 <li><p>Recruitment is log-normally distributed in Stock Synthesis. If
 inputting a normally distributed recruitment deviations specify
 <code>#_max_bias_adj_in_MPD</code> to <code>-1</code> so that Stock
-Synthesis performs the bias correction for you. {ss3sim} internally uses
-bias corrected normal recruitment deviations, unless users specify
+Synthesis performs the bias correction for you. This package internally
+uses bias corrected normal recruitment deviations, unless users specify
 <code>user_recdevs</code>, which do not need bias correction and users
 should specify <code>#_max_bias_adj_in_MPD</code> to
 <code>0</code>.</p></li>
@@ -328,8 +328,9 @@ catch_mult, and fleet name with one row per fleet after
 <code>#_Nfleets</code> and before
 <code>#Bycatch_fleet_input_goes_next</code>.</p></li>
 <li><p>Turn off mean body weight observations by setting
-<code>#_use meanbodysize_data</code> to <code>0</code> because {ss3sim}
-currently does not have the capability to sample these data.</p></li>
+<code>#_use meanbodysize_data</code> to <code>0</code> because this
+package currently does not have the capability to sample these
+data.</p></li>
 <li><p>Set <code># length bin method</code> to <code>1</code> or
 <code>2</code>. Using a value of <code>1</code>, the bins refer to the
 data bins (specified later). Using a value of <code>2</code> instructs

@@ -3,7 +3,7 @@
 calls r4ss::run() to run the operating model,
 samples the output to create fishery and survey data, and
 calls r4ss::run() to run the estimation model.
-This function is the main workhorse of ss3sim and
+This function is the main workhorse of this package and
 is typically not called by the user but called from run_ss3sim().
 
 "><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -75,7 +75,7 @@ is typically not called by the user but called from run_ss3sim().
     <p>A wrapper function that</p><ul><li><p>calls <code><a href="https://r4ss.github.io/r4ss/reference/run.html" class="external-link">r4ss::run()</a></code> to run the operating model,</p></li>
 <li><p>samples the output to create fishery and survey data, and</p></li>
 <li><p>calls <code><a href="https://r4ss.github.io/r4ss/reference/run.html" class="external-link">r4ss::run()</a></code> to run the estimation model.
-This function is the main workhorse of ss3sim and
+This function is the main workhorse of this package and
 is typically not called by the user but called from <code><a href="run_ss3sim.html">run_ss3sim()</a></code>.</p></li>
 </ul></div>
 
@@ -188,9 +188,8 @@ for the specified simulations.</p></dd>
 
 <dt id="arg-em-dir">em_dir<a class="anchor" aria-label="anchor" href="#arg-em-dir"></a></dt>
 <dd><p>The directory with the estimation model you want to copy and
-use for the specified simulations.
-If <code>NA</code>, then no estimation method is included and
-ss3sim just generates data.</p></dd>
+use for the specified simulations. If <code>NA</code>, then no estimation method is
+included and only data is created.</p></dd>
 
 
 <dt id="arg-retro-params">retro_params<a class="anchor" aria-label="anchor" href="#arg-retro-params"></a></dt>
@@ -357,7 +356,7 @@ the DESCRIPTION file.</p>
 <span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="va">replist</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"D1-E0-F0-cod"</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># clean up</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Run without an EM, where {ss3sim} is a data-generating tool</span></span></span>
+<span class="r-in"><span><span class="co"># Run without an EM, where this package operates as a data-generating tool</span></span></span>
 <span class="r-in"><span><span class="fu">ss3sim_base</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  iterations <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>  scenarios <span class="op">=</span> <span class="st">"noEM"</span>,</span></span>
