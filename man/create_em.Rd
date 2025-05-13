@@ -47,13 +47,11 @@ fishing mortality based on their scenarios.
 
 \section{Data file}{
 
-No data file is needed for the EM.
-The \code{data_expval.ss} file produced when executing the OM contains the
-expected values of the OM population dynamics.
-{ss3sim} provides three functions which carry out the random sampling
-process and generate \code{.dat} files to be used in the EM.
-See the Introduction vignette \code{vignette("introduction", package = "ss3sim")}
-for more details.
+No data file is needed for the EM. The \code{data_expval.ss} file produced when
+executing the OM contains the expected values of the OM population dynamics.
+There are three functions that carry out the random sampling process and
+generate \code{.dat} files to be used in the EM. See the Introduction vignette
+\code{vignette("introduction", package = "ss3sim")} for more details.
 }
 
 \section{Forecast file}{

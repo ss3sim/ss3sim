@@ -2,13 +2,13 @@
 #'
 #' @param bin_name A string providing the name of the binary/executable without
 #'   the extension. The default is `"ss3"`, which is the name of the executable
-#'   that is saved in {ss3sim} on GitHub.
+#'   that is saved in the GitHub version of this package.
 #'
 #' @return
-#' A string providing the full path to a Stock Synthesis binary.
-#' If using the GitHub version of {ss3sim}, this will be an internal binary.
-#' Otherwise, `get_bin()` searches for a version of the binary in your path.
-#' See the ss3sim vignette fore more information.
+#' A string providing the full path to a Stock Synthesis binary. If using the
+#' GitHub version of this package, this will be an internal binary. Otherwise,
+#' `get_bin()` searches for a version of the binary in your path. See the
+#' vignette fore more information.
 #'
 #' @author Sean C. Anderson
 #' @export

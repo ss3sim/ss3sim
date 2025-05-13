@@ -19,26 +19,27 @@
 #' For example, `change_q()` cannot add parameters for additional variance.
 #' Though it will remove additional variance parameters for
 #' fleets that no longer have survey data.
-#' Additionally, the float term is not used within {ss3sim} and is set to zero.
+#' Additionally, the float term is not used within this package and is set to
+#' zero.
 #'
 #' @param string_add A vector of fleet names and/or integers representing
 #'   fleets that need \eqn{q} parameters added to the control file.
 #' @param string_remove  A vector of fleet names and/or integers representing
 #'   fleets that need \eqn{q} parameters removed from the control file.
 #' @template ctl_list
-#' @param dat_list Deprecated with {ss3sim} version 1.19.1 because users can
+#' @param dat_list Deprecated with version 1.19.1 because users can
 #'   obtain fleet information from `ctl_list`.
-#' @param ctl_file_in Deprecated with {ss3sim} version 1.19.1 because users can
+#' @param ctl_file_in Deprecated with version 1.19.1 because users can
 #'   pass list as read in by [r4ss::SS_readctl()] rather than specifying the
 #'   file name to be read in.
-#' @param dat_file_in Deprecated with {ss3sim} version 1.19.1 because users can
+#' @param dat_file_in Deprecated with version 1.19.1 because users can
 #'   pass list as read in by [r4ss::SS_readdat()] rather than specifying the
 #'   file name to be read in.
-#' @param ctl_file_out Deprecated with {ss3sim} version 1.19.1 because {ss3sim}
+#' @param ctl_file_out Deprecated with version 1.19.1 because this package
 #'   uses the returned list internally rather than the saved control file.
-#' @param overwrite Deprecated with {ss3sim} version 1.19.1 because the file is
+#' @param overwrite Deprecated with version 1.19.1 because the file is
 #'   no longer being saved to the disk. So, there is nothing to overwrite.
-#' @param verbose Deprecated with {ss3sim} version 1.19.1 because all messages
+#' @param verbose Deprecated with version 1.19.1 because all messages
 #'   were removed.
 #' @export
 #' @return A modified Stock Synthesis control list.
@@ -193,7 +194,7 @@ change_q <- function(string_add = NULL,
 #' have q parameters set up.
 #'
 #' @template ctl_list
-#' @param Nfleets Deprecated with {ss3sim} version 1.19.1 because
+#' @param Nfleets Deprecated with version 1.19.1 because
 #'   the number of fleets is available in `ctl_list`.
 #' @param desiredfleets A numeric vector specifying which fleets should have
 #' catchability parameters.

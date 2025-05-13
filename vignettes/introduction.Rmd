@@ -29,11 +29,11 @@ This vignette is a good starting place for learning about {ss3sim}.
 
 # Overview
 
-{ss3sim} is an R package to `r missionstatement`.
+This package is an R package to `r missionstatement`.
 If you need help learning R prior to using {ss3sim},
 we recommend navigating to the [RStudio Blog][rstudio-blog].
 
-{ss3sim} consists of
+This package consists of
 
 * a series of low-level functions that facilitate
   manipulating Stock Synthesis configuration files,
@@ -47,13 +47,10 @@ we recommend navigating to the [RStudio Blog][rstudio-blog].
   [issue tracker][issues], and
   a [Discussion board][discussions] for users and developers to interact.
 
-The developers of {ss3sim} strive to facilitate
-an inviting place where all individuals feel welcome.
-Please see the
-[Code of Conduct][code-of-conduct]
-that we abide by to ensure contributors are valued and
-[Contributor Guidelines][contributor-guidelines]
-for how to contribute.
+The developers of this package strive to facilitate an inviting place where all
+individuals feel welcome. Please see the [Code of Conduct][code-of-conduct]
+that we abide by to ensure contributors are valued and [Contributor Guidelines]
+[contributor-guidelines] for how to contribute.
 
 ## Stock Synthesis
 
@@ -63,7 +60,7 @@ Stock Synthesis is an integrated statistical catch-at-age model written in
 [ADMB][admb].
 The software is widely used across the globe and has been around for 40+ years.
 
-The inspiration for {ss3sim} came from Hui-Hua Lee's hooilator software.
+The inspiration for this package came from Hui-Hua Lee's hooilator software.
 hooliator parsed `data.ss_new` files into multiple files and
 created a consistent directory structure to store the results.
 As of Stock Synthesis 3.30.19,
@@ -75,9 +72,9 @@ the expected values are in `data_expval.ss`, and
 simulated data sets are in `data_boot_**N.ss`.
 See the [section on output files in the Stock Synthesis manual][ss-manual-output-files]
 for more detailed information.
-{ss3sim} finishes the creation of simulation-specific directories similar to
+This package finishes the creation of simulation-specific directories similar to
 the directory structure that was created by hooliator.
-{ss3sim} adds functionality to sample from the expected values
+This package adds functionality to sample from the expected values
 such that simulations need not rely on bootstrapped values
 provided in `data_boot_**N.ss`.
 With a plethora of simulation output stored in structured folders,
@@ -88,26 +85,26 @@ including our
 [mission statement](#overview) and
 [example output](beautiful-output).
 
-{ss3sim} is just a minor part of the suite of functionality available for Stock Synthesis.
+This package is just a minor part of the suite of functionality available for Stock Synthesis.
 See the [Stock Synthesis website][ss] for a list of additional software.
 
 ## Installation
 
 ### Installing {ss3sim}
 
-{ss3sim} is available on [CRAN][ss3sim-cran] and [GitHub][ss3sim-github] and can
-be run on OS X, Windows, or Linux. The GitHub branch "main" contains the newest
-features, which are more than likely not available on CRAN. We recommend using
-the GitHub version because development of {ss3sim} is very fluid and new
+This package is available on [CRAN][ss3sim-cran] and [GitHub][ss3sim-github]
+and can be run on OS X, Windows, or Linux. The GitHub branch "main" contains
+the newest features, which are more than likely not available on CRAN. We
+recommend using the GitHub version because development is very fluid and new
 features are added almost monthly, whereas CRAN submissions tend to be
-bi-annual. 
+bi-annual.
 
-Run the following code to install {ss3sim} and load it into your workspace.
-You will not need to install {ss3sim} every time but it is a good idea to ensure it is up to date.
+Run the following code to install  this package and load it into your workspace.
+You will not need to install  this package every time but it is a good idea to ensure it is up to date.
 If you are installing from GitHub,
 you may need to install {remotes} or {pak}, `utils::install.packges("pak")`,
-before installing {ss3sim} if you do not already have {devtools} installed.
-If your current version of {ss3sim} is up to date,
+before installing  this package if you do not already have {devtools} installed.
+If your current version of  this package is up to date,
 R will let you know and prompt you if you want to override the current installation.
 
 ```{r install, eval=FALSE}
@@ -123,7 +120,7 @@ pak::pkg_install(
 library("ss3sim")
 ```
 
-The following code demonstrates how to access the {ss3sim} documentation within
+The following code demonstrates how to access the documentation within
 R. You can also view the [vignettes online][ss3sim].
 
 ```{r help, eval=FALSE}
@@ -134,36 +131,36 @@ utils::browseVignettes("ss3sim")
 
 ### Installing Stock Synthesis {#path}
 
-{ss3sim} relies the Stock Synthesis executable being available to the operating
+The Stock Synthesis executable must be available to the operating
 system. Thus, the executable must be in your path, which is a list of
 directories that your operating system has access to and searches through when
-a program is called. Having Stock Synthesis in your path allows {ss3sim} to use
+a program is called. Having Stock Synthesis in your path allows  this package to use
 the name of the single, saved executable instead of requiring the full path or
 copying the executable to every local directory before calling it, which saves
 on space because the Stock Synthesis binary is about 6 MB. This functionality
 of not copying the executable works even when [running Stock Synthesis in
 parallel](#parallel).
 
-{ss3sim} will first look to see if the executable is available in your R
+Your operating system will first look to see if the executable is available in your R
 library using `system.file("bin", package = "ss3sim")`. The previous will only
-lead to a viable file path if you are using the GitHub version of {ss3sim}
+lead to a viable file path if you are using the GitHub version of this package
 because the distribution of executables is not allowed on CRAN. If the location
 is not returned from `system.file`, R will look for the executable in your
 path. This hierarchy is important for understanding which version of Stock
 Synthesis is being used because you might already have a version of Stock
 Synthesis in your path.
 
-{ss3sim} was originally based on Stock Synthesis 3.24O [@anderson2014a] and did
-not immediately update to use Stock Synthesis 3.30. In 2019, {ss3sim} was
+This package was originally based on Stock Synthesis 3.24O [@anderson2014a] and did
+not immediately update to use Stock Synthesis 3.30. In 2019, the package was
 updated to use Stock Synthesis 3.30, and **users can count on future versions
-of {ss3sim} being up to date with the newest version of Stock Synthesis.**
+being up to date with the newest version of Stock Synthesis.**
 Stock Synthesis will end development with major-version three but minor
 versions will continue to be updated for quite some time.
 
-If you are using the CRAN version of {ss3sim}, reference [Getting Started with
+If you are using the CRAN version, reference [Getting Started with
 Stock Synthesis][ss-gettingstarted] for instructions on how to put Stock
 Synthesis in your path. Or, you can mimic the directory structure of the GitHub
-version of {ss3sim} and place the executable in the appropriate folder below
+version and place the executable in the appropriate folder below
 ```
 ├──library
 |  └──ss3sim
@@ -180,7 +177,7 @@ repository][ss-githubactions].
 
 ### Installing dependent R packages
 
-Installing {ss3sim} will install all of the necessary dependent packages
+Installing  this package will install all of the necessary dependent packages
 without users needing to do anything extra. But, for completeness and as
 an acknowledgement, below we highlight a few packages that are essential for
 running {ss3sim}.
@@ -240,7 +237,7 @@ Column entries of `simdf` need to be quoted if they are to be evaluated later, e
 `"c('NatM_uniform_Fem_GP_1', 'L_at_Amin_Fem_GP_1')"`.
 Scalar values can numeric.
 Use single quotes inside of double quotes to quote text.
-Developers of {ss3sim} are working on a better, more tidyverse-like non-standard evaluation method such that quotes will not be needed.
+Developers of  this package are working on a better, more tidyverse-like non-standard evaluation method such that quotes will not be needed.
 Feel free to reach out if
 you would like to help with this effort or
 have ideas on how to make it work better.
@@ -248,7 +245,7 @@ have ideas on how to make it work better.
 Column names of `simdf` are key.
 You can specify any input argument to `ss3sim_base()` as a column of `simdf`.
 
-{ss3sim} function              Argument                   Description
+function              Argument                   Description
 ---------------              --------------            -----------
 `ss3sim_base`                `bias_adjust`              Perform bias adjustment
 
@@ -265,7 +262,7 @@ For example,
 `cf.years.2` passes information to the `year` argument of `change_f()` for fleet 2.
 Function abbreviations are as follows:
 
-{ss3sim} function              Prefix               Description
+function              Prefix               Description
 ---------------              --------------       -----------
 `change_f()`                 `cf.`                 Fishing mortality
 `change_e()`                 `ce.`                 Estimation
@@ -291,11 +288,11 @@ are mandatory for a scenario.
 
 ### Input file structure
 
-{ss3sim} comes with a generic, built-in
+This package comes with a generic, built-in
 operating model (OM) and
 estimation method (EM).
 The life history for these available files is based on a cod-like fish.
-You can peruse the files if you have {ss3sim} installed here
+You can peruse the files using
 ```{r eval=FALSE}
 system.file("extdata/models", package = "ss3sim")
 ```
@@ -331,7 +328,7 @@ There will be some additional directories if you are using bias adjustment.
 See `ss3sim_base()` for more information on bias adjustment.
 You can name the scenarios
 any combination of character values or
-use the default naming system within {ss3sim} that uses the date and time.
+use the default naming system within  this package that uses the date and time.
 
 The supplied OM and EM directories are checked to ensure
 
@@ -341,7 +338,7 @@ The supplied OM and EM directories are checked to ensure
 * the control files are named `om.ctl` or `em.ctl`, and
 * the starter files are adjusted to reflect these file names.
 
-# Example simulations with {ss3sim} {#example}
+# Example simulations {#example}
 
 The example is based on the cod-like species in the papers @ono2014 and @johnson2014,
 both of which used {ss3sim}.
@@ -357,7 +354,7 @@ First we will create `df`,
 a data frame for `run_ss3sim(simdf = df)`.
 
 ```{r example-df}
-# Use the boiler-plate data frame available in {ss3sim} for 2 scenarios
+# Use the boiler-plate data frame available for 2 scenarios
 df <- setup_scenarios_defaults(nscenarios = 2)
 # Turn off bias adjustment and use default settings in cod EM model
 df[, "bias_adjust"] <- FALSE
@@ -457,7 +454,7 @@ Deviations are generated for each iteration in your simulation and used across s
 Using the same deviations for iteration one of each scenario,
 and a different set of deviations for each additional iteration,
 facilitates comparisons across scenarios.
-The default distribution in {ss3sim} has a mean of `-0.5` and a standard deviation of `1` (bias-corrected standard-normal deviations).
+The default distribution has a mean of `-0.5` and a standard deviation of `1` (bias-corrected standard-normal deviations).
 These deviations are then scaled by the level of recruitment variability specified in the OM with $\sigma_r$.
 If you would like to specify your own deviations, you can pass them using `user_recdevs`.
 See the next section on [self tests](#deterministic) for an example of `user_recdevs`.
@@ -533,7 +530,7 @@ Parameter names in these files will not always be the same across simulations be
 For example, an EM with age-specific natural mortality will have multiple natural mortality parameters each with a different name based on the age they pertain to.
 `get_results_all()` accommodates this by using the parameter name assigned by Stock Synthesis rather than attempting to standardize names.
 
-Originally, {ss3sim} provided the results using a wide-table format,
+Originally,  this package provided the results using a wide-table format,
 with individual columns for each OM and EM parameter along with some summary information for each scenario.
 In May of 2020 we changed to providing results using a tidier long format.
 
@@ -678,7 +675,7 @@ then there will be lots of combinations of expected values that are needed.
 
 Instead of generating every possible combination of years, fleets, etc.,
 which is slow and inefficient,
-{ss3sim} uses `calculate_data_units()`
+ this package uses `calculate_data_units()`
 to determine the minimal-viable amount of data types needed.
 For example,
 if arguments are passed to `sample_mlacomp()`,
@@ -690,7 +687,7 @@ empirical weight-at-age, age-composition, and mean length-at-age data.
 `sample_calcomp()` leads to expected values for
 length- and age-composition data.
 
-Currently, {ss3sim} supports the sampling of the following types of data:
+Currently,  this package supports the sampling of the following types of data:
 
 * catch-per-unit effort data with `sample_index()`,
 * length and age compositions with `sample_lcomp()` and `sample_agecomp()`,
@@ -773,7 +770,7 @@ For index data, which are assumed by Stock Synthesis to follow a log-normal dist
 the weight of the data is determined by the CV of each point.
 As the CV increases, the data have less weight in the joint likelihood.
 This is equivalent to decreasing the effective sample size in other distributions.
-{ss3sim} sets these values automatically at the truth internally,
+This package sets these values automatically at the truth internally,
 although future versions may allow for more complex options.
 The user-supplied $\sigma_y$ term is written to the `.dat` file along with the sampled values.
 So, the EM has the correct level of uncertainty.
@@ -815,7 +812,7 @@ Users can specify the level of overdispersion present in the sampled data throug
 `cpar` is the ratio of the standard deviation between a multinomial and Dirichlet distribution with the same probabilities and sample size.
 Thus, a value of 1 would be the same standard deviation,
 while 2 would be twice the standard deviation of a multinomial (overdispersed).
-{ss3sim} also currently allows for specifying the
+This package also currently allows for specifying the
 effective sample sizes used as input for the EM separately from
 the sample sizes used to sample the data.
 See `?sample_agecomp` and `?sample_lcomp` for more detail.
@@ -933,7 +930,7 @@ That is,
 \end{equation*}
 where $z_i$ is a standard normal deviate and the bias adjustment term ($\sigma_r^2/2$) makes the deviates have an expected value of 1 after exponentiation.
 
-If the recruitment deviations are not specified, then {ss3sim} will
+If the recruitment deviations are not specified, then  this package will
 use these built-in recruitment deviations.
 Alternatively, you can specify your own recruitment deviations,
 via the argument `user_recdevs` to the top-level function `ss3sim_base()`.
@@ -943,7 +940,7 @@ The user-supplied recruitment deviations are used exactly as specified
 **it is up to you to bias correct them manually** by subtracting $\sigma_r^2 / 2$ as is done above.
 This functionality allows for flexibility in how the recruitment deviations are specified, for example [running deterministic runs](#deterministic) or adding serial correlation.
 
-Note that for both built-in and user-specified recdevs, {ss3sim} will reuse the same set of recruitment deviations for all iterations across scenarios.
+Note that for both built-in and user-specified recdevs,  this package will reuse the same set of recruitment deviations for all iterations across scenarios.
 For example if you have two scenarios and run 100 iterations of each, the same set of recruitment deviations are used for iteration one for both those two scenarios.
 
 ## Reproducibility
@@ -952,7 +949,7 @@ In many cases, you may want to make the observation and process error reproducib
 For instance, you may want to reuse process error so that differences between scenarios are not confounded with process error.
 More broadly, you may want to make a simulation reproducible on another machine by another user (such as a reviewer).
 
-By default {ss3sim} sets a seed based on the iteration number.
+By default  this package sets a seed based on the iteration number.
 This will create the same recruitment deviations for a given iteration number.
 You can therefore avoid having the same recruitment deviations for a given iteration number by either specifying your own recruitment deviation matrix.
 This can be done using the `user_recdevs` argument or by changing the iteration numbers (e.g., using iterations 101 to 200 instead of 1 to 100).
@@ -970,8 +967,8 @@ the observation error is not necessarily comparable across different arguments.
 
 ## Time-varying parameters in the OM {#time-varying}
 
-{ss3sim} includes the capability for inducing time-varying changes in the OM using `change_tv()`.
-{ss3sim} currently does not have built-in functions to turn on/off the estimation of time-varying parameters in the EM.
+This package includes the capability for inducing time-varying changes in the OM using `change_tv()`.
+This package currently does not have built-in functions to turn on/off the estimation of time-varying parameters in the EM.
 However, it is possible to create versions of an EM with and without time-varying estimation of a parameter and specify each EM in `simdf` using the `em` column.
 This approach would allow for testing of differences between estimating a single, constant parameter versus time-varying estimation of the same parameter.
 
@@ -1011,9 +1008,9 @@ Each column holds code to generate
 a vector of time series information for a given parameter.
 The vectors are then combined into a named list that is passed to `change_tv_list` in `change_tv()`.
 
-## Parallel computing with {ss3sim} {#parallel}
+## Parallel computing{#parallel}
 
-{ss3sim} can easily run multiple scenarios in parallel to speed up simulations.
+This package can easily run multiple scenarios in parallel to speed up simulations.
 To run a simulation in parallel, you need to register multiple cores or clusters using the package of your choice.
 Here, we recommend using {parallel} and provide an example for you.
 First, find out how many cores are on the computer and register a portion of those for parallel processing.
@@ -1038,7 +1035,7 @@ you may need to abort the left over parallel processes.
 On Windows, open the task manager (Ctrl-Shift-Esc) and close any R processes.
 On a Mac, open Activity Monitor and force quit any R processes.
 Also, if you are working with a local development version of `ss3sim` and you are on a Windows machine,
-you may not be able to run in parallel if you load {ss3sim} with `devtools::load_all()`.
-Instead, do a full install with `devtools::install()` (and potentially restart R if {ss3sim} was already loaded).
+you may not be able to run in parallel if you load this package with `devtools::load_all()`.
+Instead, do a full install with `devtools::install()` (and potentially restart R if this package was already loaded).
 
 # References

@@ -25,24 +25,24 @@ fleets that need \eqn{q} parameters removed from the control file.}
 
 \item{ctl_list}{A control file read in by \code{\link[r4ss]{SS_readctl}}.}
 
-\item{dat_list}{Deprecated with {ss3sim} version 1.19.1 because users can
+\item{dat_list}{Deprecated with version 1.19.1 because users can
 obtain fleet information from \code{ctl_list}.}
 
-\item{ctl_file_in}{Deprecated with {ss3sim} version 1.19.1 because users can
+\item{ctl_file_in}{Deprecated with version 1.19.1 because users can
 pass list as read in by \code{\link[r4ss:SS_readctl]{r4ss::SS_readctl()}} rather than specifying the
 file name to be read in.}
 
-\item{dat_file_in}{Deprecated with {ss3sim} version 1.19.1 because users can
+\item{dat_file_in}{Deprecated with version 1.19.1 because users can
 pass list as read in by \code{\link[r4ss:SS_readdat]{r4ss::SS_readdat()}} rather than specifying the
 file name to be read in.}
 
-\item{ctl_file_out}{Deprecated with {ss3sim} version 1.19.1 because {ss3sim}
+\item{ctl_file_out}{Deprecated with version 1.19.1 because this package
 uses the returned list internally rather than the saved control file.}
 
-\item{overwrite}{Deprecated with {ss3sim} version 1.19.1 because the file is
+\item{overwrite}{Deprecated with version 1.19.1 because the file is
 no longer being saved to the disk. So, there is nothing to overwrite.}
 
-\item{verbose}{Deprecated with {ss3sim} version 1.19.1 because all messages
+\item{verbose}{Deprecated with version 1.19.1 because all messages
 were removed.}
 }
 \value{
@@ -68,7 +68,8 @@ what is available in Stock Synthesis.
 For example, \code{change_q()} cannot add parameters for additional variance.
 Though it will remove additional variance parameters for
 fleets that no longer have survey data.
-Additionally, the float term is not used within {ss3sim} and is set to zero.
+Additionally, the float term is not used within this package and is set to
+zero.
 }
 \examples{
 removedfleet1 <- change_q(string_remove = 1, ctl_list = codomctl)

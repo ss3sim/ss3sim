@@ -19,12 +19,12 @@ otherwise it is impossible to know which scenarios are located where. If
 }
 \value{
 A character vector of names of directories that contain output from
-{ss3sim}. Full paths are only provided if \code{full = TRUE}.
+this package. Full paths are only provided if \code{full = TRUE}.
 }
 \description{
 Find scenario directories, where it is known if a directory was derived from
-{ss3sim} and contains iterations of the operating and estimating models if
-there are directories with numeric names that contain om and/or em
+a simulation and contains iterations of the operating and estimating models
+if there are directories with numeric names that contain om and/or em
 directories, i.e., "1", "2", "3", ..., "100".
 }
 \author{

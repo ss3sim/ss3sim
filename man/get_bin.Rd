@@ -9,13 +9,13 @@ get_bin(bin_name = "ss3")
 \arguments{
 \item{bin_name}{A string providing the name of the binary/executable without
 the extension. The default is \code{"ss3"}, which is the name of the executable
-that is saved in {ss3sim} on GitHub.}
+that is saved in the GitHub version of this package.}
 }
 \value{
-A string providing the full path to a Stock Synthesis binary.
-If using the GitHub version of {ss3sim}, this will be an internal binary.
-Otherwise, \code{get_bin()} searches for a version of the binary in your path.
-See the ss3sim vignette fore more information.
+A string providing the full path to a Stock Synthesis binary. If using the
+GitHub version of this package, this will be an internal binary. Otherwise,
+\code{get_bin()} searches for a version of the binary in your path. See the
+vignette fore more information.
 }
 \description{
 Get Stock Synthesis binary/executable location

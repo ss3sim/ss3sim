@@ -15,13 +15,13 @@ vignette: >
 
 In some cases you may wish to adapt your own Stock Synthesis model to work with ss3sim.
 This is possible but may be difficult.
-The functions in {ss3sim} were developed to work with the existing model setups, and
+The functions in this package were developed to work with the existing model setups, and
 a model with a different structure may lead to incomprehensible error messages because
 it is extremely difficult to write auxiliary functions that will interact reliably with all the available options in Stock Synthesis.
 For this reason,
 we recommend that users strongly consider trying to [modify an existing model rather than creating a new one](modifying-models.html).
 
-For those users who choose to create a new {ss3sim} model setup,
+For those users who choose to create a new this package model setup,
 we outline below the steps needed to take an existing Stock Synthesis model and modify it to work with {ss3sim}.
 
 # Overall file structure
@@ -149,7 +149,7 @@ the model writes the new input files.
 1.  Recruitment is log-normally distributed in Stock Synthesis.
     If inputting a normally distributed recruitment deviations specify
     `#_max_bias_adj_in_MPD` to `-1` so that Stock Synthesis performs the bias correction for you.
-    {ss3sim} internally uses bias corrected normal recruitment deviations,
+    This package internally uses bias corrected normal recruitment deviations,
     unless users specify `user_recdevs`, which do not need bias correction and
     users should specify `#_max_bias_adj_in_MPD` to `0`.
 
@@ -225,7 +225,7 @@ the model writes the new input files.
     before `#Bycatch_fleet_input_goes_next`.
 
 1.  Turn off mean body weight observations by setting
-    `#_use meanbodysize_data` to `0` because {ss3sim} currently does not
+    `#_use meanbodysize_data` to `0` because this package currently does not
     have the capability to sample these data.
 
 1.  Set `# length bin method` to `1` or `2`.

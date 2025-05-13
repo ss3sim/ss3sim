@@ -4,7 +4,7 @@
 #' * calls [r4ss::run()] to run the operating model,
 #' * samples the output to create fishery and survey data, and
 #' * calls [r4ss::run()] to run the estimation model.
-#' This function is the main workhorse of {ss3sim} and
+#' This function is the main workhorse of this package and
 #' is typically not called by the user but called from [run_ss3sim()].
 #'
 #' @param iterations Which iterations to run. A numeric vector.
@@ -41,9 +41,8 @@
 #' @param om_dir The directory with the operating model you want to copy and use
 #'   for the specified simulations.
 #' @param em_dir The directory with the estimation model you want to copy and
-#'   use for the specified simulations.
-#'   If `NA`, then no estimation method is included and
-#'   {ss3sim} just generates data.
+#'   use for the specified simulations. If `NA`, then no estimation method is
+#'   included and only data is created.
 #' @template user_recdevs
 #' @param user_recdevs_warn A logical argument allowing users to turn the
 #'   warning regarding biased recruitment deviations off when `user_recdevs`
@@ -162,7 +161,7 @@
 #' test <- replist
 #' unlink("D1-E0-F0-cod", recursive = TRUE) # clean up
 #'
-#' # Run without an EM, where {ss3sim} is a data-generating tool
+#' # Run without an EM, where this package operates as a data-generating tool
 #' ss3sim_base(
 #'   iterations = 1,
 #'   scenarios = "noEM",

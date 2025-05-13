@@ -9,7 +9,7 @@ check_q(ctl_list, Nfleets = lifecycle::deprecated(), desiredfleets)
 \arguments{
 \item{ctl_list}{A control file read in by \code{\link[r4ss]{SS_readctl}}.}
 
-\item{Nfleets}{Deprecated with {ss3sim} version 1.19.1 because
+\item{Nfleets}{Deprecated with version 1.19.1 because
 the number of fleets is available in \code{ctl_list}.}
 
 \item{desiredfleets}{A numeric vector specifying which fleets should have

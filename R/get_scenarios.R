@@ -1,8 +1,8 @@
 #' Identify scenarios in `directory`
 #'
 #' Find scenario directories, where it is known if a directory was derived from
-#' {ss3sim} and contains iterations of the operating and estimating models if
-#' there are directories with numeric names that contain om and/or em
+#' a simulation and contains iterations of the operating and estimating models
+#' if there are directories with numeric names that contain om and/or em
 #' directories, i.e., "1", "2", "3", ..., "100".
 #' @param directory The directory or vector of directories that you want to
 #'   search for scenarios. The search is recursive, and thus, it is in one's
@@ -13,7 +13,7 @@
 #'   otherwise it is impossible to know which scenarios are located where. If
 #'   `FALSE`, a vector of names is returned. This is the default behavior.
 #' @return A character vector of names of directories that contain output from
-#'   {ss3sim}. Full paths are only provided if `full = TRUE`.
+#'   this package. Full paths are only provided if `full = TRUE`.
 #' @family get results
 #' @author Merrill Rudd
 #' @export

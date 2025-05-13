@@ -77,9 +77,8 @@ A mandatory input.}
 for the specified simulations.}
 
 \item{em_dir}{The directory with the estimation model you want to copy and
-use for the specified simulations.
-If \code{NA}, then no estimation method is included and
-{ss3sim} just generates data.}
+use for the specified simulations. If \code{NA}, then no estimation method is
+included and only data is created.}
 
 \item{retro_params}{A named list containing the arguments for
 \code{\link[=change_retro]{change_retro()}}.}
@@ -154,7 +153,7 @@ A wrapper function that
 \item calls \code{\link[r4ss:run]{r4ss::run()}} to run the operating model,
 \item samples the output to create fishery and survey data, and
 \item calls \code{\link[r4ss:run]{r4ss::run()}} to run the estimation model.
-This function is the main workhorse of {ss3sim} and
+This function is the main workhorse of this package and
 is typically not called by the user but called from \code{\link[=run_ss3sim]{run_ss3sim()}}.
 }
 }
@@ -227,7 +226,7 @@ testthat::expect_equivalent(replist[["cpue"]][, "Yr"], index1[["years"]][[1]])
 test <- replist
 unlink("D1-E0-F0-cod", recursive = TRUE) # clean up
 
-# Run without an EM, where {ss3sim} is a data-generating tool
+# Run without an EM, where this package operates as a data-generating tool
 ss3sim_base(
   iterations = 1,
   scenarios = "noEM",
