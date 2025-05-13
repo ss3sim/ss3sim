@@ -1,2 +1,2 @@
-#' @param report.file An \code{\link[r4ss]{SS_output}} list for a model
-#'   (operating model or estimation model).
+#' @param report.file A list returned from [r4ss::SS_output()] on operating
+#'   model or estimation model files.

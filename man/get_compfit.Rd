@@ -7,8 +7,8 @@
 get_compfit(report.file, name)
 }
 \arguments{
-\item{report.file}{An \code{\link[r4ss]{SS_output}} list for a model
-(operating model or estimation model).}
+\item{report.file}{A list returned from \code{\link[r4ss:SS_output]{r4ss::SS_output()}} on operating
+model or estimation model files.}
 
 \item{name}{A character string that matches the element of
 \code{report.file} that you wish to extract, e.g.,

@@ -7,8 +7,8 @@
 get_nll_components(report.file)
 }
 \arguments{
-\item{report.file}{An \code{\link[r4ss]{SS_output}} list for a model
-(operating model or estimation model).}
+\item{report.file}{A list returned from \code{\link[r4ss:SS_output]{r4ss::SS_output()}} on operating
+model or estimation model files.}
 }
 \value{
 A vector of named numeric values, where \code{"NLL_"} is

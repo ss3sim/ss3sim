@@ -7,8 +7,8 @@
 get_results_timeseries(report.file)
 }
 \arguments{
-\item{report.file}{An \code{\link[r4ss]{SS_output}} list for a model
-(operating model or estimation model).}
+\item{report.file}{A list returned from \code{\link[r4ss:SS_output]{r4ss::SS_output()}} on operating
+model or estimation model files.}
 }
 \value{
 A data frame with the following columns:
@@ -19,11 +19,11 @@ A data frame with the following columns:
 \item Bio_smry
 \item SpawnBio
 \item Recruit_0
-\item retainB_\link{0-9}+
-\item retainN_\link{0-9}+
-\item deadB_\link{0-9}+
-\item deadN_\link{0-9}+
-\item F_\link{0-9}+
+\item retainB\verb{_[0-9]+}
+\item retainN_\verb{[0-9]+}
+\item deadB_\verb{[0-9]+}
+\item deadN_\verb{[0-9]+}
+\item F_\verb{[0-9]+}
 \item SPRratio
 \item rec_dev
 \item raw_rec_dev

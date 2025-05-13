@@ -408,11 +408,11 @@ get_results_mod <- function(dir = getwd(), is_EM = NULL, is_OM = NULL) {
 #' * Bio_smry
 #' * SpawnBio
 #' * Recruit_0
-#' * retainB_[0-9]+
-#' * retainN_[0-9]+
-#' * deadB_[0-9]+
-#' * deadN_[0-9]+
-#' * F_[0-9]+
+#' * retainB\verb{_[0-9]+}
+#' * retainN_\verb{[0-9]+}
+#' * deadB_\verb{[0-9]+}
+#' * deadN_\verb{[0-9]+}
+#' * F_\verb{[0-9]+}
 #' * SPRratio
 #' * rec_dev
 #' * raw_rec_dev
