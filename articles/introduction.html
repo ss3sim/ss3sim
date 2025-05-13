@@ -762,7 +762,10 @@ and the time series can help add details to figures.</p>
 <span>  x <span class="op">=</span> <span class="st">"E"</span>, y <span class="op">=</span> <span class="st">"RE"</span>, re <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  horiz <span class="op">=</span> <span class="st">"parameter"</span>, print <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in ggplot2::geom_boxplot(fill = fill, outlier.colour = grDevices::rgb(0, : All aesthetics have length 1, but the data has 20 rows.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please consider using `annotate()` or provide this layer with data containing</span></span>
+<span><span class="co">#&gt;   a single row.</span></span></code></pre></div>
 <div class="figure">
 <img src="introduction_files/figure-html/relative-error-boxplots-det-1.png" alt="Box plots of the relative error (RE) for deterministic runs. $M$ is fixed at the true value from the OM (E100) or estimated (E101)." width="480"><p class="caption">
 Box plots of the relative error (RE) for deterministic runs.
@@ -800,7 +803,10 @@ Time series of relative error in spawning stock biomass.
 <span>  x <span class="op">=</span> <span class="st">"D"</span>, y <span class="op">=</span> <span class="st">"RE"</span>, re <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  vert <span class="op">=</span> <span class="st">"E"</span>, horiz <span class="op">=</span> <span class="st">"parameter"</span>, print <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in ggplot2::geom_boxplot(fill = fill, outlier.colour = grDevices::rgb(0, : All aesthetics have length 1, but the data has 40 rows.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please consider using `annotate()` or provide this layer with data containing</span></span>
+<span><span class="co">#&gt;   a single row.</span></span></code></pre></div>
 <div class="figure">
 <img src="introduction_files/figure-html/relative-error-boxplots-sto-1.png" alt="Box plots of relative error (RE) for stochastic runs. $M$ is fixed at the true value from the OM (E0) or estimated (E1). The standard deviation on the survey index observation error is 0.4 (D1) or 0.1 (D0), representing an increase in survey sampling effort." width="480"><p class="caption">
 Box plots of relative error (RE) for stochastic runs.
