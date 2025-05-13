@@ -26,7 +26,7 @@ plot_lines <- function(data, x = "year", y,
     relative.error = relative.error, axes.free = axes.free,
     horiz = horiz, horiz2 = horiz2, vert = vert, vert2 = vert2
   )
-  g <- g + ggplot2::geom_line(ggplot2::aes(group = .data[["ID"]]),
+  g <- g + ggplot2::geom_line(ggplot2::aes(group = ID),
     alpha = 0.5, lwd = 0.5
   ) +
     ggplot2::scale_color_gradient(low = "black", high = "red")

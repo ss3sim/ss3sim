@@ -164,8 +164,8 @@ test_that("Survey with all months runs", {
   expect_equal(max(ssom[["cpue"]][, "Yr"]), 100)
   expect_equivalent(
     ssom[["cpue"]] |>
-      dplyr::arrange(.data[["Fleet_name"]], .data[["Yr"]], .data[["Month"]]) |>
-      dplyr::select(.data[["Month"]]),
+      dplyr::arrange(Fleet_name, Yr, Month) |>
+      dplyr::select(Month),
     data.frame(eval(expr = parse(text = df[, "si.seas.2"])))
   )
   expect_equal(ssom[["derived_quants"]]["SSB_unfished", "Value"], 4084180000)

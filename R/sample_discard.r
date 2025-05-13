@@ -77,10 +77,10 @@ sample_discard <- function(dat_list,
     )
   }
   new <- xxx |>
-    dplyr::arrange(.data[["Flt"]], .data[["Yr"]], .data[["Seas"]]) |>
+    dplyr::arrange(Flt, Yr, Seas) |>
     dplyr::rowwise() |>
-    dplyr::mutate(Discard = sample_lognormal(.data[["obsOLD"]], .data[["Std_in"]])) |>
-    dplyr::select(.data[["Yr"]]:.data[["Flt"]], .data[["Discard"]], .data[["Std_in"]])
+    dplyr::mutate(Discard = sample_lognormal(obsOLD, Std_in)) |>
+    dplyr::select(Yr:Flt, Discard, Std_in)
 
   ## Open the .dat file and find the right lines to overwrite
   dat_list$discard_data <- as.data.frame(new)

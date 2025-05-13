@@ -23,11 +23,11 @@ plot_ss3sim <- function(data, x, y, color = NULL,
   }
   g <- ggplot2::ggplot(
     data = data,
-    ggplot2::aes(x = .data[[x]], y = .data[[y]])
+    ggplot2::aes(x = !!x, y = !!y)
   ) +
     ggplot2::xlab(gsub("year", "Year", x))
   if (x == "year") {
-    g <- g + ggplot2::aes(group = .data[["year"]])
+    g <- g + ggplot2::aes(group = year)
   }
   if (relative.error != FALSE) {
     if (relative.error == TRUE) relative.error <- "black"
@@ -44,8 +44,8 @@ plot_ss3sim <- function(data, x, y, color = NULL,
     )
   }
   if (!is.null(color)) {
-    g <- g + ggplot2::aes(color = .data[[color]]) +
-      ggplot2::labs(col = color)
+    g <- g + ggplot2::aes(color = !!ggplot2::sym(color)) +
+      ggplot2::labs(colour = color)
   }
   invisible(g)
 }

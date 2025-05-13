@@ -29,10 +29,10 @@ sample_catch <- function(dat_list,
   colnames(ev) <- gsub("catch$", "obsOLD", colnames(ev))
 
   new <- ev |>
-    dplyr::arrange(.data[["fleet"]], .data[["year"]], .data[["seas"]]) |>
+    dplyr::arrange(fleet, year, seas) |>
     dplyr::rowwise() |>
-    dplyr::mutate(catch = sample_lognormal(.data[["obsOLD"]], .data[["catch_se"]])) |>
-    dplyr::select(.data[["year"]]:.data[["fleet"]], .data[["catch"]], .data[["catch_se"]])
+    dplyr::mutate(catch = sample_lognormal(obsOLD, catch_se)) |>
+    dplyr::select(year:fleet, catch, catch_se)
 
   ## Open the .dat file and find the right lines to overwrite
   dat_list$catch <- as.data.frame(new)

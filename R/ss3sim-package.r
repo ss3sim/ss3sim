@@ -95,3 +95,28 @@
 #' @docType package
 #' @keywords internal
 "_PACKAGE"
+
+globalVariables(
+  c(
+    "Area",
+    "Discard",
+    "Flt",
+    "ID",
+    "Lbin_lo",
+    "Seas",
+    "Std_in",
+    "Yr",
+    "arg",
+    "catch", "catch_se",
+    "cummean",
+    "data",
+    "fleet",
+    "label",
+    "ncalc",
+    "rowname",
+    "seas",
+    "type",
+    "useESS_var",
+    "value"
+  )
+)

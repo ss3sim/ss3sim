@@ -61,17 +61,17 @@ plot_cummean <- function(data, var, order_var = "iteration", group = NULL,
   new_data <- do.call("rbind", data_list)
   g <- ggplot2::ggplot(
     data = new_data,
-    ggplot2::aes(x = .data[[order_var]], y = .data$cummean)
+    ggplot2::aes(x = ggplot2::sym(order_var), y = cummean)
   )
   if (use_facet) {
     g <- g +
       ggplot2::geom_line() +
       ggplot2::geom_point() +
-      ggplot2::facet_wrap(group)
+      ggplot2::facet_wrap(ggplot2::sym(group))
   } else {
     g <- g +
-      ggplot2::geom_line(ggplot2::aes(color = .data[[group]])) +
-      ggplot2::geom_point(ggplot2::aes(color = .data[[group]])) +
+      ggplot2::geom_line(ggplot2::aes(color = ggplot2::sym(group))) +
+      ggplot2::geom_point(ggplot2::aes(color = ggplot2::sym(group))) +
       ggplot2::theme(
         legend.position =
           ifelse(length(unique(new_data[, group])) == 1, "none", "right")

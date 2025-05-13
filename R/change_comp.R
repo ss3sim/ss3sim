@@ -116,9 +116,9 @@ change_comp <- function(dat_list,
   ## Age data
   if (type %in% c("age", "cal")) {
     if (type == "age") {
-      old <- dat_list[["agecomp"]] |> dplyr::filter(.data[["Lbin_lo"]] > 0)
+      old <- dat_list[["agecomp"]] |> dplyr::filter(Lbin_lo > 0)
     } else {
-      old <- dat_list[["agecomp"]] |> dplyr::filter(.data[["Lbin_lo"]] <= -1)
+      old <- dat_list[["agecomp"]] |> dplyr::filter(Lbin_lo <= -1)
     }
 
     if (type == "cal") {

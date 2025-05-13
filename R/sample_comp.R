@@ -106,24 +106,26 @@ sample_comp <- function(data,
     dplyr::rowwise() |>
     dplyr::mutate(
       comp = dplyr::case_when(
-        is.na(.data[["cpar"]]) ~ list(sample_mn(
+        is.na(cpar) ~ list(sample_mn(
           data = dplyr::c_across(dplyr::matches("[0-9]+")),
-          n = .data[["newN"]]
+          n = newN
         )),
-        is.numeric(.data[["cpar"]]) ~ list(sample_dm(
+        is.numeric(cpar) ~ list(sample_dm(
           data = dplyr::c_across(matches("[0-9]+")),
-          n = .data[["newN"]], par = .data[["cpar"]]
+          n = newN, par = cpar
         ))
       ),
       ncalc = dplyr::case_when(
-        is.na(.data[["cpar"]]) ~ .data[["newN"]],
-        is.numeric(.data[["cpar"]]) ~ .data[["newN"]] / .data[["cpar"]]^2
-      )
+        is.na(cpar) ~ newN,
+        is.numeric(cpar) ~ newN / cpar^2
+      ),
+      useESS_var = useESS,
+      Nsamp = ifelse(useESS_var, ESS, ncalc)
     ) |>
     dplyr::select(
       1:(dplyr::matches("Nsamp") - 1),
-      Nsamp = .data[[ifelse(useESS, "ESS", "ncalc")]],
-      .data[["comp"]]
+      Nsamp,
+      comp
     )
   comp <- NULL # To remove "no visible binding for global variable 'comp'"
   return(
