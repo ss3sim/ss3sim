@@ -18,7 +18,7 @@ have q parameters set up."><!-- mathjax --><script src="https://cdnjs.cloudflare
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ss3sim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.21.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.21.1</span>
       </span>
     </div>
 
@@ -109,7 +109,7 @@ specifying which fleets to add and which to remove from the control file.</p>
 <span class="r-in"><span><span class="co"># All elements of the returned list should be NULL</span></span></span>
 <span class="r-in"><span><span class="co"># because the model only has two \eqn{q} parameters</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mapply.html" class="external-link">mapply</a></span><span class="op">(</span><span class="va">is.null</span>, <span class="fu">check_q</span><span class="op">(</span><span class="va">codomctl</span>, desiredfleets <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># Fleet 3 is not present</span></span></span>
+<span class="r-in"><span><span class="co"># fleet 3 is not present</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu">check_q</span><span class="op">(</span><span class="va">codomctl</span>, desiredfleets <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">[[</span><span class="st">"add"</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu">check_q</span><span class="op">(</span><span class="va">codomctl</span>, desiredfleets <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">[[</span><span class="st">"remove"</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span></span>
 </code></pre></div>
