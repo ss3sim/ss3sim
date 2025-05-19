@@ -176,8 +176,7 @@ the model writes the new input files.
     and a negative phase value,
     e.g., `1 1 1 0 0.01 -1`.
 
-1. Remove non-terminator lines in `# Input variance adjustments factors` or
-   set all elements in the  `Value` column to `0`.
+1. Remove non-terminator lines in `# Input variance adjustments factors`.
    For example, your file could look like the following:
    ```
    # Input variance adjustments factors: 
