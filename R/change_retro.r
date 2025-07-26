@@ -43,6 +43,14 @@
 
 change_retro <- function(str_file_in = "starter.ss", str_file_out =
                            "starter.ss", retro_yr = 0) {
+  
+  #convert arguments from list
+  if (!is.null(retro_yr)) {
+    retro_yr <- unlist(retro_yr)
+  }
+  if (length(retro_yr) > 1) {
+    stop("retro_yr should have a length of one.")
+  }
   # Sanity checks:
   if (retro_yr > 0) {
     stop("retro_yr should be <= 0")
