@@ -15,7 +15,7 @@
   
       steps:
         - name: Run cleanowners action
-          uses: github/cleanowners@v1
+          uses: github-community-projects/cleanowners@v1
           env:
             GH_TOKEN: ${{ secrets.GH_TOKEN }}
             REPOSITORY: ss3sim/ss3sim
