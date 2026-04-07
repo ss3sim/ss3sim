@@ -1,47 +1,48 @@
-#V3.30.19.01;_safe;_compile_date:_Apr 15 2022;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_12.3
+#V3.30.24.2;_safe;_compile_date:_Mar  9 2026;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_13.2
 #_Stock_Synthesis_is_a_work_of_the_U.S._Government_and_is_not_subject_to_copyright_protection_in_the_United_States.
 #_Foreign_copyrights_may_apply._See_copyright.txt_for_more_information.
-#_User_support_available_at:NMFS.Stock.Synthesis@noaa.gov
-#_User_info_available_at:https://vlab.noaa.gov/group/stock-synthesis
-#_Source_code_at:_https://github.com/nmfs-stock-synthesis/stock-synthesis
+#_User_support_available_at:_https://groups.google.com/g/ss3-forum_and_NMFS.Stock.Synthesis@noaa.gov
+#_User_info_available_at:_https://nmfs-ost.github.io/ss3-website/
+#_Source_code_at:_https://github.com/nmfs-ost/ss3-source-code
 
 #C starter file written by R function SS_writestarter
 #C rerun model to get more complete formatting in starter.ss_new
 #C should work with SS version: SSv3.10b_or_later
 #C file write time: 2019-04-04 10:49:43
-ss3.dat
-codEM.ctl
-0 # 0=use init values in control file; 1=use ss.par
-0 # run display detail (0,1,2)
-1 # detailed output (0=minimal for data-limited, 1=high (w/ wtatage.ss_new), 2=brief, 3=custom) 
-# custom report options: -100 to start with minimal; -101 to start with all; -number to remove, +number to add, -999 to end
-0 # write 1st iteration details to echoinput.sso file (0,1) 
-0 # write parm values to ParmTrace.sso (0=no,1=good,active; 2=good,all; 3=every_iter,all_parms; 4=every,active)
-1 # write to cumreport.sso (0=no,1=like&timeseries; 2=add survey fits)
-0 # Include prior_like for non-estimated parameters (0,1) 
-1 # Use Soft Boundaries to aid convergence (0,1) (recommended)
+ss3.dat #_datfile
+codEM.ctl #_ctlfile
+0 #_init_values_src:  0 (use init values in control file); 1 (use ss3.par)
+0 #_screen_display:  0 (minimal); 1 (one line per iter); 2 (each logL)
+1 #_report_table_selection:  0 (minimal; no wtatage.ss_new); 1 (all tables); 2 (brief), 3 (custom, read list) 
+# COND: custom report options: -100 to start with minimal; -101 to start with all; -number to remove, +number to add, -999 to end
+0 #_checkup:  write more 1st iteration age-specific details to echoinput.sso file (0,1) 
+0 #_parmtrace:  write parm values to ParmTrace.sso:  0 (no); 1 (good_iter,active_parms); 2 (good,all); 3 (every,all); 4 (every,active)
+1 #_cumreport:  write to cumreport.sso: 0 (no); 1 (like&timeseries); 2 (add survey fits)
+0 #_prior_like:  include prior_like for non-estimated parameters (0,1) 
+1 #_soft_bounds:  Use Soft Boundaries to aid convergence (0,1) (recommended)
 #
-2 # Number of datafiles to produce:  0 turns off all *.ss_new; 1st is data_echo.ss_new, 2nd is data_expval.ss, 3rd and higher are data_boot_**N.ss,
-100 # Turn off estimation for parameters entering after this phase
+2 #_N_bootstraps:  Number of datafiles to produce:  0 turns off all *.ss_new; 1st is data_echo.ss_new, 2nd is data_expval.ss, 3rd and higher are data_boot_**N.ss,
+100 #_last_estimation_phase:  turn off estimation for parameters entering after this phase
 #
-0 # MCeval burn interval
-1 # MCeval thin interval
-0 # jitter initial parm value by this fraction
--1 # min yr for sdreport outputs (-1 for styr); #_-1
--2 # max yr for sdreport outputs (-1 for endyr+1; -2 for endyr+Nforecastyrs); #_101
-0 # N individual STD years 
-#vector of year values 
+0 #_MCMCburn
+1 #_MCMCthin
+0 # jitter_fraction:  jitter within parameter bounds
+-1 #_minyr_sdreport:  min year for sdreport outputs (-1 for styr); #_-1
+-2 #_maxyr_sdreport:  max year for sdreport outputs (-1 for endyr+1; -2 for endyr+Nforecastyrs); #_101
+0 #_N_STD_yrs:  N individual STD years 
+#COND: vector of year values if N>0
 
-0.0001 # final convergence criteria (e.g. 1.0e-04) 
-0 # retrospective year relative to end year (e.g. -4)
-1 # min age for calc of summary biomass
-1 # Depletion basis:  denom is: 0=skip; 1=rel X*SPB0; 2=rel SPBmsy; 3=rel X*SPB_styr; 4=rel X*SPB_endyr; values; >=11 invoke N multiyr (up to 9!) with 10's digit; >100 invokes log(ratio)
-1 # Fraction (X) for Depletion denominator (e.g. 0.4)
-4 # SPR_report_basis:  0=skip; 1=(1-SPR)/(1-SPR_tgt); 2=(1-SPR)/(1-SPR_MSY); 3=(1-SPR)/(1-SPR_Btarget); 4=rawSPR
-1 # Annual_F_units: 0=skip; 1=exploitation(Bio); 2=exploitation(Num); 3=sum(Apical_F's); 4=true F for range of ages; 5=unweighted avg. F for range of ages
-#COND 10 15 #_min and max age over which average F will be calculated with F_reporting=4 or 5
-0 # F_std_basis: 0=raw_annual_F; 1=F/Fspr; 2=F/Fmsy; 3=F/Fbtgt; where F means annual_F; values >=11 invoke N multiyr (up to 9!) with 10's digit; >100 invokes log(ratio)
-0 # MCMC output detail: integer part (0=default; 1=adds obj func components; 2= +write_report_for_each_mceval); and decimal part (added to SR_LN(R0) on first call to mcmc)
-0 # ALK tolerance ***disabled in code (example 0.0001)
--1 # random number seed for bootstrap data (-1 to use long(time) as seed): # 1651374928
-3.30 # check value for end of file and for version control
+0.0001 #_converge_criterion: (e.g. 1.0e-04) 
+0 #_retro_yr:  retrospective year relative to end year (e.g. -4)
+1 #_min_age_summary_bio
+1 #_depl_basis:  Depletion denom is: 0=skip; 1=X*SSB_virgin; 2=X*SSB_msy; 3=X*SSB_styr; 4=X*SSB_endyr; 5=X*dyn_Bzero; 6=X*SSB_unf_bmark; values>=11 invoke N multiyr with 10s & 100s digit; append .1 to invoke log(ratio); e.g. 122.1 produces log(12 yr trailing average of B/Bmsy)
+# If value = 1, then Btarget in benchmark will be a fraction of SSB_virgin, else will be a fraction of SSB_benchmark
+1 #_depl_denom_frac:  fraction (X) for Depletion denominator (e.g. 0.4)
+4 #_SPR_basis:  0 (skip); 1 (1-SPR)/(1-SPR_tgt); 2 (1-SPR)/(1-SPR_MSY); 3 (1-SPR)/(1-SPR_Btarget); 4 (1-SPR); 5 (SPR)
+1 # F_std_units:  0 (skip); 1 (exploitation(Bio)); 2 (exploitation(Num)); 3 (sum(Apical_F's)); 4 (mean F for range of ages (numbers weighted)); 5 (unweighted mean F for range of ages)
+#COND 10 15 #_min and max age over which mean F will be calculated with F_reporting=4 or 5
+0 # F_std_basis: 0=no scaling; 1 (F/Fspr); 2 (F/Fmsy); 3 (F/Fbtgt); where F means annual F_std, Fmsy means F_std@msy; values >=11 invoke N multiyr using 10s and 100s digit; append .1 to invoke log(ratio)
+0 #_MCMC_output_detail: integer part (0=default; 1=adds obj func components; 2= +write_report_for_each_mceval); and decimal part (added to SR_LN(R0) on first call to mcmc)
+0 #_deprecated:  ALK tolerance ***disabled in code
+-1 #_seed:  random number seed for bootstrap data (-1 to use long(time) as seed): # 1775679656
+3.30 #_final:  check value for end of file and for version control

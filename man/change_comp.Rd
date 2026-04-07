@@ -47,9 +47,11 @@ the creation of observed values for each desired combination.
 \examples{
 # todo: remove this example when testing is complete
 \dontrun{
+data("codomdat", package = "ss3sim")
+scenario_x <- setup_scenarios(setup_scenarios_defaults())[[1]]
 change_comp(
-  dat_list = dat, type = "len",
-  paramlist = scenariol[[1]][[c("lcomp_params", "agecomp_params")]]
+  dat_list = codomdat, type = "len",
+  paramlist = scenario_x[c("lcomp_params", "agecomp_params")]
 )
 }
 }

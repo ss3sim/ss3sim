@@ -26,9 +26,11 @@
 #' @examples
 #' # todo: remove this example when testing is complete
 #' \dontrun{
+#' data("codomdat", package = "ss3sim")
+#' scenario_x <- setup_scenarios(setup_scenarios_defaults())[[1]]
 #' change_comp(
-#'   dat_list = dat, type = "len",
-#'   paramlist = scenariol[[1]][[c("lcomp_params", "agecomp_params")]]
+#'   dat_list = codomdat, type = "len",
+#'   paramlist = scenario_x[c("lcomp_params", "agecomp_params")]
 #' )
 #' }
 change_comp <- function(dat_list,
@@ -54,9 +56,8 @@ change_comp <- function(dat_list,
     agebin_vector <- bins
   }
 
-  out <- dplyr::left_join(
+  out <- dplyr::cross_join(
     # Not really joining at all if no columns match
-    by = character(),
     # Data frame from parameter list
     tibble::as_tibble(paramlist) |>
       dplyr::select(-dplyr::matches("cpar|Nsamp")) |>
