@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ss3sim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.21.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0</span>
       </span>
     </div>
 
@@ -88,7 +88,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to ss3sim</h1>
             
-            <h4 data-toc-skip class="date">2026-04-01</h4>
+            <h4 data-toc-skip class="date">2026-04-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ss3sim/ss3sim/blob/main/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="hidden name"><code>introduction.Rmd</code></div>
@@ -103,7 +103,7 @@
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p>This package is an R package to simplify the steps needed to generate
-beautiful simulation output from <a href="https://github.com/nmfs-stock-synthesis/stock-synthesis" title="Stock Synthesis (SS3) github repository" class="external-link">Stock Synthesis
+beautiful simulation output from <a href="https://github.com/nmfs-ost/ss3-source-code" title="Stock Synthesis (SS3) github repository" class="external-link">Stock Synthesis
 (SS3)</a>. If you need help learning R prior to using {ss3sim}, we
 recommend navigating to the <a href="https://blog.rstudio.org/" title="RStudio Blog" class="external-link">RStudio Blog</a>.</p>
 <p>This package consists of</p>
@@ -124,7 +124,7 @@ contribute.</p>
 <div class="section level3">
 <h3 id="stock-synthesis">Stock Synthesis<a class="anchor" aria-label="anchor" href="#stock-synthesis"></a>
 </h3>
-<p>It seems imperative to first describe <a href="https://github.com/nmfs-stock-synthesis/stock-synthesis" title="Stock Synthesis (SS3) github repository" class="external-link">Stock Synthesis</a>
+<p>It seems imperative to first describe <a href="https://github.com/nmfs-ost/ss3-source-code" title="Stock Synthesis (SS3) github repository" class="external-link">Stock Synthesis</a>
 because without Stock Synthesis there would not be {ss3sim}. Stock
 Synthesis is an integrated statistical catch-at-age model written in <a href="https://www.admb-project.org/community/" title="AD model builder project" class="external-link">ADMB</a>. The software is widely used
 across the globe and has been around for 40+ years.</p>
@@ -136,7 +136,7 @@ As of Stock Synthesis 3.30.19, the need to separate out the
 because Stock Synthesis itself now ports the output into separate files,
 i.e., the echoed data are in <code>data_echo.ss_new</code>, the expected
 values are in <code>data_expval.ss</code>, and simulated data sets are
-in <code>data_boot_**N.ss</code>. See the <a href="https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html#output-files" title="Stock Synthesis output file documentation" class="external-link">section on output
+in <code>data_boot_**N.ss</code>. See the <a href="https://nmfs-ost.github.io/ss3-doc/SS330_User_Manual_release.html#output-files" title="Stock Synthesis output file documentation" class="external-link">section on output
 files in the Stock Synthesis manual</a> for more detailed information.
 This package finishes the creation of simulation-specific directories
 similar to the directory structure that was created by hooliator. This
@@ -147,7 +147,7 @@ stored in structured folders, there was an imminent need for functions
 to visualize the results. <a href="https://ggplot2.tidyverse.org/" title="ggplot2 documentation" class="external-link">{ggplot2}</a> was gaining traction at the
 time and shaped how we thought about things, including our <a href="#overview">mission statement</a> and <a href="beautiful-output">example output</a>.</p>
 <p>This package is just a minor part of the suite of functionality
-available for Stock Synthesis. See the <a href="https://github.com/nmfs-stock-synthesis/stock-synthesis" title="Stock Synthesis (SS3) github repository" class="external-link">Stock Synthesis
+available for Stock Synthesis. See the <a href="https://github.com/nmfs-ost/ss3-source-code" title="Stock Synthesis (SS3) github repository" class="external-link">Stock Synthesis
 website</a> for a list of additional software.</p>
 </div>
 <div class="section level3">
@@ -213,7 +213,7 @@ use Stock Synthesis 3.30, and <strong>users can count on future versions
 being up to date with the newest version of Stock Synthesis.</strong>
 Stock Synthesis will end development with major-version three but minor
 versions will continue to be updated for quite some time.</p>
-<p>If you are using the CRAN version, reference <a href="https://nmfs-stock-synthesis.github.io/ss-documentation/Getting_Started_SS.html" title="Stock Synthesis Getting Started documentation" class="external-link">Getting Started
+<p>If you are using the CRAN version, reference <a href="https://nmfs-ost.github.io/ss3-website/qmds/getting_started_ss3.html" title="Stock Synthesis Getting Started documentation" class="external-link">Getting Started
 with Stock Synthesis</a> for instructions on how to put Stock Synthesis
 in your path. Or, you can mimic the directory structure of the GitHub
 version and place the executable in the appropriate folder below</p>
@@ -227,7 +227,7 @@ version and place the executable in the appropriate folder below</p>
 {ss3sim}.</p>
 <p>Compiled Stock Synthesis executables are available for multiple
 operating systems <a href="https://github.com/ss3sim/ss3sim/tree/main/inst/bin" title="Stock Synthesis executables on GitHub in ss3sim" class="external-link">on GitHub</a> or
-in <a href="https://github.com/nmfs-stock-synthesis/stock-synthesis/actions" title="Stock Synthesis GitHub actions" class="external-link">GitHub actions in the Stock
+in <a href="https://github.com/nmfs-ost/ss3-source-code/actions" title="Stock Synthesis GitHub actions" class="external-link">GitHub actions in the Stock
 Synthesis repository</a>.</p>
 </div>
 <div class="section level4">
