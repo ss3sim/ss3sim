@@ -6,16 +6,18 @@
       - cron: '3 2 1 * *'
   
   permissions:
-    issues: write
+    contents: read
   
   jobs:
     cleanowners:
       name: cleanowners
       runs-on: ubuntu-latest
+      permissions:
+        issues: write
   
       steps:
         - name: Run cleanowners action
-          uses: github-community-projects/cleanowners@v1
+          uses: github-community-projects/cleanowners@v2
           env:
             GH_TOKEN: ${{ secrets.GH_TOKEN }}
             REPOSITORY: ss3sim/ss3sim
