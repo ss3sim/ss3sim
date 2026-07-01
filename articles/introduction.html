@@ -88,7 +88,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to ss3sim</h1>
             
-            <h4 data-toc-skip class="date">2026-04-13</h4>
+            <h4 data-toc-skip class="date">2026-07-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ss3sim/ss3sim/blob/main/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="hidden name"><code>introduction.Rmd</code></div>
@@ -871,32 +871,32 @@ of data:</p>
 known, and therefore, a variety of sampling techniques are possible.
 Ideal sampling, in the statistical sense, can be done easily. However,
 there is some question about the realism behind providing the model with
-this kind of data because it is unlikely to happen in practice <span class="citation">(Pennington et al. 2002)</span>. One way to generate
-more realistic data is to use flexible distributions, which allow the
-user to control the statistical properties, e.g., overdispersion of the
-data. Another option is to use unmodeled process error, typically in
-selectivity.</p>
+this kind of data because it is unlikely to happen in practice <span class="citation">(<span class="nocase">Pennington et al.</span>
+2002)</span>. One way to generate more realistic data is to use flexible
+distributions, which allow the user to control the statistical
+properties, e.g., overdispersion of the data. Another option is to use
+unmodeled process error, typically in selectivity.</p>
 <p>Under perfect mixing of fish and truly random sampling of the
 population, the age samples would be multinomial. However, in practice
 fish are never perfectly mixed because fish tend to aggregate by size
-and age <span class="citation">(e.g., Pennington et al. 2002)</span>.
-And, it is difficult to take random samples. Both of these sampling
-properties can cause the data to have more variance than expected, i.e.,
-be overdispersed, and the effective sample size is smaller than expected
-<span class="citation">(Maunder 2011, Hulson et al. 2012)</span>. For
-example, if a multinomial likelihood is assumed for overdispersed data,
-the model puts too much weight on those data by thinking they should be
-less variable than they are, at the cost of fitting other data less well
-<span class="citation">(Maunder 2011)</span>. Analysts thus often “tune”
-their model to find a sample size, i.e., “effective sample size”, that
-is more appropriate than the “input sample size”. The effective sample
-size will in theory more accurately reflect the information in the
-composition data <span class="citation">(Francis and Hilborn
-2011)</span>. In our case, we exactly control how the data are generated
-and specified in the EM, providing a large amount of flexibility to the
-user. What is optimal will depend on the questions addressed by a
-simulation and how the results are meant to be interpreted. We caution
-users to carefully consider how data are generated and fit.</p>
+and age <span class="citation">(e.g., <span class="nocase">Pennington et
+al.</span> 2002)</span>. And, it is difficult to take random samples.
+Both of these sampling properties can cause the data to have more
+variance than expected, i.e., be overdispersed, and the effective sample
+size is smaller than expected <span class="citation">(Maunder 2011,
+Hulson et al. 2012)</span>. For example, if a multinomial likelihood is
+assumed for overdispersed data, the model puts too much weight on those
+data by thinking they should be less variable than they are, at the cost
+of fitting other data less well <span class="citation">(Maunder
+2011)</span>. Analysts thus often “tune” their model to find a sample
+size, i.e., “effective sample size”, that is more appropriate than the
+“input sample size”. The effective sample size will in theory more
+accurately reflect the information in the composition data <span class="citation">(Francis and Hilborn 2011)</span>. In our case, we
+exactly control how the data are generated and specified in the EM,
+providing a large amount of flexibility to the user. What is optimal
+will depend on the questions addressed by a simulation and how the
+results are meant to be interpreted. We caution users to carefully
+consider how data are generated and fit.</p>
 <div class="section level5">
 <h5 id="indices-of-abundance">Indices of abundance<a class="anchor" aria-label="anchor" href="#indices-of-abundance"></a>
 </h5>
@@ -969,7 +969,7 @@ sampled. But, the equations apply equally to how length-composition data
 is sampled as well. The multinomial distribution
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝐦</mi><mo>∼</mo><mtext mathvariant="normal">MN</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐩</mi><mo>,</mo><mi>n</mi><mo>,</mo><mi>A</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mathbf{m} \sim \text{MN}\left(\mathbf{p}, n, A\right )</annotation></semantics></math>
 is defined as</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>𝐦</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>m</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>m</mi><mi>A</mi></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mrow><mtext mathvariant="normal">the number of fish observed in bin </mtext><mspace width="0.333em"></mspace></mrow><mi>a</mi></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mi>𝐩</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>p</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>p</mi><mi>A</mi></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mrow><mtext mathvariant="normal">the true proportion of fish in bin </mtext><mspace width="0.333em"></mspace></mrow><mi>a</mi></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mi>n</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mtext mathvariant="normal">sample size</mtext></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mi>A</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mtext mathvariant="normal">number of age bins</mtext></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>𝐦</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>m</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>m</mi><mi>A</mi></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mrow><mtext mathvariant="normal">the number of fish observed in bin </mtext><mspace width="0.333em"></mspace></mrow><mi>a</mi></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>𝐩</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>p</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>p</mi><mi>A</mi></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mrow><mtext mathvariant="normal">the true proportion of fish in bin </mtext><mspace width="0.333em"></mspace></mrow><mi>a</mi></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>n</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mtext mathvariant="normal">sample size</mtext></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>A</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mtext mathvariant="normal">number of age bins</mtext></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
  \mathbf{m} &amp;= m_1, \ldots, m_A\\
   &amp;=\text{the number of fish observed in bin $a$}\\
   \mathbf{p}&amp;= p_1, \ldots, p_A\\
@@ -992,7 +992,7 @@ can only take on values in the set
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo>,</mo><mn>1</mn><mi>/</mi><mi>n</mi><mo>,</mo><mn>2</mn><mi>/</mi><mi>n</mi><mo>,</mo><mi>…</mi><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{0, 1/n, 2/n, \ldots, 1\}</annotation></semantics></math>.
 With sufficiently large sample size this set approximates the real
 interval
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,1]</annotation></semantics></math>.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,1]</annotation></semantics></math>.
 But, the key point being that only a finite set of rational values of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>m</mi><mi>a</mi></msub><mi>/</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">m_a/n</annotation></semantics></math>
 are possible.</p>
@@ -1019,7 +1019,7 @@ probabilities and sample size n the multinomial, making it more flexible
 than the multinomial. Let
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝐝</mi><mo>∼</mo><mtext mathvariant="normal">Dirichlet</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝛂</mi><mo>,</mo><mi>A</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mathbf{d} \sim \text{Dirichlet}\left (\boldsymbol{\alpha}, A\right )</annotation></semantics></math>
 be a Dirichlet random vector. It is characterized by</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>𝐝</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>d</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>d</mi><mi>A</mi></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mrow><mtext mathvariant="normal">the proportion of fish observed in bin </mtext><mspace width="0.333em"></mspace></mrow><mi>a</mi></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mi>𝛂</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>A</mi></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mrow><mtext mathvariant="normal">concentration parameters for the proportion of fish in bin </mtext><mspace width="0.333em"></mspace></mrow><mi>a</mi></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mi>A</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mtext mathvariant="normal">number of age bins</mtext></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>𝐝</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>d</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>d</mi><mi>A</mi></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mrow><mtext mathvariant="normal">the proportion of fish observed in bin </mtext><mspace width="0.333em"></mspace></mrow><mi>a</mi></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>𝛂</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>A</mi></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mrow><mtext mathvariant="normal">concentration parameters for the proportion of fish in bin </mtext><mspace width="0.333em"></mspace></mrow><mi>a</mi></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>A</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mtext mathvariant="normal">number of age bins</mtext></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
   \mathbf{d} &amp;= d_1, \ldots, d_A\\
   &amp;=\text{the proportion of fish observed in bin $a$}\\
   \boldsymbol{\alpha}&amp;= \alpha_1, \ldots, \alpha_A\\
@@ -1042,7 +1042,7 @@ The variance is
 The marginal distributions for the Dirichlet are beta distributed. In
 contrast to the multinomial, the Dirichlet generates points on the real
 interval
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,1]</annotation></semantics></math>.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,1]</annotation></semantics></math>.</p>
 <p>The following steps are used to generate overdispersed samples:</p>
 <ul>
 <li>Get the true proportions at age from OM for the number of age bins
@@ -1099,7 +1099,7 @@ are small; in this case, the multinomial will be restricted to few
 potential values (i.e.,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mi>/</mi><mi>n</mi><mo>,</mo><mn>1</mn><mi>/</mi><mi>n</mi><mo>,</mo><mi>…</mi><mo>,</mo><mi>n</mi><mi>/</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">0/n, 1/n, \ldots, n/n</annotation></semantics></math>),
 whereas the Dirichlet has values in
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,1]</annotation></semantics></math>.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,1]</annotation></semantics></math>.
 Thus, without the Dirichlet it would be impossible to generate realistic
 values that would come about from highly overdispersed data with a large
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>.</p>
@@ -1253,7 +1253,7 @@ in the <code>.ctl</code> file. For all catchability parameters
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>q</mi><annotation encoding="application/x-tex">q</annotation></semantics></math>),
 the deviate will be added to the log transform of the base parameter
 using the following equation:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>q</mi><mi>y</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>q</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>l</mi><mi>i</mi><mi>n</mi><mi>k</mi><mo>*</mo><mi>e</mi><mi>n</mi><msub><mi>v</mi><mi>y</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{equation}
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>q</mi><mi>y</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>q</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>l</mi><mi>i</mi><mi>n</mi><mi>k</mi><mo>*</mo><mi>e</mi><mi>n</mi><msub><mi>v</mi><mi>y</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{equation}
   \log(q_{y}) = \log(q) + link * env_{y}.
 \end{equation}</annotation></semantics></math></p>
 <p>The vector of deviates must contain one value for every year of the
@@ -1389,9 +1389,10 @@ Marine Science: Journal du Conseil <strong>72</strong>(1): 31–43. doi:
 <a href="https://doi.org/10.1093/icesjms/fsu007" class="external-link">10.1093/icesjms/fsu007</a>.
 </div>
 <div id="ref-pennington2002" class="csl-entry">
-Pennington, M., Burmeister, L.-M., Hjellvik, V., and others. 2002.
-Assessing the precision of frequency distributions estimated from
-trawl-survey samples. Fishery Bulletin <strong>100</strong>(1).
+<span class="nocase">Pennington, M., Burmeister, L.-M., Hjellvik, V.,
+and others</span>. 2002. Assessing the precision of frequency
+distributions estimated from trawl-survey samples. Fishery Bulletin
+<strong>100</strong>(1).
 </div>
 </div>
 </div>
