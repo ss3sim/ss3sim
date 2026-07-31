@@ -1,7 +1,6 @@
 #' Plot time-series values as lines
 #'
-#' @template plot-functions
-#' @template plot-functions-color
+#' @inheritParams plot_ss3sim
 #' @export
 #' @examples
 #' data("scalar_dat", "ts_dat", package = "ss3sim")

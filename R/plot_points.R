@@ -13,8 +13,7 @@
 #' Values of `NA` are removed prior to plotting such that the typical
 #' error message from \pkg{ggplot2} is not printed to the screen.
 #'
-#' @template plot-functions
-#' @template plot-functions-color
+#' @inheritParams plot_ss3sim
 #' @param jitter.height,jitter.width Parameters for
 #' [ggplot2::position_jitter()] that specify the vertical and horizontal
 #' spread added to points. Where, added values are both positive and negative,

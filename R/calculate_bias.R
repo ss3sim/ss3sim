@@ -17,8 +17,8 @@
 #' * Move original estimation files.
 #' * Estimate model parameters.
 #'
-#' @template dir
-#' @template ctl_file_in
+#' @inheritParams get_success
+#' @inheritParams change_o
 #'
 #' @author Kelli F. Johnson
 #' @return A list of bias adjustment parameters.

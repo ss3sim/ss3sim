@@ -14,7 +14,7 @@
 #' Values of `NA` are removed prior to plotting such that the typical
 #' error message from [ggplot2::ggplot()] is not printed to the screen.
 #'
-#' @template plot-functions
+#' @inheritParams plot_ss3sim
 #' @param fill A character string that represents a single color that will
 #' be used to fill the boxplots. The default value of `NA` leads to
 #' unfilled boxplots.

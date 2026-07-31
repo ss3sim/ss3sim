@@ -11,12 +11,8 @@
 #'
 #' @author Cole Monnahan and Kotaro Ono
 #'
-#' @template lcomp-agecomp-index
-#' @template lcomp-agecomp
-#' @template dat_list
-#' @template outfile
-#' @template Nsamp
-#' @template sampledots
+#' @inheritParams sample_catch
+#' @inheritParams sample_comp
 #' @template sampling-return
 #'
 #' @examples

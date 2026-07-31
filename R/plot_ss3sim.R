@@ -2,8 +2,54 @@
 #'
 #' Use [ggplot2::ggplot] to plot data from `ss3sim`
 #' simulation.
-#' @template plot-functions
-#' @template plot-functions-color
+#'
+#' @details The `ss3sim` plotting functions are simply wrappers for
+#'   [ggplot2::ggplot()] code, specific to the output from
+#'   [get_results_all()]. They are designed to quickly explore simulation
+#'   output, rather than produce publication-level figures. The functions use
+#'   arguments passed as characters that refer to columns of `data`. Scalar
+#'   plots require a value for `x`; while, for time-series plots,
+#'   `x = "year"` will be necessary.
+#'
+#'   Note that there are some subtle differences between the functions.
+#'   Boxplots cannot have a color mapped to them like points or lines, and
+#'   thus `color` is not a valid argument. The time-series point and line plots
+#'   are grouped internally by `"ID"`, which is a combination of scenario and
+#'   iteration and will be automatically added to the data set if not already
+#'   present.
+#'
+#' @section Output:
+#'   These functions print the `ggplot` object, but also return it invisibly
+#'   for saving or printing again later. For example, you could save the
+#'   `ggplot` object and add a custom theme or change an axis label before
+#'   printing it.
+#' @param data A valid data frame containing scalar or timeseries values from an
+#'   `ss3sim` simulation. That data are generated from [get_results_all()].
+#' @param x A character string denoting which column to use as the x variable.
+#'   For time-series data, setting `x = "year"` leads to a time-series plot.
+#' @param y A character string denoting which column to use as the y variable.
+#'   Must be a numeric column.
+#' @param color A character string denoting which column to use to map color.
+#'   Not valid for boxplot functions. Useful for looking at estimation-model
+#'   performance criteria against other dimensions of the estimation or
+#'   operating model.
+#' @param relative.error Boolean for whether the y-axis scale should be
+#'   interpreted as relative error. If `TRUE`, `ylim` is set to `c(-1, 1)`,
+#'   the y-axis label is changed automatically, and a black, dashed line at
+#'   `y = 0` is added. The argument can also accept a color entry if you wish
+#'   the line to be something other than black. For example, `"red"` will add a
+#'   red dashed line at zero as well as fix the y-axis limits.
+#' @param axes.free Boolean for whether the y-axis scales should be free in
+#'   [ggplot2::facet_grid()].
+#' @param print A logical for whether the plot is printed or not.
+#' @param horiz,horiz2 A character string denoting which column to use as the
+#'   first (`horiz`) and second (`horiz2`) level of faceting in the horizontal
+#'   direction. A value of `NULL` indicates no faceting in the horizontal
+#'   space.
+#' @param vert,vert2 A character string denoting which column to use as the
+#'   first (`vert`) and second (`vert2`) level of faceting in the vertical
+#'   direction. A value of `NULL` indicates no faceting in the vertical space.
+#' @importFrom rlang .data
 #'
 plot_ss3sim <- function(data, x, y, color = NULL,
                         relative.error = FALSE, axes.free = TRUE, print = TRUE,

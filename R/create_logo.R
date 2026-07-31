@@ -3,7 +3,7 @@
 #' Generate and save, if `outfile` is provided,
 #' the ss3sim logo using the built-in data.
 #'
-#' @template outfile
+#' @inheritParams sample_catch
 #' @examples
 #' ss3sim:::create_logo()
 #' grDevices::dev.off()

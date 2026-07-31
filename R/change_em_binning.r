@@ -6,8 +6,7 @@
 #' according to the user's specification. If the data file also contains
 #' conditional age-at-length data, then these data will be re-binned as well.
 #'
-#' @template dat_list
-#' @template outfile
+#' @inheritParams sample_catch
 #' @param bin_vector A numeric vector of new length bins to substitute into the
 #'   `*.dat` file.
 #' @param lbin_method A numeric value of either `NULL, 1, 2, 3` to change

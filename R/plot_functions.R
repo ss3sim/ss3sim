@@ -63,8 +63,7 @@ facet_form <- function(horiz = NULL, horiz2 = NULL, vert = NULL, vert2 = NULL) {
 #' Used internally by the plotting functions to check that the arguments are
 #' structured appropriately.
 #'
-#' @template plot-functions
-#' @template plot-functions-color
+#' @inheritParams plot_ss3sim
 #' @return Nothing is returned; an informative error is thrown if an
 #' argument is invalid.
 verify_plot_arguments <- function(data, x, y, horiz, horiz2, vert, vert2,

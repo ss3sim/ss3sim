@@ -6,7 +6,8 @@
 #' * use relative benchmark years (i.e., `Bmark_years`)
 #' * use relative years for fishing specifications, i.e., `Fcast_years`
 #'
-#' @template for_list
+#' @param for_list A Stock Synthesis forecast list object as read in from
+#'   [r4ss::SS_readforecast()].
 #'
 #' @author Kelli F. Johnson
 #' @return A an augmented list object, as returned by [r4ss::SS_readforecast()],

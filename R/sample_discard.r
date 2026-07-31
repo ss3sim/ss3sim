@@ -7,9 +7,8 @@
 #' second term adjusts the random samples so that their expected value is
 #' \eqn{D_y}, i.e., the log-normal bias correction.
 #'
-#' @template lcomp-agecomp-index
-#' @template dat_list
-#' @template outfile
+#' @inheritParams sample_catch
+#' @inheritParams sample_comp
 #' @param sds_obs,month A list the same length as `fleets`. The list should
 #'   contain either single values or numeric vectors, where the length of each
 #'   vector matches the length of each vector present in `years`. Single values

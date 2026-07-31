@@ -8,8 +8,8 @@
 #' modified using this function, neither can early recruitment, which starts
 #' in year 1.
 #'
-#' @template dat_list
-#' @template ctl_list
+#' @inheritParams sample_catch
+#' @inheritParams change_catch
 change_year <- function(dat_list, ctl_list) {
   # Find first year of compositional data
   firstyearcomp <- min(c(dat_list$lencomp$year, dat_list$agecomp$year))
@@ -25,7 +25,7 @@ change_year <- function(dat_list, ctl_list) {
 #'
 #' Change start year of the data file
 #'
-#' @template dat_list
+#' @inheritParams sample_catch
 #' @param firstyear An integer specifying the year to start fitting the model.
 #' The default is `NULL`, which will look up the first year
 #' with non-zero catch or non-zero catch-per-unit-effort data in `dat_list`.
@@ -48,7 +48,7 @@ change_startyear <- function(dat_list, firstyear = NULL) {
 #'
 #' Change start year main recruitment deviations in control file
 #'
-#' @template ctl_list
+#' @inheritParams change_catch
 #' @param main An integer specifying the year to
 #' start the main period of recruitment.
 #'

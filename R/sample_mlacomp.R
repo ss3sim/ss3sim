@@ -10,10 +10,8 @@
 #'   EM.
 #' @author Cole Monnahan, Kelli F. Johnson
 #'
-#' @template lcomp-agecomp-index
-#' @template Nsamp
-#' @template dat_list
-#' @template outfile
+#' @inheritParams sample_catch
+#' @inheritParams sample_comp
 #' @param ctl_file_in A path to the control file, output from an OM, containing
 #'   the OM parameters for growth. These values are used to determine the
 #'   uncertainty about size for fish sampled in each age bin.

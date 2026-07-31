@@ -4,8 +4,7 @@
 #' operating model (OM), which in turn leads to changes
 #' in the output and ability to sample data after running the model.
 #'
-#' @template dat_list
-#' @template outfile
+#' @inheritParams sample_catch
 #' @param fleets A numeric vector of fleets.
 #' @param years A numeric vector of years.
 #' @param types A vector that can take combinations of the following entries:
@@ -45,7 +44,9 @@
 #'   [Stock Synthesis manual](https://nmfs-stock-synthesis.github.io/ss-documentation/SS330_User_Manual.html).
 #'   A `NULL` value indicates no action,
 #'   a negative value turns the feature off in Stock Synthesis.
-#' @template nsex
+#' @param nsex An integer value between one and two specifying the number of
+#'   sexes in the model, where 1 is based on females only for spawning stock
+#'   biomass and two-sex models allow for sex-specific parameters.
 #'
 #' @details
 #' `change_data()` is called internally within ss3sim, but it can be used
@@ -296,7 +297,7 @@ calculate_data_units <- function(index_params = NULL, lcomp_params = NULL,
 #' The only required argument is `dat_list` and the remaining arguments
 #' default to a value of `NULL`, which leads to the data file not being
 #' changed.
-#' @template dat_list
+#' @inheritParams sample_catch
 #' @param binwidth A numeric value specifying the width of the size bins.
 #' @param minimum_size The smallest size bin.
 #' @param maximum_size The largest size bin.

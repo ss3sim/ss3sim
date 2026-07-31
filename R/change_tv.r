@@ -9,10 +9,12 @@
 #' in the operating model that currently do not use environmental deviations and
 #' the vectors correspond to deviations. See the section
 #' "Specifying the `change_tv_list`" for help on specifying this argument.
-#' @template ctl_file_in
-#' @template ctl_file_out
-#' @template dat_file_in
-#' @template dat_file_out
+#' @inheritParams change_o
+#' @param dat_file_in A string providing the path to the input Stock Synthesis
+#'   `.dat` file.
+#' @param dat_file_out A string providing the path to the output Stock
+#'   Synthesis data file. If the value is `NULL`, the file will not be written
+#'   to disk.
 #' @author Kotaro Ono, Carey McGilliard, Kelli F. Johnson, and Kathryn L. Doering
 #' @family change functions
 #' @return The function creates modified versions of the  `.ctl` and

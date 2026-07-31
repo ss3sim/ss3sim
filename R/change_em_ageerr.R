@@ -35,8 +35,7 @@
 #' 
 #' @author Derek W. Chamberlin
 #' 
-#' @template dat_list
-#' @template outfile
+#' @inheritParams sample_catch
 #' @param fleets A vector of integers specifying the fleets to include. The
 #' order of the fleets corresponds to the order of the `definition` argument.
 #' An entry of `fleets=NULL` leads to no ageing-error definitions being 

@@ -396,7 +396,8 @@ get_results_mod <- function(dir = getwd(), is_EM = NULL, is_OM = NULL) {
 #' combination within a given year. For example, the recruitment deviation is
 #' for all areas and is thus repeated in each row across areas for a given year.
 #'
-#' @template report.file
+#' @param report.file A Stock Synthesis report list object as read in from
+#'   [r4ss::SS_output()].
 #' @export
 #' @family get-results
 #' @author Cole Monnahan
@@ -484,7 +485,7 @@ get_results_timeseries <- function(report.file) {
 #' Returns a data.frame of the results for spawning stock biomass (SSB), recruitment,
 #' forecasts, and effort by year.
 #'
-#' @template report.file
+#' @inheritParams get_results_timeseries
 #' @export
 #' @family get-results
 #' @author Kelli F. Johnson
@@ -523,7 +524,7 @@ get_results_derived <- function(report.file) {
 #'
 #' Extract scalar quantities from an [r4ss::SS_output()] list from a model run.
 #' Returns a data.frame of the results (a single row) which can be rbinded later.
-#' @template report.file
+#' @inheritParams get_results_timeseries
 #' @family get-results
 #' @export
 #' @author Cole Monnahan; Merrill Rudd
@@ -605,7 +606,7 @@ get_results_scalar <- function(report.file) {
 #' Names of the available NLL components will depend on the version
 #' of the model. Names are native to the estimation framework and all
 #' available components are extracted.
-#' @template report.file
+#' @inheritParams get_results_timeseries
 #' @author Merrill Rudd
 #' @return A vector of named numeric values, where `"NLL_"` is
 #' appended to the names in the `report.file`.
@@ -622,7 +623,7 @@ get_nll_components <- function(report.file) {
 #' Extract the summary of fits to composition data, where the sections
 #' are structured similarly for each type of data in the report file.
 #'
-#' @template report.file
+#' @inheritParams get_results_timeseries
 #' @param name A character string that matches the element of
 #' `report.file` that you wish to extract, e.g.,
 #' `"Length_Comp_Fit_Summary"`.
