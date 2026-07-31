@@ -26,6 +26,7 @@ Authors@R: c(
     person("Cody", "Szuwalski", role = "ctb"),
     person(c("Ian", "G."), "Taylor", role = "ctb"),
     person("Juan", "Valero", role = "ctb"),
+    person("Katyana", "Vert-pre", role = "ctb"),
     person("Athol", "Whitten", role = "ctb"),
     person(c("Kiva", "L."), "Oken", role = "ctb")
   )
