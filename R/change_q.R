@@ -26,7 +26,7 @@
 #'   fleets that need \eqn{q} parameters added to the control file.
 #' @param string_remove  A vector of fleet names and/or integers representing
 #'   fleets that need \eqn{q} parameters removed from the control file.
-#' @template ctl_list
+#' @inheritParams change_catch
 #' @param dat_list Deprecated with version 1.19.1 because users can
 #'   obtain fleet information from `ctl_list`.
 #' @param ctl_file_in Deprecated with version 1.19.1 because users can
@@ -193,7 +193,7 @@ change_q <- function(string_add = NULL,
 #' Check a Stock Synthesis control file to determine if the desired fleets
 #' have q parameters set up.
 #'
-#' @template ctl_list
+#' @inheritParams change_catch
 #' @param Nfleets Deprecated with version 1.19.1 because
 #'   the number of fleets is available in `ctl_list`.
 #' @param desiredfleets A numeric vector specifying which fleets should have

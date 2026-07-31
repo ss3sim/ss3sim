@@ -10,8 +10,7 @@
 #'   numeric value, as a proportion. For example 0.1 means 10 percent. See the
 #'   Stock Synthesis manual for further information. A NULL value indicates no action, a
 #'   negative value indicates to Stock Synthesis to ignore it (not use that feature).
-#' @template dat_list
-#' @template outfile
+#' @inheritParams sample_catch
 #' @return A modified Stock Synthesis `.dat` file is returned invisibly.
 #' @author Cole Monnahan
 #' @export

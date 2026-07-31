@@ -9,12 +9,10 @@
 #'   itself or within [run_ss3sim()] to alter an estimation model
 #'   `.ctl` file.
 #'
-#' @template ctl_file_in
-#' @template ctl_file_out
-#' @template dat_list
-#' @template for_file_in
-#' @template par_name
-#' @template par_int
+#' @inheritParams change_o
+#' @inheritParams sample_catch
+#' @param for_file_in A string providing the path to the input Stock Synthesis
+#'   `forecast.ss` file.
 #' @param par_phase A vector of phase values, one for each parameter in
 #'   `par_name`.  Values can be `NA` if you do not wish to change
 #'   the phase for a given parameter. Negative values will fix the parameter
@@ -22,7 +20,6 @@
 #' @param forecast_num Number of years to perform forecasts. For those years,
 #'   the data will be removed from the `dat_list`, enabling Stock Synthesis to
 #'   generate forecasts rather than use the data to fit the model.
-#' @template verbose
 #' @family change functions
 #' @return
 #' Altered versions of Stock Synthesis `.ctl` and `forecast.ss` files are written

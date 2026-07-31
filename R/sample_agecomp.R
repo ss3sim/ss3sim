@@ -11,18 +11,14 @@
 #'
 #' @author Cole Monnahan and Kotaro Ono
 #'
-#' @template lcomp-agecomp-index
-#' @template lcomp-agecomp
-#' @template dat_list
-#' @template outfile
-#' @template Nsamp
+#' @inheritParams sample_catch
+#' @inheritParams sample_comp
 #' @param keep_conditional A logical if conditional age-at-length data
 #'   should be kept or removed entirely from the data file.
 #'   `sample_agecomp` only works on the age-composition data
 #'   and not on the conditional age-at-length data. To sample the
 #'   conditional data, set `keep_conditional` to `TRUE`
 #'   and use [sample_calcomp()].
-#' @template sampledots
 #' @template sampling-return
 #'
 #' @examples

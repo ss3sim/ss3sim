@@ -9,11 +9,21 @@
 #'   in the operating model and the vectors correspond to deviations.
 #'   Alternatively, `par_name` and `par_init` can be passed to this
 #'   function.
-#' @template ctl_file_in
-#' @template ctl_file_out
-#' @template par_name
-#' @template par_int
-#' @template verbose
+#' @param ctl_file_in A string providing the path to the input Stock Synthesis
+#'   `.ctl` file.
+#' @param ctl_file_out A string providing the path to the output Stock
+#'   Synthesis control file. If the value is `NULL`, the file will not be
+#'   written to disk.
+#' @param par_name A vector of character values corresponding to parameter
+#'   names that you wish to initialize at different values or change the phase
+#'   in which they are estimated. Entries are searched for in `ctl_file_in`,
+#'   and therefore it is best to use full parameter names as they are specified
+#'   in the file.
+#' @param par_int A vector of initial values, one for each entry in `par_name`.
+#'   Values of `NA` leave the INIT value for that parameter at the value found
+#'   in the `.ctl` file.
+#' @param verbose When `TRUE` messages will be returned from the function.
+#'   Often useful for debugging. The default is `FALSE`.
 #' @author Kathryn L. Doering
 #' @family change functions
 #' @return The function creates modified versions of the  `.ctl` files. The

@@ -9,8 +9,11 @@
 #'   0, 1, 2, 3, 4, and 5 years, you will need to use this function to adjust
 #'   the starter file 6 separate times.
 #'
-#' @template str_file_in
-#' @template str_file_out
+#' @param str_file_in A string providing the path to the input Stock Synthesis
+#'   starter file.
+#' @param str_file_out A string providing the path to the output Stock
+#'   Synthesis starter file. If the value is `NULL`, the file will not be
+#'   written to disk.
 #' @param retro_yr Which retrospective year to enter into the starter file.
 #'   Should be 0 (no retrospective analysis) or a negative value, which
 #'   leads to the removal of data for the specified number of years.

@@ -16,8 +16,7 @@
 #'   the current value, and a value of 0 will throw an error since that leads to
 #'   an error when zeroes exist in the data. Instead use a very small value like
 #'   1e-07.
-#' @template dat_list
-#' @template outfile
+#' @inheritParams sample_catch
 #' @return A modified Stock Synthesis `.dat` file, and that file returned invisibly
 #'   (for testing) as a vector of character lines.
 #' @author Cole Monnahan

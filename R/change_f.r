@@ -43,7 +43,7 @@
 #'
 #' @author Kelli F. Johnson
 #'
-#' @template lcomp-agecomp-index
+#' @inheritParams sample_comp
 #' @param fvals A list of the same length as `fleets` with one
 #' entry per fishing mortality level, \eqn{F}, entry in `years`.
 #' A single value will be repeated for every value in `years`. If more than
@@ -58,7 +58,7 @@
 #' Stock Synthesis control file for each fleet.
 #' The structure is the same as `fvals`, i.e., a list or a scalar.
 #' The default is 0.005, which will be applied to all fleets in all years.
-#' @template ctl_list
+#' @inheritParams change_catch
 #' @return Modified Stock Synthesis control file list.
 #' @seealso See [r4ss::SS_readctl()] and [r4ss::SS_writectl()]
 #' for how to supply `ctl_list` and how to write the file back to the disk

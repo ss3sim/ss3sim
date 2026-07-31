@@ -12,7 +12,7 @@
 #'   fleet in your model.
 #' @param by_val Interval at which fishing mortality will be incremented
 #'   between `start` and `end` using `seq(start, end, by_val)`.
-#' @template verbose
+#' @inheritParams change_o
 #' @return A data frame of catch by fishing mortality is returned invisibly and
 #' saved to the disk along with a figure, `Fmsy.pdf`.
 #' @export

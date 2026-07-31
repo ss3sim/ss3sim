@@ -11,8 +11,19 @@
 #' adjusts the random samples so that their expected value is \eqn{D_y}, i.e.,
 #' the log-normal bias correction.
 #'
-#' @template dat_list
-#' @template outfile
+#' @param dat_list A Stock Synthesis data list object as read in from
+#'   [r4ss::SS_readdat()]. Be sure to correctly specify which section of the
+#'   data file you want to work with when reading it in using the `section`
+#'   argument. `section = 1` reads in the input values used to run the model,
+#'   `section = 2` reads in the expected values generated given all the input to
+#'   the operating model, and `section = 3` is not used within `ss3sim` but
+#'   provides bootstrapped data sets sampled internally within Stock
+#'   Synthesis.
+#' @param outfile A character string specifying the file name to use when
+#'   writing the information to disk. The string must include the proper file
+#'   extension. No file is written using the default value of `NULL`, which
+#'   increases speed because writing the file takes time and computing
+#'   resources.
 #'
 #' @template sampling-return
 #'

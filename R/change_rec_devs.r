@@ -18,8 +18,7 @@
 #' will be repeated for every recruitment deviation in the model.
 #' Alternatively, users can supply a named vector with each name being a year
 #' of the model. Missing years will be filled in with values of zero.
-#' @template ctl_file_in
-#' @template ctl_file_out
+#' @inheritParams change_o
 #' @return A modified Stock Synthesis control file.
 #' @author Kelli F. Johnson
 #' @export

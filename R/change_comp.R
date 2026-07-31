@@ -7,7 +7,7 @@
 #' observations is helpful before running your OM because it will facilitate
 #' the creation of observed values for each desired combination.
 #'
-#' @template dat_list
+#' @inheritParams sample_catch
 #' @param type The sample type you want.
 #' See the function call for available types,
 #' e.g., `formals(change_comp)$type`;

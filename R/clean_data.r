@@ -14,7 +14,7 @@
 #'   [sample_mlacomp()].
 #' @param verbose When `TRUE` it will print a message when rows are
 #' deleted.
-#' @template dat_list
+#' @inheritParams sample_catch
 #' @seealso [calculate_data_units()]
 #' @family sampling functions
 #' @return An invisible cleaned data list as an object.

@@ -34,9 +34,8 @@
 #'   Default is `NULL`.
 #' @return A modified `.wtatage.ss` file if `!is.null(outfile)`. A list
 #'   object containing the modified `.wtatage.ss` file is returned invisibly.
-#' @template lcomp-agecomp-index
-#' @template dat_list
-#' @template outfile
+#' @inheritParams sample_catch
+#' @inheritParams sample_comp
 #' @seealso
 #' * [fill_across()]
 #' * [ss3sim_base()]

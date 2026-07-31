@@ -87,12 +87,11 @@
 #' Synthesis model as CAAL.
 #'
 #' @author Cole Monnahan, Kotaro Ono
-#' @template lcomp-agecomp-index
-#' @template dat_list
+#' @inheritParams sample_catch
+#' @inheritParams sample_comp
 #' @param exp_vals_list This is a data list containing all expected values. It
 #'   should not be modified by previous sampling functions to contain sampled
 #'   data.
-#' @template outfile
 #' @param Nsamp_lengths A numeric list of the same length as fleets. Either
 #'  single values or vectors of the same length as the number of years can be
 #'  passed through. Single values are repeated for all years. If no fleet
@@ -139,7 +138,6 @@
 #' @param lcomps_sampled Have marginal length comps already been sampled and are
 #'  included in `dat_list[["lencomp"]]`? If `FALSE`, expected values are in
 #'  present in `datlist[["lencomp"]]`.
-#' @template sampledots
 #' @template sampling-return
 #' @family sampling functions
 #' @export

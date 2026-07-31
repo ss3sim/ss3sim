@@ -45,7 +45,9 @@
 #' @param em_dir The directory with the estimation model you want to copy and
 #'   use for the specified simulations. If `NA`, then no estimation method is
 #'   included and only data is created.
-#' @template user_recdevs
+#' @param user_recdevs A vector of user-specified recruitment deviations to
+#'   use for the operating model. If `NULL`, recruitment deviations are
+#'   generated internally.
 #' @param user_recdevs_warn A logical argument allowing users to turn the
 #'   warning regarding biased recruitment deviations off when `user_recdevs`
 #'   are specified.
