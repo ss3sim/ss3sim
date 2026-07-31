@@ -102,7 +102,7 @@ bi-annual.
 Run the following code to install  this package and load it into your workspace.
 You will not need to install  this package every time but it is a good idea to ensure it is up to date.
 If you are installing from GitHub,
-you may need to install {remotes} or {pak}, `utils::install.packges("pak")`,
+you may need to install {remotes} or {pak}, `utils::install.packages("pak")`,
 before installing  this package if you do not already have {devtools} installed.
 If your current version of  this package is up to date,
 R will let you know and prompt you if you want to override the current installation.
